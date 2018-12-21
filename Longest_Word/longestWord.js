@@ -4,7 +4,7 @@ words = words.split("\n");
 
 // console.log(words[0]);
 
-var badLetters = /[!@#$%^&*()-_'+]/;
+var badLetters = /[!@#$%^&*()-_'+t]/;
 var longestAcceptableWord = "";
 
 for(var testWord of words){
