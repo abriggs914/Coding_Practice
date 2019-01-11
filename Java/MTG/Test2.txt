@@ -1,0 +1,1780 @@
+Fiery Impulse, Instant, RD, 1, 0, 0, Magic Origins, 145, 272, false,
+Act of Treason, Sorcery, RD, 3, 0, 0, Magic Origins, 129, 272, false,
+Blazing Hellhound, Creature, BKRD, 4, 4, 3, Magic Origins, 210, 272, false,
+Fiery Impulse, Instant, RD, 1, 0, 0, Magic Origins, 145, 272, false,
+Nantuko Husk, Creature, BK, 3, 2, 2, Magic Origins, 109, 272, false,
+Act of Treason, Sorcery, RD, 3, 0, 0, Magic Origins, 129, 272, false,
+Nantuko Husk, Creature, BK, 3, 2, 2, Magic Origins, 109, 272, false,
+Nantuko Husk, Creature, BK, 3, 2, 2, Magic Origins, 109, 272, false,
+Thornbow Archer, Creature, BK, 1, 1, 2, Magic Origins, 121, 272, false,
+Blazing Hellhound, Creature, BKRD, 4, 4, 3, Magic Origins, 210, 272, false,
+Undead Servant, Creature, BK, 4, 3, 2, Magic Origins, 124, 272, false,
+Chandra's Ignition, Sorcery, RD, 5, 0, 0, Magic Origins, 137, 272, false,
+Chandra's Fury, Instant, RD, 5, 0, 0, Magic Origins, 136, 272, false,
+Shambling Ghoul, Creature, BK, 2, 2, 3, Magic Origins, 119, 272, false,
+Shambling Ghoul, Creature, BK, 2, 2, 3, Magic Origins, 119, 272, false,
+CobbleBrute, Creature, RD, 4, 5, 2, Magic Origins, 138, 272, false,
+Undead Servant, Creature, BK, 4, 3, 2, Magic Origins, 124, 272, false,
+Enthralling Victor, Creature, RD, 4, 3, 2, Magic Origins, 142, 272, false,
+Enthralling Victor, Creature, RD, 4, 3, 2, Magic Origins, 142, 272, false,
+Act of Treason, Sorcery, RD, 3, 0, 0, Magic Origins, 129, 272, false,
+Ravaging Blaze, Instant, RD, 3, 0, 0, Magic Origins, 159, 272, false,
+Weight of the Underworld, Enchantment-Aura, BK, 4, 0, 0, Magic Origins, 126, 272, true, Enchant
+Deadly Recluse, Creature, GN, 2, 1, 2, Magic 2010 Core Set, 175, 249, true, Reach, Deathtouch
+Deadly Recluse, Creature, GN, 2, 1, 2, Magic 2010 Core Set, 175, 249, true, Reach, Deathtouch
+Deadly Recluse, Creature, GN, 2, 1, 2, Magic 2010 Core Set, 175, 249, true, Reach, Deathtouch
+Explore, Sorcery, GN, 2, 0, 0, Elspeth vs. Kiora, 45, 67, false,
+Explore, Sorcery, GN, 2, 0, 0, Elspeth vs. Kiora, 45, 67, false,
+AEtherize, Instant, BU, 4, 0, 0, Elspeth vs. Kiora, 36, 67, false,
+Scourge of Fleets, Creature, BU, 7, 6, 6, Elspeth vs. Kiora, 41, 67, false,
+Lorescale Coatl, Creature, GNBU, 3, 2, 2, Elspeth vs. Kiora, 53, 67, false,
+Urban Evolution, Sorcery, GNBU, 5, 0, 0, Elspeth vs. Kiora, 57, 67, false,
+Accumulated Knowledge, Instant, BU, 2, 0, 0, Elspeth vs. Kiora, 35, 67, false,
+Accumulated Knowledge, Instant, BU, 2, 0, 0, Elspeth vs. Kiora, 35, 67, false,
+Accumulated Knowledge, Instant, BU, 2, 0, 0, Elspeth vs. Kiora, 35, 67, false,
+Accumulated Knowledge, Instant, BU, 2, 0, 0, Elspeth vs. Kiora, 35, 67, false,
+Lorescale Coatl, Creature, GNBU, 3, 2, 2, Elspeth vs. Kiora, 53, 67, false,
+Nimbus Swimmer, Creature, GNBU, 3, 0, 0, Elspeth vs. Kiora, 54, 67, true, Flying
+Nessian Asp, Creature, GN, 5, 4, 5, Elspeth vs. Kiora, 48, 67, true, Reach, Monstrosity
+Grazing Gladehart, Creature, GN, 3, 2, 2, Elspeth vs. Kiora, 47, 67, false,
+Grazing Gladehart, Creature, GN, 3, 2, 2, Elspeth vs. Kiora, 47, 67, false,
+Grazing Gladehart, Creature, GN, 3, 2, 2, Elspeth vs. Kiora, 47, 67, false,
+Plains, Land, WT, 0, 0, 0, Elspeth vs. Kiora, 31, 67, false,
+Plains, Land, WT, 0, 0, 0, Elspeth vs. Kiora, 33, 67, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 318, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 319, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 319, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 319, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 320, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 320, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 320, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 320, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 321, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 321, 337, false,
+Plains, Land, WT, 0, 0, 0, Commander (2014 Edition), 321, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 334, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 334, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 334, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 335, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 335, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 335, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 336, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 336, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 337, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 337, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 337, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 337, 337, false,
+Captain of the Watch, Creature, WT, 6, 3, 3, Elspeth vs. Kiora, 3, 67, true, Vigilance
+Dictate of Heliod, Enchantment, WT, 5, 0, 0, Elspeth vs. Kiora, 8, 67, true, Flash
+Retreat to Kazandu, Enchantment, GN, 3, 0, 0, Zendikar vs. Eldrazi, 21, 80, true, Landfall
+Scute Mob, Creature, GN, 1, 1, 1, Zendikar vs. Eldrazi, 22, 80, false,
+Lys Alana Huntmaster, Creature, GN, 4, 3, 3, Commander (2014 Edition), 205, 337, false,
+Hallowed Spiritkeeper, Creature, WT, 3, 3, 2, Commander (2014 Edition), 8, 337, true, Vigilance
+Immaculate Magistrate, Creature, GN, 4, 2, 2, Commander (2014 Edition), 201, 337, false,
+Wellwisher, Creature, GN, 2, 1, 1, Commander (2014 Edition), 223, 337, false,
+Sun Titan, Creature, WT, 6, 6, 6, Commander (2014 Edition), 91, 337, true, Vigilance
+Imperious Perfect, Creature, GN, 3, 2, 2, Commander (2014 Edition), 202, 337, false,
+Joraga Warcaller, Creature, GN, 1, 1, 1, Commander (2014 Edition), 203, 337, true, Multikicker
+Gift of Estates, Sorcery, WT, 2, 0, 0, Commander (2014 Edition), 73, 337, false,
+Wolfbriar Elemental, Creature, GN, 4, 4, 4, Commander (2014 Edition), 225, 337, true, Multikicker
+Deploy to the Front, Sorcery, WT, 7, 0, 0, Commander (2014 Edition), 6, 3377, false,
+Priest of Titania, Creature, GN, 2, 1, 1, Commander (2014 Edition), 210, 337, false,
+Thran Dynamo, Artifact, NA, 4, 0, 0, Commander (2014 Edition), 277, 377, false,
+Wolfcaller's Howl, Enchantment, GN, 4, 0, 0, Commander (2014 Edition), 52, 337, false,
+Angel of the Dire Hour, Creature, WT, 7, 5, 4, Commander (2014 Edition), 1, 337, true, Flash, Flying
+Geist-Honored Monk, Creature, WT, 5, 0, 0, Commander (2014 Edition), 72, 337, true, Vigilance
+Elvish Archdruid, Creature, GN, 3, 2, 2, Commander (2014 Edition), 190, 337, false,
+Essence Warden, Creature, GN, 1, 1, 1, Commander (2014 Edition), 194, 337, false,
+Drove of Elves, Creature, GN, 4, 3, 3, Commander (2014 Edition), 189, 337, true, Hexproof
+Sunblast Angel, Creature, WT, 6, 4, 5, Commander (2014 Edition), 92, 337, true, Flying
+Marchal's Anthem, Enchantment, WT, 4, 0, 0, Commander (2014 Edition), 77, 337, true, Multikicker
+Wren's Run Packmaster, Creature, GN, 4, 5, 5, Commander (2014 Edition), 227, 337, false,
+White Sun's Zenith, Instant, WT, 4, 0, 0, Commander (2014 Edition), 95, 337, false,
+Wurmcoil Engine, Artifact Creature, NA, 6, 6, 6, Commander (2014 Edition), 283, 337, true, Deathtouch, Lifelink
+Kemba Kha Regent, Creature, WT, 3, 2, 4, Commander (2014 Edition), 75, 337, false,
+Ezuri Renegade Leader, Creature, GN, 3, 2, 2, Commander (2014 Edition), 195, 337, false,
+Twilight Shepherd, Creature, WT, 6, 5, 5, Commander (2014 Edition), 94, 337, true, Flying, Vigilance
+Beastmaster Ascension, Enchantment, GN, 3, 0, 0, Commander (2014 Edition), 186, 337, false,
+Mobilization, Enchantment, WT, 3, 0, 0, Commander (2014 Edition), 81, 337, false,
+Requiem Angel, Creature, WT, 6, 5, 5, Commander (2014 Edition), 84, 337, true, Flying
+Akoum Refuge, Land, RDBK, 0, 0, 0, Zendikar vs. Eldrazi, 67, 80, false,
+Akoum Refuge, Land, RDBK, 0, 0, 0, Zendikar vs. Eldrazi, 67, 80, false,
+Akoum Refuge, Land, RDBK, 0, 0, 0, Zendikar vs. Eldrazi, 67, 80, false,
+Eldrazi Temple, Land, RDBKGNWTBUNA, 0, 0, 0, Zendikar vs. Eldrazi, 68, 80, false,
+Rocky Tar Pit, Land, RDBK, 0, 0, 0, Zendikar vs. Eldrazi, 69, 80, false,
+Rocky Tar Pit, Land, RDBK, 0, 0, 0, Zendikar vs. Eldrazi, 69, 80, false,
+Mountain, Land, RD, 0, 0, 0, Zendikar vs. Eldrazi, 73, 80, false,
+Mountain, Land, RD, 0, 0, 0, Zendikar vs. Eldrazi, 73, 80, false,
+Mountain, Land, RD, 0, 0, 0, Zendikar vs. Eldrazi, 73, 80, false,
+Mountain, Land, RD, 0, 0, 0, Zendikar vs. Eldrazi, 74, 80, false,
+Mountain, Land, RD, 0, 0, 0, Zendikar vs. Eldrazi, 74, 80, false,
+Mountain, Land, RD, 0, 0, 0, Zendikar vs. Eldrazi, 75, 80, false,
+Mountain, Land, RD, 0, 0, 0, Zendikar vs. Eldrazi, 75, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 70, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 70, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 70, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 70, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 70, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 71, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 71, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 71, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 71, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 72, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 72, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 72, 80, false,
+Swamp, Land, BK, 0, 0, 0, Zendikar vs. Eldrazi, 72, 80, false,
+Runed Servitor, Artifact Creature, NA, 2, 2, 2, Zendikar vs. Eldrazi, 66, 80, false,
+Heartstabber Mosquito, Creature, BK, 4, 2, 2, Zendikar vs. Eldrazi, 52, 80, true, Flying, Kicker
+Consume the Meek, Instant, BK, 5, 0, 0, Zendikar vs. Eldrazi, 49, 80, false,
+Induce Despair, Induce, BK, 3, 0, 0, Zendikar vs. Eldrazi, 53, 80, false,
+Emrakul's Hatcher, Creature, RD, 5, 3, 3, Zendikar vs. Eldrazi, 59, 80, false,
+Emrakul's Hatcher, Creature, RD, 5, 3, 3, Zendikar vs. Eldrazi, 59, 80, false,
+Emrakul's Hatcher, Creature, RD, 5, 3, 3, Zendikar vs. Eldrazi, 59, 80, false,
+Heartstabber Mosquito, Creature, BK, 4, 2, 2, Zendikar vs. Eldrazi, 52, 80, true, Flying, Kicker
+Butcher of Malakir, Creature, BK, 7, 5, 4, Zendikar vs. Eldrazi, 47, 80, true, Flying
+Smother, Instant, BK, 2, 0, 0, Zendikar vs. Eldrazi, 57, 80, false,
+Bloodthrone Vampire, Creature, BK, 2, 1, 1, Zendikar vs. Eldrazi, 46, 80, false,
+Mind Stone, Artifact, NA, 2, 0, 0, Zendikar vs. Eldrazi, 65, 80, false,
+Bloodrite Invoker, Creature, BK, 3, 3, 1, Zendikar vs. Eldrazi, 45, 80, false,
+Forerunner of Slaughter, Creature, RDBK, 2, 3, 2, Zendikar vs. Eldrazi, 64, 80, true, Devoid
+Pawn of Ulamog, Creature, BK, 3, 2, 2, Zendikar vs. Eldrazi, 55, 80, false,
+Read the Bones, Sorcery, BK, 3, 0, 0, Zendikar vs. Eldrazi, 56, 80, false,
+Read the Bones, Sorcery, BK, 3, 0, 0, Zendikar vs. Eldrazi, 56, 80, false,
+Magmaw, Creature, RD, 5, 4, 4, Zendikar vs. Eldrazi, 62, 80, false,
+Mind Stone, Artifact, NA, 2, 0, 0, Zendikar vs. Eldrazi, 65, 80, false,
+Forked Bolt, Sorcery, RD, 1, 0, 0, Zendikar vs. Eldrazi, 60, 80, false,
+Forked Bolt, Sorcery, RD, 1, 0, 0, Zendikar vs. Eldrazi, 60, 80, false,
+Vampire Nighthawk, Creature, BK, 3, 2, 3, Zendikar vs. Eldrazi, 58, 80, true, Flying, Deathtouch, Lifelink
+Dominator Drone, Creature, BK, 3, 3, 2, Zendikar vs. Eldrazi, 51, 80, true, Devoid, Ingest
+Dominator Drone, Creature, BK, 3, 3, 2, Zendikar vs. Eldrazi, 51, 80, true, Devoid, Ingest
+Corpsehatch, Sorcery, BK, 5, 0, 0, Zendikar vs. Eldrazi, 50, 80, false,
+Runed Servitor, Artifact Creature, NA, 2, 2, 2, Zendikar vs. Eldrazi, 66, 80, false,
+Hellion Eruption, Sorcery, RD, 6, 0, 0, Zendikar vs. Eldrazi, 61, 80, false,
+Cadaver Imp, Creature, BK, 3, 1, 1, Zendikar vs. Eldrazi, 48, 80, true, Flying
+Torch Slinger, Creature, RD, 3, 2, 2, Zendikar vs. Eldrazi, 63, 80, true, Kicker
+Marsh Casualties, Sorcery, BK, 2, 0, 0, Zendikar vs. Eldrazi, 54, 80, true, Kicker
+Plant, Token Creature, GN, 0, 0, 1, Zendikar vs. Eldrazi, 80, 80, false,
+Plant, Token Creature, GN, 0, 0, 1, Zendikar vs. Eldrazi, 80, 80, false,
+Plant, Token Creature, GN, 0, 0, 1, Zendikar vs. Eldrazi, 80, 80, false,
+Plant, Token Creature, GN, 0, 0, 1, Zendikar vs. Eldrazi, 80, 80, false,
+Plant, Token Creature, GN, 0, 0, 1, Zendikar vs. Eldrazi, 80, 80, false,
+Temple of the False God, Land, NA, 0, 0, 0, Commander (2014 Edition), 314, 337, false,
+Temple of the False God, Land, NA, 0, 0, 0, Commander (2014 Edition), 314, 337, false,
+Evolving Wilds, Land, NA, 0, 0, 0, Zendikar vs. Eldrazi, 31, 80, false,
+Evolving Wilds, Land, NA, 0, 0, 0, Zendikar vs. Eldrazi, 31, 80, false,
+Graypelt Refuge, Land, GNWT, 0, 0, 0, Zendikar vs. Eldrazi, 32, 80, false,
+Graypelt Refuge, Land, GNWT, 0, 0, 0, Zendikar vs. Eldrazi, 32, 80, false,
+Stirring Wildwood, Land, GNWT, 0, 0, 0, Zendikar vs. Eldrazi, 33, 80, false,
+Turntimber Grove, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 34, 80, false,
+Turntimber Grove, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 34, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 38, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 38, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 38, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 38, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 39, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 39, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 39, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 40, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 40, 80, false,
+Forest, Land, GN, 0, 0, 0, Zendikar vs. Eldrazi, 40, 80, false,
+Plains, Land, WT, 0, 0, 0, Zendikar vs. Eldrazi, 35, 80, false,
+Plains, Land, WT, 0, 0, 0, Zendikar vs. Eldrazi, 35, 80, false,
+Plains, Land, WT, 0, 0, 0, Zendikar vs. Eldrazi, 35, 80, false,
+Plains, Land, WT, 0, 0, 0, Zendikar vs. Eldrazi, 36, 80, false,
+Plains, Land, WT, 0, 0, 0, Zendikar vs. Eldrazi, 36, 80, false,
+Plains, Land, WT, 0, 0, 0, Zendikar vs. Eldrazi, 36, 80, false,
+Plains, Land, WT, 0, 0, 0, Zendikar vs. Eldrazi, 37, 80, false,
+Plains, Land, WT, 0, 0, 0, Zendikar vs. Eldrazi, 37, 80, false,
+Plains, Land, WT, 0, 0, 0, Zendikar vs. Eldrazi, 37, 80, false,
+Graypelt Hunter, Creature, GN, 4, 2, 2, Zendikar vs. Eldrazi, 13, 80, true, Trample
+Graypelt Hunter, Creature, GN, 4, 2, 2, Zendikar vs. Eldrazi, 13, 80, true, Trample
+Joraga Bard, Creature, GN, 4, 1, 4, Zendikar vs. Eldrazi, 17, 80, false,
+Ondu Giant, Creature, GN, 4, 2, 4, Zendikar vs. Eldrazi, 19, 80, false,
+Kabira Vindicator, Creature, WT, 4, 2, 4, Zendikar vs. Eldrazi, 4, 80, true, Level Up
+Makindi Griffin, Creature, WT, 4, 2, 4, Zendikar vs. Eldrazi, 6, 80, true, Flying
+Wildheart Invoker, Creature, GN, 4, 4, 3, Zendikar vs. Eldrazi, 26, 80, false,
+Territorial Baloth, Creature, GN, 5, 4, 4, Zendikar vs. Eldrazi, 24, 80, true, Landfall
+Territorial Baloth, Creature, GN, 5, 4, 4, Zendikar vs. Eldrazi, 24, 80, true, Landfall
+Explorer's Scope, Artifact, NA, 1, 0, 0, Zendikar vs. Eldrazi, 28, 80, true, Equip
+Groundswell, Instant, GN, 1, 0, 0, Zendikar vs. Eldrazi, 15, 80, true, Landfall
+Oust, Sorcery, WT, 1, 0, 0, Zendikar vs. Eldrazi, 7, 80, false,
+Khalni Heart Expedition, Enchantment, GN, 2, 0, 0, Zendikar vs. Eldrazi, 18, 80, true, Landfall
+Harrow, Instant, GN, 3, 0, 0, Zendikar vs. Eldrazi, 16, 80, false,
+Repel the Darkness, Instant, WT, 3, 0, 0, Zendikar vs. Eldrazi, 8, 80, false,
+Sheer Drop, Sorcery, WT, 3, 0, 0, Zendikar vs. Eldrazi, 9, 80, true, Awaken
+Sheer Drop, Sorcery, WT, 3, 0, 0, Zendikar vs. Eldrazi, 9, 80, true, Awaken
+Stonework Puma, Artifact Creature, NA, 3, 2, 2, Zendikar vs. Eldrazi, 30, 80, false,
+Knight of Cliffhaven, Creature, WT, 2, 2, 2, Zendikar vs. Eldrazi, 5, 80, true, Level Up
+Caravan Escort, Creature, WT, 1, 1, 1, Zendikar vs. Eldrazi, 3, 80, true, Level Up
+Caravan Escort, Creature, WT, 1, 1, 1, Zendikar vs. Eldrazi, 3, 80, true, Level Up
+Seer's Sundial, Artifact, NA, 4, 0, 0, Zendikar vs. Eldrazi, 29, 80, true, Landfall
+Veteran Warleader, Creature, GNWT, 3, 0, 0, Zendikar vs. Eldrazi, 27, 80, false,
+Daggerback Basilisk, Creature, GN, 3, 2, 2, Zendikar vs. Eldrazi, 11, 80, true, Deathtouch
+Tajuru Archer, Creature, GN, 3, 1, 2, Zendikar vs. Eldrazi, 23, 80, false,
+Affa Guard Hound, Creature, WT, 3, 2, 2, Zendikar vs. Eldrazi, 2, 80, true, Flash
+Turntimber Basilisk, Creature, GN, 3, 2, 1, Zendikar vs. Eldrazi, 25, 80, true, Deathtouch, Landfall
+Hunting Triad, Sorcery, GN, 4, 0, 0, Commander (2014 Edition), 200, 337, true, Reinforce
+Sylvan Raner, Creature, GN, 2, 1, 1, Commander (2014 Edition), 216, 337, false,
+Farhaven Elf, Creature, GN, 3, 1, 1, Commander (2014 Edition), 196, 337, false,
+Timberwatch Elf, Creature, GN, 3, 1, 2, Commander (2014 Edition), 220, 337, false,
+Llanowar Elves, Creature, GN, 1, 1, 1, Commander (2014 Edition), 204, 337, false,
+Wood Elves, Creature, GN, 3, 1, 1, Commander (2014 Edition), 226, 337, false,
+Scoured Barrens, Land, WTBK, 0, 0, 0, Dragons of Tarkir, 242, 269, false,
+Scoured Barrens, Land, WTBK, 0, 0, 0, Dragons of Tarkir, 242, 269, false,
+Plains, Land, WT, 0, 0, 0, Ajani vs. Nicol Bolas, 40, 80, false,
+Plains, Land, WT, 0, 0, 0, Magic 2012 Core Set, 231, 249, false,
+Plains, Land, WT, 0, 0, 0, Magic 2012 Core Set, 233, 249, false,
+Plains, Land, WT, 0, 0, 0, Innistrad, 251, 264, false,
+Plains, Land, WT, 0, 0, 0, Magic 2013 Core Set, 231, 249, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Dragons of Tarkir, 258, 264, false,
+Congregate, Instant, WT, 4, 0, 0, Magic 2014 Core Set, 14, 249, false,
+Duress, Sorcery, BK, 1, 0, 0, Magic 2014 Core Set, 97, 249, false,
+Duress, Sorcery, BK, 1, 0, 0, Magic 2014 Core Set, 97, 249, false,
+Xathrid Necromancer, Creature, BK, 3, 2, 2, Magic 2014 Core Set, 123, 249, false,
+Master of Diversion, Creature, WT, 3, 2, 2, Magic 2014 Core Set, 24, 249, false,
+Xathrid Necromancer, Creature, BK, 3, 2, 2, Magic 2014 Core Set, 123, 249, false,
+Dawnstrike Paladin, Creature, WT, 5, 2, 4, Magic 2014 Core Set, 15, 249, true, Lifelink, Vigilance
+Devine Favor, Enchantment-Aura, WT, 2, 0, 0, Magic 2012 Core Set, 14, 249, true, Enchant
+Alabaster Mage, Creature, WT, 2, 2, 1, Magic 2012 Core Set, 2, 249, false,
+Timely Reinforcements, Sorcery, WT, 3, 0, 0, Magic 2012 Core Set, 40, 249, false,
+Timely Reinforcements, Sorcery, WT, 3, 0, 0, Magic 2012 Core Set, 40, 249, false,
+Oblivion Ring, Enchantment, WT, 3, 0, 0, Magic 2012 Core Set, 27, 249, false,
+Demystify, Instant, WT, 1, 0, 0, Magic 2012 Core Set, 13, 249, false,
+Onyx Mage, Creature, BK, 2, 2, 1, Magic 2012 Core Set, 103, 249, false,
+Taste of Blood, Sorcery, BK, 1, 0, 0, Magic 2012 Core Set, 113, 249, false,
+Taste of Blood, Sorcery, BK, 1, 0, 0, Magic 2012 Core Set, 113, 249, false,
+Day of Judgement, Sorcery, WT, 4, 0, 0, Magic 2012 Core Set, 12, 249, false,
+Distress, Sorcery, BK, 2, 0, 0, Magic 2012 Core Set, 94, 249, false,
+Distress, Sorcery, BK, 2, 0, 0, Magic 2012 Core Set, 94, 249, false,
+Angel of Mercy, Instant, WT, 4, 0, 0, Magic 2012 Core Set, 4, 249, false,
+Palace Guard, Creature, WT, 3, 1, 4, Magic 2011 Core Set, 24, 249, false,
+Crusader of Odric, Creature, WT, 3, 0, 0, Magic 2013 Core Set, 10, 249, false,
+Safe Passage, Instant, WT, 3, 0, 0, Magic 2013 Core Set, 30, 249, false,
+Wit's End, Sorcery, BK, 7, 0, 0, Magic 2013 Core Set, 117, 249, false,
+Celestial Flare, Instant, WT, 2, 0, 0, Magic Origins, 8, 272, false,
+Devine Verdict, Instant, WT, 4, 0, 0, Magic Origins, 274, 272, false,
+Mind Rot, Sorcery, BK, 3, 0, 0, Magic Origins, 281, 272, false,
+Angel of Glory's Rise, Creature, WT, 7, 4, 6, UNKNOWN, 0, 0, true, Lifelink
+Rush of Battle, Sorcery, WT, 4, 0, 0, Khans of Tarkir, 19, 269, false,
+Chief of the Edge, Creature, WTBK, 2, 3, 2, Khans of Tarkir, 169, 269, false,
+Chief of the Scale, Creature, WTBK, 2, 2, 3, Khans of Tarkir, 170, 269, false,
+Hand of Silumgar, Creature, BK, 2, 2, 1, Dragons of Tarkir, 105, 264, true, Deathtouch
+Hand of Silumgar, Creature, BK, 2, 2, 1, Dragons of Tarkir, 105, 264, true, Deathtouch
+Herald of Dromoka, Creature, WT, 2, 2, 2, Dragons of Tarkir, 22, 264, true, Vigilance 
+Dutiful Attendant, Creature, BK, 3, 1, 2, Dragons of Tarkir, 99, 264, false,
+Blood-Chin Rager, Creature, BK, 2, 2, 2, Dragons of Tarkir, 89, 264, false,
+Hooded Assassin, Creature, BK, 3, 1, 2, Fate Reforged, 73, 185, false,
+Harsh Sustenance, Instant, WTBK, 3, 0, 0, Fate Reforged, 154, 185, false,
+Mardu Woe-Reaper, Creature, WT, 1, 2, 1, Fate Reforged, 18, 185, false,
+Sandsteppe Outcast, Creature, WT, 3, 2, 1, Fate  Reforged, 25, 185, false,
+Gift of Orzhova, Enchantment-Aura, WTBK, 3, 0, 0, Gatecrash, 219, 249, true, Enchant
+Gift of Orzhova, Enchantment-Aura, WTBK, 3, 0, 0, Gatecrash, 219, 249, true, Enchant
+Frontline Medic, Creature, WT, 3, 3, 3, Gatecrash, 12, 249, true, Battalion
+Angelic Edict, Sorcery, WT, 5, 0, 0, Gatecrash, 2, 249, false,
+Basilica Guards, Creature, WT, 3, 1, 4, Gatecrash, 5, 249, true, Defender, Extort
+Agent of Fates, Creature, BK, 3, 3, 2, Theros, 76, 249, true, Deathtouch, Heroic
+Pharika's Cure, Instant, BK, 2, 0, 0, Theros, 100, 249, false,
+Pharika's Cure, Instant, BK, 2, 0, 0, Theros, 100, 249, false,
+Myriad Landscape, Land, NA, 0, 0, 0, Commander (2014 Edition), 61, 337, false,
+Zoetic Cavern, Land, NA, 0, 0, 0, Commander (2014 Edition), 317, 337, true, Morph
+Lonely Sandbar, Land, BU, 0, 0, 0, Commander (2014 Edition), 304, 337, false,
+Coral Atoll, Land, BU, 0, 0, 0, Commander (2014 Edition), 287, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 322, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 322, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 322, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 323, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 323, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 323, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 323, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 323, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Sphinx of Jwar Isle, Creature, BU, 6, 5, 5, Commander (2014 Edition), 126, 337, true, Flying, Shroud
+Stromsurge Kraken, Creature, BU, 5, 5, 5, Commander (2014 Edition), 18, 337, true, Hexproof
+Nullify, Instant, BU, 2, 0, 0, Born of the Gods, 45, 165, false,
+Ur-Golem's Eye, Artifact, NA, 4, 0, 0, Commander (2014 Edition), 280, 337, false,
+Call to Mind, Sorcery, BU, 3, 0, 0, Commander (2014 Edition), 101, 337, false,
+Benthic Giant, Creature, BU, 6, 4, 5, Theros, 41, 249, true, Hexproof
+Dissolve, Instant, BU, 3, 0, 0, Theros, 47, 249, false,
+Statute of Denial, Instant, BU, 4, 0, 0, Magic 2015 Core Set, 79, 269, false,
+Phyrexian Ingester, Creature, BU, 7, 3, 3, Commander (2014 Edition), 119, 337, true, Imprint
+Dismiss, Instant, BU, 4, 0, 0, Commander (2014 Edition), 106, 337, false,
+Domineering Will, Instant, BU, 4, 0, 0, Commander (2014 Edition), 13, 337, false,
+Reef Worm, Creature, BU, 4, 0, 1, Commander (2014 Edition), 16, 337, false,
+Fog Bank, Creature, BU, 2, 0, 2, Commander (2014 Edition), 110, 337, true, Flying, Defender
+Worn Powerstone, Artifact, NA, 3, 0, 0, Commander (2014 Edition), 282, 337, false,
+Nevinyrral's Disk, Artifact, NA, 4, 0, 0, Commander (2014 Edition), 257, 337, false,
+Fool's Demise, Enchantment-Aura, BU, 5, 0, 0, Commander (2014 Edition), 111, 337, true, Enchant
+Breaching Leviathan, Creature, BU, 9, 9, 9, Commander (2014 Edition), 12, 337, false,
+Sphinx of Uthuun, Creature, BU, 7, 5, 6, Commander (2014 Edition), 128, 337, true, Flying
+Everflowing Chalice, Artifact, NA, 0, 0, 0, Commander (2014 Edition), 239, 337, true, Multikicker
+Sol Ring, Artifact, NA, 1, 0, 0, Commander (2014 Edition), 270, 337, false,
+AEther Gale, Sorcery, BU, 5, 0, 0, Commander (2014 Edition), 11, 337, false,
+Distorting Wake, Sorcery, BU, 4, 0, 0, Commander (2014 Edition), 107, 337, false,
+Dreamstone Hedron, Artifact, NA, 6, 0, 0, Commander (2014 Edition), 236, 337, false,
+Temple of the False God, Land, NA, 0, 0, 0, Elspeth vs. Kiora, 59, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 60, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 60, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 60, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 60, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 61, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 61, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 61, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 61, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 62, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 62, 67, false,
+Island, Land, BU, 0, 0, 0, Elspeth vs Kiora, 62, 67, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 335, 337, false,
+Forest, Land, GN, 0, 0, 0, Commander (2014 Edition), 335, 337, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 63, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 63, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 63, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 63, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 64, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 64, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 64, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 64, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 65, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 65, 80, false,
+Forest, Land, GN, 0, 0, 0, Elspeth vs. Kiora, 65, 80, false,
+Silklash Spider, Creature, GN, 5, 2, 7, Commander (2014 Edition), 214, 337, true, Reach
+Sphinx of Magosi, Creature, BU, 6, 6, 6, Commander (2014 Edition), 127, 337, true, Flying
+Lorthos the Tidemaker, Creature, BU, 8, 8, 8, Commander (2014 Edition), 117, 337, false,
+Rampaging Baloths, Creature, GN, 6, 6, 6, Commander (2014 Edition), 212, 337, true, Trample, Landfall
+Artisan of Kozilek, Creature, NA, 9, 10, 9, Commander (2014 Edition), 62, 337, true, Annihilator
+Deep-Sea Kraken, Creature, BU, 10, 6, 6, Commander (2014 Edition), 105, 337, true, Suspend
+Predator Flagship, Artifact, NA, 5, 0, 0, Commander (2014 Edition), 263, 337, false,
+Dismiss, Instant, BU, 4, 0, 0, Commander (2014 Edition), 106, 337, false,
+Steel Hellkite, Artifact Creature, NA, 6, 5, 5, Commander (2014 Edition), 273, 337, true, Flying
+Lorthos the Tidemaker, Creature, BU, 8, 8, 8, Commander (2014 Edition), 117, 337, false,
+Exclude, Instant, BU, 3, 0, 0, Commander (2014 Edition), 108, 337, false,
+Argentum Armor, Artifact, NA, 6, 0, 0, Commander (2014 Edition), 228, 337, true, Equip
+Dulcet Sirens, Creature, BU, 3, 1, 3, Commander (2014 Edition), 14, 337, true, Morph
+Siege Behemoth, Creature, GN, 7, 7, 4, Commander (2014 Edition), 46, 337, true, Hexproof
+Infinite Reflection, Enchantment-Aura, BU, 6, 0, 0, Commander (2014 Edition), 114, 337, true, Enchant
+Praetor's Counsel, Sorcery, GN, 8, 0, 0, Commander (2014 Edition), 209, 337, false,
+Cackling Counterpart, Instant, BU, 3, 0, 0, Commander (2014 Edition), 100, 337, true, Flashback
+Breaching Leviathan, Creature, BU, 9, 9, 9, Commander (2014 Edition), 12, 337, false,
+Tornado Elemental, Creature, GN, 7, 6, 6, Commander (2014 Edition), 222, 337, false,
+Rite of Replication, Sorcery, BU, 4, 0, 0, Commander (2014 Edition), 122, 337, true, Kicker
+Cancel, Instant, BU, 3, 0, 0, Magic 2015 Core Set, 274, 269, false,
+Negate, Instant, BU, 2, 0, 0, Magic 2015 Core Set, 71, 269, false,
+Negate, Instant, BU, 2, 0, 0, Magic 2015 Core Set, 71, 269, false,
+Negate, Instant, BU, 2, 0, 0, Magic 2015 Core Set, 71, 269, false,
+Primal Command, Sorcery, GN, 5, 0, 0, Zendikar vs. Eldrazi, 20, 80, false,
+Artisan of Kozilek, Creature, NA, 9, 10, 9, Zendikar vs. Eldrazi, 42, 80, true, Annihilator
+Ulamog's Crusher, Creature, NA, 8, 8, 8, Zendikar vs. Eldrazi, 44, 80, true, Annihilator
+It That Betrays, Creature, NA, 12, 11, 11, Zendikar vs. Eldrazi, 43, 80, true, Annihilator
+Avenger of Zendikar, Creature, GN, 7, 5, 5, Zendikar vs. Eldrazi, 1, 80, true, Landfall
+Clone, Creature, BU, 4, 0, 0, Magic 2010 Core Set, 45, 249, false,
+Clone, Creature, BU, 4, 0, 0, Magic 2010 Core Set, 45, 249, false,
+Clone, Creature, BU, 4, 0, 0, Magic 2010 Core Set, 45, 249, false,
+Clone, Creature, BU, 4, 0, 0, Magic 2010 Core Set, 45, 249, false,
+Curse of the Swine, Sorcery, BU, 3, 0, 0, Theros, 46, 249, false,
+Curse of the Swine, Sorcery, BU, 3, 0, 0, Theros, 46, 249, false,
+Curse of the Swine, Sorcery, BU, 3, 0, 0, Theros, 46, 249, false,
+Inkwell Leviathan, Creature, BU, 9, 7, 11, Elspeth vs. Kiora, 37, 67, true, Trample, Islandwalk, Shroud
+Explosive Vegetation, Sorcery, GN, 4, 0, 0, Elspeth vs. Kiora, 46, 67, false,
+Simic Sky Swallower, Creature, GNBU, 7, 6, 6, Elspeth vs. Kiora, 56, 67, true, Flying, Trample, Shroud
+Plasm Capture, Instant, GNBU, 4, 0, 0, Elspeth vs. Kiora, 55, 67, false,
+Prophet of Kruphix, Creature, GNBU, 5, 2, 3, UNKNOWN, 5, 6, false,
+Countermand, Instant, BU, 4, 0, 0, Journey into Nyx, 33, 165, false,
+Voidwalk, Sorcery, BU, 4, 0, 0, Gatecrash, 55, 249, false,
+Nullify, Instant, BU, 2, 0, 0, Born of the Gods, 45, 165, false,
+AEtherling, Creature, BU, 6, 4, 5, Dragon's Maze, 11, 156, false,
+Negate, Instant, BU, 2, 0, 0, UNKNOWN, 13, 113, false,
+Supplant Form, Instant, BU, 6, 0, 0, Fate Reforged, 54, 185, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 238, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 238, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 238, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 238, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 238, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 238, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 238, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 238, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 238, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 239, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 239, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 239, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 239, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 239, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 240, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 240, 249, false,
+Swamp, Land, BK, 0, 0, 0, Theros, 241, 249, false,
+Swamp, Land, BK, 0, 0, 0, Magic Origins, 262, 272, false,
+Swamp, Land, BK, 0, 0, 0, Magic Origins, 263, 272, false,
+Swamp, Land, BK, 0, 0, 0, Magic Origins, 264, 272, false,
+Swamp, Land, BK, 0, 0, 0, Magic Origins, 261, 272, false,
+Swamp, Land, BK, 0, 0, 0, Magic Origins, 261, 272, false,
+Swamp, Land, BK, 0, 0, 0, Fate Reforged, 181, 185, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 326, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 327, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 329, 337, false,
+Swamp, Land, BK, 0, 0, 0, Dragons of Tarkir, 257, 264, false,
+Swamp, Land, BK, 0, 0, 0, Dragons of Tarkir, 257, 264, false,
+Swamp, Land, BK, 0, 0, 0, Dragons of Tarkir, 258, 264, false,
+Swamp, Land, BK, 0, 0, 0, Dragons of Tarkir, 258, 264, false,
+Crypt Champion, Creature, BK, 5, 2, 2, Dissension, 40, 180, true, Double Strike
+Erebos's Emissary, Enchantment Creature, BK, 4, 3, 3, Theros, 86, 249, true, Bestow
+Dutiful Return, Sorcery, BK, 4, 0, 0, Khans of Tarkir, 71, 269, false,
+Giant Scorpion, Creature, BK, 3, 1, 3, Magic 2013 Core Set, 94, 249, true, Deathtouch
+Nightmare, Creature, BK, 6, 1, 1, Magic Origins, 282, 272, true, Flying
+Helm of the Gods, Artifact, NA, 1, 0, 0, Magic Origins, 230, 272, true, Equip
+Eternal Thirst, Enchantment-Aura, BK, 2, 0, 0, Magic 2015 Core Set, 95, 269, true, Enchant
+Indulgent Tormentor, Creature, BK, 5, 5, 3, Magic 2015 Core Set, 101, 269, true, Flying
+Corpseweft, Enchantment, BK, 3, 0, 0, Dragons of Tarkir, 92, 264, false,
+Ultimate Price, Instant, BK, 2, 0, 0, Dragons of Tarkir, 124, 264, false,
+Rakshasa Gravecaller, Creature, BK, 5, 3, 6, Dragons of Tarkir, 114, 264, true, Exploit
+Gift of Orzhova, Enchantment-Aura, WTBK, 3, 0, 0, Gatecrash, 219, 249, true, Enchant
+Devour Flesh, Instant, BK, 2, 0, 0, Gatecrash, 63, 249, false,
+Crypt Ghast, Creature, BK, 4, 2, 2, Gatecrash, 61, 249, true, Extort
+Desecration Demon, Creature, BK, 4, 6, 6, Return to Ravnica, 63, 274, true, Flying
+Ultimate Price, Instant, BK, 2, 0, 0, Return to Ravnica, 82, 274, false,
+Ultimate Price, Instant, BK, 2, 0, 0, Return to Ravnica, 82, 274, false,
+Doom Blade, Instant, BK, 2, 0, 0, Magic 2014 Core Set, 96, 249, false,
+Doom Blade, Instant, BK, 2, 0, 0, Magic 2014 Core Set, 96, 249, false,
+Staff of the Death Magus, Artifact, NA, 3, 0, 0, Magic 2014 Core Set, 219, 249, false,
+Staff of the Death Magus, Artifact, NA, 3, 0, 0, Magic 2014 Core Set, 219, 249, false,
+Herald of Torment, Enchantment Creature, BK, 3, 3, 3, Born of the Gods, 75, 165, true, Bestow, Flying
+Spiteful Returned, Enchantment Creature, BK, 2, 1, 1, Born of the Gods, 84, 165, true, Bestow
+Spiteful Returned, Enchantment Creature, BK, 2, 1, 1, Born of the Gods, 84, 165, true, Bestow
+Spiteful Returned, Enchantment Creature, BK, 2, 1, 1, Born of the Gods, 84, 165, true, Bestow
+Fated Return, Instant, Bk, 7, 0, 0, Born of the Gods, 69, 165, false,
+Brink of Disaster, Enchantment-Aura, BK, 4, 0, 0, Magic 2012 Core Set, 84, 249, true, Enchant
+Brink of Disaster, Enchantment-Aura, BK, 4, 0, 0, Magic 2012 Core Set, 84, 249, true, Enchant
+Brink of Disaster, Enchantment-Aura, BK, 4, 0, 0, Magic 2012 Core Set, 84, 249, true, Enchant
+Disentomb, Sorcery, BK, 1, 0, 0, Magic 2012 Core Set, 93, 249, false,
+Diabolic Tutor, Sorcery, BK, 4, 0, 0, Magic 2012 Core Set, 92, 249, false,
+Hideous Visage, Sorcery, BK, 3, 0, 0, Magic 2012 Core Set, 100, 249, false,
+Buried Ruin, Land, NA, 0, 0, 0, Magic 2012 Core Set, 224, 249, false,
+Tormented Soul, Creature, BK, 1, 1, 1, Magic 2012 Core Set, 114, 249, false,
+Grim Guardian, Creature, BK, 3, 1, 4, Journey into Nyx, 73, 165, true, Constellation
+Grim Guardian, Creature, BK, 3, 1, 4, Journey into Nyx, 73, 165, true, Constellation
+Doomwake Giant, Enchantment Creature, BK, 5, 4, 6, Journey into Nyx, 66, 165, true, Constellation
+Dreadbringers Lampads, Enchantment Creature, BK, 5, 4, 2, Journey into Nyx, 67, 165, true, Constellation
+Dreadbringers Lampads, Enchantment Creature, BK, 5, 4, 2, Journey into Nyx, 67, 165, true, Constellation
+Nyx Infusion, Enchantment-Aura, BK, 3, 0, 0, Journey into Nyx, 77, 165, true, Enchant 
+Nyx Infusion, Enchantment-Aura, BK, 3, 0, 0, Journey into Nyx, 77, 165, true, Enchant 
+Aspect of Gorgon, Enchantment-Aura, BK, 3, 0, 0, Journey into Nyx, 60, 165, true, Enchant
+Squelching Leeches, Creature, BK, 4, 2, 2, Journey into Nyx, 84, 165, false,
+Spiteful Blow, Sorcery, BK, 6, 0, 0, Journey into Nyx, 83, 165, false, 
+Spiteful Blow, Sorcery, BK, 6, 0, 0, Journey into Nyx, 83, 165, false, 
+Spiteful Blow, Sorcery, BK, 6, 0, 0, Journey into Nyx, 83, 165, false, 
+Swiftwater Cliffs, Land, RDBU, 0, 0, 0, Khans of Tarkir, 243, 269, false,
+Mountain, Land, RD, 0, 0, 0, Magic 2014 Core Set, 244, 249, false,
+Mountain, Land, RD, 0, 0, 0, Dragons of Tarkir, 259, 264, false,
+Mountain, Land, RD, 0, 0, 0, Dragons of Tarkir, 259, 264, false,
+Mountain, Land, RD, 0, 0, 0, Dragons of Tarkir, 260, 264, false,
+Mountain, Land, RD, 0, 0, 0, Dragons of Tarkir, 260, 264, false,
+Mountain, Land, RD, 0, 0, 0, Dragons of Tarkir, 260, 264, false,
+Mountain, Land, RD, 0, 0, 0, Magic Origins, 265, 272, false,
+Mountain, Land, RD, 0, 0, 0, Magic Origins, 266, 272, false,
+Mountain, Land, RD, 0, 0, 0, Magic Origins, 267, 272, false,
+Mountain, Land, RD, 0, 0, 0, Magic Origins, 268, 272, false,
+Mountain, Land, RD, 0, 0, 0, Magic Origins, 268, 272, false,
+Mountain, Land, RD, 0, 0, 0, Magic Origins, 268, 272, false,
+Island, Land, BU, 0, 0, 0, Fate Reforged, 178, 185, false,
+Island, Land, BU, 0, 0, 0, Return to Ravnica, 257, 274, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 257, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 257, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 257, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 258, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 258, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 258, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 259, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 259, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 260, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 260, 272, false,
+Mizzium Mortars, Sorcery, RD, 2, 0, 0, Return to Ravnica, 101, 274, false,
+Halimar TideCaller, Creature, BU, 3, 2, 3, Battle for Zendikar, 79, 274, false
+Stormcloud Djinn, Creature, BU, 5, 3, 3, Time Spiral, 82, 301, true, Flying
+Cancel, Instant, BU, 3, 0, 0, Magic 2014 Core Set, 45, 249, false,
+Shock, Instant, RD, 1, 0, 0, Magic 2014 Core Set, 154, 249, false,
+Beetleback Chief, Creature, RD, 4, 2, 2, Duel Decks Speed vs. Cunning, 14, 82, false,
+Kamahl Pit Fighter, Creature, RD, 6, 6, 1, Duel Decks Heroes vs. Monsters, 16, 81, true, Haste
+Reduce in Stature, Enchantment-Aura, BU, 3, 0, 0, Dragons of Tarkir, 72, 264, true, Enchant
+Kolaghan Stormsinger, Creature, RD, 1, 1, 1, Dragons of Tarkir, 145, 264, true, Haste, Megamorph
+Trumpet Blast, Instant, RD, 3, 0, 0, Khans of Tarkir, 124, 269, false,
+Summit Prowler, Creature, RD, 4, 4, 3, Khans of Tarkir, 121, 269, false,
+Mardu Runemark, Enchantment-Aura, RD, 3, 0, 0, Khans of Tarkir, 107, 185, false,
+Lightning Shrieker, Creature, RD, 5, 5, 5, Khans of Tarkir, 106, 185, Flying, Trample, Haste
+Kindle the Carnage, Sorcery, RD, 3, 0, 0, Dissension, 66, 189, false,
+Fall of the Hammer, Instant, RD, 2, 0, 0, Born of the Gods, 93, 165, false,
+Cyclops of One-Eyed Pass, Creature, RD, 4, 5, 2, Born of the Gods, 90, 165, false,
+Torch Fiend, Creature, RD, 2, 2, 1, Magic 2013 Core Set, 151, 249, false,
+Furnace Whelp, Creature, RD, 4, 2, 2, Magic 2013 Core Set, 279, 249, true, Flying
+Index, Sorcery, BU, 1, 0, 0, Magic 2013 Core Set, 55, 249, false,
+Welkin Tern, Creature, BU, 2, 2, 1, Magic 2013 Core Set, 84, 269, true, Flying
+Welkin Tern, Creature, BU, 2, 2, 1, Magic 2013 Core Set, 84, 269, true, Flying
+Welkin Tern, Creature, BU, 2, 2, 1, Magic 2013 Core Set, 84, 269, true, Flying
+Ornithopter, Artifact Creature, NA, 0, 0, 2, Magic 2013 Core Set, 223, 269, true, Flying
+Wall of Frost, Creature, BU, 3, 0, 7, Magic 2013 Core Set, 83, 269, true, Defender
+Lightning Strike, Instant, RD, 2, 0, 0, Magic 2013 Core Set, 155, 269, false,
+Fiery Impulse, Instant, RD, 1, 0, 0, Origins 2010, 145, 272, false,
+Call of the Full Moon, Enchantment-Aura, RD, 2, 0, 0, Magic Origins, 134, 272, true, Enchant
+Negate, Instant, BU, 2, 0, 0, Magic Origins, 65, 272, false,
+Negate, Instant, BU, 2, 0, 0, Magic Origins, 65, 272, false,
+Negate, Instant, BU, 2, 0, 0, Magic Origins, 65, 272, false,
+Maritime Guard, Creature, BU, 2, 1, 3, Magic Origins, 63, 272, false,
+Disperse, Instant, BU, 2, 0, 0, Magic Origins, 54, 272, false,
+Faerie Miscreant, Creature, BU, 1, 1, 1, Magic Origins, 57, 272, true, Flying
+Faerie Miscreant, Creature, BU, 1, 1, 1, Magic Origins, 57, 272, true, Flying
+Faerie Miscreant, Creature, BU, 1, 1, 1, Magic Origins, 57, 272, true, Flying
+Hydrolash, Instant, BU, 0, 0, 0, Magic Origins, 59, 272, false,
+Anchor to the AEther, Sorcery, BU, 3, 0, 0, Magic Origins, 44, 272, false,
+Hydrolash, Instant, BU, 0, 0, 0, Magic Origins, 59, 272, false,
+Stratus Walk, Enchantment-Aura, BU, 2, 0, 0, Magic Origins, 77, 272, true, Enchant
+Stratus Walk, Enchantment-Aura, BU, 2, 0, 0, Magic Origins, 77, 272, true, Enchant
+Swamp, Land, BK, 0, 0, 0, Khans of Tarkir, 260, 269, false,
+Swamp, Land, BK, 0, 0, 0, Khans of Tarkir, 260, 269, false,
+Swamp, Land, BK, 0, 0, 0, Khans of Tarkir, 260, 269, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 327, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 328, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 328, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 326, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 326, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 326, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 326, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 329, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 329, 337, false,
+Forest, Land, GN, 0, 0, 0, Fate Reforged, 185, 185, false,
+Forest, Land, GN, 0, 0, 0, Fate Reforged, 185, 185, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 266, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 267, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 268, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 269, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 269, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 269, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 269, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 269, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 269, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 269, 269, false,
+Juggernaut, Artifact Creature, NA, 4, 5, 3, Darksteel, 125, 165, false,
+Giant Spider, Creature, GN, 4, 2, 4, Magic 2014 Core Set, 175, 249, true, Reach
+Caustic Rain, Sorcery, BK, 4, 0, 0, Guildpact, 44, 165, false,
+Fate Unraveler, Enchantment Creature, BK, 4, 3, 4, Born of the Gods, 68, 165, false,
+Tormented Soul, Creature, BK, 1, 1, 1, Magic 2012 Core Set, 114, 249, false,
+Warpath Ghoul, Creature, BK, 3, 3, 2, Magic 2012 Core Set, 117, 249, false,
+Colossodoon Yearling, Creature, GN, 3, 2, 4, Dragons of Tarkir, 178, 264, false,
+Gravepurge, Instant, BK, 3, 0, 0, Dragons of Tarkir, 104, 264, false,
+Brain Maggot, Creature, BK, 2, 1, 1, Journey into Nyx, 62, 165, false,
+Pharika's Chosen, Creature, BK, 1, 1, 1, Journey into Nyx, 78, 165, true, Deathtouch
+Rotted Hulk, Creature, BK, 4, 2, 5, Journey into Nyx, 81, 165, false,
+Reclaim, Instant, GN, 1, 0, 0, Magic Origins, 195, 272, false,
+Reclaim, Instant, GN, 1, 0, 0, Magic Origins, 195, 272, false,
+Revenant, Creature, BK, 5, 0, 0, Magic Origins, 117, 272, true, Flying
+Cruel Revival, Instant, BK, 5, 0, 0, Magic Origins, 88, 272, false,
+Abbatoir Ghoul, Creature, BK, 4, 3, 2, Innistrad, 85, 264, true, First Strike
+Bitterheart Witch, Creature, BK, 5, 1, 2, Innistrad, 88, 264, true, Deathtouch
+LumberKnot, Creature, GN, 4, 1, 1, Innistrad, 194, 264, true, Hexproof
+Archer's Parapet, Creature, GN, 2, 0, 5, Khans of Tarkir, 128, 269, true, Defender
+Heir of the Wilds, Creature, GN, 2, 2, 2, Khans of Tarkir, 134, 269, true, Deathtouch, Ferocious
+Alpine Grizzly, Creature, GN, 3, 4, 2, Khans of Tarkir, 127, 269, false,
+Dutiful Return, Sorcery, BK, 4, 0, 0, Khans of Tarkir, 71, 269, false,
+Typhoid Rats, Creature, BK, 1, 1, 1, Fate Reforged, 89, 185, true, Deathtouch
+Typhoid Rats, Creature, BK, 1, 1, 1, Fate Reforged, 89, 185, true, Deathtouch
+Ainok Guide, Creature, GN, 2, 1, 1, Fate Reforged, 121, 185, false,
+Ainok Guide, Creature, GN, 2, 1, 1, Fate Reforged, 121, 185, false,
+Whisperer of the Wilds, Creature, GN, 2, 0, 2, Fate Reforged, 144, 185, true, Ferocious
+Map the Wastes, Sorcery, GN, 3, 0, 0, Fate Reforged, 134, 185, false,
+Vineweft, Enchantment-Aura, GN, 1, 0, 0, Magic 2015 Core Set, 207, 269, true, Enchant
+Gravedigger, Creature, BK, 4, 2, 2, Magic 2015 Core Set, 99, 269, false,
+Feast on the Fallen, Enchantment, BK, 3, 0, 0, Magic 2015 Core Set, 96, 269, false,
+Plummet, Instant, GN, 2, 0, 0, Magic 2015 Core Set, 192, 269, false,
+Undergowth Scavanger, Creature, GN, 4, 0, 0, Magic 2015 Core Set, 204, 269, false,
+Runeclaw Bear, Creature, GN, 2, 2, 2, Magic 2015 Core Set, 197, 269, false,
+Runeclaw Bear, Creature, GN, 2, 2, 2, Magic 2015 Core Set, 197, 269, false,
+Bad Moon, Enchantment, BK, 2, 0, 0, Commander (2014 Edition), 135, 337, false,
+Skirsdag High Priest, Creature, BK, 2, 1, 2, Commander (2014 Edition), 163, 337, true, Morbid
+Xathrid Demon, Creature, BK, 6, 7, 7, Commander (2014 Edition), 170, 337, true, Flying, Trample
+Victimize, Sorcery, BK, 3, 0, 0, Commander (2014 Edition), 135, 337, false, false,
+Abyssal Persecutor, Creature, BK, 4, 6, 6, Commander (2014 Edition), 132, 337, true, Flying, Trample
+Plains, Land, WT, 0, 0, 0, Magic 2010 Core Set, 233, 249, false,
+Plains, Land, WT, 0, 0, 0, Magic 2011 Core Set, 231, 249, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 250, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 251, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 252, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 252, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 252, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 252, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 253, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 253, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 253, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 254, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 254, 274, false,
+Plains, Land, WT, 0, 0, 0, Return to Ravnica, 254, 274, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 253, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 253, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 253, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 253, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 253, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 254, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 254, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 254, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 254, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 254, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 255, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 255, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 255, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 255, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 255, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 256, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 256, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 256, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 256, 272, false,
+Plains, Land, WT, 0, 0, 0, Magic Origins, 256, 272, false,
+Haunted Plate Mail, Artifact, NA, 4, 0, 0, Magic 2014 Core Set, 212, 249, true, Equip
+Whispersilk Cloak, Artifact, NA, 3, 0, 0, Tenth Edition, 345, 383, true, Equip
+Lightkeeper of Emeria, Creature, WT, 4, 2, 4, Worldwake, 12, 145, true, Multikicker, Flying
+Erase, Instant, WT, 1, 0, 0, Khans of Tarkir, 9, 269, false,
+Maze Sentinel, Creature, WT, 6, 3, 6, Dragon's Maze, 4, 156, true, Vigilance
+Purity, Creature, WT, 6, 6, 6, Lorwyn, 37, 301, true, Flying
+Defy Death, Sorcery, WT, 5, 0, 0, Avacyn Restored, 16, 244, false,
+Dispense Justice, Instant, WT, 3, 0, 0, Scars of Mirrodin, 5, 249, false,
+Serra Angel, Creature, WT, 5, 4, 4, Magic 2011 Core Set, 27, 249, true, Flying, Vigilance 
+Assault Griffin, Creature, WT, 4, 3, 2, Magic 2011 Core Set, 6, 249, true, Flying
+Devine Verdict, Instant, WT, 4, 0, 0, Magic 2013 Core Set, 12, 249, false,
+Defang, Enchantment-Aura, WT, 2, 0, 0, Avacyn Restored, 15, 244, true, Enchant
+Serra Angel, Creature, WT, 5, 4, 4, Magic Origins, 276, 272, true, Flying, Vigilance
+Aegis Angel, Creature, WT, 6, 5, 5, Magic Origins, 273, 272, true, Flying
+Shepherd of the Lost, Creature, WT, 5, 3, 3, Zendikar, 34, 249, true, Flying, First Strike
+Armament of Nyx, Enchantment-Aura, WT, 3, 0, 0, Journey into Nyx, 4, 165, true, Enchant
+Nyx-Fleece Ram, Enchantment-Aura, WT, 2, 0, 5, Journey into Nyx, 18, 165, false,
+Phalanx Formation, Instant, WT, 3, 0, 0, Journey into Nyx, 21, 165, true, Strive  
+Armored Transport, Artifact Creature, NA, 3, 2, 1, Gatecrash, 226, 249, false,
+Assault Griffin, Creature, WT, 4, 3, 2, Gatecrash, 4, 249, true, Flying
+Guardian of the Gateless, Creature, WT, 5, 3, 3, Gatecrash, 14, 249, true, Flying
+Zarichi Tiger, Creature, WT, 4, 2, 3, Gatecrash, 28, 249, false,
+Artful Maneuver, Instant, WT, 2, 0, 0, Dragons of Tarkir, 4, 264, true, Rebound
+Aven Tactician, Creature, WT, 5, 2, 3, Dragons of Tarkir, 6, 264, true, Flying
+Pacificism, Enchantment-Aura, WT, 2, 0, 0, Dragons of Tarkir, 29, 264, true, Enchant
+Spectral Rider, Creature, WT, 2, 2, 2, Innistrad, 35, 364, true, Immediate
+Ghostly Possession, Enchantment-Aura, WT, 3, 0, 0, Innistrad, 18, 264, true, Enchant
+Charging Griffin, Creature, WT, 4, 2, 2, Magic 2014 Core Set, 13, 249, true, Flying
+Fortify, Instant, WT, 3, 0, 0, Magic 2014 Core Set, 19, 249, false,
+Millstone, Artifact, NA, 2, 0, 0, Magic 2014 Core Set, 213, 249, false,
+Angelic Wall, Creature, WT, 2, 0, 4, Magic 2014 Core Set, 4, 249, true, Defender, Flying
+Griffin Sentinel, Creature, WT, 3, 1, 3, Magic 2014 Core Set, 20, 249, true, Flying, Vigilance
+Guardian of the Ages, Artifact Creature, NA, 7, 7, 7, Magic 2014 Core Set, 217, 249, true, Defender
+Accorder's Shield, Artifact Creature, NA, 0, 0, 0, Magic 2014 Core Set, 204, 249, true, Equip
+Arbalest Elite, Creature, WT, 4, 2, 3, Magic 2012 Core Set, 5, 249, false,
+Greatsword, Artifact, NA, 3, 0, 0, Magic 2012 Core Set, 209, 249, true, Equip
+Lifelink, Enchantment-Aura, WT, 1, 0, 0, Magic 2012 Core Set, 24, 249, true, Enchant
+Thran Golem, Artifact Creature, NA, 5, 3, 3, Magic 2012 Core Set, 220, 249, false,
+Spirit Mantle, Enchantment-Aura, WT, 2, 0, 0, Magic 2012 Core Set, 35, 249, true, Enchant
+Archon of Justice, Creature, WT, 5, 4, 4, Magic 2012 Core Set, 6, 249, true, Flying
+Aegis Angel, Creature, WT, 6, 5, 5, Magic 2012 Core Set, 1, 249, true, Flying
+Griffin Sentinel, Creature, WT, 3, 1, 3, Magic 2012 Core Set, 21, 249, true, Flying, Vigilance
+Griffin Rider, Creature, WT, 2, 1, 1, Magic 2012 Core Set, 20, 249, false,
+Siege Mastodon, Creature, WT, 5, 3, 5, Magic 2012 Core Set, 34, 249, false,
+Kite Shield, Artifact, NA, 0, 0, 0, Magic 2012 Core Set, 210, 249, true, Equip
+Assault Griffin, Creature, WT, 4, 3, 2, Magic 2012 Core Set, 8, 249, true, Flying
+Guardian's Pledge, Instant, WT, 3, 0, 0, Magic 2012 Core Set, 22, 249, false,
+Pacificism, Enchantment-Aura, WT, 2, 0, 0, Magic 2012 Core Set, 28, 249, true, Enchant
+Pride Guardian, Creature, WT, 1, 0, 3, Magic 2012 Core Set, 31, 249, true, Defender
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 330, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 330, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 330, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 330, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 330, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 331, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 331, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 331, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 331, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Mountain, Land, RD, 0, 0, 0, Commander (2014 Edition), 332, 337, false,
+Flamekin Village, Land, RD, 0, 0, 0, Commander (2014 Edition), 60, 337, false,
+Buried Ruin, Land, NA, 0, 0, 0, Commander (2014 Edition), 286, 337, false,
+Dormant Volcano, Land, RD, 0, 0, 0, Commander (2014 Edition), 291, 337, false,
+Haunted Fengraf, Land, NA, 0, 0, 0, Commander (2014 Edition), 300, 337, false,
+Myriad Landscape, Land, NA, 0, 0, 0, Commander (2014 Edition), 61, 337, false,
+Reliquary Tower, Land, NA, 0, 0, 0, Commander (2014 Edition), 308, 337, false,
+Darksteel Citadel, Artifact Land, NA, 0, 0, 0, Commander (2014 Edition), 290, 337, true, Indestructible
+Lightning Strike, Instant, RD, 2, 0, 0, Theros, 127, 249, false,
+Spearpoint Oread, Creature, RD, 3, 2, 2, Theros, 141, 249, true, Bestow, First Strike 
+Spearpoint Oread, Creature, RD, 3, 2, 2, Theros, 141, 249, true, Bestow, First Strike
+Fleetfeather Sandals, Artifact, NA, 2, 0, 0, Theros, 216, 249, true, Equip
+Soldier, Token, WT, 0, 1, 1, Theros, 2, 11, false,
+Soldier, Token, RD, 0, 1, 1, Theros, 7, 11, false,
+Soldier, Token, RD, 0, 1, 1, Theros, 7, 11, false,
+Wolf, Token, GN, 0, 2, 2, Modern Masters 2015 Edition, 13, 16, false,
+Goat, Token, WT, 0, 0, 1, Commander (2014 Edition), 3, 36, false,
+Goat, Token, WT, 0, 0, 1, Commander (2014 Edition), 3, 36, false,
+Goat, Token, WT, 0, 0, 1, Commander (2014 Edition), 3, 36, false,
+Goat, Token, WT, 0, 0, 1, Commander (2014 Edition), 3, 36, false,
+Wurm, Token, NA, 0, 3, 3, Commander (2014 Edition), 32, 36, false,
+Wurm, Token, NA, 0, 3, 3, Commander (2014 Edition), 32, 36, false,
+Goblin, Token, RD, 0, 1, 1, Commander (2014 Edition), 17, 36, false,
+Goblin, Token, RD, 0, 1, 1, Commander (2014 Edition), 17, 36, false,
+Tuktuk the Returned, Token, NA, 0, 5, 5, Commander (2014 Edition), 31, 36, false,
+Myr, Token, NA, 0, 1, 1, Commander (2014 Edition), 28, 36, false,
+Myr, Token, NA, 0, 1, 1, Commander (2014 Edition), 28, 36, false,
+Myr, Token, NA, 0, 1, 1, Commander (2014 Edition), 28, 36, false,
+Myr, Token, NA, 0, 1, 1, Commander (2014 Edition), 28, 36, false,
+Myr, Token, NA, 0, 1, 1, Commander (2014 Edition), 28, 36, false,
+Pentavite, Token, NA, 0, 1, 1, Commander (2014 Edition), 29, 36, true, Flying
+Pentavite, Token, NA, 0, 1, 1, Commander (2014 Edition), 29, 36, true, Flying
+Pentavite, Token, NA, 0, 1, 1, Commander (2014 Edition), 29, 36, true, Flying
+Pentavite, Token, NA, 0, 1, 1, Commander (2014 Edition), 29, 36, true, Flying
+Pentavite, Token, NA, 0, 1, 1, Commander (2014 Edition), 29, 36, true, Flying
+Sol Ring, Artifact, NA, 1, 0, 0, Commander (2014 Edition), 270, 337, false,
+Ruby Medallion, Artifact, NA, 2, 0, 0, Commander (2014 Edition), 165, 337, false,
+Unsatble Obelisk, Artifact, NA, 3, 0, 0, Commander (2014 Edition), 58, 337, false,
+Myr Retriever, Artifact Creature, NA, 2, 1, 1, Commander (2014 Edition), 255, 337, false,
+Spine of Ish Sah, Artifact, NA, 7, 0, 0, Commander (2014 Edition), 272, 337, false,
+Dreamstone Hedron, Artifact, NA, 6, 0, 0, Commander (2014 Edition), 236, 337, false,
+Everflowing Chalice, Artifact, NA, 0, 0, 0, Commander (2014 Edition), 239, 337, true, Multikicker
+Trading Post, Artifact, NA, 4, 0, 0,Commander (2014 Edition), 279, 337, false,
+Loreseeker's Stone, Artifact, NA, 6, 0, 0,Commander (2014 Edition), 56, 337, false,
+Bosh Iron Golem, Artifact Creature, NA, 8, 6, 7, Commander (2014 Edition), 230, 337, true, Trample
+Steel Hellkite, Artifact Creature, NA, 6, 5, 5, Commander (2014 Edition), 273, 337, true, Flying
+Myr Battlesphere, Artifact Creature, NA, 7, 4, 7, Commander (2014 Edition), 254, 337, false,
+Pentavus, Artifact Creature, NA, 7, 5, 5, Commander (2014 Edition), 254, 337, false,
+Solemn Simulacrum, Artifact Creature, NA, 4, 2, 2, Commander (2014 Edition), 271, 337, false,
+Junk Diver, Artifact Creature, NA, 3, 1, 1, Commander (2014 Edition), 244, 337, true, Flying
+Palladium Myr, Artifact Creature, NA, 3, 2, 2, Commander (2014 Edition), 258, 337, false,
+Beetleback Chief, Creature, RD, 4, 2, 2, Commander (2014 Edition), 171, 337, false,
+Hoard-Smelter Dragon, Creature, RD, 6, 5, 5, Commander (2014 Edition), 178, 337, true, Flying
+Spitebellows, Creature, RD, 6, 6, 1, Commander (2014 Edition), 181, 337, false,
+Tuktuk the Explorer, Creature, RD, 3, 1, 1, Commander (2014 Edition), 183, 337, true, Haste
+Bogarden Hellkite, Creature, RD, 8, 5, 5, Commander (2014 Edition), 173, 337, true, Flash, Flying
+Tyrant's Familiar, Creature, RD, 7, 5, 5, Commander (2014 Edition), 39, 337, true, Flying, Haste
+Incite Rebellion, Sorcery, RD, 6, 0, 0, Commander (2014 Edition), 37, 337, false,
+Warmonger Hellkite, Creature, RD, 6, 5, 5, Commander (2014 Edition), 41, 337, true, Flying
+Feldon of the Third Path, Creature, RD, 3, 2, 3, Commander (2014 Edition), 35, 337, false,
+Spawning Grounds, Enchantment-Aura, GN, 8, 0, 0, Commander (2013 Edition), 171, 356, true, Enchant
+The Great Aurora, Sorcery, GN, 9, 0, 0, Magic Origins, 179, 272, false,
+Mwonvuli Beast Tracker, Creature, GN, 3, 2, 1, Magic 2013 Core Set, 177, 249, false,
+Curse of Predation, Enchantment-Aura, GN, 3, 0, 0, Commander (2013 Edition), 140, 356, true, Enchant 
+Curse of Predation, Enchantment-Aura, GN, 3, 0, 0, Commander (2013 Edition), 140, 356, true, Enchant
+Surrak the Hunt Caller, Creature, GN, 4, 5, 4, Dragons of Tarkir, 210, 264, true, Formidable
+Archetype of Endurance, Creature, GN, 8, 6, 5, Born of the Gods, 116, 169, true, Hexproof
+Temur Sabertooth, Creature, GN, 4, 4, 4, Fate Reforged, 141, 185, false,
+Nyxborn Wolf, Creature, GN, 3, 3, 1, Born of the Gods, 131, 165, true, Bestow
+Mystic Barrier, Enchantment, WT, 5, 0, 0, Commander (2013 Edition), 18, 356, false,
+Darksteel Mutaution, Enchantment-Aura, NA, 2, 0, 0, Commander (2013 Edition), 9, 356, true, Enchant
+Wrath of God, Sorcery, WT, 4, 0, 0, Commander (2013 Edition), 27, 356, false,
+Nyxborn Shieldmate, Creature, WT, 1, 1, 2, Born of the Gods, 21, 165, true, Bestow
+Knights of the White Orchid, Creature, WT, 2, 2, 2, Magic Origins, 21, 272, true, First Strike
+World Queller, Creature, WT, 5, 4, 4, Zendikar, 39, 249, false,
+Hopeful Eidolon, Creature, WT, 1, 1, 1, Theros, 19, 249, true, Bestow, Lifelink
+Nyxborn Shieldmate, Creature, WT, 1, 1, 2, Born of the Gods, 21, 165, true, Bestow
+Eidolon of Countless Battles, Creature, WT, 3, 0, 0, Born of the Gods, 7, 165, true, Bestow
+Nyxborn Shieldmate, Creature, WT, 1, 1, 2, Born of the Gods, 21, 165, true, Bestow
+Mirror Entity, Creature, WT, 3, 1, 1, Commander (2013 Edition), 17, 356, true, Changeling
+Ainok Bond-Kin, Creature, WT, 2, 2, 1, Khans of Tarkir, 3, 269, true, Outlast
+Path of Bravery, Enchantment, WT, 3, 0, 0, Magic 2014 Core Set, 26, 249, false,
+Angelic Skirmisher, Creature, WT, 6, 4, 4, UNKNOWN, 0, 0, true, Flying
+Tempt with Glory, Sorcery, WT, 6, 0, 0, Commander (2013 Edition), 26, 356, false,
+Nyxborn Wolf, Creature, GN, 3, 3, 1, Born of the Gods, 131, 165, true, Bestow
+Nemesis of Mortals, Creature, GN, 6, 5, 5, Theros, 163, 249, true, Monstrosity
+Nessian Wilds Ravager, Creature, GN, 6, 6, 6, Born of the Gods, 129, 169, true, Tribute
+Archetype of Endurance, Creature, GN, 8, 6, 5, Born of the Gods, 116, 169, true, Hexproof
+Nyxborn Wolf, Creature, GN, 3, 3, 1, Born of the Gods, 131, 165, true, Bestow
+Infectious Bloodlust, Enchantment-Aura, RD, 2, 0, 0, Magic Origins, 152, 272, true, Enchant
+Ghirapur Gearcrafter, Creature, RD, 3, 2, 1, Magic Origins, 149, 272, false,
+Ghirapur Gearcrafter, Creature, RD, 3, 2, 1, Magic Origins, 149, 272, false,
+Ghirapur Gearcrafter, Creature, RD, 3, 2, 1, Magic Origins, 149, 272, false,
+Enthralling Victor, Creature, RD, 4, 3, 2, Origins 2010, 142, 272, false,
+Fall of the Hammer, Instant, RD, 2, 0, 0, Born of the Gods, 93, 165, false,
+Act of Treason, Sorcery, RD, 3, 0, 0, Origins 2010, 129, 272, false,
+Act of Treason, Sorcery, RD, 3, 0, 0, Origins 2010, 129, 272, false,
+Abbot of Keral Keep, Creature, RD, 2, 2, 1, Magic Origins, 127, 272, true, Prowess
+Mage-Ring Bully, Creature, RD, 2, 2, 2, Magic Origins, 154, 272, true, Prowess
+Smash to Smithereens, Instant, RD, 2, 0, 0, Magic Origins, 163, 272, false,
+Skyraker Giant, Creature, RD, 4, 4, 3, Magic Origins, 162, 272, true, Reach
+CobbleBrute, Creature, RD, 4, 5, 2, Magic Origins, 138, 272, false,
+Volcanic Awakening, Sorcery, RD, 6, 0, 0, Time Spiral, 186, 301, false,
+Vulshok War Boar, Creature, RD, 4, 5, 5, Darksteel, 72, 165, false,
+Goblin Archaeologist, Creature, RD, 2, 1, 2, Darksteel, 63, 165, false,
+Dismantle, Sorcery, RD, 3, 0, 0, Darksteel, 57, 165, false,
+Flames of the Firebrand, Sorcery, RD, 3, 0, 0, Magic 2013 Core Set, 139, 249, false,
+Mark of Mutiny, Sorcery, RD, 3, 0, 0, Magic 2013 Core Set, 141, 249, false,
+Crimson Muckwader, Creature, RD, 2, 2, 1, Magic 2013 Core Set,127, 249, false,
+Cleaver Riot, Sorcery, RD, 5, 0, 0, Magic 2013 Core Set, 123, 249, false,
+Volcanic Geyser, Instant, RD, 3, 0, 0, Magic 2013 Core Set, 154, 249, false,
+Feedback Bolt, Instant, RD, 5, 0, 0, Fifth Dawn, 63, 165, false,
+Magnetic Theft, Instant, RD, 1, 0, 0, Fifth Dawn, 74, 165, false,
+Iron-Barb Hellion, Creature, RD, 6, 5, 4, Fifth Dawn, 69, 165, true, Haste
+Electropence, Enchantment, RD, 3, 0, 0, Zendikar, 122, 149, false,
+Elemental Appeal, Sorcery, RD, 4, 0, 0, Zendikar, 123, 149, true, Kicker
+Volcanic Geyser, Instant, RD, 3, 0, 0, Magic 2013 Core Set, 154, 249, false,
+Chandra's Fury, Instant, RD, 5, 0, 0, Magic Origins, 136, 272, false,
+Chandra's Fury, Instant, RD, 5, 0, 0, Magic 2013 Core Set, 124, 249, false,
+Sarkhan's Rage, Instant, RD, 5, 0, 0, Dragons of Tarkir, 153, 164, false,
+Sarkhan's Rage, Instant, RD, 5, 0, 0, Dragons of Tarkir, 153, 164, false,
+Sarkhan's Rage, Instant, RD, 5, 0, 0, Dragons of Tarkir, 153, 164, false,
+Scrapyard Mongrel, Creature, RD, 4, 3, 3, Magic 2015 Core Set, 160, 269, false,
+Scrapyard Mongrel, Creature, RD, 4, 3, 3, Magic 2015 Core Set, 160, 269, false,
+Skyraker Giant, Creature, RD, 4, 4, 3, Magic Origins, 162, 272, true, Reach
+CobbleBrute, Creature, RD, 4, 5, 2, Return to Ravnica, 138, 272, false,
+Lightning Strike, Instant, RD, 2, 0, 0, Magic 2015 Core Set, 155, 269, false,
+Collateral Damage, Instant, RD, 1, 0, 0, Fate Reforged, 95, 185, false,
+Collateral Damage, Instant, RD, 1, 0, 0, Fate Reforged, 95, 185, false,
+Collateral Damage, Instant, RD, 1, 0, 0, Fate Reforged, 95, 185, false,
+Tormentor Exarch, Creature, RD, 4, 2, 2, New Phyrexia, 97, 175, false, 
+Priest of Urabrask, Creature, RD, 3, 2, 1, New Phyrexia, 90, 175, false,
+Act of Aggression, Instant, RD, 4, 0, 0, New Phyrexia, 78, 175, false,
+Fallen Ferromancer, Creature, RD, 4, 1, 1, New Phyrexia, 83, 175, true, Infect
+Vulshok Refugee, Creature, RD, 3, 3, 2, New Phyrexia, 161, 175, true, Protection
+End to the Challenge, Instant, RD, 2, 0, 0, Born of the Gods, 107, 165, false,
+Bolt of Keranos, Sorcery, RD, 3, 0, 0, Born of the Gods, 89, 165, false,
+Bolt of Keranos, Sorcery, RD, 3, 0, 0, Born of the Gods, 89, 165, false,
+Pinnacle of Rage, Sorcery, RD, 6, 0, 0, Born of the Gods, 105, 165, false,
+Pinnacle of Rage, Sorcery, RD, 6, 0, 0, Born of the Gods, 105, 165, false,
+Whims of the Fates, Sorcery, RD, 6, 0, 0, Born of the Gods, 115, 165, false,
+Reap What Is Sown, Instant, GNWT, 3, 0, 0, Born of the Gods, 154, 165, false,
+Desperate Ravings, Instant, RD, 2, 0, 0, Innistrad, 139, 264, false, 
+Burning Vengeance, Enchantment, RD, 3, 0, 0, Innistrad, 133, 264, false, 
+Into the Maw of Hell, Sorcery, RD, 6, 0, 0, Innistrad, 150, 264, false,
+Rolling Temblor, Sorcery, RD, 3, 0, 0, Innistrad, 161, 264, true, Flashback
+Skirsdag Cultist, Creature, RD, 4, 2, 2, Innistrad, 163, 264, false,
+Curse of the Nightly Hunt, Enchantment-Aura, RD, 3, 0, 0, Innistrad, 137, 264, true, Enchant
+Scourge of the Geier Reach, Creature, RD, 5, 3, 3, Innistrad, 162, 264, false,
+Rakish Heir, Creature, RD, 3, 2, 2, Innistrad, 158, 264, false,
+Rage Thrower, Creature, RD, 6, 4, 2, Innistrad, 157, 264, false,
+Thundering Giant, Creature, RD, 5, 4, 3, Tenth Edition, 243, 383, true, Haste
+Wall of Fire, Creature, RD, 3, 0, 5, Tenth Edition, 247, 383, true, Defender
+Flame-Kin War Scout, Creature, RD, 4, 2, 4, Dissension, 61, 180, false, 
+Gnat Alley Creeper, Creature, RD, 3, 3, 1, Dissension, 63, 180, false,
+Flaring Flame-Kin, Creature, RD, 3, 2, 2, Dissension, 62, 180, false,
+Ignorant Bliss, Instant, RD, 2, 0, 0, Dissension, 64, 180, false,
+Basalt Gargoyle, Creature, RD, 3, 3, 2, Time Spiral, 145, 301, true, Flying, Echo
+Barbed Shocker, Creature, RD, 4, 2, 2, Time Spiral, 144, 301, true, Trample, Haste
+Firemaw Kavu, Creature, RD, 6, 4, 2, Time Spiral, 153, 301, true, Echo
+Conflagrate, Sorcery, RD, 3, 0, 0, Time Spiral, 151, 301, false,
+Sudden Shock, Instant, RD, 2, 0, 0, Time Spiral, 179, 301, true, Split Second
+Ignite Memories, Sorcery, RD, 5, 0, 0, Time Spiral, 164, 301, false,
+Tectonic Fiend, Creature, RD, 6, 7, 7, Time Spiral, 181, 301, true, Echo
+Sulfurous Blast, Instant, RD, 4, 0, 0, Time Spiral, 180, 301, false,
+Undying Rage, Enchantment-Aura, RD, 3, 0, 0, Time Spiral, 184, 301, true, Enchant
+Thik-Skinned Goblin, Creature, RD, 2, 2, 1, Time Spiral, 182, 301, false,
+Inferno Fist, Enchantment-Aura, RD, 2, 0, 0, Magic 2015 Core Set, 150, 269, true, Enchant
+Inferno Fist, Enchantment-Aura, RD, 2, 0, 0, Magic 2015 Core Set, 150, 269, true, Enchant
+Font of Ire, Enchantment, RD, 2, 0, 0, Journey into Nyx, 97, 165, false,
+Temur Battle Rage, Instant, RD, 2, 0, 0, Fate Reforged, 116, 185, false,
+Spark Jolt, Instant, RD, 1, 0, 0, Theros, 140, 249, false,
+Boggart Brute, Creature, RD, 3, 3, 2, Magic Origins, 133, 272, true, Menace
+Tenement Crasher, Crasher, RD, 6, 5, 4, Return to Ravnica, 108, 274, true, Haste
+Prickleboar, Creature, RD, 5, 3, 3, Magic Origins, 158, 272, false,
+Smash to Smithereens, Instant, RD, 2, 0, 0, Magic Origins, 163, 272, false,
+Firefiend Elemental, Creature, RD, 4, 3, 2, Magic Origins, 146, 272, true, Haste, Renown
+Cyclops Tyrant, Creature, RD, 6, 3, 4, Magic 2014 Core Set, 135, 249, true, Intimidate
+Volley of Boulders, Sorcery, RD, 9, 0, 0, Odyssey, 227, 350, true, Flashback
+Bladetusk Boar, Creature, RD, 4, 3, 2, Journey into Nyx, 90, 165, true, Intimidate
+Chronomaton, Artifact Creature, NA, 1, 1, 1, Magic 2013 Core Set, 201, 249, false,
+Blastfire Bolt, Instant, RD, 6, 0, 0, Magic 2015 Core Set, 130, 269, false,
+Explosive Impact, Instant, RD, 6, 0, 0, Return to Ravnica, 94, 274, false,
+Lava Axe, Sorcery, RD, 5, 0, 0, Magic 2015 Core Set, 154, 269, false,
+Demolish, Sorcery, RD, 4, 0, 0, Magic Origins, 139, 272, false,
+Barrage of Boulders, Sorcery, RD, 3, 0, 0, Khans of Tarkir, 100, 269, true, Ferocious
+Bathe in Dragonfire, Sorcery, RD, 3, 0, 0, Fate Reforged, 92, 185, false,
+Tail Slash, Instant, RD, 3, 0, 0, Dragons of Tarkir, 161, 264, false,
+Electrickery, Instant, RD, 1, 0, 0, Return of Ravnica, 93, 274, true, Overload
+Blisterstick Shaman, Creature, RD, 3, 2, 1, Mirrodin Besieged, 58, 165, false,
+Ember Beast, Creature, RD, 3, 3, 4, Gatecrash, 89, 249, false,
+Hardened Berserker, Creature, RD, 3, 3, 2, Dragons of Tarkir, 139, 264, false,
+Cyclops of Eternal Fury, Creature, RD, 6, 5, 3, Journey into Nyx, 92, 165, false,
+Shockmaw Dragon, Creature, RD, 6, 4, 4, Fate Reforged, 114, 185, true, Flying
+Pyrokinesis, Instant, RD, 6, 0, 0, Heroes vs. Monsters, 32, 81, false,
+Stubborn Denial, Instant, BU, 1, 0, 0, Khans of Tarkir, 56, 269, false,
+Orator of Ojutai, Creature, WT, 2, 0, 4, Dragons of Tarkir, 28, 264, true, Flying, Defender
+Elder of Laurels, Creature, GN, 3, 2, 3, Innistrad, 177, 264, false,
+Razormane Masticore, Artifact Creature, NA, 5, 5, 5, Duel Decks Elspeth vs Tezzeret, 56, 73, true, First Strike
+Whip of Erebos, Artifact, BK, 4, 0, 0, Theros, 5, 6, false,
+Worry Beads, Artifact, NA, 3, 0, 0, Mercadian Masques, 315, 350, false,
+Cautery Silver, Creature, RDWT, 2, 2, 2, Planar Chaos, 154, 165, false,
+Sawback Manticore, Creature, RDGN, 5, 2, 4, Mirage, 0, 0, false,
+Mass Mutiny, Sorcery, RD, 5, 0, 0, Explorers of Ixalan, 48, 156, false,
+Parallel Thoughts, Enchantment, BU, 5, 0, 0, Scourge, 44, 143, false,
+Goblin Grappler, Creature, RD, 1, 1, 1, Legions, 100, 145, true, Provoke
+Ishi-Ishi Akki Crackshot, Creature, RD, 2, 1, 1, Betrayers of Kamigawa, 120, 165, false, 
+Search for Survivors, Sorcery, RD, 3, 0, 0, Prophecy, 102, 143, false,
+Flowstone Slide, Sorcery, RD, 5, 0, 0, Nemesis, 83, 143, false,
+Kraken's Eye, Artifact, NA, 2, 0, 0, Darksteel, 126, 165, false,
+Rush of Blood, Instant, RD, 3, 0, 0, Avacyn Restored, 154, 244, false, 
+Rush of Blood, Instant, RD, 3, 0, 0, Avacyn Restored, 154, 244, false,
+Rush of Blood, Instant, RD, 3, 0, 0, Avacyn Restored, 154, 244, false,
+Demon's Horn, Artifact, NA, 2, 0, 0, Tenth Edition, 320, 383, false,
+Goblin Tunneler, Creature, RD, 2, 1, 1, Magic 2011 Core Set, 143, 240, false,
+Goblin Tunneler, Creature, RD, 2, 1, 1, Magic 2011 Core Set, 143, 240, false,
+Countermand, Instant, BU, 4, 0, 0, Journey into Nyx, 33, 165, false,
+Bladetusk Boar, Creature, RD, 4, 3, 2, Journey into Nyx, 90, 165, true, Intimidate
+Triad of Fates, Creature, WTBK, 4, 3, 3, Theros, 206, 249, false,
+Phalanx Leader, Creature, WT, 2, 1, 1, Theros, 26, 249, true, Heroic
+Goblin Gaveleer, Creature, RD, 1, 1, 1, Scars of Mirrodin, 93, 249, true, Trample
+Turn Aside, Instant, BU, 1, 0, 0, Scars of Mirrodin, 49, 249, false,
+Gaze of Granite, Sorcery, BKGN, 4, 0, 0, Dragon's Maze, 72, 156, false,
+Pyrewild Shaman, Creature, RD, 3, 3, 1, Dragon's Maze, 36, 156, true, Bloodrush
+Shrine of Limitless Power, Artifact, NA, 3, 0, 0, New Phyrexia, 154, 175, false,
+Hex Parasite, Artifact Creature, NA, 1, 1, 1, New Phyrexia, 137, 175, false,
+Invader Parasite, Creature, RD, 5, 3, 2, New Phyrexia, 87, 175, true, Imprint
+Chimeric Coils, Artifact, NA, 1, 0, 0, Fifth Dawn, 108,165, false,
+Spinal Parasite, Artifact Creature, NA, 5, 0, 0, Fifth Dawn, 155, 165, true, Sunburst
+Relic Barrier, Artifact, NA, 2, 0, 0, Fifth Dawn, 147, 165, false,
+Treasury Thrull, Creature, WTBK, 6, 5, 5, Gatecrash, 201, 249, true, Extort
+Alms Beast, Creature, WTBK, 4, 6, 6, Gatecrash, 141, 249, false,
+Signal the Clans, Instant, RDGN, 2, 0, 0, Gatecrash, 194, 249, false,
+Immortal Servitude, Sorcery, WTBK, 4, 0, 0, Gatecrash, 221, 249, false,
+Realmwright, Creature, BU, 1, 1, 1, Gatecrash, 45, 249, false,
+Jayemdae Tome, Artifact, NA, 4, 0, 0, Gatecrash, 207, 249, false,
+Arms Dealer, Creature, RD, 3, 1, 1, Magic 2013 Core Set, 120, 249, false,
+Phyrexian Hulk, Artifact Creature, NA, 6, 5, 4, Magic 2013 Core Set, 209, 249, false,
+Primal Clay, Artifact Creature, NA, 4, 0, 0, Magic 2013 Core Set, 210, 249, false,
+Gem of Becoming, Artifact, NA, 3, 0, 0, Magic 2013 Core Set, 205, 249, false,
+Clock of Omens, Artifact, NA, 4, 0, 0, Magic 2013 Core Set, 202, 249, false,
+Sands of Delirium, Artifact, NA, 3, 0, 0, Magic 2013 Core Set, 216, 249, false,
+Mind Stone, Artifact, NA, 2, 0, 0, Commander (2014 Edition), 250, 337, false,
+Sol Ring, Artifact, NA, 1, 0, 0, Commander (2014 Edition), 270, 337, false,
+Worn Powerstone, Artifact, NA, 3, 0, 0, Commander (2014 Edition), 282, 337, false,
+Lashwrithe, Artifact, NA, 4, 0, 0, Commander (2014 Edition), 245, 337, true, Living Weapon, Equip
+Burnished Hart, Artifact Creature, NA, 3, 2, 2, Commander (2014 Edition), 248, 337, false,
+Commander's Sphere, Artifact, NA, 3, 0, 0, Commander (2014 Edition), 54, 337, false,
+Charcoal Diamond, Artifact, NA, 2, 0, 0, Commander (2014 Edition), 215, 337, false,
+Unstable Obelisk, Artifact, NA, 3, 0, 0, Commander (2014 Edition), 58, 337, false,
+Wreak Havoc, Sorcery, RDGN, 4, 0, 0, Guildpact, 139, 165, false,
+Gruul Guildmage, Creature, RDGN, 2, 2, 2, Guildpact, 144, 165, false,
+Skarrgan Skybreaker, Creature, RDGN, 7, 3, 3, Guildpact, 130, 165, true, Bloodthirst
+Savage Twister, Sorcery, RDGN, 3, 0, 0, Guildpact, 127, 165, false,
+Conjurer's Ban, Sorcery, WTBK, 2, 0, 0, Guildpact, 108, 165, false,
+Feral Animist, Creature, RDGN, 3, 2, 1, Guildpact, 112, 165, false,
+Thunderheads, Instant, BU, 3, 0, 0, Guildpact, 37, 165, true, Replicate
+Vacuumelt, Sorcery, BU, 3, 0, 0, Guildpact, 40, 165, true, Replicate
+Swiftfoot Boots, Artifact, NA, 2, 0, 0, Commander (2013 Edition), 263, 356, true, Equip
+Murkfiend Liege, Creature, GNBU, 5, 4, 4, Commander (2013 Edition), 251, 356, false,
+Behemoth Sledge, Artifact, GNWT, 3, 0, 0, Commander (2013 Edition), 178, 356, true, Equip
+Slice and Dice, Sorcery, RD, 6, 0, 0, Commander (2013 Edition), 119, 356, true, Cycling
+Wash Out, Sorcery, BU, 4, 0, 0, Commander (2013 Edition), 66, 356, false,
+Spitebellows, Creature, RD, 6, 6, 1, Commander (2013 Edition), 120, 356, false,
+**Hit // Run**, Instant, BKRDGN, 8, 0, 0, Dissension, 152, 180, false,
+**Pure // Simple**, Sorcery, RDWTGN, 6, 0, 0, Dissension, 154, 180, false,
+**Trial // Error**, Instant, WTBUBK, 4, 0, 0, Dissension, 158, 180, false,
+Vigean Intuition, Instant, GNBU, 5, 0, 0, Dissension, 136, 180, false,
+Palliation Accord, Enchantment, WTBU, 5, 0, 0, Enchantment, 122, 180, false,
+Twinstrike, Instant, BKRD, 5, 0, 0, Dissension, 134, 180, true, Hellbent
+Leafdrake Roost, Enchantment-Aura, GNBU, 5, 0, 0, Dissension, 136, 180, true, Enchant
+Pain Magnification, Enchantment, BKRD, 3, 0, 0, Dissension, 121, 180, false,
+Azorius AEthermage, Creature, WTBU, 3, 1, 1, Dissension, 104, 180, false,
+Plaxmanta, Creature, BU, 2, 2, 2, Dissension, 29, 180, false,
+Skyscribing, Sorcery, BU, 3, 0, 0, Dissension, 32, 180, true, Forecast
+Mardu Scout, Creature, RD, 2, 3, 1, Fate Reforged, 108, 185, true, Dash
+Mardu Scout, Creature, RD, 2, 3, 1, Fate Reforged, 108, 185, true, Dash
+Mardu Scout, Creature, RD, 2, 3, 1, Fate Reforged, 108, 185, true, Dash
+Goblin Heelcutter, Creature, RD, 4, 3, 2, Fate Reforged, 102, 185, true, Dash
+Goblin Heelcutter, Creature, RD, 4, 3, 2, Fate Reforged, 102, 185, true, Dash
+Goblin Heelcutter, Creature, RD, 4, 3, 2, Fate Reforged, 102, 185, true, Dash
+Goblin Heelcutter, Creature, RD, 4, 3, 2, Fate Reforged, 102, 185, true, Dash
+Goblin Heelcutter, Creature, RD, 4, 3, 2, Fate Reforged, 102, 185, true, Dash
+Goblin Heelcutter, Creature, RD, 4, 3, 2, Fate Reforged, 102, 185, true, Dash
+Frontier Mastadon, Creature, GN, 3, 3, 2, Fate Reforged, 130, 185, true, Ferocious
+Mindscour Dragon, Creature, BU, 6, 4, 4, Fate Reforged, 41, 185, true, Flying
+Siren of the Silent Song, Creature, BUBK, 3, 2, 1, Theros, 155, 165, true, Flying, Inspired
+Karametra God of Harvests, Creature, GNWT, 5, 6, 7, Theros, 148, 165, true, Indestructible
+Fall of the Hammer, Instant, RD, 2, 0, 0, Born of the Gods, 93, 165, false,
+Scouring Sands, Instant, RD, 2, 0, 0, Born of the Gods, 140, 165, false,
+Nyxborn Shieldmate, Creature, WT, 1, 1, 2, Born of the Gods, 21, 165, true, Bestow
+Vortex Elemental, Creature, BU, 1, 0, 1, Born of the Gods, 56, 165, false,
+Oracle of Bones, Creature, RD, 4, 3, 1, Born of the Gods, 103, 165, true, Haste, Tribute
+Pharagax Giant, Creature, RD, 5, 3, 3, Born of the Gods, 104, 165, true, Tribute
+Pharagax Giant, Creature, RD, 5, 3, 3, Born of the Gods, 104, 165, true, Tribute
+Bolt of Keranos, Sorcery, RD, 3, 0, 0, Born of the Gods, 89, 165, false,
+Satyr Firedancer, Creature, RD, 2, 1, 1, Born of the Gods, 108, 165, false,
+Cyclops of One-Eyed Pass, Creature, RD, 4, 5, 2, Born of the Gods, 90, 165, false,
+Codex Shredder, Artifact, NA, 1, 0, 0, Return to Ravnica, 228, 274, false,
+Righteous Authority, Enchantment-Aura, WTBU, 5, 0, 0, Return to Ravnica, 189, 274, true, Enchant
+Nivmagus Elemental, Creature, RDBU, 1, 1, 2, Return to Ravnica, 219, 274, false,
+Nivmagus Elemental, Creature, RDBU, 1, 1, 2, Return to Ravnica, 219, 274, false,
+Electrickery, Instant, RD, 1, 0, 0, Return of Ravnica, 93, 274, true, Overload
+Lobber Crew, Creature, RD, 3, 0, 4, Return to Ravnica, 99, 274, true, Defender
+Survey the Wreckage, Sorcery, RD, 5, 0, 0, Return to Ravnica, 107, 274, false,
+Guttersnipe, Creature, RD, 3, 2, 2, Return to Ravnica, 98, 274, false, 
+Goblin Rally, Creature, RD, 5, 0, 0, Return to Ravnica, 95, 274, false,
+CobbleBrute, Creature, RD, 4, 5, 2, Return to Ravnica, 138, 272, false,
+Grindclock, Artifact, NA, 2, 0, 0, Magic 2015 Core Set, 217, 269, false,
+Goblin Rabblemaster, Creature, RD, 3, 2, 2, Magic 2015 Core Set, 145, 269, false,
+Goblin Roughrider, Creature, RD, 3, 3, 2, Magic 2015 Core Set, 146, 269, false,
+Goblin Roughrider, Creature, RD, 3, 3, 2, Magic 2015 Core Set, 146, 269, false,
+Goblin Roughrider, Creature, RD, 3, 3, 2, Magic 2015 Core Set, 146, 269, false,
+Stoke the Flames, Instant, RD, 4, 0, 0, Magic 2015 Core Set, 164, 269, true, Convoke
+Krenko's Enforcer, Creature, RD, 3, 2, 2, Magic 2015 Core Set, 152, 274, true, Intimidate
+Foundry Street Denizen, Creature, RD, 1, 1, 1, Magic 2015 core Set, 141, 274, false,
+Lava Axe, Sorcery, RD, 5, 0, 0, Magic 2015 Core Set, 154, 269, false,
+Lava Axe, Sorcery, RD, 5, 0, 0, Magic 2014 Core Set, 143, 249, false,
+Lava Axe, Sorcery, RD, 5, 0, 0, Magic 2014 Core Set, 143, 249, false,
+Lava Axe, Sorcery, RD, 5, 0, 0, Magic 2014 Core Set, 143, 249, false,
+Oreskos Swiftclaw, Creature, WT, 2, 3, 1, Magic 2015 Core Set, 22, 269, false,
+Oreskos Swiftclaw, Creature, WT, 2, 3, 1, Magic 2015 Core Set, 22, 269, false,
+Oreskos Swiftclaw, Creature, WT, 2, 3, 1, Magic 2015 Core Set, 22, 269, false,
+Negate, Instant, BU, 2, 0, 0, Magic 2015 Core Set, 71, 269, false,
+Negate, Instant, BU, 2, 0, 0, Magic 2015 Core Set, 71, 269, false,
+Staff of the Flame Magus, Artifact, NA, 3, 0, 0, Magic 2014 Core Set, 220, 249, false,
+Ragathan Firecat, Creature, RD, 3, 4, 1, Magic 2014 Core Set, 150, 249, false,
+Wild Guess, Sorcery, RD, 2, 0, 0, Magic 2014 Core Set, 151, 249, false,
+Nephalia Seakite, Creature, BU, 4, 2, 3, Magic 2014 Core Set, 65, 249, true, Flash, Flying
+Phantom Warrior, Creature, BU, 3, 2, 2, Magic 2014 Core Set, 67, 249, false,
+Opportunity, Instant, BU, 6, 0, 0, Magic 2014 Core Set, 66, 249, false,
+Disperse, Instant, BU, 2, 0, 0, Magic 2014 Core Set, 51, 249, false,
+Essence Scatter, Instant, BU, 2, 0, 0, Magic 2014 Core Set, 2, 0, 0, false,
+Negate, Instant, BU, 2, 0, 0, Magic 2014 Core Set, 64, 249, false,
+Colossal Whale, Creature, BU, 7, 5, 5, Magic 2014 Core Set, 48, 249, true, Islandwalk
+Fleshpulper Giant, Creature, RD, 7, 4, 4, Magic 2014 Core Set, 140, 249, false,
+Fleshpulper Giant, Creature, RD, 7, 4, 4, Magic 2014 Core Set, 140, 249, false,
+Ragathan Firecat, Creature, RD, 3, 4, 1, Magic 2014 Core Set, 150, 249, false,
+Ragathan Firecat, Creature, RD, 3, 4, 1, Magic 2014 Core Set, 150, 249, false,
+Ragathan Firecat, Creature, RD, 3, 4, 1, Magic 2014 Core Set, 150, 249, false,
+Goblin Shortcutter, Creature, RD, 2, 2, 1, Magic 2014 Core Set, 142, 249, false,
+Goblin Shortcutter, Creature, RD, 2, 2, 1, Magic 2014 Core Set, 142, 249, false,
+Goblin Shortcutter, Creature, RD, 2, 2, 1, Magic 2014 Core Set, 142, 249, false,
+Chandra's Outrage, Instant, RD, 4, 0, 0, Magic 2014 Core Set, 133, 249, false,
+Shiv's Embrace, Enchantment-Aura, RD, 4, 0, 0, Magic 2014 Core Set, 153, 249, true, Enchant
+Volcanic Geyser, Instant, RD, 3, 0, 0, Magic 2014 Core Set, 160, 249, false,
+Flames of the Firebrand, Sorcery, RD, 3, 0, 0, Magic 2014 Core Set, 139, 249, false,
+Flames of the Firebrand, Sorcery, RD, 3, 0, 0, Magic 2014 Core Set, 139, 249, false,
+Possessed Skaab, Creature, BUBK, 5, 3, 2, Magic Origins, 215, 272, false,
+Possessed Skaab, Creature, BUBK, 5, 3, 2, Magic Origins, 215, 272, false, 
+Possessed Skaab, Creature, BUBK, 5, 3, 2, Magic Origins, 215, 272, false,
+Citadel Castellan, Creature, GNWT, 3, 2, 3, Magic Origins, 213, 272, true, Vigilance, Renown
+Bounding Krasis, Creature, GNBU, 3, 3, 3, Magic Origins, 212, 272, true, Flash
+Iroas's Champion, Creature, RDWT, 3, 2, 2, Magic Origins, 214, 272, true, Double Strike
+Subterranean Scout, Creature, RD, 2, 2, 1, Magic Origins, 164, 272, false,
+Faerie Miscreant, Creature, BU, 1, 1, 1, Magic Origins, 57, 272, true, Flying
+Turn to Frog, Instant, BU, 2, 0, 0, Magic Origins, 81, 272, false,
+Jhessian Thief, Creature, BU, 3, 1, 3, Magic Origins, 62, 272, true, Prowess
+Alhammarret High Arbiter, Creature, BU, 7, 5, 5, Magic Origins, 43, 272, true, Flying
+Whirler Rogue, Creature, BU, 4, 2, 2, Magic Origins, 83, 272, false,
+Scrapskin Drake, Creature, BU, 3, 2, 3, Magic Origins, 59, 272, true, Flying
+Stratus Walk, Enchantment-Aura, BU, 2, 0, 0, Magic Origins, 77, 272, true, Enchant
+Stratus Walk, Enchantment-Aura, BU, 2, 0, 0, Magic Origins, 77, 272, true, Enchant
+Willbreaker, Creature, BU, 5, 2, 3, Magic Origins, 84, 272, false,
+Watercourser, Creature, BU, 3, 2, 3, Magic Origins, 82, 272, false,
+Dreadwaters, Sorcery, BU, 4, 0, 0, Magic Origins, 56, 272, false,
+Bone to Ash, Instant, BU, 4, 0, 0, Magic Origins, 47, 272, false,
+Claustrophobia, Enchantment-Aura, BU, 3, 0, 0, Magic Origins, 50, 272, true, Enchant 
+Claustrophobia, Enchantment-Aura, BU, 3, 0, 0, Magic Origins, 50, 272, true, Enchant 
+Separatist Voidmage, Creature, BU, 4, 2, 2, Magic Origins, 72, 272, false,
+Skaab Goliath, Creature, BU, 6, 6, 9, Magic Origins, 74, 272, true, Trample
+Enthralling Victor, Creature, RD, 4, 3, 2, Magic Origins, 142, 272, false,
+Call of the Full Moon, Enchantment-Aura, RD, 2, 0, 0, Magic Origins, 134, 272, true, Enchant
+Ghirapur Gearcrafter, Creature, RD, 3, 2, 1, Magic Origins, 149, 272, false,
+Infectious Bloodlust, Enchantment-Aura, RD, 2, 0, 0, Magic Origins, 152, 272, true, Enchant
+Island, Land, BU, 0, 0, 0, Magic Origins, 257, 272, false,
+Island, Land, BU, 0, 0, 0, Magic Origins, 257, 272, false,
+Necrobite, Instant, BK, 3, 0, 0, Born of the Gods, 77, 165, false,
+Unhallowed Pact, Enchantment-Aura, BK, 3, 0, 0, Avacyn Restored, 124, 244, true, Enchant
+Hero's Downfall, Instant, BK, 3, 0, 0, UNKNOWN, 2, 6, false,
+Murderous Betrayal, Enchantment, BK, 3, 0, 0, Eighth Edition, 147, 356, false,
+Murderous Betrayal, Enchantment, BK, 3, 0, 0, Nemesis, 61, 143, false,
+Mindwarper, Summon Spirit, BK, 4, 3, 3, Stronghold, 0, 0, false,
+Marang River Skeleton, Creature, BK, 2, 1, 1, Dragons of Tarkir, 108, 264, true, Megamorph
+Curse of Misfortunes, Enchantment, BK, 5, 0, 0, Dark Ascension, 56, 158, true, Enchant
+Flesh Allergy, Sorcery, BK, 4, 0, 0, Scars of Mirrodin, 62, 249, false,
+Drinker of Sorrow, Creature, BK, 3, 5, 3, Legions, 66, 155, false,
+Monomania, Sorcery, BK, 5, 0, 0, Magic 2012 Core Set, 102, 249, false,
+Morbid Plunder, Sorcery, BK, 3, 0, 0, Mirrodin Besieged, 47, 155, false,
+Doom Cannon, Artifact, NA, 6, 0, 0, Onslaught, 307, 350, false,
+Faces of the Past, Enchantment, BU, 3, 0, 0, Scourge, 35, 143, false,
+Ensouled Scimitar, Artifact, NA, 3, 0, 0, Fifth Dawn, 117, 165, true, Equip
+Ebon Drake, Creature, BK, 3, 3, 3, Fifth Dawn, 48, 165, true, Flying
+Soul Strings, Sorcery, BK, 2, 0, 0, Prophecy, 78, 143, false,
+Bog Elemental, Creature, BK, 5, 5, 4, Prophecy, 57, 143, true, Protection
+Truth or Tale, Instant, BU, 2, 0, 0, Time Spiral, 89, 301, false,
+Faceless Devourer, Creature, BK, 3, 2, 1, Time Spiral, 108, 301, true, Shadow
+Air Elemental, Creature, BU, 5, 4, 4, Tenth Edition, 64, 383, true, Flying
+Thrull Surgeon, Creature, BK, 2, 1, 1, Tenth Edition, 183, 383, false,
+Stronghold Discipline, Sorcery, BK, 4, 0, 0, Tenth Edition, 181, 383, false,
+Desecrated Earth, Sorcery, BK, 5, 0, 0, Zendikar, 86, 249, false,
+Halo Hunter, Creature, BK, 5, 6, 3, Zendikar, 98, 249, true, Intimidate
+Guul Draz Specter, Creature, BK, 4, 2, 2, Zendikar, 92, 249, true, Flying
+Dissolve, Instant, BU, 3, 0, 0, Theros, 47, 249, false,
+Abhorrent Overlord, Creature, BK, 7, 6, 6, Theros, 75, 249, true, Flying
+Returned Centaur, Creature, BK, 4, 2, 4, Theros, 103, 249, false,
+Skittering Monstrosity, Creature, BK, 5, 5, 5, Time Spiral, 139, 301, false,
+Premature Burial, Sorcery, BK, 2, 0, 0, Time Spiral, 125, 301, false,
+Phthisis, Sorcery, BK, 7, 0, 0, Time Spiral, 122, 301, true, Suspend
+Evil Eye of Urborg, Creature, BK, 5, 7, 3, Time Spiral, 107, 301, false,
+Haunting Hymn, Instant, BK, 6, 0, 0, Time Spiral, 112, 301, false,
+Murderous Cut, Instant, BK, 5, 0, 0, Khans of Tarkir, 81, 269, true, Delve
+Murderous Cut, Instant, BK, 5, 0, 0, Khans of Tarkir, 81, 269, true, Delve
+Dead Drop, Sorcery, BK, 10, 0, 0, Khans of Tarkir, 67, 269, true, Delve
+Despise, Sorcery, BK, 1, 0, 0, Khans of Tarkir, 69, 269, false,
+Ghastly Conscription, Sorcery, BK, 7, 0, 0, Fate Reforged, 70, 185, false,
+Tasigur's Cruelty, Sorcery, BK, 6, 0, 0, Fate Reforged, 88, 185, true, Delve
+Sibsig Host, Creature, BK, 5, 2, 6, Fate Reforged, 82, 185, false,
+Merciless Executioner, Creature, BK, 3, 3, 1, Fate Reforged, 76, 185, false,
+Reach of Shadows, Instant, BK, 5, 0, 0, Fate Reforged, 81, 185, false,
+Reach of Shadows, Instant, BK, 5, 0, 0, Fate Reforged, 81, 185, false,
+Hooded Assassin, Creature, BK, 3, 1, 2, Fate Reforged, 73, 185, false,
+Returned Reveler, Creature, BK, 2, 1, 3, Journey into Nyx, 79, 165, false,
+Returned Reveler, Creature, BK, 2, 1, 3, Journey into Nyx, 79, 165, false,
+Aspect of Gorgon, Enchantment-Aura, BK, 3, 0, 0, Journey into Nyx, 60, 165, true, Enchant
+Pharika's Chosen, Creature, BK, 1, 1, 1, Journey into Nyx, 78, 165, true, Deathtouch
+Flesh to Dust, Instant, BK, 5, 0, 0, Magic 2015 Core Set, 98, 269, false,
+Black Cat, Creature, BK, 2, 1, 1, Magic 2015 Core Set, 86, 269, false,
+Juggernaut, Artifact Creature, NA, 4, 5, 3, Magic 2015 Core Set, 220, 269, false,
+Staff of the Flame Magus, Artifact, NA, 3, 0, 0, Magic 2015 Core Set, 233, 269, false,
+Staff of the Flame Magus, Artifact, NA, 3, 0, 0, Magic 2015 Core Set, 233, 269, false,
+Nightcreep, Instant, BK, 2, 0, 0, Dissension, 49, 180, false,
+Slithering Shade, Creature, BK, 1, 0, 1, Dissension, 55, 180, true, Defender, Hellbent
+Slithering Shade, Creature, BK, 1, 0, 1, Dissension, 55, 180, true, Defender, Hellbent
+Brain Pry, Sorcery, BK, 2, 0, 0, Dissension, 39, 180, false,
+Ragamuffyn, Creature, BK, 3, 2, 2, Dissension, 51, 180, true, Hellbent
+Skullmead Cauldron, Artifact, NA, 4, 0, 0, Dissension, 167, 180, false,
+Drekavac, Creature, BK, 2, 3, 3, Dissension, 43, 180, false, 
+Muck Drubb, Creature, BK, 5, 3, 3, Planar Chaos, 76, 165, true, Flash, Madness
+Dunerider Outlaw, Creature, BK, 2, 1, 1, Planar Chaos, 86, 165, true, Protection
+Kor Dirge, Instant, BK, 3, 0, 0, Planar Chaos, 87, 165, false,
+Waning Wurm, Creature, BK, 4, 7, 6, Planar Chaos, 83, 165, true, Vanishing
+Treacherous Urge, Instant, BK, 5, 0, 0, Planar Chaos, 82, 165, false,
+Riptide Pilferer, Creature, BU, 2, 1, 1, Planar Chaos, 60, 165, true, Morph
+Ovinize, Instant, BU, 2, 0, 0, Planar Chaos, 57, 165, false,
+Timebender, Creature, BU, 1, 1, 1, Planar Chaos, 50, 165, true, Morph
+Tidewalker, Creature, BU, 3, 1, 1, Planar Chaos, 49, 165, true, Vanishing
+Jodah's Avenger, Creature, BU, 5, 4, 4, Planar Chaos, 42, 465, false,
+Dismal Failure, Instant, BU, 4, 0, 0, Planar Chaos, 39, 165, false,
+Shadowborn Apostle, Creature, Bk, 1, 1, 1, Magic 2014 Core Set, 114, 249, false,
+Vile Rebirth, Instant, BK, 1, 0, 0, Magic 2014 Core Set, 121, 249, false,
+Gnawing Zombie, Creature, BK, 2, 1, 3, Magic 2014 Core Set, 99, 249, false,
+Artificer's Hex, Enchantment-Aura, BK, 1, 0, 0, Magic 2014 Core Set, 85, 249, true, Enchant
+Liliana's Reaver, Creature, BK, 4, 4, 3, Magic 2014 Core Set, 103, 249, true, Deathtouch 
+Blood Bairn, Creature, BK, 3, 2, 2, Magic 2014 Core Set, 87, 249, false,
+Opportunity, Instant, BU, 6, 0, 0, Magic 2014 Core Set, 66, 249, false,
+Phantom Warrior, Creature, BU, 3, 2, 2, Magic 2014 Core Set, 67, 249, false,
+Time Ebb, Sorcery, BU, 3, 0, 0, Magic 2014 Core Set, 74, 249, false,
+Claustrophobia, Enchantment-Aura, BU, 3, 0, 0, Magic 2014 Core Set, 46, 249, true, Enchant 
+Sphinx of the Chimes, Creature, BU, 6, 5, 6, Return to Ravnica, 52, 274, true, Flying
+Cancel, Instant, BU, 3, 0, 0, Magic 2014 Core Set, 45, 249, false,
+Cryptwailing, Enchantment, BK, 4, 0, 0, Guildpact, 47, 165, false,
+Sanguine Praetor, Creature, BK, 8, 7, 5, Guildpact, 60, 165, false,
+Vertigo Spawn, Creature, BU, 2, 0, 3, Guildpact, 42, 165, true, Defender
+Vedalken Plotter, Creature, BU, 3, 1, 1, Guildpact, 41, 165, false,
+Frazzle, Instant, BU, 4, 0, 0, Guildpact, 25, 165, false,
+Drowned Rusalka, Creature, BU, 1, 1, 1, Guildpact, 24, 165, false,
+Drowned Rusalka, Creature, BU, 1, 1, 1, Guildpact, 24, 165, false,
+AEtherplasm, Creature, BU, 4, 1, 1, Guildpact, 22, 165, false,
+Stratozeppelid, Creature, BU, 5, 4, 4, Guildpact, 36, 165, true, Flying
+Krovikan Rot, Instant, BK, 3, 0, 0, Coldsnap, 63, 155, true, Recover
+Balduvian Fallen, Creature, BK, 4, 3, 5, Coldsnap, 51, 155, true, Cumulative Upkeep
+Gristle Grinner, Creature, BK, 5, 3, 3, Coldsnap, 59, 155, false,
+Phobian Phantasm, Creature, BK, 3, 3, 3, Coldsnap, 66, 155, true, Flying, Fear, Cumulative Upkeep
+Rime Transfusion, Enchantment-Aura, BK, 2, 0, 0, Coldsnap, 68, 155, true, Enchant
+Tresserhorn Skyknight, Creature, BK, 7, 5, 3, Coldsnap, 73, 155, true, Flying
+Krovikan Whispers, Enchantment-Aura, BU, 4, 0, 0, Coldsnap, 39, 155, true, Enchant, Cumulative Upkeep
+Krovikan Whispers, Enchantment-Aura, BU, 4, 0, 0, Coldsnap, 39, 155, true, Enchant, Cumulative Upkeep
+Perilous Research, Instant, BU, 2, 0, 0, Coldsnap, 41, 155, false,
+Rimewind Cryomancer, Creature, BU, 4, 2, 3, Coldsnap, 43, 155, false, 
+Adarkar Windform, Creature, BU, 5, 3, 3, Coldsnap, 26, 155, true, Flying
+Controvert, Instant, BU, 4, 0, 0, Coldsnap, 30, 155, true, Recover
+Blood Reckoning, Enchantment, BK, 4, 0, 0, Magic 2013 Core Set, 81, 249, false,
+Public Execution, Instant, BK, 6, 0, 0, Magic 2013 Core Set, 105, 249, false,
+Duskmantle Prowler, Creature, BK, 4, 2, 2, Magic 2013 Core Set, 91, 249, true, Haste, Exalted
+Harbor Bandit, Creature, BK, 3, 2, 2, Magic 2013 Core Set, 95, 249, false,
+Cower in Fear, Instant, BK, 3, 0, 0, Magic 2013 Core Set, 84, 249, false,
+Rise from the Grave, Sorcery, BK, 5, 0, 0, Magic 2013 Core Set, 107, 249, false,
+Sleep, Sorcery, BU, 4, 0, 0, Magic 2013 Core Set, 67, 249, false,
+Talrand's Invocation, Sorcery, BU, 4, 0, 0, Magic 2013 Core Set, 73, 249, false,
+Courtly Provocateur, Creature, BU, 3, 1, 1, Magic 2013 Core Set, 46, 249, false,
+Switcheroo, Sorcery, BU, 5, 0, 0, Magic 2013 Core Set, 71, 249, false,
+Screams from Within, Enchantment-Aura, BK, 3, 0, 0, Darksteel, 52, 165, true, Enchant
+Scrounge, Sorcery, BK, 3, 0, 0, Darksteel, 53, 165, false,
+Emissary of Despair, Creature, BK, 3, 2, 1, Darksteel, 42, 165, true, Flying
+Emissary of Despair, Creature, BK, 3, 2, 1, Darksteel, 42, 165, true, Flying
+Carry Away, Enchantment, BU, 5, 0, 0, Darksteel, 19, 165, true, Enchant
+Second Sight, Instant, BU, 3, 0, 0, Darksteel, 33, 165, true, Entwine
+Hoverguard, Creature, BU, 4, 3, 3, Darksteel, 22, 165, true, Flying
+Psychic Overload, Enchantment, BU, 4, 0, 0, Darksteel, 28, 165, false,
+Goblin Cannon, Artifact, NA, 4, 0, 0, Fifth Dawn, 125, 165, false,
+Death-Mask Duplicant, Artifact Creature, NA, 7, 5, 5, Darksteel, 115, 165, true, Imprint
+Arcbound Lancer, Artifact Creature, NA, 7, 4, 4, Darksteel, 98, 165, true, First Strike, Modular
+Arcbound Fiend, Artifact Creature, NA, 6, 3, 3, Darksteel, 96, 165, true, Fear, Modular
+Auriok Siege Sled, Artifact Creature, NA, 6, 3, 5, Darksteel, 105, 165, false,
+Village Cannibals, Creature, BK, 3, 2, 2, Innistrad, 125, 264, false,
+Bitterheart Witch, Creature, BK, 5, 1, 2, Innistrad, 88, 264, true, Deathtouch
+Morkrut Banshee, Creature, BK, 5, 4, 4, Innistrad, 110, 264, true, Morbid
+Moan of the Unhallowed, Sorcery, BK, 4, 0, 0, Innistrad, 109, 264, true, Flashback
+Disciple of Griselbrand, Creature, BK, 2, 1, 1, Innistrad, 98, 264, false,
+Falkenrath Noble, Creature, BK, 4, 2, 2, Innistrad, 100, 264, true, Flying
+**(Screeching Bat) // Stalking Vampire**, Creature, BK, 3, 2, 2, Innistrad, 114, 264, true, Flying
+**Screeching Bat // (Stalking Vampire)**, Creature, BK, 7, 5, 5, Innistrad, 114, 264, false,
+Grasp of Phantoms, Sorcery, BU, 4, 0, 0, Innistrad, 58, 264, true, Flashback
+Battleground Geist, Creature, BU, 5, 3, 3, Innistrad, 45, 264, true, Flying
+**(Civilized Scholar) // Homicidal Brute**, Creature, BU, 3, 0, 1, Innistrad, 47, 264, false,
+**Civilized Scholar // (Homicidal Brute)**, Creature, BU, 3, 5, 1, Innistrad, 47, 264, false,
+Murder of Crows, Creature, BU, 5, 4, 4, Innistrad, 70, 264, true, Flying
+Silver-Inlaid Dagger, Artifact, NA, 1, 0, 0, Innistrad, 233, 264, true, Equip
+Sharpened Pitchfork, Artifact, NA, 2, 0, 0, Innistrad, 232, 264, true, Equip
+Butcher's Cleaver, Artifact, NA, 3, 0, 0, Innistrad, 217, 264, true, Equip
+Cellar Door, Artifact, NA, 2, 0, 0, Innistrad, 218, 264, false,
+Steel Golem, Artifact Creature, NA, 3, 3, 4, Tenth Edition, 344, 383, false,
+Composite Golem, Artifact Creature, NA, 6, 4, 4, Tenth Edition, 318, 383, false, 
+Enslave, Enchantment-Aura, BK, 6, 0, 0, New Phyrexia, 58, 175, true, Enchant
+Reaper of Sheoldred, Creature, BK, 5, 2, 5, New Phyrexia, 72, 175, true, Infect
+Ichor Explosion, Sorcery, BK, 7, 0, 0, New Phyrexia, 54, 175, false,
+Postmortem Lunge, Sorcery, BK, 1, 0, 0, New Phyrexia, 70, 175, false,
+Arm with AEther, Sorcery, BU, 3, 0, 0, New Phyrexia, 28, 175, false,
+Argent Mutaution, Instant, BU, 3, 0, 0, New Phyrexia, 27, 175, false,
+Viral Drake, Creature, BU, 4, 1, 4, New Phyrexia, 49, 175, true, Flying, Infect, Proliferate
+Corrupted Resolve, Instant, BU, 2, 0, 0, New Phyrexia, 32, 175, false,
+Wing Splicer, Creature, BU, 4, 1, 1, New Phyrexia, 50, 175, false,
+Rage Extractor, Artifact, NA, 4, 0, 0, New Phyrexia, 91, 175, false,
+Sickleslicer, Artifact, NA, 3, 0, 0, New Phyrexia, 157, 175, true, Living Weapon, Equip
+Conversion Chamber, Artifact, NA, 3, 0, 0, New Phyrexia, 133, 175, false,
+Kiln Walker, Artifact Creature, NA, 3, 0, 3, New Phyrexia, 142, 175, false,
+Shrine of Boundless Growth, Artifact, NA, 3, 0, 0, New Phyrexia, 152, 175, false,
+Shrine of Piercing Vision, Artifact, NA, 2, 0, 0, New Phyrexia, 156, 175, false,
+Evernight Shade, Creature, BK, 4, 1, 1, Commander (2014 Edition), 144, 337, true, Undying
+Magus of the Coffers, Creature, BK, 5, 4, 4, Commander (2014 Edition), 148, 337, false,
+Black Sun's Zenith, Sorcery, BK, 3, 0, 0, Commander (2014 Edition), 136, 337, false,
+AEther Snap, Sorcery, BK, 5, 0, 0, Commander (2014 Edition), 133, 337, false,
+Ghoulcaller Gisa, Creature, BK, 5, 3, 4, Commander (2014 Edition), 23, 337, false,
+Promise of Power, Sorcery, BK, 5, 0, 0, Commander (2014 Edition), 157, 337, true, Entwine
+Vampire Hexmage, Creature, BK, 2, 2, 1, Commander (2014 Edition), 168, 337, true, First Strike
+Phyrexian Gargantua, Creature, BK, 6, 4, 4, Commander (2014 Edition), 154, 337, false,
+Pontiff of Blight, Creature, BK, 6, 2, 7, Commander (2014 Edition), 155, 337, true, Extort
+Skeletal Scrying, Instant, BK, 2, 0, 0, Commander (2014 Edition), 162, 337, false, 
+Morkrut Banshee, Creature, BK, 5, 4, 4, Commander (2014 Edition), 149, 337, true, Morbid
+Flesh Carver, Creature, BK, 3, 2, 2, Commander (2014 Edition), 22, 337, true, Intimidate
+Demon of Wailing Agonies, Creature, BK, 5, 4, 4, Commander (2014 Edition), 21, 337, true, Flying
+Crypt Ghast, Creature, BK, 4, 2, 2, Commander (2014 Edition), 139, 337, true, Extort
+Sign in Blood, Sorcery, BK, 2, 0, 0, Commander (2014 Edition), 161, 337, false,
+Read the Bones, Sorcery, BK, 3, 0, 0, Commander (2014 Edition), 158, 337, false,
+Shriekmaw, Creature, BK, 5, 3, 2, Commander (2014 Edition), 160, 337, true, Fear, Evoke
+Malicious Affliction, Instant, BK, 2, 0, 0, Commander (2014 Edition), 25, 337, true, Morbid
+Annihilate, Instant, BK, 5, 0, 0, Commander (2014 Edition), 134, 337, false,
+Nekrataal, Creature, BK, 4, 2, 1, Commander (2014 Edition), 152, 337, true, First Strike
+Mutilate, Sorcery, BK, 4, 0, 0, Commander (2014 Edition), 150, 337, false,
+Tragic Slip, Instant, BK, 1, 0, 0, Commander (2014 Edition), 167, 337, true, Morbid
+Drana Kalastria Bloodchief, Creature, BK, 5, 4, 4, Commander (2014 Edition), 141, 337, true, Flying
+Spoils of Blood, Instant, BK, 1, 0, 0, Commander (2014 Edition), 30, 337, false,
+Liliana's Reaver, Creature, BK, 4, 4, 3, Commander (2014 Edition), 147, 337, true, Deathtouch
+Raving Dead, Creature, BK, 5, 2, 6, Commander (2014 Edition), 29, 337, true, Deathtouch
+Syphon Mind, Sorcery, BK, 4, 0, 0, Commander (2014 Edition), 165, 337, false,
+Dregs of Sorrow, Sorcery, BK, 6, 0, 0, Commander (2014 Edition), 143, 337, false,
+Reaper from the Abyss, Creature, BK, 6, 6, 6, Commander (2014 Edition), 159, 337, true, Flying, Morbid
+Butcher of Malakir, Creature, BK, 7, 5, 4, Commander (2014 Edition), 138, 337, true, Flying
+Necromantic Selection, Sorcery, BK, 7, 0, 0, Commander (2014 Edition), 26, 337, false,
+Pestilence Demon, Creature, BK, 8, 7, 6, Commander (2014 Edition), 153, 337, true, Flying
+Infernal Offering, Sorcery, BK, 5, 0, 0, Commander (2014 Edition), 24, 337, false,
+Profane Command, Sorcery, BK, 3, 0, 0, Commander (2014 Edition), 156, 337, false,
+Overseer of hte Damned, Creature, BK, 7, 5, 5, Commander (2014 Edition), 28, 337, true, Flying
+Read the Bones, Sorcery, BK, 3, 0, 0, Magic Origins, 114, 337, false,
+Macabre Waltz, Sorcery, BK, 2, 0, 0, Magic Origins, 107, 337, false,
+Thornbow Archer, Creature, BK, 1, 1, 2, Magic Origins, 121, 272, false,
+Gnarlroot Trapper, Creature, BK, 1, 1, 1, Magic Origins, 100, 337, false,
+Thornbow Archer, Creature, BK, 1, 1, 2, Magic Origins, 121, 272, false,
+Thornbow Archer, Creature, BK, 1, 1, 2, Magic Origins, 121, 272, false,
+Nantuko Husk, Creature, BK, 3, 2, 2, Magic Origins, 109, 272, false,
+Deadbridge, Creature, BK, 3, 3, 1, Magic Origins, 91, 272, false,
+Cruel Revival, Instant, BK, 5, 0, 0, Magic Origins, 88, 272, false,
+Unholy Hunger, Instant, BK, 5, 0, 0, Magic Origins, 125, 272, true, Spell Mastery
+Unholy Hunger, Instant, BK, 5, 0, 0, Magic Origins, 125, 272, true, Spell Mastery
+Weight of the Underworld, Enchantment-Aura, BK, 4, 0, 0, Magic Origins, 126, 272, true, Enchant
+Reave Soul, Sorcery, BK, 2, 0, 0, Magic Origins, 114, 272, false,
+Undead Servant, Creature, BK, 4, 3, 2, Magic Origins, 124, 272, false,
+Tormented Thoughts, Sorcery, BK, 3, 0, 0, Magic Origins, 122, 272, false,
+Tormented Thoughts, Sorcery, BK, 3, 0, 0, Magic Origins, 122, 272, false,
+Catacomb Slug, Creature, BK, 5, 2, 6, Magic Origins, 86, 272, false,
+Returned Centaur, Creature, BK, 4, 2, 4, Magic Origins, 116, 272, false,
+Returned Centaur, Creature, BK, 4, 2, 4, Magic Origins, 116, 272, false,
+Malakir Cullblade, Creature, BK, 2, 1, 1, Magic Origins, 108, 272, false,
+Malakir Cullblade, Creature, BK, 2, 1, 1, Magic Origins, 108, 272, false,
+Nightsnare, Sorcery, BK, 4, 0, 0, Magic Origins, 111, 272, false,
+Fleshbag Marauder, Creature, BK, 3, 3, 1, Magic Origins, 98, 272, false,
+Necromantic Summons, Sorcery, BK, 5, 0, 0, Magic Origins, 110, 272, true, Spell Mastery
+Cruel Revival, Instant, BK, 5, 0, 0, Magic Origins, 88, 272, false
+Rabid Bloodsucker, Creature, BK, 5, 3, 2, Magic Origins, 113, 272, true, Flying
+Tower Geist, Creature, BU, 4, 2, 2, Magic Origins, 80, 272, true, Flying
+Tower Geist, Creature, BU, 4, 2, 2, Magic Origins, 80, 272, true, Flying
+Soulblade Dijnn, Creature, BU, 5, 4, 3, Magic Origins, 75, 272, true, Flying
+Nivix Barrier, Creature, BU, 4, 0, 4, Magic Origins, 66, 272, true, Flying, Flash
+Nivix Barrier, Creature, BU, 4, 0, 4, Magic Origins, 66, 272, true, Flying, Flash
+Watercourser, Creature, BU, 3, 2, 3, Magic Origins, 82, 272, false,
+Watercourser, Creature, BU, 3, 2, 3, Magic Origins, 82, 272, false,
+Thunderclap Wyvern, Creature, WTBU, 4, 2, 3, Magic Origins, 218, 272, true, Flash, Flying
+Thunderclap Wyvern, Creature, WTBU, 4, 2, 3, Magic Origins, 218, 272, true, Flash, Flying
+Sigiled Starfish, Creature, BU, 2, 0, 3, Magic Origins, 73, 272, false,
+Sigiled Starfish, Creature, BU, 2, 0, 3, Magic Origins, 73, 272, false,
+Bone to Ash, Instant, BU, 4, 0, 0, Magic Origins, 47, 272, false,
+Prism Ring, Artifact, NA, 1, 0, 0, Magic Origins, 235, 272, false,
+Evolving Wilds, Land, NA, 0, 0, 0, Magic Origins, 246, 272, false,
+Deep-Sea Terror, Creature, BU, 6, 6, 6, Magic Origins, 52, 272, false,
+Dreadwaters, Sorcery, BU, 4, 0, 0, Magic Origins, 56, 272, false,
+Artificer's Epiphany, Instant, BU, 3, 0, 0, Magic Origins, 45, 272, false, 
+Separatist Voidmage, Creature, BU, 4, 2, 2, Magic Origins, 72, 272, false,
+Ringwarden Owl, Creature, BU, 5, 3, 3, Magic Origins, 68, 272, true, Flying, Prowess
+Send to Sleep, Instant, BU, 2, 0, 0, Magic Origins, 71, 272, true, Spell Mastery
+Disperse, Instant, BU, 2, 0, 0, Magic Origins, 54, 272, false,
+Disperse, Instant, BU, 2, 0, 0, Magic Origins, 54, 272, false,
+Thopter Spy Network, Enchantment, BU, 4, 0, 0, Magic Origins, 79, 272, false,
+Guardians of Meletis, Artifact Creature, NA, 3, 0, 6, Magic Origins, 228, 272, true, Defender
+Guardians of Meletis, Artifact Creature, NA, 3, 0, 6, Magic Origins, 228, 272, true, Defender
+Meteorite, Artifact, NA, 5, 0, 0, Magic Origins, 233, 272, false,
+Sigil of Valor, Artifact, NA, 2, 0, 0, Magic Origins, 239, 272, true, Equip
+Altar's Reap, Instant, BK, 2, 0, 0, Magic 2014 Core Set, 84, 249, false,
+Child of Night, Creature, BK, 2, 2, 1, Magic 2010 Core Set, 88, 249, true, Lifelink
+Jelenn Sphinx, Creature, WTBU, 5, 1, 5, Battlebond, 77, 156, true, Flying, Vigilance
+Awe for the Guilds, Sorcery, RD, 3, 0, 0, Battlebond, 31, 156, false,
+Ascended Lawmage, Creature, WTBU, 4, 3, 2, Battlebond, 53, 156, true, Flying, Hexproof
+Shatterskull Giant, Creature, RD, 4, 4, 3, Zendikar, 148, 249, false,
+Shatterskull Giant, Creature, RD, 4, 4, 3, Zendikar, 148, 249, false,
+Teleportal, Sorcery, RDBU, 2, 0, 0, Return to Ravnica, 202, 274, true, Overload
+Runewing, Creature, BU, 4, 2, 2, Return to Ravnica, 48, 274, true, Flying
+Runewing, Creature, BU, 4, 2, 2, Return to Ravnica, 48, 274, true, Flying
+Izzet Keyrune, Artifact, NA, 3, 0, 0, Return to Ravnica, 210, 274, false,
+Goblin Electromancer, Creature, BURD, 2, 2, 2, Return to Ravnica, 163, 274, false
+Blistercoil Weird, Creature, RDBU, 1, 1, 1, Return to Ravnica, 211, 274, false,
+Weight of the Underworld, Enchantment-Aura, BK, 4, 0, 0, Born of the Gods, 86, 165, true, Enchant
+Weight of the Underworld, Enchantment-Aura, BK, 4, 0, 0, Born of the Gods, 86, 165, true, Enchant
+Warchanter of Mogis, Creature, BK, 5, 3, 3, Born of the Gods, 85, 165, true, Inspired
+Reckless Reaver, Creature, RD, 2, 2, 1, Born of the Gods, 106, 165, false,
+Reckless Reaver, Creature, RD, 2, 2, 1, Born of the Gods, 106, 165, false,
+Evanescent Intellect, Enchantment-Aura, BU, 1, 0, 0, Born of the Gods, 38, 165, true, Enchant
+Evanescent Intellect, Enchantment-Aura, BU, 1, 0, 0, Born of the Gods, 38, 165, true, Enchant
+Eternity Snare, Enchantment-Aura, BU, 6, 0, 0, Born of the Gods, 37, 165, true, Enchant
+Deepwater Hypnotist, Creature, BU, 2, 2, 1, Born of the Gods, 35, 165, true, Inspired
+Deepwater Hypnotist, Creature, BU, 2, 2, 1, Born of the Gods, 35, 165, true, Inspired
+Deepwater Hypnotist, Creature, BU, 2, 2, 1, Born of the Gods, 35, 165, true, Inspired
+Crypsis, Instant, BU, 2, 0, 0, Born of the Gods, 34, 165, false,
+Claim of Erebos, Enchantment-Aura, BK, 2, 0, 0, Born of the Gods, 64, 165, true, Enchant
+Thassa's Devourer, Enchantment Creature, BU, 5, 2, 6, Journey into Nyx, 53, 165, true, Constellation
+Thassa'a Ire, Enchantment, BU, 1, 0, 0, Journey into Nyx, 54, 165, false,
+Returned Phalanx, Creature, BK, 2, 3, 3, Theros, 104, 249, true, Defender
+Read the Bones, Sorcery, BK, 3, 0, 0, Theros, 101, 29, false,
+Pin to the Earth, Enchantment-Aura, BU, 2, 0, 0, Journey into Nyx, 45, 165, true, Enchant
+Pin to the Earth, Enchantment-Aura, BU, 2, 0, 0, Journey into Nyx, 45, 165, true, Enchant
+Grim Guardian, Creature, BK, 3, 1, 4, Journey into Nyx, 73, 165, true, Constellation
+Flamespeaker's Will, Enchantment-Aura, RD, 1, 0, 0, Journey into Nyx, 95, 165, true, Enchant
+Flamespeaker's Will, Enchantment-Aura, RD, 1, 0, 0, Journey into Nyx, 95, 165, true, Enchant
+Dark Betrayal, Instant, BK, 1, 0, 0, Theros, 83, 249, false,
+Coordinated Assault, Instant, RD, 1, 0, 0, Theros, 116, 249, false,
+Arena Athlete, Creature, RD, 2, 2, 1, Theros, 113, 249, true, Heroic
+Akroan Crusader, Creature, RD, 1, 1, 1, Theros, 111, 249, true, Heroic
+Vial of Dragonfire, Artifact, NA, 2, 0, 0, Dragons of Tarkir, 247, 264, false,
+Tormenting Voice, Sorcery, RD, 2, 0, 0, Dragons of Tarkir, 163, 264, false,
+Silumgar Spell-Eater, Creature, BU, 3, 2, 3, Dragons of Tarkir, 77, 264, true, Megamorph
+Reckless Imp, Creature, BK, 3, 2, 2, Dragons of Tarkir, 115, 264, true, Flying, Dash
+Reckless Imp, Creature, BK, 3, 2, 2, Dragons of Tarkir, 115, 264, true, Flying, Dash
+Kolaghan Skirmisher, Creature, BK, 2, 2, 2, Dragons of Tarkir, 107, 264, true, Dash
+Keeper of the lens, Artifact Creature, NA, 1, 1, 2, Dragons of Tarkir, 240, 264, false,
+Gurmag Drowner, Creature, BU, 4, 2, 4, Dragons of Tarkir, 57, 264, true, Exploit
+Gurmag Drowner, Creature, BU, 4, 2, 4, Dragons of Tarkir, 57, 264, true, Exploit
+Glint, Instant, BU, 2, 0, 0, Dragons of Tarkir, 55, 264, false,
+Foul-Tongued Shriek, Instant, BK, 1, 0, 0, Dragons of Tarkir, 103, 264, false,
+Custodian of the Trove, Artifact Creature, NA, 3, 2, 5, Dragons of Tarkir, 236, 264, true, Defender
+Butcher's Glee, Instant, BK, 3, 0, 0, Dragons of Tarkir, 90, 264, false,
+Blood-Chin Rager, Creature, BK, 2, 2, 2, Dragons of Tarkir, 89, 264, false,
+Ancient Carp, Creature, BU, 5, 2, 5, Dragons of Tarkir, 44, 264, false,
+Witch's Familiar, Creature, BK, 3, 2, 3, Magic 2015 Core Set, 123, 269, false,
+Witch's Familiar, Creature, BK, 3, 2, 3, Magic 2015 Core Set, 123, 269, false,
+Will-Forged Golem, Artifact Creature, NA, 6, 4, 4, Magic 2015 Core Set, 239, 269, true, Convoke
+Will-Forged Golem, Artifact Creature, NA, 6, 4, 4, Magic 2015 Core Set, 239, 269, true, Convoke
+Wall of Frost, Creature, BU, 3, 0, 7, Magic 2015 Core Set, 83, 269, true, Defender
+Thundering Giant, Creature, RD, 5, 4, 3, Magic 2015 Core Set, 165, 269, true, Haste
+Research Assistant, Creature, BU, 1, 1, 3, Magic 2015 Core Set, 77, 269, false,
+Research Assistant, Creature, BU, 1, 1, 3, Magic 2015 Core Set, 77, 269, false,
+Hammerhand, Enchantment-Aura, RD, 1, 0, 0, Magic 2015 Core Set, 147, 269, true, Enchant
+Glacial Crasher, Creature, BU, 6, 5, 5, Magic 2015 Core Set, 57, 269, true, Trample
+Glacial Crasher, Creature, BU, 6, 5, 5, Magic 2015 Core Set, 57, 269, true, Trample
+Forge Devil, Creature, RD, 1, 1, 1, Magic 2015 Core Set, 140, 269, false,
+Forge Devil, Creature, RD, 1, 1, 1, Magic 2015 Core Set, 140, 269, false,
+Evolving Wilds, Land, NA, 0, 0, 0, Magic 2015 Core Set, 243, 269, false,
+Ensoul Artifact, Enchantment-Aura, BU, 2, 0, 0, Magic 2015 Core Set, 54, 269, true, Enchant
+Cruel Sadist, Creature, BK, 1, 1, 1, Magic 2015 Core set, 93, 269, false,
+Clear a Path, Sorcery, RD, 1, 0, 0, Magic 2015 Core Set, 136, 269, false,
+Child of Night, Creature, BK, 2, 2, 1, Magic 2015 Core Set, 90, 269, true, Lifelink
+Chronostutter, Instant, BU, 6, 0, 0, Magic 2015 Core Set, 48, 269, false,
+Borderland Marauder, Creature, RD, 2, 1, 2, Magic 2015 Core Set, 131, 269, false,
+Borderland Marauder, Creature, RD, 2, 1, 2, Magic 2015 Core Set, 131, 269, false,
+Borderland Marauder, Creature, RD, 2, 1, 2, Magic 2015 Core Set, 131, 269, false,
+Bronze Sable, Artifact Creature, NA, 2, 2, 1, Magic 2015 Core Set, 214, 269, false,
+Bronze Sable, Artifact Creature, NA, 2, 2, 1, Magic 2015 Core Set, 214, 269, false,
+Winterflame, Instant, RDBU, 3, 0, 0, Khans of Tarkir, 213, 269, false,
+Whirlwind Adept, Creature, BU, 5, 4, 2, Khans of Tarkir, 63, 269, true, Hexproof, Prowess
+Whirlwind Adept, Creature, BU, 5, 4, 2, Khans of Tarkir, 63, 269, true, Hexproof, Prowess
+Temur Banner, Artifact, NA, 3, 0, 0, Khans of Tarkir, 226, 269, false,
+Taigam's Scheming, Sorcery, BU, 2, 0, 0, Khans of Tarkir, 57, 269, false,
+Swiftwater Cliffs, Land, RDBU, 0, 0, 0, Khans of Tarkir, 243, 269, false,
+Tranquil Cove, Land, BUWT, 0, 0, 0, Khans of Tarkir, 246, 269, false,
+Tormenting Voice, Sorcery, RD, 2, 0, 0, Khans of Tarkir, 123, 269, false,
+Tormenting Voice, Sorcery, RD, 2, 0, 0, Khans of Tarkir, 123, 269, false,
+Tormenting Voice, Sorcery, RD, 2, 0, 0, Khans of Tarkir, 123, 269, false,
+Thornwood Falls, Land, BUGN, 0, 0, 0, Khans of Tarkir, 244, 269, false,
+Throttle, Instant, BK, 5, 0, 0, Khans of Tarkir, 93, 269, false,
+Throttle, Instant, BK, 5, 0, 0, Khans of Tarkir, 93, 269, false,
+Sultai Scavenger, Creature, BK, 6, 3, 3, khans of Tarkir, 91, 269, true, Delve, Flying
+Sultai Soothsayer, Creature, BKGNBU, 5, 2, 5, Khans of Tarkir, 205, 269, false,
+Sultai Charm, Instant, BKHNBU, 3, 0, 0, Khans of Tarkir, 204, 269, false,
+Snowhorn Rider, Creature, RDBUGN, 6, 5, 5, Khans of Tarkir, 201, 269, true, Trample, Morph
+Snowhorn Rider, Creature, RDBUGN, 6, 5, 5, Khans of Tarkir, 201, 269, true, Trample, Morph
+Snowhorn Rider, Creature, RDBUGN, 6, 5, 5, Khans of Tarkir, 201, 269, true, Trample, Morph
+Scaldkin, Creature, BU, 4, 2, 2, Khans of Tarkir, 52, 269, true, Flying
+Rugged Highlands, Land, RDGN, 0, 0, 0, Khans of Tarkir, 240, 269, false,
+Kheru Dreadmaw, Creature, BK, 5, 4, 4, Khans of Tarkir, 76, 269, true, Defender
+Jeskai Windscout, Creature, BU, 3, 2, 1, Khans of Tarkir, 44, 269, true, Flying, Prowess 
+Jeskai Windscout, Creature, BU, 3, 2, 1, Khans of Tarkir, 44, 269, true, Flying, Prowess
+Jeskai Windscout, Creature, BU, 3, 2, 1, Khans of Tarkir, 44, 269, true, Flying, Prowess
+Jeskai Banner, Artifact, NA, 3, 0, 0, Khans of Tarkir, 222, 269, false,
+Jeskai Banner, Artifact, NA, 3, 0, 0, Khans of Tarkir, 222, 269, false,
+Jeskai Banner, Artifact, NA, 3, 0, 0, Khans of Tarkir, 222, 269, false,
+Jeskai Banner, Artifact, NA, 3, 0, 0, Khans of Tarkir, 222, 269, false,
+Jeskai Banner, Artifact, NA, 3, 0, 0, Khans of Tarkir, 222, 269, false,
+Jeskai Elder, Creature, BU, 2, 1, 2, Khans of Tarkir, 43, 269, true, Prowess
+Jeskai Elder, Creature, BU, 2, 1, 2, Khans of Tarkir, 43, 269, true, Prowess
+Glacial Stalker, Creature, BU, 6, 4, 5, Khans of Tarkir, 41, 269, true, Morph
+Frontier Bivouac, Land, RDGNBU, 0, 0, 0, Khans of Tarkir, 234, 269, false,
+Force Away, Instant, BU, 2, 0, 0, Khans of Tarkir, 40, 269, true, Ferocious 
+Force Away, Instant, BU, 2, 0, 0, Khans of Tarkir, 40, 269, true, Ferocious 
+Force Away, Instant, BU, 2, 0, 0, Khans of Tarkir, 40, 269, true, Ferocious
+Dutiful Return, Sorcery, BK, 4, 0, 0, Khans of Tarkir, 71, 269, false,
+Efreet Weaponmaster, Creature, BURDWT, 5, 4, 3, Khans of Tarkir, 175, 269, true, First Strike, Morph
+Debilitating Injury, Enchantment-Aura, BK, 2, 0, 0, Khans of Tarkir, 68, 269, true, Enchant
+Debilitating Injury, Enchantment-Aura, BK, 2, 0, 0, Khans of Tarkir, 68, 269, true, Enchant
+Debilitating Injury, Enchantment-Aura, BK, 2, 0, 0, Khans of Tarkir, 68, 269, true, Enchant
+Crippling Chill, Instant, BU, 3, 0, 0, Khans of Tarkir, 35, 269, false,
+Crippling Chill, Instant, BU, 3, 0, 0, Khans of Tarkir, 35, 269, false,
+Canyon Lurkers, Creature, RD, 5, 5, 2, Khans of Tarkir, 105, 269, true, Morph
+Bloodfire Expert, Creature, RD, 3, 3, 1, Khans of Tarkir, 101, 269, true, Prowess
+Bloodfire Expert, Creature, RD, 3, 3, 1, Khans of Tarkir, 101, 269, true, Prowess
+Bloodfire Expert, Creature, RD, 3, 3, 1, Khans of Tarkir, 101, 269, true, Prowess
+Bloodfire Expert, Creature, RD, 3, 3, 1, Khans of Tarkir, 101, 269, true, Prowess
+Bloodfire Expert, Creature, RD, 3, 3, 1, Khans of Tarkir, 101, 269, true, Prowess
+Barrage of Boulders, Sorcery, RD, 3, 0, 0, Khans of Tarkir, 100, 269, true, Ferocious
+Barrage of Boulders, Sorcery, RD, 3, 0, 0, Khans of Tarkir, 100, 269, true, Ferocious
+Alesha's Vanguard, Creature, BK, 4, 3, 3, Fate Reforged, 60, 185, true, Dash
+Alesha's Vanguard, Creature, BK, 4, 3, 3, Fate Reforged, 60, 185, true, Dash
+Ancestral Vengeance, Enchantment-Aura, BK, 2, 0, 0, Fate Reforged, 61, 185, true, Enchant
+Ancestral Vengeance, Enchantment-Aura, BK, 2, 0, 0, Fate Reforged, 61, 185, true, Enchant
+Ancestral Vengeance, Enchantment-Aura, BK, 2, 0, 0, Fate Reforged, 61, 185, true, Enchant
+Ancestral Vengeance, Enchantment-Aura, BK, 2, 0, 0, Fate Reforged, 61, 185, true, Enchant
+Aven Surveyor, Creature, BU, 5, 2, 2, Fate Reforged, 31, 185, true, Flying
+Aven Surveyor, Creature, BU, 5, 2, 2, Fate Reforged, 31, 185, true, Flying
+Aven Surveyor, Creature, BU, 5, 2, 2, Fate Reforged, 31, 185, true, Flying
+Aven Surveyor, Creature, BU, 5, 2, 2, Fate Reforged, 31, 185, true, Flying
+Aven Surveyor, Creature, BU, 5, 2, 2, Fate Reforged, 31, 185, true, Flying
+Aven Surveyor, Creature, BU, 5, 2, 2, Fate Reforged, 31, 185, true, Flying
+Battle Brawler, Creature, BK, 2, 2, 2, Fate Reforged, 63, 185, false,
+Battle Brawler, Creature, BK, 2, 2, 2, Fate Reforged, 63, 185, false,
+Battle Brawler, Creature, BK, 2, 2, 2, Fate Reforged, 63, 185, false,
+Cunning Strike, Instant, RDBU, 5, 0, 0, Fate Reforged, 150, 185, false,
+Cunning Strike, Instant, RDBU, 5, 0, 0, Fate Reforged, 150, 185, false,
+Douse in Gloom, Instant, BK, 3, 0, 0, Fate Reforged, 68, 185, false,
+Douse in Gloom, Instant, BK, 3, 0, 0, Fate Reforged, 68, 185, false,
+Douse in Gloom, Instant, BK, 3, 0, 0, Fate Reforged, 68, 185, false,
+Defiant Ogre, Creature, RD, 6, 3, 5, Fate Reforged, 96, 185, false,
+Defiant Ogre, Creature, RD, 6, 3, 5, Fate Reforged, 96, 185, false,
+Fierce Invocation, Sorcery, RD, 5, 0, 0, Fate Reforged, 98, 185, false,
+Fierce Invocation, Sorcery, RD, 5, 0, 0, Fate Reforged, 98, 185, false,
+Fierce Invocation, Sorcery, RD, 5, 0, 0, Fate Reforged, 98, 185, false,
+Fierce Invocation, Sorcery, RD, 5, 0, 0, Fate Reforged, 98, 185, false,
+Fierce Invocation, Sorcery, RD, 5, 0, 0, Fate Reforged, 98, 185, false,
+Fierce Invocation, Sorcery, RD, 5, 0, 0, Fate Reforged, 98, 185, false,
+Harsh Sustenance, Instant, WTBK, 3, 0, 0, Fate Reforged, 154, 185, false,
+Harsh Sustenance, Instant, WTBK, 3, 0, 0, Fate Reforged, 154, 185, false,
+Harsh Sustenance, Instant, WTBK, 3, 0, 0, Fate Reforged, 154, 185, false,
+Harsh Sustenance, Instant, WTBK, 3, 0, 0, Fate Reforged, 154, 185, false,
+Harsh Sustenance, Instant, WTBK, 3, 0, 0, Fate Reforged, 154, 185, false,
+Tranquil Cove, Land, BUWT, 0, 0, 0, Fate Reforged, 174, 185, false,
+Tranquil Cove, Land, BUWT, 0, 0, 0, Fate Reforged, 174, 185, false,
+Sultai Skullkeeper, Creature, BU, 2, 2, 1, Fate Reforged, 53, 185, false,
+Sultai Skullkeeper, Creature, BU, 2, 2, 1, Fate Reforged, 53, 185, false,
+Sultai Skullkeeper, Creature, BU, 2, 2, 1, Fate Reforged, 53, 185, false,
+Sultai Skullkeeper, Creature, BU, 2, 2, 1, Fate Reforged, 53, 185, false,
+Refocus, Instant, BU, 2, 0, 0, Fate Reforged, 47, 185, false, 
+Refocus, Instant, BU, 2, 0, 0, Fate Reforged, 47, 185, false, 
+Refocus, Instant, BU, 2, 0, 0, Fate Reforged, 47, 185, false,
+Refocus, Instant, BU, 2, 0, 0, Fate Reforged, 47, 185, false,
+Gore Swine, Creature, RD, 3, 4, 1, Fate Reforged, 103, 185, false,
+Gore Swine, Creature, RD, 3, 4, 1, Fate Reforged, 103, 185, false,
+Write into Being, Sorcery, BU, 3, 0, 0, Fate Reforged, 59, 185, false,
+Write into Being, Sorcery, BU, 3, 0, 0, Fate Reforged, 59, 185, false,
+Write into Being, Sorcery, BU, 3, 0, 0, Fate Reforged, 59, 185, false,
+Will of the Naga, Instant, BU, 6, 0, 0, Fate Reforged, 58, 185, true, Delve
+Will of the Naga, Instant, BU, 6, 0, 0, Fate Reforged, 58, 185, true, Delve
+Whisk Away, Instant, BU, 3, 0, 0, Fate Reforged, 57, 185, false,
+Whisk Away, Instant, BU, 3, 0, 0, Fate Reforged, 57, 185, false,
+War Flare, Instant, RDWT, 4, 0, 0, Fate Reforged, 158, 185, false,
+War Flare, Instant, RDWT, 4, 0, 0, Fate Reforged, 158, 185, false,
+War Flare, Instant, RDWT, 4, 0, 0, Fate Reforged, 158, 185, false,
+War Flare, Instant, RDWT, 4, 0, 0, Fate Reforged, 158, 185, false,
+War Flare, Instant, RDWT, 4, 0, 0, Fate Reforged, 158, 185, false,
+Swiftwater Cliffs, Land, RDBU, 0, 0, 0, Fate Reforged, 172, 185, false,
+Typhoid Rats, Creature, BK, 1, 1, 1, Fate Reforged, 89, 185, true, Deathtouch
+Scoured Barrens, Land, WTBK, 0, 0, 0, Fate Reforged, 171, 185, false,
+Scoured Barrens, Land, WTBK, 0, 0, 0, Fate Reforged, 171, 185, false,
+Ethereal Ambush, Instant, GNBU, 5, 0, 0, Fate Reforged, 152, 185, false,
+Ethereal Ambush, Instant, GNBU, 5, 0, 0, Fate Reforged, 152, 185, false,
+Jeskai Sage, Creature, BU, 2, 1, 1, Fate Reforged, 38, 185, true, Prowess
+Jeskai Sage, Creature, BU, 2, 1, 1, Fate Reforged, 38, 185, true, Prowess
+Enhanced Awareness, Instant, BU, 5, 0, 0, Fate Reforged, 33, 185, false,
+Gurmag Angler, Creature, BK, 7, 5, 5, Fate Reforged, 72, 185, true, Delve
+Hooded Assassin, Creature, BK, 3, 1, 2, Fate Reforged, 73, 185, false,
+Hero's Blade, Artifact, NA, 2, 0, 0, Fate Reforged, 160, 185, true, Equip
+Jungle Hollow, Land, GNBK, 0, 0, 0, Fate Reforged, 169, 185, false,
+Rageform, Enchantment, RD, 4, 0, 0, Fate Reforged, 112, 185, false,
+Reach of Shadows, Instant, BK, 5, 0, 0, Fate Reforged, 81, 185, false,
+Smoldering Efreet, Creature, RD, 2, 2, 2, Fate Reforged, 115, 185, false,
+Sultai Emissary, Creature, BK, 2, 1, 1, Fate Reforged, 85, 185, false,
+Ugin's Construct, Artifact, NA, 4, 4, 5, Fate Reforged, 164, 185, false,
+Tasigur's Cruelty, Sorcery, BK, 6, 0, 0, Fate Reforged, 88, 185, true, Delve
+Angel, Token Creature, WT, 0, 4, 4, Magic Origins, 1, 14, true, Flying
+Goblin, Token Creature, RD, 0, 1, 1, Duel Decks: Speed vs. Cunning, 82, 82, false,
+Goblin, Token Creature, RD, 0, 1, 1, Duel Decks: Speed vs. Cunning, 82, 82, false,
+Goblin, Token Creature, RD, 0, 1, 1, Khans of Tarkir, 7, 13, false,
+Goblin, Token Creature, RD, 0, 1, 1, Magic 2015 Core Set, 8, 14, false,
+Goblin, Token Creature, RD, 0, 1, 1, Magic 2013 Core Set, 6, 11, false,
+Goblin, Token Creature, RD, 0, 1, 1, Dragons of Tarkir, 6, 8, false,
+Goblin, Token Creature, RD, 0, 1, 1, Dragons of Tarkir, 6, 8, false,
+Goblin, Token Creature, RD, 0, 1, 1, Magic Origins, 6, 14, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Zombie, Token Creature, BK, 0, 2, 2, Commander (2014 Edition), 16, 36, false,
+Germ, Token Creature, BK, 0, 0, 0, Commander (2014) Edition), 14, 36, false,
+Horror, Token Creature, BK, 0, 0, 0, Commander (2014) Edition), 15, 36, false,
+Horror, Token Creature, BK, 0, 0, 0, Commander (2014) Edition), 15, 36, false,
+Demon, Token Creature, BK, 0, 5, 5, Commander (2014) Edition), 13, 36, true, Flying
+Demon, Token Creature, BK, 0, 5, 5, Commander (2014) Edition), 13, 36, true, Flying
+Demon, Token Creature, BK, 0, 5, 5, Commander (2014) Edition), 13, 36, true, Flying
+Demon, Token Creature, BK, 0, 5, 5, Commander (2014) Edition), 13, 36, true, Flying
+Demon, Token Creature, BK, 0, 5, 5, Commander (2014) Edition), 13, 36, true, Flying
+Demon, Token Creature, BK, 0, 5, 5, Commander (2014) Edition), 12, 36, true, Flying
+Spirit, Token Creature, WT, 0, 1, 1, Fate Reforged, 2, 4, true, Flying
+Spirit, Token Creature, WT, 0, 1, 1, Fate Reforged, 2, 4, true, Flying
+Spirit, Token Creature, WT, 0, 1, 1, Fate Reforged, 2, 4, true, Flying
+Spirit, Token Creature, WT, 0, 1, 1, Magic 2015 Core Set, 3, 14, true, Flying
+Spirit, Token Creature, WT, 0, 1, 1, Conspiracy, 1, 9, true, Flying
+Manifest, Token Creature, NA, 0, 2, 2, Fate Reforged, 4, 4, false,
+Manifest, Token Creature, NA, 0, 2, 2, Fate Reforged, 4, 4, false,
+Manifest, Token Creature, NA, 0, 2, 2, Fate Reforged, 4, 4, false,
+Morph, Token Creature, NA, 0, 2, 2, Khans of Tarkir, 11, 13, false,
+Morph, Token Creature, NA, 0, 2, 2, Khans of Tarkir, 11, 13, false,
+Morph, Token Creature, NA, 0, 2, 2, Dragons of Tarkir, 7, 8, false,
+Morph, Token Creature, NA, 0, 2, 2, Dragons of Tarkir, 7, 8, false,
+Insect, Token Creature, GN, 0, 1, 1, Magic 2015 Core Set, 10, 14, true, Flying, Deathtouch
+Cat Soldier, Token Creature, WT, 0, 1, 1, Born of the Gods, 2, 11, true, Vigilance
+Sphinx, Token Creature, BU, 0, 4, 4, Journey into Nyx, 1, 6, true, Flying
+Rhino, Token Creature, GN, 0, 4, 4, Retun to Ravnica, 9, 12, true, Trample
+Warrior, Token Creature, BK, 0, 2, 1, Fate Reforged, 3, 4, false,
+Wolf, Token Creature, GN, 0, 2, 2, Born of the Gods, 9, 13, false,
+Wolf, Token Creature, GN, 0, 2, 2, Born of the Gods, 9, 13, false,
+Wolf, Token Creature, GN, 0, 2, 2, Conspiracy, 7, 9, false,
+Thopter, Token Artifact Creature, NA, 0, 1, 1, Magic Origins, 10, 14, true, Flying
+Thopter, Token Artifact Creature, NA, 0, 1, 1, Magic Origins, 10, 14, true, Flying
+Elf Warrior, Token Creature, GN, 0, 1, 1, Magic Origins, 9, 14, false,
+Gold, Token Artifact, NA, 0, 0, 0, Born of the Gods, 10, 11, false,
+Bird, Token Creature, WT, 0, 1, 1, Born of the Gods, 1, 11, true, Flying
+Spider, Token Creature, GN, 0, 1, 3, Journey into Nyx, 5, 6, true, Reach
+Beast, Token Creature, GN, 0, 3, 3, Magic 2015 Core Set, 9, 14, false,
+Soldier, Token Creature, WT, 0, 1, 1, Magic 2015 Core Set, 2, 14, false,
+Soldier, Token Creature, WT, 0, 1, 1, Born of the Gods, 3, 11, false,
+Minotaur, Token Creature, RD, 0, 2, 3, Journey into Nyx, 3, 6, false,
+Minotaur, Token Creature, RD, 0, 2, 3, Journey into Nyx, 3, 6, false,
+Dijnn Monk, Token Creature, BU, 0, 2, 2, Dragons of  Tarkir, 2, 8, true, Flying
+Dijnn Monk, Token Creature, BU, 0, 2, 2, Dragons of  Tarkir, 2, 8, true, Flying
+Dijnn Monk, Token Creature, BU, 0, 2, 2, Dragons of  Tarkir, 2, 8, true, Flying
+Lunar Avenger, Artifact Creature, NA, 7, 2, 2, Fifth Dawn, 136, 165, true, Sunburst
+Icatian Priest, Creature, WT, 1, 1, 1, Tenth Edition, 24, 383, false,
+Soulmender, Creature, WT, 1, 1, 1, Magic 2014 Core Set, 37, 249, false,
+Banisher Priest, Creature, WT, 3, 2, 2, Duel Decks: Elspeth vs. Kiora, 2, 67, false,
+White Shield Crusader, Creature, WT, 2, 2, 1, Coldsnap, 24, 155, true, Protection
+Ursine Fylgja, Creature, WT, 5, 3, 3, Coldsnap, 22, 155, false,
+Luminesce, Instant, WT, 1, 0, 0, Coldsnap, 14, 155, false,
+Cathedral Membrane, Artifact Creature, WT, 2, 0, 3, New Phyrexia, 5, 175, true, Defender
+Auriok Survivors, Creature, WT, 6, 4, 6, New Phyrexia, 3, 175, false,
+Due Respect, Instant, WT, 2, 0, 0, New Phyrexia, 8, 175, false,
+Inquisitor Exarch, Creature, WT, 2, 2, 2, New Phyrexia, 12, 175, false,
+Marrow Shards, Instant, WT, 1, 0, 0, New Phyrexia, 15, 175, false,
+Exclusion Ritual, Enchantment, WT, 6, 0, 0, New Phyrexia, 10, 175, true, Imprint
+Orzhov Cluestone, Artifact, NA, 3, 0, 0, Dragon's Maze, 142, 156, false,
+Haazda Snare Squad, Creature, WT, 3, 1, 4, Dragon's Maze, 2, 156, false,
+Haazda Snare Squad, Creature, WT, 3, 1, 4, Dragon's Maze, 2, 156, false,
+Ragged Veins, Enchantment-Aura, BK, 2, 0, 0, Champions of Kamigawa, 139, 306, true, Enchant, Flash
+Quest for the Gravelord, Enchantment, BK, 1, 0, 0, Zendikar, 108, 249, false,
+Zombie Cannibal, Creature, BK, 1, 1, 1, Odyssey, 169, 350, false,
+Circle of Solace, Enchantment, WT, 4, 0, 0, Onslaught, 13, 350, false,
+Convalescent Care, Enchantment, WT, 3, 0, 0, Onslaught, 14, 350, false,
+Trap Digger, Creature, WT, 4, 1, 3, Scourge, 24, 143, false,
+Luminate Primordial, Creature, WT, 7, 4, 7, Gatecrash, 20, 249, true, Vigilance
+Pacificism, Enchantment-Aura, WT, 2, 0, 0, Magic 2012 Core Set, 28, 249, true, Enchant
+Swamp, Land, BK, 0, 0, 0, Ravnica: City of Guilds, 298, 306, false,
+Swallowing Plague, Sorcery, BK, 3, 0, 0, Champions of Kamigawa, 146, 306, false,
+Nightmare, Creature, BK, 6, 1, 1, UNKNOWN, 0, 0, true, Flying
+Wind Zendikon, Enchantment-Aura, BU, 1, 0, 0, Worldwake, 46, 145, true, Enchant
+Odric Master Tactician, Creature, WT, 4, 3, 4, Magic 2013 Core Set, 23, 249, true, First Strike
+Battle of Wits, Enchantment, BU, 5, 0, 0, Magic 2013 Core Set, 44, 249, false,
+War Priest of Thune, Creature, WT, 2, 2, 2, Magic 2013 Core Set, 39, 249, false,
+Serra Angel, Creature, WT, 5, 4, 4, Magic 2013 Core Set, 31, 249, true, Flying, Vigilance
+Wirefly Hive, Artifact, NA, 3, 0, 0, Darksteel, 161, 165, false,
+Darksteel Brute, Artifact, NA, 2, 0, 0, Darksteel, 108, 165, true, Indestructible
+Angel's Feather, Artifact, NA, 2, 0, 0, Darksteel, 92, 165, false,
+Wurm's Tooth, Artifact, NA, 2, 0, 0, Darksteel, 162, 165, false,
+Emissary of Hope, Creature, WT, 3, 2, 1, Darksteel, 3, 165, true, Flying
+Leonin Battlemage, Creature, WT, 4, 2, 3, Darksteel, 5, 165, false,
+Order of the Stars, Creature, WT, 1, 0, 1, Darksteel, 13, 165, true, Defender, Protection
+Shadow Lance, Enchantment-Aura, WT, 1, 0, 0, Guildpact, 14, 165, true, Enchant
+Belfry Spirit, Creature, WT, 5, 1, 1, Guildpact, 2, 165, true, Flying, Haunt
+Martyred Rusalka, Creature, WT, 1, 1, 1, Guildpact, 12, 165, false,
+Harrier Griffin, Creature, WT, 6, 3, 3, Guildpact, 9, 165, true, Flying
+Sinstriker's Will, Enchantment-Aura, WT, 4, 0, 0, Guildpact, 16, 165, true, Enchant
+Droning Bureaucrats, Creature, WT, 4, 1, 4, Guildpact, 4, 165, false,
+Gray Merchant of Asphodel, Creature, BK, 5, 2, 4, Commander (2014 Edition), 146, 337, false,
+Island, Land, BU, 0, 0, 0, Commander (2014 Edition), 324, 337, false,
+Tendrils of Corruption, Instant, BK, 4, 0, 0, Commander (2014 Edition), 166, 337, false,
+Swamp, Land, BK, 0, 0, 0, Commander (2014 Edition), 328, 337, false,
+Jet Medallion, Artifact, NA, 2, 0, 0, Commander (2014 Edition), 243, 337, false,
+Island, Land, BU, 0, 0, 0, Theros, 235, 249, false,
+Plains, Land, WT, 0, 0, 0, Theros, 233, 249, false,
+Plains, Land, WT, 0, 0, 0, Theros, 233, 249, false,
+Plains, Land, WT, 0, 0, 0, Theros, 233, 249, false,
+Purify the Grave, Instant, WT, 1, 0, 0, Innistrad, 27, 264, true, Flashback
+Paraselene, Sorcery, WT, 3, 0, 0, Innistrad, 26, 264, false,
+Mausoleum Guard, Creature, WT, 4, 2, 2, Innistrad, 20, 264, false,
+Rally the Peasants, Instant, WT, 3, 0, 0, Innistrad, 28, 264, true, Flashback
+Gallows Warden, Creature, WT, 5, 3, 3, Innistrad, 16, 264, true, Flying
+Spectral Rider, Creature, WT, 2, 2, 2, Innistrad, 35, 264, true, Intimidate
+Geist-Honored Monk, Creature, WT, 5, 0, 0, Innistrad, 17, 264, true, Vigilance
+Demonrail Hauberk, Artifact, NA, 4, 0, 0, Innistrad, 221, 264, true, Equip
+Harvestguard Alseids, Enchantment Creature, WT, 3, 2, 3, Journey into Nyx, 13, 165, true, Constellation
+Nyx Infusion, Enchantment-Aura, BK, 3, 0, 0, Journey into Nyx, 77, 165, true, Enchant 
+Nyx Infusion, Enchantment-Aura, BK, 3, 0, 0, Journey into Nyx, 77, 165, true, Enchant 
+Nyx Weaver, Enchantment Creature, GNBK, 3, 2, 3, Journey into Nyx, 153, 165, true, Reach
+Nyx Weaver, Enchantment Creature, GNBK, 3, 2, 3, Journey into Nyx, 153, 165, true, Reach
+Lightning Diadem, Enchantment-Aura, RD, 6, 0, 0, Journey into Nyx, 102, 165, true, Enchant
+Armament of Nyx, Enchantment-Aura, WT, 3, 0, 0, Journey into Nyx, 4, 165, true, Enchant
+Brain Maggot, Creature, BK, 2, 1, 1, Journey into Nyx, 62, 165, false,
+Oreskos Swiftclaw, Creature, WT, 2, 3, 1, Journey into Nyx, 20, 165, false,
+Oppressive Rays, Enchantment-Aura, WT, 1, 0, 0, Journey into Nyx, 19, 165, true, Enchant
+Skybind, Enchantment, WT, 5, 0, 0, Journey into Nyx, 25, 165, true, Constellation
+Stoic Emphemera, Creature, WT, 3, 5, 5, Dissension, 19, 180, true, Defender, Flying
+Brace for Impact, Instant, WT, 5, 0, 0, Dissension, 5, 180, false,
+Paladin of Prahv, Creature, WT, 6, 3, 4, Dissension, 14, 180, true, Forecast
+Mistral Charger, Creature, WT, 2, 2, 1, Dissension, 13, 180, true, Flying
+Serra's Boon, Enchantment-Aura, WT, 3, 0, 0, Planar Chaos, 17, 165, true, Enchant
+Riftmarked Knight, Creature, WT, 3, 2, 2, Planar Chaos, 14, 165, true, Protection, Flanking, Suspend
+Saltblast, Sorcery, WT, 5, 0, 0, Planar Chaos, 15, 165, false,
+Mantle of Leadership, Enchantment-Aura, WT, 2, 0, 0, Planar Chaos, 9, 165, true, Flash, Enchant
+Calciderm, Creature, WT, 4, 5, 5, Planar Chaos, 23, 165, true, Hexproof, Vanishing
+Mycologist, Creature, WT, 2, 0, 1, Planar Chaos, 27, 165, false,
+Malach of the Dawn, Creature, WT, 4, 2, 4, Planar Chaos, 24, 165, true, Flying
+Ajani's Sunstriker, Creature, WT, 2, 2, 2, Conspiracy, 66, 210, true, Lifelink
+Treasonous Ogre, Creature, RD, 4, 2, 3, Conspiracy, 36, 210, true, Dethrone
+Wakedancer, Creature, BK, 3, 2, 2, Conspiracy, 134, 210, true, Morbid
+Stronghold Discipline, Sorcery, BK, 4, 0, 0, Conspiracy, 126, 210, false,
+Victimize, Sorcery, BK, 3, 0, 0, Conspiracy, 133, 210, false, false,
+Cogwork Librarian, Artifact Creature, NA, 4, 3, 3, Conspiracy, 58, 210, false,
+Guardian Zendikon, Enchantment-Aura, WT, 3, 0, 0, Conspiracy, 71, 210, true, Enchant
+Apex Hawks, Creature, WT, 3, 2, 2, Conspiracy, 67, 210, true, Multikicker, Flying
+Runed Servitor, Artifact Creature, NA, 2, 2, 2, Conspiracy, 203, 210, false,
+Island, Land, BU, 0, 0, 0, Return to Ravnica, 256, 274, false,
+Island, Land, BU, 0, 0, 0, Return to Ravnica, 255, 274, false,
+Island, Land, BU, 0, 0, 0, Return to Ravnica, 255, 274, false,
+Island, Land, BU, 0, 0, 0, Return to Ravnica, 257, 274, false,
+Island, Land, BU, 0, 0, 0, Return to Ravnica, 258, 274, false,
+Island, Land, BU, 0, 0, 0, Return to Ravnica, 258, 274, false,
+Island, Land, BU, 0, 0, 0, Return to Ravnica, 259, 274, false,
+Trained Caracal, Creature, WT, 1, 1, 1, Retun to Ravnica, 27, 274, true, Lifelink
+Hidden Dragonslayer, Creature, WT, 2, 2, 1, Dragons of Tarkir, 23, 264, true, Lifelink, Megamorph
+Island, Land, BU, 0, 0, 0, Dragons of Tarkir, 254, 264, false,
+Enduring Victory, Instant, WT, 5, 0, 0, Dragons of Tarkir, 16, 264, false,
+Enduring Victory, Instant, WT, 5, 0, 0, Dragons of Tarkir, 16, 264, false,
+Shieldhide Dragon, Creature, WT, 6, 3, 3, Dragons of Tarkir, 37, 264, true, Flying, Lifelink, Megamorph
+Swamp, Land, BK, 0, 0, 0, Dragons of Tarkir, 256, 264, false,
+Swamp, Land, BK, 0, 0, 0, Dragons of Tarkir, 257, 264, false,
+Gravepurge, Instant, BK, 3, 0, 0, Dragons of Tarkir, 104, 264, false,
+Dragon's Eye Sentry, Creature, WT, 1, 1, 3, Dragons of Tarkir, 11, 264, true, Defender, First Strike
+Mardu Hateblade, Creature, WT, 1, 1, 1, Khans of Tarkir, 16, 269, false,
+Opulent Palace, Land, GNBUBK, 0, 0, 0, Khans of Tarkir, 238, 269, false,
+Opulent Palace, Land, GNBUBK, 0, 0, 0, Khans of Tarkir, 238, 269, false,
+Opulent Palace, Land, GNBUBK, 0, 0, 0, Khans of Tarkir, 238, 269, false,
+Molting Snakeskin, Enchantment-Aura, BK, 1, 0, 0, Khans of Tarkir, 80, 269, true, Enchant
+Island, Land, BU, 0, 0, 0, Khans of Tarkir, 257, 269, false,
+Swamp, Land, BK, 0, 0, 0, Khans of Tarkir, 260, 269, false,
+Defiant Strike, Instant, WT, 1, 0, 0, Khans of Tarkir, 7, 269, false,
+Ainok Tracker, Creature, RD, 6, 3, 3, Khans of Tarkir, 96, 269, true, First Strike, Morph
+Abomination of Gudul, Creature, GNBKBU, 6, 3, 4, Khans of Tarkir, 159, 269, true, Flying, Morph
+Abomination of Gudul, Creature, GNBKBU, 6, 3, 4, Khans of Tarkir, 159, 269, true, Flying, Morph
+Abzan Battle Priest, Creature, WT, 4, 3, 2, Khans of Tarkir, 1, 269, true, Outlast
+Dismal Backwater, Land, BKBU, 0, 0, 0, Khans of Tarkir, 232, 269, false,
+Forest, Land, GN, 0, 0, 0, Khans of Tarkir, 269, 269, false,
+Archangel, Creature, WT, 7, 5, 5, Commander (2013 Edition), 5, 356, true, Flying, Vigilance
+Curse of the Forsaken, Enchantment-Aura, WT, 3, 0, 0, Commander (2013 Edition), 8, 356, true, Enchant
+Curse of the Forsaken, Enchantment-Aura, WT, 3, 0, 0, Commander (2013 Edition), 8, 356, true, Enchant
+Lu Xun Scholar General, Creature, BU, 4, 1, 3, Commander (2013 Edition), 49, 356, Horsemanship
+Forest, Land, GN, 0, 0, 0, Commander (2013 Edition), 353, 356, false,
+Forest, Land, GN, 0, 0, 0, Commander (2013 Edition), 354, 356, false,
+Forest, Land, GN, 0, 0, 0, Commander (2013 Edition), 355, 356, false,
+Forest, Land, GN, 0, 0, 0, Commander (2013 Edition), 356, 356, false,
+Plains, Land, WT, 0, 0, 0, Commander (2013 Edition), 338, 356, false,
+Plains, Land, WT, 0, 0, 0, Commander (2013 Edition), 337, 356, false,
+Plains, Land, WT, 0, 0, 0, Commander (2013 Edition), 339, 356, false,
+Plains, Land, WT, 0, 0, 0, Commander (2013 Edition), 339, 356, false,
+Plains, Land, WT, 0, 0, 0, Commander (2013 Edition), 340, 356, false,
+Plains, Land, WT, 0, 0, 0, Commander (2013 Edition), 340, 356, false,
+Selesnya Guildgate, Land, GNWT, 0, 0, 0, Commander (2013 Edition), 321, 356, false,
+Kirtar's Wrath, Sorcery, WT, 6, 0, 0, Commander (2013 Edition), 15, 356, true, Threshold
+Eternal Dragon, Creature, WT, 7, 5, 5, Commander (2013 Edition), 10, 356, true, Flying
+Angel of Finality, Creature, WT, 4, 3, 4, Commander (2013 Edition), 4, 356, true, Flying
+Selesnya Charm, Sorcery, WTGN, 2, 0, 0, Commander (2013 Edition), 211, 356, false,
+Seer's Sundial, Artifact, NA, 4, 0, 0, Commander (2013 Edition), 256, 356, true, Landfall 
+Retreat to Valakut, Enchantment, RD, 3, 0, 0, Zendikar, 153, 274, true, Landfall
+Defiant Bloodlord, Creature, BK, 7, 4, 5, Zendikar, 107, 274, true, Flying
+Mountain, Land, RD, 0, 0, 0, Zendikar, 266, 274, false,
+Kor Ally, Token Creature, WT, 0, 1, 1, Zendikar, 6, 16, false,
+Eldrazi Scion, Token Creature, NA, 0, 1, 1, Zendikar, 4, 14, false,
+Sure Strike, Instant, RD, 2, 0, 0, Zendikar, 157, 274, false,
+Sure Strike, Instant, RD, 2, 0, 0, Zendikar, 157, 274, false,
+Stonefury, Instant, RD, 5, 0, 0, Zendikar, 156, 274, false,
+Nirkana Assassin, Creature, BK, 3, 2, 3, Zendikar, 118, 274, false,
+Oracle of Dust, Creature, BU, 5, 3, 5, Zendikar, 63, 274, true, Devoid
+Altar's Reap, Instant, BK, 2, 0, 0, Zendikar, 103, 274, false,
+Looming Spires, Land, RD, 0, 0, 0, Zendikar, 238, 274, false,
+Spell Shrivel, Instant, BU, 3, 0, 0, Zendikar, 66, 274, true, Devoid
+Complete Disregard, Instant, BK, 3, 0, 0, Zendikar, 90, 274, true, Devoid
+Firemantle Mage, Creature, RD, 3, 2, 2, Zendikar, 145, 274, true, Rally
+Roil Spout, Sorcery, WTBU, 3, 0, 0, Zendikar, 219, 274, true, Awaken

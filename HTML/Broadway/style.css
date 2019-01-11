@@ -1,0 +1,163 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333333;
+  position: fixed; /*The <header> currently scrolls with the rest of the document.
+
+Set its position property so that it stays stuck to the top of the window when the document is scrolled.*/
+  width: 100%;/*Change the width of the same element so that it stretches across its entire parent element.*/
+  z-index: 1; /*The <header> has disappeared behind the <main>.
+
+Use z-index to make the <header> visible.*/
+}
+
+nav {
+  margin: 0;
+  padding: 20px 0;
+}
+
+nav li {
+  color: #fff;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  display: inline-block;/*Change the width of the same element so that it stretches across its entire parent element.*/
+  width: 80px; /*Set the width of the same elements to 80 pixels.*/
+}
+
+main {
+  text-align: center;
+  position: relative;/*After changing the position of the <header> element to fixed, the contents of the entire site after it shifted upwards.
+
+Set the position of <main> so that we can position it relatively.*/
+  top: 80px; /*Now the navigation bar looks good, but it is blocking the title at the top of the page.
+
+Offset <main> by 80 pixels from the top.*/
+}
+
+main h1 {
+  color: #333;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 70px;
+  margin-top: 0px;
+  padding-top: 80px;
+  margin-bottom: 80px;
+  text-transform: uppercase;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 30px 0;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+footer p {
+  font-family: 'Raleway', sans-serif;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.container {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 10px;
+  text-align: center;
+}
+
+.jumbotron {
+  height: 800px;
+  background-image: url("http://s3.amazonaws.com/codecademy-content/projects/broadway/bg.jpg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.btn-main {
+  background-color: #333;
+  color: #fff;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 1.3px;
+  padding: 16px 40px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.btn-default {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 1.3px;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-transform: uppercase;  
+  margin-bottom: 20px;      
+}
+
+.supporting {
+  padding-top: 80px;
+  padding-bottom: 100px;
+}
+
+.supporting .col {
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+  display: inline-block;/*Now, fix up the supporting element style below the image.
+
+Add a declaration to the .supporting .col rule set so that these elements can appear horizontally next to each other but have defined height and width.*/
+	width: 200px;/*Inspect the .supporting .col elementsthey don't seem to be flowing horizontally yet because they have no set width. Set the width and height of .supporting .col elements to 200 pixels.*/
+	height: 200px;
+  /*clear: left;*/
+}
+
+.supporting img {
+  height: 32px;
+}
+
+.supporting h2 {
+  font-weight: 600;
+  font-size: 23px;
+  text-transform: uppercase;
+}
+
+.supporting p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+
+.supporting a {
+  background-color: white;
+  color: #333333;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1.3px;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #333333; 
+}
+
+@media (max-width: 500px) {
+  main h1 {
+    font-size: 50px;
+    padding: 0 40px;
+  }
+
+  .supporting .col {
+    width: 100%;
+  }
+}
