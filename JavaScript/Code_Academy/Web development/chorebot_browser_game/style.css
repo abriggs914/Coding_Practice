@@ -1,0 +1,98 @@
+body {
+  background-color: #010165;
+  margin: 0px;
+}
+
+/*In the style.css file, under the body selector but above the door-frame selector, create a header CSS selector and assign the background-color the value #00ffff. If you refresh the page, the logo is now visible; but it's still in the left corner. Assign the text-align property a value of center.*/
+.header {
+  background-color: #00ffff;
+  text-align: center;
+}
+
+/*Your two stars, without any CSS, are resting in the top-left corner of their <div>. Noticing a trend? Let's fix this default placement.
+
+Navigate to the style.css file and under the .header CSS selector, create a new selector for .title-row. For this selector, assign the following properties with these values:
+
+margin-top - 42px
+margin-bottom - 21px
+text-align - center
+Refresh the page to make sure the stars are centered.*/
+.title-row {
+  margin-top: 42px;
+  margin-bottom: 21px;
+  text-align: center;
+}
+
+/*
+The text and the stars are centered but the stars still appear to be on different lines. Put them all on the same line.
+
+Create an .instructions-title CSS selector under your .title-row selector and assign the display property a value that will place the title inline with the stars.
+
+Save your code and refresh the page and see how the stars and title are now on the same line.*/
+.instructions-title { 
+  /*
+Unfortunately, Instructions is still hard to see. Utilize some CSS to improve your title's visibility.
+
+Look at your .instructions-title CSS rule again and pair the following properties with their respective values under your display property:
+
+font-size - 18px
+color - #00ffff
+font-family - 'Work Sans'
+Save your code after each new CSS property is assigned so you can see how each individual value influences your title.*/
+  font-size: 18px;
+  color: #00ffff;
+  font-family: 'Work Sans';
+	display: inline;
+}
+
+.instructions-row {
+  margin: 0 auto;
+  width: 400px;
+}
+
+.instructions-number {
+  padding-right: 25px;
+  font-family: 'Work Sans';
+  font-size: 36px;
+  color: #00ffff;
+}
+
+.instructions-text {
+  padding: 10px;
+  font-family: 'Work Sans';
+  font-size: 14px;
+  color: #ffffff;
+}
+
+/*
+Since you've centered the instructions, you should also center the doors.
+
+In style.css, under the .instructions-text CSS selector, add a .door-row CSS selector and assign the text-align property a value of center.
+
+Save the code and refresh the page to see the three doors centered.*/
+.door-row {
+  text-align: center;
+}
+
+/*Next, in the style.css file, create the .door-frame CSS class selector and assign the following properties and values:
+cursor - pointer
+padding - 10px
+Refresh the page after each new CSS property is assigned so you can see how each individual value influences the three doors.*/
+.door-frame {
+  cursor: pointer;
+  padding: 10px;
+}
+
+.start-row {
+  margin: auto;
+  width: 120px;
+  height: 43px;
+  font-family: 'Work-Sans';
+  background-color: #eb6536;
+  padding-top: 18px;
+  font-size: 18px;
+  text-align: center;
+  color: #010165;
+  margin-bottom: 21px;
+  cursor: pointer;
+}
