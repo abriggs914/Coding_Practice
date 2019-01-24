@@ -1,0 +1,90 @@
+<!-- store.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Musicon</title>
+    <link href='style.css' rel='stylesheet'>
+    <script src="handlebars.min.js"></script>
+    <!--You just created your first templated web page! Now it is time to create your next templated web page with the skills you just learned.
+
+Navigate back to store.html, create a <script> element that will incorporate Handlebars expressions.
+
+In the <head> element, add the <script> tag on the line after the <script> tag for Handlebars.
+Give the new <script> an id of templateHB.
+Add the type attribute to the same tag and set it to be "text/x-handlebars-template".-->
+<!--
+Currently, you have a template for one instrument, but the Musicon store has four instruments. Conveniently, Handlebars offers the built-in {{each}} block helper to iterate through an array.
+
+Wrap the .instrument element in the template with the {{each}} block helper. Provide the starting {{each}} expression with an argument of instruments.-->
+<!--Now it's time to replace some hard coded values with Handlebars expressions. Change the value of the src and alt attribute within the <img> tag with a {{this.image}} and {{this.name}} expression respectively.-->
+<!--Replace the contents inside the .name, .description, .price and .sale elements with Handlebar expressions. Use the following expressions in their respective fields: {{this.name}}, {{this.description}}, {{this.price}} and {{this.sale}}.-->
+<!--You might notice some instruments are on sale and others are not. You can account for this using a built-in Handlebars block helper, {{if}}, which acts like the if conditional in JavaScript.
+
+Use the {{if}} block helper to display the on-sale price. If the this.sale property is truthy, you should also display the <p> elements that have the classes price, sale and deal. Add an {{else}} section, in cause this.sale is falsy, to display the this.price element (without the nested <del> tag).-->
+    <script id="templateHB" type="text/x-handlebars-template">
+  {{#each instruments}}
+  <article class='instrument'>
+    <img class='image' src="{{this.image}}" alt="{{this.name}}">
+    <section class='details'>
+      <h2 class='name'>{{this.name}}</h2>
+      <p class='description'>{{this.description}}</p>
+      {{#if sale}}
+      <p class='price'><del>Price: {{this.price}}</del></p>
+      <p class='sale'>On Sale! {{this.sale}}</p>
+      {{else}}
+      <p class='price'>Price: {{this.price}}</p>
+      {{/if}}
+    </section>
+  </article>
+  {{/each}}
+    </script>
+  </head>
+  <body>
+    <header>
+      <section class="container">
+        <h1 class="branding">Musicon</h1>
+
+        <nav>
+          <ul class='navbar'>
+          	<li>
+              <!--
+Inside the <ul> element you just created, insert an <li> element. Nest an <a> element inside the <li> element.-->
+              <!--Give the <a> element an href attribute with the value "index.html". Then include the text Home between the opening and closing <a> tags.-->
+              <a href='index.html'>Home</a>
+            </li>
+            <li class='current'>
+              <!--
+In the <a> element nested in the second <li> element, and add a href attribute with the value "store.html". Insert Store into the content of the second <a> element.
+
+Save your progress and check the browser again. You should now see two links in your navbar.-->
+            	<a href='store.html'>Store</a>
+            </li>
+            <li>
+              <!--
+In the <a> element you just created, add the href attribute with the value "contact.html". Also, insert the text Contact as content.
+
+Great, you should now have a navbar in index.html, let's add a navbar to store.html.-->
+              <a href='contact.html'>Contact</a>
+            </li>
+          </ul>
+        </nav>
+      </section>
+    </header>
+    <article id="showcase">
+      <!--Now, locate the #showcase element. In the <section> that has a class of container, add an id of information. Since you don't need the hard coded values anymore, delete the all the elements that have a class of instrument.
+
+The #information <section> should be empty but the web page should still be filled with instruments!-->
+      <section id='information' class="container">
+      </section>
+    </article>
+
+    <footer>
+      <p>&copy; Musicon 2018</p>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>

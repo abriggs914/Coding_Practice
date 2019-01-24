@@ -1,0 +1,85 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Musicon</title>
+    <link href='style.css' rel='stylesheet'>
+    <script src="handlebars.min.js">			</script>
+    <!--Navigate back to index.html, you can deliver a template to the browser by including it in a <script> tag.
+
+Add another <script> tag below <script> tag for Handlebars.
+Give the new tag an id of templateHB.
+Add the type attribute to the same tag and set it to be "text/x-handlebars-template".-->
+    <script id='templateHB' type='text/x-handlebars-template'>
+    	<!--
+Next, start on a simple template for the home page.
+
+You'll be adding three elements inside the newly created <script> tag. First add a <h1> element, followed by a <p> element, followed by an <a> element. These elements will not be nested.-->
+			<!--Add Handlebars expression to the <h1> and <p> tag.
+
+Between the opening and closing <h1> tags, add a {{title}} expression.
+Between the opening and closing <p> tags, add a {{body}} expression.-->
+			<!--Add the href attribute and text to the <a> tag.
+
+Give the <a> tag the href attribute and set it to be "store.html".
+Between the opening and closing <a> tags, add the Shop Now text.-->
+    	<h1>{{title}}</h1>
+      <p>{{body}}</p>
+      <a href='store.html'>Shop Now</a>
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <section class="container">
+        <h1 class="branding">Musicon</h1>
+
+        <nav>
+          <!--Navigate to index.html. Notice that there isn't a navigation bar.
+
+Locate the <nav> element.
+Add a <ul> element within the nav element.
+Assign the newly created <ul> element a class of navbar.-->
+          <ul class='navbar'>
+          	<li class='current'>
+              <!--
+Inside the <ul> element you just created, insert an <li> element. Nest an <a> element inside the <li> element.-->
+              <!--Give the <a> element an href attribute with the value "index.html". Then include the text Home between the opening and closing <a> tags.-->
+              <a href='index.html'>Home</a>
+            </li>
+            <li>
+              <!--
+In the <a> element nested in the second <li> element, and add a href attribute with the value "store.html". Insert Store into the content of the second <a> element.
+
+Save your progress and check the browser again. You should now see two links in your navbar.-->
+            	<a href='store.html'>Store</a>
+            </li>
+            <li>
+              <!--
+In the <a> element you just created, add the href attribute with the value "contact.html". Also, insert the text Contact as content.
+
+Great, you should now have a navbar in index.html, let's add a navbar to store.html.-->
+              <a href='contact.html'>Contact</a>
+            </li>
+          </ul>
+        </nav>
+
+      </section>
+    </header>
+
+    <article id="introduction">
+      <!--
+Inside the #introduction element, add an id of information to the .container element and delete the nested tags.-->
+      <section id='information' class="container">
+      </section>
+    </article>
+
+    <footer>
+      <p>&copy; Musicon</p>
+    </footer>
+    <script src="main.js"></script>
+  </body>
+</html>
