@@ -1,20 +1,75 @@
 let allCourses = [];
 
-const comparePreReqs = (obj1, obj2) => obj1.preReqs.length > obj2.preReqs.length;
+const comparePreReqs = (obj1, obj2) => {
+  let a = obj1.preReqs.length;
+  let b = obj2.preReqs.length;
+  if(a > b){
+    return a > b;
+  }
+  // else if (a === b){
+  //   return compareCourseHours(obj1,obj2);
+  // }
+}
+
+const compareCourseHours = (obj1, obj2) => {return obj1.ch - obj2.ch;}
+
+const secondSort = (arr, currSize = 0) => {
+  let mini = [];
+  let max = arr.length;
+  let j = 0;
+  console.log("currSize: ",currSize);
+  console.log("Starting: ",arr);
+  for(let i = 0; i < max && i < 100 && j < 20; i++){
+    //console.log("arr[i]",arr[i]);
+    if(arr[i].preReqs.length === currSize){
+      mini.push(arr[i]);
+      let temp = [];
+      arr.forEach(x => {return temp.push(x);});
+      //console.log("mini",mini);
+      if(i === 0){
+        //console.log("arr: ",arr);
+        arr.shift();
+        //arr.pop();
+        //console.log("arr: ",arr);
+        //console.log("arr.length: ",arr.length);
+      }
+      else{
+        temp = temp.splice(i-2, max);
+        arr = arr.splice(0, i);
+        temp.forEach(x => {return arr.push(x);});
+      }
+      //console.log("temp2",temp);
+      //console.log(arr);
+      i--;
+      max--;
+      j++;
+    }
+  }
+  if(mini.length === 0){
+    return arr;
+  }
+  mini.sort(compareCourseHours);
+  console.log("\n\n\tMINI");
+  console.log(mini);
+  console.log("\tMINI\n\n");
+  //mini.sort(compareCourseHours);
+  //mini.push(arr);
+  mini.reverse();
+  mini.forEach(obj => {return arr.unshift(obj);});
+  // console.log("\n\n\tMINIPUSH");
+  // console.log(mini);
+  // console.log("\n\n\tMINIPUSH");
+  // arr = mini;
+  // console.log("\n\n\tarr");
+  // console.log(arr);
+  // console.log("\n\n\tarr");
+  //return arr;
+  secondSort(arr, currSize+1);
+}
 
 const sortCoursesByPreReqs = arr => {
 	//return arr.map(item1 item2 => {return arr.sort(compareTeeth(item['numTeeth']));});
     return arr.sort(comparePreReqs);
-}
-const getPrevious = (arr) => {
-  if(typeof arr === 'object'){
-    return arr.push(getPrevious(arr.preReqs));
-  }
-  return arr-1;
-  // if(obj.preReqs.length === 0){
-  //   return [];
-  // }
-  // return obj.preReqs;
 }
 
 const makeCourse = (id, courseHours, lst = []) => {
@@ -30,49 +85,7 @@ const makeCourse = (id, courseHours, lst = []) => {
 
 const print = arr => {
   for(let i = 0; i < arr.length; i++){
-    // console.log('id: '+ arr[i].id + ', ch: ' + arr[i].ch + ', preReqs: ' + getPrevious(arr[i].preReqs));
-  }
-}
-
-// const mendPreReqs = (obj) => {
-//   let lst = obj.preReqs;
-//   console.log('lst',lst);
-//   if(lst.length === 0){
-//     return [];
-//   }
-//   return lst;
-// }
-//
-// const correctPreReqs = (obj) => {
-//   let lst = obj.preReqs;
-//   console.log(lst);
-//   //console.log(obj);
-//   for(let i = 0; i < lst.length; i++){
-//     lst = mendPreReqs(lst[i]);
-//     console.log('res:',lst);
-//   }
-//   return lst;
-// }
-
-// const correctPreReqs = (obj) => {
-//   let lst = obj.preReqs;
-//   if(lst.length === 0){ // no prerequisits
-//     return [];
-//   }
-//   let res = [];
-//   for(let i = 0; i < lst.length; i++){
-//     res.push(lst[i].preReqs);
-//   }
-//   //     console.log('res:',res);
-//   // console.log('obj: ', obj);
-//   // console.log('lst ', lst);
-//   return res;
-// }
-
-const cycle = (course) => {
-  let lst = course.preReqs;
-  for(let i = 0; i < lst.length; i++){
-
+    console.log('id: '+ arr[i].id + ', ch: ' + arr[i].ch + ', preReqs: '+ arr[i].preReqs);
   }
 }
 
@@ -148,8 +161,13 @@ let coursesTaken = [makeCourse('BIOL1001', 3),
                     makeCourse('CS3873',4, [allCourses[24]]),
                     makeCourse('CS3503',4, [allCourses[19]])];
 
-coursesTaken.forEach(obj => {return correctPreReqs(obj);});
+//the line below will print the courses in an object like way.
+//coursesTaken.forEach(obj => {return correctPreReqs(obj);});
 // console.log(allCourses.length);
-// print(allCourses);
 // console.log(allCourses.length);
-// console.log(sortCoursesByPreReqs(coursesTaken));
+//console.log(coursesTaken);
+console.log(sortCoursesByPreReqs(coursesTaken));
+//print(coursesTaken);
+//console.log(coursesTaken);
+print(secondSort(coursesTaken, 0));
+//print(coursesTaken);
