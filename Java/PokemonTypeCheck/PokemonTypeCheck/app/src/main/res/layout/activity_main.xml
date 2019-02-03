@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="81dp">
+
+    <RadioGroup
+        android:id="@+id/type_selection_radio_group"
+        android:layout_width="146dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginRight="57dp"
+        android:layout_marginBottom="53dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/results_window"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/instruction_message">
+
+        <RadioButton
+            android:id="@+id/radioButton_NormalType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/normal_Type"
+            android:textColor="@color/tan" />
+
+        <RadioButton
+            android:id="@+id/radioButton_FightType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/fight_Type"
+            android:textColor="@color/firebrick" />
+
+        <RadioButton
+            android:id="@+id/radioButton_FlyingType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/flying_Type"
+            android:textColor="@color/mediumPurple" />
+
+        <RadioButton
+            android:id="@+id/radioButton_PoisonType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/poison_Type"
+            android:textColor="@color/darkViolet" />
+
+        <RadioButton
+            android:id="@+id/radioButton_GroundType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/ground_Type"
+            android:textColor="@color/lightGoldenRod" />
+
+        <RadioButton
+            android:id="@+id/radioButton_RockType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/rock_Type"
+            android:textColor="@color/darkGoldenRod" />
+
+        <RadioButton
+            android:id="@+id/radioButton_BugType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/bug_Type"
+            android:textColor="@color/yellowGreen" />
+
+        <RadioButton
+            android:id="@+id/radioButton_GhostType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/ghost_Type"
+            android:textColor="@color/darkSlateBlue" />
+
+        <RadioButton
+            android:id="@+id/radioButton_SteelType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/steel_Type"
+            android:textColor="@color/lightSteelBlue" />
+
+        <RadioButton
+            android:id="@+id/radioButton_FireType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/fire_Type"
+            android:textColor="@color/orangeRed" />
+
+        <RadioButton
+            android:id="@+id/radioButton_WaterType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/water_Type"
+            android:textColor="@color/cornFlowerBlue" />
+
+        <RadioButton
+            android:id="@+id/radioButton_GrassType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/grass_Type"
+            android:textColor="@color/limeGreen" />
+
+        <RadioButton
+            android:id="@+id/radioButton_ElectricType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/electric_Type"
+            android:textColor="@color/yellow" />
+
+        <RadioButton
+            android:id="@+id/radioButton_PsychicType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/psychic_Type"
+            android:textColor="@color/deepPink" />
+
+        <RadioButton
+            android:id="@+id/radioButton_IceType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/ice_Type"
+            android:textColor="@color/paleTurquoise" />
+
+        <RadioButton
+            android:id="@+id/radioButton_DragonType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/dragon_Type"
+            android:textColor="@color/slateBlue" />
+
+        <RadioButton
+            android:id="@+id/radioButton_DarkType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/dark_Type"
+            android:textColor="@color/dimGray" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/instruction_message"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginLeft="49dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="49dp"
+        android:layout_marginRight="49dp"
+        android:layout_marginBottom="17dp"
+        android:text="@string/instruction_message"
+        app:layout_constraintBottom_toTopOf="@+id/type_selection_radio_group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/results_window"
+        android:layout_width="160dp"
+        android:layout_height="189dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="submitButtonClicked"
+        android:text="@string/submit_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.386"
+        app:layout_constraintStart_toEndOf="@+id/type_selection_radio_group"
+        app:layout_constraintTop_toBottomOf="@+id/results_window"
+        app:layout_constraintVertical_bias="0.19" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/pokemon_name_textField"
+        android:layout_width="194dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/results_window"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/type_selection_radio_group"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.755">
+
+    </android.support.design.widget.TextInputLayout>
+
+    <EditText
+        android:id="@+id/pokemon_name_editText"
+        android:layout_width="168dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/pokemon_name_hint"
+        app:layout_constraintBottom_toTopOf="@+id/results_window"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/type_selection_radio_group"
+        app:layout_constraintTop_toBottomOf="@+id/instruction_message" />
+</android.support.constraint.ConstraintLayout>

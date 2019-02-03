@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">PokemonTypeCheck</string>
+    <string name="normal_Type">Normal</string>
+    <string name="fight_Type">Fight</string>
+    <string name="flying_Type">Flying</string>
+    <string name="poison_Type">Poison</string>
+    <string name="ground_Type">Ground</string>
+    <string name="rock_Type">Rock</string>
+    <string name="bug_Type">Bug</string>
+    <string name="ghost_Type">Ghost</string>
+    <string name="steel_Type">Steel</string>
+    <string name="fire_Type">Fire</string>
+    <string name="water_Type">Water</string>
+    <string name="grass_Type">Grass</string>
+    <string name="electric_Type">Electric</string>
+    <string name="psychic_Type">Psychic</string>
+    <string name="ice_Type">Ice</string>
+    <string name="dragon_Type">Dragon</string>
+    <string name="dark_Type">Dark</string>
+    <string name="instruction_message">Please select up to two types of the pokemon you are using:</string>
+    <string name="submit_button">SUBMIT</string>
+    <string name="pokemon_name_hint">Enter a Pokemon\'s name</string>
+</resources>
