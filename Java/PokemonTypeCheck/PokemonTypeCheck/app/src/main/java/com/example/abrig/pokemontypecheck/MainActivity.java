@@ -1,17 +1,16 @@
 package com.example.abrig.pokemontypecheck;
 
+import android.renderscript.RenderScript;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected String user_input = "";
     protected String[] allTypes = {"Normal","Fight","Flying","Poison","Ground","Rock","Bug",
             "Ghost","Steel","Fire","Water","Grass","Electric",
-            "Psychic","Ice","Dragon","Dark"};
+            "Psychic","Ice","Dragon","Dark","Fairy"};
     // each row corresponds to a type. The first column
     // identifies the type for that row, each type after
     // column 1, is a type that would be a good match up
@@ -47,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
                     {"Psychic","Fight","Poison"},
                     {"Ice","Flying","Ground","Grass","Dragon"},
                     {"Dragon","Dragon"},
-                    {"Dark","Ghost","Psychic"}};
+                    {"Dark","Ghost","Psychic"},
+                    {"Fairy","Fight","Dragon","Dark"}};
 
     // each row corresponds to a type. The first column
 // identifies the type for that row, each type after
@@ -73,9 +73,11 @@ public class MainActivity extends AppCompatActivity {
                     {"Psychic","Fight","Psychic"},
                     {"Ice","Ice"},
                     {"Dragon","Fire","Water","Grass","Electric"},
-                    {"Dark","Ghost","Dark"}};
+                    {"Dark","Ghost","Dark"},
+                    {"Fairy","Poison","Steel"}};
 
     protected String[][] allPokemon;
+    protected Spelling corrector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         allPokemon = parseCSV();
         allPokemon = capitalizeTypeNames(allPokemon);
+        try {
+            corrector = new Spelling(allPokemon);
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
         TextView resultsMessageDisplay = (TextView) findViewById(R.id.results_window);
         resultsMessageDisplay.setText("Beginning: " + allPokemon[0][0] + "\n" + allPokemon[907][0]);
     }
@@ -132,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         return new HashSet<String>(Arrays.asList(arr)).toArray(new String[0]);
     }
 
-    public static String[] decipher(String line, String[] types){
+    public String[] decipher(String line, String[] types){
         String[] result = new String[1];
         boolean earlyExit = true;
         int len = line.length(), curr = 0;
@@ -255,46 +262,85 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void submitButtonClicked(View view) {
-        TextView resultsMessageDisplay = (TextView) findViewById(R.id.results_window);
-        EditText pokemonNameEditText = (EditText) findViewById(R.id.pokemon_name_editText);
-        String nameInput = pokemonNameEditText.getText().toString().trim();
-        StringBuilder result = new StringBuilder();
-        String namedPokemonTypes;
-        Boolean properNameGiven = false;
-        if(!nameInput.equals("")){
-            namedPokemonTypes = typesFromNameFromInput(nameInput); // take in a string, give a string, (use commas will deciper the result)
-            if(!namedPokemonTypes.equals("")){
-                properNameGiven = true;
-                user_input = namedPokemonTypes;
-                String[] typeInput = decipher(namedPokemonTypes,allTypes);
-                result.append("Input: \n").append(user_input).append("\n");
-                result.append("Best types to fight against:\n");
-                typeInput = bestTypes(strongATTK, typeInput);
-                for(String type : typeInput) {
-                    //if(!type.equals("None")) {
-                        result.append(type).append(", ");
-                   // }
+        //Runnable runnable = new Runnable() {
+        //    @Override
+        //    public void run() {
+                TextView resultsMessageDisplay = (TextView) findViewById(R.id.results_window);
+                TextInputLayout pokemonNameEditText = findViewById(R.id.pokemon_name_editText);
+                String nameInput = pokemonNameEditText.getEditText().getText().toString().trim();
+                String[] nameInputArray = decipherName(nameInput);
+                StringBuilder result = new StringBuilder();
+                result.append(nameInputArray[0]).append(" < name\n");
+                String namedPokemonTypes;
+                Boolean properNameGiven = false;
+                if(!nameInput.equals("")){
+                    namedPokemonTypes = typesFromNameFromInput(nameInputArray[0]); // take in a string, give a string, (use commas will decipher the result)
+                    if(!namedPokemonTypes.equals("")){
+                        properNameGiven = true;
+                        user_input = namedPokemonTypes;
+                        String[] typeInput = decipher(namedPokemonTypes,allTypes);
+                        typeInput = capitalizeStringArray(typeInput);
+                        result.append("Input: \n").append(user_input).append("\n");
+                        result.append("Best types to fight against:\n");
+                        typeInput = bestTypes(strongATTK, typeInput);
+                        for(String type : typeInput) {
+                            //if(!type.equals("None")) {
+                            result.append(type).append(", ");
+                            // }
+                        }
+                    }
+                    else{
+                        result.append("Try again");
+                        properNameGiven = true;
+                    }
                 }
-            }
+                if(!properNameGiven) {
+                    if (user_input.length() == 0) {
+                        result.append("Nothing Entered!");
+                    } else {
+                        result.append("Input: \n").append(user_input).append("\n");
+                        String[] input = decipher(user_input, allTypes);
+                        input = bestTypes(strongATTK, input);
+                        result.append("Best types to fight against:\n");
+                        for (String type : input) {
+                            result.append(type).append(", ");
+                        }
+                    }
+                }
+                resultsMessageDisplay.setText(result);
+        //    }
+        //};
+        //Thread myThread = new Thread(runnable);
+        //myThread.start();
+    }
+
+    private String[] decipherName(String name) {
+
+        String[] result = new String[1];
+        boolean earlyExit;
+        int len = name.length();
+        earlyExit = len > 15;
+        if(earlyExit){ // earlyExit conditions met
+            return result;
         }
-        if(!properNameGiven) {
-            if (user_input.length() == 0) {
-                result = new StringBuilder("Nothing Entered!");
+        int i;
+        StringBuilder nameBuilder = new StringBuilder();
+        for(i = 0; i < len; i++) {
+            if (i == 0) {
+                nameBuilder.append(Character.toUpperCase(name.charAt(i)));
             } else {
-                result.append("Input: \n").append(user_input).append("\n");
-                String[] input = decipher(user_input, allTypes);
-                input = bestTypes(strongATTK, input);
-                result.append("Best types to fight against:\n");
-                for (String type : input) {
-                    result.append(type).append(", ");
-                }
+                nameBuilder.append(name.charAt(i));
             }
         }
-        resultsMessageDisplay.setText(result);
+        name = nameBuilder.toString();
+        result[0] = corrector.correct(name);
+        result = capitalizeStringArray(result);
+        return result;
     }
 
     private String typesFromNameFromInput(String nameInput) {
         StringBuilder result = new StringBuilder();
+        //ameInput = corrector.correct(nameInput);
         for(int i = 0; i < allPokemon.length; i++){
             if(allPokemon[i][0].equals(nameInput)){
                 String secondType = ((allPokemon[i][2].equals("None")? "" : allPokemon[i][2]));
@@ -302,11 +348,19 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
-        return result.toString();
+        String line = result.toString();
+        if(line.length() == 0){
+            return "";
+        }
+        else {
+            TextView resultsMessageDisplay = (TextView) findViewById(R.id.results_window);
+            resultsMessageDisplay.setText("Processing");
+            //return corrector.correct(line); // ?????????????
+            return line;
+        }
     }
 
     public String[][] parseCSV() {
-        String csvFile = "raw/pokedex.csv";
         String line;
         String[][] pokemonArr = new String[908][1];
         InputStream inputStream = getResources().openRawResource(R.raw.pokedex);
@@ -342,11 +396,11 @@ public class MainActivity extends AppCompatActivity {
         for(i = 0; i < arr.length; i++){
             for(j = 0; j < arr[i].length; j++){
                 char firstLetter = Character.toUpperCase(arr[i][j].charAt(0));
-                String line = Character.toString(firstLetter);
+                StringBuilder line = new StringBuilder(Character.toString(firstLetter));
                 for(k = 1; k < arr[i][j].length(); k++){
-                    line += Character.toString(arr[i][j].charAt(k));
+                    line.append(Character.toString(arr[i][j].charAt(k)));
                 }
-                arr[i][j] = line;
+                arr[i][j] = line.toString();
             }
         }
         return arr;
@@ -356,14 +410,17 @@ public class MainActivity extends AppCompatActivity {
     private String[] capitalizeStringArray(String[] arr) {
         int j = 0, k;
         for(String item : arr){
-            char firstLetter = Character.toUpperCase(item.charAt(0));
-            String line = Character.toString(firstLetter);
-            for(k = 1; k < item.length(); k++){
-                line += Character.toString(item.charAt(k));
+            int size = item.length();
+            if(size > 0) {
+                char firstLetter = Character.toUpperCase(item.charAt(0));
+                StringBuilder line = new StringBuilder(Character.toString(firstLetter));
+                for (k = 1; k < size; k++) {
+                    line.append(Character.toString(item.charAt(k)));
+                }
+                item = line.toString();
+                arr[j] = item;
+                j++;
             }
-            item = line;
-            arr[j] = item;
-            j++;
         }
         return arr;
     }
