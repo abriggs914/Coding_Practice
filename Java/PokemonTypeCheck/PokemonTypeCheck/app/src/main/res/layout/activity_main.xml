@@ -10,7 +10,7 @@
     <RadioGroup
         android:id="@+id/type_selection_radio_group"
         android:layout_width="146dp"
-        android:layout_height="0dp"
+        android:layout_height="439dp"
         android:layout_marginStart="28dp"
         android:layout_marginLeft="28dp"
         android:layout_marginEnd="57dp"
@@ -174,6 +174,15 @@
             android:onClick="typeRadioButtonClicked"
             android:text="@string/dark_Type"
             android:textColor="@color/dimGray" />
+
+        <RadioButton
+            android:id="@+id/radioButton_FairyType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="typeRadioButtonClicked"
+            android:text="@string/fairy_Type"
+            android:textColor="@color/pink" />
     </RadioGroup>
 
     <TextView

@@ -17,6 +17,7 @@
     <string name="ice_Type">Ice</string>
     <string name="dragon_Type">Dragon</string>
     <string name="dark_Type">Dark</string>
+    <string name="fairy_Type">Fairy</string>
     <string name="instruction_message">Please select up to two types of the pokemon you are using:</string>
     <string name="submit_button">SUBMIT</string>
     <string name="pokemon_name_hint">Enter a Pokemon\'s name</string>

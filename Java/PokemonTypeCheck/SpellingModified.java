@@ -15,7 +15,15 @@ import java.util.regex.*;
  */
 class Spelling {
 
+
+  public static String[] types = {"Normal","Fight","Flying","Poison","Ground",
+                                  "Rock","Bug","Ghost","Steel","Fire","Water",
+                                  "Grass","Electric","Psychic","Ice","Dragon",
+                                  "Dark"};
   private HashMap<String, Integer> nWords;
+  public String[] allPokemonNames = new String[908];
+  public static String[][] allPokemon;
+  public static Spelling corrector;
 
   /**
    * Constructs a new spell corrector.  Builds up a map of correct words with
@@ -32,7 +40,6 @@ class Spelling {
     Pattern p = Pattern.compile("\\w+");
     for(String temp = ""; temp != null; temp = in.readLine()){
       Matcher m = p.matcher(temp.toLowerCase());
-
       // find looks for next match for pattern p (in this case a word).  True if found.
       // group then returns the last thing matched.
       // The ? is a conditional expression.
@@ -106,7 +113,7 @@ class Spelling {
     // If found something edit distance 2 return the most frequent word.
     // If not return the word with a "?" prepended.  (Original just returned the word.)
     return candidates.size() > 0 ?
-        candidates.get(Collections.max(candidates.keySet())) : "?" + word;
+        candidates.get(Collections.max(candidates.keySet())) : "" + word;
   }
 
   /**
@@ -122,15 +129,110 @@ class Spelling {
 */
 
    public static void main(String args[]) throws IOException {
-     Spelling corrector = new Spelling("bigger.txt");
+     corrector = new Spelling("./pokedex.txt");
      Scanner input = new Scanner(System.in);
+     allPokemon = parseCSV();
 
      System.out.println("Enter words to correct");
      String word = input.next();
 
      while(true) {
-       System.out.println(word + " is corrected to " + corrector.correct(word));
+       String[] temp = new String[2];
+       temp[0] = corrector.correct(word);
+       temp[1] = typesFromNameFromInput(word);
+       temp = capitalizeStringArray(temp);
+       System.out.println(word + " is corrected to " + temp[0] + ", types: " + temp[1]);
        word = input.next();
      }
    }
+
+   public static String[] capitalizeStringArray(String[] arr) {
+       int j = 0, k;
+       for(String item : arr){
+           int size = item.length();
+           if(size > 0) {
+               char firstLetter = Character.toUpperCase(item.charAt(0));
+               StringBuilder line = new StringBuilder(Character.toString(firstLetter));
+               for (k = 1; k < size; k++) {
+                   line.append(Character.toString(item.charAt(k)));
+               }
+               item = line.toString();
+               arr[j] = item;
+               j++;
+           }
+       }
+       return arr;
+   }
+
+   private static String typesFromNameFromInput(String nameInput) {
+        StringBuilder result = new StringBuilder();
+        for(int i = 0; i < allPokemon.length; i++){
+            if(allPokemon[i][0].equals(nameInput)){
+                String secondType = ((allPokemon[i][2].equals("None")? "" : allPokemon[i][2]));
+                result.append(allPokemon[i][1]).append(",").append(secondType);
+                break;
+            }
+        }
+        String line = result.toString();
+        System.out.println("\nLine: "+line+"\n");
+        if(line.length() < 2){
+            return "";
+        }
+        else {
+            //TextView resultsMessageDisplay = (TextView) findViewById(R.id.results_window);
+            //resultsMessageDisplay.setText("Processing");
+            String res = corrector.correct(line);
+            if(isPokemonName(line)){
+              return line;
+            }
+            return "NOT A VALID NAME";
+        }
+    }
+
+    public static String[][] parseCSV() {
+         String csvFile = "./pokedex.csv";
+         String line;
+         String[][] pokemonArr = new String[909][1];
+         BufferedReader br = null;
+         int curr = 0;
+         try {
+             br = new BufferedReader(new FileReader(csvFile));
+             while ((line = br.readLine()) != null) {
+                 // use comma as separator
+                 String[] pokemon = line.split(",");
+                 pokemonArr[curr] = pokemon;
+                 curr++;
+             }
+
+         } catch (FileNotFoundException e) {
+             //e.printStackTrace();
+         } catch (IOException e) {
+             //e.printStackTrace();
+         } finally {
+             if (br != null) {
+                 try {
+                     br.close();
+                 } catch (IOException e) {
+                     //e.printStackTrace();
+                 }
+             }
+         }
+         return pokemonArr;
+     }
+
+     public static boolean isPokemonName(String line){
+       List<String> list = Arrays.asList(types);
+       String[] regions = {"Kanto","Johto","Hoenn","Sinnoh",
+                           "Unova","Kalos","Alola"};
+       if(list.contains(line)){
+           return false;
+       }
+       list = Arrays.asList(regions);
+       if(list.contains(line)){
+         return false;
+       }
+       return true;
+     }
+
+
 }
