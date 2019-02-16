@@ -1,0 +1,218 @@
+[
+  {
+    "languages" : {
+      "english": "Normal",
+      "chinese": "一般",
+      "japanese": "ノーマル"
+    },
+    "typeEffective" : {
+      "strongAtk" : [],
+      "strongDef" : [],
+      "noEffect" : ["Ghost"]
+    }
+  },
+  {
+    "languages" : {
+      "english": "Fighting",
+      "chinese": "格斗",
+      "japanese": "かくとう"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Normal","Rock","Steel","Ice","Dark"],
+      "strongDef" : ["Rock","Bug","Dark"],
+      "noEffect" : ["Ghost"]
+    }
+  },
+  {
+    "languages" : {
+      "english": "Flying",
+      "chinese": "飞行",
+      "japanese": "ひこう"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Fighting","Bug","Grass"],
+      "strongDef" : ["Fighting","Bug","Grass"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Poison",
+      "chinese": "毒",
+      "japanese": "どく"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Grass","Poison"],
+      "strongDef" : ["Fighting","Poison","Bug","Grass","Fairy"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Ground",
+      "chinese": "地上",
+      "japanese": "じめん"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Poison","Rock","Steel","Fire","Electric"],
+      "strongDef" : ["Poison","Rock"],
+      "noEffect" : ["Flying"]
+    }
+  },
+  {
+    "languages" : {
+      "english": "Rock",
+      "chinese": "岩石",
+      "japanese": "いわ"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Flying","Bug","Fire","Ice"],
+      "strongDef" : ["Normal","Flying","Poison","Fire"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Bug",
+      "chinese": "虫",
+      "japanese": "むし"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Grass","Psychic","Dark"],
+      "strongDef" : ["Fighting","Ground","Grass"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Ghost",
+      "chinese": "幽灵",
+      "japanese": "ゴースト"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Ghost","Psychic"],
+      "strongDef" : ["Poison","Bug"],
+      "noEffect" : ["Normal"]
+    }
+  },
+  {
+    "languages" : {
+      "english": "Steel",
+      "chinese": "钢",
+      "japanese": "はがね"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Rock","Ice","Fairy"],
+      "strongDef" : ["Normal","Flying","Rock","Bug","Steel","Grass","Psychic","Ice","Dragon","Fairy"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Fire",
+      "chinese": "炎",
+      "japanese": "ほのお"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Bug","Steel","Grass","Ice"],
+      "strongDef" : ["Bug","Steel","Fire","Grass","Ice","Fairy"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Water",
+      "chinese": "水",
+      "japanese": "みず"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Ground","Rock","Fire"],
+      "strongDef" : ["Steel","Fire","Water","Ice"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Grass",
+      "chinese": "草",
+      "japanese": "くさ"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Ground","Rock","Water"],
+      "strongDef" : ["Ground","Water","Grass","Electric"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Electric",
+      "chinese": "电",
+      "japanese": "でんき"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Flying","Water"],
+      "strongDef" : ["Flying","Steel","Electric"],
+      "noEffect" : ["Ground"]
+    }
+  },
+  {
+    "languages" : {
+      "english": "Psychic",
+      "chinese": "超能",
+      "japanese": "エスパー"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Fighting","Poison"],
+      "strongDef" : ["Fighting","Psychic"],
+      "noEffect" : ["Dark"]
+    }
+  },
+  {
+    "languages" : {
+      "english": "Ice",
+      "chinese": "冰",
+      "japanese": "こおり"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Flying","Ground","Grass","Dragon"],
+      "strongDef" : ["Ice"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Dragon",
+      "chinese": "龙",
+      "japanese": "ドラゴン"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Dragon"],
+      "strongDef" : ["Fire","Water","Grass","Electric"],
+      "noEffect" : ["Fairy"]
+    }
+  },
+  {
+    "languages" : {
+      "english": "Dark",
+      "chinese": "恶",
+      "japanese": "あく"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Ghost","Psychic"],
+      "strongDef" : ["Ghost","Dark"],
+      "noEffect" : []
+    }
+  },
+  {
+    "languages" : {
+      "english": "Fairy",
+      "chinese": "妖精",
+      "japanese": "フェアリー"
+    },
+    "typeEffective" : {
+      "strongAtk" : ["Fighting","Dragon","Dark"],
+      "strongDef" : ["Fighting","Bug","Dark"],
+      "noEffect" : []
+    }
+  }
+]

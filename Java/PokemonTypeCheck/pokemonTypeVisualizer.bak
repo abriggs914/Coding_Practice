@@ -1,0 +1,13 @@
+#lang racket
+(require json)
+(require explorer)
+
+(define file "../pokedex.json")
+
+(define (read-json-file file-name)
+      (with-input-from-file file-name read-json))
+
+(define (visualize-json-file file-name)
+      (explore (read-json-file file-name)))
+
+(visualize-json-file (read-json-file file))

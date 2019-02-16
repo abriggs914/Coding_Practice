@@ -89,8 +89,8 @@ let file = 'full_pokedex.json';
 
 file = read_json_file(file);
 //console.log(file);
-console.log(countPokemon(file));
-console.log(collectTypes(file).length);
-console.log(collectTypes(file).sort());
-console.log(verifyVote(typeCensus(file), file));
-console.log('result: ',typeCensus(file));
+// console.log(countPokemon(file));
+// console.log(collectTypes(file).length);
+// console.log(collectTypes(file).sort());
+// console.log(verifyVote(typeCensus(file), file));
+// console.log('result: ',typeCensus(file));

@@ -21,6 +21,7 @@ import java.util.HashSet;
 public class MainActivity extends AppCompatActivity {
 
     protected String user_input = "";
+    protected String checkStringName = "";
     protected String[] allTypes = {"Normal","Fight","Flying","Poison","Ground","Rock","Bug",
             "Ghost","Steel","Fire","Water","Grass","Electric",
             "Psychic","Ice","Dragon","Dark","Fairy"};
@@ -190,6 +191,10 @@ public class MainActivity extends AppCompatActivity {
         String str = user_input;
         String temp = str;
         int count = temp.length() - temp.replace(",", "").length();
+        if(!checkStringName.equals("")){
+            checkStringName = "";
+            user_input = "";
+        }
         // Check which radio button was clicked
         if(count >= 2){
             str = "";
@@ -292,11 +297,22 @@ public class MainActivity extends AppCompatActivity {
                         result.append(nameInputArray[0]).append(" < name\n");
                         String namedPokemonTypes;
                         Boolean properNameGiven = false;
+                        if(user_input.equals((checkStringName))) {
+                           user_input = "";
+                        }
                         if (!nameInput.equals("")) {
                             namedPokemonTypes = typesFromNameFromInput(nameInputArray[0]); // take in a string, give a string, (use commas will decipher the result)
                             if (!namedPokemonTypes.equals("")) {
                                 properNameGiven = true;
                                 user_input = namedPokemonTypes;
+                                if(user_input.equals((checkStringName))) {
+                                    user_input = "";
+                                    result.append("Nothing Entered!");
+                                    resultsMessageDisplay.setText(result);
+                                    pokemonNameEditText.getEditText().setText("");
+                                    return;
+                                }
+                                checkStringName = user_input;
                                 String[] typeInput = decipher(namedPokemonTypes, allTypes);
                                 typeInput = capitalizeStringArray(typeInput);
                                 result.append("Input: \n").append(user_input).append("\n");
