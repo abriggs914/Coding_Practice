@@ -1,0 +1,229 @@
+body{
+  /*background-color : #999999;*/
+  color : #303030;
+  /*font-size : 18px;
+  text-align : center;*/
+  background-image: linear-gradient(135deg,rgba(162,219,150,1) 0%,rgba(36,204,170,1) 100%);
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: sans-serif;
+}
+.chkBtn {
+    display: none;
+}
+.chkBtn + label span {
+    display: inline-block;
+    width: 100px;
+    height: 35px;
+    border-radius: 10px;
+    color: black;
+    border: 3px solid;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: sans-serif;
+    margin: 10px;
+    padding-top: 15px;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px #333;
+    box-shadow: 0px 2px 2px #333;
+}
+.chkBtn:checked + label span {
+    box-shadow: none;
+    color: white;
+}
+
+.btn-wrap {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.submit-btn-wrap {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.btn-normal + label span {
+    background: #a8a878;
+    background-image: linear-gradient(#a8a878,#79794e);/*#8a8a59*/
+    border-color: #79794e;
+}
+.btn-normal:checked + label span{
+    background-image: linear-gradient(#79794e, #a8a878);
+}
+
+.btn-fire + label span {
+    background: #f08030;
+    background-image: linear-gradient(#f08030,#b4530d);/*#dd6610*/
+    border-color: #b4530d;
+}
+.btn-fire:checked + label span{
+    background-image: linear-gradient(#b4530d, #f08030);
+}
+
+.btn-water + label span {
+    background: #6890f0;
+    background-image: linear-gradient(#6890f0,#1753e3);/*#386ceb*/
+    border-color: #1753e3;
+}
+.btn-water:checked + label span{
+    background-image: linear-gradient(#1753e3, #6890f0);
+}
+
+.btn-electric + label span {
+    background: #f8d030;
+    background-image: linear-gradient(#f8d030,#c19b07);/*#f0c108)*/
+    border-color: #c19b07;
+}
+.btn-electric:checked + label span{
+    background-image: linear-gradient(#c19b07, #f8d030);
+}
+
+.btn-grass + label span {
+    background: #78c850;
+    background-image: linear-gradient(#78c850,#4a892b);/*#5ca935*/
+    border-color: #4a892b;
+}
+.btn-grass:checked + label span{
+    background-image: linear-gradient(#4a892b, #78c850);
+}
+
+.btn-ice + label span {
+    background: #98d8d8;
+    background-image: linear-gradient(#98d8d8,#45b6b6);/*#69c6c6*/
+    border-color: #45b6b6;
+}
+.btn-ice:checked + label span{
+    background-image: linear-gradient(#45b6b6, #98d8d8);
+}
+
+.btn-fighting + label span {
+    background: #c03028;
+    background-image: linear-gradient(#c03028,#82211b);/*#9d2721*/
+    border-color: #82211b;
+}
+.btn-fighting:checked + label span{
+    background-image: linear-gradient(#82211b, #c03028);
+}
+
+.btn-poison + label span {
+    background: #a040a0;
+    background-image: linear-gradient(#a040a0,#662966);/*#803380*/
+    border-color: #662966;
+}
+.btn-poison:checked + label span{
+    background-image: linear-gradient(#662966, #a040a0);
+}
+
+.btn-ground + label span {
+    background: #e0c068;
+    background-image: linear-gradient(#e0c068,#aa8623);/*#d4a82f*/
+    border-color: #aa8623;
+}
+.btn-ground:checked + label span{
+    background-image: linear-gradient(#aa8623, #e0c068);
+}
+
+.btn-flying + label span {
+    background: #a890f0;
+    background-image: linear-gradient(#a890f0,#7762b6);/*#9180c4*/
+    border-color: #7762b6;
+}
+.btn-flying:checked + label span{
+    background-image: linear-gradient(#7762b6, #a890f0);
+}
+
+.btn-psychic + label span {
+    background: #f85888;
+    background-image: linear-gradient(#f85888,#d60945);/*#f61c5d*/
+    border-color: #d60945;
+}
+.btn-psychic:checked + label span{
+    background-image: linear-gradient(#d60945, #f85888);
+}
+
+.btn-bug + label span {
+    background: #a8b820;
+    background-image: linear-gradient(#a8b820,#616b13);/*#8d9a1b*/
+    border-color: #616b13;
+}
+.btn-bug:checked + label span{
+    background-image: linear-gradient(#616b13, #a8b820);
+}
+
+.btn-rock + label span {
+    background: #b8a038;
+    background-image: linear-gradient(#b8a038,#746523);/*#93802d*/
+    border-color: #746523;
+}
+.btn-rock:checked + label span{
+    background-image: linear-gradient(#746523, #b8a038);
+}
+
+.btn-ghost + label span {
+    background: #705898;
+    background-image: linear-gradient(#705898,#413359);/*#554374*/
+    border-color: #413359;
+}
+.btn-ghost:checked + label span{
+    background-image: linear-gradient(#413359, #705898);
+}
+
+.btn-dragon + label span {
+    background: #7038f8;
+    background-image: linear-gradient(#7038f8,#3d07c0);/*#4c08ef*/
+    border-color: #3d07c0;
+}
+.btn-dragon:checked + label span{
+    background-image: linear-gradient(#3d07c0, #7038f8);
+}
+
+.btn-dark + label span {
+    background: #705848;
+    background-image: linear-gradient(#705848,#362a23);/*#513f34*/
+    border-color: #362a23;
+}
+.btn-dark:checked + label span{
+    background-image: linear-gradient(#362a23, #705848);
+}
+
+.btn-steel + label span {
+    background: #b8b8d0;
+    background-image: linear-gradient(#b8b8d0,#7a7aa7);/*#9797ba*/
+    border-color: #7a7aa7;
+}
+.btn-steel:checked + label span{
+    background-image: linear-gradient(#7a7aa7, #b8b8d0);
+}
+
+.btn-fairy + label span {
+    background: #e898e8;
+    background-image: linear-gradient(#e898e8,#d547d5);/*#de6ede*/
+    border-color: #d547d5;
+}
+.btn-fairy:checked + label span{
+    background-image: linear-gradient(#d547d5, #e898e8);
+}
+
+.btn-submit {
+    display: inline-block;
+    height: 35px;
+    width: 120px;
+    border-radius: 10px;
+    color: white;
+    background-image: linear-gradient(limegreen,green);
+    border: 3px solid darkgreen;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: sans-serif;
+    margin: 10px;
+    padding-top: 15px;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px #333;
+    box-shadow: 0px 2px 2px #333;
+}
