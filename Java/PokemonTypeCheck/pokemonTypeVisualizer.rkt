@@ -1,6 +1,7 @@
 #lang racket
 (require json)
 (require explorer)
+(require math)
 
 (define file1 "./full_pokedex.json")
 (define file2 "./pokemonTypes.json")
@@ -50,6 +51,10 @@
            (helper sym (rest lst) (append acc (first lst))))]))
     (helper sym lst empty))
 
+; currPokemonStrAtk takes in a pokemon name string
+; and returns a list of sorted unique types that the
+; given pokemon has a type advantage over when attacking
+; that type (Effectiveness = 2.0 dealt)
 (define (currPokemonStrAtk pokemon)
   (let* ([currTypes (currPokemonTypes pokemon)])
     (if (equal? "Invalid Pokemon" (first currTypes))
@@ -60,16 +65,24 @@
                                  (if (equal? (hash-ref (hash-ref x 'languages) 'english) type)
                                      (hash-ref (hash-ref x 'typeEffective) 'strongAtk) " ")) typesFile))) currTypes))) string<?))))
 
+; currPokemonStrDef takes in a pokemon name string
+; and returns a list of sorted types that the given
+; pokemon has a type advantage over when defending
+; that type (Effectiveness = 0.5 recieved).
 (define (currPokemonStrDef pokemon)
   (let* ([currTypes (currPokemonTypes pokemon)])
     (if (equal? "Invalid Pokemon" (first currTypes))
         (error 'currPokemonStrAtk "Error Invalid Pokemon")
-        (sort (remove-duplicates (flatten (map (lambda (type)
+        (sort (flatten (map (lambda (type)
                (removeAll " "
                           (map (lambda (x)
                                  (if (equal? (hash-ref (hash-ref x 'languages) 'english) type)
-                                     (hash-ref (hash-ref x 'typeEffective) 'strongDef) " ")) typesFile))) currTypes))) string<?))))
+                                     (hash-ref (hash-ref x 'typeEffective) 'strongDef) " ")) typesFile))) currTypes)) string<?))))
 
+; currPokemonNoEffect takes in a pokemon name string
+; and returns a list of sorted unique types that
+; given pokemon has no type Effect when attacking
+; that type (Effectiveness = 0.0 dealt).
 (define (currPokemonNoEffect pokemon)
   (let* ([currTypes (currPokemonTypes pokemon)])
     (if (equal? "Invalid Pokemon" (first currTypes))
@@ -80,6 +93,16 @@
                                  (if (equal? (hash-ref (hash-ref x 'languages) 'english) type)
                                      (hash-ref (hash-ref x 'typeEffective) 'noEffect) " ")) typesFile))) currTypes))) string<?))))
 
+; gathrTypeInfo takes in a pokemons name string
+; and returns a hasheq of that pokemons:
+; type 
+; strDef
+; noEffect
+; name
+; strAttack
+; all values are lists of strings and should be
+; accessed using string indexing after calling
+; hash->licst on the resulting hasheq.
 (define (gatherTypeInfo pokemon)
   (let* ([strAtk (currPokemonStrAtk pokemon)]
          [strDef (currPokemonStrDef pokemon)]
@@ -97,7 +120,7 @@
          ("strAtk" . ("Bug" "Grass" "Ice" "Steel"))))
   (check-equal? (gatherTypeInfo "Gengar")
                 '#hasheq(("type" . ("Ghost" "Poison"))
-         ("strDef" . ("Bug" "Fairy" "Fighting" "Grass" "Poison"))
+         ("strDef" . ("Bug" "Bug" "Fairy" "Fighting" "Grass" "Poison" "Poison"))
          ("noEffect" . ("Normal"))
          ("name" . "Gengar")
          ("strAtk" . ("Ghost" "Grass" "Poison" "Psychic")))))
@@ -113,9 +136,13 @@
             [else item])])
   (if (list? (member item lst)) #t #f)))
 
+; getAllTypes returns a list of all types in
+; the fullPokedex.json file
 (define (getAllTypes)
   (map (lambda (x) (hash-ref x 'type)) readFile))
 
+; getAllNames returns a list of all names in
+; the fullPokedex.json file
 (define (getAllNames)
   (map (lambda (x) (hash-ref (hash-ref x 'name) 'english)) readFile))
 
@@ -124,8 +151,8 @@
 ;  (if (isMember name )))
 
 ;(visualize-json-file file1)
-(define (a)
-(for ([i (build-list (length readFile) values)]) (if (odd? i) (number->string i) "not odd")))
+;(define (a)
+;(for ([i (build-list (length readFile) values)]) (if (odd? i) (number->string i) "not odd")))
 
 #|(define (typeStrAttacking type)
   (define (helper type acc)
@@ -158,6 +185,9 @@
   (require rackunit)
   (check-equal? (typeStrAttacking "Fighting") '("Dark" "Ice" "Normal" "Rock" "Steel")))
 
+; noeEffectAgainst takes in a type string and
+; returns a list of all types that type has
+; no effect against
 (define (typeNoEffectAgainst moveType)
   (define (helper type acc)
     (sort
@@ -168,13 +198,26 @@
                  acc)) typesFile)) string<?))
   (helper moveType empty))
 
+; 
 (define (strAtkHelper type moveStrAttack)
   (define (helper type moveStrAttack acc)
     (cond
       [(empty? type) acc]
       [else (helper (rest type) moveStrAttack (cons (cons? (member (first type) moveStrAttack)) acc))]))
   (helper type moveStrAttack empty))
-  ;(flatten (foldl (lambda (x y) (cons y (member x moveStrAttack))) empty type)))
+
+(define occur
+  (lambda (a s)
+    (count (curry equal? a) s)))
+
+(define (strDefHelper type pokemonStrDef)
+  (expt 0.5 (occur type pokemonStrDef)))
+
+  ;(define (helper type pokemonStrDef acc)
+  ;  (cond
+  ;    [(empty? type) acc]
+  ;    [else (helper (rest type) moveStrAttack (cons (cons? (member (first type) moveStrAttack)) acc))]))
+  ;(helper type moveStrAttack empty))
 
 (define (boolsEvaluator lst)
   (define (helper lst acc)
@@ -191,17 +234,17 @@
   (helper lst 1))
 
 (define (moveEffectiveness moveType pokemon)
-  (let ([E 1])
+  (let ([E 1.0])
     (let* ([pokemonTypeInfo (hash->list (gatherTypeInfo pokemon))])
       (let* ([pokemonStrDef (second pokemonTypeInfo)]
              [moveStrAttack (typeStrAttacking moveType)]
              [noEffect (typeNoEffectAgainst moveType)]
              [type (first pokemonTypeInfo)])
         (if (cons? noEffect)
-            (if (foldl (lambda (x y) (or y (cons? (member x noEffect)))) #f type) (set! E (* E 0)) E) E)
-        (if (cons? (member moveType pokemonStrDef)) (set! E
-                                                          (let* ([res (* E 0.5)])
-                                                            (if (equal? 0 (modulo (* 2 res) 2)) (truncate res) (rationalize res 0)))) E)
+            (if (foldl (lambda (x y) (or y (cons? (member x noEffect)))) #f type) (set! E (* E 0.0)) E) E)
+        ;(if (cons? (member moveType pokemonStrDef)) (set! E (* E 0.5)) E)
+        (let* ([mult (strDefHelper moveType pokemonStrDef)])
+          (set! E (* E mult)))
         (let* ([bools (strAtkHelper type moveStrAttack)])
           (if (boolsEvaluator bools) (set! E (* E (boolsAdjust bools))) E))))
     E))
@@ -210,14 +253,128 @@
   (require rackunit)
   ;(gatherTypeInfo "Raticate")
   ; ghost vs normal == 0
-  (check-equal? (moveEffectiveness "Ghost" "Raticate") 0)
+  (check-equal? (moveEffectiveness "Ghost" "Raticate") 0.0)
   ; electric vs ground == 0
-  (check-equal? (moveEffectiveness "Electric" "Sandslash") 0)
+  (check-equal? (moveEffectiveness "Electric" "Sandslash") 0.0)
   ; electric vs flying == 2
-  (check-equal? (moveEffectiveness "Electric" "Pidgeot") 2)
+  (check-equal? (moveEffectiveness "Electric" "Pidgeot") 2.0)
   ; fire vs water == 0.5
   (check-equal? (moveEffectiveness "Fire" "Squirtle") 0.5)
-  (check-equal? (moveEffectiveness "Fire" "Snover") 4)
-  (check-equal? (moveEffectiveness "Psychic" "Croagunk") 4)
-  (check-equal? (moveEffectiveness "Fire" "Empoleon") 1)
+  ; fire vs grass ice
+  (check-equal? (moveEffectiveness "Fire" "Snover") 4.0)
+  ; psychic vs poison fighting
+  (check-equal? (moveEffectiveness "Psychic" "Croagunk") 4.0)
+  ; fire vs steel water
+  (check-equal? (moveEffectiveness "Fire" "Empoleon") 1.0)
+  ; fighting vs flying poison
   (check-equal? (moveEffectiveness "Fighting" "Crobat") 0.25))
+
+(define (convertNum n)
+  (define (helper n i)
+      (cond
+        [(= n i) i]
+        [(> i (length readFile)) (error 'convertNum "Invalid number given")]
+        [else (helper n (add1 i))]))
+  (helper n 0))
+
+(convertNum 1.0)
+
+(define (genTeam)
+  (define (helper team members)
+    (cond
+      [(= 6 members) team]
+      [else (helper
+             (cons (gatherTypeInfo
+                    (hash-ref (hash-ref
+                               (list-ref readFile (convertNum (floor (* (random) (length readFile)))))
+                               'name) 'english)) team) (add1 members))]))
+  (helper empty 0))
+
+(define (bestTeamDefender team moveType)
+  (define (helper team moveType bestChoice)
+    (cond
+      [(empty? team) bestChoice]
+      [else (helper (rest team) moveType (if (> (moveEffectiveness moveType (cdr (fourth (hash->list (first team)))))
+                                                (moveEffectiveness moveType (cdr (fourth (hash->list bestChoice)))))
+                                             bestChoice (first team)))]))
+  (helper (rest team) moveType (first team)))
+
+
+(define (worstTeamDefender team moveType)
+  (define (helper team moveType bestChoice)
+    (cond
+      [(empty? team) bestChoice]
+      [else (helper (rest team) moveType (if (< (moveEffectiveness moveType (cdr (fourth (hash->list (first team)))))
+                                                (moveEffectiveness moveType (cdr (fourth (hash->list bestChoice)))))
+                                             bestChoice (first team)))]))
+  (helper (rest team) moveType (first team)))
+
+(define (getTypeListNames)
+  (map (lambda (type) (hash-ref (hash-ref type 'languages) 'english )) typesFile))
+
+(define (genGivenTeam lst)
+  (let* ([bool (foldl (lambda (x y) (and (isMember x (getAllNames)) y)) #t lst)])
+    (if bool (map (lambda (x) (gatherTypeInfo x)) lst) (error 'genGivenTeam "Invalid team given"))))
+
+(define (teamEffectivenessPerType team)
+  (display " ((NRM FGT FLY PSN GRD RCK BUG GST STL FIR WTR GRS ELC PSY ICE DRG DRK FRY)\n")
+  (map
+   (lambda (member)
+     (map (lambda (type)
+            (moveEffectiveness type (cdr (fourth (hash->list member)))))
+          (getTypeListNames)))
+   team))
+
+
+  ;(define (helper team members)
+  ;  (cond
+  ;    [(= 6 members) team]
+  ;    [else (helper
+  ;           (cons (gatherTypeInfo
+  ;                  (hash-ref (hash-ref
+  ;                             (list-ref readFile (convertNum (floor (* (random) (length readFile)))))
+  ;                             'name) 'english)) team) (add1 members))]))
+  ;(helper empty 0))
+
+(define b (genTeam))
+(define moveType "Electric")
+(bestTeamDefender b moveType)
+(worstTeamDefender b moveType)
+(define pearlTeamList '("Infernape" "Gengar" "Luxray" "Gyarados" "Garchomp" "Alakazam"))
+
+
+(define (reportTeamMoveVote team move)
+   (let* ([teamEffectiveness
+           (map (lambda (x)
+                  (cons (cdr (fourth (hash->list x)))
+                        (moveEffectiveness move (cdr (fourth (hash->list x)))))) team)]
+          [bestCandidate (bestTeamDefender team move)]
+          [worstCandidate (worstTeamDefender team move)]
+          [effect (lambda (x) (moveEffectiveness move (cdr (fourth (hash->list x)))))])
+     (display "\n\t")
+     (display move)
+     (display " type move V.S. trainer's team:\n")
+     (display teamEffectiveness)
+     (display "\n\tBest pokemon to defend with: ")
+     (display (effect bestCandidate))
+     (display "\n")
+     (display bestCandidate)
+     (display "\n\tWorst pokemon to defend with: ")
+     (display (effect worstCandidate))
+     (display "\n")
+     (display worstCandidate)
+     (display "\n")))
+
+(reportTeamMoveVote b moveType)
+(teamEffectivenessPerType (genGivenTeam pearlTeamList))
+
+(define (sum a lst)
+  (foldl (lambda (x y) (+ y x)) a lst))
+(define (overall lst)
+  (map (lambda (x) (sum 0 x)) lst))
+
+(module+ test
+  (require rackunit)
+  (check-equal? (overall (teamEffectivenessPerType (genGivenTeam pearlTeamList))) '(18.75 17.75 17.5 18.5 20.5 20.0)))
+
+;(map (lambda (x) (cons (cdr (fourth (hash->list x))) (moveEffectiveness moveType (cdr (fourth (hash->list x)))))) b)
