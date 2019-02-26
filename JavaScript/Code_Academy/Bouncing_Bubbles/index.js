@@ -13,7 +13,7 @@ mouseResponseThreshold = 50;
 friction = 0.85;
 
 // This variable controls how much the dots will rotate when interacting
-rotationForce = 0.0;
+rotationForce = 10.0;
 
 message = 'Avery Briggs!';
 

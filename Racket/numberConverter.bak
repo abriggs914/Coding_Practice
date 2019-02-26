@@ -1,0 +1,37 @@
+#lang racket
+
+
+(define (baseTenConverter n b)
+  (define (helper n b acc)
+    (let ([res (modulo n b)])
+      (cond
+        [(>= 0 n) acc]
+        [else (helper (floor (/ n b)) b (cons res acc))])))
+  (helper n b empty))
+
+(define (number->list n)
+  (let ([n
+         (map
+          (lambda (x) (- (char->integer x) 48))
+          (reverse (string->list (number->string n))))])
+    (reverse n)))
+
+(define (baseConverter n cb rb)
+  (let ([n (reverse (number->list n))])
+    (define (helper n cb acc i)
+      (cond
+        [(empty? n) acc]
+        [else (helper (rest n) cb (+ acc (* (first n) (expt cb i))) (add1 i))]))
+    (baseTenConverter (helper n cb 0 0) rb)))
+
+(module+ test
+  (require rackunit)
+  (check-equal? (baseTenConverter 17 2) '(1 0 0 0 1))
+  (check-equal? (baseTenConverter 50 8) '(6 2))
+
+  (check-equal? (number->list 10001) '(1 0 0 0 1))
+  (check-equal? (number->list 62) '(6 2))
+  
+  (check-equal? (baseConverter 10001 2 10) '(1 7))
+  (check-equal? (baseConverter 62 8 2) '(1 1 0 0 1 0))
+  (check-equal? (baseConverter 248712225 10 2) '(1 1 1 0 1 1 0 1 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1)))
