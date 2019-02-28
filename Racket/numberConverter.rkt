@@ -1,4 +1,5 @@
 #lang racket
+(provide baseConverter number->list list->number)
 
 #|
  NumberConverter
