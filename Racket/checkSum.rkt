@@ -8,11 +8,18 @@
   (build-list n (lambda (x) (* x 0))))
 
 (define (checkSum lst chk)
-  (let* ([sum (flip (foldl (lambda (x y) (binAdd x y)) (first lst) (rest lst)))]
+  (define (helper lst acc)
+    (cond
+      [(empty? lst) acc]
+      [else (helper (rest lst) (list->number (binAdd acc (first lst))))]))
+  (let* ([sum (flip (number->list (helper lst 0)))]
          [comp (binAdd chk (list->number sum))]
          [l (length comp)]
          [identity (build-list l (lambda (x) (if (= x 0) 1 (/ x x))))])
-        (if (foldl (lambda (x y) (and x y)) #t (map (lambda (x y) (= x y)) comp identity)) #t #f)))
+    (display "\tSUM: ")
+    (display sum)
+    (display "\n")
+    (if (foldl (lambda (x y) (and x y)) #t (map (lambda (x y) (= x y)) comp identity)) #t #f)))
 
 (define (binAdd a b)
   (let* ([listA (baseConverter a 2 10)]
@@ -38,4 +45,6 @@
   (check-equal? (checkSum '(101 1110001) 1110110) #t)
   (check-equal? (checkSum '(101 1110001) 1110111) #f)
   (check-equal? (flip (binAdd 101 1110001)) '(0 0 0 1 0 0 1))
-  (check-equal? (numDigits 1546) 4))
+  (check-equal? (numDigits 1546) 4)
+  (check-equal? (checkSum '(1 100 1011 111101 11101 1011 11111011 111) 10010001) #f)
+  (check-equal? (checkSum '(1 100 1011 111101 11101 1011 11111011 111) 101110111) #t))
