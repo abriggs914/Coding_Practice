@@ -81,7 +81,7 @@ public class CardIndexer{
       Card psychoPuppet = combos[715-1][0];
       Card babyDragon = combos[4-1][0];
       String suSk = "Summoned Skull";
-      System.out.println("cardVal: " + psychoPuppet);
+      /*System.out.println("cardVal: " + psychoPuppet);
       //System.out.println(possibleFusionPartners(psychoPuppet));
       System.out.println("cardVal: " + babyDragon);
       //System.out.println(possibleFusionPartners(babyDragon));
@@ -90,36 +90,69 @@ public class CardIndexer{
       ArrayList<Card> suSkFusions = getFusions(summonedSkull);
       System.out.println(suSkFusions.size());
       //ArrayList<Card> hand = genRandomHand();
+      */
       ArrayList<Card> hand = new ArrayList<Card>();
-      hand.add(getCardFromName("Emperor of the Land and Sea"));
-      hand.add(getCardFromName("Thousand Dragon"));
-      hand.add(getCardFromName("Ancient Tool"));
-      hand.add(getCardFromName("Umi"));
-      hand.add(getCardFromName("Dragon Zombie"));
-      hand.add(getCardFromName("Raigeki"));
-      hand.add(getCardFromName("Mystical Elf"));
+      /*
+        Implement a draw() method to do this in less typing
+      */
+      // hand.add(getCardFromName("Emperor of the Land and Sea"));
+      // hand.add(getCardFromName("Thousand Dragon"));
+      // hand.add(getCardFromName("Ancient Tool"));
+      // hand.add(getCardFromName("Umi"));
+      // hand.add(getCardFromName("Dragon Zombie"));
+      // hand.add(getCardFromName("Raigeki"));
+      // hand.add(getCardFromName("Mystical Elf"));
       hand.add(getCardFromName("Jirai Gumo"));
-      hand.add(getCardFromName("Ansatsu"));
+      // hand.add(getCardFromName("Electric Snake"));
+      // hand.add(getCardFromName("Mechanicalchacer"));
+      //hand.add(getCardFromName("Octoberser"));
+      // hand.add(getCardFromName("Emperor of the Land and Sea"));
+      // hand.add(getCardFromName("Labyrinth Wall"));
+      // hand.add(getCardFromName("Cannon Soldier"));
+      // hand.add(getCardFromName("Koumori Dragon"));
+      // hand.add(getCardFromName("Pragtical"));
+      // hand.add(getCardFromName("Mystical Elf"));
+      hand.add(getCardFromName("Oscillo Hero #2"));
+      // hand.add(getCardFromName("Catapult Turtle"));
+      // hand.add(getCardFromName("Ancient Tool"));
+      // hand.add(getCardFromName("Mavelus"));
+      // hand.add(getCardFromName("Firewing Pegasus"));
+      // hand.add(getCardFromName("Dragon Zombie"));
+      // hand.add(getCardFromName("King of Yamimakai"));
+      // hand.add(getCardFromName("Time Wizard"));
+      // hand.add(getCardFromName("Raigeki"));
+      // hand.add(getCardFromName("Spellbinding Circle"));
+      // hand.add(getCardFromName("Axe of Despair"));
+      // hand.add(getCardFromName("Mountain"));
+      hand.add(getCardFromName("Aqua Madoor"));
+      // hand.add(getCardFromName("The Immortal of Thunder"));
+      // hand.add(getCardFromName("Darkworld Thorns"));
+      // hand.add(getCardFromName("Giant Mech-soldier"));
+      // hand.add(getCardFromName("Twin-headed Thunder Dragon"));
+      // hand.add(getCardFromName("Meteor Dragon"));
+      // hand.add(getCardFromName("Mystical Elf"));
+      // hand.add(getCardFromName("Akihiron"));
+      hand.add(getCardFromName("Vermillion Sparrow"));
+      // hand.add(getCardFromName("Ansatsu"));
+      // hand.add(getCardFromName("Crimson Sunbird"));
+      // hand.add(getCardFromName("Kaminarikozou"));
+      // hand.add(getCardFromName("Embryonic Beast"));
       System.out.println();
       System.out.println(hand);
+      System.out.println();
+      System.out.println("hand.size(): " + hand.size());
       System.out.println("COMBOS AVAILABLE");
       System.out.println(fusionInHand(hand).size());
       //printCombos();
 
-      System.out.println(currDeck.length);
+      /*System.out.println(currDeck.length);
       System.out.println(deckFromIds(currDeck));
       System.out.println(fusionInHand(deckFromIds(currDeck)));
       System.out.println("\n\n\n");
       ArrayList<Card> tHTDFusions = getFusions(getCardFromName("Twin-headed Thunder Dragon"));
-      for(int i = 0; i < tHTDFusions.size(); i++){
-        if(i % 2 == 0){
-          System.out.print(tHTDFusions.get(i) + " + ");
-        }
-        else{
-          System.out.println(tHTDFusions.get(i));
-        }
-      }
-
+      */
+      // ArrayList<Card> abc =  getFusions(getCardFromName("Red-eyes B. Dragon"));
+      // printGetFusions(abc);
       /*System.out.println("j: " + j);
       for(int x = 0; x < cardsList.length; x++){
         System.out.println(cardsList[x].toString());
@@ -129,6 +162,18 @@ public class CardIndexer{
         e.printStackTrace();
       }
   }
+
+  public static void printGetFusions(ArrayList<Card> a){
+    for(int i = 0; i < a.size(); i++){
+      if(i % 2 == 0){
+        System.out.print(a.get(i) + " + ");
+      }
+      else{
+        System.out.println(a.get(i));
+      }
+    }
+  }
+
 
   public static void fusionChains(ArrayList<Card> fusions, ArrayList<Card> hand){
 
@@ -165,7 +210,7 @@ public class CardIndexer{
         for(int k = 0; k < temp.size(); k++){
           boolean allReadyChecked = false;
           if(temp.get(k).id == hand.get(j).id && !allReadyChecked){
-            System.out.println(temp.get(k) + " + " + hand.get(i) + " = " + combos[temp.get(k).id][hand.get(i).id]);
+            System.out.println("== "+combos[temp.get(k).id][hand.get(i).id]+" ==\n\t"+temp.get(k)+" + "+hand.get(i));
             combo = true;
             allReadyChecked = true;
             //if(!res.contains(temp.get(k))){
