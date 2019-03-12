@@ -10,8 +10,9 @@
 * 3471065
 */
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 public class CardIndexer{
 
@@ -19,6 +20,8 @@ public class CardIndexer{
   public static Scanner scan, tokenizer;
   public static Card[] cardsList = new Card[722];
   public static Card[][] combos = new Card[722][722];
+  public static ArrayList<Card> myHand = new ArrayList<Card>();
+  public static ArrayList<Card> myBoard = new ArrayList<Card>();
 
   public static void main(String[] args) {
     try{
@@ -91,58 +94,68 @@ public class CardIndexer{
       System.out.println(suSkFusions.size());
       //ArrayList<Card> hand = genRandomHand();
       */
-      ArrayList<Card> hand = new ArrayList<Card>();
       /*
         Implement a draw() method to do this in less typing
       */
-      // hand.add(getCardFromName("Emperor of the Land and Sea"));
-      // hand.add(getCardFromName("Thousand Dragon"));
-      // hand.add(getCardFromName("Ancient Tool"));
-      // hand.add(getCardFromName("Umi"));
-      // hand.add(getCardFromName("Dragon Zombie"));
-      // hand.add(getCardFromName("Raigeki"));
-      // hand.add(getCardFromName("Mystical Elf"));
-      hand.add(getCardFromName("Jirai Gumo"));
-      // hand.add(getCardFromName("Electric Snake"));
-      // hand.add(getCardFromName("Mechanicalchacer"));
-      //hand.add(getCardFromName("Octoberser"));
-      // hand.add(getCardFromName("Emperor of the Land and Sea"));
-      // hand.add(getCardFromName("Labyrinth Wall"));
-      // hand.add(getCardFromName("Cannon Soldier"));
-      // hand.add(getCardFromName("Koumori Dragon"));
-      // hand.add(getCardFromName("Pragtical"));
-      // hand.add(getCardFromName("Mystical Elf"));
-      hand.add(getCardFromName("Oscillo Hero #2"));
-      // hand.add(getCardFromName("Catapult Turtle"));
-      // hand.add(getCardFromName("Ancient Tool"));
-      // hand.add(getCardFromName("Mavelus"));
-      // hand.add(getCardFromName("Firewing Pegasus"));
-      // hand.add(getCardFromName("Dragon Zombie"));
-      // hand.add(getCardFromName("King of Yamimakai"));
-      // hand.add(getCardFromName("Time Wizard"));
-      // hand.add(getCardFromName("Raigeki"));
-      // hand.add(getCardFromName("Spellbinding Circle"));
-      // hand.add(getCardFromName("Axe of Despair"));
-      // hand.add(getCardFromName("Mountain"));
-      hand.add(getCardFromName("Aqua Madoor"));
-      // hand.add(getCardFromName("The Immortal of Thunder"));
-      // hand.add(getCardFromName("Darkworld Thorns"));
-      // hand.add(getCardFromName("Giant Mech-soldier"));
-      // hand.add(getCardFromName("Twin-headed Thunder Dragon"));
-      // hand.add(getCardFromName("Meteor Dragon"));
-      // hand.add(getCardFromName("Mystical Elf"));
-      // hand.add(getCardFromName("Akihiron"));
-      hand.add(getCardFromName("Vermillion Sparrow"));
-      // hand.add(getCardFromName("Ansatsu"));
-      // hand.add(getCardFromName("Crimson Sunbird"));
-      // hand.add(getCardFromName("Kaminarikozou"));
-      // hand.add(getCardFromName("Embryonic Beast"));
+      // draw("Emperor of the Land and Sea", 'h');
+      // draw("Thousand Dragon", 'h');
+      // draw("Ancient Tool", 'h');
+      // draw("Umi", 'h');
+      // draw("Dragon Zombie", 'h');
+      // draw("Raigeki", 'h');
+      // draw("Mystical Elf", 'h');
+      // draw("Jirai Gumo", 'h');
+      // draw("Electric Snake", 'h');
+      draw("Mechanicalchacer", 'h');
+      // draw("Octoberser", 'h');
+      // draw("Emperor of the Land and Sea", 'h');
+      // draw("Labyrinth Wall", 'h');
+      // draw("Cannon Soldier", 'h');
+      draw("Koumori Dragon", 'h');
+      // draw("Pragtical", 'h');
+      // draw("Mystical Elf", 'h');
+      // draw("Oscillo Hero #2", 'h');
+      // draw("Catapult Turtle", 'h');
+      // draw("Ancient Tool", 'h');
+      // draw("Mavelus", 'h');
+      // draw("Firewing Pegasus", 'h');
+      // draw("Dragon Zombie", 'h');
+      // draw("King of Yamimakai", 'h');
+      // draw("Time Wizard", 'h');
+      draw("Time Wizard", 'b');
+      // draw("Raigeki", 'h');
+      // draw("Spellbinding Circle", 'h');
+      // draw("Axe of Despair", 'h');
+      // draw("Mountain", 'h');
+      // draw("Aqua Madoor", 'h');
+      // draw("The Immortal of Thunder", 'h');
+      // draw("Darkworld Thorns", 'h');
+      // draw("Giant Mech-soldier", 'h');
+      // draw("Twin-headed Thunder Dragon", 'h');
+      // draw("Meteor Dragon", 'h');
+      // draw("Mystical Elf", 'h');
+      // draw("Akihiron", 'h');
+      // draw("Vermillion Sparrow", 'h');
+      // draw("Ansatsu", 'h');
+      // draw("Crimson Sunbird", 'h');
+      // draw("Kaminarikozou", 'h');
+      // draw("Yami", 'h');
+      draw("Embryonic Beast", 'h');
+      draw("LaLa Li-oon", 'h');
+      // draw("Skullbird", 'h');
       System.out.println();
-      System.out.println(hand);
+      System.out.println(myHand);
       System.out.println();
-      System.out.println("hand.size(): " + hand.size());
+      System.out.println("hand.size(): " + myHand.size());
       System.out.println("COMBOS AVAILABLE");
-      System.out.println(fusionInHand(hand).size());
+      ArrayList<Card> handCombos = new ArrayList<Card>();
+      ArrayList<Card> tempHand = new ArrayList<Card>();
+      tempHand = myHand;
+      tempHand.addAll(myBoard);
+      handCombos = fusionInHand(tempHand);
+      int handNumCombos = handCombos.size() / 3;
+      System.out.println("combos in hand : " + handNumCombos);
+      printCombosInHand(handCombos);
       //printCombos();
 
       /*System.out.println(currDeck.length);
@@ -163,6 +176,18 @@ public class CardIndexer{
       }
   }
 
+  public static void draw(String cardName, char hORb) throws CardException{
+    if(hORb == 'h'){
+      myHand.add(getCardFromName(cardName));
+    }
+    else if(hORb == 'b'){
+      myBoard.add(getCardFromName(cardName));
+    }
+    else{
+      throw new CardException("hey");
+    }
+  }
+
   public static void printGetFusions(ArrayList<Card> a){
     for(int i = 0; i < a.size(); i++){
       if(i % 2 == 0){
@@ -174,9 +199,221 @@ public class CardIndexer{
     }
   }
 
+  public static void printCombosInHand(ArrayList<Card> arr){
+    for(int i = 0; i < arr.size(); i += 3){
+      printOneCombo(arr.get(i), arr.get(i+1), arr.get(i+2));
+    }
+  }
 
-  public static void fusionChains(ArrayList<Card> fusions, ArrayList<Card> hand){
+  public static int[] merge(int[] arr, int l, int m, int r){
+    int nLeft = m - l + 1;
+    int nRight = r - m;
+    int i = 0, j = 0, k;
+    int[] left = new int[nLeft];
+    int[] right = new int[nRight];
+    for(i = 0; i < nLeft; i++){
+      left[i] = arr[l + i];
+    }
+    for(j = 0; j < nRight; j++){
+      right[j] = arr[m + 1 + j];
+    }
+    i = 0;
+    j = 0;
+    k = l;
+    while(i < nLeft && j < nRight){
+      if(left[i] <= right[j]){
+        arr[k] = left[i];
+        i++;
+      }
+      else{
+        arr[k] = right[j];
+        j++;
+      }
+      k++;
+    }
+    while(i < nLeft){
+      arr[k] = left[i];
+      i++;
+      k++;
+    }
+    while(j < nRight){
+      arr[k] = right[j];
+      j++;
+      k++;
+    }
+    return arr;
+  }
 
+  public static int[] removeDuplicates(int[] arr){
+    sort(arr);
+		int c = 1;
+		int[] b = new int[arr.length];
+		if(arr.length <= 1){
+		    return arr;
+		}
+		int i, j = arr[0];
+		b[0] = arr[0];
+		for(i = 1; i < arr.length; i++){
+		    if(arr[i] == j){
+		    }
+		    else{
+		        b[c-1] = j;
+		        j = arr[i];
+		        c++;
+		    }
+		    if(i == arr.length-1){
+		        b[c-1] = j;
+		    }
+		}
+		return b;
+	}
+
+  public static int[] mergeSort(int[] arr, int l, int r){
+	   if(l < r){
+	      int m = (l + r)/2;
+			arr = mergeSort(arr, l, m);
+			arr = mergeSort(arr , m + 1, r);
+			arr = merge(arr, l, m, r);
+		}
+    return arr;
+	}
+
+  public static int[] sort(int[] arr){
+	   int n = arr.length;
+	   arr = mergeSort(arr, 0, n - 1);
+    return arr;
+	}
+
+  public static int SumCharVals(String line){
+    int sum = 0;
+    for(int j = 0; j < line.length(); j++){
+      sum += line.charAt(j);
+    }
+    return sum;
+  }
+
+  public static ArrayList<Card> removeDuplicateCombos(ArrayList<Card> fusions){
+    if(fusions.size() < 2){
+      return fusions;
+    }
+    //System.out.println(fusions);
+    int[] fus = new int[fusions.size() / 3];
+    int c = 0, index = 0;
+    ArrayList<String> temp = new ArrayList<String>();
+    ArrayList<String> track = new ArrayList<String>();
+    for(int i = 0; i < fusions.size(); i += 3){ // group into three cards
+      //System.out.println("i: " + i);
+      for(int j = 0; j < 3; j++){ // group into three strings
+        temp.add(fusions.get(j+i).toString());
+        track.add(fusions.get(j+i).toString());
+        //System.out.println("fusions: " + fusions.get(j+i).toString());
+        if(j == 2){
+          for(int k = 0; k < temp.size(); k++){ // visit each string
+            String curr = temp.get(k);
+              c += SumCharVals(curr); // sum the string
+          }
+        }
+      }
+      fus[index] = c;
+      index++;
+      c = 0;
+      temp.clear();
+    }
+    fus = removeDuplicates(fus);
+    int curr = 0;
+    String line = "";
+    ArrayList<String> result = new ArrayList<String>();
+    ArrayList<Integer> fusList = new ArrayList<Integer>();
+    for(int i = 0; i < fus.length; i++){
+      if(fus[i] != 0){
+        fusList.add(fus[i]);
+      }
+    }
+    for(int i = 0; i < fusList.size(); i++){
+      for(int s = 0; s < track.size(); s += 3){
+        line = track.get(s);
+        line += track.get(s+1);
+        line += track.get(s+2);
+        int sum = SumCharVals(line);
+        if(fusList.get(i) == sum){
+          result.add(track.get(s));
+          result.add(track.get(s+1));
+          result.add(track.get(s+2));
+          fusList.remove(i);
+          if(i != 0){
+            i--;
+          }
+          else if(fusList.size() == 0){
+            break;
+          }
+        }
+      }
+    }
+    fusions.clear();
+    for(int i = 0; i < result.size(); i++){
+      fusions.add(getCardFromName(getNameFromString(result.get(i))));
+    }
+    return fusions;
+  }
+
+  public static String getNameFromString(String line){
+    //line = line.split(" ").toString();
+    //System.out.println("\tline: " + line);
+    line = line.subSequence(0, 3).toString().trim();
+    int s = Integer.parseInt(line);
+    line = combos[0][s-1].name;
+    //System.out.println("\tline: " + line);
+    return line;
+  }
+
+  public static ArrayList<Card> fusionChains(ArrayList<Card> fusions, ArrayList<Card> hand, ArrayList<Card> board){
+    //fusions = removeDuplicateCombos(fusions);
+    //System.out.println(fusions);
+    if(fusions.size() < 2){
+      return fusions;
+    }
+    System.out.println(hand);
+    System.out.println(fusions);
+    System.out.println(board);
+    ArrayList<Card> handBoardCombos = new ArrayList<Card>();
+    ArrayList<Card> fusHandCombos = new ArrayList<Card>();
+    ArrayList<Card> fusBoardCombos = new ArrayList<Card>();
+    ArrayList<Card> a = new ArrayList<Card>();
+    handBoardCombos.addAll(hand);
+    handBoardCombos.addAll(board);
+    fusBoardCombos.addAll(fusions);
+    fusBoardCombos.addAll(board);
+    a.addAll(fusions);
+    a.addAll(board);
+    fusHandCombos.addAll(fusions);
+    fusHandCombos.addAll(hand);
+    //ArrayList<Card> temp = new ArrayList<Card>();
+    //ArrayList<Card> temp = new ArrayList<Card>();
+    if(a == fusBoardCombos){
+      System.out.println("hey");
+    }
+    ArrayList<Card> newHand = hand;
+    System.out.println("\thandBoardCombos FUSIONS");
+    // System.out.println(handBoardCombos);
+    System.out.println(fusionInHand(handBoardCombos));
+    System.out.println("\tfusHandCombos FUSIONS");
+    // System.out.println(fusHandCombos);
+    System.out.println(fusionInHand(fusHandCombos));
+    System.out.println("\tfusBoardCombos FUSIONS");
+    // System.out.println(fusBoardCombos);
+    System.out.println(fusionInHand(fusBoardCombos));
+    System.out.println(fusions);
+    System.out.println("\thand");
+    System.out.println(hand);
+    /*for(int j = 0 ; j < newHand.size(); j++){
+      for(int i = 0; i < fusions.size(); i += 3){
+        newHand.remove(fusions.get(i+1));
+        newHand.remove(fusions.get(i));
+        newHand.add(fusions.get(i+2));
+      }
+      System.out.println("\nNEWHAND\n"+newHand);
+    }*/
+    return fusions;
   }
 
   public static ArrayList<Card> deckFromIds(int[] ids){
@@ -199,6 +436,28 @@ public class CardIndexer{
     return res;
   }
 
+  public static int abcde = 0;
+
+  public static boolean handHasCorrectCards(ArrayList<Card> arr, Card target, ArrayList<Card> hand){
+    ArrayList<Card> arrTemp = new ArrayList<Card>();
+    arrTemp.add(target);
+    arrTemp.addAll(arr);
+    //System.out.println("target: " + target);
+    ArrayList<Card> temp = new ArrayList<Card>();
+    temp.addAll(hand);
+    boolean res = true;
+    for(int j = 0; j < arrTemp.size(); j++){
+      if(hand.contains(arrTemp.get(j))){
+        res &= temp.remove(arrTemp.get(j));
+      }
+    }
+    return res;
+  }
+
+  public static void printOneCombo(Card a, Card b, Card c){
+    System.out.println("== " + c + " ==\n\t" + a + " + " + b);
+  }
+
   public static ArrayList<Card> fusionInHand(ArrayList<Card> hand){
     int s = hand.size();
     ArrayList<Card> res = new ArrayList<Card>();
@@ -206,24 +465,26 @@ public class CardIndexer{
     boolean combo = false;
     for(int i = 0; i < s; i++){
       temp = possibleFusionPartners(hand.get(i));
-      for(int j = 0; j < s; j++){
-        for(int k = 0; k < temp.size(); k++){
-          boolean allReadyChecked = false;
-          if(temp.get(k).id == hand.get(j).id && !allReadyChecked){
-            System.out.println("== "+combos[temp.get(k).id][hand.get(i).id]+" ==\n\t"+temp.get(k)+" + "+hand.get(i));
-            combo = true;
-            allReadyChecked = true;
-            //if(!res.contains(temp.get(k))){
+      if(handHasCorrectCards(temp, hand.get(i), hand)){
+        for(int j = 0; j < s; j++){
+          for(int k = 0; k < temp.size(); k++){
+            if(temp.get(k).id == hand.get(j).id){
+              //printOneCombo(combos[temp.get(k).id][hand.get(i).id], temp.get(k), hand.get(i));
+              combo = true;
               res.add(temp.get(k));
               res.add(hand.get(i));
               res.add(combos[temp.get(k).id][hand.get(i).id]);
-            break;
+              break;
+            }
           }
         }
       }
       //System.out.println("combo: " + combo);
     }
-    return res;
+    if(res.size() > 0){
+      //res = fusionChains(res, hand, myBoard);
+    }
+    return removeDuplicateCombos(res);
   }
 
 
@@ -296,7 +557,7 @@ public class CardIndexer{
     ArrayList<Card> res = new ArrayList<Card>();
     for(int i = 0; i < combos.length; i++){
       if(target == combos[i][0]){
-        //System.out.println("target: " + combos[i][0]);
+        //System.out.println("target: " + target + " combos " + combos[i][0]);
         for(int j = 1; j < combos[i].length; j++){
           if(combos[i+1][j] != null){
             //System.out.println("i: " + i + " j: " + j + " " + combos[i+1][j]);
@@ -305,6 +566,7 @@ public class CardIndexer{
         }
       }
     }
+    //System.out.println(res);
     return res;
   }
 
