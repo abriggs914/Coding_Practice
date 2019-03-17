@@ -26,7 +26,10 @@ public class CardIndexer{
 
   public static void main(String[] args) throws CardException{
     parseCombinationsFile();
-      int[] currDeck = {2,16,16,31,31,45,45,85,89,97,97,124,127,131,150,213,254,272,304,332,334,336,337,349,349,366,367,400,408,415,463,473,482,512,567,651,652,690,712,714};
+      int[] currDeck = {2,16,16,31,31,45,45,85,89,97,
+                        97,124,127,131,150,213,254,272,304,332,
+                        334,336,337,349,349,366,367,400,408,415,
+                        463,473,482,512,567,651,652,690,712,714};
       Card psychoPuppet = combos[715-1][0];
       Card babyDragon = combos[4-1][0];
       String suSk = "Summoned Skull";
@@ -142,6 +145,12 @@ public class CardIndexer{
       }*/
       Card a = getCardFromName("Twin-headed Thunder Dragon");
       Card b = getCardFromName("Judge Man");
+      if(validFusionPartners(getCardFromName("Time Wizard"), getCardFromName("Koumori Dragon"))){
+        System.out.println("true");
+      }
+      else{
+        System.out.println("false");
+      }
       //System.out.println(starSignAdvantage(a.planet2, b.planet1));
     }
 
@@ -844,11 +853,11 @@ public class CardIndexer{
   }
 
 
-  public static ArrayList<Card> fusionChains(ArrayList<Card> fusions, ArrayList<Card> hand, ArrayList<Card> board){
+  public static void fusionChains(ArrayList<Card> fusions, ArrayList<Card> hand, ArrayList<Card> board){
     //fusions = removeDuplicateCombos(fusions);
     //System.out.println(fusions);
     if(fusions.size() < 2){
-      return fusions;
+      return ;//fusions;
     }
     System.out.println(hand);
     System.out.println(fusions);
@@ -891,9 +900,14 @@ public class CardIndexer{
       }
       System.out.println("\nNEWHAND\n"+newHand);
     }*/
-    return fusions;
+    //return fusions;
   }
 
+
+  public static boolean validFusionPartners(Card a, Card b){
+    Card res = combos[a.id][b.id];
+    return res != null;
+  }
 
 
 /**
@@ -1007,7 +1021,7 @@ public class CardIndexer{
       //System.out.println("combo: " + combo);
     }
     if(res.size() > 0){
-      //res = fusionChains(res, hand, myBoard);
+      // fusionChains(res, hand, myBoard);
     }
     return removeDuplicateCombos(res);
   }
