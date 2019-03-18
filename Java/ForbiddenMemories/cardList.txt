@@ -1,0 +1,724 @@
+<string-array name="cardList">
+	<item>Blue-eyes White Dragon</item>
+	<item>Mystical Elf</item>
+	<item>Hitotsu-me Giant</item>
+	<item>Baby Dragon</item>
+	<item>Ryu-kishin</item>
+	<item>Feral Imp</item>
+	<item>Winged Dragon #1</item>
+	<item>Mushroom Man</item>
+	<item>Shadow Specter</item>
+	<item>Blackland Fire Dragon</item>
+	<item>Sword Arm of Dragon</item>
+	<item>Swamp Battleguard</item>
+	<item>Tyhone</item>
+	<item>Battle Steer</item>
+	<item>Flame Swordsman</item>
+	<item>Time Wizard</item>
+	<item>Right Leg of the Forbidden One</item>
+	<item>Left Leg of the Forbidden One</item>
+	<item>Right Arm of the Forbidden One</item>
+	<item>Left Arm of the Forbidden One</item>
+	<item>Exodia the Forbidden</item>
+	<item>Summoned Skull</item>
+	<item>The Wicked Worm Beast</item>
+	<item>Skull Servant</item>
+	<item>Horn Imp</item>
+	<item>Battle Ox</item>
+	<item>Beaver Warrior</item>
+	<item>Rock Ogre Grotto #1</item>
+	<item>Mountain Warrior</item>
+	<item>Zombie Warrior</item>
+	<item>Koumori Dragon</item>
+	<item>Two-headed King Rex</item>
+	<item>Judge Man</item>
+	<item>Saggi the Dark Clown</item>
+	<item>Dark Magician</item>
+	<item>The Snake Hair</item>
+	<item>Gaia the Dragon Champion</item>
+	<item>Gaia the Fierce Knight</item>
+	<item>Curse of Dragon</item>
+	<item>Dragon Piper</item>
+	<item>Celtic Guardian</item>
+	<item>Illusionist Faceless Mage</item>
+	<item>Karbonala Warrior</item>
+	<item>Rogue Doll</item>
+	<item>Oscillo Hero #2</item>
+	<item>Griffore</item>
+	<item>Torike</item>
+	<item>Sangan</item>
+	<item>Big Insect</item>
+	<item>Basic Insect</item>
+	<item>Armored Lizard</item>
+	<item>Hercules Beetle</item>
+	<item>Killer Needle</item>
+	<item>Gokibore</item>
+	<item>Giant Flea</item>
+	<item>Larvae Moth</item>
+	<item>Great Moth</item>
+	<item>Kuriboh</item>
+	<item>Mammoth Graveyard</item>
+	<item>Great White</item>
+	<item>Wolf</item>
+	<item>Harpie Lady</item>
+	<item>Harpie Lady Sisters</item>
+	<item>Tiger Axe</item>
+	<item>Silver Fang</item>
+	<item>Kojikocy</item>
+	<item>Perfectly Ultimate Great Moth</item>
+	<item>Garoozis</item>
+	<item>Thousand Dragon</item>
+	<item>Fiend Kraken</item>
+	<item>Jellyfish</item>
+	<item>Cocoon of Evolution</item>
+	<item>Kairyu-shin</item>
+	<item>Giant Soldier of Stone</item>
+	<item>Man-eating Plant</item>
+	<item>Krokodilus</item>
+	<item>Grappler</item>
+	<item>Axe Raider</item>
+	<item>Megazowler</item>
+	<item>Uraby</item>
+	<item>Crawling Dragon #2</item>
+	<item>Red-eyes B. Dragon</item>
+	<item>Castle of Dark Illusions</item>
+	<item>Reaper of the Cards</item>
+	<item>King of Yamimakai</item>
+	<item>Barox</item>
+	<item>Dark Chimera</item>
+	<item>Metal Guardian</item>
+	<item>Catapult Turtle</item>
+	<item>Gyakutenno Megami</item>
+	<item>Mystic Horseman</item>
+	<item>Rabid Horseman</item>
+	<item>Zanki</item>
+	<item>Crawling Dragon</item>
+	<item>Crass Clown</item>
+	<item>Armored Zombie</item>
+	<item>Dragon Zombie</item>
+	<item>Clown Zombie</item>
+	<item>Pumpking the King of Ghosts</item>
+	<item>Battle Warrior</item>
+	<item>Wings of Wicked Flame</item>
+	<item>Mask of Darkness</item>
+	<item>Job-change Mirror</item>
+	<item>Curtain of the Dark Ones</item>
+	<item>Tomozaurus</item>
+	<item>Spirit of the Winds</item>
+	<item>Kageningen</item>
+	<item>Graveyard and the Hand of Invitation</item>
+	<item>Goddess with the Third Eye</item>
+	<item>Hero of the East</item>
+	<item>Doma The Angel of Silence</item>
+	<item>That Which Feeds on Life</item>
+	<item>Dark Gray</item>
+	<item>White Magical Hat</item>
+	<item>Kamion Wizard</item>
+	<item>Nightmare Scorpion</item>
+	<item>Spirit of the Books</item>
+	<item>Supporter in the Shadows</item>
+	<item>Trial of Nightmares</item>
+	<item>Dream Clown</item>
+	<item>Sleeping Lion</item>
+	<item>Yamatano Dragon Scroll</item>
+	<item>Dark Plant</item>
+	<item>Ancient Tool</item>
+	<item>Faith Bird</item>
+	<item>Orion the Battle King</item>
+	<item>Ansatsu</item>
+	<item>LaMoon</item>
+	<item>Nemuriko</item>
+	<item>Weather Control</item>
+	<item>Octoberser</item>
+	<item>The 13th Grave</item>
+	<item>Charubin the Fire Knight</item>
+	<item>Mystical Capture Chain</item>
+	<item>Fiend's Hand</item>
+	<item>Witty Phantom</item>
+	<item>Mystery Hand</item>
+	<item>Dragon Statue</item>
+	<item>Blue-eyed Silver Zombie</item>
+	<item>Toad Master</item>
+	<item>Spiked Snail</item>
+	<item>Flame Manipulator</item>
+	<item>Necrolancer the Timelord</item>
+	<item>Djinn the Watcher of the Wind</item>
+	<item>The Bewitching Phantom Thief</item>
+	<item>Temple of Skulls</item>
+	<item>Monster Egg</item>
+	<item>The Shadow Who Controls the Dark</item>
+	<item>Lord of the Lamp</item>
+	<item>Akihiron</item>
+	<item>Rhaimundos of the Red Sword</item>
+	<item>The Melting Red Shadow</item>
+	<item>Dokuroizo the Grim Reaper</item>
+	<item>Fire Reaper</item>
+	<item>Larvas</item>
+	<item>Hard Armor</item>
+	<item>Firegrass</item>
+	<item>Man Eater</item>
+	<item>Dig Beak</item>
+	<item>M-warrior #1</item>
+	<item>M-warrior #2</item>
+	<item>Tainted Wisdom</item>
+	<item>Lisark</item>
+	<item>Lord of Zemia</item>
+	<item>The Judgement Hand</item>
+	<item>Mysterious Puppeteer</item>
+	<item>Ancient Jar</item>
+	<item>Darkfire Dragon</item>
+	<item>Dark King of the Abyss</item>
+	<item>Spirit of the Harp</item>
+	<item>Big Eye</item>
+	<item>Armaill</item>
+	<item>Dark Prisoner</item>
+	<item>Hurricail</item>
+	<item>Ancient Brain</item>
+	<item>Fire Eye</item>
+	<item>Monsturtle</item>
+	<item>Claw Reacher</item>
+	<item>Phantom Dewan</item>
+	<item>Arlownay</item>
+	<item>Dark Shade</item>
+	<item>Masked Clown</item>
+	<item>Lucky Trinket</item>
+	<item>Genin</item>
+	<item>Eyearmor</item>
+	<item>Fiend Refrection #2</item>
+	<item>Gate Deeg</item>
+	<item>Synchar</item>
+	<item>Fusionist</item>
+	<item>Akakieisu</item>
+	<item>LaLa Li-oon</item>
+	<item>Key Mace</item>
+	<item>Turtle Tiger</item>
+	<item>Terra the Terrible</item>
+	<item>Doron</item>
+	<item>Arma Knight</item>
+	<item>Mech Mole Zombie</item>
+	<item>Happy Lover</item>
+	<item>Penguin Knight</item>
+	<item>Petit Dragon</item>
+	<item>Frenzied Panda</item>
+	<item>Air Marmot of Nefariousness</item>
+	<item>Phantom Ghost</item>
+	<item>Mabarrel</item>
+	<item>Dorover</item>
+	<item>Twin Long Rods #1</item>
+	<item>Droll Bird</item>
+	<item>Petit Angel</item>
+	<item>Winged Cleaver</item>
+	<item>Hinotama Soul</item>
+	<item>Kaminarikozou</item>
+	<item>Meotoko</item>
+	<item>Aqua Madoor</item>
+	<item>Kagemusha of the Blue Flame</item>
+	<item>Flame Ghost</item>
+	<item>Dryad</item>
+	<item>B. Skull Dragon</item>
+	<item>Two-mouth Darkruler</item>
+	<item>Solitude</item>
+	<item>Masked Sorcerer</item>
+	<item>Kumootoko</item>
+	<item>Midnight Fiend</item>
+	<item>Roaring Ocean Snake</item>
+	<item>Trap Master</item>
+	<item>Fiend Sword</item>
+	<item>Skull Stalker</item>
+	<item>Hitodenchak</item>
+	<item>Wood Remains</item>
+	<item>Hourglass of Life</item>
+	<item>Rare Fish</item>
+	<item>Wood Clown</item>
+	<item>Madjinn Gunn</item>
+	<item>Dark Titan of Terror</item>
+	<item>Beautiful Headhuntress</item>
+	<item>Wodan the Resident of the Forest</item>
+	<item>Guardian of the Labyrinth</item>
+	<item>Haniwa</item>
+	<item>Yashinoki</item>
+	<item>Vishwar Randi</item>
+	<item>The Drdek</item>
+	<item>Dark Assailant</item>
+	<item>Candle of Fate</item>
+	<item>Water Element</item>
+	<item>Dissolverock</item>
+	<item>Meda Bat</item>
+	<item>One Who Hunts Souls</item>
+	<item>Root Water</item>
+	<item>Master & Expert</item>
+	<item>Water Omotics</item>
+	<item>Hyo</item>
+	<item>Enchanting Mermaid</item>
+	<item>Nekogal #1</item>
+	<item>Angelwitch</item>
+	<item>Embryonic Beast</item>
+	<item>Prevent Rat</item>
+	<item>Dimensional Warrior</item>
+	<item>Stone Armadiller</item>
+	<item>Beastking of the Swamps</item>
+	<item>Ancient Sorcerer</item>
+	<item>Lunar Queen Elzaim</item>
+	<item>Wicked Mirror</item>
+	<item>The Little Swordsman of Aile</item>
+	<item>Rock Ogre Grotto #2</item>
+	<item>Wing Egg Elf</item>
+	<item>The Furious Sea King</item>
+	<item>Princess of Tsurugi</item>
+	<item>Unknown Warrior of Fiend</item>
+	<item>Sectarian of Secrets</item>
+	<item>Versago the Destroyer</item>
+	<item>Wetha</item>
+	<item>Megirus Light</item>
+	<item>Mavelus</item>
+	<item>Ancient Tree of Enlightenment</item>
+	<item>Green Phantom King</item>
+	<item>Ground Attacker Bugroth</item>
+	<item>Ray & Temperature</item>
+	<item>Gorgon Egg</item>
+	<item>Petit Moth</item>
+	<item>King Fog</item>
+	<item>Protector of the Throne</item>
+	<item>Mystic Clown</item>
+	<item>Mystical Sheep #2</item>
+	<item>Holograh</item>
+	<item>Tao the Chanter</item>
+	<item>Serpent Marauder</item>
+	<item>Gatekeeper</item>
+	<item>Ogre of the Black Shadow</item>
+	<item>Dark Artist</item>
+	<item>Change Slime</item>
+	<item>Moon Envoy</item>
+	<item>Fireyarou</item>
+	<item>Psychic Kappa</item>
+	<item>Masaki the Legendary Swordsman</item>
+	<item>Dragoness the Wicked Knight</item>
+	<item>Bio Plant</item>
+	<item>One-eyed Shield Dragon</item>
+	<item>Cyber Soldier of Darkworld</item>
+	<item>Wicked Dragon with the Ersatz Head</item>
+	<item>Sonic Maid</item>
+	<item>Kurama</item>
+	<item>Legendary Sword</item>
+	<item>Sword of Dark Destruction</item>
+	<item>Dark Energy</item>
+	<item>Axe of Despair</item>
+	<item>Laser Cannon Armor</item>
+	<item>Insect Armor with Laser Cannon</item>
+	<item>Elf's Light</item>
+	<item>Beast Fangs</item>
+	<item>Steel Shell</item>
+	<item>Vile Germs</item>
+	<item>Black Pendant</item>
+	<item>Silver Bow and Arrow</item>
+	<item>Horn of Light</item>
+	<item>Horn of the Unicorn</item>
+	<item>Dragon Treasure</item>
+	<item>Electro-whip</item>
+	<item>Cyber Shield</item>
+	<item>Elegant Egotist</item>
+	<item>Mystical Moon</item>
+	<item>Stop Defense</item>
+	<item>Malevolent Nuzzler</item>
+	<item>Violet Crystal</item>
+	<item>Book of Secret Arts</item>
+	<item>Invigoration</item>
+	<item>Machine Conversion Factory</item>
+	<item>Raise Body Heat</item>
+	<item>Follow Wind</item>
+	<item>Power of Kaishin</item>
+	<item>Dragon Capture Jar</item>
+	<item>Forest</item>
+	<item>Wasteland</item>
+	<item>Mountain</item>
+	<item>Sogen</item>
+	<item>Umi</item>
+	<item>Yami</item>
+	<item>Dark Hole</item>
+	<item>Raigeki</item>
+	<item>Mooyan Curry</item>
+	<item>Red Medicine</item>
+	<item>Goblin's Secret Remedy</item>
+	<item>Soul of the Pure</item>
+	<item>Dian Keto the Cure Master</item>
+	<item>Sparks</item>
+	<item>Hinotama</item>
+	<item>Final Flame</item>
+	<item>Ookazi</item>
+	<item>Tremendous Fire</item>
+	<item>Swords of Revealing Light</item>
+	<item>Spellbinding Circle</item>
+	<item>Dark-piercing Light</item>
+	<item>Yaranzo</item>
+	<item>Kanan the Swordmistress</item>
+	<item>Takriminos</item>
+	<item>Stuffed Animal</item>
+	<item>Megasonic Eye</item>
+	<item>Super War-lion</item>
+	<item>Yamadron</item>
+	<item>Seiyaryu</item>
+	<item>Three-legged Zombies</item>
+	<item>Zera The Mant</item>
+	<item>Flying Penguin</item>
+	<item>Millennium Shield</item>
+	<item>Fairy's Gift</item>
+	<item>Black Luster Soldier</item>
+	<item>Fiend's Mirror</item>
+	<item>Labyrinth Wall</item>
+	<item>Jirai Gumo</item>
+	<item>Shadow Ghoul</item>
+	<item>Wall Shadow</item>
+	<item>Labyrinth Tank</item>
+	<item>Sanga of the Thunder</item>
+	<item>Kazejin</item>
+	<item>Suijin</item>
+	<item>Gate Guardian</item>
+	<item>Dungeon Worm</item>
+	<item>Monster Tamer</item>
+	<item>Ryu-kishin Powered</item>
+	<item>Swordstalker</item>
+	<item>La Jinn the Mystical Genie</item>
+	<item>Blue-eyes Ultimate Dragon</item>
+	<item>Toon Alligator</item>
+	<item>Rude Kaiser</item>
+	<item>Parrot Dragon</item>
+	<item>Dark Rabbit</item>
+	<item>Bickuribox</item>
+	<item>Harpie's Pet Dragon</item>
+	<item>Mystic Lamp</item>
+	<item>Pendulum Machine</item>
+	<item>Giltia the D. Knight</item>
+	<item>Launcher Spider</item>
+	<item>Zoa</item>
+	<item>Metalzoa</item>
+	<item>Zone Eater</item>
+	<item>Steel Scorpion</item>
+	<item>Dancing Elf</item>
+	<item>Ocubeam</item>
+	<item>Leghul</item>
+	<item>Ooguchi</item>
+	<item>Swordsman from a Foreign Land</item>
+	<item>Emperor of the Land and Sea</item>
+	<item>Ushi Oni</item>
+	<item>Monster Eye</item>
+	<item>Leogun</item>
+	<item>Tatsunootoshigo</item>
+	<item>Saber Slasher</item>
+	<item>Yaiba Robo</item>
+	<item>Machine King</item>
+	<item>Giant Mech-soldier</item>
+	<item>Metal Dragon</item>
+	<item>Mechanical Spider</item>
+	<item>Bat</item>
+	<item>Giga-tech Wolf</item>
+	<item>Cyber Soldier</item>
+	<item>Shovel Crusher</item>
+	<item>Mechanicalchacer</item>
+	<item>Blocker</item>
+	<item>Blast Juggler</item>
+	<item>Golgoil</item>
+	<item>Giganto</item>
+	<item>Cyber-Stein</item>
+	<item>Cyber Commander</item>
+	<item>Jinzo #7</item>
+	<item>Dice Armadillo</item>
+	<item>Sky Dragon</item>
+	<item>Thunder Dragon</item>
+	<item>Stone D.</item>
+	<item>Kaiser Dragon</item>
+	<item>Magician of Faith</item>
+	<item>Goddess of Whim</item>
+	<item>Water Magician</item>
+	<item>Ice Water</item>
+	<item>Waterdragon Fairy</item>
+	<item>Ancient Elf</item>
+	<item>Beautiful Beast Trainer</item>
+	<item>Water Girl</item>
+	<item>White Dolphin</item>
+	<item>Deepsea Shark</item>
+	<item>Metal Fish</item>
+	<item>Bottom Dweller</item>
+	<item>7 Colored Fish</item>
+	<item>Mech Bass</item>
+	<item>Aqua Dragon</item>
+	<item>Sea King Dragon</item>
+	<item>Turu-Purun</item>
+	<item>Guardian of the Sea</item>
+	<item>Aqua Snake</item>
+	<item>Giant Red Seasnake</item>
+	<item>Spike Seadra</item>
+	<item>30,000-Year White Turtle</item>
+	<item>Kappa Avenger</item>
+	<item>Kanikabuto</item>
+	<item>Zarigun</item>
+	<item>Millennium Golem</item>
+	<item>Destroyer Golem</item>
+	<item>Barrel Rock</item>
+	<item>Minomushi Warrior</item>
+	<item>Stone Ghost</item>
+	<item>Kaminari Attack</item>
+	<item>Tripwire Beast</item>
+	<item>Bolt Escargot</item>
+	<item>Bolt Penguin</item>
+	<item>The Immortal of Thunder</item>
+	<item>Electric Snake</item>
+	<item>Wing Eagle</item>
+	<item>Punished Eagle</item>
+	<item>Skull Red Bird</item>
+	<item>Crimson Sunbird</item>
+	<item>Queen Bird</item>
+	<item>Armed Ninja</item>
+	<item>Magical Ghost</item>
+	<item>Soul Hunter</item>
+	<item>Air Eater</item>
+	<item>Vermillion Sparrow</item>
+	<item>Sea Kamen</item>
+	<item>Sinister Serpent</item>
+	<item>Ganigumo</item>
+	<item>Alinsection</item>
+	<item>Insect Soldiers of the Sky</item>
+	<item>Cockroach Knight</item>
+	<item>Kuwagata α</item>
+	<item>Burglar</item>
+	<item>Pragtical</item>
+	<item>Garvas</item>
+	<item>Ameba</item>
+	<item>Korogashi</item>
+	<item>Boo Koo</item>
+	<item>Flower Wolf</item>
+	<item>Rainbow Flower</item>
+	<item>Barrel Lily</item>
+	<item>Needle Ball</item>
+	<item>Peacock</item>
+	<item>Hoshiningen</item>
+	<item>Maha Vailo</item>
+	<item>Rainbow Marine Mermaid</item>
+	<item>Musician King</item>
+	<item>Wilmee</item>
+	<item>Yado Karu</item>
+	<item>Morinphen</item>
+	<item>Kattapillar</item>
+	<item>Dragon Seeker</item>
+	<item>Man-eater Bug</item>
+	<item>D. Human</item>
+	<item>Turtle Raccoon</item>
+	<item>Fungi of the Musk</item>
+	<item>Prisman</item>
+	<item>Gale Dogra</item>
+	<item>Crazy Fish</item>
+	<item>Cyber Saurus</item>
+	<item>Bracchio-raidus</item>
+	<item>Laughing Flower</item>
+	<item>Bean Soldier</item>
+	<item>Cannon Soldier</item>
+	<item>Guardian of the Throne Room</item>
+	<item>Brave Scizzar</item>
+	<item>The Statue of Easter Island</item>
+	<item>Muka Muka</item>
+	<item>Sand Stone</item>
+	<item>Boulder Tortoise</item>
+	<item>Fire Kraken</item>
+	<item>Turtle Bird</item>
+	<item>Skullbird</item>
+	<item>Monstrous Bird</item>
+	<item>The Bistro Butcher</item>
+	<item>Star Boy</item>
+	<item>Spirit of the Mountain</item>
+	<item>Neck Hunter</item>
+	<item>Milus Radiant</item>
+	<item>Togex</item>
+	<item>Flame Cerebrus</item>
+	<item>Eldeen</item>
+	<item>Mystical Sand</item>
+	<item>Gemini Elf</item>
+	<item>Kwagar Hercules</item>
+	<item>Minar</item>
+	<item>Kamakiriman</item>
+	<item>Mechaleon</item>
+	<item>Mega Thunderball</item>
+	<item>Niwatori</item>
+	<item>Corroding Shark</item>
+	<item>Skelengel</item>
+	<item>Hane-Hane</item>
+	<item>Misairuzame</item>
+	<item>Tongyo</item>
+	<item>Dharma Cannon</item>
+	<item>Skelgon</item>
+	<item>Wow Warrior</item>
+	<item>Griggle</item>
+	<item>Bone Mouse</item>
+	<item>Frog The Jam</item>
+	<item>Behegon</item>
+	<item>Dark Elf</item>
+	<item>Winged Dragon #2</item>
+	<item>Mushroom Man #2</item>
+	<item>Lava Battleguard</item>
+	<item>Tyhone #2</item>
+	<item>The Wandering Doomed</item>
+	<item>Steel Ogre Grotto #1</item>
+	<item>Pot the Trick</item>
+	<item>Oscillo Hero</item>
+	<item>Invader from Another Dimension</item>
+	<item>Lesser Dragon</item>
+	<item>Needle Worm</item>
+	<item>Wretched Ghost of the Attic</item>
+	<item>Great Mammoth of Goldfine</item>
+	<item>Man-eating Black Shark</item>
+	<item>Yormungarde</item>
+	<item>Darkworld Thorns</item>
+	<item>Anthrosaurus</item>
+	<item>Drooling Lizard</item>
+	<item>Trakadon</item>
+	<item>B. Dragon Jungle King</item>
+	<item>Empress Judge</item>
+	<item>Little D</item>
+	<item>Witch of the Black Forest</item>
+	<item>Ancient One of the Deep Forest</item>
+	<item>Giant Scorpion of the Tundra</item>
+	<item>Crow Goblin</item>
+	<item>Leo Wizard</item>
+	<item>Abyss Flower</item>
+	<item>Patrol Robo</item>
+	<item>Takuhee</item>
+	<item>Dark Witch</item>
+	<item>Weather Report</item>
+	<item>Binding Chain</item>
+	<item>Mechanical Snail</item>
+	<item>Greenkappa</item>
+	<item>Mon Larvas</item>
+	<item>Living Vase</item>
+	<item>Tentacle Plant</item>
+	<item>Beaked Snake</item>
+	<item>Morphing Jar</item>
+	<item>Muse-A</item>
+	<item>Giant Turtle Who Feeds on Flames</item>
+	<item>Rose Spectre of Dunn</item>
+	<item>Fiend Refrection #1</item>
+	<item>Ghoul with an Appetite</item>
+	<item>Pale Beast</item>
+	<item>Little Chimera</item>
+	<item>Violent Rain</item>
+	<item>Key Mace #2</item>
+	<item>Tenderness</item>
+	<item>Penguin Soldier</item>
+	<item>Fairy Dragon</item>
+	<item>Obese Marmot of Nefariousness</item>
+	<item>Liquid Beast</item>
+	<item>Twin Long Rods #2</item>
+	<item>Great Bill</item>
+	<item>Shining Friendship</item>
+	<item>Bladefly</item>
+	<item>Electric Lizard</item>
+	<item>Hiro's Shadow Scout</item>
+	<item>Lady of Faith</item>
+	<item>Twin-headed Thunder Dragon</item>
+	<item>Hunter Spider</item>
+	<item>Armored Starfish</item>
+	<item>Hourglass of Courage</item>
+	<item>Marine Beast</item>
+	<item>Warrior of Tradition</item>
+	<item>Rock Spirit</item>
+	<item>Snakeyashi</item>
+	<item>Succubus Knight</item>
+	<item>Ill Witch</item>
+	<item>The Thing That Hides in the Mud</item>
+	<item>High Tide Gyojin</item>
+	<item>Fairy of the Fountain</item>
+	<item>Amazon of the Seas</item>
+	<item>Nekogal #2</item>
+	<item>Witch's Apprentice</item>
+	<item>Armored Rat</item>
+	<item>Ancient Lizard Warrior</item>
+	<item>Maiden of the Moonlight</item>
+	<item>Stone Ogre Grotto</item>
+	<item>Winged Egg of New Life</item>
+	<item>Night Lizard</item>
+	<item>Queen's Double</item>
+	<item>Blue-winged Crown</item>
+	<item>Trent</item>
+	<item>Queen of Autumn Leaves</item>
+	<item>Amphibious Bugroth</item>
+	<item>Acid Crawler</item>
+	<item>Invader of the Throne</item>
+	<item>Mystical Sheep #1</item>
+	<item>Disk Magician</item>
+	<item>Flame Viper</item>
+	<item>Royal Guard</item>
+	<item>Gruesome Goo</item>
+	<item>Hyosube</item>
+	<item>Machine Attacker</item>
+	<item>Hibikime</item>
+	<item>Whiptail Crow</item>
+	<item>Kunai with Chain</item>
+	<item>Magical Labyrinth</item>
+	<item>Warrior Elimination</item>
+	<item>Salamandra</item>
+	<item>Cursebreaker</item>
+	<item>Eternal Rest</item>
+	<item>Megamorph</item>
+	<item>Metalmorph</item>
+	<item>Winged Trumpeter</item>
+	<item>Stain Storm</item>
+	<item>Crush Card</item>
+	<item>Eradicating Aerosol</item>
+	<item>Breath of Light</item>
+	<item>Eternal Draught</item>
+	<item>Curse of Millennium Shield</item>
+	<item>Yamadron Ritual</item>
+	<item>Gate Guardian Ritual</item>
+	<item>Bright Castle</item>
+	<item>Shadow Spell</item>
+	<item>Black Luster Ritual</item>
+	<item>Zera Ritual</item>
+	<item>Harpie's Feather Duster</item>
+	<item>War-lion Ritual</item>
+	<item>Beastry Mirror Ritual</item>
+	<item>Ultimate Dragon</item>
+	<item>Commencement Dance</item>
+	<item>Hamburger Recipe</item>
+	<item>Revival of Sennen Genjin</item>
+	<item>Novox's Prayer</item>
+	<item>Curse of Tri-Horned Dragon</item>
+	<item>House of Adhesive Tape</item>
+	<item>Eatgaboon</item>
+	<item>Bear Trap</item>
+	<item>Invisible Wire</item>
+	<item>Acid Trap Hole</item>
+	<item>Widespread Ruin</item>
+	<item>Goblin Fan</item>
+	<item>Bad Reaction to Simochi</item>
+	<item>Reverse Trap</item>
+	<item>Fake Trap</item>
+	<item>Revived of Serpent Night Dragon</item>
+	<item>Turtle Oath</item>
+	<item>Contruct of Mask</item>
+	<item>Resurrection of Chakra</item>
+	<item>Puppet Ritual</item>
+	<item>Javelin Beetle Pact</item>
+	<item>Garma Sword Oath</item>
+	<item>Cosmo Queen's Prayer</item>
+	<item>Revival of Skeleton Rider</item>
+	<item>Fortress Whale's Oath</item>
+	<item>Performance of Sword</item>
+	<item>Hungry Burger</item>
+	<item>Sengenjin</item>
+	<item>Skull Guardian</item>
+	<item>Tri-horned Dragon</item>
+	<item>Serpent Night Dragon</item>
+	<item>Skull Knight</item>
+	<item>Cosmo Queen</item>
+	<item>Chakra</item>
+	<item>Crab Turtle</item>
+	<item>Mikazukinoyaiba</item>
+	<item>Meteor Dragon</item>
+	<item>Meteor B. Dragon</item>
+	<item>Firewing Pegasus</item>
+	<item>Psycho-Puppet</item>
+	<item>Garma Sword</item>
+	<item>Javelin Beetle</item>
+	<item>Fortress Whale</item>
+	<item>Dokurorider</item>
+	<item>Mask of Shine & Dark</item>
+	<item>Dark Magic Ritual</item>
+	<item>Magician of Black Chaos</item>
+</string-array>

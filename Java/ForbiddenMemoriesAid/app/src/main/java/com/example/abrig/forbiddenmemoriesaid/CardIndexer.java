@@ -2,7 +2,7 @@ package com.example.abrig.forbiddenmemoriesaid;
 
 /**
  * Java program to parse all yugioh
- * cards in the combinations.txt file.
+ * cards in the combinations text file.
  * Uses the Card class to store each
  * card's data. Program can produce
  * a list of possible combinations.
@@ -13,12 +13,13 @@ package com.example.abrig.forbiddenmemoriesaid;
  */
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class CardIndexer{
 
-    public String file = "./combinations.txt";
+    public String file = "raw/combinations.txt";
     public Scanner scan, tokenizer;
     public Card[] cardsList = new Card[722];
     public Card[][] combos = new Card[722][722];
@@ -161,6 +162,11 @@ public class CardIndexer{
 
     public void parseCombinationsFile(){
         try{
+
+
+            InputStream inputStream = getResources().openRawResource(R.raw.combinations);
+
+            
             scan = new Scanner(new FileInputStream(file));
             String line = scan.nextLine();
             Card temp;
@@ -1058,7 +1064,7 @@ public class CardIndexer{
      lineToCard method is called to turn a bufferered string into a Card object.
      Uses a scanner to tokenize each character, and assign to card attribute
      values. Returns the created Card.
-     @param line A string of characters read from the combinations.txt file.
+     @param line A string of characters read from the combinations text file.
      @return The created Card.
      */
     public Card lineToCard(String line){

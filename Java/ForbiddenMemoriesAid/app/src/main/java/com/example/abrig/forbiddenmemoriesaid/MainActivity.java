@@ -17,7 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,15 +57,16 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
+//        Button submitButton = findViewById(R.id.submit_button);
     }
 
 
@@ -117,9 +122,20 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             assert getArguments() != null;
             int args = getArguments().getInt(ARG_SECTION_NUMBER);
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, args));
+            View rootView;
+            switch(args) {
+                case 1  :   rootView = inflater.inflate(R.layout.fragment_main, container, false);
+                            FragmentMain fM = new FragmentMain();
+                            break;
+                case 2  :   rootView = inflater.inflate(R.layout.fragment_2, container, false);
+                            break;
+                case 3  :   rootView = inflater.inflate(R.layout.fragment_3, container, false);
+                            break;
+                default :   rootView = inflater.inflate(R.layout.fragment_main, container, false);
+                            break;
+            }
+//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+//            textView.setText(getString(R.string.section_format, args));
             return rootView;
         }
     }

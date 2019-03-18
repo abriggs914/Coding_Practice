@@ -11,6 +11,8 @@
 */
 
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -151,6 +153,7 @@ public class CardIndexer{
       else{
         System.out.println("false");
       }
+      printXMLFile();
       //System.out.println(starSignAdvantage(a.planet2, b.planet1));
     }
 
@@ -192,6 +195,23 @@ public class CardIndexer{
           }
         }
       }
+    }
+    catch(Exception e){
+      e.printStackTrace();
+    }
+  }
+
+  public static void printXMLFile(){
+    String fileName = "./cardList.txt";
+    BufferedWriter bw;
+    try{
+      bw = new BufferedWriter(new FileWriter(fileName));
+      bw.write("<string-array name=\"cardList\">\n");
+      for(int i = 0; i < cardsList.length; i++){
+        bw.write("\t<item>"+cardsList[i].name+"</item>\n");
+      }
+      bw.write("</string-array>\n");
+      bw.close();
     }
     catch(Exception e){
       e.printStackTrace();
