@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    private final String TAG = "MAINACTIVITY";
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -65,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-
-//        Button submitButton = findViewById(R.id.submit_button);
     }
 
 
@@ -120,20 +121,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            assert getArguments() != null;
-            int args = getArguments().getInt(ARG_SECTION_NUMBER);
             View rootView;
-            switch(args) {
-                case 1  :   rootView = inflater.inflate(R.layout.fragment_main, container, false);
-                            FragmentMain fM = new FragmentMain();
-                            break;
-                case 2  :   rootView = inflater.inflate(R.layout.fragment_2, container, false);
-                            break;
-                case 3  :   rootView = inflater.inflate(R.layout.fragment_3, container, false);
-                            break;
-                default :   rootView = inflater.inflate(R.layout.fragment_main, container, false);
-                            break;
-            }
+            rootView = inflater.inflate(R.layout.fragment_main, container, false);
 //            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 //            textView.setText(getString(R.string.section_format, args));
             return rootView;
@@ -154,7 +143,21 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+//            assert getArguments() != null;
+//            int args = getArguments().getInt(ARG_SECTION_NUMBER);
+            CardIndexer cardIndexer = new CardIndexer();
+            Fragment fragment = null;
+            switch(position) {
+                case 0  :   fragment = new FragmentMain();
+                            break;
+//                case 1  :   fragment = new FragmentMain();
+//                            break;
+//                case 2  :   fragment = new FragmentMain();
+//                            break;
+                default :   fragment = new FragmentMain();
+                            break;
+            }
+            return fragment;
         }
 
         @Override

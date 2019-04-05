@@ -57,4 +57,5 @@
   (check-equal? (baseConverter 248712225 10 2) '(1 1 1 0 1 1 0 1 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1))
   
   (check-equal? (list->number '(1 1 1 0 1 1 0 1 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1)) 1110110100110000110000100001)
-  (check-equal? (list->number (baseConverter 1110110100110000110000100001 2 10)) 248712225))
+  (check-equal? (list->number (baseConverter 1110110100110000110000100001 2 10)) 248712225)
+  (check-equal? (list->number (baseConverter (list->number '(1 0 7 7 6 5 1 5 2 0)) 10 2)) 1000000001110111010100001000000))

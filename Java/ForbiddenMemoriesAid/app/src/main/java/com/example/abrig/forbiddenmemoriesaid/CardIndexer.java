@@ -164,7 +164,7 @@ public class CardIndexer{
         try{
 
 
-            InputStream inputStream = getResources().openRawResource(R.raw.combinations);
+//            InputStream inputStream = getResources().openRawResource(R.raw.combinations);
 
             
             scan = new Scanner(new FileInputStream(file));
