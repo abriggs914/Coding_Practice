@@ -1,12 +1,20 @@
 
-import java.util.*;
-import java.util.Collections;
+// import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class CourseWeb{
 
   public static ArrayList<Course> courseList = new ArrayList<Course>();
 
-  public static void main(String[] args){
+  public static void main(String[] args) throws CourseException{
+
+    /*
+
+        DO NOT SORT courseList  IT IS ALREADY IN CHRONOLOGICAL ORDER
+
+    */
 
     courseList.add(new Course("BIOL", 1001, "C", 3));
 		courseList.add(new Course("CHEM", 1001, "B", 3));
@@ -49,6 +57,7 @@ public class CourseWeb{
 
     // courseList.forEach((c) -> System.out.println(c.getName()));
     System.out.println("Average grade: " + computeAverageGrade());
+    computeGPA();
 
     // courseList.remove(21);
     printLstCoursesWithPreReqs();
@@ -111,6 +120,29 @@ public class CourseWeb{
     return res;
   }
 
+  public static void computeGPA(){
+
+    int numCoursesTaken = courseList.size();
+    computeGPAValue();
+  }
+
+  public static double computeGPAValue(){
+    ArrayList<Double> grades = new ArrayList<Double>();
+    courseList.forEach((c) -> grades.add(c.getGradeValue() * c.getCourseHours()));
+    // for(int i = 0; i < courseList.length; i++){
+    //   grades.get(i) *= cou
+    // }
+    System.out.println(grades);
+    double gpaSum = 0;
+    int numCreditHoursAttempted = 0;
+    for(int i = 0; i < grades.size(); i++){
+      gpaSum += grades.get(i);
+      numCreditHoursAttempted += courseList.get(i).getCourseHours();
+    }
+    gpaSum /= (double) numCreditHoursAttempted;
+    return gpaSum;
+  }
+
   public static ArrayList<Course> collectCoursePreReqs(Course course){
     ArrayList<Course> preReqs = course.getPreReqs();
     if(preReqs.isEmpty()){
@@ -122,30 +154,63 @@ public class CourseWeb{
       for(int i = 0; i < preReqs.size(); i++){
         temp.addAll(collectCoursePreReqs(preReqs.get(i)));
       }
-      ArrayList<Course> res = new ArrayList<Course>();
-      // preReqs.clear();
-      for(Course c : temp){
-        if(!res.contains(c)){
-          res.add(c);
-        }
-      }
-      return res;
+      return temp;
     }
   }
     // System.out.println();
 
+  /**
+  *
+  */
   public static void printLstCoursesWithPreReqs(){
     for(int i = 0; i < courseList.size(); i++){
       System.out.println("\n\tCourse: " + courseList.get(i).getName());
-      ArrayList<Course> preReqs = collectCoursePreReqs(courseList.get(i));
-      mapPreReqsTimeline(courseList.get(i), preReqs);
-      preReqs.forEach((c) -> System.out.println(c.getName()));
+      ArrayList<Course> res = collectCoursePreReqs(courseList.get(i));
+      ArrayList<Course> preReqs = new ArrayList<Course>();
+      // preReqs.clear();
+      for(Course c : res){
+        // System.out.println(preReqs);
+        if(!preReqs.contains(c)){
+          preReqs.add(c);
+        }
+      }
+      sortCoursesByCourseNum(preReqs);
+      preReqs.forEach((c) -> System.out.println(c));
     }
   }
 
+  public static void printLstCoursesWithPreReqsTimeLine(){
+    for(int i = 0; i < courseList.size(); i++){
+      System.out.println("\n\tCourse: " + courseList.get(i).getName());
+      ArrayList<Course> res = collectCoursePreReqs(courseList.get(i));
+      ArrayList<Course> preReqs = new ArrayList<Course>();
+      // preReqs.clear();
+      for(Course c : res){
+        // System.out.println(preReqs);
+        if(!preReqs.contains(c)){
+          preReqs.add(c);
+        }
+      }
+      sortCoursesByCourseNum(preReqs);
+      mapPreReqsTimeline(courseList.get(i), preReqs);
+      preReqs.forEach((c) -> System.out.println(c));
+    }
+  }
+
+  public static void sortCoursesByCourseNum(ArrayList<Course> arr){
+    arr.sort((c1, c2) -> {
+      return c1.getCourseNum() - c2.getCourseNum();
+    });
+  }
+
+  public static void sortCoursesByOrderTaken(ArrayList<Course> arr){
+    arr.sort((c1, c2) -> {
+      return c1.getChronoIndex() - c2.getChronoIndex();
+    });
+  }
+
   public static void mapPreReqsTimeline(Course course, ArrayList<Course> preReqs){
-    Comparator<Course> compareById = (Course c1, Course c2) -> c1.getCourseNum().compareTo(c2.getCourseNum());
-    Collections.sort(preReqs);
-    preReqs.forEach((c) -> System.out.println(c.getName()));
+
+    // preReqs.forEach((c) -> System.out.println(c));
   }
 }
