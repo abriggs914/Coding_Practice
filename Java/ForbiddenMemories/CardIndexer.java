@@ -8,6 +8,10 @@
 * March 2019
 * @author Avery Briggs
 * 3471065
+*
+*7
+*
+*
 */
 
 import java.io.FileInputStream;
@@ -230,7 +234,6 @@ public class CardIndexer{
       e.printStackTrace();
     }
   }
-
 
   public static void selectStrongestCard(ArrayList<Card> hand, ArrayList<Card> fusions){
     int maxH = -1;

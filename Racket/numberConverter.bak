@@ -29,20 +29,37 @@
           (reverse (string->list (number->string n))))])
     (reverse n)))
 
-(define (baseConverter n cb rb)
-  (let ([n (reverse (number->list n))])
-    (define (helper n cb acc i)
-      (cond
-        [(empty? n) acc]
-        [else (helper (rest n) cb (+ acc (* (first n) (expt cb i))) (add1 i))]))
-    (baseTenConverter (helper n cb 0 0) rb)))
-
 (define (list->number lst)
   (define (helper lst n i)
     (cond
       [(empty? lst) n]
       [else (helper (rest lst) (+ n (* (first lst) (expt 10 i))) (add1 i))]))
   (helper (reverse lst) 0 0))
+
+(define (baseConverter n cb rb)
+  (let* ([x (verify n cb)]
+         [n (reverse (number->list x))])
+    (define (helper n cb acc i)
+      (cond
+        [(empty? n) acc]
+        [else (helper (rest n) cb (+ acc (* (first n) (expt cb i))) (add1 i))]))
+    (baseTenConverter (helper n cb 0 0) rb)))
+
+(define (verify n cb)
+  (cond
+    [(number? n) n]
+    [else
+(let ([x (char->integer n)])
+     (if
+      (= 16 cb)
+      (cond
+        [(= x 65) 10]
+        [(= x 66) 11]
+        [(= x 67) 12]
+        [(= x 68) 13]
+        [(= x 69) 14]
+        [(= x 70) 15])
+      (error 'verify "Invalid number")))]))
 
 (module+ test
   (require rackunit)
@@ -57,4 +74,5 @@
   (check-equal? (baseConverter 248712225 10 2) '(1 1 1 0 1 1 0 1 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1))
   
   (check-equal? (list->number '(1 1 1 0 1 1 0 1 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1)) 1110110100110000110000100001)
-  (check-equal? (list->number (baseConverter 1110110100110000110000100001 2 10)) 248712225))
+  (check-equal? (list->number (baseConverter 1110110100110000110000100001 2 10)) 248712225)
+  (check-equal? (list->number (baseConverter (list->number '(1 0 7 7 6 5 1 5 2 0)) 10 2)) 1000000001110111010100001000000))

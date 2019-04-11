@@ -108,7 +108,7 @@ public class Card{
                  this.atkPoints + " " +
                  this.defPoints + " " +
                  this.planet1 + " " +
-                 this.planet2;
+                 this.planet2 + "\n";
     return res;
   }
 }
