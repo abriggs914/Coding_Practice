@@ -67,6 +67,10 @@ public class Card{
         }
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public void setStarSignPlay(String planet) throws CardException{
         if(this.planet1.equals(planet)){
             return;
