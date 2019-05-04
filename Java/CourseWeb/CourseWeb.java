@@ -50,9 +50,9 @@ public class CourseWeb{
 		courseList.add(new Course("CS", 3413, "B+", 4, new ArrayList<Course>(Arrays.asList(courseList.get(24)))));
 		courseList.add(new Course("CS", 3113, "D", 3, new ArrayList<Course>(Arrays.asList(courseList.get(15), courseList.get(18)))));
 		courseList.add(new Course("CS", 2063, "A", 4, new ArrayList<Course>(Arrays.asList(courseList.get(27)))));
-		courseList.add(new Course("CS", 3383, "F", 4, new ArrayList<Course>(Arrays.asList(courseList.get(20), courseList.get(22), courseList.get(28)))));
-		courseList.add(new Course("CS", 3613, "F", 4, new ArrayList<Course>(Arrays.asList(courseList.get(20), courseList.get(24), courseList.get(29)))));
-		courseList.add(new Course("CS", 3873, "F", 4, new ArrayList<Course>(Arrays.asList(courseList.get(24)))));
+		courseList.add(new Course("CS", 3383, "C+", 4, new ArrayList<Course>(Arrays.asList(courseList.get(20), courseList.get(22), courseList.get(28)))));
+		courseList.add(new Course("CS", 3613, "B", 4, new ArrayList<Course>(Arrays.asList(courseList.get(20), courseList.get(24), courseList.get(29)))));
+		courseList.add(new Course("CS", 3873, "A-", 4, new ArrayList<Course>(Arrays.asList(courseList.get(24)))));
 		courseList.add(new Course("CS", 3503, "B", 4, new ArrayList<Course>(Arrays.asList(courseList.get(19)))));
 
     // courseList.forEach((c) -> System.out.println(c.getName()));
