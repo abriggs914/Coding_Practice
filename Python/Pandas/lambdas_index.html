@@ -1,0 +1,69 @@
+<html><head><style>html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  text-align: center;
+}
+
+/*
+ * Table stuff
+ */
+
+.table-container {
+  width: max-content;
+  min-width: 100%;
+  padding: 0.5rem;
+  margin-top: 2rem;
+}
+
+.scroll-container {
+  overflow-y: auto;
+  overflow-x: none;
+  max-height: 14rem;
+  border: 1px solid #3E3E40;
+}
+
+table {
+  font-family: monospace;
+  white-space: nowrap;
+  padding: 0.625rem;
+  width: 100%;
+  overflow-x: none;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.25rem;
+  background-color: transparent;
+}
+
+tr {
+  height: 1.875rem;
+  font-size: 0.8125rem;
+}
+
+tr:nth-child(odd) {
+  background-color: #E9EAEA;
+}
+
+tr:nth-child(even),
+th {
+  background-color: #FFFFFF;
+}
+
+/*
+ * Chart stuff
+ */
+
+svg {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  max-width: 100%;
+}
+</style></head><body><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>id</th><th>first_name</th><th>last_name</th><th>gender</th><th>email</th><th>shoe_type</th><th>shoe_material</th><th>shoe_color</th></tr><tr><td>0</td><td>54791</td><td>Rebecca</td><td>Lindsay</td><td>female</td><td>RebeccaLindsay57@hotmail.com</td><td>clogs</td><td>faux-leather</td><td>black</td></tr><tr><td>1</td><td>53450</td><td>Emily</td><td>Joyce</td><td>female</td><td>EmilyJoyce25@gmail.com</td><td>ballet flats</td><td>faux-leather</td><td>navy</td></tr><tr><td>2</td><td>91987</td><td>Joyce</td><td>Waller</td><td>female</td><td>Joyce.Waller@gmail.com</td><td>sandles</td><td>fabric</td><td>black</td></tr><tr><td>3</td><td>14437</td><td>Justin</td><td>Erickson</td><td>male</td><td>Justin.Erickson@outlook.com</td><td>clogs</td><td>faux-leather</td><td>red</td></tr><tr><td>4</td><td>79357</td><td>Andrew</td><td>Banks</td><td>male</td><td>AB4318@gmail.com</td><td>boots</td><td>leather</td><td>brown</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>id</th><th>first_name</th><th>last_name</th><th>gender</th><th>email</th><th>shoe_type</th><th>shoe_material</th><th>shoe_color</th><th>shoe_source</th><th>salutation</th></tr><tr><td>0</td><td>54791</td><td>Rebecca</td><td>Lindsay</td><td>female</td><td>RebeccaLindsay57@hotmail.com</td><td>clogs</td><td>faux-leather</td><td>black</td><td>vegan</td><td>Dear Ms. Lindsay</td></tr><tr><td>1</td><td>53450</td><td>Emily</td><td>Joyce</td><td>female</td><td>EmilyJoyce25@gmail.com</td><td>ballet flats</td><td>faux-leather</td><td>navy</td><td>vegan</td><td>Dear Ms. Joyce</td></tr><tr><td>2</td><td>91987</td><td>Joyce</td><td>Waller</td><td>female</td><td>Joyce.Waller@gmail.com</td><td>sandles</td><td>fabric</td><td>black</td><td>vegan</td><td>Dear Ms. Waller</td></tr><tr><td>3</td><td>14437</td><td>Justin</td><td>Erickson</td><td>male</td><td>Justin.Erickson@outlook.com</td><td>clogs</td><td>faux-leather</td><td>red</td><td>vegan</td><td>Dear Mr. Erickson</td></tr><tr><td>4</td><td>79357</td><td>Andrew</td><td>Banks</td><td>male</td><td>AB4318@gmail.com</td><td>boots</td><td>leather</td><td>brown</td><td>animal</td><td>Dear Mr. Banks</td></tr><tr><td>5</td><td>52386</td><td>Julie</td><td>Marsh</td><td>female</td><td>JulieMarsh59@gmail.com</td><td>sandles</td><td>fabric</td><td>black</td><td>vegan</td><td>Dear Ms. Marsh</td></tr><tr><td>6</td><td>20487</td><td>Thomas</td><td>Jensen</td><td>male</td><td>TJ5470@gmail.com</td><td>clogs</td><td>fabric</td><td>navy</td><td>vegan</td><td>Dear Mr. Jensen</td></tr><tr><td>7</td><td>76971</td><td>Janice</td><td>Hicks</td><td>female</td><td>Janice.Hicks@gmail.com</td><td>clogs</td><td>faux-leather</td><td>navy</td><td>vegan</td><td>Dear Ms. Hicks</td></tr><tr><td>8</td><td>21586</td><td>Gabriel</td><td>Porter</td><td>male</td><td>GabrielPorter24@gmail.com</td><td>clogs</td><td>leather</td><td>brown</td><td>animal</td><td>Dear Mr. Porter</td></tr><tr><td>9</td><td>62083</td><td>Frances</td><td>Palmer</td><td>female</td><td>FrancesPalmer50@gmail.com</td><td>wedges</td><td>leather</td><td>white</td><td>animal</td><td>Dear Ms. Palmer</td></tr><tr><td>10</td><td>91629</td><td>Jessica</td><td>Hale</td><td>female</td><td>JessicaHale25@gmail.com</td><td>clogs</td><td>leather</td><td>red</td><td>animal</td><td>Dear Ms. Hale</td></tr><tr><td>11</td><td>98602</td><td>Lawrence</td><td>Parker</td><td>male</td><td>LawrenceParker44@gmail.com</td><td>wedges</td><td>fabric</td><td>brown</td><td>vegan</td><td>Dear Mr. Parker</td></tr><tr><td>12</td><td>45832</td><td>Susan</td><td>Dennis</td><td>female</td><td>SusanDennis58@gmail.com</td><td>ballet flats</td><td>fabric</td><td>white</td><td>vegan</td><td>Dear Ms. Dennis</td></tr><tr><td>13</td><td>33862</td><td>Diane</td><td>Ochoa</td><td>female</td><td>DO2680@gmail.com</td><td>sandles</td><td>fabric</td><td>red</td><td>vegan</td><td>Dear Ms. Ochoa</td></tr><tr><td>14</td><td>73431</td><td>Rebecca</td><td>Charles</td><td>female</td><td>Rebecca.Charles@gmail.com</td><td>boots</td><td>faux-leather</td><td>white</td><td>vegan</td><td>Dear Ms. Charles</td></tr><tr><td>15</td><td>93889</td><td>Jacqueline</td><td>Crane</td><td>female</td><td>JC2072@hotmail.com</td><td>wedges</td><td>fabric</td><td>red</td><td>vegan</td><td>Dear Ms. Crane</td></tr><tr><td>16</td><td>39888</td><td>Vincent</td><td>Stephenson</td><td>male</td><td>VS4753@outlook.com</td><td>boots</td><td>leather</td><td>black</td><td>animal</td><td>Dear Mr. Stephenson</td></tr><tr><td>17</td><td>35961</td><td>Roy</td><td>Tillman</td><td>male</td><td>RoyTillman20@gmail.com</td><td>boots</td><td>leather</td><td>white</td><td>animal</td><td>Dear Mr. Tillman</td></tr><tr><td>18</td><td>24560</td><td>Thomas</td><td>Roberson</td><td>male</td><td>Thomas.Roberson@gmail.com</td><td>wedges</td><td>fabric</td><td>red</td><td>vegan</td><td>Dear Mr. Roberson</td></tr><tr><td>19</td><td>28559</td><td>Angela</td><td>Newton</td><td>female</td><td>ANewton1977@outlook.com</td><td>wedges</td><td>fabric</td><td>red</td><td>vegan</td><td>Dear Ms. Newton</td></tr></table></div></div></body></html>
