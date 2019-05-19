@@ -1,7 +1,12 @@
 from full_pokedex import pokedex
 from pokemon import Pokemon
+import pandas as pd
 
-#Dict[Union[str,  Any],  Union[Union[Tuple[List[str],  List[str],  List[Any]],  Tuple[List[str],  List[str],  List[str]]],  Any]]
+# Dict[Union[str,  Any],  Union[Union[Tuple[List[str],  List[str],  List[Any]],  Tuple[List[str],  List[str],  List[str]]],  Any]]
+# List of all types stored as a dictionary. Each type contains a tuple of three lists:
+# 1st list ideals strong damage to the key type
+# 2nd list is dealt strong damage by the key type
+# 3rd list is dealt no damage from the key type
 type_effectiveness = {'fairy': (['poison', 'steel'], ['fighting', 'dragon', 'dark'], []),
                       'steel': (['fire', 'fighting', 'ground'], ['ice', 'rock', 'fairy'], []),
                       'dark': (['fighting', 'bug', 'fairy'], ['psychic', 'ghost'], []),
@@ -11,9 +16,11 @@ type_effectiveness = {'fairy': (['poison', 'steel'], ['fighting', 'dragon', 'dar
                       'bug': (['fire', 'flying', 'rock'], ['grass', 'psychic', 'dark'], []),
                       'psychic': (['bug', 'ghost', 'dark'], ['fighting', 'poison'], ['dark']),
                       'flying': (['electric', 'ice', 'rock'], ['grass', 'fighting', 'bug'], []),
-                      'ground': (['water', 'grass', 'ice'], ['fire', 'electric', 'poison', 'rock', 'steel'], ['flying']),
+                      'ground': (
+                      ['water', 'grass', 'ice'], ['fire', 'electric', 'poison', 'rock', 'steel'], ['flying']),
                       'poison': (['ground', 'psychic'], ['grass', 'fairy'], ['steel']),
-                      'fighting': (['flying', 'psychic', 'fairy'], ['normal', 'ice', 'rock', 'dark', 'steel'], ['ghost']),
+                      'fighting': (
+                      ['flying', 'psychic', 'fairy'], ['normal', 'ice', 'rock', 'dark', 'steel'], ['ghost']),
                       'ice': (['fire', 'fighting', 'rock', 'steel'], ['grass', 'ground', 'flying', 'dragon'], []),
                       'grass': (['fire', 'ice', 'poison', 'flying', 'bug'], ['water', 'ground', 'rock'], []),
                       'electric': (['ground'], ['water', 'flying'], ['ground']),
@@ -24,18 +31,18 @@ type_effectiveness = {'fairy': (['poison', 'steel'], ['fighting', 'dragon', 'dar
 print(type_effectiveness)
 print(type_effectiveness.get('fairy'))
 
-pokedex_temp = {'id':[],
-                'name':[],
-                'types':[]}
+pokedex_temp = {'id': [],
+                'name': [],
+                'types': []}
 
 pokemon_list = []
 
 for i in range(len(pokedex)):
-    pokedex_temp['id'].append((i+1))
+    pokedex_temp['id'].append((i + 1))
     pokedex_temp['name'].append(pokedex[i]['name']['english'])
     pokedex_temp['types'].append(pokedex[i]['type'])
-    pokemon_list.append(Pokemon((i+1), pokedex[i]['name']['english'], pokedex[i]['type'], pokedex[i]['base']))
-    print(pokemon_list[i])
+    pokemon_list.append(Pokemon((i + 1), pokedex[i]['name']['english'], pokedex[i]['type'], pokedex[i]['base']))
+    # print(pokemon_list[i])
 
 print(pokemon_list[0].versus_effectiveness(pokemon_list[1]) == 1)
 print(pokemon_list[3].versus_effectiveness(pokemon_list[1]) == 2)
@@ -50,5 +57,61 @@ print(pokemon_list[3].move_effectiveness('fire', pokemon_list[46]) == 4)
 print(pokemon_list[24].move_effectiveness('electric', pokemon_list[26]) == 0)
 print(pokemon_list[235].move_effectiveness('fighting', pokemon_list[176]) == 0.5)
 
+types_list_dataframe = pd.read_csv('types_list.csv')
+types_list = list(types_list_dataframe['identifier'])
+print(types_list_dataframe)
+print(types_list)
+
+moves_list_dataframe = pd.read_csv('moves_list.csv')
+moves_list_dataframe_coloumns = list(moves_list_dataframe.columns)
+print(moves_list_dataframe_coloumns)
 
 
+def look_up_type_index(types):
+    for i in range(len(types_list)):
+        if types == types_list[i]:
+            return i + 1
+
+
+def get_elemental_moves(types):
+    possible_moves = {}
+    moves = list(moves_list_dataframe.apply(lambda x: x.identifier, axis=1))
+    move_types = list(moves_list_dataframe.apply(lambda x: x.type_id, axis=1))
+    for typ in types:
+        possible_moves[typ] = []
+        type_index = look_up_type_index(typ)
+        for i in range(len(move_types)):
+            if move_types[i] == type_index:
+                possible_moves[typ].append(moves[i])
+    return possible_moves
+
+
+def look_up_pokemon_name(name):
+    for pokemon in pokemon_list:
+        if pokemon.get_name().lower() == name.lower():
+            return pokemon
+    raise ValueError
+
+
+def look_up_pokemon_id(id):
+    for pokemon in pokemon_list:
+        if pokemon.get_id() == id:
+            return pokemon
+    raise ValueError
+
+
+def look_up_pokemon(identifier):
+    if type(identifier) is str:
+        print('look-up name')
+        print(look_up_pokemon_name(identifier))
+    elif type(identifier) is int:
+        print(look_up_pokemon_id(identifier))
+        print('look-up id number')
+    else:
+        raise ValueError
+
+
+print(get_elemental_moves(['fire', 'water']))
+print(look_up_pokemon('pikachu'))
+print(look_up_pokemon(15))
+#print(look_up_pokemon(None))
