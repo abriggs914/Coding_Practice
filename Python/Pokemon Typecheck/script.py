@@ -1,6 +1,7 @@
 from full_pokedex import pokedex
 from pokemon import Pokemon
 import pandas as pd
+import random
 
 # Dict[Union[str,  Any],  Union[Union[Tuple[List[str],  List[str],  List[Any]],  Tuple[List[str],  List[str],  List[str]]],  Any]]
 # List of all types stored as a dictionary. Each type contains a tuple of three lists:
@@ -103,15 +104,67 @@ def look_up_pokemon_id(id):
 def look_up_pokemon(identifier):
     if type(identifier) is str:
         print('look-up name')
-        print(look_up_pokemon_name(identifier))
+        return look_up_pokemon_name(identifier)
     elif type(identifier) is int:
-        print(look_up_pokemon_id(identifier))
+        return look_up_pokemon_id(identifier)
         print('look-up id number')
     else:
         raise ValueError
 
 
+def gen_random_team():
+    team = []
+    for i in range(6):
+        j = random.randint(1, len(pokemon_list))
+        team.append(pokemon_list[j-1])
+    return team
+
+
+def pick_best_team_attacker(team, enemy_pokemon):
+    # print('team:' + str(team) + '\n\tVS\n' + str(enemy_pokemon))
+    effectiveness_scores = []
+    for pokemon in team:
+        effectiveness_scores.append(pokemon.versus_effectiveness(enemy_pokemon))
+    best_score_index = effectiveness_scores.index(max(effectiveness_scores))
+    return team[best_score_index]
+
+
+def pick_worst_team_attacker(team, enemy_pokemon):
+    # print('team:' + str(team) + '\n\tVS\n' + str(enemy_pokemon))
+    effectiveness_scores = []
+    for pokemon in team:
+        effectiveness_scores.append(pokemon.versus_effectiveness(enemy_pokemon))
+    best_score_index = effectiveness_scores.index(min(effectiveness_scores))
+    return team[best_score_index]
+
+
+def pick_best_team_defender(team, enemy_pokemon):
+    # print('team:' + str(team) + '\n\tVS\n' + str(enemy_pokemon))
+    effectiveness_scores = []
+    for pokemon in team:
+        effectiveness_scores.append(enemy_pokemon.versus_effectiveness(pokemon))
+    best_score_index = effectiveness_scores.index(min(effectiveness_scores))
+    return team[best_score_index]
+
+
+def pick_worst_team_defender(team, enemy_pokemon):
+    # print('team:' + str(team) + '\n\tVS\n' + str(enemy_pokemon))
+    effectiveness_scores = []
+    for pokemon in team:
+        effectiveness_scores.append(enemy_pokemon.versus_effectiveness(pokemon))
+    best_score_index = effectiveness_scores.index(max(effectiveness_scores))
+    return team[best_score_index]
+
+
 print(get_elemental_moves(['fire', 'water']))
 print(look_up_pokemon('pikachu'))
 print(look_up_pokemon(15))
-#print(look_up_pokemon(None))
+# print(look_up_pokemon(None))
+
+team = gen_random_team()
+enemy_pokemon = look_up_pokemon(random.randint(0, len(pokemon_list) - 1))
+print('team:' + str(team) + '\n\tVS\n' + str(enemy_pokemon))
+print('pick_best_team_attacker',pick_best_team_attacker(team, enemy_pokemon))
+print('pick_best_team_defender',pick_best_team_defender(team, enemy_pokemon))
+print('pick_worst_team_attacker',pick_worst_team_attacker(team, enemy_pokemon))
+print('pick_worst_team_defender',pick_worst_team_defender(team, enemy_pokemon))
