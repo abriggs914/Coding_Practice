@@ -1,0 +1,69 @@
+<html><head><style>html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  text-align: center;
+}
+
+/*
+ * Table stuff
+ */
+
+.table-container {
+  width: max-content;
+  min-width: 100%;
+  padding: 0.5rem;
+  margin-top: 2rem;
+}
+
+.scroll-container {
+  overflow-y: auto;
+  overflow-x: none;
+  max-height: 14rem;
+  border: 1px solid #3E3E40;
+}
+
+table {
+  font-family: monospace;
+  white-space: nowrap;
+  padding: 0.625rem;
+  width: 100%;
+  overflow-x: none;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.25rem;
+  background-color: transparent;
+}
+
+tr {
+  height: 1.875rem;
+  font-size: 0.8125rem;
+}
+
+tr:nth-child(odd) {
+  background-color: #E9EAEA;
+}
+
+tr:nth-child(even),
+th {
+  background-color: #FFFFFF;
+}
+
+/*
+ * Chart stuff
+ */
+
+svg {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  max-width: 100%;
+}
+</style></head><body><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>id</th><th>first_name</th><th>last_name</th><th>email</th><th>month</th><th>utm_source</th></tr><tr><td>0</td><td>10043</td><td>Louis</td><td>Koch</td><td>LouisKoch43@gmail.com</td><td>3 - March</td><td>yahoo</td></tr><tr><td>1</td><td>10150</td><td>Bruce</td><td>Webb</td><td>BruceWebb44@outlook.com</td><td>3 - March</td><td>twitter</td></tr><tr><td>2</td><td>10155</td><td>Nicholas</td><td>Hoffman</td><td>Nicholas.Hoffman@gmail.com</td><td>2 - February</td><td>google</td></tr><tr><td>3</td><td>10178</td><td>William</td><td>Key</td><td>William.Key@outlook.com</td><td>3 - March</td><td>yahoo</td></tr><tr><td>4</td><td>10208</td><td>Karen</td><td>Bass</td><td>KB4971@gmail.com</td><td>2 - February</td><td>google</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>utm_source</th><th>id</th><th>first_name</th><th>last_name</th><th>email</th><th>month</th></tr><tr><td>0</td><td>email</td><td>462</td><td>462</td><td>462</td><td>462</td><td>462</td></tr><tr><td>1</td><td>facebook</td><td>823</td><td>823</td><td>823</td><td>823</td><td>823</td></tr><tr><td>2</td><td>google</td><td>543</td><td>543</td><td>543</td><td>543</td><td>543</td></tr><tr><td>3</td><td>twitter</td><td>415</td><td>415</td><td>415</td><td>415</td><td>415</td></tr><tr><td>4</td><td>yahoo</td><td>757</td><td>757</td><td>757</td><td>757</td><td>757</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>utm_source</th><th>1 - January</th><th>2 - February</th><th>3 - March</th></tr><tr><td>0</td><td>email</td><td>43</td><td>147</td><td>272</td></tr><tr><td>1</td><td>facebook</td><td>404</td><td>263</td><td>156</td></tr><tr><td>2</td><td>google</td><td>127</td><td>196</td><td>220</td></tr><tr><td>3</td><td>twitter</td><td>164</td><td>154</td><td>97</td></tr><tr><td>4</td><td>yahoo</td><td>262</td><td>240</td><td>255</td></tr></table></div></div></body></html>
