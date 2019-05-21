@@ -132,5 +132,112 @@ print(pricey_shoes)
 #Enter the following code to check:
 print(type(pricey_shoes))
 
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#import codecademylib
+import numpy as np
+#import pandas as pd
+
+# np.percentile can calculate any percentile over an array of values
+# high_earners = df.groupby('category').wage
+#     .apply(lambda x: np.percentile(x, 75))
+#     .reset_index()
+
+orders = pd.read_csv('orders.csv')
+
+#1.
+#Once more, we’ll return to the data from ShoeFly.com. Our Marketing team says that it’s important to have some affordably priced shoes available for every color of shoe that we sell.
+#Let’s calculate the 25th percentile for shoe price for each shoe_color to help Marketing decide if we have enough cheap shoes on sale. Save the data to the variable cheap_shoes.
+#Note: Be sure to use reset_index() at the end of your query so that cheap_shoes is a DataFrame.
+#2.
+#Display cheap_shoes using print.
+
+cheap_shoes = orders.groupby('shoe_color').price.apply(lambda x: np.percentile(x, 25)).reset_index()
+
+print(cheap_shoes)
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#import codecademylib
+#import numpy as np
+#import pandas as pd
+
+orders = pd.read_csv('orders.csv')
+
+#At ShoeFly.com, our Purchasing team thinks that certain shoe_type/shoe_color combinations are particularly popular this year (for example, blue ballet flats are all the rage in Paris).
+#Create a DataFrame with the total number of shoes of each shoe_type/shoe_color combination purchased. Save it to the variable shoe_counts.
+#You should be able to do this using groupby and count().
+#Note: When we’re using count(), it doesn’t really matter which column we perform the calculation on. You should use id in this example, but we would get the same answer if we used shoe_type or last_name.
+#emember to use reset_index() at the end of your code!
+shoe_counts = orders.groupby(['shoe_type', 'shoe_color'])['id'].count().reset_index()
+
+print(shoe_counts)
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#AGGREGATES IN PANDAS
+# Pivot Tables
+# When we perform a groupby across multiple columns, we often want to change how our data is stored. For instance, recall the example where we are running a chain of stores and have data about the number of sales at different locations on different days:
+# Location	Date	Day of Week	Total Sales
+# West Village	February 1	W	400
+# West Village	February 2	Th	450
+# Chelsea	February 1	W	375
+# Chelsea	February 2	Th	390
+# We suspected that there might be different sales on different days of the week at different stores, so we performed a groupby across two different columns (Location and Day of Week). This gave us results that looked like this:			
+# Location	Day of Week	Total Sales
+# Chelsea	M	300
+# Chelsea	Tu	310
+# Chelsea	W	320
+# Chelsea	Th	290
+# …		
+# West Village	Th	400
+# West Village	F	390
+# West Village	Sa	250
+# …		
+# In order to test our hypothesis, it would be more useful if the table was formatted like this:		
+# Location	M	Tu	W	Th	F	Sa	Su
+# Chelsea	400	390	250	275	300	150	175
+# West Village	300	310	350	400	390	250	200
+# …							
+# Reorganizing a table in this way is called pivoting. The new table is called a pivot table.
+# In Pandas, the command for pivot is:
+# df.pivot(columns='ColumnToPivot',
+#          index='ColumnToBeRows',
+#          values='ColumnToBeValues')
+# For our specific example, we would write the command like this:
+# First use the groupby statement:
+# unpivoted = df.groupby(['Location', 'Day of Week'])['Total Sales'].mean().reset_index()
+# Now pivot the table
+# pivoted = unpivoted.pivot(
+#     columns='Day of Week',
+#     index='Location',
+#     values='Total Sales')
+# Just like with groupby, the output of a pivot command is a new DataFrame, but the indexing tends to be “weird”, so we usually follow up with .reset_index().
+
+#import codecademylib
+#import numpy as np
+#import pandas as pd
+
+orders = pd.read_csv('orders.csv')
+
+shoe_counts = orders.groupby(['shoe_type', 'shoe_color']).id.count().reset_index()
+
+#In the previous example, you created a DataFrame with the total number of shoes of each shoe_type/shoe_color combination purchased for ShoeFly.com.
+# The purchasing manager complains that this DataFrame is confusing.
+# Make it easier for her to compare purchases of different shoe colors of the same shoe type by creating a pivot table. Save your results to the variable shoe_counts_pivot.
+# Your table should look like this:
+# shoe_type	black	brown	navy	red	white
+# ballet flats	…	…	…	…	…
+# sandals	…	…	…	…	…
+# stilettos	…	…	…	…	…
+# wedges	…	…	…	…	…
+# Remember to use reset_index() at the end of your code!
+shoe_counts_pivot = shoe_counts.pivot(columns = 'shoe_color', index = 'shoe_type', values = 'id').reset_index()
+
+print(shoe_counts_pivot)
+
+
+
+
 
 

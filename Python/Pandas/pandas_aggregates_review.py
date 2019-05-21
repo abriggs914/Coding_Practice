@@ -5,7 +5,7 @@
 # How to rearrange a DataFrame into a pivot table, a great way to compare data across two dimensions.
 # Instructions
 
-import codecademylib
+#import codecademylib
 import pandas as pd
 
 user_visits = pd.read_csv('page_visits.csv')
