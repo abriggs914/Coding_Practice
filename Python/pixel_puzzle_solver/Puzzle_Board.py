@@ -16,6 +16,7 @@ class Puzzle:
         self.vertical_divider = self.gen_vertical_divider()
         self.vertical_hints_height = self.get_vertical_height()
         self.solution_board = self.gen_solution_board()
+        self.solved_puzzle_board = self.gen_solved_puzzle()
 
     def __repr__(self):
         return self.solution_board
@@ -75,10 +76,9 @@ class Puzzle:
                 if (board[r][c] == 1 and c == 0) or (board[r][c] == 1 and board[r][c - 1] == 0):
                     count = 1
                     temp = c
-                    while c < cols - 1 and board[r][c + 1] == 1:
+                    while temp < cols - 1 and board[r][temp + 1] == 1:
                         count += 1
-                        c += 1
-                    c = temp
+                        temp += 1
                     res[r].append(count)
         for r in range(rows):
             if len(res[r]) == 0:
@@ -210,11 +210,92 @@ class Puzzle:
             res += str(el) + '|'
         return res
 
+    def gen_solved_puzzle(self):
+        n_rows = self.rows
+        n_cols = self.cols
+        v_hints = self.vertical_hints
+        h_hints = self.horizontal_hints
+        num_pixels = 0
+        for h_hint_row in range(len(h_hints)):
+            num_pixels += sum(h_hints[h_hint_row])
+        print('n_rows:', n_rows, ', n_cols:', n_cols, ', num_pixels:', num_pixels)
+        printA('v_hints:', v_hints)
+        printA('h_hints:', h_hints)
+        board = [[0 for i in range(n_cols)] for x in range(n_rows)]
+        r = 0
+        c = 0
+        # while truthy_list(h_hints) or truthy_list(v_hints):
+        #     while r in range(n_rows):
+        #         num_spaces = len(h_hints[r]) - 1
+        #         row_spaces = self.determine_row_spaces(board[r])
+        #         while c in range(n_cols):
+        #             print('r:',r,'c:',c,'num_spaces:',num_spaces,'row_spaces:',row_spaces,'h_hints[r]:',h_hints[r],'v_hints[c]:', v_hints[c])
+        #             if len(v_hints[c]) > 0:
+        #                 v_hints[c].pop()
+        #             c += 1
+        #         c = 0
+        #         h_hints[r].pop()
+        #         r += 1
+
+        while r in range(n_rows):
+            row_spaces = self.determine_row_spaces(board[r])
+            # print('row_spaces', row_spaces)
+            for space in row_spaces:
+                col_tracker = 0
+                for val in h_hints[r]:
+                    # if col_tracker > 0 and col_tracker < len(h_hints[r]) - 1:
+                    #     space -= 2
+                    if 0 < val < len(h_hints[r]) - 1:
+                        val += 2
+                    diff = space - val
+                    print('row_spaces',row_spaces, 'r', r,'space:', space, ',val:', val, 'diff:', diff, 'h_hints[r]', h_hints[r])
+                    if diff < val:
+                        mid_space_index = space // 2
+                        if space % 2 == 0:
+                            mid_space_index -= 1
+                        buffer = mid_space_index - (diff - 1 if diff > 0 else 0)
+                        print('color in space,', 'mid_space_index', mid_space_index, 'buffer:', buffer)
+                        # divide col_tracker /2
+                        board[r][mid_space_index] = 1
+                        count = 1
+                        while buffer > 0:
+                            if buffer > 1:
+                                board[r][mid_space_index + buffer] = 9
+                                board[r][mid_space_index - buffer] = 9
+                            elif buffer == 1:
+                                board[r][mid_space_index - buffer] = 9
+                            buffer -= 1
+                            count += 1
+                    col_tracker += 1
+
+            r += 1
+
+            #while c in range(c_cols):
+        printA('board:', board)
+        return 1
+
+    def look_horizontal(self):
+        pass
+
+    def determine_row_spaces(self, row):
+        res = []
+        curr_count = 0
+        for el in range(len(row)):
+            # print('row[el]:',row[el])
+            if row[el] == 0:
+                curr_count += 1
+            else:
+                if curr_count > 0:
+                    res.append(curr_count)
+                curr_count = 0
+        res.append(curr_count)
+        return res
+
 
 def pad_puzzle(puzzle):
-    new_puzzle = []
-    rows = 0
-    cols = 0
+    # new_puzzle = []
+    # rows = 0
+    # cols = 0
     if type(puzzle) == list:
         rows = len(puzzle)
         # row_len = len(rows)
@@ -255,6 +336,40 @@ def verify(puzzle):
     if (len(lst) > 1) or (lst[0] < 3) or (len(puzzle) < 3):
         return False
     return True
+
+
+def printA(name, arr):
+    string = name + '\n['
+    for i in range(len(arr)):
+        in_string = '['
+        for j in range(len(arr[i])):
+            if j < len(arr[i]) - 1:
+                in_string += str(arr[i][j])  # + ', '
+            else:
+                in_string += str(arr[i][j])
+        if i < len(arr) - 1:
+            in_string += '],\n'
+        else:
+            in_string += ']'
+        string += in_string
+    string += ']\n'
+    print(string)
+
+
+def truthy_list(lst):
+    if type(lst) == list and len(lst) > 0:
+        b = 0
+        for el in lst:
+            # print('el',el, 'lst', lst)
+            if type(el) != list:
+                return False
+            if len(el) > b:
+                b = len(el)
+            for val in el:
+                if type(val) != int:
+                    return False
+        return True and b != 0
+    return False
 
 
 sample_smiley = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -415,3 +530,4 @@ print(puzzle7)
 puzzle8 = Puzzle([])
 print(puzzle8)
 # h = input('what?')
+
