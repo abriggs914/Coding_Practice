@@ -1,0 +1,69 @@
+<html><head><style>html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  text-align: center;
+}
+
+/*
+ * Table stuff
+ */
+
+.table-container {
+  width: max-content;
+  min-width: 100%;
+  padding: 0.5rem;
+  margin-top: 2rem;
+}
+
+.scroll-container {
+  overflow-y: auto;
+  overflow-x: none;
+  max-height: 14rem;
+  border: 1px solid #3E3E40;
+}
+
+table {
+  font-family: monospace;
+  white-space: nowrap;
+  padding: 0.625rem;
+  width: 100%;
+  overflow-x: none;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.25rem;
+  background-color: transparent;
+}
+
+tr {
+  height: 1.875rem;
+  font-size: 0.8125rem;
+}
+
+tr:nth-child(odd) {
+  background-color: #E9EAEA;
+}
+
+tr:nth-child(even),
+th {
+  background-color: #FFFFFF;
+}
+
+/*
+ * Chart stuff
+ */
+
+svg {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  max-width: 100%;
+}
+</style></head><body><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>id</th><th>product_id</th><th>customer_id</th><th>quantity</th><th>timestamp</th></tr><tr><td>0</td><td>1</td><td>3</td><td>2</td><td>1</td><td>2017-01-01</td></tr><tr><td>1</td><td>2</td><td>2</td><td>2</td><td>3</td><td>2017-01-01</td></tr><tr><td>2</td><td>3</td><td>1</td><td>3</td><td>1</td><td>2017-01-01</td></tr><tr><td>3</td><td>4</td><td>2</td><td>3</td><td>2</td><td>2016-02-01</td></tr><tr><td>4</td><td>5</td><td>3</td><td>3</td><td>3</td><td>2017-02-01</td></tr><tr><td>5</td><td>6</td><td>4</td><td>1</td><td>2</td><td>2017-03-01</td></tr><tr><td>6</td><td>7</td><td>1</td><td>1</td><td>1</td><td>2017-02-02</td></tr><tr><td>7</td><td>8</td><td>4</td><td>1</td><td>1</td><td>2017-02-02</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>id</th><th>description</th><th>price</th></tr><tr><td>0</td><td>1</td><td>thing-a-ma-jig</td><td>5</td></tr><tr><td>1</td><td>2</td><td>whatcha-ma-call-it</td><td>10</td></tr><tr><td>2</td><td>3</td><td>doo-hickey</td><td>7</td></tr><tr><td>3</td><td>4</td><td>gizmo</td><td>3</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>id_orders</th><th>product_id</th><th>customer_id</th><th>quantity</th><th>timestamp</th><th>id_products</th><th>description</th><th>price</th></tr><tr><td>0</td><td>1</td><td>3</td><td>2</td><td>1</td><td>2017-01-01</td><td>2</td><td>whatcha-ma-call-it</td><td>10</td></tr><tr><td>1</td><td>2</td><td>2</td><td>2</td><td>3</td><td>2017-01-01</td><td>2</td><td>whatcha-ma-call-it</td><td>10</td></tr><tr><td>2</td><td>3</td><td>1</td><td>3</td><td>1</td><td>2017-01-01</td><td>3</td><td>doo-hickey</td><td>7</td></tr><tr><td>3</td><td>4</td><td>2</td><td>3</td><td>2</td><td>2016-02-01</td><td>3</td><td>doo-hickey</td><td>7</td></tr><tr><td>4</td><td>5</td><td>3</td><td>3</td><td>3</td><td>2017-02-01</td><td>3</td><td>doo-hickey</td><td>7</td></tr><tr><td>5</td><td>6</td><td>4</td><td>1</td><td>2</td><td>2017-03-01</td><td>1</td><td>thing-a-ma-jig</td><td>5</td></tr><tr><td>6</td><td>7</td><td>1</td><td>1</td><td>1</td><td>2017-02-02</td><td>1</td><td>thing-a-ma-jig</td><td>5</td></tr><tr><td>7</td><td>8</td><td>4</td><td>1</td><td>1</td><td>2017-02-02</td><td>1</td><td>thing-a-ma-jig</td><td>5</td></tr></table></div></div></body></html>

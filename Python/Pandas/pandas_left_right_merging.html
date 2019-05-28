@@ -1,0 +1,69 @@
+<html><head><style>html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  text-align: center;
+}
+
+/*
+ * Table stuff
+ */
+
+.table-container {
+  width: max-content;
+  min-width: 100%;
+  padding: 0.5rem;
+  margin-top: 2rem;
+}
+
+.scroll-container {
+  overflow-y: auto;
+  overflow-x: none;
+  max-height: 14rem;
+  border: 1px solid #3E3E40;
+}
+
+table {
+  font-family: monospace;
+  white-space: nowrap;
+  padding: 0.625rem;
+  width: 100%;
+  overflow-x: none;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.25rem;
+  background-color: transparent;
+}
+
+tr {
+  height: 1.875rem;
+  font-size: 0.8125rem;
+}
+
+tr:nth-child(odd) {
+  background-color: #E9EAEA;
+}
+
+tr:nth-child(even),
+th {
+  background-color: #FFFFFF;
+}
+
+/*
+ * Chart stuff
+ */
+
+svg {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  max-width: 100%;
+}
+</style></head><body><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>item</th><th>store_a_inventory</th></tr><tr><td>0</td><td>hammer</td><td>12</td></tr><tr><td>1</td><td>screwdriver</td><td>15</td></tr><tr><td>2</td><td>nails</td><td>200</td></tr><tr><td>3</td><td>screws</td><td>350</td></tr><tr><td>4</td><td>saw</td><td>6</td></tr><tr><td>5</td><td>duct tape</td><td>150</td></tr><tr><td>6</td><td>wrench</td><td>12</td></tr><tr><td>7</td><td>pvc pipe</td><td>54</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>item</th><th>store_b_inventory</th></tr><tr><td>0</td><td>hammer</td><td>6</td></tr><tr><td>1</td><td>nails</td><td>250</td></tr><tr><td>2</td><td>saw</td><td>6</td></tr><tr><td>3</td><td>duct tape</td><td>150</td></tr><tr><td>4</td><td>pvc pipe</td><td>54</td></tr><tr><td>5</td><td>rake</td><td>10</td></tr><tr><td>6</td><td>shovel</td><td>15</td></tr><tr><td>7</td><td>wooden dowels</td><td>192</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>item</th><th>store_a_inventory</th><th>store_b_inventory</th></tr><tr><td>0</td><td>hammer</td><td>12</td><td>6.0</td></tr><tr><td>1</td><td>screwdriver</td><td>15</td><td>nan</td></tr><tr><td>2</td><td>nails</td><td>200</td><td>250.0</td></tr><tr><td>3</td><td>screws</td><td>350</td><td>nan</td></tr><tr><td>4</td><td>saw</td><td>6</td><td>6.0</td></tr><tr><td>5</td><td>duct tape</td><td>150</td><td>150.0</td></tr><tr><td>6</td><td>wrench</td><td>12</td><td>nan</td></tr><tr><td>7</td><td>pvc pipe</td><td>54</td><td>54.0</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>item</th><th>store_b_inventory</th><th>store_a_inventory</th></tr><tr><td>0</td><td>hammer</td><td>6</td><td>12.0</td></tr><tr><td>1</td><td>nails</td><td>250</td><td>200.0</td></tr><tr><td>2</td><td>saw</td><td>6</td><td>6.0</td></tr><tr><td>3</td><td>duct tape</td><td>150</td><td>150.0</td></tr><tr><td>4</td><td>pvc pipe</td><td>54</td><td>54.0</td></tr><tr><td>5</td><td>rake</td><td>10</td><td>nan</td></tr><tr><td>6</td><td>shovel</td><td>15</td><td>nan</td></tr><tr><td>7</td><td>wooden dowels</td><td>192</td><td>nan</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>item</th><th>store_a_inventory</th><th>store_b_inventory</th></tr><tr><td>0</td><td>hammer</td><td>12</td><td>6.0</td></tr><tr><td>1</td><td>screwdriver</td><td>15</td><td>nan</td></tr><tr><td>2</td><td>nails</td><td>200</td><td>250.0</td></tr><tr><td>3</td><td>screws</td><td>350</td><td>nan</td></tr><tr><td>4</td><td>saw</td><td>6</td><td>6.0</td></tr><tr><td>5</td><td>duct tape</td><td>150</td><td>150.0</td></tr><tr><td>6</td><td>wrench</td><td>12</td><td>nan</td></tr><tr><td>7</td><td>pvc pipe</td><td>54</td><td>54.0</td></tr></table></div></div><div class="table-container"><div class="scroll-container"><table><tr><th></th><th>item</th><th>store_b_inventory</th><th>store_a_inventory</th></tr><tr><td>0</td><td>hammer</td><td>6</td><td>12.0</td></tr><tr><td>1</td><td>nails</td><td>250</td><td>200.0</td></tr><tr><td>2</td><td>saw</td><td>6</td><td>6.0</td></tr><tr><td>3</td><td>duct tape</td><td>150</td><td>150.0</td></tr><tr><td>4</td><td>pvc pipe</td><td>54</td><td>54.0</td></tr><tr><td>5</td><td>rake</td><td>10</td><td>nan</td></tr><tr><td>6</td><td>shovel</td><td>15</td><td>nan</td></tr><tr><td>7</td><td>wooden dowels</td><td>192</td><td>nan</td></tr></table></div></div></body></html>
