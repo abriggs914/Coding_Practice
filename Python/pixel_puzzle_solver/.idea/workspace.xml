@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="50961cbc-8e03-406b-be0c-48cf03d0a02f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Puzzle_Board.py" beforeDir="false" afterPath="$PROJECT_DIR$/Puzzle_Board.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/puzzle.py" beforeDir="false" afterPath="$PROJECT_DIR$/puzzle.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/puzzles_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/puzzles_list.py" afterDir="false" />
     </list>
@@ -17,8 +18,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Puzzle_Board.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="210">
+              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
               <folding>
                 <element signature="e#152#180#0" expanded="true" />
               </folding>
@@ -29,8 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/puzzle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="431">
-              <caret line="616" column="22" selection-start-line="616" selection-start-column="22" selection-end-line="616" selection-end-column="22" />
+            <state relative-caret-position="-3502">
+              <caret line="550" column="39" lean-forward="true" selection-start-line="550" selection-start-column="39" selection-end-line="550" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -38,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/puzzles_list.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="69" lean-forward="true" selection-start-line="10" selection-start-column="69" selection-end-line="10" selection-end-column="69" />
+            <state relative-caret-position="737">
+              <caret line="269" column="54" lean-forward="true" selection-start-line="269" selection-start-column="54" selection-end-line="269" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -108,6 +109,7 @@
       <find>.get_name()</find>
       <find>sample</find>
       <find>print</find>
+      <find>single</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -122,8 +124,8 @@
         <option value="$PROJECT_DIR$/test_t.txt" />
         <option value="$PROJECT_DIR$/test_3.txt" />
         <option value="$PROJECT_DIR$/Puzzle_Board.py" />
-        <option value="$PROJECT_DIR$/puzzle.py" />
         <option value="$PROJECT_DIR$/puzzles_list.py" />
+        <option value="$PROJECT_DIR$/puzzle.py" />
       </list>
     </option>
   </component>
@@ -207,7 +209,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.41080198" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.41080198" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934534" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -233,16 +235,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Puzzle_Board.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-          <folding>
-            <element signature="e#152#180#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test_3.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -278,17 +270,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Puzzle_Board.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+          <folding>
+            <element signature="e#152#180#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/puzzles_list.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="69" lean-forward="true" selection-start-line="10" selection-start-column="69" selection-end-line="10" selection-end-column="69" />
+        <state relative-caret-position="737">
+          <caret line="269" column="54" lean-forward="true" selection-start-line="269" selection-start-column="54" selection-end-line="269" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/puzzle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="616" column="22" selection-start-line="616" selection-start-column="22" selection-end-line="616" selection-end-column="22" />
+        <state relative-caret-position="-3502">
+          <caret line="550" column="39" lean-forward="true" selection-start-line="550" selection-start-column="39" selection-end-line="550" selection-end-column="39" />
         </state>
       </provider>
     </entry>
