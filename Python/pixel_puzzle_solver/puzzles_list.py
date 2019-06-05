@@ -252,7 +252,15 @@ puzzle13 = ['puzzle_13', 13, [[0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]]
 
-list_of_puzzles = {\
+puzzle14 = ['pirate flag', 14, \
+            [[1, 14, 1], [5, 4], [3, 2], [2, 1, 2], [3, 3], [4, 4], [5, 1, 1, 4], [5, 3, 3, 4], [5, 4], [5, 1, 4],
+             [6, 5], [7, 6], [9, 1, 8], [5, 5, 4], [4, 1, 1, 1, 1, 1, 3], [3, 1, 1, 2], [11], [1, 13],
+             [2, 13, 1], [2, 13, 1]], \
+            [[1, 13, 3], [13, 2], [12], [2, 10], [3, 8, 3], [4, 3, 4], [3, 1, 2, 6], [2, 2, 1, 4], [1, 1, 3, 4],
+             [1, 1, 4], [1, 1, 3, 4], [1, 1, 4], [1, 1, 3, 4], [2, 2, 1, 4], [3, 1, 2, 6], [3, 3, 4], [3, 9, 3], [11],
+             [13], [1, 13, 2]]]
+
+list_of_puzzles = { \
     puzzle1[0]: puzzle1,
     puzzle2[0]: puzzle2,
     puzzle3[0]: puzzle3,
@@ -266,8 +274,10 @@ list_of_puzzles = {\
     puzzle11[0]: puzzle11,
     puzzle12[0]: puzzle12,
     puzzle13[0]: puzzle13,
+    puzzle14[0]: puzzle14,
     sample_smiley_puzzle[0]: sample_smiley_puzzle,
-    sample_mushroom_puzzle[0]: sample_mushroom_puzzle}
+    sample_mushroom_puzzle[0]: sample_mushroom_puzzle \
+}
 
 
 def get_list_of_puzzles():

@@ -10,6 +10,7 @@ class Puzzle:
         self.name = name.title()
         self.id = id
         self.solved = False
+        self.solving_history = None
         if v_hints_in is not None:
             self.rows = len(puzzle)
             self.cols = len(v_hints_in)
@@ -35,6 +36,7 @@ class Puzzle:
         self.solution_board = self.gen_solution_board()
 
     def __repr__(self):
+        self.print_history(self.solving_history)
         return self.solution_board
 
     def get_name(self):
@@ -116,7 +118,7 @@ class Puzzle:
         for c in range(cols):
             if len(res[c]) == 0:
                 res[c] = [0]
-        print(res)
+        print('v_hints', res)
         return res
 
     def gen_horizontal_hints(self):
@@ -136,7 +138,7 @@ class Puzzle:
         for r in range(rows):
             if len(res[r]) == 0:
                 res[r] = [0]
-        print(res)
+        print('h_hints', res)
         return res
 
     def presentify(self):
@@ -276,39 +278,6 @@ class Puzzle:
         return num_pixels
 
     def transpose_puzzle(self, board):
-
-    #     public static void matrixTransposeRecursive(int[][] A, int r, int c, int s){
-    #         if (s == 1){
-    #             return;
-    #         }
-    #         else {
-    #             int
-    #             x = (int)
-    #             Math.floor(s / 2);
-    #             matrixTransposeRecursive(A, r, c, x);
-    #             matrixTransposeRecursive(A, r + x, c + x, s - x);
-    #             matrixTransposeSwap(A, r, c + x, r + x, c, x, s - x);
-    #         }
-    #     }
-    #
-    # public static void matrixTransposeSwap(int[][] A, int r1, int c1, int r2, int c2, int s1, int s2){
-    #     if (s1 < s2){
-    #         matrixTransposeSwap(A, r2, c2, r1, c1, s2, s1);
-    #     }
-    #     else if (s1 == 1){
-    #         int temp = A[r1][c1];
-    #         A[r1][c1] = A[r2][c2];
-    #         A[r2][c2] = temp;
-    #     }
-    #     else {
-    #         int x = (int)
-    #         Math.floor(s1 / 2);
-    #         matrixTransposeSwap(A, r2, c2, r1, c1, s2, x);
-    #         matrixTransposeSwap(A, r2, c2 + x, r1 + x, c1, s2, s1 - x);
-    #     }
-    # }
-
-
         r = 0
         c = 0
         new_board = [[0 for c in range(len(board))] for r in range(len(board[r]))]
@@ -323,10 +292,16 @@ class Puzzle:
         return new_board
 
     def gen_solved_puzzle(self):
+        print('\n\tLevel 1 Solving\n')
+        solving_history = {'stats': {}, 'level_1': {}}
         n_rows = self.rows
         n_cols = self.cols
         v_hints = self.vertical_hints
         h_hints = self.horizontal_hints
+        solving_history['stats']['n_rows'] = n_rows
+        solving_history['stats']['n_cols'] = n_cols
+        solving_history['stats']['v_hints'] = v_hints
+        solving_history['stats']['h_hints'] = h_hints
         # num_pixels = self.count_num_pixels(self.puzzle_board)
         print('n_rows:', n_rows, ', n_cols:', n_cols)  # , ', num_pixels:', num_pixels)
         # printA('v_hints:', v_hints)
@@ -338,6 +313,7 @@ class Puzzle:
             # print('using hints:',h_hints)
             board[i] = self.horizontal_row_fill(board[i], h_hints[i])
             i += 1
+        solving_history['level_1']['horizontal_board'] = board.copy()
         printA('horizontal_board', board)
         i = 0
         while i in range(len(t_board)):
@@ -345,6 +321,7 @@ class Puzzle:
             t_board[i] = self.horizontal_row_fill(t_board[i], v_hints[i])
             i += 1
         t_board = self.transpose_puzzle(t_board)
+        solving_history['level_1']['vertical_board'] = t_board.copy()
         printA('vertical_board', t_board)
         i = 0
         j = 0
@@ -356,7 +333,9 @@ class Puzzle:
             j = 0
             i += 1
         printA('resulting board',board)
+        solving_history['level_1']['resulting_board'] = board.copy()
         if self.check_board(board):
+            self.solving_history = solving_history
             return board
 
         i = 0
@@ -366,7 +345,9 @@ class Puzzle:
             i += 1
 
         printA('row_continuity',board)
+        solving_history['level_1']['row_continuity'] = board.copy()
         if self.check_board(board):
+            self.solving_history = solving_history
             return board
 
         i = 0
@@ -378,10 +359,14 @@ class Puzzle:
 
         board = self.transpose_puzzle(t_board)
         printA('col_continuity',board)
+        solving_history['level_1']['col_continuity'] = board.copy()
         if self.check_board(board):
+            self.solving_history = solving_history
             return board
 
+        self.solving_history = solving_history
         board = self.advanced_solving(board)
+        # printA('returned advanced board', board)
         return board
 
     def len_hints(self, arr):
@@ -566,28 +551,36 @@ class Puzzle:
         return board
 
     def advanced_solving(self, board):
+        print('\n\tLevel 2 Solving\n')
+
+        printA('\n\n\n\n\n\nboard',board)
         h_hints = self.horizontal_hints
         v_hints = self.vertical_hints
+        # level_2 = {}
         r = 0
         c = 0
         cuts = {}
         temp = (None,None)
         param_board = board.copy()
         board = self.zero_rows_and_cols(board, 9)
+        t_board = board.copy()
         board, temp = self.shrink_board(board, 'row')
         cuts['top_row_cut'] = temp[0]
         cuts['bottom_row_cut'] = temp[1]
         printA('row_shrunk',board)
-        board, temp = self.shrink_board(board, 'col')
+        # board = self.transpose_puzzle(board)
+        t_board, temp = self.shrink_board(t_board, 'col')
         cuts['left_col_cut'] = temp[0]
         cuts['right_col_cut'] = temp[1]
+        board = self.adjust_board(board, t_board, cuts)
+        # board = self.transpose_puzzle(board)
         printA('col_shrunk',board)
         # while r in range(len(param_board))
         printA('advanced_solving', board)
         n_rows = len(board)
         n_cols = len(board[0])
         v_hints = self.vertical_hints_adjustment(v_hints, param_board, board)
-        # h_hints = self.horizontal_hints_adjustment(h_hints, param_board, board)
+        h_hints = self.horizontal_hints_adjustment(h_hints, param_board, board)
         num_pixels = self.num_pixels
         print('n_rows:', n_rows, ', n_cols:', n_cols, ', num_pixels:', num_pixels)
         # printA('v_hints:', v_hints)
@@ -617,8 +610,7 @@ class Puzzle:
         #     j = 0
         #     i += 1
         # printA('advanced_resulting board', board)
-        if self.pad_shrunken_board(board, param_board, cuts) == self.puzzle_board:
-            print('\n\nfinished puzzle!\n\n')
+        if self.check_board(self.pad_shrunken_board(board, param_board, cuts)):
             return board
 
         i = 0
@@ -642,7 +634,7 @@ class Puzzle:
         printA('advanced_col_continuity', board)
         if self.check_board(board):
             return board
-
+        print('\n\nNEEDS LEVEL 3\n\n')
         return board
 
     def shrink_board(self, board, how):
@@ -653,11 +645,12 @@ class Puzzle:
             temp = dims[0]
             dims[0] = dims[1]
             dims[1] = temp
-            board = self.transpose_puzzle(board)
+            board = self.transpose_puzzle(board.copy())
         # do something
         new_board = []
         r = 0
         c = 0
+        printA('board_used_for_cutting', board)
         reverse = False
         top_row_cut = -1
         bottom_row_cut = -1
@@ -683,10 +676,11 @@ class Puzzle:
         print('top_cut:',top_row_cut,'bottom_cut:',bottom_row_cut)
         cut_board = board[top_row_cut + 1: bottom_row_cut]
         if how == 'col':
-            board = self.transpose_puzzle(cut_board)
+            board = self.transpose_puzzle(cut_board.copy())
         else:
-            board = cut_board
-        # printA('cut_board',cut_board)
+            board = cut_board.copy()
+        print('shrink_board',board)
+        print('shrink_cut_board',cut_board)
         return board, (top_row_cut, bottom_row_cut)
 
     def vertical_hints_adjustment(self, v_hints, param_board, board):
@@ -696,8 +690,8 @@ class Puzzle:
         printA('v_hints', v_hints)
         print('len(board_transpose):',len(board))
         printA('board_transpose',board)
-        print('len(param_board_transpose):',len(param_board))
-        printA('param_board_transpose',param_board)
+        print('len(param_board):',len(param_board))
+        printA('param_board',param_board)
         new_v_hints = []
         r = 0
         c = 0
@@ -759,23 +753,119 @@ class Puzzle:
         param_board = self.transpose_puzzle(param_board)
         return new_v_hints
 
+    def horizontal_hints_adjustment(self, h_hints, param_board, board):
+        # board = self.transpose_puzzle(board)
+        # param_board = self.transpose_puzzle(param_board)
+        print('len(v_hints):',len(h_hints))
+        printA('v_hints', h_hints)
+        print('len(board_transpose):',len(board))
+        printA('board_transpose',board)
+        print('len(param_board_transpose):',len(param_board))
+        printA('param_board_transpose',param_board)
+        new_h_hints = []
+        r = 0
+        c = 0
+        reverse = False
+        start = -1
+        end = -1
+        while r in range(len(param_board)):
+            hints = h_hints[r]
+            consec_space = 0
+            colored_space = 0
+            counting = True
+            lst = flatten_list(param_board[r])
+            print('r:',r,'board arr:',lst)
+            if len(lst) == 2 and sum(hints) == 0:
+                pass
+                # new_v_hints.append(hints)
+                # do something
+            else:
+                if reverse:
+                    end = r
+                    break
+                else:
+                    start = r
+                    r = len(param_board)
+                    reverse = True
+            # while c in range(len(param_board[r])):
+            #     pixel = param_board[r][c]
+            #     if counting:
+            #         if pixel == 1:
+            #             start = c
+            #             while pixel == 1 and c < len(param_board[r]):
+            #                 c += 1
+            #                 pixel = param_board[r][c]
+            #             end = c
+            #     else:
+            #         if pixel == 0:
+            #
+            #     c += 1
+            #     if reverse:
+            #         c -= 2
+            r += 1
+            if reverse:
+                r -= 2
+            c = 0
+        new_h_hints = h_hints[start + 1: end]
+        left_cut = param_board[0:start]
+        r = 0
+        c = 0
+        while r in range(len(left_cut)):
+            hint = h_hints[r]
+            print('hint:',hint,'top_cut[r]:','r:',r,':',left_cut[r])
+            # while c in range(len(top_cut[r])):
+            #
+            #     c += 1
+            r += 1
+        right_cut = param_board[end:len(h_hints)]
+        print('new_h_hints:',new_h_hints, 'start:',start,'end:',end)
+        # board = self.transpose_puzzle(board)
+        # param_board = self.transpose_puzzle(param_board)
+        return new_h_hints
+
     def pad_shrunken_board(self, board, param_board, cuts):
         print(cuts)
-        top_rows_cut = param_board[:cuts['top_row_cut'] + 1]
-        bottom_rows_cut = param_board[cuts['bottom_row_cut']:]
+        top_rows_cut = re_space(param_board[:cuts['top_row_cut'] + 1])
+        bottom_rows_cut = re_space(param_board[cuts['bottom_row_cut']:])
         param_board = self.transpose_puzzle(param_board)
-        left_cols_cut = param_board[:cuts['left_col_cut'] + 1]
-        right_cols_cut = param_board[cuts['right_col_cut']:]
+        left_cols_cut = re_space(param_board[:cuts['left_col_cut'] + 1])
+        right_cols_cut = re_space(param_board[cuts['right_col_cut']:])
         param_board = self.transpose_puzzle(param_board)
         print('top_rows_cut:',top_rows_cut)
         print('bottom_rows_cut:',bottom_rows_cut)
         print('left_cols_cut:',left_cols_cut)
         print('right_cols_cut:',right_cols_cut)
-        for key, val in cuts.items():
-            print('key:',key,',val:',val)
-        return board
+        # for key, val in cuts.items():
+        #     print('key:',key,',val:',val)
+
+        result_board = []
+        result_board += top_rows_cut
+        i = len(top_rows_cut)
+        # print('i:',i)
+        # print('len(param_board):',len(param_board))
+        # print('len(top_rows_cut):',len(top_rows_cut))
+        # print('len(bottom_rows_cut):',len(bottom_rows_cut))
+        while i in range(len(param_board) - len(bottom_rows_cut)):
+            print('i:',i,param_board[i])
+            row = board[i - len(top_rows_cut)]
+            if len(row) < len(param_board):
+                space = (len(param_board) - len(row)) // 2
+                fill_space = [0 for i in range(space)]
+                row_t = row.copy()
+                row = fill_space.copy()
+                for el in row_t:
+                    row.append(el)
+                row += fill_space
+                print('space:',space, 'fill_space:',fill_space,'row_t:',row_t,'row:',row)
+            result_board += [row]
+            i += 1
+        result_board += bottom_rows_cut
+        print('pad_shrunk_board_result', result_board)
+        printA('pad_shrunk_board_result', result_board)
+        return result_board
 
     def check_board(self, board):
+        print('checking...')
         if self.solved:
             if board == self.puzzle_board:
                 print('\n\nfinished puzzle!\n\n')
@@ -787,6 +877,78 @@ class Puzzle:
             self.solved = True
             return True
         return False
+
+    def print_history(self, solving_history):
+        spacing = '\t'
+        for key in solving_history:
+            print(key)
+            for key, val in solving_history[key].items():
+                print(spacing, key + ':', val)
+
+    # def surround_shrunken_board(self, puzzle):
+    #     n_cols = self.cols
+
+    def adjust_board(self, board, t_board, cuts):
+        printA('board_param_adjusting', board)
+        printA('t_board_param_adjusting', t_board)
+        res = []
+        i = 0
+        j = 0
+        print('cuts_A',cuts['top_row_cut'])
+        print('cuts_B',cuts['bottom_row_cut'])
+        print('cuts_C',cuts['left_col_cut'])
+        print('cuts_D',cuts['right_col_cut'])
+
+        r_calc = max(max([len(t_board[i]) for i in range(len(t_board))]), len(t_board))
+        c_calc = max(max([len(board[i]) for i in range(len(board))]), len(board))
+        puzzle_dims = [r_calc, c_calc]
+        row_buffer = (puzzle_dims[0] - min(len(t_board[0]), len(t_board))) // 2
+        col_buffer = (puzzle_dims[1] - min(len(board[0]), len(board))) // 2
+        row_buffer = 1 if row_buffer == 1 else row_buffer // 2
+        col_buffer = 1 if col_buffer == 1 else col_buffer // 2
+        print('puzzle_dims:', puzzle_dims,'row_buffer:',row_buffer,'col_buffer:',col_buffer)
+
+        while i in range(puzzle_dims[0]):
+            if row_buffer < i <= (puzzle_dims[0] - row_buffer):
+                row = []
+                while j in range(puzzle_dims[1]):
+                    if col_buffer < j <= (puzzle_dims[1] - col_buffer):
+                        x = i - (2 * row_buffer)
+                        y = j - (2 * col_buffer)
+                        print('x:',x,', y:',y)
+                        row.append(max(board[x][y], t_board[x][y]))
+                    j += 1
+                j = 0
+                print('i:',i,', j:',j,', row:',row)
+                res.append(row)
+            i += 1
+        printA('row_combined_shrunk:',res)
+        return res
+        # while i in range(max(len(board), len(t_board))):
+        #     j = 0
+        #     row = []
+        #     while j in range(max_array_rows(board, t_board, i)):
+        #         if i in range(len(board)):
+        #             if i in range(len(t_board)):
+        #                 if j in range(len(board[i])):
+        #                     if j in range(len(t_board[i])):
+        #                         if board[i][j] != 9 and t_board[i][j] != 9:
+        #                             row.append(max(board[i][j], t_board[i][j]))
+        #                     else:
+        #                         if board[i][j] != 9:
+        #                             row.append(board[i][j])
+        #                 else:
+        #                     if t_board[i][j] != 9:
+        #                         row.append(t_board[i][j])
+        #             else:
+        #                 if board[i][j] != 9:
+        #                     row.append(board[i][j])
+        #         else:
+        #             if t_board[i][j] != 9:
+        #                 row.append(t_board[i][j])
+        #         j += 1
+        #     i += 1
+        #     res.append(row)
 
 
 # def sum_rest_lst(lst, val):
@@ -808,6 +970,7 @@ def puzzleify(list_of_puzzles):
         else:
             temp = Puzzle(puzzle, list_of_puzzles[puzzle][1], list_of_puzzles[puzzle][2])
         print(temp)
+        print('\n---------------------------------------------------------------------------------------------------------\n\n')
         new_list[temp.get_name()] = temp
     return new_list
 
@@ -827,9 +990,9 @@ def verify(puzzle, v_hints_in):
 
 
 def printA(name='arrIn', arr=None):
-    if arr is None or len(arr) == 1:
+    if arr is None or len(arr) <= 1:
         arr = [[]]
-        print('nothing given to print', arr)
+        print('nothing given to print {', name, ' : ', arr, '}')
         return
     string = name + '\n\t    '
     for i in range(len(arr[0])):
@@ -908,6 +1071,32 @@ def flatten_list(arr):
     new_arr.append(max(spaces, colored))
     # print('colored:', colored, 'spaces', spaces)
     return new_arr
+
+
+def re_space(arr):
+    new_arr = []
+    # print('re_space(arr):',arr)
+    for lst in arr:
+        i = 0
+        temp = []
+        while i in range(len(lst)):
+            if lst[i] == 9:
+                temp.append(0)
+            else:
+                temp.append(lst[i])
+            i += 1
+        new_arr.append(temp)
+    return new_arr
+
+def max_array_rows(board, t_board, index):
+    if index in range(len(board)):
+        if index in range(len(t_board)):
+            return max(len(board[index]), len(t_board[index]))
+        return len(board[index])
+    return len(t_board[index])
+
+
+
 
 
 
