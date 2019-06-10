@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="50961cbc-8e03-406b-be0c-48cf03d0a02f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Puzzle_Board.py" beforeDir="false" afterPath="$PROJECT_DIR$/Puzzle_Board.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/puzzle.py" beforeDir="false" afterPath="$PROJECT_DIR$/puzzle.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/puzzles_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/puzzles_list.py" afterDir="false" />
     </list>
@@ -17,8 +18,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Puzzle_Board.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="208">
+              <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
               <folding>
                 <element signature="e#152#180#0" expanded="true" />
               </folding>
@@ -29,19 +30,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/puzzle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="918" selection-start-line="918" selection-end-line="918" />
-              <folding>
-                <element signature="e#2006#2915#0" />
-                <element signature="e#4221#4891#0" />
-                <element signature="e#4937#5583#0" />
-                <element signature="e#5619#5954#0" />
-                <element signature="e#6006#8305#0" />
-                <element signature="e#8433#8685#0" />
-                <element signature="e#8731#8852#0" />
-                <element signature="e#8897#9418#0" />
-                <element signature="e#9472#9953#0" />
-              </folding>
+            <state relative-caret-position="102">
+              <caret line="54" column="54" selection-start-line="54" selection-start-column="54" selection-end-line="54" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -49,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/puzzles_list.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="280" lean-forward="true" selection-start-line="280" selection-end-line="280" />
+            <state relative-caret-position="143">
+              <caret line="280" column="26" lean-forward="true" selection-start-line="280" selection-start-column="26" selection-end-line="280" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -123,6 +113,10 @@
       <find>level 2</find>
       <find>pad_puzzle</find>
       <find>shrink_board</find>
+      <find>board_us</find>
+      <find>puzzle is</find>
+      <find>transp</find>
+      <find>temp</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -215,6 +209,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -284,8 +279,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Puzzle_Board.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="208">
+          <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
           <folding>
             <element signature="e#152#180#0" expanded="true" />
           </folding>
@@ -294,26 +289,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/puzzles_list.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="280" lean-forward="true" selection-start-line="280" selection-end-line="280" />
+        <state relative-caret-position="143">
+          <caret line="280" column="26" lean-forward="true" selection-start-line="280" selection-start-column="26" selection-end-line="280" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/puzzle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="918" selection-start-line="918" selection-end-line="918" />
-          <folding>
-            <element signature="e#2006#2915#0" />
-            <element signature="e#4221#4891#0" />
-            <element signature="e#4937#5583#0" />
-            <element signature="e#5619#5954#0" />
-            <element signature="e#6006#8305#0" />
-            <element signature="e#8433#8685#0" />
-            <element signature="e#8731#8852#0" />
-            <element signature="e#8897#9418#0" />
-            <element signature="e#9472#9953#0" />
-          </folding>
+        <state relative-caret-position="102">
+          <caret line="54" column="54" selection-start-line="54" selection-start-column="54" selection-end-line="54" selection-end-column="54" />
         </state>
       </provider>
     </entry>

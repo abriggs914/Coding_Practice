@@ -21,6 +21,7 @@ class Puzzle:
             puzzle = self.gen_solved_puzzle()  # stores the parameter value
             self.puzzle_board = puzzle
             self.solved_puzzle_board = puzzle
+            self.given_solution = False
         else:
             self.puzzle_board = puzzle  # stores the parameter value
             self.rows = len(puzzle)  # num rows in puzzle
@@ -29,6 +30,7 @@ class Puzzle:
             self.vertical_hints = self.gen_vertical_hints()  # list of lists containing the v_hints to puzzle
             self.num_pixels = self.count_num_pixels(puzzle)  # number of pixels coloured in pixel
             self.solved_puzzle_board = self.gen_solved_puzzle()
+            self.given_solution = True
 
         self.vertical_divider = self.gen_vertical_divider()
         self.vertical_hints_height = self.get_vertical_height()
@@ -47,6 +49,10 @@ class Puzzle:
         name = self.name
         id = self.id
         res = '\n\tPuzzle: ' + name + ', id: ' + str(id) + '\n\t\t\t' + str(self.rows) + ' X ' + str(self.cols) + '\n'
+        if not self.solved:
+            res += '\n\t-- UNSOLVED PRINTING SOLUTION --\n'
+            if not self.given_solution:
+                res += '\t-- *BEST AVAILABLE SOLUTION* --\n'
         res += self.vertical_hint_presentation()
         h_hints = self.horizontal_hint_presentation()
         length = len(self.horizontal_spacer)
@@ -291,9 +297,121 @@ class Puzzle:
         # printA('newBoard', new_board)
         return new_board
 
+    def space(self, n):
+        n = n if 0 <= n <= 100 else 5
+        return [0 for i in range(n)]
+
+    # hint_1 = [4, 7, 4]
+    # hint_2 = [1]
+    # hint_3 = [6, 6, 6]
+    # hint_4 = [6, 11]
+
+    def len_hints(self, hints):
+        return sum(hints) + len(hints) - 1
+
+    def gen_rest_possibilities(self, space, hints, delta):
+        if delta < 1:
+            return []
+        else:
+            res = []
+            i = 1
+            while (i - 1) in range(delta):
+                temp = space[-i:] + space[0: len(space) - i]
+                # print('temp:\t', temp)
+                i += 1
+                res.append(temp)
+            # printA('res',res)
+            return res
+
+    def space_hints(self, space, hints):
+        if self.len_hints(hints) > len(space):
+            print('hint size is too large')
+            return
+        else:
+            curr_space_index = 0
+            last_space_index = curr_space_index
+            delta = len(space) - self.len_hints(hints)
+            for hint in hints:
+                curr_space_index += hint
+                i = last_space_index
+                # print('i:',i,'last_space_index:',last_space_index,'curr_space_index:',curr_space_index)
+                while i in range(last_space_index, curr_space_index):
+                    space[i] = 1
+                    i += 1
+                if hints.index(hint) < len(hints) - 1:
+                    curr_space_index += 1
+                last_space_index = curr_space_index
+            # rev = space.copy()
+            # rev.reverse()
+            res = [space]
+            # print('space:\t', space)
+            res += self.gen_rest_possibilities(space, hints, delta)
+            # res += [rev]
+            # print('rev:\t', rev)
+            return res
+
+    def guess_row(self, space, hints):
+        print('Fitting', hints, 'into space size', len(space), ',', space)
+        rows = self.space_hints(space, hints)
+        # print('rows:', rows)
+        delta = len(space) - self.len_hints(hints)
+        if delta == 0:
+            res = [1 if rows[0][i] == 1 else 9 for i in range(len(rows[0]))]
+            return res
+        col = 0
+        res = []
+        while col in range(len(rows[0])):
+            fill_in = True
+            valid = False
+            j = 0
+            while j in range(len(rows)):
+                if rows[j][col] == 0:
+                    fill_in = False
+                else:
+                    valid |= True
+                j += 1
+            if fill_in:
+                res.append(1)
+            elif not valid:
+                res.append(9)
+            else:
+                res.append(0)
+            col += 1
+        print('res:\t', res)
+        return res
+
+    def guess_puzzle(self, puzzle_in):
+        puzzle_name = self.name # puzzle_in[0]
+        puzzle_id = self.id # puzzle_in[1]
+        puzzle_h_hints = puzzle_in[0]
+        puzzle_v_hints = puzzle_in[1]
+        board = [[0 for i in range(len(puzzle_v_hints))] for j in range(len(puzzle_h_hints))]
+        guessed_h_rows = [self.guess_row(self.space(len(puzzle_v_hints)), row_hints) for row_hints in puzzle_h_hints]
+        # printA('guessed_h_rows:', guessed_h_rows)
+        self.solving_history['level_1']['horizontal_board'] = guessed_h_rows.copy()
+        guessed_v_rows = [self.guess_row(self.space(len(puzzle_h_hints)), row_hints) for row_hints in puzzle_v_hints]
+        # printA('guessed_v_rows:', guessed_v_rows)
+        guessed_v_rows = self.transpose_puzzle(guessed_v_rows)
+        self.solving_history['level_1']['vertical_board'] = guessed_v_rows.copy()
+        # printA('guessed_v_rows:', guessed_v_rows)
+        i, j = 0, 0
+        while i in range(len(guessed_v_rows)):
+            j = 0
+            while j in range(len(guessed_v_rows[i])):
+                if guessed_h_rows[i][j] == 1 or guessed_v_rows[i][j] == 1:
+                    board[i][j] = 1
+                elif guessed_h_rows[i][j] == 9 or guessed_v_rows[i][j] == 9:
+                    board[i][j] = 0
+                # print('i:',i,'j:',j)
+                j += 1
+            i += 1
+        # print(board)
+        return board
+
     def gen_solved_puzzle(self):
         print('\n\tLevel 1 Solving\n')
         solving_history = {'stats': {}, 'level_1': {}}
+        self.solving_history = solving_history
         n_rows = self.rows
         n_cols = self.cols
         v_hints = self.vertical_hints
@@ -306,37 +424,44 @@ class Puzzle:
         print('n_rows:', n_rows, ', n_cols:', n_cols)  # , ', num_pixels:', num_pixels)
         # printA('v_hints:', v_hints)
         # printA('h_hints:', h_hints)
-        board = [[0 for i in range(n_cols)] for x in range(n_rows)]
-        t_board = self.transpose_puzzle(board.copy())
-        i = 0
-        while i in range(len(board)):
-            # print('using hints:',h_hints)
-            board[i] = self.horizontal_row_fill(board[i], h_hints[i])
-            i += 1
-        solving_history['level_1']['horizontal_board'] = board.copy()
-        printA('horizontal_board', board)
-        i = 0
-        while i in range(len(t_board)):
-            # print('using hints:',v_hints)
-            t_board[i] = self.horizontal_row_fill(t_board[i], v_hints[i])
-            i += 1
-        t_board = self.transpose_puzzle(t_board)
-        solving_history['level_1']['vertical_board'] = t_board.copy()
-        printA('vertical_board', t_board)
-        i = 0
-        j = 0
-        while i in range(len(board)):
-            while j in range(len(board[i])):
-                if t_board[i][j] == 1:
-                    board[i][j] = 1
-                j += 1
-            j = 0
-            i += 1
+
+
+        # board = [[0 for i in range(n_cols)] for x in range(n_rows)]
+        # t_board = self.transpose_puzzle(board.copy())
+        # i = 0
+        # while i in range(len(board)):
+        #     # print('using hints:',h_hints)
+        #     board[i] = self.horizontal_row_fill(board[i], h_hints[i])
+        #     i += 1
+        # solving_history['level_1']['horizontal_board'] = board.copy()
+        # printA('horizontal_board', board)
+        # i = 0
+        # while i in range(len(t_board)):
+        #     # print('using hints:',v_hints)
+        #     t_board[i] = self.horizontal_row_fill(t_board[i], v_hints[i])
+        #     i += 1
+        # t_board = self.transpose_puzzle(t_board)
+        # solving_history['level_1']['vertical_board'] = t_board.copy()
+        # printA('vertical_board', t_board)
+        # i = 0
+        # j = 0
+        # while i in range(len(board)):
+        #     while j in range(len(board[i])):
+        #         if t_board[i][j] == 1:
+        #             board[i][j] = 1
+        #         j += 1
+        #     j = 0
+        #     i += 1
+        board = self.guess_puzzle([h_hints, v_hints])
+
+
         printA('resulting board',board)
         solving_history['level_1']['resulting_board'] = board.copy()
         if self.check_board(board):
             self.solving_history = solving_history
             return board
+
+
 
         i = 0
         j = 0
@@ -365,12 +490,12 @@ class Puzzle:
             return board
 
         self.solving_history = solving_history
-        board = self.advanced_solving(board)
+        # board = self.advanced_solving(board)
         # printA('returned advanced board', board)
         return board
 
-    def len_hints(self, arr):
-        return sum(arr) + len(arr) - 1
+    # def len_hints(self, arr):
+    #     return sum(arr) + len(arr) - 1
 
     # def how_many_counted(self, arr):
     #     seen = False
@@ -880,10 +1005,18 @@ class Puzzle:
 
     def print_history(self, solving_history):
         spacing = '\t'
+        details = False
         for key in solving_history:
             print(key)
             for key, val in solving_history[key].items():
-                print(spacing, key + ':', val)
+                if details:
+                    if type(val) is list:
+                        printA(spacing + key + ':', val)
+                    else:
+                        print(spacing, key + ':', val)
+                else:
+                    print(spacing, key + ':', val)
+
 
     # def surround_shrunken_board(self, puzzle):
     #     n_cols = self.cols
@@ -899,23 +1032,31 @@ class Puzzle:
         print('cuts_C',cuts['left_col_cut'])
         print('cuts_D',cuts['right_col_cut'])
 
-        r_calc = max(max([len(t_board[i]) for i in range(len(t_board))]), len(t_board))
-        c_calc = max(max([len(board[i]) for i in range(len(board))]), len(board))
+        a = max([len(t_board[i]) for i in range(len(t_board))])
+        b = len(t_board)
+        r_calc = max(a, b)
+        c = max([len(board[i]) for i in range(len(board))])
+        d = len(board)
+        c_calc = max(c, d)
         puzzle_dims = [r_calc, c_calc]
-        row_buffer = (puzzle_dims[0] - min(len(t_board[0]), len(t_board))) // 2
-        col_buffer = (puzzle_dims[1] - min(len(board[0]), len(board))) // 2
-        row_buffer = 1 if row_buffer == 1 else row_buffer // 2
-        col_buffer = 1 if col_buffer == 1 else col_buffer // 2
-        print('puzzle_dims:', puzzle_dims,'row_buffer:',row_buffer,'col_buffer:',col_buffer)
+        e = (puzzle_dims[0] - min(len(t_board[0]), len(t_board)))
+        row_buffer = 1 if e == 1 else e // 2
+        f = (puzzle_dims[1] - min(len(board[0]), len(board)))
+        col_buffer = 1 if f == 1 else f // 2
+        print('puzzle_dims:', puzzle_dims,'row_buffer:',row_buffer,'col_buffer:',col_buffer,'r_calc:',r_calc,'c_calc:',c_calc)
+        print('a:',a,'b:',b,'c:',c,'d:',d,'e:',e,'f:',f)
 
         while i in range(puzzle_dims[0]):
             if row_buffer < i <= (puzzle_dims[0] - row_buffer):
                 row = []
                 while j in range(puzzle_dims[1]):
                     if col_buffer < j <= (puzzle_dims[1] - col_buffer):
-                        x = i - (2 * row_buffer)
-                        y = j - (2 * col_buffer)
-                        print('x:',x,', y:',y)
+                        x = i - (2 * row_buffer) if i - (2 * row_buffer) >= 0 else 0
+                        y = j - (2 * col_buffer) if j - (2 * col_buffer) >= 0 else 0
+                        print('i:',i,'j:',j,'x:',x,',y:',y)
+                        # x += cuts['top_row_cut']
+                        # y += cuts['left_col_cut']
+                        # print('upgraded: x:',x,', y:',y)
                         row.append(max(board[x][y], t_board[x][y]))
                     j += 1
                 j = 0

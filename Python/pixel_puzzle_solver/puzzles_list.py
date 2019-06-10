@@ -9,7 +9,7 @@ sample_smiley = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
                  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0]]
 
-sample_smiley_puzzle = ['sample_smiley', 0, sample_smiley]
+sample_smiley_puzzle = ['sample_smiley', 16, sample_smiley]
 # print(sample_smiley_puzzle)
 
 puzzle1 = ['puzzle_1', 1, [[0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 1, 0, 1, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0]]]
@@ -202,7 +202,7 @@ mushroom_puzzle_v_hints = [[8], [6, 4], [1, 3, 6], [1, 6, 4], [1, 15], [7, 9], [
 mushroom_puzzle_h_hints = [[11], [6, 2, 1], [2, 5, 1, 1], [1, 10, 3], [2, 16], [16, 1], [6, 4, 1], [5, 3, 1],
                            [1, 2, 4, 1], [2, 1, 8], [2, 3, 9], [16, 2], [18], [17], [6, 1, 4], [4, 2], [3, 1], [3, 1],
                            [4, 2], [9]]
-sample_mushroom_puzzle = ['sample_mushroom_puzzle', 14, mushroom_puzzle_h_hints, mushroom_puzzle_v_hints]
+sample_mushroom_puzzle = ['sample_mushroom_puzzle', 17, mushroom_puzzle_h_hints, mushroom_puzzle_v_hints]
 # need to remove:
 # r4: [c4, c5]
 # r5: [c2, c4]
@@ -260,6 +260,10 @@ puzzle14 = ['pirate flag', 14, \
              [1, 1, 4], [1, 1, 3, 4], [1, 1, 4], [1, 1, 3, 4], [2, 2, 1, 4], [3, 1, 2, 6], [3, 3, 4], [3, 9, 3], [11],
              [13], [1, 13, 2]]]
 
+puzzle15 = ['puzzle_15', 15, \
+            [[25], [12, 12], [11, 11], [10, 1, 10], [9, 2, 9], [8, 3, 8], [7, 4, 7], [6, 6, 6], [5, 8, 5], [4, 10, 4], [3, 12, 3], [2, 14, 2], [1, 16, 1], [18], [25]],
+            [[13, 1], [12, 1], [11, 1], [10, 1], [9, 1], [8, 2], [7, 3], [6, 4], [5, 5], [4, 6], [3, 7], [2, 8], [1, 12], [2, 11], [3, 10], [4, 9], [5, 8], [6, 7], [7, 6], [8, 5], [9, 4], [10, 3], [11, 2], [12, 1], [13, 1]]]
+
 list_of_puzzles = { \
     puzzle1[0]: puzzle1,
     puzzle2[0]: puzzle2,
@@ -275,8 +279,9 @@ list_of_puzzles = { \
     puzzle12[0]: puzzle12,
     puzzle13[0]: puzzle13,
     puzzle14[0]: puzzle14,
+    puzzle15[0]: puzzle15,
     sample_smiley_puzzle[0]: sample_smiley_puzzle,
-    sample_mushroom_puzzle[0]: sample_mushroom_puzzle \
+    sample_mushroom_puzzle[0]: sample_mushroom_puzzle,    \
 }
 
 
