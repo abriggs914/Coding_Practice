@@ -21,7 +21,8 @@ list_of_puzzles = puzzleify(list_of_puzzles)
 def begin_scoring():
     print('Begin scoring')
     score = 0
-    summary = True
+    # summary = True
+    summary = False
     solved_puzzles = []
     progress_bar = [' ' for i in range(len(list_of_puzzles.keys()))]
     for i in list_of_puzzles.keys():
@@ -41,3 +42,4 @@ def begin_scoring():
 
 begin_scoring()
 # end Puzzle_Board
+# inp = input('type something')
