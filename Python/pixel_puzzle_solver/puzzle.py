@@ -490,7 +490,8 @@ class Puzzle:
             return board
 
         self.solving_history = solving_history
-        board = self.advanced_solving(board)
+        
+        # board = self.advanced_solving(board)
         # printA('returned advanced board', board)
         return board
 
