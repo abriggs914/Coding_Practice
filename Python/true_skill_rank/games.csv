@@ -1,6 +1,6 @@
 team_1,team_2,location,result,date,team_1_score,team_2_score
 Calgary Flames,Detroit Red Wings,home,W,2019-10-08,3,1
-Toronto Maple Leafs,Pittsburg Penguins,away,SOL,2019-10-08,2,3
+Toronto Maple Leafs,Pittsburgh Penguins,away,SOL,2019-10-08,2,3
 Calgary Flames,Edmonton Oilers,home,W,2019-10-10,2,0
 Tampa Bay Lightning,Toronto Maple Leafs,home,W,2019-10-10,2,1
 Carolina Hurricanes,Toronto Maple Leafs,home,W,2019-10-10,2,1
@@ -10,3 +10,4 @@ Calgary Flames,Winnipeg Jets,away,L,2019-10-11,0,2
 Calgary Flames,Nashville Predators,away,W,2019-10-12,3,2
 Calgary Flames,Minnesota Wild,away,L,2019-10-13,0,1
 Calgary Flames,Washington Capitals,away,L,2019-10-14,0,2
+Vancouver Canucks,Calgary Flames,away,L,2019-10-15,0,2

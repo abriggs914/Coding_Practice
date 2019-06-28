@@ -21,7 +21,7 @@ class RankingSim:
             if not self.same_game_check(row):
                 # print('append')
                 self.game_number += 1
-                print('adding game', row['team_1'], 'vs', row['team_2'], 'date:', row['date'])
+                print('\nadding game', row['team_1'], 'vs', row['team_2'], 'date:', row['date'],'\n')
                 if row['date'] not in self.schedule.keys():
                     self.schedule[row['date']] = [row]
                     self.add_team_record(row['team_1'], row)
@@ -39,17 +39,34 @@ class RankingSim:
 
     def same_game_check(self, game):
         day = game['date']
+        # for day in self.schedule.keys():
+            # print('date:', day)
+        team_1_a, team_1_b = None, None
         if day in self.schedule.keys():
-            team_1_a = game['team_1']
-            team_1_b = game['team_2']
-            team_2_a = [self.schedule[day][i]['team_1'] for i in range(len(self.schedule[day]))]
-            team_2_b = [self.schedule[day][i]['team_2'] for i in range(len(self.schedule[day]))]
-            # print('schedule team_2_a',team_2_a)
-            # print('schedule team_2_b',team_2_b)
+            team_1_a = game['team_1'].strip().upper()
+            team_1_b = game['team_2'].strip().upper()
+            team_2_a = [self.schedule[day][i]['team_1'].strip().upper() for i in range(len(self.schedule[day]))]
+            team_2_b = [self.schedule[day][i]['team_2'].strip().upper() for i in range(len(self.schedule[day]))]
+            # print('in keys', day)
+            # print('team_1_a', team_1_a,'schedule team_2_a',team_2_a)
+            # print('team_1_b', team_1_b,'schedule team_2_b',team_2_b)
+            # res = team_1_b in team_2_a
+            # print(team_1_b)
+            # print(team_2_a[0])
+            # print('team_1_b',team_1_b, 'team_2_a', team_2_a, 'type(team_1_b)',type(team_1_b), 'type(team_2_a[0])', type(team_2_a[0]), '___', team_1_b == team_2_a[0])
+            # print('res', res)
             if team_1_a in team_2_a or team_1_a in team_2_b:
+                # print('exit 1')
                 return True
             if team_1_b in team_2_a or team_1_b in team_2_b:
+                # print('exit 2')
                 return True
+        # print('returning false')
+        else:
+            team_1_a = game['team_1']
+            team_1_b = game['team_2']
+        if not self.check_team_names(team_1_a, team_1_b):
+            raise ValueError('INVALID TEAM NAME: ' + '[' + str(team_1_a) + ', ' + str(team_1_b) + ']')
         return False
 
     # def gen_alternate_view(self):
@@ -179,8 +196,14 @@ class RankingSim:
         mmr_change = self.START_MMR
         return mmr_change
 
-    def adjust_confidence(self,_param_recrd):
+    def adjust_confidence(self, param_record):
         confidence = self.CONFIDENCE
+        team_1 = list(param_record['team_1'])[0]
+        team_2 = list(param_record['team_2'])[0]
+        print('ADJUSTING CONFIDENCE')
+        print('team_1', team_1, 'team_2', team_2)
+        print('param_record', param_record)
+        print('CONFIDENCE ADJUSTED')
         return confidence
 
     def first_addition(self, record_df):
@@ -223,11 +246,29 @@ class RankingSim:
         # print('type::', type(self.games))
         return df
 
+    def check_team_names(self, team_1, team_2):
+        team_cities_split = [team.split(' ') for team in teams]
+        team_1_temp = team_1.strip().title()
+        team_2_temp = team_2.strip().title()
+        special_team_names = ['Red', 'Maple', 'Blue', 'Golden']
+        team_1_temp = team_1_temp.split(' ')
+        team_2_temp = team_2_temp.split(' ')
+        # team_2_temp = [team[0] if len(team) == 2 else team[0] if team[1] in special_team_names else team[0] + ' ' + team[1] for team in team_2_temp.split(' ')]
+        # team_1_temp = ' '.join(team_1_temp)
+        # team_2_temp = ' '.join(team_2_temp)
+        team_1_temp = team_1_temp[0] if len(team_1_temp) == 2 else team_1_temp[0] if team_1_temp[1] in special_team_names else team_1_temp[0] + ' ' + team_1_temp[1]
+        team_2_temp = team_2_temp[0] if len(team_2_temp) == 2 else team_2_temp[0] if team_2_temp[1] in special_team_names else team_2_temp[0] + ' ' + team_2_temp[1]
+        print('team_1:', team_1_temp, 'team_2:', team_2_temp)
+        team_cities = [team[0] if len(team) == 2 else team[0] if team[1] in special_team_names else team[0] + ' ' + team[1] for team in team_cities_split]
+        print(team_cities)
+        return True if team_1_temp in team_cities and team_2_temp in team_cities else False
+
 
 def read_games_file():
     file = pd.read_csv('games.csv')
     # file = pd.read_csv('test_1.csv')
     # file = pd.read_csv('test_2.csv')
+    # file = pd.read_csv('test_3.csv')
     return file
 
 
