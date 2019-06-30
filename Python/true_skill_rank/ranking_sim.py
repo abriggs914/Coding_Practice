@@ -10,7 +10,7 @@ class RankingSim:
         self.schedule = {}
         self.games = {}
         self.skipped_games = []
-        self.min_games_required_for_rank = 10
+        self.min_games_required_for_rank = 5
 
     def populate_games_dict(self, games_file):
         for i in range(len(games_file)):
@@ -188,21 +188,91 @@ class RankingSim:
             return self.START_MMR
         # print('TEST', team_1, '_', team_2)
         # print('GAMES',self.games)
-        team_1_rank = self.games[team_1]['MMR']
-        team_2_rank = self.games[team_2]['MMR']
+        print('ADJUSTING MMR')
+        team_1_rank_list = list(self.games[team_1]['MMR'])
+        team_1_rank = team_1_rank_list[len(team_1_rank_list) - 1]
+        team_2_rank_list = list(self.games[team_2]['MMR'])
+        team_2_rank = team_2_rank_list[len(team_2_rank_list) - 1]
+        team_1_confidence_list = list(self.games[team_1]['confidence'])
+        team_1_confidence = team_1_confidence_list[len(team_1_confidence_list) - 1]
+        team_2_confidence_list = list(self.games[team_2]['confidence'])
+        team_2_confidence = team_2_confidence_list[len(team_2_confidence_list) - 1]
+        mmr_diff_1 = (1 - (team_1_rank - team_2_rank))
+        mmr_diff_2 = mmr_diff_1 // 3
+        mmr_diff_3 = mmr_diff_2 // 2
+        # win
+        mmr_diff_win, mmr_diff_loss = team_1_confidence, team_1_confidence
+        mmr_diff_win -= (team_1_confidence - mmr_diff_3) / team_1_confidence
+        # loss
+        mmr_diff_loss += (team_1_confidence - mmr_diff_3) / team_1_confidence
         # print('PARAM', param_record)
+        game_result = list(param_record['result'])[0]
+        print(team_1 + ':', game_result)
+        confidence = self.CONFIDENCE
+        rank_range = (max(0, abs(team_1_rank - confidence)), min(50, abs(team_1_rank + confidence)))
+        if game_result == 'W':
+            # confidence = mmr_diff_win
+            rank_estimate_unround = (team_1_rank + rank_range[1]) / 2
+        elif game_result == 'L':
+            # confidence = mmr_diff_loss
+            # rank_range = (team_1_rank - confidence, team_1_rank + confidence)
+            rank_estimate_unround = (rank_range[0] + team_1_rank) / 2
+        rank_estimate = round(rank_estimate_unround)
         print('team_1_rank', team_1_rank, 'team_2_rank', team_2_rank)
-        print('mmr_change', mmr_change)
+        print('team_1_confidence', team_1_confidence, 'team_2_confidence', team_2_confidence)
+        print('mmr_diff_1:', mmr_diff_1,'mmr_diff_2:', mmr_diff_2,'mmr_diff_3:', mmr_diff_3, 'mmr_change', mmr_change)
+        print('mmr|_diff_win', mmr_diff_win, 'mmr_diff_loss', mmr_diff_loss)
+        print('RANK RANGE:', rank_range, 'rank_estimate_unround', rank_estimate_unround, 'rank_estimate', rank_estimate)
         mmr_change = self.START_MMR
-        return mmr_change
+        print('MMR ADJUSTED')
+        return rank_estimate
 
     def adjust_confidence(self, param_record):
         confidence = self.CONFIDENCE
         team_1 = list(param_record['team_1'])[0]
         team_2 = list(param_record['team_2'])[0]
+        if team_1 not in self.games.keys():
+            print('First Game for the', team_1)
+            return self.CONFIDENCE
+        if team_2 not in self.games.keys():
+            # print('First Game for team_2', team_2)
+            return self.CONFIDENCE
+        x = len(self.games[team_1])
+        print('x:',x)
+        if x < self.min_games_required_for_rank:
+            print('The',team_1,'have not yet played at least',self.min_games_required_for_rank,'games, \nand therefore can\'t be ranked confidently [' + str(x) + ' / ' + str(self.min_games_required_for_rank) + ']')
+            return self.CONFIDENCE
         print('ADJUSTING CONFIDENCE')
+        # print('games', self.games)
+        team_1_rank_list = list(self.games[team_1]['MMR'])
+        team_1_rank = team_1_rank_list[len(team_1_rank_list) - 1]
+        team_2_rank_list = list(self.games[team_2]['MMR'])
+        team_2_rank = team_2_rank_list[len(team_2_rank_list) - 1]
+        team_1_confidence_list = list(self.games[team_1]['confidence'])
+        team_1_confidence = team_1_confidence_list[len(team_1_confidence_list) - 1]
+        team_2_confidence_list = list(self.games[team_2]['confidence'])
+        team_2_confidence = team_2_confidence_list[len(team_2_confidence_list) - 1]
+        mmr_diff_1 = (1 - (team_1_rank - team_2_rank))
+        mmr_diff_2 = mmr_diff_1 // 3
+        mmr_diff_3 = mmr_diff_2 // 2
+        # win
+        mmr_diff_win, mmr_diff_loss = team_1_confidence, team_1_confidence
+        mmr_diff_win -= (team_1_confidence - mmr_diff_3) / team_1_confidence
+        # loss
+        mmr_diff_loss += (team_1_confidence - mmr_diff_3) / team_1_confidence
+        # print('PARAM', param_record)
+        print('team_1_rank', team_1_rank, 'team_2_rank', team_2_rank)
+        print('team_1_confidence', team_1_confidence, 'team_2_confidence', team_2_confidence)
+        print('mmr_diff_1:', mmr_diff_1,'mmr_diff_2:', mmr_diff_2,'mmr_diff_3:', mmr_diff_3)
+        print('mmr|_diff_win', mmr_diff_win, 'mmr_diff_loss', mmr_diff_loss)
         print('team_1', team_1, 'team_2', team_2)
-        print('param_record', param_record)
+        # print('param_record[\'result\']', param_record['result'])
+        game_result = list(param_record['result'])[0]
+        if game_result == 'W':
+            confidence = mmr_diff_win
+        elif game_result == 'L':
+            confidence = mmr_diff_loss
+        # confidence = mmr_diff_win
         print('CONFIDENCE ADJUSTED')
         return confidence
 
