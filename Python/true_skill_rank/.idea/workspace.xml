@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/ranking_sim.py" description="from bs4 import BeatifulSoup" line="2" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="63255c37-945c-4cec-bca7-6265b971cd4a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/games.csv" beforeDir="false" afterPath="$PROJECT_DIR$/games.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ranking_sim.py" beforeDir="false" afterPath="$PROJECT_DIR$/ranking_sim.py" afterDir="false" />
     </list>
@@ -17,10 +19,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ranking_sim.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="272" column="32" lean-forward="true" selection-start-line="272" selection-start-column="32" selection-end-line="272" selection-end-column="32" />
+            <state relative-caret-position="102">
+              <caret line="339" column="70" lean-forward="true" selection-start-line="339" selection-start-column="70" selection-end-line="339" selection-end-column="70" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/regular_season_2018_2019.csv">
+          <provider editor-type-id="csv-table-editor">
+            <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+          </provider>
+          <provider selected="true" editor-type-id="csv-text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -29,8 +42,8 @@
             <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
           </provider>
           <provider selected="true" editor-type-id="csv-text-editor">
-            <state relative-caret-position="255">
-              <caret line="26" column="48" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
+            <state>
+              <caret selection-end-column="60" />
             </state>
           </provider>
         </entry>
@@ -86,6 +99,8 @@
       <find>first</find>
       <find>teams</find>
       <find>rank r</find>
+      <find>location</find>
+      <find>L</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -98,6 +113,7 @@
         <option value="$PROJECT_DIR$/test_2.csv" />
         <option value="$PROJECT_DIR$/test_3.csv" />
         <option value="$PROJECT_DIR$/games.csv" />
+        <option value="$PROJECT_DIR$/regular_season_2018_2019.csv" />
         <option value="$PROJECT_DIR$/ranking_sim.py" />
       </list>
     </option>
@@ -192,7 +208,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.44517186" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.44517186" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934534" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -244,20 +260,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/regular_season_2018_2019.csv">
+      <provider editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
+      </provider>
+      <provider selected="true" editor-type-id="csv-text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/games.csv">
       <provider editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3" />
       </provider>
       <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="255">
-          <caret line="26" column="48" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
+        <state>
+          <caret selection-end-column="60" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ranking_sim.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="272" column="32" lean-forward="true" selection-start-line="272" selection-start-column="32" selection-end-line="272" selection-end-column="32" />
+        <state relative-caret-position="102">
+          <caret line="339" column="70" lean-forward="true" selection-start-line="339" selection-start-column="70" selection-end-line="339" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

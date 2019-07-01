@@ -1,0 +1,26 @@
+NHL CLI
+A CLI tool to display NHL games and scores.
+
+NHL scores in the terminal
+
+Install
+npm install nhl-cli -g
+Commands
+Today's NHL games and scores
+nhl
+nhl today
+Tomorrow's NHL game schedule
+nhl tomorrow
+Yesterday's NHL games and scores
+nhl yesterday
+Date of NHL games and scores
+nhl date 2016-03-15
+Contributing
+Fork it
+Run npm install
+Create your feature branch (git checkout -b my-new-feature)
+Commit your changes (git commit -am 'Add some feature')
+Push to the branch (git push origin my-new-feature)
+Create new Pull Request
+License
+MIT © Ryan Burgess

@@ -1,5 +1,6 @@
 import pandas as pd
-
+import requests
+from bs4 import BeautifulSoup
 
 class RankingSim:
 
@@ -182,7 +183,7 @@ class RankingSim:
             # print('First Game for team_2', team_2)
             return self.START_MMR
         x = len(self.games[team_1])
-        print('x:',x)
+        # print('x:',x)
         if x < self.min_games_required_for_rank:
             print('The',team_1,'have not yet played at least',self.min_games_required_for_rank,'games, \nand therefore can\'t be ranked confidently [' + str(x) + ' / ' + str(self.min_games_required_for_rank) + ']')
             return self.START_MMR
@@ -212,11 +213,11 @@ class RankingSim:
         rank_range = (max(0, abs(team_1_rank - confidence)), min(50, abs(team_1_rank + confidence)))
         if game_result == 'W':
             # confidence = mmr_diff_win
-            rank_estimate_unround = (team_1_rank + rank_range[1]) / 2
+            rank_estimate_unround = ((team_1_rank + rank_range[1]) / 2)
         elif game_result == 'L':
             # confidence = mmr_diff_loss
             # rank_range = (team_1_rank - confidence, team_1_rank + confidence)
-            rank_estimate_unround = (rank_range[0] + team_1_rank) / 2
+            rank_estimate_unround = ((rank_range[0] + team_1_rank) / 2)
         rank_estimate = round(rank_estimate_unround)
         print('team_1_rank', team_1_rank, 'team_2_rank', team_2_rank)
         print('team_1_confidence', team_1_confidence, 'team_2_confidence', team_2_confidence)
@@ -238,7 +239,7 @@ class RankingSim:
             # print('First Game for team_2', team_2)
             return self.CONFIDENCE
         x = len(self.games[team_1])
-        print('x:',x)
+        # print('x:',x)
         if x < self.min_games_required_for_rank:
             print('The',team_1,'have not yet played at least',self.min_games_required_for_rank,'games, \nand therefore can\'t be ranked confidently [' + str(x) + ' / ' + str(self.min_games_required_for_rank) + ']')
             return self.CONFIDENCE
@@ -272,7 +273,7 @@ class RankingSim:
             confidence = mmr_diff_win
         elif game_result == 'L':
             confidence = mmr_diff_loss
-        # confidence = mmr_diff_win
+        confidence = mmr_diff_win
         print('CONFIDENCE ADJUSTED')
         return confidence
 
@@ -334,11 +335,68 @@ class RankingSim:
         return True if team_1_temp in team_cities and team_2_temp in team_cities else False
 
 
+def adjust_regular_season_dataframe(orig_frame):
+
+    # need to change the indexes that are used to determine the values
+    orig_frame_columns = list(orig_frame.columns)
+    columns = ['team_1','team_2','location','result','date','team_1_score','team_2_score']
+    df = pd.DataFrame()
+    list_of_games = list(orig_frame.values)
+    for game in list_of_games:
+        game_dict = {}
+        date = game[0]
+        home_team = game[3]
+        away_team = game[1]
+        home_score = game[4]
+        away_score = game[2]
+        extra_result = game[5]
+        if type(extra_result) != str:
+            attendance_thousands = game[5]
+            attendance_ones = game[6]
+            log = game[7]
+            notes = game[8]
+
+        else:
+            attendance_thousands = game[6]
+            attendance_ones = game[7]
+            log = game[8]
+            notes = game[9]
+
+        location_prefixes = ['New', 'Tampa', 'St', 'San', 'Los']
+        two_name_mascots = ['Vegas', 'Columbus', 'Toronto', 'Detroit']
+        location = home_team.split(' ')
+        if len(location) == 3:
+            if location[0] == 'St.':
+                location[0] = 'St'
+            if location[0] in location_prefixes:
+                location = location[0] + ' ' + location[1]
+            if location[0] in two_name_mascots:
+                location = location[0]
+        else:
+            location = location[0]
+
+        # location = get_location(home_team)
+        print('attendance_thousands:', attendance_thousands, 'attendance_ones', attendance_ones)
+        print('type(attendance_thousands):', type(attendance_thousands), 'type(attendance_ones)', type(attendance_ones))
+        # attendance = attendance_thousands * 1000 + attendance_ones
+        attendance = 'ATTENDANCE'
+
+        print('\nhome_team:',home_team,'away_team:',away_team,'home_score:',home_score,'away_score:',away_score,'location:',location,'attendance:',attendance, 'extra_result:',extra_result,'log:', log, 'notes', notes)
+
+        # print('values', game.values)
+        # print('index', game.index)
+        # print('game',game)
+        # for col in list(game):
+        #     print('type(col)',type(col),'col', col)
+    return orig_frame
+
+
 def read_games_file():
-    file = pd.read_csv('games.csv')
+    # file = pd.read_csv('games.csv')
     # file = pd.read_csv('test_1.csv')
     # file = pd.read_csv('test_2.csv')
     # file = pd.read_csv('test_3.csv')
+    file = adjust_regular_season_dataframe(pd.read_csv('regular_season_2018_2019.csv'))
     return file
 
 
@@ -370,9 +428,12 @@ def create_df_from_series(series):
     # print('CONVERTED')
     return res
 
+#-----------------------------------
+# games = read_games_file()
+# print(games)
+#-----------------------------------
 
-games = read_games_file()
-print(games)
+
 # g = games.iloc[0]
 # print(g)
 # gf = g.to_frame()
@@ -431,20 +492,45 @@ teams = ['Anaheim Ducks',
          'Vegas Golden Knights',
          'Washington Capitals',
          'Winnipeg Jets']
-rank_sim = RankingSim()
-rank_sim.populate_games_dict(games)
+
+#-----------------------------------
+# rank_sim = RankingSim()
+# rank_sim.populate_games_dict(games)
+#-----------------------------------
+
 # print('\n')
 # print('rank_sim.schedule:', rank_sim.schedule)
 # print('\n')
+
+#-----------------------------------
 print('-----------------------------------------------------------------------------')
-for record in rank_sim.games.keys():
-    # print(record)
-    # for game in rank_sim.games[record]:
-    print(rank_sim.games[record])
-    print('\n')
-    # print('\nRECORD\n', rank_sim.games[record])
-    # print('\nRECORD ', rank_sim.games[record][0]['team_1'], '\n', rank_sim.games[record])
-    # print('\nRECORD ', rank_sim.games[record][0]['team_1'], '\n')
+# for record in rank_sim.games.keys():
+#     # print(record)
+#     # for game in rank_sim.games[record]:
+#     print(rank_sim.games[record])
+#     print('\n')
+#     # print('\nRECORD\n', rank_sim.games[record])
+#     # print('\nRECORD ', rank_sim.games[record][0]['team_1'], '\n', rank_sim.games[record])
+#     # print('\nRECORD ', rank_sim.games[record][0]['team_1'], '\n')
+
+#-----------------------------------
 
 # rank_sim.gen_alternate_view()
+
+# url = 'https://www.nhl.com/schedule/2018-09-01/ET'
+# webpage_response = requests.get(url)
+# print(webpage_response)
+# webpage_content = webpage_response.content
+# print(webpage_content)
+# soup = BeautifulSoup(webpage_content, "html.parser")
+# print(soup)
+
+games_file = read_games_file()
+print(games_file.columns)
+print(games_file.head())
+for col in list(games_file.columns):
+    print('col:', col, '_', games_file.iloc[0][col])
+print()
+for col in list(games_file.columns):
+    print('col:', col, '_', games_file.iloc[8][col])
 
