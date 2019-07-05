@@ -2,9 +2,11 @@ team_1,team_2,location,result,date,team_1_score,team_2_score
 Calgary Flames,Detroit Red Wings,home,W,2019-10-08,3,1
 Toronto Maple Leafs,Pittsburgh Penguins,away,SOL,2019-10-08,2,3
 Calgary Flames,Edmonton Oilers,home,W,2019-10-10,2,0
+Florida Panthers,Boston Bruins,home,W,2019-10-10,6,2
 Tampa Bay Lightning,Toronto Maple Leafs,home,W,2019-10-10,2,1
 Carolina Hurricanes,Toronto Maple Leafs,home,W,2019-10-10,2,1
 Carolina Hurricanes,New York Islanders,home,W,2019-10-10,2,1
+Florida Panthers,Boston Bruins,home,W,2019-10-11,6,2
 Los Angeles Kings,San Jose Sharks,home,L,2019-10-11,0,1
 Calgary Flames,Winnipeg Jets,away,L,2019-10-11,0,2
 Calgary Flames,Nashville Predators,away,W,2019-10-12,3,2
@@ -14,12 +16,16 @@ Vancouver Canucks,Calgary Flames,away,L,2019-10-15,0,2
 San Jose Sharks,Los Angeles Kings,home,L,2019-10-15,0,1
 Calgary Flames,Edmonton Oilers,away,W,2019-10-16,2,0
 Calgary Flames,Winnipeg Jets,away,L,2019-10-17,0,2
+Boston Bruins,Florida Panthers,home,L,2019-10-17,2,6
 Calgary Flames,Nashville Predators,away,W,2019-10-18,3,2
 Calgary Flames,Minnesota Wild,away,L,2019-10-19,0,1
 Calgary Flames,Washington Capitals,away,L,2019-10-20,0,2
+Florida Panthers,Boston Bruins,home,W,2019-10-20,6,2
 Vancouver Canucks,Calgary Flames,away,L,2019-10-21,0,2
 Calgary Flames,Edmonton Oilers,away,W,2019-10-22,2,0
 Calgary Flames,Edmonton Oilers,away,W,2019-10-23,2,0
+Florida Panthers,Boston Bruins,home,W,2019-10-23,6,2
+Boston Bruins,Florida Panthers,home,L,2019-10-24,2,6
 Calgary Flames,Edmonton Oilers,away,W,2019-10-24,2,0
 Calgary Flames,Edmonton Oilers,away,W,2019-10-25,2,0
 Calgary Flames,Edmonton Oilers,away,W,2019-10-26,2,0
@@ -27,3 +33,6 @@ Calgary Flames,Edmonton Oilers,away,W,2019-10-27,2,0
 Calgary Flames,Edmonton Oilers,away,W,2019-10-28,2,0
 Calgary Flames,Edmonton Oilers,away,W,2019-10-29,2,0
 Winnipeg Jets,Detroit Red Wings,home,W,2019-10-18,4,2
+Florida Panthers,Boston Bruins,home,W,2019-10-29,6,2
+Boston Bruins,Florida Panthers,home,L,2019-10-30,2,6
+Boston Bruins,Florida Panthers,home,W,2019-10-31,1,0

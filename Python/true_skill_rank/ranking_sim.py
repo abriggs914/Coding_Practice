@@ -2,23 +2,77 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
+START_CONFIDENCE = float(float(25)/float(3))
+START_MMR = 25
+print_details = False
+print_more_details = False
+
 class RankingSim:
 
     def __init__(self):
         self.game_number = 0
-        self.START_MMR = 25
-        self.CONFIDENCE = float(25 / 3)
+        self.START_MMR = START_MMR
+        self.CONFIDENCE = START_CONFIDENCE
         self.schedule = {}
         self.games = {}
         self.skipped_games = []
-        self.min_games_required_for_rank = 5
+        self.min_games_required_for_rank = 0
+
+    def __repr__(self):
+        string_res = ''
+        for team in self.games.keys():
+            string_res += '\n\tTeam:\t' + str(team) + '\n'
+            df = self.games[team]  # pd.DataFrame(
+            show_dict = {'DATE': list(df['date']),
+                         'VS': list(df['team_2']),
+                         'RES': list(df['result']),
+                         'GF': list(df['team_1_score']),
+                         'GA': list(df['team_2_score']),
+                         'WSTK': list(df['consec_wins']),
+                         'LSTK': list(df['consec_losses']),
+                         'MMR': list(df['MMR']),
+                         'CONFD': list(df['confidence'])}
+            show_df = pd.DataFrame.from_dict(show_dict)#, orient='index', columns=['DATE','VS','RES','GF','GA','WSTK','LSTK','MMR','CONFD'])
+            columns = ['DATE', 'VS', 'RES', 'GF', 'GA', 'WSTK', 'LSTK', 'MMR', 'CONFD']
+            show_df = show_df[columns]
+            print('TEAM:\t' + str(team) +'\t\t\tHIGHEST MMR:\t' + str(max(list(show_df['MMR']))))
+            string_res += str(show_df)
+        return string_res
+
+    def print_df(self, df):
+        string_res = ''
+        team = list(df['team_1'])[0]
+        # for team in self.games.keys():
+        string_res += '\n\tTeam:\t' + str(team) + '\n'
+        # df = self.games[team]  # pd.DataFrame(
+        show_dict = {'DATE': list(df['date']),
+                         'VS': list(df['team_2']),
+                         'RES': list(df['result']),
+                         'GF': list(df['team_1_score']),
+                         'GA': list(df['team_2_score']),
+                         'WSTK': list(df['consec_wins']),
+                         'LSTK': list(df['consec_losses']),
+                         'MMR': list(df['MMR']),
+                         'CONFD': list(df['confidence'])}
+        show_df = pd.DataFrame.from_dict(show_dict)  # , orient='index', columns=['DATE','VS','RES','GF','GA','WSTK','LSTK','MMR','CONFD'])
+        columns = ['DATE', 'VS', 'RES', 'GF', 'GA', 'WSTK', 'LSTK', 'MMR', 'CONFD']
+        show_df = show_df[columns]
+        # print('TEAM:\t' + str(team) + '\t\t\tHIGHEST MMR:\t' + str(max(list(show_df['MMR']))))
+        string_res += str(show_df)
+        return string_res
 
     def populate_games_dict(self, games_file):
         for i in range(len(games_file)):
             # row = games_file.iloc[i]
-            col_names = ['team_1', 'team_2', 'location', 'result', 'date', 'team_1_score', 'team_2_score']
+            col_names = ['team_1', 'team_2', 'location', 'result', 'date', 'team_1_score', 'team_2_score','consec_wins','consec_losses']
             row = pd.Series(games_file.iloc[i])
-            # print(row['date'])
+            # print('incoming date:  ' + str(row['date']))
+
+
+            #THESE LINES SHOULD BE CHANGED
+            # row['consec_wins'] = 0
+            # row['consec_losses'] = 0
+            print('row', row)
             if not self.same_game_check(row):
                 # print('append')
                 self.game_number += 1
@@ -34,7 +88,7 @@ class RankingSim:
                     self.add_team_record(row['team_2'], self.swap_stats_team1_team2(row))
             else:
                 self.skipped_games.append(row)
-        print('Skipped', self.skipped_games)
+        print('\n\t-- Skipped Games --\n' + str(self.skipped_games))
             # print(self.schedule)
 
 
@@ -88,7 +142,7 @@ class RankingSim:
     #         print('\n')
 
     def add_team_record(self, team_name, param_record):
-        # print('\nPARAM',param_record)
+        # print('\nPARAM' + str(param_record) + str('\n\n\n\n\n'))
         # col_names = ['team_1', 'team_2', 'location', 'result', 'date', 'team_1_score', 'team_2_score']
         # record_df = param_record.to_frame()
         # record_df.pivot(columns=col_names, index='team_1')
@@ -101,12 +155,26 @@ class RankingSim:
         # record_df.melt(id_vars='0',
         #         # var_name="date",
         #         value_name="Value")
+            # print('HEY', self.games[team_name],'\n\n')
+
+        # col_names = list(record_df.columns)
+        # consec = ('consec_wins', 'consec_losses')
+        # if consec[0] not in col_names:
+        #     record_df[consec[0]] = self.look_up_team_2_consec_wins(list(record_df['team_1'])[0])
+        # if consec[1] not in col_names:
+        #     record_df[consec[1]] = self.look_up_team_2_consec_losses(list(record_df['team_1'])[0])
+
 
         # print('TYPE:', type(record_df))
         # print('record_df:', record_df)
         for key in self.games.keys():
             # print('key', key)
             if key == team_name:
+
+                game_num = len(record_df['team_1_score']) - 1
+                team_1_score = record_df['team_1_score'][game_num]
+                team_2_score = record_df['team_2_score'][game_num]
+                win = True if team_1_score > team_2_score else False
                 # print('APPENDING HERE')
                 # self.game_number += 1
                 # print('team_name:',team_name, 'record[\'num_games\']', record['num_games/'],'type(record):', type(record))\
@@ -116,41 +184,80 @@ class RankingSim:
                 # record_df.loc[record_df.num_games] = len(self.games[key]) + 1
                 # record = param_record.copy()
                 print('already exists', team_name)
-                # print('\nrecord::',record_df,'\n')
-                # print('ILOC[0]:', record_df.iloc[0])
-                # print('ILOC[1]:', record_df.iloc[1])
+
+                record_df['consec_wins'] = 0 if not win else self.look_up_team_2_consec_wins(list(record_df['team_1'])[0]) + 1
+                record_df['consec_losses'] = 0 if win else self.look_up_team_2_consec_losses(list(record_df['team_1'])[0]) + 1
                 record_df['num_games'] = x
                 record_df['MMR'] = self.adjust_mmr(record_df)
                 record_df['confidence'] = self.adjust_confidence(record_df)
+                # print('\nrecord::',record_df,'\n')
+                # print('ILOC[0]:', record_df.iloc[0])
+                # print('ILOC[1]:', record_df.iloc[1])
+                # print('record_df.columns', record_df.columns)
+                team_1_consec_wins = record_df['consec_wins'][game_num]
+                team_1_consec_losses = record_df['consec_losses'][game_num]
+                # print('team_1_score:',team_1_score,'team_2_score',team_2_score)
+                # print('team_1_consec_wins:',team_1_consec_wins,'team_1_consec_losses',team_1_consec_losses)
                 # print('CONCAT\t', self.games[team_name], '\n\t', record_df, '\n')
                 self.games[team_name] = pd.concat([self.games[team_name], record_df], sort=False)#.reset_index()  #[self.game_number]|
                 # self.games[team_name].at[team_name, 'num_games'] = x + 1
                 return
+
         if team_name not in self.games.keys():
             # self.game_number += 1
+            # if print_more_details:
             print('FIRST ADDITION')
             first_addition = self.first_addition(record_df)
+            # first_addition['consec_wins'] = 0
+            # first_addition['consec_losses'] = 0
             # record_df.insert(len(record_df.columns), 'num_games', 1)
             record_df['num_games'] = 1
             record_df['MMR'] = self.adjust_mmr(record_df)
             record_df['confidence'] = self.adjust_confidence(record_df)
+
+            game_num = len(record_df['team_1_score']) - 1
+            team_1_score = record_df['team_1_score'][game_num]
+            team_2_score = record_df['team_2_score'][game_num]
+            win = True if team_1_score > team_2_score else False
+            record_df['consec_wins'] = 1 if win else 0
+            record_df['consec_losses'] = 1 if not win else 0
             # print('\nfirst_addition:', len(list(first_addition.columns)), '\nrecord_df',len(list(record_df.columns)))
-            self.games[team_name] = pd.concat([first_addition, record_df], sort=False)
+            result_df = pd.concat([first_addition, record_df], sort=False)
+            print('result_df:',result_df)
+            self.games[team_name] = result_df
             # record = param_record.copy()
             # t = record
             # print('team_name:',team_name, 'record[\'num_games\']', t['num_games'],'type(record):', type(t))
             # print(record.at[team_name, 'num_games'])
             # print('new', team_name)
-            # print('\nrecord::',record_df,'\n')
+            # print('\nrecord:: ' + str(record_df) + '\nindex: ' + str(list(record_df.index)) + '\nvalues: ' + str(list(record_df.values)) + '\ncolumns: ' + str(list(record_df.columns)))
             # print(self.games[team_name])#.insert(self.game_number, str(self.game_number), record_df)
 
-            # print('HEY', self.games[team_name],'\n\n')
+
+    def n_best_ranked_teams(self, n):
+        top_list = []
+        for team in self.games.keys():
+            if len(top_list) < n:
+                top_list.append(team)
+            else:
+                max_team_mmr = max(list(self.games[team]['MMR']))
+                index = n - 1
+                while 0 <= max_team_mmr > top_list[index]:
+                    index -= 1
+                # shuffle down
+                top_list = top_list[:index] + [team] + top_list[index + 1:(n - 1)]
+        print('\n\n\n\n\n\n\nTOP MMR TEAMS\n\n\n\n\n\n\n\n')
+        print(top_list)
+        for team in top_list:
+            print(self.print_df(self.games[team]))
+
 
     def swap_stats_team1_team2(self, row):
         # print('SWAPPING')
         # columns = row.columns
         values = list(row.values)
-        index = list(row.index)
+        index = list(row.index) + ['consec_wins', 'consec_losses']
+        # print('row',row)
         # print('columns:', columns)
         # print('values:', values)
         # print('index:', index)
@@ -161,89 +268,127 @@ class RankingSim:
         orig_date = values[4]
         orig_team_1_score = values[5]
         orig_team_2_score = values[6]
+        orig_team_1_consec_wins = self.look_up_team_2_consec_wins(orig_team_2) # values[7]
+        orig_team_1_consec_losses = self.look_up_team_2_consec_losses(orig_team_2) # values[8]
         new_location = 'away' if orig_location == 'home' else 'home'
         # if orig_result == 'W':
         #     new_result = 'L'
         # elif orig_result == 'W'
         new_result = 'W' if orig_result == 'L' else 'L'
-        data = [orig_team_2, orig_team_1, new_location, new_result, orig_date, orig_team_2_score, orig_team_1_score]
+        data = [orig_team_2, orig_team_1, new_location, new_result, orig_date, orig_team_2_score, orig_team_1_score, orig_team_1_consec_wins, orig_team_1_consec_losses]
+        # print('data:',data)
         res = pd.Series(data, index = index)#.reset_index()
         # print('swap_res:', res)
         # print('SWAPPED')
         return res
 
     def adjust_mmr(self, param_record):
-        mmr_change = self.START_MMR - 3 * self.CONFIDENCE
+        print('PARAM' + '\ncolumns:\t' + str(list(param_record.columns)) + '\nvalues:\t' + str(list(param_record.values)))
         team_1 = list(param_record['team_1'])[0]
         team_2 = list(param_record['team_2'])[0]
         if team_1 not in self.games.keys():
             print('First Game for the', team_1)
-            return self.START_MMR
+            return START_MMR
         if team_2 not in self.games.keys():
             # print('First Game for team_2', team_2)
-            return self.START_MMR
+            return START_MMR
+        team_1_confidence_list = list(self.games[team_1]['confidence'])
+        team_1_confidence = team_1_confidence_list[len(team_1_confidence_list) - 1]
+        confidence = team_1_confidence
+        # mmr_change = sSTART_MMR - 3 * confidence
         x = len(self.games[team_1])
         # print('x:',x)
-        if x < self.min_games_required_for_rank:
+        if 1 < x < self.min_games_required_for_rank:
             print('The',team_1,'have not yet played at least',self.min_games_required_for_rank,'games, \nand therefore can\'t be ranked confidently [' + str(x) + ' / ' + str(self.min_games_required_for_rank) + ']')
-            return self.START_MMR
+            return START_MMR
         # print('TEST', team_1, '_', team_2)
         # print('GAMES',self.games)
-        print('ADJUSTING MMR')
+        if print_more_details:
+            print('ADJUSTING MMR')
         team_1_rank_list = list(self.games[team_1]['MMR'])
         team_1_rank = team_1_rank_list[len(team_1_rank_list) - 1]
         team_2_rank_list = list(self.games[team_2]['MMR'])
         team_2_rank = team_2_rank_list[len(team_2_rank_list) - 1]
-        team_1_confidence_list = list(self.games[team_1]['confidence'])
-        team_1_confidence = team_1_confidence_list[len(team_1_confidence_list) - 1]
         team_2_confidence_list = list(self.games[team_2]['confidence'])
         team_2_confidence = team_2_confidence_list[len(team_2_confidence_list) - 1]
-        mmr_diff_1 = (1 - (team_1_rank - team_2_rank))
-        mmr_diff_2 = mmr_diff_1 // 3
-        mmr_diff_3 = mmr_diff_2 // 2
-        # win
-        mmr_diff_win, mmr_diff_loss = team_1_confidence, team_1_confidence
-        mmr_diff_win -= (team_1_confidence - mmr_diff_3) / team_1_confidence
-        # loss
-        mmr_diff_loss += (team_1_confidence - mmr_diff_3) / team_1_confidence
-        # print('PARAM', param_record)
-        game_result = list(param_record['result'])[0]
-        print(team_1 + ':', game_result)
-        confidence = self.CONFIDENCE
-        rank_range = (max(0, abs(team_1_rank - confidence)), min(50, abs(team_1_rank + confidence)))
-        if game_result == 'W':
-            # confidence = mmr_diff_win
-            rank_estimate_unround = ((team_1_rank + rank_range[1]) / 2)
-        elif game_result == 'L':
-            # confidence = mmr_diff_loss
-            # rank_range = (team_1_rank - confidence, team_1_rank + confidence)
-            rank_estimate_unround = ((rank_range[0] + team_1_rank) / 2)
-        rank_estimate = round(rank_estimate_unround)
-        print('team_1_rank', team_1_rank, 'team_2_rank', team_2_rank)
-        print('team_1_confidence', team_1_confidence, 'team_2_confidence', team_2_confidence)
-        print('mmr_diff_1:', mmr_diff_1,'mmr_diff_2:', mmr_diff_2,'mmr_diff_3:', mmr_diff_3, 'mmr_change', mmr_change)
-        print('mmr|_diff_win', mmr_diff_win, 'mmr_diff_loss', mmr_diff_loss)
-        print('RANK RANGE:', rank_range, 'rank_estimate_unround', rank_estimate_unround, 'rank_estimate', rank_estimate)
-        mmr_change = self.START_MMR
-        print('MMR ADJUSTED')
-        return rank_estimate
+        mmr_diff_1 = ((2 * START_MMR) - (team_1_rank - team_2_rank))
+
+        team_1_score = list(param_record['team_1_score'])[0]
+        team_2_score = list(param_record['team_2_score'])[0]
+        win = True if team_1_score > team_2_score else False
+        rcwin = ((4 * START_MMR) - mmr_diff_1) / (4 * START_MMR)
+        rcloss = 1 - rcwin
+        win_rank_window = (team_1_rank - (team_1_confidence * rcwin), team_1_rank + (team_1_confidence * rcwin))
+        loss_rank_window = (team_1_rank - (team_1_confidence * rcloss), team_1_rank + (team_1_confidence * rcloss))
+        if win:
+            estimate_window = (((win_rank_window[0] + win_rank_window[1]) / 2), win_rank_window[1])
+        else:
+            estimate_window = (loss_rank_window[0], ((loss_rank_window[0] + loss_rank_window[1]) / 2))
+
+        # if win:
+        new_rank = min((2 * START_MMR), max(0, round((estimate_window[0] + estimate_window[1]) / 2)))
+        print('\nmmr_delta:\t' + str(mmr_diff_1) + '\nconfd:\t' + str(team_1_confidence) + '\nwin:\t' + ('WIN' if win else 'LOSS') \
+              + '\nrcwin:\t' + str(rcwin) + '\nrcloss:\t' + str(rcloss)  \
+              + '\nwin_rank_window:\t' + str(win_rank_window) + '\nloss_rank_window:\t' + str(loss_rank_window)\
+              + '\nextimate_window:\t' + str(estimate_window) + '\nnew_rank:\t' + str(new_rank))
+        return new_rank
+        # else:
+        #     new_rank =
+        #
+
+        # mmr_diff_2 = mmr_diff_1 // 3
+        # mmr_diff_3 = mmr_diff_2 // 2
+        # # win
+        # mmr_diff_win, mmr_diff_loss = team_1_confidence, team_1_confidence
+        # mmr_diff_win -= (team_1_confidence - mmr_diff_3) / team_1_confidence
+        # # loss
+        # mmr_diff_loss += (team_1_confidence - mmr_diff_3) / team_1_confidence
+        # # print('PARAM', param_record)
+        # game_result = list(param_record['result'])[0]
+        # print(team_1 + ':', game_result)
+        # rank_range = (max(0, abs(team_1_rank - confidence)), min(50, abs(team_1_rank + confidence)))
+        # if game_result == 'W':
+        #     # confidence = mmr_diff_win
+        #     rank_estimate_unround = ((team_1_rank + rank_range[1]) / 2)
+        # elif game_result == 'L':
+        #     # confidence = mmr_diff_loss
+        #     # rank_range = (team_1_rank - confidence, team_1_rank + confidence)
+        #     rank_estimate_unround = ((rank_range[0] + team_1_rank) / 2)
+        # rank_estimate = round(rank_estimate_unround)
+        #
+        #
+        # #COMMENTED OUT FOR FASTER RESULTS
+        # if print_details:
+        #     if print_more_details:
+        #         print('team_1_rank', team_1_rank, 'team_2_rank', team_2_rank)
+        #         print('team_1_confidence', team_1_confidence, 'team_2_confidence', team_2_confidence)
+        #         print('mmr_diff_1:', mmr_diff_1,'mmr_diff_2:', mmr_diff_2,'mmr_diff_3:', mmr_diff_3, 'mmr_change', mmr_change)
+        #         print('mmr|_diff_win', mmr_diff_win, 'mmr_diff_loss', mmr_diff_loss)
+        #         print('RANK RANGE:', rank_range, 'rank_estimate_unround', rank_estimate_unround, 'rank_estimate', rank_estimate)
+        #
+        #
+        # mmr_change = self.START_MMR
+        # # print('MMR ADJUSTED')
+        # return rank_estimate
 
     def adjust_confidence(self, param_record):
-        confidence = self.CONFIDENCE
+        print('\n\nCOLUMNS' + str(list(param_record.columns)))
         team_1 = list(param_record['team_1'])[0]
         team_2 = list(param_record['team_2'])[0]
         if team_1 not in self.games.keys():
-            print('First Game for the', team_1)
-            return self.CONFIDENCE
+            # print('First Game for the', team_1)
+            return START_CONFIDENCE
         if team_2 not in self.games.keys():
             # print('First Game for team_2', team_2)
-            return self.CONFIDENCE
+            return START_CONFIDENCE
         x = len(self.games[team_1])
         # print('x:',x)
         if x < self.min_games_required_for_rank:
             print('The',team_1,'have not yet played at least',self.min_games_required_for_rank,'games, \nand therefore can\'t be ranked confidently [' + str(x) + ' / ' + str(self.min_games_required_for_rank) + ']')
-            return self.CONFIDENCE
-        print('ADJUSTING CONFIDENCE')
+            return START_CONFIDENCE
+        if print_more_details:
+            print('ADJUSTING CONFIDENCE')
+        # confidence = list(param_record['confidence'])[x - 1]
         # print('games', self.games)
         team_1_rank_list = list(self.games[team_1]['MMR'])
         team_1_rank = team_1_rank_list[len(team_1_rank_list) - 1]
@@ -253,29 +398,72 @@ class RankingSim:
         team_1_confidence = team_1_confidence_list[len(team_1_confidence_list) - 1]
         team_2_confidence_list = list(self.games[team_2]['confidence'])
         team_2_confidence = team_2_confidence_list[len(team_2_confidence_list) - 1]
-        mmr_diff_1 = (1 - (team_1_rank - team_2_rank))
-        mmr_diff_2 = mmr_diff_1 // 3
-        mmr_diff_3 = mmr_diff_2 // 2
-        # win
-        mmr_diff_win, mmr_diff_loss = team_1_confidence, team_1_confidence
-        mmr_diff_win -= (team_1_confidence - mmr_diff_3) / team_1_confidence
-        # loss
-        mmr_diff_loss += (team_1_confidence - mmr_diff_3) / team_1_confidence
-        # print('PARAM', param_record)
-        print('team_1_rank', team_1_rank, 'team_2_rank', team_2_rank)
-        print('team_1_confidence', team_1_confidence, 'team_2_confidence', team_2_confidence)
-        print('mmr_diff_1:', mmr_diff_1,'mmr_diff_2:', mmr_diff_2,'mmr_diff_3:', mmr_diff_3)
-        print('mmr|_diff_win', mmr_diff_win, 'mmr_diff_loss', mmr_diff_loss)
-        print('team_1', team_1, 'team_2', team_2)
-        # print('param_record[\'result\']', param_record['result'])
-        game_result = list(param_record['result'])[0]
-        if game_result == 'W':
-            confidence = mmr_diff_win
-        elif game_result == 'L':
-            confidence = mmr_diff_loss
-        confidence = mmr_diff_win
-        print('CONFIDENCE ADJUSTED')
-        return confidence
+        mmr_diff_1 = (50 - (team_1_rank - team_2_rank))
+
+        team_1_score = list(param_record['team_1_score'])[0]
+        team_2_score = list(param_record['team_2_score'])[0]
+        win = True if team_1_score > team_2_score else False
+        confidence_delta = START_CONFIDENCE - (team_1_confidence - team_2_confidence)
+        win_confidence_delta_coefficient = ((2 * START_CONFIDENCE) - confidence_delta) / (2 * START_CONFIDENCE)
+        loss_confidence_delta_coefficient = 1 - win_confidence_delta_coefficient
+
+        # res_confidence = team_1_confidence
+        win_conf_window = (team_1_confidence, team_1_confidence - (team_1_confidence * win_confidence_delta_coefficient))
+        loss_conf_window = (team_1_confidence - (team_1_confidence * loss_confidence_delta_coefficient), team_1_confidence)
+        if win:
+            confidence_estimate = ((win_conf_window[0] + win_conf_window[1]) / 2) * win_confidence_delta_coefficient
+            confidence_estimate *= (win_confidence_delta_coefficient ** 2) ** 2
+        else:
+            confidence_estimate = ((loss_conf_window[0] + loss_conf_window[1]) / 2) * loss_confidence_delta_coefficient
+            confidence_estimate *= (((loss_confidence_delta_coefficient ** 2) / 2) ** 2) ** 2
+
+        print()
+        print('confidence:\t' + str(confidence_estimate))
+        confidence_estimate = team_1_confidence - confidence_estimate
+        print('confidence:\t' + str(confidence_estimate))
+        confidence_estimate = max(0, min(START_CONFIDENCE, confidence_estimate))
+        print('confidence:\t' + str(confidence_estimate))
+
+        print('\nmmr_delta:\t' + str(mmr_diff_1) + '\nconfd:\t' + str(team_1_confidence) + '\nconfdelta:\t' \
+              + str(confidence_delta) + '\nwin:\t' + ('WIN' if win else 'LOSS') \
+              + '\nwin_confidence_delta_coefficient:\t' + str(win_confidence_delta_coefficient) \
+              + '\nloss_confidence_delta_coefficient:\t' + str(loss_confidence_delta_coefficient)#  \
+              + '\nwin_conf_window:\t' + str(win_conf_window) + '\nloss_conf_window:\t' + str(loss_conf_window)\
+              + '\nconfidence_estimate:\t' + str(confidence_estimate)
+              + '\n\n')
+
+        return confidence_estimate
+
+
+
+        # mmr_diff_2 = mmr_diff_1 // 3
+        # mmr_diff_3 = mmr_diff_2 // 2
+        # # win
+        # mmr_diff_win, mmr_diff_loss = team_1_confidence, team_1_confidence
+        # mmr_diff_win -= (team_1_confidence - mmr_diff_3) / team_1_confidence
+        # # loss
+        # mmr_diff_loss -= (team_1_confidence - mmr_diff_3) / team_1_confidence
+        # # print('PARAM', param_record)
+        #
+        # #COMMENTED OUT FOR FASTER RESULTS
+        # if print_details:
+        #     if print_more_details:
+        #         print('team_1_rank', team_1_rank, 'team_2_rank', team_2_rank)
+        #         print('team_1_confidence', team_1_confidence, 'team_2_confidence', team_2_confidence)
+        #         print('mmr_diff_1:', mmr_diff_1,'mmr_diff_2:', mmr_diff_2,'mmr_diff_3:', mmr_diff_3)
+        #         print('mmr|_diff_win', mmr_diff_win, 'mmr_diff_loss', mmr_diff_loss)
+        #         print('team_1', team_1, 'team_2', team_2)
+        #
+        #
+        # # print('param_record[\'result\']', param_record['result'])
+        # game_result = list(param_record['result'])[0]
+        # if game_result == 'W':
+        #     confidence = mmr_diff_win
+        # elif game_result == 'L':
+        #     confidence = mmr_diff_loss
+        # # confidence = mmr_diff_win
+        # # print('CONFIDENCE ADJUSTED')
+        # return confidence
 
     def first_addition(self, record_df):
         # print('ADDING FIRST ROW', record_df)
@@ -297,22 +485,31 @@ class RankingSim:
         team_2_score = 'NA'
         result = 'NA'
         # print('LOCATION', location)
-        df_dict = {'team_1':[team_1],
-                   'team_2':[team_2],
-                   'location':[location],
-                   'date':[date],
-                   'result':[result],
-                   'team_1_score':[team_1_score],
-                   'team_2_score':[team_2_score],
-                   'num_games':[0],
-                   'MMR':[self.START_MMR],
-                   'confidence':[self.CONFIDENCE]}
+        df_dict = {'team_1': [team_1],
+                   'team_2': [team_2],
+                   'location': [location],
+                   'date': [date],
+                   'result': [result],
+                   'team_1_score': [team_1_score],
+                   'team_2_score': [team_2_score],
+                   'num_games': [0],
+                   'MMR': [START_MMR],
+                   'confidence': [START_CONFIDENCE],
+                   'consec_wins': 'NaN',
+                   'consec_losses': 'NaN'}
+        df_dict_order_assert = {}
+        columns = ['team_1','team_2','location','result','date','team_1_score','team_2_score','consec_wins','consec_losses','MMR','confidence']
+        for col in columns:
+            df_dict_order_assert[col] = df_dict[col]
+
         # print('df_dict',df_dict)
         # print('type(df_dict)',type(df_dict))
-        # for key, val in df_dict.items():
+        # if print_more_details:
+        # for key, val in df_dict_order_assert.items():
         #     print('key:',key,'val:', val)
-        df = pd.DataFrame(df_dict)
-        # print('df',df)
+        df = pd.DataFrame(df_dict_order_assert)
+        # print('first addititon cols:', list(df.columns))
+        # print('df.head()',df.head())
         # print('GAMES', self.games, '\nteam_1',team_1)
         # print('type::', type(self.games))
         return df
@@ -329,10 +526,26 @@ class RankingSim:
         # team_2_temp = ' '.join(team_2_temp)
         team_1_temp = team_1_temp[0] if len(team_1_temp) == 2 else team_1_temp[0] if team_1_temp[1] in special_team_names else team_1_temp[0] + ' ' + team_1_temp[1]
         team_2_temp = team_2_temp[0] if len(team_2_temp) == 2 else team_2_temp[0] if team_2_temp[1] in special_team_names else team_2_temp[0] + ' ' + team_2_temp[1]
-        print('team_1:', team_1_temp, 'team_2:', team_2_temp)
+        # print('team_1:', team_1_temp, 'team_2:', team_2_temp)
         team_cities = [team[0] if len(team) == 2 else team[0] if team[1] in special_team_names else team[0] + ' ' + team[1] for team in team_cities_split]
-        print(team_cities)
+        # print(team_cities)
         return True if team_1_temp in team_cities and team_2_temp in team_cities else False
+
+    def look_up_team_2_consec_wins(self, orig_team_2):
+        teams = list(self.games.keys())
+        if orig_team_2 not in teams:
+            return 0
+        else:
+            game_num = len(list(self.games[orig_team_2]['consec_wins'])) - 1
+            return list(self.games[orig_team_2]['consec_wins'])[game_num]
+
+    def look_up_team_2_consec_losses(self, orig_team_2):
+        teams = list(self.games.keys())
+        if orig_team_2 not in teams:
+            return 0
+        else:
+            game_num = len(list(self.games[orig_team_2]['consec_losses'])) - 1
+            return list(self.games[orig_team_2]['consec_losses'])[game_num]
 
 
 def adjust_regular_season_dataframe(orig_frame):
@@ -340,56 +553,127 @@ def adjust_regular_season_dataframe(orig_frame):
     # need to change the indexes that are used to determine the values
     orig_frame_columns = list(orig_frame.columns)
     columns = ['team_1','team_2','location','result','date','team_1_score','team_2_score']
+    columns_str = ''
+    for col in columns:
+        if columns.index(col) == len(columns) - 1:
+            columns_str += col
+        else:
+            columns_str += col + ','
     df = pd.DataFrame()
     list_of_games = list(orig_frame.values)
+    game_list = []
+    # game_num = 0
+    # game_num_str = 'game#'
     for game in list_of_games:
-        game_dict = {}
-        date = game[0]
-        home_team = game[3]
-        away_team = game[1]
-        home_score = game[4]
-        away_score = game[2]
+        temp_dict = {}
+        temp_dict['date'] = game[0]
+        if game[3] == 'St. Louis Blues':
+            temp_dict['team_1'] = 'St Louis Blues'
+        else:
+            temp_dict['team_1'] = game[3]
+
+        if game[1] == 'St. Louis Blues':
+            temp_dict['team_2'] = 'St Louis Blues'
+        else:
+            temp_dict['team_2'] = game[1]
+        # temp_dict['team_2'] = game[1]
+        temp_dict['team_1_score'] = game[4]
+        temp_dict['team_2_score'] = game[2]
         extra_result = game[5]
         if type(extra_result) != str:
-            attendance_thousands = game[5]
-            attendance_ones = game[6]
-            log = game[7]
-            notes = game[8]
+            temp_dict['attendance_thousands'] = game[5]
+            temp_dict['attendance_ones'] = game[6]
+            temp_dict['log'] = game[7]
+            temp_dict['notes'] = game[8]
 
         else:
-            attendance_thousands = game[6]
-            attendance_ones = game[7]
-            log = game[8]
-            notes = game[9]
+            temp_dict['attendance_thousands'] = game[6]
+            temp_dict['attendance_ones'] = game[7]
+            temp_dict['log'] = game[8]
+            temp_dict['notes'] = game[9]
 
-        location_prefixes = ['New', 'Tampa', 'St', 'San', 'Los']
-        two_name_mascots = ['Vegas', 'Columbus', 'Toronto', 'Detroit']
-        location = home_team.split(' ')
-        if len(location) == 3:
-            if location[0] == 'St.':
-                location[0] = 'St'
-            if location[0] in location_prefixes:
-                location = location[0] + ' ' + location[1]
-            if location[0] in two_name_mascots:
-                location = location[0]
-        else:
-            location = location[0]
+        # print(temp_dict)
 
+        temp_dict['location'] = get_location(temp_dict['team_1'])
+        # location_prefixes = ['New', 'Tampa', 'St', 'San', 'Los']
+        # two_name_mascots = ['Vegas', 'Columbus', 'Toronto', 'Detroit']
+        # home_team = temp_dict['team_1']
+        # location = home_team.split(' ')
+        # if len(location) == 3:
+        #     if location[0] == 'St.':
+        #         location[0] = 'St'
+        #     if location[0] in location_prefixes:
+        #         temp_dict['location'] = location[0] + ' ' + location[1]
+        #     if location[0] in two_name_mascots:
+        #         temp_dict['location'] = location[0]
+        # else:
+        #     temp_dict['location'] = location[0]
+
+        if temp_dict['team_1_score'] > temp_dict['team_2_score']:
+            temp_dict['result'] = 'W'
+        elif temp_dict['team_1_score'] < temp_dict['team_2_score']:
+            temp_dict['result'] = 'L'
+        game_list.append(temp_dict)
         # location = get_location(home_team)
-        print('attendance_thousands:', attendance_thousands, 'attendance_ones', attendance_ones)
-        print('type(attendance_thousands):', type(attendance_thousands), 'type(attendance_ones)', type(attendance_ones))
+        # print('attendance_thousands:', attendance_thousands, 'attendance_ones', attendance_ones)
+        # print('type(attendance_thousands):', type(attendance_thousands), 'type(attendance_ones)', type(attendance_ones))
         # attendance = attendance_thousands * 1000 + attendance_ones
         attendance = 'ATTENDANCE'
 
-        print('\nhome_team:',home_team,'away_team:',away_team,'home_score:',home_score,'away_score:',away_score,'location:',location,'attendance:',attendance, 'extra_result:',extra_result,'log:', log, 'notes', notes)
+        # print('\nhome_team:',home_team,'away_team:',away_team,'home_score:',home_score,'away_score:',away_score,'location:',location,'attendance:',attendance, 'extra_result:',extra_result,'log:', log, 'notes', notes)
 
         # print('values', game.values)
         # print('index', game.index)
         # print('game',game)
         # for col in list(game):
         #     print('type(col)',type(col),'col', col)
-    return orig_frame
+    #game_list is populated with to much data, need to trim
+    #columns = ['team_1','team_2','location','result','date','team_1_score','team_2_score']
+    game_csv = columns_str + '\n'
+    for game in game_list:
+        for col_title in columns:
+            if col_title == 'location':
+                # team_name = game['team_1']
+                # location_name = get_location(game[col_title])
+                # find_index = team_name.find(location_name)
+                # print('team_name',team_name,'location_name:', location_name,'find_index', find_index)
+                # if find_index >= 0:
+                #     location = 'home'
+                # else:
+                #     location = 'away'
+                # game_csv += location + ','
+                game_csv += 'home,'
+            elif col_title == 'team_2_score':
+                game_csv += str(game[col_title])
+            else:
+                game_csv += str(game[col_title]) + ','
+        game_csv += '\n'
+    # print(game_csv)
+    # return orig_frame
+    file = 'regular_season_2018_2019_adjusted.csv'
+    f = open(file, 'w')
+    f.write(game_csv)  # Give your csv text here.
+    ## Python will convert \n to os.linesep
+    f.close()
+    df = pd.read_csv(file)
+    return df
 
+def get_location(team):
+    location_prefixes = ['New', 'Tampa', 'St', 'San', 'Los']
+    two_name_mascots = ['Vegas', 'Columbus', 'Toronto', 'Detroit']
+    # home_team = temp_dict['team_1']
+    location = team.split(' ')
+    if len(location) == 3:
+        if location[0] == 'St.':
+            print('st LOUIS')
+            location = 'St Louis'
+        elif location[0] in location_prefixes:
+            location = location[0] + ' ' + location[1]
+        elif location[0] in two_name_mascots:
+            location = location[0]
+    else:
+        location = location[0]
+    return location
 
 def read_games_file():
     # file = pd.read_csv('games.csv')
@@ -526,11 +810,37 @@ print('-------------------------------------------------------------------------
 # print(soup)
 
 games_file = read_games_file()
-print(games_file.columns)
-print(games_file.head())
-for col in list(games_file.columns):
-    print('col:', col, '_', games_file.iloc[0][col])
-print()
-for col in list(games_file.columns):
-    print('col:', col, '_', games_file.iloc[8][col])
+# print(games_file.columns)
+# print(games_file.head())
+# for col in list(games_file.columns):
+#     print('col:', col, '_', games_file.iloc[0][col])
+# print()
+# for col in list(games_file.columns):
+#     print('col:', col, '_', games_file.iloc[8][col])
+rank_sim_regular_season = RankingSim()
+rank_sim_regular_season.populate_games_dict(games_file)
 
+print('-----------------------------------------------------------------------------')
+
+if print_details:
+    print(rank_sim_regular_season.games)
+    for record in rank_sim_regular_season.games.keys():
+        print("\trecord:\t", record)
+        for record_col in rank_sim_regular_season.games[record].keys():
+            game_num = len(list(rank_sim_regular_season.games[record][record_col])) - 1
+            print("\t\trecord_col:\t", record_col,'val:',list(rank_sim_regular_season.games[record][record_col])[game_num])#[game_num])
+        # for game in rank_sim_regular_season.games[record]:
+        #     print(rank_sim_regular_season.games[record])
+        #     print('\n')
+        # print('\nRECORD\n', rank_sim_regular_season.games[record])
+        # print('\nRECORD ', rank_sim_regular_season.games[record][0]['team_1'], '\n', rank_sim_regular_season.games[record])
+        # print('\nRECORD ', rank_sim_regular_season.games[record][0]['team_1'], '\n')
+# print('\n\tSORTED\n' + str(rank_sim_regular_season.games.sort_values(by=['MMR'])))
+print('\n\tSORTED\n')
+print(rank_sim_regular_season)
+rank_sim_regular_season.n_best_ranked_teams(5)
+# for team in rank_sim_regular_season.games.keys():
+#     print('\n\tTeam:\t' + str(team))
+#     df = rank_sim_regular_season.games[team]  #pd.DataFrame(
+#     print(df)
+#.sort_values(by=['MMR']))

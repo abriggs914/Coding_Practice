@@ -1,0 +1,1272 @@
+team_1,team_2,location,result,date,team_1_score,team_2_score
+San Jose Sharks,Anaheim Ducks,home,L,2018-10-03,2,5
+Toronto Maple Leafs,Montreal Canadiens,home,W,2018-10-03,3,2
+Vancouver Canucks,Calgary Flames,home,W,2018-10-03,5,2
+Washington Capitals,Boston Bruins,home,W,2018-10-03,7,0
+Buffalo Sabres,Boston Bruins,home,L,2018-10-04,0,4
+Carolina Hurricanes,New York Islanders,home,L,2018-10-04,1,2
+Colorado Avalanche,Minnesota Wild,home,W,2018-10-04,4,1
+Dallas Stars,Arizona Coyotes,home,W,2018-10-04,3,0
+Detroit Red Wings,Columbus Blue Jackets,home,L,2018-10-04,2,3
+New York Rangers,Nashville Predators,home,L,2018-10-04,2,3
+Ottawa Senators,Chicago Blackhawks,home,L,2018-10-04,3,4
+Pittsburgh Penguins,Washington Capitals,home,W,2018-10-04,7,6
+St Louis Blues,Winnipeg Jets,home,L,2018-10-04,1,5
+Vegas Golden Knights,Philadelphia Flyers,home,L,2018-10-04,2,5
+Columbus Blue Jackets,Carolina Hurricanes,home,L,2018-10-05,1,3
+Los Angeles Kings,San Jose Sharks,home,L,2018-10-05,2,3
+Arizona Coyotes,Anaheim Ducks,home,L,2018-10-06,0,1
+Buffalo Sabres,New York Rangers,home,W,2018-10-06,3,1
+Calgary Flames,Vancouver Canucks,home,W,2018-10-06,7,4
+Colorado Avalanche,Philadelphia Flyers,home,W,2018-10-06,5,2
+Dallas Stars,Winnipeg Jets,home,W,2018-10-06,5,1
+Minnesota Wild,Vegas Golden Knights,home,L,2018-10-06,1,2
+New Jersey Devils,Edmonton Oilers,home,W,2018-10-06,5,2
+New York Islanders,Nashville Predators,home,L,2018-10-06,3,4
+Pittsburgh Penguins,Montreal Canadiens,home,L,2018-10-06,1,5
+St Louis Blues,Chicago Blackhawks,home,L,2018-10-06,4,5
+Tampa Bay Lightning,Florida Panthers,home,W,2018-10-06,2,1
+Toronto Maple Leafs,Ottawa Senators,home,L,2018-10-06,3,5
+Carolina Hurricanes,New York Rangers,home,W,2018-10-07,8,5
+Chicago Blackhawks,Toronto Maple Leafs,home,L,2018-10-07,6,7
+Los Angeles Kings,Detroit Red Wings,home,W,2018-10-07,4,2
+Anaheim Ducks,Detroit Red Wings,home,W,2018-10-08,3,2
+Boston Bruins,Ottawa Senators,home,W,2018-10-08,6,3
+Buffalo Sabres,Vegas Golden Knights,home,W,2018-10-08,4,2
+New York Islanders,San Jose Sharks,home,W,2018-10-08,4,0
+Carolina Hurricanes,Vancouver Canucks,home,W,2018-10-09,5,3
+Columbus Blue Jackets,Colorado Avalanche,home,W,2018-10-09,5,2
+Dallas Stars,Toronto Maple Leafs,home,L,2018-10-09,4,7
+Nashville Predators,Calgary Flames,home,L,2018-10-09,0,3
+Philadelphia Flyers,San Jose Sharks,home,L,2018-10-09,2,8
+Winnipeg Jets,Los Angeles Kings,home,W,2018-10-09,2,1
+Anaheim Ducks,Arizona Coyotes,home,L,2018-10-10,2,3
+Ottawa Senators,Philadelphia Flyers,home,L,2018-10-10,4,7
+Washington Capitals,Vegas Golden Knights,home,W,2018-10-10,5,2
+Boston Bruins,Edmonton Oilers,home,W,2018-10-11,4,1
+Buffalo Sabres,Colorado Avalanche,home,L,2018-10-11,1,6
+Detroit Red Wings,Toronto Maple Leafs,home,L,2018-10-11,3,5
+Florida Panthers,Columbus Blue Jackets,home,L,2018-10-11,4,5
+Minnesota Wild,Chicago Blackhawks,home,W,2018-10-11,4,3
+Montreal Canadiens,Los Angeles Kings,home,L,2018-10-11,0,3
+New Jersey Devils,Washington Capitals,home,W,2018-10-11,6,0
+Nashville Predators,Winnipeg Jets,home,W,2018-10-11,3,0
+New York Rangers,San Jose Sharks,home,W,2018-10-11,3,2
+Pittsburgh Penguins,Vegas Golden Knights,home,W,2018-10-11,4,2
+St Louis Blues,Calgary Flames,home,W,2018-10-11,5,3
+Tampa Bay Lightning,Vancouver Canucks,home,L,2018-10-11,1,4
+Arizona Coyotes,Buffalo Sabres,home,L,2018-10-13,0,3
+Boston Bruins,Detroit Red Wings,home,W,2018-10-13,8,2
+Chicago Blackhawks,St Louis Blues,home,W,2018-10-13,4,3
+Colorado Avalanche,Calgary Flames,home,L,2018-10-13,2,3
+Dallas Stars,Anaheim Ducks,home,W,2018-10-13,5,3
+Florida Panthers,Vancouver Canucks,home,L,2018-10-13,2,3
+Minnesota Wild,Carolina Hurricanes,home,L,2018-10-13,4,5
+Montreal Canadiens,Pittsburgh Penguins,home,W,2018-10-13,4,3
+Nashville Predators,New York Islanders,home,W,2018-10-13,5,2
+New York Rangers,Edmonton Oilers,home,L,2018-10-13,1,2
+Ottawa Senators,Los Angeles Kings,home,W,2018-10-13,5,1
+Philadelphia Flyers,Vegas Golden Knights,home,L,2018-10-13,0,1
+Tampa Bay Lightning,Columbus Blue Jackets,home,W,2018-10-13,8,2
+Washington Capitals,Toronto Maple Leafs,home,L,2018-10-13,2,4
+New Jersey Devils,San Jose Sharks,home,W,2018-10-14,3,2
+St Louis Blues,Anaheim Ducks,home,L,2018-10-14,2,3
+Winnipeg Jets,Carolina Hurricanes,home,W,2018-10-14,3,1
+Montreal Canadiens,Detroit Red Wings,home,W,2018-10-15,7,3
+Nashville Predators,Minnesota Wild,home,W,2018-10-15,4,2
+Ottawa Senators,Dallas Stars,home,W,2018-10-15,4,1
+Toronto Maple Leafs,Los Angeles Kings,home,W,2018-10-15,4,1
+Minnesota Wild,Arizona Coyotes,home,W,2018-10-16,2,1
+New Jersey Devils,Dallas Stars,home,W,2018-10-16,3,0
+New York Rangers,Colorado Avalanche,home,W,2018-10-16,3,2
+Philadelphia Flyers,Florida Panthers,home,W,2018-10-16,6,5
+Pittsburgh Penguins,Vancouver Canucks,home,L,2018-10-16,2,3
+Tampa Bay Lightning,Carolina Hurricanes,home,W,2018-10-16,4,2
+Vegas Golden Knights,Buffalo Sabres,home,W,2018-10-16,4,1
+Winnipeg Jets,Edmonton Oilers,home,L,2018-10-16,4,5
+Anaheim Ducks,New York Islanders,home,W,2018-10-17,4,1
+Calgary Flames,Boston Bruins,home,W,2018-10-17,5,2
+Montreal Canadiens,St Louis Blues,home,W,2018-10-17,3,2
+Washington Capitals,New York Rangers,home,W,2018-10-17,4,3
+Columbus Blue Jackets,Philadelphia Flyers,home,W,2018-10-18,6,3
+Chicago Blackhawks,Arizona Coyotes,home,L,2018-10-18,1,4
+Edmonton Oilers,Boston Bruins,home,W,2018-10-18,3,2
+Los Angeles Kings,New York Islanders,home,L,2018-10-18,2,7
+New Jersey Devils,Colorado Avalanche,home,L,2018-10-18,3,5
+San Jose Sharks,Buffalo Sabres,home,W,2018-10-18,5,1
+Tampa Bay Lightning,Detroit Red Wings,home,W,2018-10-18,3,1
+Toronto Maple Leafs,Pittsburgh Penguins,home,L,2018-10-18,0,3
+Winnipeg Jets,Vancouver Canucks,home,W,2018-10-18,4,1
+Calgary Flames,Nashville Predators,home,L,2018-10-19,3,5
+Dallas Stars,Minnesota Wild,home,L,2018-10-19,1,3
+Washington Capitals,Florida Panthers,home,L,2018-10-19,5,6
+Carolina Hurricanes,Colorado Avalanche,home,L,2018-10-20,1,3
+Columbus Blue Jackets,Chicago Blackhawks,home,L,2018-10-20,1,4
+Edmonton Oilers,Nashville Predators,home,L,2018-10-20,0,3
+Florida Panthers,Detroit Red Wings,home,L,2018-10-20,3,4
+Los Angeles Kings,Buffalo Sabres,home,L,2018-10-20,1,5
+Minnesota Wild,Tampa Bay Lightning,home,W,2018-10-20,5,4
+Ottawa Senators,Montreal Canadiens,home,W,2018-10-20,4,3
+Philadelphia Flyers,New Jersey Devils,home,W,2018-10-20,5,2
+San Jose Sharks,New York Islanders,home,W,2018-10-20,4,1
+Toronto Maple Leafs,St Louis Blues,home,L,2018-10-20,1,4
+Vancouver Canucks,Boston Bruins,home,W,2018-10-20,2,1
+Vegas Golden Knights,Anaheim Ducks,home,W,2018-10-20,3,1
+Winnipeg Jets,Arizona Coyotes,home,W,2018-10-20,5,3
+Anaheim Ducks,Buffalo Sabres,home,L,2018-10-21,2,4
+Chicago Blackhawks,Tampa Bay Lightning,home,L,2018-10-21,3,6
+New York Rangers,Calgary Flames,home,L,2018-10-21,1,4
+Detroit Red Wings,Carolina Hurricanes,home,L,2018-10-22,1,3
+Philadelphia Flyers,Colorado Avalanche,home,L,2018-10-22,1,4
+Vancouver Canucks,Washington Capitals,home,L,2018-10-22,2,5
+Winnipeg Jets,St Louis Blues,home,W,2018-10-22,5,4
+Columbus Blue Jackets,Arizona Coyotes,home,L,2018-10-23,1,4
+Chicago Blackhawks,Anaheim Ducks,home,W,2018-10-23,3,1
+Dallas Stars,Los Angeles Kings,home,W,2018-10-23,4,2
+Edmonton Oilers,Pittsburgh Penguins,home,L,2018-10-23,5,6
+Montreal Canadiens,Calgary Flames,home,W,2018-10-23,3,2
+Nashville Predators,San Jose Sharks,home,L,2018-10-23,4,5
+New York Rangers,Florida Panthers,home,W,2018-10-23,5,2
+Ottawa Senators,Boston Bruins,home,L,2018-10-23,1,4
+Colorado Avalanche,Tampa Bay Lightning,home,L,2018-10-24,0,1
+New York Islanders,Florida Panthers,home,L,2018-10-24,2,3
+Vegas Golden Knights,Vancouver Canucks,home,L,2018-10-24,2,3
+Winnipeg Jets,Toronto Maple Leafs,home,L,2018-10-24,2,4
+Arizona Coyotes,Vancouver Canucks,home,W,2018-10-25,4,1
+Boston Bruins,Philadelphia Flyers,home,W,2018-10-25,3,0
+Buffalo Sabres,Montreal Canadiens,home,W,2018-10-25,4,3
+Calgary Flames,Pittsburgh Penguins,home,L,2018-10-25,1,9
+Chicago Blackhawks,New York Rangers,home,W,2018-10-25,4,1
+Dallas Stars,Anaheim Ducks,home,W,2018-10-25,5,2
+Edmonton Oilers,Washington Capitals,home,W,2018-10-25,4,1
+Minnesota Wild,Los Angeles Kings,home,W,2018-10-25,4,1
+New Jersey Devils,Nashville Predators,home,L,2018-10-25,3,4
+St Louis Blues,Columbus Blue Jackets,home,L,2018-10-25,4,7
+Carolina Hurricanes,San Jose Sharks,home,W,2018-10-26,4,3
+Colorado Avalanche,Ottawa Senators,home,W,2018-10-26,6,3
+Detroit Red Wings,Winnipeg Jets,home,L,2018-10-26,1,2
+Vegas Golden Knights,Tampa Bay Lightning,home,L,2018-10-26,2,3
+Arizona Coyotes,Tampa Bay Lightning,home,W,2018-10-27,7,1
+Boston Bruins,Montreal Canadiens,home,L,2018-10-27,0,3
+Columbus Blue Jackets,Buffalo Sabres,home,W,2018-10-27,5,4
+Calgary Flames,Washington Capitals,home,L,2018-10-27,3,4
+Minnesota Wild,Colorado Avalanche,home,W,2018-10-27,3,2
+New Jersey Devils,Florida Panthers,home,W,2018-10-27,3,2
+Nashville Predators,Edmonton Oilers,home,L,2018-10-27,3,5
+Philadelphia Flyers,New York Islanders,home,L,2018-10-27,1,6
+St Louis Blues,Chicago Blackhawks,home,W,2018-10-27,7,3
+Toronto Maple Leafs,Winnipeg Jets,home,W,2018-10-27,3,2
+Vancouver Canucks,Pittsburgh Penguins,home,L,2018-10-27,0,5
+Anaheim Ducks,San Jose Sharks,home,L,2018-10-28,3,4
+Carolina Hurricanes,New York Islanders,home,L,2018-10-28,1,2
+Chicago Blackhawks,Edmonton Oilers,home,L,2018-10-28,1,2
+Detroit Red Wings,Dallas Stars,home,W,2018-10-28,4,2
+Los Angeles Kings,New York Rangers,home,W,2018-10-28,4,3
+Vegas Golden Knights,Ottawa Senators,home,W,2018-10-28,4,3
+Toronto Maple Leafs,Calgary Flames,home,L,2018-10-29,1,3
+Vancouver Canucks,Minnesota Wild,home,W,2018-10-29,5,2
+Anaheim Ducks,Philadelphia Flyers,home,L,2018-10-30,2,3
+Arizona Coyotes,Ottawa Senators,home,W,2018-10-30,5,1
+Buffalo Sabres,Calgary Flames,home,L,2018-10-30,1,2
+Carolina Hurricanes,Boston Bruins,home,L,2018-10-30,2,3
+Columbus Blue Jackets,Detroit Red Wings,home,L,2018-10-30,3,5
+Edmonton Oilers,Minnesota Wild,home,L,2018-10-30,3,4
+Montreal Canadiens,Dallas Stars,home,L,2018-10-30,1,4
+Nashville Predators,Vegas Golden Knights,home,W,2018-10-30,4,1
+Pittsburgh Penguins,New York Islanders,home,L,2018-10-30,3,6
+San Jose Sharks,New York Rangers,home,L,2018-10-30,3,4
+Tampa Bay Lightning,New Jersey Devils,home,W,2018-10-30,8,3
+Vancouver Canucks,Chicago Blackhawks,home,W,2018-10-31,4,2
+Anaheim Ducks,New York Rangers,home,L,2018-11-01,2,3
+Calgary Flames,Colorado Avalanche,home,W,2018-11-01,6,5
+Detroit Red Wings,New Jersey Devils,home,W,2018-11-01,4,3
+Edmonton Oilers,Chicago Blackhawks,home,W,2018-11-01,4,0
+Florida Panthers,Winnipeg Jets,home,L,2018-11-01,2,4
+Los Angeles Kings,Philadelphia Flyers,home,L,2018-11-01,2,5
+Montreal Canadiens,Washington Capitals,home,W,2018-11-01,6,4
+New York Islanders,Pittsburgh Penguins,home,W,2018-11-01,3,2
+Ottawa Senators,Buffalo Sabres,home,W,2018-11-01,4,2
+San Jose Sharks,Columbus Blue Jackets,home,L,2018-11-01,1,4
+St Louis Blues,Vegas Golden Knights,home,W,2018-11-01,5,3
+Tampa Bay Lightning,Nashville Predators,home,L,2018-11-01,1,4
+Toronto Maple Leafs,Dallas Stars,home,L,2018-11-01,1,2
+Arizona Coyotes,Carolina Hurricanes,home,W,2018-11-02,4,3
+Vancouver Canucks,Colorado Avalanche,home,W,2018-11-02,7,6
+Winnipeg Jets,Florida Panthers,home,L,2018-11-02,2,4
+Buffalo Sabres,Ottawa Senators,home,W,2018-11-03,9,2
+Calgary Flames,Chicago Blackhawks,home,W,2018-11-03,5,3
+Detroit Red Wings,Edmonton Oilers,home,L,2018-11-03,3,4
+Los Angeles Kings,Columbus Blue Jackets,home,W,2018-11-03,4,1
+Montreal Canadiens,Tampa Bay Lightning,home,L,2018-11-03,1,4
+Nashville Predators,Boston Bruins,home,W,2018-11-03,1,0
+New York Islanders,New Jersey Devils,home,W,2018-11-03,3,0
+Pittsburgh Penguins,Toronto Maple Leafs,home,L,2018-11-03,0,5
+San Jose Sharks,Philadelphia Flyers,home,W,2018-11-03,4,3
+St Louis Blues,Minnesota Wild,home,L,2018-11-03,1,5
+Vegas Golden Knights,Carolina Hurricanes,home,W,2018-11-03,3,0
+Washington Capitals,Dallas Stars,home,L,2018-11-03,3,4
+Anaheim Ducks,Columbus Blue Jackets,home,W,2018-11-04,3,2
+New York Rangers,Buffalo Sabres,home,W,2018-11-04,3,1
+Ottawa Senators,Tampa Bay Lightning,home,L,2018-11-04,3,4
+Arizona Coyotes,Philadelphia Flyers,home,L,2018-11-05,2,5
+Boston Bruins,Dallas Stars,home,W,2018-11-05,2,1
+New York Islanders,Montreal Canadiens,home,L,2018-11-05,3,4
+Pittsburgh Penguins,New Jersey Devils,home,L,2018-11-05,1,5
+Washington Capitals,Edmonton Oilers,home,W,2018-11-05,4,2
+Columbus Blue Jackets,Dallas Stars,home,W,2018-11-06,4,1
+Detroit Red Wings,Vancouver Canucks,home,W,2018-11-06,3,2
+Los Angeles Kings,Anaheim Ducks,home,W,2018-11-06,4,1
+New York Rangers,Montreal Canadiens,home,W,2018-11-06,5,3
+Ottawa Senators,New Jersey Devils,home,W,2018-11-06,7,3
+San Jose Sharks,Minnesota Wild,home,W,2018-11-06,4,3
+St Louis Blues,Carolina Hurricanes,home,W,2018-11-06,4,1
+Tampa Bay Lightning,Edmonton Oilers,home,W,2018-11-06,5,2
+Toronto Maple Leafs,Vegas Golden Knights,home,W,2018-11-06,3,1
+Anaheim Ducks,Calgary Flames,home,W,2018-11-07,3,2
+Colorado Avalanche,Nashville Predators,home,L,2018-11-07,1,4
+Washington Capitals,Pittsburgh Penguins,home,W,2018-11-07,2,1
+Boston Bruins,Vancouver Canucks,home,L,2018-11-08,5,8
+Chicago Blackhawks,Carolina Hurricanes,home,L,2018-11-08,3,4
+Dallas Stars,San Jose Sharks,home,W,2018-11-08,4,3
+Florida Panthers,Edmonton Oilers,home,W,2018-11-08,4,1
+Los Angeles Kings,Minnesota Wild,home,L,2018-11-08,1,3
+Montreal Canadiens,Buffalo Sabres,home,L,2018-11-08,5,6
+Ottawa Senators,Vegas Golden Knights,home,L,2018-11-08,3,5
+Philadelphia Flyers,Arizona Coyotes,home,W,2018-11-08,5,4
+Tampa Bay Lightning,New York Islanders,home,W,2018-11-08,4,2
+Anaheim Ducks,Minnesota Wild,home,L,2018-11-09,1,5
+Detroit Red Wings,New York Rangers,home,W,2018-11-09,3,2
+St Louis Blues,San Jose Sharks,home,W,2018-11-09,4,0
+Toronto Maple Leafs,New Jersey Devils,home,W,2018-11-09,6,1
+Winnipeg Jets,Colorado Avalanche,home,W,2018-11-09,5,2
+Washington Capitals,Columbus Blue Jackets,home,L,2018-11-09,1,2
+Boston Bruins,Toronto Maple Leafs,home,W,2018-11-10,5,1
+Buffalo Sabres,Vancouver Canucks,home,W,2018-11-10,4,3
+Carolina Hurricanes,Detroit Red Wings,home,L,2018-11-10,3,4
+Columbus Blue Jackets,New York Rangers,home,L,2018-11-10,4,5
+Dallas Stars,Nashville Predators,home,L,2018-11-10,4,5
+Florida Panthers,New York Islanders,home,W,2018-11-10,4,2
+Los Angeles Kings,Calgary Flames,home,L,2018-11-10,0,1
+Montreal Canadiens,Vegas Golden Knights,home,W,2018-11-10,5,4
+Philadelphia Flyers,Chicago Blackhawks,home,W,2018-11-10,4,0
+Pittsburgh Penguins,Arizona Coyotes,home,W,2018-11-10,4,0
+Tampa Bay Lightning,Ottawa Senators,home,L,2018-11-10,4,6
+Boston Bruins,Vegas Golden Knights,home,W,2018-11-11,4,1
+Edmonton Oilers,Colorado Avalanche,home,L,2018-11-11,1,4
+Florida Panthers,Ottawa Senators,home,W,2018-11-11,5,1
+San Jose Sharks,Calgary Flames,home,W,2018-11-11,3,1
+St Louis Blues,Minnesota Wild,home,L,2018-11-11,2,3
+Winnipeg Jets,New Jersey Devils,home,W,2018-11-11,5,2
+Washington Capitals,Arizona Coyotes,home,L,2018-11-11,1,4
+Anaheim Ducks,Nashville Predators,home,W,2018-11-12,2,1
+Carolina Hurricanes,Chicago Blackhawks,home,W,2018-11-12,3,2
+Dallas Stars,Columbus Blue Jackets,home,L,2018-11-12,1,2
+New York Rangers,Vancouver Canucks,home,W,2018-11-12,2,1
+Buffalo Sabres,Tampa Bay Lightning,home,W,2018-11-13,2,1
+Detroit Red Wings,Arizona Coyotes,home,W,2018-11-13,6,1
+Edmonton Oilers,Montreal Canadiens,home,W,2018-11-13,6,2
+Los Angeles Kings,Toronto Maple Leafs,home,L,2018-11-13,1,5
+Minnesota Wild,Washington Capitals,home,L,2018-11-13,2,5
+New Jersey Devils,Pittsburgh Penguins,home,W,2018-11-13,4,2
+New York Islanders,Vancouver Canucks,home,W,2018-11-13,5,2
+Philadelphia Flyers,Florida Panthers,home,L,2018-11-13,1,2
+San Jose Sharks,Nashville Predators,home,W,2018-11-13,5,4
+Chicago Blackhawks,St Louis Blues,home,W,2018-11-14,1,0
+Colorado Avalanche,Boston Bruins,home,W,2018-11-14,6,3
+Vegas Golden Knights,Anaheim Ducks,home,W,2018-11-14,5,0
+Winnipeg Jets,Washington Capitals,home,W,2018-11-14,3,1
+Arizona Coyotes,Nashville Predators,home,W,2018-11-15,2,1
+Columbus Blue Jackets,Florida Panthers,home,W,2018-11-15,7,3
+Calgary Flames,Montreal Canadiens,home,L,2018-11-15,2,3
+Minnesota Wild,Vancouver Canucks,home,W,2018-11-15,6,2
+New York Islanders,New York Rangers,home,W,2018-11-15,7,5
+Ottawa Senators,Detroit Red Wings,home,W,2018-11-15,2,1
+Philadelphia Flyers,New Jersey Devils,home,L,2018-11-15,0,3
+Pittsburgh Penguins,Tampa Bay Lightning,home,L,2018-11-15,3,4
+San Jose Sharks,Toronto Maple Leafs,home,L,2018-11-15,3,5
+Anaheim Ducks,Toronto Maple Leafs,home,L,2018-11-16,1,2
+Chicago Blackhawks,Los Angeles Kings,home,L,2018-11-16,1,2
+Colorado Avalanche,Washington Capitals,home,L,2018-11-16,2,3
+Dallas Stars,Boston Bruins,home,W,2018-11-16,1,0
+Vegas Golden Knights,St Louis Blues,home,L,2018-11-16,1,4
+Winnipeg Jets,Buffalo Sabres,home,L,2018-11-16,1,2
+Arizona Coyotes,Boston Bruins,home,L,2018-11-17,1,2
+Carolina Hurricanes,Columbus Blue Jackets,home,L,2018-11-17,1,4
+Calgary Flames,Edmonton Oilers,home,W,2018-11-17,4,2
+Minnesota Wild,Buffalo Sabres,home,L,2018-11-17,2,3
+New Jersey Devils,Detroit Red Wings,home,L,2018-11-17,2,3
+Nashville Predators,Los Angeles Kings,home,W,2018-11-17,5,3
+New York Rangers,Florida Panthers,home,W,2018-11-17,4,2
+Ottawa Senators,Pittsburgh Penguins,home,W,2018-11-17,6,4
+Philadelphia Flyers,Tampa Bay Lightning,home,L,2018-11-17,5,6
+San Jose Sharks,St Louis Blues,home,W,2018-11-17,4,0
+Vancouver Canucks,Montreal Canadiens,home,L,2018-11-17,2,3
+Anaheim Ducks,Colorado Avalanche,home,L,2018-11-18,3,4
+Carolina Hurricanes,New Jersey Devils,home,W,2018-11-18,2,1
+Chicago Blackhawks,Minnesota Wild,home,W,2018-11-18,3,1
+Edmonton Oilers,Vegas Golden Knights,home,L,2018-11-18,3,6
+New York Islanders,Dallas Stars,home,L,2018-11-18,2,6
+Calgary Flames,Vegas Golden Knights,home,W,2018-11-19,7,2
+Montreal Canadiens,Washington Capitals,home,L,2018-11-19,4,5
+Nashville Predators,Tampa Bay Lightning,home,W,2018-11-19,3,2
+New York Rangers,Dallas Stars,home,W,2018-11-19,2,1
+Ottawa Senators,Florida Panthers,home,L,2018-11-19,5,7
+Pittsburgh Penguins,Buffalo Sabres,home,L,2018-11-19,4,5
+St Louis Blues,Los Angeles Kings,home,L,2018-11-19,0,2
+Toronto Maple Leafs,Columbus Blue Jackets,home,W,2018-11-19,4,2
+Vancouver Canucks,Winnipeg Jets,home,L,2018-11-19,3,6
+San Jose Sharks,Edmonton Oilers,home,L,2018-11-20,3,4
+Anaheim Ducks,Vancouver Canucks,home,W,2018-11-21,4,3
+Arizona Coyotes,Vegas Golden Knights,home,L,2018-11-21,2,3
+Buffalo Sabres,Philadelphia Flyers,home,W,2018-11-21,5,2
+Carolina Hurricanes,Toronto Maple Leafs,home,W,2018-11-21,5,2
+Calgary Flames,Winnipeg Jets,home,W,2018-11-21,6,3
+Detroit Red Wings,Boston Bruins,home,W,2018-11-21,3,2
+Los Angeles Kings,Colorado Avalanche,home,L,2018-11-21,3,7
+Minnesota Wild,Ottawa Senators,home,W,2018-11-21,6,4
+New Jersey Devils,Montreal Canadiens,home,W,2018-11-21,5,2
+Nashville Predators,St Louis Blues,home,W,2018-11-21,4,1
+New York Rangers,New York Islanders,home,W,2018-11-21,5,0
+Pittsburgh Penguins,Dallas Stars,home,W,2018-11-21,5,1
+Tampa Bay Lightning,Florida Panthers,home,W,2018-11-21,7,3
+Washington Capitals,Chicago Blackhawks,home,W,2018-11-21,4,2
+Anaheim Ducks,Edmonton Oilers,home,W,2018-11-23,2,1
+Arizona Coyotes,Colorado Avalanche,home,L,2018-11-23,1,5
+Boston Bruins,Pittsburgh Penguins,home,W,2018-11-23,2,1
+Buffalo Sabres,Montreal Canadiens,home,W,2018-11-23,3,2
+Carolina Hurricanes,Florida Panthers,home,W,2018-11-23,4,1
+Columbus Blue Jackets,Toronto Maple Leafs,home,W,2018-11-23,4,2
+Dallas Stars,Ottawa Senators,home,W,2018-11-23,6,4
+Minnesota Wild,Winnipeg Jets,home,W,2018-11-23,4,2
+New Jersey Devils,New York Islanders,home,L,2018-11-23,3,4
+Philadelphia Flyers,New York Rangers,home,W,2018-11-23,4,0
+San Jose Sharks,Vancouver Canucks,home,W,2018-11-23,4,0
+St Louis Blues,Nashville Predators,home,W,2018-11-23,6,2
+Tampa Bay Lightning,Chicago Blackhawks,home,W,2018-11-23,4,2
+Vegas Golden Knights,Calgary Flames,home,W,2018-11-23,2,0
+Washington Capitals,Detroit Red Wings,home,W,2018-11-23,3,1
+Colorado Avalanche,Dallas Stars,home,W,2018-11-24,3,2
+Detroit Red Wings,Buffalo Sabres,home,L,2018-11-24,2,3
+Florida Panthers,Chicago Blackhawks,home,L,2018-11-24,4,5
+Los Angeles Kings,Vancouver Canucks,home,L,2018-11-24,2,4
+Montreal Canadiens,Boston Bruins,home,L,2018-11-24,2,3
+New York Islanders,Carolina Hurricanes,home,W,2018-11-24,4,1
+New York Rangers,Washington Capitals,home,L,2018-11-24,3,5
+Pittsburgh Penguins,Columbus Blue Jackets,home,W,2018-11-24,4,2
+St Louis Blues,Winnipeg Jets,home,L,2018-11-24,4,8
+Toronto Maple Leafs,Philadelphia Flyers,home,W,2018-11-24,6,0
+Vegas Golden Knights,San Jose Sharks,home,W,2018-11-24,6,0
+Arizona Coyotes,Calgary Flames,home,L,2018-11-25,1,6
+Los Angeles Kings,Edmonton Oilers,home,W,2018-11-25,5,2
+Nashville Predators,Anaheim Ducks,home,W,2018-11-25,5,2
+Tampa Bay Lightning,New Jersey Devils,home,W,2018-11-25,5,2
+Detroit Red Wings,Columbus Blue Jackets,home,L,2018-11-26,5,7
+Florida Panthers,New Jersey Devils,home,W,2018-11-26,4,3
+New York Islanders,Washington Capitals,home,L,2018-11-26,1,4
+New York Rangers,Ottawa Senators,home,W,2018-11-26,4,2
+Toronto Maple Leafs,Boston Bruins,home,W,2018-11-26,4,2
+Buffalo Sabres,San Jose Sharks,home,W,2018-11-27,3,2
+Chicago Blackhawks,Vegas Golden Knights,home,L,2018-11-27,3,8
+Edmonton Oilers,Dallas Stars,home,W,2018-11-27,1,0
+Minnesota Wild,Arizona Coyotes,home,L,2018-11-27,3,4
+Montreal Canadiens,Carolina Hurricanes,home,L,2018-11-27,1,2
+Nashville Predators,Colorado Avalanche,home,L,2018-11-27,2,3
+Philadelphia Flyers,Ottawa Senators,home,L,2018-11-27,3,4
+Tampa Bay Lightning,Anaheim Ducks,home,L,2018-11-27,1,3
+Vancouver Canucks,Los Angeles Kings,home,L,2018-11-27,1,2
+Winnipeg Jets,Pittsburgh Penguins,home,L,2018-11-27,3,4
+Calgary Flames,Dallas Stars,home,L,2018-11-28,3,4
+Colorado Avalanche,Pittsburgh Penguins,home,W,2018-11-28,6,3
+Detroit Red Wings,St Louis Blues,home,W,2018-11-28,4,3
+Florida Panthers,Anaheim Ducks,home,L,2018-11-28,2,3
+Toronto Maple Leafs,San Jose Sharks,home,W,2018-11-28,5,3
+Boston Bruins,New York Islanders,home,W,2018-11-29,2,1
+Columbus Blue Jackets,Minnesota Wild,home,W,2018-11-29,4,2
+Edmonton Oilers,Los Angeles Kings,home,W,2018-11-29,3,2
+Nashville Predators,Arizona Coyotes,home,L,2018-11-29,0,3
+Ottawa Senators,New York Rangers,home,W,2018-11-29,3,0
+Tampa Bay Lightning,Buffalo Sabres,home,W,2018-11-29,5,4
+Vancouver Canucks,Vegas Golden Knights,home,L,2018-11-29,3,4
+Winnipeg Jets,Chicago Blackhawks,home,W,2018-11-29,6,5
+Carolina Hurricanes,Anaheim Ducks,home,L,2018-11-30,1,2
+Calgary Flames,Los Angeles Kings,home,W,2018-11-30,4,1
+Colorado Avalanche,St Louis Blues,home,L,2018-11-30,2,3
+Florida Panthers,Buffalo Sabres,home,W,2018-11-30,3,2
+Washington Capitals,New Jersey Devils,home,W,2018-11-30,6,3
+Arizona Coyotes,St Louis Blues,home,W,2018-12-01,6,1
+Boston Bruins,Detroit Red Wings,home,L,2018-12-01,2,4
+Edmonton Oilers,Vegas Golden Knights,home,W,2018-12-01,2,1
+Florida Panthers,Tampa Bay Lightning,home,L,2018-12-01,4,5
+Minnesota Wild,Toronto Maple Leafs,home,L,2018-12-01,3,5
+Montreal Canadiens,New York Rangers,home,W,2018-12-01,5,2
+New Jersey Devils,Winnipeg Jets,home,L,2018-12-01,3,4
+Nashville Predators,Chicago Blackhawks,home,W,2018-12-01,5,2
+New York Islanders,Columbus Blue Jackets,home,W,2018-12-01,3,2
+Ottawa Senators,San Jose Sharks,home,W,2018-12-01,6,2
+Pittsburgh Penguins,Philadelphia Flyers,home,L,2018-12-01,2,4
+Vancouver Canucks,Dallas Stars,home,L,2018-12-01,1,2
+Chicago Blackhawks,Calgary Flames,home,L,2018-12-02,2,3
+Detroit Red Wings,Colorado Avalanche,home,L,2018-12-02,0,2
+Los Angeles Kings,Carolina Hurricanes,home,W,2018-12-02,2,0
+Montreal Canadiens,San Jose Sharks,home,L,2018-12-02,1,3
+New York Rangers,Winnipeg Jets,home,L,2018-12-02,3,4
+Washington Capitals,Anaheim Ducks,home,L,2018-12-02,5,6
+Dallas Stars,Edmonton Oilers,home,W,2018-12-03,4,1
+New Jersey Devils,Tampa Bay Lightning,home,L,2018-12-03,1,5
+Nashville Predators,Buffalo Sabres,home,W,2018-12-03,2,1
+Buffalo Sabres,Toronto Maple Leafs,home,L,2018-12-04,3,4
+Columbus Blue Jackets,Calgary Flames,home,L,2018-12-04,6,9
+Detroit Red Wings,Tampa Bay Lightning,home,L,2018-12-04,5,6
+Florida Panthers,Boston Bruins,home,W,2018-12-04,5,0
+Los Angeles Kings,Arizona Coyotes,home,L,2018-12-04,1,2
+Montreal Canadiens,Ottawa Senators,home,W,2018-12-04,5,2
+New York Islanders,Winnipeg Jets,home,L,2018-12-04,1,3
+Pittsburgh Penguins,Colorado Avalanche,home,W,2018-12-04,6,3
+Vancouver Canucks,Minnesota Wild,home,L,2018-12-04,2,3
+Vegas Golden Knights,Washington Capitals,home,W,2018-12-04,5,3
+Anaheim Ducks,Chicago Blackhawks,home,W,2018-12-05,4,2
+San Jose Sharks,Carolina Hurricanes,home,W,2018-12-05,5,1
+St Louis Blues,Edmonton Oilers,home,L,2018-12-05,2,3
+Arizona Coyotes,Washington Capitals,home,L,2018-12-06,2,4
+Calgary Flames,Minnesota Wild,home,W,2018-12-06,2,0
+Florida Panthers,Colorado Avalanche,home,L,2018-12-06,2,5
+Los Angeles Kings,New Jersey Devils,home,L,2018-12-06,3,6
+Ottawa Senators,Montreal Canadiens,home,L,2018-12-06,2,5
+Philadelphia Flyers,Columbus Blue Jackets,home,L,2018-12-06,3,4
+Pittsburgh Penguins,New York Islanders,home,W,2018-12-06,6,2
+Tampa Bay Lightning,Boston Bruins,home,W,2018-12-06,3,2
+Toronto Maple Leafs,Detroit Red Wings,home,L,2018-12-06,4,5
+Vancouver Canucks,Nashville Predators,home,W,2018-12-06,5,3
+Vegas Golden Knights,Chicago Blackhawks,home,W,2018-12-06,4,3
+Anaheim Ducks,Carolina Hurricanes,home,L,2018-12-07,1,4
+Dallas Stars,San Jose Sharks,home,W,2018-12-07,3,2
+Edmonton Oilers,Minnesota Wild,home,W,2018-12-07,7,2
+Winnipeg Jets,St Louis Blues,home,L,2018-12-07,0,1
+Arizona Coyotes,San Jose Sharks,home,L,2018-12-08,3,5
+Boston Bruins,Toronto Maple Leafs,home,W,2018-12-08,6,3
+Buffalo Sabres,Philadelphia Flyers,home,L,2018-12-08,2,6
+Columbus Blue Jackets,Washington Capitals,home,L,2018-12-08,0,4
+Calgary Flames,Nashville Predators,home,W,2018-12-08,5,2
+Detroit Red Wings,New York Islanders,home,L,2018-12-08,2,3
+Florida Panthers,New York Rangers,home,L,2018-12-08,4,5
+Los Angeles Kings,Vegas Golden Knights,home,W,2018-12-08,5,1
+Ottawa Senators,Pittsburgh Penguins,home,W,2018-12-08,2,1
+Tampa Bay Lightning,Colorado Avalanche,home,W,2018-12-08,7,1
+Anaheim Ducks,New Jersey Devils,home,W,2018-12-09,6,5
+Chicago Blackhawks,Montreal Canadiens,home,L,2018-12-09,2,3
+Edmonton Oilers,Calgary Flames,home,W,2018-12-09,1,0
+Ottawa Senators,Boston Bruins,home,L,2018-12-09,1,2
+St Louis Blues,Vancouver Canucks,home,L,2018-12-09,1,6
+Vegas Golden Knights,Dallas Stars,home,W,2018-12-09,4,2
+Winnipeg Jets,Philadelphia Flyers,home,W,2018-12-09,7,1
+Detroit Red Wings,Los Angeles Kings,home,W,2018-12-10,3,1
+New York Islanders,Pittsburgh Penguins,home,L,2018-12-10,1,2
+San Jose Sharks,New Jersey Devils,home,W,2018-12-10,5,2
+Tampa Bay Lightning,New York Rangers,home,W,2018-12-10,6,3
+Boston Bruins,Arizona Coyotes,home,W,2018-12-11,4,3
+Buffalo Sabres,Los Angeles Kings,home,W,2018-12-11,4,3
+Carolina Hurricanes,Toronto Maple Leafs,home,L,2018-12-11,1,4
+Columbus Blue Jackets,Vancouver Canucks,home,L,2018-12-11,2,3
+Colorado Avalanche,Edmonton Oilers,home,L,2018-12-11,4,6
+Minnesota Wild,Montreal Canadiens,home,W,2018-12-11,7,1
+Nashville Predators,Ottawa Senators,home,W,2018-12-11,3,1
+St Louis Blues,Florida Panthers,home,W,2018-12-11,4,3
+Winnipeg Jets,Chicago Blackhawks,home,W,2018-12-11,6,3
+Washington Capitals,Detroit Red Wings,home,W,2018-12-11,6,2
+Anaheim Ducks,Dallas Stars,home,W,2018-12-12,6,3
+Calgary Flames,Philadelphia Flyers,home,W,2018-12-12,6,5
+Chicago Blackhawks,Pittsburgh Penguins,home,W,2018-12-12,6,3
+New York Islanders,Vegas Golden Knights,home,L,2018-12-12,2,3
+Buffalo Sabres,Arizona Coyotes,home,W,2018-12-13,3,1
+Columbus Blue Jackets,Los Angeles Kings,home,W,2018-12-13,4,1
+Minnesota Wild,Florida Panthers,home,W,2018-12-13,5,1
+Montreal Canadiens,Carolina Hurricanes,home,W,2018-12-13,6,4
+Nashville Predators,Vancouver Canucks,home,W,2018-12-13,4,3
+San Jose Sharks,Dallas Stars,home,W,2018-12-13,3,2
+Tampa Bay Lightning,Toronto Maple Leafs,home,W,2018-12-13,4,1
+Winnipeg Jets,Edmonton Oilers,home,W,2018-12-13,5,4
+Carolina Hurricanes,Washington Capitals,home,L,2018-12-14,5,6
+Chicago Blackhawks,Winnipeg Jets,home,L,2018-12-14,3,4
+Detroit Red Wings,Ottawa Senators,home,L,2018-12-14,2,4
+Edmonton Oilers,Philadelphia Flyers,home,W,2018-12-14,4,1
+New Jersey Devils,Vegas Golden Knights,home,W,2018-12-14,5,4
+New York Rangers,Arizona Coyotes,home,L,2018-12-14,3,4
+Pittsburgh Penguins,Boston Bruins,home,W,2018-12-14,5,3
+St Louis Blues,Colorado Avalanche,home,W,2018-12-14,4,3
+Columbus Blue Jackets,Anaheim Ducks,home,L,2018-12-15,1,2
+Colorado Avalanche,Dallas Stars,home,W,2018-12-15,6,4
+Florida Panthers,Toronto Maple Leafs,home,W,2018-12-15,4,3
+Minnesota Wild,Calgary Flames,home,L,2018-12-15,1,2
+Montreal Canadiens,Ottawa Senators,home,W,2018-12-15,5,2
+Nashville Predators,New Jersey Devils,home,W,2018-12-15,2,1
+New York Islanders,Detroit Red Wings,home,W,2018-12-15,4,3
+Pittsburgh Penguins,Los Angeles Kings,home,W,2018-12-15,4,3
+Vancouver Canucks,Philadelphia Flyers,home,W,2018-12-15,5,1
+Washington Capitals,Buffalo Sabres,home,W,2018-12-15,4,3
+Boston Bruins,Buffalo Sabres,home,L,2018-12-16,2,4
+Carolina Hurricanes,Arizona Coyotes,home,W,2018-12-16,3,0
+Chicago Blackhawks,San Jose Sharks,home,L,2018-12-16,3,7
+New York Rangers,Vegas Golden Knights,home,L,2018-12-16,3,4
+St Louis Blues,Calgary Flames,home,L,2018-12-16,2,7
+Vancouver Canucks,Edmonton Oilers,home,W,2018-12-16,4,2
+Winnipeg Jets,Tampa Bay Lightning,home,W,2018-12-16,5,4
+Columbus Blue Jackets,Vegas Golden Knights,home,W,2018-12-17,1,0
+Colorado Avalanche,New York Islanders,home,L,2018-12-17,1,4
+Montreal Canadiens,Boston Bruins,home,L,2018-12-17,0,4
+Ottawa Senators,Nashville Predators,home,W,2018-12-17,4,3
+Pittsburgh Penguins,Anaheim Ducks,home,L,2018-12-17,2,4
+Arizona Coyotes,New York Islanders,home,L,2018-12-18,1,3
+Buffalo Sabres,Florida Panthers,home,L,2018-12-18,2,5
+Chicago Blackhawks,Nashville Predators,home,W,2018-12-18,2,1
+Dallas Stars,Calgary Flames,home,W,2018-12-18,2,0
+Edmonton Oilers,St Louis Blues,home,L,2018-12-18,1,4
+Los Angeles Kings,Winnipeg Jets,home,W,2018-12-18,4,1
+Minnesota Wild,San Jose Sharks,home,L,2018-12-18,0,4
+New Jersey Devils,Toronto Maple Leafs,home,L,2018-12-18,2,7
+New York Rangers,Anaheim Ducks,home,W,2018-12-18,3,1
+Philadelphia Flyers,Detroit Red Wings,home,W,2018-12-18,3,2
+Vancouver Canucks,Tampa Bay Lightning,home,L,2018-12-18,2,5
+Colorado Avalanche,Montreal Canadiens,home,W,2018-12-19,2,1
+Washington Capitals,Pittsburgh Penguins,home,L,2018-12-19,1,2
+Arizona Coyotes,Montreal Canadiens,home,L,2018-12-20,1,2
+Boston Bruins,Anaheim Ducks,home,W,2018-12-20,3,1
+Carolina Hurricanes,Detroit Red Wings,home,L,2018-12-20,1,4
+Columbus Blue Jackets,New Jersey Devils,home,W,2018-12-20,2,1
+Calgary Flames,Tampa Bay Lightning,home,L,2018-12-20,4,5
+Dallas Stars,Chicago Blackhawks,home,L,2018-12-20,2,5
+Philadelphia Flyers,Nashville Predators,home,W,2018-12-20,2,1
+Pittsburgh Penguins,Minnesota Wild,home,W,2018-12-20,2,1
+San Jose Sharks,Winnipeg Jets,home,L,2018-12-20,3,5
+Toronto Maple Leafs,Florida Panthers,home,W,2018-12-20,6,1
+Vancouver Canucks,St Louis Blues,home,W,2018-12-20,5,1
+Vegas Golden Knights,New York Islanders,home,W,2018-12-20,4,2
+Colorado Avalanche,Chicago Blackhawks,home,L,2018-12-21,1,2
+New Jersey Devils,Ottawa Senators,home,W,2018-12-21,5,2
+Washington Capitals,Buffalo Sabres,home,W,2018-12-21,2,1
+Arizona Coyotes,Colorado Avalanche,home,W,2018-12-22,6,4
+Boston Bruins,Nashville Predators,home,W,2018-12-22,5,2
+Buffalo Sabres,Anaheim Ducks,home,W,2018-12-22,3,0
+Carolina Hurricanes,Pittsburgh Penguins,home,L,2018-12-22,0,3
+Calgary Flames,St Louis Blues,home,L,2018-12-22,1,3
+Detroit Red Wings,Florida Panthers,home,L,2018-12-22,1,2
+Edmonton Oilers,Tampa Bay Lightning,home,L,2018-12-22,3,6
+Minnesota Wild,Dallas Stars,home,L,2018-12-22,1,2
+Ottawa Senators,Washington Capitals,home,L,2018-12-22,0,4
+Philadelphia Flyers,Columbus Blue Jackets,home,L,2018-12-22,3,4
+San Jose Sharks,Los Angeles Kings,home,L,2018-12-22,2,3
+Toronto Maple Leafs,New York Rangers,home,W,2018-12-22,5,3
+Vancouver Canucks,Winnipeg Jets,home,L,2018-12-22,0,1
+Vegas Golden Knights,Montreal Canadiens,home,L,2018-12-22,3,4
+Carolina Hurricanes,Boston Bruins,home,W,2018-12-23,5,3
+Chicago Blackhawks,Florida Panthers,home,L,2018-12-23,3,6
+Dallas Stars,New York Islanders,home,L,2018-12-23,1,3
+New Jersey Devils,Columbus Blue Jackets,home,L,2018-12-23,0,3
+New York Rangers,Philadelphia Flyers,home,L,2018-12-23,2,3
+San Jose Sharks,Arizona Coyotes,home,L,2018-12-23,3,4
+Toronto Maple Leafs,Detroit Red Wings,home,W,2018-12-23,5,4
+Vegas Golden Knights,Los Angeles Kings,home,L,2018-12-23,3,4
+Boston Bruins,New Jersey Devils,home,L,2018-12-27,2,5
+Chicago Blackhawks,Minnesota Wild,home,W,2018-12-27,5,2
+Edmonton Oilers,Vancouver Canucks,home,L,2018-12-27,2,4
+Los Angeles Kings,Arizona Coyotes,home,W,2018-12-27,2,1
+Nashville Predators,Dallas Stars,home,L,2018-12-27,0,2
+New York Rangers,Columbus Blue Jackets,home,L,2018-12-27,3,4
+Pittsburgh Penguins,Detroit Red Wings,home,W,2018-12-27,5,2
+San Jose Sharks,Anaheim Ducks,home,W,2018-12-27,4,2
+St Louis Blues,Buffalo Sabres,home,W,2018-12-27,4,1
+Tampa Bay Lightning,Philadelphia Flyers,home,W,2018-12-27,6,5
+Vegas Golden Knights,Colorado Avalanche,home,W,2018-12-27,2,1
+Winnipeg Jets,Calgary Flames,home,L,2018-12-27,1,4
+Washington Capitals,Carolina Hurricanes,home,W,2018-12-27,3,1
+Columbus Blue Jackets,Toronto Maple Leafs,home,L,2018-12-28,2,4
+Florida Panthers,Montreal Canadiens,home,L,2018-12-28,3,5
+New York Islanders,Ottawa Senators,home,W,2018-12-28,6,3
+Anaheim Ducks,Arizona Coyotes,home,L,2018-12-29,4,5
+Buffalo Sabres,Boston Bruins,home,L,2018-12-29,2,3
+Calgary Flames,Vancouver Canucks,home,L,2018-12-29,2,3
+Colorado Avalanche,Chicago Blackhawks,home,L,2018-12-29,2,3
+Dallas Stars,Detroit Red Wings,home,W,2018-12-29,5,1
+Edmonton Oilers,San Jose Sharks,home,L,2018-12-29,4,7
+Florida Panthers,Philadelphia Flyers,home,W,2018-12-29,2,1
+Los Angeles Kings,Vegas Golden Knights,home,L,2018-12-29,1,4
+New Jersey Devils,Carolina Hurricanes,home,W,2018-12-29,2,0
+Nashville Predators,New York Rangers,home,L,2018-12-29,3,4
+Ottawa Senators,Washington Capitals,home,L,2018-12-29,2,3
+St Louis Blues,Pittsburgh Penguins,home,L,2018-12-29,1,6
+Tampa Bay Lightning,Montreal Canadiens,home,W,2018-12-29,6,5
+Toronto Maple Leafs,New York Islanders,home,L,2018-12-29,0,4
+Winnipeg Jets,Minnesota Wild,home,L,2018-12-29,1,3
+Arizona Coyotes,Vegas Golden Knights,home,L,2018-12-30,1,5
+Anaheim Ducks,Tampa Bay Lightning,home,L,2018-12-31,1,2
+Buffalo Sabres,New York Islanders,home,L,2018-12-31,1,3
+Carolina Hurricanes,Philadelphia Flyers,home,W,2018-12-31,3,1
+Columbus Blue Jackets,Ottawa Senators,home,W,2018-12-31,6,3
+Calgary Flames,San Jose Sharks,home,W,2018-12-31,8,5
+Colorado Avalanche,Los Angeles Kings,home,L,2018-12-31,2,3
+Dallas Stars,Montreal Canadiens,home,L,2018-12-31,2,3
+Detroit Red Wings,Florida Panthers,home,L,2018-12-31,3,4
+Edmonton Oilers,Winnipeg Jets,home,L,2018-12-31,3,4
+Minnesota Wild,Pittsburgh Penguins,home,L,2018-12-31,2,3
+New Jersey Devils,Vancouver Canucks,home,W,2018-12-31,4,0
+St Louis Blues,New York Rangers,home,L,2018-12-31,1,2
+Washington Capitals,Nashville Predators,home,L,2018-12-31,3,6
+Chicago Blackhawks,Boston Bruins,home,L,2019-01-01,2,4
+Nashville Predators,Philadelphia Flyers,home,W,2019-01-01,4,0
+Vegas Golden Knights,Los Angeles Kings,home,W,2019-01-01,2,0
+Arizona Coyotes,Edmonton Oilers,home,L,2019-01-02,1,3
+Colorado Avalanche,San Jose Sharks,home,L,2019-01-02,4,5
+Dallas Stars,New Jersey Devils,home,W,2019-01-02,5,4
+Detroit Red Wings,Calgary Flames,home,L,2019-01-02,3,5
+New York Rangers,Pittsburgh Penguins,home,L,2019-01-02,2,7
+Ottawa Senators,Vancouver Canucks,home,L,2019-01-02,3,4
+Boston Bruins,Calgary Flames,home,W,2019-01-03,6,4
+Buffalo Sabres,Florida Panthers,home,W,2019-01-03,4,3
+Los Angeles Kings,Tampa Bay Lightning,home,L,2019-01-03,2,6
+Montreal Canadiens,Vancouver Canucks,home,W,2019-01-03,2,0
+New York Islanders,Chicago Blackhawks,home,W,2019-01-03,3,2
+Philadelphia Flyers,Carolina Hurricanes,home,L,2019-01-03,3,5
+St Louis Blues,Washington Capitals,home,W,2019-01-03,5,2
+Toronto Maple Leafs,Minnesota Wild,home,L,2019-01-03,3,4
+Anaheim Ducks,Vegas Golden Knights,home,L,2019-01-04,2,3
+Arizona Coyotes,New Jersey Devils,home,L,2019-01-04,2,3
+Carolina Hurricanes,Columbus Blue Jackets,home,W,2019-01-04,4,2
+Colorado Avalanche,New York Rangers,home,W,2019-01-04,6,1
+Dallas Stars,Washington Capitals,home,W,2019-01-04,2,1
+Detroit Red Wings,Nashville Predators,home,W,2019-01-04,4,3
+Pittsburgh Penguins,Winnipeg Jets,home,W,2019-01-04,4,0
+Boston Bruins,Buffalo Sabres,home,W,2019-01-05,2,1
+Florida Panthers,Columbus Blue Jackets,home,L,2019-01-05,3,4
+Los Angeles Kings,Edmonton Oilers,home,W,2019-01-05,4,0
+Montreal Canadiens,Nashville Predators,home,L,2019-01-05,1,4
+Ottawa Senators,Minnesota Wild,home,L,2019-01-05,3,4
+Philadelphia Flyers,Calgary Flames,home,L,2019-01-05,2,3
+San Jose Sharks,Tampa Bay Lightning,home,W,2019-01-05,5,2
+St Louis Blues,New York Islanders,home,L,2019-01-05,3,4
+Toronto Maple Leafs,Vancouver Canucks,home,W,2019-01-05,5,0
+Anaheim Ducks,Edmonton Oilers,home,L,2019-01-06,0,4
+Arizona Coyotes,New York Rangers,home,W,2019-01-06,5,0
+Detroit Red Wings,Washington Capitals,home,L,2019-01-06,2,3
+Ottawa Senators,Carolina Hurricanes,home,L,2019-01-06,4,5
+Pittsburgh Penguins,Chicago Blackhawks,home,L,2019-01-06,3,5
+Vegas Golden Knights,New Jersey Devils,home,W,2019-01-06,3,2
+Winnipeg Jets,Dallas Stars,home,W,2019-01-06,5,1
+Chicago Blackhawks,Calgary Flames,home,L,2019-01-07,3,4
+Montreal Canadiens,Minnesota Wild,home,L,2019-01-07,0,1
+Philadelphia Flyers,St Louis Blues,home,L,2019-01-07,0,3
+San Jose Sharks,Los Angeles Kings,home,W,2019-01-07,3,1
+Toronto Maple Leafs,Nashville Predators,home,L,2019-01-07,0,4
+Boston Bruins,Minnesota Wild,home,W,2019-01-08,4,0
+Buffalo Sabres,New Jersey Devils,home,W,2019-01-08,5,1
+Detroit Red Wings,Montreal Canadiens,home,L,2019-01-08,2,3
+New York Islanders,Carolina Hurricanes,home,L,2019-01-08,3,4
+Pittsburgh Penguins,Florida Panthers,home,W,2019-01-08,5,1
+San Jose Sharks,Edmonton Oilers,home,W,2019-01-08,7,2
+St Louis Blues,Dallas Stars,home,L,2019-01-08,1,3
+Tampa Bay Lightning,Columbus Blue Jackets,home,W,2019-01-08,4,0
+Vegas Golden Knights,New York Rangers,home,W,2019-01-08,4,2
+Winnipeg Jets,Colorado Avalanche,home,W,2019-01-08,7,4
+Washington Capitals,Philadelphia Flyers,home,W,2019-01-08,5,3
+Anaheim Ducks,Ottawa Senators,home,L,2019-01-09,1,2
+Calgary Flames,Colorado Avalanche,home,W,2019-01-09,5,3
+Chicago Blackhawks,Nashville Predators,home,L,2019-01-09,3,4
+Boston Bruins,Washington Capitals,home,L,2019-01-10,2,4
+Columbus Blue Jackets,Nashville Predators,home,W,2019-01-10,4,3
+Edmonton Oilers,Florida Panthers,home,W,2019-01-10,4,3
+Los Angeles Kings,Ottawa Senators,home,L,2019-01-10,1,4
+Minnesota Wild,Winnipeg Jets,home,W,2019-01-10,3,2
+New Jersey Devils,Toronto Maple Leafs,home,L,2019-01-10,2,4
+New York Rangers,New York Islanders,home,L,2019-01-10,3,4
+Philadelphia Flyers,Dallas Stars,home,W,2019-01-10,2,1
+St Louis Blues,Montreal Canadiens,home,W,2019-01-10,4,1
+Tampa Bay Lightning,Carolina Hurricanes,home,W,2019-01-10,3,1
+Vancouver Canucks,Arizona Coyotes,home,L,2019-01-10,3,4
+Vegas Golden Knights,San Jose Sharks,home,L,2019-01-10,2,3
+Anaheim Ducks,Pittsburgh Penguins,home,L,2019-01-11,4,7
+Carolina Hurricanes,Buffalo Sabres,home,W,2019-01-11,4,3
+Calgary Flames,Florida Panthers,home,W,2019-01-11,4,3
+Winnipeg Jets,Detroit Red Wings,home,W,2019-01-11,4,2
+Buffalo Sabres,Tampa Bay Lightning,home,L,2019-01-12,3,5
+Chicago Blackhawks,Vegas Golden Knights,home,L,2019-01-12,3,4
+Dallas Stars,St Louis Blues,home,L,2019-01-12,1,3
+Edmonton Oilers,Arizona Coyotes,home,L,2019-01-12,2,3
+Los Angeles Kings,Pittsburgh Penguins,home,W,2019-01-12,5,2
+Minnesota Wild,Detroit Red Wings,home,L,2019-01-12,2,5
+Montreal Canadiens,Colorado Avalanche,home,W,2019-01-12,3,0
+New Jersey Devils,Philadelphia Flyers,home,W,2019-01-12,3,2
+New York Islanders,New York Rangers,home,L,2019-01-12,1,2
+San Jose Sharks,Ottawa Senators,home,W,2019-01-12,4,1
+Toronto Maple Leafs,Boston Bruins,home,L,2019-01-12,2,3
+Washington Capitals,Columbus Blue Jackets,home,L,2019-01-12,1,2
+Carolina Hurricanes,Nashville Predators,home,W,2019-01-13,6,3
+Columbus Blue Jackets,New York Rangers,home,W,2019-01-13,7,5
+Calgary Flames,Arizona Coyotes,home,W,2019-01-13,7,1
+New York Islanders,Tampa Bay Lightning,home,W,2019-01-13,5,1
+Vancouver Canucks,Florida Panthers,home,W,2019-01-13,5,1
+Winnipeg Jets,Anaheim Ducks,home,W,2019-01-13,4,3
+Boston Bruins,Montreal Canadiens,home,L,2019-01-14,2,3
+Edmonton Oilers,Buffalo Sabres,home,W,2019-01-14,7,2
+New Jersey Devils,Chicago Blackhawks,home,W,2019-01-14,8,5
+Philadelphia Flyers,Minnesota Wild,home,W,2019-01-14,7,4
+Toronto Maple Leafs,Colorado Avalanche,home,L,2019-01-14,3,6
+Washington Capitals,St Louis Blues,home,L,2019-01-14,1,4
+Columbus Blue Jackets,New Jersey Devils,home,W,2019-01-15,4,1
+Dallas Stars,Tampa Bay Lightning,home,L,2019-01-15,0,2
+Detroit Red Wings,Anaheim Ducks,home,W,2019-01-15,3,1
+Minnesota Wild,Los Angeles Kings,home,W,2019-01-15,3,2
+Montreal Canadiens,Florida Panthers,home,W,2019-01-15,5,1
+Nashville Predators,Washington Capitals,home,W,2019-01-15,7,2
+New York Islanders,St Louis Blues,home,W,2019-01-15,2,1
+New York Rangers,Carolina Hurricanes,home,W,2019-01-15,6,2
+San Jose Sharks,Pittsburgh Penguins,home,W,2019-01-15,5,2
+Winnipeg Jets,Vegas Golden Knights,home,W,2019-01-15,4,1
+Arizona Coyotes,San Jose Sharks,home,W,2019-01-16,6,3
+Calgary Flames,Buffalo Sabres,home,L,2019-01-16,3,4
+Ottawa Senators,Colorado Avalanche,home,W,2019-01-16,5,2
+Philadelphia Flyers,Boston Bruins,home,W,2019-01-16,4,3
+Vancouver Canucks,Edmonton Oilers,home,L,2019-01-16,2,3
+Boston Bruins,St Louis Blues,home,W,2019-01-17,5,2
+Dallas Stars,Los Angeles Kings,home,L,2019-01-17,1,2
+Minnesota Wild,Anaheim Ducks,home,L,2019-01-17,0,3
+Nashville Predators,Winnipeg Jets,home,L,2019-01-17,1,5
+New York Islanders,New Jersey Devils,home,W,2019-01-17,4,1
+New York Rangers,Chicago Blackhawks,home,W,2019-01-17,4,3
+Tampa Bay Lightning,Toronto Maple Leafs,home,L,2019-01-17,2,4
+Arizona Coyotes,Pittsburgh Penguins,home,L,2019-01-18,2,3
+Carolina Hurricanes,Ottawa Senators,home,L,2019-01-18,1,4
+Columbus Blue Jackets,Montreal Canadiens,home,L,2019-01-18,1,4
+Calgary Flames,Detroit Red Wings,home,W,2019-01-18,6,4
+Florida Panthers,Toronto Maple Leafs,home,W,2019-01-18,3,1
+Vancouver Canucks,Buffalo Sabres,home,W,2019-01-18,4,3
+Washington Capitals,New York Islanders,home,L,2019-01-18,0,2
+Boston Bruins,New York Rangers,home,L,2019-01-19,2,3
+Colorado Avalanche,Los Angeles Kings,home,W,2019-01-19,7,1
+Dallas Stars,Winnipeg Jets,home,W,2019-01-19,4,2
+Edmonton Oilers,Calgary Flames,home,L,2019-01-19,2,5
+Minnesota Wild,Columbus Blue Jackets,home,W,2019-01-19,2,1
+Montreal Canadiens,Philadelphia Flyers,home,L,2019-01-19,2,5
+New Jersey Devils,Anaheim Ducks,home,L,2019-01-19,2,3
+Nashville Predators,Florida Panthers,home,L,2019-01-19,2,4
+St Louis Blues,Ottawa Senators,home,W,2019-01-19,3,2
+Tampa Bay Lightning,San Jose Sharks,home,W,2019-01-19,6,3
+Vegas Golden Knights,Pittsburgh Penguins,home,W,2019-01-19,7,3
+Chicago Blackhawks,Washington Capitals,home,W,2019-01-20,8,5
+Edmonton Oilers,Carolina Hurricanes,home,L,2019-01-20,4,7
+New York Islanders,Anaheim Ducks,home,W,2019-01-20,3,0
+Toronto Maple Leafs,Arizona Coyotes,home,L,2019-01-20,2,4
+Vancouver Canucks,Detroit Red Wings,home,W,2019-01-20,3,2
+Colorado Avalanche,Nashville Predators,home,L,2019-01-21,1,4
+Florida Panthers,San Jose Sharks,home,W,2019-01-21,6,2
+Los Angeles Kings,St Louis Blues,home,W,2019-01-21,4,3
+Vegas Golden Knights,Minnesota Wild,home,L,2019-01-21,2,4
+Calgary Flames,Carolina Hurricanes,home,W,2019-01-22,3,2
+Chicago Blackhawks,New York Islanders,home,W,2019-01-22,3,2
+Edmonton Oilers,Detroit Red Wings,home,L,2019-01-22,2,3
+Ottawa Senators,Arizona Coyotes,home,L,2019-01-22,2,3
+Washington Capitals,San Jose Sharks,home,L,2019-01-22,6,7
+Anaheim Ducks,St Louis Blues,home,L,2019-01-23,1,5
+Colorado Avalanche,Minnesota Wild,home,L,2019-01-23,2,5
+Montreal Canadiens,Arizona Coyotes,home,W,2019-01-23,2,1
+Toronto Maple Leafs,Washington Capitals,home,W,2019-01-23,6,3
+Vancouver Canucks,Carolina Hurricanes,home,L,2019-01-23,2,5
+Vegas Golden Knights,Nashville Predators,home,L,2019-01-23,1,2
+Philadelphia Flyers,Winnipeg Jets,home,W,2019-01-28,3,1
+Pittsburgh Penguins,New Jersey Devils,home,L,2019-01-28,3,6
+Boston Bruins,Winnipeg Jets,home,L,2019-01-29,3,4
+Columbus Blue Jackets,Buffalo Sabres,home,L,2019-01-29,4,5
+New York Rangers,Philadelphia Flyers,home,L,2019-01-29,0,1
+Dallas Stars,Buffalo Sabres,home,W,2019-01-30,1,0
+Pittsburgh Penguins,Tampa Bay Lightning,home,W,2019-01-30,4,2
+Boston Bruins,Philadelphia Flyers,home,L,2019-01-31,2,3
+New Jersey Devils,New York Rangers,home,L,2019-01-31,3,4
+Winnipeg Jets,Columbus Blue Jackets,home,W,2019-01-31,4,3
+Buffalo Sabres,Chicago Blackhawks,home,L,2019-02-01,3,7
+Carolina Hurricanes,Vegas Golden Knights,home,W,2019-02-01,5,2
+Dallas Stars,Minnesota Wild,home,W,2019-02-01,3,1
+Detroit Red Wings,Toronto Maple Leafs,home,W,2019-02-01,3,2
+Florida Panthers,Nashville Predators,home,L,2019-02-01,1,4
+New York Islanders,Tampa Bay Lightning,home,L,2019-02-01,0,1
+Pittsburgh Penguins,Ottawa Senators,home,W,2019-02-01,5,3
+Washington Capitals,Calgary Flames,home,W,2019-02-01,4,3
+Columbus Blue Jackets,St Louis Blues,home,L,2019-02-02,2,4
+Colorado Avalanche,Vancouver Canucks,home,L,2019-02-02,1,5
+Florida Panthers,Vegas Golden Knights,home,W,2019-02-02,3,1
+Minnesota Wild,Chicago Blackhawks,home,L,2019-02-02,3,4
+Montreal Canadiens,New Jersey Devils,home,L,2019-02-02,2,3
+Nashville Predators,Dallas Stars,home,L,2019-02-02,1,3
+New York Islanders,Los Angeles Kings,home,W,2019-02-02,4,2
+New York Rangers,Tampa Bay Lightning,home,L,2019-02-02,2,3
+Ottawa Senators,Detroit Red Wings,home,L,2019-02-02,0,2
+Philadelphia Flyers,Edmonton Oilers,home,W,2019-02-02,5,4
+San Jose Sharks,Arizona Coyotes,home,W,2019-02-02,3,2
+Toronto Maple Leafs,Pittsburgh Penguins,home,W,2019-02-02,3,2
+Winnipeg Jets,Anaheim Ducks,home,W,2019-02-02,9,3
+Carolina Hurricanes,Calgary Flames,home,L,2019-02-03,3,4
+Montreal Canadiens,Edmonton Oilers,home,W,2019-02-03,4,3
+Washington Capitals,Boston Bruins,home,L,2019-02-03,0,1
+Dallas Stars,Arizona Coyotes,home,W,2019-02-04,5,4
+New York Rangers,Los Angeles Kings,home,L,2019-02-04,3,4
+Philadelphia Flyers,Vancouver Canucks,home,W,2019-02-04,2,1
+Toronto Maple Leafs,Anaheim Ducks,home,W,2019-02-04,6,1
+Boston Bruins,New York Islanders,home,W,2019-02-05,3,1
+Buffalo Sabres,Minnesota Wild,home,W,2019-02-05,5,4
+Colorado Avalanche,Columbus Blue Jackets,home,L,2019-02-05,3,6
+Edmonton Oilers,Chicago Blackhawks,home,L,2019-02-05,2,6
+Florida Panthers,St Louis Blues,home,L,2019-02-05,2,3
+Montreal Canadiens,Anaheim Ducks,home,W,2019-02-05,4,1
+New Jersey Devils,Los Angeles Kings,home,L,2019-02-05,1,5
+Nashville Predators,Arizona Coyotes,home,W,2019-02-05,5,2
+Pittsburgh Penguins,Carolina Hurricanes,home,L,2019-02-05,0,4
+Tampa Bay Lightning,Vegas Golden Knights,home,L,2019-02-05,2,3
+Winnipeg Jets,San Jose Sharks,home,L,2019-02-05,2,3
+Washington Capitals,Vancouver Canucks,home,W,2019-02-05,3,2
+New York Rangers,Boston Bruins,home,W,2019-02-06,4,3
+Toronto Maple Leafs,Ottawa Senators,home,W,2019-02-06,5,4
+Arizona Coyotes,Columbus Blue Jackets,home,L,2019-02-07,2,4
+Buffalo Sabres,Carolina Hurricanes,home,L,2019-02-07,5,6
+Calgary Flames,San Jose Sharks,home,L,2019-02-07,2,5
+Chicago Blackhawks,Vancouver Canucks,home,W,2019-02-07,4,3
+Detroit Red Wings,Vegas Golden Knights,home,L,2019-02-07,3,4
+Florida Panthers,Pittsburgh Penguins,home,W,2019-02-07,3,2
+Minnesota Wild,Edmonton Oilers,home,L,2019-02-07,1,4
+Montreal Canadiens,Winnipeg Jets,home,W,2019-02-07,5,2
+New Jersey Devils,New York Islanders,home,L,2019-02-07,1,2
+Nashville Predators,Dallas Stars,home,W,2019-02-07,3,2
+Ottawa Senators,Anaheim Ducks,home,W,2019-02-07,4,0
+Philadelphia Flyers,Los Angeles Kings,home,L,2019-02-07,2,3
+Tampa Bay Lightning,St Louis Blues,home,L,2019-02-07,0,1
+Washington Capitals,Colorado Avalanche,home,W,2019-02-07,4,3
+New York Rangers,Carolina Hurricanes,home,L,2019-02-08,0,3
+Arizona Coyotes,Dallas Stars,home,W,2019-02-09,3,2
+Boston Bruins,Los Angeles Kings,home,W,2019-02-09,5,4
+Buffalo Sabres,Detroit Red Wings,home,W,2019-02-09,3,1
+Edmonton Oilers,San Jose Sharks,home,L,2019-02-09,2,5
+Montreal Canadiens,Toronto Maple Leafs,home,L,2019-02-09,3,4
+New Jersey Devils,Minnesota Wild,home,L,2019-02-09,2,4
+New York Islanders,Colorado Avalanche,home,W,2019-02-09,4,3
+Ottawa Senators,Winnipeg Jets,home,W,2019-02-09,5,2
+Philadelphia Flyers,Anaheim Ducks,home,W,2019-02-09,6,2
+St Louis Blues,Nashville Predators,home,W,2019-02-09,3,2
+Tampa Bay Lightning,Pittsburgh Penguins,home,W,2019-02-09,5,4
+Vancouver Canucks,Calgary Flames,home,W,2019-02-09,4,3
+Vegas Golden Knights,Columbus Blue Jackets,home,L,2019-02-09,3,4
+Washington Capitals,Florida Panthers,home,L,2019-02-09,4,5
+Boston Bruins,Colorado Avalanche,home,W,2019-02-10,2,1
+Buffalo Sabres,Winnipeg Jets,home,L,2019-02-10,1,3
+Chicago Blackhawks,Detroit Red Wings,home,W,2019-02-10,5,2
+Florida Panthers,Tampa Bay Lightning,home,L,2019-02-10,2,5
+New Jersey Devils,Carolina Hurricanes,home,W,2019-02-10,3,2
+Nashville Predators,St Louis Blues,home,L,2019-02-10,4,5
+New York Islanders,Minnesota Wild,home,W,2019-02-10,2,1
+New York Rangers,Toronto Maple Leafs,home,W,2019-02-10,4,1
+Philadelphia Flyers,Pittsburgh Penguins,home,L,2019-02-11,1,4
+Vancouver Canucks,San Jose Sharks,home,L,2019-02-11,2,7
+Washington Capitals,Los Angeles Kings,home,W,2019-02-11,6,4
+Boston Bruins,Chicago Blackhawks,home,W,2019-02-12,6,3
+Buffalo Sabres,New York Islanders,home,W,2019-02-12,3,1
+Columbus Blue Jackets,Washington Capitals,home,W,2019-02-12,3,0
+Colorado Avalanche,Toronto Maple Leafs,home,L,2019-02-12,2,5
+Florida Panthers,Dallas Stars,home,L,2019-02-12,0,3
+Minnesota Wild,Philadelphia Flyers,home,L,2019-02-12,4,5
+Nashville Predators,Detroit Red Wings,home,L,2019-02-12,2,3
+Ottawa Senators,Carolina Hurricanes,home,L,2019-02-12,1,4
+St Louis Blues,New Jersey Devils,home,W,2019-02-12,8,3
+Tampa Bay Lightning,Calgary Flames,home,W,2019-02-12,6,3
+Vegas Golden Knights,Arizona Coyotes,home,L,2019-02-12,2,5
+Winnipeg Jets,New York Rangers,home,W,2019-02-12,4,3
+Anaheim Ducks,Vancouver Canucks,home,W,2019-02-13,1,0
+Pittsburgh Penguins,Edmonton Oilers,home,W,2019-02-13,3,1
+Arizona Coyotes,St Louis Blues,home,L,2019-02-14,0,4
+Columbus Blue Jackets,New York Islanders,home,L,2019-02-14,0,3
+Chicago Blackhawks,New Jersey Devils,home,W,2019-02-14,5,2
+Detroit Red Wings,Ottawa Senators,home,W,2019-02-14,3,2
+Florida Panthers,Calgary Flames,home,W,2019-02-14,3,2
+Los Angeles Kings,Vancouver Canucks,home,L,2019-02-14,3,4
+Nashville Predators,Montreal Canadiens,home,W,2019-02-14,3,1
+San Jose Sharks,Washington Capitals,home,L,2019-02-14,1,5
+Tampa Bay Lightning,Dallas Stars,home,W,2019-02-14,6,0
+Vegas Golden Knights,Toronto Maple Leafs,home,L,2019-02-14,3,6
+Winnipeg Jets,Colorado Avalanche,home,L,2019-02-14,1,4
+Anaheim Ducks,Boston Bruins,home,L,2019-02-15,0,3
+Buffalo Sabres,New York Rangers,home,L,2019-02-15,2,6
+Carolina Hurricanes,Edmonton Oilers,home,W,2019-02-15,3,1
+Minnesota Wild,New Jersey Devils,home,L,2019-02-15,4,5
+Arizona Coyotes,Toronto Maple Leafs,home,W,2019-02-16,2,0
+Carolina Hurricanes,Dallas Stars,home,W,2019-02-16,3,0
+Chicago Blackhawks,Columbus Blue Jackets,home,L,2019-02-16,2,5
+Colorado Avalanche,St Louis Blues,home,L,2019-02-16,0,3
+Los Angeles Kings,Boston Bruins,home,L,2019-02-16,2,4
+New York Islanders,Edmonton Oilers,home,W,2019-02-16,5,2
+Philadelphia Flyers,Detroit Red Wings,home,W,2019-02-16,6,5
+Pittsburgh Penguins,Calgary Flames,home,L,2019-02-16,4,5
+San Jose Sharks,Vancouver Canucks,home,W,2019-02-16,3,2
+Tampa Bay Lightning,Montreal Canadiens,home,W,2019-02-16,3,0
+Vegas Golden Knights,Nashville Predators,home,W,2019-02-16,5,1
+Winnipeg Jets,Ottawa Senators,home,L,2019-02-16,3,4
+Anaheim Ducks,Washington Capitals,home,W,2019-02-17,5,2
+Detroit Red Wings,Philadelphia Flyers,home,L,2019-02-17,1,3
+Florida Panthers,Montreal Canadiens,home,W,2019-02-17,6,3
+Minnesota Wild,St Louis Blues,home,L,2019-02-17,0,4
+New Jersey Devils,Buffalo Sabres,home,W,2019-02-17,4,1
+Pittsburgh Penguins,New York Rangers,home,W,2019-02-17,6,5
+Columbus Blue Jackets,Tampa Bay Lightning,home,L,2019-02-18,1,5
+Calgary Flames,Arizona Coyotes,home,W,2019-02-18,5,2
+Chicago Blackhawks,Ottawa Senators,home,W,2019-02-18,8,7
+Colorado Avalanche,Vegas Golden Knights,home,W,2019-02-18,3,0
+Los Angeles Kings,Washington Capitals,home,L,2019-02-18,2,3
+San Jose Sharks,Boston Bruins,home,L,2019-02-18,5,6
+Carolina Hurricanes,New York Rangers,home,L,2019-02-19,1,2
+Dallas Stars,Nashville Predators,home,L,2019-02-19,3,5
+Edmonton Oilers,Arizona Coyotes,home,L,2019-02-19,2,3
+Florida Panthers,Buffalo Sabres,home,W,2019-02-19,4,2
+Minnesota Wild,Anaheim Ducks,home,L,2019-02-19,0,4
+Montreal Canadiens,Columbus Blue Jackets,home,W,2019-02-19,3,2
+New Jersey Devils,Pittsburgh Penguins,home,L,2019-02-19,3,4
+Philadelphia Flyers,Tampa Bay Lightning,home,L,2019-02-19,2,5
+St Louis Blues,Toronto Maple Leafs,home,W,2019-02-19,3,2
+Calgary Flames,New York Islanders,home,W,2019-02-20,4,2
+Colorado Avalanche,Winnipeg Jets,home,W,2019-02-20,7,1
+Detroit Red Wings,Chicago Blackhawks,home,L,2019-02-20,4,5
+Vegas Golden Knights,Boston Bruins,home,L,2019-02-20,2,3
+Dallas Stars,St Louis Blues,home,W,2019-02-21,5,2
+Edmonton Oilers,New York Islanders,home,W,2019-02-21,4,3
+Florida Panthers,Carolina Hurricanes,home,L,2019-02-21,3,4
+Montreal Canadiens,Philadelphia Flyers,home,W,2019-02-21,5,1
+New Jersey Devils,Ottawa Senators,home,W,2019-02-21,4,0
+Nashville Predators,Los Angeles Kings,home,W,2019-02-21,2,1
+New York Rangers,Minnesota Wild,home,L,2019-02-21,1,4
+Pittsburgh Penguins,San Jose Sharks,home,L,2019-02-21,0,4
+Tampa Bay Lightning,Buffalo Sabres,home,W,2019-02-21,2,1
+Toronto Maple Leafs,Washington Capitals,home,L,2019-02-21,2,3
+Vancouver Canucks,Arizona Coyotes,home,L,2019-02-21,2,3
+Calgary Flames,Anaheim Ducks,home,W,2019-02-22,2,1
+Chicago Blackhawks,Colorado Avalanche,home,L,2019-02-22,3,5
+Detroit Red Wings,Minnesota Wild,home,L,2019-02-22,2,3
+Ottawa Senators,Columbus Blue Jackets,home,L,2019-02-22,0,3
+Vegas Golden Knights,Winnipeg Jets,home,L,2019-02-22,3,6
+Buffalo Sabres,Washington Capitals,home,W,2019-02-23,5,2
+Columbus Blue Jackets,San Jose Sharks,home,W,2019-02-23,4,0
+Dallas Stars,Carolina Hurricanes,home,L,2019-02-23,0,3
+Edmonton Oilers,Anaheim Ducks,home,W,2019-02-23,2,1
+Florida Panthers,Los Angeles Kings,home,W,2019-02-23,6,1
+Nashville Predators,Colorado Avalanche,home,L,2019-02-23,0,5
+New York Rangers,New Jersey Devils,home,W,2019-02-23,5,2
+Philadelphia Flyers,Pittsburgh Penguins,home,W,2019-02-23,4,3
+St Louis Blues,Boston Bruins,home,W,2019-02-23,2,1
+Toronto Maple Leafs,Montreal Canadiens,home,W,2019-02-23,6,3
+Vancouver Canucks,New York Islanders,home,L,2019-02-23,0,4
+Arizona Coyotes,Winnipeg Jets,home,W,2019-02-24,4,1
+Chicago Blackhawks,Dallas Stars,home,L,2019-02-24,3,4
+Detroit Red Wings,San Jose Sharks,home,L,2019-02-24,3,5
+Minnesota Wild,St Louis Blues,home,W,2019-02-24,2,1
+Ottawa Senators,Calgary Flames,home,L,2019-02-24,1,2
+Washington Capitals,New York Rangers,home,W,2019-02-24,6,5
+Colorado Avalanche,Florida Panthers,home,L,2019-02-25,3,4
+New Jersey Devils,Montreal Canadiens,home,W,2019-02-25,2,1
+Nashville Predators,Edmonton Oilers,home,W,2019-02-25,3,2
+Tampa Bay Lightning,Los Angeles Kings,home,W,2019-02-25,4,3
+Toronto Maple Leafs,Buffalo Sabres,home,W,2019-02-25,5,3
+Vancouver Canucks,Anaheim Ducks,home,W,2019-02-25,4,0
+Arizona Coyotes,Florida Panthers,home,W,2019-02-26,4,3
+Boston Bruins,San Jose Sharks,home,W,2019-02-26,4,1
+Carolina Hurricanes,Los Angeles Kings,home,W,2019-02-26,6,1
+Columbus Blue Jackets,Pittsburgh Penguins,home,L,2019-02-26,2,5
+Detroit Red Wings,Montreal Canadiens,home,L,2019-02-26,1,8
+New York Islanders,Calgary Flames,home,L,2019-02-26,1,3
+Philadelphia Flyers,Buffalo Sabres,home,W,2019-02-26,5,2
+St Louis Blues,Nashville Predators,home,W,2019-02-26,2,0
+Vegas Golden Knights,Dallas Stars,home,W,2019-02-26,4,1
+Winnipeg Jets,Minnesota Wild,home,L,2019-02-26,2,3
+Washington Capitals,Ottawa Senators,home,W,2019-02-26,7,2
+Anaheim Ducks,Chicago Blackhawks,home,L,2019-02-27,3,4
+Colorado Avalanche,Vancouver Canucks,home,W,2019-02-27,3,2
+New Jersey Devils,Calgary Flames,home,L,2019-02-27,1,2
+New York Rangers,Tampa Bay Lightning,home,L,2019-02-27,3,4
+Toronto Maple Leafs,Edmonton Oilers,home,W,2019-02-27,6,2
+Arizona Coyotes,Vancouver Canucks,home,W,2019-02-28,5,2
+Boston Bruins,Tampa Bay Lightning,home,W,2019-02-28,4,1
+Columbus Blue Jackets,Philadelphia Flyers,home,W,2019-02-28,4,3
+Los Angeles Kings,Dallas Stars,home,L,2019-02-28,3,4
+New York Islanders,Toronto Maple Leafs,home,W,2019-02-28,6,1
+Ottawa Senators,Edmonton Oilers,home,L,2019-02-28,2,4
+Vegas Golden Knights,Florida Panthers,home,W,2019-02-28,6,5
+Anaheim Ducks,Vegas Golden Knights,home,L,2019-03-01,0,3
+Buffalo Sabres,Pittsburgh Penguins,home,W,2019-03-01,4,3
+Carolina Hurricanes,St Louis Blues,home,W,2019-03-01,5,2
+New Jersey Devils,Philadelphia Flyers,home,L,2019-03-01,3,6
+New York Islanders,Washington Capitals,home,L,2019-03-01,1,3
+New York Rangers,Montreal Canadiens,home,L,2019-03-01,2,4
+San Jose Sharks,Colorado Avalanche,home,W,2019-03-01,4,3
+Winnipeg Jets,Nashville Predators,home,W,2019-03-01,5,3
+Arizona Coyotes,Detroit Red Wings,home,W,2019-03-02,3,1
+Boston Bruins,New Jersey Devils,home,W,2019-03-02,1,0
+Columbus Blue Jackets,Edmonton Oilers,home,L,2019-03-02,0,4
+Calgary Flames,Minnesota Wild,home,L,2019-03-02,2,4
+Florida Panthers,Carolina Hurricanes,home,L,2019-03-02,3,4
+Los Angeles Kings,Chicago Blackhawks,home,W,2019-03-02,6,3
+Montreal Canadiens,Pittsburgh Penguins,home,L,2019-03-02,1,5
+St Louis Blues,Dallas Stars,home,L,2019-03-02,1,4
+Tampa Bay Lightning,Ottawa Senators,home,W,2019-03-02,5,1
+Toronto Maple Leafs,Buffalo Sabres,home,W,2019-03-02,5,2
+Anaheim Ducks,Colorado Avalanche,home,W,2019-03-03,2,1
+Columbus Blue Jackets,Winnipeg Jets,home,L,2019-03-03,2,5
+Florida Panthers,Ottawa Senators,home,L,2019-03-03,2,3
+Minnesota Wild,Nashville Predators,home,L,2019-03-03,2,3
+New York Islanders,Philadelphia Flyers,home,L,2019-03-03,1,4
+New York Rangers,Washington Capitals,home,L,2019-03-03,2,3
+San Jose Sharks,Chicago Blackhawks,home,W,2019-03-03,5,2
+Vegas Golden Knights,Vancouver Canucks,home,W,2019-03-03,3,0
+Buffalo Sabres,Edmonton Oilers,home,L,2019-03-04,3,4
+Calgary Flames,Toronto Maple Leafs,home,L,2019-03-04,2,6
+Arizona Coyotes,Anaheim Ducks,home,L,2019-03-05,1,3
+Boston Bruins,Carolina Hurricanes,home,W,2019-03-05,4,3
+Colorado Avalanche,Detroit Red Wings,home,W,2019-03-05,4,3
+Dallas Stars,New York Rangers,home,W,2019-03-05,1,0
+Los Angeles Kings,Montreal Canadiens,home,L,2019-03-05,1,3
+New Jersey Devils,Columbus Blue Jackets,home,L,2019-03-05,1,2
+Nashville Predators,Minnesota Wild,home,W,2019-03-05,5,4
+New York Islanders,Ottawa Senators,home,W,2019-03-05,5,4
+Pittsburgh Penguins,Florida Panthers,home,W,2019-03-05,3,2
+Tampa Bay Lightning,Winnipeg Jets,home,W,2019-03-05,5,2
+Anaheim Ducks,St Louis Blues,home,L,2019-03-06,4,5
+Philadelphia Flyers,Washington Capitals,home,L,2019-03-06,3,5
+Vancouver Canucks,Toronto Maple Leafs,home,W,2019-03-06,3,2
+Vegas Golden Knights,Calgary Flames,home,W,2019-03-06,2,1
+Arizona Coyotes,Calgary Flames,home,W,2019-03-07,2,0
+Boston Bruins,Florida Panthers,home,W,2019-03-07,4,3
+Chicago Blackhawks,Buffalo Sabres,home,W,2019-03-07,5,4
+Dallas Stars,Colorado Avalanche,home,W,2019-03-07,4,0
+Detroit Red Wings,New York Rangers,home,W,2019-03-07,3,2
+Edmonton Oilers,Vancouver Canucks,home,W,2019-03-07,3,2
+Los Angeles Kings,St Louis Blues,home,L,2019-03-07,0,4
+Ottawa Senators,New York Islanders,home,L,2019-03-07,2,4
+Pittsburgh Penguins,Columbus Blue Jackets,home,W,2019-03-07,3,0
+San Jose Sharks,Montreal Canadiens,home,W,2019-03-07,5,2
+Tampa Bay Lightning,Minnesota Wild,home,L,2019-03-07,0,3
+Anaheim Ducks,Montreal Canadiens,home,W,2019-03-08,8,2
+Carolina Hurricanes,Winnipeg Jets,home,L,2019-03-08,1,8
+Florida Panthers,Minnesota Wild,home,W,2019-03-08,6,2
+Washington Capitals,New Jersey Devils,home,W,2019-03-08,3,0
+Arizona Coyotes,Los Angeles Kings,home,W,2019-03-09,4,2
+Boston Bruins,Ottawa Senators,home,W,2019-03-09,3,2
+Columbus Blue Jackets,Pittsburgh Penguins,home,W,2019-03-09,4,1
+Colorado Avalanche,Buffalo Sabres,home,W,2019-03-09,3,0
+Dallas Stars,Chicago Blackhawks,home,L,2019-03-09,1,2
+Edmonton Oilers,Toronto Maple Leafs,home,L,2019-03-09,2,3
+Nashville Predators,Carolina Hurricanes,home,L,2019-03-09,3,5
+New York Islanders,Philadelphia Flyers,home,L,2019-03-09,2,5
+New York Rangers,New Jersey Devils,home,W,2019-03-09,4,2
+San Jose Sharks,St Louis Blues,home,W,2019-03-09,3,2
+Tampa Bay Lightning,Detroit Red Wings,home,W,2019-03-09,3,2
+Vancouver Canucks,Vegas Golden Knights,home,L,2019-03-09,2,6
+Anaheim Ducks,Los Angeles Kings,home,L,2019-03-10,2,3
+Calgary Flames,Vegas Golden Knights,home,W,2019-03-10,6,3
+Florida Panthers,Detroit Red Wings,home,W,2019-03-10,6,1
+Pittsburgh Penguins,Boston Bruins,home,W,2019-03-10,4,2
+Washington Capitals,Winnipeg Jets,home,W,2019-03-10,3,1
+Chicago Blackhawks,Arizona Coyotes,home,W,2019-03-11,7,1
+Colorado Avalanche,Carolina Hurricanes,home,L,2019-03-11,0,3
+Edmonton Oilers,New York Rangers,home,W,2019-03-11,3,2
+Minnesota Wild,San Jose Sharks,home,L,2019-03-11,0,3
+New York Islanders,Columbus Blue Jackets,home,W,2019-03-11,2,0
+Philadelphia Flyers,Ottawa Senators,home,W,2019-03-11,3,2
+Toronto Maple Leafs,Tampa Bay Lightning,home,L,2019-03-11,2,6
+Anaheim Ducks,Nashville Predators,home,W,2019-03-12,3,2
+Buffalo Sabres,Dallas Stars,home,L,2019-03-12,0,2
+Columbus Blue Jackets,Boston Bruins,home,W,2019-03-12,7,4
+Calgary Flames,New Jersey Devils,home,W,2019-03-12,9,4
+Montreal Canadiens,Detroit Red Wings,home,W,2019-03-12,3,1
+Pittsburgh Penguins,Washington Capitals,home,W,2019-03-12,5,3
+St Louis Blues,Arizona Coyotes,home,L,2019-03-12,1,3
+Winnipeg Jets,San Jose Sharks,home,L,2019-03-12,4,5
+Edmonton Oilers,New Jersey Devils,home,L,2019-03-13,3,6
+Toronto Maple Leafs,Chicago Blackhawks,home,L,2019-03-13,4,5
+Vancouver Canucks,New York Rangers,home,W,2019-03-13,4,1
+Arizona Coyotes,Anaheim Ducks,home,W,2019-03-14,6,1
+Buffalo Sabres,Pittsburgh Penguins,home,L,2019-03-14,0,5
+Detroit Red Wings,Tampa Bay Lightning,home,L,2019-03-14,4,5
+Los Angeles Kings,Nashville Predators,home,L,2019-03-14,1,3
+Minnesota Wild,Dallas Stars,home,L,2019-03-14,1,4
+New York Islanders,Montreal Canadiens,home,W,2019-03-14,2,1
+Ottawa Senators,St Louis Blues,home,W,2019-03-14,2,0
+Philadelphia Flyers,Washington Capitals,home,L,2019-03-14,2,5
+San Jose Sharks,Florida Panthers,home,L,2019-03-14,2,4
+Winnipeg Jets,Boston Bruins,home,W,2019-03-14,4,3
+Columbus Blue Jackets,Carolina Hurricanes,home,W,2019-03-15,3,0
+Calgary Flames,New York Rangers,home,W,2019-03-15,5,1
+Colorado Avalanche,Anaheim Ducks,home,L,2019-03-15,3,5
+Dallas Stars,Vegas Golden Knights,home,L,2019-03-15,1,2
+Toronto Maple Leafs,Philadelphia Flyers,home,W,2019-03-15,7,6
+Vancouver Canucks,New Jersey Devils,home,L,2019-03-15,2,3
+Arizona Coyotes,Edmonton Oilers,home,L,2019-03-16,2,3
+Boston Bruins,Columbus Blue Jackets,home,W,2019-03-16,2,1
+Carolina Hurricanes,Buffalo Sabres,home,W,2019-03-16,4,2
+Detroit Red Wings,New York Islanders,home,W,2019-03-16,2,1
+Los Angeles Kings,Florida Panthers,home,L,2019-03-16,3,4
+Minnesota Wild,New York Rangers,home,W,2019-03-16,5,2
+Montreal Canadiens,Chicago Blackhawks,home,L,2019-03-16,0,2
+Ottawa Senators,Toronto Maple Leafs,home,W,2019-03-16,6,2
+Pittsburgh Penguins,St Louis Blues,home,L,2019-03-16,1,5
+San Jose Sharks,Nashville Predators,home,L,2019-03-16,2,4
+Tampa Bay Lightning,Washington Capitals,home,W,2019-03-16,6,3
+Winnipeg Jets,Calgary Flames,home,W,2019-03-16,2,1
+Anaheim Ducks,Florida Panthers,home,W,2019-03-17,3,2
+Buffalo Sabres,St Louis Blues,home,W,2019-03-17,4,3
+Colorado Avalanche,New Jersey Devils,home,W,2019-03-17,3,0
+Dallas Stars,Vancouver Canucks,home,L,2019-03-17,2,3
+Minnesota Wild,New York Islanders,home,L,2019-03-17,2,3
+Pittsburgh Penguins,Philadelphia Flyers,home,L,2019-03-17,1,2
+Vegas Golden Knights,Edmonton Oilers,home,W,2019-03-17,6,3
+Chicago Blackhawks,Vancouver Canucks,home,L,2019-03-18,2,3
+Los Angeles Kings,Winnipeg Jets,home,L,2019-03-18,2,3
+San Jose Sharks,Vegas Golden Knights,home,L,2019-03-18,3,7
+Tampa Bay Lightning,Arizona Coyotes,home,W,2019-03-18,4,1
+Carolina Hurricanes,Pittsburgh Penguins,home,W,2019-03-19,3,2
+Calgary Flames,Columbus Blue Jackets,home,W,2019-03-19,4,2
+Dallas Stars,Florida Panthers,home,W,2019-03-19,4,2
+Minnesota Wild,Colorado Avalanche,home,L,2019-03-19,1,3
+New Jersey Devils,Washington Capitals,home,L,2019-03-19,1,4
+Nashville Predators,Toronto Maple Leafs,home,W,2019-03-19,3,0
+New York Islanders,Boston Bruins,home,L,2019-03-19,0,5
+New York Rangers,Detroit Red Wings,home,L,2019-03-19,2,3
+Philadelphia Flyers,Montreal Canadiens,home,L,2019-03-19,1,3
+St Louis Blues,Edmonton Oilers,home,W,2019-03-19,7,2
+Anaheim Ducks,Winnipeg Jets,home,L,2019-03-20,0,3
+Buffalo Sabres,Toronto Maple Leafs,home,L,2019-03-20,2,4
+Vancouver Canucks,Ottawa Senators,home,W,2019-03-20,7,4
+Washington Capitals,Tampa Bay Lightning,home,L,2019-03-20,4,5
+Carolina Hurricanes,Tampa Bay Lightning,home,L,2019-03-21,3,6
+Calgary Flames,Ottawa Senators,home,W,2019-03-21,5,1
+Chicago Blackhawks,Philadelphia Flyers,home,L,2019-03-21,1,3
+Dallas Stars,Colorado Avalanche,home,L,2019-03-21,1,3
+Edmonton Oilers,Columbus Blue Jackets,home,W,2019-03-21,4,1
+Florida Panthers,Arizona Coyotes,home,W,2019-03-21,4,2
+Los Angeles Kings,San Jose Sharks,home,W,2019-03-21,4,2
+Montreal Canadiens,New York Islanders,home,W,2019-03-21,4,0
+New Jersey Devils,Boston Bruins,home,L,2019-03-21,1,5
+Nashville Predators,Pittsburgh Penguins,home,L,2019-03-21,1,2
+St Louis Blues,Detroit Red Wings,home,W,2019-03-21,5,2
+Vegas Golden Knights,Winnipeg Jets,home,W,2019-03-21,5,0
+Anaheim Ducks,San Jose Sharks,home,W,2019-03-22,4,3
+Washington Capitals,Minnesota Wild,home,L,2019-03-22,1,2
+Carolina Hurricanes,Minnesota Wild,home,W,2019-03-23,5,1
+Colorado Avalanche,Chicago Blackhawks,home,W,2019-03-23,4,2
+Dallas Stars,Pittsburgh Penguins,home,L,2019-03-23,2,3
+Edmonton Oilers,Ottawa Senators,home,L,2019-03-23,3,4
+Florida Panthers,Boston Bruins,home,L,2019-03-23,3,7
+Los Angeles Kings,Anaheim Ducks,home,W,2019-03-23,4,3
+Montreal Canadiens,Buffalo Sabres,home,W,2019-03-23,7,4
+New Jersey Devils,Arizona Coyotes,home,W,2019-03-23,2,1
+Philadelphia Flyers,New York Islanders,home,L,2019-03-23,2,4
+St Louis Blues,Tampa Bay Lightning,home,W,2019-03-23,4,3
+Toronto Maple Leafs,New York Rangers,home,L,2019-03-23,1,2
+Vancouver Canucks,Calgary Flames,home,L,2019-03-23,1,3
+Vegas Golden Knights,Detroit Red Wings,home,L,2019-03-23,2,3
+Winnipeg Jets,Nashville Predators,home,W,2019-03-23,5,0
+Carolina Hurricanes,Montreal Canadiens,home,W,2019-03-24,2,1
+Chicago Blackhawks,Colorado Avalanche,home,W,2019-03-24,2,1
+New York Islanders,Arizona Coyotes,home,W,2019-03-24,2,0
+Vancouver Canucks,Columbus Blue Jackets,home,L,2019-03-24,0,5
+Washington Capitals,Philadelphia Flyers,home,W,2019-03-24,3,1
+Calgary Flames,Los Angeles Kings,home,L,2019-03-25,0,3
+Minnesota Wild,Nashville Predators,home,L,2019-03-25,0,1
+New Jersey Devils,Buffalo Sabres,home,W,2019-03-25,3,1
+New York Rangers,Pittsburgh Penguins,home,L,2019-03-25,2,5
+San Jose Sharks,Detroit Red Wings,home,L,2019-03-25,2,3
+St Louis Blues,Vegas Golden Knights,home,W,2019-03-25,3,1
+Tampa Bay Lightning,Boston Bruins,home,W,2019-03-25,5,4
+Toronto Maple Leafs,Florida Panthers,home,W,2019-03-25,7,5
+Winnipeg Jets,Dallas Stars,home,L,2019-03-25,2,5
+Arizona Coyotes,Chicago Blackhawks,home,W,2019-03-26,1,0
+Columbus Blue Jackets,New York Islanders,home,W,2019-03-26,4,0
+Edmonton Oilers,Los Angeles Kings,home,W,2019-03-26,8,4
+Montreal Canadiens,Florida Panthers,home,W,2019-03-26,6,1
+Ottawa Senators,Buffalo Sabres,home,W,2019-03-26,4,0
+Vancouver Canucks,Anaheim Ducks,home,L,2019-03-26,4,5
+Washington Capitals,Carolina Hurricanes,home,W,2019-03-26,4,1
+Boston Bruins,New York Rangers,home,W,2019-03-27,6,3
+Calgary Flames,Dallas Stars,home,L,2019-03-27,1,2
+Colorado Avalanche,Vegas Golden Knights,home,W,2019-03-27,4,3
+Philadelphia Flyers,Toronto Maple Leafs,home,W,2019-03-27,5,4
+Buffalo Sabres,Detroit Red Wings,home,L,2019-03-28,4,5
+Carolina Hurricanes,Washington Capitals,home,L,2019-03-28,2,3
+Columbus Blue Jackets,Montreal Canadiens,home,W,2019-03-28,6,2
+Edmonton Oilers,Dallas Stars,home,L,2019-03-28,2,3
+Ottawa Senators,Florida Panthers,home,L,2019-03-28,2,5
+San Jose Sharks,Chicago Blackhawks,home,L,2019-03-28,4,5
+Vancouver Canucks,Los Angeles Kings,home,W,2019-03-28,3,2
+Winnipeg Jets,New York Islanders,home,L,2019-03-28,4,5
+Calgary Flames,Anaheim Ducks,home,W,2019-03-29,6,1
+Colorado Avalanche,Arizona Coyotes,home,W,2019-03-29,3,2
+Detroit Red Wings,New Jersey Devils,home,W,2019-03-29,4,0
+New York Rangers,St Louis Blues,home,W,2019-03-29,4,2
+Pittsburgh Penguins,Nashville Predators,home,L,2019-03-29,1,3
+Vegas Golden Knights,Minnesota Wild,home,L,2019-03-29,2,3
+Boston Bruins,Florida Panthers,home,L,2019-03-30,1,4
+Carolina Hurricanes,Philadelphia Flyers,home,W,2019-03-30,5,2
+Edmonton Oilers,Anaheim Ducks,home,L,2019-03-30,1,5
+Los Angeles Kings,Chicago Blackhawks,home,W,2019-03-30,3,2
+New Jersey Devils,St Louis Blues,home,L,2019-03-30,2,3
+Nashville Predators,Columbus Blue Jackets,home,L,2019-03-30,2,5
+New York Islanders,Buffalo Sabres,home,W,2019-03-30,5,1
+Ottawa Senators,Toronto Maple Leafs,home,W,2019-03-30,4,2
+San Jose Sharks,Vegas Golden Knights,home,W,2019-03-30,4,3
+Tampa Bay Lightning,Washington Capitals,home,L,2019-03-30,3,6
+Vancouver Canucks,Dallas Stars,home,W,2019-03-30,3,2
+Winnipeg Jets,Montreal Canadiens,home,L,2019-03-30,1,3
+Arizona Coyotes,Minnesota Wild,home,W,2019-03-31,4,0
+Buffalo Sabres,Columbus Blue Jackets,home,L,2019-03-31,0,4
+Detroit Red Wings,Boston Bruins,home,W,2019-03-31,6,3
+Philadelphia Flyers,New York Rangers,home,L,2019-03-31,0,3
+Pittsburgh Penguins,Carolina Hurricanes,home,W,2019-03-31,3,1
+San Jose Sharks,Calgary Flames,home,L,2019-03-31,3,5
+Chicago Blackhawks,Winnipeg Jets,home,L,2019-04-01,3,4
+Florida Panthers,Washington Capitals,home,W,2019-04-01,5,3
+Los Angeles Kings,Calgary Flames,home,L,2019-04-01,2,7
+New Jersey Devils,New York Rangers,home,W,2019-04-01,4,2
+New York Islanders,Toronto Maple Leafs,home,L,2019-04-01,1,2
+Ottawa Senators,Tampa Bay Lightning,home,L,2019-04-01,2,5
+St Louis Blues,Colorado Avalanche,home,W,2019-04-01,3,2
+Vegas Golden Knights,Edmonton Oilers,home,W,2019-04-01,3,1
+Arizona Coyotes,Los Angeles Kings,home,L,2019-04-02,1,3
+Buffalo Sabres,Nashville Predators,home,L,2019-04-02,2,3
+Columbus Blue Jackets,Boston Bruins,home,L,2019-04-02,2,6
+Colorado Avalanche,Edmonton Oilers,home,W,2019-04-02,6,2
+Dallas Stars,Philadelphia Flyers,home,W,2019-04-02,6,2
+Detroit Red Wings,Pittsburgh Penguins,home,W,2019-04-02,4,1
+Minnesota Wild,Winnipeg Jets,home,W,2019-04-02,5,1
+Montreal Canadiens,Tampa Bay Lightning,home,W,2019-04-02,4,2
+Toronto Maple Leafs,Carolina Hurricanes,home,L,2019-04-02,1,4
+Vancouver Canucks,San Jose Sharks,home,W,2019-04-02,4,2
+Anaheim Ducks,Calgary Flames,home,W,2019-04-03,3,1
+Chicago Blackhawks,St Louis Blues,home,W,2019-04-03,4,3
+New York Rangers,Ottawa Senators,home,L,2019-04-03,1,4
+Buffalo Sabres,Ottawa Senators,home,W,2019-04-04,5,2
+Carolina Hurricanes,New Jersey Devils,home,W,2019-04-04,3,1
+Colorado Avalanche,Winnipeg Jets,home,W,2019-04-04,3,2
+Edmonton Oilers,San Jose Sharks,home,L,2019-04-04,2,3
+Florida Panthers,New York Islanders,home,L,2019-04-04,1,2
+Minnesota Wild,Boston Bruins,home,L,2019-04-04,0,3
+Nashville Predators,Vancouver Canucks,home,W,2019-04-04,3,2
+Pittsburgh Penguins,Detroit Red Wings,home,W,2019-04-04,4,1
+St Louis Blues,Philadelphia Flyers,home,W,2019-04-04,7,3
+Toronto Maple Leafs,Tampa Bay Lightning,home,L,2019-04-04,1,3
+Vegas Golden Knights,Arizona Coyotes,home,L,2019-04-04,1,4
+Washington Capitals,Montreal Canadiens,home,W,2019-04-04,2,1
+Anaheim Ducks,Los Angeles Kings,home,W,2019-04-05,5,2
+Chicago Blackhawks,Dallas Stars,home,W,2019-04-05,6,1
+New York Rangers,Columbus Blue Jackets,home,L,2019-04-05,2,3
+Arizona Coyotes,Winnipeg Jets,home,L,2019-04-06,2,4
+Boston Bruins,Tampa Bay Lightning,home,L,2019-04-06,3,6
+Calgary Flames,Edmonton Oilers,home,L,2019-04-06,1,3
+Dallas Stars,Minnesota Wild,home,W,2019-04-06,3,0
+Detroit Red Wings,Buffalo Sabres,home,L,2019-04-06,1,7
+Florida Panthers,New Jersey Devils,home,L,2019-04-06,3,4
+Los Angeles Kings,Vegas Golden Knights,home,W,2019-04-06,5,2
+Montreal Canadiens,Toronto Maple Leafs,home,W,2019-04-06,6,5
+Nashville Predators,Chicago Blackhawks,home,W,2019-04-06,5,2
+Ottawa Senators,Columbus Blue Jackets,home,L,2019-04-06,2,6
+Philadelphia Flyers,Carolina Hurricanes,home,L,2019-04-06,3,4
+Pittsburgh Penguins,New York Rangers,home,L,2019-04-06,3,4
+San Jose Sharks,Colorado Avalanche,home,W,2019-04-06,5,2
+St Louis Blues,Vancouver Canucks,home,W,2019-04-06,3,2
+Washington Capitals,New York Islanders,home,L,2019-04-06,0,3
