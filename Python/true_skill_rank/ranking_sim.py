@@ -33,7 +33,7 @@ class RankingSim:
             df = self.games[team]  # pd.DataFrame(
             results_guesses = list(df['guess_result'])
             predictions[team] = results_guesses
-            print('results_guesses:\t' + str(results_guesses))
+            #print('results_guesses:\t' + str(results_guesses))
             show_dict = {'DATE': list(df['date']),
                          'VS': list(df['team_2']),
                          'RES': list(df['result']),
@@ -251,7 +251,7 @@ class RankingSim:
         if team_name not in self.games.keys():
             # self.game_number += 1
             # if print_more_details:
-            print('FIRST ADDITION')
+            #print('FIRST ADDITION')
             first_addition = self.first_addition(record_df)
             # first_addition['consec_wins'] = 0
             # first_addition['consec_losses'] = 0
@@ -268,15 +268,15 @@ class RankingSim:
             record_df['consec_losses'] = 1 if not win else 0
 
             team_2 = list(record_df['team_2'])[0]
-            print('team_2:\t' + str(team_2) + '\tteam_1_rank:\t' + str(list(record_df['MMR'])))
+            #print('team_2:\t' + str(team_2) + '\tteam_1_rank:\t' + str(list(record_df['MMR'])))
             team_1_rank = list(record_df['MMR'])[len(record_df['MMR']) - 1]
             if team_2 not in self.games.keys():
                 team_2_rank = START_MMR
             else:
                 team_2_rank = list(self.games[team_2]['MMR'])[len(list(self.games[team_2]['MMR'])) - 1]
 
-            print('team_2:\t' + str(team_2) + '\tteam_1_rank:\t' + str(
-                team_1_rank) + '\tteam_2_rank:\t' + str(team_2_rank))
+            #print('team_2:\t' + str(team_2) + '\tteam_1_rank:\t' + str(
+            #    team_1_rank) + '\tteam_2_rank:\t' + str(team_2_rank))
             guess_result = True if (
                         ((team_1_rank >= team_2_rank) and win) or ((team_1_rank <= team_2_rank) and not win)) else False
             record_df['guess_result'] = guess_result
@@ -1157,11 +1157,18 @@ else:
                      worst_avg_teams_list_answer_reg_season,
                      most_consistent_teams_list_answer_reg_season,
                      least_consistent_teams_list_answer_reg_season]
-
-print('\nbest_team_check:\n\tANS\t\t' + str(stats_results[0]) + '\n\t\t\t==\n\tGUESS\t' + str(best_teams_list) + '\n\tRES:\t' + str(best_teams_list == stats_results[0]))
-print('\nworst_team_check:\n\tANS\t\t' + str(stats_results[1]) + '\n\t\t\t==\n\tGUESS\t' + str(worst_teams_list) + '\n\tRES:\t' + str(worst_teams_list == stats_results[1]))
-print('\nbest_avg_team_check:\n\tANS\t\t' + str(stats_results[2]) + '\n\t\t\t==\n\tGUESS\t' + str(best_avg_teams_list) + '\n\tRES:\t' + str(best_avg_teams_list == stats_results[2]))
-print('\nworst_avg_team_check:\n\tANS\t\t' + str(stats_results[3]) + '\n\t\t\t==\n\tGUESS\t' + str(worst_avg_teams_list) + '\n\tRES:\t' + str(worst_avg_teams_list == stats_results[3]))
-print('\nmost_consistent_team_check:\n\tANS\t\t' + str(stats_results[4]) + '\n\t\t\t==\n\tGUESS\t' + str(most_consistent_teams_list) + '\n\tRES:\t' + str(most_consistent_teams_list == stats_results[4]))
-print('\nleast_consistent_team_check:\n\tANS\t\t' + str(stats_results[5]) + '\n\t\t\t==\n\tGUESS\t' + str(least_consistent_teams_list) + '\n\tRES:\t' + str(least_consistent_teams_list == stats_results[5]))
+print_guesses_and_results  = False
+if print_guesses_and_results:
+    print('\nbest_team_check:\n\tANS\t\t' + str(stats_results[0]) + '\n\t\t\t==\n\tGUESS\t' + \
+          str(best_teams_list) + '\n\tRES:\t' + str(best_teams_list == stats_results[0]))
+    print('\nworst_team_check:\n\tANS\t\t' + str(stats_results[1]) + '\n\t\t\t==\n\tGUESS\t' + \
+          str(worst_teams_list) + '\n\tRES:\t' + str(worst_teams_list == stats_results[1]))
+    print('\nbest_avg_team_check:\n\tANS\t\t' + str(stats_results[2]) + '\n\t\t\t==\n\tGUESS\t' + \
+          str(best_avg_teams_list) + '\n\tRES:\t' + str(best_avg_teams_list == stats_results[2]))
+    print('\nworst_avg_team_check:\n\tANS\t\t' + str(stats_results[3]) + '\n\t\t\t==\n\tGUESS\t' + \
+          str(worst_avg_teams_list) + '\n\tRES:\t' + str(worst_avg_teams_list == stats_results[3]))
+    print('\nmost_consistent_team_check:\n\tANS\t\t' + str(stats_results[4]) + '\n\t\t\t==\n\tGUESS\t' + \
+          str(most_consistent_teams_list) + '\n\tRES:\t' + str(most_consistent_teams_list == stats_results[4]))
+    print('\nleast_consistent_team_check:\n\tANS\t\t' + str(stats_results[5]) + '\n\t\t\t==\n\tGUESS\t' + \
+          str(least_consistent_teams_list) + '\n\tRES:\t' + str(least_consistent_teams_list == stats_results[5]))
 
