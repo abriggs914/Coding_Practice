@@ -6,15 +6,15 @@ Enter number of cards and adjust game_types list below, to play different games.
 	
 	Currently supports
 - regular				- a straight line of 5 consecutive numbers
-- four_corners			- each corner is marked
-- five_in_corner		- arrow like shape in a corner, creates a right angle 
+- four_corners				- each corner is marked
+- five_in_corner			- arrow like shape in a corner, creates a right angle 
 - letter_v				- a v shape connecting 2 corners and the free space, non-diagonally
 - small_x				- free space and 4 inner corners surrounding it
 - large_x				- 2 crossing diagonal lines, shaped like an x
-- small_picture_frame	- a box surrounding only the free space 
-- large_picture_frame	- perimeter of card is marked
+- small_picture_frame			- a box surrounding only the free space 
+- large_picture_frame			- perimeter of card is marked
 - sputnik				- entire card is filled
-- postage_stamp			- a small 4 square box marked in, no free spaces allowed
+- postage_stamp				- a small 4 square box marked in, no free spaces allowed
 - two_lines				- any 2 staight lines, includes large_x
 
 July 2019
@@ -214,7 +214,8 @@ class Bingo:
                 # row_idx = math.floor(num / 15)
                 # col_idx = card.board[row_idx].index(num)
                 # print('row_idx:\t'+str(row_idx)+', col_idx:\t'+str(col_idx))
-                # print('NUM:\t' + str(num) + ', ROW_IDX:\t' + str(card.board[row_idx]) + ', NUM_IDX:\t' + str(card.board[row_idx][col_idx]))
+                # print('NUM:\t' + str(num) + ', ROW_IDX:\t' + str(card.board[row_idx]) + ', NUM_IDX:\t' +
+				# str(card.board[row_idx][col_idx]))
                 card.board[row_idx][col_idx] = '__'
                 card.called_status[num] = True
                 card.marked_order.append(num)

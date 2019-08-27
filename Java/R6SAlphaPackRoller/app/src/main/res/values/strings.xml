@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">R6S Alpha Pack Roller</string>
+    <string name="loss">LOSS</string>
+    <string name="win">WIN</string>
+    <string name="vip">VIP</string>
+    <string name="casual">Casual</string>
+    <string name="ranked">Ranked</string>
+    <string name="num_games">Num Games</string>
+    <string name="num_alpha_packs">Num Alpha Packs</string>
+    <string name="percentage">PERCENTAGE</string>
+    <string name="reset">RESET</string>
+    <string name="max_percentage">Max Min %</string>
+</resources>

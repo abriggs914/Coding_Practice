@@ -1696,3 +1696,596 @@ if lst != []:
         print(lst[0])
 		
 #######################################################################################################################
+# Write a program, which inputs the rectangular matrix from a sequence of lines, ending with a line, containing
+# the only word "end" (without the quotation marks).
+# The program should output the matrix of the same size, where each elements in the position (i, j) 
+# is equal to the sum of the elements from the first matrix on the positions (i-1, j), (i+1, j), (i, j-1), (i, j+1).
+# Boundary elements have neighbours on the opposite side of the matrix. In the case with one row or column,
+# the element itself maybe its neighbour.
+# Sample Input 1:
+'''
+9 5 3
+0 7 -1
+-5 2 9
+end
+'''
+# Sample Output 1:
+'''
+3 21 22
+10 6 19
+20 16 -1
+'''
+# Sample Input 2:
+'''
+1
+end
+'''
+# Sample Output 2:
+'''
+4
+'''
+
+# put your python code here
+
+inp_lst = []
+inp = input()
+
+while inp != 'end':
+    # print('inp:\t' + str(inp))
+    inp_lst.append(list(map(int, inp.split(' '))))
+    inp = input()
+
+# print('inp_lst:\t' + str(inp_lst))
+if len(inp_lst) == 0:
+    print(0)
+elif len(inp_lst) == 1 and len(inp_lst[0]) == 1:
+    print(4 * inp_lst[0][0])
+else:
+    n = len(inp_lst)
+    m = len(inp_lst[0])
+    res = ''
+    print('n:\t' + str(n) + ', m:\t' + str(m))
+    for i in range(n):
+        row = []
+        for j in range(m):
+            x_1 = i - 1
+            xp1 = i + 1
+            y_1 = j - 1
+            yp1 = j + 1
+            if xp1 == n:
+                xp1 = 0
+            if yp1 == m:
+                yp1 = 0
+            # print('x_1:\t' + str(x_1) + ', xp1:\t' + str(xp1))
+            # print('y_1:\t' + str(y_1) + ', yp1:\t' + str(yp1))
+            a = inp_lst[x_1][j]
+            b = inp_lst[xp1][j]
+            c = inp_lst[i][y_1]
+            d = inp_lst[i][yp1]
+            new_num = a + b + c + d
+            # print('new_num:\t' + str(new_num))
+            row.append(new_num)
+        res += ' '.join(list(map(str, row))) + '\n'
+    print(res)
+	
+'''
+import sys
+
+M = [list(map(int, line.split())) for line in sys.stdin.readlines()[:-1]]
+rows = len(M)
+cols = len(M[0])
+for j in range(rows):
+    print(*(M[j][i-1] + M[j][(i+1) % cols] + M[j-1][i] + M[(j+1) % rows][i] for i in range(cols)))
+'''
+#######################################################################################################################
+
+# Implement mapper mapreduce of the problem to calculate TF-IDF using the Hadoop Streaming.
+# In the input data, the key is a word, and the value consists of the document number and tf, separated by tab.
+# The value in the output data consists of three components: document number, tf and 1, separated by ";".
+
+#Sample Input:
+'''
+aut	1	4
+aut	2	2
+bene	2	1
+de	2	1
+mortuis	2	1
+nihil	1	1
+nihil	2	1
+Caesar	1	1
+'''
+#Sample Output:
+'''
+aut	1;4;1
+aut	2;2;1
+bene	2;1;1
+de	2;1;1
+mortuis	2;1;1
+nihil	1;1;1
+nihil	2;1;1
+Caesar	1;1;1
+'''
+
+'''
+from sys import stdin
+for s in stdin.read().splitlines():
+    print("%s\t%s;%s;1" % tuple(s.split('\t')))
+'''
+
+# put your python code here
+inp_str = input()
+inp = []
+while 1:
+    inp.append(inp_str)
+    # for line in sys.stdin.readlines()
+    try:
+        inp_str = input()
+    except EOFError:
+        break
+    # print('inp:\t' + str(inp_str))
+    
+# print('inp:\t' + str(inp))
+for line in inp:
+    line_lst = line.split('\t')
+    print(line_lst[0] + '\t' + ';'.join(line_lst[1:]) + ';1')
+	
+#######################################################################################################################
+
+# Write a program that reads integers from the input one number per line.
+
+# For each of the entered numbers please check: 
+# if the number is less than 10, then skip that number;
+# if the number is greater than 100, then stop reading numbers;
+# in any other cases bring the number back to the console in a separate line.
+
+# Sample Input 1:
+'''
+12
+4
+2
+58
+112
+'''
+# Sample Output 1:
+'''
+12
+58
+'''
+# Sample Input 2:
+'''
+101
+'''
+# Sample Output 2:
+'''
+
+'''
+# Sample Input 3:
+'''
+1
+2
+102
+'''
+# Sample Output 3:
+'''
+
+'''
+# put your python code here
+import sys
+
+for line in sys.stdin.readlines():
+    num = int(line.split()[0])
+    if int(num) > 100:
+        break
+    if int(num) > 9:
+        print(num)
+		
+#######################################################################################################################
+
+# You have been given a sequence of lines.
+# Output the lines which contain "cat" as a substring at least twice.
+'''
+Note:
+You can read all lines from the standard input stream by the following code:
+import sys
+
+for line in sys.stdin:
+    line = line.rstrip()
+    # process line
+'''
+
+# put your python code here
+
+import sys
+
+for line in sys.stdin:
+    line = line.rstrip()
+    # process line
+    
+    magic_word = 'cat'
+    first_idx = line.find(magic_word)
+    if first_idx > -1:
+        second_idx = line[first_idx + len(magic_word):].find(magic_word)
+        if second_idx > -1:
+            print(line)
+			
+#Sample Input:
+'''
+catcat
+cat and cat
+catac
+cat
+ccaatt
+'''
+#Sample Output:
+'''
+catcat
+cat and cat
+'''
+
+#######################################################################################################################
+
+# Write a program that parses user commands and imitates their processing.
+
+# The program should output messages on its state in the following format:
+# When user enters a command, the content of which we denote as <command>, the program should print the phrase
+
+# Processing "<command>" command...
+# For example, a user has entered Come to me, in this case the following line should be printed
+
+# Processing "Come to me" command...
+# Reading of commands shall continue until the End command is entered, in such case the program should7
+# print the message
+
+# Good bye!
+# and end (see the example).
+
+# Use the input() function without arguments to read the commands.
+
+# Input format:
+# A sequence of commands, each on a separate line. A command consists of the letters of Latin alphabet,
+# spaces and tab symbols. It is guaranteed that there are no spaces at the beginning and at the end of a line.
+# End is always the last command.
+
+# Output format:
+# Messages while processing of commands, as specified in the problem statement; one message per line.
+
+# Sample Input:
+'''
+Turn left
+Move forward
+Turn left
+Move forward
+Turn left
+Move forward
+Turn left
+Move forward
+End
+'''
+# Sample Output:
+'''
+Processing "Turn left" command...
+Processing "Move forward" command...
+Processing "Turn left" command...
+Processing "Move forward" command...
+Processing "Turn left" command...
+Processing "Move forward" command...
+Processing "Turn left" command...
+Processing "Move forward" command...
+Good bye!
+'''
+# put your python code here
+
+inp_str = input()
+inp = []
+
+while inp_str != 'End':
+    inp.append(inp_str)
+    inp_str = input()
+    
+for command in inp:
+    print('Processing \"{}\" command...'.format(command))
+print('Good bye!')
+
+#######################################################################################################################
+
+# At some point in the Bioinformatics Institute biology students no longer understood what did the
+# computer science students said: they spoke a strange set of sounds.
+# And one of the biologists had suddenly discovered the secret of computer science students: 
+# they used the substitution cipher in their communication, i.e. they replaced each symbol of the initial
+# message to the corresponding other symbol. Biologists gained the key to the cipher and now they need help:
+
+# Write a program that can encode and decode the substitution cipher. The program accepts two input
+# strings of the same length; the first line contains the characters of the original alphabet, the second 
+# line - the symbols of a resulting alphabet, then goes a line you need to encode by the transmitted key, 
+# and another line to be decrypted.
+
+# For example, the program takes the following input:
+#  abcd
+#  *d%#
+#  abacabadaba
+#  #*%*d*%
+# It means that symbol a of the initial message is changed to symbol * in the cipher, b changed to d,
+# c — to% and d — to #. You need to encode the string abacabadaba and decode the string #*%*d*% using
+# this cipher. So you get the following lines, which you should be the output of the program:
+
+#  *d*%*d*#*d*
+#  dacabac
+
+# Sample Input 1:
+'''
+abcd
+*d%#
+abacabadaba
+#*%*d*%
+'''
+# Sample Output 1:
+'''
+*d*%*d*#*d*
+dacabac
+'''
+# Sample Input 2:
+'''
+dcba
+badc
+dcba
+badc
+'''
+# Sample Output 2:
+'''
+badc
+dcba
+'''
+
+# put your python code here
+used_alphabet = input()
+cipher_alphabet = input()
+to_encode = [x for x in input()]
+to_decode = [x for x in input()]
+
+encoded = ['' for x in to_encode]
+decoded = ['' for x in to_decode]
+
+# print(used_alphabet)
+# print(cipher_alphabet)
+# print(to_encode)
+# print(to_decode)
+for idx in range(len(used_alphabet)):
+    find_letter = used_alphabet[idx]
+    encode_letter = cipher_alphabet[idx]
+    # print('find_letter:\t' + str(find_letter) + ', encode_letter:\t' + str(encode_letter))
+    # print(to_encode)
+    for i in range(len(to_encode)):
+        letter = to_encode[i]
+        # print(letter)
+        if find_letter == letter:
+            # print('find_letter:\t' + str(find_letter) + ', letter:\t' + str(letter))
+            encoded[i] = encode_letter
+    # print(to_decode)
+    for i in range(len(to_decode)):
+        letter = to_decode[i]
+        # print(letter)
+        if encode_letter == letter:
+            # print('encode_letter:\t' + str(encode_letter) + ', letter:\t' + str(letter))
+            decoded[i] = find_letter
+            
+a = ''.join(encoded)
+b = ''.join(decoded)
+ans_1 = '*d*%*d*#*d*'
+ans_2 = 'dacabac'
+# print(a + '\t' + ans_1)
+# print(b + '\t' + ans_2)
+# print(a == ans_1)
+# print(b == ans_2)
+print(a)
+print(b)
+
+#######################################################################################################################
+
+# Find the greatest common denominator of the two integers.
+# Sample Input:
+'''
+779820539 641724086
+'''
+# Sample Output:
+'''
+1
+'''
+
+# put your python code here
+
+a, b = map(int, input().split())
+
+# Using Euclid's Algorithm
+def gcd(a, b):
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+print(gcd(max(a, b), min(a, b)))
+
+#######################################################################################################################
+
+# Write a program that takes a list of integers as input,
+# and outputs the values that are repeated in it more than once.
+# You may need the list method sort to solve this problem.
+# Input format:
+# One line with integers, separated by a space.
+# Output format:
+# A line with integers, separated by a space. The numbers must not be repeated, the output order can be arbitrary.
+
+# Sample Input:
+'''
+4 8 0 3 4 2 0 3
+'''
+# Sample Output:
+'''
+0 3 4
+'''
+# put your python code here
+
+repeated = []
+try:
+    inp_lst = input()
+    inp_nums = list(map(int, inp_lst.split()))
+    nums = sorted(inp_nums)
+    if len(nums) > 0:
+        curr = nums[0]
+        for i in range(1, len(nums)):
+            num = nums[i]
+            if num == curr and num not in repeated:
+                repeated.append(num)
+            else:
+                curr = num
+except EOFError:
+    pass
+print(' '.join(list(map(str, repeated))))
+
+#######################################################################################################################
+
+# Write a program that uses regular expressions to check whether the input string is a phone number. 
+# A phone number has the following form: 19∗∗∗∗∗∗∗∗∗, where ∗ is any number from 0 to 9.
+
+# The program should print Yes or No.
+
+# Sample Input:
+'''
+19123456789
+'''
+# Sample Output:
+'''
+Yes
+'''
+
+# put your python code here
+import re
+str1 = input() # "The8rain in Spain0"
+#Check if the string contains any digits (numbers from 0-9):
+x = re.findall("\d", str1[2:])
+y = re.search('^19', str1)
+z = len(x) == 9
+'''
+print('x:\t' + str(x))
+print('y:\t' + str(y))
+print('z:\t' + str(z))
+'''
+if x and y and z:
+  print("Yes")
+else:
+  print("No")
+  
+#######################################################################################################################
+
+# Implement reducer in the problem of calculating the average time a user spent on the page.
+
+# Mapper transfers data to reducer in a form of key / value, where key - page address, value - number of seconds
+# the user spent on this page. 
+
+# Cast the average time at the output to an integer. The output data should be displayed in the order in
+# which they came.
+
+# Sample Input:
+'''
+www.facebook.com	100
+www.google.com	10
+www.google.com	5
+www.google.com	15
+stepic.org	60
+stepic.org	100
+'''
+# Sample Output:
+'''
+www.facebook.com	100
+www.google.com	10
+stepic.org	80
+'''
+# put your python code here
+import sys
+
+sites = {}
+for line in sys.stdin.readlines():
+    site, views = line.split()
+    visit = 1
+    if site in sites:
+        sites[site] = (sites[site][0] + visit, sites[site][1] + int(views))
+    else:
+        sites[site] = (visit, int(views))
+        
+        
+for site in sites:
+    print(site + '\t' + str(sites[site][1] // sites[site][0]))
+
+#######################################################################################################################
+
+# Write a program that takes a matrix as input, performs its transposing and outputs the result.
+
+# Input format:
+# In the first line – two integers n and m – the number of rows and columns, respectively.
+# Next go n lines, with m integers each, separated by a space.
+
+# Output format:
+# The program should output m lines of the content of transposed matrix. Elements of the matrix
+# should be separated by a space.
+
+# Sample Input 1:
+'''
+2 3
+1 2 3
+4 5 6
+'''
+# Sample Output 1:
+'''
+1 4
+2 5
+3 6
+'''
+# Sample Input 2:
+'''
+2 2
+1 2
+3 4
+'''
+# Sample Output 2:
+'''
+1 3
+2 4
+'''
+# put your python code here
+
+def scan_matrix():
+    n,m = list(map(int, input().split()))
+    in_m = []
+    for r in range(n):
+        in_m.append(list(map(int, input().split())))
+    return in_m
+
+def reverse_matrix_rows(m):
+    new_m = [[0 for y in range(len(m[x]))] for x in range(len(m))]
+    for r in range(len(m)):
+        row = m[r]
+        for c in range(len(m[r])):
+            new_m[r][c] = m[-1*(r+1)][-1*(c+1)]
+    return new_m
+
+def transpose(m):
+    if len(m) == 0:
+        return []
+    new_m = [[0 for y in range(len(m))] for x in range(len(m[0]))]
+    # print(new_m)
+    for r in range(len(m)):
+        row = m[r]
+        for c in range(len(m[r])):
+            new_m[c][r] = m[r][c]
+    return new_m
+
+def print_matrix(m):
+    for r in m:
+        print(' '.join(list(map(str, r))))
+
+m = scan_matrix()
+m_t = transpose(m)
+# print(m)
+print_matrix(m_t)
+
+#######################################################################################################################
+
+#######################################################################################################################

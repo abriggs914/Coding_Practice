@@ -68,7 +68,7 @@ class r6s_loot_roll_simulator {
 		while (num_alpha_packs < num_desired_packs) {
 		    Random rand = new Random();
 		    int win = rand.nextInt(2);
-		    num_games += 5;
+		    num_games += 1;
 			System.out.println("percent chance = " + chance + " %");
 		    if (win == 0) {
 		        System.out.println("\tYOU WIN GAME # " + num_games);
