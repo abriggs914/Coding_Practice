@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">R6S Loot Pack Roller</string>
+    <string name="loss">LOSS</string>
+    <string name="win">WIN</string>
+    <string name="vip">VIP</string>
+    <string name="casual">Casual\t</string>
+    <string name="ranked">Ranked</string>
+    <string name="num_games">Num Games</string>
+    <string name="num_alpha_packs">Num Alpha Packs</string>
+    <string name="percentage">PERCENTAGE</string>
+    <string name="reset">RESET</string>
+    <string name="max_percentage">Max Min %</string>
+    <string name="packs_per_game">Packs Per Game</string>
+    <string name="max">MAX %</string>
+    <string name="min">MIN %</string>
+    <string name="games_since_last_pack">Games Since Last Pack</string>
+    <string name="most_games_for_pack">Most Games For Pack</string>
+    <string name="least_games_for_pack">Least Games For Pack</string>
+    <string name="ranked_label">Ranked :</string>
+    <string name="casual_label">Casual :</string>
+    <string name="average">Average %</string>
+</resources>

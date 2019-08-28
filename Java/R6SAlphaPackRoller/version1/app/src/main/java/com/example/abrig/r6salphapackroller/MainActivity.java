@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updatePercentage(boolean gameWin) {
-        Boolean rankedCasualState = rankedCasualSwitch.isChecked();
-        Boolean vipState = vipSwitch.isChecked();
+        boolean rankedCasualState = rankedCasualSwitch.isChecked();
+        boolean vipState = vipSwitch.isChecked();
         double rollVal = roll() + 1.0;
         boolean alphaPackWin = false;
         if (gameWin && percentage >= rollVal) {
@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         numGamesInt = 0;
         percentage = 0.0;
         maxPercentage = percentage;
+        minPercentage = 100.0;
         alphaPacksTextView.setText(Integer.toString(numAlphaPacksInt));
         numGamesTextView.setText(setGames());
         percentageTextView.setText(setPercentage(percentage));
