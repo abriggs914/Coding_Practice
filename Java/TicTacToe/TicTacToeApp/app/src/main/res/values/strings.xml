@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Tic-Tac-Toe</string>
+    <string name="top_left_square">top_left_square</string>
+    <string name="left_square">left_square</string>
+    <string name="center_square">center_square</string>
+    <string name="right_square">right_square</string>
+    <string name="bottom_left_square">bottom_left_square</string>
+    <string name="bottom_square">bottom_square</string>
+    <string name="bottom_right_square">bottom_right_square</string>
+    <string name="top_square">top_square</string>
+    <string name="top_right_square">top_right_square</string>
+    <string name="top_right_o">top_right_o</string>
+    <string name="right_o">right_o</string>
+    <string name="left_o">left_o</string>
+    <string name="center_o">center_o</string>
+    <string name="bottom_left_o">bottom_left_o</string>
+    <string name="bottom_o">bottom_o</string>
+    <string name="bottom_right_o">bottom_right_o</string>
+    <string name="top_left_o">top_left_o</string>
+    <string name="center_x">center_x</string>
+    <string name="top_right_x">top_right_x</string>
+    <string name="right_x">right_x</string>
+    <string name="left_x">left_x</string>
+    <string name="bottom_left_x">bottom_left_x</string>
+    <string name="bottom_x">bottom_x</string>
+    <string name="bottom_right_x">bottom_right_x</string>
+    <string name="top_x">top_x</string>
+    <string name="top_left_x">top_left_x</string>
+    <string name="top_o">top_o</string>
+    <string name="select_x_button">select_x_button</string>
+    <string name="select_o_button">select_o_button</string>
+    <string name="reset">RESET</string>
+</resources>

@@ -16,7 +16,7 @@ if uncomment_to_run:
 	3
 	2
 
-##############################################################################################
+#######################################################################################################################
 
 # Difference of times
 
@@ -497,7 +497,8 @@ for word in list(set(found_words)):
 # 3, 5, 31, and infinitely many numbers.
 # Number 4, as example, is not prime, because it has three dividers – 1, 2, 4. Number 1 is not prime either,
 # as it has only one divider – 1.
-# Implement the generator function primes, which will generate prime numbers in ascending order, starting from number 2.
+# Implement the generator function primes, which will generate prime numbers in ascending order,
+# starting from number 2.
 # Example use:
 # print(list(itertools.takewhile(lambda x : x <= 31, primes())))
 # [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
@@ -526,7 +527,8 @@ print(lst)
 
 # Residents of the Malevia country often experiment with the plan of their rooms. Rooms can be triangular, 
 # rectangular and round. To quickly calculate the floorage it is required to write a program, which gets the 
-# type of the room shape and the relevant parameters as input - the program should output the area of the resulting room.
+# type of the room shape and the relevant parameters as input - the program should output the area of
+# the resulting room.
 
 # The value of 3.14 is used instead of the number π in Malevia.
 
@@ -945,8 +947,10 @@ for i in range(a, b + 1):
     
 #######################################################################################################################
 
-# Given a two-dimensional array (matrix) and the two numbers: i and j. Swap the columns with indices i and j within the matrix.
-# Input contains matrix dimensions n and m, not exceeding 100, then the elements of the matrix, then the indices i and j.
+# Given a two-dimensional array (matrix) and the two numbers: i and j. Swap the columns with indices i and j
+# within the matrix.
+# Input contains matrix dimensions n and m, not exceeding 100, then the elements of the matrix, then the
+# indices i and j.
 # Sample Input:
 '''
 3 4
@@ -1657,7 +1661,8 @@ while i in range(len(inp)):
 
 # Given real numbers a, b, c, where a ≠ 0.
 # Solve the quadratic equation ax2 + bx + c = 0 and output all of its roots.
-# If the equation has two roots, output these two roots in ascending order; if one root - output a single number; if no roots – do not output anything.
+# If the equation has two roots, output these two roots in ascending order; if one root - output a single number;
+# if no roots – do not output anything.
 # Sample Input:
 '''
 1
@@ -2287,5 +2292,1048 @@ m_t = transpose(m)
 print_matrix(m_t)
 
 #######################################################################################################################
+
+# Print the number of integers that are relatively prime (coprime) to input n
+# Sample Input
+'''
+237642351
+'''
+# Sample Output
+'''
+158383680
+'''
+
+'''
+This version naively checks every integer to n instead of using the totient function
+to check only integers that may yield a new result
+
+
+def gcd(a, b):
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+    
+def coprimes(n):
+    c = 0
+    for i in range(1, n):
+        a = max(i, n)
+        b = min(i , n)
+        if gcd(a, b) == 1:
+            c += 1 
+    return c
+    
+n = int(input())
+print(coprimes(n))
+'''
+
+# Python 3 program to calculate 
+# Euler's Totient Function 
+# using Euler's product formula 
+  
+def phi(n) : 
+  
+    result = n   # Initialize result as n 
+       
+    # Consider all prime factors 
+    # of n and for every prime 
+    # factor p, multiply result with (1 - 1 / p) 
+    p = 2
+    while(p * p<= n) : 
+  
+        # Check if p is a prime factor. 
+        if (n % p == 0) : 
+  
+            # If yes, then update n and result 
+            while (n % p == 0) : 
+                n = n // p 
+            result = result * (1.0 - (1.0 / (float) (p))) 
+        p = p + 1
+          
+          
+    # If n has a prime factor 
+    # greater than sqrt(n) 
+    # (There can be at-most one 
+    # such prime factor) 
+    if (n > 1) : 
+        result = result * (1.0 - (1.0 / (float)(n))) 
+   
+    return (int)(result) 
+      
+      
+# Driver program to test above function 
+# for n in range(1, 11) : 
+    # print("phi(", n, ") = ", phi(n)) 
+n = int(input())
+print(phi(n))
+  
+# This code is contributed 
+# by Nikita Tiwari. 
+
+#######################################################################################################################
+
+# You need to write a program that "flips" a sequence of positive integers. On input there is a sequence of space
+# separated positive integers. The sequence ends with zero. You are required to output the sequence in the 
+# reverse order.
+# The numbers should be space separated on the output. The terminating zero is simply the indicator of the end of
+# the sequence, it is not a part of it, i.e. you should not output it.
+# Sample Input:
+'''
+15 26 1 42 0
+'''
+# Sample Output:
+'''
+42 1 26 15
+'''
+
+# put your python code here
+
+line = input()
+nums = line.split()
+flipped_nums = []
+for i in range(len(nums) - 2, -1, -1):
+    flipped_nums.append(nums[i])
+print(" ".join(flipped_nums))    
+
+#######################################################################################################################
+
+# You are given an integer number of indefinite length. Check, whether this number divides by 3 or not, without
+# using the remainder (%) operation.
+# Print "YES" if the number divides by 3 and "NO" if it doesn't.
+# Note: What happens, when you divide, say, 17 by 3? And then back.
+# Sample Input 1:
+'''
+7
+'''
+# Sample Output 1:
+'''
+NO
+'''
+# Sample Input 2:
+'''
+43
+'''
+# Sample Output 2:
+'''
+NO
+'''
+# Sample Input 3:
+'''
+18
+'''
+# Sample Output 3:
+'''
+YES
+'''
+
+# put your python code here
+
+def cont_divide(n):
+    n = abs(n)
+    if n < 3:
+        return "NO"
+    while n >= 3:
+        n -= 3
+        if n == 0:
+            return "YES"
+    return "NO"
+
+n = int(input())
+print(cont_divide(n))
+
+'''
+a = int(input())
+print("type(a):\t" + str(type(a)))
+b = a / 3
+c = round(b)
+print("type(b):\t" + str(type(b)))
+print("c:\t" + str(c))
+if int(b) == c:
+    print("YES")
+else:
+    print("NO")
+'''
+
+#######################################################################################################################
+
+# Class filter is one of the most frequently used classes in Python. In the constructor it takes the two
+# arguments a and f – a sequence and a function, and allows to iterate only by such elements x from the sequence
+# a that f(x) equals to True. Let’s say that in this case the function f accepts the element x, and the
+# element x is an accepted one.
+
+# In this problem, we ask you to implement the multifilter class, which will do the same as the standard
+# filter class, but will use several functions instead of a single one.
+
+# The decision to accept an element will be taken based on how many functions accept  this element,
+# and how many don't. Let us mark these quantities as pos and neg.
+
+# Let us introduce the notion of the decision function – this is the function, which takes the two
+# arguments – numbers pos and neg, and returns True, if the element is allowed, and False otherwise.
+
+# Let’s consider the acceptance process in more details in the following example:
+# a = [1, 2, 3]
+# f2(x) = x % 2 == 0 # returns True, if x is divisible by 2
+# f3(x) = x % 3 == 0
+# judge_any(pos, neg) = pos >= 1 # returns True, if at least one function accepts an element
+
+# In this example, we want to filter the sequence a and keep only those elements, which are divided by two or three.
+
+# The f2 function accepts only for the elements, which can be divided by two, and the f3 function accepts only
+# for the elements, divided by three. The decision function accepts the element only in the case it was
+# accepted by at least one of the functions f2 or f3, i.e. the elements, which can be divided
+# either by two, or by three.
+
+# Let’s take the first element x = 1.
+# f2(x) is False, i.e. the function f2 does not accept the element x.
+# f3(x) is also False, i.e. the function f3 also does not accept the element x.
+# In this case pos = 0, as non of the functions accepts x, and, accordingly, neg = 2.
+# judge_any(0, 2) is False, it means that we don't accept the element x = 1.
+
+# Let’s take the second element x = 2.
+# f2(x) is True
+# f3(x) is False
+# pos = 1, neg = 1
+# judge_any(1, 1) is True, and it means that we accept the element x = 2.
+# Similar for the third element x = 3.
+
+# Thus, we got the sequence of the accepted elements [2, 3].
+# The class should have the following structure:
+
+
+class multifilter:
+    def judge_half(pos, neg):
+        # accepts the element, if at least half of the functions accept this 
+        # element (pos >= neg)
+        return pos >= neg
+
+    def judge_any(pos, neg):
+        # accepts the element, if at least one of the functions accept it (pos >= 1)
+        return pos >= 1
+
+    def judge_all(pos, neg):
+        # accepts the element, if at all functions accept it (neg == 0)
+        return neg == 0
+
+    def __init__(self, iterable, *funcs, judge=judge_any):
+        # iterable - the original sequence
+        # funcs - the allowing functions
+        # judge - the judging function
+        self.iterable = iterable
+        self.funcs = funcs
+        self.judge = judge
+
+    def __iter__(self):
+        # returns iterator on the resulting sequencedef next(self):
+        for i in self.iterable:
+            pos = 0
+            neg = 0
+            for func in self.funcs:
+                if func(i):
+                    pos += 1
+                else:
+                    neg += 1
+            if self.judge(pos, neg):
+                yield i
+
+def mul2(x):
+    return x % 2 == 0
+
+def mul3(x):
+    return x % 3 == 0
+
+def mul5(x):
+    return x % 5 == 0
+
+
+a = [i for i in range(31)] # [0, 1, 2, ... , 30]
+
+ar = list(multifilter(a, mul2, mul3, mul5))
+aa = [0, 2, 3, 4, 5, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, 26, 27, 28, 30]
+print(str(ar) + "\n" + str(aa) + "\n" + str(aa == ar)) 
+# [0, 2, 3, 4, 5, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, 26, 27, 28, 30]
+
+br = list(multifilter(a, mul2, mul3, mul5, judge=multifilter.judge_half))
+ba = [0, 6, 10, 12, 15, 18, 20, 24, 30]
+print(str(br) + "\n" + str(ba) + "\n" + str(ba == br)) 
+# [0, 6, 10, 12, 15, 18, 20, 24, 30]
+
+cr = list(multifilter(a, mul2, mul3, mul5, judge=multifilter.judge_all))
+ca = [0, 30]
+print(str(cr) + "\n" + str(ca) + "\n" + str(ca == cr)) 
+# [0, 30]
+
+# print(list(multifilter([], mul2, judge=multifilter.judge_half)))
+
+
+#print(list(multifilter(a, mul2, mul3, mul5))) 
+# [0, 2, 3, 4, 5, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, 26, 27, 28, 30]
+
+#print(list(multifilter(a, mul2, mul3, mul5, judge=multifilter.judge_half))) 
+# [0, 6, 10, 12, 15, 18, 20, 24, 30]
+
+#print(list(multifilter(a, mul2, mul3, mul5, judge=multifilter.judge_all))) 
+# [0, 30]
+
+# print(list(multifilter([], mul2, judge=multifilter.judge_half)))
+
+#######################################################################################################################
+
+# Given a list of football teams with the result of the match. Output the summary table of the results of all matches.
+# The team gets 3 points for winning, 0 points for loosing, 1 point for draw.
+# Input format:
+# The first line specifies the integer n — the number of completed games.
+# After this follow the n lines, which contain the game results in the following format:
+# First_team;Goals_by_first_team;Second_team;Goals_by_second_team
+# Output of your program should look like the following:
+# Team:Total_games Wins Draws Defeats Total_points
+# You can output teams in an arbitrary order.
+
+# Sample Input1:
+'''
+3
+Zenit;3;Spartak;1
+Spartak;1;CSKA;1
+CSKA;0;Zenit;2
+'''
+# Sample Output1:
+'''
+CSKA:2 0 1 1 1
+Zenit:2 2 0 0 6
+Spartak:2 0 1 1 1
+'''
+# Sample Input2:
+'''
+5
+Zenit;3;Spartak;1
+Spartak;1;CSKA;1
+CSKA;0;Zenit;2
+CSKA;0;Avery;3
+Avery;5;Zenit;3
+'''
+# Sample Output2:
+'''
+Zenit:3 2 0 1 6
+Spartak:2 0 1 1 1
+CSKA:3 0 1 2 1
+Avery:2 2 0 0 6
+'''
+
+team_stats = {}
+
+class Team:
+    def __init__(self, name, gf, ga):
+        self.team_name = name
+        self.goals_for = gf
+        self.goals_against = ga
+        self.wins = 0
+        self.losses = 0
+        self.draws = 0
+        self.games_played = 0
+        self.points = 0
+        self.update_stats(gf, ga)
+        
+    def __repr__(self):
+        name = str(self.team_name)
+        gp = str(self.games_played)
+        w = str(self.wins)
+        l = str(self.losses)
+        d = str(self.draws)
+        p = str(self.points)
+        return name + ":" + gp + " " + w + " " + d + " " + l + " " + p
+    
+    def update_stats(self, goals_for, goals_against):
+        self.games_played += 1
+        self.goals_for += goals_for
+        self.goals_against += goals_against
+        win_game = goals_for > goals_against
+        draw_game = goals_for == goals_against
+        if win_game:
+            self.wins += 1
+            self.points += 3
+        elif draw_game:
+            self.draws += 1
+            self.points += 1
+        else:
+            self.losses += 1
+            
+class ReportGame:
+    def __init__(self, game_string):
+        game_stats = game_string.split(";")
+        self.game_string = game_string
+        self.game_stats = game_stats
+        team1 = game_stats[0]
+        team1_score = game_stats[1]
+        team2 = game_stats[2]
+        team2_score = game_stats[3]
+        if team1 not in team_stats:
+            team_stats[team1] = Team(team1, team1_score, team2_score)
+        else:
+            team_stats[team1].update_stats(team1_score, team2_score)
+        if team2 not in team_stats:
+            team_stats[team2] = Team(team2, team2_score, team1_score)
+        else:
+            team_stats[team2].update_stats(team2_score, team1_score)
+            
+num_games = int(input())
+games = [input() for line in range(num_games)]
+# print(games)
+
+for game in games:
+    ReportGame(game)
+    
+for team, stats in team_stats.items():
+    print(stats)
+	
+#######################################################################################################################
+
+#Calculator
+
+# Write a simple calculator that reads the three input lines: the first number, the second number and the
+# operation, after which it applies the operation to the entered numbers ("first number" "operation" "second number")
+# and outputs the result to the screen. Note that the numbers can be real.
+
+# Supported operations: +, -, /, *, mod, pow, div; where 
+# mod — taking the residue, 
+# pow — exponentiation, 
+# div — integer division.
+
+# If a user performs the division and the second number is 0, it is necessary to output the line "Division by 0!".
+
+# Sample Input 1:
+'''
+5.0
+0.0
+mod
+'''
+# Sample Output 1:
+'''
+Division by 0!
+'''
+# Sample Input 2:
+'''
+-12.0
+-8.0
+*
+'''
+# Sample Output 2:
+'''
+96.0
+'''
+# Sample Input 3:
+'''
+5.0
+10.0
+/
+'''
+# Sample Output 3:
+'''
+0.5
+'''
+
+# put your python code here
+
+num_1 = float(input())
+num_2 = float(input())
+op = input()
+
+def add(x, y):
+    return x + y
+
+def sub(x, y):
+    return x - y
+
+def mul(x, y):
+    return x * y
+
+def fdiv(x, y):
+    if y == 0:
+        return "Division by 0!"
+    return x / y
+
+def mod(x, y):
+    if y == 0:
+        return "Division by 0!"
+    return int(x) % int(y)
+
+def exp(x, y):
+    return x ** y
+
+def div(x, y):
+    if y == 0:
+        return "Division by 0!"
+    return x // y
+
+supported_ops = {"+": add,
+                 "-": sub,
+                 "*": mul,
+                 "/": fdiv,
+                 "mod": mod,
+                 "pow": exp,
+                 "div": div}
+
+if op in supported_ops:
+    print(supported_ops[op](num_1, num_2))
+	
+#######################################################################################################################
+
+# Write a program that checks whether two given words are anagrams.
+
+# The program should output True in the case if entered words are anagrams, and False otherwise.
+
+# Input format:
+
+# Two words, each on a separate line. Words can only consist of Latin characters. Your solution should
+# be case insensitive, i.e. characters' case should not affect the answer.
+
+# Sample Input 1:
+'''
+silent
+listen
+'''
+# Sample Output 1:
+'''
+True
+'''
+# Sample Input 2:
+'''
+AbaCa
+AcaBa
+'''
+# Sample Output 2:
+'''
+True
+'''
+# Sample Input 3:
+'''
+abaca
+acada
+'''
+# Sample Output 3:
+'''
+False
+'''
+
+# put your python code here
+
+a = input()
+b = input()
+
+def anagram(a, b):
+    a = a.upper()
+    b = b.upper()
+    if len(a) == len(b):
+        for letter in a:
+            if letter not in b:
+                return False
+            idx = b.index(letter)
+            b = b[:idx] + b[idx + 1:]
+            # print(b)
+        return True
+    else:
+        return False
+            
+print(anagram(a, b))
+
+#######################################################################################################################
+
+# Fractional part 1
+
+# Given a positive real number X. Output its fractional part.
+
+# Sample Input:
+'''
+17.9
+'''
+# Sample Output:
+'''
+0.9
+'''
+
+# put your python code here
+
+inp = input()
+num = inp.split(".")
+fraction = num[-1] if "." in inp else 0
+print("0." + str(fraction))
+
+'''
+num = float(input())
+whole = int(num)
+print(str(num) + "\n" + str(whole) + "\n" + str(num - whole))
+'''
+
+#######################################################################################################################
+
+# There are two horses on a chess board and four coordintes x1, y1, x2, y2 are typed in. Determine,
+# whether they can hit each other or not. 
+
+# INPUT
+
+# Four integer coordinates in the following sequence: x1,y1,x2,y2. The coordinates are not the same.
+
+# OUTPUT
+
+# "YES" (uppercase), if they hit each other and "NO" if they don't. 
+
+# Sample Input 1:
+'''
+4 4 2 5
+'''
+# Sample Output 1:
+'''
+YES
+'''
+# Sample Input 2:
+'''
+4 4 6 6
+'''
+# Sample Output 2:
+'''
+NO
+'''
+# Sample Input 3:
+'''
+4 4 6 5
+'''
+# Sample Output 3:
+'''
+YES
+'''
+
+# put your python code here
+
+x1, y1, x2, y2 = list(map(int, input().split()))
+
+def possible_moves_knight(knight_coordinates):
+    ''' Knights move in L shapes '''
+    '''
+        _ # _ # _ # _
+        # _ H _ A _ #
+        _ G _ # _ B _
+        # _ # K # _ #
+        _ F _ # _ C _
+        # _ E _ D _ #
+        _ # _ # _ # _
+    '''
+    x = knight_coordinates[0]
+    y = knight_coordinates[1]
+    possible_locations = []
+    new_coordinates = [ (x + 1, y + 2),
+                        (x + 2, y + 1),
+                        (x + 2, y - 1),
+                        (x + 1, y - 2),
+                        (x - 1, y - 2),
+                        (x - 2, y - 1),
+                        (x - 2, y + 1),
+                        (x - 1, y + 2)]
+    for coordinate in new_coordinates:
+        new_x = coordinate[0]
+        new_y = coordinate[1]
+        if 0 <= new_x <= 7:
+            if 0 <= new_y <= 7:
+                possible_locations.append(coordinate)
+    return possible_locations
+    
+knight1 = (x1, y1)
+knight2 = (x2, y2)
+# print(possible_moves_knight(knight1))
+# print(possible_moves_knight(knight2))
+
+def check_knight_hit(knight1, knight2):
+    if knight2 in possible_moves_knight(knight1):
+        return "YES"
+    if knight1 in possible_moves_knight(knight2):
+        return "YES"
+    return "NO"
+
+print(check_knight_hit(knight1, knight2))
+
+#######################################################################################################################
+
+# You are given two coordinates on a chess board of the first queen and two of the second. Find out, whether two queens hit each other or not.
+
+# INPUT
+# Four integer numbers x1,y1,x2,y2 are being typed.
+
+# OUTPUT
+# Type "YES" (uppercase) if they hit each other or "NO" if the don't.
+# Sample Input 1:
+'''
+1 1 3 3
+'''
+# Sample Output 1:
+'''
+YES
+'''
+# Sample Input 2:
+'''
+1 1 4 3
+'''
+# Sample Output 2:
+'''
+NO
+'''
+# Sample Input 3:
+'''
+2 2 5 2
+'''
+# Sample Output 3:
+'''
+YES
+'''
+
+# put your python code here
+
+x1, y1, x2, y2 = list(map(int, input().split()))
+
+def possible_moves_queen(queen_coordinates):
+    ''' Queens move vertically, horizontally and diagonally '''
+    '''
+        X # _ X _ # X
+        # X # X # X #
+        _ # X X X # _
+        X X X Q X X X
+        _ # X X X # _
+        # X # X # X #
+        X # _ X _ # X
+    '''
+    x = queen_coordinates[0]
+    y = queen_coordinates[1]
+    possible_locations = []
+    new_coordinates = []
+    for i in range(1, 7):
+        ne = (x + i, y + i)
+        se = (x + i, y - i)
+        sw = (x - i, y - i)
+        nw = (x - i, y + i)
+        n = (x, y + i)
+        e = (x + i, y)
+        s = (x, y - i)
+        w = (x - i, y)
+        new_coordinates.append(ne)
+        new_coordinates.append(se)
+        new_coordinates.append(sw)
+        new_coordinates.append(nw)
+        new_coordinates.append(n)
+        new_coordinates.append(e)
+        new_coordinates.append(s)
+        new_coordinates.append(w)
+    
+    for coordinate in new_coordinates:
+        new_x = coordinate[0]
+        new_y = coordinate[1]
+        if 0 <= new_x <= 7:
+            if 0 <= new_y <= 7:
+                possible_locations.append(coordinate)
+    return possible_locations
+    
+queen1 = (x1, y1)
+queen2 = (x2, y2)
+# print(possible_moves_queen(queen1))
+# print(possible_moves_queen(queen2))
+
+def check_queen_hit(queen1, queen2):
+    if queen2 in possible_moves_queen(queen1):
+        return "YES"
+    if queen1 in possible_moves_queen(queen2):
+        return "YES"
+    return "NO"
+
+print(check_queen_hit(queen1, queen2))
+
+#######################################################################################################################
+
+# A user inputs a word.
+
+# Remove all letters that are in even positions in the word, and print what's left.
+
+# Sample Input:
+'''
+Blackbeard
+'''
+# Sample Output:
+'''
+Baker
+'''
+
+# put your python code here
+line = input()
+
+res = ""
+for i in range(len(line)):
+    if i % 2 == 0:
+        res += line[i]
+print(res)
+
+#######################################################################################################################
+
+# Implement a data structure that represents an extended stack. It is necessary to support the pushing
+# (appending) of the element to the top of the stack, the popping (removal) from the top of the stack,
+# and also the operations of addition, subtraction, multiplication and integer division.
+
+# The operation of addition on the stack is defined as follows. The top element (top1) is removed from the stack,
+# then the next top element (top2) is removed, and then the element equal to top1 + top2 is pushed to the stack.
+
+# In similar way are defined the operations of subtraction (top1 - top2), multiplication (top1 * top2) and
+# integer division (top1 // top2).
+
+# Implement this data structure as the ExtendedStack class, by inheriting it from the standard list class.
+# The required class structure:
+
+# class ExtendedStack(list):
+    # def sum(self):
+        # addition
+
+    # def sub(self):
+        # substraction
+
+    # def mul(self):
+        # multiplication
+
+    # def div(self):
+        # integer division
+ 
+# Note Use the append method to push an element to the stack, and the pop method - to remove it. It is guaranteed
+# that the extended operations will be requested only if the stack contains at least two elements.
+
+class ExtendedStack(list):
+    def sum(self):
+        # addition
+        a = self.pop()
+        b = self.pop()
+        self.append(a + b)
+
+    def sub(self):
+        # substraction
+        a = self.pop()
+        b = self.pop()
+        self.append(a - b)
+
+    def mul(self):
+        # multiplication
+        a = self.pop()
+        b = self.pop()
+        self.append(a * b)
+
+    def div(self):
+        # integer division
+        a = self.pop()
+        b = self.pop()
+        self.append(a // b)
+        
+lst = [1, 3, 5]
+es = ExtendedStack(lst)
+print(es)
+es.mul()
+print(es)
+es.sum()
+print(es)
+
+#######################################################################################################################
+
+# Implement insertion sort for array of integers.
+
+# The number of integers in the array is determined by the end of the standard input stream and is not
+# known in advance.
+
+# Sample Input:
+'''
+3 1 2
+'''
+# Sample Output:
+'''
+1 2 3
+'''
+
+# put your python code here
+
+def insertion_sort(lst):
+    res = []
+    for i in range(len(lst)):
+        num = lst[i]
+        c = 0
+        for j in range(len(res)):
+            if num > res[j]:
+                c += 1
+        res = res[:c] + [num] + res[c:]
+    return res
+
+try:
+    nums = input()
+except:
+    nums = ""
+nums = list(map(int, nums.split()))
+#nums = [i for i in range(1000)]
+print(" ".join(list(map(str,insertion_sort(nums)))))
+
+#######################################################################################################################
+
+# Find the number of "Ds", "Cs", "Bs" and "As" for the last test on informatics in the class consisting of n
+# students. The program gets number n as input, and then gets the grades themselves (one by one). The program
+# should output four numbers in a single line - the number of "D", the number of "C", the number of "B" and the
+# number of "A" grades.
+
+# Sample Input:
+'''
+14
+3
+4
+5
+3
+3
+4
+3
+3
+3
+2
+4
+2
+3
+3
+'''
+# Sample Output:
+'''
+2 8 3 1
+'''
+
+# put your python code here
+
+num_students = int(input())
+
+grades = [int(input()) for student in range(num_students)]
+
+a = grades.count(5)
+b = grades.count(4)
+c = grades.count(3)
+d = grades.count(2)
+
+grades_count = [d, c, b, a]
+print(" ".join(list(map(str, grades_count))))
+
+#######################################################################################################################
+
+# Given two integers 1<=a,b<=2^10^9.
+
+# Find the smallest integer m, which can be divided both by a, and by b.
+
+# Sample Input:
+'''
+18 35
+'''
+# Sample Output:
+'''
+630
+'''
+
+# put your python code here
+
+a, b = list(map(int, input().split()))
+
+def gcd(a, b):
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+    
+def lcm(a, b):
+    return (a * b) // gcd(a, b)
+
+print(lcm(a, b))
+
+#######################################################################################################################
+
+# Transform the symbol into uppercase.
+
+# Input data
+
+# A single symbol.
+
+# Output data
+
+# If the entered symbol is a lowercase letter of the Latin alphabet, output the same uppercase letter.
+# Otherwise, output the symbol that was entered.
+
+# Sample Input:
+'''
+b
+'''
+# Sample Output:
+'''
+B
+'''
+
+# put your python code here
+symbol = input().upper()
+print(symbol)
+
+#######################################################################################################################
+
+# Given the array of length M with integers in the range 1 ... N, where N is not greater than 20. You need to
+# go through the array and count how many times each number appears.
+
+# Please do not use the 20 individual variables for the counters, but create an array from them.
+
+# Input data contain M and N in the first line. Second line (it may be quite long) contains M numbers,
+# separated by a space.
+
+# The solution should contain exactly N numbers, separated by spaces. The first indicates the number
+# of ones in the original array, the second – the number of twos, and so on.
+
+# Sample Input:
+'''
+2 3
+1 3
+'''
+# Sample Output:
+'''
+1 0 1
+'''
+
+# put your python code here
+
+m, n = list(map(int, input().split()))
+
+nums = list(map(int, input().split()))
+
+res = []
+for i in range(n):
+    c = nums.count(i + 1)
+    res.append(c)
+
+print(" ".join(list(map(str, res))))
+
+#######################################################################################################################
+
+# Swap the position of neighbouring items of the list (A[0] with A[1], A[2] with A[3] etc.). If there is
+# odd number of elements in the list, the last element remains at its position.
+
+# Input data format
+
+# The first line of the input contains the number of elements in the array. The second line contains
+# the elements of the array.
+
+# Sample Input:
+'''
+5
+1 2 3 4 5
+'''
+# Sample Output:
+'''
+2 1 4 3 5
+'''
+
+# put your python code here
+n = int(input())
+nums = list(map(int, input().split()))
+
+def swap_neighbours(lst):
+    n = len(lst)
+    for i in range(0, n, 2):
+        a = lst[i]
+        if i < n - 1:
+            b = lst[i + 1]
+            lst[i] = b
+            lst[i + 1] = a
+    return lst
+
+print(" ".join(list(map(str, swap_neighbours(nums)))))
 
 #######################################################################################################################
