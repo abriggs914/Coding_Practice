@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6ebe7b1-e2c0-45e9-9555-d98fac3657ed" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/scheduler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Bingo/bingo_v4.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Bingo/bingo_v4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Java/TicTacToe/TicTacToeApp/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Java/TicTacToe/TicTacToeApp/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Stepik/adaptive_python_challenges.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Stepik/adaptive_python_challenges.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler.py" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,8 +17,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scheduler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="146" column="40" selection-start-line="146" selection-start-column="40" selection-end-line="146" selection-end-column="40" />
+            <state relative-caret-position="-2868">
+              <caret line="49" column="18" lean-forward="true" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="18" />
+              <folding>
+                <element signature="e#9518#17955#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -38,6 +41,7 @@
       <find>gen_r</find>
       <find>gen_app</find>
       <find>full_</find>
+      <find>max</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -71,6 +75,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -82,11 +87,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -150,7 +155,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3289689" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3207856" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -167,8 +172,11 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/scheduler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="146" column="40" selection-start-line="146" selection-start-column="40" selection-end-line="146" selection-end-column="40" />
+        <state relative-caret-position="-2868">
+          <caret line="49" column="18" lean-forward="true" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="18" />
+          <folding>
+            <element signature="e#9518#17955#0" />
+          </folding>
         </state>
       </provider>
     </entry>

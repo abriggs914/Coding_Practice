@@ -37,8 +37,8 @@ class Schedule:
                 res += '\n' + time_of_day + tab_space + ''.join([empty_col_width for i in range(7)])
                 for i in range(-1, max_num_lines):
                     if -1 < i < max_num_lines - 1:
-                        row_appintments = self.gen_row_appointments(time_of_day)
-                        res += left_margin + 'TOFILL'  # ''.join([empty_col_width for i in range(7)]) + right_margi
+                        row_appointments = self.gen_row_appointments(time_of_day)
+                        res += left_margin + row_appointments + right_margin # 'TOFILL'  # ''.join([empty_col_width for i in range(7)]) + right_margi
                     elif i > -1:
                         # bottom border of cell
                         res += left_margin + empty_cell_width + right_margin
@@ -46,16 +46,16 @@ class Schedule:
                 res += '\n' + time_of_day + tab_space + empty_cell_width
                 # print('len(left_margin):\t' + str(len(self.left_margin)))
 
-        res += left_margin + bottom_perimeter + right_margin
+        # res += left_margin + bottom_perimeter + right_margin
         return res
 
     def determine_max_width(self):
         max_width = 0
         col_labels = self.col_labels
         for appointment in self.appointments:
-            max_width = max(max_width, max([len(x) for x in appointment if appointment.index(x) != 1]))
+            max_width = max(max_width, len(appointment[0] + " @ " + appointment[4]))
         max_width = max(max_width, max([len(x) for x in col_labels]))
-        return max_width
+        return max_width + 2
 
     def gen_col_names_string(self):
         max_width = self.max_appointment_string
@@ -106,7 +106,6 @@ class Schedule:
             # print('ehi:\t' + str(end_hour_int))
             end_hour_int +=  (0 if (end_hour_suffix == 'AM' and end_hour_int < 12) or
                                    (end_hour_suffix == 'PM' and end_hour_int == 12) else 12)
-            # app_length = end_hour_int - start_hour_int
             # print('start_hour_int:\t' + str(start_hour_int) + '\tend_hour_int:\t' + str(end_hour_int) + '\tapp_duration:\t' + str(app_length))
             for appointment in app_days:
                 for i in range(start_hour_int, end_hour_int + 1):
@@ -114,8 +113,6 @@ class Schedule:
                     curr_hour = hour_num + ':00 ' + ('AM' if i < 12 or i == 24 else 'PM')
                     # print('i:\t' + str(i) + '\tappointment  day:\t' + str(appointment) + '\tcurr_hour:\t' + str(curr_hour))
                     times_of_day[curr_hour][appointment] += 1
-                # times_of_day[end_hour][appointment] += 1
-        print(times_of_day)
         for time, days in times_of_day.items():
             for day in days:
                 num_lines = times_of_day[time][day]
@@ -124,45 +121,58 @@ class Schedule:
                 if times_of_day[time][day] > 0 and times_of_day[time][day] % 2 == 1:
                     times_of_day[time][day] += 1
 
-            # times_of_day[day] += 1
-        print(times_of_day)
+        # print(times_of_day)
         return times_of_day
 
     def gen_appointment_dict(self):
-        print('gen_appointment_dict\t' + str(self.appointments))
+        # print('gen_appointment_dict\t' + str(self.appointments))
         times = list(self.times_of_day.keys())
         hours_apps_list = [dict(zip(times, [[] for _ in range(len(times))])) for _ in range(7)]
         appointments_dict = dict(zip(self.col_labels, hours_apps_list))
-        print('col_labels:\t' + str(self.col_labels))
-        print('times:\t' + str(times))
+        # print('col_labels:\t' + str(self.col_labels))
+        # print('times:\t' + str(times))
         days_occurring = self.full_day_acronym()# appointment[1]
         for i in range(len(self.appointments)):
             appointment = self.appointments[i]
-            print('days:\t' + '#:\t' + str(len(days_occurring)) + '\t' + str(days_occurring))
-            start_time_split = appointment[2].split(':')
-            start_time = start_time_split[0] + ':00 ' + start_time_split[1][-2:]
-            end_time_split = appointment[3].split(':')
-            end_time = end_time_split[0] + ':00' + end_time_split[1][:-2]
-            duration_times = []
-            end_range = end_time_split[0] if int(end_time_split[1][:-3]) == 0 else int(end_time_split[0]) + 1
-            for j in range(int(start_time_split[0]), int(end_range)):
-                print('i:\t' + str(j))
-                duration_times.append(j)
-            print('duration:\t' + str(duration_times))
+            # print('days:\t' + '#:\t' + str(len(days_occurring)) + '\t' + str(days_occurring))
+            duration_times = self.gen_duration(appointment[2], appointment[3])
+            # print('duration:\t' + str(duration_times))
             for day in days_occurring[i]:
-                appointments_dict[day][start_time] = 'k'
+                for hour in duration_times:
+                    appointments_dict[day][hour] = appointment[0] + " @ " + appointment[4]
 
-        print('dict:\t' + str(appointments_dict))
-        raise ValueError('NOT RETURNING YET')
+        # print('dict:\t' + str(appointments_dict))
+        # raise ValueError('NOT RETURNING YET')
         return appointments_dict
+
+    def gen_duration(self, start, end):
+        start_hour, start_min = start.split(':')
+        end_hour, end_min = end.split(':')
+        start_hour = int(start_hour)
+        end_hour = int(end_hour)
+        start_hour += 12 if ((start_min[-2:] == "PM" and start_hour != 12) or
+                             (start_hour == 12 and start_min[-2:] == "AM")) else 0
+        end_hour += 12 if ((end_min[-2:] == "PM" and end_hour != 12) or
+                           (end_hour == 12 and end_min[-2:] == "AM")) else 0
+        duration_keys = []
+        for h in range(start_hour, end_hour + 1):
+            suffix = "AM"
+            if 11 < h < 24:
+                suffix = "PM"
+                if h > 12:
+                    h -= 12
+            if h == 24:
+                h -= 12
+            time = str(h) + ":00 " + suffix
+            duration_keys.append(time)
+        return duration_keys
 
     def determine_max_heights(self):
         times_of_day = self.appointments_max_hours_dict
         max_lines_per_hour = {}
         for time_of_day, weekdays in times_of_day.items():
-            max_lines_per_hour[time_of_day] = max([val for key, val in weekdays.items()])
-        print(max_lines_per_hour)
-        # print(appointment_times)
+            max_lines_per_hour[time_of_day] = 2 #max([val for key, val in weekdays.items()])
+        # print("max_lines_per_hour:\t" + str(max_lines_per_hour))
         return max_lines_per_hour
 
     def full_day_acronym(self):
@@ -356,15 +366,47 @@ class Schedule:
                                     'Saturday': 0}}
 
     def gen_row_appointments(self, time_of_day):
-        print('time_of_day\t' + str(time_of_day) + ',\tappoointments_dict[time_of_day]:\t' + str(self.appointments_dict[time_of_day]))
-        return ''
+        appointments_dict = self.appointments_dict
+        days_of_week = self.col_labels
+        max_width = self.max_appointment_string
+        empty_col_width = '|' + ''.join([' ' for i in range(max_width)]) + '|'
+        # print("APPOINTMENTS DICT\n" + str(appointments_dict))
+        row = ""
+        for day in days_of_week:
+            # print('time_of_day\t' + str(time_of_day) + ',\tappoointments_dict[time_of_day]:\t' + str(appointments_dict[day][time_of_day]))
+            if len(appointments_dict[day][time_of_day]) == 0:
+                row += empty_col_width
+            else:
+                padded_appointment = appointments_dict[day][time_of_day]
+                diff = (max_width - len(padded_appointment)) // 2
+                pad_size = max_width - diff
+                if diff % 2 == 0:
+                    padded_appointment = padded_appointment.ljust(pad_size)
+                    padded_appointment = padded_appointment.rjust(pad_size + diff)
+                else:
+                    padded_appointment = padded_appointment.rjust(pad_size)
+                    padded_appointment = padded_appointment.ljust(pad_size + diff)
+                row += "|" + padded_appointment + "|"
+        # print("ROW:\n" + row)
+        return row
 
 
-appointments = [('CS3113', 'MON WED FRI', '8:30 AM', '9:20 AM', 'Gillin C118'),
-                ('CS4355', 'MON WED FRI', '9:30 AM', '10:20 AM', 'Head Hall 107gggggg'),
-                ('INFO3303', 'TUE THU', '9:30 AM', '10:20 AM', 'Head Hall 107'),
+# Testing Appointments
+'''
+appointments = [('CS3113', 'MON WED FRI', '8:30 AM', '9:20 AM', 'GH C118'),
+                ('CS4355', 'MON WED FRI', '9:30 AM', '10:20 AM', 'HH 107'),
+                ('INFO3303', 'TUE THU', '9:30 AM', '10:20 AM', 'HH 107'),
                 ('Ref', 'SAT', '12:00 PM', '1:30 PM', 'FHS'),
                 ('Sleep', 'SUN MON TUE WED THU FRI SAT', '1:00 AM', '7:00 AM', 'Home'),
                 ('TV', 'FRI', '10:00 PM', '12:00 AM', 'Home')]
+'''
+appointments = [('CS3113', 'MON WED FRI', '8:30 AM', '9:20 AM', 'GH C122'),
+                ('CS4355', 'TUE THU', '10:00 AM', '11:20 AM', 'HH C9'),
+                ('CS4355 TUT', 'TUE', '2:30 PM', '3:20 PM', 'GH D124'),
+                ('CS4411', 'TUE THU', '3:30 PM', '4:50 PM', 'ITC 317'),
+                ('CS4411 TUT', 'THU', '2:30 PM', '3:20 PM', 'ITC 317'),
+                ('ECE2214', 'MON WED FRI', '11:30 AM', '12:20 PM', 'GH C122'),
+                ('ECE2214 TUT', 'TUE', '1:30 PM', '2:20 PM', 'MH 53'),
+                ('ECE2215 LAB', 'WED', '2:30 PM', '4:20 PM', 'HH 117')]
 class_schedule = Schedule(appointments)
 print(class_schedule)
