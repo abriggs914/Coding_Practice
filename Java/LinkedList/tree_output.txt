@@ -1,0 +1,790 @@
+	CREATING NODE:
+
+{ NodeNumber:	2	Depth:	1 }
+	CREATING NODE:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	0	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	0	lightChild:	0
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+	CREATING NODE:
+
+{ NodeNumber:	4	Depth:	2 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	1	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	0	lightChild:	1
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+	CREATING NODE:
+
+{ NodeNumber:	5	Depth:	2 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	0	lightChild:	-2147483648
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+	CREATING NODE:
+
+{ NodeNumber:	6	Depth:	2 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	1	lightChild:	-2147483648
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+	CREATING NODE:
+
+{ NodeNumber:	7	Depth:	2 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+at:	
+{ NodeNumber:	4	Depth:	2 }
+nChildren:	0	lightChild:	-2147483648
+at:	
+{ NodeNumber:	5	Depth:	2 }
+nChildren:	0	lightChild:	0
+	NODE SELECTED:
+
+{ NodeNumber:	4	Depth:	2 }
+	CREATING NODE:
+
+{ NodeNumber:	8	Depth:	3 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	6	Depth:	2 }
+nChildren:	0	lightChild:	-2147483648
+at:	
+{ NodeNumber:	7	Depth:	2 }
+nChildren:	0	lightChild:	0
+	NODE SELECTED:
+
+{ NodeNumber:	6	Depth:	2 }
+	CREATING NODE:
+
+{ NodeNumber:	9	Depth:	3 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+at:	
+{ NodeNumber:	4	Depth:	2 }
+nChildren:	1	lightChild:	-2147483648
+at:	
+{ NodeNumber:	5	Depth:	2 }
+nChildren:	0	lightChild:	1
+	NODE SELECTED:
+
+{ NodeNumber:	4	Depth:	2 }
+	CREATING NODE:
+
+{ NodeNumber:	10	Depth:	3 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	6	Depth:	2 }
+nChildren:	1	lightChild:	-2147483648
+at:	
+{ NodeNumber:	7	Depth:	2 }
+nChildren:	0	lightChild:	1
+	NODE SELECTED:
+
+{ NodeNumber:	6	Depth:	2 }
+	CREATING NODE:
+
+{ NodeNumber:	11	Depth:	3 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+at:	
+{ NodeNumber:	4	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	5	Depth:	2 }
+nChildren:	0	lightChild:	-2147483648
+	NODE SELECTED:
+
+{ NodeNumber:	5	Depth:	2 }
+	CREATING NODE:
+
+{ NodeNumber:	12	Depth:	3 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	6	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	7	Depth:	2 }
+nChildren:	0	lightChild:	-2147483648
+	NODE SELECTED:
+
+{ NodeNumber:	7	Depth:	2 }
+	CREATING NODE:
+
+{ NodeNumber:	13	Depth:	3 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+at:	
+{ NodeNumber:	4	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	5	Depth:	2 }
+nChildren:	1	lightChild:	-2147483648
+	NODE SELECTED:
+
+{ NodeNumber:	5	Depth:	2 }
+	CREATING NODE:
+
+{ NodeNumber:	14	Depth:	3 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	6	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	7	Depth:	2 }
+nChildren:	1	lightChild:	-2147483648
+	NODE SELECTED:
+
+{ NodeNumber:	7	Depth:	2 }
+	CREATING NODE:
+
+{ NodeNumber:	15	Depth:	3 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+at:	
+{ NodeNumber:	4	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	5	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	4	Depth:	2 }
+at:	
+{ NodeNumber:	8	Depth:	3 }
+nChildren:	0	lightChild:	-2147483648
+at:	
+{ NodeNumber:	10	Depth:	3 }
+nChildren:	0	lightChild:	0
+	NODE SELECTED:
+
+{ NodeNumber:	8	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	16	Depth:	4 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	6	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	7	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	6	Depth:	2 }
+at:	
+{ NodeNumber:	9	Depth:	3 }
+nChildren:	0	lightChild:	-2147483648
+at:	
+{ NodeNumber:	11	Depth:	3 }
+nChildren:	0	lightChild:	0
+	NODE SELECTED:
+
+{ NodeNumber:	9	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	17	Depth:	4 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+at:	
+{ NodeNumber:	4	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	5	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	5	Depth:	2 }
+at:	
+{ NodeNumber:	12	Depth:	3 }
+nChildren:	0	lightChild:	-2147483648
+at:	
+{ NodeNumber:	14	Depth:	3 }
+nChildren:	0	lightChild:	0
+	NODE SELECTED:
+
+{ NodeNumber:	12	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	18	Depth:	4 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	6	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	7	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	7	Depth:	2 }
+at:	
+{ NodeNumber:	13	Depth:	3 }
+nChildren:	0	lightChild:	-2147483648
+at:	
+{ NodeNumber:	15	Depth:	3 }
+nChildren:	0	lightChild:	0
+	NODE SELECTED:
+
+{ NodeNumber:	13	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	19	Depth:	4 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+at:	
+{ NodeNumber:	4	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	5	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	4	Depth:	2 }
+at:	
+{ NodeNumber:	8	Depth:	3 }
+nChildren:	1	lightChild:	-2147483648
+at:	
+{ NodeNumber:	10	Depth:	3 }
+nChildren:	0	lightChild:	1
+	NODE SELECTED:
+
+{ NodeNumber:	8	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	20	Depth:	4 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	6	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	7	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	6	Depth:	2 }
+at:	
+{ NodeNumber:	9	Depth:	3 }
+nChildren:	1	lightChild:	-2147483648
+at:	
+{ NodeNumber:	11	Depth:	3 }
+nChildren:	0	lightChild:	1
+	NODE SELECTED:
+
+{ NodeNumber:	9	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	21	Depth:	4 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+at:	
+{ NodeNumber:	4	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	5	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	5	Depth:	2 }
+at:	
+{ NodeNumber:	12	Depth:	3 }
+nChildren:	1	lightChild:	-2147483648
+at:	
+{ NodeNumber:	14	Depth:	3 }
+nChildren:	0	lightChild:	1
+	NODE SELECTED:
+
+{ NodeNumber:	12	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	22	Depth:	4 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	6	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	7	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	7	Depth:	2 }
+at:	
+{ NodeNumber:	13	Depth:	3 }
+nChildren:	1	lightChild:	-2147483648
+at:	
+{ NodeNumber:	15	Depth:	3 }
+nChildren:	0	lightChild:	1
+	NODE SELECTED:
+
+{ NodeNumber:	13	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	23	Depth:	4 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	2	Depth:	1 }
+at:	
+{ NodeNumber:	4	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	5	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	4	Depth:	2 }
+at:	
+{ NodeNumber:	8	Depth:	3 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	10	Depth:	3 }
+nChildren:	0	lightChild:	-2147483648
+	NODE SELECTED:
+
+{ NodeNumber:	10	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	24	Depth:	4 }
+at:	
+{ NodeNumber:	2	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	3	Depth:	1 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	3	Depth:	1 }
+at:	
+{ NodeNumber:	6	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	7	Depth:	2 }
+nChildren:	2	lightChild:	-2147483648
+SWITCHEROO
+	NODE SELECTED:
+
+{ NodeNumber:	6	Depth:	2 }
+at:	
+{ NodeNumber:	9	Depth:	3 }
+nChildren:	2	lightChild:	-2147483648
+at:	
+{ NodeNumber:	11	Depth:	3 }
+nChildren:	0	lightChild:	-2147483648
+	NODE SELECTED:
+
+{ NodeNumber:	11	Depth:	3 }
+	CREATING NODE:
+
+{ NodeNumber:	25	Depth:	4 }
+
+
+
+	ROOT
+{ NodeNumber:	1	Depth:	0 }	Root children: true,	Num children:	24
+[
+{ NodeNumber:	2	Depth:	1 }, 
+{ NodeNumber:	3	Depth:	1 }]
+
+	CHILD
+{ NodeNumber:	2	Depth:	1 }	children: true,	Num children:	11
+[
+{ NodeNumber:	4	Depth:	2 }, 
+{ NodeNumber:	5	Depth:	2 }]
+
+	CHILD
+{ NodeNumber:	4	Depth:	2 }	children: true,	Num children:	5
+[
+{ NodeNumber:	8	Depth:	3 }, 
+{ NodeNumber:	10	Depth:	3 }]
+
+	CHILD
+{ NodeNumber:	8	Depth:	3 }	children: true,	Num children:	2
+[
+{ NodeNumber:	16	Depth:	4 }, 
+{ NodeNumber:	20	Depth:	4 }]
+
+	CHILD
+{ NodeNumber:	16	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	20	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	10	Depth:	3 }	children: true,	Num children:	1
+[
+{ NodeNumber:	24	Depth:	4 }]
+
+	CHILD
+{ NodeNumber:	24	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	5	Depth:	2 }	children: true,	Num children:	4
+[
+{ NodeNumber:	12	Depth:	3 }, 
+{ NodeNumber:	14	Depth:	3 }]
+
+	CHILD
+{ NodeNumber:	12	Depth:	3 }	children: true,	Num children:	2
+[
+{ NodeNumber:	18	Depth:	4 }, 
+{ NodeNumber:	22	Depth:	4 }]
+
+	CHILD
+{ NodeNumber:	18	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	22	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	14	Depth:	3 }	children: true,	Num children:	0
+[]
+
+
+	CHILD
+{ NodeNumber:	3	Depth:	1 }	children: true,	Num children:	11
+[
+{ NodeNumber:	6	Depth:	2 }, 
+{ NodeNumber:	7	Depth:	2 }]
+
+	CHILD
+{ NodeNumber:	6	Depth:	2 }	children: true,	Num children:	5
+[
+{ NodeNumber:	9	Depth:	3 }, 
+{ NodeNumber:	11	Depth:	3 }]
+
+	CHILD
+{ NodeNumber:	9	Depth:	3 }	children: true,	Num children:	2
+[
+{ NodeNumber:	17	Depth:	4 }, 
+{ NodeNumber:	21	Depth:	4 }]
+
+	CHILD
+{ NodeNumber:	17	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	21	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	11	Depth:	3 }	children: true,	Num children:	1
+[
+{ NodeNumber:	25	Depth:	4 }]
+
+	CHILD
+{ NodeNumber:	25	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	7	Depth:	2 }	children: true,	Num children:	4
+[
+{ NodeNumber:	13	Depth:	3 }, 
+{ NodeNumber:	15	Depth:	3 }]
+
+	CHILD
+{ NodeNumber:	13	Depth:	3 }	children: true,	Num children:	2
+[
+{ NodeNumber:	19	Depth:	4 }, 
+{ NodeNumber:	23	Depth:	4 }]
+
+	CHILD
+{ NodeNumber:	19	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	23	Depth:	4 }	children: true,	Num children:	0
+[]
+
+	CHILD
+{ NodeNumber:	15	Depth:	3 }	children: true,	Num children:	0
+[]
+
+
+maxDepth:	4
+borderWidth:	1
+branchingFactor:	2
+bfToMaxDepth:	16.0
+maxWidth:	49
+EDIT THIS
+
+	BFS
+
+bfsQ.size:	1
+bfsQ.size:	2
+bfsQ.size:	3
+bfsQ.size:	4
+bfsQ.size:	5
+bfsQ.size:	6
+bfsQ.size:	7
+bfsQ.size:	8
+bfsQ.size:	9
+bfsQ.size:	9
+bfsQ.size:	10
+bfsQ.size:	9
+bfsQ.size:	10
+bfsQ.size:	10
+	ANSWER:
+
+{ NodeNumber:	23	Depth:	4 }
+	PATH:
+
+[
+{ NodeNumber:	1	Depth:	0 }, 
+{ NodeNumber:	2	Depth:	1 }, 
+{ NodeNumber:	3	Depth:	1 }, 
+{ NodeNumber:	4	Depth:	2 }, 
+{ NodeNumber:	5	Depth:	2 }, 
+{ NodeNumber:	6	Depth:	2 }, 
+{ NodeNumber:	7	Depth:	2 }, 
+{ NodeNumber:	8	Depth:	3 }, 
+{ NodeNumber:	10	Depth:	3 }, 
+{ NodeNumber:	12	Depth:	3 }, 
+{ NodeNumber:	14	Depth:	3 }, 
+{ NodeNumber:	9	Depth:	3 }, 
+{ NodeNumber:	11	Depth:	3 }, 
+{ NodeNumber:	13	Depth:	3 }, 
+{ NodeNumber:	15	Depth:	3 }, 
+{ NodeNumber:	16	Depth:	4 }, 
+{ NodeNumber:	20	Depth:	4 }, 
+{ NodeNumber:	24	Depth:	4 }, 
+{ NodeNumber:	18	Depth:	4 }, 
+{ NodeNumber:	22	Depth:	4 }, 
+{ NodeNumber:	17	Depth:	4 }, 
+{ NodeNumber:	21	Depth:	4 }, 
+{ NodeNumber:	25	Depth:	4 }, 
+{ NodeNumber:	19	Depth:	4 }, 
+{ NodeNumber:	23	Depth:	4 }]
+	PATH.SIZE():
+
+25
+	DFS
+
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+REACHED END - NO PATH
+	ANSWER:
+
+{ NodeNumber:	23	Depth:	4 }
+	PATH:
+
+[
+{ NodeNumber:	1	Depth:	0 }, 
+{ NodeNumber:	2	Depth:	1 }, 
+{ NodeNumber:	4	Depth:	2 }, 
+{ NodeNumber:	8	Depth:	3 }, 
+{ NodeNumber:	16	Depth:	4 }, 
+{ NodeNumber:	20	Depth:	4 }, 
+{ NodeNumber:	10	Depth:	3 }, 
+{ NodeNumber:	24	Depth:	4 }, 
+{ NodeNumber:	5	Depth:	2 }, 
+{ NodeNumber:	12	Depth:	3 }, 
+{ NodeNumber:	18	Depth:	4 }, 
+{ NodeNumber:	22	Depth:	4 }, 
+{ NodeNumber:	14	Depth:	3 }, 
+{ NodeNumber:	3	Depth:	1 }, 
+{ NodeNumber:	6	Depth:	2 }, 
+{ NodeNumber:	9	Depth:	3 }, 
+{ NodeNumber:	17	Depth:	4 }, 
+{ NodeNumber:	21	Depth:	4 }, 
+{ NodeNumber:	11	Depth:	3 }, 
+{ NodeNumber:	25	Depth:	4 }, 
+{ NodeNumber:	7	Depth:	2 }, 
+{ NodeNumber:	13	Depth:	3 }, 
+{ NodeNumber:	19	Depth:	4 }, 
+{ NodeNumber:	23	Depth:	4 }]
+	PATH.SIZE():
+
+24

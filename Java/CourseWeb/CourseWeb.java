@@ -54,6 +54,12 @@ public class CourseWeb{
 		courseList.add(new Course("CS", 3613, "B", 4, new ArrayList<Course>(Arrays.asList(courseList.get(20), courseList.get(24), courseList.get(29)))));
 		courseList.add(new Course("CS", 3873, "A-", 4, new ArrayList<Course>(Arrays.asList(courseList.get(24)))));
 		courseList.add(new Course("CS", 3503, "B", 4, new ArrayList<Course>(Arrays.asList(courseList.get(19)))));
+		
+		courseList.add(new Course("CS", 3053, "F", 3, new ArrayList<Course>(Arrays.asList(courseList.get(27)))));
+		courseList.add(new Course("CS", 3113, "F", 3, new ArrayList<Course>(Arrays.asList(courseList.get(15), courseList.get(18)))));
+		courseList.add(new Course("CS", 4411, "F", 4, new ArrayList<Course>(Arrays.asList(courseList.get(35)))));
+		courseList.add(new Course("CS", 4355, "F", 4, new ArrayList<Course>(Arrays.asList(courseList.get(19), courseList.get(16), courseList.get(24)))));
+		courseList.add(new Course("CS", 4725, "F", 4, new ArrayList<Course>(Arrays.asList(courseList.get(20), courseList.get(28)))));
 
     // courseList.forEach((c) -> System.out.println(c.getName()));
     System.out.println("Average grade: " + computeAverageGrade());

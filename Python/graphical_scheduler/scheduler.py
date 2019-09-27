@@ -400,6 +400,7 @@ appointments = [('CS3113', 'MON WED FRI', '8:30 AM', '9:20 AM', 'GH C118'),
                 ('Sleep', 'SUN MON TUE WED THU FRI SAT', '1:00 AM', '7:00 AM', 'Home'),
                 ('TV', 'FRI', '10:00 PM', '12:00 AM', 'Home')]
 '''
+'''
 appointments = [('CS3113', 'MON WED FRI', '8:30 AM', '9:20 AM', 'GH C122'),
                 ('CS4355', 'TUE THU', '10:00 AM', '11:20 AM', 'HH C9'),
                 ('CS4355 TUT', 'TUE', '2:30 PM', '3:20 PM', 'GH D124'),
@@ -407,6 +408,17 @@ appointments = [('CS3113', 'MON WED FRI', '8:30 AM', '9:20 AM', 'GH C122'),
                 ('CS4411 TUT', 'THU', '2:30 PM', '3:20 PM', 'ITC 317'),
                 ('ECE2214', 'MON WED FRI', '11:30 AM', '12:20 PM', 'GH C122'),
                 ('ECE2214 TUT', 'TUE', '1:30 PM', '2:20 PM', 'MH 53'),
-                ('ECE2215 LAB', 'WED', '2:30 PM', '4:20 PM', 'HH 117')]
+                ('ECE2215 LAB', 'WED', '2:30 PM', '4:20 PM', 'HH 117'),
+                ("CS4725", "MON WED FRI", "12:30 PM", "1:20 PM", "GH C112"),
+                ("CS4725 LAB", "FRI", "2:30 PM", "4:20 PM", "ITC 415")]
+'''
+appointments = [("CS3113", "MON WED FRI", "8:30 AM", "9:20 AM", "GH C122"),
+                ("CS4355", "TUE THU", "10:00 AM", "11:20 AM", "HH C9"),
+                ("CS4355 TUT", "TUE", "2:30 PM", "3:20 PM", "GH D124"),
+                ("CS4411", "TUE THU", "3:30 PM", "4:50 PM", "ITC 317"),
+                ("CS4411 TUT", "THU", "2:30 PM", "3:20 PM", "ITC 317"),
+                ("CS3035", "TUE THU", "8:30 AM", "9:50 AM", "HH 206"),
+                ("CS4725", "MON WED FRI", "12:30 PM", "1:20 PM", "GH C112"),
+                ("CS4725 LAB", "FRI", "2:30 PM", "4:20 PM", "ITC 415")]
 class_schedule = Schedule(appointments)
 print(class_schedule)
