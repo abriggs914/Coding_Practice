@@ -7,7 +7,12 @@ public class Node {
     private int arrSum;
     private int nodeNum;
     private int branchFactor;
+    private boolean isLeafNode;
     private Node parent;
+
+    private int alpha;
+    private int beta;
+    private int value;
 
     Node(int nodeNum, int branchingFactor, ArrayList<Integer> arr) {
         this.arr = arr;
@@ -16,6 +21,7 @@ public class Node {
         this.branchFactor = branchingFactor;
         this.children = new ArrayList<>();
         this.nodeNum = nodeNum;
+        this.isLeafNode = true;
     }
 
     void setParent(Node parent) {
@@ -25,7 +31,10 @@ public class Node {
         }
         else {
             this.depth = parent.depth + 1;
+            parent.setNonLeaf();
         }
+        this.initAlpha();
+        this.initBeta();
     }
 
     private int sum(ArrayList<Integer> arr) {
@@ -73,7 +82,7 @@ public class Node {
         return this.arrSum;
     }
 
-    public int getNodeNum() {
+    int getNodeNum() {
         return nodeNum;
     }
 
@@ -81,7 +90,11 @@ public class Node {
         return this.getChildren().size() != 0;
     }
 
-    private ArrayList<Integer> getArr() {
+    void pruneChildren() {
+        this.children.clear();
+    }
+
+    ArrayList<Integer> getArr() {
         return this.arr;
     }
 
@@ -100,7 +113,7 @@ public class Node {
                 ",  Arr: " + this.getArrSum();
         if (this.hasChildren()) {
             res += ",  favChild.id: " + this.getFavouriteChild().getNodeNum() +
-                   ",  score: " + this.getArrSum();
+                   ",  score: " + this.getFavouriteChild().getArrSum();
         }
         res += " } ";
         //  "\nARR\n" + this.getArr().toString() +
@@ -111,5 +124,71 @@ public class Node {
     // returns its eldest (furthest left) child
      Node getFavouriteChild() {
         return this.getChildren().get(0);
+    }
+
+    void initAlpha() {
+        this.alpha = Integer.MIN_VALUE;
+    }
+
+    void initBeta() {
+        this.beta = Integer.MAX_VALUE;
+    }
+
+    void initValue() {
+        this.value = -99;
+    }
+
+    void updateValue() {
+
+    }
+
+    void setValue(int value) {
+        this.value = value;
+    }
+
+    void setAlpha(int value) {
+        this.alpha = value;
+    }
+
+    void setBeta(int value) {
+        this.beta = value;
+    }
+
+    int getValue() {
+        return this.value;
+    }
+
+    int getAlpha() {
+        return this.alpha;
+    }
+
+    int getBeta() {
+        return this.beta;
+    }
+
+    // parent node will call this
+    private void setNonLeaf() {
+        this.isLeafNode = false;
+//        this.getParent().
+        this.initValue();
+    }
+
+    boolean getLeafStatus() {
+        return this.isLeafNode;
+    }
+
+    Node getParent() {
+        return this.parent;
+    }
+
+    boolean isDecendantOf(Node ancestor) {
+        Node currNode = this;
+        while (currNode.getParent() != null) {
+            if (currNode == ancestor) {
+                return true;
+            }
+            currNode = currNode.getParent();
+        }
+        return false;
     }
 }

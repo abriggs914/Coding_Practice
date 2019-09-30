@@ -1,8 +1,45 @@
 import java.util.ArrayList;
 
-public class MaxNode extends Node {
+class MaxNode extends Node {
+
     MaxNode(int nodeNum, int branchingFactor, ArrayList<Integer> arr) {
         super(nodeNum, branchingFactor, arr);
+        this.initValue();
+    }
+
+    void initValue() {
+        if (this.getLeafStatus()) {
+            this.setValue(this.getArrSum());
+        }
+        else {
+            this.setValue(Integer.MIN_VALUE);
+        }
+    }
+
+    void updateValue() {
+        ArrayList<Node> children = this.getChildren();
+        System.out.print("updating:\t" + this);
+        int thisValue = this.getValue();
+        for (Node child : children) {
+            if (child.hasChildren()) {
+                child.updateValue();
+            }
+            else {
+                int childValue = child.getValue();
+                System.out.println("thisVal: " + thisValue + ", childVal: " + childValue);
+                if (childValue > thisValue) {
+                    this.setValue(childValue);
+                    thisValue = this.getValue();
+                }
+                if (thisValue >= this.getBeta()) {
+                    break;
+                } else if (thisValue > this.getAlpha()) {
+                    this.setAlpha(thisValue);
+                }
+            }
+//            child.updateValue();
+        }
+        System.out.println("\n\t->\t" + this);
     }
 
     // returns max of children
@@ -24,24 +61,29 @@ public class MaxNode extends Node {
         }
     }
 
-//    public String toString() {
-//        String res = "root ->";
-////            if (this.parent != null) {
-////                res = " { Parent#: " + this.parent.nodeNum +
-////                        ",  pDepth: " + this.parent.getDepth() +
-////                        ",  #PimmC: " + this.parent.getNumImmediateChildren() +
-////                        ",  #Pchildren: " + this.parent.getNumChildren(this.parent) + "} ->";
-////            }
-//        res += " { NodeNumber: " + this.getNodeNum() +
-//                ",  Depth: " + this.getDepth() +
-//                ",  #immC: " + this.getNumImmediateChildren() +
-//                ",  #children: " + this.getNumChildren(this);
-//        if (this.hasChildren()) {
-//            res += ",  favChild: " + this.getFavouriteChild();
+    public String toString() {
+        String res = "";
+//        if (this.parent != null) {
+//            res = " { Parent#: " + this.parent.nodeNum +
+//                    ",  pDepth: " + this.parent.getDepth() +
+//                    ",  #PimmC: " + this.parent.getNumImmediateChildren() +
+//                    ",  #Pchildren: " + this.parent.getNumChildren(this.parent) + "} ->";
 //        }
-//        res += " } ";
-//        //  "\nARR\n" + this.getArr().toString() +
-//        //  "sum:\t" + this.getArrSum() + "\n";
-//        return res;
-//    }
+        res += " (Max) { Node#: " + this.getNodeNum() +
+                ",  D: " + this.getDepth() +
+                ",  #immC: " + this.getNumImmediateChildren() +
+                ",  val: " + this.getValue() +
+                ",  alpha: " + this.getAlpha() +
+                ",  beta: " + this.getBeta();
+//                ",  #kids: " + this.getNumChildren(this) +
+//                ",  Arr: " + this.getArrSum();
+//        if (this.hasChildren()) {
+//            res += ",  favChild.id: " + this.getFavouriteChild().getNodeNum() +
+//                    ",  score: " + this.getFavouriteChild().getArrSum();
+//        }
+        res += " } ";
+        //  "\nARR\n" + this.getArr().toString() +
+//          "sum:\t" + this.getArrSum() + "\n";
+        return res;
+    }
 }

@@ -1,5 +1,6 @@
 /*package whatever //do not write package name here */
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.LinkedList;
@@ -10,9 +11,9 @@ import java.util.Set;
 
 public class Tree {
 
-    private Node root;
-    private int maxDepth;
-    private ArrayList<Node> nodeStorage;
+    Node root;
+    int maxDepth;
+    ArrayList<Node> nodeStorage;
 
     Tree(int branchingFactor, ArrayList<Integer> arr) {
         this.root = new Node(1, branchingFactor, arr);
@@ -25,10 +26,10 @@ public class Tree {
     // the target node.
     ArrayList<Node> depthFirstSearch(Node target) {
         ArrayList<Node> dfsRes = depthFirstSearchHelper(root, target, new ArrayList<>());
-        if (dfsRes.size() == 0) {
-            System.out.println("REACHED END - NO PATH");
-
-        }
+//        if (dfsRes.size() == 0) {
+//            System.out.println("REACHED END - NO PATH");
+//
+//        }
         return dfsRes;
     }
 
@@ -103,7 +104,7 @@ public class Tree {
                 }
             }
         }
-        System.out.println("REACHED END - NO PATH");
+//        System.out.println("REACHED END - NO PATH");
         path.clear();
         return path;
     }
@@ -128,10 +129,10 @@ public class Tree {
 
     ArrayList<Node> depthLimitedSearch(int limit, Node target) {
         ArrayList<Node> dfsRes = depthLimitedSearchHelper(limit, root, target, new ArrayList<>());
-        if (dfsRes.size() == 0) {
-            System.out.println("REACHED END - NO PATH");
-
-        }
+//        if (dfsRes.size() == 0) {
+//            System.out.println("REACHED END - NO PATH");
+//
+//        }
         return dfsRes;
     }
 
@@ -222,21 +223,29 @@ public class Tree {
         int d = newNode.getDepth();
         if (this.maxDepth < d) {
             this.maxDepth = d;
+            System.out.println("New max depth:\t" + maxDepth);
         }
     }
 
+    private int calcMaxDepth(int bF, int numNodes) {
+        double partA = Math.log(((bF - 1.0) * (numNodes + 1)) + 1);
+        double partB = Math.log(bF);
+        double partC = ((partA - partB) / partB);
+        return (int) Math.ceil(partC);
+    }
+
     int lookupIndex(int goalNodeId) {
-        if (goalNodeId == 2) {
-            goalNodeId = 1;
-        }
-        else if (goalNodeId == 1) {
-            goalNodeId = 0;
-        }
-        else if (goalNodeId < 1) {
+//        if (goalNodeId == 2) {
+//            goalNodeId = 1;
+//        }
+//        else if (goalNodeId == 1) {
+//            goalNodeId = 0;
+//        }
+         if (goalNodeId < 1) {
             goalNodeId = -1;
         }
         else {
-            goalNodeId -= 2;
+            goalNodeId -= 1;
         }
         return goalNodeId;
     }
@@ -248,56 +257,60 @@ public class Tree {
     String printTreeTopToBottom() {
         int borderWidth = 1;
         int charSize = 3;
+        int spaceSize = 2;
         double bfToMaxDepth = Math.pow(root.getBranchingFactor(), maxDepth);
         int maxWidth = (2 * borderWidth) +
                 (int) (charSize * bfToMaxDepth) +
-                (int) (bfToMaxDepth - 1);
+                (int) ((spaceSize * bfToMaxDepth) - 1);
 
-        System.out.println("maxDepth:\t" + maxDepth +
-                "\nborderWidth:\t" + borderWidth +
-                "\nbranchingFactor:\t" + root.getBranchingFactor() +
-                "\nbfToMaxDepth:\t" + bfToMaxDepth +
-                "\nmaxWidth:\t" + maxWidth);
+//        System.out.println("maxDepth:\t" + maxDepth +
+//                "\nborderWidth:\t" + borderWidth +
+//                "\nbranchingFactor:\t" + root.getBranchingFactor() +
+//                "\nbfToMaxDepth:\t" + bfToMaxDepth +
+//                "\nmaxWidth:\t" + maxWidth);
 
-        StringBuilder tree = new StringBuilder();
-        int currNode = 0;
-        int divisor;
-        for (int d = 0; d < maxDepth + 1; d++) {
-            divisor = (int) Math.pow(nodeStorage.get(currNode).getBranchingFactor(), d);
-            int numNodesOnRow = divisor;
-            int spacer = maxWidth / Math.max(2, divisor);
-            double overFlowCheck = (double) maxWidth / Math.max(2, divisor);
-            System.out.println("spacer:\t" + spacer + "\toverflow:\t" + overFlowCheck + "\tdivisor:\t" + Math.max(2, divisor));
-            StringBuilder row = new StringBuilder();
-            for (int i = 0; i < maxWidth; i++) {
-                if (i > 0 && i % spacer == 0) {
-                    System.out.println("i:\t" + i);
-                    if (currNode < nodeStorage.size() && numNodesOnRow > 0) {
-                        numNodesOnRow--;
-                        String num = Integer.toString(nodeStorage.get(currNode).getNodeNum());
-                        currNode++;
-                        StringBuilder pad = new StringBuilder();
-                        for (int j = 0; j < (charSize - num.length()); j++) {
-                            pad.append(" ");
+        if (maxWidth < 500) {
+            StringBuilder tree = new StringBuilder();
+            tree.append("\n");
+            int currNode = 0;
+            int divisor;
+            for (int d = 0; d < maxDepth + 1; d++) {
+                divisor = (int) Math.pow(nodeStorage.get(currNode).getBranchingFactor(), d);
+                int numNodesOnRow = divisor;
+                int spacer = maxWidth / Math.max(2, divisor);
+                double overFlowCheck = (double) maxWidth / Math.max(2, divisor);
+//                System.out.println("spacer:\t" + spacer + "\toverflow:\t" + overFlowCheck + "\tdivisor:\t" + Math.max(2, divisor));
+                StringBuilder row = new StringBuilder();
+                int i = 0;
+                while (i < maxWidth) {
+                    if (i > 0 && i % spacer == 0) {
+                        if (currNode < nodeStorage.size() && numNodesOnRow > 0) {
+                            numNodesOnRow--;
+                            String num = Integer.toString(nodeStorage.get(currNode).getNodeNum());
+                            currNode++;
+                            StringBuilder pad = new StringBuilder();
+                            for (int j = 0; j < (charSize - num.length()); j++) {
+                                pad.append(" ");
+                            }
+                            num = pad + num + "|";
+                            row.append(num);
+                            i += (charSize);
                         }
-                        num = pad + num;
-                        row.append(num);
-//                        double x = (overFlowCheck * (i / Math.max(2, divisor)));
-//                        if (x >= maxWidth) {
-//                            System.out.println("X:\t" + x);
-//                            break;
-//                        }
-                    }
 
+                    }
+                    else {
+                        row.append(" ");
+                    }
+                    i++;
                 }
-                else {
-                    row.append(" ");
-                }
+                row.append("\n");
+                tree.append(row);
             }
-            row.append("\n");
-            tree.append(row);
+            System.out.println("{ " + tree + " }");
         }
-        System.out.println("{ " + tree + " }");
+        else {
+            System.out.println("Tree width is too wide...");
+        }
 //        for (int i = 0; i < 49; i++) {
 //            System.out.print("0");
 //        }
@@ -337,5 +350,27 @@ public class Tree {
 
     public String toString() {
         return treeToString();
+    }
+
+    public Tree copyTree(Tree orig) {
+        Tree obj = null;
+        try {
+            // Write the object out to a byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+            out.writeObject(orig);
+            out.flush();
+            out.close();
+
+            // Make an input stream from the byte array and read
+            // a copy of the object back in.
+            ObjectInputStream in = new ObjectInputStream(
+                    new ByteArrayInputStream(bos.toByteArray()));
+            obj = (Tree) in.readObject();
+        }
+        catch(IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return obj;
     }
 }

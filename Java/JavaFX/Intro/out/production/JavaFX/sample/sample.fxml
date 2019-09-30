@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" hgap="10" prefHeight="335.0" prefWidth="508.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <Pane prefHeight="356.0" prefWidth="382.0">
+         <children>
+            <TextField id="pEqualsResultTextField" layoutX="41.0" layoutY="37.0" prefHeight="25.0" prefWidth="333.0" promptText="p" />
+            <Label id="pEqualsLabel" layoutX="18.0" layoutY="41.0" text="p =" />
+            <Label id="qEqualsLabel" layoutX="18.0" layoutY="66.0" text="q =" />
+            <TextField id="qEqualsResultTextField" layoutX="41.0" layoutY="62.0" prefHeight="25.0" prefWidth="333.0" promptText="q" />
+            <Label id="generatePrimesLabel1" layoutX="13.0" layoutY="14.0" text="1. Generate primes p and q" />
+            <Button id="generatePrimesButton" layoutX="170.0" layoutY="10.0" mnemonicParsing="false" text="Gen" />
+            <Label id="generatePrimesLabel2" layoutX="222.0" layoutY="14.0" text="( 1000 &lt; p, q &lt; 5000 )" />
+            <Label id="computeNLabel" layoutX="13.0" layoutY="96.0" text="2. Compute n=pq" />
+            <Label id="setPublicKeyELabel" layoutX="12.0" layoutY="159.0" text="3. Set a public key e" />
+            <Label id="calculatePrivateKeyDLabel" layoutX="11.0" layoutY="187.0" text="4. Calculate the private key d" />
+            <Label id="inputStringLabel" layoutX="12.0" layoutY="246.0" text="5. Input a message m" />
+            <Label id="encryptCLabel" layoutX="12.0" layoutY="275.0" text="6. Encrypt c=m^e mod n" />
+            <Label id="decryptMLabel" layoutX="13.0" layoutY="304.0" text="7. Decrypt m=c^d mod n" />
+            <Button id="computeNButton" layoutX="118.0" layoutY="92.0" mnemonicParsing="false" text="Com" />
+            <Button id="calculateDButton" layoutX="176.0" layoutY="183.0" mnemonicParsing="false" text="Cal" />
+            <Button id="encryptButton" layoutX="157.0" layoutY="270.0" mnemonicParsing="false" text="Enc" />
+            <Button id="decryptButton" layoutX="156.0" layoutY="300.0" mnemonicParsing="false" text="Dec" />
+            <TextField id="cEqualsResultTextField" layoutX="228.0" layoutY="271.0" />
+            <Label id="cEqualsLabel" layoutX="206.0" layoutY="274.0" text="c =" />
+            <Label id="mEqualsLabel2" layoutX="204.0" layoutY="304.0" text="m =" />
+            <Label id="mEqualsLabel1" layoutX="204.0" layoutY="246.0" text="m =" />
+            <TextField id="mEqualsResultTextField1" layoutX="228.0" layoutY="242.0" />
+            <TextField id="mEqualsResultTextField2" layoutX="228.0" layoutY="302.0" />
+            <Label id="dEqualsLabel" layoutX="41.0" layoutY="216.0" text="d =" />
+            <Label id="eEqualsLabel" layoutX="135.0" layoutY="159.0" text="e =" />
+            <Label id="nEqualsLabel" layoutX="41.0" layoutY="126.0" text="n =" />
+            <TextField id="dEqualsResultTextField" layoutX="64.0" layoutY="212.0" prefHeight="25.0" prefWidth="311.0" />
+            <TextField id="nEqualsResultTextField" layoutX="71.0" layoutY="122.0" prefHeight="25.0" prefWidth="304.0" />
+            <TextField id="eEqualsResultTextField" layoutX="166.0" layoutY="155.0" prefHeight="25.0" prefWidth="210.0" promptText="enter a key" />
+         </children></Pane>
+   </children>
+</GridPane>

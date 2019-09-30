@@ -2,37 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/sample/Axes.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sample/Plot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Full Screen Instructions.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFX/sample/Main$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFX/sample/Main$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFX/sample/Main$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFX/sample/Main$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFX/sample/Main$5.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFX/sample/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFX/sample/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFX/sample/RSAEncryption.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFX/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFX/sample/sample.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/RSAEncryption.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/sample.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MaxNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MaxNode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MinMaxTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MinMaxTree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MinNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MinNode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Node.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Tree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MaxNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MaxNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MinMaxTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MinMaxTree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MinNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MinNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Tree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Python/Assignment_schedule/important_dates.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/Assignment_schedule/important_dates.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Python/Assignment_schedule/important_dates_output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/Assignment_schedule/important_dates_output.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sample/RSAEncryption.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TicTacToe/TicTacToeAppReal/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../TicTacToe/TicTacToeAppReal/.idea/assetWizardSettings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TicTacToe/TicTacToeAppReal/app/src/main/java/com/example/abrig/tictactoeapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../TicTacToe/TicTacToeAppReal/app/src/main/java/com/example/abrig/tictactoeapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Python/graphical_scheduler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/graphical_scheduler/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Python/graphical_scheduler/scheduler.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/graphical_scheduler/scheduler.py" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -85,8 +59,7 @@
     <breakpoint_rules converted="true" />
   </component>
   <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
   </component>
   <component name="FavoritesManager">
     <favorites_list name="JavaFxApplication" />
@@ -96,39 +69,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="38" selection-start-line="1" selection-start-column="38" selection-end-line="1" selection-end-column="38" />
+            <state relative-caret-position="678">
+              <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
               <folding>
-                <element signature="e#1235#1236#0" expanded="true" />
-                <element signature="e#1263#1264#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#1429#1430#0" expanded="true" />
+                <element signature="e#1457#1458#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Plot.java">
+        <entry file="file://$PROJECT_DIR$/src/sample/RSAEncryption.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-828">
-              <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Axes.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="40" column="34" lean-forward="true" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1232#1233#0" expanded="true" />
-                <element signature="e#1272#1273#0" expanded="true" />
-                <element signature="e#1308#1309#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="119">
+              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
             </state>
           </provider>
         </entry>
@@ -144,12 +100,12 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="42" column="50" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="50" />
             </state>
           </provider>
+          <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
     </leaf>
@@ -172,8 +128,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/sample/Axes.java" />
-        <option value="$PROJECT_DIR$/src/sample/Plot.java" />
+        <option value="$PROJECT_DIR$/src/sample/sample.fxml" />
+        <option value="$PROJECT_DIR$/src/sample/RSAEncryption.java" />
         <option value="$PROJECT_DIR$/src/sample/Main.java" />
       </list>
     </option>
@@ -193,32 +149,7 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="JavaFX" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaFX" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaFX" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaFX" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaFX" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaFX" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sample" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="GoToClass.includeLibraries" value="false" />
@@ -228,7 +159,6 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="OverrideImplement.combined" value="false" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dynamic.classpath" value="false" />
     <property name="recentsLimit" value="5" />
@@ -339,17 +269,16 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Designer" />
-      <window_info id="Image Layers" />
-      <window_info id="UI Designer" />
-      <window_info id="Capture Tool" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" visible="true" weight="0.25416037" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6703755" weight="0.52747256" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" />
-      <window_info anchor="bottom" id="Terminal" />
+      <window_info id="Designer" order="3" />
+      <window_info id="Image Layers" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3289689" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.35188216" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -361,10 +290,7 @@
       <window_info anchor="bottom" id="Profiler" order="11" />
       <window_info anchor="bottom" id="Event Log" order="12" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.3289689" />
-      <window_info anchor="right" id="Maven" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Palette&#9;" />
-      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="bottom" id="Terminal" order="14" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -372,6 +298,10 @@
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="right" id="Palette" order="5" />
       <window_info anchor="right" id="Maven Projects" order="6" />
+      <window_info anchor="right" id="Maven" order="7" />
+      <window_info anchor="right" id="Capture Analysis" order="8" />
+      <window_info anchor="right" id="Palette&#9;" order="9" />
+      <window_info anchor="right" id="Theme Preview" order="10" />
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
@@ -383,11 +313,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/application/Application.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
+        <state relative-caret-position="138">
+          <caret line="304" column="25" selection-start-line="304" selection-start-column="25" selection-end-line="304" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -398,36 +327,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Axes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" column="34" lean-forward="true" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1232#1233#0" expanded="true" />
-            <element signature="e#1272#1273#0" expanded="true" />
-            <element signature="e#1308#1309#0" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="42" column="50" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="50" />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Plot.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/RSAEncryption.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-828">
-          <caret line="12" column="16" lean-forward="true" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="119">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="38" selection-start-line="1" selection-start-column="38" selection-end-line="1" selection-end-column="38" />
+        <state relative-caret-position="678">
+          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
           <folding>
-            <element signature="e#1235#1236#0" expanded="true" />
-            <element signature="e#1263#1264#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#1429#1430#0" expanded="true" />
+            <element signature="e#1457#1458#0" expanded="true" />
           </folding>
         </state>
       </provider>
