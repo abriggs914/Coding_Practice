@@ -5,6 +5,19 @@ class MinNode extends Node {
     MinNode(int nodeNum, int branchingFactor, ArrayList<Integer> arr) {
         super(nodeNum, branchingFactor, arr);
         this.initValue();
+        this.setIsMinNode();
+    }
+
+    MinNode(int nodeNum, int branchingFactor, int[] arrIn) {
+        super(nodeNum, branchingFactor, arrIn);
+        this.initValue();
+        this.setIsMinNode();
+    }
+
+    MinNode(int nodeNum, int branchingFactor, int val) {
+        super(nodeNum, branchingFactor, val);
+        this.initValue();
+        this.setIsMinNode();
     }
 
     void initValue() {
@@ -14,33 +27,34 @@ class MinNode extends Node {
         else {
             this.setValue(Integer.MAX_VALUE);
         }
+        this.setIsMiniMaxNode();
     }
 
-    void updateValue() {
-        ArrayList<Node> children = this.getChildren();
-        System.out.print("updating:\t" + this);
-        int thisValue = this.getValue();
-        for (Node child : children) {
-            if (child.hasChildren()) {
-                child.updateValue();
-            }
-            else {
-                int childValue = child.getValue();
-                System.out.println("thisVal: " + thisValue + ", childVal: " + childValue);
-                if (childValue < thisValue) {
-                    this.setValue(childValue);
-                    thisValue = this.getValue();
-                }
-                if (thisValue <= this.getAlpha()) {
-                    break;
-                } else if (thisValue < this.getBeta()) {
-                    this.setBeta(thisValue);
-                }
-            }
-//            child.updateValue();
-        }
-        System.out.println("\n\t->\t" + this);
-    }
+//    void updateValue() {
+//        ArrayList<Node> children = this.getChildren();
+//        System.out.print("updating:\t" + this);
+//        int thisValue = this.getValue();
+//        for (Node child : children) {
+//            if (child.hasChildren()) {
+//                child.updateValue();
+//            }
+//            else {
+//                int childValue = child.getValue();
+//                System.out.println("thisVal: " + thisValue + ", childVal: " + childValue);
+//                if (childValue < thisValue) {
+//                    this.setValue(childValue);
+//                    thisValue = this.getValue();
+//                }
+//                if (thisValue <= this.getAlpha()) {
+//                    break;
+//                } else if (thisValue < this.getBeta()) {
+//                    this.setBeta(thisValue);
+//                }
+//            }
+////            child.updateValue();
+//        }
+//        System.out.println("\n\t->\t" + this);
+//    }
 
     // returns min of children
     Node getFavouriteChild() {
@@ -69,9 +83,18 @@ class MinNode extends Node {
 //                    ",  #PimmC: " + this.parent.getNumImmediateChildren() +
 //                    ",  #Pchildren: " + this.parent.getNumChildren(this.parent) + "} ->";
 //        }
-        res += " (Min) { Node#: " + this.getNodeNum() +
+        int adjNodeNum = this.getNodeNum() + 64;
+        String letter = "";
+        while (adjNodeNum > 90) {
+            int x = (adjNodeNum / 26) / 26;
+            adjNodeNum -= 26;
+            letter += (char) (65 + x);
+        }
+        letter += (char) adjNodeNum;
+        res += " (Min) { Node#: " + this.getNodeNum() + ", ( " + letter  + " )" +
                 ",  D: " + this.getDepth() +
                 ",  #immC: " + this.getNumImmediateChildren() +
+                ",  BF: " + this.getBranchingFactor() +
                 ",  val: " + this.getValue() +
                 ",  alpha: " + this.getAlpha() +
                 ",  beta: " + this.getBeta();

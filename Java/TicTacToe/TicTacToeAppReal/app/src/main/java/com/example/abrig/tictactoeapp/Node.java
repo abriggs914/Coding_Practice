@@ -1,3 +1,5 @@
+package com.example.abrig.tictactoeapp;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +15,7 @@ public class Node {
     private boolean isMaxNode;
     private boolean isMiniMaxNode;
     private Node parent;
+    private String letterID;
 
     private int alpha;
     private int beta;
@@ -27,6 +30,7 @@ public class Node {
         this.nodeNum = nodeNum;
         this.isLeafNode = true;
         this.isMaxNode = true;
+        this.letterID = genLetterID();
         initValue();
     }
 
@@ -43,6 +47,7 @@ public class Node {
         this.nodeNum = nodeNum;
         this.isLeafNode = true;
         this.isMaxNode = true;
+        this.letterID = genLetterID();
         initValue();
     }
 
@@ -57,6 +62,7 @@ public class Node {
         this.nodeNum = nodeNum;
         this.isLeafNode = true;
         this.isMaxNode = true;
+        this.letterID = genLetterID();
         initValue();
     }
 
@@ -157,23 +163,17 @@ public class Node {
 //                    ",  #PimmC: " + this.parent.getNumImmediateChildren() +
 //                    ",  #Pchildren: " + this.parent.getNumChildren(this.parent) + "} ->";
 //        }
-        int adjNodeNum = this.getNodeNum() + 64;
-        String letter = "";
-        while (adjNodeNum > 90) {
-            int x = (adjNodeNum / 26) / 26;
-            adjNodeNum -= 26;
-            letter += (char) (65 + x);
-        }
-        letter += (char) adjNodeNum;
-        res += " { Node#: " + this.nodeNum + "( " + letter + " )" +
+        res += " { Node#: " + this.nodeNum + "( " + this.getLetterID() + " )" +
                 ",  D: " + this.getDepth() +
+                ",  BF: " + this.getBranchingFactor() +
                 ",  #immC: " + this.getNumImmediateChildren() +
                 ",  #kids: " + this.getNumChildren(this) +
-                ",  Arr: " + this.getArrSum();
-        if (this.hasChildren()) {
-            res += ",  favChild.id: " + this.getFavouriteChild().getNodeNum() +
-                   ",  score: " + this.getFavouriteChild().getArrSum();
-        }
+                ",  Arr: " + this.getArr() +
+                ", value: " + this.getValue();
+//        if (this.hasChildren()) {
+//            res += ",  favChild.id: " + this.getFavouriteChild().getNodeNum() +
+//                   ",  score: " + this.getFavouriteChild().getArrSum();
+//        }
         res += " } ";
         //  "\nARR\n" + this.getArr().toString() +
 //          "sum:\t" + this.getArrSum() + "\n";
@@ -194,7 +194,7 @@ public class Node {
     }
 
     void initValue() {
-        this.value = arrSum;
+        this.value = sum(this.getArr());
     }
 
 //    void updateValue() {
@@ -277,5 +277,39 @@ public class Node {
 
     void setIsMiniMaxNode() {
         this.isMiniMaxNode = true;
+    }
+
+    String getLetterID() {
+        return this.letterID;
+    }
+
+    public String genLetterID() {
+        int getNodeNum = this.getNodeNum();
+        int p;
+        int divides26 = getNodeNum;
+        ArrayList<Integer> digits = new ArrayList<>();
+        if (getNodeNum > 0 && getNodeNum < 27) {
+            digits.add(divides26);
+        }
+        else {
+            while (divides26 > 1) {
+                p = divides26 % 26;
+                if (p == 0) {
+                    digits.add(26);
+                }
+                else {
+                    digits.add(p);
+                }
+                divides26 /= 26;
+            }
+            if (divides26 < 27 && divides26 > 0) {
+                digits.add(divides26);
+            }
+        }
+        String letter = "";
+        for (int alphabetIdx : digits) {
+            letter = (char)  (alphabetIdx + 64) + letter;
+        }
+        return letter;
     }
 }

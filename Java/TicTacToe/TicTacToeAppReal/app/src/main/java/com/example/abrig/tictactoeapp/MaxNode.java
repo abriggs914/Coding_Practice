@@ -1,3 +1,5 @@
+package com.example.abrig.tictactoeapp;
+
 import java.util.ArrayList;
 
 class MaxNode extends Node {
@@ -74,15 +76,7 @@ class MaxNode extends Node {
 
     public String toString() {
         String res = "";
-        int adjNodeNum = this.getNodeNum() + 64;
-        String letter = "";
-        while (adjNodeNum > 90) {
-            int x = (adjNodeNum / 26) / 26;
-            adjNodeNum -= 26;
-            letter += (char) (65 + x);
-        }
-        letter += (char) adjNodeNum;
-        res += " (Max) { Node#: " + this.getNodeNum() + ", ( " + letter  + " )" +
+        res += " (Max) { Node#: " + this.getNodeNum() + ", ( " + this.getLetterID()  + " )" +
                 ",  D: " + this.getDepth() +
                 ",  #immC: " + this.getNumImmediateChildren() +
                 ",  BF: " + this.getBranchingFactor() +
@@ -90,10 +84,6 @@ class MaxNode extends Node {
                 ",  alpha: " + this.getAlpha() +
                 ",  beta: " + this.getBeta();
 //                ",  Arr: " + this.getArrSum();
-//        if (this.hasChildren()) {
-//            res += ",  favChild.id: " + this.getFavouriteChild().getNodeNum() +
-//                    ",  score: " + this.getFavouriteChild().getArrSum();
-//        }
         res += " } ";
         return res;
     }

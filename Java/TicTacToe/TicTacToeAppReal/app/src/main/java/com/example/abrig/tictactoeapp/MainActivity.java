@@ -1,5 +1,7 @@
 package com.example.abrig.tictactoeapp;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -329,11 +332,210 @@ public class MainActivity extends AppCompatActivity {
                     t++;
                 }
             }
-            naiveMove(flattenedBoard);
-//            minimaxMove(flattenedBoard);
+//            naiveMove(flattenedBoard);
+            minimaxMove(flattenedBoard);
             checkForWinner();
         }
 //
+    }
+
+    public void minimaxMove(int[] flattenedBoard) {
+        AsyncAiMove aiMove = new AsyncAiMove();
+        ((AsyncAiMove) aiMove).setFlatBoard(flattenedBoard);
+        aiMove.execute();
+    }
+
+//    public void expandTree(MinMaxTree tree, int symbol) {
+//        expandTree(tree.getRoot());
+//    }
+
+
+    public int[][] genNodeNumStorage(int x) {
+        int[][] res = new int[x][2];
+        res[0][0] = 0;
+        res[0][1] = 1;
+        for (int i = 1; i < x; i++) {
+            res[i][0] = i;
+            res[i][1] = numNodesTotalUpToDepth(i - 1) + 1;
+        }
+//        for (int i = 0; i < res.length; i++) {
+//            System.out.println(Arrays.toString(res[i]));
+//        }
+        return res;
+    }
+
+    public int numNodesTotalUpToDepth(int depth) {
+        double partA = -1.731745679 * Math.pow(depth, 7);
+        double partB = 36.74443594 * Math.pow(depth, 6);
+        double partC = 293.7221434 * Math.pow(depth, 5);
+        double partD = 1189.610725 * Math.pow(depth, 4);
+        double partE = 2541.687946 * Math.pow(depth, 3);
+        double partF = 2697.644508 * Math.pow(depth, 2);
+        double partG = 1078.860481 * depth;
+        double partH = 9.898814075 * Math.pow(10, -1);
+        double allTogether = partA + partB - partC + partD - partE + partF - partG + partH;
+        int roundedAns = (int) Math.round(allTogether);
+//        System.out.println("partA:\t" + partA);
+//        System.out.println("partB:\t" + partB);
+//        System.out.println("partC:\t" + partC);
+//        System.out.println("partD:\t" + partD);
+//        System.out.println("partE:\t" + partE);
+//        System.out.println("partF:\t" + partF);
+//        System.out.println("partG:\t" + partG);
+//        System.out.println("partH:\t" + partH);
+//        System.out.println("allTogther:\t" + allTogether);
+//        System.out.println("roundedAns:\t" + roundedAns);
+        return roundedAns;
+    }
+
+    public ArrayList<ArrayList<Integer>> genRestBoards(int symbol, ArrayList<Integer> boardIn) {
+        int[] flatBoard = arrayListToIntArray(boardIn);
+        ArrayList<Integer> availSquares = collectAvailableSquares(flatBoard);
+        int numAvailSquares = availSquares.size();
+        ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < numAvailSquares; i++) {
+            ArrayList<Integer> markedBoard = copyArrayList(boardIn);
+            markedBoard.set(i, symbol);
+            int tempSymbol = symbol;
+            for (int j = i + 1; j < numAvailSquares; j++) {
+                tempSymbol = ((tempSymbol == 1)? 3 : 1);
+                markedBoard.set(j, tempSymbol);
+            }
+            res.add(markedBoard);
+        }
+        return res;
+    }
+
+    public ArrayList<Integer> selectRandomBoard(int symbol, ArrayList<Integer> boardIn) {
+        ArrayList<ArrayList<Integer>> otherConfigs = genRestBoards(symbol, boardIn);
+        Random rnd = new Random();
+        if (otherConfigs.size() < 1) {
+            return boardIn;
+        }
+        else {
+            int rndInt = rnd.nextInt(otherConfigs.size());
+            return otherConfigs.get(rndInt);
+        }
+    }
+
+    public void expandNode(int initialDepth,
+                           int depthLimit,
+                           int initialSymbol,
+                           int symbol,
+                           Node currNode,
+                           MinMaxTree tree,
+                           int[][] nodeNumStorage) {
+
+        int nodeNum = nodeNumStorage[currNode.getDepth() + 1][1];
+
+        if (currNode.getDepth() - initialDepth >= depthLimit) {
+            ArrayList<Integer> randomBoardConfig = selectRandomBoard(symbol, currNode.getArr());
+            Node monteCarloLeaf = new Node(nodeNum,0, randomBoardConfig);
+//            System.out.println("MONTE-CARLO NODE# " + nodeNum);
+
+            int[][] currBoardStatus = new int[3][3];
+            for (int i = 0; i < randomBoardConfig.size(); i++) {
+                int r = i / 3;
+                int c = i % 3;
+                currBoardStatus[r][c] = randomBoardConfig.get(i);
+            }
+            int gameResult = checkBoardForWinner(currBoardStatus);
+            int value;
+            // no winner      -1, new board found
+            // draw            4, full board found
+            // winnerFound ==  1, X won
+            // winnerFound ==  2, no winner
+            // winnerFound ==  3, O won
+            if (gameResult == 4) {
+                value = 0;
+            }
+            else if (gameResult == initialSymbol) {
+                value = 10;
+            }
+            else if (((initialSymbol == 1) ? 3 : 1) == gameResult) {
+                value = -10;
+            }
+            else {
+                System.out.println("GAME RESULT OTHER THAN 1,3, or 4.");
+                value = 0;
+            }
+            System.out.println("initialSymbol:\t" + initialSymbol + "\tgameResult:\t" + gameResult + "\tvalue:\t" + value + "\nrandomBoardConfig:\t" + randomBoardConfig);
+            monteCarloLeaf.setValue(value);
+
+            tree.addNodeToTree(monteCarloLeaf, currNode);
+            nodeNumStorage[currNode.getDepth() + 1][1]++;
+        }
+        else {
+            boolean childIsMaxNode = !currNode.getIsMaxNode();
+            ArrayList<Integer> availSquaresAL = currNode.getArr();
+            int[] availSquares = arrayListToIntArray(availSquaresAL);
+            ArrayList<Integer> availableIndexes = collectAvailableSquares(availSquares);
+            for (int i = 0; i < currNode.getBranchingFactor(); i++) {
+                Node newNode;
+                nodeNum = nodeNumStorage[currNode.getDepth() + 1][1];
+                ArrayList<Integer> markedBoard = copyArrayList(currNode.getArr());
+//                System.out.println("markedBaord:\t" + markedBoard);
+                markedBoard.set(availableIndexes.get(i), symbol);
+                if (childIsMaxNode) {
+                    newNode = new MaxNode(nodeNum, currNode.getBranchingFactor() - 1, markedBoard);
+                } else {
+                    newNode = new MinNode(nodeNum, currNode.getBranchingFactor() - 1, markedBoard);
+                }
+                int[][] currBoardStatus = new int[3][3];
+                for (int j = 0; j < markedBoard.size(); j++) {
+                    int r = j / 3;
+                    int c = j % 3;
+                    currBoardStatus[r][c] = markedBoard.get(i);
+                }
+                int gameResult = checkBoardForWinner(currBoardStatus);
+                int value;
+                // no winner      -1, new board found
+                // draw            4, full board found
+                // winnerFound ==  1, X won
+                // winnerFound ==  2, no winner
+                // winnerFound ==  3, O won
+                if (gameResult == symbol) {
+                    value = 10;
+                }
+                else if (((symbol == 1) ? 3 : 1) == gameResult) {
+                    value = -10;
+                }
+                else {
+                    value = 0;
+                }
+//                System.out.println("Symbol:\t" + symbol + "\tgameResult:\t" + gameResult + "\tvalue:\t" + value);
+                newNode.setValue(value);
+                tree.addNodeToTree(newNode, currNode);
+//                System.out.println("NEWNODE:\t" + newNode);
+                nodeNumStorage[currNode.getDepth() + 1][1]++;
+            }
+            int nextMoveSymbol = ((symbol == 1) ? 3 : 1);
+            for (Node child : currNode.getChildren()) {
+                expandNode(initialDepth, depthLimit, initialSymbol, nextMoveSymbol, child, tree, nodeNumStorage);
+            }
+        }
+    }
+
+    private int[] arrayListToIntArray(ArrayList<Integer> arr) {
+        int [] res = new int[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            res[i] = arr.get(i);
+        }
+        return res;
+    }
+
+    public ArrayList<MinMaxTree> genNTrees(ArrayList<Integer> availSquares, int symbol) {
+        int computerSymbol = ((playerSymbolIsX)? 3 : 1);
+        ArrayList<MinMaxTree> trees = new ArrayList<>();
+        ArrayList<Integer> markedBoard = copyArrayList(availSquares);
+        for (int i = 0; i < availSquares.size(); i++) {
+            int availSquare = availSquares.get(i);
+            markedBoard.set(availSquare, symbol);
+            int bf = ((availSquares.size() - 1 <= 0)? 0 : availSquares.size() - 1);
+            MinMaxTree newTree = new MinMaxTree("branch # " + i, bf, markedBoard, true);
+            trees.add(newTree);
+        }
+        return trees;
     }
 
 //    public void minimaxMove(int[] flattenedBoard) {
@@ -939,6 +1141,69 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             getPlayerToChooseSymbol();
+        }
+    }
+
+    private class AsyncAiMove extends AsyncTask<Void, Integer, Void> {
+
+        int[] flattenedBoard;
+        int selectedSquare;
+
+        private void setFlatBoard(int[] boardIn) {
+            this.flattenedBoard = boardIn;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            System.out.println("PRE EXECUTE");
+            this.selectedSquare = -1;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ArrayList<Integer> availableSquares = collectAvailableSquares(flattenedBoard);
+//        ArrayList<Integer> availSquaresCopy = copyArrayList(availableSquares);
+            boolean isMaxNode = false;
+            // hard coded, won't support a game version where the cpu can go first. (see call to expandNode() below)
+            int computerSymbol = ((playerSymbolIsX)? 3 : 1);
+            int playerSymbol = ((playerSymbolIsX)? 1 : 3);
+            int whosMove = computerSymbol;
+            int bf = availableSquares.size();
+            MinNode root = new MinNode(1, bf, flattenedBoard);
+            MinMaxTree tree = new MinMaxTree("MiniMax Tree CPU choice", root, root.getIsMaxNode());
+//            System.out.println("NEW TREE\n" + tree);
+            int[][] nodeNumStorage = genNodeNumStorage(bf + 2);
+            expandNode(0, 4, computerSymbol, whosMove, tree.getRoot(), tree, nodeNumStorage);
+//            System.out.println(tree);
+            tree.doMiniMax();
+            tree.pruneTree();
+            tree = tree.getPrunedTree();
+            ArrayList<Node> bestPath = tree.getPathToBestValue();
+            Node nodeSelected = bestPath.get(1);
+            ArrayList<Integer> selectedBoardState = nodeSelected.getArr();
+            System.out.println("flattenedBoard:\t" + Arrays.toString(flattenedBoard));
+            System.out.println("selectedBoardState:\t" + selectedBoardState);
+            System.out.println("bestPath:\t" + bestPath);
+            System.out.println("root.getChildren():\t" + tree.getRoot().getChildren());
+            for (int i = 0; i < selectedBoardState.size(); i++) {
+                if (selectedBoardState.get(i) != flattenedBoard[i]) {
+                    this.selectedSquare = i;
+                    System.out.println("i:\t" + i);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            aiMoveChoice(selectedSquare, flattenedBoard.length);
         }
     }
 }

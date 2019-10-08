@@ -1,4 +1,7 @@
+package com.example.abrig.tictactoeapp;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -219,7 +222,22 @@ class MinMaxTree extends Tree {
                 }
             }
         }
-        return path;
+        Collections.reverse(path);
+        ArrayList<Node> finalPath = new ArrayList<>();
+        Node tempNode = path.get(0);
+        for (int i = 0; i < path.size(); i++) {
+            Node lstMember = path.get(i);
+            finalPath.add(lstMember);
+            tempNode = lstMember.getParent();
+            i++;
+            while (i < path.size() && (path.get(i) != tempNode)) {
+                System.out.println("path.get(" + i + "):\t" + path.get(i) + "\ttempNode:\t" + tempNode);
+                i++;
+            }
+        }
+        Collections.reverse(finalPath);
+        System.out.println("finalPath:\t" + finalPath);
+        return finalPath;
     }
 
     MinMaxTree getPrunedTree() {

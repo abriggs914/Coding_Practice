@@ -2,93 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae8b6651-c04b-4f64-bc03-8d7537c27b36" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../JavaFX/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/.idea/description.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/JavaFX.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/out/production/JavaFX/sample/Controller.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/out/production/JavaFX/sample/Main$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/out/production/JavaFX/sample/Main$2.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/out/production/JavaFX/sample/Main$3.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/out/production/JavaFX/sample/Main$4.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/out/production/JavaFX/sample/Main$5.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/out/production/JavaFX/sample/Main.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/out/production/JavaFX/sample/RSAEncryption.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/out/production/JavaFX/sample/sample.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/src/sample/Controller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/src/sample/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/src/sample/RSAEncryption.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../JavaFX/src/sample/sample.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/Chocolate.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/Chocolate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/FizzBuzz.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/FizzBuzz.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/MultiplicationTable.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/MultiplicationTable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/Reversing.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/Reversing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/SwapElementsInMatrix.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/SwapElementsInMatrix.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/areaFloorSpace.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stepik Adaptive Java/areaFloorSpace.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.project" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/.classpath" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/.project" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/src/BoardState.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/src/BoardState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/src/SimTicTacToe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/src/TicTacToe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/src/TicTacToe.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/src/TicTacToe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/src/TicTacToeDriver.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Java App/src/TicTacToeDriver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TicTacToe.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TicTacToeAppReal/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TicTacToeAppReal/app/src/main/java/com/example/abrig/tictactoeapp/TicTacToeException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TicTacToeAppReal/app/src/main/res/drawable/red_selected_o_24dp.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TicTacToeAppReal/app/src/main/res/drawable/red_selected_x_24dp.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/DNASequencing Strings/DNASequencing.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/DNASequencing Strings/DNASequencing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/Polymorphism/Dinner/BiangBiang.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/Polymorphism/Dinner/BiangBiang.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/Polymorphism/Dinner/Dinner.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/Polymorphism/Dinner/Dinner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/Polymorphism/Dinner/Noodle.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/Polymorphism/Dinner/Noodle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/Polymorphism/Language/Language.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/Polymorphism/Language/Mayan.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/Polymorphism/Language/SinoTibetan.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/PrimeDirective/PrimeDirective.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/PrimeDirective/PrimeDirective.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/TransitCalculator/TransitCalculator.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/TransitCalculator/TransitCalculator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../codecademy/TransitCalculator/best-fare-calculator-starting.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Python/Assignment_schedule/important_dates.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Python/Hand_and_foot/.idea/Hand_and_foot.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Python/Hand_and_foot/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Python/Hand_and_foot/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Python/Hand_and_foot/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Python/Hand_and_foot/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Python/Hand_and_foot/card.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Python/Hand_and_foot/deck.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Python/Hand_and_foot/hand.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CourseWeb/CourseWeb.class" beforeDir="false" afterPath="$PROJECT_DIR$/../CourseWeb/CourseWeb.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CourseWeb/CourseWeb.java" beforeDir="false" afterPath="$PROJECT_DIR$/../CourseWeb/CourseWeb.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicTacToeAppReal/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeAppReal/.idea/assetWizardSettings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TicTacToeAppReal/app/src/main/java/com/example/abrig/tictactoeapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/TicTacToeAppReal/app/src/main/java/com/example/abrig/tictactoeapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Python/graphical_scheduler/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/graphical_scheduler/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Python/graphical_scheduler/scheduler.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/graphical_scheduler/scheduler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MaxNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MaxNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MinMaxTree.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MinMaxTree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MinNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/MinNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/out/production/Traversing The Tree/Tree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MaxNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MaxNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MinMaxTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MinMaxTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MinNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/MinNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LinkedList/Traversing The Tree/src/Tree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Java App/src/TicTacToe.class" beforeDir="false" afterPath="$PROJECT_DIR$/Java App/src/TicTacToe.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Python/Graph Searching/Dijkstra/dijkstra.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/Graph Searching/Dijkstra/dijkstra.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -105,16 +34,23 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Java App/src/TicTacToe.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="129" column="9" lean-forward="true" selection-start-line="129" selection-start-column="9" selection-end-line="129" selection-end-column="9" />
+            <state relative-caret-position="120">
+              <caret line="22" column="30" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#7165#7166#0" expanded="true" />
                 <element signature="e#7202#7203#0" expanded="true" />
+                <element signature="e#7240#7241#0" expanded="true" />
                 <element signature="e#7279#7280#0" expanded="true" />
+                <element signature="e#7316#7317#0" expanded="true" />
                 <element signature="e#7352#7353#0" expanded="true" />
+                <element signature="e#7393#7394#0" expanded="true" />
                 <element signature="e#7427#7428#0" expanded="true" />
+                <element signature="e#9187#9188#0" expanded="true" />
                 <element signature="e#9248#9249#0" expanded="true" />
+                <element signature="e#9284#9285#0" expanded="true" />
                 <element signature="e#9324#9325#0" expanded="true" />
+                <element signature="e#9743#9744#0" expanded="true" />
                 <element signature="e#9783#9784#0" expanded="true" />
                 <element signature="method#checkHorizontal#0;class#TicTacToe#0" />
                 <element signature="method#checkVertical#0;class#TicTacToe#0" />
@@ -128,16 +64,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Java App/src/BoardState.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
+            <state relative-caret-position="663">
               <caret line="52" column="35" selection-start-line="52" selection-start-column="32" selection-end-line="52" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1074#1075#0" expanded="true" />
                 <element signature="e#1112#1113#0" expanded="true" />
+                <element signature="e#1145#1146#0" expanded="true" />
                 <element signature="e#1178#1179#0" expanded="true" />
-                <element signature="e#1050#1051#0" expanded="true" />
-                <element signature="e#1076#1077#0" expanded="true" />
-                <element signature="e#998#999#0" expanded="true" />
-                <element signature="e#1035#1036#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -145,17 +79,13 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Java App/src/ttt.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="96696" column="2" lean-forward="true" selection-start-line="96696" selection-start-column="2" selection-end-line="96696" selection-end-column="2" />
-            </state>
-          </provider>
+          <provider selected="true" editor-type-id="LargeFileEditor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Java App/src/TicTacToeDriver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
+            <state relative-caret-position="187">
               <caret line="164" selection-start-line="164" selection-end-line="164" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -167,7 +97,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Java App/src/SimTicTacToe.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
+            <state relative-caret-position="340">
               <caret line="36" column="51" selection-start-line="36" selection-start-column="51" selection-end-line="36" selection-end-column="51" />
             </state>
           </provider>
@@ -188,6 +118,7 @@
       <find>expandTree</find>
       <find>new</find>
       <find>exp</find>
+      <find>new b</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -217,7 +148,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -240,12 +170,14 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -285,7 +217,7 @@
     <frame x="-8" y="-8" width="1386" height="788" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26093516" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2647059" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -316,9 +248,16 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/TicTacToe" />
     <entry file="file://$PROJECT_DIR$/TicTacToeDriver.java" />
+    <entry file="file://$PROJECT_DIR$/Java App/src/SimTicTacToe.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="36" column="51" selection-start-line="36" selection-start-column="51" selection-end-line="36" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Java App/src/TicTacToeDriver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
+        <state relative-caret-position="187">
           <caret line="164" selection-start-line="164" selection-end-line="164" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -327,47 +266,46 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Java App/src/ttt.txt">
-      <provider selected="true" editor-type-id="text-editor">
+      <provider editor-type-id="text-editor">
         <state relative-caret-position="186">
           <caret line="96696" column="2" lean-forward="true" selection-start-line="96696" selection-start-column="2" selection-end-line="96696" selection-end-column="2" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Java App/src/SimTicTacToe.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="36" column="51" selection-start-line="36" selection-start-column="51" selection-end-line="36" selection-end-column="51" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="LargeFileEditor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Java App/src/BoardState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
+        <state relative-caret-position="663">
           <caret line="52" column="35" selection-start-line="52" selection-start-column="32" selection-end-line="52" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1074#1075#0" expanded="true" />
             <element signature="e#1112#1113#0" expanded="true" />
+            <element signature="e#1145#1146#0" expanded="true" />
             <element signature="e#1178#1179#0" expanded="true" />
-            <element signature="e#1050#1051#0" expanded="true" />
-            <element signature="e#1076#1077#0" expanded="true" />
-            <element signature="e#998#999#0" expanded="true" />
-            <element signature="e#1035#1036#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Java App/src/TicTacToe.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="129" column="9" lean-forward="true" selection-start-line="129" selection-start-column="9" selection-end-line="129" selection-end-column="9" />
+        <state relative-caret-position="120">
+          <caret line="22" column="30" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#7165#7166#0" expanded="true" />
             <element signature="e#7202#7203#0" expanded="true" />
+            <element signature="e#7240#7241#0" expanded="true" />
             <element signature="e#7279#7280#0" expanded="true" />
+            <element signature="e#7316#7317#0" expanded="true" />
             <element signature="e#7352#7353#0" expanded="true" />
+            <element signature="e#7393#7394#0" expanded="true" />
             <element signature="e#7427#7428#0" expanded="true" />
+            <element signature="e#9187#9188#0" expanded="true" />
             <element signature="e#9248#9249#0" expanded="true" />
+            <element signature="e#9284#9285#0" expanded="true" />
             <element signature="e#9324#9325#0" expanded="true" />
+            <element signature="e#9743#9744#0" expanded="true" />
             <element signature="e#9783#9784#0" expanded="true" />
             <element signature="method#checkHorizontal#0;class#TicTacToe#0" />
             <element signature="method#checkVertical#0;class#TicTacToe#0" />

@@ -1,4 +1,4 @@
-/*package whatever //do not write package name here */
+package com.example.abrig.tictactoeapp;/*package whatever //do not write package name here */
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -34,7 +34,7 @@ public class Tree {
     // Returns an ArrayList containing visited nodes on the way to
     // the target node.
     ArrayList<Node> depthFirstSearch(Node target) {
-        return depthFirstSearchHelper(root, target, new ArrayList<>());
+        return depthFirstSearchHelper(root, target, new ArrayList<Node>());
     }
 
     private ArrayList<Node> depthFirstSearchHelper(Node start, Node target, ArrayList<Node> visited) {
@@ -136,7 +136,7 @@ public class Tree {
     }
 
     ArrayList<Node> depthLimitedSearch(int limit, Node target) {
-        ArrayList<Node> dfsRes = depthLimitedSearchHelper(limit, root, target, new ArrayList<>());
+        ArrayList<Node> dfsRes = depthLimitedSearchHelper(limit, root, target, new ArrayList<Node>());
 //        if (dfsRes.size() == 0) {
 //            System.out.println("REACHED END - NO PATH");
 //
@@ -243,7 +243,7 @@ public class Tree {
     void addNodeToTree(Node newNode, Node parent) {
         String numID = Integer.toString(parent.getNodeNum());
         parent = nodeStorage.get(numID);
-        System.out.println("numID:\t" + numID + parent);
+//        System.out.println("numID:\t" + numID + parent);
         boolean addResult = tryToAdd(newNode, parent);
         String extra = "";
         if (!addResult) {

@@ -1,20 +1,25 @@
+package com.example.abrig.tictactoeapp;
+
 import java.util.ArrayList;
 
-class MaxNode extends Node {
+class MinNode extends Node {
 
-    MaxNode(int nodeNum, int branchingFactor, ArrayList<Integer> arr) {
+    MinNode(int nodeNum, int branchingFactor, ArrayList<Integer> arr) {
         super(nodeNum, branchingFactor, arr);
         this.initValue();
+        this.setIsMinNode();
     }
 
-    MaxNode(int nodeNum, int branchingFactor, int[] arrIn) {
+    MinNode(int nodeNum, int branchingFactor, int[] arrIn) {
         super(nodeNum, branchingFactor, arrIn);
         this.initValue();
+        this.setIsMinNode();
     }
 
-    MaxNode(int nodeNum, int branchingFactor, int val) {
+    MinNode(int nodeNum, int branchingFactor, int val) {
         super(nodeNum, branchingFactor, val);
         this.initValue();
+        this.setIsMinNode();
     }
 
     void initValue() {
@@ -22,7 +27,7 @@ class MaxNode extends Node {
             this.setValue(this.getArrSum());
         }
         else {
-            this.setValue(Integer.MIN_VALUE);
+            this.setValue(Integer.MAX_VALUE);
         }
         this.setIsMiniMaxNode();
     }
@@ -38,14 +43,14 @@ class MaxNode extends Node {
 //            else {
 //                int childValue = child.getValue();
 //                System.out.println("thisVal: " + thisValue + ", childVal: " + childValue);
-//                if (childValue > thisValue) {
+//                if (childValue < thisValue) {
 //                    this.setValue(childValue);
 //                    thisValue = this.getValue();
 //                }
-//                if (thisValue >= this.getBeta()) {
+//                if (thisValue <= this.getAlpha()) {
 //                    break;
-//                } else if (thisValue > this.getAlpha()) {
-//                    this.setAlpha(thisValue);
+//                } else if (thisValue < this.getBeta()) {
+//                    this.setBeta(thisValue);
 //                }
 //            }
 ////            child.updateValue();
@@ -53,36 +58,28 @@ class MaxNode extends Node {
 //        System.out.println("\n\t->\t" + this);
 //    }
 
-    // returns max of children
+    // returns min of children
     Node getFavouriteChild() {
         ArrayList<Node> children = this.getChildren();
-        int maxNodeVal = Integer.MIN_VALUE;
-        Node maxChild = null;
+        int minNodeVal = Integer.MAX_VALUE;
+        Node minChild = null;
         for (Node child : children) {
-            if (child.getArrSum() > maxNodeVal) {
-                maxNodeVal = child.getArrSum();
-                maxChild = child;
+            if (child.getArrSum() < minNodeVal) {
+                minNodeVal = child.getArrSum();
+                minChild = child;
             }
         }
-        if (maxChild == null) {
+        if (minChild == null) {
             return this;
         }
         else {
-            return maxChild;
+            return minChild;
         }
     }
 
     public String toString() {
         String res = "";
-        int adjNodeNum = this.getNodeNum() + 64;
-        String letter = "";
-        while (adjNodeNum > 90) {
-            int x = (adjNodeNum / 26) / 26;
-            adjNodeNum -= 26;
-            letter += (char) (65 + x);
-        }
-        letter += (char) adjNodeNum;
-        res += " (Max) { Node#: " + this.getNodeNum() + ", ( " + letter  + " )" +
+        res += " (Min) { Node#: " + this.getNodeNum() + ", ( " + this.getLetterID()  + " )" +
                 ",  D: " + this.getDepth() +
                 ",  #immC: " + this.getNumImmediateChildren() +
                 ",  BF: " + this.getBranchingFactor() +
@@ -90,10 +87,6 @@ class MaxNode extends Node {
                 ",  alpha: " + this.getAlpha() +
                 ",  beta: " + this.getBeta();
 //                ",  Arr: " + this.getArrSum();
-//        if (this.hasChildren()) {
-//            res += ",  favChild.id: " + this.getFavouriteChild().getNodeNum() +
-//                    ",  score: " + this.getFavouriteChild().getArrSum();
-//        }
         res += " } ";
         return res;
     }
