@@ -420,5 +420,7 @@ appointments = [("CS3113", "MON WED FRI", "8:30 AM", "9:20 AM", "GH C122"),
                 ("CS3035", "TUE THU", "8:30 AM", "9:50 AM", "HH 206"),
                 ("CS4725", "MON WED FRI", "12:30 PM", "1:20 PM", "GH C112"),
                 ("CS4725 LAB", "FRI", "2:30 PM", "4:20 PM", "ITC 415")]
+
+# appointments = [("Dinner", "MON", "12:30 PM", "2:00 PM", "Gram & Gramps")]
 class_schedule = Schedule(appointments)
 print(class_schedule)

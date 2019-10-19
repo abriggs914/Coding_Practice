@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6ebe7b1-e2c0-45e9-9555-d98fac3657ed" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../Java/JavaFX/src/sample/RSAEncryption.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Java/TicTacToe/TicTacToeAppReal/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Java/TicTacToe/TicTacToeAppReal/app/src/main/java/com/example/abrig/tictactoeapp/TicTacToeException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Hand_and_foot/.idea/Hand_and_foot.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Hand_and_foot/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Hand_and_foot/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Hand_and_foot/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Hand_and_foot/card.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Hand_and_foot/deck.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Hand_and_foot/hand.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Java/CourseWeb/CourseWeb.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../Java/CourseWeb/CourseWeb.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Java/CourseWeb/CourseWeb.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Java/CourseWeb/CourseWeb.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Java/TicTacToe/TicTacToeAppReal/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Java/TicTacToe/TicTacToeAppReal/.idea/assetWizardSettings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Java/TicTacToe/TicTacToeAppReal/app/src/main/java/com/example/abrig/tictactoeapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Java/TicTacToe/TicTacToeAppReal/app/src/main/java/com/example/abrig/tictactoeapp/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Assignment_schedule/important_dates.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Assignment_schedule/important_dates.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Assignment_schedule/important_dates_output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Assignment_schedule/important_dates_output.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler.py" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +17,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scheduler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="417" column="71" selection-start-line="417" selection-start-column="71" selection-end-line="417" selection-end-column="71" />
+            <state relative-caret-position="226">
+              <caret line="413" column="3" selection-start-line="413" selection-start-column="3" selection-end-line="413" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -158,13 +145,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.898527" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.4222586" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -181,8 +169,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/scheduler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="417" column="71" selection-start-line="417" selection-start-column="71" selection-end-line="417" selection-end-column="71" />
+        <state relative-caret-position="226">
+          <caret line="413" column="3" selection-start-line="413" selection-start-column="3" selection-end-line="413" selection-end-column="3" />
         </state>
       </provider>
     </entry>

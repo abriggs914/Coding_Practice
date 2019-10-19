@@ -170,7 +170,6 @@ public class CourseWeb{
   */
   public static void printLstCoursesWithPreReqs(){
     for(int i = 0; i < courseList.size(); i++){
-      System.out.println("\n\tCourse: " + courseList.get(i).getName());
       ArrayList<Course> res = collectCoursePreReqs(courseList.get(i));
       ArrayList<Course> preReqs = new ArrayList<Course>();
       // preReqs.clear();
@@ -181,6 +180,7 @@ public class CourseWeb{
         }
       }
       sortCoursesByCourseNum(preReqs);
+      System.out.println("\n\tCourse: " + courseList.get(i).getName() + " [ " + preReqs.size() + " ] prereqs");
       preReqs.forEach((c) -> System.out.println(c));
     }
   }
