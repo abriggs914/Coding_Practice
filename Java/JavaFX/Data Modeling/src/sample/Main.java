@@ -1,24 +1,16 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
@@ -45,7 +37,7 @@ public class Main extends Application {
                 scene = new Scene(borderPane, 800, 550);
                 menu = new GenMenuBar(getMenuContents()).getMenuBar();
                 dataModeler = new DataModeler(getDataToModel());
-                dataViewer = new DataViewer();
+//                dataViewer = new DataViewer();
 //            }
 
             borderPane.setTop(menu);
@@ -53,7 +45,16 @@ public class Main extends Application {
 //
 //            hbox.getChildren().addAll(dateLabel, dataViewer);
 //            borderPane.setCenter(hbox);
-            borderPane.setCenter(dataViewer);
+//            borderPane.setCenter(dataViewer);
+
+            // initialize toolbars
+            HBox toolbars = new HBox();
+            VBox vBox = new VBox();
+            toolbars.getChildren().addAll();
+            toolbars.setSpacing(50);
+            toolbars.getChildren().addAll(new BarsToolBar(), new SimToolBar());
+            vBox.getChildren().addAll(toolbars, new View());
+            borderPane.setCenter(toolbars);
 
             primaryStage.setTitle("Data Modeling");
             primaryStage.setScene(scene);
@@ -62,33 +63,33 @@ public class Main extends Application {
 
             ArrayList<String> days = Main.dataModeler.getDataSets().get(0).getSortedDates();
 
-            Service<Void> service = new Service<Void>() {
-                @Override
-                protected Task<Void> createTask() {
-                    return new Task<Void>() {
-                        @Override
-                        protected Void call() throws Exception {
-                            //Background work
-                            final CountDownLatch latch = new CountDownLatch(1);
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try{
-                                        //FX Stuff done here
-                                        dataViewer.dateLabel.setText("I HAVE BEEN CHANGED");
-                                    }finally{
-                                        latch.countDown();
-                                    }
-                                }
-                            });
-                            latch.await();
-                            //Keep with the background work
-                            return null;
-                        }
-                    };
-                }
-            };
-            service.start();
+//            Service<Void> service = new Service<Void>() {
+//                @Override
+//                protected Task<Void> createTask() {
+//                    return new Task<Void>() {
+//                        @Override
+//                        protected Void call() throws Exception {
+//                            //Background work
+//                            final CountDownLatch latch = new CountDownLatch(1);
+//                            Platform.runLater(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    try{
+//                                        //FX Stuff done here
+//                                        dataViewer.dateLabel.setText("I HAVE BEEN CHANGED");
+//                                    }finally{
+//                                        latch.countDown();
+//                                    }
+//                                }
+//                            });
+//                            latch.await();
+//                            //Keep with the background work
+//                            return null;
+//                        }
+//                    };
+//                }
+//            };
+//            service.start();
 
 
 

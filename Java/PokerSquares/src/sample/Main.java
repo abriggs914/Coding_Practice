@@ -21,11 +21,17 @@ public class Main extends Application {
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(80);
         imageView.setFitWidth(150);
+
 //        borderPane.setCenter(imageView);
-        borderPane.setCenter(new CardViews());
-        Scene scene = new Scene(borderPane, 300, 275);
+
+//        borderPane.setCenter(new CardViews());
+
+        borderPane.setCenter(new BoardView(5,5,550, 600));
+
+        Scene scene = new Scene(borderPane, 400, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setMaximized(true);
     }
 
     public static void main(String[] args) {

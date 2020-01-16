@@ -13,16 +13,18 @@ public class CardViews extends BorderPane {
     private HBox diamondsHBox;
     private HBox spadesHBox;
     private HBox clubsHBox;
+    private HBox cardBacks;
     private VBox grid;
 
     public CardViews() {
         init();
-        grid.getChildren().addAll(heartsHBox, spadesHBox, diamondsHBox, clubsHBox);
+        grid.getChildren().addAll(heartsHBox, spadesHBox, diamondsHBox, clubsHBox, cardBacks);
         this.setCenter(grid);
     }
 
     public void init() {
         grid = new VBox();
+        cardBacks = new HBox();
         heartsHBox = new HBox();
         diamondsHBox = new HBox();
         spadesHBox = new HBox();
@@ -32,11 +34,13 @@ public class CardViews extends BorderPane {
         setClubs();
         setDiamonds();
         setSpades();
+        setBacks();
 
         setBounds(heartsHBox);
         setBounds(spadesHBox);
         setBounds(diamondsHBox);
         setBounds(clubsHBox);
+        setBounds(cardBacks);
     }
 
     private void setBounds(HBox hBox) {
@@ -45,6 +49,11 @@ public class CardViews extends BorderPane {
             i.setFitWidth(60);
             i.setFitHeight(90);
         }
+    }
+
+    public void setBacks() {
+        ImageView blueBackYellowDiamonds = new ImageView(new Image("resources/back_blue_&_yellow_diamonds.png"));
+        cardBacks.getChildren().addAll(blueBackYellowDiamonds);
     }
 
     public void setHearts() {

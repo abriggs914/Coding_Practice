@@ -96,6 +96,8 @@ public class DataSet{
     public Paint getColor() {
         return this.color;
     }
+
+    public void setColor(Color c) { this.color = c; }
 }
 
 //    private HashMap<String, ArrayList<Double>> processData(HashMap<String, Double> dataPoints) {

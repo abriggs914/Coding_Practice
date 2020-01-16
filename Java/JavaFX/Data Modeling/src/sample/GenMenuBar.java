@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * MenuBar buttons and functionality. Used for loading datasets
+ * and program controlling.
+ */
+
 class GenMenuBar {
 
     private MenuBar menuBar;
