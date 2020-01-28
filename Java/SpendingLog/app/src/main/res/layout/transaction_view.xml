@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/transactionLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/create_a_new_transaction"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/tableLayout4"
+        android:layout_width="365dp"
+        android:layout_height="372dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/transactionSaveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transactionLabelTextView">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:padding="10dp">
+
+            <TextView
+                android:id="@+id/transactionSenderTextView"
+                android:layout_width="132dp"
+                android:layout_height="wrap_content"
+                android:text="@string/sender"
+                tools:layout_margin="5dp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/transactionSenderAutoTextView"
+                android:layout_width="188dp"
+                android:layout_height="wrap_content"
+                android:completionHint="Select a sender"
+                tools:layout_margin="5dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:padding="10dp">
+
+            <TextView
+                android:id="@+id/transactionReceiverTextView"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:text="@string/receiver"
+                tools:layout_margin="5dp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/transactionReceiverAutoTextView"
+                android:layout_width="133dp"
+                android:layout_height="wrap_content"
+                android:completionHint="Select a receiver"
+                tools:layout_margin="5dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:padding="10dp">
+
+            <TextView
+                android:id="@+id/transactionAmountTextView"
+                android:layout_width="141dp"
+                android:layout_height="wrap_content"
+                android:text="@string/transaction_amount"
+                tools:layout_margin="5dp" />
+
+            <EditText
+                android:id="@+id/transactionAmountEditText"
+                android:layout_width="126dp"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/enter_transaction_amount"
+                android:ems="10"
+                android:inputType="numberSigned"
+                tools:layout_margin="5dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:padding="10dp">
+
+            <TextView
+                android:id="@+id/transactionOneTimeTextView"
+                android:layout_width="131dp"
+                android:layout_height="wrap_content"
+                android:text="@string/reoccurring"
+                tools:layout_margin="5dp"
+                tools:paddingBottom="15dp" />
+
+            <Switch
+                android:id="@+id/transactionOnetimeSwitch"
+                android:layout_width="139dp"
+                android:layout_height="wrap_content"
+                tools:layout_margin="5dp"
+                tools:padding="5dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:padding="10dp">
+
+            <TextView
+                android:id="@+id/transactionOccurringTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/occurring"
+                tools:layout_margin="5dp"
+                tools:padding="10dp" />
+
+            <Spinner
+                android:id="@+id/transactionOccurringSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_marginTop="20dp"
+                tools:padding="10dp" />
+
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/transactionSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="36dp"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/transactionClearFormButton"
+        app:layout_constraintHorizontal_bias="0.636"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout4" />
+
+    <Button
+        android:id="@+id/transactionClearFormButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginBottom="36dp"
+        android:text="@string/clear"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/viewAllTransactionsButton"
+        app:layout_constraintStart_toEndOf="@+id/transactionSaveButton"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout4" />
+
+    <Button
+        android:id="@+id/viewAllTransactionsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="36dp"
+        android:text="@string/view_all"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/transactionClearFormButton"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout4" />
+
+</android.support.constraint.ConstraintLayout>
