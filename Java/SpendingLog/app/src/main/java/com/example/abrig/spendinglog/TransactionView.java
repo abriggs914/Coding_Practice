@@ -2,6 +2,7 @@ package com.example.abrig.spendinglog;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.view.LayoutInflater;
@@ -61,6 +62,7 @@ public class TransactionView extends Fragment {
 
 
     final String[] occurringList = new String[] {
+            "custom",
             "hourly",
             "daily",
             "nightly",
@@ -99,8 +101,12 @@ public class TransactionView extends Fragment {
         Map<String, ?> keyVals = MainActivity.prefs.getAll();
         for (String key : keyVals.keySet()) {
             if (key.contains("entity_entry_")) {
+                System.out.println("            entity key: " + key);
                 Entity e = Utilities.getEntity((String) keyVals.get(key));
                 res.add(e);
+            }
+            else {
+                System.out.println("    regular key: " + key);
             }
         }
         return res;
@@ -149,7 +155,6 @@ public class TransactionView extends Fragment {
 //        occurringAutoTextView.setVisibility(View.INVISIBLE);
         occurringDropDown.setVisibility(View.INVISIBLE);
         occurringTextView.setVisibility(View.INVISIBLE);
-        occurringDropDown.setVisibility(View.INVISIBLE);
 
         clearFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,7 +183,7 @@ public class TransactionView extends Fragment {
                 Entity sender = MainActivity.TH.getEntityEntry(senderEntry);
                 Entity receiver = MainActivity.TH.getEntityEntry(receiverEntry);
                 String occurring = validateOccurringInput(occurringEntry);
-                System.out.println("Save button clicked");
+                System.out.println("TransactionView Save button clicked");
                 boolean transactionSuccess = MainActivity.TH.tryTransaction(
                         sender, receiver, amount, oneTime, occurring
                 );
@@ -188,13 +193,17 @@ public class TransactionView extends Fragment {
                     String receiverKey = Utilities.getKey(receiver);
                     System.out.println("overwriting " + senderKey);
                     System.out.println("overwriting " + receiverKey);
-                    MainActivity.prefs.edit().putString(senderKey, sender.serializeEntry()).commit();
-                    MainActivity.prefs.edit().putString(receiverKey, receiver.serializeEntry()).commit();
+                    SharedPreferencesWriter.write(senderKey, sender.serializeEntry());
+                    SharedPreferencesWriter.write(receiverKey, receiver.serializeEntry());
+//                    MainActivity.prefs.edit().putString(senderKey, sender.serializeEntry()).commit();
+//                    MainActivity.prefs.edit().putString(receiverKey, receiver.serializeEntry()).commit();
                     if (senderKey.equals("entity_entry_User")) {
-                        MainActivity.prefs.edit().putInt("user_banked_amount", sender.getBankedMoney()).commit();
+//                        MainActivity.prefs.edit().putInt("user_banked_amount", sender.getBankedMoney()).commit();
+                        SharedPreferencesWriter.write("user_banked_amount", sender.getBankedMoney());
                     }
                     if (receiverKey.equals("entity_entry_User")) {
-                        MainActivity.prefs.edit().putInt("user_banked_amount", receiver.getBankedMoney()).commit();
+//                        MainActivity.prefs.edit().putInt("user_banked_amount", receiver.getBankedMoney()).commit();
+                        SharedPreferencesWriter.write("user_banked_amount", receiver.getBankedMoney());
                     }
                 }
                 else {
@@ -207,8 +216,14 @@ public class TransactionView extends Fragment {
             @Override
             public void onClick(View v) {
                 ArrayList<Transaction> transactions = MainActivity.TH.getTransactions();
-                System.out.println("View all button clicked");
+                System.out.println("TransactionView view all button clicked");
                 System.out.println("Transactions: " + transactions);
+                SharedPreferencesWriter.printPrefs();
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.container, TransactionEditing.newInstance("", ""));
+                ft.addToBackStack(null);
+                ft.commit();
 //                String spacer = ">>";
 //                String res = spacer;
 //                String nowString = new Date().toString();

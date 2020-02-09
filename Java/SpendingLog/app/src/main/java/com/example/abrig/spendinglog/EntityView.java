@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.abrig.spendinglog.MainActivity;
 import com.example.abrig.spendinglog.R;
@@ -82,23 +83,27 @@ public class EntityView  extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("Saving a new Entity");
-                int entityNum = MainActivity.TH.getNumEntities();
-                String name = Utilities.titlifyName(nameEntryEditText.getText().toString());
-                String balanceInput = balanceEntryEditText.getText().toString();
+                String entityNum = String.format("|%05d|", MainActivity.TH.getNumEntities() + 1);
+                String name = Utilities.titlifyName(nameEntryEditText.getText().toString().trim());
+                String balanceInput = balanceEntryEditText.getText().toString().trim();
                 int balance = ((balanceInput.length() == 0)?
-                        Utilities.parseMoney(balanceEntryEditText.getText().toString()) : Integer.MAX_VALUE);
+                        Utilities.parseMoney(balanceEntryEditText.getText().toString().trim()) : Integer.MAX_VALUE);
                 boolean overdraft = overdraftSwitch.isChecked();
                 String key = "entity_entry_";
                 if (name.length() == 0 || name.length() > 30) {
-                    name = "entity_" + entityNum;
-                    key += entityNum;
+                    name = "entity|" + entityNum + "|";
+                    key +=  "entity|" + entityNum + "|";
                 }
                 else {
                     key += name;
                 }
-                Entity e = new Entity(name, balance, overdraft);
-                MainActivity.TH.addUser(e);
-                MainActivity.prefs.edit().putString(key, e.serializeEntry()).commit();
+                String idString = TransactionHandler.genEntityID(name);
+                Entity e = new Entity(name, idString, balance, overdraft);
+//                MainActivity.TH.addUser(e);
+                SharedPreferencesWriter.write(key, e.serializeEntry());
+                MainActivity.TH.addEntity(e);
+                nameEntryEditText.setText(name);
+                Toast.makeText(getContext(), "Entity \"" + name + "\" created successfully!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -115,6 +120,8 @@ public class EntityView  extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("View all entities button clicked");
+                System.out.println("entitiesList: " + MainActivity.TH.getEntities());
+                SharedPreferencesWriter.printPrefs();
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.container, EntityEditing.newInstance("", ""));

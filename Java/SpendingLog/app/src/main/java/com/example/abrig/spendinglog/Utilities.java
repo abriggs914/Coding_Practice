@@ -3,6 +3,7 @@ package com.example.abrig.spendinglog;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,9 +12,16 @@ import java.util.Date;
 
 public class Utilities {
 
+//    public static String dollarify(int transactionAmount) {
+//        double m = transactionAmount / 100.0;
+//        return "$ " + String.format("% .2f", m);
+//    }
+
     public static String dollarify(int transactionAmount) {
-        double m = transactionAmount / 100.0;
-        return "$ " + String.format("% .2f", m);
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(2);
+        nf.setMinimumFractionDigits(2);
+        return "$ " + nf.format(transactionAmount / 100.0);
     }
 
     public static void createCSV(ArrayList<Transaction> transactions) {
@@ -97,7 +105,7 @@ public class Utilities {
         for (String s : splitName) {
             res += title(s) + " ";
         }
-        return res;
+        return res.trim();
     }
 
     // |*| Entity
@@ -114,12 +122,13 @@ public class Utilities {
         System.out.println("entityParse: " + Arrays.toString(entityParse));
         System.out.println("transactionParse: " + Arrays.toString(transactionParse));
 
-        String name = entityParse[1];
-        int balance = Integer.parseInt(entityParse[2]);
-        int moneySent = Integer.parseInt(entityParse[3]);
-        int moneyReceived = Integer.parseInt(entityParse[4]);
-        boolean overdraft = Boolean.parseBoolean(entityParse[5]);
-        Entity e = Entity.re_initEntity(name, balance, moneySent, moneyReceived, overdraft);
+        String name = entityParse[1].trim();
+        String idString = entityParse[2].trim();
+        int balance = Integer.parseInt(entityParse[3].trim());
+        int moneySent = Integer.parseInt(entityParse[4].trim());
+        int moneyReceived = Integer.parseInt(entityParse[5].trim());
+        boolean overdraft = Boolean.parseBoolean(entityParse[6].trim());
+        Entity e = Entity.re_initEntity(name, idString, balance, moneySent, moneyReceived, overdraft);
 //        System.out.println("ENTITY PARSED: " + e);
         return e;
     }
@@ -133,15 +142,18 @@ public class Utilities {
         String[] entityParse = str.split("<<");
         String[] transactionParse = str.substring(idx).split(">>");
 
-        for (int i = 1; i < transactionParse.length; i += 6) {
-            Date date = parseDate(transactionParse[i]);
-            Entity sender = getEntity(transactionParse[i + 1]);
-            Entity receiver = getEntity(transactionParse[i + 2]);
-            int amount = Integer.parseInt(transactionParse[i + 3]);
-            boolean reoccurring = Boolean.parseBoolean(transactionParse[i + 4]);
+        System.out.println("entityParse: " + Arrays.toString(entityParse));
+        System.out.println("transactionParse: " + Arrays.toString(transactionParse));
+
+        for (int i = 1; i < transactionParse.length; i += 7) {
+            Date date = parseDate(transactionParse[i].trim());
+            Entity sender = getEntity(transactionParse[i + 1].trim());
+            Entity receiver = getEntity(transactionParse[i + 2].trim());
+            int amount = Integer.parseInt(transactionParse[i + 3].trim());
+            boolean reoccurring = Boolean.parseBoolean(transactionParse[i + 4].trim());
             String occurring = "NA";
             if (reoccurring) {
-                occurring = transactionParse[i + 5];
+                occurring = transactionParse[i + 5].trim();
             }
             else {
                 i -= 1;
@@ -184,15 +196,19 @@ public class Utilities {
     public static String getKey(Entity e) {
         for (String key : MainActivity.prefs.getAll().keySet()) {
             System.out.println("key: " + key + " vs. " + e);
-            if (key.contains("entity_entry_")) {
-                if (key.contains(e.getName())) {
+            String k = key.toUpperCase();
+            String n = e.getName().toUpperCase();
+            if (k.contains("ENTITY_ENTRY_")) {
+                if (k.contains(n)) {
                     System.out.println("returning key: " + key);
                     return key;
                 }
             }
         }
         String userName = MainActivity.prefs.getString("user_name", "User");
-        if (e.getName().equals(userName)) {
+        String oldName = MainActivity.prefs.getString("user_old_name", "User");
+        if (e.getName().equals(userName) || e.getName().equals(oldName)) {
+            System.out.println("returning user key");
             return "entity_entry_User";
         }
         System.out.println("key for entity e: " + e + ", not found, returning null.");
@@ -200,22 +216,28 @@ public class Utilities {
     }
 
     public static String getKey(String name) {
+        String userName = MainActivity.prefs.getString("user_name", "User");
+        String oldName = MainActivity.prefs.getString("user_old_name", "User");
+        System.out.println("Comparing {" + name + "} to userName {" + userName + "}");
         if (name.contains("<<")) {
             // is a serialized entity string.
             String[] spl = name.split("<<");
             name = spl[1];
         }
+        name = name.trim();
         for (String key : MainActivity.prefs.getAll().keySet()) {
             System.out.println("key: " + key + " vs. " + name);
-            if (key.contains("entity_entry_")) {
-                if (key.contains(name)) {
+            String k = key.toUpperCase();
+            String n = name.toUpperCase();
+            if (k.contains("ENTITY_ENTRY_")) {
+                if (k.contains(n)) {
                     System.out.println("returning key: " + key);
                     return key;
                 }
             }
         }
-        String userName = MainActivity.prefs.getString("user_name", "User");
-        if (name.equals(userName)) {
+        if (name.equals(userName) || name.equals(oldName)) {
+            System.out.println("returning user key");
             return "entity_entry_User";
         }
         System.out.println("key for name n: " + name + ", not found, returning null.");

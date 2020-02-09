@@ -1,18 +1,22 @@
 package com.example.abrig.spendinglog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Entity {
 
     private String name;
+    private String idString;
     private int bankedMoney;
     private int moneySent;
     private int moneyReceived;
     private boolean allowedOverdraft;
     private ArrayList<Transaction> transactions;
 
-    public Entity(String name) {
+    public Entity(String name, String idString) {
         this.name = name;
+        this.idString = idString;
         this.bankedMoney = 0;
         this.moneySent = 0;
         this.moneyReceived = 0;
@@ -20,8 +24,9 @@ public class Entity {
         this.allowedOverdraft = false;
     }
 
-    public Entity(String name, int estimatedBank, boolean... allowedOverdraft) {
+    public Entity(String name, String idString, int estimatedBank, boolean... allowedOverdraft) {
         this.name = name;
+        this.idString = idString;
         this.bankedMoney = estimatedBank;
         this.moneySent = 0;
         this.moneyReceived = 0;
@@ -72,9 +77,16 @@ public class Entity {
         return Utilities.title(name);
     }
 
-    public String toString() {
-        return getName();
+    public void setIdString(String idString) {
+        this.idString = idString;
     }
+
+    public String getIdString() {
+        return idString;
+    }
+
+    public String toString() {
+        return getName();} // + " {" + idString + "}";}
 
     public int getBankedMoney(){
         return bankedMoney;
@@ -113,15 +125,19 @@ public class Entity {
     }
 
     public String serializeEntry() {
-        String res = "<<" + name + "<<" + bankedMoney + "<<" + moneySent + "<<" + moneyReceived + "<<" + allowedOverdraft + "<<";
-        for (Transaction t : transactions) {
-            res += t.serializeEntry(); // +"<<";
+        List<String> items = Arrays.asList(name, idString, bankedMoney+"", moneySent+"", moneyReceived+"", allowedOverdraft+"");
+        StringBuilder res = new StringBuilder("<<"); //= "<<" + name + "<<" + idString + "<<" + bankedMoney + "<<" + moneySent + "<<" + moneyReceived + "<<" + allowedOverdraft + "<<";
+        for (String i : items) {
+            res.append(i).append("<<");
         }
-        return res;
+        for (Transaction t : transactions) {
+            res.append(t.serializeEntry()); // +"<<";
+        }
+        return res.toString();
     }
 
-    public static Entity re_initEntity(String name, int balance, int moneySent, int moneyReceived, boolean overdraft) {
-        Entity e = new Entity(name, balance);
+    public static Entity re_initEntity(String name, String idString, int balance, int moneySent, int moneyReceived, boolean overdraft) {
+        Entity e = new Entity(name, idString, balance);
         e.moneySent = moneySent;
         e.moneyReceived = moneyReceived;
         e.allowedOverdraft = overdraft;

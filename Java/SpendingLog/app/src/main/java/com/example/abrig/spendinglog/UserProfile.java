@@ -1,8 +1,12 @@
 package com.example.abrig.spendinglog;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +35,7 @@ public class UserProfile extends Fragment {
     private boolean edited;
 
     private String name;
+    private String idString;
     private boolean allowedOverDraft;
     private String bankedMoneyString;
     private int bankedMoney;
@@ -116,16 +121,16 @@ public class UserProfile extends Fragment {
         final View view = inflater.inflate(R.layout.user_profile, container, false);
         Toast.makeText(getContext(), "Editing profile information...", Toast.LENGTH_SHORT).show();
 
-        saveButton = (Button) view.findViewById(R.id.saveButton);
-        closeButton = (Button) view.findViewById(R.id.closeButton);
-        overdraftSwitch = (Switch) view.findViewById(R.id.allowedOverDraftSwitch);
-        nameEditText = (EditText) view.findViewById(R.id.nameEditText);
-        bankedEditText = (EditText) view.findViewById(R.id.bankedEditText);
+        saveButton = view.findViewById(R.id.saveButton);
+        closeButton = view.findViewById(R.id.closeButton);
+        overdraftSwitch = view.findViewById(R.id.allowedOverDraftSwitch);
+        nameEditText = view.findViewById(R.id.nameEditText);
+        bankedEditText = view.findViewById(R.id.bankedEditText);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.print("Save button clicked!");
+                System.out.print("UserProfile Save button clicked!");
                 name = Utilities.titlifyName(nameEditText.getText().toString()).trim();
                 nameEditText.setText(name);
                 bankedMoneyString = bankedEditText.getText().toString();
@@ -138,9 +143,13 @@ public class UserProfile extends Fragment {
                 String oldName = MainActivity.prefs.getString("user_name", "User");
                 // these are left as a commit instead of apply because they are
                 // essentially the three most important pieces of information in the app.
-                MainActivity.prefs.edit().putString("user_name", name).commit();
-                MainActivity.prefs.edit().putInt("user_banked_amount", bankedMoney).commit();
-                MainActivity.prefs.edit().putBoolean("user_allowed_overdraft", allowedOverDraft).commit();
+//                MainActivity.prefs.edit().putString("user_name", name).commit();
+//                MainActivity.prefs.edit().putInt("user_banked_amount", bankedMoney).commit();
+//                MainActivity.prefs.edit().putBoolean("user_allowed_overdraft", allowedOverDraft).commit();
+                SharedPreferencesWriter.write("user_name", name);
+                SharedPreferencesWriter.write("user_old_name", oldName);
+                SharedPreferencesWriter.write("user_banked_amount", bankedMoney);
+                SharedPreferencesWriter.write("user_allowed_overdraft", allowedOverDraft);
 
                 Entity e;
                 if (MainActivity.prefs.contains("entity_entry_User")) {
@@ -148,22 +157,29 @@ public class UserProfile extends Fragment {
                     String entityString = (String) MainActivity.prefs.getAll().get("entity_entry_User");
                     // don't think this should be here
                     ArrayList<Transaction> transactions = Utilities.parseTransactions(entityString);
-                    MainActivity.TH.addTransactions(transactions);
+//                    MainActivity.TH.addTransactions(transactions);
                     Entity t = Utilities.parseEntity(entityString);
-                    e = Entity.re_initEntity(name, bankedMoney, t.getSentMoney(), t.getReceivedMoney(), allowedOverDraft);
+                    e = Entity.re_initEntity(name, t.getIdString(), bankedMoney, t.getSentMoney(), t.getReceivedMoney(), allowedOverDraft);
+                    MainActivity.TH.updateUserEntity(t, e);
+                    MainActivity.TH.updateTransactions(t, e);
                 }
                 else {
                     // create user entity for the first time
                     System.out.println("NOT FOUND");
-                    e = new Entity(name, bankedMoney);
+                    String idString = TransactionHandler.genEntityID(name);
+                    e = new Entity(name, idString, bankedMoney);
                 }
                 e.setName(name);
                 e.setBankedMoney(bankedMoney);
                 e.setAllowedOverdraft(allowedOverDraft);
-                MainActivity.prefs.edit().putString("entity_entry_User", e.serializeEntry()).commit();
-                MainActivity.TH.removeUser(oldName);
-                MainActivity.TH.addUser(e);
+//                MainActivity.prefs.edit().putString("entity_entry_User", e.serializeEntry()).commit();
+//                MainActivity.TH.removeUser(oldName);
+//                MainActivity.TH.addUser(e);
+                SharedPreferencesWriter.write("entity_entry_User", e.serializeEntry());
+                MainActivity.TH.addEntity(e);
                 edited = false;
+                System.out.println("entry edited to: " + e);
+                System.out.println("from oldName: " + oldName);
             }
         });
 
@@ -197,7 +213,16 @@ public class UserProfile extends Fragment {
             Entity e = Utilities.getEntity(entityString);
 
             nameEditText.setText(e.getName());
-            bankedEditText.setText(Utilities.dollarify(e.getBankedMoney()));
+            int money = e.getBankedMoney();
+            String bankedMoney = Utilities.dollarify(money);
+            if (money < 0) {
+                Spannable wordToSpan = new SpannableString(bankedMoney);
+                wordToSpan.setSpan(new ForegroundColorSpan(Color.RED), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                bankedEditText.setText(wordToSpan);
+            }
+            else {
+                bankedEditText.setText(bankedMoney);
+            }
             overdraftSwitch.setChecked(e.isAllowedOverdraft());
         }
 

@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="@string/enter_transaction_amount"
                 android:ems="10"
-                android:inputType="numberSigned"
+                android:inputType="numberDecimal"
                 tools:layout_margin="5dp" />
         </TableRow>
 

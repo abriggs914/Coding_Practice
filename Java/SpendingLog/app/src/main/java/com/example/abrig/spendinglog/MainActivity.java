@@ -57,19 +57,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        resetPreferencesButton = findViewById(R.id.resetPeferencesButton);
+        prefs = getSharedPreferences("com.example.spendinglog", MODE_PRIVATE);
 
+        // ask user to start from a new application state on launch.
+        resetPreferencesButton = findViewById(R.id.resetPeferencesButton);
         resetPreferencesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetPreferences();
             }
         });
+        resetPreferences();
+        //
 
-        // ask user to start from a new application state on launch.
-
-        prefs = getSharedPreferences("com.example.spendinglog", MODE_PRIVATE);
-//        resetPreferences();
+        TH = new TransactionHandler();
 
 //        Map<String, ?> keysValues = prefs.getAll();
 //        System.out.println("CLEARING");
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println("Key: " + s + ", clazz: " + clazz + ", value: " + keysValues.get(s));
 //        }
 
-        TH = new TransactionHandler();
 //        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -116,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
         prefs.edit().clear().commit();
         prefs = getSharedPreferences("com.example.spendinglog", MODE_PRIVATE);
         resetPreferencesButton.setVisibility(View.INVISIBLE);
+        if (TH != null){
+            TH.resetTransactionHandler();
+        }
         onResume();
     }
 
@@ -132,22 +135,15 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         if (prefs.getBoolean("firstrun", true)) {
-            // Do first run stuff here then set 'firstrun' as false
-            // using the following line to edit/commit prefs
-            prefs.edit().putBoolean("firstrun", false).apply();
 
+            SharedPreferencesWriter.write("firstrun", false);
 
             System.out.print("KEY SET: " + MainActivity.prefs.getAll().keySet());
             for (String s : MainActivity.prefs.getAll().keySet()) {
                 System.out.print("String entry: " + s);
             }
             System.out.println("\n\n\n\tFIRST RUN\n\n\n");
-
-//            setContentView(R.layout.user_profile);
-//            Intent i = new Intent(this, UserProfile.class);
-//            startActivityForResult(i, 0);
             openFragment(UserProfile.newInstance("", ""));
-//            getSupportFragmentManager().popBackStack();
         }
         else {
             System.out.print("\n\n\n\tNOT THE FIRST RUN\n\n\n");

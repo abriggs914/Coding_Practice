@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -34,27 +35,39 @@ public class EntityEditing extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private String name; // = MainActivity.prefs.getString("user_name", "user");
-    private boolean allowedOverDraft;
-    private String bankedMoneyString;
-    private int bankedMoney;
+//    private String name; // = MainActivity.prefs.getString("user_name", "user");
+//    private boolean allowedOverDraft;
+//    private String bankedMoneyString;
+//    private int bankedMoney;
+//
+//    private TextView senderTextView;
+//    private TextView receiverTextView;
+//    private TextView balanceTextview;
+//    private TextView oneTimeTextView;
+//    private TextView occurringTextView;
+//
+//    private Switch oneTimeSwitch;
+//    private EditText balanceEntryEditText;
+//    private AutoCompleteTextView senderAutoTextView;
+//    private AutoCompleteTextView receiverAutoTextView;
+////    private AutoCompleteTextView occurringAutoTextView;
+//
+//    private Button saveButton;
+//    private Button viewAllButton;
+//    private Button clearFormButton;
+//    private Spinner occurringDropDown;
 
-    private TextView senderTextView;
-    private TextView receiverTextView;
-    private TextView balanceTextview;
-    private TextView oneTimeTextView;
-    private TextView occurringTextView;
+    private ListView entitiesListView;
 
-    private Switch oneTimeSwitch;
-    private EditText balanceEntryEditText;
-    private AutoCompleteTextView senderAutoTextView;
-    private AutoCompleteTextView receiverAutoTextView;
-//    private AutoCompleteTextView occurringAutoTextView;
+    private TextView selectedTextView;
+    private TextView selectedReportTextView;
+    private TextView totalTextview;
+    private TextView totalReportTextView;
 
-    private Button saveButton;
-    private Button viewAllButton;
-    private Button clearFormButton;
-    private Spinner occurringDropDown;
+    private Button deleteButton;
+    private Button selectAllButton;
+    private Button clearSelectedButton;
+    private Button closeButton;
 
 
     final String[] occurringList = new String[] {
@@ -108,6 +121,112 @@ public class EntityEditing extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.entity_editing_view, container, false);
+
+        entitiesListView = view.findViewById(R.id.entityEditingListView);
+        deleteButton = view.findViewById(R.id.entityEditingDeleteButton);
+        selectAllButton = view.findViewById(R.id.entityEditingSelectAllButton);
+        clearSelectedButton = view.findViewById(R.id.entityEditingClearSelectedButton);
+        closeButton = view.findViewById(R.id.entityEditingCloseButton);
+        selectedTextView = view.findViewById(R.id.entityEditingSelectedNumTextView);
+        selectedReportTextView = view.findViewById(R.id.entityEditingSelectedReportTextView);
+        totalTextview = view.findViewById(R.id.entityEditingTotalTextView);
+        totalReportTextView = view.findViewById(R.id.entityEditingTotalReportTextView);
+
+        final List<Entity> entitiesList = MainActivity.TH.getEntities();
+        final ArrayAdapter<Entity> entitiesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, entitiesList);
+        entitiesListView.setAdapter(entitiesAdapter);
+        entitiesListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        totalReportTextView.setText(Integer.toString(entitiesList.size()));
+        selectedReportTextView.setText("0");
+
+        entitiesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int n = entitiesListView.getCheckedItemCount();
+                selectedReportTextView.setText(Integer.toString(n));
+            }
+        });
+
+        entitiesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("parent: " + parent + ", view: " + view + ", position: " + position + ", id: " + id);
+                entitiesListView.setItemChecked(position, false);
+                Entity e = entitiesAdapter.getItem(position);
+                System.out.println("entity long pressed: " + e + " -> {" + e.serializeEntry() + "}");
+                return false;
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("delete button clicked");
+                ArrayList<Transaction> transactions = MainActivity.TH.getTransactions();
+                ArrayList<Entity> entitiesToRemove = new ArrayList<>();
+                for (Entity e : entitiesList) {
+//                    int position = entitiesAdapter.getPosition(e);
+//                    Entity e = entitiesAdapter.getItem(position);
+                    boolean valid = false;
+                    int position = entitiesAdapter.getPosition(e);
+                    if (entitiesListView.isItemChecked(position)) {
+                        valid = MainActivity.TH.ensureValidDelete(e);
+                        if (valid) {
+                            entitiesToRemove.add(e);
+                        }
+                        else {
+                            Toast.makeText(getContext(), "Unable to delete entity \"" + e + "\" due to\nthem being involved in a past transaction.", Toast.LENGTH_SHORT).show();
+                            entitiesListView.setItemChecked(position, false);
+                        }
+                    }
+                }
+                for (Entity e : entitiesToRemove) {
+                    System.out.println("deleting: " + e);
+                    entitiesAdapter.remove(e);
+                    MainActivity.TH.removeUser(e);
+                }
+                entitiesAdapter.notifyDataSetChanged();
+                int n = entitiesListView.getCheckedItemCount();
+                selectedReportTextView.setText(Integer.toString(n));
+                totalReportTextView.setText(Integer.toString(entitiesAdapter.getCount()));
+            }
+        });
+
+        selectAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("select all button clicked");
+                for(Entity e : entitiesList) {
+                    int position = entitiesAdapter.getPosition(e);
+                    entitiesListView.setItemChecked(position, true);
+                }
+                entitiesAdapter.notifyDataSetChanged();
+                int n = entitiesListView.getCheckedItemCount();
+                selectedReportTextView.setText(Integer.toString(n));
+            }
+        });
+
+        clearSelectedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("clear selected button clicked");
+                for(Entity e : entitiesList) {
+                    int position = entitiesAdapter.getPosition(e);
+                    entitiesListView.setItemChecked(position, false);
+                }
+                entitiesAdapter.notifyDataSetChanged();
+                selectedReportTextView.setText("0");
+            }
+        });
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("close button clicked");
+                getFragmentManager().popBackStack();
+            }
+        });
 
 //        oneTimeSwitch = view.findViewById(R.id.transactionOnetimeSwitch);
 //        balanceEntryEditText = view.findViewById(R.id.transactionAmountEditText);

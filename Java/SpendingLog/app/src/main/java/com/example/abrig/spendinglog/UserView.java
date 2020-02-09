@@ -1,5 +1,6 @@
 package com.example.abrig.spendinglog;
 
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 
@@ -7,6 +8,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,25 +127,39 @@ public class UserView extends Fragment {
         fab = view.findViewById(R.id.floatingActionButton);
 
         Set<String> keys = MainActivity.prefs.getAll().keySet();
-        if (keys.contains("user_name")) {
-            nameReportTextView.setText(MainActivity.prefs.getString("user_name", "user"));
-        }
-        if (keys.contains("user_banked_amount")) {
-            double t = MainActivity.prefs.getInt("user_banked_amount", 0) / 100.0;
-            NumberFormat nf = NumberFormat.getInstance();
-            nf.setMaximumFractionDigits(2);
-            nf.setMinimumFractionDigits(2);
-            String s = "$ " + nf.format(t);
-            balanceReportTextView.setText(s);
-        }
-        if (keys.contains("user_allowed_overdraft")) {
-            boolean allowed = MainActivity.prefs.getBoolean("user_allowed_overdraft", true);
-            String message = "Allowed";
-            if (!allowed) {
-                message = "Not " + message.substring(0, 1). toLowerCase() + message.substring(1);
+        if (keys.contains("entity_entry_User")) {
+            Entity e = Utilities.parseEntity((String)MainActivity.prefs.getAll().get("entity_entry_User"));
+            String userName = e.getName();
+            String userBalance = Utilities.dollarify(e.getBankedMoney());
+            String userAllowedOverdraft = genOverdraftMessage(e.isAllowedOverdraft());
+            nameReportTextView.setText(userName);
+            int money = e.getBankedMoney();
+            String bankedMoney = Utilities.dollarify(money);
+            if (money < 0) {
+                Spannable wordToSpan = new SpannableString(bankedMoney);
+                wordToSpan.setSpan(new ForegroundColorSpan(Color.RED), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                balanceReportTextView.setText(wordToSpan);
             }
-            overdraftReportTextView.setText(message);
+            else {
+                balanceReportTextView.setText(bankedMoney);
+            }
+            overdraftReportTextView.setText(userAllowedOverdraft);
         }
+//        if (keys.contains("user_name")) {
+//            nameReportTextView.setText(MainActivity.prefs.getString("user_name", "user"));
+//        }
+//        if (keys.contains("user_banked_amount")) {
+//            double t = MainActivity.prefs.getInt("user_banked_amount", 0) / 100.0;
+//            NumberFormat nf = NumberFormat.getInstance();
+//            nf.setMaximumFractionDigits(2);
+//            nf.setMinimumFractionDigits(2);
+//            String s = "$ " + nf.format(t);
+//            balanceReportTextView.setText(s);
+//        }
+//        if (keys.contains("user_allowed_overdraft")) {
+//            boolean allowed = MainActivity.prefs.getBoolean("user_allowed_overdraft", true);
+//            overdraftReportTextView.setText(message);
+//        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,5 +238,13 @@ public class UserView extends Fragment {
 //        }
 
         return view;
+    }
+
+    public String genOverdraftMessage(boolean allowed) {
+        String message = "Allowed";
+        if (!allowed) {
+            message = "Not " + message.substring(0, 1). toLowerCase() + message.substring(1);
+        }
+        return message;
     }
 }
