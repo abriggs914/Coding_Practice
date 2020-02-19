@@ -3,6 +3,7 @@ package com.example.abrig.spendinglog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -180,6 +181,12 @@ public class UserProfile extends Fragment {
                 edited = false;
                 System.out.println("entry edited to: " + e);
                 System.out.println("from oldName: " + oldName);
+                closeFragment();
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.container, UserView.newInstance("", ""));
+                ft.addToBackStack(null);
+                ft.commit();
             }
         });
 
@@ -197,7 +204,7 @@ public class UserProfile extends Fragment {
                     edited = false;
                 }
                 else {
-                    getFragmentManager().popBackStack();
+                    closeFragment();
                 }
 //                addToBackStack().commit();
 //                System.out.println("-- fragment manager AFTER: " + getFragmentManager().getFragments());
@@ -214,15 +221,15 @@ public class UserProfile extends Fragment {
 
             nameEditText.setText(e.getName());
             int money = e.getBankedMoney();
-            String bankedMoney = Utilities.dollarify(money);
-            if (money < 0) {
-                Spannable wordToSpan = new SpannableString(bankedMoney);
-                wordToSpan.setSpan(new ForegroundColorSpan(Color.RED), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                bankedEditText.setText(wordToSpan);
-            }
-            else {
+            Spannable bankedMoney = Utilities.dollarify(money);
+//            if (money < 0) {
+//                Spannable wordToSpan = new SpannableString(bankedMoney);
+//                wordToSpan.setSpan(new ForegroundColorSpan(Color.RED), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                bankedEditText.setText(wordToSpan);
+//            }
+//            else {
                 bankedEditText.setText(bankedMoney);
-            }
+//            }
             overdraftSwitch.setChecked(e.isAllowedOverdraft());
         }
 
@@ -238,6 +245,10 @@ public class UserProfile extends Fragment {
 //        }
 
         return view;
+    }
+
+    public void closeFragment() {
+        getFragmentManager().popBackStack();
     }
 
     public void determineChanges() {

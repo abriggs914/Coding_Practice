@@ -18,6 +18,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -48,9 +49,12 @@ public class TransactionView extends Fragment {
     private TextView balanceTextview;
     private TextView oneTimeTextView;
     private TextView occurringTextView;
+    private TextView customOccurringTextView;
+    private TextView customOccurringTimesTextView;
 
     private Switch oneTimeSwitch;
     private EditText balanceEntryEditText;
+    private EditText customOccurringEditText;
     private AutoCompleteTextView senderAutoTextView;
     private AutoCompleteTextView receiverAutoTextView;
 //    private AutoCompleteTextView occurringAutoTextView;
@@ -59,20 +63,7 @@ public class TransactionView extends Fragment {
     private Button viewAllButton;
     private Button clearFormButton;
     private Spinner occurringDropDown;
-
-
-    final String[] occurringList = new String[] {
-            "custom",
-            "hourly",
-            "daily",
-            "nightly",
-            "weekly",
-            "bi-weekly",
-            "monthly",
-            "bi-monthly",
-            "yearly",
-            "bi-yearly"
-    };
+    private Spinner customOccurringDropDown;
 
     public TransactionView() {
     }
@@ -122,9 +113,12 @@ public class TransactionView extends Fragment {
         balanceEntryEditText = view.findViewById(R.id.transactionAmountEditText);
         senderAutoTextView = (AutoCompleteTextView) view.findViewById(transactionSenderAutoTextView);
         receiverAutoTextView = (AutoCompleteTextView) view.findViewById(transactionReceiverAutoTextView);
-//        occurringAutoTextView = (AutoCompleteTextView) view.findViewById(transactionOccurringAutoTextView);
         occurringTextView = view.findViewById(R.id.transactionOccurringTextView);
+        customOccurringTextView = view.findViewById(R.id.customOccurringTextView);
+        customOccurringTimesTextView = view.findViewById(R.id.customOccurringTimesTextView);
         occurringDropDown = view.findViewById(R.id.transactionOccurringSpinner);
+        customOccurringDropDown = view.findViewById(R.id.customOccurringSpinner);
+        customOccurringEditText = view.findViewById(R.id.customOccurringEditText);
         saveButton = view.findViewById(R.id.transactionSaveButton);
         viewAllButton = view.findViewById(R.id.viewAllTransactionsButton);
         clearFormButton = view.findViewById(R.id.transactionClearFormButton);
@@ -140,30 +134,11 @@ public class TransactionView extends Fragment {
                 getActivity(), android.R.layout.select_dialog_item, entitiesList);
         ArrayAdapter<String> entitiesAdapter2 = new ArrayAdapter<String>(
                 getActivity(), android.R.layout.select_dialog_item, entitiesList);
-        ArrayAdapter<String> entitiesAdapter3 = new ArrayAdapter<String>(
-                getActivity(), android.R.layout.select_dialog_item, occurringList);
-
-        senderAutoTextView.setAdapter(entitiesAdapter1);
-        receiverAutoTextView.setAdapter(entitiesAdapter2);
-//        occurringAutoTextView.setAdapter(entitiesAdapter3);
-
-        senderAutoTextView.setThreshold(1);
-        receiverAutoTextView.setThreshold(1);
-//        occurringAutoTextView.setThreshold(1);
-
-        // turned on by using the one time switch
-//        occurringAutoTextView.setVisibility(View.INVISIBLE);
-        occurringDropDown.setVisibility(View.INVISIBLE);
-        occurringTextView.setVisibility(View.INVISIBLE);
 
         clearFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                oneTimeSwitch.setChecked(false);
-                balanceEntryEditText.getText().clear();
-                senderAutoTextView.getText().clear();
-                receiverAutoTextView.getText().clear();
-//                occurringAutoTextView.getText().clear();
+                clearForm();
             }
         });
 
@@ -178,7 +153,7 @@ public class TransactionView extends Fragment {
                 boolean oneTime = oneTimeSwitch.isChecked();
                 int amount = Utilities.parseMoney(balanceEntryEditText.getText().toString());
                 System.out.println("entitiesList: " + Arrays.toString(entitiesList));
-                System.out.println("occuringList: " + Arrays.toString(occurringList));
+                System.out.println("occuringList: " + Arrays.toString(OccurringOptions.getValues()));
                 System.out.println("senderEntry: " + senderEntry + ", receiverEntry: " + receiverEntry + ", oneTime: " + oneTime + ", amount: " + Utilities.dollarify(amount));
                 Entity sender = MainActivity.TH.getEntityEntry(senderEntry);
                 Entity receiver = MainActivity.TH.getEntityEntry(receiverEntry);
@@ -242,86 +217,127 @@ public class TransactionView extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 System.out.println("one time switch status : " + isChecked);
                 if (isChecked) {
-//                    occurringAutoTextView.setVisibility(View.VISIBLE);
-                    occurringDropDown.setVisibility(View.VISIBLE);
-                    occurringTextView.setVisibility(View.VISIBLE);
-                    occurringDropDown.setVisibility(View.VISIBLE);
+                    showOccurring();
                 }
                 else {
 //                    occurringAutoTextView.setVisibility(View.INVISIBLE);
-                    occurringDropDown.setVisibility(View.INVISIBLE);
-                    occurringTextView.setVisibility(View.INVISIBLE);
-                    occurringDropDown.setVisibility(View.INVISIBLE);
+                    hideOccurring();
+                    hideCustomOccurring();
                 }
             }
         });
 
-        List<String> list = Arrays.asList(occurringList);
+        List<String> list = Arrays.asList(OccurringOptions.getValues());
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        occurringDropDown.setAdapter(dataAdapter);
         occurringDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 9) {
+                    showCustomOccurring();
+                }
+                else {
+                    hideCustomOccurring();
+                }
 //                occurringAutoTextView.setText(occurringList[position]);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {hideCustomOccurring();}
         });
 
+//        List<String> list = Arrays.asList(occurringList);
+        ArrayAdapter<String> customOccurringAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, CustomOccurringOptions.getValues());
+        customOccurringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-//        nameEntryEditText = view.findViewById(R.id.entityNameEditText);
-//        balanceEntryEditText = view.findViewById(R.id.entityBalanceEditText);
-//        overdraftSwitch = view.findViewById(R.id.entityOverdraftSwitch);
-//        saveButton = view.findViewById(R.id.entitySaveButton);
-//        viewAllButton = view.findViewById(R.id.viewAllEntitiesButton);
-//        clearFormButton = view.findViewById(R.id.entityFormClearButton);
-//
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                System.out.println("Saving a new Entity");
-//                int entityNum = MainActivity.TH.getNumEntities();
-//                String name = Utilities.titlifyName(nameEntryEditText.getText().toString());
-//                String balanceInput = balanceEntryEditText.getText().toString();
-//                int balance = ((balanceInput.length() == 0)?
-//                        Utilities.parseMoney(balanceEntryEditText.getText().toString()) : Integer.MAX_VALUE);
-//                boolean overdraft = overdraftSwitch.isChecked();
-//                String key = "entity_entry_";
-//                if (name.length() == 0 || name.length() > 30) {
-//                    name = "entity_" + entityNum;
-//                    key += entityNum;
-//                }
-//                else {
-//                    key += name;
-//                }
-//                Entity e = new Entity(name, balance, overdraft);
-//                MainActivity.TH.addUser(e);
-//                MainActivity.prefs.edit().putString(key, e.serializeEntry()).commit();
-//            }
-//        });
-//
-//        clearFormButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                nameEntryEditText.getText().clear();
-//                balanceEntryEditText.getText().clear();
-//                overdraftSwitch.setChecked(false);
-//            }
-//        });
+        // final set-up before showing
+        senderAutoTextView.setAdapter(entitiesAdapter1);
+        receiverAutoTextView.setAdapter(entitiesAdapter2);
+
+        senderAutoTextView.setThreshold(1);
+        receiverAutoTextView.setThreshold(1);
+
+        occurringDropDown.setAdapter(dataAdapter);
+        customOccurringDropDown.setAdapter(customOccurringAdapter);
+
+        hideCustomOccurring();
+        hideOccurring();
 
         return view;
     }
 
     private String validateOccurringInput(String occurringEntry) {
-        for (String s : occurringList) {
+        OccurringOptions[] values = OccurringOptions.values();
+        for (int i = 0; i < values.length; i++) {
+            OccurringOptions o = values[i];
+            String s = o.name;
             if (s.equals(occurringEntry)) {
-                return s;
+                if (o == OccurringOptions.CUSTOM) {
+                    return validateCustomOccurring();
+                }
+                else {
+                    return s;
+                }
             }
         }
         return "NA";
+    }
+
+    public String validateCustomOccurring() {
+        String res = "";
+        String editTextEntry = customOccurringEditText.getText().toString();
+        int customEntry = customOccurringDropDown.getSelectedItemPosition();
+        String customInput = CustomOccurringOptions.getValues()[customEntry];
+        boolean isNum = Utilities.checkDec(editTextEntry);
+        double num = 0.0;
+        if (isNum) {
+            num = Double.parseDouble(editTextEntry);
+            if (num == 1) {
+                res += "once";
+            }
+            else if (num == 2) {
+                res += "twice";
+            }
+            else {
+                res += Utilities.twoDecimals(num);
+            }
+            res += " per " + customInput;
+        }
+        System.out.println("GENERATED STRING: " + res);
+        return res;
+    }
+
+    public void hideOccurring() {
+        occurringDropDown.setVisibility(View.INVISIBLE);
+        occurringTextView.setVisibility(View.INVISIBLE);
+        occurringDropDown.setVisibility(View.INVISIBLE);
+    }
+
+    public void showOccurring() {
+        occurringDropDown.setVisibility(View.VISIBLE);
+        occurringTextView.setVisibility(View.VISIBLE);
+        occurringDropDown.setVisibility(View.VISIBLE);
+    }
+
+    public void hideCustomOccurring() {
+        customOccurringDropDown.setVisibility(View.INVISIBLE);
+        customOccurringTextView.setVisibility(View.INVISIBLE);
+        customOccurringTimesTextView.setVisibility(View.INVISIBLE);
+        customOccurringEditText.setVisibility(View.INVISIBLE);
+    }
+
+    public void showCustomOccurring() {
+        customOccurringDropDown.setVisibility(View.VISIBLE);
+        customOccurringTextView.setVisibility(View.VISIBLE);
+        customOccurringTimesTextView.setVisibility(View.VISIBLE);
+        customOccurringEditText.setVisibility(View.VISIBLE);
+    }
+
+    public void clearForm() {
+        oneTimeSwitch.setChecked(false);
+        balanceEntryEditText.getText().clear();
+        senderAutoTextView.getText().clear();
+        receiverAutoTextView.getText().clear();
+        customOccurringEditText.getText().clear();
     }
 }

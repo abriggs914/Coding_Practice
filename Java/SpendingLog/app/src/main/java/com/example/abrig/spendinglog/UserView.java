@@ -130,19 +130,19 @@ public class UserView extends Fragment {
         if (keys.contains("entity_entry_User")) {
             Entity e = Utilities.parseEntity((String)MainActivity.prefs.getAll().get("entity_entry_User"));
             String userName = e.getName();
-            String userBalance = Utilities.dollarify(e.getBankedMoney());
+            Spannable userBalance = Utilities.dollarify(e.getBankedMoney());
             String userAllowedOverdraft = genOverdraftMessage(e.isAllowedOverdraft());
             nameReportTextView.setText(userName);
             int money = e.getBankedMoney();
-            String bankedMoney = Utilities.dollarify(money);
-            if (money < 0) {
-                Spannable wordToSpan = new SpannableString(bankedMoney);
-                wordToSpan.setSpan(new ForegroundColorSpan(Color.RED), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                balanceReportTextView.setText(wordToSpan);
-            }
-            else {
+            Spannable bankedMoney = Utilities.dollarify(money);
+//            if (money < 0) {
+//                Spannable wordToSpan = new SpannableString(bankedMoney);
+//                wordToSpan.setSpan(new ForegroundColorSpan(Color.RED), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                balanceReportTextView.setText(wordToSpan);
+//            }
+//            else {
                 balanceReportTextView.setText(bankedMoney);
-            }
+//            }
             overdraftReportTextView.setText(userAllowedOverdraft);
         }
 //        if (keys.contains("user_name")) {
@@ -164,7 +164,6 @@ public class UserView extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
 //                MainActivity.getUserDataAtLaunch();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.container, UserProfile.newInstance("", ""));

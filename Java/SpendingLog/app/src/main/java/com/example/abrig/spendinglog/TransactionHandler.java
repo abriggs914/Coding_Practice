@@ -1,6 +1,7 @@
 package com.example.abrig.spendinglog;
 
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -165,6 +166,7 @@ public class TransactionHandler {
     }
 
     public void addTransaction(Transaction t) {
+        Toast.makeText(, "Editing profile information...", Toast.LENGTH_SHORT).show();
         System.out.println("trying to insert transaction {" + transactions + "}");
         if (!this.transactions.contains(t)) {
             this.transactions.add(t);

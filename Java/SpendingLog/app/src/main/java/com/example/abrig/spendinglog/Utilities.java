@@ -1,5 +1,10 @@
 package com.example.abrig.spendinglog;
 
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
@@ -17,11 +22,21 @@ public class Utilities {
 //        return "$ " + String.format("% .2f", m);
 //    }
 
-    public static String dollarify(int transactionAmount) {
+    public static Spannable dollarify(int transactionAmount) {
+
+        String moneyString = "$ " + twoDecimals(transactionAmount / 100.0);
+        Spannable wordToSpan = new SpannableString(moneyString);
+        if (transactionAmount < 0) {
+            wordToSpan.setSpan(new ForegroundColorSpan(Color.RED), 0, wordToSpan.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return wordToSpan;
+    }
+
+    public static String twoDecimals(double d) {
         NumberFormat nf = NumberFormat.getInstance();
         nf.setMaximumFractionDigits(2);
         nf.setMinimumFractionDigits(2);
-        return "$ " + nf.format(transactionAmount / 100.0);
+        return nf.format(d);
     }
 
     public static void createCSV(ArrayList<Transaction> transactions) {
@@ -32,7 +47,7 @@ public class Utilities {
 
     public static boolean checkInt(String n) {
         try {
-            BigInteger i = new BigInteger(n.trim());
+            int i = Integer.parseInt(n.trim());
             return true;
         }
         catch (Exception e) {
@@ -41,7 +56,7 @@ public class Utilities {
     }
     public static boolean checkDec(String n) {
         try {
-            BigDecimal i = new BigDecimal(n.trim());
+            double d = Double.parseDouble(n.trim());
             return true;
         }
         catch (Exception e) {

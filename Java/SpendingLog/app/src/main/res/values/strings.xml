@@ -28,4 +28,7 @@
     <string name="delete">Delete</string>
     <string name="clear_selected">Clear Selected</string>
     <string name="select_all">Select All</string>
+    <string name="custom_occurring_prompt"><![CDATA[(0 < x <= + inf.)]]></string>
+    <string name="times_per">times per</string>
+    <string name="enter_a_number">Enter a number:</string>
 </resources>
