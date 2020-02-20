@@ -41,6 +41,7 @@ public enum Gym {
     HAROLD_PETERSON_MIDDLE_SCHOOL("Harold peterson middle school", "", "Oromocto", false, OROMOCTO),
     RIDGEVIEW_MIDDLE_SCHOOL("Ridgeview middle school", "", "Oromocto", false, OROMOCTO),
     GAGETOWN_SCHOOL("Gagetown school", "GES", "Gagetown", false, GAGETOWN),
+    GAGETOWN_BASE("Base gagetown", "CBF", "Gagetown", false, BASE_GAGETOWN),
     BURTS_CORNER("Burt\'s corner school", "KVS", "Keswick valley", false, KESWICK_VALLEY),
     KESWICK_RIDGE_SCHOOL("Keswick ridge school", "KRS", "Keswick ridge", false, KESWICK_RIDGE),
     CHIPMAN_HIGH_SCHOOL("Chipman high school", "CHS", "Chipman", false, CHIPMAN),

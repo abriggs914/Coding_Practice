@@ -12,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.chrono.Chronology;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -25,7 +27,10 @@ public class Controller {
 //    @FXML public Button gameCreationClearButton;
 
     private static StringBuilder reportString;
+    private String selectedString = "SELECTED";
+    private String unSelectedString = "Not selected";
 
+    // Game creation variables
     private static ObservableList<Gym> gameCreationGymsList;
     private static ObservableList<Team> gameCreationAwayTeamsList;
     private static ObservableList<Team> gameCreationHomeTeamsList;
@@ -43,23 +48,40 @@ public class Controller {
 
     private static TextArea gameCreationReportTextArea;
 
-//    Controller() {
-//        GridPane gp = FXMLLoader;
-//        this.gameCreationTeamComboBox = FX
-//        this.gameCreationOkButton = game_creation_ok_button;
-//        gameCreationOkButton.setOnAction(this::gameCreation_okButtonClicked);
-//        gameCreationClearButton.setOnAction(this::gameCreation_clearButtonClicked);
+    // Game History variables
+    private static ToggleButton gameHistoryDateToggleButton;
+    private static ToggleButton gameHistoryTimeToggleButton;
+    private static ToggleButton gameHistoryGymToggleButton;
+    private static ToggleButton gameHistoryHomeTeamToggleButton;
+    private static ToggleButton gameHistoryAwayTeamToggleButton;
+    private static ToggleButton gameHistoryRefereeAToggleButton;
+    private static ToggleButton gameHistoryRefereeBToggleButton;
 
-//        ObservableList<Team> gameCreationAwayTeamsList = (ObservableList<Team>) Team.getValues();
-//        ObservableList<Team> gameCreationHomeTeamsList = (ObservableList<Team>) Team.getValues();
-//
-//        gameCreationHomeTeamComboBox.setItems(gameCreationHomeTeamsList);
-//        gameCreationAwayTeamComboBox.setItems(gameCreationAwayTeamsList);
-//    }
+    private static ObservableList<TimeList> gameHistoryTimeList;
+    private static ObservableList<Gym> gameHistoryGymsList;
+    private static ObservableList<Team> gameHistoryAwayTeamsList;
+    private static ObservableList<Team> gameHistoryHomeTeamsList;
+    private static ObservableList<Referee> gameHistoryRefereeAList;
+    private static ObservableList<Referee> gameHistoryRefereeBList;
+
+    private static DatePicker gameHistoryDatePicker;
+    private static Spinner<Double> gameHistoryOffsetSpinner;
+    private static ComboBox<TimeList> gameHistoryTimeComboBox;
+    private static ComboBox<Gym> gameHistoryGymComboBox;
+    private static ComboBox<Team> gameHistoryHomeTeamComboBox;
+    private static ComboBox<Team> gameHistoryAwayTeamComboBox;
+    private static ComboBox<Referee> gameHistoryRefereeAComboBox;
+    private static ComboBox<Referee> gameHistoryRefereeBComboBox;
+    private static TextArea gameHistoryReportTextArea;
 
     public void init(Parent parent) {
 
         reportString = new StringBuilder();
+        beginGameCreationSetUp(parent);
+        beginGameHistorySetUp(parent);
+    }
+
+    private void beginGameCreationSetUp(Parent parent) {
 
         // Begin gameCreation set-up
         gameCreationGymsList = FXCollections.observableArrayList(Gym.getValues()).sorted(Gym.compareGymNames());
@@ -164,6 +186,157 @@ public class Controller {
         // End gameCreation set-up
     }
 
+    private void beginGameHistorySetUp(Parent parent) {
+
+        // Begin gameHistory set-up
+        gameHistoryTimeList = FXCollections.observableArrayList(TimeList.getValues()).sorted(TimeList.compareHours());
+        gameHistoryGymsList = FXCollections.observableArrayList(Gym.getValues()).sorted(Gym.compareGymNames());
+        gameHistoryAwayTeamsList = FXCollections.observableArrayList(Team.getValues()).sorted(Team.compareTeamNames());
+        gameHistoryHomeTeamsList = FXCollections.observableArrayList(Team.getValues()).sorted(Team.compareTeamNames());
+        gameHistoryRefereeAList = FXCollections.observableArrayList(Referee.getValues()).sorted(Referee.compareRefereeNames());
+        gameHistoryRefereeBList = FXCollections.observableArrayList(Referee.getValues()).sorted(Referee.compareRefereeNames());
+
+        gameHistoryDateToggleButton = (ToggleButton) parent.lookup("#game_history_date_toggleButton");
+        gameHistoryTimeToggleButton = (ToggleButton) parent.lookup("#game_history_time_toggleButton");
+        gameHistoryGymToggleButton = (ToggleButton) parent.lookup("#game_history_gym_toggleButton");
+        gameHistoryHomeTeamToggleButton = (ToggleButton) parent.lookup("#game_history_home_team_toggleButton");
+        gameHistoryAwayTeamToggleButton = (ToggleButton) parent.lookup("#game_history_away_team_toggleButton");
+        gameHistoryRefereeAToggleButton = (ToggleButton) parent.lookup("#game_history_referee_A_toggleButton");
+        gameHistoryRefereeBToggleButton = (ToggleButton) parent.lookup("#game_history_referee_B_toggleButton");
+
+        gameHistoryDatePicker = (DatePicker) parent.lookup("#game_history_datePicker");
+        gameHistoryOffsetSpinner = (Spinner<Double>) parent.lookup("#game_history_offset_spinner");
+        gameHistoryTimeComboBox = (ComboBox<TimeList>) parent.lookup("#game_history_time_comboBox");
+        gameHistoryGymComboBox = (ComboBox<Gym>) parent.lookup("#game_history_gym_comboBox");
+        gameHistoryHomeTeamComboBox = (ComboBox<Team>) parent.lookup("#game_history_home_team_comboBox");
+        gameHistoryAwayTeamComboBox = (ComboBox<Team>) parent.lookup("#game_history_away_team_comboBox");
+        gameHistoryRefereeAComboBox = (ComboBox<Referee>) parent.lookup("#game_history_referee_A_comboBox");
+        gameHistoryRefereeBComboBox = (ComboBox<Referee>) parent.lookup("#game_history_referee_B_comboBox");
+        gameHistoryReportTextArea = (TextArea) parent.lookup("#game_history_report_textArea");
+
+        gameHistoryTimeComboBox.setItems(gameHistoryTimeList);
+        gameHistoryGymComboBox.setItems(gameHistoryGymsList);
+        gameHistoryHomeTeamComboBox.setItems(gameHistoryHomeTeamsList);
+        gameHistoryAwayTeamComboBox.setItems(gameHistoryAwayTeamsList);
+        gameHistoryRefereeAComboBox.setItems(gameHistoryRefereeAList);
+        gameHistoryRefereeBComboBox.setItems(gameHistoryRefereeBList);
+
+        gameHistoryDateToggleButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                boolean isDown = gameHistoryDateToggleButton.isSelected();
+                if (isDown) {
+                    gameHistoryDateToggleButton.setText(selectedString);
+                }
+                else {
+                    gameHistoryDateToggleButton.setText(unSelectedString);
+                }
+            }
+        });
+
+        gameHistoryTimeToggleButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                boolean isDown = gameHistoryTimeToggleButton.isSelected();
+                if (isDown) {
+                    gameHistoryTimeToggleButton.setText(selectedString);
+                }
+                else {
+                    gameHistoryTimeToggleButton.setText(unSelectedString);
+                }
+            }
+        });
+
+        gameHistoryGymToggleButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                boolean isDown = gameHistoryGymToggleButton.isSelected();
+                if (isDown) {
+                    gameHistoryGymToggleButton.setText(selectedString);
+                }
+                else {
+                    gameHistoryGymToggleButton.setText(unSelectedString);
+                }
+            }
+        });
+
+        gameHistoryHomeTeamToggleButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                boolean isDown = gameHistoryHomeTeamToggleButton.isSelected();
+                if (isDown) {
+                    gameHistoryHomeTeamToggleButton.setText(selectedString);
+                }
+                else {
+                    gameHistoryHomeTeamToggleButton.setText(unSelectedString);
+                }
+            }
+        });
+
+        gameHistoryAwayTeamToggleButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                boolean isDown = gameHistoryAwayTeamToggleButton.isSelected();
+                if (isDown) {
+                    gameHistoryAwayTeamToggleButton.setText(selectedString);
+                }
+                else {
+                    gameHistoryAwayTeamToggleButton.setText(unSelectedString);
+                }
+            }
+        });
+
+        gameHistoryRefereeAToggleButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                boolean isDown = gameHistoryRefereeAToggleButton.isSelected();
+                if (isDown) {
+                    gameHistoryRefereeAToggleButton.setText(selectedString);
+                }
+                else {
+                    gameHistoryRefereeAToggleButton.setText(unSelectedString);
+                }
+            }
+        });
+
+        gameHistoryRefereeBToggleButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                boolean isDown = gameHistoryRefereeBToggleButton.isSelected();
+                if (isDown) {
+                    gameHistoryRefereeBToggleButton.setText(selectedString);
+                }
+                else {
+                    gameHistoryRefereeBToggleButton.setText(unSelectedString);
+                }
+            }
+        });
+
+        gameHistoryOffsetSpinner.setValueFactory(new SpinnerValueFactory<Double>() {
+            @Override
+            public void decrement(int steps) {
+                double st = steps / 100.0;
+                double v = Double.parseDouble(gameHistoryOffsetSpinner.getEditor().getText());
+                double x = Math.max(0.0, (v - st));
+                String s = Utilities.twoDecimals(x);
+                gameHistoryOffsetSpinner.getEditor().setText(s);
+            }
+
+            @Override
+            public void increment(int steps) {
+                double st = steps / 100.0;
+                double v = Double.parseDouble(gameHistoryOffsetSpinner.getEditor().getText());
+                double x = Math.min(1.0, (v + st));
+                String s = Utilities.twoDecimals(x);
+                gameHistoryOffsetSpinner.getEditor().setText(s);
+
+            }
+        });
+        gameHistoryDatePicker.setValue(LocalDate.now());
+        gameHistoryOffsetSpinner.getEditor().setText("0.00");
+        // End gameHistory set-up
+    }
+
     private ObservableList<Team> addTeam(Team newTeam, ObservableList<Team> list) {
         ArrayList<Team> teams = new ArrayList<>(list);
         teams.add(newTeam);
@@ -204,6 +377,16 @@ public class Controller {
         comboBox.setItems(referees);
     }
 
+    public void selectToggleButton(ToggleButton t) {
+        t.setSelected(true);
+        t.setText(selectedString);
+    }
+
+    public void unSelectToggleButton(ToggleButton t) {
+        t.setSelected(false);
+        t.setText(unSelectedString);
+    }
+
     private static void clearReportString() {
         reportString.delete(0, reportString.length());
     }
@@ -217,10 +400,84 @@ public class Controller {
     }
 
 
+    public static Date gameHistory_getDate() {
+        String dateText = gameHistoryDatePicker.getEditor().getText().trim();
+        TimeList timeListText = gameHistoryTimeComboBox.getValue();
+        String timeText;
+        if (timeListText == null) {
+            timeText = TimeList._05_00_PM.getName();
+        }
+        else {
+            timeText = timeListText.toString();
+        }
+        String dateTimeText = dateText + " " + timeText;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy KK:mm aa");//"EEE MMM dd hh:mm:ss zzz yyyy");
+        Date date = null;
+        try {
+            date = sdf.parse(dateTimeText);
+        } catch (ParseException e) {
+            addToReportString("\ndate {" + dateTimeText + "} is unparseable.");
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public static double gameHistory_getOffset() {
+        return Double.parseDouble(gameHistoryOffsetSpinner.getEditor().getText());
+    }
+
+    public static Team gameHistory_getHomeTeam() {
+        Team t = gameHistoryHomeTeamComboBox.getValue();
+        boolean b = gameHistoryHomeTeamToggleButton.isSelected();
+        if (b && t == null) {
+            addToReportString("\nSelect a home team.");
+        }
+        return t;
+    }
+
+    public static Team gameHistory_getAwayTeam() {
+        Team t = gameHistoryAwayTeamComboBox.getValue();
+        boolean b = gameHistoryAwayTeamToggleButton.isSelected();
+        if (b && t == null) {
+            addToReportString("\nSelect an away team.");
+        }
+        return t;
+    }
+
+    public static Gym gameHistory_getGym() {
+        Gym g = gameHistoryGymComboBox.getValue();
+        boolean b = gameHistoryGymToggleButton.isSelected();
+        if (b && g == null) {
+            addToReportString("\nSelect a gym.");
+        }
+        return g;
+    }
+
+    public static Referee gameHistory_getRefereeA() {
+        Referee r = gameHistoryRefereeAComboBox.getValue();
+        boolean b = gameHistoryRefereeAToggleButton.isSelected();
+        if (b && r == null) {
+            addToReportString("\nSelect referee A.");
+        }
+        return r;
+    }
+
+    public static Referee gameHistory_getRefereeB() {
+        Referee r = gameHistoryRefereeBComboBox.getValue();
+        boolean b = gameHistoryRefereeBToggleButton.isSelected();
+        if (b && r == null) {
+            addToReportString("\nSelect referee B.");
+        }
+        return r;
+    }
+
     public static Date gameCreation_getDate() {
         String dateText = gameCreationDatePicker.getEditor().getText().trim();
         String timeText = gameCreationTimeReportSpinner.getEditor().getText().trim();
-        String dateTimeText = dateText + " " + timeText;
+//        if (dateText.equals("")) {
+//        }
+        String dateTimeText = (dateText + " " + timeText).trim();
+        System.out.println("dateText: " + dateText + ", timeText: " + timeText + ", dateTimeText: " + dateTimeText);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy KK:mm aa");//"EEE MMM dd hh:mm:ss zzz yyyy");
         Date date = null;
         try {
@@ -272,6 +529,60 @@ public class Controller {
         return r;
     }
 
+    public static boolean gameHistory_getDateFilterStatus() {
+        return gameHistoryDateToggleButton.isSelected();
+    }
+
+    public static boolean gameHistory_getTimeFilterStatus() {
+        return gameHistoryTimeToggleButton.isSelected();
+    }
+
+    public static boolean gameHistory_getGymFilterStatus() {
+        return gameHistoryGymToggleButton.isSelected();
+    }
+
+    public static boolean gameHistory_getHomeTeamFilterStatus() {
+        return gameHistoryHomeTeamToggleButton.isSelected();
+    }
+
+    public static boolean gameHistory_getAwayTeamFilterStatus() {
+        return gameHistoryAwayTeamToggleButton.isSelected();
+    }
+
+    public static boolean gameHistory_getRefereeAFilterStatus() {
+        return gameHistoryRefereeAToggleButton.isSelected();
+    }
+
+    public static boolean gameHistory_getRefereeBFilterStatus() {
+        return gameHistoryRefereeBToggleButton.isSelected();
+    }
+
+    // Showing report string for each tab
+    public void gameCreation_showReportText(boolean show, boolean clearString) {
+        if (show) {
+            gameCreationReportTextArea.setText(getReportString());
+        }
+        else {
+            gameCreationReportTextArea.setText("");
+        }
+        if (clearString) {
+            clearReportString();
+        }
+    }
+
+    public void gameHistory_showReportText(boolean show, boolean clearString) {
+        if (show) {
+            gameHistoryReportTextArea.setText(getReportString());
+        }
+        else {
+            gameHistoryReportTextArea.setText("");
+        }
+        if (clearString) {
+            clearReportString();
+        }
+    }
+
+    // Main button handlers for all tabs
     public void gameCreation_okButtonClicked(ActionEvent actionEvent) {
         GameCreationForm gcf = new GameCreationForm();
         gcf.collectAttributes();
@@ -288,25 +599,57 @@ public class Controller {
     }
 
     public void gameCreation_clearButtonClicked(ActionEvent actionEvent) {
+        gameCreationDatePicker.getEditor().setText("");
+        gameCreationTimeSlider.setValue(17.0); // default 5 PM
+        String timeText = Utilities.parseTime(gameCreationTimeSlider.getValue(), true);
+        gameCreationTimeReportSpinner.getEditor().setText(timeText);
+        gameCreationGymComboBox.getSelectionModel().clearSelection();
+        gameCreationHomeTeamComboBox.getSelectionModel().clearSelection();
+        gameCreationAwayTeamComboBox.getSelectionModel().clearSelection();
+        gameCreationRefereeAComboBox.getSelectionModel().clearSelection();
+        gameCreationRefereeBComboBox.getSelectionModel().clearSelection();
+        gameCreation_showReportText(false, true);
     }
 
-    public void gameCreation_showReportText(boolean show, boolean clearString) {
-        if (show) {
-            gameCreationReportTextArea.setText(getReportString());
+    public void gameHistory_graphButtonClicked(ActionEvent actionEvent) {
+        System.out.println("gameHistory graph button clicked");
+        GameHistoryForm ghf = new GameHistoryForm();
+        ghf.collectAttributes();
+        boolean validEntries = ghf.checkValid() || ghf.checkSelectionValidity();
+//        Game game = null;
+        if (validEntries) {
+//            game = gcf.createGame();
+//            addToReportString(game.toString());
+            System.out.println("ALL VALID");
+            System.out.println("filtered games: " + ghf.getFilteredGames());
         }
         else {
-            gameCreationReportTextArea.setText("");
+            addToReportString("\nCheck entries.");
         }
-        if (clearString) {
-            clearReportString();
-        }
+        gameHistory_showReportText(true, true);
     }
 
-    private void gameCreation_spinnerButton(ObservableValue<? extends Double> observableValue, Double oldValue, Double newValue) {
-        String timeText = gameCreationTimeReportSpinner.getEditor().getText();
-        String newTime = Utilities.addOneMinute(timeText);
-        gameCreationTimeReportSpinner.getEditor().setText(newTime);
-        double timeValue = Utilities.getTimeSliderValue(newTime);
-        gameCreationTimeSlider.setValue(timeValue);
+    public void gameHistory_clearTogglesButtonClicked(ActionEvent actionEvent) {
+        System.out.println("gameHistory clear toggles button clicked");
+        unSelectToggleButton(gameHistoryDateToggleButton);
+        unSelectToggleButton(gameHistoryTimeToggleButton);
+        unSelectToggleButton(gameHistoryGymToggleButton);
+        unSelectToggleButton(gameHistoryHomeTeamToggleButton);
+        unSelectToggleButton(gameHistoryAwayTeamToggleButton);
+        unSelectToggleButton(gameHistoryRefereeAToggleButton);
+        unSelectToggleButton(gameHistoryRefereeBToggleButton);
+    }
+
+    public void gameHistory_clearAllButtonClicked(ActionEvent actionEvent) {
+        System.out.println("gameHistory clear all button clicked");
+        gameHistory_clearTogglesButtonClicked(actionEvent);
+        gameHistoryDatePicker.setValue(LocalDate.now());
+        gameHistoryOffsetSpinner.getEditor().setText("0.00");
+        gameHistoryTimeComboBox.getSelectionModel().clearSelection();
+        gameHistoryGymComboBox.getSelectionModel().clearSelection();
+        gameHistoryHomeTeamComboBox.getSelectionModel().clearSelection();
+        gameHistoryAwayTeamComboBox.getSelectionModel().clearSelection();
+        gameHistoryRefereeAComboBox.getSelectionModel().clearSelection();
+        gameHistoryRefereeBComboBox.getSelectionModel().clearSelection();
     }
 }

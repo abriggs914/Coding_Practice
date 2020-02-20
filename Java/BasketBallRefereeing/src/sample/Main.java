@@ -20,7 +20,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Basketball game entry form.");
-        primaryStage.setScene(new Scene(root, 500, 550));
+        primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.show();
 
 //        root.lookup("");
