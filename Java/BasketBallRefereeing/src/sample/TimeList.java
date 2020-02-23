@@ -57,54 +57,54 @@ public enum TimeList {
     _11_30_AM("11:30 AM", 11, 30, true),
     _11_45_AM("11:45 AM", 11, 45, true),
 
-    _12_00_PM("12:00 PM", 0, 0, false),
-    _12_15_PM("12:15 PM", 0, 15, false),
-    _12_30_PM("12:30 PM", 0, 30, false),
-    _12_45_PM("12:45 PM", 0, 45, false),
-    _01_00_PM("01:00 PM", 1, 0, false),
-    _01_15_PM("01:15 PM", 1, 15, false),
-    _01_30_PM("01:30 PM", 1, 30, false),
-    _01_45_PM("01:45 PM", 1, 45, false),
-    _02_00_PM("02:00 PM", 2, 0, false),
-    _02_15_PM("02:15 PM", 2, 15, false),
-    _02_30_PM("02:30 PM", 2, 30, false),
-    _02_45_PM("02:45 PM", 2, 45, false),
-    _03_00_PM("03:00 PM", 3, 0, false),
-    _03_15_PM("03:15 PM", 3, 15, false),
-    _03_30_PM("03:30 PM", 3, 30, false),
-    _03_45_PM("03:45 PM", 3, 45, false),
-    _04_00_PM("04:00 PM", 4, 0, false),
-    _04_15_PM("04:15 PM", 4, 15, false),
-    _04_30_PM("04:30 PM", 4, 30, false),
-    _04_45_PM("04:45 PM", 4, 45, false),
-    _05_00_PM("05:00 PM", 5, 0, false),
-    _05_15_PM("05:15 PM", 5, 15, false),
-    _05_30_PM("05:30 PM", 5, 30, false),
-    _05_45_PM("05:45 PM", 5, 45, false),
-    _06_00_PM("06:00 PM", 6, 0, false),
-    _06_15_PM("06:15 PM", 6, 15, false),
-    _06_30_PM("06:30 PM", 6, 30, false),
-    _06_45_PM("06:45 PM", 6, 45, false),
-    _07_00_PM("07:00 PM", 7, 0, false),
-    _07_15_PM("07:15 PM", 7, 15, false),
-    _07_30_PM("07:30 PM", 7, 30, false),
-    _07_45_PM("07:45 PM", 7, 45, false),
-    _08_00_PM("08:00 PM", 8, 0, false),
-    _08_15_PM("08:15 PM", 8, 15, false),
-    _08_30_PM("08:30 PM", 8, 30, false),
-    _08_45_PM("08:45 PM", 8, 45, false),
-    _09_00_PM("09:00 PM", 9, 0, false),
-    _09_15_PM("09:15 PM", 9, 15, false),
-    _09_30_PM("09:30 PM", 9, 30, false),
-    _09_45_PM("09:45 PM", 9, 45, false),
-    _10_00_PM("10:00 PM", 10, 0, false),
-    _10_15_PM("10:15 PM", 10, 15, false),
-    _10_30_PM("10:30 PM", 10, 30, false),
-    _10_45_PM("10:45 PM", 10, 45, false),
-    _11_00_PM("11:00 PM", 11, 0, false),
-    _11_15_PM("11:15 PM", 11, 15, false),
-    _11_30_PM("11:30 PM", 11, 30, false),
-    _11_45_PM("11:45 PM", 11, 45, false);
+    _12_00_PM("12:00 PM",12, 0, false),
+    _12_15_PM("12:15 PM",12, 15, false),
+    _12_30_PM("12:30 PM",12, 30, false),
+    _12_45_PM("12:45 PM",12, 45, false),
+    _01_00_PM("01:00 PM",13, 0, false),
+    _01_15_PM("01:15 PM",13, 15, false),
+    _01_30_PM("01:30 PM",13, 30, false),
+    _01_45_PM("01:45 PM",13, 45, false),
+    _02_00_PM("02:00 PM",14, 0, false),
+    _02_15_PM("02:15 PM",14, 15, false),
+    _02_30_PM("02:30 PM",14, 30, false),
+    _02_45_PM("02:45 PM",14, 45, false),
+    _03_00_PM("03:00 PM",15, 0, false),
+    _03_15_PM("03:15 PM",15, 15, false),
+    _03_30_PM("03:30 PM",15, 30, false),
+    _03_45_PM("03:45 PM",15, 45, false),
+    _04_00_PM("04:00 PM",16, 0, false),
+    _04_15_PM("04:15 PM",16, 15, false),
+    _04_30_PM("04:30 PM",16, 30, false),
+    _04_45_PM("04:45 PM",16, 45, false),
+    _05_00_PM("05:00 PM",17, 0, false),
+    _05_15_PM("05:15 PM",17, 15, false),
+    _05_30_PM("05:30 PM",17, 30, false),
+    _05_45_PM("05:45 PM",17, 45, false),
+    _06_00_PM("06:00 PM",18, 0, false),
+    _06_15_PM("06:15 PM",18, 15, false),
+    _06_30_PM("06:30 PM",18, 30, false),
+    _06_45_PM("06:45 PM",18, 45, false),
+    _07_00_PM("07:00 PM",19, 0, false),
+    _07_15_PM("07:15 PM",19, 15, false),
+    _07_30_PM("07:30 PM",19, 30, false),
+    _07_45_PM("07:45 PM",19, 45, false),
+    _08_00_PM("08:00 PM",20, 0, false),
+    _08_15_PM("08:15 PM",20, 15, false),
+    _08_30_PM("08:30 PM",20, 30, false),
+    _08_45_PM("08:45 PM",20, 45, false),
+    _09_00_PM("09:00 PM",21, 0, false),
+    _09_15_PM("09:15 PM",21, 15, false),
+    _09_30_PM("09:30 PM",21, 30, false),
+    _09_45_PM("09:45 PM",21, 45, false),
+    _10_00_PM("10:00 PM",22, 0, false),
+    _10_15_PM("10:15 PM",22, 15, false),
+    _10_30_PM("10:30 PM",22, 30, false),
+    _10_45_PM("10:45 PM",22, 45, false),
+    _11_00_PM("11:00 PM",23, 0, false),
+    _11_15_PM("11:15 PM",23, 15, false),
+    _11_30_PM("11:30 PM",23, 30, false),
+    _11_45_PM("11:45 PM",23, 45, false);
 
     private String name;
     private int hour, minute;
@@ -122,9 +122,9 @@ public enum TimeList {
     }
 
     public int getHour() {
-        if (isAM) {
-            return hour;
-        }
+//        if (isAM) {
+//            return hour;
+//        }
         return hour + 12;
     }
 
@@ -134,6 +134,10 @@ public enum TimeList {
 
     public boolean isAM() {
         return isAM;
+    }
+
+    public String getTimeString() {
+        return String.format("%02d", this.hour) + ":" + String.format("%02d", this.minute);
     }
 
     //    public ArrayList<String> getValues() {

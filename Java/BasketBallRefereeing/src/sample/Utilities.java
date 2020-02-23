@@ -1,6 +1,8 @@
 package sample;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -168,6 +170,10 @@ public class Utilities {
         return diff < NUM_MILLIS_PER_DAY;
     }
 
+    public static String getTimeFromDate(Date d) {
+        return d.toString().split(" ")[3];
+    }
+
     public static boolean sameTime(Date a, Date b, double window, boolean isHours) {
         String aString = a.toString();
         String bString = b.toString();
@@ -182,23 +188,27 @@ public class Utilities {
         double aMinute = Double.parseDouble(aTimeSplit[1]);
         double bHour = Double.parseDouble(bTimeSplit[0]);
         double bMinute = Double.parseDouble(bTimeSplit[1]);
-//        System.out.print( "Bupwindow: " + upWindow + "\nBdownWindow: " + downWindow);
+//        System.out.print( "\n\nBupwindow: " + upWindow + "\nBdownWindow: " + downWindow);
 
-        boolean bool = false; // clean up
+        boolean bool = false;
+        upWindow += (aMinute / 100.0);
+        downWindow += (aMinute / 100.0);
         if (isHours) {
             upWindow += aHour;
-            downWindow += aHour;
-            if (downWindow <= bHour && bHour <= upWindow) {
-                bool = true;
-            }
         }
-        else {
-            upWindow += aMinute;
-            downWindow += aMinute;
-            if (downWindow <= bMinute && bMinute <= upWindow) {
-                bool = true;
-            }
+
+        double bHourMinute = ((100 * bHour) + bMinute) / 100.0;
+        String bTimeString = parseTime(bHourMinute, true);
+        String upWindowString = parseTime(upWindow, false);
+        String downWindowString = parseTime(downWindow, false);
+        double bValue = getTimeSliderValue(bTimeString);
+        double upWindowValue = getTimeSliderValue(upWindowString);
+        double downWindowValue = getTimeSliderValue(downWindowString);
+
+        if (downWindowValue <= bValue && bValue <= upWindowValue) {
+            bool = true;
         }
+
 //        System.out.println( "\nAupwindow: " + upWindow +
 //                "\nAdownWindow: " + downWindow +
 //                "\naString: " + aString +
@@ -211,11 +221,16 @@ public class Utilities {
 //                "\naMinute: " + aMinute +
 //                "\nbHour: " + bHour +
 //                "\nbMinute: " + bMinute +
-//                "\nbool: " + bool +
+//                "\nupWindowString: " + upWindowString +
+//                "\ndownWindowString: " + downWindowString +
+//                "\nbValue: " + bValue +
+//                "\nupWindowValue: " + upWindowValue +
+//                "\ndownWindowValue: " + downWindowValue +
 //                "\ndateA: " + a +
 //                "\ndateB: " + b +
 //                "\nwindow: " + window +
-//                "\nisHours: " + isHours);
+//                "\nisHours: " + isHours +
+//                "\nbool: " + bool);
         return bool;
     }
 
@@ -226,12 +241,172 @@ public class Utilities {
         int dateHour = Integer.parseInt(dateTimeSplit[0]);
         int dateMinute = Integer.parseInt(dateTimeSplit[1]);
         String am_pm = "AM";
-        if (dateHour > 12) {
-            dateHour -= 12;
+        if (dateHour > 11) {
+            if (dateHour != 12) {
+                dateHour -= 12;
+            }
             am_pm = "PM";
         }
         String timeText = String.format("%02d", dateHour) + ":" + String.format("%02d", dateMinute) + " " + am_pm;
-        System.out.println("date: " + date + ", timeText: " + timeText);
+        System.out.println("Utilities.getTimeString, date: " + date + ", dateString: " + dateString + ", timeText: " + timeText);
         return timeText;
+    }
+
+    public static Date parseDate(String s) {
+//        System.out.print(" date: " + s);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM dd, yyyy hh:mm aa");//"EEE MMM dd hh:mm:ss zzz yyyy");
+        what the fuc
+        Date date = null;
+        try {
+            date = sdf.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public static int min(int a, int b){
+        return ((a <= b)? a : b);
+    }
+
+    public static int min(int x, int y, int z) {
+        if (x <= y && x <= z) {
+            return x;
+        }
+        if (y <= x && y <= z) {
+            return y;
+        }
+        else {
+            return z;
+        }
+    }
+
+    public static int max(int a, int b){
+        return ((a >= b)? a : b);
+    }
+
+    public static void show(int[][] arr){
+        System.out.print("{");
+        for(int i = 0; i < arr.length; i++){
+            System.out.print("{");
+            if(i > 0)
+                System.out.print(" ");
+            for(int j = 0; j < arr[i].length; j++){
+                if(j < arr[i].length-1){
+                    if(i == 0 || j == 0)
+                        System.out.print((char)arr[i][j] + ", ");
+                    else
+                        System.out.print(arr[i][j] + ", ");
+                }
+                else{
+                    if(i == 0 || j == 0)
+                        System.out.print((char)arr[i][j]);
+                    else
+                        System.out.print(arr[i][j]);
+                }
+            }
+            if(i < arr.length-1)
+                System.out.println("},");
+            else
+                System.out.print("}");
+        }
+        System.out.println("}");
+    }
+
+    public static int computeMinEditDistance(String a, String b) {
+        int lenA = a.length();
+        int lenB = b.length();
+        int x = max(lenA, lenB);
+        String p = ((x == lenA)? a : b);
+        String q = ((x == lenA)? b : a);
+//        ArrayList<String> instructions =
+        return minEditDistance(p, q);
+    }
+
+    public static int minEditDistance(String a, String b) {
+        a = a.toUpperCase();
+        b = b.toUpperCase();
+        System.out.print("Minimum edit Distance to convert \"" + a + "\" to \"" + b + "\"\t->\t");
+        int n = a.length() + 2;
+        int m = b.length() + 2;
+        int[][] table = new int[m][n];
+        for(int i = 2; i < max(n, m); i++){
+            if(i < n){
+                table[0][i] = a.charAt(i - 2);
+                table[1][i] = i - 1;
+            }
+            if(i < m){
+                table[i][0] = b.charAt(i - 2);
+                table[i][1] = i - 1;
+            }
+        }
+        for(int i = 2; i < m; i++){
+            for(int j = 2; j < n; j++){
+                int x = table[i][j-1];
+                int y = table[i-1][j-1];
+                int z = table[i-1][j];
+                int mini = min(x, min(y, z));
+                int u = table[0][j];
+                int v = table[i][0];
+                if(u == v){
+                    table[i][j] = table[i-1][j-1];
+                }
+                else{
+                    // System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", min(x, min(y, z): " + mini);
+                    // able[i][j] = mini + 1;
+                }
+            }
+        }
+        int minimumDistance = table[table.length-1][table[table.length-1].length-1];
+//        int maxN = Integer.MIN_VALUE;
+//        for(int[] row : table) {
+//            for(int z : row) {
+//                if (z > maxN) {
+//                    maxN = z;
+//                }
+//            }
+//        }
+//        int minimumDistance = maxN;
+        System.out.println(minimumDistance);
+        show(table);
+        return minimumDistance;
+    }
+
+    public static int getMinEditDist(String a, String b) {
+        return editDistDP(a, b, a.length(), b.length());
+    }
+
+    public static int editDistDP(String str1, String str2, int m, int n) {
+        // Create a table to store results of subproblems
+        int dp[][] = new int[m + 1][n + 1];
+
+        // Fill d[][] in bottom up manner
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                // If first string is empty, only option is to
+                // insert all characters of second string
+                if (i == 0)
+                    dp[i][j] = j; // Min. operations = j
+
+                    // If second string is empty, only option is to
+                    // remove all characters of second string
+                else if (j == 0)
+                    dp[i][j] = i; // Min. operations = i
+
+                    // If last characters are same, ignore last char
+                    // and recur for remaining string
+                else if (str1.charAt(i - 1) == str2.charAt(j - 1))
+                    dp[i][j] = dp[i - 1][j - 1];
+
+                    // If the last character is different, consider all
+                    // possibilities and find the minimum
+                else
+                    dp[i][j] = 1 + min(dp[i][j - 1], // Insert
+                            dp[i - 1][j], // Remove
+                            dp[i - 1][j - 1]); // Replace
+            }
+        }
+
+        return dp[m][n];
     }
 }

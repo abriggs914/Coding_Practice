@@ -3,6 +3,7 @@ package sample;
 import java.util.Comparator;
 
 public enum Level {
+    UNKNOWN_LEVEL("UNKNOWN"),
     U_12("u-12"),
     U_14("u-14"),
     MINI("mini"),
@@ -15,6 +16,7 @@ public enum Level {
     JV_A("JV_A"),
     JV_AA("JV_AA"),
     JV_AAA("JV_AAA"),
+    EXHIBITION("exhibition"),
     SR_EDP("Sr. EDP"),
     JR_EDP("Jr. EDP");
 

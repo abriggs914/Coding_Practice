@@ -18,7 +18,7 @@ public class GameManager {
         return this.gamesList;
     }
 
-    private Game createGameObject(Date day, Gym gym, Referee refereeA, Referee refereeB, Team homeTeam, Team awayTeam) {
+    public Game createGameObject(Date day, Gym gym, Referee refereeA, Referee refereeB, Team homeTeam, Team awayTeam) {
         return new Game(day, gym, refereeA, refereeB, homeTeam, awayTeam);
     }
 
@@ -26,6 +26,14 @@ public class GameManager {
         Game g = createGameObject(day, gym, refereeA, refereeB, homeTeam, awayTeam);
         this.gamesList.add(g);
         return g;
+    }
+
+    public void addGameObject(Game game) {
+        this.gamesList.add(game);
+    }
+
+    public void addGameObjectsArrayList(ArrayList<Game> games) {
+        this.gamesList.addAll(games);
     }
 
     public void gameCreation_setHomeTeamSelected(Team t) {
@@ -72,7 +80,7 @@ public class GameManager {
         }
         ArrayList<Game> res = newArrayList();
         for (Game g : arr) {
-            if (Utilities.sameTime(g.getDate(), day, window, isHours)) {
+            if (Utilities.sameTime(day, g.getDate(), window, isHours)) {
                 res.add(g);
             }
         }

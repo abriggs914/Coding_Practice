@@ -85,9 +85,10 @@ public class GameHistoryForm {
         ArrayList<Game> games = new ArrayList<>(Main.gameManager.getGames());
         if (this.filterDate) {
             System.out.println("filtering by Date");
-            ArrayList<Game> temp = Main.gameManager.filterGamesForDate(games, this.date);
-            games.clear();
-            games.addAll(temp);
+//            ArrayList<Game> temp = Main.gameManager.filterGamesForDate(games, this.date);
+//            games.clear();
+//            games.addAll(temp);
+            games = new ArrayList<>(Main.gameManager.filterGamesForDate(games, this.date));
         }
         if (this.filterTime) {
             System.out.println("filtering by Time");

@@ -27,14 +27,9 @@ public class Main extends Application {
 
         Controller controller = new Controller();
         controller.init(root);
-
-        Team homeTeam = FREDERICTON_HIGH_SCHOOL_SR_AAA_BOYS;
-        Team awayTeam = LEO_HAYES_HIGH_SCHOOL_SR_AAA_BOYS;
-        Referee refA = AVERY_BRIGGS;
-        Referee refB = TERRY_DOLAN;
-        Gym gym = FREDERICTON_HIGH_SCHOOL_MAIN_GYM;
-        Date day = new Date();
-        gameManager.createNewGame(day, gym, refA, refB, homeTeam, awayTeam);
+        SampleGames sg = new SampleGames();
+        sg.load_Fall_2019();
+        gameManager.addGameObjectsArrayList(sg.getGames());
         System.out.println("gameManager: " + gameManager);
     }
 

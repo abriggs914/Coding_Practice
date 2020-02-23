@@ -408,17 +408,20 @@ public class Controller {
             timeText = TimeList._05_00_PM.getName();
         }
         else {
-            timeText = timeListText.toString();
+            timeText = timeListText.getTimeString();
         }
         String dateTimeText = dateText + " " + timeText;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy KK:mm aa");//"EEE MMM dd hh:mm:ss zzz yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");//"EEE MMM dd hh:mm:ss zzz yyyy");
+        System.out.println("sdf.toPattern: " + sdf.toPattern() + ", sdf.toString: " + sdf.toString());
         Date date = null;
         try {
             date = sdf.parse(dateTimeText);
         } catch (ParseException e) {
             addToReportString("\ndate {" + dateTimeText + "} is unparseable.");
+            gameHistory_showReportText(true, true);
             e.printStackTrace();
         }
+        System.out.println("GameHistory_getDate, dateTimeText: " + dateTimeText + ", date: " + date);
         return date;
     }
 
@@ -570,7 +573,7 @@ public class Controller {
         }
     }
 
-    public void gameHistory_showReportText(boolean show, boolean clearString) {
+    public static void gameHistory_showReportText(boolean show, boolean clearString) {
         if (show) {
             gameHistoryReportTextArea.setText(getReportString());
         }
@@ -621,7 +624,10 @@ public class Controller {
 //            game = gcf.createGame();
 //            addToReportString(game.toString());
             System.out.println("ALL VALID");
-            System.out.println("filtered games: " + ghf.getFilteredGames());
+            System.out.println(
+                    "filtered games: " + ghf.getFilteredGames() +
+                     "\n\tSIZE: " + ghf.getFilteredGames().size());
+            addToReportString(ghf.getFilteredGames().toString());
         }
         else {
             addToReportString("\nCheck entries.");
