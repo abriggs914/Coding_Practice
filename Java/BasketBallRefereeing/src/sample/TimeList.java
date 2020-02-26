@@ -125,7 +125,7 @@ public enum TimeList {
 //        if (isAM) {
 //            return hour;
 //        }
-        return hour + 12;
+        return hour;
     }
 
     public int getMinute() {
@@ -137,7 +137,8 @@ public enum TimeList {
     }
 
     public String getTimeString() {
-        return String.format("%02d", this.hour) + ":" + String.format("%02d", this.minute);
+        String am_pm = ((isAM)? " AM" : " PM");
+        return String.format("%02d", this.hour) + ":" + String.format("%02d", this.minute);// + am_pm;
     }
 
     //    public ArrayList<String> getValues() {

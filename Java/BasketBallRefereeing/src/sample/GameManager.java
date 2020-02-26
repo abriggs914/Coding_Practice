@@ -6,12 +6,15 @@ import java.util.Date;
 
 public class GameManager {
 
+    private Date firstDate, endDate;
     private ArrayList<Game> gamesList;
     private Team gameCreation_homeTeamSelected;
     private Referee gameCreation_refereeASelected;
 
     public GameManager() {
         this.gamesList = new ArrayList<>();
+        this.firstDate = new Date();
+        this.endDate = new Date();
     }
 
     public ArrayList<Game> getGames() {
@@ -24,6 +27,7 @@ public class GameManager {
 
     public Game createNewGame(Date day, Gym gym, Referee refereeA, Referee refereeB, Team homeTeam, Team awayTeam) {
         Game g = createGameObject(day, gym, refereeA, refereeB, homeTeam, awayTeam);
+        checkGameDate(day);
         this.gamesList.add(g);
         return g;
     }
@@ -34,6 +38,34 @@ public class GameManager {
 
     public void addGameObjectsArrayList(ArrayList<Game> games) {
         this.gamesList.addAll(games);
+        checkAllGamesDates();
+    }
+
+    private void checkGameDate(Date day) {
+//        System.out.print("\tday: " + day + " -> " + endDate.getTime() + ", firstDate: " + firstDate + ", endDate: " + endDate);
+        if (day.getTime() < firstDate.getTime()) {
+//            System.out.println(", day.getTime() < firstDate.getTime(): " + firstDate.getTime());
+            this.firstDate = day;
+        }
+        if (day.getTime() > endDate.getTime()) {
+//            System.out.println(", day.getTime() > endDate.getTime(): " + endDate.getTime());
+            this.endDate = day;
+        }
+    }
+
+    private void checkAllGamesDates() {
+        for (Date day : getGameDates(gamesList)) {
+//            System.out.println("\tday: " + day + " -> " + endDate.getTime() + ", firstDate: " + firstDate + ", endDate: " + endDate);
+            if (day.getTime() < firstDate.getTime()) {
+//                System.out.println(", day.getTime() < firstDate.getTime(): " + firstDate.getTime());
+                this.firstDate = day;
+            }
+            if (day.getTime() > endDate.getTime()) {
+//                System.out.println(", day.getTime() > endDate.getTime(): " + endDate.getTime());
+                this.endDate = day;
+            }
+//            System.out.println();
+        }
     }
 
     public void gameCreation_setHomeTeamSelected(Team t) {
@@ -71,16 +103,15 @@ public class GameManager {
      * @param arr     - arr to filter, possibly null.
      * @param day     - day set to hour for searching.
      * @param window  - (0 <= x <= 1).
-     * @param isHours - true for hours, false for minutes
      * @return new ArrayList of filtered games.
      */
-    public ArrayList<Game> filterGamesForTime(ArrayList<Game> arr, Date day, double window, boolean isHours) {
+    public ArrayList<Game> filterGamesForTime(ArrayList<Game> arr, Date day, double window) {
         if (arr == null) {
             arr = new ArrayList<>(gamesList);
         }
         ArrayList<Game> res = newArrayList();
         for (Game g : arr) {
-            if (Utilities.sameTime(day, g.getDate(), window, isHours)) {
+            if (Utilities.sameTime(day, g.getDate(), window)) {//, isHours)) {
                 res.add(g);
             }
         }
@@ -184,8 +215,24 @@ public class GameManager {
         return res;
     }
 
+    public ArrayList<Date> getGameDates(ArrayList<Game> arr) {
+        ArrayList<Date> res = new ArrayList<>();
+        for (Game g : arr) {
+            res.add(g.getDate());
+        }
+        return res;
+    }
+
     private ArrayList<Game> newArrayList() {
         return new ArrayList<>();
+    }
+
+    public Date getFirstDate() {
+        return firstDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
     }
 
     public String toString() {

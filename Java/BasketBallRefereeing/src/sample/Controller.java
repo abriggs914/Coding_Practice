@@ -7,6 +7,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
+import javafx.scene.chart.Chart;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
@@ -15,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.chrono.Chronology;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -23,14 +27,14 @@ import java.util.Date;
 
 public class Controller {
 
-//    @FXML public Button gameCreationOkButton;
-//    @FXML public Button gameCreationClearButton;
-
     private static StringBuilder reportString;
     private String selectedString = "SELECTED";
     private String unSelectedString = "Not selected";
 
-    // Game creation variables
+    /*
+    * Game creation variables
+    */
+
     private static ObservableList<Gym> gameCreationGymsList;
     private static ObservableList<Team> gameCreationAwayTeamsList;
     private static ObservableList<Team> gameCreationHomeTeamsList;
@@ -48,7 +52,10 @@ public class Controller {
 
     private static TextArea gameCreationReportTextArea;
 
-    // Game History variables
+    /*
+    * Game History variables
+    */
+
     private static ToggleButton gameHistoryDateToggleButton;
     private static ToggleButton gameHistoryTimeToggleButton;
     private static ToggleButton gameHistoryGymToggleButton;
@@ -56,6 +63,13 @@ public class Controller {
     private static ToggleButton gameHistoryAwayTeamToggleButton;
     private static ToggleButton gameHistoryRefereeAToggleButton;
     private static ToggleButton gameHistoryRefereeBToggleButton;
+    private static RadioButton gameHistoryAnimateRadioButton;
+    private static RadioButton gameHistoryStackGraphRadioButton;
+    private static RadioButton gameHistoryStartDateRadioButton;
+    private static RadioButton gameHistoryEndDateRadioButton;
+    private static DatePicker gameHistoryStartDatePicker;
+    private static DatePicker gameHistoryEndDatePicker;
+    private static Slider gameHistoryAnimateSlider;
 
     private static ObservableList<TimeList> gameHistoryTimeList;
     private static ObservableList<Gym> gameHistoryGymsList;
@@ -64,6 +78,7 @@ public class Controller {
     private static ObservableList<Referee> gameHistoryRefereeAList;
     private static ObservableList<Referee> gameHistoryRefereeBList;
 
+    private static LineChart<Number, Number> gameHistoryLineChart;
     private static DatePicker gameHistoryDatePicker;
     private static Spinner<Double> gameHistoryOffsetSpinner;
     private static ComboBox<TimeList> gameHistoryTimeComboBox;
@@ -90,6 +105,7 @@ public class Controller {
         gameCreationRefereeAList = FXCollections.observableArrayList(Referee.getValues()).sorted(Referee.compareRefereeNames());
         gameCreationRefereeBList = FXCollections.observableArrayList(Referee.getValues()).sorted(Referee.compareRefereeNames());
 
+        gameHistoryLineChart = (LineChart<Number, Number>) parent.lookup("#game_history_lineChart");
         gameCreationDatePicker = (DatePicker) parent.lookup("#game_creation_datePicker");
         gameCreationTimeSlider = (Slider) parent.lookup("#game_creation_time_slider");
         gameCreationTimeReportSpinner = (Spinner) parent.lookup("#game_creation_time_report_spinner");
@@ -203,7 +219,15 @@ public class Controller {
         gameHistoryAwayTeamToggleButton = (ToggleButton) parent.lookup("#game_history_away_team_toggleButton");
         gameHistoryRefereeAToggleButton = (ToggleButton) parent.lookup("#game_history_referee_A_toggleButton");
         gameHistoryRefereeBToggleButton = (ToggleButton) parent.lookup("#game_history_referee_B_toggleButton");
+        gameHistoryAnimateRadioButton = (RadioButton) parent.lookup("#game_history_animate_radioButton");
+        gameHistoryStackGraphRadioButton = (RadioButton) parent.lookup("#game_history_stack_graph_radioButton");
+        gameHistoryStartDateRadioButton = (RadioButton) parent.lookup("#game_history_start_date_radioButton");
+        gameHistoryEndDateRadioButton = (RadioButton) parent.lookup("#game_history_end_date_radioButton");
+        gameHistoryStartDatePicker = (DatePicker) parent.lookup("#game_history_start_date_datePicker");
+        gameHistoryEndDatePicker = (DatePicker) parent.lookup("#game_history_end_date_datePicker");
+        gameHistoryAnimateSlider = (Slider) parent.lookup("#game_history_animate_slider");
 
+        gameHistoryLineChart = (LineChart<Number, Number>) parent.lookup("#game_history_lineChart");
         gameHistoryDatePicker = (DatePicker) parent.lookup("#game_history_datePicker");
         gameHistoryOffsetSpinner = (Spinner<Double>) parent.lookup("#game_history_offset_spinner");
         gameHistoryTimeComboBox = (ComboBox<TimeList>) parent.lookup("#game_history_time_comboBox");
@@ -329,11 +353,45 @@ public class Controller {
                 double x = Math.min(1.0, (v + st));
                 String s = Utilities.twoDecimals(x);
                 gameHistoryOffsetSpinner.getEditor().setText(s);
-
             }
         });
+
+//        gameHistoryStartDateRadioButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                boolean isSelected = gameHistoryStartDateRadioButton.isSelected();
+//                if (isSelected) {
+//
+//                }
+//            }
+//        });
+//        gameHistoryEndDateRadioButton
+
+
         gameHistoryDatePicker.setValue(LocalDate.now());
+        Date firstDate = Main.gameManager.getFirstDate();
+        Date endDate = Main.gameManager.getEndDate();
+        System.out.println("\n\tSETTING:\nfirstDate: " + firstDate + ", endDate: " + endDate);
+        int startYear = Utilities.getYear(firstDate);
+        int endYear = Utilities.getYear(endDate);
+        int startMonth = Utilities.getMonth(firstDate);
+        int endMonth = Utilities.getMonth(endDate);
+        int startDay = Utilities.getDay(firstDate);
+        int endDay = Utilities.getDay(endDate);
+        System.out.println(
+                "startYear: " + startYear +
+                "\nstartMonth: " + startMonth +
+                "\nstartDay: " + startDay +
+                "\nendYear: " + endYear +
+                "\nendMonth: " + endMonth +
+                "\nendDay: " + endDay);
+        gameHistoryStartDatePicker.setValue(LocalDate.of(startYear, startMonth, startDay));
+        gameHistoryEndDatePicker.setValue(LocalDate.of(endYear, endMonth, endDay));
         gameHistoryOffsetSpinner.getEditor().setText("0.00");
+//        GameHistoryChart ghc = new GameHistoryChart();
+//        gameHistoryLineChart = ghc.getSampleChart();
+//        gameHistoryLineChart.setData(ghc.getSampleChart().getData());
+//        gameHistoryLineChart.setAnimated(true);
         // End gameHistory set-up
     }
 
@@ -405,13 +463,13 @@ public class Controller {
         TimeList timeListText = gameHistoryTimeComboBox.getValue();
         String timeText;
         if (timeListText == null) {
-            timeText = TimeList._05_00_PM.getName();
+            timeText = TimeList._05_00_PM.getTimeString();
         }
         else {
             timeText = timeListText.getTimeString();
         }
         String dateTimeText = dateText + " " + timeText;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");//"EEE MMM dd hh:mm:ss zzz yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");//"EEE MMM dd hh:mm:ss zzz yyyy");
         System.out.println("sdf.toPattern: " + sdf.toPattern() + ", sdf.toString: " + sdf.toString());
         Date date = null;
         try {
@@ -472,6 +530,40 @@ public class Controller {
             addToReportString("\nSelect referee B.");
         }
         return r;
+    }
+
+    public static boolean gameHistory_getStartBeginning() {
+        return gameHistoryStartDateRadioButton.isSelected();
+    }
+
+    public static boolean gameHistory_getGraphToEnd() {
+        return gameHistoryEndDateRadioButton.isSelected();
+    }
+
+    public static Date gameHistory_getStartDate() {
+        String dateText = gameHistoryStartDatePicker.getEditor().getText().trim();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");//"EEE MMM dd hh:mm:ss zzz yyyy");
+        Date date = null;
+        try {
+            date = sdf.parse(dateText);
+        } catch (ParseException e) {
+            addToReportString("\ndate {" + dateText + "} is unparseable.");
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public static Date gameHistory_getEndDate() {
+        String dateText = gameHistoryEndDatePicker.getEditor().getText().trim();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");//"EEE MMM dd hh:mm:ss zzz yyyy");
+        Date date = null;
+        try {
+            date = sdf.parse(dateText);
+        } catch (ParseException e) {
+            addToReportString("\ndate {" + dateText + "} is unparseable.");
+            e.printStackTrace();
+        }
+        return date;
     }
 
     public static Date gameCreation_getDate() {
@@ -560,7 +652,10 @@ public class Controller {
         return gameHistoryRefereeBToggleButton.isSelected();
     }
 
-    // Showing report string for each tab
+    /*
+    * Report Strings for all tabs
+    */
+
     public void gameCreation_showReportText(boolean show, boolean clearString) {
         if (show) {
             gameCreationReportTextArea.setText(getReportString());
@@ -585,7 +680,10 @@ public class Controller {
         }
     }
 
-    // Main button handlers for all tabs
+    /*
+    * Main button handlers for all tabs
+    */
+
     public void gameCreation_okButtonClicked(ActionEvent actionEvent) {
         GameCreationForm gcf = new GameCreationForm();
         gcf.collectAttributes();
@@ -617,17 +715,29 @@ public class Controller {
     public void gameHistory_graphButtonClicked(ActionEvent actionEvent) {
         System.out.println("gameHistory graph button clicked");
         GameHistoryForm ghf = new GameHistoryForm();
+        GameCreationForm gcf = new GameCreationForm();
         ghf.collectAttributes();
         boolean validEntries = ghf.checkValid() || ghf.checkSelectionValidity();
-//        Game game = null;
         if (validEntries) {
-//            game = gcf.createGame();
-//            addToReportString(game.toString());
             System.out.println("ALL VALID");
-            System.out.println(
-                    "filtered games: " + ghf.getFilteredGames() +
-                     "\n\tSIZE: " + ghf.getFilteredGames().size());
-            addToReportString(ghf.getFilteredGames().toString());
+//            System.out.println(
+//                    "filtered games: " + ghf.getFilteredGames() +
+//                     "\n\tSIZE: " + ghf.getFilteredGames().size());
+            ArrayList<Game> filteredGames = ghf.getFilteredGames();
+            addToReportString(filteredGames + "\n\tSIZE: " + filteredGames.size());
+            GameHistoryChart ghc = new GameHistoryChart(ghf, gameHistoryLineChart);
+            System.out.println("GAMEHISTORYLINECHART_DATA: " + gameHistoryLineChart.getData());
+            Platform.runLater(() -> {
+//                gameHistoryLineChart = ghc.setSampleChart(gameHistoryLineChart);
+
+                //TODO : add a stackgraph switch to ask for a reset
+                gameHistoryLineChart.getData().clear();
+//                gameHistoryLineChart = ghc.drawLineChartDateVSNumGames(filteredGames);
+                gameHistoryLineChart = ghc.drawLineChart();
+
+                System.out.println("GAMEHISTORYLINECHART_DATA: " + gameHistoryLineChart.getData());
+                System.out.println("GAMEHISTORYLINECHART_DATA.data: " + gameHistoryLineChart.getData().get(0).getData());
+            });
         }
         else {
             addToReportString("\nCheck entries.");

@@ -66,9 +66,13 @@ public class Game {
         this.awayTeam = awayTeam;
     }
 
-    public String toString() {
+    public String getFormattedGameString() {
         return "\n\t" + awayTeam + "\n\t\t\t\t\t@\n\t" + homeTeam
                 + "\n\n\t" + gym + "\n\t" + date + "\n\n\tRefereed by:\t"
                 + refereeA + "\n\t\t\t\t" + refereeB;
+    }
+
+    public String toString() {
+        return "\n" + awayTeam + "\t@\t" + homeTeam + " {" + date + "}\nAT: " + gym + ", A: " + refereeA + ", B: " + refereeB;
     }
 }

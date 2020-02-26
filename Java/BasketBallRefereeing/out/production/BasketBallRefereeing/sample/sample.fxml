@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
@@ -20,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
 
 <tabs>
     <Tab id="create_game_tab" fx:id="create_game_tab" text="Create a game">
@@ -178,11 +179,11 @@
     </Tab>
     <Tab id="game_history_tab" fx:id="game_history_tab" text="Game history">
          <content>
-            <HBox prefHeight="450.0" prefWidth="600.0">
+            <HBox>
                <children>
-                  <VBox prefHeight="300.0" prefWidth="250.0">
+                  <VBox>
                      <children>
-                        <LineChart>
+                        <LineChart id="game_history_lineChart" fx:id="game_history_lineChart" prefWidth="1000.0">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -190,14 +191,69 @@
                             <NumberAxis side="LEFT" />
                           </yAxis>
                         </LineChart>
-                        <TextArea id="game_history_report_textArea" fx:id="game_history_report_textArea" editable="false" prefHeight="200.0" prefWidth="200.0">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <VBox.margin>
-                              <Insets bottom="10.0" top="10.0" />
-                           </VBox.margin>
-                        </TextArea>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <TextArea id="game_history_report_textArea" fx:id="game_history_report_textArea" editable="false" prefWidth="500.0">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </TextArea>
+                              <VBox prefWidth="500.0">
+                                 <children>
+                                    <HBox layoutX="10.0" layoutY="52.0">
+                                       <children>
+                                          <RadioButton id="game_history_animate_radioButton" fx:id="game_history_animate_radioButton" mnemonicParsing="false" text="Animate">
+                                             <HBox.margin>
+                                                <Insets right="20.0" />
+                                             </HBox.margin>
+                                          </RadioButton>
+                                          <Slider id="game_history_animate_slider" fx:id="game_history_animate_slider" blockIncrement="0.01" majorTickUnit="0.5" max="1.5" min="0.01" showTickLabels="true" showTickMarks="true" value="1.0" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <RadioButton id="game_history_stack_graph_radioButton" fx:id="game_history_stack_graph_radioButton" mnemonicParsing="false" text="Stack graphs">
+                                       <padding>
+                                          <Insets right="20.0" />
+                                       </padding>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </RadioButton>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <RadioButton id="game_history_start_date_radioButton" fx:id="game_history_start_date_radioButton" mnemonicParsing="false" text="Start date">
+                                             <padding>
+                                                <Insets right="20.0" />
+                                             </padding>
+                                          </RadioButton>
+                                          <DatePicker id="game_history_start_date_datePicker" fx:id="game_history_start_date_datePicker" promptText="Pick a start date" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <RadioButton id="game_history_end_date_radioButton" fx:id="game_history_end_date_radioButton" mnemonicParsing="false" text="End date">
+                                             <padding>
+                                                <Insets right="20.0" />
+                                             </padding>
+                                          </RadioButton>
+                                          <DatePicker id="game_history_end_date_datePicker" fx:id="game_history_end_date_datePicker" promptText="Pick an end date" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                   <VBox prefHeight="300.0" prefWidth="300.0">

@@ -36,10 +36,12 @@ public class SampleGames {
                 "Sat, Sep 14, 2019 2:15 PM###Currie Center_Perf###Jr EDP###M### ### ###MacDonald###Briggs###$20### ",
                 "Thu, Sep 19, 2019 5:30 PM###FHS###FHSSP###M###Kentucky###Michigan###Hornibrook###Briggs###$20### ",
                 "Thu, Sep 19, 2019 6:30 PM###FHS###FHSSP###M###Lousville###Syracuse###Hornibrook###Briggs###$20### ",
+                /////
                 "Sun, Oct 20, 2019 12:30 PM###Currie Ctr_Rec2_2###Jr EDP### |## ###|Briggs###cancel### ",
                 "Sun, Oct 20, 2019 1:30 PM###Currie Ctr_Rec2_2###Jr EDP### ### ###Briggs###cancel### ",
                 "Sun, Oct 20, 2019 2:30 PM###Currie Ctr_Rec2_2###Jr EDP### ### ###Briggs###cancel### ",
                 "Sun, Oct 20, 2019 3:30 PM###Currie Ctr_Rec2_2###Jr EDP### ### ###Briggs###cancel### ",
+                /////
                 "Sat, Nov 02, 2019 9:00 AM###Leo Hayes###U14###F###Riverview 'A'###NMBA tier 1###Briggs###Dugas###$34### ",
                 "Sat, Nov 02, 2019 10:30 AM###Leo Hayes###U14###F###KVBA 'A'###Moncton 'A'###Briggs###Dugas###$34### ",
                 "Sun, Nov 03, 2019 4:00 PM###Eclaireurs - Gym 1###U14###F###Championship [Tier 1]### ###Briggs###Robichaud###$34### ",
@@ -53,8 +55,10 @@ public class SampleGames {
                 "Sat, Nov 16, 2019 12:00 PM###Naasis - Ct3###U14###M###Riverview###KVBA 'A'###Briggs###I.Humphrey###$34### ",
                 "Sun, Nov 17, 2019 8:30 AM###Naasis - Ct2###U14###M###Lancaster 'B'###NMBA Tier 2###Dugas###Briggs###$34### ",
                 "Sun, Nov 17, 2019 10:00 AM###Naasis - Ct2###U14###M###Western Valley 'B'###St. Stephen###Dugas###Briggs###$34### ",
+                /////
                 "Sat, Nov 23, 2019 11:00 AM###Cambridge-Narrows###A###F###Cambridge-Narrows###Caledonia###Colwell###Briggs###cancel### ",
                 "Sat, Nov 23, 2019 12:45 PM###Cambridge-Narrows###A###M###Cambridge-Narrows###Caledonia###Colwell###Briggs###cancel### ",
+                /////
                 "Sun, Nov 24, 2019 10:30 AM###Gibson-Neill###U12###M###NMBA Tier 2### ###Moore###Briggs###$29### ",
                 "Mon, Nov 25, 2019 5:30 PM###Harvey###JV-A###F###Harvey###St. Stephen###Briggs###MacMullin###cancel### ",
                 "Sat, Dec 07, 2019 1:30 PM###Garden Creek###U12-T3###M###Riverview 'B'###Grand Manan###Rioux###Briggs###$29### ",

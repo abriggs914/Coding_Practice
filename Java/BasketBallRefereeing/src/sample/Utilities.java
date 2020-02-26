@@ -160,78 +160,158 @@ public class Utilities {
         long diff;
         if (a.before(b)) {
             diff = bTime - aTime;
-            System.out.println("IF comparing: " + a.toInstant().compareTo(b.toInstant()));
+//            System.out.println("IF comparing: " + a.toInstant().compareTo(b.toInstant()));
         }
         else {
             diff = aTime - bTime;
-            System.out.println("ELSE comparing: " + a.toInstant().compareTo(b.toInstant()));
+//            System.out.println("ELSE comparing: " + a.toInstant().compareTo(b.toInstant()));
         }
-        System.out.println("aTime: " + aTime + ", bTime: " + bTime + ", diff: " + diff);
-        return diff < NUM_MILLIS_PER_DAY;
+//        System.out.println("aTime: " + aTime + ", bTime: " + bTime + ", diff: " + diff);
+        boolean lessThanOneDay = diff < NUM_MILLIS_PER_DAY;
+        String aString = a.toString();
+        String bString = b.toString();
+        String[] aSplit = aString.split(" ");
+        String[] bSplit = bString.split(" ");
+        int aDate = Integer.parseInt(aSplit[2]);
+        int bDate = Integer.parseInt(bSplit[2]);
+//        System.out.println("aSplit: " + Arrays.toString(aSplit) +
+//                "\nbSplit: " + Arrays.toString(bSplit) +
+//                "\naDate: " + aDate +
+//                "\nbDate: " + bDate);
+        return lessThanOneDay && aDate == bDate;
     }
 
     public static String getTimeFromDate(Date d) {
         return d.toString().split(" ")[3];
     }
 
-    public static boolean sameTime(Date a, Date b, double window, boolean isHours) {
-        String aString = a.toString();
-        String bString = b.toString();
-        // "EEE MMM dd hh:mm:ss zzz yyyy"
-        double upWindow = window * 1; // (0 <= x <= 1)
-        double downWindow = -1 * (window * 1); // (-1 <= x <= 0)
-        String[] aSpaceSplit = aString.split(" ");
-        String[] bSpaceSplit = bString.split(" ");
-        String[] aTimeSplit = aSpaceSplit[3].split(":");
-        String[] bTimeSplit = bSpaceSplit[3].split(":");
-        double aHour = Double.parseDouble(aTimeSplit[0]);
-        double aMinute = Double.parseDouble(aTimeSplit[1]);
-        double bHour = Double.parseDouble(bTimeSplit[0]);
-        double bMinute = Double.parseDouble(bTimeSplit[1]);
-//        System.out.print( "\n\nBupwindow: " + upWindow + "\nBdownWindow: " + downWindow);
-
-        boolean bool = false;
-        upWindow += (aMinute / 100.0);
-        downWindow += (aMinute / 100.0);
-        if (isHours) {
-            upWindow += aHour;
-        }
-
-        double bHourMinute = ((100 * bHour) + bMinute) / 100.0;
-        String bTimeString = parseTime(bHourMinute, true);
-        String upWindowString = parseTime(upWindow, false);
-        String downWindowString = parseTime(downWindow, false);
-        double bValue = getTimeSliderValue(bTimeString);
-        double upWindowValue = getTimeSliderValue(upWindowString);
-        double downWindowValue = getTimeSliderValue(downWindowString);
-
-        if (downWindowValue <= bValue && bValue <= upWindowValue) {
-            bool = true;
-        }
-
-//        System.out.println( "\nAupwindow: " + upWindow +
+    public static boolean sameTime(Date a, Date b, double window) {
+        //, boolean isHours) {
+//        String aString = a.toString();
+//        String bString = b.toString();
+//        // "EEE MMM dd hh:mm:ss zzz yyyy"
+////        double mult = ((isHours)? 60 : 1);
+//        double upWindow = window * 1; // (0 <= x <= 1)
+//        double downWindow = -1 * (window * 1); // (-1 <= x <= 0)
+//        String[] aSpaceSplit = aString.split(" ");
+//        String[] bSpaceSplit = bString.split(" ");
+//        String[] aTimeSplit = aSpaceSplit[3].split(":");
+//        String[] bTimeSplit = bSpaceSplit[3].split(":");
+//        double aHour = Double.parseDouble(aTimeSplit[0]);
+//        double aMinute = Double.parseDouble(aTimeSplit[1]);
+//        double bHour = Double.parseDouble(bTimeSplit[0]);
+//        double bMinute = Double.parseDouble(bTimeSplit[1]);
+//        System.out.print( "\nBupwindow: " + upWindow + "\nBdownWindow: " + downWindow);
+//
+//        boolean bool = false;
+//        upWindow += (aMinute / 100.0);
+//        downWindow += (aMinute / 100.0);
+//        boolean upWindowFractional = (upWindow - (int)upWindow)  >= 0.6;
+//        boolean upWindowLessThanOne = upWindow < 1 && upWindow >= 0.6;
+//        boolean downWindowFractional = (downWindow - (int)downWindow)  >= 0.6;
+//        boolean downWindowLessThanOne = Math.abs(downWindow) < 1 && Math.abs(downWindow) >= 0.6;
+//        if (upWindowFractional || upWindowLessThanOne) {
+//            System.out.print("\n\tupFractional: " + upWindowFractional + ", upLessThan1: " + upWindowLessThanOne + ", upwindow: (" + upWindow + " -> (");
+//            upWindow = (upWindow + 1) - ((upWindowLessThanOne)? 0.6 : 0); //(0.6 * ((upWindow - (int)upWindow) * 100));
+//            System.out.print(upWindow + ")");
+//        }
+//        if (downWindowFractional || downWindowLessThanOne) {
+//            System.out.print("\n\tdownFractional: " + downWindowFractional + ", downLessThan1: " + downWindowLessThanOne + ", downwindow: (" + downWindow + " -> (");
+//            downWindow = (downWindow - 1) + ((downWindowLessThanOne)? 0.6 : 0); //(0.6 * ((downWindow - (int)downWindow) * 100));
+//            System.out.print(downWindow + ")");
+//        }
+////        if (isHours) {
+//        upWindow += aHour;
+//        downWindow += aHour;
+//
+//        System.out.print( "\nDupwindow: " + upWindow + "\nDdownWindow: " + downWindow);
+//
+////        }
+//        if (upWindow >= 24) {
+//            System.out.print("\n\tupWindow(" + upWindow + ") -> (");
+//            upWindow -= 24;
+//            System.out.print(upWindow + ")");
+//        }
+//        boolean downWindowExact = true;
+//        if (downWindow < 0) {
+//            System.out.print("\n\tdownWindow(" + downWindow + ") -> (");
+////            downWindowExact = false;
+//            downWindow += 23.6;
+//            System.out.print(downWindow + ")");
+//        }
+//        if ((downWindow - (int)downWindow) >= 0.6) {
+//            downWindow = getTimeValue(parseTime(downWindow, false), false, false);
+//        }
+//
+//        double bHourMinute = ((100 * bHour) + bMinute) / 100.0;
+//        String bTimeString = parseTime(bHourMinute, true);
+////        String upWindowString = parseTime(upWindow, true);
+////        String downWindowString = parseTime(downWindow, true);
+//        double bValue = getTimeSliderValue(bTimeString);
+////        double upWindowValue = getTimeSliderValue(upWindowString);
+////        double downWindowValue = getTimeSliderValue(downWindowString);
+////        String upWindowString2 = parseTime(upWindowValue, false);
+////        String downWindowString2 = parseTime(downWindowValue, false);
+//        double upWindowValue = upWindow;
+//        double downWindowValue = downWindow;
+//        String upWindowString2 = parseTime(upWindowValue, true);
+//        String downWindowString2 = parseTime(downWindowValue, downWindowExact);
+//
+//        if (downWindowValue <= bValue && bValue <= upWindowValue) {
+//            bool = true;
+//        }
+//
+//        System.out.println(
+//                "\nAupwindow: " + upWindow +
 //                "\nAdownWindow: " + downWindow +
 //                "\naString: " + aString +
 //                "\nbString: " + bString +
-//                "\naSpaceSplit: " + Arrays.toString(aSpaceSplit) +
-//                "\nbSpaceSplit: " + Arrays.toString(bSpaceSplit) +
-//                "\naTimeSplit: " + Arrays.toString(aTimeSplit) +
-//                "\nbTimeSplit: " + Arrays.toString(bTimeSplit) +
+////                "\naSpaceSplit: " + Arrays.toString(aSpaceSplit) +
+////                "\nbSpaceSplit: " + Arrays.toString(bSpaceSplit) +
+////                "\naTimeSplit: " + Arrays.toString(aTimeSplit) +
+////                "\nbTimeSplit: " + Arrays.toString(bTimeSplit) +
 //                "\naHour: " + aHour +
-//                "\naMinute: " + aMinute +
+//                "\taMinute: " + aMinute +
 //                "\nbHour: " + bHour +
-//                "\nbMinute: " + bMinute +
-//                "\nupWindowString: " + upWindowString +
-//                "\ndownWindowString: " + downWindowString +
+//                "\tbMinute: " + bMinute +
+////                "\nupWindowString: " + upWindowString +
+////                "\ndownWindowString: " + downWindowString +
+//                "\nupWindowString2: " + upWindowString2 +
+//                "\ndownWindowString2: " + downWindowString2 +
 //                "\nbValue: " + bValue +
 //                "\nupWindowValue: " + upWindowValue +
 //                "\ndownWindowValue: " + downWindowValue +
-//                "\ndateA: " + a +
-//                "\ndateB: " + b +
+////                "\ndateA: " + a +
+////                "\ndateB: " + b +
 //                "\nwindow: " + window +
-//                "\nisHours: " + isHours +
+////                "\nisHours: " + isHours +
 //                "\nbool: " + bool);
-        return bool;
+////        return bool;
+
+        int minutes = (int) (window * 100);
+        double selectedBound, upperBound = 0.0, lowerBound = 0.0;
+        String selectedTime = getTimeString(a);
+        String dateInString = getTimeString(b);
+        selectedBound = getTimeValue(dateInString, false, false);
+        String upperBoundString = String.copyValueOf(selectedTime.toCharArray());
+        String lowerBoundString = String.copyValueOf(selectedTime.toCharArray());
+        for (int i = 0; i < minutes; i++) {
+            upperBound = getTimeValue(upperBoundString, true, true);
+            upperBoundString = parseTime(upperBound, true);
+        }
+        for (int i = 0; i < minutes; i++) {
+            lowerBound = getTimeValue(lowerBoundString, true, false);
+            lowerBoundString = parseTime(lowerBound, true);
+        }
+        boolean res = lowerBound <= selectedBound && selectedBound <= upperBound;
+//        System.out.println(
+//                "selectedTime: " + selectedTime +
+//                "\ndate in question: " + dateInString +
+//                "\nvalue: " + selectedBound +
+//                "\nlowerBoundString: " + lowerBoundString +
+//                "\nupperBoundString: " + upperBoundString +
+//                "\n(" + lowerBound + " <= X <= + " + upperBound + ")\nres: " + res);
+        return res;
     }
 
     public static String getTimeString(Date date) {
@@ -248,20 +328,26 @@ public class Utilities {
             am_pm = "PM";
         }
         String timeText = String.format("%02d", dateHour) + ":" + String.format("%02d", dateMinute) + " " + am_pm;
-        System.out.println("Utilities.getTimeString, date: " + date + ", dateString: " + dateString + ", timeText: " + timeText);
+//        System.out.println("Utilities.getTimeString, date: " + date + ", dateString: " + dateString + ", timeText: " + timeText);
         return timeText;
+    }
+
+    public static String getDateString(Date date) {
+        String dateString = date.toString();
+        String[] dateSplit = dateString.split(" ");
+        return dateSplit[1] + " " + dateSplit[2] + ", " + dateSplit[5];
     }
 
     public static Date parseDate(String s) {
 //        System.out.print(" date: " + s);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM dd, yyyy hh:mm aa");//"EEE MMM dd hh:mm:ss zzz yyyy");
-        what the fuc
         Date date = null;
         try {
             date = sdf.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+//        System.out.println("Utilities.parseDate - date parsed" + date);
         return date;
     }
 
@@ -358,15 +444,6 @@ public class Utilities {
             }
         }
         int minimumDistance = table[table.length-1][table[table.length-1].length-1];
-//        int maxN = Integer.MIN_VALUE;
-//        for(int[] row : table) {
-//            for(int z : row) {
-//                if (z > maxN) {
-//                    maxN = z;
-//                }
-//            }
-//        }
-//        int minimumDistance = maxN;
         System.out.println(minimumDistance);
         show(table);
         return minimumDistance;
@@ -408,5 +485,22 @@ public class Utilities {
         }
 
         return dp[m][n];
+    }
+
+    public static int getYear(Date firstDate) {
+        String dateString = firstDate.toString();
+        String[] dateSplit = dateString.split(" ");
+        return Integer.parseInt(dateSplit[5]);
+    }
+
+    public static int getMonth(Date firstDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM");
+        return Integer.parseInt(sdf.format(firstDate));
+    }
+
+    public static int getDay(Date firstDate) {
+        String dateString = firstDate.toString();
+        String[] dateSplit = dateString.split(" ");
+        return Integer.parseInt(dateSplit[2]);
     }
 }

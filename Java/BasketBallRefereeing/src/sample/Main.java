@@ -18,18 +18,20 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        SampleGames sg = new SampleGames();
+        sg.load_Fall_2019();
+        gameManager.addGameObjectsArrayList(sg.getGames());
+
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Basketball game entry form.");
-        primaryStage.setScene(new Scene(root, 600, 600));
+        primaryStage.setScene(new Scene(root, 800, 800));
+        primaryStage.setMaximized(true);
         primaryStage.show();
 
 //        root.lookup("");
 
         Controller controller = new Controller();
         controller.init(root);
-        SampleGames sg = new SampleGames();
-        sg.load_Fall_2019();
-        gameManager.addGameObjectsArrayList(sg.getGames());
         System.out.println("gameManager: " + gameManager);
     }
 
