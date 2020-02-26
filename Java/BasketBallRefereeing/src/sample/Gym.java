@@ -96,6 +96,12 @@ public enum Gym {
         return new ArrayList<>(Arrays.asList(Gym.values()));
     }
 
+    public static ArrayList<String> getStringValues() {
+        ArrayList<String> res = new ArrayList<>();
+        getValues().forEach((g) -> res.add(g.getName()));
+        return res;
+    }
+
     public static Comparator<Gym> compareGymNames() {
         return Comparator.comparing(Gym::getName);
     }

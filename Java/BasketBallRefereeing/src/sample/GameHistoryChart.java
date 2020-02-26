@@ -1,12 +1,16 @@
 package sample;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class GameHistoryChart {
 
@@ -27,6 +31,11 @@ public class GameHistoryChart {
             if (ghf.isFilterDate()) {
                 return drawLineChartDateVSNumGames(filteredGames);
             }
+            else {
+                if (ghf.isFilterGym()) {
+                    return drawLineChartGymVSNumGames(Main.gameManager.getGames());
+                }
+            }
         }
         return drawLineChartDateVSNumGames(filteredGames);
     }
@@ -38,29 +47,100 @@ public class GameHistoryChart {
      * @return
      */
     public LineChart<Number, Number> drawLineChartDateVSNumGames(ArrayList<Game> games) {
+
         ArrayList<String> datesList = genDatesAxisLabels(games);
-        HashMap<String, Integer> datesValues = new HashMap<>();
-        XYChart.Series dataSeries1 = new XYChart.Series();
-        dataSeries1.setName("Games per day");
-        for (String dateString : datesList) {
-            if (!datesValues.keySet().contains(dateString)) {
-                datesValues.put(dateString, 0);
-            }
-        }
+        HashMap<String, Integer> datesValues = genStringIntHashMap(datesList);
+
+        // if date in games list, increment value
         for (Game g : games) {
             String dateString = Utilities.getDateString(g.getDate());
-                int curr = datesValues.get(dateString);
-//                System.out.println("\tgame " + dateString + " -> " + curr);
-                datesValues.put(dateString, curr + 1);
+            int curr = datesValues.get(dateString);
+            datesValues.put(dateString, curr + 1);
         }
+
         System.out.println("hashmap: " + datesValues);
-        for (String key : datesList) {
-            int val = datesValues.get(key);
-//            System.out.println("\tadding " + key + " : " + val);
-            dataSeries1.getData().add(new XYChart.Data( key, val));
-        }
-        this.lineChart.getData().add(dataSeries1);
+        XYChart.Series dataSeries = genXYDataSeries("Games per day", datesValues);
+        this.lineChart.getData().add(dataSeries);
+        addToolTips(dataSeries);
         return lineChart;
+    }
+
+    public LineChart<Number, Number> drawLineChartGymVSNumGames(ArrayList<Game> games) {
+        ArrayList<String> gymsList = Gym.getStringValues();
+        HashMap<String, Integer> gymValues = genStringIntHashMap(gymsList);
+
+        for (Game game : games) {
+            String gym = game.getGym().getName();
+            int val = gymValues.get(gym);
+            gymValues.put(gym, val + 1);
+        }
+
+        XYChart.Series dataSeries = genXYDataSeries("Times in gym", gymValues);
+        this.lineChart.getData().add(dataSeries);
+        addToolTips(dataSeries);
+        return lineChart;
+    }
+
+    private void addToolTips(XYChart.Series series) {
+
+        for (Data<Number, Number> entry : (ObservableList<Data<Number, Number>>) series.getData()) {
+            System.out.print("Entered!\t");
+            Tooltip t = new Tooltip(entry.getYValue().toString());
+            hackTooltipStartTiming(t);
+            System.out.println("entry: " + entry + ", entry.getNode(): " + entry.getNode() + ", message: " + t.getText());
+            Tooltip.install(entry.getNode(), t);
+        }
+
+//        ArrayList<XYChart.Data<String, Integer>> dataPoints = Collections.list(series.getData().listIterator());
+//        series.getData().forEach((d) -> d.);
+//        for (Object o : series.getData())
+//            XYChart.Data<String, Integer> data = (XYChart.Data<String, Integer>) o;
+
+//        ArrayList<Data<String, Integer>> list = new ArrayList<>(series.getData());
+//        for (Data<String, Integer> entry : list) {
+//            System.out.println("Entered!");
+//            Tooltip t = new Tooltip(entry.getYValue().toString());
+//            Tooltip.install(entry.getNode(), t);
+//        }
+//        return series;
+    }
+
+    public static void hackTooltipStartTiming(Tooltip tooltip) {
+        try {
+            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            fieldBehavior.setAccessible(true);
+            Object objBehavior = fieldBehavior.get(tooltip);
+
+            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
+            fieldTimer.setAccessible(true);
+            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(150)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private XYChart.Series genXYDataSeries(String label, HashMap<String, Integer> values) {
+        XYChart.Series dataSeries = new XYChart.Series();
+        dataSeries.setName(label);
+        for (String key : values.keySet()) {
+            int val = values.get(key);
+//            System.out.println("\tadding " + key + " : " + val);
+            dataSeries.getData().add(new XYChart.Data(key, val));
+        }
+        return dataSeries;
+    }
+
+    private HashMap<String, Integer> genStringIntHashMap(ArrayList<String> keys) {
+        HashMap<String, Integer> res = new HashMap<>();
+        for (String str : keys) {
+            if (!res.keySet().contains(str)) {
+                res.put(str, 0);
+            }
+        }
+        return res;
     }
 
     public LineChart<Number, Number> setSampleChart(LineChart<Number, Number> lineChart) {
