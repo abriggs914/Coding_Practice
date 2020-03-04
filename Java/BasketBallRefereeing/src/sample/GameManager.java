@@ -84,14 +84,31 @@ public class GameManager {
         return this.gameCreation_refereeASelected;
     }
 
-    public ArrayList<Game> filterGamesForDate(ArrayList<Game> arr, Date day) {
+    public ArrayList<Game> filterGamesBetweenDates(ArrayList<Game> arr, Date startDate, Date lastDate) {
         if (arr == null) {
             arr = new ArrayList<>(gamesList);
         }
         ArrayList<Game> res = newArrayList();
         for (Game g : arr) {
-            if (Utilities.sameDay(g.getDate(), day)) {
+            Date gameDay = g.getDate();
+            if (startDate.before(gameDay) && lastDate.after(gameDay)) {
                 res.add(g);
+            }
+        }
+        return res;
+    }
+
+    public ArrayList<Game> filterGamesForDate(ArrayList<Game> arr, Date day, Date startDate, Date lastDate) {
+        if (arr == null) {
+            arr = new ArrayList<>(gamesList);
+        }
+        ArrayList<Game> res = newArrayList();
+        for (Game g : arr) {
+            Date gameDay = g.getDate();
+            if (startDate.before(gameDay) && lastDate.after(gameDay)) {
+                if (Utilities.sameDay(gameDay, day)) {
+                    res.add(g);
+                }
             }
         }
         return res;
@@ -100,116 +117,136 @@ public class GameManager {
     /**
      * Returns a copy of the parameterized ArrayList filtered
      * by the hour +/- the window gap.
-     * @param arr     - arr to filter, possibly null.
-     * @param day     - day set to hour for searching.
-     * @param window  - (0 <= x <= 1).
+     * @param arr       - arr to filter, possibly null.
+     * @param day       - day set to hour for searching.
+     * @param window    - (0 <= x <= 1).
+     * @param startDate -
+     * @param lastDate  -
      * @return new ArrayList of filtered games.
      */
-    public ArrayList<Game> filterGamesForTime(ArrayList<Game> arr, Date day, double window) {
+    public ArrayList<Game> filterGamesForTime(ArrayList<Game> arr, Date day, double window, Date startDate, Date lastDate) {
         if (arr == null) {
             arr = new ArrayList<>(gamesList);
         }
         ArrayList<Game> res = newArrayList();
         for (Game g : arr) {
-            if (Utilities.sameTime(day, g.getDate(), window)) {//, isHours)) {
-                res.add(g);
-            }
-        }
-        return res;
-    }
-
-    public ArrayList<Game> filterGamesForGym(ArrayList<Game> arr, Gym gym){
-        if (arr == null) {
-            arr = new ArrayList<>(gamesList);
-        }
-        ArrayList<Game> res = newArrayList();
-        for (Game g : arr) {
-            if (g.getGym() == gym) {
-                res.add(g);
-            }
-        }
-        return res;
-    }
-
-    public ArrayList<Game> filterGamesForTeam(ArrayList<Game> arr, Team team, boolean andHome) {
-        if (arr == null) {
-            arr = new ArrayList<>(gamesList);
-        }
-        ArrayList<Game> res = newArrayList();
-        for (Game g : arr) {
-            Team home = g.getHomeTeam();
-            Team away = g.getAwayTeam();
-            if (andHome) {
-                if (home != team) {
-                    // not the home team
-                    continue;
+            Date gameDay = g.getDate();
+            if (startDate.before(gameDay) && lastDate.after(gameDay)) {
+                if (Utilities.sameTime(day, gameDay, window)) {
+                    res.add(g);
                 }
             }
-            if (team == home || team == away) {
-                res.add(g);
-            }
         }
         return res;
     }
 
-    public ArrayList<Game> filterGamesForTeams(ArrayList<Game> arr, Team teamA, Team teamB, boolean andHome) {
+    public ArrayList<Game> filterGamesForGym(ArrayList<Game> arr, Gym gym, Date startDate, Date lastDate){
         if (arr == null) {
             arr = new ArrayList<>(gamesList);
         }
         ArrayList<Game> res = newArrayList();
         for (Game g : arr) {
-            Team home = g.getHomeTeam();
-            Team away = g.getAwayTeam();
-            if (andHome) {
-                if (home != teamA || away != teamB) {
-                    // andHome doesn't match
-                    continue;
+            Date gameDay = g.getDate();
+            if (startDate.before(gameDay) && lastDate.after(gameDay)) {
+                if (g.getGym() == gym) {
+                    res.add(g);
                 }
-            }
-            if (teamA == home && teamB == away) {
-                res.add(g);
             }
         }
         return res;
     }
 
-    public ArrayList<Game> filterGamesForReferee(ArrayList<Game> arr, Referee referee, boolean andDriver) {
+    public ArrayList<Game> filterGamesForTeam(ArrayList<Game> arr, Team team, boolean andHome, Date startDate, Date lastDate) {
         if (arr == null) {
             arr = new ArrayList<>(gamesList);
         }
         ArrayList<Game> res = newArrayList();
         for (Game g : arr) {
-            Referee a = g.getRefereeA();
-            Referee b = g.getRefereeB();
-            if (andDriver) {
-                if (a != referee) {
-                    // not the driver
-                    continue;
+            Date gameDay = g.getDate();
+            if (startDate.before(gameDay) && lastDate.after(gameDay)) {
+                Team home = g.getHomeTeam();
+                Team away = g.getAwayTeam();
+                if (andHome) {
+                    if (home != team) {
+                        // not the home team
+                        continue;
+                    }
                 }
-            }
-            if (referee == a || referee == b) {
-                res.add(g);
+                if (team == home || team == away) {
+                    res.add(g);
+                }
             }
         }
         return res;
     }
 
-    public ArrayList<Game> filterGamesForReferees(ArrayList<Game> arr, Referee refereeA, Referee refereeB, boolean andDriver) {
+    public ArrayList<Game> filterGamesForTeams(ArrayList<Game> arr, Team teamA, Team teamB, boolean andHome, Date startDate, Date lastDate) {
         if (arr == null) {
             arr = new ArrayList<>(gamesList);
         }
         ArrayList<Game> res = newArrayList();
         for (Game g : arr) {
-            Referee a = g.getRefereeA();
-            Referee b = g.getRefereeB();
-            if (andDriver) {
-                if (refereeA != a || refereeB != b) {
-                    // andDriver doesn't match
-                    continue;
+            Date gameDay = g.getDate();
+            if (startDate.before(gameDay) && lastDate.after(gameDay)) {
+                Team home = g.getHomeTeam();
+                Team away = g.getAwayTeam();
+                if (andHome) {
+                    if (home != teamA || away != teamB) {
+                        // andHome doesn't match
+                        continue;
+                    }
+                }
+                if (teamA == home && teamB == away) {
+                    res.add(g);
                 }
             }
-            if (refereeA == a && refereeB == b) {
-                res.add(g);
+        }
+        return res;
+    }
+
+    public ArrayList<Game> filterGamesForReferee(ArrayList<Game> arr, Referee referee, boolean andDriver, Date startDate, Date lastDate) {
+        if (arr == null) {
+            arr = new ArrayList<>(gamesList);
+        }
+        ArrayList<Game> res = newArrayList();
+        for (Game g : arr) {
+            Date gameDay = g.getDate();
+            if (startDate.before(gameDay) && lastDate.after(gameDay)) {
+                Referee a = g.getRefereeA();
+                Referee b = g.getRefereeB();
+                if (andDriver) {
+                    if (a != referee) {
+                        // not the driver
+                        continue;
+                    }
+                }
+                if (referee == a || referee == b) {
+                    res.add(g);
+                }
+            }
+        }
+        return res;
+    }
+
+    public ArrayList<Game> filterGamesForReferees(ArrayList<Game> arr, Referee refereeA, Referee refereeB, boolean andDriver, Date startDate, Date lastDate) {
+        if (arr == null) {
+            arr = new ArrayList<>(gamesList);
+        }
+        ArrayList<Game> res = newArrayList();
+        for (Game g : arr) {
+            Date gameDay = g.getDate();
+            if (startDate.before(gameDay) && lastDate.after(gameDay)) {
+                Referee a = g.getRefereeA();
+                Referee b = g.getRefereeB();
+                if (andDriver) {
+                    if (refereeA != a || refereeB != b) {
+                        // andDriver doesn't match
+                        continue;
+                    }
+                }
+                if (refereeA == a && refereeB == b) {
+                    res.add(g);
+                }
             }
         }
         return res;

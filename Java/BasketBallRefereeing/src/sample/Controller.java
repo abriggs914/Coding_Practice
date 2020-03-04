@@ -470,7 +470,7 @@ public class Controller {
         }
         String dateTimeText = dateText + " " + timeText;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");//"EEE MMM dd hh:mm:ss zzz yyyy");
-        System.out.println("sdf.toPattern: " + sdf.toPattern() + ", sdf.toString: " + sdf.toString());
+//        System.out.println("sdf.toPattern: " + sdf.toPattern() + ", sdf.toString: " + sdf.toString());
         Date date = null;
         try {
             date = sdf.parse(dateTimeText);
@@ -479,7 +479,7 @@ public class Controller {
             gameHistory_showReportText(true, true);
             e.printStackTrace();
         }
-        System.out.println("GameHistory_getDate, dateTimeText: " + dateTimeText + ", date: " + date);
+//        System.out.println("GameHistory_getDate, dateTimeText: " + dateTimeText + ", date: " + date);
         return date;
     }
 
@@ -532,12 +532,20 @@ public class Controller {
         return r;
     }
 
+    /**
+     * If selected then graph from the given date, else use the beginning
+     * @return startDate filtering is not selected
+     */
     public static boolean gameHistory_getStartBeginning() {
-        return gameHistoryStartDateRadioButton.isSelected();
+        return !gameHistoryStartDateRadioButton.isSelected();
     }
 
+    /**
+     * If selected then graph from the given date, else use the end
+     * @return endDate filtering is not selected
+     */
     public static boolean gameHistory_getGraphToEnd() {
-        return gameHistoryEndDateRadioButton.isSelected();
+        return !gameHistoryEndDateRadioButton.isSelected();
     }
 
     public static Date gameHistory_getStartDate() {
@@ -715,7 +723,6 @@ public class Controller {
     public void gameHistory_graphButtonClicked(ActionEvent actionEvent) {
         System.out.println("gameHistory graph button clicked");
         GameHistoryForm ghf = new GameHistoryForm();
-        GameCreationForm gcf = new GameCreationForm();
         ghf.collectAttributes();
         boolean validEntries = ghf.checkValid() || ghf.checkSelectionValidity();
         if (validEntries) {
@@ -724,19 +731,15 @@ public class Controller {
 //                    "filtered games: " + ghf.getFilteredGames() +
 //                     "\n\tSIZE: " + ghf.getFilteredGames().size());
             ArrayList<Game> filteredGames = ghf.getFilteredGames();
-            addToReportString(filteredGames + "\n\tSIZE: " + filteredGames.size());
+            final String[] message = {"\tGames found:\n\n"};
+            filteredGames.forEach((g) -> message[0] += g.getFormattedGameString());
+            addToReportString(message[0] + "\n\tSIZE: " + filteredGames.size());
             GameHistoryChart ghc = new GameHistoryChart(ghf, gameHistoryLineChart);
-            System.out.println("GAMEHISTORYLINECHART_DATA: " + gameHistoryLineChart.getData());
             Platform.runLater(() -> {
-//                gameHistoryLineChart = ghc.setSampleChart(gameHistoryLineChart);
 
-                //TODO : add a stackgraph switch to ask for a reset
-                gameHistoryLineChart.getData().clear();
-//                gameHistoryLineChart = ghc.drawLineChartDateVSNumGames(filteredGames);
-                gameHistoryLineChart = ghc.drawLineChart();
-
-                System.out.println("GAMEHISTORYLINECHART_DATA: " + gameHistoryLineChart.getData());
-                System.out.println("GAMEHISTORYLINECHART_DATA.data: " + gameHistoryLineChart.getData().get(0).getData());
+                gameHistoryLineChart = ghc.drawLineChart(gameHistoryStackGraphRadioButton.isSelected());
+//                System.out.println("GAMEHISTORYLINECHART_DATA: " + gameHistoryLineChart.getData());
+//                System.out.println("GAMEHISTORYLINECHART_DATA.data: " + gameHistoryLineChart.getData().get(0).getData());
             });
         }
         else {
@@ -767,5 +770,31 @@ public class Controller {
         gameHistoryAwayTeamComboBox.getSelectionModel().clearSelection();
         gameHistoryRefereeAComboBox.getSelectionModel().clearSelection();
         gameHistoryRefereeBComboBox.getSelectionModel().clearSelection();
+
+        gameHistoryAnimateRadioButton.setSelected(false);
+        gameHistoryStackGraphRadioButton.setSelected(false);
+        gameHistoryStartDateRadioButton.setSelected(false);
+        gameHistoryEndDateRadioButton.setSelected(false);
+
+        Date firstDate = Main.gameManager.getFirstDate();
+        Date endDate = Main.gameManager.getEndDate();
+        System.out.println("\n\tSETTING:\nfirstDate: " + firstDate + ", endDate: " + endDate);
+        int startYear = Utilities.getYear(firstDate);
+        int endYear = Utilities.getYear(endDate);
+        int startMonth = Utilities.getMonth(firstDate);
+        int endMonth = Utilities.getMonth(endDate);
+        int startDay = Utilities.getDay(firstDate);
+        int endDay = Utilities.getDay(endDate);
+        System.out.println(
+                "startYear: " + startYear +
+                        "\nstartMonth: " + startMonth +
+                        "\nstartDay: " + startDay +
+                        "\nendYear: " + endYear +
+                        "\nendMonth: " + endMonth +
+                        "\nendDay: " + endDay);
+        gameHistoryStartDatePicker.setValue(LocalDate.of(startYear, startMonth, startDay));
+        gameHistoryEndDatePicker.setValue(LocalDate.of(endYear, endMonth, endDay));
+        gameHistoryLineChart.getData().clear();
+        gameHistoryAnimateSlider.setValue(1.0);
     }
 }

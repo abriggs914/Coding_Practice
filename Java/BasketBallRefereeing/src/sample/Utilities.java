@@ -503,4 +503,36 @@ public class Utilities {
         String[] dateSplit = dateString.split(" ");
         return Integer.parseInt(dateSplit[2]);
     }
+
+    public static Date getFirstDate(ArrayList<Game> games) {
+        Date firstDate = null;
+        if (games.size() > 0) {
+            firstDate = games.get(0).getDate();
+        }
+        for (int i = 0; i < games.size(); i++) {
+            Game g = games.get(i);
+            Date d = g.getDate();
+            if (d.before(firstDate)) {
+                firstDate = d;
+            }
+        }
+        System.out.println("returning firstDate: " + firstDate);
+        return firstDate;
+    }
+
+    public static Date getLastDate(ArrayList<Game> games) {
+        Date lastDate = null;
+        if (games.size() > 0) {
+            lastDate = games.get(0).getDate();
+        }
+        for (int i = 0; i < games.size(); i++) {
+            Game g = games.get(i);
+            Date d = g.getDate();
+            if (d.after(lastDate)) {
+                lastDate = d;
+            }
+        }
+        System.out.println("returning lastDate: " + lastDate);
+        return lastDate;
+    }
 }

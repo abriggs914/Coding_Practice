@@ -24,8 +24,11 @@ public class GameHistoryChart {
         this.lineChart = lineChart;
     }
 
-    public LineChart<Number, Number> drawLineChart() {
+    public LineChart<Number, Number> drawLineChart(boolean resetChart) {
         ArrayList<Game> filteredGames = this.ghf.getFilteredGames();
+        if (resetChart) {
+            this.lineChart.getData().clear();
+        }
         boolean none = ghf.isNoFilterSelected();
         if (!none) {
             if (ghf.isFilterDate()) {
@@ -33,7 +36,7 @@ public class GameHistoryChart {
             }
             else {
                 if (ghf.isFilterGym()) {
-                    return drawLineChartGymVSNumGames(Main.gameManager.getGames());
+                    return drawLineChartGymVSNumGames(filteredGames);
                 }
             }
         }
@@ -47,19 +50,22 @@ public class GameHistoryChart {
      * @return
      */
     public LineChart<Number, Number> drawLineChartDateVSNumGames(ArrayList<Game> games) {
+        System.out.println("games: " + games);
 
         ArrayList<String> datesList = genDatesAxisLabels(games);
         HashMap<String, Integer> datesValues = genStringIntHashMap(datesList);
 
         // if date in games list, increment value
+        System.out.println("datesValues != null: " + (datesValues != null) + ", size: " + datesList.size());
         for (Game g : games) {
+            System.out.println("\tChecking on date: " + Utilities.getDateString(g.getDate()));
             String dateString = Utilities.getDateString(g.getDate());
             int curr = datesValues.get(dateString);
             datesValues.put(dateString, curr + 1);
         }
 
         System.out.println("hashmap: " + datesValues);
-        XYChart.Series dataSeries = genXYDataSeries("Games per day", datesValues);
+        XYChart.Series dataSeries = genXYDataSeries("Games per day", datesValues, datesList);
         this.lineChart.getData().add(dataSeries);
         addToolTips(dataSeries);
         return lineChart;
@@ -75,34 +81,21 @@ public class GameHistoryChart {
             gymValues.put(gym, val + 1);
         }
 
-        XYChart.Series dataSeries = genXYDataSeries("Times in gym", gymValues);
+        XYChart.Series dataSeries = genXYDataSeries("Times in gym", gymValues, gymsList);
         this.lineChart.getData().add(dataSeries);
         addToolTips(dataSeries);
         return lineChart;
     }
 
     private void addToolTips(XYChart.Series series) {
-
         for (Data<Number, Number> entry : (ObservableList<Data<Number, Number>>) series.getData()) {
-            System.out.print("Entered!\t");
-            Tooltip t = new Tooltip(entry.getYValue().toString());
+//            System.out.print("Entered! entry: " + entry + ", Y: " + entry.getYValue() + ", X: " + entry.getXValue());
+            String message = "(" + entry.getXValue() + ", " + entry.getYValue().toString() + ")";
+            Tooltip t = new Tooltip(message);
             hackTooltipStartTiming(t);
-            System.out.println("entry: " + entry + ", entry.getNode(): " + entry.getNode() + ", message: " + t.getText());
+//            System.out.println(", message: " + t.getText());
             Tooltip.install(entry.getNode(), t);
         }
-
-//        ArrayList<XYChart.Data<String, Integer>> dataPoints = Collections.list(series.getData().listIterator());
-//        series.getData().forEach((d) -> d.);
-//        for (Object o : series.getData())
-//            XYChart.Data<String, Integer> data = (XYChart.Data<String, Integer>) o;
-
-//        ArrayList<Data<String, Integer>> list = new ArrayList<>(series.getData());
-//        for (Data<String, Integer> entry : list) {
-//            System.out.println("Entered!");
-//            Tooltip t = new Tooltip(entry.getYValue().toString());
-//            Tooltip.install(entry.getNode(), t);
-//        }
-//        return series;
     }
 
     public static void hackTooltipStartTiming(Tooltip tooltip) {
@@ -122,10 +115,10 @@ public class GameHistoryChart {
         }
     }
 
-    private XYChart.Series genXYDataSeries(String label, HashMap<String, Integer> values) {
+    private XYChart.Series genXYDataSeries(String label, HashMap<String, Integer> values, ArrayList<String> keys) {
         XYChart.Series dataSeries = new XYChart.Series();
         dataSeries.setName(label);
-        for (String key : values.keySet()) {
+        for (String key : keys) {
             int val = values.get(key);
 //            System.out.println("\tadding " + key + " : " + val);
             dataSeries.getData().add(new XYChart.Data(key, val));
@@ -140,6 +133,8 @@ public class GameHistoryChart {
                 res.put(str, 0);
             }
         }
+//        System.out.println("\ndates hashMap:");
+//        res.forEach((k, v) -> System.out.println("\tk: " + k + ", v: " + v));
         return res;
     }
 
@@ -177,18 +172,10 @@ public class GameHistoryChart {
         ArrayList<String> res = new ArrayList<>();
         ArrayList<Date> datesList = Main.gameManager.getGameDates(arr);
         Calendar calendar = Calendar.getInstance();
-        Date firstDate = null, lastDate = null;
-        for (int i = 0; i < datesList.size(); i++) {
-            Date d = datesList.get(i);
-            if (i == 0) {
-                firstDate = d;
-            }
-            if (i == datesList.size() - 1) {
-                lastDate = d;
-            }
-        }
-        firstDate = ((ghf.isStartFromBeginning())? Controller.gameHistory_getStartDate() : firstDate);
-        lastDate = ((ghf.isGraphToEnd())? Controller.gameHistory_getEndDate() : lastDate);
+        Date firstDate = Utilities.getFirstDate(arr);
+        Date lastDate = Utilities.getLastDate(arr);
+        firstDate = ((ghf.isStartFromBeginning())? firstDate : Controller.gameHistory_getStartDate());
+        lastDate = ((ghf.isGraphToEnd())? lastDate : Controller.gameHistory_getEndDate());
         System.out.println("ghf.isStartFromBeginning(): " + ghf.isStartFromBeginning() + ", ghf.isGraphToEnd(): " + ghf.isGraphToEnd());
         System.out.println("Graphing games from: " + firstDate + " -> " + lastDate);
         if (firstDate != null && lastDate != null) {
@@ -204,8 +191,8 @@ public class GameHistoryChart {
             if (res.size() == 0) {
                 res.add(Utilities.getDateString(firstDate));
             }
-//            System.out.println("dates labels: " + res);
         }
+        System.out.println("dates labels: " + res);
         return res;
     }
 }

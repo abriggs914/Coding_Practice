@@ -20,6 +20,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         SampleGames sg = new SampleGames();
         sg.load_Fall_2019();
+        sg.load_Full_season_2018_2019();
         gameManager.addGameObjectsArrayList(sg.getGames());
 
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));

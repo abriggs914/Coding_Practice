@@ -110,36 +110,41 @@ public class GameHistoryForm {
         ArrayList<Game> games = new ArrayList<>(Main.gameManager.getGames());
         // TODO ensure that the games list is sorted by date
         if (games.size() > 0) {
-            this.firstDate = games.get(0).getDate();
-            this.lastDate = games.get(games.size() - 1).getDate();
+            this.firstDate = ((startFromBeginning)? Utilities.getFirstDate(games) : Controller.gameHistory_getStartDate());
+            this.lastDate = ((graphToEnd)? Utilities.getLastDate(games) : Controller.gameHistory_getEndDate());
         }
+        if (!startFromBeginning || !graphToEnd) {
+            System.out.println("filtering between dates: {" + firstDate + " and " + lastDate + "}");
+            games = new ArrayList<>(Main.gameManager.filterGamesBetweenDates(games, this.firstDate, this.lastDate));
+        }
+//        System.out.println("startFromBeginning: " + startFromBeginning + ", graphToEnd: " + graphToEnd + "\nFiltering between: " + Utilities.getDateString(firstDate) + " and " + Utilities.getDateString(lastDate));
         if (this.filterDate) {
             System.out.println("filtering by Date {" + date + "}");
-            games = new ArrayList<>(Main.gameManager.filterGamesForDate(games, this.date));
+            games = new ArrayList<>(Main.gameManager.filterGamesForDate(games, this.date, this.firstDate, this.lastDate));
         }
         if (this.filterTime) {
             System.out.println("filtering by Time {" + date + "}");
-            games = new ArrayList<>(Main.gameManager.filterGamesForTime(games, this.date, this.offset));
+            games = new ArrayList<>(Main.gameManager.filterGamesForTime(games, this.date, this.offset, this.firstDate, this.lastDate));
         }
         if (this.filterGym) {
             System.out.println("filtering by Gym {" + gym + "}");
-            games = new ArrayList<>(Main.gameManager.filterGamesForGym(games, this.gym));
+            games = new ArrayList<>(Main.gameManager.filterGamesForGym(games, this.gym, this.firstDate, this.lastDate));
         }
         if (this.filterHomeTeam) {
             System.out.println("filtering by Home Team {" + homeTeam + "}");
-            games = new ArrayList<>(Main.gameManager.filterGamesForTeam(games, this.homeTeam, true));/////////////////////////////////////////////////////////
+            games = new ArrayList<>(Main.gameManager.filterGamesForTeam(games, this.homeTeam, true, this.firstDate, this.lastDate));/////////////////////////////////////////////////////////
         }
         if (this.filterAwayTeam) {
             System.out.println("filtering by Away Team {" + awayTeam + "}");
-            games = new ArrayList<>(Main.gameManager.filterGamesForTeam(games, this.awayTeam, false));/////////////////////////////////////////////////////////
+            games = new ArrayList<>(Main.gameManager.filterGamesForTeam(games, this.awayTeam, false, this.firstDate, this.lastDate));/////////////////////////////////////////////////////////
         }
         if (this.filterRefereeA) {
             System.out.println("filtering by Referee A {" + refereeA + "}");
-            games = new ArrayList<>(Main.gameManager.filterGamesForReferee(games, this.refereeA, true));/////////////////////////////////////////////////////////
+            games = new ArrayList<>(Main.gameManager.filterGamesForReferee(games, this.refereeA, true, this.firstDate, this.lastDate));/////////////////////////////////////////////////////////
         }
         if (this.filterRefereeB) {
             System.out.println("filtering by Referee B {" + refereeB + "}");
-            games = new ArrayList<>(Main.gameManager.filterGamesForReferee(games, this.refereeB, false));/////////////////////////////////////////////////////////
+            games = new ArrayList<>(Main.gameManager.filterGamesForReferee(games, this.refereeB, false, this.firstDate, this.lastDate));/////////////////////////////////////////////////////////
         }
         return games;
     }
