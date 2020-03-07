@@ -88,13 +88,13 @@ public class RangeBar extends View {
         this.lastTick = lastTick;
         this.numTicks = lastTick - firstTick;
 
-        this.majorMinorRatio = 0.0;
-        this.majorMinor = false;
-        this.snapTo = false;
-        this.showTicks = true;
-        this.showNumbers = true;
-
-        init();
+//        this.majorMinorRatio = 0.0;
+//        this.majorMinor = false;
+//        this.snapTo = false;
+//        this.showTicks = true;
+//        this.showNumbers = true;
+//
+//        init();
     }
 
     public RangeBar(Context context, int firstTick, int lastTick, TextView reportTextView) {
