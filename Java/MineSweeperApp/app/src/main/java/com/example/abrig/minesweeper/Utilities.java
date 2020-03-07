@@ -1,5 +1,8 @@
 package com.example.abrig.minesweeper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Utilities {
     // Inclusive
     public static boolean inRange(int start, int x, int end) {
@@ -14,6 +17,10 @@ public class Utilities {
 
     public static String keyify(int r, int c) {
         return "(" + r + ", " + c + ")";
+    }
+
+    public static String keyify(float r, float c) {
+        return "(" + (int)r + ", " + (int)c + ")";
     }
 
     public static String parseTime(int secondsPast) {
@@ -42,6 +49,41 @@ public class Utilities {
             secondsString = "0" + secondsString;
         }
         res += secondsString;
+        return res;
+    }
+
+    public static String[][] arrify(String s) {
+//        System.out.println("in: " + s);
+        String[] leftSplit = s.split("]\\[");
+//        System.out.println("leftSplit: " + Arrays.toString(leftSplit));
+        ArrayList<ArrayList<String>> list = new ArrayList<>();
+        for (String possibleRow : leftSplit) {
+            String[] commaSplit = possibleRow.split(",");
+            ArrayList<String> rowList = new ArrayList<>();
+            for (String entry : commaSplit) {
+//                System.out.print("\tbefore: {" + entry);
+                entry = entry.replaceAll("\\[", "");
+                entry = entry.replaceAll("]", "");
+                entry = entry.trim();
+                rowList.add(entry);
+//                System.out.println("}\tafter: {" + entry + "}");
+            }
+//            System.out.println("rowList: " + rowList);
+            list.add(rowList);
+        }
+        int x = 1, y = 1;
+        if (list.size() > 0) {
+            y = list.get(0).size();
+            x = list.size();
+        }
+        String[][] res = new String[x][y];
+        for (int r = 0; r < x; r++) {
+            ArrayList<String> row = list.get(r);
+//            System.out.println("row ("+row.size()+"): " + row);
+            for (int c = 0; c < y; c++) {
+                res[r][c] = row.get(c);
+            }
+        }
         return res;
     }
 }

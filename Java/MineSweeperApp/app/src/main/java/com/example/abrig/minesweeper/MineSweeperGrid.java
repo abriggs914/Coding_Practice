@@ -2,13 +2,12 @@ package com.example.abrig.minesweeper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -16,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialogListener {
@@ -26,14 +26,16 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
     private int n_rows, n_cols;
     private int secondsPast;
     private int layoutX, layoutY, width, height;
+    private ArrayList<String> animatedKeys;
     private GestureDetector myGestureDetector;
     private AndroidGestureDetector androidGestureDetector;
     private FragmentManager supportFragmentManager;
-    private boolean quitGameResponse, resetGame;
+    private boolean quitGameResponse, resetGame, gameOverHandled;
     private CountDownTimer countDownTimer;
 
     public MineSweeperGrid(Context context, FragmentManager supportFragmentManager, Grid grid, int layoutX, int layoutY) {
         super(context);
+        SharedPreferencesHandler.increment("games_num");
         this.supportFragmentManager = supportFragmentManager;
         this.squarePaint = new Paint();
         this.textPaint = new Paint();
@@ -42,11 +44,13 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
         this.layoutY = layoutY;
         this.n_rows = grid.getNRows();
         this.n_cols = grid.getNCols();
+        this.animatedKeys = new ArrayList<>();
         this.androidGestureDetector = new AndroidGestureDetector();
         this.myGestureDetector = new GestureDetector(getContext(), androidGestureDetector);
         this.setLongClickable(true);
         this.quitGameResponse = false;
         this.resetGame = false;
+        this.gameOverHandled = false;
 
         this.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -60,12 +64,12 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
             public void onTick(long millisUntilFinished) {
                 long seconds = 3600000 - millisUntilFinished;
                 secondsPast = (int) (seconds / 1000);
-                System.out.println("secondsPast: " + secondsPast);
+//                System.out.println("secondsPast: " + secondsPast);
                 invalidate();
             }
 
             public void onFinish() {
-                System.out.println("Finished! " + secondsPast);
+//                System.out.println("Finished! " + secondsPast);
                 invalidate();
             }
 
@@ -122,10 +126,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
         String numMinesMarked = String.format("%03d", (mineSweeper.countSoln(Main.MINE) - mineSweeper.count(Main.POSSIBLE)));
         boolean solvedGrid = false;
         if (numMinesMarked.equals("000")) {
-            try {
-                solvedGrid = mineSweeper.checkSolution();
-            }
-            catch (MineSweeperException e) { }
+            solvedGrid = mineSweeper.checkSolution();
         }
         canvas.drawText(numMinesMarked, 270, 180, textPaint);
 
@@ -154,6 +155,9 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                 countDownTimer.cancel();
                 throw new MineSweeperException(mineSweeper, 4);
             } catch (MineSweeperException e) { }
+
+            Log.e("onDraw 158", "onDraw puzzle solved.");
+            handleGameOver();
         }
         else {
             if (!mineSweeper.isGameOver()) {
@@ -183,6 +187,9 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                 // right eye
                 canvas.drawLine(550, 142, 570, 120, squarePaint);
                 canvas.drawLine(550, 120, 570, 142, squarePaint);
+
+                Log.e("onDraw 190", "onDraw mine clicked.");
+                handleGameOver();
             }
         }
 
@@ -204,11 +211,11 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
             else {
                 redVal -= 50;
             }
-            System.out.println("x: " + x + ", redVal: " + redVal + ", greenVal: " + greenVal + ", blueVal: " + blueVal);
+//            System.out.println("x: " + x + ", redVal: " + redVal + ", greenVal: " + greenVal + ", blueVal: " + blueVal);
         }
-        System.out.println("FINAL, redVal: " + redVal + ", greenVal: " + greenVal + ", blueVal: " + blueVal);
+//        System.out.println("FINAL, redVal: " + redVal + ", greenVal: " + greenVal + ", blueVal: " + blueVal);
         squarePaint.setColor(Color.rgb(redVal, greenVal, blueVal));
-        System.out.println("distance: " + distance + ", searched: " + searched + ", numSquares: " + numSquares + ", progress: " + progress);
+//        System.out.println("distance: " + distance + ", searched: " + searched + ", numSquares: " + numSquares + ", progress: " + progress);
         canvas.drawRect(
                 mineProgressBounds.left + 10,
                 mineProgressBounds.top + 10,
@@ -236,13 +243,14 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
             for (int c = 0; c < n_cols; c++) { //double c = widthSpace; (c - widthSpace) < x; c += spacePerCol) {
 //                message += "\nr: " + r + ", c: " + c + ", a: " + a + ", b: " + b;
                 boolean status = grid.getCheckStatusAt(r, c);
+                boolean isAnimated = animatedKeys.contains(Utilities.keyify(r, c));
                 int gridValue = grid.getValueAt(r, c);
                 String squareText = ""; //(a + b) + "";
                 float p = (float) ((r * spacePerRow) + heightSpace);
                 float q = (float) ((c * spacePerCol) + widthSpace);
                 squarePaint.setColor(Color.LTGRAY);
                 textPaint.setColor(Color.BLACK);
-                if (status) {
+                if (status || mineSweeper.isGameOver()) {
                     squarePaint.setColor(Color.GRAY);
                     boolean isMine = grid.isMine(r, c);
 //                    System.out.println("r: " + ", c: " + c + ", val: " + grid.getValueAt(r, c) + ", isMine: " + grid.isMine(r, c));
@@ -262,8 +270,8 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                                 squareText = "2";
                                 break;
                             case 3 :
-                                squareText = "3";
                                 textPaint.setColor(Color.rgb(252, 140, 3)); // orange
+                                squareText = "3";
                                 break;
                             case 4 :
                                 textPaint.setColor(Color.rgb(252, 3, 3)); // red
@@ -300,9 +308,29 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
 //                }
                 double widthHeight = Math.min(getGridColWidth(), getGridRowHeight()) / 1.75;
                 textPaint.setTextSize((float) widthHeight);
-                canvas.drawRect(q + 5,
-                        p + 5, (float)((q + spacePerCol) - 5),
-                        (float)((p + spacePerRow) - 5),
+                Rect squareBounds = new Rect(
+                        (int) q + 5,
+                        (int) p + 5,
+                        (int) ((q + spacePerCol) - 5),
+                        (int) ((p + spacePerRow) - 5));
+                if (isAnimated) {
+                    // draw border
+                    Rect borderBounds = new Rect(
+                            (int) q + 5,
+                            (int) p + 5,
+                            (int) ((q + spacePerCol) - 5),
+                            (int) ((p + spacePerRow) - 5));
+                    squarePaint.setColor(Color.BLACK);
+                    canvas.drawRect(borderBounds, squarePaint);
+                    squarePaint.setColor(Color.LTGRAY);
+
+                    squareBounds = new Rect(
+                            squareBounds.left + 5,
+                            squareBounds.top + 5,
+                            squareBounds.right - 5,
+                            squareBounds.bottom - 5);
+                }
+                canvas.drawRect(squareBounds,
                         squarePaint);
                 canvas.drawText(squareText,
                         (float)(q + (spacePerCol * 0.3)),
@@ -314,6 +342,77 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
             b -= 1;
         }
         System.out.println("message: " + message);
+        if (animatedKeys.size() > 0) {
+            animatedKeys.clear();
+        }
+    }
+
+    public void handleGameOver() {
+        if (!gameOverHandled) {
+            this.gameOverHandled = true;
+            Grid grid = mineSweeper.getGameGrid();
+            double searched = grid.countCheckedSquares();
+            double numSquares = grid.getNumSquares();
+            double progress = searched / numSquares;
+
+            boolean winner = mineSweeper.checkSolution();
+            int time = secondsPast;
+            int score = (int) (progress * 100);
+            if (winner) {
+                score = 100;
+            }
+
+            int difficulty = (int) ((mineSweeper.getNumMines() / numSquares) * 100);
+
+            System.out.println("searched: " + searched + ", numSquares: " + numSquares + ", progress: " + progress + ", winner: " + winner + ", time: " + time + ", score: " + score);
+
+            SharedPreferencesHandler.add("score_total", score);
+            SharedPreferencesHandler.add("time_total", time);
+            SharedPreferencesHandler.add("difficulty_total", difficulty);
+            if (winner) {
+                SharedPreferencesHandler.increment("games_won");
+            } else {
+                SharedPreferencesHandler.increment("games_lost");
+            }
+
+            // evaluate after updating
+            int totalScore = SharedPreferencesHandler.getTotalScore();
+            int totalTime = SharedPreferencesHandler.getTotalTime();
+            int totalDifficulty = SharedPreferencesHandler.getTotalDifficulty();
+            int numGames = SharedPreferencesHandler.getNumGames();
+            int bestScore = SharedPreferencesHandler.getBestScore();
+            int worstScore = SharedPreferencesHandler.getWorstScore();
+            int bestTime = SharedPreferencesHandler.getBestTime();
+            int worstTime = SharedPreferencesHandler.getWorstTime();
+
+            int avgScore = Math.round(totalScore / numGames);
+            int avgTime = Math.round(totalTime / numGames);
+            int avgDifficulty = Math.round(totalDifficulty / numGames);
+
+            SharedPreferencesHandler.write("score_average", avgScore);
+            SharedPreferencesHandler.write("time_average", avgTime);
+            SharedPreferencesHandler.write("difficulty_average", avgDifficulty);
+
+            if (score > bestScore) {
+                SharedPreferencesHandler.write("score_best", score);
+            }
+            if (score < worstScore) {
+                SharedPreferencesHandler.write("score_worst", score);
+            }
+
+            if (time < bestTime) {
+                SharedPreferencesHandler.write("time_best", time);
+            }
+            if (time > worstTime) {
+                SharedPreferencesHandler.write("time_worst", time);
+            }
+
+            // game_num, win/loss(1/0), time, score, searched
+            int winLoss = ((winner) ? 1 : 0);
+            String gameString = GameHistoryParser.genHistoryString(grid, mineSweeper.getSolnGrid(), numGames, winLoss, time, score, (int) searched);
+            String gameNumber = String.format("%03d", numGames);
+            SharedPreferencesHandler.write(("game #" + gameNumber), gameString);
+        }
     }
 
     public void stopTimer() {
@@ -368,8 +467,8 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
             int xpos = (int) e.getX();
             int ypos = (int) e.getY();
             if (!mineSweeper.isGameOver()) {
-                if (Utilities.inRange(getGridWidthSpace(), xpos, (getWidth() - getGridWidthSpace()))) {
-                    if (Utilities.inRange(getGridHeightSpace(), ypos, (getHeight() - getGridHeightSpace()))) {
+                if (Utilities.inRange(getGridWidthSpace(), xpos, getWidth())) {
+                    if (Utilities.inRange(getGridHeightSpace(), ypos, getHeight())) {
                         int[] rowCol = getRowColFromTap(xpos, ypos);
                         int row = rowCol[0];
                         int col = rowCol[1];
@@ -408,8 +507,8 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
             Grid grid = mineSweeper.getGameGrid();
             int xpos = (int) e.getX();
             int ypos = (int) e.getY();
-            boolean xRange = Utilities.inRange(getGridWidthSpace(), xpos, (getWidth() - getGridWidthSpace()));
-            boolean yRange = Utilities.inRange(getGridHeightSpace(), ypos, (getHeight() - getGridHeightSpace()));
+            boolean xRange = Utilities.inRange(getGridWidthSpace(), xpos, getWidth());
+            boolean yRange = Utilities.inRange(getGridHeightSpace(), ypos, getHeight());
             if (!mineSweeper.isGameOver()) {
                 if (xRange) {
                     if (yRange) {
@@ -424,6 +523,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                                 int col = rowCol[1];
                                 int val = grid.getValueAt(row, col);
                                 boolean status = grid.getCheckStatusAt(row, col);
+                                message += ", row: " + row + ", col: " + col + ", val: " + val;
                                 try {
                                     if (status) {
                                         Log.e("SingleTapUpConfirmed", "Clicked an already cleared square");
@@ -435,10 +535,12 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                                         System.out.println("SUBGRID SOLN: " + subGridSoln + "\nNumMines: " + subGridSolnMines);
 
 //                                        int
+//                                        err
                                         if (subGridMines == subGridSolnMines && val < 9) {
                                             // all mines in the 3x3 grid are marked
                                             mineSweeper.setSurroundingChecked(row, col);
                                         } else {
+                                            animatedKeys = new ArrayList<>(grid.getUncheckedSurrounding(row, col));
                                             System.out.println("Unchecked surrounding:\n\n" + grid.getUncheckedSurrounding(row, col));
                                         }
                                     } else {

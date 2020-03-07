@@ -45,7 +45,7 @@ public class MineSweeper {
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
-        this.grid.setCheckedAll();
+//        this.grid.setCheckedAll();
     }
 
     public int getNumSquares() { return this.grid.getNumSquares(); }
@@ -101,9 +101,10 @@ public class MineSweeper {
     public void setSurroundingChecked(int r, int c) throws MineSweeperException{
         ArrayList<String> surroundingKeys = grid.getSurroundingSquaresKeys(r, c);
         for (String key : surroundingKeys) {
+            int currVal = grid.getValueAt(key);
             int val = grid_soln.getValueAt(key);
             grid.setCheckStatusAt(key, true);
-            if (val == Main.MINE.charAt(0)) {
+            if (currVal == Main.MINE.charAt(0) && val == Main.MINE.charAt(0)) {
                 throw new MineSweeperException(this, 2);
             }
         }
@@ -123,7 +124,7 @@ public class MineSweeper {
         return countSoln(Main.MINE) == count(Main.POSSIBLE);
     }
 
-    public boolean checkSolution() throws MineSweeperException{
+    public boolean checkSolution() {
         boolean valid = true;
 //        boolean gameOver = count(Main.MINE) > 0;
 //        if (gameOver) {
