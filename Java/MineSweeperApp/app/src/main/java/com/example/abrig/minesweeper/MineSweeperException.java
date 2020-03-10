@@ -1,55 +1,72 @@
 package com.example.abrig.minesweeper;
 
+import android.content.Context;
+import android.widget.Toast;
+
 public class MineSweeperException extends Throwable {
 
+    private Context context;
     private MineSweeper mineSweeper;
 
-    public MineSweeperException(MineSweeper mineSweeper, int code) {
+    public MineSweeperException(Context context, MineSweeper mineSweeper, int code, String message) {
+        this.context = context;
         this.mineSweeper = mineSweeper;
         switch (code) {
             case 0 :
-                gameOverException();
+                gameOverException(message);
                 break;
             case 1 :
-                invalidSubGridIndicies();
+                invalidSubGridIndicies(message);
                 break;
             case 2 :
-                failedToClearSurrounding();
+                failedToClearSurrounding(message);
                 break;
             case 3 :
-                timesUpException();
+                timesUpException(message);
                 break;
             case 4 :
-                youWinException();
+                youWinException(message);
+                break;
+            case 5:
+                nullGridParseException(message);
                 break;
             default :
-                gameOverException();
+                gameOverException(message);
         }
     }
 
-    private void youWinException() {
-        System.out.println("You win!");
-        gameOverException();
+    private void nullGridParseException(String message) {
+        String s = ((message.length() == 0)? "" : "\n" + message);
+        gameOverException("You Win!" + s);
     }
 
-    private void invalidSubGridIndicies() {
-        System.out.println("Invalid grid indicies.");
-        gameOverException();
+    private void youWinException(String message) {
+        String s = ((message.length() == 0)? "" : "\n" + message);
+        gameOverException("You Win!" + s);
     }
 
-    private void failedToClearSurrounding() {
-        System.out.println("Not all surrounding squares were marked correctly.");
-        gameOverException();
+    private void invalidSubGridIndicies(String message) {
+        String s = ((message.length() == 0)? "" : "\n" + message);
+        gameOverException("Invalid grid indices" + s);
     }
 
-    private void timesUpException() {
-        System.out.println("Time\'s up!");
-        gameOverException();
+    private void failedToClearSurrounding(String message) {
+        String m = "\nFailed to clear surrounding";
+        String s = ((message.length() == 0)? "" : "\n" + message);
+        gameOverException(m + s);
     }
 
-    public void gameOverException() {
+    private void timesUpException(String message) {
+        String m = "Time\'s up!";
+        String s = ((message.length() == 0)? "" : "\n" + message);
+        gameOverException(m + s);
+    }
+
+    public void gameOverException(String message) {
 //        this.printStackTrace();
-        System.out.println("GAME OVER");
+        String m = "GAME OVER";
+        String s = ((message.length() == 0)? "" : "\n" + message);
+        Toast.makeText(context, (m + s), Toast.LENGTH_LONG).show();
         mineSweeper.setGameOver(true);
     }
 }

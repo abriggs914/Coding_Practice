@@ -8,10 +8,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 public class QuitGamePopUp extends AppCompatDialogFragment {
 
-    private boolean keepPlaying, resetGame;
+    private boolean keepPlaying, shuffleGrid, resetGame;
     private ExampleDialogListener listener;
 
     @Override
@@ -20,29 +21,72 @@ public class QuitGamePopUp extends AppCompatDialogFragment {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.quit_game_pop_up, null);
         builder.setView(view)
-                .setTitle("Quit?")
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
+                .setTitle("Quit?");
+//                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        keepPlaying = true;
+//                        shuffleGrid = false;
+//                        resetGame = false;
+//                        listener.applyTexts(keepPlaying, shuffleGrid, resetGame);
+//                    }
+//                })
+//                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        keepPlaying = false;
+//                        shuffleGrid = false;
+//                        resetGame = false;
+//                        listener.applyTexts(keepPlaying, shuffleGrid, resetGame);
+//                    }
+//                })
+//                .setNeutralButton("reset", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        keepPlaying = false;
+//                        shuffleGrid = false;
+//                        resetGame = true;
+//                        listener.applyTexts(keepPlaying, shuffleGrid, resetGame);
+//                    }
+//                })
+//        .button;
+//        return builder.create();
+        builder.setItems(new CharSequence[]
+                        {"ok", "shuffle", "reset", "cancel"},
+                new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        keepPlaying = true;
-                        resetGame = false;
-                        listener.applyTexts(keepPlaying, resetGame);
-                    }
-                })
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        keepPlaying = false;
-                        resetGame = false;
-                        listener.applyTexts(keepPlaying, resetGame);
-                    }
-                })
-                .setNeutralButton("reset", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        keepPlaying = false;
-                        resetGame = true;
-                        listener.applyTexts(keepPlaying, resetGame);
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        switch (which) {
+                            case 0:
+                                // ok button
+                                keepPlaying = false;
+                                shuffleGrid = false;
+                                resetGame = false;
+                                listener.applyTexts(keepPlaying, shuffleGrid, resetGame);
+                                break;
+                            case 1:
+                                // shuffle button
+                                keepPlaying = false;
+                                shuffleGrid = true;
+                                resetGame = false;
+                                listener.applyTexts(keepPlaying, shuffleGrid, resetGame);
+                                break;
+                            case 2:
+                                // reset button
+                                keepPlaying = false;
+                                shuffleGrid = false;
+                                resetGame = true;
+                                listener.applyTexts(keepPlaying, shuffleGrid, resetGame);
+                                break;
+                            case 3:
+                                // cancel button
+                                keepPlaying = true;
+                                shuffleGrid = false;
+                                resetGame = false;
+                                listener.applyTexts(keepPlaying, shuffleGrid, resetGame);
+                                break;
+                        }
                     }
                 });
         return builder.create();
@@ -61,6 +105,6 @@ public class QuitGamePopUp extends AppCompatDialogFragment {
     }
 
     public interface ExampleDialogListener {
-        void applyTexts(boolean keepPlaying, boolean resetGame);
+        void applyTexts(boolean keepPlaying, boolean shuffleGrid, boolean resetGame);
     }
 }

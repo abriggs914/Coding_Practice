@@ -33,52 +33,27 @@ public class Grid {
             String[] row = gridIn[r];
             for (int c = 0; c < n_cols; c++) {
                 String key = keyify(r, c);
-                String val = gridIn[r][c];
+                String val = String.valueOf(gridIn[r][c]);
                 HashMap<String, String> attrs = new HashMap<>();
                 boolean checked = val.equals(Main.CHECKED); // could be a clue, so not a safe check
                 boolean unChecked = val.equals(Main.UNCHECKED) || val.equals(Main.MINE);
+                // bad naming, but checked WITH "ed" marks whether the square is marked with a mine
+                // WITHOUT "ed" marks the in game status of whether the square has been revealed
                 attrs.put("checked_status", Boolean.toString(!unChecked));
-                attrs.put("current_value", val);
+                attrs.put("current_value", String.valueOf(val));
 
                 res.put(key, attrs);
             }
         }
-        System.out.println("initGrid results: " + res);
+//        for (String key : res.keySet()) {
+//            System.out.println("\tATTRS @ " + key + ": " + res.get(key));
+//        }
+//        System.out.println("initGrid results: " + res);
         return res;
     }
 
     public String keyify(int r, int c) {
         return "(" + r + ", " + c + ")";
-    }
-
-    public static Grid parseGrid(String[][] gridIn) {
-        System.out.println("IN -> gridIn: ");
-        for (String[] arr : gridIn) {
-            System.out.println(Arrays.toString(arr));
-        }
-        int n_rows = gridIn.length;
-        if (n_rows == 0 || !validateRectangle(gridIn)) {
-            System.out.println("EARLY");
-            return null;
-        }
-        int n_cols = gridIn[0].length;
-        ArrayList<String> acceptedInput = Main.getAcceptedInput();
-//        System.out.println("ACCEPTED INPUT: " + acceptedInput);
-        for (int r = 0; r < n_rows; r++) {
-            for (int c = 0; c < n_cols; c++) {
-                String val = gridIn[r][c];
-                if (!acceptedInput.contains(val)) {
-                    System.out.println("Invalid symbol encountered: {" + val + "}");
-                   //  TODO: this line is broken.
-                    return null;
-                }
-            }
-        }
-        System.out.println("OUT -> gridIn: ");
-        for (String[] arr : gridIn) {
-            System.out.println(Arrays.toString(arr));
-        }
-        return new Grid(gridIn);
     }
 
     public static boolean validateRectangle(String[][] gridIn){
@@ -168,7 +143,7 @@ public class Grid {
     }
 
     public int getValueAt(int r, int c) {
-        String curr = this.grid.get(keyify(r, c)).get("current_value");
+        String curr = String.valueOf(this.grid.get(keyify(r, c)).get("current_value"));
         int res;
         try {
             res = Integer.parseInt(curr);
@@ -182,11 +157,12 @@ public class Grid {
 //                System.out.println("\tcurr: (" + curr + "), is not a number. From key: " + keyify(r, c) + "\treturning: " + res);
             }
         }
+//        System.out.println("fetchedA (" + res + ") from " + Utilities.keyify(r, c));
         return res;
     }
 
     public int getValueAt(String key) {
-        String curr = this.grid.get(key).get("current_value");
+        String curr = String.valueOf(this.grid.get(key).get("current_value"));
         int res;
         try {
             res = Integer.parseInt(curr);
@@ -200,6 +176,7 @@ public class Grid {
 //                System.out.println("\tcurr: (" + curr + "), is not a number. From key: " + key + "\treturning: " + res);
             }
         }
+//        System.out.println("fetchedB (" + res + ") from " + key);
         return res;
     }
 
@@ -235,6 +212,10 @@ public class Grid {
         this.grid.get(key).put("current_value", Integer.toString(val));
     }
 
+    public HashMap<String, HashMap<String, String>> getMap() {
+        return new HashMap<>(grid);
+    }
+
     public int getNumSquares() {
         return n_rows * n_cols;
     }
@@ -254,34 +235,33 @@ public class Grid {
         return getNumSquares() - countCheckedSquares();
     }
 
-    public boolean selectSquare(int r, int c, Grid soln) {
+    public boolean selectSquare(int r, int c, boolean doCascade, Grid soln) {
         boolean stop = false;
-        System.out.println("\n\tSelecting: " + keyify(r, c) + ", which is valued at: " + getValueAt(r, c));
+//        System.out.println("\n\tSelecting: " + keyify(r, c) + ", which is valued at: " + getValueAt(r, c));
         if (r < 0 || r  >= n_rows) {
-            System.out.println("Row out of range (" + r + ") out of (0, " + n_rows + ")");
+//            System.out.println("Row out of range (" + r + ") out of (0, " + n_rows + ")");
             stop = true;
         }
         if (c < 0 || c >= n_cols) {
-            System.out.println("Col out of range (" + c + ") out of (0, " + n_cols + ")");
+//            System.out.println("Col out of range (" + c + ") out of (0, " + n_cols + ")");
             stop = true;
         }
         if (stop) {
             return false;
         }
-//        setCheckStatusAt(r, c, true);
-//        putValueAt(r, c, soln.getValueAt(r, c));
         int val = getValueAt(r, c);
         if (val == Main.MINE.charAt(0)) {
             setCheckStatusAt(r, c, true);
             return false;
-//            throw new MineSweeperException(0);
         }
         else {
-            boolean lastPlacedZero = true;
-            if (val == 0) {
-                lastPlacedZero = true;
+//            boolean lastPlacedZero = true;
+//            if (val == 0) {
+//                lastPlacedZero = true;
+//            }
+            if (doCascade) {
+                cascadeSelection(r, c, soln, true);
             }
-            cascadeSelection(r, c, soln, lastPlacedZero);
             setCheckStatusAt(r, c, true);
             return true;
         }
@@ -306,7 +286,7 @@ public class Grid {
                         else if (!status && lastPlacedSpace && (solVal < 9)) {
                             this.putValueAt(x, y, solVal);
                             this.setCheckStatusAt(x, y, true);
-//                            // TODO: check this
+//                             TODO: check this
                             cascadeSelection(x, y, soln, false);
                         }
                     }
@@ -377,17 +357,17 @@ public class Grid {
                 }
             }
         }
-        System.out.println("Squares surrounding: " + keyify(r, c) + ": " + res);
+//        System.out.println("Squares surrounding: " + keyify(r, c) + ": " + res);
         return res;
     }
 
     public ArrayList<String> getUncheckedSurrounding(int r, int c) {
         ArrayList<String> strings = getSurroundingSquaresKeys(r, c);
         ArrayList<String> res = new ArrayList<>();
-        System.out.println("getUncheckedSurrounding: " + strings + "\nr: " + r + ", c: " + c);
+//        System.out.println("getUncheckedSurrounding: " + strings + "\nr: " + r + ", c: " + c);
         for (String s : strings) {
             boolean status = getCheckStatusAt(s);
-            System.out.println("s: " + s + ", status: " + status + "\n");
+//            System.out.println("s: " + s + ", status: " + status + "\n");
             if (!status){
                 res.add(s);
             }
@@ -443,33 +423,8 @@ public class Grid {
         }
     }
 
-    public void setCheckedAllSpaces() {
-        for (int r = 0; r < n_rows; r++) {
-            for (int c = 0; c < n_cols; c++) {
-                int val = getValueAt(r, c);
-                if (val == 0) {
-                    setCheckStatusAt(r, c, true);
-                }
-            }
-        }
-    }
-
-    public void setCheckedAllSpacesAndHints() {
-        for (int r = 0; r < n_rows; r++) {
-            for (int c = 0; c < n_cols; c++) {
-                int val = getValueAt(r, c);
-                if (val < 9) {
-                    setCheckStatusAt(r, c, true);
-                }
-            }
-        }
-    }
-
-    public void setGridChecked(int r, int c) {
-
-    }
-
     public String[][] getGameGrid() {
+//        System.out.println("Get game grid");
         String[][] res = new String[n_rows][n_cols];
         for (int r = 0; r < n_rows; r++) {
             String[] row = new String[n_cols];
@@ -480,7 +435,7 @@ public class Grid {
                     row[c] = val + "";
                 }
                 else {
-                    row[c] = "0";
+                    row[c] = Main.UNCHECKED;
                 }
             }
             res[r] = row;
@@ -507,7 +462,7 @@ public class Grid {
                 int val = getValueAt(r, c);
                 if (val < 10) {
                     if (val == 0) {
-                        res.append(" ");
+                        res.append(Main.CHECKED);
                     }
                     else {
                         res.append(val);
@@ -515,7 +470,7 @@ public class Grid {
                 }
                 else {
 //                    System.out.println("Mine: " + val);
-                    res.append("M");
+                    res.append(Main.MINE);
                 }
             }
             res.append(Main.BORDER + "\n");
@@ -545,25 +500,42 @@ public class Grid {
                     }
                 }
                 else {
-                    res.append("0");
+                    res.append(Main.UNCHECKED);
                 }
-
-//                if (val < 10) {
-//                    if (showBlanks && val == 0) {
-//                        res.append(" ");
-//                    }
-//                    else {
-//                        res.append(val);
-//                    }
-//                }
-//                else {
-////                    System.out.println("Mine: " + val);
-//                    res.append("M");
-//                }
             }
             res.append(Main.BORDER + "\n");
         }
         res.append(borderString).append("\n");
         return res.toString();
+    }
+
+    public static Grid parseGrid(String[][] gridIn) {
+//        System.out.println("IN -> gridIn: ");
+//        for (String[] arr : gridIn) {
+//            System.out.println(Arrays.toString(arr));
+//        }
+        int n_rows = gridIn.length;
+        if (n_rows == 0 || !validateRectangle(gridIn)) {
+//            System.out.println("EARLY");
+            return null;
+        }
+        int n_cols = gridIn[0].length;
+        ArrayList<String> acceptedInput = Main.getAcceptedInput();
+//        System.out.println("ACCEPTED INPUT: " + acceptedInput);
+        for (int r = 0; r < n_rows; r++) {
+            for (int c = 0; c < n_cols; c++) {
+                String val = String.valueOf(gridIn[r][c]);
+                if (!acceptedInput.contains(val)) {
+                    System.out.println("Invalid symbol encountered: {" + val + "}");
+//                      TODO: this line is broken.
+                    return null;
+                }
+            }
+        }
+//        System.out.println("OUT -> gridIn: ");
+//        for (String[] arr : gridIn) {
+//            System.out.println(Arrays.toString(arr));
+//        }
+        return new Grid(gridIn);
     }
 }

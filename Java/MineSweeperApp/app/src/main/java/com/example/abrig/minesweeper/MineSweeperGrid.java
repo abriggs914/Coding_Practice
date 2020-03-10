@@ -2,7 +2,6 @@ package com.example.abrig.minesweeper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,10 +12,8 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialogListener {
 
@@ -30,16 +27,17 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
     private GestureDetector myGestureDetector;
     private AndroidGestureDetector androidGestureDetector;
     private FragmentManager supportFragmentManager;
-    private boolean quitGameResponse, resetGame, gameOverHandled;
+    private boolean quitGameResponse, shuffleGridResponse, resetGame, gameOverHandled;
     private CountDownTimer countDownTimer;
 
-    public MineSweeperGrid(Context context, FragmentManager supportFragmentManager, Grid grid, int layoutX, int layoutY) {
+    public MineSweeperGrid(
+            Context context, FragmentManager supportFragmentManager,
+            Grid grid, int layoutX, int layoutY) throws MineSweeperException {
         super(context);
-        SharedPreferencesHandler.increment("games_num");
         this.supportFragmentManager = supportFragmentManager;
         this.squarePaint = new Paint();
         this.textPaint = new Paint();
-        this.mineSweeper = new MineSweeper(grid);
+        this.mineSweeper = new MineSweeper(grid, context);
         this.layoutX = layoutX;
         this.layoutY = layoutY;
         this.n_rows = grid.getNRows();
@@ -49,6 +47,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
         this.myGestureDetector = new GestureDetector(getContext(), androidGestureDetector);
         this.setLongClickable(true);
         this.quitGameResponse = false;
+        this.shuffleGridResponse = false;
         this.resetGame = false;
         this.gameOverHandled = false;
 
@@ -59,21 +58,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
             }
         });
 
-        this.countDownTimer = new CountDownTimer(3600000, 1000) {
-
-            public void onTick(long millisUntilFinished) {
-                long seconds = 3600000 - millisUntilFinished;
-                secondsPast = (int) (seconds / 1000);
-//                System.out.println("secondsPast: " + secondsPast);
-                invalidate();
-            }
-
-            public void onFinish() {
-//                System.out.println("Finished! " + secondsPast);
-                invalidate();
-            }
-
-        }.start();
+        setTimer();
 
     }
 
@@ -92,6 +77,16 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
     public double getGridColWidth() { return (getWidth() / n_cols) * 0.8; }
 
     public double getGridRowHeight() { return (getHeight() / n_rows) * 0.8;}
+
+    public int getSecondsPast() { return secondsPast; }
+
+    public int getScore() {
+        Grid grid = mineSweeper.getGameGrid();
+        double searched = grid.countCheckedSquares();
+        double numSquares = grid.getNumSquares();
+        double progress = searched / numSquares;
+        return (int) (progress * 100);
+    }
 
     @SuppressLint("NewApi")
     @Override
@@ -135,7 +130,6 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
         canvas.drawCircle(530, 142, 75, squarePaint);
 
         if (solvedGrid) {
-            Toast.makeText(getContext(), "You Win!", Toast.LENGTH_LONG).show();
             // mouth
             squarePaint.setColor(Color.rgb(92, 4, 4));
             canvas.drawArc(485, 150, 575, 210, 0f, 180f, true, squarePaint);
@@ -153,10 +147,10 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
 
             try {
                 countDownTimer.cancel();
-                throw new MineSweeperException(mineSweeper, 4);
+                throw new MineSweeperException(getContext(), mineSweeper, 4, "");
             } catch (MineSweeperException e) { }
 
-            Log.e("onDraw 158", "onDraw puzzle solved.");
+//            Log.e("onDraw 158", "onDraw puzzle solved.");
             handleGameOver();
         }
         else {
@@ -231,13 +225,13 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
         String timeString = Utilities.parseTime(secondsPast);
         if (timeString.equals("TIME\'S UP")) {
             try {
-                throw new MineSweeperException(mineSweeper, 3);
+                throw new MineSweeperException(getContext(), mineSweeper, 3, "");
             } catch (MineSweeperException e) { }
         }
         canvas.drawText(timeString, timerBounds.left + 10, timerBounds.bottom - 10, textPaint);
 
         // --------------------- grid ---------------------
-        String message = "n_rows: " + n_rows + ", n_cols: " + n_cols + ", spacePerRow: " + spacePerRow + ", spacePerCol: " + spacePerCol;
+//        String message = "n_rows: " + n_rows + ", n_cols: " + n_cols + ", spacePerRow: " + spacePerRow + ", spacePerCol: " + spacePerCol;
         int a = 0, b = 1;
         for (int r = 0; r < n_rows; r++) { //double r = heightSpace; (r - heightSpace) < y; r += spacePerRow) {
             for (int c = 0; c < n_cols; c++) { //double c = widthSpace; (c - widthSpace) < x; c += spacePerCol) {
@@ -341,7 +335,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
             a++;
             b -= 1;
         }
-        System.out.println("message: " + message);
+//        System.out.println("message: " + message);
         if (animatedKeys.size() > 0) {
             animatedKeys.clear();
         }
@@ -349,6 +343,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
 
     public void handleGameOver() {
         if (!gameOverHandled) {
+            SharedPreferencesHandler.increment("games_num");
             this.gameOverHandled = true;
             Grid grid = mineSweeper.getGameGrid();
             double searched = grid.countCheckedSquares();
@@ -357,7 +352,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
 
             boolean winner = mineSweeper.checkSolution();
             int time = secondsPast;
-            int score = (int) (progress * 100);
+            int score = getScore();
             if (winner) {
                 score = 100;
             }
@@ -409,10 +404,43 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
 
             // game_num, win/loss(1/0), time, score, searched
             int winLoss = ((winner) ? 1 : 0);
-            String gameString = GameHistoryParser.genHistoryString(grid, mineSweeper.getSolnGrid(), numGames, winLoss, time, score, (int) searched);
-            String gameNumber = String.format("%03d", numGames);
-            SharedPreferencesHandler.write(("game #" + gameNumber), gameString);
+            String gameString = GameHistoryParser.genHistoryString(mineSweeper, numGames, winLoss, time, score, (int) searched);
+            SharedPreferencesHandler.writeGame(numGames, gameString);
         }
+    }
+
+    public void shuffleGrid() throws MineSweeperException {
+        this.mineSweeper = mineSweeper.shuffleGrid();
+    }
+
+    // MAX 1 hour
+    public void setTimer(long... millis) {
+        final long time;
+        final long offset;
+        if (millis.length > 0) {
+            time = 3600000 - (1000 * millis[0]);
+            offset = 1000 * millis[0];
+        }
+        else {
+            time = 3600000;
+            offset = 0;
+        }
+//        System.out.println("TIME: " + time);
+        this.countDownTimer = new CountDownTimer(time, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                long seconds = time - millisUntilFinished;
+                secondsPast = (int) ((seconds + offset) / 1000);
+//                System.out.println("\"TIME\": " + time + ", millisUntilFinished: " + millisUntilFinished + ", seconds: " + seconds + ", secondsPast: " + secondsPast);
+                invalidate();
+            }
+
+            public void onFinish() {
+//                System.out.println("Finished! " + secondsPast);
+                invalidate();
+            }
+
+        }.start();
     }
 
     public void stopTimer() {
@@ -430,9 +458,8 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
     }
 
     @Override
-    public void applyTexts(boolean keepPlaying, boolean resetGame) {
-        System.out.println("Applying texts in MineSweeperGrid keepPlaying: " + keepPlaying + ", resetGame: " + resetGame);
-//        this.quitGameResponse = keepPlaying;
+    public void applyTexts(boolean keepPlaying, boolean shuffleGrid, boolean resetGame) {
+//        System.out.println("Applying texts in MineSweeperGrid keepPlaying: " + keepPlaying + ", shuffleGrid: " + shuffleGrid + ", resetGame: " + resetGame);
     }
 
     class AndroidGestureDetector implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
@@ -515,7 +542,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                         switch (e.getAction()) {
                             case MotionEvent.ACTION_DOWN:
                                 String border = "\n-------------------------------------------------\n";
-                                String message = border;
+//                                String message = border;
 //                                message += "xpos: " + xpos + ", ypos: " + ypos + ", downTime: " + downTime + ", eventTime: " + eventTime;
 //                message += border;
                                 int[] rowCol = getRowColFromTap(xpos, ypos);
@@ -523,16 +550,16 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                                 int col = rowCol[1];
                                 int val = grid.getValueAt(row, col);
                                 boolean status = grid.getCheckStatusAt(row, col);
-                                message += ", row: " + row + ", col: " + col + ", val: " + val;
+//                                message += ", row: " + row + ", col: " + col + ", val: " + val;
                                 try {
                                     if (status) {
-                                        Log.e("SingleTapUpConfirmed", "Clicked an already cleared square");
+                                        Log.i("SingleTapUpConfirmed", "Clicked an already cleared square");
                                         Grid subGrid = mineSweeper.subGrid(grid, row - 1, row + 1, col - 1, col + 1);
                                         Grid subGridSoln = mineSweeper.subGrid(mineSweeper.getSolnGrid(), row - 1, row + 1, col - 1, col + 1);
                                         int subGridMines = subGrid.count(Main.MINE) + subGrid.count(Main.POSSIBLE);
                                         int subGridSolnMines = subGridSoln.count(Main.MINE);
-                                        System.out.println("SUBGRID GRID: " + subGrid + "\nNumMines: " + subGridMines);
-                                        System.out.println("SUBGRID SOLN: " + subGridSoln + "\nNumMines: " + subGridSolnMines);
+//                                        System.out.println("SUBGRID GRID: " + subGrid + "\nNumMines: " + subGridMines);
+//                                        System.out.println("SUBGRID SOLN: " + subGridSoln + "\nNumMines: " + subGridSolnMines);
 
 //                                        int
 //                                        err
@@ -541,17 +568,17 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                                             mineSweeper.setSurroundingChecked(row, col);
                                         } else {
                                             animatedKeys = new ArrayList<>(grid.getUncheckedSurrounding(row, col));
-                                            System.out.println("Unchecked surrounding:\n\n" + grid.getUncheckedSurrounding(row, col));
+//                                            System.out.println("Unchecked surrounding:\n\n" + grid.getUncheckedSurrounding(row, col));
                                         }
                                     } else {
-                                        boolean success = mineSweeper.selectSquare(row, col);
+                                        boolean success = mineSweeper.selectSquare(row, col, true);
                                     }
                                 } catch (MineSweeperException e1) {
 //                                    e1.printStackTrace();
                                 }
                                 invalidate();
-                                message += "\n\tRowCol:\n" + Arrays.toString(rowCol);
-                                System.out.println(message);
+//                                message += "\n\tRowCol:\n" + Arrays.toString(rowCol);
+//                                System.out.println(message);
                                 break;
                         }
                     }
@@ -561,7 +588,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                 // check main button press
                 if (Utilities.inRange(80, ypos, 205)) {
                     if (Utilities.inRange(50, xpos, 250)) {
-                        System.out.println("Main button clicked");
+                        Log.i("MineSweeperGrid","Main button clicked");
                         startQuitGame();
                     }
                 }
@@ -569,7 +596,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
                 // check reset smiley
                 if (Utilities.inRange(55, ypos, 205)) {
                     if (Utilities.inRange(475, xpos, 625)) {
-                        System.out.println("Smiley button pressed");
+                        Log.i("MineSweeperGrid","Smiley button pressed");
                         startQuitGame();
                     }
                 }
@@ -592,7 +619,7 @@ public class MineSweeperGrid extends View implements QuitGamePopUp.ExampleDialog
         QuitGamePopUp popUp = new QuitGamePopUp();
         popUp.show(supportFragmentManager, "Quit?");
 
-        applyTexts(quitGameResponse, resetGame);
+        applyTexts(quitGameResponse, shuffleGridResponse, resetGame);
         invalidate();
 
     }

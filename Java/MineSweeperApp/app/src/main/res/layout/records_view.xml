@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/gamesPlayedLinearLayout"
         android:layout_width="374dp"
-        android:layout_height="49dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginEnd="5dp"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Games played"
+            android:text="@string/games_played"
             tools:layout_margin="5dp"
             tools:padding="5dp" />
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Games won"
+            android:text="@string/games_won"
             tools:layout_margin="5dp"
             tools:padding="5dp" />
 
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Games lost"
+            android:text="@string/games_lost"
             tools:layout_margin="5dp"
             tools:padding="5dp" />
 
@@ -105,7 +105,7 @@
     <LinearLayout
         android:id="@+id/timeLinearLayout"
         android:layout_width="374dp"
-        android:layout_height="49dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginEnd="5dp"
@@ -201,7 +201,7 @@
     <LinearLayout
         android:id="@+id/scoreLinearLayout"
         android:layout_width="374dp"
-        android:layout_height="49dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginEnd="5dp"
@@ -297,7 +297,7 @@
     <LinearLayout
         android:id="@+id/difficultyLinearLayout"
         android:layout_width="374dp"
-        android:layout_height="49dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginEnd="5dp"
@@ -355,7 +355,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/difficultyLinearLayout"
-        tools:layout_margin="5dp"
+        tools:layout_margin="10dp"
         tools:padding="5dp">
 
         <TextView
@@ -404,28 +404,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Best Time" />
+                android:text="@string/best_time" />
 
             <RadioButton
                 android:id="@+id/worstTimeRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Worst Time" />
+                android:text="@string/worst_time" />
 
             <RadioButton
                 android:id="@+id/bestScoreRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Best Score" />
+                android:text="@string/best_score" />
 
             <RadioButton
                 android:id="@+id/worstScoreRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Worst Score" />
+                android:text="@string/worst_score" />
         </RadioGroup>
     </LinearLayout>
 
@@ -447,7 +447,7 @@
     <ListView
         android:id="@+id/top5ListView"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="130dp"
         app:layout_constraintBottom_toTopOf="@+id/last5ReportTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -457,7 +457,7 @@
     <TextView
         android:id="@+id/last5ReportTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="12dp"
@@ -470,7 +470,7 @@
     <ListView
         android:id="@+id/last5ListView"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="130dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

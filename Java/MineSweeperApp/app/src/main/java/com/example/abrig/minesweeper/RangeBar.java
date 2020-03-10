@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -12,10 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 
 public class RangeBar extends View {
-
-    public void setPaletteSelection(int paletteSelection) {
-        this.paletteSelection = paletteSelection;
-    }
 
     public class Thumb {
 
@@ -65,6 +60,7 @@ public class RangeBar extends View {
     private int firstTick;
     private int lastTick;
     private int numTicks;
+    private int tickLength;
     private double majorMinorRatio;
     private boolean majorMinor;
     private boolean snapTo;
@@ -138,9 +134,8 @@ public class RangeBar extends View {
     }
 
     private void init() { //Rect bounds) {
-        System.out.println("init of RangeBar");
-//        this.androidGestureDetector =
-//        this.myGestureDetector = new GestureDetector(getContext(), androidGestureDetector);
+//        System.out.println("init of RangeBar");
+        this.tickLength = 15;
         this.leftThumb = new Thumb();
         this.rightThumb = new Thumb();
         this.leftThumb.setLeft(true);
@@ -164,7 +159,7 @@ public class RangeBar extends View {
                     int deadZone = 15;
                     if (Utilities.inRange(bounds.left - deadZone, xPos, bounds.right + deadZone)) {
                         if (Utilities.inRange(bounds.top - deadZone, yPos, bounds.bottom + deadZone)) {
-                            System.out.println("RangeBar TOUCHED using: " + thumbInUse);
+//                            System.out.println("RangeBar TOUCHED using: " + thumbInUse);
                         }
                     }
                 }
@@ -198,7 +193,6 @@ public class RangeBar extends View {
                 }
                 invalidate();
                 if (reportTextView != null) {
-//                    TextView textView = findViewById(R.id.difficultyReportTextView);
                     int[] range = getRange();
                     reportTextView.setText(("range: " + Utilities.keyify(range[0], range[1])));
                 }
@@ -293,6 +287,14 @@ public class RangeBar extends View {
         this.numTicks = numTicks;
     }
 
+    public void setTickLength(int tickLength) {
+        this.tickLength = tickLength;
+    }
+
+    public int getTickLength() {
+        return tickLength;
+    }
+
     public double getMajorMinorRatio() {
         return majorMinorRatio;
     }
@@ -331,6 +333,10 @@ public class RangeBar extends View {
 
     public void setShowNumbers(boolean showNumbers) {
         this.showNumbers = showNumbers;
+    }
+
+    public void setPaletteSelection(int paletteSelection) {
+        this.paletteSelection = paletteSelection;
     }
 
     private Paint[] getColors() {
@@ -379,6 +385,8 @@ public class RangeBar extends View {
         return new int[] {leftThumb.getTickPos(), rightThumb.getTickPos()};
     }
 
+    public String getStringRange() { return Utilities.keyify(getRange()[0], getRange()[1]); }
+
     public int getDistance() {
         return rightThumb.getxPos() - leftThumb.getxPos();
     }
@@ -422,20 +430,29 @@ public class RangeBar extends View {
 
         int numberHeight = ((int) ((getBottom() - getTop()) * 0.1));// + getTop();
         int tickHeight = ((int) ((getBottom() - getTop()) * 0.3));// + getTop();
+
+        int everyNTicks = (int) Math.round(majorMinorRatio * (numTicks + 0.0));
         for (int t = 0; t <= numTicks; t++) {
-//        for (double x = bounds.left, m = firstTick; x < (bounds.right + spacePerTick); x += spacePerTick, m++) {
+            boolean numberShown = false;
             float x = bounds.left + ((float) (t * spacePerTick));
             if (showTicks) {
-                int tickLength = 15;
-//                if (majorMinor) {
-//                    m
-//                    double majorMinorRatio
-//                    tickLength
-//                }
-                canvas.drawLine(x, tickHeight, x, tickHeight - tickLength, tickTextPaint);
+                int tickLen = tickLength;
+//                System.out.println("(t + firstTick): " + (t + firstTick) + ", everyNTicks: " + everyNTicks + ", majorMinor: " + majorMinor + ", ((t + firstTick) % everyNTicks == 0): " + ((t + firstTick) % everyNTicks == 0));
+                if (majorMinor) {
+                    if (showNumbers) {
+                        numberShown = true;
+                    }
+                    if ((t == 0 || t == numTicks) || (t + firstTick) % everyNTicks == 0) {
+                        tickLen += 10;
+                        if (showNumbers) {
+                            canvas.drawText(((t + firstTick) + ""), x - 25, numberHeight, tickNumberPaint);
+                        }
+                    }
+                }
+                canvas.drawLine(x, tickHeight, x, tickHeight - tickLen, tickTextPaint);
             }
-            if (showNumbers) {
-                canvas.drawText(((t + firstTick) + ""), x, numberHeight, tickNumberPaint);
+            if (!numberShown && showNumbers) {
+                canvas.drawText(((t + firstTick) + ""), x - 25, numberHeight, tickNumberPaint);
             }
         }
     }

@@ -1,30 +1,42 @@
 package com.example.abrig.minesweeper;
 
+import android.content.Context;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MineSweeper {
 
+    private Context context;
     private Grid originalGrid;
     private Grid grid;
-    private Grid grid_soln;
+    private Grid gridSoln;
     private boolean gameOver;
 
-    public MineSweeper(Grid soln) {
-        this.grid_soln = soln;
+    public MineSweeper(Grid soln, Context context) throws MineSweeperException {
+        this.context = context;
+        this.gridSoln = soln;
         init();
     }
 
-    public MineSweeper(String[][] arr) {
-        this.grid_soln = Grid.parseGrid(arr);
+    public MineSweeper(String[][] arr, Context context) throws MineSweeperException {
+        this.context = context;
+        this.gridSoln = Grid.parseGrid(arr);
+        if (gridSoln == null) {
+            throw new MineSweeperException(context, this, 5, "");
+        }
         init();
     }
 
-    public void init() {
+    public void init() throws MineSweeperException {
         this.gameOver = false;
-        this.grid_soln.addClues();
-        this.grid_soln.setCheckedAll();
-        this.grid = Grid.parseGrid(grid_soln.getGameGrid());
-        this.originalGrid = Grid.parseGrid(grid_soln.getGameGrid());
+        this.gridSoln.addClues();
+        this.gridSoln.setCheckedAll();
+        this.grid = Grid.parseGrid(gridSoln.getGameGrid());
+        this.originalGrid = Grid.parseGrid(gridSoln.getGameGrid());
+        if (gridSoln == null || grid == null) {
+            throw new MineSweeperException(context, this, 5, "");
+        }
     }
 
     public Grid getOriginalGrid() {
@@ -36,7 +48,7 @@ public class MineSweeper {
     }
 
     public Grid getSolnGrid() {
-        return grid_soln;
+        return gridSoln;
     }
 
     public boolean isGameOver() {
@@ -51,31 +63,36 @@ public class MineSweeper {
     public int getNumSquares() { return this.grid.getNumSquares(); }
 
     public int getNumMines() {
-        return this.grid_soln.count(Main.MINE);
+        return this.gridSoln.count(Main.MINE);
     }
 
     public int getNumCheckedSquares() { return this.grid.countCheckedSquares(); }
 
     public int getNumUnCheckedSquares() { return this.grid.countUnCheckedSquares(); }
 
-    public boolean selectSquare(int r, int c) throws MineSweeperException {
+    public int getDifficulty() {
+//        System.out.println("DIFFICULTY CALCULATION: " + (getNumMines() + 0.0) / (getNumSquares() + 0.0) + ", getNumMines(): " + getNumMines() + ", getNumSquares(): " + getNumSquares());
+        return (int) (100 * (getNumMines() + 0.0) / (getNumSquares() + 0.0));
+    }
+
+    public boolean selectSquare(int r, int c, boolean doCascade) throws MineSweeperException {
         boolean success = false;
         if (!gameOver) {
-            success = this.grid.selectSquare(r, c, grid_soln);
+            success = this.grid.selectSquare(r, c, doCascade, gridSoln);
             if (success) {
-//            int val = this.grid_soln.getValueAt(r, c);
+//            int val = this.gridSoln.getValueAt(r, c);
 //            if (0 < val && val < 10) {
 //                this.grid.putValueAt(r, c, val);
 //            }
-                System.out.println("Square selection at (" + r + ", " + c + ") was successful!");
+//                System.out.println("Square selection at (" + r + ", " + c + ") was successful!");
             } else {
                 this.gameOver = true;
-                System.out.println("Square selection at (" + r + ", " + c + ") FAILED");
-                throw new MineSweeperException(this, 0);
+//                System.out.println("Square selection at (" + r + ", " + c + ") FAILED");
+                throw new MineSweeperException(context, this, 0, "");
             }
         }
         else {
-            throw new MineSweeperException(this, 0);
+            throw new MineSweeperException(context, this, 0, "");
         }
         return success;
     }
@@ -90,34 +107,34 @@ public class MineSweeper {
         int val = grid.getValueAt(r, c);
         if (status) {
             if (val == Main.POSSIBLE.charAt(0)) {
-                this.grid.putValueAt(r, c, this.grid_soln.getValueAt(r, c));
+                this.grid.putValueAt(r, c, this.gridSoln.getValueAt(r, c));
                 this.grid.setCheckStatusAt(r, c, false);
                 return;
             }
         }
-        throw new MineSweeperException(this, 0);
+        throw new MineSweeperException(context, this, 0, "");
     }
 
     public void setSurroundingChecked(int r, int c) throws MineSweeperException{
         ArrayList<String> surroundingKeys = grid.getSurroundingSquaresKeys(r, c);
         for (String key : surroundingKeys) {
             int currVal = grid.getValueAt(key);
-            int val = grid_soln.getValueAt(key);
+            int val = gridSoln.getValueAt(key);
             grid.setCheckStatusAt(key, true);
             if (currVal == Main.MINE.charAt(0) && val == Main.MINE.charAt(0)) {
-                throw new MineSweeperException(this, 2);
+                throw new MineSweeperException(context, this, 2, "");
             }
         }
     }
 
     public int count(String s) {
-        System.out.println("Grid counting: " + s);
+//        System.out.println("Grid counting: " + s);
         return this.grid.count(s);
     }
 
     public int countSoln(String s) {
-        System.out.println("GridSoln counting: " + s);
-        return this.grid_soln.count(s);
+//        System.out.println("GridSoln counting: " + s);
+        return this.gridSoln.count(s);
     }
 
     public boolean guessedAll() {
@@ -136,7 +153,7 @@ public class MineSweeper {
             int mineVal = Main.MINE.charAt(0);
             for (String key : markedIndexes) {
                 boolean status = grid.getCheckStatusAt(key);
-                int val = grid_soln.getValueAt(key);
+                int val = gridSoln.getValueAt(key);
                 if (!status || val != mineVal) {
                     valid = false;
                     break;
@@ -146,12 +163,8 @@ public class MineSweeper {
         return guessAll && valid;
     }
 
-    public void printSoln() {
-        System.out.println("\n\tSOLUTION\n" + grid_soln.toGameView(true));
-    }
-
     public String toString() {
-        return grid.toGameView(true);//_soln.toGameView(false);
+        return grid.toGameView(true);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,7 +188,7 @@ public class MineSweeper {
             }
         }
         if (!valid) {
-            throw new MineSweeperException(this, 1);
+            throw new MineSweeperException(context, this, 1, "");
         }
 
         int newRows = 1 + stopRow - startRow;
@@ -207,5 +220,42 @@ public class MineSweeper {
 //        g.setCheckedAllSpacesAndHints();
 //        System.out.println(g.toGameView(true));
         return g;
+    }
+
+    public MineSweeper shuffleGrid() throws MineSweeperException {
+        int rows = gridSoln.getNRows();
+        int cols = gridSoln.getNCols();
+        int mines = getNumMines();
+        String[][] newGridString = generateStringGrid(rows, cols, mines);
+        return new MineSweeper(newGridString, context);
+    }
+
+    private String[][] generateStringGrid(int numRows, int numCols, int numMines) {
+        String[][] res = new String[numRows][numCols];
+        double percentage = numMines / (numRows * numCols);
+        int minesPlaced = 0;
+        Random rand = new Random();
+        for (int r = 0; r < numRows; r++) {
+            for (int c = 0; c < numCols; c++) {
+                double randomNum = rand.nextDouble();
+                boolean isMine = randomNum <= percentage;
+                String val = Main.CHECKED;
+                if (isMine && minesPlaced < numMines) {
+                    val = Main.MINE;
+                    minesPlaced++;
+                }
+                res[r][c] = val;
+            }
+        }
+        while (minesPlaced < numMines) {
+            int r = rand.nextInt(numRows);
+            int c = rand.nextInt(numCols);
+            String val = res[r][c];
+            if (!val.equals(Main.MINE)) {
+                res[r][c] = Main.MINE;
+                minesPlaced++;
+            }
+        }
+        return res;
     }
 }
