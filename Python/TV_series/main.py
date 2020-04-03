@@ -268,6 +268,19 @@ letterkenny = TVSeries("Letterkenny", {
     True,
     "Comedy",
     "Crave")
+	
+prison_break = TVSeries("Prison Break", {
+    1 : 22,
+	2 : 22,
+	3 : 13,
+	4 : 24,
+	5 : 9},
+	42,
+	2005,
+	2017,
+	False,
+	"Drama, Thriller",
+	"Netflix")
 
 series_list = [
     the_office,
@@ -288,7 +301,8 @@ series_list = [
     avatar_last_airbender,
     peaky_blinders,
     curb_your_enthusiasm,
-    letterkenny]
+    letterkenny,
+	prison_break]
    
 def longest_series_title(series_list) :
     num = 0

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane id="borderPane" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <top>
+      <ButtonBar id="interaction_buttonBar" prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+            <TextField id="time_view_pane" editable="false" />
+            <TextField id="number_people_textField" promptText="Number people" />
+            <TextField id="number_infected_textField" promptText="number infected" />
+            <Slider id="speed_slider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="0.25" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+            <CheckBox id="step_sim_checkBox" fx:id="step_sim_checkBox" mnemonicParsing="false" text="step" />
+            <CheckBox id="show_paths_checkBox" fx:id="show_paths_checkBox" mnemonicParsing="false" text="show paths" />
+            <Button id="clear_button" mnemonicParsing="false" text="clear" />
+            <Button id="stop_button" mnemonicParsing="false" text="stop" />
+          <Button id="simulate_button" mnemonicParsing="false" text="simulate" />
+        </buttons>
+      </ButtonBar>
+   </top>
+   <left>
+       <VBox>
+          <ListView id="interaction_listView" prefHeight="200.0" prefWidth="200.0" />
+           <VBox fx:id="graph_buttons_vBox" id="graph_button_vBox"></VBox>
+       </VBox>
+   </left>
+    <center>
+        <Pane id="interaction_pane" />
+    </center>
+   <bottom>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <AreaChart id="interaction_lineChart">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </AreaChart>
+            <ScrollPane id="sim_summary_scrollPane" fx:id="sim_summary_scrollPane" prefHeight="200.0" prefWidth="200.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+              </content>
+            </ScrollPane>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
