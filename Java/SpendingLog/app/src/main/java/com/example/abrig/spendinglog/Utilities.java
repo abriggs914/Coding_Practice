@@ -162,6 +162,11 @@ public class Utilities {
 
         for (int i = 1; i < transactionParse.length; i += 7) {
             Date date = parseDate(transactionParse[i].trim());
+            // date is null only if entities are not found in the transaction.
+            // then just skip the transactions
+            if (date == null) {
+                continue;
+            }
             Entity sender = getEntity(transactionParse[i + 1].trim());
             Entity receiver = getEntity(transactionParse[i + 2].trim());
             int amount = Integer.parseInt(transactionParse[i + 3].trim());

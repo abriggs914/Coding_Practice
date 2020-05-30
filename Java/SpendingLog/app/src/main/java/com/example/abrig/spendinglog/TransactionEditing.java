@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionEditing extends Fragment {
@@ -123,9 +125,24 @@ public class TransactionEditing extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.println("delete button clicked");
-//                ArrayList<Transaction> transactions = MainActivity.TH.getTransactions();
+                ArrayList<Transaction> transactions = MainActivity.TH.getTransactions();
+                for (Transaction t : transactionsList) {
+                    System.out.println("t: " + t);
+                    int position = entitiesAdapter.getPosition(t);
+                    if (transactionsListView.isItemChecked(position)) {
+                        entitiesAdapter.remove(t);
+                    }
+                }
+
+                entitiesAdapter.notifyDataSetChanged();
+                int n = transactionsListView.getCheckedItemCount();
+                selectedReportTextView.setText(Integer.toString(n));
+                totalReportTextView.setText(Integer.toString(entitiesAdapter.getCount()));
+
+
+//                ArrayList<Entity> entities = MainActivity.TH.getEntities();
 //                ArrayList<Entity> entitiesToRemove = new ArrayList<>();
-//                for (Entity e : entitiesList) {
+//                for (Entity e : entities) {
 ////                    int position = entitiesAdapter.getPosition(e);
 ////                    Entity e = entitiesAdapter.getItem(position);
 //                    boolean valid = false;
@@ -134,9 +151,10 @@ public class TransactionEditing extends Fragment {
 //                        valid = MainActivity.TH.ensureValidDelete(e);
 //                        if (valid) {
 //                            entitiesToRemove.add(e);
+////                            Toast.makeText(getContext(), "Unable to delete entity \"" + e + "\" due to\nthem being involved in a past transaction.", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getContext(), "Deleting entity \"" + e + "\"", Toast.LENGTH_LONG).show();
 //                        }
 //                        else {
-//                            Toast.makeText(getContext(), "Unable to delete entity \"" + e + "\" due to\nthem being involved in a past transaction.", Toast.LENGTH_SHORT).show();
 //                            transactionsListView.setItemChecked(position, false);
 //                        }
 //                    }

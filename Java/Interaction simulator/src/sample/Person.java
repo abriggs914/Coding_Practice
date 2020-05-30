@@ -333,14 +333,19 @@ public class Person {
     }
 
     public void age() {
+        int prevAge = getAgeYears();
         if (isAlive) {
             this.lifeTime += 1.0;
             if (isInfected) {
                 this.secondsInfected += 1.0;
-                checkInfectedSurvival();
+                int ageVal = getAgeYears();
+                checkInfectedSurvival(ageVal);
                 if (this.secondsInfected > this.disease.getInfectiousPeriod()) {
                     Model.setCured(this);
                 }
+            }
+            if (getAgeYears() > prevAge) {
+                birthday();
             }
             checkNaturalCauses();
         }
@@ -353,8 +358,15 @@ public class Person {
         Model.setDeath(this);
     }
 
-    private void checkInfectedSurvival() {
-        double probDeath = disease.getMortalityRate();
+    private double oddsOfSurvival(int age) {
+        if (isInfected) {
+            return disease.getMortalityRate(age);
+        }
+        return Utilities.survivalTableLookup(this);
+    }
+
+    private void checkInfectedSurvival(int age) {
+        double probDeath = oddsOfSurvival(age);
         double chance = Utilities.randomDoubleInRange(0, 101);
         boolean survive = chance > probDeath;
         if (!survive) {
@@ -415,8 +427,35 @@ public class Person {
         this.diseaseHistory.add(this.disease);
     }
 
+    public int getAgeYears() {
+        return (int) lifeTime / 365;
+    }
+
+    public int getExpectedYears() {
+        return (int) lifeSpan / 365;
+    }
+
+    public void birthday() {
+        String suffix;
+        String ageString = Integer.toString(getAgeYears());
+        int lastDigit = Integer.parseInt(ageString.substring(ageString.length() - 1));
+        if (lastDigit == 1) {
+            suffix = "st";
+        }
+        if (lastDigit == 2) {
+            suffix = "nd";
+        }
+        if (lastDigit == 3) {
+            suffix = "rd";
+        }
+        else {
+            suffix = "th";
+        }
+        System.err.println("Happy " + ageString + suffix + " birthday! " + this);
+    }
+
     @Override
     public String toString() {
-        return idString + " (" + lifeTime + " / " + lifeSpan + ")"; //, v:" + directionVector;
+        return (idString + " (" + getAgeYears() + " / " + getExpectedYears() + ") (" + oddsOfSurvival(getAgeYears()) + ")"); //, v:" + directionVector;
     }
 }

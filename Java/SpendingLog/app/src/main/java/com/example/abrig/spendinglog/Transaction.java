@@ -139,14 +139,18 @@ public class Transaction {
         return firstTransactionDate;
     }
 
-    public void setUpcomingTransactionDates(ArrayList<Date> d) {
+    public ArrayList<Transaction> setUpcomingTransactionDates(ArrayList<Date> d) {
+        ArrayList<Transaction> upcomingTransactions = new ArrayList<>();
         Date today = new Date();
         ArrayList<Date> leftOver = new ArrayList<>();
         for (Date date : d) {
             if (date.before(today)) {
                 // update list from last start-up
                 Transaction newT = re_initTransaction(date, sender, receiver, transactionAmount, reoccurring, occurring);
-                MainActivity.TH.addTransaction(newT);
+                System.out.println("TransactionHandler: " + MainActivity.TH);
+                System.out.println("newTransaction: " + newT);
+//                MainActivity.TH.addTransaction(newT);
+                upcomingTransactions.add(newT);
                 sender.addTransaction(newT);
                 receiver.addTransaction(newT);
             }
@@ -155,6 +159,7 @@ public class Transaction {
             }
         }
         this.oneYearTransactions.addAll(leftOver);
+        return upcomingTransactions;
     }
 
     public Date getNextTransactionDate() {
@@ -214,12 +219,12 @@ public class Transaction {
 //        System.out.println("secondsPerAttempt: " + secondsPerAttempt + ", next date calculated: " + nextDate);
         Calendar c = Calendar.getInstance();
         c.setTime(tDate);
-        System.out.println("                   DATES: ");
+//        System.out.println("                   DATES: ");
         for (int count = 0, i = 0; i < SECONDS_PER_YEAR; count += 1, i += secondsPerAttempt) {
             c.add(Calendar.SECOND, (int)secondsPerAttempt);
             Date currDate = c.getTime();
             res.add(currDate);
-            System.out.println("count. " + count + ":      next date: " + currDate + " from beginning: " + i);
+//            System.out.println("count. " + count + ":      next date: " + currDate + " from beginning: " + i);
         }
         return res;
     }
@@ -242,7 +247,14 @@ public class Transaction {
         Transaction t = new Transaction(sender, receiver, amount, reoccurring, occurring);
         t.setTransactionDate(date);
         t.setFirstTransactionDate(date);
-        t.setUpcomingTransactionDates(t.calculateNextTransactionDate(t.getTransactionDate(), t.getAnnualOccurringRate()));
+        ArrayList<Transaction> upcomingTransactions =
+                t.setUpcomingTransactionDates(
+                        t.calculateNextTransactionDate(
+                                t.getTransactionDate(), t.getAnnualOccurringRate()
+                        )
+                );
+        System.out.println("UPCOMING: " + upcomingTransactions);
+        System.out.println("newT: " + t);
         return t;
     }
 }

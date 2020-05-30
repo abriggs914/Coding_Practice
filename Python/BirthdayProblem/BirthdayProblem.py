@@ -3,7 +3,7 @@
 import random
 
 # max of 120
-num_people_in_room = 70 #Change This Number
+num_people_in_room = 20 #Change This Number
 
 #Simulate a room with a certain number of people
 def simulate(num_people):

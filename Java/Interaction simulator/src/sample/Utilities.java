@@ -31,7 +31,8 @@ public class Utilities {
         if (ageTable == null) {
             ageTable = getRandomList((int) Math.round(averageAge), TABLE_CERTAINTY_LENGTH);
         }
-        return 365 * ageTable[(int) randomDoubleInRange(0, ageTable.length)];
+        int days = (int) Math.round(randomDoubleInRange(0, 365));
+        return (365 * ageTable[(int) randomDoubleInRange(0, ageTable.length)]) + days;
     }
 
     public static double genRandomLifeSpan(double age, double avgLifeExpectancy) {
@@ -42,13 +43,20 @@ public class Utilities {
         while(lifeExpectancy <= age) {
             lifeExpectancy = 365 * expectancyTable[(int) randomDoubleInRange(0, expectancyTable.length)];
         }
-        return lifeExpectancy;
+        int days = (int) Math.round(randomDoubleInRange(0, 365));
+        return lifeExpectancy + days;
     }
 
     public static boolean calcSurvival(Person p) {
+        double probDeath = survivalTableLookup(p);
+        double chance = randomDoubleInRange(0, 1);
+        return chance < probDeath;
+    }
+
+    public static double survivalTableLookup(Person p) {
         boolean isMale = p.isMale();
-        double lifeTime = p.getLifeTime();
-        double lifeSpan = p.getLifeSpan();
+        double lifeTime = p.getAgeYears();
+        double lifeSpan = p.getExpectedYears();
         double probDeath;
         if (survivalTable == null) {
             genSurvivalTable();
@@ -56,7 +64,7 @@ public class Utilities {
 
         if (lifeTime >= lifeSpan) {
             // pseudoRandom
-            probDeath = 1 - (lifeSpan / (lifeSpan + (2 * lifeTime)));
+            probDeath = 1.0 - (lifeSpan / (lifeSpan + (2 * lifeTime)));
         }
         else{
             int probIdx = 1;
@@ -65,8 +73,7 @@ public class Utilities {
             }
             probDeath = survivalTable[(int) lifeTime][probIdx];
         }
-        double chance = randomDoubleInRange(0, 1);
-        return chance < probDeath;
+        return probDeath;
     }
 
     private static void genSurvivalTable() {

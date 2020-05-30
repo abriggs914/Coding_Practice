@@ -33,19 +33,19 @@ public class SharedPreferencesWriter {
         }
     }
 
-    public static void write(String label,  String value) {
+    public static void write(String label, String value) {
         MainActivity.prefs.edit().putString(label, value).apply();
     }
 
-    public static void write(String label,  int value) {
+    public static void write(String label, int value) {
         MainActivity.prefs.edit().putInt(label, value).apply();
     }
 
-    public static void write(String label,  float value) {
+    public static void write(String label, float value) {
         MainActivity.prefs.edit().putFloat(label, value).apply();
     }
 
-    public static void write(String label,  boolean value) {
+    public static void write(String label, boolean value) {
         MainActivity.prefs.edit().putBoolean(label, value).apply();
     }
 
@@ -75,5 +75,7 @@ public class SharedPreferencesWriter {
                 write("entity_entry_User", e.serializeEntry());
             }
         }
+
+//        MainActivity.prefs.edit().apply();
     }
 }

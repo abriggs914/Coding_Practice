@@ -408,6 +408,8 @@ class Puzzle:
         # print(board)
         return board
 
+    # def check_solved_status(self, board):
+
     def gen_solved_puzzle(self):
         print('\n\tLevel 1 Solving\n')
         solving_history = {'stats': {}, 'level_1': {}}
@@ -491,9 +493,120 @@ class Puzzle:
 
         self.solving_history = solving_history
         
-        # board = self.advanced_solving(board)
-        # printA('returned advanced board', board)
+        board = self.solve_level_2(board)
+        printA('returned advanced board', board)
+        status = self.check_board(board)
+        print("status: " + str(status))
         return board
+
+    def solve_level_2(self, board):
+        n_rows = self.rows
+        n_cols = self.cols
+        v_hints = self.vertical_hints
+        h_hints = self.horizontal_hints
+        new_h_board, new_h_hints, h_cut_idxs, new_v_board, new_v_hints, v_cut_idxs = self.shrink(board, h_hints, v_hints)
+        # printA("new_h_board ", new_h_board)
+        # printA("new_v_board ", new_v_board)
+        # print("new_h_hints " + str(new_h_hints) + ", h_cut_idxs: " + str(h_cut_idxs))
+        # print("new_v_hints " + str(new_v_hints) + ", v_cut_idxs: " + str(v_cut_idxs))
+        new_board = self.cut_board(board, h_cut_idxs, v_cut_idxs)
+        # printA("New Board IN", new_board)
+
+        new_board = self.solving_level_2(new_board, new_h_hints, new_v_hints)
+        # printA("New Board OUT", new_board)
+
+        new_board = self.pad_board(board, new_board, h_cut_idxs, v_cut_idxs)
+        # printA("New Board AFTER Pad", new_board)
+        return new_board
+
+
+    def solving_level_2(self, board, h_hints, v_hints):
+        # printA("BOARD IN", board)
+        # print("BOARD: " + str(board))
+        n_rows = len(board)
+        n_cols = 0 if (len(board) == 0) else len(board[0])
+        # print("Solving horizontal")
+        for i in range(len(h_hints)):
+            hint = h_hints[i]
+            row = board[i]
+            # print("i: " + str(i) + ", n_cols: " + str(n_cols) + ", row: " + str(row) + ", hint: " + str(hint))
+            self.fill_row(row, hint)
+        board = self.transpose_puzzle(board)
+        # printA("after horizontal", board)
+        # print("Solving vertical")
+        for i in range(len(v_hints)):
+            hint = v_hints[i]
+            col = board[i]
+            # print("i: " + str(i) + ", n_rows: " + str(n_rows) + ", col: " + str(col) + ", hint: " + str(hint))
+            self.fill_row(col, hint)
+        board = self.transpose_puzzle(board)
+        # printA("BOARD OUT", board)
+        return board
+
+    def pad_board(self, board, small_board, h_cuts, v_cuts):
+        temp = []
+        c1 = h_cuts[0]
+        c2 = h_cuts[1]
+        r1 = v_cuts[0]
+        r2 = v_cuts[1]
+        for r in range(len(board)):
+            row = []
+            for c in range(len(board[r])):
+                if r > r1 and r < r2 and c > c1 and c < c2 :
+                    # print("r(" + str(r) + ") - r1(" + str(r1) + ") + 1: " + str(r - (r1 + 1)) + ", c(" + str(c) + ") - c1(" + str(c1) + ") + 1: " + str(c - (c1 + 1)))
+                    row.append(small_board[r - (r1 + 1)][c - (c1 + 1)])
+                else:
+                    row.append(board[r][c])
+            temp.append(row)
+
+        # printA("temp", temp)
+        return temp
+
+
+        # print("temp: " + str(temp) + ", new_board: " + str(small_board) + ", h_cuts: " + str(h_cuts) + ", v_cuts: " + str(v_cuts))
+        # print("temp[:h_cuts[0] + 1]: " + str(temp[:h_cuts[0] + 1]) + ", flatten_list(temp[:h_cuts[0] + 1]): " + str(flatten_list(temp[:h_cuts[0] + 1])))
+        # new_board = flatten_list(temp[:h_cuts[0] + 1])[v_cuts[0] : v_cuts[1]] + small_board + flatten_list(temp[h_cuts[1]:])[v_cuts[0] + 1 : v_cuts[1] + 1]
+        # return new_board
+
+    def cut_board(self, board, h_cuts, v_cuts):
+        new_board = board.copy()
+        new_board = new_board[h_cuts[0] + 1 : h_cuts[1]]
+        new_board = self.transpose_puzzle(new_board)
+        new_board = new_board[v_cuts[0] + 1 : v_cuts[1]]
+        return new_board
+
+    def fill_row(self, row, hints):
+        if len(row) == 0 or (len(hints) == 1 and hints[0] == 0):
+            # base case
+            return
+        num_to_cover = sum(hints)
+        num_covered = sum(row)
+        if num_covered == num_to_cover:
+            return
+        space = len(row)
+        hint_to_place = hints[0]
+        rest_hints = sum(hints[1:])
+        rest_space = (len(hints) - 1) + rest_hints
+        new_space = space - rest_space
+        diff = new_space - hint_to_place
+        begin_idx = max(0, diff)
+        end_idx = max(0, min(diff, space - 1))
+        if begin_idx <= end_idx:
+            # do colour
+            if diff == 0:
+                begin_idx = 0
+                end_idx = hint_to_place - 1
+            for i in range(begin_idx, end_idx + 1):
+                # m = "\t(B,E)=(" + str(begin_idx) + ", " + str(end_idx) + "), i=(" + str(i) + "), row=(" + str(row) + "), hints=(" + str(hints) + "), hint(" + str(hint_to_place) + "), diff=(" + str(diff) + "), new_space=(" + str(new_space) + "), space=(" + str(space) + "), rest_space=(" + str(rest_space) + ")"
+                row[i] = 1
+                # m += "\n=>\t\t" + "(B,E)=(" + str(begin_idx) + ", " + str(end_idx) + "), i=(" + str(i) + "), row=(" + str(row) + "), hints=(" + str(hints) + "), hint(" + str(hint_to_place) + "), rest_hints=(" + str(hints[1:]) + "), rest_list=(" + str(row[1:]) + ")"
+                # print(m)
+        else:
+            # print("\tNOT (B,E)=(" + str(begin_idx) + ", " + str(end_idx) + ")")
+            pass
+        if rest_hints > 0:
+            self.fill_row(row[end_idx:], hints[1:])
+
 
     # def len_hints(self, arr):
     #     return sum(arr) + len(arr) - 1
@@ -776,11 +889,17 @@ class Puzzle:
         print('\n\nNEEDS LEVEL 3\n\n')
         return board
 
+    def shrink(self, board, v_hints, h_hints):
+        new_h_board, new_h_hints, h_cut_idxs = self.shrink_board(board, h_hints, v_hints, "")
+        new_v_board, new_v_hints, v_cut_idxs = self.shrink_board(board, h_hints, v_hints, "col")
+        return new_h_board, new_h_hints, h_cut_idxs, new_v_board, new_v_hints, v_cut_idxs
+
     def shrink_board(self, board, h_hints, v_hints, how):
         # h_hints = self.horizontal_hints
         # v_hints = self.vertical_hints
         # dims = [self.rows, self.cols]
-        dims = [len(board), len(board[0])]
+        dims = [len(board[0]), len(board)]
+        print("Before dims: " + str(dims) + ", h_hints: " + str(h_hints) + ", v_hints: " + str(v_hints))
         if how == 'col':
             temp = dims[0]
             dims[0] = dims[1]
@@ -790,6 +909,7 @@ class Puzzle:
         new_board = []
         r = 0
         c = 0
+        print("AFTER dims: " + str(dims) + ", h_hints: " + str(h_hints) + ", v_hints: " + str(v_hints))
         printA('board_used_for_cutting', board)
         reverse = False
         top_row_cut = -1
@@ -813,15 +933,17 @@ class Puzzle:
             if reverse:
                 r -= 2
             print('r:',r, 'reverse', reverse)
-        cut_board = board[top_row_cut: bottom_row_cut]
+        cut_board = board[top_row_cut + 1: bottom_row_cut]
         if how == 'col':
             board = self.transpose_puzzle(cut_board.copy())
+            res_hints = v_hints[top_row_cut + 1 : bottom_row_cut]
         else:
             board = cut_board.copy()
+            res_hints = h_hints[top_row_cut + 1 : bottom_row_cut]
         print('shrink_board',board)
         print('shrink_cut_board',cut_board)
         print('(top_row_cut, bottom_row_cut)',(top_row_cut, bottom_row_cut))
-        return board, (top_row_cut, bottom_row_cut)
+        return board, res_hints, (top_row_cut, bottom_row_cut)
 
     def vertical_hints_adjustment(self, v_hints, param_board, board, cuts):
         board = self.transpose_puzzle(board)

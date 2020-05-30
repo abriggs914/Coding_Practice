@@ -41,6 +41,7 @@ public class UserView extends Fragment {
     private int bankedMoney;
 
     private FloatingActionButton fab;
+    private Button inDepthButton;
 
     private TextView nameTextView;
     private TextView nameReportTextView;
@@ -125,6 +126,7 @@ public class UserView extends Fragment {
         balanceReportTextView = view.findViewById(R.id.bankBalanceReportTextView);
         overdraftReportTextView = view.findViewById(R.id.overdraftReportTextView);
         fab = view.findViewById(R.id.floatingActionButton);
+        inDepthButton = view.findViewById(R.id.inDepthbutton);
 
         Set<String> keys = MainActivity.prefs.getAll().keySet();
         if (keys.contains("entity_entry_User")) {
@@ -173,6 +175,17 @@ public class UserView extends Fragment {
             }
         });
         fab.show();
+
+        inDepthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("LOOKING IN DEPTH");
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.container, InDepthEntityView.newInstance("", ""));
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override

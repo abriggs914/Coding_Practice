@@ -154,7 +154,7 @@ public class UserProfile extends Fragment {
 
                 Entity e;
                 if (MainActivity.prefs.contains("entity_entry_User")) {
-                    System.out.println("FOUND");
+                    System.out.println("entity_entry_User - FOUND");
                     String entityString = (String) MainActivity.prefs.getAll().get("entity_entry_User");
                     // don't think this should be here
                     ArrayList<Transaction> transactions = Utilities.parseTransactions(entityString);
@@ -166,7 +166,7 @@ public class UserProfile extends Fragment {
                 }
                 else {
                     // create user entity for the first time
-                    System.out.println("NOT FOUND");
+                    System.out.println("entity_entry_User - NOT FOUND");
                     String idString = TransactionHandler.genEntityID(name);
                     e = new Entity(name, idString, bankedMoney);
                 }

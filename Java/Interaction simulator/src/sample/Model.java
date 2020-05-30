@@ -300,6 +300,12 @@ public class Model {
                         }
                         p.updateCircle();
                     }
+
+                    pandemicHistory.setCaseHistory(caseHistoryPopulation);
+                    pandemicHistory.setCuredPopulation(curedPopulation);
+                    pandemicHistory.setPassedPopulation(passedPopulation);
+                    pandemicHistory.setInfectedPopulation(infectedPopulation);
+
                     View.updateNewsList();
                     View.updateStatsPane();
                     parallelTransition.setCycleCount(Timeline.INDEFINITE);
@@ -322,13 +328,14 @@ public class Model {
         double lifeSpan = Utilities.genRandomLifeSpan(age, AVG_LIFE_EXPECTANCY);
         boolean isMale = Utilities.randomDoubleInRange(0, 1) <= 0.5;
         Person person = new Person(personID, personNum, isMale, age, lifeSpan, AVG_PERSON_MASS, x, y);
+        int ageVal = person.getAgeYears();
         double speed = Utilities.randomDoubleInRange(MIN_PERSON_SPEED, MAX_PERSON_SPEED);
         double degrees = Utilities.randomDoubleInRange(0, 360);
         Vector vector = new Vector(speed, degrees);
         person.setDirectionVector(vector);
         person.setMoveable(true);
         if (numInfectedCount < numInfectedStart) {
-            boolean infected = Utilities.randomDoubleInRange(0, 100.001) < currentDisease.getInfectionRate();
+            boolean infected = Utilities.randomDoubleInRange(0, 100.001) < currentDisease.getInfectionRate(ageVal);
             if (infected) {
                 setInfectedPerson(person, currentDisease);
             }
@@ -343,6 +350,11 @@ public class Model {
         double x2 = View.getInteractionView().getWidth() - 10;
         double y2 = View.getInteractionView().getHeight() - 10;
         interactionViewBounds = View.getInteractionView().getLayoutBounds();
+        pandemicHistory = new PandemicHistory(
+                startDate,
+                (ArrayList<Person>) population.clone(),
+                (ArrayList<Person>) infectedPopulation.clone(),
+                currentDisease);
         if (x1 < x2 && y1 < y2) {
             for (int i = 0; i < numPeopleStart; i++) {
                 double x = Utilities.randomDoubleInRange(10, x2);
@@ -382,11 +394,13 @@ public class Model {
         passedPopulation.add(person);
         caseHistoryPopulation.add(person);
         passedTodayPopulation.add(person);
+        System.err.println(person + " has passed away from " + person.getCauseOfDeath());
     }
 
     public static void setCured(Person person) {
         numCuredCount++;
         numHealthyCount++;
+        numInfectedCount--;
         curedPopulation.add(person);
         curedTodayPopulation.add(person);
         person.setInfected(false);
@@ -486,7 +500,8 @@ public class Model {
 //            System.out.println("infected person: " + p + ", disease: " + disease.getName());
             if (circle.intersects(infectedCircle.getBoundsInLocal())) {
                 if (p.isAlive() || disease.isTransmittableAfterDeath()) {
-                    double infectionRate = disease.getInfectionRate();
+                    int ageVal = p.getAgeYears();
+                    double infectionRate = disease.getInfectionRate(ageVal);
                     double chance = Utilities.randomDoubleInRange(0, 101);
                     if (chance <= infectionRate) {
                         setInfectedPerson(person, disease);
@@ -507,11 +522,14 @@ public class Model {
         if (getAliveAndInfectedPopulation().size() > 0) {
             if (timeline.getStatus() == Animation.Status.STOPPED ||
                     timeline.getStatus() == Animation.Status.PAUSED) {
-                pandemicHistory = new PandemicHistory(
-                        startDate,
-                        (ArrayList<Person>) population.clone(),
-                        (ArrayList<Person>) infectedPopulation.clone(),
-                        currentDisease);
+                if (pandemicHistory == null) {
+                    pandemicHistory = new PandemicHistory(
+                            startDate,
+                            (ArrayList<Person>) population.clone(),
+                            (ArrayList<Person>) infectedPopulation.clone(),
+                            currentDisease);
+                }
+                updateChart();
 //                System.out.print("\n\t\tif is true");
                 if (!View.isSteppingSim()) {
                     timeline.setCycleCount(Animation.INDEFINITE);
@@ -555,6 +573,7 @@ public class Model {
         numCuredCount = 0;
         numCollisionCount = 0;
         currentDate = DateHandler.getToday();
+        pandemicHistory = null;
     }
 
     public static Animation getTimeLine() {

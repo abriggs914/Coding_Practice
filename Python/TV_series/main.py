@@ -72,7 +72,7 @@ parks_and_rec = TVSeries("Parks and Recreation", {
     2015,
     False,
     "Comedy",
-    "Amazon Prime")
+    "Prime TV")
 
 silicon_valley = TVSeries("Silicon Valley", {
     1 : 8,
@@ -281,6 +281,23 @@ prison_break = TVSeries("Prison Break", {
 	False,
 	"Drama, Thriller",
 	"Netflix")
+	
+scrubs = TVSeries("Scrubs", {
+	1 : 24,
+	2 : 22,
+	3 : 22,
+	4 : 25,
+	5 : 24,
+	6 : 22,
+	7 : 11,
+	8 : 19,
+	9 : 13},
+	22,
+	2001,
+	2010,
+	False,
+	"Comedy",
+	"Prime TV")
 
 series_list = [
     the_office,
@@ -302,7 +319,8 @@ series_list = [
     peaky_blinders,
     curb_your_enthusiasm,
     letterkenny,
-	prison_break]
+	prison_break,
+	scrubs]
    
 def longest_series_title(series_list) :
     num = 0

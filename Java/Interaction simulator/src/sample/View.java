@@ -298,6 +298,11 @@ public class View {
         Label infectedTitleLabel = new Label("Number infected:");
         Label curedTitleLabel = new Label("Number cured:");
         Label deathTitleLabel = new Label("Number deaths:");
+        Label oldestPersonsTitleLabel = new Label("Oldest");
+        Label youngestPersonsTitleLabel = new Label("Youngest");
+        Label curedPersonsTitleLabel = new Label("Cured");
+        Label infectedPersonsTitleLabel = new Label("Infected");
+        Label passedPersonsTitleLabel = new Label("Passed");
 
         Label firstDateValueLabel = new Label(DateHandler.getFormattedString(startDay));
         Label lastDateValueLabel = new Label(DateHandler.getFormattedString(today));
@@ -308,6 +313,27 @@ public class View {
         Label infectedValueLabel = new Label(Integer.toString(infectedCount));
         Label curedValueLabel = new Label(Integer.toString(curedCount));
         Label deathValueLabel = new Label(Integer.toString(deathCount));
+        PandemicHistory pandemicHistory = Model.getHistory();
+
+        Person youngestCuredPerson = pandemicHistory.getYoungestCured();
+        String youngestCured = ((youngestCuredPerson == null)? "NA" : youngestCuredPerson.toString());
+        Person youngestInfecedPerson = pandemicHistory.getYoungestInfected();
+        String youngestInfeced = ((youngestInfecedPerson == null)? "NA" : youngestInfecedPerson.toString());
+        Person youngestPassedPerson = pandemicHistory.getYoungestPassed();
+        String youngestPassed = ((youngestPassedPerson == null)? "NA" : youngestPassedPerson.toString());
+        Person oldestCuredPerson = pandemicHistory.getOldestCured();
+        String oldestCured = ((oldestCuredPerson == null)? "NA" : oldestCuredPerson.toString());
+        Person oldestInfectedPerson = pandemicHistory.getOldestInfected();
+        String oldestInfected = ((oldestInfectedPerson == null)? "NA" : oldestInfectedPerson.toString());
+        Person oldestPassedPerson = pandemicHistory.getOldestPassed();
+        String oldestPassed = ((oldestPassedPerson == null)? "NA" : oldestPassedPerson.toString());
+
+        Label youngestCuredValueLabel = new Label(youngestCured);
+        Label youngestPassedValueLabel = new Label(youngestPassed);
+        Label youngestInfectedValueLabel = new Label(youngestInfeced);
+        Label oldestCuredValueLabel = new Label(oldestCured);
+        Label oldestPassedValueLabel = new Label(oldestPassed);
+        Label oldestInfectedValueLabel = new Label(oldestInfected);
 
         HBox startDateBox = new HBox(firstDateTitleLabel, firstDateValueLabel);
         HBox endDateBox = new HBox(lastDateTitleLabel, lastDateValueLabel);
@@ -316,7 +342,26 @@ public class View {
         HBox infectedBox = new HBox(infectedTitleLabel, infectedValueLabel);
         HBox deathBox = new HBox(deathTitleLabel, deathValueLabel);
         HBox cureBox = new HBox(curedTitleLabel, curedValueLabel);
-        VBox vBox = new VBox(title, startDateBox, endDateBox, durationDateBox, populationBox, infectedBox, deathBox, cureBox);
+        HBox youngestCasesHBox = new HBox(youngestInfectedValueLabel, youngestCuredValueLabel, youngestPassedValueLabel);
+        HBox oldestCasesHBox = new HBox(oldestInfectedValueLabel, oldestCuredValueLabel, oldestPassedValueLabel);
+
+        VBox youngestCasesVBox = new VBox(youngestPersonsTitleLabel, youngestCasesHBox);
+        VBox oldestCasesVBox = new VBox(oldestPersonsTitleLabel, oldestCasesHBox);
+
+        HBox youngCasesBox = new HBox(youngestCasesVBox);
+        HBox oldCasesBox = new HBox(oldestCasesVBox);
+
+        VBox vBox = new VBox(
+                title,
+                startDateBox,
+                endDateBox,
+                durationDateBox,
+                populationBox,
+                infectedBox,
+                deathBox,
+                cureBox,
+                youngCasesBox,
+                oldCasesBox);
         vBox.setAlignment(Pos.TOP_CENTER);
 
 
@@ -334,10 +379,28 @@ public class View {
             hBox.setPadding(new Insets(5,25,5,25));
             ObservableList<Node> children = hBox.getChildren();
             for (int i = 0; i < children.size(); i += 2) {
-                Label titleLabel = (Label) children.get(i);
-                Label valueLabel = (Label) children.get(i + 1);
-                titleLabel.setAlignment(Pos.CENTER_LEFT);
-                valueLabel.setAlignment(Pos.CENTER_RIGHT);
+                Node n = children.get(i);
+                Class clazz = n.getClass();
+                if (clazz == Label.class) {
+                    Label titleLabel = (Label) n;
+                    Label valueLabel = (Label) children.get(i + 1);
+                    titleLabel.setAlignment(Pos.CENTER_LEFT);
+                    valueLabel.setAlignment(Pos.CENTER_RIGHT);
+                }
+                else if (clazz == VBox.class) {
+                    VBox valuesVBox = (VBox) n;
+//                    titleLabel.setAlignment(Pos.CENTER);
+//                    titleLabel = (Label) children.get(i + 1);
+                    for (int k = 0; k < valuesVBox.getChildren().size(); k += 2) {
+                        Label childTitleLabel = (Label) valuesVBox.getChildren().get(k);
+                        HBox childValueBox = (HBox) valuesVBox.getChildren().get(k + 1);
+                        childTitleLabel.setAlignment(Pos.CENTER_LEFT);
+                        for (int l = 0; l < childValueBox.getChildren().size(); l++) {
+                            Label childValueLabel = (Label) childValueBox.getChildren().get(l);
+                            childValueLabel.setAlignment(Pos.CENTER_RIGHT);
+                        }
+                    }
+                }
             }
         }
 

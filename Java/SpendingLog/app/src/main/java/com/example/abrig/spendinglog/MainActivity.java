@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = getSharedPreferences("com.example.spendinglog", MODE_PRIVATE);
 
+
         // ask user to start from a new application state on launch.
         resetPreferencesButton = findViewById(R.id.resetPeferencesButton);
         resetPreferencesButton.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +69,15 @@ public class MainActivity extends AppCompatActivity {
                 resetPreferences();
             }
         });
-        resetPreferences();
-        //
 
-        TH = new TransactionHandler();
+        /*
+        //
+        //resetPreferences();
+        //
+        //
+        */
+
+        TH = new TransactionHandler(this);
 
 //        Map<String, ?> keysValues = prefs.getAll();
 //        System.out.println("CLEARING");
@@ -113,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void resetPreferences() {
-        prefs.edit().clear().commit();
+        prefs.edit().clear().apply();
         prefs = getSharedPreferences("com.example.spendinglog", MODE_PRIVATE);
         resetPreferencesButton.setVisibility(View.INVISIBLE);
         if (TH != null){
@@ -133,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        Toast.makeText(this, "ON RESUME", Toast.LENGTH_LONG);
         if (prefs.getBoolean("firstrun", true)) {
 
             SharedPreferencesWriter.write("firstrun", false);
@@ -150,4 +157,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        System.out.println("BEGIN STOPPING APPLICATION");
+        SharedPreferencesWriter.printPrefs();
+        System.out.println("FINISH STOPPING APPLICATION");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        System.out.println("BEGIN DESTROYING APPLICATION");
+        SharedPreferencesWriter.printPrefs();
+        System.out.println("FINISH DESTROYING APPLICATION");
+        super.onDestroy();
+    }
 }

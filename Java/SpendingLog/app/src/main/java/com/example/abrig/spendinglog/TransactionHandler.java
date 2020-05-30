@@ -1,5 +1,6 @@
 package com.example.abrig.spendinglog;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
@@ -11,11 +12,13 @@ import java.util.Set;
 
 public class TransactionHandler {
 
+    private Context context;
     private ArrayList<Entity> entities;
     private ArrayList<Transaction> transactions;
     private static int entityNumber;
 
-    public TransactionHandler() {
+    public TransactionHandler(Context context) {
+        this.context = context;
         entities = new ArrayList<>();
         transactions = new ArrayList<>();
         entityNumber = 0;
@@ -74,17 +77,22 @@ public class TransactionHandler {
 
 //        checkUser(sender);
 //        checkUser(receiver);
-        boolean validFunds = sender.sendMoney(t);
-        if (validFunds) {
-            receiver.receiveMoney(t);
-            addTransaction(t);
-            return true;
+        try {
+            boolean validFunds = sender.sendMoney(t);
+            boolean differentPeople = sender != receiver;
+            if (validFunds && differentPeople) {
+                receiver.receiveMoney(t);
+                addTransaction(t);
+                return true;
+            } else {
+                System.out.print("Insufficient funds.");
+                return false;
+            }
         }
-        else {
-            System.out.print("Insufficient funds.");
+        catch (Exception e) {
+            Toast.makeText(context, "Invalid transaction", Toast.LENGTH_LONG).show();
             return false;
         }
-
     }
 
     // starts numbering at 1
@@ -146,6 +154,22 @@ public class TransactionHandler {
         return entities;
     }
 
+    public ArrayList<String> getEntitiesIds() {
+        ArrayList<String> ids = new ArrayList<>();
+        for (Entity e : entities) {
+            ids.add(e.getIdString());
+        }
+        return ids;
+    }
+
+    public ArrayList<String> getEntitiesNames() {
+        ArrayList<String> names = new ArrayList<>();
+        for (Entity e : entities) {
+            names.add(e.getName());
+        }
+        return names;
+    }
+
     public ArrayList<Transaction> getTransactions() {
         return transactions;
     }
@@ -166,7 +190,7 @@ public class TransactionHandler {
     }
 
     public void addTransaction(Transaction t) {
-        Toast.makeText(, "Editing profile information...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.context, "Editing profile information...", Toast.LENGTH_SHORT).show();
         System.out.println("trying to insert transaction {" + transactions + "}");
         if (!this.transactions.contains(t)) {
             this.transactions.add(t);

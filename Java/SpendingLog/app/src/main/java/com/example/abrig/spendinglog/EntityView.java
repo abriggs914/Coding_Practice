@@ -17,6 +17,7 @@ import com.example.abrig.spendinglog.MainActivity;
 import com.example.abrig.spendinglog.R;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class EntityView  extends Fragment {
@@ -84,35 +85,44 @@ public class EntityView  extends Fragment {
             public void onClick(View v) {
                 System.out.println("Saving a new Entity");
                 String entityNum = String.format("|%05d|", MainActivity.TH.getNumEntities() + 1);
+
                 String name = Utilities.titlifyName(nameEntryEditText.getText().toString().trim());
-                String balanceInput = balanceEntryEditText.getText().toString().trim();
-                int balance = ((balanceInput.length() == 0)?
-                        Utilities.parseMoney(balanceEntryEditText.getText().toString().trim()) : Integer.MAX_VALUE);
-                boolean overdraft = overdraftSwitch.isChecked();
-                String key = "entity_entry_";
-                if (name.length() == 0 || name.length() > 30) {
-                    name = "entity|" + entityNum + "|";
-                    key +=  "entity|" + entityNum + "|";
+                ArrayList<String> entitiesList = MainActivity.TH.getEntitiesNames();
+
+                if (!entitiesList.contains(name)) {
+    //                get entities and check that given name is new
+                    String balanceInput = balanceEntryEditText.getText().toString().trim();
+                    int balance = ((balanceInput.length() == 0)?
+                            Utilities.parseMoney(balanceEntryEditText.getText().toString().trim()) : Integer.MAX_VALUE);
+                    boolean overdraft = overdraftSwitch.isChecked();
+                    String key = "entity_entry_";
+                    if (name.length() == 0 || name.length() > 30) {
+                        name = "entity|" + entityNum + "|";
+                        key +=  "entity|" + entityNum + "|";
+                    }
+                    else {
+                        key += name;
+                    }
+                    String idString = TransactionHandler.genEntityID(name);
+                    Entity e = new Entity(name, idString, balance, overdraft);
+
+                    SharedPreferencesWriter.write(key, e.serializeEntry());
+                    MainActivity.TH.addEntity(e);
+                    nameEntryEditText.setText(name);
+                    clearFields();
+
+                    Toast.makeText(getContext(), "Entity \"" + name + "\" created successfully!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    key += name;
+                    Toast.makeText(getContext(), "Creation Failed\nEntity " + name + " already exists.", Toast.LENGTH_LONG).show();
                 }
-                String idString = TransactionHandler.genEntityID(name);
-                Entity e = new Entity(name, idString, balance, overdraft);
-//                MainActivity.TH.addUser(e);
-                SharedPreferencesWriter.write(key, e.serializeEntry());
-                MainActivity.TH.addEntity(e);
-                nameEntryEditText.setText(name);
-                Toast.makeText(getContext(), "Entity \"" + name + "\" created successfully!", Toast.LENGTH_SHORT).show();
             }
         });
 
         clearFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nameEntryEditText.getText().clear();
-                balanceEntryEditText.getText().clear();
-                overdraftSwitch.setChecked(false);
+                clearFields();
             }
         });
 
@@ -131,6 +141,12 @@ public class EntityView  extends Fragment {
         });
 
         return view;
+    }
+
+    public void clearFields() {
+        nameEntryEditText.getText().clear();
+        balanceEntryEditText.getText().clear();
+        overdraftSwitch.setChecked(false);
     }
 }
 
