@@ -27,4 +27,9 @@ public enum OccurringOptions {
         }
         return res;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -47,6 +49,9 @@ public class InDepthEntityView extends Fragment{
     private double avgTransactionTime;
     private Date firstTransactionDate;
     private Date lastTransactionDate;
+
+    private ImageButton inDepthBackButton;
+    private ImageButton addFilterButton;
 
     private PieChart pieChart;
     private PieData pieData;
@@ -96,6 +101,9 @@ public class InDepthEntityView extends Fragment{
         Toast.makeText(getContext(), "Editing profile information...", Toast.LENGTH_SHORT).show();
 
         pieChart = view.findViewById(R.id.pieChart);
+        inDepthBackButton = view.findViewById(R.id.inDepthBackButton);
+        addFilterButton = view.findViewById(R.id.addFilterButton);
+
         getEntries();
         pieDataSet = new PieDataSet(pieEntries, "");
         pieData = new PieData(pieDataSet);
@@ -111,6 +119,12 @@ public class InDepthEntityView extends Fragment{
 //        nameEditText = view.findViewById(R.id.nameEditText);
 //        bankedEditText = view.findViewById(R.id.bankedEditText);
 
+        inDepthBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeFragment();
+            }
+        });
 
         return view;
     }
@@ -127,6 +141,7 @@ public class InDepthEntityView extends Fragment{
         pieEntries.add(new PieEntry(4f, 1));
         pieEntries.add(new PieEntry(6f, 2));
         pieEntries.add(new PieEntry(8f, 3));
+        pieEntries.add(new PieEntry(8f, "LABEL"));
         pieEntries.add(new PieEntry(7f, 4));
         pieEntries.add(new PieEntry(3f, 5));
         pieEntries.add(new PieEntry(18f, 6));

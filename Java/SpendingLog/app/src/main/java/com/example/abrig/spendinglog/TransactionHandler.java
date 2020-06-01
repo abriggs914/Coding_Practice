@@ -15,10 +15,13 @@ public class TransactionHandler {
     private Context context;
     private ArrayList<Entity> entities;
     private ArrayList<Transaction> transactions;
+    private TransactionType transactionType;
     private static int entityNumber;
 
     public TransactionHandler(Context context) {
         this.context = context;
+        this.transactionType = new TransactionType("No selection");
+        this.transactionType = new TransactionType("Custom");
         entities = new ArrayList<>();
         transactions = new ArrayList<>();
         entityNumber = 0;
@@ -72,8 +75,9 @@ public class TransactionHandler {
                                   Entity receiver,
                                   int amount,
                                   boolean oneTime,
-                                  String occurring) {
-        Transaction t = new Transaction(sender, receiver, amount, oneTime, occurring);
+                                  String occurring,
+                                  TransactionType transactionType) {
+        Transaction t = new Transaction(sender, receiver, amount, oneTime, occurring, transactionType);
 
 //        checkUser(sender);
 //        checkUser(receiver);
@@ -189,6 +193,16 @@ public class TransactionHandler {
         return null;
     }
 
+//    public TransactionType getTransactionTypeEntry(String transactionTypeString) {
+//        ArrayList<TransactionType> types = TransactionType.getTypes();
+//        for (TransactionType t : types) {
+//            if (t.getName().equals(transactionTypeString)) {
+//                return t;
+//            }
+//        }
+//        return null;
+//    }
+
     public void addTransaction(Transaction t) {
         Toast.makeText(this.context, "Editing profile information...", Toast.LENGTH_SHORT).show();
         System.out.println("trying to insert transaction {" + transactions + "}");
@@ -290,5 +304,16 @@ public class TransactionHandler {
         entities.addAll(arr);
         SharedPreferencesWriter.write("entity_entry_User", newE.serializeEntry());
         SharedPreferencesWriter.re_writePrefs();
+    }
+
+    public TransactionType getTransactionTypeEntry(String transactionTypeString) {
+        transactionTypeString = transactionTypeString.substring(0, 1).toUpperCase() + transactionTypeString.substring(1);
+        ArrayList<TransactionType> types = TransactionType.getTypes();
+        for(TransactionType t : types) {
+            if (t.getName().equals(transactionTypeString)) {
+                return t;
+            }
+        }
+        return new TransactionType(transactionTypeString);
     }
 }

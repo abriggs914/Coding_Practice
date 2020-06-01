@@ -120,7 +120,6 @@ public class UserProfile extends Fragment {
 
         edited = false;
         final View view = inflater.inflate(R.layout.user_profile, container, false);
-        Toast.makeText(getContext(), "Editing profile information...", Toast.LENGTH_SHORT).show();
 
         saveButton = view.findViewById(R.id.saveButton);
         closeButton = view.findViewById(R.id.closeButton);
@@ -132,6 +131,7 @@ public class UserProfile extends Fragment {
             @Override
             public void onClick(View v) {
                 System.out.print("UserProfile Save button clicked!");
+                Toast.makeText(getContext(), "Editing profile information...", Toast.LENGTH_SHORT).show();
                 name = Utilities.titlifyName(nameEditText.getText().toString()).trim();
                 nameEditText.setText(name);
                 bankedMoneyString = bankedEditText.getText().toString();

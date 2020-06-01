@@ -48,15 +48,19 @@ public class TransactionView extends Fragment {
     private TextView receiverTextView;
     private TextView balanceTextview;
     private TextView oneTimeTextView;
+    private TextView transactionTypeTextView;
     private TextView occurringTextView;
     private TextView customOccurringTextView;
     private TextView customOccurringTimesTextView;
+    private TextView customTransactionTypeTextView;
 
     private Switch oneTimeSwitch;
     private EditText balanceEntryEditText;
     private EditText customOccurringEditText;
+    private EditText customTransactionTypeEditText;
     private AutoCompleteTextView senderAutoTextView;
     private AutoCompleteTextView receiverAutoTextView;
+    private Spinner transactionTypeDropDown;
 //    private AutoCompleteTextView occurringAutoTextView;
 
     private Button saveButton;
@@ -114,6 +118,10 @@ public class TransactionView extends Fragment {
         senderAutoTextView = (AutoCompleteTextView) view.findViewById(transactionSenderAutoTextView);
         receiverAutoTextView = (AutoCompleteTextView) view.findViewById(transactionReceiverAutoTextView);
         occurringTextView = view.findViewById(R.id.transactionOccurringTextView);
+        transactionTypeTextView = view.findViewById(R.id.transactionTypeTextView);
+        transactionTypeDropDown = view.findViewById(R.id.transactionTypeSpinner);
+        customTransactionTypeEditText = view.findViewById(R.id.customTransactionTypeEditText);
+        customTransactionTypeTextView = view.findViewById(R.id.customTransactionTypeTextView);
         customOccurringTextView = view.findViewById(R.id.customOccurringTextView);
         customOccurringTimesTextView = view.findViewById(R.id.customOccurringTimesTextView);
         occurringDropDown = view.findViewById(R.id.transactionOccurringSpinner);
@@ -150,6 +158,7 @@ public class TransactionView extends Fragment {
                 String senderEntry = senderAutoTextView.getText().toString();
                 String receiverEntry = receiverAutoTextView.getText().toString();
                 String occurringEntry = occurringDropDown.getSelectedItem().toString();
+                String transactionTypeString = (String) transactionTypeDropDown.getSelectedItem();
                 boolean oneTime = oneTimeSwitch.isChecked();
                 int amount = Utilities.parseMoney(balanceEntryEditText.getText().toString());
                 System.out.println("entitiesList: " + Arrays.toString(entitiesList));
@@ -157,10 +166,11 @@ public class TransactionView extends Fragment {
                 System.out.println("senderEntry: " + senderEntry + ", receiverEntry: " + receiverEntry + ", oneTime: " + oneTime + ", amount: " + Utilities.dollarify(amount));
                 Entity sender = MainActivity.TH.getEntityEntry(senderEntry);
                 Entity receiver = MainActivity.TH.getEntityEntry(receiverEntry);
+                TransactionType transactionType = MainActivity.TH.getTransactionTypeEntry(transactionTypeString);
                 String occurring = validateOccurringInput(occurringEntry);
                 System.out.println("TransactionView Save button clicked");
                 boolean transactionSuccess = MainActivity.TH.tryTransaction(
-                        sender, receiver, amount, oneTime, occurring
+                        sender, receiver, amount, oneTime, occurring, transactionType
                 );
                 if (transactionSuccess) {
                     Toast.makeText(getContext(), "Transaction successful!", Toast.LENGTH_LONG).show();
@@ -250,6 +260,35 @@ public class TransactionView extends Fragment {
         ArrayAdapter<String> customOccurringAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, CustomOccurringOptions.getValues());
         customOccurringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        ArrayList<TransactionType> transactionTypesList = TransactionType.getTypes();
+//        if (!transactionTypesList.contains())
+
+        final String[] transactionTypesNameList = new String[transactionTypesList.size()];
+        for (int i = 0; i < transactionTypesList.size(); i++) {
+            String n = transactionTypesList.get(i).getName();
+            transactionTypesNameList[i] = n;
+        }
+
+        List<String> typesList = Arrays.asList(transactionTypesNameList);
+        ArrayAdapter<String> transactionTypeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, typesList);
+        transactionTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        transactionTypeDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+                    showCustomTransactionType();
+                }
+                else {
+                    hideCustomTransactionType();
+                }
+//                occurringAutoTextView.setText(occurringList[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {hideCustomTransactionType();}
+        });
+
         // final set-up before showing
         senderAutoTextView.setAdapter(entitiesAdapter1);
         receiverAutoTextView.setAdapter(entitiesAdapter2);
@@ -260,6 +299,10 @@ public class TransactionView extends Fragment {
         occurringDropDown.setAdapter(dataAdapter);
         customOccurringDropDown.setAdapter(customOccurringAdapter);
 
+        transactionTypeDropDown.setAdapter(transactionTypeAdapter);
+//        transactionTypeDropDown.setSelection(-1);
+
+        hideCustomTransactionType();
         hideCustomOccurring();
         hideOccurring();
 
@@ -307,16 +350,26 @@ public class TransactionView extends Fragment {
         return res;
     }
 
+    public void showCustomTransactionType() {
+        customTransactionTypeEditText.setVisibility(View.VISIBLE);
+        customTransactionTypeTextView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideCustomTransactionType() {
+        customTransactionTypeEditText.setVisibility(View.INVISIBLE);
+        customTransactionTypeTextView.setVisibility(View.INVISIBLE);
+    }
+
     public void hideOccurring() {
         occurringDropDown.setVisibility(View.INVISIBLE);
         occurringTextView.setVisibility(View.INVISIBLE);
-        occurringDropDown.setVisibility(View.INVISIBLE);
+//        occurringDropDown.setVisibility(View.INVISIBLE);
     }
 
     public void showOccurring() {
         occurringDropDown.setVisibility(View.VISIBLE);
         occurringTextView.setVisibility(View.VISIBLE);
-        occurringDropDown.setVisibility(View.VISIBLE);
+//        occurringDropDown.setVisibility(View.VISIBLE);
     }
 
     public void hideCustomOccurring() {

@@ -23,7 +23,9 @@ public class CSVWriter {
                     t.getTransactionDate().toString(),
                     t.getSender().getName(),
                     t.getReceiver().getName(),
-                    Integer.toString(t.getTransactionAmount())});
+                    Integer.toString(t.getTransactionAmount()),
+                    t.getTransactionType().toString()
+            });
         }
         for (String[] s : data) {
             System.out.println(Arrays.toString(s));

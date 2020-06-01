@@ -41,7 +41,7 @@ public class Utilities {
 
     public static void createCSV(ArrayList<Transaction> transactions) {
         CSVWriter writer = new CSVWriter();
-        ArrayList<String> header = new ArrayList<>(Arrays.asList("Date", "Sender", "Receiver", "Amount"));
+        ArrayList<String> header = new ArrayList<>(Arrays.asList("Date", "Sender", "Receiver", "Amount", "Purpose"));
         writer.writeFile(header, transactions);
     }
 
@@ -170,10 +170,11 @@ public class Utilities {
             Entity sender = getEntity(transactionParse[i + 1].trim());
             Entity receiver = getEntity(transactionParse[i + 2].trim());
             int amount = Integer.parseInt(transactionParse[i + 3].trim());
-            boolean reoccurring = Boolean.parseBoolean(transactionParse[i + 4].trim());
+            TransactionType transactionType = getTransactionType(transactionParse[i + 4].trim());
+            boolean reoccurring = Boolean.parseBoolean(transactionParse[i + 5].trim());
             String occurring = "NA";
             if (reoccurring) {
-                occurring = transactionParse[i + 5].trim();
+                occurring = transactionParse[i + 6].trim();
             }
             else {
                 i -= 1;
@@ -183,10 +184,11 @@ public class Utilities {
             System.out.println("sender: " + sender);
             System.out.println("receiver: " + receiver);
             System.out.println("amount: " + amount);
+            System.out.println("transactionType: " + transactionType);
             System.out.println("reoccurring: " + reoccurring);
             System.out.println("occurring: " + occurring);
             Transaction t = Transaction.re_initTransaction(
-                    date, sender, receiver, amount, reoccurring, occurring
+                    date, sender, receiver, amount, reoccurring, occurring, transactionType
             );
             transactions.add(t);
         }
@@ -267,5 +269,15 @@ public class Utilities {
     public static Entity getEntity(String name) {
         String key = getKey(name);
         return parseEntity(MainActivity.prefs.getString(key, null));
+    }
+
+    public static TransactionType getTransactionType(String transactionTypeIn) {
+        ArrayList<TransactionType> transactionTypes = TransactionType.getTypes();
+        for (TransactionType t : transactionTypes) {
+            if (t.getName().equals(transactionTypeIn)) {
+                return t;
+            }
+        }
+        return null;
     }
 }
