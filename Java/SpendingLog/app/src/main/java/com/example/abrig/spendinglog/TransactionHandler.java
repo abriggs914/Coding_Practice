@@ -204,7 +204,7 @@ public class TransactionHandler {
 //    }
 
     public void addTransaction(Transaction t) {
-        Toast.makeText(this.context, "Editing profile information...", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this.context, "Editing profile information...", Toast.LENGTH_SHORT).show();
         System.out.println("trying to insert transaction {" + transactions + "}");
         if (!this.transactions.contains(t)) {
             this.transactions.add(t);

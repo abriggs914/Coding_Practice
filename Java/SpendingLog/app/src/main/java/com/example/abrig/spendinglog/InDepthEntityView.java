@@ -3,6 +3,7 @@ package com.example.abrig.spendinglog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class InDepthEntityView extends Fragment{
+public class InDepthEntityView extends Fragment implements AddFiltersDialog.ExampleDialogListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,6 +50,9 @@ public class InDepthEntityView extends Fragment{
     private double avgTransactionTime;
     private Date firstTransactionDate;
     private Date lastTransactionDate;
+
+    private FragmentManager supportFragmentManager;
+    private boolean quitGameResponse, shuffleGridResponse, resetGame, gameOverHandled;
 
     private ImageButton inDepthBackButton;
     private ImageButton addFilterButton;
@@ -94,14 +98,15 @@ public class InDepthEntityView extends Fragment{
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        this.supportFragmentManager = getFragmentManager();
+        // Inflate the layout for this fragment
         edited = false;
         final View view = inflater.inflate(R.layout.in_depth_entity_view, container, false);
-        Toast.makeText(getContext(), "Editing profile information...", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "Editing profile information...", Toast.LENGTH_SHORT).show();
 
         pieChart = view.findViewById(R.id.pieChart);
-        inDepthBackButton = view.findViewById(R.id.inDepthBackButton);
+        inDepthBackButton = (ImageButton) view.findViewById(R.id.inDepthBackButton);
         addFilterButton = view.findViewById(R.id.addFilterButton);
 
         getEntries();
@@ -122,13 +127,24 @@ public class InDepthEntityView extends Fragment{
         inDepthBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("in depth image button clicked");
                 closeFragment();
+            }
+        });
+
+        addFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AddFiltersDialog popUp = new AddFiltersDialog();
+                popUp.show(supportFragmentManager, "Quit?");
+
+                applyTexts(quitGameResponse, shuffleGridResponse, resetGame);
             }
         });
 
         return view;
     }
-
 
     public void closeFragment() {
         getFragmentManager().popBackStack();
@@ -145,5 +161,45 @@ public class InDepthEntityView extends Fragment{
         pieEntries.add(new PieEntry(7f, 4));
         pieEntries.add(new PieEntry(3f, 5));
         pieEntries.add(new PieEntry(18f, 6));
+    }
+
+    // After dialog window is closed control resumes here with passed values
+    @Override
+    public void applyTexts(boolean keepPlaying, boolean shuffle, boolean resetGame) {
+        if (shuffle) {
+            resetGame = true;
+        }
+        if (keepPlaying) {
+            return;
+        }
+        else {
+            return;
+//            mineSweeperGrid.stopTimer();
+//            mineSweeperGrid.getMineSweeper().setGameOver(true);
+//            if (resetGame) {
+//                String[][] stringGrid = mineSweeperGrid.getMineSweeper().getOriginalGrid().getStringGrid();
+//                Grid grid = Grid.parseGrid(stringGrid);
+//                try {
+//                    mineSweeperGrid = new MineSweeperGrid(
+//                            this,
+//                            getSupportFragmentManager(),
+//                            grid,
+//                            0,
+//                            0);
+//                    if (shuffle) {
+//                        mineSweeperGrid.shuffleGrid();
+//                    }
+//                    setContentView(mineSweeperGrid);
+//                }
+//                catch (MineSweeperException e) {
+//                    e.printStackTrace();
+//                    setMainMenu();
+//                }
+//            }
+//            else {
+//                setMainMenu();
+//            }
+//            mineSweeperGrid.handleGameOver();
+        }
     }
 }

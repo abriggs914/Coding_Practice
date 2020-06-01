@@ -32,4 +32,8 @@
     <string name="times_per">times per</string>
     <string name="enter_a_number">Enter a number:</string>
     <string name="reason_for_transaction">Reason for Transaction</string>
+    <string name="back_arrow">back arrow</string>
+    <string name="add_filters">add filters</string>
+    <string name="in_depth_view">In depth view</string>
+    <string name="select_a_filter_to_add">Select a filter to add.</string>
 </resources>
