@@ -36,6 +36,8 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
 
     private boolean edited;
 
+    private String currentFilterString;
+
     private String name;
     private String idString;
     private boolean allowedOverDraft;
@@ -99,7 +101,8 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        this.supportFragmentManager = getFragmentManager();
+        this.currentFilterString = "";
+        this.supportFragmentManager = getChildFragmentManager();
         // Inflate the layout for this fragment
         edited = false;
         final View view = inflater.inflate(R.layout.in_depth_entity_view, container, false);
@@ -139,7 +142,7 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
                 AddFiltersDialog popUp = new AddFiltersDialog();
                 popUp.show(supportFragmentManager, "Quit?");
 
-                applyTexts(quitGameResponse, shuffleGridResponse, resetGame);
+                applyTexts(currentFilterString);
             }
         });
 
@@ -165,41 +168,8 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
 
     // After dialog window is closed control resumes here with passed values
     @Override
-    public void applyTexts(boolean keepPlaying, boolean shuffle, boolean resetGame) {
-        if (shuffle) {
-            resetGame = true;
-        }
-        if (keepPlaying) {
-            return;
-        }
-        else {
-            return;
-//            mineSweeperGrid.stopTimer();
-//            mineSweeperGrid.getMineSweeper().setGameOver(true);
-//            if (resetGame) {
-//                String[][] stringGrid = mineSweeperGrid.getMineSweeper().getOriginalGrid().getStringGrid();
-//                Grid grid = Grid.parseGrid(stringGrid);
-//                try {
-//                    mineSweeperGrid = new MineSweeperGrid(
-//                            this,
-//                            getSupportFragmentManager(),
-//                            grid,
-//                            0,
-//                            0);
-//                    if (shuffle) {
-//                        mineSweeperGrid.shuffleGrid();
-//                    }
-//                    setContentView(mineSweeperGrid);
-//                }
-//                catch (MineSweeperException e) {
-//                    e.printStackTrace();
-//                    setMainMenu();
-//                }
-//            }
-//            else {
-//                setMainMenu();
-//            }
-//            mineSweeperGrid.handleGameOver();
-        }
+    public void applyTexts(String filterString) {
+        System.out.println("\n\tfilterString (InDepthEntityView): " + filterString + "\n");
+        Toast.makeText(getContext(), ("filterString: " + filterString), Toast.LENGTH_LONG).show();
     }
 }
