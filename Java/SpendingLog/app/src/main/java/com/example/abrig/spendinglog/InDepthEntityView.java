@@ -1,18 +1,23 @@
 package com.example.abrig.spendinglog;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Switch;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -58,6 +63,7 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
 
     private ImageButton inDepthBackButton;
     private ImageButton addFilterButton;
+    private ListView filterListView;
 
     private PieChart pieChart;
     private PieData pieData;
@@ -101,19 +107,21 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        this.currentFilterString = "";
+        String s = "Filter on create:\n\t" + MainActivity.TH.getCurrentFilterString();
+        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+        this.currentFilterString = MainActivity.TH.getCurrentFilterString();
         this.supportFragmentManager = getChildFragmentManager();
         // Inflate the layout for this fragment
         edited = false;
         final View view = inflater.inflate(R.layout.in_depth_entity_view, container, false);
-//        Toast.makeText(getContext(), "Editing profile information...", Toast.LENGTH_SHORT).show();
 
         pieChart = view.findViewById(R.id.pieChart);
         inDepthBackButton = (ImageButton) view.findViewById(R.id.inDepthBackButton);
         addFilterButton = view.findViewById(R.id.addFilterButton);
+        filterListView = view.findViewById(R.id.filtersListView);
 
         getEntries();
-        pieDataSet = new PieDataSet(pieEntries, "");
+        pieDataSet = new PieDataSet(pieEntries, "Pie Entries");
         pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
@@ -127,6 +135,10 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
 //        nameEditText = view.findViewById(R.id.nameEditText);
 //        bankedEditText = view.findViewById(R.id.bankedEditText);
 
+        // TODO: finish arrayAdapter
+//        ArrayAdapter<View> filtersAdapter = new ;
+//        filterListView.setAdapter(filtersAdapter);
+
         inDepthBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,11 +150,18 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
         addFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showFragment(getActivity(), new Bundle(), new AddFiltersDialog());
+            }
+        });
 
-                AddFiltersDialog popUp = new AddFiltersDialog();
-                popUp.show(supportFragmentManager, "Quit?");
-
-                applyTexts(currentFilterString);
+        filterListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println("Trying to remove item # (" + position + "), id: (" + id + ")");
+                char[] newFilter = currentFilterString.toCharArray();
+                newFilter[position] = '9';
+                MainActivity.TH.setInDepthFilters(new String(newFilter));
+                return false;
             }
         });
 
@@ -152,7 +171,6 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
     public void closeFragment() {
         getFragmentManager().popBackStack();
     }
-
 
     private void getEntries() {
         pieEntries = new ArrayList<>();
@@ -166,10 +184,24 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
         pieEntries.add(new PieEntry(18f, 6));
     }
 
-    // After dialog window is closed control resumes here with passed values
+    // show filter alert dialog pop-up
+    public void showFragment(Activity activity, Bundle bundle, AppCompatDialogFragment fragmentClass) {
+        FragmentTransaction ft = ((AppCompatActivity) activity).getSupportFragmentManager().beginTransaction();
+        fragmentClass.setArguments(bundle);
+        fragmentClass.show(ft, null);
+        fragmentClass.setTargetFragment(this, 0);
+    }
+
+    public void updateFilterList() {
+        String activeFilters = MainActivity.TH.getCurrentFilterString();
+    }
+
+//     After dialog window is closed control resumes here with passed values
     @Override
     public void applyTexts(String filterString) {
-        System.out.println("\n\tfilterString (InDepthEntityView): " + filterString + "\n");
-        Toast.makeText(getContext(), ("filterString: " + filterString), Toast.LENGTH_LONG).show();
+        MainActivity.TH.setInDepthFilters(filterString);
+//        System.out.println("\n\tCurrentFilterString: {" + currentFilterString + "}\n\tfilterString (InDepthEntityView): {" + filterString + "}\n");
+        Toast.makeText(getActivity(), ("filterString InDepth: {" + filterString + "}"), Toast.LENGTH_LONG).show();
+        updateFilterList();
     }
 }

@@ -36,9 +36,8 @@ public class AddFiltersDialog extends AppCompatDialogFragment {
         final char[] arr = filterString.toCharArray();
         final char checked = '1';
         builder.setView(view)
-                .setTitle("Quit?");
-        builder.setItems(new CharSequence[]
-                        {"By Entity", "By Sender", "By Recipient", "By Transaction Type", "Start Date", "Current Date", "End Date", "By Amount Range"},
+                .setTitle("Add a filter:");
+        builder.setItems(Utilities.possibleFilters,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
@@ -79,20 +78,24 @@ public class AddFiltersDialog extends AppCompatDialogFragment {
                         }
                         filterString = new String(arr);
                         listener.applyTexts(filterString);
+
                     }
                 });
+//        getTargetFragment().onActivityResult(getTargetRequestCode(), 1, null);
         return builder.create();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        // Verify that the host activity implements the callback interface
         try {
-            listener = (ExampleDialogListener) context;
-        }
-        catch (ClassCastException e) {
-            throw new ClassCastException(context + " must implement ClassCastException");
+            // Instantiate the EditNameDialogListener so we can send events to the host
+            listener = (ExampleDialogListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement EditNameDialogListener");
         }
     }
 

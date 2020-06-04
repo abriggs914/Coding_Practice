@@ -17,6 +17,17 @@ import java.util.Date;
 
 public class Utilities {
 
+    public static CharSequence[] possibleFilters = new CharSequence[] {
+            "By Entity",
+            "By Sender",
+            "By Recipient",
+            "By Transaction Type",
+            "Start Date",
+            "Current Date",
+            "End Date",
+            "By Amount Range"
+    };
+
 //    public static String dollarify(int transactionAmount) {
 //        double m = transactionAmount / 100.0;
 //        return "$ " + String.format("% .2f", m);
