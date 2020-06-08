@@ -33,6 +33,33 @@ public class Utilities {
 //        return "$ " + String.format("% .2f", m);
 //    }
 
+    // Inclusive
+    public static boolean inRange(int start, int x, int end) {
+        return start <= x && x <= end;
+    }
+
+    // Inclusive
+    public static boolean inRange(double start, double x, double end) {
+//        System.out.println(start + " <= " + x + " <= " + end + " -> " + (start <= x && x <= end));
+        return start <= x && x <= end;
+    }
+
+
+
+    public static String keyify(int r, int c) {
+        return "(" + r + ", " + c + ")";
+    }
+
+    public static String keyify(float r, float c) {
+        return "(" + (int)r + ", " + (int)c + ")";
+    }
+
+    public static int[] unkeyify(String key) {
+        String keys = key.replaceAll("\\(", "").replaceAll("\\)" , "").replaceAll(",", "");
+        String[] splitString = keys.split(" ");
+        return new int[] {Integer.parseInt(splitString[0]), Integer.parseInt(splitString[1])};
+    }
+
     public static Spannable dollarify(int transactionAmount) {
 
         String moneyString = "$ " + twoDecimals(transactionAmount / 100.0);

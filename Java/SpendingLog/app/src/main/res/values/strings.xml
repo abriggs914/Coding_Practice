@@ -36,4 +36,10 @@
     <string name="add_filters">add filters</string>
     <string name="in_depth_view">In depth view</string>
     <string name="select_a_filter_to_add">Select a filter to add.</string>
+    <string name="by_start_date">By Start Date:</string>
+    <string name="by_recipient">By Recipient:</string>
+    <string name="by_sender">By Sender:</string>
+    <string name="by_entity">By Entity:</string>
+    <string name="by_end_date">By End Date:</string>
+    <string name="by_amount_range">By Amount Range:</string>
 </resources>

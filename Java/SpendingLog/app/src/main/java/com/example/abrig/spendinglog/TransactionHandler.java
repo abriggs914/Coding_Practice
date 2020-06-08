@@ -7,6 +7,7 @@ import android.widget.Toast;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -341,5 +342,18 @@ public class TransactionHandler {
 
     public String getCurrentFilterString() {
         return this.currentFilterString;
+    }
+
+    public Date[] getFirstLastTransactionDates() {
+        Date firstDate;
+        Date lastDate;
+        if (transactions.size() == 0) {
+            firstDate = lastDate = DateHandler.getToday();
+        }
+        else {
+            firstDate = transactions.get(0).getTransactionDate();
+            lastDate = transactions.get(transactions.size() - 1).getTransactionDate();
+        }
+        return new Date[] {firstDate, lastDate};
     }
 }
