@@ -21,7 +21,6 @@ def randrange(n, vmin, vmax):
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-
 n = 100
 
 # For each set of style and range settings, plot n random points in the box
@@ -57,7 +56,8 @@ places = {
     "Centre of Town 3": (640, 66, -280, '$3$'),
     "Glacier": (720, 62, -560, '$G$'),
     "Coral Reef": (400, 62, -455, '.'),
-    "Tower": (100, 96, 160, '$T$')
+    "Tower": (100, 96, 160, '$T$'),
+    "Zombie Spawner": (165, 16, 38, '$Z$')
 }
 
 for n, coords in places.items():
@@ -69,6 +69,7 @@ for n, coords in places.items():
     c_g = rand.random()
     c_b = rand.random()
     c = [[c_r, c_b, c_g]]
+    # color all places below 64 black
     if z < 64:
         c = [[0, 0, 0]]
     ax.scatter(x, y, z, marker=m, c=c)

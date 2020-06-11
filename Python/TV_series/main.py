@@ -298,6 +298,32 @@ scrubs = TVSeries("Scrubs", {
 	False,
 	"Comedy",
 	"Prime TV")
+	
+yugioh = TVSeries("Yu-Gi-Oh!", {
+	1 : 49,
+	2 : 48,
+	3 : 47,
+	4 : 40,
+	5 : 52},
+	22,
+	1998,
+	2006,
+	False,
+	"Anime",
+	"Prime TV")
+	
+misfits = TVSeries("Misfits", {
+	1 : 6,
+	2 : 7,
+	3 : 8,
+	4 : 8,
+	5 : 8},
+	44,
+	2009,
+	2013,
+	False,
+	"Comedy",
+	"Netflix")
 
 series_list = [
     the_office,
@@ -320,7 +346,9 @@ series_list = [
     curb_your_enthusiasm,
     letterkenny,
 	prison_break,
-	scrubs]
+	scrubs,
+	yugioh,
+	misfits]
    
 def longest_series_title(series_list) :
     num = 0
@@ -509,5 +537,5 @@ if __name__ == "__main__" :
     
     
   for i in range(10) :
-    print(print_time_line_horizontal(series_list, 1999, 2021))
+    print(print_time_line_horizontal(series_list, 1995, 2021))
     print(print_series_stats(series_list))
