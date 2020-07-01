@@ -412,6 +412,7 @@ appointments = [('CS3113', 'MON WED FRI', '8:30 AM', '9:20 AM', 'GH C122'),
                 ("CS4725", "MON WED FRI", "12:30 PM", "1:20 PM", "GH C112"),
                 ("CS4725 LAB", "FRI", "2:30 PM", "4:20 PM", "ITC 415")]
 '''
+'''
 appointments = [("CS3113", "MON WED FRI", "8:30 AM", "9:20 AM", "GH C122"),
                 ("CS4355", "TUE THU", "10:00 AM", "11:20 AM", "HH C9"),
                 ("CS4355 TUT", "TUE", "2:30 PM", "3:20 PM", "GH D124"),
@@ -420,6 +421,22 @@ appointments = [("CS3113", "MON WED FRI", "8:30 AM", "9:20 AM", "GH C122"),
                 ("CS3035", "TUE THU", "8:30 AM", "9:50 AM", "HH 206"),
                 ("CS4725", "MON WED FRI", "12:30 PM", "1:20 PM", "GH C112"),
                 ("CS4725 LAB", "FRI", "2:30 PM", "4:20 PM", "ITC 415")]
+'''
+appointments = [
+    ("BI2013-1", "TUE THU", "8:15 AM", "9:30 AM", "NA"),
+    ("BI3823-1", "MON WED", "12:45 PM", "2:00 PM", "NA"),
+    ("BI2213-1 Class", "THU", "12:45 PM", "2:00 PM", "NA"),
+    ("BI2213-1 Lab", "MON", "2:30 PM", "5:30 PM", "NA"),
+    ("BI4913-1", "THU", "2:30 PM", "5:30 PM", "NA"),
+    ("BI2413-1", "THU", "10:00 AM", "11:15 AM", "NA"),
+    ("CH2113-1 Class", "MON WED FRI", "8:15 AM", "9:30 AM", "NA"),
+    ("CH2113-1 Lab", "TUE", "2:30 PM", "5:30 PM", "NA"),
+    ("FR1513-1", "THU", "4:15 PM", "5:30 PM", "NA"),
+    ("HK3803-1", "MON WED", "4:15 PM", "5:30 PM", "NA"),
+    ("RS1003-1", "MON WED", "12:45 PM", "2:00 PM", "NA"),
+    ("RS1003-2", "MON WED", "2:30 PM", "3:45 PM", "NA"),
+    ("PS3613-1", "THU", "6:30 PM", "9:15 PM", "NA")
+]
 
 # appointments = [("Dinner", "MON", "12:30 PM", "2:00 PM", "Gram & Gramps")]
 class_schedule = Schedule(appointments)

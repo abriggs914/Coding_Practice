@@ -25,7 +25,7 @@ public class AddFiltersDialog extends AppCompatDialogFragment {
     // re-occurring
     // same cycle       (is re-occurring on a set interval (may need a date...))
 
-    private String filterString = "00000000";
+    private String filterString = "0000000";
     private ExampleDialogListener listener;
 
     @Override
@@ -63,17 +63,17 @@ public class AddFiltersDialog extends AppCompatDialogFragment {
                                 // By Start Date
                                 arr[4] = checked;
                                 break;
+//                            case 5:
+//                                // By Current Date
+//                                arr[5] = checked;
+//                                break;
                             case 5:
-                                // By Current Date
+                                // By End Date
                                 arr[5] = checked;
                                 break;
                             case 6:
-                                // By End Date
-                                arr[6] = checked;
-                                break;
-                            case 7:
                                 // By Amount Range
-                                arr[7] = checked;
+                                arr[6] = checked;
                                 break;
                         }
                         filterString = new String(arr);

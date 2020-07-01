@@ -1,4 +1,6 @@
 package com.example.abrig.spendinglog;
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 
 public class TransactionType {
@@ -22,6 +24,7 @@ public class TransactionType {
         return name;
     }
 
+    @Override
     public String toString() {
         return this.name;
     }

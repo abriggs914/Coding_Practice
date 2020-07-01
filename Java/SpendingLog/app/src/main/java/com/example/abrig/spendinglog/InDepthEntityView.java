@@ -80,6 +80,8 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
     private Spinner senderSpinner;
     private TextView recipientTitle;
     private Spinner recipientSpinner;
+    private TextView transactionTypeFilterTitle;
+    private Spinner transactionTypeFilterSpinner;
     private TextView startDateTitle;
     private DatePicker startDatePicker;
     private TextView endDateTitle;
@@ -87,7 +89,6 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
     private TextView amountRangeTitle;
     private FrameLayout amountRangeFrame;
     private RangeBar rangeBar;
-    private FrameLayout moneyAmountFrameLayout;
 
     private PieChart pieChart;
     private PieData pieData;
@@ -150,6 +151,8 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
         senderSpinner = view.findViewById(R.id.senderFilterDropDown);
         recipientTitle = view.findViewById(R.id.recipientFilterTitleTextView);
         recipientSpinner = view.findViewById(R.id.recipientFilterDropDown);
+        transactionTypeFilterTitle = view.findViewById(R.id.transactionTypeFilterTitleTextView);
+        transactionTypeFilterSpinner = view.findViewById(R.id.transactionTypeFilterDropDown);
         startDateTitle = view.findViewById(R.id.startDateFilterTitleTextView);
         startDatePicker = view.findViewById(R.id.startDatePicker);
         endDateTitle = view.findViewById(R.id.endDateFilterTitleTextView);
@@ -157,15 +160,6 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
         amountRangeTitle = view.findViewById(R.id.amountTitleTextView);
         amountRangeFrame = view.findViewById(R.id.amountFrameLayout);
 
-        getEntries();
-        pieDataSet = new PieDataSet(pieEntries, "Pie Entries");
-        pieData = new PieData(pieDataSet);
-        pieChart.setData(pieData);
-        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        pieDataSet.setSliceSpace(2f);
-        pieDataSet.setValueTextColor(Color.WHITE);
-        pieDataSet.setValueTextSize(10f);
-        pieDataSet.setSliceSpace(5f);
 //        saveButton = view.findViewById(R.id.saveButton);
 //        closeButton = view.findViewById(R.id.closeButton);
 //        overdraftSwitch = view.findViewById(R.id.allowedOverDraftSwitch);
@@ -203,16 +197,25 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
 
         views = new ArrayList<>(
                 Arrays.asList(
+                        // 0
                         entityTitle,
                         entitySpinner,
+                        // 1
                         senderTitle,
                         senderSpinner,
+                        // 2
                         recipientTitle,
                         recipientSpinner,
+                        // 3
+                        transactionTypeFilterTitle,
+                        transactionTypeFilterSpinner,
+                        // 4
                         startDateTitle,
                         startDatePicker,
+                        // 5
                         endDateTitle,
                         endDatePicker,
+                        // 6
                         amountRangeTitle,
                         amountRangeFrame
                 ));
@@ -224,16 +227,49 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
         getFragmentManager().popBackStack();
     }
 
+    public void initPieEntries() {
+        getEntries();
+        pieDataSet = new PieDataSet(pieEntries, "Pie Entries");
+        pieData = new PieData(pieDataSet);
+        pieChart.setData(pieData);
+        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        pieDataSet.setSliceSpace(2f);
+        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextSize(10f);
+        pieDataSet.setSliceSpace(5f);
+    }
+
     private void getEntries() {
-        pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(2f, 0));
-        pieEntries.add(new PieEntry(4f, 1));
-        pieEntries.add(new PieEntry(6f, 2));
-        pieEntries.add(new PieEntry(8f, 3));
-        pieEntries.add(new PieEntry(8f, "LABEL"));
-        pieEntries.add(new PieEntry(7f, 4));
-        pieEntries.add(new PieEntry(3f, 5));
-        pieEntries.add(new PieEntry(18f, 6));
+        String filterString = MainActivity.TH.getCurrentFilterString();
+        if (filterString.contains("1")) {
+            // do some filtering
+            Toast.makeText(getActivity(), "DO some filtering", Toast.LENGTH_LONG).show();
+        }
+        else {
+            // no filtering
+            Entity user = MainActivity.TH.getUserProfile();
+            Toast.makeText(getActivity(), "DO not do some filtering", Toast.LENGTH_LONG).show();
+            if (user != null) {
+                Toast.makeText(getActivity(), "user is not null", Toast.LENGTH_LONG).show();
+                pieEntries = new ArrayList<>();
+                float userGained = (float) (user.getReceivedMoney() / 100.0);
+                float userSpent = (float) (user.getSentMoney() / 100.0);
+//                float gainedFraction = (float) userGained / (userGained + userSpent);
+//                float spentFraction = (float) userSpent / (userGained + userSpent);
+//                pieEntries.add(new PieEntry(gainedFraction, "Money gained"));
+//                pieEntries.add(new PieEntry(spentFraction, "Money sent"));
+                pieEntries.add(new PieEntry(userGained, "Money gained"));
+                pieEntries.add(new PieEntry(userSpent, "Money sent"));
+//                pieEntries.add(new PieEntry(2f, 0));
+//                pieEntries.add(new PieEntry(4f, 1));
+//                pieEntries.add(new PieEntry(6f, 2));
+//                pieEntries.add(new PieEntry(8f, 3));
+//                pieEntries.add(new PieEntry(8f, "LABEL"));
+//                pieEntries.add(new PieEntry(7f, 4));
+//                pieEntries.add(new PieEntry(3f, 5));
+//                pieEntries.add(new PieEntry(18f, 6));
+            }
+        }
     }
 
     // show filter alert dialog pop-up
@@ -246,39 +282,47 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
 
     public void updateFilterList() {
         String activeFilters = MainActivity.TH.getCurrentFilterString();
-//        ArrayList<View> filterViews = new ArrayList<>();
-//        filterViews.add(entitySpinner);
-        // entity
-        for (int i = 0; i < views.size(); i += 2) {
-            // TODO this doesn't work due to the number of views in the views list. It needs to be 16 long not 12
-            int titleIdx = i / 2;
-            int widgetIdx = titleIdx + 1;
-            System.out.print("views.size(): " + views.size() + ", i: " + i + ", titleIdx: " + titleIdx + ", widgetIdx: " + widgetIdx);
 
-            if (activeFilters.charAt(titleIdx) == '1') {
+        for (int i = 0; i < activeFilters.length(); i++) {
+            char letter = activeFilters.charAt(i);
+            int titleIdx = i * 2;
+            int widgetIdx = titleIdx + 1;
+            if (letter == '1') {
                 views.get(titleIdx).setVisibility(View.VISIBLE);
                 views.get(widgetIdx).setVisibility(View.VISIBLE);
-                System.out.println(" IS 1");
             }
             else {
                 views.get(titleIdx).setVisibility(View.INVISIBLE);
                 views.get(widgetIdx).setVisibility(View.INVISIBLE);
-                System.out.println(" ISNT 1");
             }
         }
-//        if (activeFilters.charAt(0) == '1') {
-//            entityTitle.setVisibility(View.VISIBLE);
-//            entitySpinner.setVisibility(View.VISIBLE);
-//        }
 
-//        ArrayAdapter<View> filtersAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, filterViews);
-//        filterListView.setAdapter(filtersAdapter);
+
+//        for (int i = 0; i < views.size() - 2; i += 2) {
+//            // TODO this doesn't work due to the number of views in the views list. It needs to be 16 long not 12
+//            int titleIdx = i;
+//            int widgetIdx = titleIdx + 1;
+//            System.out.print("views.size(): " + views.size() + ", i: " + i + ", titleIdx: " + titleIdx + ", widgetIdx: " + widgetIdx);
+//
+//            if (activeFilters.charAt(titleIdx) == '1') {
+//                views.get(titleIdx).setVisibility(View.VISIBLE);
+//                views.get(widgetIdx).setVisibility(View.VISIBLE);
+//                System.out.println(" IS 1");
+//            }
+//            else {
+//                views.get(titleIdx).setVisibility(View.INVISIBLE);
+//                views.get(widgetIdx).setVisibility(View.INVISIBLE);
+//                System.out.println(" ISNT 1");
+//            }
+//        }
     }
 
     private void init() {
         initEntity();
+        initTransactionTypes();
         initDates();
         initRangeBar();
+        initPieEntries();
 
         for (View v: views) {
             v.setVisibility(View.INVISIBLE);
@@ -296,6 +340,21 @@ public class InDepthEntityView extends Fragment implements AddFiltersDialog.Exam
         senderSpinner.setAdapter(senderAdapter);
         ArrayAdapter<Entity> recipientAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, entitiesList);
         recipientSpinner.setAdapter(recipientAdapter);
+    }
+
+    public void initTransactionTypes() {
+        ArrayList<TransactionType> transactionTypes = MainActivity.TH.getTransactionTypes();
+        ArrayList<TransactionType> types = new ArrayList<>();
+        for (TransactionType t: transactionTypes) {
+            if (t.getName().equals("No selection") || t.getName().equals("Custom")) {
+                continue;
+            }
+            if (!types.contains(t)) {
+                types.add(t);
+            }
+        }
+        ArrayAdapter<TransactionType> typesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, types);
+        transactionTypeFilterSpinner.setAdapter(typesAdapter);
     }
 
     public void initDates() {

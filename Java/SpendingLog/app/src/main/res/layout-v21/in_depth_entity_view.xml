@@ -166,6 +166,31 @@
                             android:padding="10dp">
 
                             <TextView
+                                android:id="@+id/transactionTypeFilterTitleTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="start"
+                                android:text="@string/by_recipient"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <Spinner
+                                android:id="@+id/transactionTypeFilterDropDown"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="end"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"></Spinner>
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp">
+
+                            <TextView
                                 android:id="@+id/startDateFilterTitleTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

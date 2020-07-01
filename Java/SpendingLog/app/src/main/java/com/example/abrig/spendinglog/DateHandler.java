@@ -8,34 +8,34 @@ import java.text.ParseException;
 class DateHandler {
     public static void main (String[] args) {
         System.out.println("");
-        Date today = DateHandler.getToday();
+        Date today = getToday();
         System.out.println("today: " + today);
-        System.out.println("timeString: " + DateHandler.getTimeString(today));
-        System.out.println("dateString: " + DateHandler.getDateString(today));
+        System.out.println("timeString: " + getTimeString(today));
+        System.out.println("dateString: " + getDateString(today));
         Date now = new Date();
-        System.out.println("parseDate: " + DateHandler.parseDate(now.toString()));
+        System.out.println("parseDate: " + parseDate(now.toString()));
         String a = "03/08/2020";
         String b = "03/08/2020 12:35:15";
-        System.out.println("createDate("+a+"): " + DateHandler.createDate(a));
-        System.out.println("createDateAndTime("+b+"): " + DateHandler.createDateAndTime(b));
+        System.out.println("createDate("+a+"): " + createDate(a));
+        System.out.println("createDateAndTime("+b+"): " + createDateAndTime(b));
         double a1 = 2.59;
         double b1 = 14.59;
         double c1 = 14.99;
         double window = 0.05;
-        System.out.println("parseTime("+a1+", true): " + DateHandler.parseTime(a1, true));
-        System.out.println("parseTime("+a1+", false): " + DateHandler.parseTime(a1, false));
-        System.out.println("parseTime("+b1+", true): " + DateHandler.parseTime(b1, true));
-        System.out.println("parseTime("+b1+", false): " + DateHandler.parseTime(b1, false));
-        System.out.println("parseTime("+c1+", true): " + DateHandler.parseTime(c1, true));
-        System.out.println("parseTime("+c1+", false): " + DateHandler.parseTime(c1, false));
-        System.out.println("getTimeValue("+a1+", true, true): " + DateHandler.getTimeValue(DateHandler.getTimeString(today), true, true));
-        System.out.println("getTimeValue("+a1+", true, false): " + DateHandler.getTimeValue(DateHandler.getTimeString(today), true, false));
-        System.out.println("sameDay("+today+", "+now+"): " + DateHandler.sameDay(today, now));
-        System.out.println("sameTime("+today+", "+now+", "+window+"): " + DateHandler.sameTime(today, now, window));
-        System.out.println("getDay("+today+"): " + DateHandler.getDay(today));
-        System.out.println("getMonth("+today+"): " + DateHandler.getMonth(today));
-        System.out.println("getYear("+today+"): " + DateHandler.getYear(today));
-        System.out.println("nextDate("+today+"): " + DateHandler.nextDate(today));
+        System.out.println("parseTime("+a1+", true): " + parseTime(a1, true));
+        System.out.println("parseTime("+a1+", false): " + parseTime(a1, false));
+        System.out.println("parseTime("+b1+", true): " + parseTime(b1, true));
+        System.out.println("parseTime("+b1+", false): " + parseTime(b1, false));
+        System.out.println("parseTime("+c1+", true): " + parseTime(c1, true));
+        System.out.println("parseTime("+c1+", false): " + parseTime(c1, false));
+        System.out.println("getTimeValue("+a1+", true, true): " + getTimeValue(getTimeString(today), true, true));
+        System.out.println("getTimeValue("+a1+", true, false): " + getTimeValue(getTimeString(today), true, false));
+        System.out.println("sameDay("+today+", "+now+"): " + sameDay(today, now));
+        System.out.println("sameTime("+today+", "+now+", "+window+"): " + sameTime(today, now, window));
+        System.out.println("getDay("+today+"): " + getDay(today));
+        System.out.println("getMonth("+today+"): " + getMonth(today));
+        System.out.println("getYear("+today+"): " + getYear(today));
+        System.out.println("nextDate("+today+"): " + nextDate(today));
 
     }
 

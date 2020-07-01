@@ -23,7 +23,6 @@ public class Utilities {
             "By Recipient",
             "By Transaction Type",
             "Start Date",
-            "Current Date",
             "End Date",
             "By Amount Range"
     };

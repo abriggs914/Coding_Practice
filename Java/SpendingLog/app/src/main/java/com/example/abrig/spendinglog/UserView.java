@@ -129,7 +129,7 @@ public class UserView extends Fragment {
 
         Set<String> keys = MainActivity.prefs.getAll().keySet();
         if (keys.contains("entity_entry_User")) {
-            Entity e = Utilities.parseEntity((String)MainActivity.prefs.getAll().get("entity_entry_User"));
+            Entity e = MainActivity.TH.getUserProfile();
             String userName = e.getName();
             Spannable userBalance = Utilities.dollarify(e.getBankedMoney());
             String userAllowedOverdraft = genOverdraftMessage(e.isAllowedOverdraft());

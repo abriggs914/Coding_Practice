@@ -22,7 +22,7 @@ public class TransactionHandler {
     private String currentFilterString;
 
     public TransactionHandler(Context context) {
-        this.currentFilterString = "00000000";
+        this.currentFilterString = "0000000";
         this.context = context;
         this.transactionType = new TransactionType("No selection");
         this.transactionType = new TransactionType("Custom");
@@ -100,6 +100,15 @@ public class TransactionHandler {
         catch (Exception e) {
             Toast.makeText(context, "Invalid transaction", Toast.LENGTH_LONG).show();
             return false;
+        }
+    }
+
+    public Entity getUserProfile() {
+        if (MainActivity.prefs.getAll().containsKey("entity_entry_User")) {
+            return Utilities.parseEntity((String) MainActivity.prefs.getAll().get("entity_entry_User"));
+        }
+        else {
+            return null;
         }
     }
 
@@ -355,5 +364,9 @@ public class TransactionHandler {
             lastDate = transactions.get(transactions.size() - 1).getTransactionDate();
         }
         return new Date[] {firstDate, lastDate};
+    }
+
+    public ArrayList<TransactionType> getTransactionTypes() {
+        return TransactionType.getTypes();
     }
 }

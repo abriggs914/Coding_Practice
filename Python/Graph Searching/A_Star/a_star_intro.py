@@ -1,6 +1,8 @@
 from math import inf
 from heapq import heappop, heappush
 
+# A* searching algorithm
+
 def a_star(graph, start, target):
   paths_and_distances = {}
   for vertex in graph:
