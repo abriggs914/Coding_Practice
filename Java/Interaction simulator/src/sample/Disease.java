@@ -10,13 +10,13 @@ public enum Disease {
             "Coronavirus",
             "COVID-19",
             new HashMap<Integer, Double>() {{
-                put(0, 10.1);
-                put(10, 18.5);
-                put(20, 32.1);
-                put(30, 34.5);
-                put(40, 35.6);
-                put(50, 35.0);
-                put(60, 34.6);
+                put(0, 8.1);
+                put(10, 11.5);
+                put(20, 22.1);
+                put(30, 28.5);
+                put(40, 29.6);
+                put(50, 31.0);
+                put(60, 35.6);
                 put(70, 32.2);
                 put(80, 26.6);
                 put(90, 25.7);
@@ -27,10 +27,10 @@ public enum Disease {
             new HashMap<Integer, Double>() {{
                 put(0, 0.0);
                 put(10, 0.0);
-                put(20, 0.2);
-                put(30, 0.2);
+                put(20, 0.15);
+                put(30, 0.18);
                 put(40, 0.2);
-                put(50, 0.4);
+                put(50, 0.3);
                 put(60, 1.3);
                 put(70, 3.6);
                 put(80, 8.0);

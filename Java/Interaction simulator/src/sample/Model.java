@@ -37,6 +37,7 @@ public class Model {
     private static Timeline timeline;
     private static Date startDate;
     private static Date currentDate;
+    private static boolean extraDay;
     private static int numCuredCount;
     private static int numPeopleCount;
     private static int numHealthyCount;
@@ -58,6 +59,7 @@ public class Model {
     public static void init() {
         startDate = TODAY;
         currentDate = startDate;
+        extraDay = true;
         currentDisease = Disease.CORONAVIRUS;
         numCuredCount = 0;
         numPeopleCount = 0;
@@ -317,6 +319,10 @@ public class Model {
                     passedTodayPopulation.clear();
                 }));
 //        timeline.setCycleCount(Timeline.INDEFINITE);
+
+        if (getAliveAndInfectedPopulation().size() > 0) {
+            extraDay = false;
+        }
         return timeline;
     }
 
@@ -519,7 +525,7 @@ public class Model {
         System.out.println("aliveAndInfectedPopulation : " + getAliveAndInfectedPopulation());
         System.out.print("BEGIN playSim {");
 //        System.out.print("\n\tstart runnable");
-        if (getAliveAndInfectedPopulation().size() > 0) {
+        if (getAliveAndInfectedPopulation().size() > 0 || extraDay) {
             if (timeline.getStatus() == Animation.Status.STOPPED ||
                     timeline.getStatus() == Animation.Status.PAUSED) {
                 if (pandemicHistory == null) {

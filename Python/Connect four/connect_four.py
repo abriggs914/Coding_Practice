@@ -19,6 +19,104 @@ WIN_CODE = [
 	"DRAW"
 ]
 
+
+# static method which attempts to simulate a monte carlo type move for the computer
+# self			-		Connect 4 object
+# score			-		The weight to scale the outcome of the simulations
+# max_moves		-		How many moves the AI will play
+# depth			-		How many games the AI will play
+# do_sleep 		-		Used in the REPL version to give time for reading output
+# do_print		-		Used to show output in the REPL version
+def cpu_monte_carlo(self, score=10, max_moves=None, depth=None, do_sleep=True, do_print=True):
+	start_time = time()
+	if not max_moves:
+		max_moves = self.board.size - self.moves_made
+	if not depth:
+		depth = 100
+	
+	spaces_left_on_board = self.board.size - self.moves_made
+	spaces_left = min(max_moves, spaces_left_on_board)
+	remaining_cols = self.board.remaining_cols()
+	shortest_moves_to_win = 0
+	
+	original = deepcopy(self) # connect_4 object
+	original_board = deepcopy(original.board) # board object
+	
+	col_scores = dict(zip(remaining_cols, [0 for i in range(len(remaining_cols))]))
+	
+	# loop depth
+	for i in range(depth):
+		used_cols = []
+		win = False
+		win_cpu = False
+		# loop columns
+		for j in range(0, spaces_left, 2):
+			# cpu move
+			row_cpu, col_cpu = self.random_move()
+			self.board.mark(row_cpu, col_cpu, self.players[1])
+			
+			used_cols.append(col_cpu)
+			code, win = self.check_win(do_sleep, do_print)
+			if win:
+				win_cpu = True
+				break
+			
+			# player move
+			row_player, col_player = self.random_move()
+			self.board.mark(row_player, col_player, self.players[0])
+			
+			used_cols.append(col_cpu)
+			code, win = self.check_win(do_sleep, do_print)
+			if win:
+				break
+		
+		# update cols dict
+		moves = len(used_cols)
+		game_score = score * (moves * (1 - (moves / (spaces_left_on_board + 1))))
+		for col in used_cols:
+			#print("cols used: " + str(col))
+			if win:
+				if win_cpu:
+					col_scores[col] += game_score
+				else:
+					col_scores[col] -= game_score
+		
+		# reset working board
+		self.board = deepcopy(original_board)
+		
+		# reset board
+		self = deepcopy(original)
+		self.board = deepcopy(original_board)
+	#print("size:", self.board.size, "spaces_left:", spaces_left, "remaining cols", remaining_cols)
+	if do_print:
+		print("scores", col_scores)
+	if do_sleep:
+		sleep(3)
+	best_col = None
+	best_score = None
+	tied_scores = []
+	for col, score in col_scores.items():
+		if not best_col or score > best_score:
+			best_col = col
+			best_score = score
+			tied_scores = [(best_col, best_score)]
+		elif not best_col or score == best_score:
+			tied_scores.append((col, score))
+	if do_print:
+		print("best_col", best_col, "best_score:", best_score)
+	if do_sleep:
+		sleep(3)
+	if len(tied_scores) > 1:
+		best_col, best_score = rand.choice(tied_scores)
+	
+	r, c = self.board.next_row(best_col), best_col
+	print("Computer selected row {0}, col {1}".format(r, c))
+	if do_sleep:
+		sleep(MOVE_SELECTION_SLEEP_TIME)
+	end_time = time()
+	how_long = end_time - start_time
+	return r, c, {"best_col":best_col, "best_score":best_score, "time":how_long}
+
 # helper function to return random number in given range
 # by default returns float between 0 and 1 exclusive
 def random_in_range(upper=0, lower=1, is_int=False):
@@ -264,102 +362,6 @@ class Connect_Four:
 			sleep(MOVE_SELECTION_SLEEP_TIME)
 		return r, c
 		
-	# attempts to simulate a monte carlo type move for the computer
-	# score			-		The weight to scale the outcome of the simulations
-	# max_moves		-		How many moves the AI will play
-	# depth			-		How many games the AI will play
-	# do_sleep 		-		Used in the REPL version to give time for reading output
-	# do_print		-		Used to show output in the REPL version
-	def cpu_monte_carlo(self, score=10, max_moves=None, depth=None, do_sleep=True, do_print=True):
-		start_time = time()
-		if not max_moves:
-			max_moves = self.board.size - self.moves_made
-		if not depth:
-			depth = 100
-		
-		spaces_left_on_board = self.board.size - self.moves_made
-		spaces_left = max_moves
-		remaining_cols = self.board.remaining_cols()
-		shortest_moves_to_win = 0
-		
-		original = deepcopy(self)
-		original_board = deepcopy(original.board)
-		
-		col_scores = dict(zip(remaining_cols, [0 for i in range(len(remaining_cols))]))
-		
-		# loop depth
-		for i in range(depth):
-			used_cols = []
-			win = False
-			win_cpu = False
-			# loop columns
-			for j in range(0, spaces_left, 2):
-				# cpu move
-				row_cpu, col_cpu = self.random_move()
-				self.board.mark(row_cpu, col_cpu, self.players[1])
-				
-				used_cols.append(col_cpu)
-				code, win = self.check_win(do_sleep, do_print)
-				if win:
-					win_cpu = True
-					break
-				
-				# player move
-				row_player, col_player = self.random_move()
-				self.board.mark(row_player, col_player, self.players[0])
-				
-				used_cols.append(col_cpu)
-				code, win = self.check_win(do_sleep, do_print)
-				if win:
-					break
-			
-			# update cols dict
-			moves = len(used_cols)
-			game_score = score * (moves * (1 - (moves / (spaces_left_on_board + 1))))
-			for col in used_cols:
-				#print("cols used: " + str(col))
-				if win:
-					if win_cpu:
-						col_scores[col] += game_score
-					else:
-						col_scores[col] -= game_score
-			
-			# reset working board
-			self.board = deepcopy(original_board)
-			
-		# reset board
-			self = deepcopy(original)
-			self.board = deepcopy(original_board)
-		#print("size:", self.board.size, "spaces_left:", spaces_left, "remaining cols", remaining_cols)
-		if do_print:
-			print("scores", col_scores)
-		if do_sleep:
-			sleep(3)
-		best_col = None
-		best_score = None
-		tied_scores = []
-		for col, score in col_scores.items():
-			if not best_col or score > best_score:
-				best_col = col
-				best_score = score
-				tied_scores = [(best_col, best_score)]
-			elif not best_col or score == best_score:
-				tied_scores.append((col, score))
-		if do_print:
-			print("best_col", best_col, "best_score:", best_score)
-		if do_sleep:
-			sleep(3)
-		if len(tied_scores) > 1:
-			best_col, best_score = rand.choice(tied_scores)
-		
-		r, c = self.board.next_row(best_col), best_col
-		print("Computer selected row {0}, col {1}".format(r, c))
-		if do_sleep:
-			sleep(MOVE_SELECTION_SLEEP_TIME)
-		end_time = time()
-		how_long = end_time - start_time
-		return r, c, {"best_col":best_col, "best_score":best_score, "time":how_long}
-		
 	def play(self):
 		print(border + "\nWelcome to Connect Four!")
 		self.game_setup()
@@ -383,7 +385,7 @@ class Connect_Four:
 				data = {}
 			else:
 				max_moves = round((self.board.size - self.moves_made) * 0.6)
-				r, c, data = self.cpu_monte_carlo(do_print=False)
+				r, c, data = cpu_monte_carlo(self, do_print=False)
 				# r, c = self.cpu_move()  # for a random move
 				
 			# mark the board
@@ -408,14 +410,6 @@ class Connect_Four:
 			self.turn_change()
 			curr_player = self.players[0] if self.player_turn else self.players[1]
 			
-			
-def main():
-
-	connect_4 = Connect_Four()
-	connect_4.play()
-
-if __name__ == "__main__":
-	main()
 
 # -- Testing --
 #######################################################################################################################
@@ -428,6 +422,16 @@ def perform_move_test():
 	connect_4.test_connect_four(test_board, test_players)
 	print(connect_4)
 	print(connect_4.board.next_row(0))
+	
+#######################################################################################################################
+
+def main():
+
+	connect_4 = Connect_Four()
+	connect_4.play()
+
+if __name__ == "__main__":
+	main()
 
 # TODO:
 #

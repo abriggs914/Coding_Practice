@@ -1,6 +1,7 @@
 from pympler import summary, muppy
 import psutil
 # resource module doesnt seem to work
+# update module only works on linux systems
 import resource
 import os
 import sys

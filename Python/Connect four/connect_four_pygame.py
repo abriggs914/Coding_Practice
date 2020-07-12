@@ -4,13 +4,13 @@
 from time import sleep, time
 from random import choice
 from copy import deepcopy
-#import threading
+import threading
 #import concurrent.futures
 from multiprocessing.pool import ThreadPool
 import pygame
 import connect_four_pop_up
 from player import Player
-from connect_four import Connect_Four
+from connect_four import Connect_Four, cpu_monte_carlo
 
 pygame.init()
 
@@ -668,6 +668,7 @@ def print_start_game(game_info):
 		connect_4.player_turn = False
 		print(first_bot_message)	
 	else:
+		print(first_random_message)
 		heads_won_toss, user_is_heads = do_coin_flip()
 		if heads_won_toss:
 			if user_is_heads:
@@ -679,8 +680,8 @@ def print_start_game(game_info):
 				connect_4.player_turn = False
 			else:
 				connect_4.player_turn = True
-		print(first_random_message)
 		
+# On mouse click return the column the user selected, else None
 def determine_col(game_info, mouse_x):
 	buckets = game_info["buckets"]
 	diameter = game_info["radius"] * 2
@@ -733,7 +734,8 @@ def compute_positions(game_info):
 	
 # initialize the connect_4 object, sets players, rows, columns, and connect_x attributes
 def init_game(game_info):
-	global connect_4, n_coin_flips, TIMED_EVENTS
+	global connect_4, n_coin_flips, TIMED_EVENTS, CPU_IS_THINKING
+	CPU_IS_THINKING = False
 	TIMED_EVENTS = []
 	connect_4 = Connect_Four()
 	user_player = Player(game_info["name"], game_info["color"])
@@ -749,6 +751,7 @@ def init_game(game_info):
 	#test_marks(user_player, bot_player)
 	
 def mark(game_info, col, player, *data):
+	global CPU_IS_THINKING
 	# TODO: check that there is room on the board BEFORE AND AFTER marking to catch ties before returning to the game loop
 	row = connect_4.board.next_row(col)
 	connect_4.board.mark(row, col, player)
@@ -758,88 +761,97 @@ def mark(game_info, col, player, *data):
 	draw_display(game_info)
 	pygame.display.update()
 	code, win = connect_4.check_win(do_sleep=False, do_print=True)
+	if not connect_4.player_turn:
+		CPU_IS_THINKING = True
 	if win:
 		print("WINNER FOUND - GAME OVER")
 		connect_4.playing = False
 		game_over()
-	
+
+def calc_look_ahead_moves(r, c, m, coefficient, connect_x):
+	return round(max(connect_x, (((r*c) - m) / 2) * (1 - coefficient)))
+
+def make_cpu_move(game_info):
+	global CPU_IS_THINKING
+	if CPU_IS_THINKING:
+		CPU_IS_THINKING = False
+		start_time = time()
+		
+		# random move
+		# cpu_r, cpu_c = connect_4.cpu_move(do_sleep=False)
+			
+		
+# self			-		Connect 4 object
+# score			-		The weight to scale the outcome of the simulations
+# max_moves		-		How many moves the AI will play
+# depth			-		How many games the AI will play
+# do_sleep 		-		Used in the REPL version to give time for reading output
+# do_print		-		Used to show output in the REPL version
+		connect_4_obj = deepcopy(connect_4)
+		score = 100
+		coefficient = 0.05
+		look_ahead_args = (connect_4.board.rows, connect_4.board.cols, connect_4.moves_made, coefficient, connect_4.CONNECT_X)
+		max_moves = calc_look_ahead_moves(*look_ahead_args)
+		depth = 200
+		do_print = False
+		do_sleep = False
+		print("CPU will play {d} games, looking {m} moves ahead, scoring each succesive move by a fraction of {s}".format(d=depth, m=max_moves, s=score))
+		monte_carlo_args = (connect_4_obj, score, max_moves, depth, do_sleep, do_print)
+		
+		start_time = time()
+		cpu_r, cpu_c, monte_carlo_data = cpu_monte_carlo(*monte_carlo_args)
+		end_time = time()
+		how_long = end_time - start_time
+		board = connect_4.board
+		data = (how_long, monte_carlo_data, board.create_board(deepcopy(board.status), connect_4.players))
+		
+		print("how long?", how_long)	
+		mark(game_info, cpu_c, connect_4.players[1], data)
+
 # runs the game
 def main_game_loop(game_info):
 	# main loop
 	while connect_4.playing:
 		events = pygame.event.get()
-		for event in events:
-			if event.type == pygame.QUIT:
-				quit_game()
+		event_types = [event.type for event in events]
+		if pygame.QUIT in event_types:
+			quit_game()
+		if connect_4.playing:
 			if connect_4.player_turn:
-				if event.type == pygame.MOUSEBUTTONDOWN:
-					#pygame.event.set_allowed([pygame.QUIT, pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP])
-					mouse_x, mouse_y = get_mouse_coords()
-					board_col = determine_col(game_info, mouse_x)
-					print("CLICK column:", board_col)
-					available_cols = connect_4.board.remaining_cols()
-					valid_move = board_col in available_cols
-					board = connect_4.board
-					if valid_move:
-						mark(game_info, board_col, connect_4.players[0], board.create_board(deepcopy(board.status.copy()), connect_4.players))
-					else:
-						show_invalid_move()
-					#print("events:", events)
-					#print("waiting", pygame.event.wait())
-					
-		if connect_4.playing and connect_4.player_turn is False:
-			print("computer move")
-			computer_move_call = connect_4.cpu_monte_carlo
-			
-			start_time = time()
-			pool = ThreadPool(processes=1)
-			score = 10
-			max_moves = max(round(0.01 * connect_4.board.size), connect_4.CONNECT_X)
-			depth = 250
-			do_print = False
-			do_sleep = False
-			monte_carlo_args = (score, max_moves, depth, do_sleep, do_print)
-			async_result = pool.apply_async(computer_move_call, args=monte_carlo_args) # tuple of args for foo
-			# do some other stuff in the main process
-			#draw_display(game_info)
-			return_val = async_result.get()  # get the return value from your function.
-			cpu_r, cpu_c, monte_carlo_data = return_val
-			end_time = time()
-			how_long = end_time - start_time
-			board = connect_4.board
-			data = (how_long, monte_carlo_data, board.create_board(deepcopy(board.status), connect_4.players))
-			mark(game_info, cpu_c, connect_4.players[1], data)
-			print("how long?", how_long)	
-			
-			#start_time = time()
-			#with concurrent.futures.ThreadPoolExecutor() as executor:
-			#	future = executor.submit(connect_4.cpu_move)
-			#	return_value = future.result()
-			#	print(return_value)
-			#	cpu_r, cpu_c = return_value
-			#	mark(game_info, cpu_c, connect_4.players[1])
-			#end_time = time()
-			#how_long = end_time - start_time
-			#print("how long?", how_long)	
-
-			#cpu_r, cpu_c = connect_4.cpu_monte_carlo(do_sleep=False, do_print=False)
-			#cpu_r, cpu_c = connect_4.cpu_move(do_sleep=False)
-			#mark(game_info, cpu_c, connect_4.players[1])
-			
-			
+				for event in events:
+					if event.type == pygame.QUIT:
+						quit_game()
+					if connect_4.player_turn:
+						if event.type == pygame.MOUSEBUTTONDOWN:
+							#pygame.event.set_allowed([pygame.QUIT, pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP])
+							mouse_x, mouse_y = get_mouse_coords()
+							board_col = determine_col(game_info, mouse_x)
+							print("CLICK column:", board_col)
+							available_cols = connect_4.board.remaining_cols()
+							valid_move = board_col in available_cols
+							board = connect_4.board
+							if valid_move:
+								mark(game_info, board_col, connect_4.players[0], board.create_board(deepcopy(board.status.copy()), connect_4.players))
+							else:
+								show_invalid_move()
+							#print("events:", events)
+							#print("waiting", pygame.event.wait())
+			else:
+				threading.Thread(target=make_cpu_move, args=[game_info]).start()
 		#show_invalid_move()
 		#print(get_mouse_coords())
 		draw_display(game_info)
 		#quit_game()
+	print("main quit")
 	sleep(6)
 	quit_game()
 
 # called before the main game loop to do set up and variable initialization
 def play_game():
-	
+	global CPU_IS_THINKING
 	# commenting out to make testing faster
-	game_info = connect_four_pop_up.gather_info()
-	# game_info = {"name": "Avery Briggs", "color": "Yellow", "rows": 11, "cols": 11, "connect_x": 4, "first_player": "random"}
+	#game_info = connect_four_pop_up.gather_info()
+	game_info = {"name": "Avery Briggs", "color": "Yellow", "rows": 11, "cols": 11, "connect_x": 4, "first_player": "random"}
 	
 	validated_info = validate_game_info(game_info)
 	
@@ -854,6 +866,7 @@ def play_game():
 	init_display()
 	print_start_game(game_info)
 	draw_display(game_info)
+	CPU_IS_THINKING = not connect_4.player_turn
 	main_game_loop(game_info)	
 
 def game_over():
