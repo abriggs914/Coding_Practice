@@ -25,8 +25,8 @@ public enum Disease {
                 put(120, 7.4);
             }},
             new HashMap<Integer, Double>() {{
-                put(0, 0.0);
-                put(10, 0.0);
+                put(0, 0.0001);
+                put(10, 0.0003);
                 put(20, 0.15);
                 put(30, 0.18);
                 put(40, 0.2);

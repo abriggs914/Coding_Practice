@@ -2,6 +2,9 @@ class graph_vertex:
   def __init__(self, name, x, y):
     self.name = name
     self.position = (x, y)
+	
+  def __repr__(self):
+    return "{n}, ({p})".format(n=self.name, p=self.position)
 
 delhi = graph_vertex("New Delhi", 28.6448, 77.216721)
 jaipur = graph_vertex("Jaipur", 26.92207, 75.778885)

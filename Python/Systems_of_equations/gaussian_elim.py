@@ -288,3 +288,24 @@ l_solns =   [[0],
 matrix_l = Matrix(l, l_solns)
 print(str(matrix_l))
 matrix_l.print_solved_system()
+
+question = [
+	# [1,2,1,0,0],
+	# [1,1,0,1,1],
+	# [1,1,2,0,0]
+	[1,1,1,0],
+	[1,1,0,1],
+	[1,0,2,0],
+	# [0,2,0,0,1]
+]
+
+question_solns = [
+	[64],
+	[96],
+	[32],
+	# [0]
+]
+
+question_matrix = Matrix(question, question_solns)
+print(str(question_matrix))
+question_matrix.print_solved_system()

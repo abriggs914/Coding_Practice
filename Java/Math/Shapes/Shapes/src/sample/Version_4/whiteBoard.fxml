@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Version_4.WhiteBoard">
+   <children>
+      <VBox id="vbox_whiteBoard_backdrop" fx:id="vbox_whiteBoard_backdrop" prefHeight="500.0" prefWidth="500.0">
+         <children>
+            <HBox id="hbox_whiteBoard_buttons" fx:id="hbox_whiteBoard_buttons" prefHeight="100.0" prefWidth="500.0">
+               <children>
+                  <Button id="button_whiteBoard_clear" fx:id="button_whiteBoard_clear" mnemonicParsing="false" text="clear" />
+                  <Slider id="slider_whiteBoard_red_colour" fx:id="slider_whiteBoard_red_colour" blockIncrement="0.1" max="1.0" showTickMarks="true" value="0.0" />
+                  <Slider id="slider_whiteBoard_green_colour" fx:id="slider_whiteBoard_green_colour" blockIncrement="0.1" max="1.0" showTickMarks="true" value="0.0" />
+                  <Slider id="slider_whiteBoard_blue_colour" fx:id="slider_whiteBoard_blue_colour" blockIncrement="0.1" max="1.0" showTickMarks="true" value="0.0" />
+                  <Rectangle id="rectangle_whiteBoard_marker_colour" fx:id="rectangle_whiteBoard_marker_colour" arcHeight="5.0" arcWidth="5.0" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+               </children>
+            </HBox>
+            <Pane id="pane_whiteBoard_container" fx:id="pane_whiteBoard_container" prefHeight="400.0" prefWidth="500.0">
+                <children>
+                    <Pane id="pane_whiteBoard_drawing_container" fx:id="pane_whiteBoard_drawing_container" prefHeight="400.0" prefWidth="500.0">
+                       <children>
+                          <Pane id="pane_whiteBoard_drawing" fx:id="pane_whiteBoard_drawing" prefHeight="400.0" prefWidth="500.0"></Pane>
+        <!--                  <Rectangle id="rectangle_whiteBoard_drawing" fx:id="rectangle_whiteBoard_drawing" arcHeight="5.0" arcWidth="5.0" fill="#fcfcfc" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />-->
+                       </children>
+                    </Pane>>
+                </children>
+            </Pane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
