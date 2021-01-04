@@ -1,5 +1,6 @@
-Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
-1,  Kuramon
+Number,Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd
+,1
+,Kuramon
 ,Baby
 ,Free
 ,Neutral
@@ -11,7 +12,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,69
 ,68
 ,95
-, 2,  Pabumon
+,2
+,Pabumon
 ,Baby
 ,Free
 ,Neutral
@@ -23,7 +25,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,76
 ,69
 ,68
-, 3,  Punimon
+,3
+,Punimon
 ,Baby
 ,Free
 ,Neutral
@@ -35,7 +38,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,87
 ,50
 ,75
-, 4,  Botamon
+,4
+,Botamon
 ,Baby
 ,Free
 ,Neutral
@@ -47,7 +51,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,95
 ,76
 ,61
-, 5,  Poyomon
+,5
+,Poyomon
 ,Baby
 ,Free
 ,Neutral
@@ -59,7 +64,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,59
 ,95
 ,86
-, 6,, Arcadiamon In-Tr.
+,6
+,Arcadiamon In-Tr.
 ,In-Training
 ,Free
 ,Dark
@@ -71,7 +77,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,59
 ,81
 ,93
-, 7,  Koromon
+,7
+,Koromon
 ,In-Training
 ,Free
 ,Fire
@@ -83,7 +90,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,93
 ,52
 ,76
-, 8,  Tanemon
+,8
+,Tanemon
 ,In-Training
 ,Free
 ,Plant
@@ -95,7 +103,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,82
 ,73
 ,69
-, 9,  Tsunomon
+,9
+,Tsunomon
 ,In-Training
 ,Free
 ,Earth
@@ -107,7 +116,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,92
 ,54
 ,76
-, 10,  Tsumemon
+,10
+,Tsumemon
 ,In-Training
 ,Free
 ,Dark
@@ -119,7 +129,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,64
 ,54
 ,93
-, 11,  Tokomon
+,11
+,Tokomon
 ,In-Training
 ,Free
 ,Neutral
@@ -131,7 +142,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,74
 ,103
-, 12,  Nyaromon
+,12
+,Nyaromon
 ,In-Training
 ,Free
 ,Light
@@ -143,7 +155,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,64
 ,103
 ,94
-, 13,  Pagumon
+,13
+,Pagumon
 ,In-Training
 ,Free
 ,Dark
@@ -155,7 +168,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,63
 ,102
 ,93
-, 14,  Yokomon
+,14
+,Yokomon
 ,In-Training
 ,Free
 ,Plant
@@ -167,7 +181,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,82
 ,75
 ,69
-, 15,  Bukamon
+,15
+,Bukamon
 ,In-Training
 ,Free
 ,Water
@@ -179,7 +194,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,103
 ,69
-, 16,  Motimon
+,16
+,Motimon
 ,In-Training
 ,Free
 ,Neutral
@@ -191,7 +207,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,81
 ,78
 ,69
-, 17,  Wanyamon
+,17
+,Wanyamon
 ,In-Training
 ,Free
 ,Wind
@@ -203,7 +220,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,75
 ,75
 ,82
-, 18,  Agumon
+,18
+,Agumon
 ,Rookie
 ,Vaccine
 ,Fire
@@ -215,7 +233,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,103
 ,54
 ,86
-, 19,  Agumon (Blk)
+,19
+,Agumon (Blk)
 ,Rookie
 ,Virus
 ,Fire
@@ -227,7 +246,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,108
 ,56
 ,85
-, 20,  Arcadiamon Rookie,
+,20
+,Arcadiamon Rookie
 ,Rookie
 ,Virus
 ,Dark
@@ -239,7 +259,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,85
 ,86
-, 21,  Armadillomon
+,21
+,Armadillomon
 ,Rookie
 ,Free
 ,Earth
@@ -251,7 +272,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,111
 ,65
 ,72
-, 22,  Impmon
+,22
+,Impmon
 ,Rookie
 ,Virus
 ,Dark
@@ -263,7 +285,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,65
 ,114
 ,102
-, 23,  Elecmon
+,23
+,Elecmon
 ,Rookie
 ,Data
 ,Electric
@@ -275,7 +298,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,79
 ,90
-, 24,  Otamamon
+,24
+,Otamamon
 ,Rookie
 ,Virus
 ,Water
@@ -287,7 +311,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,75
 ,113
 ,78
-, 25,  Gaomon
+,25
+,Gaomon
 ,Rookie
 ,Data
 ,Neutral
@@ -299,7 +324,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,66
 ,101
-, 26,  Gazimon
+,26
+,Gazimon
 ,Rookie
 ,Virus
 ,Dark
@@ -311,7 +337,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,64
 ,59
 ,102
-, 27,  Gabumon
+,27
+,Gabumon
 ,Rookie
 ,Data
 ,Fire
@@ -323,7 +350,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,81
 ,79
 ,91
-, 28,  Gabumon (Blk)
+,28
+,Gabumon (Blk)
 ,Rookie
 ,Virus
 ,Fire
@@ -335,7 +363,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,74
 ,91
-, 29,  Guilmon
+,29
+,Guilmon
 ,Rookie
 ,Virus
 ,Fire
@@ -347,7 +376,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,54
 ,101
-, 30,  Kudamon
+,30
+,Kudamon
 ,Rookie
 ,Vaccine
 ,Light
@@ -359,7 +389,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,117
 ,105
-, 31,  Keramon
+,31
+,Keramon
 ,Rookie
 ,Free
 ,Dark
@@ -371,7 +402,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,69
 ,61
 ,101
-, 32,  Gotsumon
+,32
+,Gotsumon
 ,Rookie
 ,Data
 ,Earth
@@ -383,7 +415,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,118
 ,90
 ,72
-, 33,  Goblimon
+,33
+,Goblimon
 ,Rookie
 ,Virus
 ,Earth
@@ -395,7 +428,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,110
 ,51
 ,84
-, 34,  Gomamon
+,34
+,Gomamon
 ,Rookie
 ,Vaccine
 ,Water
@@ -407,7 +441,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,93
 ,81
 ,79
-, 35,  Syakomon
+,35
+,Syakomon
 ,Rookie
 ,Virus
 ,Water
@@ -419,7 +454,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,86
 ,112
 ,78
-, 36,  Zubamon
+,36
+,Zubamon
 ,Rookie
 ,Vaccine
 ,Neutral
@@ -431,7 +467,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,111
 ,54
 ,87
-, 37,  Solarmon
+,37
+,Solarmon
 ,Rookie
 ,Vaccine
 ,Light
@@ -443,7 +480,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,108
 ,71
 ,77
-, 38,  Chuumon
+,38
+,Chuumon
 ,Rookie
 ,Virus
 ,Earth
@@ -455,7 +493,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,73
 ,85
 ,111
-, 39,  Terriermon
+,39
+,Terriermon
 ,Rookie
 ,Vaccine
 ,Wind
@@ -467,7 +506,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,75
 ,84
 ,112
-, 40,  Tentomon
+,40
+,Tentomon
 ,Rookie
 ,Vaccine
 ,Plant
@@ -479,7 +519,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,110
 ,93
 ,73
-, 41,  ToyAgumon
+,41
+,ToyAgumon
 ,Rookie
 ,Vaccine
 ,Neutral
@@ -491,7 +532,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,112
 ,63
 ,71
-, 42,  Dracmon
+,42
+,Dracmon
 ,Rookie
 ,Virus
 ,Dark
@@ -503,7 +545,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,88
 ,83
 ,84
-, 43,  Dracomon
+,43
+,Dracomon
 ,Rookie
 ,Data
 ,Fire
@@ -515,7 +558,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,49
 ,99
-, 44,  Dorumon
+,44
+,Dorumon
 ,Rookie
 ,Data
 ,Neutral
@@ -527,7 +571,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,56
 ,101
-, 45,  Hagurumon
+,45
+,Hagurumon
 ,Rookie
 ,Virus
 ,Electric
@@ -539,7 +584,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,110
 ,69
 ,71
-, 46,  Patamon
+,46
+,Patamon
 ,Rookie
 ,Data
 ,Wind
@@ -551,7 +597,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,92
 ,90
-, 47,  Hackmon
+,47
+,Hackmon
 ,Rookie
 ,Data
 ,Fire
@@ -563,7 +610,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,108
 ,63
 ,85
-, 48,  Palmon
+,48
+,Palmon
 ,Rookie
 ,Data
 ,Plant
@@ -575,7 +623,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,90
 ,80
 ,79
-, 49,  DemiDevimon
+,49
+,DemiDevimon
 ,Rookie
 ,Virus
 ,Dark
@@ -587,7 +636,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,76
 ,89
 ,111
-, 50,  Biyomon
+,50
+,Biyomon
 ,Rookie
 ,Vaccine
 ,Wind
@@ -599,7 +649,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,85
 ,91
-, 51,  Falcomon
+,51
+,Falcomon
 ,Rookie
 ,Vaccine
 ,Wind
@@ -611,7 +662,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,79
 ,113
-, 52,  FanBeemon
+,52
+,FanBeemon
 ,Rookie
 ,Virus
 ,Plant
@@ -623,7 +675,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,86
 ,73
 ,98
-, 53,  Veemon
+,53
+,Veemon
 ,Rookie
 ,Free
 ,Neutral
@@ -635,7 +688,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,53
 ,101
-, 54,  Salamon
+,54
+,Salamon
 ,Rookie
 ,Vaccine
 ,Light
@@ -647,7 +701,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,69
 ,119
 ,97
-, 55,  Betamon
+,55
+,Betamon
 ,Rookie
 ,Virus
 ,Water
@@ -659,7 +714,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,76
 ,113
 ,78
-, 56,  Hawkmon
+,56
+,Hawkmon
 ,Rookie
 ,Free
 ,Wind
@@ -671,7 +727,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,83
 ,114
-, 57,  Mushroomon
+,57
+,Mushroomon
 ,Rookie
 ,Virus
 ,Plant
@@ -683,7 +740,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,88
 ,79
 ,78
-, 58,  Monodramon
+,58
+,Monodramon
 ,Rookie
 ,Vaccine
 ,Neutral
@@ -695,7 +753,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,100
 ,51
 ,79
-, 59,  Lalamon
+,59
+,Lalamon
 ,Rookie
 ,Data
 ,Plant
@@ -707,7 +766,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,87
 ,79
 ,79
-, 60,  Lucemon
+,60
+,Lucemon
 ,Rookie
 ,Vaccine
 ,Light
@@ -719,7 +779,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,208
 ,119
-, 61,  Lunamon
+,61
+,Lunamon
 ,Rookie
 ,Data
 ,Water
@@ -731,7 +792,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,76
 ,101
 ,82
-, 62,  Renamon
+,62
+,Renamon
 ,Rookie
 ,Data
 ,Plant
@@ -743,7 +805,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,89
 ,93
-, 63,  Lopmon
+,63
+,Lopmon
 ,Rookie
 ,Data
 ,Earth
@@ -755,7 +818,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,68
 ,103
 ,85
-, 64,  Wormmon
+,64
+,Wormmon
 ,Rookie
 ,Free
 ,Plant
@@ -767,7 +831,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,111
 ,90
 ,71
-, 65,  IceDevimon
+,65
+,IceDevimon
 ,Champion
 ,Virus
 ,Water
@@ -779,7 +844,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,118
 ,92
-, 66,  Icemon
+,66
+,Icemon
 ,Champion
 ,Data
 ,Water
@@ -791,7 +857,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,132
 ,106
 ,84
-, 67,  Aquilamon
+,67
+,Aquilamon
 ,Champion
 ,Free
 ,Wind
@@ -803,7 +870,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,89
 ,143
-, 68,  Agunimon
+,68
+,Agunimon
 ,Champion
 ,Free
 ,Fire
@@ -815,7 +883,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,93
 ,84
 ,119
-, 69,  Arcadiamon Champion,
+,69
+,Arcadiamon Champion,
 ,Champion
 ,Virus
 ,Dark
@@ -827,7 +896,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,89
 ,108
-, 70,  Ankylomon
+,70
+,Ankylomon
 ,Champion
 ,Free
 ,Earth
@@ -839,7 +909,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,133
 ,79
 ,79
-, 71,  Ikkakumon
+,71
+,Ikkakumon
 ,Champion
 ,Vaccine
 ,Water
@@ -851,7 +922,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,102
 ,94
 ,90
-, 72,  Wizardmon
+,72
+,Wizardmon
 ,Champion
 ,Data
 ,Dark
@@ -863,7 +935,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,143
 ,118
-, 73,  Lobomon
+,73
+,Lobomon
 ,Champion
 ,Free
 ,Light
@@ -875,7 +948,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,95
 ,69
 ,117
-, 74,  Woodmon
+,74
+,Woodmon
 ,Champion
 ,Virus
 ,Plant
@@ -887,7 +961,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,103
 ,89
 ,88
-, 75,  Airdramon
+,75
+,Airdramon
 ,Champion
 ,Vaccine
 ,Wind
@@ -899,7 +974,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,100
 ,86
 ,118
-, 76,  ExVeemon
+,76
+,ExVeemon
 ,Champion
 ,Free
 ,Neutral
@@ -911,7 +987,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,94
 ,118
-, 77,  Angemon
+,77
+,Angemon
 ,Champion
 ,Vaccine
 ,Light
@@ -923,7 +1000,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,128
 ,99
-, 78,  Ogremon
+,78
+,Ogremon
 ,Champion
 ,Virus
 ,Earth
@@ -935,7 +1013,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,118
 ,64
 ,97
-, 79,  Guardromon
+,79
+,Guardromon
 ,Champion
 ,Virus
 ,Electric
@@ -947,7 +1026,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,138
 ,103
 ,79
-, 80,  Guardromon (Gold)
+,80
+,Guardromon (Gold)
 ,Champion
 ,Free
 ,Electric
@@ -959,7 +1039,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,168
 ,96
 ,62
-, 81,  GaoGamon
+,81
+,GaoGamon
 ,Champion
 ,Data
 ,Wind
@@ -971,7 +1052,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,99
 ,138
-, 82,  Kabuterimon
+,82
+,Kabuterimon
 ,Champion
 ,Vaccine
 ,Plant
@@ -983,7 +1065,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,128
 ,116
 ,81
-, 83,  ShellNumemon
+,83
+,ShellNumemon
 ,Champion
 ,Virus
 ,Water
@@ -995,7 +1078,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,148
 ,74
 ,79
-, 84,  Gargomon
+,84
+,Gargomon
 ,Champion
 ,Vaccine
 ,Electric
@@ -1007,7 +1091,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,89
 ,108
-, 85,  Garurumon
+,85
+,Garurumon
 ,Champion
 ,Vaccine
 ,Fire
@@ -1019,7 +1104,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,94
 ,138
-, 86,  Garurumon (Blk)
+,86
+,Garurumon (Blk)
 ,Champion
 ,Virus
 ,Fire
@@ -1031,7 +1117,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,79
 ,133
-, 87,  Kyubimon
+,87
+,Kyubimon
 ,Champion
 ,Data
 ,Fire
@@ -1043,7 +1130,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,138
 ,128
-, 88,  Growlmon
+,88
+,Growlmon
 ,Champion
 ,Virus
 ,Fire
@@ -1055,7 +1143,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,113
 ,69
 ,109
-, 89,  Kurisarimon
+,89
+,Kurisarimon
 ,Champion
 ,Free
 ,Dark
@@ -1067,7 +1156,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,64
 ,113
-, 90,  Greymon
+,90
+,Greymon
 ,Champion
 ,Vaccine
 ,Fire
@@ -1079,7 +1169,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,118
 ,64
 ,104
-, 91,  Greymon (Blue)
+,91
+,Greymon (Blue)
 ,Champion
 ,Virus
 ,Fire
@@ -1091,7 +1182,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,118
 ,59
 ,99
-, 92,  Clockmon
+,92
+,Clockmon
 ,Champion
 ,Data
 ,Electric
@@ -1103,7 +1195,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,101
 ,133
 ,92
-, 93,  Kuwagamon
+,93
+,Kuwagamon
 ,Champion
 ,Virus
 ,Plant
@@ -1115,7 +1208,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,113
 ,59
 ,99
-, 94,  Gekomon
+,94
+,Gekomon
 ,Champion
 ,Virus
 ,Water
@@ -1127,7 +1221,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,128
 ,90
-, 95,  Geremon
+,95
+,Geremon
 ,Champion
 ,Virus
 ,Electric
@@ -1139,7 +1234,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,128
 ,64
 ,78
-, 96,  Coredramon (Blue)
+,96
+,Coredramon (Blue)
 ,Champion
 ,Vaccine
 ,Wind
@@ -1151,7 +1247,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,103
 ,69
 ,109
-, 97,  Coredramon (Green)
+,97
+,Coredramon (Green)
 ,Champion
 ,Virus
 ,Earth
@@ -1163,7 +1260,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,61
 ,123
-, 98,  GoldNumemon
+,98
+,GoldNumemon
 ,Champion
 ,Virus
 ,Light
@@ -1175,7 +1273,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,143
 ,88
-, 99,  Golemon
+,99
+,Golemon
 ,Champion
 ,Virus
 ,Earth
@@ -1187,7 +1286,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,132
 ,62
 ,74
-, 100,  Cyclonemon
+,100
+,Cyclonemon
 ,Champion
 ,Virus
 ,Earth
@@ -1199,7 +1299,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,128
 ,93
 ,81
-, 101,  Sangloupmon
+,101
+,Sangloupmon
 ,Champion
 ,Virus
 ,Dark
@@ -1211,7 +1312,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,91
 ,90
 ,104
-, 102,  Sunflowmon
+,102
+,Sunflowmon
 ,Champion
 ,Data
 ,Plant
@@ -1223,7 +1325,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,141
 ,86
-, 103,  Seadramon
+,103
+,Seadramon
 ,Champion
 ,Data
 ,Water
@@ -1235,7 +1338,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,134
 ,88
-, 104,  Coelamon
+,104
+,Coelamon
 ,Champion
 ,Data
 ,Water
@@ -1247,7 +1351,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,105
 ,90
 ,96
-, 105,  GeoGreymon
+,105
+,GeoGreymon
 ,Champion
 ,Vaccine
 ,Fire
@@ -1259,7 +1364,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,64
 ,118
-, 106,  Sukamon
+,106
+,Sukamon
 ,Champion
 ,Virus
 ,Earth
@@ -1271,7 +1377,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,133
 ,69
 ,79
-, 107,  Starmon
+,107
+,Starmon
 ,Champion
 ,Data
 ,Neutral
@@ -1283,7 +1390,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,91
 ,101
-, 108,  Stingmon
+,108
+,Stingmon
 ,Champion
 ,Free
 ,Plant
@@ -1295,7 +1403,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,74
 ,133
-, 109,  Strikedramon
+,109
+,Strikedramon
 ,Champion
 ,Vaccine
 ,Earth
@@ -1307,7 +1416,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,87
 ,68
 ,118
-, 110,  Zubaeagermon
+,110
+,Zubaeagermon
 ,Champion
 ,Vaccine
 ,Neutral
@@ -1319,7 +1429,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,126
 ,63
 ,111
-, 111,  Socerimon
+,111
+,Socerimon
 ,Champion
 ,Vaccine
 ,Water
@@ -1331,7 +1442,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,93
 ,148
 ,90
-, 112,  Tankmon
+,112
+,Tankmon
 ,Champion
 ,Data
 ,Electric
@@ -1343,7 +1455,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,141
 ,98
 ,81
-, 113,  MudFrigimon
+,113
+,MudFrigimon
 ,Champion
 ,Data
 ,Earth
@@ -1355,7 +1468,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,97
 ,99
-, 114,  Tyrannomon
+,114
+,Tyrannomon
 ,Champion
 ,Data
 ,Fire
@@ -1367,7 +1481,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,125
 ,59
 ,97
-, 115,  Gatomon
+,115
+,Gatomon
 ,Champion
 ,Vaccine
 ,Light
@@ -1379,7 +1494,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,143
 ,123
-, 116,  Devimon
+,116
+,Devimon
 ,Champion
 ,Virus
 ,Dark
@@ -1391,7 +1507,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,125
 ,97
-, 117,  Turuiemon
+,117
+,Turuiemon
 ,Champion
 ,Data
 ,Earth
@@ -1403,7 +1520,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,91
 ,78
 ,120
-, 118,  Togemon
+,118
+,Togemon
 ,Champion
 ,Data
 ,Plant
@@ -1415,7 +1533,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,113
 ,93
 ,90
-, 119,  Dorugamon
+,119
+,Dorugamon
 ,Champion
 ,Data
 ,Earth
@@ -1427,7 +1546,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,69
 ,123
-, 120,  Nanimon
+,120
+,Nanimon
 ,Champion
 ,Virus
 ,Earth
@@ -1439,7 +1559,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,133
 ,98
 ,81
-, 121,  Numemon
+,121
+,Numemon
 ,Champion
 ,Virus
 ,Earth
@@ -1451,7 +1572,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,138
 ,69
 ,83
-, 122,  Birdramon
+,122
+,Birdramon
 ,Champion
 ,Vaccine
 ,Fire
@@ -1463,7 +1585,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,109
 ,128
-, 123,  BaoHuckmon
+,123
+,BaoHuckmon
 ,Champion
 ,Data
 ,Fire
@@ -1475,7 +1598,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,117
 ,90
 ,113
-, 124,  Bakemon
+,124
+,Bakemon
 ,Champion
 ,Virus
 ,Dark
@@ -1487,7 +1611,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,74
 ,138
 ,128
-, 125,  Veedramon
+,125
+,Veedramon
 ,Champion
 ,Vaccine
 ,Wind
@@ -1499,7 +1624,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,113
 ,64
 ,114
-, 126,  Hudiemon
+,126
+,Hudiemon
 ,Champion
 ,Free
 ,Plant
@@ -1511,7 +1637,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,85
 ,113
 ,115
-, 127,  PlatinumSukamon
+,127
+,PlatinumSukamon
 ,Champion
 ,Virus
 ,Neutral
@@ -1523,7 +1650,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,999
 ,50
 ,103
-, 128,  BlackGatomon
+,128
+,BlackGatomon
 ,Champion
 ,Virus
 ,Dark
@@ -1535,7 +1663,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,133
 ,118
-, 129,  Vegiemon
+,129
+,Vegiemon
 ,Champion
 ,Virus
 ,Plant
@@ -1547,7 +1676,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,106
 ,87
 ,88
-, 130,  Peckmon
+,130
+,Peckmon
 ,Champion
 ,Vaccine
 ,Wind
@@ -1559,7 +1689,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,94
 ,148
-, 131,  Meramon
+,131
+,Meramon
 ,Champion
 ,Data
 ,Fire
@@ -1571,7 +1702,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,113
 ,79
 ,99
-, 132,  Monochromon
+,132
+,Monochromon
 ,Champion
 ,Data
 ,Earth
@@ -1583,7 +1715,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,128
 ,77
 ,92
-, 133,  Frigimon
+,133
+,Frigimon
 ,Champion
 ,Vaccine
 ,Water
@@ -1595,7 +1728,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,98
 ,99
 ,90
-, 134,  Unimon
+,134
+,Unimon
 ,Champion
 ,Vaccine
 ,Wind
@@ -1607,7 +1741,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,79
 ,128
 ,118
-, 135,  Raptordramon
+,135
+,Raptordramon
 ,Champion
 ,Vaccine
 ,Neutral
@@ -1619,7 +1754,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,101
 ,83
 ,100
-, 136,  Raremon
+,136
+,Raremon
 ,Champion
 ,Virus
 ,Earth
@@ -1631,7 +1767,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,100
 ,88
 ,103
-, 137,  Leomon
+,137
+,Leomon
 ,Champion
 ,Vaccine
 ,Earth
@@ -1643,7 +1780,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,123
 ,71
 ,97
-, 138,  Lekismon
+,138
+,Lekismon
 ,Champion
 ,Data
 ,Water
@@ -1655,7 +1793,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,99
 ,143
-, 139,  Reppamon
+,139
+,Reppamon
 ,Champion
 ,Vaccine
 ,Light
@@ -1667,7 +1806,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,99
 ,143
-, 140,  Waspmon
+,140
+,Waspmon
 ,Champion
 ,Virus
 ,Electric
@@ -1679,7 +1819,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,74
 ,113
-, 141,  MegaKabuterimon
+,141
+,MegaKabuterimon
 ,Ultimate
 ,Vaccine
 ,Plant
@@ -1691,7 +1832,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,163
 ,109
 ,92
-, 142,  Arcadiamon Ultimate,
+,142
+,Arcadiamon Ultimate
 ,Ultimate
 ,Virus
 ,Dark
@@ -1703,7 +1845,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,119
 ,138
-, 143,  Antylamon
+,143
+,Antylamon
 ,Ultimate
 ,Data
 ,Neutral
@@ -1715,7 +1858,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,114
 ,168
-, 144,  Andromon
+,144
+,Andromon
 ,Ultimate
 ,Vaccine
 ,Electric
@@ -1727,7 +1871,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,157
 ,133
 ,95
-, 145,  Meteormon
+,145
+,Meteormon
 ,Ultimate
 ,Data
 ,Earth
@@ -1739,7 +1884,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,163
 ,128
 ,89
-, 146,  Infermon
+,146
+,Infermon
 ,Ultimate
 ,Free
 ,Dark
@@ -1751,7 +1897,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,74
 ,153
-, 147,  Myotismon
+,147
+,Myotismon
 ,Ultimate
 ,Virus
 ,Dark
@@ -1763,7 +1910,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,148
 ,110
-, 148,  Wingdramon
+,148
+,Wingdramon
 ,Ultimate
 ,Vaccine
 ,Wind
@@ -1775,7 +1923,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,89
 ,158
-, 149,  BurningGreymon
+,149
+,BurningGreymon
 ,Ultimate
 ,Free
 ,Fire
@@ -1787,7 +1936,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,131
 ,95
 ,128
-, 150,  AeroVeedramon
+,150
+,AeroVeedramon
 ,Ultimate
 ,Vaccine
 ,Wind
@@ -1799,7 +1949,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,94
 ,153
-, 151,  Etemon
+,151
+,Etemon
 ,Ultimate
 ,Virus
 ,Dark
@@ -1811,7 +1962,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,119
 ,129
 ,133
-, 152,  Angewomon
+,152
+,Angewomon
 ,Ultimate
 ,Vaccine
 ,Light
@@ -1823,7 +1975,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,188
 ,143
-, 153,  Okuwamon
+,153
+,Okuwamon
 ,Ultimate
 ,Virus
 ,Plant
@@ -1835,7 +1988,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,158
 ,74
 ,119
-, 154,  Garudamon
+,154
+,Garudamon
 ,Ultimate
 ,Vaccine
 ,Fire
@@ -1847,7 +2001,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,129
 ,143
-, 155,  KendoGarurumon
+,155
+,KendoGarurumon
 ,Ultimate
 ,Free
 ,Light
@@ -1859,7 +2014,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,128
 ,104
 ,124
-, 156,  Gigadramon
+,156
+,Gigadramon
 ,Ultimate
 ,Virus
 ,Wind
@@ -1871,7 +2027,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,148
 ,113
 ,100
-, 157,  CatchMamemon
+,157
+,CatchMamemon
 ,Ultimate
 ,Data
 ,Electric
@@ -1883,7 +2040,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,134
 ,95
 ,104
-, 158,  CannonBeemon
+,158
+,CannonBeemon
 ,Ultimate
 ,Virus
 ,Electric
@@ -1895,7 +2053,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,139
 ,99
 ,143
-, 159,  Groundramon
+,159
+,Groundramon
 ,Ultimate
 ,Virus
 ,Earth
@@ -1907,7 +2066,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,143
 ,74
 ,104
-, 160,  GrapLeomon
+,160
+,GrapLeomon
 ,Ultimate
 ,Vaccine
 ,Electric
@@ -1919,7 +2079,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,79
 ,143
-, 161,  Grademon
+,161
+,Grademon
 ,Ultimate
 ,Vaccine
 ,Neutral
@@ -1931,7 +2092,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,100
 ,144
-, 162,  Crescemon
+,162
+,Crescemon
 ,Ultimate
 ,Data
 ,Water
@@ -1943,7 +2105,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,103
 ,139
 ,114
-, 163,  Cyberdramon
+,163
+,Cyberdramon
 ,Ultimate
 ,Vaccine
 ,Dark
@@ -1955,7 +2118,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,143
 ,79
 ,122
-, 164,  Shakkoumon
+,164
+,Shakkoumon
 ,Ultimate
 ,Free
 ,Light
@@ -1967,7 +2131,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,158
 ,139
 ,92
-, 165,  Cherrymon
+,165
+,Cherrymon
 ,Ultimate
 ,Virus
 ,Plant
@@ -1979,7 +2144,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,133
 ,114
 ,100
-, 166,  Silphymon
+,166
+,Silphymon
 ,Ultimate
 ,Free
 ,Wind
@@ -1991,7 +2157,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,119
 ,124
 ,158
-, 167,  SuperStarmon
+,167
+,SuperStarmon
 ,Ultimate
 ,Data
 ,Light
@@ -2003,7 +2170,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,134
 ,109
 ,120
-, 168,  SkullGreymon
+,168
+,SkullGreymon
 ,Ultimate
 ,Virus
 ,Dark
@@ -2015,7 +2183,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,153
 ,69
 ,119
-, 169,  SkullSatamon
+,169
+,SkullSatamon
 ,Ultimate
 ,Virus
 ,Dark
@@ -2027,7 +2196,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,101
 ,132
 ,118
-, 170,  Zudomon
+,170
+,Zudomon
 ,Ultimate
 ,Vaccine
 ,Water
@@ -2039,7 +2209,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,128
 ,104
 ,102
-, 171,  SaviorHuckmon
+,171
+,SaviorHuckmon
 ,Ultimate
 ,Data
 ,Fire
@@ -2051,7 +2222,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,128
 ,79
 ,144
-, 172,  Taomon
+,172
+,Taomon
 ,Ultimate
 ,Data
 ,Dark
@@ -2063,7 +2235,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,173
 ,138
-, 173,  Dragomon
+,173
+,Dragomon
 ,Ultimate
 ,Virus
 ,Water
@@ -2075,7 +2248,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,111
 ,137
 ,99
-, 174,  Chirinmon
+,174
+,Chirinmon
 ,Ultimate
 ,Vaccine
 ,Light
@@ -2087,7 +2261,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,119
 ,124
 ,168
-, 175,  Dinobeemon
+,175
+,Dinobeemon
 ,Ultimate
 ,Free
 ,Plant
@@ -2099,7 +2274,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,124
 ,84
 ,133
-, 176,  Digitamamon
+,176
+,Digitamamon
 ,Ultimate
 ,Data
 ,Neutral
@@ -2111,7 +2287,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,148
 ,111
 ,102
-, 177,  SkullMeramon
+,177
+,SkullMeramon
 ,Ultimate
 ,Data
 ,Fire
@@ -2123,7 +2300,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,133
 ,70
 ,113
-, 178,  Duramon
+,178
+,Duramon
 ,Ultimate
 ,Vaccine
 ,Neutral
@@ -2135,7 +2313,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,146
 ,79
 ,119
-, 179,  ShogunGekomon
+,179
+,ShogunGekomon
 ,Ultimate
 ,Virus
 ,Water
@@ -2147,7 +2326,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,113
 ,99
 ,97
-, 180,  Triceramon
+,180
+,Triceramon
 ,Ultimate
 ,Data
 ,Earth
@@ -2159,7 +2339,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,168
 ,94
 ,99
-, 181,  DoruGreymon
+,181
+,DoruGreymon
 ,Ultimate
 ,Data
 ,Fire
@@ -2171,7 +2352,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,153
 ,84
 ,116
-, 182,  Knightmon
+,182
+,Knightmon
 ,Ultimate
 ,Data
 ,Neutral
@@ -2183,7 +2365,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,158
 ,123
 ,92
-, 183,  Datamon
+,183
+,Datamon
 ,Ultimate
 ,Virus
 ,Electric
@@ -2195,7 +2378,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,175
 ,102
-, 184,  Paildramon
+,184
+,Paildramon
 ,Ultimate
 ,Free
 ,Neutral
@@ -2207,7 +2391,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,124
 ,109
 ,128
-, 185,  Panjyamon
+,185
+,Panjyamon
 ,Ultimate
 ,Vaccine
 ,Water
@@ -2219,7 +2404,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,111
 ,126
-, 186,  Pandamon
+,186
+,Pandamon
 ,Ultimate
 ,Data
 ,Earth
@@ -2231,7 +2417,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,153
 ,118
 ,97
-, 187,  Pumpkinmon
+,187
+,Pumpkinmon
 ,Ultimate
 ,Data
 ,Earth
@@ -2243,7 +2430,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,108
 ,119
 ,111
-, 188,  Piximon
+,188
+,Piximon
 ,Ultimate
 ,Data
 ,Light
@@ -2255,7 +2443,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,134
 ,153
-, 189,  HippoGryphonmon
+,189
+,HippoGryphonmon
 ,Ultimate
 ,Data
 ,Wind
@@ -2267,7 +2456,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,82
 ,143
 ,148
-, 190,  Phantomon
+,190
+,Phantomon
 ,Ultimate
 ,Virus
 ,Dark
@@ -2279,7 +2469,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,163
 ,138
-, 191,  BlackKingNumemon
+,191
+,BlackKingNumemon
 ,Ultimate
 ,Virus
 ,Dark
@@ -2291,7 +2482,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,168
 ,89
 ,89
-, 192,  BlueMeramon
+,192
+,BlueMeramon
 ,Ultimate
 ,Virus
 ,Fire
@@ -2303,7 +2495,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,133
 ,119
-, 193,  Vademon
+,193
+,Vademon
 ,Ultimate
 ,Virus
 ,Dark
@@ -2315,7 +2508,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,173
 ,97
-, 194,  Whamon
+,194
+,Whamon
 ,Ultimate
 ,Vaccine
 ,Water
@@ -2327,7 +2521,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,123
 ,124
 ,100
-, 195,  MagnaAngemon
+,195
+,MagnaAngemon
 ,Ultimate
 ,Vaccine
 ,Light
@@ -2339,7 +2534,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,119
 ,163
 ,105
-, 196,  Volcanomon
+,196
+,Volcanomon
 ,Ultimate
 ,Data
 ,Fire
@@ -2351,7 +2547,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,119
 ,69
 ,125
-, 197,  Matadormon
+,197
+,Matadormon
 ,Ultimate
 ,Virus
 ,Dark
@@ -2363,7 +2560,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,93
 ,104
 ,144
-, 198,  MachGaogamon
+,198
+,MachGaogamon
 ,Ultimate
 ,Data
 ,Wind
@@ -2375,7 +2573,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,89
 ,158
-, 199,  Mamemon
+,199
+,Mamemon
 ,Ultimate
 ,Data
 ,Earth
@@ -2387,7 +2586,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,153
 ,84
 ,97
-, 200,  MegaSeadramon
+,200
+,MegaSeadramon
 ,Ultimate
 ,Data
 ,Water
@@ -2399,7 +2599,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,158
 ,102
-, 201,  Megadramon
+,201
+,Megadramon
 ,Ultimate
 ,Virus
 ,Wind
@@ -2411,7 +2612,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,148
 ,69
 ,119
-, 202,  WarGrowlmon
+,202
+,WarGrowlmon
 ,Ultimate
 ,Virus
 ,Fire
@@ -2423,7 +2625,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,138
 ,87
 ,116
-, 203,  MetalGreymon
+,203
+,MetalGreymon
 ,Ultimate
 ,Vaccine
 ,Fire
@@ -2435,7 +2638,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,148
 ,80
 ,113
-, 204,  MetalGreymon (Blue)
+,204
+,MetalGreymon (Blue)
 ,Ultimate
 ,Virus
 ,Fire
@@ -2447,7 +2651,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,143
 ,69
 ,110
-, 205,  MetalTyrannomon
+,205
+,MetalTyrannomon
 ,Ultimate
 ,Virus
 ,Electric
@@ -2459,7 +2664,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,178
 ,118
 ,92
-, 206,  MetalMamemon
+,206
+,MetalMamemon
 ,Ultimate
 ,Data
 ,Electric
@@ -2471,7 +2677,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,153
 ,128
 ,103
-, 207,  Monzaemon
+,207
+,Monzaemon
 ,Ultimate
 ,Vaccine
 ,Neutral
@@ -2483,7 +2690,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,118
 ,119
 ,100
-, 208,  Crowmon
+,208
+,Crowmon
 ,Ultimate
 ,Vaccine
 ,Wind
@@ -2495,7 +2703,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,119
 ,173
-, 209,  RizeGreymon
+,209
+,RizeGreymon
 ,Ultimate
 ,Vaccine
 ,Fire
@@ -2507,7 +2716,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,69
 ,143
-, 210,  Lilamon
+,210
+,Lilamon
 ,Ultimate
 ,Data
 ,Plant
@@ -2519,7 +2729,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,168
 ,114
-, 211,  Rapidmon
+,211
+,Rapidmon
 ,Ultimate
 ,Vaccine
 ,Electric
@@ -2531,7 +2742,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,119
 ,143
-, 212,  Lillymon
+,212
+,Lillymon
 ,Ultimate
 ,Data
 ,Plant
@@ -2543,7 +2755,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,163
 ,158
-, 213,  Lucemon FM,
+,213
+,Lucemon FM
 ,Ultimate
 ,Virus
 ,Neutral
@@ -2555,7 +2768,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,203
 ,139
-, 214,  LadyDevimon
+,214
+,LadyDevimon
 ,Ultimate
 ,Virus
 ,Dark
@@ -2567,7 +2781,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,158
 ,143
-, 215,  WereGarurumon
+,215
+,WereGarurumon
 ,Ultimate
 ,Vaccine
 ,Earth
@@ -2579,7 +2794,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,79
 ,153
-, 216,  WereGarurumon (Blk)
+,216
+,WereGarurumon (Blk)
 ,Ultimate
 ,Virus
 ,Earth
@@ -2591,7 +2807,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,69
 ,148
-, 217,  Wisemon
+,217
+,Wisemon
 ,Ultimate
 ,Virus
 ,Dark
@@ -2603,7 +2820,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,198
 ,133
-, 218,  Arcadiamon Mega,
+,218
+,Arcadiamon Mega
 ,Mega
 ,Virus
 ,Dark
@@ -2615,7 +2833,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,119
 ,163
-, 219,  Alphamon
+,219
+,Alphamon
 ,Mega
 ,Vaccine
 ,Neutral
@@ -2627,7 +2846,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,183
 ,158
 ,130
-, 220,  UlforceVeedramon
+,220
+,UlforceVeedramon
 ,Mega
 ,Vaccine
 ,Wind
@@ -2639,7 +2859,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,104
 ,198
-, 221,  Ebemon
+,221
+,Ebemon
 ,Mega
 ,Virus
 ,Electric
@@ -2651,7 +2872,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,198
 ,129
-, 222,  Imperialdramon DM,
+,222
+,Imperialdramon DM
 ,Mega
 ,Free
 ,Fire
@@ -2663,7 +2885,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,139
 ,139
 ,148
-, 223,  Imperialdramon FM,
+,223
+,Imperialdramon FM
 ,Mega
 ,Free
 ,Neutral
@@ -2675,7 +2898,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,124
 ,114
 ,153
-, 224,  Vikemon
+,224
+,Vikemon
 ,Mega
 ,Free
 ,Water
@@ -2687,7 +2911,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,143
 ,129
 ,133
-, 225,  Valkyrimon
+,225
+,Valkyrimon
 ,Mega
 ,Free
 ,Wind
@@ -2699,7 +2924,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,129
 ,129
 ,168
-, 226,  Varodurumon
+,226
+,Varodurumon
 ,Mega
 ,Vaccine
 ,Light
@@ -2711,7 +2937,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,189
 ,173
-, 227,  VenomMyotismon
+,227
+,VenomMyotismon
 ,Mega
 ,Virus
 ,Dark
@@ -2723,7 +2950,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,148
 ,138
-, 228,  WarGreymon
+,228
+,WarGreymon
 ,Mega
 ,Vaccine
 ,Fire
@@ -2735,7 +2963,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,163
 ,99
 ,140
-, 229,  Ophanimon
+,229
+,Ophanimon
 ,Mega
 ,Vaccine
 ,Light
@@ -2747,7 +2976,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,164
 ,193
 ,153
-, 230,  Gaiomon
+,230
+,Gaiomon
 ,Mega
 ,Virus
 ,Fire
@@ -2759,7 +2989,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,129
 ,94
 ,158
-, 231,  KaiserGreymon
+,231
+,KaiserGreymon
 ,Mega
 ,Free
 ,Fire
@@ -2771,7 +3002,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,151
 ,123
 ,139
-, 232,  ChaosGallantmon
+,232
+,ChaosGallantmon
 ,Mega
 ,Virus
 ,Dark
@@ -2783,7 +3015,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,139
 ,163
 ,144
-, 233,  Chaosdramon
+,233
+,Chaosdramon
 ,Mega
 ,Virus
 ,Electric
@@ -2795,7 +3028,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,173
 ,109
 ,134
-, 234,  Gankoomon
+,234
+,Gankoomon
 ,Mega
 ,Data
 ,Fire
@@ -2807,7 +3041,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,163
 ,109
 ,138
-, 235,  KingEtemon
+,235
+,KingEtemon
 ,Mega
 ,Virus
 ,Earth
@@ -2819,7 +3054,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,163
 ,131
 ,125
-, 236,  Kuzuhamon
+,236
+,Kuzuhamon
 ,Mega
 ,Data
 ,Dark
@@ -2831,7 +3067,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,129
 ,193
 ,139
-, 237,  GranKuwagamon
+,237
+,GranKuwagamon
 ,Mega
 ,Virus
 ,Plant
@@ -2843,7 +3080,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,178
 ,89
 ,140
-, 238,  GranDracmon
+,238
+,GranDracmon
 ,Mega
 ,Virus
 ,Dark
@@ -2855,7 +3093,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,169
 ,151
-, 239,  GroundLocomon
+,239
+,GroundLocomon
 ,Mega
 ,Data
 ,Electric
@@ -2867,7 +3106,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,213
 ,133
 ,128
-, 240,  Gryphonmon
+,240
+,Gryphonmon
 ,Mega
 ,Data
 ,Wind
@@ -2879,7 +3119,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,130
 ,173
-, 241,  Craniamon
+,241
+,Craniamon
 ,Mega
 ,Vaccine
 ,Earth
@@ -2891,7 +3132,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,208
 ,134
 ,124
-, 242,  Kerpymon (Blk)
+,242
+,Kerpymon (Blk)
 ,Mega
 ,Virus
 ,Dark
@@ -2903,7 +3145,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,223
 ,153
-, 243,  Kerpymon (Good)
+,243
+,Kerpymon (Good)
 ,Mega
 ,Vaccine
 ,Light
@@ -2915,7 +3158,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,208
 ,158
-, 244,  Goldramon
+,244
+,Goldramon
 ,Mega
 ,Vaccine
 ,Light
@@ -2927,7 +3171,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,149
 ,134
 ,138
-, 245,  SaberLeomon
+,245
+,SaberLeomon
 ,Mega
 ,Data
 ,Wind
@@ -2939,7 +3184,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,84
 ,163
-, 246,  Sakuyamon
+,246
+,Sakuyamon
 ,Mega
 ,Data
 ,Light
@@ -2951,7 +3197,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,188
 ,173
-, 247,  Jesmon
+,247
+,Jesmon
 ,Mega
 ,Data
 ,Neutral
@@ -2963,7 +3210,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,149
 ,114
 ,168
-, 248,  ShineGreymon
+,248
+,ShineGreymon
 ,Mega
 ,Vaccine
 ,Light
@@ -2975,7 +3223,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,84
 ,158
-, 249,  ShineGreymon BM,
+,249
+,ShineGreymon BM
 ,Mega
 ,Vaccine
 ,Fire
@@ -2987,7 +3236,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,84
 ,168
-, 250,  Justimon
+,250
+,Justimon
 ,Mega
 ,Vaccine
 ,Light
@@ -2999,7 +3249,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,158
 ,99
 ,144
-, 251,  Kentaurosmon
+,251
+,Kentaurosmon
 ,Mega
 ,Vaccine
 ,Light
@@ -3011,7 +3262,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,154
 ,154
 ,183
-, 252,  Slayerdramon
+,252
+,Slayerdramon
 ,Mega
 ,Vaccine
 ,Wind
@@ -3023,7 +3275,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,129
 ,129
 ,153
-, 253,  Seraphimon
+,253
+,Seraphimon
 ,Mega
 ,Vaccine
 ,Light
@@ -3035,7 +3288,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,144
 ,198
 ,135
-, 254,  MegaGargomon
+,254
+,MegaGargomon
 ,Mega
 ,Vaccine
 ,Electric
@@ -3047,7 +3301,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,139
 ,119
 ,144
-, 255,  Darkdramon
+,255
+,Darkdramon
 ,Mega
 ,Virus
 ,Electric
@@ -3059,7 +3314,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,148
 ,99
 ,139
-, 256,  TigerVespamon
+,256
+,TigerVespamon
 ,Mega
 ,Virus
 ,Electric
@@ -3071,7 +3327,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,99
 ,173
-, 257,  Titamon
+,257
+,Titamon
 ,Mega
 ,Virus
 ,Earth
@@ -3083,7 +3340,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,128
 ,114
 ,129
-, 258,  TyrantKabuterimon
+,258
+,TyrantKabuterimon
 ,Mega
 ,Virus
 ,Plant
@@ -3095,7 +3353,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,164
 ,123
 ,159
-, 259,  Dianamon
+,259
+,Dianamon
 ,Mega
 ,Data
 ,Water
@@ -3107,7 +3366,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,154
 ,198
 ,183
-, 260,  Diaboromon
+,260
+,Diaboromon
 ,Mega
 ,Free
 ,Dark
@@ -3119,7 +3379,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,79
 ,173
-, 261,  Creepymon
+,261
+,Creepymon
 ,Mega
 ,Virus
 ,Dark
@@ -3131,7 +3392,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,183
 ,140
-, 262,  Gallantmon
+,262
+,Gallantmon
 ,Mega
 ,Virus
 ,Light
@@ -3143,7 +3405,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,154
 ,149
 ,148
-, 263,  Dynasmon
+,263
+,Dynasmon
 ,Mega
 ,Data
 ,Wind
@@ -3155,7 +3418,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,129
 ,94
 ,178
-, 264,  Durandamon
+,264
+,Durandamon
 ,Mega
 ,Vaccine
 ,Neutral
@@ -3167,7 +3431,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,175
 ,95
 ,135
-, 265,  Leopardmon
+,265
+,Leopardmon
 ,Mega
 ,Data
 ,Light
@@ -3179,7 +3444,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,183
 ,188
-, 266,  Leopardmon LM,
+,266
+,Leopardmon LM
 ,Mega
 ,Data
 ,Earth
@@ -3191,7 +3457,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,129
 ,139
 ,218
-, 267,  Dorugoramon
+,267
+,Dorugoramon
 ,Mega
 ,Data
 ,Dark
@@ -3203,7 +3470,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,134
 ,88
 ,145
-, 268,  Neptunemon
+,268
+,Neptunemon
 ,Mega
 ,Vaccine
 ,Water
@@ -3215,7 +3483,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,130
 ,173
 ,139
-, 269,  HiAndromon
+,269
+,HiAndromon
 ,Mega
 ,Vaccine
 ,Electric
@@ -3227,7 +3496,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,178
 ,138
 ,124
-, 270,  PileVolcamon
+,270
+,PileVolcamon
 ,Mega
 ,Data
 ,Fire
@@ -3239,7 +3509,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,163
 ,111
 ,137
-, 271,  Barbamon
+,271
+,Barbamon
 ,Mega
 ,Virus
 ,Dark
@@ -3251,7 +3522,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,129
 ,233
 ,133
-, 272,  BanchoLeomon
+,272
+,BanchoLeomon
 ,Mega
 ,Vaccine
 ,Earth
@@ -3263,7 +3535,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,188
 ,80
 ,138
-, 273,  Piedmon
+,273
+,Piedmon
 ,Mega
 ,Virus
 ,Dark
@@ -3275,7 +3548,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,183
 ,163
-, 274,  Puppetmon
+,274
+,Puppetmon
 ,Mega
 ,Virus
 ,Plant
@@ -3287,7 +3561,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,163
 ,148
 ,124
-, 275,  PlatinumNumemon
+,275
+,PlatinumNumemon
 ,Mega
 ,Virus
 ,Neutral
@@ -3299,7 +3574,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,999
 ,50
 ,144
-, 276,  BlackWarGreymon
+,276
+,BlackWarGreymon
 ,Mega
 ,Virus
 ,Fire
@@ -3311,7 +3587,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,178
 ,89
 ,140
-, 277,  PrinceMamemon
+,277
+,PrinceMamemon
 ,Mega
 ,Data
 ,Neutral
@@ -3323,7 +3600,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,173
 ,109
 ,130
-, 278,  Breakdramon
+,278
+,Breakdramon
 ,Mega
 ,Virus
 ,Earth
@@ -3335,7 +3613,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,168
 ,94
 ,129
-, 279,  Plesiomon
+,279
+,Plesiomon
 ,Mega
 ,Data
 ,Water
@@ -3347,7 +3626,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,188
 ,129
-, 280,  HerculesKabuterimon
+,280
+,HerculesKabuterimon
 ,Mega
 ,Vaccine
 ,Plant
@@ -3359,7 +3639,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,168
 ,124
 ,124
-, 281,  Beelzemon
+,281
+,Beelzemon
 ,Mega
 ,Virus
 ,Dark
@@ -3371,7 +3652,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,119
 ,99
 ,168
-, 282,  Beelzemon BM,
+,282
+,Beelzemon BM
 ,Mega
 ,Virus
 ,Dark
@@ -3383,7 +3665,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,124
 ,104
 ,178
-, 283,  Belphemon SM,
+,283
+,Belphemon SM
 ,Mega
 ,Virus
 ,Dark
@@ -3395,7 +3678,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,203
 ,139
-, 284,  Hououmon
+,284
+,Hououmon
 ,Mega
 ,Vaccine
 ,Fire
@@ -3407,7 +3691,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,193
 ,158
-, 285,  Magnadramon
+,285
+,Magnadramon
 ,Mega
 ,Vaccine
 ,Light
@@ -3419,7 +3704,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,124
 ,183
 ,129
-, 286,  Boltmon
+,286
+,Boltmon
 ,Mega
 ,Data
 ,Electric
@@ -3431,7 +3717,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,163
 ,84
 ,140
-, 287,  MagnaGarurumon
+,287
+,MagnaGarurumon
 ,Mega
 ,Free
 ,Light
@@ -3443,7 +3730,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,114
 ,183
-, 288,  MagnaGarurumon (SV)
+,288
+,MagnaGarurumon (SV)
 ,Mega
 ,Free
 ,Light
@@ -3455,7 +3743,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,107
 ,119
 ,218
-, 289,  Mastemon
+,289
+,Mastemon
 ,Mega
 ,Vaccine
 ,Neutral
@@ -3467,7 +3756,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,134
 ,173
 ,149
-, 290,  MarineAngemon
+,290
+,MarineAngemon
 ,Mega
 ,Vaccine
 ,Water
@@ -3479,7 +3769,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,89
 ,203
 ,153
-, 291,  Minervamon
+,291
+,Minervamon
 ,Mega
 ,Virus
 ,Neutral
@@ -3491,7 +3782,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,119
 ,168
-, 292,  MirageGaogamon
+,292
+,MirageGaogamon
 ,Mega
 ,Data
 ,Wind
@@ -3503,7 +3795,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,109
 ,178
-, 293,  MirageGaogamon BM,
+,293
+,MirageGaogamon BM
 ,Mega
 ,Data
 ,Light
@@ -3515,7 +3808,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,158
 ,174
-, 294,  Machinedramon
+,294
+,Machinedramon
 ,Mega
 ,Virus
 ,Electric
@@ -3527,7 +3821,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,183
 ,128
 ,124
-, 295,  Megidramon
+,295
+,Megidramon
 ,Mega
 ,Virus
 ,Fire
@@ -3539,7 +3834,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,132
 ,109
 ,153
-, 296,  MetalEtemon
+,296
+,MetalEtemon
 ,Mega
 ,Virus
 ,Earth
@@ -3551,7 +3847,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,188
 ,89
 ,124
-, 297,  MetalGarurumon
+,297
+,MetalGarurumon
 ,Mega
 ,Data
 ,Water
@@ -3563,7 +3860,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,129
 ,129
 ,178
-, 298,  MetalGarurumon (Blk)
+,298
+,MetalGarurumon (Blk)
 ,Mega
 ,Virus
 ,Electric
@@ -3575,7 +3873,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,173
 ,133
 ,130
-, 299,  MetalSeadramon
+,299
+,MetalSeadramon
 ,Mega
 ,Data
 ,Water
@@ -3587,7 +3886,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,139
 ,168
 ,129
-, 300,  Merukimon
+,300
+,Merukimon
 ,Mega
 ,Virus
 ,Wind
@@ -3599,7 +3899,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,138
 ,141
 ,177
-, 301,  RustTyranomon
+,301
+,RustTyranomon
 ,Mega
 ,Virus
 ,Electric
@@ -3611,7 +3912,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,163
 ,74
 ,140
-, 302,  Leviamon
+,302
+,Leviamon
 ,Mega
 ,Virus
 ,Water
@@ -3623,7 +3925,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,158
 ,144
 ,133
-, 303,  Lilithmon
+,303
+,Lilithmon
 ,Mega
 ,Virus
 ,Dark
@@ -3635,7 +3938,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,223
 ,173
-, 304,  Ravemon
+,304
+,Ravemon
 ,Mega
 ,Vaccine
 ,Wind
@@ -3647,7 +3951,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,119
 ,139
 ,203
-, 305,  Ravemon BM,
+,305
+,Ravemon BM
 ,Mega
 ,Vaccine
 ,Wind
@@ -3659,7 +3964,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,139
 ,144
 ,213
-, 306,  Crusadermon
+,306
+,Crusadermon
 ,Mega
 ,Virus
 ,Dark
@@ -3671,7 +3977,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,139
 ,144
 ,193
-, 307,  Rosemon
+,307
+,Rosemon
 ,Mega
 ,Data
 ,Plant
@@ -3683,7 +3990,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,129
 ,149
 ,144
-, 308,  Rosemon BM,
+,308
+,Rosemon BM
 ,Mega
 ,Data
 ,Plant
@@ -3695,7 +4003,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,139
 ,159
 ,143
-, 309,  Lotosmon
+,309
+,Lotosmon
 ,Mega
 ,Data
 ,Plant
@@ -3707,7 +4016,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,213
 ,168
-, 310,  Armageddemon
+,310
+,Armageddemon
 ,Ultra
 ,Free
 ,Dark
@@ -3719,7 +4029,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,133
 ,84
 ,164
-, 311,  Arcadiamon Ultra,
+,311
+,Arcadiamon Ultra
 ,Ultra
 ,Virus
 ,Dark
@@ -3731,7 +4042,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,109
 ,134
 ,170
-, 312,  Alphamon Ouryuken,
+,312
+,Alphamon Ouryuken
 ,Ultra
 ,Vaccine
 ,Neutral
@@ -3743,7 +4055,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,149
 ,159
 ,153
-, 313,  Imperialdramon PM,
+,313
+,Imperialdramon PM
 ,Ultra
 ,Vaccine
 ,Light
@@ -3755,7 +4068,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,154
 ,154
 ,153
-, 314,  Examon
+,314
+,Examon
 ,Ultra
 ,Data
 ,Wind
@@ -3767,7 +4081,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,139
 ,134
 ,153
-, 315,  Omnimon
+,315
+,Omnimon
 ,Ultra
 ,Vaccine
 ,Light
@@ -3779,7 +4094,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,168
 ,134
 ,144
-, 316,  Omnimon Zwart,
+,316
+,Omnimon Zwart
 ,Ultra
 ,Vaccine
 ,Dark
@@ -3791,7 +4107,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,193
 ,158
 ,134
-, 317,  Chaosmon
+,317
+,Chaosmon
 ,Ultra
 ,Vaccine
 ,Neutral
@@ -3803,7 +4120,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,94
 ,89
 ,188
-, 318,  Chaosmon VA,
+,318
+,Chaosmon VA
 ,Ultra
 ,Vaccine
 ,Light
@@ -3815,7 +4133,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,84
 ,204
 ,168
-, 319,  Susanomon
+,319
+,Susanomon
 ,Ultra
 ,Vaccine
 ,Light
@@ -3827,7 +4146,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,158
 ,149
 ,149
-, 320,  Gallantmon CM,
+,320
+,Gallantmon CM
 ,Ultra
 ,Virus
 ,Light
@@ -3839,7 +4159,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,124
 ,139
 ,173
-, 321,  Belphemon RM,
+,321
+,Belphemon RM
 ,Ultra
 ,Virus
 ,Dark
@@ -3851,7 +4172,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,168
 ,109
 ,140
-, 322,  Lucemon SM,
+,322
+,Lucemon SM
 ,Ultra
 ,Virus
 ,Dark
@@ -3863,7 +4185,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,124
 ,233
 ,158
-, 323,  Flamedramon
+,323
+,Flamedramon
 ,Armor
 ,Free
 ,Fire
@@ -3875,7 +4198,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,89
 ,138
-, 324,  Magnamon
+,324
+,Magnamon
 ,Armor
 ,Free
 ,Earth
@@ -3887,7 +4211,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,208
 ,148
 ,124
-, 325,  Rapidmon (Armor)
+,325
+,Rapidmon (Armor)
 ,Armor
 ,Vaccine
 ,Light
@@ -3899,7 +4224,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,178
 ,158
 ,124
-, 326,  Shoutmon
+,326
+,Shoutmon
 ,None
 ,Free
 ,Fire
@@ -3911,7 +4237,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,101
 ,55
 ,87
-, 327,  OmniShoutmon
+,327
+,OmniShoutmon
 ,None
 ,Free
 ,Fire
@@ -3923,7 +4250,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,144
 ,114
 ,165
-, 328,  Ryudamon
+,328
+,Ryudamon
 ,Rookie
 ,Vaccine
 ,Neutral
@@ -3935,7 +4263,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,97
 ,57
 ,102
-, 329,  Ginryumon
+,329
+,Ginryumon
 ,Champion
 ,Vaccine
 ,Neutral
@@ -3947,7 +4276,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,71
 ,118
-, 330,  Hisyaryumon
+,330
+,Hisyaryumon
 ,Ultimate
 ,Vaccine
 ,Neutral
@@ -3959,7 +4289,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,157
 ,74
 ,123
-, 331,  Ouryumon
+,331
+,Ouryumon
 ,Mega
 ,Vaccine
 ,Neutral
@@ -3971,7 +4302,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,179
 ,84
 ,158
-, 332,  Apocalymon
+,332
+,Apocalymon
 ,Ultra
 ,Free
 ,Neutral
@@ -3983,7 +4315,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,104
 ,183
 ,188
-, 333,  Sistermon Blanc,
+,333
+,Sistermon Blanc
 ,Rookie
 ,Vaccine
 ,Light
@@ -3995,7 +4328,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,72
 ,116
 ,82
-, 334,  Sistermon B (Awake.)
+,334
+,Sistermon B (Awake.)
 ,Rookie
 ,Vaccine
 ,Light
@@ -4007,7 +4341,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,112
 ,191
 ,165
-, 335,  Sistermon Ciel,
+,335
+,Sistermon Ciel
 ,Champion
 ,Virus
 ,Light
@@ -4019,7 +4354,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,87
 ,95
 ,139
-, 336,  Sistermon C (Awake.)
+,336
+,Sistermon C (Awake.)
 ,Champion
 ,Virus
 ,Light
@@ -4031,7 +4367,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,102
 ,114
 ,173
-, 337,  Alphamon NX,
+,337
+,Alphamon NX
 ,Mega
 ,Vaccine
 ,Neutral
@@ -4043,7 +4380,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,114
 ,109
 ,116
-, 338,  Crusadermon NX,
+,338
+,Crusadermon NX
 ,Mega
 ,Virus
 ,Dark
@@ -4055,7 +4393,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,99
 ,109
 ,121
-, 339,  Leopardmon NX,
+,339
+,Leopardmon NX
 ,Mega
 ,Data
 ,Light
@@ -4067,7 +4406,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,91
 ,116
 ,126
-, 340,  Omnimon NX,
+,340
+,Omnimon NX
 ,Mega
 ,Vaccine
 ,Light
@@ -4079,7 +4419,8 @@ Digimon,Stage,Type,Attribute,Memory,Equip Slots,HP,SP,Atk,Def,Int,Spd,
 ,111
 ,111
 ,113
-, 341,  Gallantmon NX,
+,341
+,Gallantmon NX
 ,Mega
 ,Virus
 ,Light

@@ -7,28 +7,32 @@ import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Brachistochrone extends Curve{
+public class Brachistochrone extends Curve implements CurveCreator{
 
     private BigDecimal xVal;
     private BigDecimal yVal;
     private BigDecimal radius;
     private BigDecimal theta;
-    private MathContext mathContext;
 
-    public Brachistochrone(double x1, double y1, double x2, double y2, int segments) {
-        super(x1, y1, x2, y2, segments, true);
+    public Brachistochrone(double x1, double y1, double x2, double y2, int segments, boolean downHill) {
+        super(x1, y1, x2, y2, segments, downHill);
+
+        init();
+    }
+
+    public void init() {
         this.xVal = calXVal();
         this.yVal = calYVal();
-        this.mathContext = new MathContext(100);
         this.theta = calcTheta(getXVal(), getYVal());
         System.out.println("calculated theta: " + theta);
         this.radius = calcRadius();
         System.out.println("calculated radius: " + radius);
         this.setPoints(calcPoints());
+        this.setDuration(calcDuration());
     }
 
     public BigDecimal calcRadius() {
-        System.out.println("ROOT: " + getTheta());
+        System.out.println("THETA: " + getTheta());
         MathContext mathContext = getMathContext();
 //        BigDecimal deltaY = new BigDecimal(0 - this.getY1());
 //        BigDecimal yVal = new BigDecimal(this.getY2());
@@ -39,11 +43,9 @@ public class Brachistochrone extends Curve{
     }
 
     public BigDecimal calcTheta(BigDecimal xVal, BigDecimal yVal) {
-        System.out.println("new BigDecimal(-360): " + new BigDecimal(-360));
-        System.out.println("new BigDecimal(360): " + new BigDecimal(360));
 //        System.out.println("non_zero: " + nonZeroBisectionOnT(new BigDecimal(-360), new BigDecimal(360), xVal, yVal, 25));
 
-        return nonZeroBisectionOnT(new BigDecimal(-360), new BigDecimal(360), xVal, yVal, 25);
+        return nonZeroBisectionOnT(BigDecimal.valueOf(-360), BigDecimal.valueOf(360), xVal, yVal, 25);
     }
 
     public BigDecimal nonZeroBisectionOnT(BigDecimal low, BigDecimal high, BigDecimal xVal, BigDecimal yVal, int times) {
@@ -127,9 +129,10 @@ public class Brachistochrone extends Curve{
         return (y.multiply(t.subtract(BigDecimalMath.sin(t, mc)))).subtract(x.multiply(BigDecimal.ONE.subtract(BigDecimalMath.cos(t, mc))));
     }
 
+    @Override
     public ArrayList<BigDecimal[]> calcPoints() {
         ArrayList<BigDecimal[]> points = new ArrayList<>();
-        BigDecimal s = new BigDecimal(this.getSegments());
+        BigDecimal s = BigDecimal.valueOf(this.getSegments());
         BigDecimal i = BigDecimal.ZERO;
         BigDecimal t = getTheta();
         BigDecimal r = getRadius();
@@ -143,27 +146,22 @@ public class Brachistochrone extends Curve{
             points.add(new BigDecimal[] {bx, by});
             i = i.add(d);
         }
+        System.out.println("xVal: " + getXVal() + ", yVal: " + getYVal());
         System.out.println("AFTER CALCULATION BEFORE ADJUSTING");
         for (BigDecimal[] point : points) {
             System.out.println("\tpoint: " + Arrays.toString(point));
         }
 
-        if (this.getX2() != getXVal().doubleValue()) {
-            BigDecimal xd = ((new BigDecimal(this.getX2() - this.getX1())).divide(getXVal(), getMathContext())).abs();
-            System.out.println("xd: " + xd);
+        if (this.getX2() != getXVal().doubleValue() || this.getY2() != getYVal().doubleValue()) {
+            BigDecimal xd = ((BigDecimal.valueOf(this.getX2() - this.getX1())).divide(getXVal(), getMathContext())).abs();
+            BigDecimal yd = (BigDecimal.valueOf(this.getY2() - this.getY1()).divide(getYVal(), getMathContext())).abs();
+            System.out.println("xd: " + xd + ", yd: " + yd);
             for (int j = 0; j < points.size(); j++) {
                 BigDecimal[] point = points.get(j);
-                BigDecimal[] p = new BigDecimal[] {(xd.multiply(point[0])).add(new BigDecimal(this.getX1())), point[1]};
-                points.set(j, p);
-            }
-        }
-        if (this.getY2() != getYVal().doubleValue()) {
-            BigDecimal yd = (new BigDecimal(this.getY2() - this.getY1()).divide(getYVal(), getMathContext())).abs();
-//            BigDecimal yd = new BigDecimal(Math.abs(this.getY2() - this.getY1())).divide(s, getMathContext());
-            System.out.println("yd: " + yd);
-            for (int j = 0; j < points.size(); j++) {
-                BigDecimal[] point = points.get(j);
-                BigDecimal[] p = new BigDecimal[] {point[0], (yd.multiply(point[1])).add(new BigDecimal(this.getY1()))};
+                BigDecimal[] p = new BigDecimal[] {
+                        (xd.multiply(point[0])).add(BigDecimal.valueOf(this.getX1())),
+                        (yd.multiply(point[1])).abs().add(BigDecimal.valueOf(this.getY2()))
+                };
                 points.set(j, p);
             }
         }
@@ -171,12 +169,20 @@ public class Brachistochrone extends Curve{
         return points;
     }
 
+    @Override
+    public double calcDuration() {
+        BigDecimal r = getRadius().multiply(BigDecimal.valueOf(Math.PI)).divide(BigDecimal.valueOf(180), getMathContext());
+        BigDecimal g = BigDecimal.valueOf(getGravity());
+        BigDecimal dx = BigDecimal.valueOf(Math.abs(this.getX2() - this.getX1()));
+        return (r.divide(g, getMathContext()).multiply(dx)).sqrt(getMathContext()).doubleValue();
+    }
+
     public BigDecimal brachistochroneX(BigDecimal r, BigDecimal t, BigDecimal x0) {
         return x0.add(r.multiply(t.subtract(BigDecimalMath.sin(t, getMathContext()))));
     }
 
     public BigDecimal brachistochroneY(BigDecimal r, BigDecimal t, BigDecimal y0) {
-        return y0.add(r.multiply(new BigDecimal(-1).add(BigDecimalMath.cos(t, getMathContext()))));
+        return y0.add(r.multiply(BigDecimal.valueOf(-1).add(BigDecimalMath.cos(t, getMathContext()))));
     }
 
     public boolean bigDecimalInRange(BigDecimal low, BigDecimal x, BigDecimal high) {
@@ -184,15 +190,15 @@ public class Brachistochrone extends Curve{
     }
 
     public BigDecimal calXVal() {
-        BigDecimal deltaX = new BigDecimal(0 - this.getX1());
-        BigDecimal xVal = new BigDecimal(this.getX2());
+        BigDecimal deltaX = BigDecimal.valueOf(0 - this.getX1());
+        BigDecimal xVal = BigDecimal.valueOf(this.getX2());
         System.out.println("calcXVal: x1: " + getX1() + ", x2: " + getX2());
         return xVal.abs().add(deltaX);
     }
 
     public BigDecimal calYVal() {
-        BigDecimal deltaY = new BigDecimal(0 - this.getY1());
-        BigDecimal yVal = new BigDecimal(this.getY2());
+        BigDecimal deltaY = BigDecimal.valueOf(0 - this.getY1());
+        BigDecimal yVal = BigDecimal.valueOf(this.getY2());
         System.out.println("calcYVal: y1: " + getY1() + ", y2: " + getY2());
         return yVal.abs().add(deltaY);
 //        System.out.println("xVal: " + xVal + ", yVal: " + yVal + ", deltaX: " + deltaX + ", deltaY: " + deltaY);
@@ -206,16 +212,51 @@ public class Brachistochrone extends Curve{
         return theta;
     }
 
-    public MathContext getMathContext() {
-        return mathContext;
-    }
-
     public BigDecimal getXVal() {
         return xVal;
     }
 
     public BigDecimal getYVal() {
         return yVal;
+    }
+
+    @Override
+    public String toString() {
+        return "Brachistochrone";
+    }
+
+    @Override
+    public String getEquation() {
+        BigDecimal s = BigDecimal.valueOf(this.getSegments());
+        BigDecimal i = BigDecimal.ZERO;
+        BigDecimal t = getTheta();
+        BigDecimal r = getRadius();
+        BigDecimal d = (t.divide(s, getMathContext())).abs();
+        BigDecimal x = BigDecimal.ZERO;//new BigDecimal(this.getX1());
+        BigDecimal y = BigDecimal.ZERO;//new BigDecimal(this.getY1());
+        String xEquation = x + " + " + r + "(" + t + " - sin(" + t + ")";
+        String yEquation = y + " + " + r + "(" + -1 + " + cos(" + t + ")";
+        return xEquation + "\n" + yEquation;
+    }
+
+    @Override
+    public BigDecimal[] getPointAtT(double t) {
+        return new BigDecimal[] {
+                BigDecimal.valueOf(XPointAtT(t)),
+                BigDecimal.valueOf(YPointAtT(t))
+        };
+    }
+
+    @Override
+    public double XPointAtT(double t) {
+        //TODO non 0
+        return 0;
+    }
+
+    @Override
+    public double YPointAtT(double t) {
+        //TODO non 0
+        return 0;
     }
 
 }

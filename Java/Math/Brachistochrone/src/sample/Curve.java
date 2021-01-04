@@ -1,22 +1,25 @@
 package sample;
 
-import javafx.geometry.Point2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.shape.Rectangle;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 
 public class Curve {
+
+    private final double GRAVITY = 9.8;
 
     private double x1;
     private double y1;
     private double x2;
     private double y2;
+    private double duration;
+    private MathContext mathContext;
 
-//    private Circle circle;
     private int segments;
     private ArrayList<BigDecimal[]> points;
-//    private final double wheelRadius;
-//    private ArrayList<Double> thetas;
 
     public Curve(double x1, double y1, double x2, double y2, int segments, boolean downHill) {
 
@@ -36,6 +39,15 @@ public class Curve {
         this.x2 = x2;
         this.y2 = y2;
         this.segments = segments;
+        this.mathContext = new MathContext(100);
+    }
+
+    public void draw(Canvas canvas) {
+        System.out.println("Please overwrite this method in the subclass");
+    }
+
+    public String getEquation() {
+        return "Please overwrite this method in the subclass";
     }
 
     public ArrayList<BigDecimal[]> getPoints() {
@@ -62,29 +74,63 @@ public class Curve {
         return y2;
     }
 
+    public double getXSpan() {
+        return Math.abs(x2 - x1);
+    }
+
+    public double getYSpan() {
+        return Math.abs(y2 - y1);
+    }
+
+    public Rectangle getBounds() {
+        double x = Math.min(x1, x2);
+        double y = Math.max(y1, y2);
+        return new Rectangle(x, y, getXSpan(), getYSpan());
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public double getGravity() {
+        return GRAVITY;
+    }
+
+    public MathContext getMathContext() {
+        return mathContext;
+    }
+
+    public BigDecimal[] getPointAtT(double t) {
+        return new BigDecimal[] {BigDecimal.ZERO, BigDecimal.ZERO};
+    }
+
     public void setPoints(ArrayList<BigDecimal[]> points) {
         this.points = new ArrayList<>(points);
     }
 
-    public void setSegments(int segments) {
-        this.segments = segments;
+    public void setDuration(double d) {
+        this.duration = d;
     }
 
-    public void setX1(double x1) {
-        this.x1 = x1;
-    }
-
-    public void setY1(double y1) {
-        this.y1 = y1;
-    }
-
-    public void setX2(double x2) {
-        this.x2 = x2;
-    }
-
-    public void setY2(double y2) {
-        this.y2 = y2;
-    }
+//    public void setSegments(int segments) {
+//        this.segments = segments;
+//    }
+//
+//    public void setX1(double x1) {
+//        this.x1 = x1;
+//    }
+//
+//    public void setY1(double y1) {
+//        this.y1 = y1;
+//    }
+//
+//    public void setX2(double x2) {
+//        this.x2 = x2;
+//    }
+//
+//    public void setY2(double y2) {
+//        this.y2 = y2;
+//    }
 
 //    public ArrayList<Double[]> getBrachistochronePoints() {
 //        ArrayList<Double[]> points = new ArrayList<>();

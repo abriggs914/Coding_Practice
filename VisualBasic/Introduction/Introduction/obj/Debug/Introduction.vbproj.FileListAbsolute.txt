@@ -1,0 +1,11 @@
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\bin\Debug\Introduction.exe.config
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\bin\Debug\Introduction.exe
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\bin\Debug\Introduction.pdb
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\bin\Debug\Introduction.xml
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\obj\Debug\Introduction.vbprojAssemblyReference.cache
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\obj\Debug\Introduction.Resources.resources
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\obj\Debug\Introduction.vbproj.GenerateResource.cache
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\obj\Debug\Introduction.vbproj.CoreCompileInputs.cache
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\obj\Debug\Introduction.exe
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\obj\Debug\Introduction.xml
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Introduction\Introduction\obj\Debug\Introduction.pdb

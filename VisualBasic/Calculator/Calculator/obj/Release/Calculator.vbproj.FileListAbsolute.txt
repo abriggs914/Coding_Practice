@@ -1,0 +1,11 @@
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\bin\Release\Calculator.exe.config
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\bin\Release\Calculator.exe
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\bin\Release\Calculator.pdb
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\bin\Release\Calculator.xml
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\obj\Release\Calculator.vbprojAssemblyReference.cache
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\obj\Release\Calculator.Resources.resources
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\obj\Release\Calculator.vbproj.GenerateResource.cache
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\obj\Release\Calculator.vbproj.CoreCompileInputs.cache
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\obj\Release\Calculator.exe
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\obj\Release\Calculator.xml
+C:\Users\abrig\Documents\Coding_Practice\VisualBasic\Calculator\Calculator\obj\Release\Calculator.pdb

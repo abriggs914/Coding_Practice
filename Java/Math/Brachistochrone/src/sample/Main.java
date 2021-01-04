@@ -2,7 +2,6 @@ package sample;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -14,35 +13,46 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        double WIDTH = 800;
+        double WIDTH = 900;
         double HEIGHT = 600;
+        // small test
 //        double x1 = 4;
 //        double y1 = 2;
 //        double x2 = 4;
 //        double y2 = 4;
 
+        // large test
 //        double x1 = 60;
 //        double y1 = 200;
 //        double x2 = 220;
 //        double y2 = 80;
 
 //        double x1 = 20;
-//        double y1 = 160;
+//        double y1 = 200;
 //        double x2 = 100;
-//        double y2 = 200;
+//        double y2 = 25;
+
+//        double x2 = 20;
+//        double y2 = 40;
+//        double x1 = 40;
+//        double y1 = 20;
+
+        // very large test
         double x1 = 20;
-        double y1 = 40;
-        double x2 = 40;
-        double y2 = 20;
-        int segments = 20;
+        double y1 = 540;
+        double x2 = 890;
+        double y2 = 88;
+
+//        double x1 = 20;
+//        double y1 = 80;
+//        double x2 = 140;
+//        double y2 = 20;
+        int segments = 150;
+        double duration = 3.5;
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
         Label label = new Label("TOP LABEL");
@@ -51,6 +61,14 @@ public class Main extends Application {
         HBox hBox = new HBox(label);
         hBox.setStyle("-fx-border-color: blue");
         Canvas canvas = new Canvas(WIDTH, HEIGHT);//300, 275, Color.color(0.45, 0.85, 0.45, 0.67));
+        canvas.setWidth(WIDTH);
+        canvas.maxWidth(WIDTH);
+        canvas.minWidth(WIDTH);
+        canvas.prefWidth(WIDTH);
+        canvas.setHeight(HEIGHT);
+        canvas.maxHeight(HEIGHT);
+        canvas.minHeight(HEIGHT);
+        canvas.prefHeight(HEIGHT);
         VBox vBox = new VBox(hBox, canvas);
         vBox.setStyle("-fx-border-color: green");
 //        Curve curve = new Curve(x1, y1, x2, y2, 15, 5);
@@ -59,35 +77,73 @@ public class Main extends Application {
 //        int nPoints = pts.size();
 //        double[] xs = new double[nPoints];
 //        double[] ys = new double[nPoints];
-        double w = 1;
-        double h = 1;
+//        double w = 1;
+//        double h = 1;
 
-        canvas.setStyle("-fx-border-color: black");
-        canvas.getGraphicsContext2D().setStroke(Color.color(0.86, 0.21, 0.35, 0.85));
-        canvas.getGraphicsContext2D().setFill(Color.color(0.86, 0.21, 0.35, 0.85));
+//        canvas.setStyle("-fx-border-color: black");
+//        changeCanvasColour(canvas, Color.color(0.86, 0.21, 0.35, 0.85));
 
-        double s = y1 + y2;
-        double xA = x1;
-        double yA = Math.abs(y1 - s);
-        double xB = x2;
-        double yB = Math.abs(y2 - s);
-        System.out.println("s: " + s + ", xA: " + xA + ", yA: " + yA + ", xB; " + xB + ", yB: " + yB);
-        canvas.getGraphicsContext2D().strokeLine(xA, yA, xB, yB);
+//        double s = y1 + y2;
+//        double xA = x1;
+//        double yA = Math.min(y1, y2);
+//        double xB = x2;
+//        double yB = Math.max(y1, y2);
+//        System.out.println("s: " + s + ", xA: " + xA + ", yA: " + yA + ", xB; " + xB + ", yB: " + yB);
+//        canvas.getGraphicsContext2D().strokeLine(x1, yA, x2, yB);
+
+        //////////////////////////////////////////////////////////////////////////
+
+//        changeCanvasColour(canvas, Color.color(0.35, 0.21, 0.86, 0.85));
+//        Curve brachistochrone = new Brachistochrone(x1, y1, x2, y2, segments, true);
+//        ArrayList<BigDecimal[]> bPoints = brachistochrone.getPoints();
+//
+//        for (BigDecimal[] point : bPoints) {
+//            BigDecimal bdX = point[0];
+//            BigDecimal bdY = point[1];
+//            double x = bdX.doubleValue();
+//            double y = bdY.doubleValue();
+//            System.out.println("x: " + x + ", y: " + y);
+//            canvas.getGraphicsContext2D().strokeOval(x, y, w, h);
+//        }
+//
+//        // Finding the right-angled triangle to the two given points
+//
+//        Curve cycloid = new Cycloid(x1, y1, x2, y2, segments, true);
+//        System.out.println("Circular points: " + cycloid.getPoints());
+//        ArrayList<BigDecimal[]> cPoints = cycloid.getPoints();
+//
+//        changeCanvasColour(canvas, Color.color(0.4, 0.0, 0.3, 1));
+//        for (BigDecimal[] point : cPoints) {
+//            BigDecimal cdX = point[0];
+//            BigDecimal cdY = point[1];
+//            double x = cdX.doubleValue();
+//            double y = cdY.doubleValue();
+//            System.out.println("x: " + x + ", y: " + y);
+//            canvas.getGraphicsContext2D().strokeOval(x, y, w, h);
+//        }
+//
+//
+//        Curve parabola = new Parabolic(x1, y1, x2, y2, segments, true);
+//        System.out.println("Parabolic points: " + parabola.getPoints());
+//        ArrayList<BigDecimal[]> pPoints = parabola.getPoints();
+//
+//        changeCanvasColour(canvas, Color.color(0.0, 0.45, 0.0, 1));
+//        for (BigDecimal[] point : pPoints) {
+//            BigDecimal pdX = point[0];
+//            BigDecimal pdY = point[1];
+//            double x = pdX.doubleValue();
+//            double y = pdY.doubleValue();
+//            System.out.println("x: " + x + ", y: " + y);
+//            canvas.getGraphicsContext2D().strokeOval(x, y, w, h);
+//        }
+
+//        Color.color(0.8, 0.6, 0.3, 1);
 
 
-        canvas.getGraphicsContext2D().setStroke(Color.color(0.35, 0.21, 0.86, 0.85));
-        canvas.getGraphicsContext2D().setFill(Color.color(0.35, 0.21, 0.86, 0.85));
-        Curve brachistochrone = new Brachistochrone(x1, y1, x2, y2, segments);
-        ArrayList<BigDecimal[]> bPoints = brachistochrone.getPoints();
+        //////////////////////////////////////////////////////////////////////////
 
-        for (BigDecimal[] point : bPoints) {
-            BigDecimal bdX = point[0];
-            BigDecimal bdY = point[1];
-            double x = bdX.doubleValue();
-            double y = bdY.doubleValue();
-            System.out.println("x: " + x + ", y: " + y);
-            canvas.getGraphicsContext2D().strokeOval(x, y, w, h);
-        }
+
+
 
 //        sample.Circle cObject = curve.getCircle();
 //        canvas.getGraphicsContext2D().strokeOval(cObject.getMidX() - (15 / 2.), cObject.getMidY() - (15 / 2.), 15, 15);
@@ -140,17 +196,9 @@ public class Main extends Application {
         vBox.resize(WIDTH, HEIGHT);
 //        vBox.setPrefWidth(300);
 //        vBox.setPrefHeight(275);
-
-        sample.Circle c1 = new sample.Circle(x1, y1, x2, y2);
-        System.out.println("\tcircle:\n" + c1);
-        x1 = 1;
-        y1 = 10;
-        x2 = 4;
-        y2 = 8;
-//        Circle c2 = new Circle(x1, y1, x2, y2);
-//        System.out.println("\tcircle:\n" + c2);
-
-//        System.out.println("\tthetas\n" + curve.getThetas());
+        BallSimulation ballSimulation = new BallSimulation(x1, y1, x2, y2, segments, duration, Brachistochrone.class, Parabolic.class, Cycloid.class, Linear.class);
+//        BallSimulation ballSimulation = new BallSimulation(x1, y1, x2, y2, segments, duration, Brachistochrone.class);
+        ballSimulation.draw(canvas);
     }
 
     public static double linear(double x, double x1, double y1, double x2, double y2) {
@@ -158,6 +206,16 @@ public class Main extends Application {
         double b = y1 - (m * x1);
         return (m * x) + b;
 //        return 0;
+    }
+
+    public static void changeCanvasColour(Canvas c, Color paint) {
+        c.getGraphicsContext2D().setStroke(paint);
+        c.getGraphicsContext2D().setFill(paint);
+    }
+
+    public static void changeCanvasColour(Canvas c, Paint paint) {
+        c.getGraphicsContext2D().setStroke(paint);
+        c.getGraphicsContext2D().setFill(paint);
     }
 
 
