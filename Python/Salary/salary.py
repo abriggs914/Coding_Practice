@@ -10,6 +10,8 @@ from enum import Enum
 TimeFrame = Enum("TimeFrame", "SECOND MINUTE HOURLY DAILY WEEKLY MONTHLY QUARTERLY WORK_SECOND WORK_MINUTE WORK_HOURLY WORK_DAILY WORK_WEEKLY WORK_MONTHLY WORK_QUARTERLY ANNUALLY BI_ANNUALLY N5YEARS DECADE")
 
 class Salary:
+
+    # base is in the form $ / year.
 	def __init__(self, base):
 		self.base = base
 		
@@ -228,6 +230,92 @@ def twenty_four_toString(t):
 	h, mh = divmod(t, 100)
 	m = 60 * mh / 100
 	return ("{h} hour" + ("s" if h > 1 else "") + " {m} minute" + ("s" if m > 1 else "")).format(h=h, m=m)
+	
+# convert a salary in a given TimeFrame to the value proportional to the change in TimeFrame.
+# i.e. $50/H -> $438000/Y
+def convert_to_annual(val, time_frame):
+	print("CONVERTING: " + str(time_frame) + " -> ANNUALLY")
+	options = {
+		0: lambda x : x * SECONDS_PER_MINUTE * MINUTES_PER_HOUR * HOURS_PER_DAY * DAYS_PER_YEAR, #SECOND
+		1: lambda x : x * MINUTES_PER_HOUR * HOURS_PER_DAY * DAYS_PER_YEAR, #MINUTE
+		2: lambda x : x * HOURS_PER_DAY * DAYS_PER_YEAR, #HOURLY
+		3: lambda x : x * DAYS_PER_YEAR, #DAILY
+		4: lambda x : x * WEEKS_PER_YEAR, #WEEKLY
+		5: lambda x : x * MONTHS_PER_YEAR, #MONTHLY
+		6: lambda x : x * MONTHS_PER_YEAR / MONTHS_PER_QUARTER, #QUARTERLY
+		7: lambda x : x * WORK_SECONDS_PER_WORK_MINUTE * WORK_MINUTES_PER_HOUR * WORK_HOURS_PER_DAY * WORK_DAYS, #WORK_SECOND
+		8: lambda x : x * WORK_MINUTES_PER_HOUR * WORK_HOURS_PER_DAY * WORK_DAYS, #WORK_MINUTE
+		9: lambda x : x * WORK_HOURS_PER_DAY * WORK_DAYS_PER_WEEK * WORK_DAYS, #WORK_HOURLY
+		10: lambda x : x * WORK_DAYS, #WORK_DAILY
+		11: lambda x : x * WORK_DAYS / WORK_DAYS_PER_WEEK , #WORK_WEEKLY
+		12: lambda x : x * MONTHS_PER_YEAR, #WORK_MONTHLY
+		13: lambda x : x * MONTHS_PER_YEAR / MONTHS_PER_QUARTER, #WORK_QUARTERLY
+		14: lambda x : x, #ANNUALLY
+		15: lambda x : x / YEARS_PER_BI_ANNUAL, #BI_ANNUALLY
+		16: lambda x : x / 5, #5YEARS
+		17: lambda x : x / YEARS_PER_DECADE #DECADE
+	}
+	return options[time_frame.value - 1](val)
+    
+def get_numerical_input(prompt):
+	inp = input(prompt + "\n")
+	try:
+		inp = float(inp)
+	except ValueError:
+		try:
+			if "$" in inp:
+				inp = inp[inp.index("$"):]
+				inp = float(inp)
+			else:
+				inp = 0
+		except ValueError: 
+			inp = 0
+	return inp
+	
+def get_timeframe_input(prompt):
+	m = ""
+	for tf in TimeFrame:
+		x = len(str(tf.value))
+		m += "\t" + str(tf.value).ljust(10, ".") + tf.name + "\n"
+	print(m)
+	inp = input(prompt + "\n")
+	try:
+		inp = int(inp)
+		if not (0 < inp <= len(TimeFrame)):
+			raise ValueError
+	except ValueError:
+		inp = TimeFrame.ANNUALLY.value # annual
+	return inp
+	
+# True for yes False for no
+def get_yes_no(prompt):
+	valid = ["y","yes","n","no"]
+	prompt += "\n\tEnter:\n\tY for yes\n\tN for no\n"
+	inp = 0
+	while inp not in valid:
+		inp = input(prompt + "\n").lower()
+	i = valid.index(inp)
+	return i < 2
+		
+def run():
+	loop = True
+	while loop:
+		money_input = get_numerical_input("Enter a monetary amount:")
+		date_input = get_timeframe_input("Enter a value corresponding to a timeframe:")
+		cap_input = False
+		if date_input != TimeFrame.ANNUALLY.value:
+			money_input = convert_to_annual(money_input, list(TimeFrame)[date_input - 1])
+			# s = Salary(money_input)
+		# print("s: " + str(money_input) + ", TF: " + str(date_input))
+		salary = Salary(money_input)
+		print(salary)
+		cap_input = get_yes_no("Would you like to enter a cap for the amount of time worked?")
+		if cap_input:
+			cap_input = [get_numerical_input("Enter the number of time segments:\n(ex: '5' - for 5 minutes/days/weeks...etc)"), None]
+			cap_input[1] = get_timeframe_input("Enter a timeframe corresponding to the number of time segments previously entered:")
+			
+		
+		loop = get_yes_no("Run again?")
 		
 # Constants
 MINUTES_PER_HOUR = 60
@@ -260,3 +348,4 @@ if __name__ == "__main__":
 	print("work days per year: {0}".format(WORK_DAYS))
 	salary = Salary(40000)
 	print(salary)
+	run()
