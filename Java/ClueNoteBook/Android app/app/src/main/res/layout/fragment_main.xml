@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.PlaceholderFragment">
+
+    <TextView
+        android:id="@+id/section_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1"
+        android:background="@drawable/scooby_doo_clue_board"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/notebook_wrapper_poeple"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/notebook_header_people"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/people" />
+
+            <LinearLayout
+                android:id="@+id/notebook_pictures_people"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/notebook_picture_people_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/white_token"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/white_token" />
+
+                <ImageButton
+                    android:id="@+id/notebook_picture_people_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/green_token"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/green_token" />
+
+                <ImageButton
+                    android:id="@+id/notebook_picture_people_purple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/purple_token"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/purple_token" />
+
+                <ImageButton
+                    android:id="@+id/notebook_picture_people_yellow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/yellow_token"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/yellow_token" />
+
+                <ImageButton
+                    android:id="@+id/notebook_picture_people_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/blue_token"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/blue_token" />
+
+                <ImageButton
+                    android:id="@+id/notebook_picture_people_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/red_token"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    app:srcCompat="@drawable/red_token" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/notebook_wrapper_weapons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/notebook_header_weapons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/weapons" />
+
+            <LinearLayout
+                android:id="@+id/notebook_pictures_weapons"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal">
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/notebook_pictures_weapons_rope"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:contentDescription="@string/white_token"-->
+<!--                    android:scaleX="0.5"-->
+<!--                    android:scaleY="0.5"-->
+<!--                    app:srcCompat="@drawable/white_token" />-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/notebook_picture_people_green"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:contentDescription="@string/green_token"-->
+<!--                    android:scaleX="0.5"-->
+<!--                    android:scaleY="0.5"-->
+<!--                    app:srcCompat="@drawable/green_token" />-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/notebook_picture_people_purple"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:contentDescription="@string/purple_token"-->
+<!--                    android:scaleX="0.5"-->
+<!--                    android:scaleY="0.5"-->
+<!--                    app:srcCompat="@drawable/purple_token" />-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/notebook_picture_people_yellow"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:contentDescription="@string/yellow_token"-->
+<!--                    android:scaleX="0.5"-->
+<!--                    android:scaleY="0.5"-->
+<!--                    app:srcCompat="@drawable/yellow_token" />-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/notebook_picture_people_blue"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:contentDescription="@string/blue_token"-->
+<!--                    android:scaleX="0.5"-->
+<!--                    android:scaleY="0.5"-->
+<!--                    app:srcCompat="@drawable/blue_token" />-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/notebook_picture_people_red"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:contentDescription="@string/red_token"-->
+<!--                    android:scaleX="0.5"-->
+<!--                    android:scaleY="0.5"-->
+<!--                    app:srcCompat="@drawable/red_token" />-->
+                <ImageButton
+                    android:id="@+id/notebook_pictures_weapons_rope"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:src="@drawable/rope" />
+
+                <ImageButton
+                    android:id="@+id/notebook_pictures_weapons_axe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:src="@drawable/axe" />
+
+                <ImageButton
+                    android:id="@+id/notebook_pictures_weapons_trophy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:src="@drawable/trophy" />
+
+                <ImageButton
+                    android:id="@+id/notebook_pictures_weapons_dumbbell"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:src="@drawable/dumbbell" />
+
+                <ImageButton
+                    android:id="@+id/notebook_pictures_weapons_poison"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:src="@drawable/poison" />
+
+                <ImageButton
+                    android:id="@+id/notebook_pictures_weapons_knife"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:src="@drawable/knife" />
+
+                <ImageButton
+                    android:id="@+id/notebook_pictures_weapons_candlestick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:src="@drawable/candlestick" />
+
+                <ImageButton
+                    android:id="@+id/notebook_pictures_weapons_pistol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:src="@drawable/pistol" />
+
+                <ImageButton
+                    android:id="@+id/notebook_pictures_weapons_bat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    android:src="@drawable/bat" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
