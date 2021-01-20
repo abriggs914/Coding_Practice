@@ -33,6 +33,20 @@ public class ClueNoteBook {
 		}
 	}
 
+	public void addClueElement(ClueElement clueElement, ArrayList<ClueElement> lst) {
+		if (lst.contains(clueElement)) {
+			System.out.println(clueElement + " is already in the list");
+		}
+		else if (history.contains(clueElement)){
+			System.out.println(clueElement + " has already been revealed");
+			history.remove(clueElement);
+		}
+		else {
+			System.out.println("ClueElement " + clueElement + " not recognized");
+		}
+		lst.add(clueElement);
+	}
+
 	public void seeCards(ClueElement... clues) {
 		for (ClueElement clue : clues) {
 			Class clazz = clue.getClass();
@@ -46,6 +60,22 @@ public class ClueNoteBook {
 			} else if (clazz.equals(Room.class)) {
 				removeClueElement(clueElement, rooms);
 				rooms.remove(clueElement);
+			} else {
+				System.out.println("ERROR");
+			}
+		}
+	}
+
+	public void addCardBack(ClueElement... clues) {
+		for (ClueElement clue : clues) {
+			Class clazz = clue.getClass();
+			ClueElement clueElement = clue;
+			if (clazz.equals(Person.class)) {
+				addClueElement(clueElement, people);
+			} else if (clazz.equals(Weapon.class)) {
+				addClueElement(clueElement, weapons);
+			} else if (clazz.equals(Room.class)) {
+				addClueElement(clueElement, rooms);
 			} else {
 				System.out.println("ERROR");
 			}
@@ -73,6 +103,7 @@ public class ClueNoteBook {
 		String res = "\n\tClueNotebook\nPeople: " + people;
 		res += "\nWeapons: " + weapons;
 		res += "\nRooms: " + rooms;
+		res += "\nHistory: " + history;
 		return res;
 	}
 

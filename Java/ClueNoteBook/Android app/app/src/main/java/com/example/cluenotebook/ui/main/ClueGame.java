@@ -63,6 +63,10 @@ public class ClueGame {
          this.clueNoteBook.seeCards(clues);
     }
 
+    public void addCardBack(ClueElement... clues) {
+        this.clueNoteBook.addCardBack(clues);
+    }
+
     public ClueElement getPersonByColour(String colour) {
          // Mustard, Plum, Scarlett, Peacock, White, Green
          switch (colour.toLowerCase()) {
@@ -90,6 +94,34 @@ public class ClueGame {
             case "trophy": return ORIG_weapons[8];
             default: return null;
         }
+    }
+
+    public ClueElement getRoomByName(String room) {
+         // "Axe", "Pistol", "Rope", "Candlestick", "Poison", "Bat", "Knife", "Dumbbell", "Trophy"
+        switch (room.toLowerCase()) {
+            case "axe" : return ORIG_weapons[0];
+            case "bat" : return ORIG_weapons[5];
+            case "candlestick" : return ORIG_weapons[3];
+            case "dumbbell" : return ORIG_weapons[7];
+            case "knife" : return ORIG_weapons[6];
+            case "poison": return ORIG_weapons[4];
+            case "pistol": return ORIG_weapons[1];
+            case "rope": return ORIG_weapons[2];
+            case "trophy": return ORIG_weapons[8];
+            default: return null;
+        }
+    }
+
+    public boolean stillInPlay(ClueElement... clues) {
+         for (ClueElement clue : clues) {
+             boolean person = clueNoteBook.getPeople().contains(clue);
+             boolean weapon = clueNoteBook.getWeapons().contains(clue);
+             boolean room = clueNoteBook.getRooms().contains(clue);
+             if (!(person || weapon || room)) {
+                 return false;
+             }
+         }
+         return true;
     }
 
     public ClueNoteBook getClueNoteBook() {

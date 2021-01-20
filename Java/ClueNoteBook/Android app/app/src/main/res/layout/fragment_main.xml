@@ -11,25 +11,29 @@
         android:id="@+id/section_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/scooby_doo_clue_board"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/constraintLayout"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1"
-        android:background="@drawable/scooby_doo_clue_board"/>
+        tools:layout_constraintTop_creator="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/section_label">
 
+        <!--    people    -->
         <LinearLayout
             android:id="@+id/notebook_wrapper_poeple"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -41,75 +45,167 @@
             <LinearLayout
                 android:id="@+id/notebook_pictures_people"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="100dp"
                 android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/notebook_picture_people_white"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:contentDescription="@string/white_token"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    app:srcCompat="@drawable/white_token" />
+                    android:scaleType="fitXY">
 
-                <ImageButton
-                    android:id="@+id/notebook_picture_people_green"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/green_token"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    app:srcCompat="@drawable/green_token" />
+                    <ImageButton
+                        android:id="@+id/notebook_picture_people_white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/white_token"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
+                        app:srcCompat="@drawable/white_token" />
 
-                <ImageButton
-                    android:id="@+id/notebook_picture_people_purple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/purple_token"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    app:srcCompat="@drawable/purple_token" />
+                    <ImageView
+                        android:id="@+id/red_x_white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/red_x">
+                    </ImageView>
+                </FrameLayout>
 
-                <ImageButton
-                    android:id="@+id/notebook_picture_people_yellow"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:contentDescription="@string/yellow_token"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    app:srcCompat="@drawable/yellow_token" />
+                    android:scaleType="fitXY">
 
-                <ImageButton
-                    android:id="@+id/notebook_picture_people_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/blue_token"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    app:srcCompat="@drawable/blue_token" />
+                    <ImageButton
+                        android:id="@+id/notebook_picture_people_green"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/green_token"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
+                        app:srcCompat="@drawable/green_token" />
 
-                <ImageButton
-                    android:id="@+id/notebook_picture_people_red"
+                    <ImageView
+                        android:id="@+id/red_x_green"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/red_x"></ImageView>
+                </FrameLayout>
+
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:contentDescription="@string/red_token"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    app:srcCompat="@drawable/red_token" />
+                    android:scaleType="fitXY">
+
+                    <ImageButton
+                        android:id="@+id/notebook_picture_people_purple"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/purple_token"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
+                        app:srcCompat="@drawable/purple_token" />
+
+                    <ImageView
+                        android:id="@+id/red_x_purple"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/red_x"></ImageView>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY">
+
+                    <ImageButton
+                        android:id="@+id/notebook_picture_people_yellow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/yellow_token"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
+                        app:srcCompat="@drawable/yellow_token" />
+
+                    <ImageView
+                        android:id="@+id/red_x_yellow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/red_x"></ImageView>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY">
+
+                    <ImageButton
+                        android:id="@+id/notebook_picture_people_blue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/blue_token"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
+                        app:srcCompat="@drawable/blue_token" />
+
+                    <ImageView
+                        android:id="@+id/red_x_blue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/red_x"></ImageView>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY">
+
+                    <ImageButton
+                        android:id="@+id/notebook_picture_people_red"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/red_token"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
+                        app:srcCompat="@drawable/red_token" />
+
+                    <ImageView
+                        android:id="@+id/red_x_red"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/red_x"></ImageView>
+                </FrameLayout>
             </LinearLayout>
         </LinearLayout>
 
+        <!--    weapons    -->
         <LinearLayout
             android:id="@+id/notebook_wrapper_weapons"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -121,148 +217,507 @@
             <LinearLayout
                 android:id="@+id/notebook_pictures_weapons"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-<!--                <ImageButton-->
-<!--                    android:id="@+id/notebook_pictures_weapons_rope"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:contentDescription="@string/white_token"-->
-<!--                    android:scaleX="0.5"-->
-<!--                    android:scaleY="0.5"-->
-<!--                    app:srcCompat="@drawable/white_token" />-->
-
-<!--                <ImageButton-->
-<!--                    android:id="@+id/notebook_picture_people_green"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:contentDescription="@string/green_token"-->
-<!--                    android:scaleX="0.5"-->
-<!--                    android:scaleY="0.5"-->
-<!--                    app:srcCompat="@drawable/green_token" />-->
-
-<!--                <ImageButton-->
-<!--                    android:id="@+id/notebook_picture_people_purple"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:contentDescription="@string/purple_token"-->
-<!--                    android:scaleX="0.5"-->
-<!--                    android:scaleY="0.5"-->
-<!--                    app:srcCompat="@drawable/purple_token" />-->
-
-<!--                <ImageButton-->
-<!--                    android:id="@+id/notebook_picture_people_yellow"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:contentDescription="@string/yellow_token"-->
-<!--                    android:scaleX="0.5"-->
-<!--                    android:scaleY="0.5"-->
-<!--                    app:srcCompat="@drawable/yellow_token" />-->
-
-<!--                <ImageButton-->
-<!--                    android:id="@+id/notebook_picture_people_blue"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:contentDescription="@string/blue_token"-->
-<!--                    android:scaleX="0.5"-->
-<!--                    android:scaleY="0.5"-->
-<!--                    app:srcCompat="@drawable/blue_token" />-->
-
-<!--                <ImageButton-->
-<!--                    android:id="@+id/notebook_picture_people_red"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:contentDescription="@string/red_token"-->
-<!--                    android:scaleX="0.5"-->
-<!--                    android:scaleY="0.5"-->
-<!--                    app:srcCompat="@drawable/red_token" />-->
-                <ImageButton
-                    android:id="@+id/notebook_pictures_weapons_rope"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:src="@drawable/rope" />
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/notebook_pictures_weapons_axe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:src="@drawable/axe" />
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
 
-                <ImageButton
-                    android:id="@+id/notebook_pictures_weapons_trophy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:src="@drawable/trophy" />
+                        <ImageButton
+                            android:id="@+id/notebook_pictures_weapons_rope"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/rope" />
 
-                <ImageButton
-                    android:id="@+id/notebook_pictures_weapons_dumbbell"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:src="@drawable/dumbbell" />
+                        <ImageView
+                            android:id="@+id/red_x_rope"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
 
-                <ImageButton
-                    android:id="@+id/notebook_pictures_weapons_poison"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:src="@drawable/poison" />
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
 
-                <ImageButton
-                    android:id="@+id/notebook_pictures_weapons_knife"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:src="@drawable/knife" />
+                        <ImageButton
+                            android:id="@+id/notebook_pictures_weapons_axe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/axe" />
 
-                <ImageButton
-                    android:id="@+id/notebook_pictures_weapons_candlestick"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:src="@drawable/candlestick" />
+                        <ImageView
+                            android:id="@+id/red_x_axe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x" />
+                    </FrameLayout>
 
-                <ImageButton
-                    android:id="@+id/notebook_pictures_weapons_pistol"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:src="@drawable/pistol" />
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
 
-                <ImageButton
-                    android:id="@+id/notebook_pictures_weapons_bat"
+                        <ImageButton
+                            android:id="@+id/notebook_pictures_weapons_trophy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/trophy" />
+
+                        <ImageView
+                            android:id="@+id/red_x_trophy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x" />
+                    </FrameLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleX="0.5"
-                    android:scaleY="0.5"
-                    android:src="@drawable/bat" />
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_pictures_weapons_dumbbell"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/dumbbell" />
+
+                        <ImageView
+                            android:id="@+id/red_x_dumbbell"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_pictures_weapons_poison"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/poison" />
+
+                        <ImageView
+                            android:id="@+id/red_x_poison"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_pictures_weapons_knife"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/knife" />
+
+                        <ImageView
+                            android:id="@+id/red_x_knife"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x" />
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_pictures_weapons_candlestick"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/candlestick" />
+
+                        <ImageView
+                            android:id="@+id/red_x_candlestick"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_pictures_weapons_pistol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/pistol" />
+
+                        <ImageView
+                            android:id="@+id/red_x_pistol"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_pictures_weapons_bat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bat" />
+
+                        <ImageView
+                            android:id="@+id/red_x_bat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x" />
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--    rooms    -->
+        <LinearLayout
+            android:id="@+id/notebook_wrapper_rooms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/notebook_header_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rooms" />
+
+            <LinearLayout
+                android:id="@+id/notebook_pictures_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_picture_room_spa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/white_token"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:srcCompat="@drawable/red_x" />
+                        <!--TODO update drawable-->
+
+                        <ImageView
+                            android:id="@+id/red_x_spa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_picture_room_theater"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/white_token"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:srcCompat="@drawable/red_x" />
+                        <!--TODO update drawable-->
+
+                        <ImageView
+                            android:id="@+id/red_x_theater"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_picture_room_living_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/white_token"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:srcCompat="@drawable/red_x" />
+                        <!--TODO update drawable-->
+
+                        <ImageView
+                            android:id="@+id/red_x_living_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_picture_room_observatory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/white_token"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:srcCompat="@drawable/red_x" />
+                        <!--TODO update drawable-->
+
+                        <ImageView
+                            android:id="@+id/red_x_observatory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_picture_room_patio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/white_token"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:srcCompat="@drawable/red_x" />
+                        <!--TODO update drawable-->
+
+                        <ImageView
+                            android:id="@+id/red_x_patio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_picture_room_hall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/white_token"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:srcCompat="@drawable/red_x" />
+                        <!--TODO update drawable-->
+
+                        <ImageView
+                            android:id="@+id/red_x_hall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_picture_room_guest_house"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/white_token"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:srcCompat="@drawable/red_x" />
+                        <!--TODO update drawable-->
+
+                        <ImageView
+                            android:id="@+id/red_x_guest_house"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_picture_room_kitchen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/white_token"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:srcCompat="@drawable/red_x" />
+                        <!--TODO update drawable-->
+
+                        <ImageView
+                            android:id="@+id/red_x_kitchen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:scaleType="fitXY">
+
+                        <ImageButton
+                            android:id="@+id/notebook_picture_room_dining_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/white_token"
+                            android:scaleX="0.5"
+                            android:scaleY="0.5"
+                            app:srcCompat="@drawable/red_x" />
+                        <!--TODO update drawable-->
+
+                        <ImageView
+                            android:id="@+id/red_x_dining_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:scaleType="fitXY"
+                            android:visibility="invisible"
+                            app:srcCompat="@drawable/red_x"></ImageView>
+                    </FrameLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
