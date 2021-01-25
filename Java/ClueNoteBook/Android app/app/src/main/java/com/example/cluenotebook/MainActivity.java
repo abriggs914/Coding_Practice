@@ -1,5 +1,6 @@
 package com.example.cluenotebook;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        openPlayerEntry();
+
         setContentView(R.layout.activity_main);
         PACKAGE_NAME = getApplicationContext().getPackageName();
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
@@ -43,5 +47,10 @@ public class MainActivity extends AppCompatActivity {
                 ClueNoteBook.main(null);
             }
         });
+    }
+
+    private void openPlayerEntry() {
+        Intent intent  = new Intent(MainActivity.this, PlayerEntry.class);
+        startActivityForResult(intent, 0);
     }
 }

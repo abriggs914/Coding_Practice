@@ -222,7 +222,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     android:orientation="horizontal">
 
                     <FrameLayout
@@ -298,7 +298,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     android:orientation="horizontal">
 
                     <FrameLayout
@@ -373,7 +373,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     android:orientation="horizontal">
 
                     <FrameLayout
@@ -464,12 +464,12 @@
             <LinearLayout
                 android:id="@+id/notebook_pictures_rooms"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
                     android:orientation="horizontal">
 
                     <FrameLayout
@@ -482,10 +482,11 @@
                             android:id="@+id/notebook_picture_room_spa"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/white_token"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/red_x" />
+                            android:contentDescription="spa"
+                            android:scaleType="centerInside"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:srcCompat="@drawable/spa" />
                         <!--TODO update drawable-->
 
                         <ImageView
@@ -508,10 +509,11 @@
                             android:id="@+id/notebook_picture_room_theater"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/white_token"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/red_x" />
+                            android:contentDescription="theater"
+                            android:scaleType="centerInside"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:srcCompat="@drawable/theater" />
                         <!--TODO update drawable-->
 
                         <ImageView
@@ -534,10 +536,11 @@
                             android:id="@+id/notebook_picture_room_living_room"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/white_token"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/red_x" />
+                            android:contentDescription="living_room"
+                            android:scaleType="centerInside"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:srcCompat="@drawable/living_room" />
                         <!--TODO update drawable-->
 
                         <ImageView
@@ -552,8 +555,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
                     android:orientation="horizontal">
 
                     <FrameLayout
@@ -566,10 +569,11 @@
                             android:id="@+id/notebook_picture_room_observatory"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/white_token"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/red_x" />
+                            android:contentDescription="observatory"
+                            android:scaleType="centerInside"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:srcCompat="@drawable/observatory" />
                         <!--TODO update drawable-->
 
                         <ImageView
@@ -592,10 +596,11 @@
                             android:id="@+id/notebook_picture_room_patio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/white_token"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/red_x" />
+                            android:contentDescription="patio"
+                            android:scaleType="centerInside"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:srcCompat="@drawable/patio" />
                         <!--TODO update drawable-->
 
                         <ImageView
@@ -618,10 +623,11 @@
                             android:id="@+id/notebook_picture_room_hall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/white_token"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/red_x" />
+                            android:contentDescription="hall"
+                            android:scaleType="centerInside"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:srcCompat="@drawable/hall" />
                         <!--TODO update drawable-->
 
                         <ImageView
@@ -636,8 +642,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
                     android:orientation="horizontal">
 
                     <FrameLayout
@@ -650,10 +656,11 @@
                             android:id="@+id/notebook_picture_room_guest_house"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/white_token"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/red_x" />
+                            android:contentDescription="guest_house"
+                            android:scaleType="centerInside"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:srcCompat="@drawable/guest_house" />
                         <!--TODO update drawable-->
 
                         <ImageView
@@ -676,10 +683,11 @@
                             android:id="@+id/notebook_picture_room_kitchen"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/white_token"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/red_x" />
+                            android:contentDescription="kitchen"
+                            android:scaleType="centerInside"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:srcCompat="@drawable/kitchen" />
                         <!--TODO update drawable-->
 
                         <ImageView
@@ -702,10 +710,11 @@
                             android:id="@+id/notebook_picture_room_dining_room"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/white_token"
-                            android:scaleX="0.5"
-                            android:scaleY="0.5"
-                            app:srcCompat="@drawable/red_x" />
+                            android:contentDescription="dining_room"
+                            android:scaleType="centerInside"
+                            android:scaleX="1"
+                            android:scaleY="1"
+                            app:srcCompat="@drawable/dining_room" />
                         <!--TODO update drawable-->
 
                         <ImageView
@@ -720,6 +729,34 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/notebook_wrapper_buttons"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/notebook_header_buttons"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/buttons" />-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/notebook_pictures_buttons"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="100dp"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <Button-->
+<!--                        android:id="@+id/button"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:text="@string/generate_guesses" />-->
+<!--                </LinearLayout>-->
+<!--        </LinearLayout>-->
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

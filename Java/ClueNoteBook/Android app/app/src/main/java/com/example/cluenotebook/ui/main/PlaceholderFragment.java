@@ -1,6 +1,5 @@
 package com.example.cluenotebook.ui.main;
 
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,16 +9,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.cluenotebook.ClueElement;
-import com.example.cluenotebook.MainActivity;
+import com.example.cluenotebook.ClueGame;
 import com.example.cluenotebook.Person;
 import com.example.cluenotebook.PersonE;
 import com.example.cluenotebook.R;
@@ -28,7 +25,6 @@ import com.example.cluenotebook.RoomE;
 import com.example.cluenotebook.Weapon;
 import com.example.cluenotebook.WeaponE;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -246,7 +242,7 @@ public class PlaceholderFragment extends Fragment {
         for (ImageButton person : peopleButtons.keySet()) {
             for (ImageView x : peopleButtons.get(person).keySet()) {
                 String colour = peopleButtons.get(person).get(x).colour;
-                Person p = (Person) clueGame.getPersonByColour(colour);
+                Person p = (Person) ClueGame.getPersonByColour(colour);
                 person.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -258,7 +254,7 @@ public class PlaceholderFragment extends Fragment {
                             clueGame.addCardBack(p);
                         }
                         markClueElement(v, person, x);
-                        System.out.println(clueGame.getClueNoteBook());
+                        System.out.println(clueGame);
                         return false;
                     }
                 });
@@ -271,7 +267,7 @@ public class PlaceholderFragment extends Fragment {
         for (ImageButton weapon : weaponButtons.keySet()) {
             for (ImageView x : weaponButtons.get(weapon).keySet()) {
                 String name = weaponButtons.get(weapon).get(x).name;
-                Weapon w = (Weapon) clueGame.getWeaponByName(name);
+                Weapon w = (Weapon) ClueGame.getWeaponByName(name);
                 weapon.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -283,7 +279,7 @@ public class PlaceholderFragment extends Fragment {
                             clueGame.addCardBack(w);
                         }
                         markClueElement(v, weapon, x);
-                        System.out.println(clueGame.getClueNoteBook());
+                        System.out.println(clueGame);
                         return false;
                     }
                 });
@@ -296,11 +292,11 @@ public class PlaceholderFragment extends Fragment {
         for (ImageButton room : roomButtons.keySet()) {
             for (ImageView x : roomButtons.get(room).keySet()) {
                 String name = roomButtons.get(room).get(x).name;
-                Room r = (Room) clueGame.getRoomByName(name);
+                Room r = (Room) ClueGame.getRoomByName(name);
                 room.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        System.out.println("Long press on " + name + " token");
+                        System.out.println("Long press on " + name + " token\nroom: " + r);
                         if (clueGame.stillInPlay(r)) {
                             clueGame.seeCards(r);
                         }
@@ -308,7 +304,7 @@ public class PlaceholderFragment extends Fragment {
                             clueGame.addCardBack(r);
                         }
                         markClueElement(v, room, x);
-                        System.out.println(clueGame.getClueNoteBook());
+                        System.out.println(clueGame);
                         return false;
                     }
                 });

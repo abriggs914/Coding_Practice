@@ -29,6 +29,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
+        System.out.println("position: " + position);
+        // show the guess list fragment
+        if (position == 1) {
+            return GuessListFragmemt.newInstance(position + 1);
+        }
+        // default to notebook fragment
         return PlaceholderFragment.newInstance(position + 1);
     }
 

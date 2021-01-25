@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Clue Notebook</string>
-    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_1">Notebook</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="white_token">white token</string>
     <string name="green_token">green token</string>
@@ -11,4 +11,8 @@
     <string name="people">People</string>
     <string name="weapons">Weapons</string>
     <string name="rooms">rooms</string>
+    <string name="buttons">buttons</string>
+    <string name="generate_guesses">Generate guesses</string>
+    <string name="submit">SUBMIT</string>
+    <string name="add_player">Add Player</string>
 </resources>

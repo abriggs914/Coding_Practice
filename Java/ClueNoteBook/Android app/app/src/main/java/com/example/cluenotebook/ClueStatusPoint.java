@@ -1,4 +1,4 @@
-package com.example.cluenotebook.ui.main;
+package com.example.cluenotebook;
 
 import com.example.cluenotebook.ClueElement;
 
