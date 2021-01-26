@@ -1,13 +1,92 @@
 import math
 from enum import Enum
 
+
+# Constants
+MINUTES_PER_HOUR = 60
+SECONDS_PER_MINUTE = 60
+WEEKS_PER_MONTH = 4
+MONTHS_PER_YEAR = 12
+MONTHS_PER_QUARTER = 3
+DAYS_PER_WEEK = 7
+HOURS_PER_DAY = 24
+DAYS_PER_YEAR = 365
+WEEKS_PER_YEAR = 52
+YEARS_PER_BI_ANNUAL = 2
+YEARS_PER_DECADE = 10
+DAYS_PER_MONTH = DAYS_PER_YEAR / 12.0
+# DAYS_PER_MONTH = sum([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]) / 12.0
+
+# Changeable vars
+VACATION_DAYS = 14
+WORK_DAYS_PER_WEEK = 5
+WORK_DAY_START_TIME = 800
+WORK_DAY_END_TIME = 1700
+WORK_lUNCH_TIME = 0 #50
+INCOME_TAX_RATE = 15
+
+def work_day_hours(start, end, lunch):
+	return end - start - lunch
+
+WORK_HOURS_PER_DAY = work_day_hours(WORK_DAY_START_TIME, WORK_DAY_END_TIME, WORK_lUNCH_TIME)
+WORK_DAYS = math.ceil(DAYS_PER_YEAR - VACATION_DAYS - ((DAYS_PER_WEEK - WORK_DAYS_PER_WEEK) * ((DAYS_PER_YEAR - VACATION_DAYS) / DAYS_PER_WEEK)))
+
+
+
 # from aenum import Enum  # for the aenum version
 # Animal = Enum('Animal', 'ant bee cat dog')
 # Animal.ant  # returns <Animal.ant: 1>
 # Animal['ant']  # returns <Animal.ant: 1> (string lookup)
 # Animal.ant.name  # returns 'ant' (inverse lookup)
 
-TimeFrame = Enum("TimeFrame", "SECOND MINUTE HOURLY DAILY WEEKLY MONTHLY QUARTERLY WORK_SECOND WORK_MINUTE WORK_HOURLY WORK_DAILY WORK_WEEKLY WORK_MONTHLY WORK_QUARTERLY ANNUALLY BI_ANNUALLY N5YEARS DECADE")
+class TimeFrame(Enum):
+	def __new__(cls, *args, **kwds):
+		value = len(cls.__members__) + 1
+		obj = object.__new__(cls)
+		obj._value_ = value
+		return obj
+		
+	def __init__(self, n, year_ratio):
+		self.n = n
+		self.R = year_ratio # ratio of (1 unit : 1 year)
+
+	# SECOND = 1 / 60 / 60 / 24 / 365
+	# MINUTE = 1 / 60 / 24 / 365
+	# HOURLY = 1 / 24 / 365
+	# DAILY = 1 / 365 
+	# WEEKLY = 1 / 52
+	# MONTHLY = 1 / 12
+	# QUARTERLY = 1 / 4
+	# WORK_SECOND = 1 / 60 / 60 / 24 / 365
+	# WORK_MINUTE = 1 / 60 / 24 / 365
+	# WORK_HOURLY = 1 / 24 / 365
+	# WORK_DAILY = 1 / 365
+	# WORK_WEEKLY = 1 / 52
+	# WORK_MONTHLY = 1 / 12
+	# WORK_QUARTERLY = 1 / 4
+	# ANNUALLY = 1
+	# BI_ANNUALLY = 2
+	# N5YEARS = 5
+	# DECADE = 10
+	
+	SECOND = "second", 1 / SECONDS_PER_MINUTE / MINUTES_PER_HOUR / HOURS_PER_DAY
+	MINUTE = "minute", 1 / MINUTES_PER_HOUR / HOURS_PER_DAY
+	HOURLY = "hour", 1 / HOURS_PER_DAY
+	DAILY = "say", 1 
+	WEEKLY = "week", DAYS_PER_WEEK
+	MONTHLY = "month", DAYS_PER_MONTH
+	QUARTERLY = "quarter", DAYS_PER_YEAR / MONTHS_PER_QUARTER
+	WORK_SECOND = "work second", 1 / SECONDS_PER_MINUTE / MINUTES_PER_HOUR / HOURS_PER_DAY
+	WORK_MINUTE = "work minute", 1 / MINUTES_PER_HOUR / HOURS_PER_DAY
+	WORK_HOURLY = "work hour", 1 / HOURS_PER_DAY
+	WORK_DAILY = "work day", 1
+	WORK_WEEKLY = "work week", DAYS_PER_WEEK
+	WORK_MONTHLY = "work month", DAYS_PER_MONTH
+	WORK_QUARTERLY = "work quarter", DAYS_PER_YEAR / MONTHS_PER_QUARTER
+	ANNUALLY = "year", DAYS_PER_YEAR
+	BI_ANNUALLY = str(YEARS_PER_BI_ANNUAL) + " years", YEARS_PER_BI_ANNUAL * DAYS_PER_YEAR
+	N5YEARS = "5 years", 5 * DAYS_PER_YEAR
+	DECADE = "decade", YEARS_PER_DECADE * DAYS_PER_YEAR
 
 class Salary:
 
@@ -15,14 +94,21 @@ class Salary:
 	def __init__(self, base):
 		self.base = base
 		
-	def create_line(self, m, v, l, is_money=False, is_percentage=False):
+	# m				- 	message / line indicator
+	# v				- 	numeric value of line
+	# l				-	
+	# is_money		-	T if value is in terms of money, else F
+	# is_percentage	-	T if value is a percentage, else F
+	# n				-	number of fractional digits to include in value.
+	def create_line(self, m, v, l, is_money=False, is_percentage=False, n=2):
 		# print("m: {m}, v: {v}, l: {l}, is_money: {is_money}, is_percentage: {is_percentage}".format(m=m, v=v, l=l, is_money=is_money, is_percentage=is_percentage))
 		m += " " if m[-1] != " " else ""
+		d = "%." + str(n) + "f "
 		if is_money:
-			return m + ("$ %.2f" % v).rjust(l - len(m), ".")
+			return m + ("$ " + d % v).rjust(l - len(m) + 1, ".")
 		if is_percentage:
-			return m + (("%.2f " % v) + "%").rjust(l - len(m), ".")
-		return m + ("%.2f %" % v).ljust(l - len(m), ".")
+			return m + ((d % v) + "%").rjust(l - len(m), ".")
+		return m + (d % v).ljust(l - len(m), ".")
 		
 	def __repr__(self):
 		l = 40
@@ -95,18 +181,18 @@ class Salary:
 		
 		to_view = [
 			("generic reporting", generic_to_view),
-			("monthly reporting", monthly_to_view),
-			("weekly reporting", weekly_to_view),
-			("daily reporting", daily_to_view),
+			# ("monthly reporting", monthly_to_view),
+			# ("weekly reporting", weekly_to_view),
+			# ("daily reporting", daily_to_view),
 			("hourly reporting", hourly_to_view),
-			("minute reporting", minute_to_view),
+			# ("minute reporting", minute_to_view),
 			("second reporting", second_to_view)
 		]
 		
 		for description, category in to_view:
 			message += "\n\t{d}\n".format(d=description)
 			for m, func, fargs, args in category:
-				message += self.create_line(m, func(*fargs), l, **args) + "\n"
+				message += self.create_line(m, func(*fargs), l, **args, n=4) + "\n"
 				
 		return message
 		
@@ -183,6 +269,7 @@ class Salary:
 		}
 		
 		return options[time_frame.value - 1](ta)
+
 		
 	def net_earn_amount(self, time_frame):
 		ta = self.base
@@ -220,16 +307,24 @@ class Salary:
 		
 		return options[time_frame.value - 1](ta) - self.tax_amount(time_frame)
 		
+		
+	# TODO - implement tax brackets
 	def annual_tax_rate(self):
 		return INCOME_TAX_RATE
-		
-def work_day_hours(start, end, lunch):
-	return end - start - lunch
+	
 	
 def twenty_four_toString(t):
 	h, mh = divmod(t, 100)
 	m = 60 * mh / 100
 	return ("{h} hour" + ("s" if h > 1 else "") + " {m} minute" + ("s" if m > 1 else "")).format(h=h, m=m)
+	
+	
+def display_func()
+	
+	
+def show_conversion(val, time_frame):
+	print("$ " + ("%.2f" % val) + " per " + str(time_frame.n))
+	
 	
 # convert a salary in a given TimeFrame to the value proportional to the change in TimeFrame.
 # i.e. $50/H -> $438000/Y
@@ -255,6 +350,7 @@ def convert_to_annual(val, time_frame):
 		16: lambda x : x / 5, #5YEARS
 		17: lambda x : x / YEARS_PER_DECADE #DECADE
 	}
+	show_conversion(val, time_frame)
 	return options[time_frame.value - 1](val)
     
 def get_numerical_input(prompt):
@@ -313,35 +409,11 @@ def run():
 		if cap_input:
 			cap_input = [get_numerical_input("Enter the number of time segments:\n(ex: '5' - for 5 minutes/days/weeks...etc)"), None]
 			cap_input[1] = get_timeframe_input("Enter a timeframe corresponding to the number of time segments previously entered:")
+			print("cap_input: " + str(cap_input))
 			
 		
 		loop = get_yes_no("Run again?")
 		
-# Constants
-MINUTES_PER_HOUR = 60
-SECONDS_PER_MINUTE = 60
-WEEKS_PER_MONTH = 4
-MONTHS_PER_YEAR = 12
-MONTHS_PER_QUARTER = 3
-DAYS_PER_WEEK = 7
-HOURS_PER_DAY = 24
-DAYS_PER_YEAR = 365
-WEEKS_PER_YEAR = 52
-YEARS_PER_BI_ANNUAL = 2
-YEARS_PER_DECADE = 10
-
-# Changeable vars
-VACATION_DAYS = 14
-WORK_DAYS_PER_WEEK = 5
-WORK_DAY_START_TIME = 800
-WORK_DAY_END_TIME = 1600
-WORK_lUNCH_TIME = 50
-INCOME_TAX_RATE = 15
-
-
-
-WORK_HOURS_PER_DAY = work_day_hours(WORK_DAY_START_TIME, WORK_DAY_END_TIME, WORK_lUNCH_TIME)
-WORK_DAYS = math.ceil(DAYS_PER_YEAR - VACATION_DAYS - ((DAYS_PER_WEEK - WORK_DAYS_PER_WEEK) * ((DAYS_PER_YEAR - VACATION_DAYS) / DAYS_PER_WEEK)))
 
 if __name__ == "__main__":
 	print("work hours per day: {0}".format(twenty_four_toString(WORK_HOURS_PER_DAY)))
