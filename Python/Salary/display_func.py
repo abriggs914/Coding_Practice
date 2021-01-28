@@ -61,6 +61,36 @@ def indexOf(s, v, start=None, end=None, times=1):
 		return i
 	return indexOf(s, v, start=i+1, end=end, times=times-1)
 	
+# # return the index of the matching close parenthesis.
+# def index_match_bracket(s):
+	# l, r = 0, 0
+	# for i, c in enumerate(s):
+		# if c == "(":
+			# l += 1
+		# if c == ")":
+			# r += 1
+			# if l != 0 and r != 0 and l == r:
+				# return i
+	# return -1
+
+# def collect_bracket_groups(f, lefts):
+	# groups = {} # key is char index in f, val is the substring forming a closed set of brackets
+	# # for i, c in enumerate(f):
+	# for n, i in enumerate(lefts):
+		# sub = f[i:]
+		# print("  f[i:]: {f}".format(f=sub))
+		# # cant use regular index function here because it defaults to first encounter, which typically is the most inner-nested set
+		# j = -1 if ")" not in sub else (index_match_bracket(sub) + (len(f) - len(sub))) 
+		# print("MATCHED:\n\tf[i:j]: <<{f}>>\n\ti: {i}\tj: {j}".format(f=sub[:j+1], i=i, j=j))
+		# if j < 0:
+			# return None
+		# brackets = f[i: j+1]
+		# groups[i] = brackets
+	# return groups
+				
+
+# return the index of the matching close parenthesis.
+# TODO calculate the depth of the nested brackets.
 def index_match_bracket(s):
 	l, r = 0, 0
 	for i, c in enumerate(s):
@@ -68,9 +98,10 @@ def index_match_bracket(s):
 			l += 1
 		if c == ")":
 			r += 1
+			print("l: " + str(l) + ", r: " + str(r))
 			if l != 0 and r != 0 and l == r:
-				return i
-	return -1
+				return i, l
+	return -1, -1
 
 def collect_bracket_groups(f, lefts):
 	groups = {} # key is char index in f, val is the substring forming a closed set of brackets
@@ -79,14 +110,15 @@ def collect_bracket_groups(f, lefts):
 		sub = f[i:]
 		print("  f[i:]: {f}".format(f=sub))
 		# cant use regular index function here because it defaults to first encounter, which typically is the most inner-nested set
-		j = -1 if ")" not in sub else (index_match_bracket(sub) + (len(f) - len(sub))) 
+		m = index_match_bracket(sub)
+		j = -1 if ")" not in sub else (m[0] + (len(f) - len(sub))) 
+		d = len(lefts) - (-1 if j < 0 else m[1]) 
 		print("MATCHED:\n\tf[i:j]: <<{f}>>\n\ti: {i}\tj: {j}".format(f=sub[:j+1], i=i, j=j))
 		if j < 0:
 			return None
-		brackets = f[i: j+1]
+		brackets = f[i: j+1], d
 		groups[i] = brackets
 	return groups
-				
 
 def display_func(f):
 	operators = ["(", ")", "="] + [op.n for op in Operators]
@@ -107,6 +139,10 @@ def display_func(f):
 	if not bracket_groups and (lefts or rights):
 		raise ValueError("mismatched brackets <<{0}>>".format(f))
 	
+	# Need to split each group to determine if any multi-vertical line terms need to be added.
+	# i.e. if there is a division, then the height of the result function will be increased to include
+	# the height of stacked terms. (Character height varies due to jumbo feature)
+	# Operations which add new height lines are: DIVISION / LOG / POWER / FRACTIONS
 	
 	res = None
 	return res
