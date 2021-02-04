@@ -319,7 +319,8 @@ def twenty_four_toString(t):
 	return ("{h} hour" + ("s" if h > 1 else "") + " {m} minute" + ("s" if m > 1 else "")).format(h=h, m=m)
 	
 	
-def display_func()
+def display_func():
+	pass
 	
 	
 def show_conversion(val, time_frame):

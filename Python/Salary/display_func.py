@@ -1,53 +1,62 @@
-from enum import Enum
+from operators import Operators
 from characters import Chars
 
 
-f1  = "y = mx+b", "y = m * x + b"
-f2  = "y = m x + b", "y = m * x + b"
-f3  = "y=mx+b", "y = m * x + b"
-f4  = "y = m*x+b", "y = m * x + b"
-f5  = "y = m*x +b", "y = m * x + b"
-f6  = "y = m*x + b", "y = m * x + b"
-f7  = "y = m *x+b", "y = m * x + b"
-f8  = "y = m * x+b", "y = m * x + b"
-f9  = "y = m * x +b", "y = m * x + b"
-f10 = "y = m * x + b", "y = m * x + b"
-f11 = "y = m*x+ b", "y = m * x + b"
-f12 = "(y = ((m*(x)))+ b)", "y = m * x + b"
-f13 = "((y) = (((m*(x)))+ (b)))", "y = m * x + b"
+# return the calculated width and height of a text => (w, h)
+def text_wh(txt):
+	splt = txt.split("\n")
+	return max([len(letter) for letter in splt]), len(splt)
 
 
-class Operators(Enum):
-	def __new__(cls, *args, **kwds):
-		value = len(cls.__members__) + 1
-		obj = object.__new__(cls)
-		obj._value_ = value
-		return obj
-		
-	def __init__(self, n, f):
-		self.n = n
-		self.f = f
-
-	ADDITION = "+", lambda a, b : a + b
-	SUBTRACTION = "-", lambda a, b : a - b
-	MULTIPLICATION = "*", lambda a, b : a * b
-	DIVISION = "/", lambda a, b : a / b
-	POWER = "^", lambda a, b : a ** b
-	
-	
-def text_wh(t):
-	s = t.split("\n")
-	return max([len(l) for l in s]), len(s)
-
-		
-def dict_print(n, d):
-	m = "--  " + str(n) + "  --\n"
+# Function returns a formatted string containing the contents of a dict object.
+# Special lines and line count for values that are lists.
+# n			-	Name of the dict, printed above the contents.
+# d			-	dict object.
+# number	-	Decide whether to number the content lines.
+# l			-	Minimum number of chars in the content line.
+# 				Spaces between keys and values are populated by marker.
+# sep		-	Additional separation between keys and values.
+# marker	-	Char that separates the key and value of a content line.
+def dict_print(n, d, number=False, l=15, sep=5, marker="."):
+	if not d or not n:
+		return "None"
+	m = "\n--  " + str(n).title() + "  --\n\n"
+	fill = 0
 	for k, v in d.items():
-		ml = str(k)
-		ml += ("<<" + str(v) + ">>").rjust(18 - len(ml), ".") + "\n"
-		m += ml
+		lk = len(str(k))
+		lv = len(str(v))
+		# print("lk: {lk}, lv: {lv}".format(lk=lk, lv=lv))
+		if type(k) == list:
+			lk += (2 * len(k) + 2 + len(k) - 1)
+		if type(v) == list:
+			lv = max([len(str(v_elem)) for v_elem in v])
+			# print("v: {v}".format(v=v))
+			# for v_elem in v:
+			# print("\tv_elem: {n}<{ve}>".format(n=len(v_elem), ve=v_elem))
+			fill += len(v)
+		l = max(l, (lk + lv))
+	# print("calculated L : {l}\tLK: {lk}\tLV: {lv}".format(l=l, lk=lk, lv=lv))
+	l += sep
+	fill = "".join([" " for i in range(len(str(fill + len(d))))])
+	i = 0
+	# print("FINAL L: {l}\nFill: {n}<{f}>".format(l=l, n=len(fill), f=fill))
+	for k, v in d.items():
+		if type(v) != list:
+			v = [v]
+		for j, v_elem in enumerate(v):
+			ml = str(k)
+			orig_ml = ml
+			num = str(i + 1)
+			if number:
+				ml = fill + "  -  " + ml
+				if j == 0:
+					ml = num.ljust(len(fill)) + ml[len(fill):]
+			ml += str(v_elem).rjust(l - len(orig_ml), marker) + "\n"
+			m += "\t" + ml
+			i += 1
 	return m
-	
+
+
 def indexOf(s, v, start=None, end=None, times=1):
 	if not start:
 		start = 0
@@ -98,29 +107,42 @@ def index_match_bracket(s):
 			l += 1
 		if c == ")":
 			r += 1
-			print("l: " + str(l) + ", r: " + str(r))
+			# print("l: " + str(l) + ", r: " + str(r))
 			if l != 0 and r != 0 and l == r:
-				return i, l
-	return -1, -1
+				return i
+	return -1
 
-def collect_bracket_groups(f, lefts):
+
+def collect_bracket_groups(f, lefts, rights):
 	groups = {} # key is char index in f, val is the substring forming a closed set of brackets
 	# for i, c in enumerate(f):
 	for n, i in enumerate(lefts):
 		sub = f[i:]
-		print("  f[i:]: {f}".format(f=sub))
+		# print("  f[i:]: {f}".format(f=sub))
 		# cant use regular index function here because it defaults to first encounter, which typically is the most inner-nested set
 		m = index_match_bracket(sub)
-		j = -1 if ")" not in sub else (m[0] + (len(f) - len(sub))) 
-		d = len(lefts) - (-1 if j < 0 else m[1]) 
-		print("MATCHED:\n\tf[i:j]: <<{f}>>\n\ti: {i}\tj: {j}".format(f=sub[:j+1], i=i, j=j))
+		j = -1 if ")" not in sub else (m + (len(f) - len(sub)))
+		d = sum([1 if v == "(" else -1 if v == ")" else 0 for v in f[:j+1]])
+		# d = len(lefts) - (-1 if j < 0 else m[1]) 
+		# print("MATCHED:\n\tf[i:j]: <<{f}>>\n\ti: {i}\tj: {j}".format(f=sub[:j+1], i=i, j=j))
 		if j < 0:
 			return None
-		brackets = f[i: j+1], d
-		groups[i] = brackets
+		brackets = i, f[i: j+1]
+		if d in groups:
+			groups[d].append(brackets)
+		else:
+			groups[d] = [brackets]
+			
+	# for bracket in brackets:
+		# idx = lefts.index(bracket)
+		
+	# for l in lefts:
+		# for r in rights:
 	return groups
 
+
 def display_func(f):
+	f = "(" + f + ")"
 	operators = ["(", ")", "="] + [op.n for op in Operators]
 	bracket_idxs = [i for i, c in enumerate(f) if c == "(" or c == ")"]
 	lefts, rights = [], []
@@ -134,10 +156,11 @@ def display_func(f):
 		# unmatched brackets
 		raise ValueError("unmatched brackets: <<{0}>>".format(f))
 	print("f:               {f}\nbracket indexes: {b}\nlefts:           {l}\nright:           {r}".format(f=f, b=bracket_idxs, l=lefts, r=rights))
-	bracket_groups = collect_bracket_groups(f, lefts)
+	bracket_groups = collect_bracket_groups(f, lefts, rights)
 	print(dict_print("bracket groups", bracket_groups))
 	if not bracket_groups and (lefts or rights):
 		raise ValueError("mismatched brackets <<{0}>>".format(f))
+	
 	
 	# Need to split each group to determine if any multi-vertical line terms need to be added.
 	# i.e. if there is a division, then the height of the result function will be increased to include
@@ -146,31 +169,3 @@ def display_func(f):
 	
 	res = None
 	return res
-	
-if __name__ == "__main__":
-	to_test = {} 
-	names = ["f1", "f2", "f3", "f4", "f4", "f6", "f7", "f8", "f9", "f10", "f11", "f12", "f13"]
-	tests = [f1, f2, f3, f4, f4, f6, f7, f8, f9, f10, f11, f12, f13]
-	# to_test = dict(zip(names, tests))
-	to_test["f1"] = f1
-	to_test["f2"] = f2
-	to_test["f3"] = f3
-	to_test["f4"] = f4
-	to_test["f5"] = f5
-	to_test["f6"] = f6
-	to_test["f7"] = f7
-	to_test["f8"] = f8
-	to_test["f9"] = f9
-	to_test["f10"] = f10
-	to_test["f11"] = f11
-	to_test["f12"] = f12
-	to_test["f13"] = f13
-	border = "".join(["#" for i in range(45)])
-	for n, t in to_test.items():
-		# print("tst: " + str(t) + " tst[0]: " + str(t[0]) + " tst[1]: " + str(t[1]))
-		func, results = t
-		res = display_func(func)
-		print("{b}\n\t--  {n}  --\nFUNC ARGS: <<{a}>>\nRES: <<{r}>>\nDESIRED: <<{d}>>\nCORRECT: <<{c}>>\n{b}".format(n=n, b=border, a=func, r=res, d=results, c=res==results))
-	
-	for c in Chars:
-		print("\n" + c.j_s+"\n")
