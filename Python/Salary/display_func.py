@@ -161,7 +161,9 @@ def display_func(f):
 	if not bracket_groups and (lefts or rights):
 		raise ValueError("mismatched brackets <<{0}>>".format(f))
 	
-	
+	# At this stage the equation should be divided into it's nested bracket groups
+
+
 	# Need to split each group to determine if any multi-vertical line terms need to be added.
 	# i.e. if there is a division, then the height of the result function will be increased to include
 	# the height of stacked terms. (Character height varies due to jumbo feature)
