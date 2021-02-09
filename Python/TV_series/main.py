@@ -261,10 +261,11 @@ letterkenny = TVSeries("Letterkenny", {
     5 : 6,
     6 : 6,
     7 : 6,
-    8 : 7},
+    8 : 7,
+	9 : 7},
     22,
     2016,
-    2020,
+    2021,
     True,
     "Comedy",
     "Crave")
@@ -325,6 +326,16 @@ misfits = TVSeries("Misfits", {
 	"Comedy",
 	"Netflix")
 
+the_mandalorian = TVSeries("The Mandalorian", {
+    1 : 8,
+    2 : 8},
+    44,
+    2019,
+    2021,
+    True,
+    "Drama, Action",
+    "Disney Plus")
+
 series_list = [
     the_office,
     community,
@@ -348,7 +359,8 @@ series_list = [
 	prison_break,
 	scrubs,
 	yugioh,
-	misfits]
+	misfits,
+	the_mandalorian]
    
 def longest_series_title(series_list) :
     num = 0

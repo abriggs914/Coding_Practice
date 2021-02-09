@@ -141,6 +141,47 @@ def collect_bracket_groups(f, lefts, rights):
 	return groups
 
 
+def reduce_brackets(f, bracket_groups):
+	redundant = []
+	og = f
+	for depth in range(len(bracket_groups)):
+		d1 = depth + 1
+		if d1 == len(bracket_groups):
+			break
+
+		for g0 in bracket_groups[depth]:
+			for g1 in bracket_groups[d1]:
+				g0_start, g0_end = g0[0], g0[0] + len(g0[1])
+				g1_start, g1_end = g1[0], g1[0] + len(g1[1])
+				print("\t({0}, {1}), ({2}, {3}), g0s==g1s-1 => {4}, g0e==g1e+1 => {5}, g1s-g1e => {6}".format(g0_start, g0_end, g1_start, g1_end, g0_start==g1_start-1, g0_end==g1_end+1, g1_end-g1_start))
+				if (g1_end - g1_start) == 2 or ((g0_start == (g1_start - 1)) and (g0_end == (g1_end + 1))):
+					redundant.append((g1_start - 1, g1_end))
+
+		# if redundant:
+	print("redundant: {r}".format(r=redundant))
+
+	i = 0
+	while i < len(redundant):
+		left, right = redundant[i]
+		updated = redundant[:i]
+		f = f[:left] + f[left+1: right] + f[right+1:]
+		for l1, r1 in redundant[i+1:]:
+			if left < l1:
+				l1 -= 1
+			if left < r1:
+				r1 -= 1
+			if right < l1:
+				l1 -= 1
+			if right < r1:
+				r1 -= 1
+			updated.append((l1, r1))
+		redundant = updated
+		i += 1
+
+	print("non redundant f: " + str(f) + "\noriginal f:      " + str(og))
+	return f
+
+
 def display_func(f):
 	f = "(" + f + ")"
 	operators = ["(", ")", "="] + [op.n for op in Operators]
@@ -160,7 +201,8 @@ def display_func(f):
 	print(dict_print("bracket groups", bracket_groups))
 	if not bracket_groups and (lefts or rights):
 		raise ValueError("mismatched brackets <<{0}>>".format(f))
-	
+
+	f = reduce_brackets(f, bracket_groups)
 	# At this stage the equation should be divided into it's nested bracket groups
 
 
