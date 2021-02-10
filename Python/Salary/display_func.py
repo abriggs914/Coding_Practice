@@ -1,4 +1,5 @@
 from operators import Operators
+from Term import Term
 from characters import Chars
 
 
@@ -182,6 +183,73 @@ def reduce_brackets(f, bracket_groups):
 	return f
 
 
+def brackets_only(val, reverse=False):
+	if reverse:
+		rev = [l for l in val]
+		rev.reverse()
+		val = "".join(rev)
+
+	past_equals = False
+	res = ""
+	for let in val:
+		if let == "=":
+			past_equals = True
+			continue
+		if not past_equals:
+			if let == "(" or let == ")":
+				res += let
+		else:
+			res += let
+
+	if reverse:
+		print("reverse res <{res}>".format(res=res))
+		rev = [l for l in res]
+		rev.reverse()
+		res = "".join(rev)
+		print("reverse res <{res}>".format(res=res))
+
+	return res.strip()
+
+
+def parse_eval(val):
+	equals = val.index("=")
+	og = val
+	past_equals = False
+	right = brackets_only(val)
+	left = brackets_only(val, reverse=True)
+
+	res = ""
+	non_terms = ["(", ")", "+", "-", "*", "/", " "]
+	i = 0
+	lv = len(right)
+	terms = []
+	while i < lv:
+		let = right[i]
+		if let not in non_terms:
+			j = i + 1 if i < lv - 1 else -1
+			next_let = right[j] if j >= 0 else None
+			t = let
+			print("let: {let}, next_let: {nl}".format(let=let, nl=next_let))
+			if next_let is not None and next_let not in non_terms:
+				k = j
+				while k < lv - 1:
+					letter = right[k]
+					if letter in non_terms:
+						break
+					t += letter
+					k += 1
+					i += 1
+					print("Loop\nk: {k}\nlv: {lv}\nletter: {letter}".format(k=k, lv=lv, letter=letter))
+			terms.append((i - len(t) + 1, Term(t, None)))
+		i += 1
+
+
+	print("ORIGINAL VAL:\n\t<{0}>\nRIGHT:\n\t<{1}>\nLEFT:\n\t<{2}>\nCALCULATED TERMS\n\t{3}".format(og, right, left, terms))
+	e = left + str(eval(right))
+	print("EVALUATED TO: <{0}>".format(e))
+	return e
+
+
 def display_func(f):
 	f = "(" + f + ")"
 	operators = ["(", ")", "="] + [op.n for op in Operators]
@@ -194,8 +262,9 @@ def display_func(f):
 		if f[i] == ")":
 			rights.append(i)
 	if len(bracket_idxs) % 2 == 1 or len(lefts) != len(rights):
+		pass
 		# unmatched brackets
-		raise ValueError("unmatched brackets: <<{0}>>".format(f))
+		# raise ValueError("unmatched brackets: <<{0}>>".format(f))
 	print("f:               {f}\nbracket indexes: {b}\nlefts:           {l}\nright:           {r}".format(f=f, b=bracket_idxs, l=lefts, r=rights))
 	bracket_groups = collect_bracket_groups(f, lefts, rights)
 	print(dict_print("bracket groups", bracket_groups))
@@ -203,6 +272,8 @@ def display_func(f):
 		raise ValueError("mismatched brackets <<{0}>>".format(f))
 
 	f = reduce_brackets(f, bracket_groups)
+	e = parse_eval(f)
+
 	# At this stage the equation should be divided into it's nested bracket groups
 
 

@@ -7,9 +7,10 @@ from display_func import *
 #   "y = 3(x + 1)" should be converted to "y = 3 * (x + 1)"
 #   "y = 3(1)" should be converted to "y = 3 * 1"
 
-f1  = "y = mx+b", "y = m * x + b"
-f2  = "y = m x + b", "y = m * x + b"
-f3  = "y=mx+b", "y = m * x + b"
+f1  = "y = 1 + 2 +3 + 4", "y = 1 + 2 + 3 + 4"
+# f1  = "y = mx+b", "y = mx + b"
+f2  = "y = m*x + b", "y = m * x + b"
+f3  = "y=mx+b", "y = mx + b"
 f4  = "y = m*x+b", "y = m * x + b"
 f5  = "y = m*x +b", "y = m * x + b"
 f6  = "y = m*x + b", "y = m * x + b"
@@ -64,6 +65,13 @@ f18 = "y = x ^ (12 / x)", "\n".join([
     "      (           (  )   ) ",
     "y =    (  x  ^^         )  ",
     "        (              )   "
+])
+f19 = "((y) = (((((x) + (1)) / (2)) + (1)) + (1)))", "\n".join([
+    "       (     )          ",
+    "      ( x + 1 )         ",
+    "y =  (  _____  ) + 1 + 1",
+    "      (   2   )         ",
+    "       (     )          "
 ])
 
 # TODO for each of DIVISION, POWER, and LOG I need examples of every permutation and nested samples
@@ -190,6 +198,7 @@ to_test["f15"] = f15
 to_test["f16"] = f16
 to_test["f17"] = f17
 to_test["f18"] = f18
+to_test["f19"] = f19
 border = "".join(["#" for i in range(45)])
 for n, t in to_test.items():
     # print("tst: " + str(t) + " tst[0]: " + str(t[0]) + " tst[1]: " + str(t[1]))
