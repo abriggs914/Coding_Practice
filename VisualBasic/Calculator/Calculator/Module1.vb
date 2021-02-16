@@ -69,7 +69,7 @@
             For Each func In Functions
                 message += vbTab & "-" & vbTab & Title(func.ToString()) & vbNewLine
             Next
-            message += vbNewLine & "Enter a numer to get started:"
+            message += vbNewLine & "Enter a number to get started:"
             message += vbNewLine & Border & vbNewLine
             Console.WriteLine(message)
             UpdateCurrVal(GetNumberInput())
