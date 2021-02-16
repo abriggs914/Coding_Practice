@@ -53,6 +53,13 @@ REOCCURRING = {
 				"occur_annual": 12,
 				"occur_lifetime": float("inf")
 			},
+	"Quarterly": {
+				"pname": "Quarterly",
+				"ratio_to_annual": 4,
+				"ratio_from_annual": 1/4,
+				"occur_annual": 4,
+				"occur_lifetime": float("inf")
+			},
 	"Annually": {
 				"pname": "Annual",
 				"ratio_to_annual": 1,
@@ -193,7 +200,8 @@ entities = {
 	"Walmart": Entity("Walmart"),
 	"SF": Entity("SF"),
 	"ScotiaBank": Entity("ScotiaBank"),
-	"BMO": Entity("BMO")
+	"BMO": Entity("BMO"),
+	"GST": Entity("GST")
 }
 
 
@@ -211,7 +219,8 @@ transactions = [
 	Transaction(175.93, "Avery", "Walmart", "Once", "Clothing", "Some new work clothes", datetime.datetime.now()),
 	Transaction(17.50, "Avery", "SF", "Monthly", "SF", "SF", datetime.datetime.now()),
 	Transaction(15.95, "Avery", "ScotiaBank", "Monthly", "Bank fees", "Bank fees", datetime.datetime.now()),
-	Transaction(10.50, "Avery", "BMO", "Monthly", "Bank fees", "Bank fees", datetime.datetime.now())
+	Transaction(10.50, "Avery", "BMO", "Monthly", "Bank fees", "Bank fees", datetime.datetime.now()),
+	Transaction(147.5, "GST", "Avery", "Quarterly", "GST", "GST pamyent", datetime.datetime.now())
 ]
 
 for transaction in transactions:
