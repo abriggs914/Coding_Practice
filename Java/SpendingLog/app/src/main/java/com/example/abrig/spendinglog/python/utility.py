@@ -44,7 +44,7 @@ def pad_centre(text, l, pad_str=" "):
 # min_encapsulation	-	If a table is necessary because of a value that is a
 #						dictionary, then opt to keep all column widths as small as
 #						possible. This will most likely produce varying widths.
-def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_header=False, min_encapsulation=True):
+def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_header=False, min_encapsulation=True, table_title="Table Title"):
 	if not d or not n:
 		return "None"
 	m = "\n--  " + str(n).title() + "  --\n\n"
@@ -69,7 +69,7 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
 		max_val = max((max([len(str(v_elem)) for v_elem in v] if v else [0]) if type(v) == (list or tuple) else len(str(v)) if type(v) != dict else 0), max_val)
 			
 	
-	l = max(l, (max_key + max_val)) + sep
+	l = max(len(table_title), max(l, (max_key + max_val))) + sep
 	has_dict = [(k, v) for k, v in d.items() if type(v) == dict]
 	has_list = any([1 if type(v) in [list, tuple] else 0 for v in d.values()])
 	
@@ -115,7 +115,7 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
 	table_width = l + len(fill) + len(SEPARATOR) + len(TAB) + len(table_header) - (4 * len(TABLE_DIVIDER))
 	table_tab = "".join([marker for i in range(len(TAB))])
 	if has_dict:
-		table_header_title = pad_centre("Table Header", l + len(SEPARATOR) - 1)
+		table_header_title = pad_centre(table_title, l + len(SEPARATOR) - 1)
 		m += TAB
 		m += "" if not number else fill + SEPARATOR
 		m += table_header_title + table_header.rjust(table_width - len(table_header_title) - len(fill) - len(SEPARATOR)) + "\n"

@@ -7,6 +7,8 @@ class Term:
         self.val = self.attempt_eval(term)
 
         self.is_var = str(term) != str(val)
+        print("term: {t}=>{st}\tval: {v}=>{sv}\tis_var: {iv}".format(t=term, st=self.term, v=val, sv=self.val, iv=self.is_var))
+        # self.is_solvable =
 
     def val(self):
         return self.val
