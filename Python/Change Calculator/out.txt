@@ -1,0 +1,112 @@
+
+--  Res  --
+
+        Table Title     | Buyer Balance | Seller Balance |
+    Run 1...............|    $ -0.19    |     $ 0.19     |
+    Run 2...............|    $ -0.01    |     $ 0.01     |
+    Run 3...............|    $ -0.04    |     $ 0.04     |
+    Run 4...............|    $ 0.07     |    $ -0.07     |
+    Run 5...............|    $ 0.01     |    $ -0.01     |
+    Run 6...............|    $ 0.18     |    $ -0.18     |
+    Run 7...............|    $ -0.12    |     $ 0.12     |
+    Run 8...............|    $ -0.05    |     $ 0.05     |
+    Run 9...............|    $ 0.03     |    $ -0.03     |
+    Run 10..............|    $ -0.01    |     $ 0.01     |
+    Run 11..............|    $ -0.17    |     $ 0.17     |
+    Run 12..............|    $ -0.04    |     $ 0.04     |
+    Run 13..............|    $ 0.12     |    $ -0.12     |
+    Run 14..............|    $ 0.04     |    $ -0.04     |
+    Run 15..............|    $ -0.03    |     $ 0.03     |
+    Run 16..............|    $ -0.22    |     $ 0.22     |
+    Run 17..............|    $ -0.14    |     $ 0.14     |
+    Run 18..............|    $ -0.23    |     $ 0.23     |
+    Run 19..............|    $ -0.07    |     $ 0.07     |
+    Run 20..............|    $ 0.08     |    $ -0.08     |
+    Run 21..............|    $ 0.19     |    $ -0.19     |
+    Run 22..............|    $ 0.23     |    $ -0.23     |
+    Run 23..............|    $ 0.22     |    $ -0.22     |
+    Run 24..............|    $ 0.06     |    $ -0.06     |
+    Run 25..............|    $ -0.01    |     $ 0.01     |
+    Run 26..............|    $ 0.17     |    $ -0.17     |
+    Run 27..............|    $ 0.09     |    $ -0.09     |
+    Run 28..............|    $ 0.29     |    $ -0.29     |
+    Run 29..............|    $ -0.13    |     $ 0.13     |
+    Run 30..............|    $ -0.03    |     $ 0.03     |
+    Run 31..............|    $ 0.17     |    $ -0.17     |
+    Run 32..............|    $ 0.23     |    $ -0.23     |
+    Run 33..............|    $ 0.02     |    $ -0.02     |
+    Run 34..............|    $ 0.15     |    $ -0.15     |
+    Run 35..............|    $ -0.12    |     $ 0.12     |
+    Run 36..............|    $ 0.07     |    $ -0.07     |
+    Run 37..............|    $ 0.15     |    $ -0.15     |
+    Run 38..............|    $ -0.14    |     $ 0.14     |
+    Run 39..............|    $ -0.18    |     $ 0.18     |
+    Run 40..............|    $ -0.06    |     $ 0.06     |
+    Run 41..............|    $ -0.12    |     $ 0.12     |
+    Run 42..............|    $ 0.12     |    $ -0.12     |
+    Run 43..............|    $ -0.15    |     $ 0.15     |
+    Run 44..............|    $ 0.06     |    $ -0.06     |
+    Run 45..............|    $ 0.07     |    $ -0.07     |
+    Run 46..............|    $ 0.01     |    $ -0.01     |
+    Run 47..............|    $ -0.24    |     $ 0.24     |
+    Run 48..............|    $ -0.10    |     $ 0.10     |
+    Run 49..............|    $ -0.15    |     $ 0.15     |
+    Run 50..............|    $ 0.03     |    $ -0.03     |
+    Run 51..............|    $ -0.09    |     $ 0.09     |
+    Run 52..............|    $ -0.06    |     $ 0.06     |
+    Run 53..............|    $ 0.10     |    $ -0.10     |
+    Run 54..............|    $ 0.07     |    $ -0.07     |
+    Run 55..............|    $ -0.15    |     $ 0.15     |
+    Run 56..............|    $ 0.09     |    $ -0.09     |
+    Run 57..............|    $ 0.18     |    $ -0.18     |
+    Run 58..............|    $ -0.08    |     $ 0.08     |
+    Run 59..............|    $ 0.12     |    $ -0.12     |
+    Run 60..............|    $ 0.06     |    $ -0.06     |
+    Run 61..............|    $ 0.16     |    $ -0.16     |
+    Run 62..............|    $ -0.05    |     $ 0.05     |
+    Run 63..............|    $ -0.06    |     $ 0.06     |
+    Run 64..............|    $ -0.31    |     $ 0.31     |
+    Run 65..............|    $ -0.05    |     $ 0.05     |
+    Run 66..............|    $ 0.02     |    $ -0.02     |
+    Run 67..............|    $ -0.33    |     $ 0.33     |
+    Run 68..............|    $ 0.17     |    $ -0.17     |
+    Run 69..............|    $ -0.04    |     $ 0.04     |
+    Run 70..............|    $ 0.03     |    $ -0.03     |
+    Run 71..............|    $ -0.20    |     $ 0.20     |
+    Run 72..............|    $ 0.15     |    $ -0.15     |
+    Run 73..............|    $ -0.05    |     $ 0.05     |
+    Run 74..............|    $ -0.04    |     $ 0.04     |
+    Run 75..............|    $ 0.10     |    $ -0.10     |
+    Run 76..............|    $ 0.25     |    $ -0.25     |
+    Run 77..............|    $ 0.05     |    $ -0.05     |
+    Run 78..............|    $ -0.09    |     $ 0.09     |
+    Run 79..............|    $ 0.01     |    $ -0.01     |
+    Run 80..............|    $ -0.01    |     $ 0.01     |
+    Run 81..............|    $ 0.15     |    $ -0.15     |
+    Run 82..............|    $ -0.01    |     $ 0.01     |
+    Run 83..............|    $ 0.02     |    $ -0.02     |
+    Run 84..............|    $ 0.11     |    $ -0.11     |
+    Run 85..............|    $ -0.07    |     $ 0.07     |
+    Run 86..............|    $ -0.15    |     $ 0.15     |
+    Run 87..............|    $ -0.20    |     $ 0.20     |
+    Run 88..............|    $ 0.01     |    $ -0.01     |
+    Run 89..............|    $ -0.09    |     $ 0.09     |
+    Run 90..............|    $ -0.11    |     $ 0.11     |
+    Run 91..............|    $ -0.24    |     $ 0.24     |
+    Run 92..............|    $ 0.13     |    $ -0.13     |
+    Run 93..............|    $ 0.10     |    $ -0.10     |
+    Run 94..............|    $ 0.22     |    $ -0.22     |
+    Run 95..............|    $ 0.16     |    $ -0.16     |
+    Run 96..............|    $ 0.14     |    $ -0.14     |
+    Run 97..............|    $ 0.12     |    $ -0.12     |
+    Run 98..............|    $ -0.04    |     $ 0.04     |
+    Run 99..............|    $ 0.20     |    $ -0.20     |
+    Run 100.............|    $ -0.10    |     $ 0.10     |
+
+Res: {'Run 1': {'Buyer Balance': '$ -0.19', 'Seller Balance': '$ 0.19'}, 'Run 2': {'Buyer Balance': '$ -0.01', 'Seller Balance': '$ 0.01'}, 'Run 3': {'Buyer Balance': '$ -0.04', 'Seller Balance': '$ 0.04'}, 'Run 4': {'Buyer Balance': '$ 0.07', 'Seller Balance': '$ -0.07'}, 'Run 5': {'Buyer Balance': '$ 0.01', 'Seller Balance': '$ -0.01'}, 'Run 6': {'Buyer Balance': '$ 0.18', 'Seller Balance': '$ -0.18'}, 'Run 7': {'Buyer Balance': '$ -0.12', 'Seller Balance': '$ 0.12'}, 'Run 8': {'Buyer Balance': '$ -0.05', 'Seller Balance': '$ 0.05'}, 'Run 9': {'Buyer Balance': '$ 0.03', 'Seller Balance': '$ -0.03'}, 'Run 10': {'Buyer Balance': '$ -0.01', 'Seller Balance': '$ 0.01'}, 'Run 11': {'Buyer Balance': '$ -0.17', 'Seller Balance': '$ 0.17'}, 'Run 12': {'Buyer Balance': '$ -0.04', 'Seller Balance': '$ 0.04'}, 'Run 13': {'Buyer Balance': '$ 0.12', 'Seller Balance': '$ -0.12'}, 'Run 14': {'Buyer Balance': '$ 0.04', 'Seller Balance': '$ -0.04'}, 'Run 15': {'Buyer Balance': '$ -0.03', 'Seller Balance': '$ 0.03'}, 'Run 16': {'Buyer Balance': '$ -0.22', 'Seller Balance': '$ 0.22'}, 'Run 17': {'Buyer Balance': '$ -0.14', 'Seller Balance': '$ 0.14'}, 'Run 18': {'Buyer Balance': '$ -0.23', 'Seller Balance': '$ 0.23'}, 'Run 19': {'Buyer Balance': '$ -0.07', 'Seller Balance': '$ 0.07'}, 'Run 20': {'Buyer Balance': '$ 0.08', 'Seller Balance': '$ -0.08'}, 'Run 21': {'Buyer Balance': '$ 0.19', 'Seller Balance': '$ -0.19'}, 'Run 22': {'Buyer Balance': '$ 0.23', 'Seller Balance': '$ -0.23'}, 'Run 23': {'Buyer Balance': '$ 0.22', 'Seller Balance': '$ -0.22'}, 'Run 24': {'Buyer Balance': '$ 0.06', 'Seller Balance': '$ -0.06'}, 'Run 25': {'Buyer Balance': '$ -0.01', 'Seller Balance': '$ 0.01'}, 'Run 26': {'Buyer Balance': '$ 0.17', 'Seller Balance': '$ -0.17'}, 'Run 27': {'Buyer Balance': '$ 0.09', 'Seller Balance': '$ -0.09'}, 'Run 28': {'Buyer Balance': '$ 0.29', 'Seller Balance': '$ -0.29'}, 'Run 29': {'Buyer Balance': '$ -0.13', 'Seller Balance': '$ 0.13'}, 'Run 30': {'Buyer Balance': '$ -0.03', 'Seller Balance': '$ 0.03'}, 'Run 31': {'Buyer Balance': '$ 0.17', 'Seller Balance': '$ -0.17'}, 'Run 32': {'Buyer Balance': '$ 0.23', 'Seller Balance': '$ -0.23'}, 'Run 33': {'Buyer Balance': '$ 0.02', 'Seller Balance': '$ -0.02'}, 'Run 34': {'Buyer Balance': '$ 0.15', 'Seller Balance': '$ -0.15'}, 'Run 35': {'Buyer Balance': '$ -0.12', 'Seller Balance': '$ 0.12'}, 'Run 36': {'Buyer Balance': '$ 0.07', 'Seller Balance': '$ -0.07'}, 'Run 37': {'Buyer Balance': '$ 0.15', 'Seller Balance': '$ -0.15'}, 'Run 38': {'Buyer Balance': '$ -0.14', 'Seller Balance': '$ 0.14'}, 'Run 39': {'Buyer Balance': '$ -0.18', 'Seller Balance': '$ 0.18'}, 'Run 40': {'Buyer Balance': '$ -0.06', 'Seller Balance': '$ 0.06'}, 'Run 41': {'Buyer Balance': '$ -0.12', 'Seller Balance': '$ 0.12'}, 'Run 42': {'Buyer Balance': '$ 0.12', 'Seller Balance': '$ -0.12'}, 'Run 43': {'Buyer Balance': '$ -0.15', 'Seller Balance': '$ 0.15'}, 'Run 44': {'Buyer Balance': '$ 0.06', 'Seller Balance': '$ -0.06'}, 'Run 45': {'Buyer Balance': '$ 0.07', 'Seller Balance': '$ -0.07'}, 'Run 46': {'Buyer Balance': '$ 0.01', 'Seller Balance': '$ -0.01'}, 'Run 47': {'Buyer Balance': '$ -0.24', 'Seller Balance': '$ 0.24'}, 'Run 48': {'Buyer Balance': '$ -0.10', 'Seller Balance': '$ 0.10'}, 'Run 49': {'Buyer Balance': '$ -0.15', 'Seller Balance': '$ 0.15'}, 'Run 50': {'Buyer Balance': '$ 0.03', 'Seller Balance': '$ -0.03'}, 'Run 51': {'Buyer Balance': '$ -0.09', 'Seller Balance': '$ 0.09'}, 'Run 52': {'Buyer Balance': '$ -0.06', 'Seller Balance': '$ 0.06'}, 'Run 53': {'Buyer Balance': '$ 0.10', 'Seller Balance': '$ -0.10'}, 'Run 54': {'Buyer Balance': '$ 0.07', 'Seller Balance': '$ -0.07'}, 'Run 55': {'Buyer Balance': '$ -0.15', 'Seller Balance': '$ 0.15'}, 'Run 56': {'Buyer Balance': '$ 0.09', 'Seller Balance': '$ -0.09'}, 'Run 57': {'Buyer Balance': '$ 0.18', 'Seller Balance': '$ -0.18'}, 'Run 58': {'Buyer Balance': '$ -0.08', 'Seller Balance': '$ 0.08'}, 'Run 59': {'Buyer Balance': '$ 0.12', 'Seller Balance': '$ -0.12'}, 'Run 60': {'Buyer Balance': '$ 0.06', 'Seller Balance': '$ -0.06'}, 'Run 61': {'Buyer Balance': '$ 0.16', 'Seller Balance': '$ -0.16'}, 'Run 62': {'Buyer Balance': '$ -0.05', 'Seller Balance': '$ 0.05'}, 'Run 63': {'Buyer Balance': '$ -0.06', 'Seller Balance': '$ 0.06'}, 'Run 64': {'Buyer Balance': '$ -0.31', 'Seller Balance': '$ 0.31'}, 'Run 65': {'Buyer Balance': '$ -0.05', 'Seller Balance': '$ 0.05'}, 'Run 66': {'Buyer Balance': '$ 0.02', 'Seller Balance': '$ -0.02'}, 'Run 67': {'Buyer Balance': '$ -0.33', 'Seller Balance': '$ 0.33'}, 'Run 68': {'Buyer Balance': '$ 0.17', 'Seller Balance': '$ -0.17'}, 'Run 69': {'Buyer Balance': '$ -0.04', 'Seller Balance': '$ 0.04'}, 'Run 70': {'Buyer Balance': '$ 0.03', 'Seller Balance': '$ -0.03'}, 'Run 71': {'Buyer Balance': '$ -0.20', 'Seller Balance': '$ 0.20'}, 'Run 72': {'Buyer Balance': '$ 0.15', 'Seller Balance': '$ -0.15'}, 'Run 73': {'Buyer Balance': '$ -0.05', 'Seller Balance': '$ 0.05'}, 'Run 74': {'Buyer Balance': '$ -0.04', 'Seller Balance': '$ 0.04'}, 'Run 75': {'Buyer Balance': '$ 0.10', 'Seller Balance': '$ -0.10'}, 'Run 76': {'Buyer Balance': '$ 0.25', 'Seller Balance': '$ -0.25'}, 'Run 77': {'Buyer Balance': '$ 0.05', 'Seller Balance': '$ -0.05'}, 'Run 78': {'Buyer Balance': '$ -0.09', 'Seller Balance': '$ 0.09'}, 'Run 79': {'Buyer Balance': '$ 0.01', 'Seller Balance': '$ -0.01'}, 'Run 80': {'Buyer Balance': '$ -0.01', 'Seller Balance': '$ 0.01'}, 'Run 81': {'Buyer Balance': '$ 0.15', 'Seller Balance': '$ -0.15'}, 'Run 82': {'Buyer Balance': '$ -0.01', 'Seller Balance': '$ 0.01'}, 'Run 83': {'Buyer Balance': '$ 0.02', 'Seller Balance': '$ -0.02'}, 'Run 84': {'Buyer Balance': '$ 0.11', 'Seller Balance': '$ -0.11'}, 'Run 85': {'Buyer Balance': '$ -0.07', 'Seller Balance': '$ 0.07'}, 'Run 86': {'Buyer Balance': '$ -0.15', 'Seller Balance': '$ 0.15'}, 'Run 87': {'Buyer Balance': '$ -0.20', 'Seller Balance': '$ 0.20'}, 'Run 88': {'Buyer Balance': '$ 0.01', 'Seller Balance': '$ -0.01'}, 'Run 89': {'Buyer Balance': '$ -0.09', 'Seller Balance': '$ 0.09'}, 'Run 90': {'Buyer Balance': '$ -0.11', 'Seller Balance': '$ 0.11'}, 'Run 91': {'Buyer Balance': '$ -0.24', 'Seller Balance': '$ 0.24'}, 'Run 92': {'Buyer Balance': '$ 0.13', 'Seller Balance': '$ -0.13'}, 'Run 93': {'Buyer Balance': '$ 0.10', 'Seller Balance': '$ -0.10'}, 'Run 94': {'Buyer Balance': '$ 0.22', 'Seller Balance': '$ -0.22'}, 'Run 95': {'Buyer Balance': '$ 0.16', 'Seller Balance': '$ -0.16'}, 'Run 96': {'Buyer Balance': '$ 0.14', 'Seller Balance': '$ -0.14'}, 'Run 97': {'Buyer Balance': '$ 0.12', 'Seller Balance': '$ -0.12'}, 'Run 98': {'Buyer Balance': '$ -0.04', 'Seller Balance': '$ 0.04'}, 'Run 99': {'Buyer Balance': '$ 0.20', 'Seller Balance': '$ -0.20'}, 'Run 100': {'Buyer Balance': '$ -0.10', 'Seller Balance': '$ 0.10'}}
+
+--  Final Tally  --
+
+    Buyer Balance.......$ 0.41
+    Seller Balance.....$ -0.41
+
