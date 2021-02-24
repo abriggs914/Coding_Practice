@@ -420,7 +420,9 @@ metric_possibilities = [
     "least number episodes",
     "most number episodes",
     "shortest time",
-    "longest time"
+    "longest time",
+	"most episodes per season",
+	"least episodes per season"
     ]
     
 def ask_print_style(series_list) :
@@ -443,7 +445,7 @@ def ask_print_style(series_list) :
         print("\nsorting by start year...\n")
         metric = (False, lambda s : s.start_year, metric_possibilities[0])
     elif selection == 2 :
-        print("\nsorting by end year...")
+        print("\nsorting by end year...\n")
         metric = (False, lambda s : s.end_year, metric_possibilities[1])
     elif selection == 3 :
         print("\nsorting by shortest series length...\n")
@@ -469,6 +471,12 @@ def ask_print_style(series_list) :
     elif selection == 10 :
         print("\nsorting by longest time...\n")
         metric = (True, lambda s : s.how_long_is_series()[1], metric_possibilities[9])
+    elif selection == 11 :
+        print("\nsorting by most episodes per season...\n")
+        metric = (True, lambda s : s.calc_episode_per_season(), metric_possibilities[10])
+    elif selection == 12 :
+        print("\nsorting by least episodes per season...\n")
+        metric = (False, lambda s : s.calc_episode_per_season(), metric_possibilities[11])
     else :
         print("\nNo sorting performed\n")
     
@@ -588,6 +596,6 @@ if __name__ == "__main__" :
   print("Episode: " + str(selected_episode))
     
     
-  for i in range(10) :
-    print(print_time_line_horizontal(series_list, 1995, 2021))
+  for i in range(len(metric_possibilities)) :
+    print(print_time_line_horizontal(series_list, 1995, 2022))
     print(print_series_stats(series_list))

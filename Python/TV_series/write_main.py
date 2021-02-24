@@ -133,7 +133,7 @@ def write_file():
 				f.write("\nsorting by start year...\n")
 				metric = (False, lambda s : s.start_year, metric_possibilities[0])
 			elif selection == 2 :
-				f.write("\nsorting by end year...")
+				f.write("\nsorting by end year...\n")
 				metric = (False, lambda s : s.end_year, metric_possibilities[1])
 			elif selection == 3 :
 				f.write("\nsorting by shortest series length...\n")
@@ -159,6 +159,12 @@ def write_file():
 			elif selection == 10 :
 				f.write("\nsorting by longest time...\n")
 				metric = (True, lambda s : s.how_long_is_series()[1], metric_possibilities[9])
+			elif selection == 11 :
+				f.write("\nsorting by most episodes per season...\n")
+				metric = (True, lambda s : s.calc_episode_per_season(), metric_possibilities[10])
+			elif selection == 12 :
+				f.write("\nsorting by least episodes per season...\n")
+				metric = (False, lambda s : s.calc_episode_per_season(), metric_possibilities[11])
 			else :
 				f.write("\nNo sorting performed\n")
 				
@@ -172,11 +178,11 @@ def write_file():
 		selected_season = random.choice([seasonKey for seasonKey in selected_series.episodes_list.keys()])
 		f.write("\nSeason: " + str(selected_season))
 		selected_episode = random.choice([i for i in range(1, selected_series.episodes_list[selected_season] + 1)])
-		f.write("Episode: " + str(selected_episode))
+		f.write(" Episode: " + str(selected_episode))
 		
 		
-		for i in range(10) :
-			f.write(print_time_line_horizontal_write(series_list, 1995, 2021))
+		for i in range(len(metric_possibilities)) :
+			f.write(print_time_line_horizontal_write(series_list, 1995, 2022))
 			f.write(print_series_stats_write(series_list))
 			
 
