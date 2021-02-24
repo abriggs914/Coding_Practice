@@ -239,32 +239,65 @@ average length of an episode:	44
 Total minutes:			704
 Total hours:			11.733333333333333
 Where to watch:			Disney Plus
+	Recess
+Genre:				Comedy, Cartoon
+Run (1997 -> 2001):		4 years
+number seasons:			6
+number episodes:		68
+episodes per season:		11.333333333333334
+average length of an episode:	23
+Total minutes:			1564
+Total hours:			26.066666666666666
+Where to watch:			Disney Plus
+	The Proud Family
+Genre:				Comedy, Cartoon
+Run (2001 -> 2005):		4 years
+number seasons:			2
+number episodes:		52
+episodes per season:		26.0
+average length of an episode:	23
+Total minutes:			1196
+Total hours:			19.933333333333334
+Where to watch:			Disney Plus
+	My Name is Earl
+Genre:				Comedy
+Run (2005 -> 2009):		4 years
+number seasons:			4
+number episodes:		96
+episodes per season:		24.0
+average length of an episode:	21
+Total minutes:			2016
+Total hours:			33.6
+Where to watch:			Disney Plus
 
 	What to watch?
 Series:
 
-	Arrested Develpoment
-Genre:				Comedy
-Run (2003 -> 2019):		16 years
-number seasons:			5
-number episodes:		84
-episodes per season:		16.8
-average length of an episode:	22
-Total minutes:			1848
-Total hours:			30.8
-Where to watch:			Netflix
-Season: 1Episode: 20
+	The Mandalorian
+Genre:				Drama, Action
+Run (2019 -> 2021):		2 years
+number seasons:			2
+number episodes:		16
+episodes per season:		8.0
+average length of an episode:	44
+Total minutes:			704
+Total hours:			11.733333333333333
+Where to watch:			Disney Plus
+Season: 2Episode: 7
 sorting by start year...
 ########################################################################################################################################################################################################################
 ###########################| start year |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| start year |###########################
+|Recess                    |    1997    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1997    |Recess                    |
 |Yu-Gi-Oh!                 |    1998    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1998    |Yu-Gi-Oh!                 |
 |Curb your Enthusiasm      |    2000    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    2000    |Curb your Enthusiasm      |
 |Trailer Park Boys         |    2001    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    2001    |Trailer Park Boys         |
 |Scrubs                    |    2001    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    2001    |Scrubs                    |
+|The Proud Family          |    2001    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2001    |The Proud Family          |
 |Arrested Develpoment      |    2003    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    2003    |Arrested Develpoment      |
 |The Office                |    2005    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    2005    |The Office                |
 |Avatar, the Last Airbender|    2005    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    2005    |Avatar, the Last Airbender|
 |Prison Break              |    2005    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    2005    |Prison Break              |
+|My Name is Earl           |    2005    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    2005    |My Name is Earl           |
 |The IT Crowd              |    2006    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2006    |The IT Crowd              |
 |Breaking Bad              |    2008    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2008    |Breaking Bad              |
 |Community                 |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    2009    |Community                 |
@@ -285,14 +318,17 @@ sorting by start year...
 sorting by start year...
 #########################################
 ###########################| start year |
+|Recess                    |    1997    |
 |Yu-Gi-Oh!                 |    1998    |
 |Curb your Enthusiasm      |    2000    |
 |Trailer Park Boys         |    2001    |
 |Scrubs                    |    2001    |
+|The Proud Family          |    2001    |
 |Arrested Develpoment      |    2003    |
 |The Office                |    2005    |
 |Avatar, the Last Airbender|    2005    |
 |Prison Break              |    2005    |
+|My Name is Earl           |    2005    |
 |The IT Crowd              |    2006    |
 |Breaking Bad              |    2008    |
 |Community                 |    2009    |
@@ -311,16 +347,19 @@ sorting by start year...
 |The Mandalorian           |    2019    |
 #########################################
 
-Mean:		2009.12
+Mean:		2008.22
 Median:		2009.00
-Pstdev:		  5.98
-Pvariance:	 35.78
-Stdev:		  6.11
-Variance:	 37.33
+Pstdev:		  6.29
+Pvariance:	 39.51
+Stdev:		  6.41
+Variance:	 41.03
 sorting by end year...####################################################################################################################################################################################################################
 ###########################| end year |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| end year |###########################
+|Recess                    |   2001   |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2001   |Recess                    |
+|The Proud Family          |   2005   |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2005   |The Proud Family          |
 |Yu-Gi-Oh!                 |   2006   |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2006   |Yu-Gi-Oh!                 |
 |Avatar, the Last Airbender|   2008   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   2008   |Avatar, the Last Airbender|
+|My Name is Earl           |   2009   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |   2009   |My Name is Earl           |
 |Scrubs                    |   2010   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |   2010   |Scrubs                    |
 |The Office                |   2012   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   2012   |The Office                |
 |The IT Crowd              |   2013   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   2013   |The IT Crowd              |
@@ -346,8 +385,11 @@ sorting by end year...##########################################################
 ####################################################################################################################################################################################################################
 sorting by end year...#######################################
 ###########################| end year |
+|Recess                    |   2001   |
+|The Proud Family          |   2005   |
 |Yu-Gi-Oh!                 |   2006   |
 |Avatar, the Last Airbender|   2008   |
+|My Name is Earl           |   2009   |
 |Scrubs                    |   2010   |
 |The Office                |   2012   |
 |The IT Crowd              |   2013   |
@@ -372,12 +414,12 @@ sorting by end year...#######################################
 |The Mandalorian           |   2021   |
 #######################################
 
-Mean:		2016.42
-Median:		2018.50
-Pstdev:		  4.19
-Pvariance:	 17.58
-Stdev:		  4.28
-Variance:	 18.34
+Mean:		2015.15
+Median:		2017.00
+Pstdev:		  5.45
+Pvariance:	 29.68
+Stdev:		  5.55
+Variance:	 30.82
 sorting by shortest series length...
 ########################################################################################################################################################################################################################################################
 ###########################| shortest series run length |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| shortest series run length |###########################
@@ -385,6 +427,9 @@ sorting by shortest series length...
 |Final Space               |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2              |Final Space               |
 |The Mandalorian           |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|             2              |The Mandalorian           |
 |Avatar, the Last Airbender|             3              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender|
+|Recess                    |             4              |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |Recess                    |
+|The Proud Family          |             4              |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |The Proud Family          |
+|My Name is Earl           |             4              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |             4              |My Name is Earl           |
 |Misfits                   |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |             4              |Misfits                   |
 |Breaking Bad              |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |             5              |Breaking Bad              |
 |Silicon Valley            |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5              |Silicon Valley            |
@@ -413,6 +458,9 @@ sorting by shortest series length...
 |Final Space               |             2              |
 |The Mandalorian           |             2              |
 |Avatar, the Last Airbender|             3              |
+|Recess                    |             4              |
+|The Proud Family          |             4              |
+|My Name is Earl           |             4              |
 |Misfits                   |             4              |
 |Breaking Bad              |             5              |
 |Silicon Valley            |             5              |
@@ -435,12 +483,12 @@ sorting by shortest series length...
 |Curb your Enthusiasm      |             20             |
 #########################################################
 
-Mean:		  7.33
-Median:		  6.50
-Pstdev:		  4.61
-Pvariance:	 21.22
-Stdev:		  4.71
-Variance:	 22.14
+Mean:		  6.96
+Median:		  6.00
+Pstdev:		  4.47
+Pvariance:	 19.96
+Stdev:		  4.55
+Variance:	 20.73
 sorting by longest series length...
 ######################################################################################################################################################################################################################################################
 ###########################| longest series run length |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| longest series run length |###########################
@@ -463,6 +511,9 @@ sorting by longest series length...
 |Silicon Valley            |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5             |Silicon Valley            |
 |Better Call Saul          |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |             5             |Better Call Saul          |
 |Letterkenny               |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|             5             |Letterkenny               |
+|Recess                    |             4             |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |Recess                    |
+|The Proud Family          |             4             |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |The Proud Family          |
+|My Name is Earl           |             4             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |             4             |My Name is Earl           |
 |Misfits                   |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |             4             |Misfits                   |
 |Avatar, the Last Airbender|             3             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             3             |Avatar, the Last Airbender|
 |Final Space               |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2             |Final Space               |
@@ -491,6 +542,9 @@ sorting by longest series length...
 |Silicon Valley            |             5             |
 |Better Call Saul          |             5             |
 |Letterkenny               |             5             |
+|Recess                    |             4             |
+|The Proud Family          |             4             |
+|My Name is Earl           |             4             |
 |Misfits                   |             4             |
 |Avatar, the Last Airbender|             3             |
 |Final Space               |             2             |
@@ -498,20 +552,22 @@ sorting by longest series length...
 |Chernobyl                 |             1             |
 ########################################################
 
-Mean:		  7.33
-Median:		  6.50
-Pstdev:		  4.61
-Pvariance:	 21.22
-Stdev:		  4.71
-Variance:	 22.14
+Mean:		  6.96
+Median:		  6.00
+Pstdev:		  4.47
+Pvariance:	 19.96
+Stdev:		  4.55
+Variance:	 20.73
 sorting by least number of seasons...
 ############################################################################################################################################################################################################################################
 ###########################| least number seasons |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| least number seasons |###########################
 |Chernobyl                 |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Chernobyl                 |
+|The Proud Family          |          2           |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2           |The Proud Family          |
 |Final Space               |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2           |Final Space               |
 |The Mandalorian           |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|          2           |The Mandalorian           |
 |Avatar, the Last Airbender|          3           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          3           |Avatar, the Last Airbender|
 |The IT Crowd              |          4           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          4           |The IT Crowd              |
+|My Name is Earl           |          4           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          4           |My Name is Earl           |
 |Arrested Develpoment      |          5           |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          5           |Arrested Develpoment      |
 |Prison Break              |          5           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          5           |Prison Break              |
 |Yu-Gi-Oh!                 |          5           |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5           |Yu-Gi-Oh!                 |
@@ -522,6 +578,7 @@ sorting by least number of seasons...
 |Misfits                   |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |          5           |Misfits                   |
 |Community                 |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          6           |Community                 |
 |Silicon Valley            |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          6           |Silicon Valley            |
+|Recess                    |          6           |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          6           |Recess                    |
 |Brooklyn Nine-Nine        |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          7           |Brooklyn Nine-Nine        |
 |Parks and Recreation      |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          7           |Parks and Recreation      |
 |Workaholics               |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |          7           |Workaholics               |
@@ -536,10 +593,12 @@ sorting by least number of seasons...
 ###################################################
 ###########################| least number seasons |
 |Chernobyl                 |          1           |
+|The Proud Family          |          2           |
 |Final Space               |          2           |
 |The Mandalorian           |          2           |
 |Avatar, the Last Airbender|          3           |
 |The IT Crowd              |          4           |
+|My Name is Earl           |          4           |
 |Arrested Develpoment      |          5           |
 |Prison Break              |          5           |
 |Yu-Gi-Oh!                 |          5           |
@@ -550,6 +609,7 @@ sorting by least number of seasons...
 |Misfits                   |          5           |
 |Community                 |          6           |
 |Silicon Valley            |          6           |
+|Recess                    |          6           |
 |Brooklyn Nine-Nine        |          7           |
 |Parks and Recreation      |          7           |
 |Workaholics               |          7           |
@@ -561,12 +621,12 @@ sorting by least number of seasons...
 |Trailer Park Boys         |          12          |
 ###################################################
 
-Mean:		  5.92
+Mean:		  5.70
 Median:		  5.00
-Pstdev:		  2.61
-Pvariance:	  6.83
-Stdev:		  2.67
-Variance:	  7.12
+Pstdev:		  2.59
+Pvariance:	  6.73
+Stdev:		  2.64
+Variance:	  6.99
 sorting by most number of seasons...
 ##########################################################################################################################################################################################################################################
 ###########################| most number seasons |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| most number seasons |###########################
@@ -581,6 +641,7 @@ sorting by most number of seasons...
 |Workaholics               |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |          7          |Workaholics               |
 |Community                 |          6          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          6          |Community                 |
 |Silicon Valley            |          6          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          6          |Silicon Valley            |
+|Recess                    |          6          |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          6          |Recess                    |
 |Arrested Develpoment      |          5          |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          5          |Arrested Develpoment      |
 |Prison Break              |          5          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          5          |Prison Break              |
 |Yu-Gi-Oh!                 |          5          |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5          |Yu-Gi-Oh!                 |
@@ -590,7 +651,9 @@ sorting by most number of seasons...
 |Better Call Saul          |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          5          |Better Call Saul          |
 |Misfits                   |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |          5          |Misfits                   |
 |The IT Crowd              |          4          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          4          |The IT Crowd              |
+|My Name is Earl           |          4          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          4          |My Name is Earl           |
 |Avatar, the Last Airbender|          3          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          3          |Avatar, the Last Airbender|
+|The Proud Family          |          2          |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2          |The Proud Family          |
 |Final Space               |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2          |Final Space               |
 |The Mandalorian           |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|          2          |The Mandalorian           |
 |Chernobyl                 |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Chernobyl                 |
@@ -609,6 +672,7 @@ sorting by most number of seasons...
 |Workaholics               |          7          |
 |Community                 |          6          |
 |Silicon Valley            |          6          |
+|Recess                    |          6          |
 |Arrested Develpoment      |          5          |
 |Prison Break              |          5          |
 |Yu-Gi-Oh!                 |          5          |
@@ -618,18 +682,20 @@ sorting by most number of seasons...
 |Better Call Saul          |          5          |
 |Misfits                   |          5          |
 |The IT Crowd              |          4          |
+|My Name is Earl           |          4          |
 |Avatar, the Last Airbender|          3          |
+|The Proud Family          |          2          |
 |Final Space               |          2          |
 |The Mandalorian           |          2          |
 |Chernobyl                 |          1          |
 ##################################################
 
-Mean:		  5.92
+Mean:		  5.70
 Median:		  5.00
-Pstdev:		  2.61
-Pvariance:	  6.83
-Stdev:		  2.67
-Variance:	  7.12
+Pstdev:		  2.59
+Pvariance:	  6.73
+Stdev:		  2.64
+Variance:	  6.99
 sorting by least number of episodes...
 ##############################################################################################################################################################################################################################################
 ###########################| least number episodes |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| least number episodes |###########################
@@ -641,14 +707,17 @@ sorting by least number of episodes...
 |Peaky Blinders            |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          30           |Peaky Blinders            |
 |Misfits                   |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |          37           |Misfits                   |
 |Better Call Saul          |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          50           |Better Call Saul          |
+|The Proud Family          |          52           |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52           |The Proud Family          |
 |Silicon Valley            |          53           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          53           |Silicon Valley            |
 |Letterkenny               |          56           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|          56           |Letterkenny               |
 |Avatar, the Last Airbender|          61           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          61           |Avatar, the Last Airbender|
 |Breaking Bad              |          62           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |          62           |Breaking Bad              |
+|Recess                    |          68           |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          68           |Recess                    |
 |Game of Thrones           |          73           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          73           |Game of Thrones           |
 |Arrested Develpoment      |          84           |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          84           |Arrested Develpoment      |
 |Workaholics               |          86           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |          86           |Workaholics               |
 |Prison Break              |          90           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          90           |Prison Break              |
+|My Name is Earl           |          96           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          96           |My Name is Earl           |
 |Curb your Enthusiasm      |          100          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          100          |Curb your Enthusiasm      |
 |Trailer Park Boys         |          105          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          105          |Trailer Park Boys         |
 |Community                 |          110          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          110          |Community                 |
@@ -669,14 +738,17 @@ sorting by least number of episodes...
 |Peaky Blinders            |          30           |
 |Misfits                   |          37           |
 |Better Call Saul          |          50           |
+|The Proud Family          |          52           |
 |Silicon Valley            |          53           |
 |Letterkenny               |          56           |
 |Avatar, the Last Airbender|          61           |
 |Breaking Bad              |          62           |
+|Recess                    |          68           |
 |Game of Thrones           |          73           |
 |Arrested Develpoment      |          84           |
 |Workaholics               |          86           |
 |Prison Break              |          90           |
+|My Name is Earl           |          96           |
 |Curb your Enthusiasm      |          100          |
 |Trailer Park Boys         |          105          |
 |Community                 |          110          |
@@ -687,12 +759,12 @@ sorting by least number of episodes...
 |Yu-Gi-Oh!                 |          236          |
 ####################################################
 
-Mean:		 82.25
-Median:		 67.50
-Pstdev:		 59.19
-Pvariance:	3503.94
-Stdev:		 60.47
-Variance:	3656.28
+Mean:		 81.11
+Median:		 68.00
+Pstdev:		 56.23
+Pvariance:	3161.73
+Stdev:		 57.30
+Variance:	3283.33
 sorting by most number of episodes...
 ############################################################################################################################################################################################################################################
 ###########################| most number episodes |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| most number episodes |###########################
@@ -704,14 +776,17 @@ sorting by most number of episodes...
 |Community                 |         110          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |         110          |Community                 |
 |Trailer Park Boys         |         105          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         105          |Trailer Park Boys         |
 |Curb your Enthusiasm      |         100          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         100          |Curb your Enthusiasm      |
+|My Name is Earl           |          96          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          96          |My Name is Earl           |
 |Prison Break              |          90          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          90          |Prison Break              |
 |Workaholics               |          86          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |          86          |Workaholics               |
 |Arrested Develpoment      |          84          |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          84          |Arrested Develpoment      |
 |Game of Thrones           |          73          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          73          |Game of Thrones           |
+|Recess                    |          68          |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          68          |Recess                    |
 |Breaking Bad              |          62          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |          62          |Breaking Bad              |
 |Avatar, the Last Airbender|          61          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          61          |Avatar, the Last Airbender|
 |Letterkenny               |          56          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|          56          |Letterkenny               |
 |Silicon Valley            |          53          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          53          |Silicon Valley            |
+|The Proud Family          |          52          |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52          |The Proud Family          |
 |Better Call Saul          |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          50          |Better Call Saul          |
 |Misfits                   |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |          37          |Misfits                   |
 |Peaky Blinders            |          30          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          30          |Peaky Blinders            |
@@ -732,14 +807,17 @@ sorting by most number of episodes...
 |Community                 |         110          |
 |Trailer Park Boys         |         105          |
 |Curb your Enthusiasm      |         100          |
+|My Name is Earl           |          96          |
 |Prison Break              |          90          |
 |Workaholics               |          86          |
 |Arrested Develpoment      |          84          |
 |Game of Thrones           |          73          |
+|Recess                    |          68          |
 |Breaking Bad              |          62          |
 |Avatar, the Last Airbender|          61          |
 |Letterkenny               |          56          |
 |Silicon Valley            |          53          |
+|The Proud Family          |          52          |
 |Better Call Saul          |          50          |
 |Misfits                   |          37          |
 |Peaky Blinders            |          30          |
@@ -750,12 +828,12 @@ sorting by most number of episodes...
 |Chernobyl                 |          5           |
 ###################################################
 
-Mean:		 82.25
-Median:		 67.50
-Pstdev:		 59.19
-Pvariance:	3503.94
-Stdev:		 60.47
-Variance:	3656.28
+Mean:		 81.11
+Median:		 68.00
+Pstdev:		 56.23
+Pvariance:	3161.73
+Stdev:		 57.30
+Variance:	3283.33
 sorting by shortest time...
 ##############################################################################################################################################################################################################################
 ###########################| shortest time |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| shortest time |###########################
@@ -764,13 +842,16 @@ sorting by shortest time...
 |The IT Crowd              |   9.166667    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   9.166667    |The IT Crowd              |
 |The Mandalorian           |   11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|   11.733333   |The Mandalorian           |
 |Silicon Valley            |   19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |   19.433333   |Silicon Valley            |
+|The Proud Family          |   19.933333   |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   19.933333   |The Proud Family          |
 |Letterkenny               |   20.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|   20.533333   |Letterkenny               |
 |Black Mirror              |     21.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |     21.0      |Black Mirror              |
 |Avatar, the Last Airbender|   22.366667   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   22.366667   |Avatar, the Last Airbender|
 |Peaky Blinders            |     25.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |     25.0      |Peaky Blinders            |
+|Recess                    |   26.066667   |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   26.066667   |Recess                    |
 |Misfits                   |   27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |   27.133333   |Misfits                   |
 |Arrested Develpoment      |   30.800000   |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |   30.800000   |Arrested Develpoment      |
 |Workaholics               |   31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |   31.533333   |Workaholics               |
+|My Name is Earl           |   33.600000   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |   33.600000   |My Name is Earl           |
 |Trailer Park Boys         |   38.500000   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   38.500000   |Trailer Park Boys         |
 |Community                 |   40.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |   40.333333   |Community                 |
 |Better Call Saul          |   41.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   41.666667   |Better Call Saul          |
@@ -792,13 +873,16 @@ sorting by shortest time...
 |The IT Crowd              |   9.166667    |
 |The Mandalorian           |   11.733333   |
 |Silicon Valley            |   19.433333   |
+|The Proud Family          |   19.933333   |
 |Letterkenny               |   20.533333   |
 |Black Mirror              |     21.0      |
 |Avatar, the Last Airbender|   22.366667   |
 |Peaky Blinders            |     25.0      |
+|Recess                    |   26.066667   |
 |Misfits                   |   27.133333   |
 |Arrested Develpoment      |   30.800000   |
 |Workaholics               |   31.533333   |
+|My Name is Earl           |   33.600000   |
 |Trailer Park Boys         |   38.500000   |
 |Community                 |   40.333333   |
 |Better Call Saul          |   41.666667   |
@@ -813,12 +897,12 @@ sorting by shortest time...
 |Yu-Gi-Oh!                 |   86.533333   |
 ############################################
 
-Mean:		 37.64
-Median:		 35.02
-Pstdev:		 21.67
-Pvariance:	469.45
-Stdev:		 22.13
-Variance:	489.86
+Mean:		 36.41
+Median:		 31.53
+Pstdev:		 20.81
+Pvariance:	432.95
+Stdev:		 21.20
+Variance:	449.60
 sorting by longest time...
 ############################################################################################################################################################################################################################
 ###########################| longest time |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| longest time |###########################
@@ -834,13 +918,16 @@ sorting by longest time...
 |Better Call Saul          |  41.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |  41.666667   |Better Call Saul          |
 |Community                 |  40.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |  40.333333   |Community                 |
 |Trailer Park Boys         |  38.500000   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  38.500000   |Trailer Park Boys         |
+|My Name is Earl           |  33.600000   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |  33.600000   |My Name is Earl           |
 |Workaholics               |  31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |  31.533333   |Workaholics               |
 |Arrested Develpoment      |  30.800000   |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |  30.800000   |Arrested Develpoment      |
 |Misfits                   |  27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |  27.133333   |Misfits                   |
+|Recess                    |  26.066667   |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  26.066667   |Recess                    |
 |Peaky Blinders            |     25.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |     25.0     |Peaky Blinders            |
 |Avatar, the Last Airbender|  22.366667   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |  22.366667   |Avatar, the Last Airbender|
 |Black Mirror              |     21.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |     21.0     |Black Mirror              |
 |Letterkenny               |  20.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|  20.533333   |Letterkenny               |
+|The Proud Family          |  19.933333   |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  19.933333   |The Proud Family          |
 |Silicon Valley            |  19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |  19.433333   |Silicon Valley            |
 |The Mandalorian           |  11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|  11.733333   |The Mandalorian           |
 |The IT Crowd              |   9.166667   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   9.166667   |The IT Crowd              |
@@ -862,13 +949,16 @@ sorting by longest time...
 |Better Call Saul          |  41.666667   |
 |Community                 |  40.333333   |
 |Trailer Park Boys         |  38.500000   |
+|My Name is Earl           |  33.600000   |
 |Workaholics               |  31.533333   |
 |Arrested Develpoment      |  30.800000   |
 |Misfits                   |  27.133333   |
+|Recess                    |  26.066667   |
 |Peaky Blinders            |     25.0     |
 |Avatar, the Last Airbender|  22.366667   |
 |Black Mirror              |     21.0     |
 |Letterkenny               |  20.533333   |
+|The Proud Family          |  19.933333   |
 |Silicon Valley            |  19.433333   |
 |The Mandalorian           |  11.733333   |
 |The IT Crowd              |   9.166667   |
@@ -876,9 +966,9 @@ sorting by longest time...
 |Chernobyl                 |     5.0      |
 ###########################################
 
-Mean:		 37.64
-Median:		 35.02
-Pstdev:		 21.67
-Pvariance:	469.45
-Stdev:		 22.13
-Variance:	489.86
+Mean:		 36.41
+Median:		 31.53
+Pstdev:		 20.81
+Pvariance:	432.95
+Stdev:		 21.20
+Variance:	449.60
