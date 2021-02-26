@@ -237,6 +237,7 @@ transactions = [
 	Transaction(17.50, "Avery", "SF", "Monthly", "SF", "SF", datetime.datetime.now()),
 	Transaction(15.95, "Avery", "ScotiaBank", "Monthly", "Bank fees", "Bank fees", datetime.datetime.now()),
 	Transaction(10.50, "Avery", "BMO", "Monthly", "Bank fees", "Bank fees", datetime.datetime.now()),
+	Transaction(25, "Avery", "BMO", "Monthly", "Bill", "Credit card", datetime.datetime.now()),
 	Transaction(147.5, "GST", "Avery", "Quarterly", "GST", "GST pamyent", datetime.datetime.now()),
 	Transaction(50, "Avery", "Phone Bill", "Monthly", "Bill", "Phone bill", datetime.datetime.now()),
 	Transaction(634, "Avery", "NSLSC", "Monthly", "Bill", "Student Loan", datetime.datetime.now()),
