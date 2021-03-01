@@ -334,7 +334,7 @@ the_mandalorian = TVSeries("The Mandalorian", {
     2021,
     True,
     "Drama, Action",
-    "Disney Plus")
+    "Disney+")
 
 recess = TVSeries("Recess", {
     1 : 13,
@@ -348,7 +348,7 @@ recess = TVSeries("Recess", {
     2001,
     False,
     "Comedy, Cartoon",
-    "Disney Plus")
+    "Disney+")
 
 the_proud_family = TVSeries("The Proud Family", {
     1 : 21,
@@ -358,7 +358,7 @@ the_proud_family = TVSeries("The Proud Family", {
     2005,
     False,
     "Comedy, Cartoon",
-    "Disney Plus")
+    "Disney+")
 	
 my_name_is_earl = TVSeries("My Name is Earl", {
     1 : 24,
@@ -370,7 +370,25 @@ my_name_is_earl = TVSeries("My Name is Earl", {
     2009,
     False,
     "Comedy",
-    "Disney Plus")
+    "Disney+")
+	
+futurama = TVSeries("Futurama", {
+	1 : 9,
+	2 : 20,
+	3 : 15,
+	4 : 12,
+	5 : 16,
+	6 : 16,
+	7 : 13,
+	8 : 13,
+	9 : 13,
+	10 : 13},
+	22,
+	1999,
+	2013,
+	False,
+	"Comedy",
+	"Disney+")
 	
 
 series_list = [
@@ -400,7 +418,8 @@ series_list = [
 	the_mandalorian,
 	recess,
 	the_proud_family,
-	my_name_is_earl]
+	my_name_is_earl,
+	futurama]
    
 def longest_series_title(series_list) :
     num = 0

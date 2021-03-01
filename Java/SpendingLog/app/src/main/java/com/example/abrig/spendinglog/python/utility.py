@@ -21,19 +21,14 @@ def pad_centre(text, l, pad_str=" "):
 		return ""
 			
 			
-## TODO
-## When a dict value is a list, the content lines are too long.
-## When a dict value is a list, opt to print the key only once per list (similarily to the numbering system)
-## Add functionality for the numbering system to only count the keys, instead of sum of keys and all lengths of values that are lists
-			
 # Function returns a formatted string containing the contents of a dict object.
 # Special lines and line count for values that are lists.
 # Supports dictionaries with special value types.
 # Lists are printed line by line, but the counting index is constant for all elements. - Useful for ties.
 # Dicts are represented by a table which will dynamically generate a header and appropriately format cell values.
 # Strings, floats, ints, bools are simply converted to their string representations.
-# n					-	Name of the dict, printed above the contents.
 # d					-	dict object.
+# n					-	Name of the dict, printed above the contents.
 # number			-	Decide whether to number the content lines.
 # l					-	Minimum number of chars in the content line.
 # 						Spaces between keys and values are populated by marker.
@@ -44,11 +39,14 @@ def pad_centre(text, l, pad_str=" "):
 # min_encapsulation	-	If a table is necessary because of a value that is a
 #						dictionary, then opt to keep all column widths as small as
 #						possible. This will most likely produce varying widths.
-def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_header=False, min_encapsulation=True, table_title="Table Title"):
-	if not d or not n:
+# table_title		-	If a table is created, then display the title in the first
+#						column directly above the row names.
+def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_header=False, min_encapsulation=True, table_title=""):
+	if not d or not n or type(d) != dict:
 		return "None"
 	m = "\n--  " + str(n).title() + "  --\n\n"
 	fill = 0
+	lenstr = lambda x: len(str(x))      
 	
 	# max_key = max([len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0) for k in d.keys()])
 	# max_val = max([max([len(str(v_elem)) for v_elem in v]) if type(v) == (list or tuple) else len(str(v)) if type(v) != dict else 0 for v in d.values()])
@@ -70,7 +68,7 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
 			
 	
 	l = max(len(table_title), max(l, (max_key + max_val))) + sep
-	has_dict = [(k, v) for k, v in d.items() if type(v) == dict]
+	has_dict = [(k, v) for k, v in d.items() if type(v) == dict or (type(v) == list and v and type(v[0]) == dict)]
 	has_list = any([1 if type(v) in [list, tuple] else 0 for v in d.values()])
 	
 	header = []
@@ -79,27 +77,42 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
 	
 	if has_list:
 		number = True
-	
-	for k, v in has_dict:
-		for k in v:
-			key = str(k)
+	for k1, v in has_dict:
+		for k2 in v:
+			key = str(k2)
 			if key not in header:
-				header.append(key)
-				max_cell = max(max_cell, max(len(key), max([len(str(value)) for value in v.values()])))
+				if type(v) == dict:
+					header.append(key)
+					max_cell = max(max_cell, max(len(key), max([lenstr(value) for value in v.values()])))
+					# print("max_cell: {mc}".format(mc=max_cell))
+				else:
+					for lst in v:
+						a = max(list(map(lenstr, list(map(str, lst.keys())))))
+						b = max(list(map(lenstr, list(map(str, lst.values())))))
+						# print("a: {a}, b: {b}, values: {v}".format(a=a, b=b, v=lst.values()))
+						max_cell = max(max_cell, max(a, b))
 				
 	max_cell += 2
 	
+	# print("max_cell: {mc}".format(mc=max_cell))
 	if sort_header:
 		header.sort(key=lambda x: x.rjust(max_cell))
 	
 	if min_encapsulation:
 		for h in header:
-			max_col_width = len(" " + h + " ")
+			max_col_width = len(h) + 2
+			# print("h: {h}, type(h): {th}".format(h=h, th=type(h)))
 			for k, d_val in has_dict:
+				d_val = {str(d_val_k): str(d_val_v) for d_val_k, d_val_v in d_val.items()} if type(d_val) == dict else d_val
+				# print("d_val: {dv},\thidv: {hidv},\tetdvlist: {etdvl}".format(dv=d_val, hidv=(h in d_val), etdvl=(type(d_val) == list)))
+				# print("k: {k}\nt(k): {tk}\nd: {d}\nt(d): {td}".format(k=k, tk=type(k), d=d_val, td=type(d_val)))
 				if h in d_val:
-					max_col_width = max(max_col_width, len(" " + str(d_val[h]) + " "))
+					max_col_width = max(max_col_width, lenstr(d_val[h]) + 2)
+				elif type(d_val) == list:
+					max_col_width = max(max_col_width, max([max(max(list(map(lenstr, [ek for ek in elem.keys() if ek == h]))), max(list(map(lenstr, [ev for ek, ev in elem.items() if ek == h]))) + 2) for elem in d_val]))
 			max_cell_widths.append(max_col_width) 
-						
+		
+	# print("max_cell_widths: {mcw}".format(mcw=max_cell_widths))
 	table_header = TABLE_DIVIDER + TABLE_DIVIDER.join(map(lambda x: pad_centre(str(x), max_cell), header)) + TABLE_DIVIDER
 	empty_line = TABLE_DIVIDER + TABLE_DIVIDER.join([pad_centre(" ", max_cell) for i in range(len(header))]) + TABLE_DIVIDER
 	
@@ -150,9 +163,10 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
 		
 def money(v):
 	# return "$ %.2f" % v
-	locale.setlocale(locale.LC_ALL, '')
+	locale.setlocale(locale.LC_ALL, "")
 	m = locale.currency(v, grouping=True)
-	return m[0] + " " + m[1:]
+	i = m.index("$") + 1
+	return m[:i] + " " + m[i:]
 	
 	
 def money_value(m):

@@ -2,6 +2,7 @@ import random
 from statistics import mean, median, mode, pstdev, pvariance, stdev, variance
 from tv_series import TVSeries
 from main import *
+from utility import *
 
 
 # Run this file to update output.txt.
@@ -184,6 +185,12 @@ def write_file():
 		for i in range(len(metric_possibilities)) :
 			f.write(print_time_line_horizontal_write(series_list, 1995, 2022))
 			f.write(print_series_stats_write(series_list))
+			
+		
+		episodes_comparison = {}
+		for series in series_list:
+			episodes_comparison[series.name] = series.episodes_list
+		f.write("\n\n" + dict_print(episodes_comparison, "episodes comparison", min_encapsulation=True, number=True))
 			
 
 
