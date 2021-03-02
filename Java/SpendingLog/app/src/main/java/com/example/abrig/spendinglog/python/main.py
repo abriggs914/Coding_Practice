@@ -116,3 +116,11 @@ if __name__ == "__main__":
 		TH.create_transaction(*list(transaction.values()))
 
 	print(TH.transaction_list)
+	entities_dict = {}
+	for entity in TH.entities_list:
+		entities_dict[entity.name] = {"balance": money(entity.balance)}
+	print(dict_print(entities_dict, "entities dict", number=True))
+
+	a = "String one"
+	b = "sTriNg TWo"
+	print(computeMinEditDistance(a, b))

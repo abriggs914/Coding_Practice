@@ -1,5 +1,6 @@
 from Transaction import Transaction
 from Entity import Entity
+from utility import *
 
 # pname	-	plural name "annual spending / weekly spending"
 
@@ -90,8 +91,8 @@ class TransactionHandler:
         # TODO fix this
         et, ef = -1, -1
         for i, entity in enumerate(self.entities_list):
-            print("entity in: te: <{te}> <{e}, ten: {ten}> ".format(te=type(entity), e=entity.name, ten=type(entity.name)))
-            print("entity_to: te: <{te}> <{e}> ".format(te=type(entity_to), e=entity_to.name))
+            # print("entity in: te: <{te}> <{e}, ten: {ten}> ".format(te=type(entity), e=entity.name, ten=type(entity.name)))
+            # print("entity_to: te: <{te}> <{e}> ".format(te=type(entity_to), e=entity_to.name))
             if entity.name.lower() == entity_to.name.lower():
                 entity_to = entity
                 et = i
@@ -99,13 +100,8 @@ class TransactionHandler:
                 entity_from = entity
                 ef = i
         if et < 0:
-            # raise ValueError("<{e}> not found in entities list".format(e=entity))
-            print("\tCreating To: <{e}>".format(e=entity_to))
-            entity_to = Entity(entity_to)
             self.entities_list.append(entity_to)
         if ef < 0:
-            print("\tCreating From: <{e}>".format(e=entity_from))
-            entity_from = Entity(entity_from)
             self.entities_list.append(entity_from)
         transaction = Transaction(amount, entity_from, entity_to, reoccurring_category, transaction_catgory,
                                   description, date_in)

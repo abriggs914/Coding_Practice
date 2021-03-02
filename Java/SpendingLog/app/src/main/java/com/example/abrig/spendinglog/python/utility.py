@@ -171,4 +171,68 @@ def money(v):
 	
 def money_value(m):
 	return float("".join(m[1:].split(",")))
-	
+
+
+def computeMinEditDistance(a, b):
+	len_a = len(a);
+	len_b = len(b)
+	x = max(len_a, len_b)
+	s = b if x == len_a else a
+	instructions = minEditDistance(a, b)
+	print(instructions)
+
+def minEditDistance (a, b):
+	a = a.upper()
+	b = b.upper()
+	print("Minimum edit Distance to convert \"" + a + "\" to \"" + b + "\"")
+	n = len(a) + 2
+	m = len(b) + 2
+	table = [[0 for j in range(n)] for i in range(m)]
+	for i in range(2, max(n, m)):
+		if i < n:
+			table[0][i] = a[i - 2]
+			table[1][i] = i - 1
+		if i < m:
+			table[i][0] = b[i - 2]
+			table[i][1] = i - 1
+
+	for i in range(2, m):
+		for j in range(2, n):
+			x = table[i][j-1]
+			y = table[i-1][j-1]
+			z = table[i-1][j]
+			mini = min(x, min(y, z))
+			u = table[0][j]
+			v = table[i][0]
+			if u == v:
+				table[i][j] = table[i-1][j-1]
+			else:
+				# System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", min(x, min(y, z): " + mini);
+				table[i][j] = mini + 1
+
+	show(table)
+
+
+def show(arr):
+	res = "{"
+	for i in range(len(arr)):
+		res += "{"
+		if i > 0:
+			res += " "
+		for j in range(len(arr[i])):
+			if j < len(arr[i])-1:
+				if i == 0 or j == 0:
+					res += str(arr[i][j]) + ", "
+				else:
+					res += str(arr[i][j]) + ", "
+			else:
+				if i == 0 or j == 0:
+					res += str(arr[i][j])
+				else:
+					res += str(arr[i][j])
+		if i < len(arr)-1:
+			res += "},\n"
+		else:
+			res += "}"
+	res += "}\n"
+	print(res)
