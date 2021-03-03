@@ -4,6 +4,7 @@ from TransactionHandler import *
 from utility import *
 from Entity import Entity
 from Transaction import Transaction
+import re
 
 
 def test():
@@ -92,35 +93,156 @@ def test():
 
 if __name__ == "__main__":
 
-	transactions_dict = populate_transactions_dict()
-	TH = TransactionHandler()
-	me = TH.get_entity("Me")
-	print("transactions_dict {td}".format(td=transactions_dict))
-	for num, transaction in transactions_dict.items():
-		# amount, entity_from, entity_to, reoccurring_category, transaction_catgory, description, date_in
-		# Transaction Date, Transaction Amount, Notes, Transaction Type, Entity
-		amount = float(transaction["Transaction Amount"])
-		entity = Entity(transaction["Entity"])
-		transaction_type = transaction["Transaction Type"]
-		date = transaction["Transaction Date"]
-		transaction = {
-			"amount": abs(amount),
-			"entity_from": me if amount < 0 else entity,
-			"entity_to": me if amount > 0 else entity,
-			"reoccurring_category": REOCCURRING["Once"],
-			"transaction_catgory": transaction_type,
-			"description": entity,
-			"date_in": date
-		}
-		print("transaction: {t}".format(t=list(transaction.values())))
-		TH.create_transaction(*list(transaction.values()))
+	# transactions_dict = populate_transactions_dict()
+	# TH = TransactionHandler()
+	# me = TH.get_entity("Me")
+	# print("transactions_dict {td}".format(td=transactions_dict))
+	# for num, transaction in transactions_dict.items():
+	# 	# amount, entity_from, entity_to, reoccurring_category, transaction_catgory, description, date_in
+	# 	# Transaction Date, Transaction Amount, Notes, Transaction Type, Entity
+	# 	amount = float(transaction["Transaction Amount"])
+	# 	entity = Entity(transaction["Entity"])
+	# 	transaction_type = transaction["Transaction Type"]
+	# 	date = transaction["Transaction Date"]
+	# 	transaction = {
+	# 		"amount": abs(amount),
+	# 		"entity_from": me if amount < 0 else entity,
+	# 		"entity_to": me if amount > 0 else entity,
+	# 		"reoccurring_category": REOCCURRING["Once"],
+	# 		"transaction_catgory": transaction_type,
+	# 		"description": entity,
+	# 		"date_in": date
+	# 	}
+	# 	print("transaction: {t}".format(t=list(transaction.values())))
+	# 	TH.create_transaction(*list(transaction.values()))
+	#
+	# print(TH.transaction_list)
+	# entities_dict = {}
+	# for entity in TH.entities_list:
+	# 	entities_dict[entity.name] = {"balance": money(entity.balance)}
+	# print(dict_print(entities_dict, "entities dict", number=True))
 
-	print(TH.transaction_list)
-	entities_dict = {}
-	for entity in TH.entities_list:
-		entities_dict[entity.name] = {"balance": money(entity.balance)}
-	print(dict_print(entities_dict, "entities dict", number=True))
+	def unclutter(txt):
+		m = "IN: <"+str(txt)+">"
+		ignore = ["fPOS", "OPOS"] + [str(i) for i in range(10)]
+		for val in ignore:
+			txt = txt.replace(val, "")
+		txt = txt.strip()
+		m += "     OUT: <"+str(txt)+">"
+		print(m)
+		return txt
+
+	def num_matching_words(txt_1, txt_2):
+		spl_1 = txt_1.split()
+		spl_2 = txt_2.split()
+		spl_1.sort()
+		spl_2.sort()
+		i, j = 0, 0
+		p, q = len(spl_1), len(spl_2)
+		matching_words = [None for m in range(max(p, q))]
+		edit_distances = [None for m in range(max(p, q))]
+		while i < p:
+			while j < q:
+				word_1 = spl_1[i]
+				word_2 = spl_2[j]
+				m = compute_min_edit_distance(word_1, word_2)
+				edit_distances[i] = m
+				j += 1
+				if m == 0:
+					matching_words[i] = word_1
+					break
+			i += 1
+		# same len - could be a coincidence if the strings don't already match
+		# matching word score - unreliable for few words
+		# balance the edit distance (score-wise)
+		# in the unmatched words, is the edit distance good?
+
+	def same_entity(entity_1, entity_2, tol=2):
+		entity_1 = unclutter(entity_1)
+		entity_2 = unclutter(entity_2)
+		if all([type(e) == Entity for e in [entity_1, entity_2]]):
+			if entity_1 == entity_2:
+				return True
+		elif all([type(e) == str for e in [entity_1, entity_2]]):
+			if entity_1.lower() == entity_2.lower():
+				return True
+			else:
+				m = compute_min_edit_distance(entity_1, entity_2)
+				print("m: {m}".format(m=m))
+				if m <= tol:
+					return True
+		return False
 
 	a = "String one"
-	b = "sTriNg TWo"
-	print(computeMinEditDistance(a, b))
+	b = "sTriNg Tne"
+	print(same_entity(a, b))
+
+	# All of the values in each list should be recognized as the same entity
+	strings = {
+		"Amazon": [
+			"OPOS AMZN Mktp CA        WWW.A",
+			"OPOS Amazon.ca           AMAZO",
+			"OPOS Amazon.ca           Seatt",
+			"OPOS 0.26 Amazon.com     Amzn"
+		],
+		"Walmart": [
+			"FPOS WALMART STORE #3032 FREDE",
+			"WALMART STORE #3032      FREDE",
+			"WAL-MART #1067           FREDE",
+			"WAL-MART #3032           FREDE",
+			"WAL-MART #3054           MISSI"
+
+		],
+		"Spotify": [
+			"OPOS Spotify P1218E1D37  Stock",
+			"OPOS Spotify P11ADFDDFA  Stock",
+			"OPOS Spotify P1141E5D3C  Stock",
+			"OPOS Spotify P10DB0D4BE  Stock",
+			"OPOS Spotify P107B0FD46  Stock",
+			"OPOS Spotify P1016DF90E  Stock",
+			"OPOS Spotify P0FAEF62A7  Stock",
+			"OPOS Spotify P0F4ACEEDB  Stock",
+			"OPOS Spotify P0EE6E8930  Stock",
+			"OPOS Spotify P0E89649A6  Stock",
+			"OPOS Spotify P0E2BD45D7  Stock",
+			"OPOS Spotify P0DCCEAEA3  Stock",
+			"OPOS Spotify P0D70EFBFE  Stock",
+			"OPOS Spotify P0D1553710  Stock",
+			"OPOS Spotify P0CB386227  Stock",
+			"OPOS Spotify P0C3751BE6  Stock",
+			"OPOS Spotify P0BC0B1632  Stock",
+			"OPOS Spotify P0B480BBD8  Stock",
+			"OPOS Spotify P0ACCBD915  Stock",
+			"OPOS Spotify P0A56621F8  Stock"
+		],
+		"Irving": [
+			"FPOS IRVING/FLORENCEVILLEFLORE",
+			"FPOS IRVING/BOAT CLUB    FREDE",
+			"FPOS IRVING STATION #1170CHIPM",
+			"CIRCLE K / IRVING #201   FREDE",
+			"FPOS IRVING #15886       WOODS"
+		]
+	}
+
+	results = {}
+	for entity, entries in strings.items():
+		res = {}
+		for i in range(len(entries)):
+			for j in range(i + 1, len(entries)):
+				e1, e2 = unclutter(entries[i]), unclutter(entries[j])
+				res = {
+					"e1": e1,
+					"e2": e2,
+					"m": compute_min_edit_distance(e1, e2),
+					"same": same_entity(e1, e2)
+				}
+				if entity in results:
+					results[entity].append(res)
+				else:
+					results[entity] = [res]
+			print(dict_print({entity: results[entity]}))
+		print("\tresults[entity]:\n{re}".format(re=results[entity]))
+
+	print(dict_print(results, "Results", number=True, table_title="Entity name"))
+	for res, strings in results.items():
+		print("{r}, {s}".format(r=res, s=strings))
