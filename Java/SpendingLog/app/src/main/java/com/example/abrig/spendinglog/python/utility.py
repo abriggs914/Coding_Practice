@@ -79,16 +79,16 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
     max_cell = 0
     max_cell_widths = []
 
-    print("has_dict: {hd}".format(hd=has_dict))
+    # print("has_dict: {hd}".format(hd=has_dict))
     if has_list:
         number = True
     for k1, v in has_dict:
         for k2 in v:
             key = str(k2)
-            print("key: {k}".format(k=key))
+            # print("key: {k}".format(k=key))
             if key not in header:
                 if type(v) == dict:
-                    print("\t\tNew key: {k}".format(k=key))
+                    # print("\t\tNew key: {k}".format(k=key))
                     header.append(key)
                     max_cell = max(max_cell, max(len(key), max([lenstr(value) for value in v.values()])))
                 # print("max_cell: {mc}".format(mc=max_cell))
@@ -141,7 +141,7 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
     else:
         max_cell_widths = [max_cell for i in range(len(header))]
 
-    print("Header: {h}\nTable Header: {th}".format(h=header, th=table_header))
+    # print("Header: {h}\nTable Header: {th}".format(h=header, th=table_header))
     fill = "".join([" " for i in range(len(str(fill + len(d))))])
     table_width = l + len(fill) + len(SEPARATOR) + len(TAB) + len(table_header) - (4 * len(TABLE_DIVIDER))
     table_tab = "".join([marker for i in range(len(TAB))])
@@ -201,7 +201,7 @@ def compute_min_edit_distance(a, b):
     x = max(len_a, len_b)
     s = b if x == len_a else a
     m, instructions = min_edit_distance(a, b)
-    print(instructions)
+    # print(instructions)
     return m
 
 
