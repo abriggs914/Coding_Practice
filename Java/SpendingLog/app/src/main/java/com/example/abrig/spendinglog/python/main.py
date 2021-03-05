@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
 	def unclutter(txt):
 		m = "IN: <" + str(txt) + ">"
-		ignore = ["fPOS", "OPOS"] + [str(i) for i in range(10)]
+		ignore = ["FPOS", "OPOS", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "=", "+", "{", "}", "[", "]", "?", "/", "<", ">", ":", ";", "'", "`", "~", ",", "."] + [str(i) for i in range(10)]
 		for val in ignore:
 			txt = txt.replace(val, "")
 		txt = txt.strip()
@@ -145,8 +145,10 @@ if __name__ == "__main__":
 		spl_2.sort()
 		i, j = 0, 0
 		p, q = len(spl_1), len(spl_2)
-		matching_words = [None for m in range(max(p, q))]
-		edit_distances = [None for m in range(max(p, q))]
+		matching_words = [None for m in range(p*q)]
+		edit_distances = [None for m in range(p*q)]
+		word_lengths = [lenstr(word) for word in spl_1 + spl_2]
+		avg_word_len = avg(word_lengths)
 
 		print(dict_print({
 			"txt_1": txt_1,
@@ -165,15 +167,18 @@ if __name__ == "__main__":
 				word_1 = spl_1[i]
 				word_2 = spl_2[j]
 				m = compute_min_edit_distance(word_1, word_2)
-				print("({i}, {j})".format(i=i, j=j))
-				edit_distances[i] = m
+				print("({i}, {j}) => (i*q)+j: {ij}".format(i=i, j=j, ij=(i*q)+j))
+				edit_distances[(i*q)+j] = m
+				matching_words[(i*q)+j] = word_1 if m == 0 else matching_words[(i*q)+j]
 				j += 1
-				if m == 0:
-					matching_words[i] = word_1
-					break
+				# if m == 0:
+				# 	break
 			i += 1
 
-		print("matching words:\n{mw}\nedit distances:\n{ed}".format(mw=matching_words, ed=edit_distances))
+		avg_word_len = avg(word_lengths)
+		avg_edit_dist = avg(edit_distances)
+
+		print("matching words: <{amw}>:\n{mw}\nedit distances: <{aed}>\n{ed}".format(mw=matching_words, ed=edit_distances, amw=avg_word_len, aed=avg_edit_dist))
 		return matching_words
 
 
@@ -212,14 +217,14 @@ if __name__ == "__main__":
 		# 	"OPOS Amazon.ca           Seatt",
 		# 	"OPOS 0.26 Amazon.com     Amzn"
 		# ],
-		# "Walmart": [
-		# 	"FPOS WALMART STORE #3032 FREDE",
-		# 	"WALMART STORE #3032      FREDE",
-		# 	"WAL-MART #1067           FREDE",
-		# 	"WAL-MART #3032           FREDE",
-		# 	"WAL-MART #3054           MISSI"
-		#
-		# ],
+		"Walmart": [
+			"FPOS WALMART STORE #3032 FREDE",
+			"WALMART STORE #3032      FREDE",
+			"WAL-MART #1067           FREDE",
+			"WAL-MART #3032           FREDE",
+			"WAL-MART #3054           MISSI"
+
+		],
 		# "Spotify": [
 		# 	"OPOS Spotify P1218E1D37  Stock",
 		# 	"OPOS Spotify P11ADFDDFA  Stock",
@@ -258,6 +263,8 @@ if __name__ == "__main__":
 			for j in range(i + 1, len(entries)):
 				e1, e2 = unclutter(entries[i]), unclutter(entries[j])
 				res = {
+					"entries[i]": entries[i],
+					"entries[j]": entries[j],
 					"e1": e1,
 					"e2": e2,
 					"m": compute_min_edit_distance(e1, e2),

@@ -7,6 +7,18 @@ TABLE_DIVIDER = "|"
 
 # Utility functions
 
+
+def lenstr(x):
+    return len(str(x))
+
+
+def avg(lst):
+    try:
+        return sum(lst) / len(lst)
+    except TypeError:
+        return 0
+
+
 def pad_centre(text, l, pad_str=" "):
     if l > 0:
         h = (l - len(text)) // 2
@@ -50,7 +62,6 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
         return "None"
     m = "\n--  " + str(n).title() + "  --\n\n"
     fill = 0
-    lenstr = lambda x: len(str(x))
 
     # max_key = max([len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0) for k in d.keys()])
     # max_val = max([max([len(str(v_elem)) for v_elem in v]) if type(v) == (list or tuple) else len(str(v)) if type(v) != dict else 0 for v in d.values()])
@@ -208,7 +219,6 @@ def compute_min_edit_distance(a, b):
 def min_edit_distance(a, b, show_table=False):
     a = a.upper()
     b = b.upper()
-    print("Minimum edit Distance to convert \"" + a + "\" to \"" + b + "\"")
     n = len(a) + 2
     m = len(b) + 2
     table = [[0 for j in range(n)] for i in range(m)]
@@ -236,6 +246,7 @@ def min_edit_distance(a, b, show_table=False):
 
     if show_table:
         show(table)
+    print("Minimum edit Distance to convert \"" + a + "\" to \"" + b + "\": " + str(table[m - 1][n - 1]))
     return table[m - 1][n - 1], table
 
 
