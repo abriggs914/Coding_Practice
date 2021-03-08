@@ -14,7 +14,7 @@ def lenstr(x):
 
 def avg(lst):
     try:
-        return sum(lst) / len(lst)
+        return sum(lst) / max(1, len(lst))
     except TypeError:
         return 0
 
@@ -206,12 +206,12 @@ def money_value(m):
     return float("".join(m[1:].split(",")))
 
 
-def compute_min_edit_distance(a, b):
-    len_a = len(a);
+def compute_min_edit_distance(a, b, show=False):
+    len_a = len(a)
     len_b = len(b)
     x = max(len_a, len_b)
     s = b if x == len_a else a
-    m, instructions = min_edit_distance(a, b)
+    m, instructions = min_edit_distance(a, b, show_table=show)
     # print(instructions)
     return m
 
@@ -246,7 +246,7 @@ def min_edit_distance(a, b, show_table=False):
 
     if show_table:
         show(table)
-    print("Minimum edit Distance to convert \"" + a + "\" to \"" + b + "\": " + str(table[m - 1][n - 1]))
+        print("Minimum edit Distance to convert \"" + a + "\" to \"" + b + "\": " + str(table[m - 1][n - 1]))
     return table[m - 1][n - 1], table
 
 
