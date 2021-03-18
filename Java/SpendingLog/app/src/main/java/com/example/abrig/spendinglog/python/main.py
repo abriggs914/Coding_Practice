@@ -134,7 +134,7 @@ def scotia_transactions():
 
 if __name__ == "__main__":
 
-	# scotia_transactions()
+	scotia_transactions()
 
 	# PRINT = False
 	# a = "String one"
