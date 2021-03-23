@@ -21,6 +21,7 @@ class G2048:
 		self.n = n
 		self.grid = [[None for j in range(n)] for i in range(n)]
 		self.largest_tile = None
+		self.history = []
 		
 		if init_spaces:
 			for i in range(n):
@@ -61,218 +62,52 @@ class G2048:
 		v = rand.choice(self.random_tile_values)
 		self.grid[i][j] = v
 		
+
 	def shift_grid(self, dir):
 		so = self.shift_options
-		n = self.n
-		
-		def shift_up(grid):
-			grid = np.transpose(grid)
-			res = []
-			for row in grid:
-				l = len(row)
-				nr = [c for c in row if c is not None]
-				i = 0
-				while i < len(nr)-1:
-					el = nr[i]
-					if el == nr[i+1]:
-						nr = nr[:i] + [el * 2] + nr[i+2:]
-						i -= 1
-					i += 1
-					
-				row = nr + [None for i in range(l - len(nr))]
-				res.append(row)
-				
-			res = np.transpose(res).tolist()
-			return res
-			
-		def shift_left(grid):
-			# grid = np.transpose(grid)
-			res = []
-			for row in grid:
-				l = len(row)
-				nr = [c for c in row if c is not None]
-				i = 0
-				while i < len(nr)-1:
-					el = nr[i]
-					if el == nr[i+1]:
-						nr = nr[:i] + [el * 2] + nr[i+2:]
-						i -= 1
-					i += 1
-					
-				row = nr + [None for i in range(l - len(nr))]
-				res.append(row)
-				
-			# res = np.transpose(res)
-			return res
-			
-		def shift_down(grid):
-			grid[::-1]
-			grid = np.transpose(grid)
-			res = []
-			for row in grid:
-				l = len(row)
-				nr = [c for c in row if c is not None]
-				i = 0
-				while i < len(nr)-1:
-					el = nr[i]
-					if el == nr[i+1]:
-						nr = nr[:i] + [el * 2] + nr[i+2:]
-						i -= 1
-					i += 1
-					
-				row = [None for i in range(l - len(nr))] + nr
-				res.append(row)
-				
-			res = np.transpose(res).tolist()
-			grid[::-1]
-			res[::-1]
-			return res
-			# grid = np.transpose(grid)
-			# res = []
-			# for row in grid:
-				# l = len(row)
-				# nr = [c for c in row if c is not None]
-				# i = len(nr)-1
-				# while i > 0 and len(nr) > 1:
-					# # print("\ti:\t\t" + str(i))
-					# el = nr[i]
-					# if el == nr[i-1]:
-						# # print("\tnr B:\t\t" + str(nr))
-						# # print("\tnr[:i]:\t\t" + str(nr[:i-1]))
-						# # print("\t[el * 2]:\t" + str([el * 2]))
-						# # print("\tnr[i+2:]:\t" + str(nr[i+2:]))
-						# # nr = nr[i-2:] + [el * 2] + nr[:i-1]
-						# # nr = [el * 2] + nr[:i-1]
-						# nr = nr[:i-1] + [el * 2] + nr[i+2:]
-						# # print("\tnr A:\t\t" + str(nr))
-						# i += 1
-					# i -= 1
-					
-				# row = [None for i in range(l - len(nr))] + nr
-				# # print("row: " + str(row))
-				# res.append(row)
-				
-			# res = np.transpose(res)
-			# return res
-			
-		def shift_right(grid):
-		# grid = np.transpose(grid)
-			grid[::-1]
-			res = []
-			for row in grid:
-				l = len(row)
-				nr = [c for c in row if c is not None]
-				i = 0
-				while i < len(nr)-1:
-					el = nr[i]
-					if el == nr[i+1]:
-						nr = nr[:i] + [el * 2] + nr[i+2:]
-						i -= 1
-					i += 1
-					
-				row = [None for i in range(l - len(nr))] + nr
-				res.append(row)
-				
-			# res = np.transpose(res)
-			grid[::-1]
-			res[::-1]
-			return res
-		
-		
-			# # grid = np.transpose(grid)
-			# res = []
-			# for row in grid:
-				# l = len(row)
-				# nr = [c for c in row if c is not None]
-				# i = len(nr)-1
-				# while i > 0 and len(nr) > 1:
-					# # print("\ti:\t\t" + str(i))
-					# el = nr[i]
-					# if el == nr[i-1]:
-						# # print("\tnr B:\t\t" + str(nr))
-						# # print("\tnr[:i]:\t\t" + str(nr[:i-1]))
-						# # print("\t[el * 2]:\t" + str([el * 2]))
-						# # print("\tnr[i+2:]:\t" + str(nr[i+2:]))
-						# # nr = nr[i-2:] + [el * 2] + nr[:i-1]
-						# # nr = [el * 2] + nr[:i-1]
-						# nr = nr[:i-1] + [el * 2] + nr[i+2:]
-						# # print("\tnr A:\t\t" + str(nr))
-						# i += 1
-					# i -= 1
-					
-				# row = [None for i in range(l - len(nr))] + nr
-				# # print("row: " + str(row))
-				# res.append(row)
-				
-			# # res = np.transpose(res)
-			# return res
+		self.history.append((dir, [row.copy() for row in self.grid]))
+		def shift():
+			g = "\n".join(list(map(str, self.grid)))
+			print("to shift\n" + g)
 
-		# def shift_up(grid):
-		# 	print("shifting up:\n" + str(grid))
-		# 	for i in range(n-1, 0, -1):
-		# 		for j in range(n):
-		# 			if grid[i-1][j] is None:
-		# 				grid[i-1][j] = grid[i][j]
-		# 				grid[i][j] = None
-		# 			elif grid[i-1][j] == grid[i][j]:
-		# 				grid[i-1][j] *= 2
-		# 				grid[i][j] = None
-		# 	print("done:\n" + str(grid))
+			for r, row in enumerate(self.grid):
+				i = 0
+				lr = len(row)
+				while i < lr:
+					if self.grid[r][i] is not None:
+						k = i + 1
+						while k < lr:
+							if self.grid[r][k] != None:
+								break
+							k += 1
+						if k < lr:
+							if self.grid[r][i] == self.grid[r][k]:
+								self.grid[r][i] *= 2
+								self.grid[r][k] = None
+						i = k
+					i += 1
 
-		# def shift_down(grid):
-		# 	print("shifting down:\n" + str(grid))
-		# 	for i in range(n-1):
-		# 		for j in range(n):
-		# 			if grid[i+1][j] is None:
-		# 				grid[i+1][j] = grid[i][j]
-		# 				grid[i][j] = None
-		# 			elif grid[i+1][j] == grid[i][j]:
-		# 				grid[i+1][j] *= 2
-		# 				grid[i][j] = None
-		# 	print("done:\n" + str(grid))
-		
-		# def shift_left(grid):
-		# 	# grid = np.transpose(grid)
-		# 	print("shifting left:\n" + str(grid))
-		# 	for i in range(n):
-		# 		for j in range(n-1, 0, -1):
-		# 			if grid[i][j-1] is None:
-		# 				grid[i][j-1] = grid[i][j]
-		# 				grid[i][j] = None
-		# 			elif grid[i][j-1] == grid[i][j]:
-		# 				grid[i][j-1] *= 2
-		# 				grid[i][j] = None
-		# 	print("shifted left:\n" + str(grid))
-		# 	# grid = np.transpose(grid)
-		# 	self.grid = grid
-		# 	print("done:\n" + str(grid))
-
-		# def shift_right(grid):
-		# 	grid = np.transpose(grid)
-		# 	print("shifting right:\n" + str(grid))
-		# 	for i in range(n-1):
-		# 		for j in range(n):
-		# 			if grid[i+1][j] is None:
-		# 				grid[i+1][j] = grid[i][j]
-		# 				grid[i][j] = None
-		# 			elif grid[i+1][j] == grid[i][j]:
-		# 				grid[i+1][j] *= 2
-		# 				grid[i][j] = None
-		# 	grid = np.transpose(grid)
-		# 	self.grid = grid
-		# 	print("done:\n" + str(grid))
+			for r in range(len(self.grid)):
+				self.grid[r] = [v for v in self.grid[r] if v is not None]
+				self.grid[r] += [None for j in range(lr - len(self.grid[r]))]
 
 		if dir == so["UP"]:
-			self.grid = shift_up(self.grid)
+			self.grid = np.transpose(self.grid).tolist()
+			shift()
+			self.grid = np.transpose(self.grid).tolist()
 		elif dir == so["DOWN"]:
-			self.grid = shift_down(self.grid)
-		elif dir == so["LEFT"]:
-			self.grid = shift_left(self.grid)
+			self.grid = np.transpose(self.grid).tolist()
+			shift()
+			self.grid = np.transpose(self.grid).tolist()
+			self.grid.reverse()
 		elif dir == so["RIGHT"]:
-			self.grid = shift_right(self.grid)
-		# print("done global: " + str(self.grid))
-		
-		
+			shift()
+			for row in self.grid:
+				row.reverse()
+		# left is default
+		else:
+			shift()
+
 	def __repr__(self):
 		res = "\n"
 		lt = self.largest_tile[2] if self.largest_tile is not None else 1
@@ -295,6 +130,8 @@ def get_move_input():
 			return "down"
 		elif kbd.is_pressed('d') or kbd.is_pressed('right'):
 			return "right"
+		elif kbd.is_pressed('q'):
+			return "quit"
 	# valid = ["W", "A", "S", "D"]
 	# legend = ["UP", "LEFT", "DOWN", "RIGHT"]
 	# inp = ""
@@ -302,23 +139,49 @@ def get_move_input():
 		# inp = input("Up, down, left, or right?")
 	# return legend[valid.index(inp.upper())].lower()
 
+def grid_print(grid):
+	res = "\n"
+	lt = max([max(list(map(lenstr, row))) for row in grid])
+	min_width = 2 + len(str(lt))
+	for row in grid:
+		for val in row:
+			res += pad_centre(str(val), min_width) if val is not None else pad_centre("-", min_width)
+		res += "\n"
+	res += "\n"
+	return res
+
 clear = lambda: os.system('cls') #on Windows System
 
-def play_game():
-	game = G2048()
-	game.gen_random_tile()
-	game.gen_random_tile()
-	while game.playable():
-		clear()
-		print(game)
-		move_dir = get_move_input()
-		game.shift_grid(move_dir)
+def play_game(gen_moves=True, start_grid=None):
+	if start_grid:
+		game = G2048(init_spaces=start_grid)
+	else:
+		game = G2048()
 		game.gen_random_tile()
+		game.gen_random_tile()
+	once = False
+	while game.playable():
+		if gen_moves:
+			clear()
+		print(game)
+		if once:
+			break
+		move_dir = get_move_input()
+		if move_dir == "quit":
+			break
+		game.shift_grid(move_dir)
+		if gen_moves:
+			game.gen_random_tile()
+		else:
+			once = True
 		time.sleep(0.1)
 	
 	clear()
 	print(game)
 	print("\n\tGame over!\n\n")
+	for i in range(min(5, len(game.history)), -1, -1):
+		move, grid = game.history[-i]
+		print(move + "\n" + str(grid) + "\n" + grid_print(grid))
 	
 def move_tests():
 	move_test_grid = [[2, None, None, 2], [None, 2, None, None], [None, None, 2, None], [2, 2, 2, 2]]
@@ -390,6 +253,7 @@ def move_tests():
 		
 if __name__ == "__main__":
 	
+	a = """
 	game = G2048()
 	# game.gen_random_tile()
 	game.place(0, 3, 2)
@@ -404,7 +268,9 @@ if __name__ == "__main__":
 	# game.shift_grid(game.shift_options["LEFT"])
 	game.shift_grid(game.shift_options["RIGHT"])
 	print(game)
-	
-	move_tests()
-	# play_game()
+	"""
+	# move_tests()
+	play_game()
+	# play_game([[None, None, None, None], [2, None, None, None], [2, None, None, None], [4, 2, 4, 4]])
+	# play_game(gen_moves=False, start_grid=[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, 2, 2, 4]])
 	

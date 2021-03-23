@@ -1,0 +1,257 @@
+
+	# def shift_grid(self, dir):
+	# 	so = self.shift_options
+	# 	n = self.n
+		
+	# 	def shift_up(grid):
+	# 		grid = np.transpose(grid)
+	# 		res = []
+	# 		for row in grid:
+	# 			l = len(row)
+	# 			nr = [c for c in row if c is not None]
+	# 			i = 0
+	# 			while i < len(nr)-1:
+	# 				el = nr[i]
+	# 				if el == nr[i+1]:
+	# 					nr = nr[:i] + [el * 2] + nr[i+2:]
+	# 					i -= 1
+	# 				i += 1
+					
+	# 			row = nr + [None for i in range(l - len(nr))]
+	# 			res.append(row)
+				
+	# 		res = np.transpose(res).tolist()
+	# 		return res
+			
+	# 	def shift_left(grid):
+	# 		# grid = np.transpose(grid)
+	# 		res = []
+	# 		for row in grid:
+	# 			l = len(row)
+	# 			nr = [c for c in row if c is not None]
+	# 			i = 0
+	# 			while i < len(nr)-1:
+	# 				el = nr[i]
+	# 				if el == nr[i+1]:
+	# 					nr = nr[:i] + [el * 2] + nr[i+2:]
+	# 					i -= 1
+	# 				i += 1
+					
+	# 			row = nr + [None for i in range(l - len(nr))]
+	# 			res.append(row)
+				
+	# 		# res = np.transpose(res)
+	# 		return res
+			
+	# 	def shift_down(grid):
+	# 		grid[::-1]
+	# 		grid = np.transpose(grid)
+	# 		res = []
+	# 		for row in grid:
+	# 			l = len(row)
+	# 			nr = [c for c in row if c is not None]
+	# 			i = 0
+	# 			while i < len(nr)-1:
+	# 				el = nr[i]
+	# 				if el == nr[i+1]:
+	# 					nr = nr[:i] + [el * 2] + nr[i+2:]
+	# 					i -= 1
+	# 				i += 1
+					
+	# 			row = [None for i in range(l - len(nr))] + nr
+	# 			res.append(row)
+				
+	# 		res = np.transpose(res).tolist()
+	# 		grid[::-1]
+	# 		res[::-1]
+	# 		return res
+			# grid = np.transpose(grid)
+			# res = []
+			# for row in grid:
+				# l = len(row)
+				# nr = [c for c in row if c is not None]
+				# i = len(nr)-1
+				# while i > 0 and len(nr) > 1:
+					# # print("\ti:\t\t" + str(i))
+					# el = nr[i]
+					# if el == nr[i-1]:
+						# # print("\tnr B:\t\t" + str(nr))
+						# # print("\tnr[:i]:\t\t" + str(nr[:i-1]))
+						# # print("\t[el * 2]:\t" + str([el * 2]))
+						# # print("\tnr[i+2:]:\t" + str(nr[i+2:]))
+						# # nr = nr[i-2:] + [el * 2] + nr[:i-1]
+						# # nr = [el * 2] + nr[:i-1]
+						# nr = nr[:i-1] + [el * 2] + nr[i+2:]
+						# # print("\tnr A:\t\t" + str(nr))
+						# i += 1
+					# i -= 1
+					
+				# row = [None for i in range(l - len(nr))] + nr
+				# # print("row: " + str(row))
+				# res.append(row)
+				
+			# res = np.transpose(res)
+			# return res
+			
+		# def shift_right(grid):
+		# # grid = np.transpose(grid)
+		# 	grid[::-1]
+		# 	res = []
+		# 	for row in grid:
+		# 		l = len(row)
+		# 		nr = [c for c in row if c is not None]
+		# 		i = 0
+		# 		while i < len(nr)-1:
+		# 			el = nr[i]
+		# 			if el == nr[i+1]:
+		# 				nr = nr[:i] + [el * 2] + nr[i+2:]
+		# 				i -= 1
+		# 			i += 1
+					
+		# 		row = [None for i in range(l - len(nr))] + nr
+		# 		res.append(row)
+				
+		# 	# res = np.transpose(res)
+		# 	grid[::-1]
+		# 	res[::-1]
+		# 	return res
+		
+		
+			# # grid = np.transpose(grid)
+			# res = []
+			# for row in grid:
+				# l = len(row)
+				# nr = [c for c in row if c is not None]
+				# i = len(nr)-1
+				# while i > 0 and len(nr) > 1:
+					# # print("\ti:\t\t" + str(i))
+					# el = nr[i]
+					# if el == nr[i-1]:
+						# # print("\tnr B:\t\t" + str(nr))
+						# # print("\tnr[:i]:\t\t" + str(nr[:i-1]))
+						# # print("\t[el * 2]:\t" + str([el * 2]))
+						# # print("\tnr[i+2:]:\t" + str(nr[i+2:]))
+						# # nr = nr[i-2:] + [el * 2] + nr[:i-1]
+						# # nr = [el * 2] + nr[:i-1]
+						# nr = nr[:i-1] + [el * 2] + nr[i+2:]
+						# # print("\tnr A:\t\t" + str(nr))
+						# i += 1
+					# i -= 1
+					
+				# row = [None for i in range(l - len(nr))] + nr
+				# # print("row: " + str(row))
+				# res.append(row)
+				
+			# # res = np.transpose(res)
+			# return res
+
+		# def shift_up(grid):
+		# 	print("shifting up:\n" + str(grid))
+		# 	for i in range(n-1, 0, -1):
+		# 		for j in range(n):
+		# 			if grid[i-1][j] is None:
+		# 				grid[i-1][j] = grid[i][j]
+		# 				grid[i][j] = None
+		# 			elif grid[i-1][j] == grid[i][j]:
+		# 				grid[i-1][j] *= 2
+		# 				grid[i][j] = None
+		# 	print("done:\n" + str(grid))
+
+		# def shift_down(grid):
+		# 	print("shifting down:\n" + str(grid))
+		# 	for i in range(n-1):
+		# 		for j in range(n):
+		# 			if grid[i+1][j] is None:
+		# 				grid[i+1][j] = grid[i][j]
+		# 				grid[i][j] = None
+		# 			elif grid[i+1][j] == grid[i][j]:
+		# 				grid[i+1][j] *= 2
+		# 				grid[i][j] = None
+		# 	print("done:\n" + str(grid))
+		
+		# def shift_left(grid):
+		# 	# grid = np.transpose(grid)
+		# 	print("shifting left:\n" + str(grid))
+		# 	for i in range(n):
+		# 		for j in range(n-1, 0, -1):
+		# 			if grid[i][j-1] is None:
+		# 				grid[i][j-1] = grid[i][j]
+		# 				grid[i][j] = None
+		# 			elif grid[i][j-1] == grid[i][j]:
+		# 				grid[i][j-1] *= 2
+		# 				grid[i][j] = None
+		# 	print("shifted left:\n" + str(grid))
+		# 	# grid = np.transpose(grid)
+		# 	self.grid = grid
+		# 	print("done:\n" + str(grid))
+
+		# def shift_right(grid):
+		# 	grid = np.transpose(grid)
+		# 	print("shifting right:\n" + str(grid))
+		# 	for i in range(n-1):
+		# 		for j in range(n):
+		# 			if grid[i+1][j] is None:
+		# 				grid[i+1][j] = grid[i][j]
+		# 				grid[i][j] = None
+		# 			elif grid[i+1][j] == grid[i][j]:
+		# 				grid[i+1][j] *= 2
+		# 				grid[i][j] = None
+		# 	grid = np.transpose(grid)
+		# 	self.grid = grid
+		# 	print("done:\n" + str(grid))
+
+		# def shift():
+		# 	g = "\n".join(list(map(str, self.grid)))
+		# 	print("to shift\n" + g)
+
+		# 	for r, row in enumerate(self.grid):
+		# 		# row.reverse()
+		# 		i = 0
+		# 		# new_row = []
+		# 		lr = len(row)
+		# 		while i < lr:
+		# 			if self.grid[r][i] is not None:
+		# 				k = i + 1
+		# 				while k < lr:
+		# 					if self.grid[r][k] != None:
+		# 						break
+		# 					k += 1
+		# 				if k < lr:
+		# 					if self.grid[r][i] == self.grid[r][k]:
+		# 						self.grid[r][i] *= 2
+		# 						self.grid[r][k] = None
+		# 				i = k
+		# 			i += 1
+
+		# 	for r in range(len(self.grid)):
+		# 		self.grid[r] = [v for v in self.grid[r] if v is not None]
+		# 		self.grid[r] += [None for j in range(lr - len(self.grid[r]))]
+
+		# if dir == so["UP"]:
+		# 	self.grid = np.transpose(self.grid).tolist()
+		# 	shift()
+		# 	self.grid = np.transpose(self.grid).tolist()
+		# elif dir == so["DOWN"]:
+		# 	# for row in self.grid:
+		# 	# 	row.reverse()
+		# 	self.grid = np.transpose(self.grid).tolist()
+		# 	shift()
+		# 	self.grid = np.transpose(self.grid).tolist()
+		# 	self.grid.reverse()
+		# 	# for row in self.grid:
+		# 	# 	row.reverse()
+		# # elif dir == so["LEFT"]:
+		# elif dir == so["RIGHT"]:
+		# 	# for row in self.grid:
+		# 	# 	row.reverse()
+		# 	shift()
+		# 	for row in self.grid:
+		# 		row.reverse()
+		# # left is default
+		# else:
+		# 	shift()
+
+
+		# print("done global: " + str(self.grid))
+
+		# generic shift grid for moving left. for other directions, modify the grid object with matrix operations		
