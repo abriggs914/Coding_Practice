@@ -88,17 +88,54 @@ class YearHistory:
 		self.balance += p
 		self.history.append(order)
 		self.months[calendar.month_name[m]].append(order)
+
+	def get_monthly_spending(self, month):
+		return sum(list(map(lambda x : x[1], self.months[calendar.month_name[month]])))
+
+	def __repr__(self):
+		return str(self.year)
 		
 history = {}
 total_spent = 0
+largest_order = None
+smallest_order = None
+highest_spending_month = None
+least_spending_month = None
+highest_spending_year = None
+least_spending_year = None
+average_order_price = 0
 for year in orders:
 	history[year] = YearHistory(year)
 	for order in orders[year]:		
 		history[year].add(order)
+
+		d, p = order
+		if largest_order == None or largest_order[1] < p:
+			largest_order = order
+		if smallest_order == None or smallest_order[1] > p:
+			smallest_order = order
+
+		m = datetime.date(*list(map(int, d.split("-")))).month
+		if highest_spending_month == None or history[year].get_monthly_spending(m) > highest_spending_month[0].get_monthly_spending(highest_spending_month[1]):
+			highest_spending_month = (history[year], m)
+		if least_spending_month == None or history[year].get_monthly_spending(m) < least_spending_month[0].get_monthly_spending(least_spending_month[1]):
+			least_spending_month = (history[year], m)
+
+		if highest_spending_year == None or history[year].balance > highest_spending_year.balance:
+			highest_spending_year = history[year]
+		if least_spending_year == None or history[year].balance < least_spending_year.balance:
+			least_spending_year = history[year]
 		
-for hist, dat in history.items():
-	print("hist: " + str(hist))
-	print("\tbalance: $ %.2f" % dat.balance)
-	total_spent += dat.balance
-print("\n\nTotal spent: $ %.2f" % total_spent)
-	
+if history:
+	for hist, dat in history.items():
+		print("hist: " + str(hist))
+		b = dat.balance
+		print("\tbalance: $ %.2f" % b)
+		total_spent += b
+	print("\n\nTotal spent: $ %.2f" % total_spent)
+	print("Largest order:", largest_order)
+	print("Smallest order:", smallest_order)
+	print("Highest spending month:", highest_spending_month, "Spent:", highest_spending_month[0].get_monthly_spending(highest_spending_month[1]), "Orders:", highest_spending_month[0].months[calendar.month_name[highest_spending_month[1]]])
+	print("least spending month:", least_spending_month, "Spent:", least_spending_month[0].get_monthly_spending(least_spending_month[1]), "Orders:", least_spending_month[0].months[calendar.month_name[least_spending_month[1]]])
+	print("Highest spending year:", highest_spending_year, "Spent:", highest_spending_year.balance)
+	print("least spending year:", least_spending_year, "Spent:", least_spending_year.balance)
