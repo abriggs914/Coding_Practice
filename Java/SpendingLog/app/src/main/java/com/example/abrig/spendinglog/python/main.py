@@ -122,8 +122,11 @@ def scotia_transactions():
 		TH.create_transaction(*list(transaction.values()))
 
 	print(TH.transaction_list)
+	ents = TH.entities_list.copy()
+	ents.sort(key=lambda x: x.name)
+	# ents.sort(key=lambda x: x.balance)
 	entities_dict = {}
-	for entity in TH.entities_list:
+	for entity in ents:
 		entities_dict[entity.name] = {"balance": money(entity.balance)}
 	print(dict_print(entities_dict, "entities dict", number=True))
 

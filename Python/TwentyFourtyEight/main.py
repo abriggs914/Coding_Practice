@@ -65,11 +65,8 @@ class G2048:
 
 	def shift_grid(self, dir):
 		so = self.shift_options
-		self.history.append((dir, [row.copy() for row in self.grid]))
+		init_grid = [row.copy() for row in self.grid]
 		def shift():
-			g = "\n".join(list(map(str, self.grid)))
-			print("to shift\n" + g)
-
 			for r, row in enumerate(self.grid):
 				i = 0
 				lr = len(row)
@@ -84,6 +81,8 @@ class G2048:
 							if self.grid[r][i] == self.grid[r][k]:
 								self.grid[r][i] *= 2
 								self.grid[r][k] = None
+							else:
+								k = i
 						i = k
 					i += 1
 
@@ -97,16 +96,29 @@ class G2048:
 			self.grid = np.transpose(self.grid).tolist()
 		elif dir == so["DOWN"]:
 			self.grid = np.transpose(self.grid).tolist()
-			shift()
-			self.grid = np.transpose(self.grid).tolist()
 			self.grid.reverse()
+			for row in self.grid:
+				row.reverse()
+			shift()
+			for row in self.grid:
+				row.reverse()
+			self.grid.reverse()
+			self.grid = np.transpose(self.grid).tolist()
 		elif dir == so["RIGHT"]:
+			for row in self.grid:
+				row.reverse()
 			shift()
 			for row in self.grid:
 				row.reverse()
 		# left is default
 		else:
 			shift()
+
+		if self.grid == init_grid:
+			return False
+
+		self.history.append((dir, [row.copy() for row in self.grid]))
+		return True
 
 	def __repr__(self):
 		res = "\n"
@@ -169,12 +181,13 @@ def play_game(gen_moves=True, start_grid=None):
 		move_dir = get_move_input()
 		if move_dir == "quit":
 			break
-		game.shift_grid(move_dir)
-		if gen_moves:
-			game.gen_random_tile()
-		else:
-			once = True
-		time.sleep(0.1)
+		valid = game.shift_grid(move_dir)
+		if valid:
+			if gen_moves:
+				game.gen_random_tile()
+			else:
+				once = True
+			time.sleep(0.15)
 	
 	clear()
 	print(game)
@@ -214,7 +227,21 @@ def move_tests():
 			],
 			[[None, None, None, 4], [None, None, None, 2], [None, None, None, 2], [None, None, 4, 4]]
 		],
-		"test_5, testing 2 moves, up then left": [
+		"test_5, should only make one push not 2": [
+			[
+				[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, 2, 2, 4]],
+				"right"
+			],
+			[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, None, 4, 4]]
+		],
+		"test_6, should only make one push not 2": [
+			[
+				[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, 2, 2, 4]],
+				"left"
+			],
+			[[2, None, None, None], [4, None, None, None], [2, 4, 2, None], [4, 4, None, None]]
+		],
+		"test_7, testing 2 moves, up then left": [
 			[
 				move_test_grid,
 				[
@@ -224,19 +251,171 @@ def move_tests():
 			],
 			[[8, 8, None, None], [None, None, None, None], [None, None, None, None], [None, None, None, None]]
 		],
-		"test_6, should only make one push not 2": [
+		"test_8, testing 2 moves, up then right": [
 			[
-				[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, 2, 2, 4]],
+				move_test_grid,
+				[
+					"up",
+					"right"
+				]
+			],
+			[[None, None, 8, 8], [None, None, None, None], [None, None, None, None], [None, None, None, None]]
+		],
+		"test_9, testing 2 moves, up then up": [
+			[
+				move_test_grid,
+				[
+					"up",
+					"up"
+				]
+			],
+			[[4, 4, 4, 4], [None, None, None, None], [None, None, None, None], [None, None, None, None]]
+		],
+		"test_10, testing 2 moves, up then down": [
+			[
+				move_test_grid,
+				[
+					"up",
+					"down"
+				]
+			],
+			[[None, None, None, None], [None, None, None, None], [None, None, None, None], [4, 4, 4, 4]]
+		],
+		"test_11, testing 2 moves, down then left": [
+			[
+				move_test_grid,
+				[
+					"down",
+					"left"
+				]
+			],
+			[[None, None, None, None], [None, None, None, None], [None, None, None, None], [8, 8, None, None]]
+		],
+		"test_12, testing 2 moves, down then right": [
+			[
+				move_test_grid,
+				[
+					"down",
+					"right"
+				]
+			],
+			[[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, None, 8, 8]]
+		],
+		"test_13, testing 2 moves, down then up": [
+			[
+				move_test_grid,
+				[
+					"down",
+					"up"
+				]
+			],
+			[[4, 4, 4, 4], [None, None, None, None], [None, None, None, None], [None, None, None, None]]
+		],
+		"test_14, testing 2 moves, down then down": [
+			[
+				move_test_grid,
+				[
+					"down",
+					"down"
+				]
+			],
+			[[None, None, None, None], [None, None, None, None], [None, None, None, None], [4, 4, 4, 4]]
+		],
+		"test_15, testing 2 moves, left then left": [
+			[
+				move_test_grid,
+				[
+					"left",
+					"left"
+				]
+			],
+			[[4, None, None, None], [2, None, None, None], [2, None, None, None], [8, None, None, None]]
+		],
+		"test_16, testing 2 moves, left then right": [
+			[
+				move_test_grid,
+				[
+					"left",
+					"right"
+				]
+			],
+			[[None, None, None, 4], [None, None, None, 2], [None, None, None, 2], [None, None, None, 8]]
+		],
+		"test_17, testing 2 moves, left then up": [
+			[
+				move_test_grid,
+				[
+					"left",
+					"up"
+				]
+			],
+			[[4, 4, None, None], [4, None, None, None], [4, None, None, None], [None, None, None, None]]
+		],
+		"test_18, testing 2 moves, left then down": [
+			[
+				move_test_grid,
+				[
+					"left",
+					"down"
+				]
+			],
+			[[None, None, None, None], [4, None, None, None], [4, None, None, None], [4, 4, None, None]]
+		],
+		"test_19, testing 2 moves, right then left": [
+			[
+				move_test_grid,
+				[
+					"right",
+					"left"
+				]
+			],
+			[[4, None, None, None], [2, None, None, None], [2, None, None, None], [8, None, None, None]]
+		],
+		"test_20, testing 2 moves, right then right": [
+			[
+				move_test_grid,
+				[
+					"right",
+					"right"
+				]
+			],
+			[[None, None, None, 4], [None, None, None, 2], [None, None, None, 2], [None, None, None, 8]]
+		],
+		"test_21, testing 2 moves, right then up": [
+			[
+				move_test_grid,
+				[
+					"right",
+					"up"
+				]
+			],
+			[[None, None, 4, 4], [None, None, None, 4], [None, None, None, 4], [None, None, None, None]]
+		],
+		"test_22, testing 2 moves, right then down": [
+			[
+				move_test_grid,
+				[
+					"right",
+					"down"
+				]
+			],
+			[[None, None, None, None], [None, None, None, 4], [None, None, None, 4], [None, None, 4, 4]]
+		],
+		"test_23, middle shift": [
+			[
+				[[4, 2, 2, 4], [2, 2, 2, 2], [8, 2, 2, 2], [8, 2, 4, 4]],
+				[
+					"left"
+				]
+			],
+			[[4, 4, 4, None], [4, 4, None, None], [8, 4, 2, None], [8, 2, 8, None]]
+		],
+		"test_23 shift right.. again?": [
+			[
+				[[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, 4, 8, 8]],
 				"right"
 			],
-			[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, None, 4, 4]]
-		],
-		"test_7, should only make one push not 2": [
-			[
-				[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, 2, 2, 4]],
-				"left"
-			],
-			[[2, None, None, None], [4, None, None, None], [2, 4, 2, None], [4, 4, None, None]]
+			[[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, None, 4, 16]]
 		]
 	}
 	
@@ -248,8 +427,23 @@ def move_tests():
 		else:
 			game.shift_grid(move)
 		return game.grid
+
+	def test_move_validity(set_places, move):
+		game = G2048(init_spaces=set_places)
+		return game.shift_grid(move)
 		
-	run_multiple_tests([(test_move, moves_test_set)])
+	run_multiple_tests([
+		(test_move, moves_test_set),
+		(test_move_validity, {
+			"test_24 invalid shift right": [
+				[
+					[[None, None, None, 2], [None, None, None, 4], [None, None, 4, 8], [None, None, 16, 32]],
+					"right"
+				],
+				False
+			]
+		})
+	])
 		
 if __name__ == "__main__":
 	
@@ -269,8 +463,8 @@ if __name__ == "__main__":
 	game.shift_grid(game.shift_options["RIGHT"])
 	print(game)
 	"""
-	# move_tests()
-	play_game()
+	move_tests()
+	# play_game()
 	# play_game([[None, None, None, None], [2, None, None, None], [2, None, None, None], [4, 2, 4, 4]])
 	# play_game(gen_moves=False, start_grid=[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, 2, 2, 4]])
 	
