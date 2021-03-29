@@ -1,5 +1,6 @@
 import datetime
 import calendar
+from utility import *
 
 orders = {
 	2016: [
@@ -139,3 +140,66 @@ if history:
 	print("least spending month:", least_spending_month, "Spent:", least_spending_month[0].get_monthly_spending(least_spending_month[1]), "Orders:", least_spending_month[0].months[calendar.month_name[least_spending_month[1]]])
 	print("Highest spending year:", highest_spending_year, "Spent:", highest_spending_year.balance)
 	print("least spending year:", least_spending_year, "Spent:", least_spending_year.balance)
+	
+def amazon_recent():
+	orders = {
+		"2021-03-15": [
+			(1, 6, 6, "NP", 26.99)
+		],
+		"2021-03-19": [
+			(1, 8, 16, "S", 21.75),
+			(1, 3, 3, "B", 22.03),
+			(1, 6, 6, "P", 28.03),
+			(1, 1, 1, "TS", 26.53),
+			(1, 1, 1, "SH", 18.03),
+			(1, 1, 1, "SH", 25.03)
+		],
+		"2021-03-22": [
+			(1, 6, 42, "NP", 59.99)
+		],
+		"2021-03-24": [
+			(1, 1, 2, "PY", 56.75),
+			(1, 5, 10, "S", 20.22),
+			(1, 8, 16, "S", 21.82),
+			(1, 8, 16, "S", 21.90),
+			(1, 1, 1, "B", 18.75),
+			(1, 1, 1, "SH", 22.26),
+			(1, 5, 5, "P", 29.75),
+			(1, 3, 3, "B", 30.75),
+			(1, 10, 10, "P", 35.75),
+			(1, 1, 1, "B", 18.75),
+			(1, 1, 1, "SH", 27.75),
+			(1, 3, 3, "P", 20.74),
+			(1, 1, 3, "PY", 29.90),
+			(1, 5, 10, "S", 29.75),
+			(1, 4, 4, "P", 28.97)
+		]
+	}
+
+	print("\n\n")
+	total_cost = sum(sum([vals[-1] for vals in lst]) for lst in orders.values())
+	quantites = {}
+	for date, items in orders.items():
+		for item in items:
+			times, qty, pieces, typ, price = item
+			if typ in quantites:
+				quantites[typ]["Qty"] += qty
+				quantites[typ]["Price"] += price
+				quantites[typ]["Pieces"] += pieces
+			else:
+				quantites[typ] = {}
+				quantites[typ]["Qty"] = qty
+				quantites[typ]["Price"] = price
+				quantites[typ]["Pieces"] = pieces
+				
+	for item in quantites:
+		quantites[item]["Cost / Item"] = money(quantites[item]["Price"] / max(1, quantites[item]["Qty"]))
+		quantites[item]["Cost / Item"] = money(quantites[item]["Price"] / max(1, quantites[item]["Qty"]))
+		quantites[item]["Cost / Piece"] = money(quantites[item]["Price"] / max(1, quantites[item]["Pieces"]))
+		quantites[item]["Price"] = money(quantites[item]["Price"])
+	
+	
+	print("total cost: $ ", total_cost)
+	print(dict_print(quantites, "Qunatities"))
+	
+amazon_recent()
