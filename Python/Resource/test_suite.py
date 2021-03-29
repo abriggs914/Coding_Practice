@@ -1,5 +1,6 @@
 import shutil
 import pprint
+import inspect
 from utility import *
 
 def get_terminal_columns():
@@ -30,13 +31,18 @@ def run_tests(func, test_set):
 		print(div + work_below + div)
 		result = func(*args)
 		print(div + work_above + div)
-		is_desired_result = result == desired_answer
+		is_desired_result = (result == desired_answer)
 		
 		args_str = pad_centre("args:\t\t" + str(args).rjust(longest_test, " "), w) + "\n"
 		desired_str = pad_centre("desired:\t" + str(desired_answer).rjust(longest_test, " "), w) + "\n"
 		result_str = pad_centre("got:\t\t" + str(result).rjust(longest_test, " "), w) + "\n"
 		
 		print(args_str + desired_str + result_str + pad_centre("correct:\t" + str(is_desired_result).rjust(longest_test, " "), w) + "\n" + pad_centre(border, w))
+		
+		# print("result t:(" + str(type(result)) + "): " + str(result))
+		# print("desired_answer: t:(" + str(type(desired_answer)) + ")" + str(desired_answer))
+		# print("result == desired_answer: t(" + str(type((result == desired_answer))) + ")" + str(result == desired_answer))
+		# print("is_desired_result: " + str(is_desired_result))
 		
 		if not is_desired_result:
 			failed_tests.append(name)
@@ -45,28 +51,39 @@ def run_tests(func, test_set):
 	
 	num_failed = len(failed_tests)
 	# wprint("\n\tFailed Tests\t" + str(num_failed) + " / " + str(num_tests) + "\n-\t" + "\n-\t".join(test for test in failed_tests) + "\n")
-	print("\n\t-- Passed Tests --\t" + str(num_tests - num_failed) + " / " + str(num_tests) + "\n\t-\t" + "\n\t-\t".join(test for test in passed_tests) + "\n")
-	return failed_tests
+	return passed_tests, failed_tests
 	
 	
 def run_multiple_tests(tests_to_run):
 	w = get_terminal_columns()
 	border = "".join(["#" for i in range(w)])
+	passed_tests = {}
 	failed_tests = {}
 	num_tests = 0
+	num_passed = 0
 	num_failed = 0
 	print(border)
 	for test in tests_to_run:
 		func, test_set = test
 		num_tests += len(test_set)
-		test_results = run_tests(func, test_set)
-		if test_results:
-			failed_tests[str(func)] = test_results
-			num_failed += len(test_results)
+		test_results_passed, test_results_failed = run_tests(func, test_set)
+		if test_results_failed:
+			print("inspect.stack()(" + str(len(inspect.stack())) + "):\n\t", "\n\t".join(list(map(str, inspect.stack()))))
+			name = func.__name__ + " - line " + str(int(str(inspect.findsource(func)).split()[-1][:-1]) + 1)  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
+			failed_tests[name] = test_results_failed
+			num_failed += len(test_results_failed)
+		if test_results_passed:
+			name = func.__name__ + " - line " + str(int(str(inspect.findsource(func)).split()[-1][:-1]) + 1 )  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
+			passed_tests[name] = test_results_passed
+			num_passed += len(test_results_passed)
+
+	print("\n\t-- Passed Tests --\t" + str(num_passed) + " / " + str(num_tests))
+	for func, passed_test_results in passed_tests.items():
+		print("\t-\t" + func + "\n\t\t-\t" + "\n\t\t-\t".join(test_name for test_name in passed_test_results) + "\n")
 		
 	print("\n\t-- Failed Tests --\t" + str(num_failed) + " / " + str(num_tests))
 	for func, failed_test_results in failed_tests.items():
-		print("\t-\t"+ "\n\t-\t".join(test_name for test_name in failed_test_results) + "\n")
+		print("\t-\t" + func + "\n\t\t-\t" + "\n\t\t-\t".join(test_name for test_name in failed_test_results) + "\n")
 	print(border)
 		# for test in failed_test_results:
 		# wprint("failed_test_results:", failed_test_results, "test:", test)
@@ -110,7 +127,9 @@ def do_test():
 		
 	}
 	tests_to_run = [(add, add_test_set)]
-	run_multiple_tests(tests_to_run)
+	run_multiple_tests(tests_to_run + [
+		(lambda x : x, {"test": [["arg"], "arg"]})  # simplest usage I could think of.
+	])
 
 
 # tests_to_run = [

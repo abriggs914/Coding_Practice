@@ -38,36 +38,7 @@ class G2048:
 		return res
 		
 	def playable(self):
-		for i in range(self.n):
-			for j in range(self.n):
-				if self.grid[i][j] == None:
-					return True
-				if i > 0:
-					# up
-					if self.grid[i - 1][j] == self.grid[i][j]:
-						return True
-				if i < self.n - 1:
-					# down
-					if self.grid[i + 1][j] == self.grid[i][j]:
-						return True
-				if j > 0:
-					# left
-					if self.grid[i][j - 1] == self.grid[i][j]:
-						return True
-				if j < self.n - 1:
-					# right
-					if self.grid[i][j + 1] == self.grid[i][j]:
-						return True
-		return False
-		# init_grid = [row.copy() for row in self.grid]
-		# so = self.shift_options
-		# moves = []
-		# for dir, name in so.items():
-		# 	res = self.shift_grid(name)
-		# 	moves.append(res)
-		# 	if res:
-		# 		self.grid = init_grid
-		# return len(self.find_empty_cells()) > 0 or any(moves)
+		return len(self.find_empty_cells()) > 0
 		
 	def place(self, i, j, v):
 		self.grid[i][j] = v
@@ -93,9 +64,13 @@ class G2048:
 		
 
 	def shift_grid(self, dir):
+		g = "\n".join(list(map(str, self.grid)))
+		print("to shift\n" + g)
 		so = self.shift_options
-		init_grid = [row.copy() for row in self.grid]
+		self.history.append((dir, [row.copy() for row in self.grid]))
 		def shift():
+			g = "\n\t".join(list(map(str, self.grid)))
+			print("\tpre shift\n\t" + g)
 			for r, row in enumerate(self.grid):
 				i = 0
 				lr = len(row)
@@ -103,12 +78,14 @@ class G2048:
 					if self.grid[r][i] is not None:
 						k = i + 1
 						while k < lr:
+							print("\tg", self.grid[r], "r[k]", self.grid[r][k])
 							if self.grid[r][k] != None:
 								break
 							k += 1
 						if k < lr:
+							print("row", row, "i", i, "k", k, "lr", lr, "equal", (self.grid[r][i] == self.grid[r][k]))
 							if self.grid[r][i] == self.grid[r][k]:
-								self.place(r, i, self.grid[r][i] * 2)
+								self.grid[r][i] *= 2
 								self.grid[r][k] = None
 							else:
 								k = i
@@ -118,6 +95,8 @@ class G2048:
 			for r in range(len(self.grid)):
 				self.grid[r] = [v for v in self.grid[r] if v is not None]
 				self.grid[r] += [None for j in range(lr - len(self.grid[r]))]
+			g = "\n\t".join(list(map(str, self.grid)))
+			print("\tpost shift\n\t" + g)
 
 		if dir == so["UP"]:
 			self.grid = np.transpose(self.grid).tolist()
@@ -134,26 +113,20 @@ class G2048:
 			self.grid.reverse()
 			self.grid = np.transpose(self.grid).tolist()
 		elif dir == so["RIGHT"]:
-			for row in self.grid:
-				row.reverse()
 			shift()
 			for row in self.grid:
 				row.reverse()
 		# left is default
 		else:
 			shift()
-
-		if self.grid == init_grid:
-			return False
-
-		self.history.append((dir, [row.copy() for row in self.grid]))
-		return True
+		
+		g = "\n".join(list(map(str, self.grid)))
+		print("\nshifted\n" + g)
 
 	def __repr__(self):
 		res = "\n"
-		lenstr_no_none = lambda x : lenstr(x) if x != None else lenstr("-")
-		lt = max([max(list(map(lenstr_no_none, row))) for row in self.grid])
-		min_width = 2 + lt
+		lt = self.largest_tile[2] if self.largest_tile is not None else 1
+		min_width = 2 + len(str(lt))
 		for row in self.grid:
 			for val in row:
 				res += pad_centre(str(val), min_width) if val is not None else pad_centre("-", min_width)
@@ -183,10 +156,8 @@ def get_move_input():
 
 def grid_print(grid):
 	res = "\n"
-	lenstr_no_none = lambda x : lenstr(x) if x != None else lenstr("-")
-	lt = max([max(list(map(lenstr_no_none, row))) for row in grid])
-	min_width = 2 + lt
-	print("min_width:", min_width)
+	lt = max([max(list(map(lenstr, row))) for row in grid])
+	min_width = 2 + len(str(lt))
 	for row in grid:
 		for val in row:
 			res += pad_centre(str(val), min_width) if val is not None else pad_centre("-", min_width)
@@ -213,32 +184,19 @@ def play_game(gen_moves=True, start_grid=None):
 		move_dir = get_move_input()
 		if move_dir == "quit":
 			break
-		valid = game.shift_grid(move_dir)
-		if valid:
-			clear()
-			print(game)
-			time.sleep(0.15)
-			if gen_moves:
-				game.gen_random_tile()
-			else:
-				once = True
-			time.sleep(0.15)
+		game.shift_grid(move_dir)
+		if gen_moves:
+			game.gen_random_tile()
+		else:
+			once = True
+		time.sleep(0.1)
 	
 	clear()
 	print(game)
 	print("\n\tGame over!\n\n")
-	if game.history:
-		for i in range(min(5, len(game.history)), -1, -1):
-			move, grid = game.history[-i]
-			print(move + "\n" + str(grid) + "\n" + grid_print(grid))
-
-	write = input("\n\tWould you like to save your score?\n\t\t1\t\tyes\n\t\totherwise\tno\n")
-	if write == "1":
-		write_score(game)
-
-def write_score(game):
-	with open(file_name, 'w') as f:
-		pass
+	for i in range(min(5, len(game.history)), -1, -1):
+		move, grid = game.history[-i]
+		print(move + "\n" + str(grid) + "\n" + grid_print(grid))
 	
 def move_tests():
 	move_test_grid = [[2, None, None, 2], [None, 2, None, None], [None, None, 2, None], [2, 2, 2, 2]]
@@ -453,58 +411,6 @@ def move_tests():
 				]
 			],
 			[[4, 4, 4, None], [4, 4, None, None], [8, 4, 2, None], [8, 2, 8, None]]
-		],
-		"test_23 shift right.. again?": [
-			[
-				[[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, 4, 8, 8]],
-				"right"
-			],
-			[[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, None, 4, 16]]
-		]
-	}
-
-	valid_move_test_set = {
-			"test_1 invalid shift right": [
-				[
-					[[None, None, None, 2], [None, None, None, 4], [None, None, 4, 8], [None, None, 16, 32]],
-					"right"
-				],
-				False
-			],
-			"test_2 invalid shift up": [
-				[
-					[[None, None, None, 2], [None, None, None, None], [None, None, None, None], [None, None, None, None]],
-					"up"
-				],
-				False
-			],
-			"test_3 valid shift up": [
-				[
-					[[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, None, None, 2]],
-					"up"
-				],
-				True
-			]
-		}
-	
-	playable_test_set = {
-		"test_1 still playable": [
-			[
-				[[None, 4, 8, 2], [8, 16, 4, 8], [16, 32, 16, 8], [32, 64, 128, 512]]
-			],
-			True
-		],
-		"test_2 full grid, still playable": [
-			[
-				[[2, 4, 8, 2], [8, 16, 4, 8], [16, 32, 16, 8], [32, 64, 128, 512]]
-			],
-			True
-		],
-		"test_3 full grid, not playable": [
-			[
-				[[2, 4, 8, 2], [8, 16, 4, 32], [16, 32, 16, 8], [32, 64, 128, 512]]
-			],
-			False
 		]
 	}
 	
@@ -516,21 +422,8 @@ def move_tests():
 		else:
 			game.shift_grid(move)
 		return game.grid
-
-	def test_move_validity(set_places, move):
-		game = G2048(init_spaces=set_places)
-		return game.shift_grid(move)
-
-	def test_still_playable(set_places):
-		game = G2048(init_spaces=set_places)
-		return game.playable()
-
 		
-	run_multiple_tests([
-		(test_move, moves_test_set),
-		(test_move_validity, valid_move_test_set),
-		(test_still_playable, playable_test_set)
-	])
+	run_multiple_tests([(test_move, moves_test_set)])
 		
 if __name__ == "__main__":
 	
@@ -551,7 +444,7 @@ if __name__ == "__main__":
 	print(game)
 	"""
 	# move_tests()
-	# play_game()
-	play_game(start_grid=[[1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, 16]])
+	play_game()
 	# play_game([[None, None, None, None], [2, None, None, None], [2, None, None, None], [4, 2, 4, 4]])
 	# play_game(gen_moves=False, start_grid=[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, 2, 2, 4]])
+	
