@@ -1,5 +1,6 @@
 import os
 import time
+import datetime
 import random as rand
 import numpy as np
 from utility import *
@@ -78,7 +79,7 @@ class G2048:
 			for p in range(self.n):
 				for q in range(self.n):
 					gv = self.grid[p][q] if self.grid[p][q] is not None else 0
-					if max_tile is None or max_tile[2] > gv:
+					if max_tile is None or max_tile[2] < gv:
 						max_tile = (p, q, gv)
 			self.largest_tile = max_tile
 
@@ -149,6 +150,14 @@ class G2048:
 		self.history.append((dir, [row.copy() for row in self.grid]))
 		return True
 
+	def get_record_entry(self):
+		return [
+			str(datetime.datetime.now()),
+			str(self.largest_tile),
+			str(len(self.history)),
+			str(self.grid)
+		]
+
 	def __repr__(self):
 		res = "\n"
 		lenstr_no_none = lambda x : lenstr(x) if x != None else lenstr("-")
@@ -186,7 +195,6 @@ def grid_print(grid):
 	lenstr_no_none = lambda x : lenstr(x) if x != None else lenstr("-")
 	lt = max([max(list(map(lenstr_no_none, row))) for row in grid])
 	min_width = 2 + lt
-	print("min_width:", min_width)
 	for row in grid:
 		for val in row:
 			res += pad_centre(str(val), min_width) if val is not None else pad_centre("-", min_width)
@@ -237,8 +245,10 @@ def play_game(gen_moves=True, start_grid=None):
 		write_score(game)
 
 def write_score(game):
-	with open(file_name, 'w') as f:
-		pass
+	file_name = "score_history.csv"
+	with open(file_name, 'a') as f:
+		f.write("\n" + ";;".join(game.get_record_entry()))
+		
 	
 def move_tests():
 	move_test_grid = [[2, None, None, 2], [None, 2, None, None], [None, None, 2, None], [2, 2, 2, 2]]
@@ -551,7 +561,7 @@ if __name__ == "__main__":
 	print(game)
 	"""
 	# move_tests()
-	# play_game()
-	play_game(start_grid=[[1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, 16]])
+	play_game()
+	# play_game(start_grid=[[1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, 16]])
 	# play_game([[None, None, None, None], [2, None, None, None], [2, None, None, None], [4, 2, 4, 4]])
 	# play_game(gen_moves=False, start_grid=[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, 2, 2, 4]])
