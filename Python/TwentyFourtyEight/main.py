@@ -158,6 +158,40 @@ class G2048:
 			str(self.grid)
 		]
 
+	def play(self, gen_moves=True):
+		once = False
+		while self.playable():
+			if gen_moves:
+				clear()
+			print(self)
+			if once:
+				break
+			move_dir = get_move_input()
+			if move_dir == "quit":
+				break
+			valid = self.shift_grid(move_dir)
+			if valid:
+				clear()
+				print(self)
+				time.sleep(0.15)
+				if gen_moves:
+					self.gen_random_tile()
+				else:
+					once = True
+				time.sleep(0.15)
+		
+		clear()
+		print(self)
+		print("\n\tGame over!\n\n")
+		if self.history:
+			for i in range(min(5, len(self.history)), -1, -1):
+				move, grid = self.history[-i]
+				print(move + "\n" + str(grid) + "\n" + grid_print(grid))
+
+		write = input("\n\tWould you like to save your score?\n\t\t1\t\tyes\n\t\totherwise\tno\n")
+		if write == "1":
+			write_score(self)
+
 	def __repr__(self):
 		res = "\n"
 		lenstr_no_none = lambda x : lenstr(x) if x != None else lenstr("-")
@@ -211,38 +245,9 @@ def play_game(gen_moves=True, start_grid=None):
 		game = G2048()
 		game.gen_random_tile()
 		game.gen_random_tile()
-	once = False
-	while game.playable():
-		if gen_moves:
-			clear()
-		print(game)
-		if once:
-			break
-		move_dir = get_move_input()
-		if move_dir == "quit":
-			break
-		valid = game.shift_grid(move_dir)
-		if valid:
-			clear()
-			print(game)
-			time.sleep(0.15)
-			if gen_moves:
-				game.gen_random_tile()
-			else:
-				once = True
-			time.sleep(0.15)
-	
-	clear()
-	print(game)
-	print("\n\tGame over!\n\n")
-	if game.history:
-		for i in range(min(5, len(game.history)), -1, -1):
-			move, grid = game.history[-i]
-			print(move + "\n" + str(grid) + "\n" + grid_print(grid))
 
-	write = input("\n\tWould you like to save your score?\n\t\t1\t\tyes\n\t\totherwise\tno\n")
-	if write == "1":
-		write_score(game)
+	game.play()
+
 
 def write_score(game):
 	file_name = "score_history.csv"

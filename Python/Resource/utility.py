@@ -12,6 +12,12 @@ def lenstr(x):
     return len(str(x))
 
 
+def minmax(a, b):
+	if a <= b:
+		return a, b
+	return b, a
+
+
 def avg(lst):
     try:
         return sum(lst) / max(1, len(lst))
