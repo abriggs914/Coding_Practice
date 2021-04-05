@@ -1,6 +1,27 @@
 import pygame
 import easygui
 
+
+# On start-up show main menu.
+# Main menu consists of:
+#   -   Ability to change grid dimensions (Must be square)
+#   -   Ability to load existing game
+#   -   Ability to start new game
+#   -   Ability to view stats and game history
+#   -   Ability to change colour scheme (presets or custom)
+
+# Grid game main screen
+#   -   Ability to shift current grid by using keyboard or (mouse clicks?)
+#   -   Buttons to navigate back to the main menu (pauses game clock)
+#   -   Ability to quit game and offer to save game before exiting
+
+# Stats and history screen
+#   -   Show top N (5) scores (show the grid view in small form)
+#   -   Show averages and high and low scores in text, num games, time played...
+#   -   Buttons to navigate back to main menu
+
+# Colour scheme chooser
+
 ##################################################
 ##					Design vars					##
 ##################################################
