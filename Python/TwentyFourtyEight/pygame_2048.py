@@ -26,6 +26,7 @@ import easygui
 ##					Design vars					##
 ##################################################
 
+BLACK = (0, 0, 0)
 CIRCLE_MARKER_COLOR = (255, 255, 255) 	# white
 LEGEND_MARKER_COLOR = (255, 15, 15) 	# red
 BACKGROUND_COLOR = (0, 0, 0) 			# black
@@ -42,7 +43,7 @@ TITLE = "2048"						    # title
 WIDTH = 750								# width and height
 HEIGHT = 750
 DATA = {
-    "current_screen": "main_menu"
+    "current_screen": "main_menu",
     "current_game": None,
     "game_time": None,
     "colour_scheme": None
@@ -151,14 +152,14 @@ def init():
 	pygame.init()
 	DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 	pygame.display.set_caption(TITLE)
-	
-    loaded_game = load_game()
-    if not loaded_game:
-        loaded_game = G2048()
-    else:
-        loaded_game = G2048(init_grid=loaded_game)
-    DATA["current_game"] = loaded_game
-	DATA["game_time"] = compute_row_space()
-	DATA["colour_scheme"] = compute_spacing()
-	DATA["radius"] = compute_radius()
-	DATA["circles"] = create_circles()
+		
+	loaded_game = load_game()
+	if not loaded_game:
+		loaded_game = G2048()
+	else:
+		loaded_game = G2048(init_grid=loaded_game)
+	DATA["current_game"] = loaded_game
+	# DATA["game_time"] = compute_row_space()
+	# DATA["colour_scheme"] = compute_spacing()
+	# DATA["radius"] = compute_radius()
+	# DATA["circles"] = create_circles()
