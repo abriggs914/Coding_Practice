@@ -1,0 +1,20 @@
+Rarity ; Name ; Description ; Duplicate ; Renown_Gain ; Availibility ; Code ; Operator ; Gun
+Common ; Royalty ; F2 Skin ; True ; 310 ; Twitch ; WP ; NO_OPERATOR ; F2 {ASR}
+Common ; Forest ; SPAS-12 Skin ; True ; 310 ; Valkyrie ; WP ; NO_OPERATOR ; SPAS-12 {SHG}
+Rare ; Chameleon ; P9 Skin ; False ; 0 ; GIGN ; WS ; NO_OPERATOR ; P9 {HDG}
+Common ; Acid Rain ; 417 Skin ; False ; 0 ; Twitch, Lion ; WP ; NO_OPERATOR ; 417 {DMR}
+Uncommon ; Sunburn ; Pulse Headgear ; True ; 625 ; Pulse ; HG ; Defender Pulse {FBI} ; NO_WEAPON
+Rare ; Predator ; Glaz Headgear ; False ; 0 ; Glaz ; HG ; Attacker Glaz {Spetsnaz} ; NO_WEAPON
+Common ; Molokai ; SMG-11 Skin ; False ; 0 ; SAS ; WS ; NO_OPERATOR ; SMG-11 {SMG}
+Common ; KONA ; MP5 Skin ; False ; 0 ; Doc, Rook ; WP ; NO_OPERATOR ; MP5 {SMG}
+Common ; Oahu ; M870 Skin ; True ; 310 ; Jaeger, Bandit ; WP ; NO_OPERATOR ; M870 {SHG}
+Common ; Hull ; SR25 Skin ; True ; 310 ; Blackbeard ; WP ; NO_OPERATOR ; SR-25 {DMR}
+Common ; Weave ; G36C Skin ; True ; 310 ; Ash ; WP ; NO_OPERATOR ; G36C {ASR}
+Epic ; Ceifador ; SPAS-15 Skin ; False ; 0 ; Caveira ; WP ; NO_OPERATOR ; SPAS-15 {SHG}
+Uncommon ; Black Widow ; AR33 Skin ; False ; 0 ; Thatcher ; WP ; NO_OPERATOR ; AR33 {ASR}
+Rare ; Compass ; MPX Skin ; False ; 0 ; Valkyrie, Warden ; WP ; NO_OPERATOR ; MPX {SMG}
+Rare ; Musca ; Twitch Headgear ; False ; 0 ; Twitch ; HG ; Attacker Twitch {GIGN} ; NO_WEAPON
+Epic ; Ceifador ; M12 Skin ; False ; 0 ; Caveira ; WP ; NO_OPERATOR ; M12 {SMG}
+Rare ; Canary ; Universal Weapon Skin ; False ; 0 ; Everyone ; WU ; NO_OPERATOR ; UNIVERSAL
+Common ; Saint ; SG-CQB Skin ; False ; 0 ; GIGN, Lion ; WP ; NO_OPERATOR ; SG-CQB {SHG}
+Common ; Robotics ; GSH-18 Skin ; False ; 0 ; SPETSNAZ, Finka ; WS ; NO_OPERATOR ; GSH-18 {HDG}

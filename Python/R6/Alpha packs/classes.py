@@ -30,12 +30,13 @@ class Operator:
 
 class Weapon:
 
-    def __init__(self, name, pri_sec):
+    def __init__(self, name, pri_sec, group):
         self.name = name
         self.pri_sec = pri_sec
+        self.group = group
 
     def __repr__(self):
-        return self.name
+        return self.name + " {" + self.group + "}"
 
 operators_dict = {
     "Pathfinders": {
@@ -276,22 +277,30 @@ with open("weapons.csv", "r") as w:
             spl = line.split(",")
             pri_sec = spl[0].strip()
             name = spl[1].strip()
+            group = spl[2].strip()
             k = "Primary" if pri_sec else "Secondary"
-            weapons[k].append(Weapon(name, pri_sec))
+            weapons[k].append(Weapon(name, pri_sec, group))
 
-def add_weapon(weapon, pri_sec):
+def add_weapon(weapon, pri_sec, group):
     new_weapon = None
     with open("weapons.csv", "a") as w:
         pri_sec = "1" if pri_sec else "0"
-        w.write("\n" + pri_sec + ", " + weapon)
+        w.write("\n" + pri_sec + ", " + weapon + ", " + group)
         k = "Primary" if pri_sec else "Secondary"
-        new_weapon = Weapon(weapon, pri_sec)
+        new_weapon = Weapon(weapon, pri_sec, group)
         weapons[k].append(new_weapon)
     return new_weapon
 
 def lookup_weapon(name):
+    print("looking up:", name)
     weapon = None
-    for w in weapons:
-        if w.name.lower() == name.lower():
-            return w
-    return w
+    if name.lower() == "universal":
+        weapon = [] 
+    for group in weapons:
+        for w in weapons[group]:
+            print("comparing:", w, "res", (str(w).lower() == name.lower()))
+            if name.lower() == "universal":
+                weapon.append(w)
+            elif str(w).lower() == name.lower():
+                return w
+    return weapon

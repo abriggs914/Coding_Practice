@@ -3,7 +3,28 @@ from classes import *
 
 
 rarities_list = ["NO_RARITY", "Common", "Uncommon", "Rare", "Epic", "Legendary"]
-code_list = ["NO_CODE", "UN", "HG", "WP", "WS", "WU", "CH"]
+# code_list = ["NO_CODE", "UN", "HG", "WP", "WS", "WU", "CH"]
+# gun_code_list = ["NO_CODE", "SNP", "DMR", "ASR", "SMG", "LMG", "SHG", "HDG", "MPL"]
+code_list = {
+    "NO_CODE": "NO_CODE", 
+    "UN": "uniform",
+    "HG": "headgear",
+    "WP": "primary weapon",
+    "WS": "secondary weapon",
+    "WU": "universal weapon skin",
+    "CH": "charm"
+    }
+gun_code_list = {
+    "NO_CODE": "NO_CODE",
+    "SNP": "sniper",
+    "DMR": "marksman rifle",
+    "ASR": "assault rifle",
+    "SMG": "sub-machine gun",
+    "LMG": "light machine gun",
+    "SHG": "shotgun",
+    "HDG": "handgun",
+    "MPL": "machine pistol"
+    }
 
 
 def msgbox(msg, title, choices, default_choice, cancel_choice):
@@ -70,10 +91,10 @@ def gather_data():
     
     msg_code = "Select Code:"
     title_code = "Select Code"
-    choices_code = code_list[1:].copy()
-    default_choice_code = code_list[0]
-    cancel_choice_code = code_list[0]
-    selection_code = msgbox(msg_code, title_code, choices_code, default_choice_code, cancel_choice_code)
+    choices_code = list(map(str.title, code_list.values()))[1:]
+    default_choice_code = list(map(str.title, code_list.values()))[0]
+    cancel_choice_code = list(code_list.values())[0]
+    selection_code = msgbox(msg_code, title_code, choices_code, default_choice_code, cancel_choice_code).lower()
 
     operators_list = list(map(str, (attackers.copy() + defenders.copy())))
     operators_list.sort()
@@ -91,7 +112,7 @@ def gather_data():
     guns_list = attackers.copy() + defenders.copy()
     selection_operator = operators_list[0]
     selection_gun = "NO_WEAPON"
-    if selection_code in code_list[1:3]:
+    if selection_code in list(code_list.values())[1:3]:
         msg_operator = "Select All Operators that Have Access to this Reward"
         title_operator = "Operators"
         choices_operator = list(map(str, operators_list.copy()))
@@ -99,13 +120,13 @@ def gather_data():
         choices_operator = operators_list
         preselect_operator = 0
         selection_operator = choicebox(msg_operator, title_operator, choices_operator, preselect_operator)
-    elif selection_code in code_list[3:-1]:
+    elif selection_code in list(code_list.values())[3:-2]:
         msg_gun = "Select a Weapon that Has Access to this Reward"
         title_gun = "Weapons"
         choices_gun = list(map(str, weapons["Primary"] + weapons["Secondary"]))
         if len(choices_gun) > 1:
             choices_gun.sort()
-            choices_gun = ["NEW_WEAPON"] + choices_gun
+            choices_gun = ["NEW_WEAPON", "UNIVERSAL"] + choices_gun
             preselect_gun = 0
             selection_gun = choicebox(msg_gun, title_gun, choices_gun, preselect_gun)
         else:
@@ -113,23 +134,30 @@ def gather_data():
         if selection_gun == "NEW_WEAPON":
             msg_new_weapon_name = "Enter New Weapon's Name"
             msg_new_weapon_pri_sec = "Is the New Weapon a Primary or Secondary Weapon?"
+            msg_new_weapon_code = "What is this Weapon's Class?"
             title_new_weapon_name = "New Weapon"
             title_new_weapon_pri_sec = "New Weapon"
+            title_new_weapon_code = "New Weapon"
             choices_new_weapon_pri_sec = ["Primary", "Secondary"]
+            choices_new_weapon_code = list(map(str.title, gun_code_list.values()))[1:]
             default_new_weapon_pri_sec = choices_new_weapon_pri_sec[0]
             default_choice_new_weapon_name = "NO_WEAPON"
+            default_choice_new_weapon_code = list(gun_code_list.values())[0]
             cancel_new_weapon_pri_sec = choices_new_weapon_pri_sec[0]
+            cancel_new_weapon_code = list(gun_code_list.values())[0]
             selection_new_weapon_pri_sec = ynbox(msg_new_weapon_pri_sec, title_new_weapon_pri_sec, choices_new_weapon_pri_sec, default_new_weapon_pri_sec, cancel_new_weapon_pri_sec)
             selection_new_weapon_name = enterbox(msg_new_weapon_name, title_new_weapon_name, default_choice_new_weapon_name)
+            selection_new_weapon_code = msgbox(msg_new_weapon_code, title_new_weapon_code, choices_new_weapon_code, default_choice_new_weapon_code, cancel_new_weapon_code).lower()
 
-            selection_gun = add_weapon(selection_new_weapon_name, selection_new_weapon_pri_sec)
+            selection_gun = add_weapon(selection_new_weapon_name, selection_new_weapon_pri_sec, selection_new_weapon_code)
         else:
             selection_gun = lookup_weapon(selection_gun)
-
+    elif selection_code in list(code_list.values())[-2:]:
+        selection_gun = "UNIVERSAL"
     return selection_rarity, selection_name, selection_description, selection_duplicate, selection_renown, selection_availibility, selection_code, selection_operator, selection_gun
     
 
-with open("results.csv", "a"):
+with open("results.csv", "a") as results:
     loop = True
     while loop:
         loop = ynbox(msg="What would you like to do?", title="Continue?", choices=["Create Another Entry", "Quit"], default="Quit", cancel="Quit")
@@ -137,4 +165,5 @@ with open("results.csv", "a"):
             continue
         data = gather_data()
         print(data)
+        results.write("\n" + " ; ".join(list(map(str, data))))
     
