@@ -63,8 +63,21 @@ def food_to_segment(food, snake, food_symbol=DEFAULT_FOOD_SYMBOL):
     w = snake.wrap
     d = snake.direction
     segs = snake.line()
-    for k in range(v):
-        segments.append(SnakeSegment(i, j, symbol=food_symbol))
+    next_ij = snake.next_segment()
+    ni, nj = next_ij
+    if v == 1:
+        segments.append(SnakeSegment(ni, nj, symbol=food_symbol))
+    else:
+        s = Snake(snake.name, snake.n, snake.m, snake.start_i, snake.start_j, snake.direction, snake.wrap, len(snake.line()))
+        f = Food(ni, nj, food.val - 1)
+        s.eat_food(f)
+        segments += food_to_segment(f, s, food_symbol)
+
+    # for k in range(v):
+    #     next_ij = snake.next_segment()
+    #     if next_ij != None:
+    #         ni, nj = next_ij
+    #         segments.append(SnakeSegment(ni, nj, symbol=food_symbol))
     return segments
 
 class Food:
@@ -77,6 +90,9 @@ class SnakeSegment:
     def __init__(self, i, j, symbol=DEFAULT_SNAKESEGMENT_SYMBOL):
         self.ij = i, j
         self.symbol = symbol
+    
+    def __repr__(self):
+        return "SnakeSegment (" + str(self.ij[0]) + ", " + str(self.ij[1]) + ")"
 
 class Snake:
     # name              -   string: name
@@ -92,6 +108,8 @@ class Snake:
         self.name = name
         self.n = n
         self.m = m
+        self.start_i = start_i
+        self.start_j = start_j
         self.ij = start_i, start_j
         self.direction = start_direction
         self.length = start_length
@@ -144,6 +162,7 @@ class Snake:
     # Important: type(food) == Food
     def eat_food(self, food):
         segments = food_to_segment(food, self)
+        print("new segments", segments)
         if food.ij in self.line():
             for seg in segments:
                 self.hidden_segments.append(seg)
@@ -153,5 +172,9 @@ class Snake:
 
 if __name__ == "__main__":
     snake = Snake(name="snake 1", n=20, m=20, start_i=10, start_j=12, start_direction="W", wrap=True, start_length=1)
+    food_1 = Food(i=10, j=13, val=8)
+    print(snake)
+    print(snake.next_segment())
+    snake.eat_food(food_1)
     print(snake)
     print(snake.next_segment())
