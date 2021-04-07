@@ -304,3 +304,51 @@ def lookup_weapon(name):
             elif str(w).lower() == name.lower():
                 return w
     return weapon
+
+
+
+
+
+def tests():
+    ops = attackers + defenders
+    f = lambda x, a, b, c: x.difficulty == a and x.speed == b and x.armour == c 
+    b = lambda x: "\n\t" + x[0] + "\n\t\t" + "\n\t\t".join(list(map(str, x[1])))
+    vals = {
+        "d1s1a1": [op for op in ops if f(op, 1, 1, 1)],
+        "d1s1a2": [op for op in ops if f(op, 1, 1, 2)],
+        "d1s1a3": [op for op in ops if f(op, 1, 1, 3)],
+
+        "d1s2a1": [op for op in ops if f(op, 1, 2, 1)],
+        "d1s2a2": [op for op in ops if f(op, 1, 2, 2)],
+        "d1s2a3": [op for op in ops if f(op, 1, 2, 3)],
+
+        "d1s3a1": [op for op in ops if f(op, 1, 3, 1)],
+        "d1s3a2": [op for op in ops if f(op, 1, 3, 2)],
+        "d1s3a3": [op for op in ops if f(op, 1, 3, 3)],
+
+        "d2s1a1": [op for op in ops if f(op, 2, 1, 1)],
+        "d2s1a2": [op for op in ops if f(op, 2, 1, 2)],
+        "d2s1a3": [op for op in ops if f(op, 2, 1, 3)],
+
+        "d2s2a1": [op for op in ops if f(op, 2, 2, 1)],
+        "d2s2a2": [op for op in ops if f(op, 2, 2, 2)],
+        "d2s2a3": [op for op in ops if f(op, 2, 2, 3)],
+
+        "d2s3a1": [op for op in ops if f(op, 2, 3, 1)],
+        "d2s3a2": [op for op in ops if f(op, 2, 3, 2)],
+        "d2s3a3": [op for op in ops if f(op, 2, 3, 3)],
+
+        "d3s1a1": [op for op in ops if f(op, 3, 1, 1)],
+        "d3s1a2": [op for op in ops if f(op, 3, 1, 2)],
+        "d3s1a3": [op for op in ops if f(op, 3, 1, 3)],
+
+        "d3s2a1": [op for op in ops if f(op, 3, 2, 1)],
+        "d3s2a2": [op for op in ops if f(op, 3, 2, 2)],
+        "d3s2a3": [op for op in ops if f(op, 3, 2, 3)],
+
+        "d3s3a1": [op for op in ops if f(op, 3, 3, 1)],
+        "d3s3a2": [op for op in ops if f(op, 3, 3, 2)],
+        "d3s3a3": [op for op in ops if f(op, 3, 3, 3)]
+    }
+    
+    print("\n".join(list(map(b, list(vals.items())))))

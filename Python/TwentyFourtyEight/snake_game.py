@@ -1,38 +1,157 @@
+import random
+
 directions = {
-    "N": "north",
-    "NE": "north-east",
-    "E": "east",
-    "SE": "south-east",
-    "S": "south",
-    "SW": "south-west",
-    "W": "west",
-    "NN": "north-west",
+    "N": {
+        "dir": "north",
+        "i": -1,
+        "j": 0,
+        "opp": "S"
+    },
+    "NE": {
+        "dir": "north-east",
+        "i": -1,
+        "j": 1,
+        "opp": "SW"
+    },
+    "E": {
+        "dir": "east",
+        "i": 0,
+        "j": 1,
+        "opp": "W"
+    },
+    "SE": {
+        "dir": "south-east",
+        "i": 1,
+        "j": 1,
+        "opp": "NW"
+    },
+    "S": {
+        "dir": "south",
+        "i": 1,
+        "j": 0,
+        "opp": "N"
+    },
+    "SW": {
+        "dir": "south-west",
+        "i": 1,
+        "j": -1,
+        "opp": "NE"
+    },
+    "W": {
+        "dir": "west",
+        "i": 0,
+        "j": -1,
+        "opp": "E"
+    },
+    "NW": {
+        "dir": "north-west",
+        "i": -1,
+        "j": -1,
+        "opp": "SE"
+    }
 }
+DEFAULT_FOOD_SYMBOL = "O"
+DEFAULT_SNAKESEGMENT_SYMBOL = "I"
+
+# Important: v > 0
+# Important: type(food) == Food
+def food_to_segment(food, snake, food_symbol=DEFAULT_FOOD_SYMBOL):
+    segments = []
+    v = food.val
+    i, j = food.ij
+    n, m = snake.n, snake.m
+    w = snake.wrap
+    d = snake.direction
+    segs = snake.line()
+    for k in range(v):
+        segments.append(SnakeSegment(i, j, symbol=food_symbol))
+    return segments
 
 class Food:
-    def __init__(self, i, j, val, symbol="O"):
+    def __init__(self, i, j, val, symbol=DEFAULT_FOOD_SYMBOL):
         self.ij = i, j
         self.val = val
         self.symbol = symbol
 
 class SnakeSegment:
-    def __init__(self, i, j, symbol="I")
-        self.name = name
+    def __init__(self, i, j, symbol=DEFAULT_SNAKESEGMENT_SYMBOL):
         self.ij = i, j
+        self.symbol = symbol
 
 class Snake:
-    def __init__(self, name, start_i, start_j, start_direction, start_length=1)
+    # name              -   string: name
+    # n                 -   int: number grid rows
+    # m                 -   int: number grid columns
+    # start_i           -   int: row position of snake head
+    # start_j           -   int: column position of snake head
+    # start_direction   -   string: member of the directions dict
+    # wrap              -   boolean: T if snake can wrap the grid
+    # start_length      -   int: populate segments with n segments
+    # Important: start_length > 0
+    def __init__(self, name, n, m, start_i, start_j, start_direction, wrap, start_length=1):
         self.name = name
+        self.n = n
+        self.m = m
+        self.ij = start_i, start_j
         self.direction = start_direction
         self.length = start_length
-        self.segments = [SnakeSegment(start_i, start_j)
+        self.wrap = wrap
+        self.segments = self.init_segments(start_length)
         self.hidden_segments = []
 
-    def eat_food(food):
-        fi, fd = food.ij
-        for s in self.segments:
-            si, sj = s.ij
-            if fi == si and fj == sj:
-                self.hidden_segments.append(food)
-                return
-        self.segments.append(food_to_segment(food))
+    # return i and j for the next segment
+    def next_segment(self, force=False):
+        d = self.direction
+        o = directions[directions[d]["opp"]]
+        segs = self.line()
+        i, j = segs[-1]
+        r = (i + o["i"]) % self.n if self.wrap else i + o["i"]
+        c = (j + o["j"]) % self.m if self.wrap else j + o["j"]
+        if (r, c) not in segs:
+            return r, c
+        elif force:
+            valid = []
+            for dr, dat in directions.items():
+                r = (i + dat["i"]) % self.n if self.wrap else i + dat["i"]
+                c = (j + dat["j"]) % self.m if self.wrap else j + dat["j"]
+                if (r, c) not in segs:
+                    valid.append(dr)
+            return random.choice(valid)
+        return None
+
+        # d = self.direction
+        # o = directions[d]["opp"]
+        # segs = self.line()
+        # last = segs[-1]
+        # i, j = last.ij
+        # valid = []
+        # for dr, dat in directions.items():
+        #     r = (i + dat["i"]) % self.n if self.wrap else i + dat["i"]
+        #     c = (j + dat["j"]) % self.m if self.wrap else j + dat["j"]
+        #     if (r, c) % self.m) not in segs:
+        #         valid.append(dr)
+        # if o in valid:
+        #     return i + directions[o]["i"], i + directions[o]["i"]
+        # return None
+
+
+    def init_segments(self, start_length):
+        return [SnakeSegment(self.ij[0], self.ij[1])]
+
+    def line(self):
+        return [seg.ij for seg in self.segments]
+
+    # Important: type(food) == Food
+    def eat_food(self, food):
+        segments = food_to_segment(food, self)
+        if food.ij in self.line():
+            for seg in segments:
+                self.hidden_segments.append(seg)
+        else:
+            for seg in segments:
+                self.segments.append(seg)
+
+if __name__ == "__main__":
+    snake = Snake(name="snake 1", n=20, m=20, start_i=10, start_j=12, start_direction="W", wrap=True, start_length=1)
+    print(snake)
+    print(snake.next_segment())
