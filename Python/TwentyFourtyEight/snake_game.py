@@ -71,10 +71,12 @@ def food_to_segment(food, snake):
     elif v < 1:
         raise ValueError("Food object cannot have a value less than 1")
     else:
-        s = Snake(snake.name, snake.n, snake.m, snake.start_i, snake.start_j, snake.direction, snake.wrap, len(snake.line()))
+        si, sj = snake.segments[0].ij
+        s = Snake(snake.name, snake.n, snake.m, si, sj, snake.direction, snake.wrap, len(snake.line()))
         f = Food(ni, nj, food.val - 1)
         s.eat_food(f)
         segments += food_to_segment(f, s)
+    print("ni: {ni}, nj: {nj}, segments: {seg}".format(ni=ni, nj=nj, seg=segments))
 
     # for k in range(v):
     #     next_ij = snake.next_segment()
@@ -192,12 +194,16 @@ class Snake:
         self.distance_travelled += 1
         d = directions[self.direction]
         pi, pj = self.segments[0].ij
-        self.segments[0].set(pi + d["i"], pj + d["j"])
-        for i in range(len(self.segments[1:])):
+        di, dj = d["i"], d["j"]
+        # self.segments[0].set(pi + di, pj + dj)
+        for i in range(len(self.segments)):
             ci, cj = self.segments[i].ij
+            pi, pj = ci + di, cj + dj
             self.segments[i].set(pi, pj)
-            pi, pj = ci, cj
         print("segs A:", self.segments)
+
+    def change_direction(self, d):
+        self.direction = d
 
     def __repr__(self):
         return self.name + ", " + str(len(self.segments)) + " segments long, traversed " + str(self.distance_travelled)
@@ -256,6 +262,10 @@ if __name__ == "__main__":
     # print(snake)
     # print(snake.next_segment())
     print("SnakeGame:", snake_game)
-    for i in range(2):
+    for i in range(4):
         snake_2.shift()
+        if i % 2 == 0:
+            new_dir = random.choice(list(directions.keys()))
+            print("New direction " + new_dir)
+            snake_2.change_direction(new_dir)
     print("SnakeGame:", snake_game)
