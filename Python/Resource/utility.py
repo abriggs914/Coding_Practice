@@ -212,6 +212,10 @@ def money_value(m):
     return float("".join(m[1:].split(",")))
 
 
+def percent(v):
+    return ("%.2f" % (v * 100)) + " %"
+
+
 def compute_min_edit_distance(a, b, show=False):
     len_a = len(a)
     len_b = len(b)
