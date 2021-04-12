@@ -1,4 +1,11 @@
 Transaction Date, Transaction Amount, Notes, Transaction Type, Entity
+4/10/2021,-10.32,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
+4/9/2021,-55.01,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
+4/8/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
+4/1/2021,-477.50,000000037,"Cheque                 ",""
+4/1/2021,-55.00,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
+4/1/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
+4/1/2021,149.00,-,"Provincial Payment     ","CANADA                       "
 3/31/2021,-49.99,-,"POS Purchase","FPOS CNB #018            PERTH ANDOVNBCA"
 3/31/2021,-110.99,-,"POS Purchase","CNB #018                 PERTH ANDOVNBCA"
 3/26/2021,-55.01,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "

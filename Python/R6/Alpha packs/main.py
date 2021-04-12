@@ -1,4 +1,6 @@
 import easygui
+import csv
+from utility import *
 from classes import *
 
 
@@ -14,6 +16,7 @@ code_list = {
     "WU": "universal weapon skin",
     "CH": "charm"
     }
+
 gun_code_list = {
     "NO_CODE": "NO_CODE",
     "SNP": "sniper",
@@ -23,7 +26,8 @@ gun_code_list = {
     "LMG": "light machine gun",
     "SHG": "shotgun",
     "HDG": "handgun",
-    "MPL": "machine pistol"
+    "MPL": "machine pistol",
+    "SHD": "riot shield"
     }
 
 
@@ -148,12 +152,16 @@ def gather_data():
             selection_new_weapon_pri_sec = ynbox(msg_new_weapon_pri_sec, title_new_weapon_pri_sec, choices_new_weapon_pri_sec, default_new_weapon_pri_sec, cancel_new_weapon_pri_sec)
             selection_new_weapon_name = enterbox(msg_new_weapon_name, title_new_weapon_name, default_choice_new_weapon_name)
             selection_new_weapon_code = msgbox(msg_new_weapon_code, title_new_weapon_code, choices_new_weapon_code, default_choice_new_weapon_code, cancel_new_weapon_code).lower()
+            
+            selection_new_weapon_code = {v.lower() : k for k, v in gun_code_list.items()}[selection_new_weapon_code]
 
             selection_gun = add_weapon(selection_new_weapon_name, selection_new_weapon_pri_sec, selection_new_weapon_code)
         else:
             selection_gun = lookup_weapon(selection_gun)
     elif selection_code in list(code_list.values())[-2:]:
         selection_gun = "UNIVERSAL"
+    
+    selection_code = {v.lower() : k for k, v in code_list.items()}[selection_code]
     return selection_rarity, selection_name, selection_description, selection_duplicate, selection_renown, selection_availibility, selection_code, selection_operator, selection_gun
     
 
@@ -166,4 +174,56 @@ with open("results.csv", "a") as results:
         data = gather_data()
         print(data)
         results.write("\n" + " ; ".join(list(map(str, data))))
+
+print("Input done. Beginning analysis...")
+
+with open("results.csv", "r") as resf:
+    res_dict = csv.DictReader(resf, delimiter=";")
+    # lst = [{k.strip() : v.strip() for k, v in dct.items()} for dct in res_dict]
+
+
+    duplicates = []
+    rarities = {k: [] for k in rarities_list}
+    codes = {k: [] for k in code_list}
+    rewards = []
+    for entry in res_dict:
+        reward = Reward(*[e.strip() for e in entry.values()])
+        rewards.append(reward)
+        if reward.duplicate:
+            duplicates.append(reward)
+        rarities[reward.rarity].append(reward)
+        codes[reward.code].append(reward)
+        # print(reward)
+
+    renown_gained = sum([r.renown_gain for r in duplicates])
+
+    t = len(rewards)
+    print("Rarities classificaton, " + str(t) + " rewards")
+    for rarity, rarity_rewards in rarities.items():
+        n = len(rarity_rewards)
+        p = n / t
+        print("#######################################################################################\n" + rarity + ", " + str(n) + " / " + str(t) + " rewards, " + percent(p) + "\n")
+        for r in rarity_rewards:
+            print(r)
+        print("\n#######################################################################################")
+    
+    print("Codes classificaton, " + str(t) + " rewards")
+    for code, code_rewards in codes.items():
+        n = len(code_rewards)
+        p = n / t
+        print("#######################################################################################\n" + code + ", " + str(n) + " / " + str(t) + " rewards, " + percent(p) + "\n")
+        for c in code_rewards:
+            print(c)
+        print("\n#######################################################################################")
+    
+
+    d = len(duplicates)
+    p = d / t
+    print("\n\nDuplicates classificaton, " + str(d) + " / " + str(t) + " rewards, " + percent(p))
+    print("#######################################################################################\n")
+    for dup in duplicates:
+        print(dup)
+    print("\n#######################################################################################")
+
+    print("return on renown: " + str(renown_gained))
     

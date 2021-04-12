@@ -18,3 +18,84 @@ Epic ; Ceifador ; M12 Skin ; False ; 0 ; Caveira ; WP ; NO_OPERATOR ; M12 {SMG}
 Rare ; Canary ; Universal Weapon Skin ; False ; 0 ; Everyone ; WU ; NO_OPERATOR ; UNIVERSAL
 Common ; Saint ; SG-CQB Skin ; False ; 0 ; GIGN, Lion ; WP ; NO_OPERATOR ; SG-CQB {SHG}
 Common ; Robotics ; GSH-18 Skin ; False ; 0 ; SPETSNAZ, Finka ; WS ; NO_OPERATOR ; GSH-18 {HDG}
+Common ; KONA ; F2 Skin ; False ; 0 ; Twitch ; WP ; NO_OPERATOR ; F2 {ASR}
+Epic ; Engraved ; FMG-9 Skin ; False ; 0 ; Smoke, Nokk ; WP ; NO_OPERATOR ; FMG-9 {SMG}
+Rare ; Thermite Chibi ; Thermite Chibi ; False ; 0 ; EVERYONE ; CH ; NO_OPERATOR ; UNIVERSAL
+Uncommon ; Mechanical ; 9x19USN Skin ; False ; 0 ; Kapkan, Tachanka ; WP ; NO_OPERATOR ; 9x19USN {SMG}
+Common ; Weav e ; UMP-45 Skin ; False ; 0 ; Castle, Pulse ; WP ; NO_OPERATOR ; UMP-45 {SMG}
+Uncommon ; Sapien ; M590A1 Skin ; False ; 0 ; SAS, Finka ; WP ; NO_OPERATOR ; M590A1 {SHG}
+Uncommon ; Guardian ; 6941 Skin ; False ; 0 ; Fuze, Finka ; WP ; NO_OPERATOR ; 6941 {LMG}
+Uncommon ; Tread ; AUG-12 Skin ; True ; 550 ; IQ ; WP ; NO_OPERATOR ; AUG-12 {ASR}
+Uncommon ; Sketchy ; 9mm C1 Skin ; True ; 550 ; Frost ; WP ; NO_OPERATOR ; 9mm C1 {SMG}
+Rare ; Compass ; Mk17CQB Skin ; False ; 0 ; Blackbeard ; WP ; NO_OPERATOR ; MK17CQB {ASR}
+Rare ; Canine ; Kapkan Headgear ; True ; 1300 ; Kapkan ; HG ; Defender Kapkan {Spetsnaz} ; NO_WEAPON
+Uncommon ; Dissociate ; 9mm C1 Skin ; True ; 550 ; Frost ; WP ; NO_OPERATOR ; 9mm C1 {SMG}
+Uncommon ; Sunburn ; Pulse Headgear ; True ; 625 ; Pulse ; HG ; Defender Pulse {FBI} ; NO_WEAPON
+Common ; Knutr ; 556X1 Skin ; True ; 310 ; Thermite ; WP ; NO_OPERATOR ; 556X1 {ASR}
+Common ; KONA ; P9 Skin ; True ; 310 ; GIGN, Lion ; WS ; NO_OPERATOR ; P9 {HDG}
+Rare ; Invaders ; CAMRS Skin ; False ; 0 ; Buck ; WP ; NO_OPERATOR ; CAMRS {DMR}
+Common ; Geothermal ; 6941 Skin ; False ; 0 ; Fuze, Finka ; WP ; NO_OPERATOR ; 6941 {LMG}
+Uncommon ; 9mm Ammo ; Universal charm ; False ; 0 ; EVERYONE ; CH ; NO_OPERATOR ; UNIVERSAL
+Rare ; Sledge Chibi ; Sledge Chibi ; False ; 0 ; EVERYONE ; CH ; NO_OPERATOR ; UNIVERSAL
+Rare ; Solar Flare ; Jager Headgear ; False ; 0 ; Jager ; HG ; Defender Jager {GSG 9} ; NO_WEAPON
+Uncommon ; Ice ; G8A1 Skin ; True ; 550 ; IQ ; WP ; NO_OPERATOR ; G8A1 {ASR}
+Epic ; Safety Orange ; Bearing-9 Skin ; False ; 0 ; Hibana, Echo ; WS ; NO_OPERATOR ; Bearing-9 {SMG}
+Common ; Road Warrior ; GSH-18 Skin ; False ; 0 ; SPETSNAZ, Finka ; WS ; NO_OPERATOR ; GSH-18 {HDG}
+Uncommon ; Jellyfish ; G8A1 Skin ; False ; 0 ; IQ ; WP ; NO_OPERATOR ; G8A1 {ASR}
+Common ; Oahu ; M870 Skin ; True ; 310 ; Bandit, Jager ; WP ; NO_OPERATOR ; M870 {SHG}
+Common ; Cluster ; AK-12 Skin ; False ; 0 ; Fuze ; WP ; NO_OPERATOR ; AK-12 {ASR}
+Common ; KONA ; F2 Skin ; True ; 310 ; Twitch ; WP ; NO_OPERATOR ; F2 {ASR}
+Common ; Ring ; SASG-12 Skin ; False ; 0 ; Spetsnaz, Finka ; WP ; NO_OPERATOR ; SASG-12 {SHG}
+Epic ; Black Ice ; M45 Meusoc Skin ; False ; 0 ; FBI ; WS ; NO_OPERATOR ; 45 Meusoc {HDG}
+Legendary ; Rose Thorn ; Vector .45OSP Skin ; False ; 0 ; Mira ; WP ; NO_OPERATOR ; Vector .45OSP {SMG}
+Common ; The Foal ; M590A1 Skin ; True ; 310 ; SAS, Warden ; WP ; NO_OPERATOR ; M590A1 {SHG}
+Common ; Molokai ; FMG-9 Skin ; False ; 0 ; Smoke, Nokk ; WP ; NO_OPERATOR ; FMG-9 {SMG}
+Rare ; Intervention ; Doc Headgear ; True ; 1300 ; Doc ; HG ; Defender Doc {GIGN} ; NO_WEAPON
+Common ; Chimera ; Thatcher Uniform ; False ; 0 ; Thatcher ; UN ; Attacker Thatcher {SAS} ; NO_WEAPON
+Common ; Chimera ; Thatcher Headgear ; False ; 0 ; Thatcher ; HG ; Attacker Thatcher {SAS} ; NO_WEAPON
+Rare ; Gondola ; Universal Charm ; False ; 0 ; EVERYONE ; CH ; NO_OPERATOR ; UNIVERSAL
+Rare ; Plus Ultra ; Vector .45OSP Skin ; False ; 0 ; Mira, Goyo ; WP ; NO_OPERATOR ; Vector .45OSP {SMG}
+Rare ; CA ; 9mm C1 Skin ; False ; 0 ; Frost ; WP ; NO_OPERATOR ; 9mm C1 {SMG}
+Common ; The Emperor ; AR33 Skin ; False ; 0 ; Thatcher ; WP ; NO_OPERATOR ; AR33 {ASR}
+Common ; Chimera ; Jager Headgear ; False ; 0 ; Jager ; HG ; Defender Jager {GSG 9} ; NO_WEAPON
+Rare ; Splittermuster ; IQ Uniform ; False ; 0 ; IQ ; UN ; Attacker IQ {GSG 9} ; NO_WEAPON
+Common ; Waves ; SMG-11 Skin ; False ; 0 ; Amaru, Sledge, Smoke, Mute ; WS ; NO_OPERATOR ; SMG-11 {SMG}
+Rare ; Health Hazard ; SGCQB Skin ; False ; 0 ; Lion, Twitch, Doc, Rook ; WP ; NO_OPERATOR ; SG-CQB {SHG}
+Common ; Jellyfish ; G8A1 Skin ; True ; 550 ; Amaru, IQ ; WP ; NO_OPERATOR ; G8A1 {ASR}
+Common ; Arabian Desert ; Ela Uniform ; False ; 0 ; Ela ; UN ; Defender Ela {GROM} ; NO_WEAPON
+Common ; White Noise ; Vigil Uniform ; False ; 0 ; Vigil ; UN ; Defender Vigil {707th SMB} ; NO_WEAPON
+Common ; Chimera ; Vigil Headgear ; False ; 0 ; Vigil ; HG ; Defender Vigil {707th SMB} ; NO_WEAPON
+Common ; Traction ; Mk19mm Skin ; False ; 0 ; Iana, Frost, Buck ; WS ; NO_OPERATOR ; MK19mm {HDG}
+Rare ; Tiger Pelt ; Q929 Skin ; False ; 0 ; Ying, Lesion ; WS ; NO_OPERATOR ; Q929 {HDG}
+Common ; Triple Helix ; SASG-12 Skin ; False ; 0 ; Finka, Kapkan, Tachanka ; WP ; NO_OPERATOR ; SASG-12 {SHG}
+Common ; Acid Rain ; P9 Skin ; True ; 550 ; Ace, Lion, Doc, Twitch, Montagne, Rook ; WS ; NO_OPERATOR ; P9 {HDG}
+Common ; Skull Rain ; Smoke Headgear ; False ; 0 ; Smoke ; HG ; Defender Smoke {SAS} ; NO_WEAPON
+Rare ; Peak Current ; Blitz Shield ; False ; 0 ; Blitz ; WP ; NO_OPERATOR ; Blitz Shield {SHD}
+Rare ; Trance ; IQ Headgear ; False ; 0 ; IQ ; HG ; Attacker IQ {GSG 9} ; NO_WEAPON
+Epic ; Black Ops ; AK-12 Skin ; False ; 0 ; Ace, Fuze ; WP ; NO_OPERATOR ; AK-12 {ASR}
+Common ; Oahu ; G8A1 Skin ; False ; 0 ; Amaru, IQ ; WP ; NO_OPERATOR ; G8A1 {ASR}
+Common ; Red Crow ; Rook Headgear ; False ; 0 ; Rook ; HG ; Defender Rook {GIGN} ; NO_WEAPON
+Epic ; Black Ice ; M590A1 Skin ; False ; 0 ; Warden, Smoke, Sledge, Mute, Thatcher ; WP ; NO_OPERATOR ; M590A1 {SHG}
+Common ; Robotics ; GSH-18 Skin ; True ; 550 ; Finka, Glaz, Tachanka, Kapkan, Fuze ; WS ; NO_OPERATOR ; GSH-18 {HDG}
+Common ; Blood Orchid ; Twitch Uniform ; False ; 0 ; Twitch ; UN ; Attacker Twitch {GIGN} ; NO_WEAPON
+Rare ; MTP Alpine ; Sledge Uniform ; False ; 0 ; Sledge ; UN ; Attacker Sledge {SAS} ; NO_WEAPON
+Common ; Red Crow ; Montagne Headgear ; False ; 0 ; Montagne ; HG ; Attacker Montagne {GIGN} ; NO_WEAPON
+Common ; Skull Rain ; Buck Headgear ; True ; 300 ; Buck ; HG ; Attacker Buck {JTF2} ; NO_WEAPON
+Common ; White Noise ; Mira Headgear ; False ; 0 ; Mira ; HG ; Defender Mira {GEO} ; NO_WEAPON
+Uncommon ; Amazon Jungle ; Valkyrie Uniform ; False ; 0 ; Valkyrie ; UN ; Defender Valkyrie {NAVY SEAL} ; NO_WEAPON
+Common ; 393 ; Universal Charm ; False ; 0 ; EVERYONE ; CH ; NO_OPERATOR ; UNIVERSAL
+Common ; Blood Orchid ; Ash Uniform ; False ; 0 ; Ash ; UN ; Attacker Ash {FBI} ; NO_WEAPON
+Uncommon ; Zarafshan Range ; Fuze Uniform ; False ; 0 ; Fuze ; UN ; Attacker Fuze {Spetsnaz} ; NO_WEAPON
+Common ; Hull ; MPX Skin ; False ; 0 ; Valkyrie, Warden ; WP ; NO_OPERATOR ; MPX {SMG}
+Uncommon ; Quicksand ; Fuze Headgear ; False ; 0 ; Fuze ; HG ; Attacker Fuze {Spetsnaz} ; NO_WEAPON
+Rare ; Nightshade ; IQ Uniform ; False ; 0 ; IQ ; UN ; Attacker IQ {GSG 9} ; NO_WEAPON
+Uncommon ; Nightworks ; Smoke Uniform ; False ; 0 ; Smoke ; UN ; Defender Smoke {SAS} ; NO_WEAPON
+Common ; Skull Rain ; Jager Headgear ; False ; 0 ; Jager ; HG ; Defender Jager {GSG 9} ; NO_WEAPON
+Rare ; Fearless ; K1A Skin ; False ; 0 ; Vigil ; WP ; NO_OPERATOR ; K1A {SMG}
+Uncommon ; Nightworks ; Mute Uniform ; False ; 0 ; Mute ; UN ; Defender Mute {SAS} ; NO_WEAPON
+Uncommon ; Triple Helix ; GSH-18 Skin ; False ; 0 ; Tachanka, Fuze, Kapkan, Finka, Glaz ; WS ; NO_OPERATOR ; GSH-18 {HDG}
+Common ; Royalty ; F2 Skin ; True ; 310 ; Twitch ; WP ; NO_OPERATOR ; F2 {ASR}
+Common ; Chimera ; Finka Headgear ; False ; 0 ; Finka ; HG ; Attacker Finka {CBRN THREAT UNTI} ; NO_WEAPON
+Epic ; Sturdy ; C8SFW Skin ; False ; 0 ; Buck ; WP ; NO_OPERATOR ; C8SFW {ASR}
+Uncommon ; Coldwar USA ; Universal Weapon Skin ; False ; 0 ; EVERYONE ; WU ; NO_OPERATOR ; UNIVERSAL
+Common ; Red Crow ; Mute Headgear ; True ; 300 ; Mute ; HG ; Defender Mute {SAS} ; NO_WEAPON

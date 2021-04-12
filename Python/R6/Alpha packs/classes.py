@@ -1,3 +1,5 @@
+from utility import *
+
 class Reward:
 
     def __init__(self, rarity, name, description, duplicate, renown, availibility, code, operator, gun):
@@ -37,6 +39,30 @@ class Weapon:
 
     def __repr__(self):
         return self.name + " {" + self.group + "}"
+
+
+class Reward:
+
+    def __init__(self, rarity, name, description, duplicate, renown_gain, availibility, code, operator, gun):
+        self.rarity = rarity
+        self.name = name
+        self.description = description
+        self.duplicate = True if duplicate.lower() == "true" else False
+        self.renown_gain = int(renown_gain)
+        self.availibility = availibility
+        self.code = code
+        self.operator = operator
+        self.gun = gun
+
+    def __repr__(self):
+        res = "\n"
+        keys = ["Rarity", "Name", "Description", "Duplicate", "renown_Gain", "Availability", "Code", "Operator", "Gun"]
+        vals = list(map(str, [self.rarity, self.name, self.description, self.duplicate, self.renown_gain, self.availibility, self.code, self.operator, self.gun]))
+        max_key = max([lenstr(k) for k in keys])
+        max_val = max([lenstr(v) for v in vals])
+        for k, v in zip(keys, vals):
+            res += k.ljust(max_key) + "  -  " + v.rjust(max_val) + "\n"
+        return res + "\n"
 
 operators_dict = {
     "Pathfinders": {
@@ -292,13 +318,13 @@ def add_weapon(weapon, pri_sec, group):
     return new_weapon
 
 def lookup_weapon(name):
-    print("looking up:", name)
+    # print("looking up:", name)
     weapon = None
     if name.lower() == "universal":
         weapon = [] 
     for group in weapons:
         for w in weapons[group]:
-            print("comparing:", w, "res", (str(w).lower() == name.lower()))
+            # print("comparing:", w, "res", (str(w).lower() == name.lower()))
             if name.lower() == "universal":
                 weapon.append(w)
             elif str(w).lower() == name.lower():

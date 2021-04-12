@@ -1,5 +1,9 @@
 import pygame
 import easygui
+from multiprocessing.pool import ThreadPool
+from threading import Thread
+from main import *
+from colors import *
 
 
 # On start-up show main menu.
@@ -26,13 +30,16 @@ import easygui
 ##					Design vars					##
 ##################################################
 
-BLACK = (0, 0, 0)
+# BLACK = (0, 0, 0)
 CIRCLE_MARKER_COLOR = (255, 255, 255) 	# white
 LEGEND_MARKER_COLOR = (255, 15, 15) 	# red
 BACKGROUND_COLOR = (0, 0, 0) 			# black
 CIRCLE_MARKER_SIZE = 10					# diameter of dot
 CIRCLE_BORDER_SIZE = 3					# space of the grid circle color shown
 SCREEN_PROPORTION = 0.85				# margin space for circle drawing
+SELECTION_WIDTH = 5
+BUTTON_TEXT_FONT = None  				# initialized in init_pygame function                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+LINE_WIDTH = 1
 
 ##################################################
 ##					Game vars					##
@@ -49,6 +56,11 @@ DATA = {
     "colour_scheme": None
 }
 LOAD_GAME_FILE = "save.txt"
+IDLE = "idle"
+load = "load"  # initialized in init_file_handling must be done there because file_handling uses
+save = "save"  # small_pop_up and reset functions defined in this file
+POP_UP_THREAD = None
+
 # ROWS = 11								# Number of rows and columns
 # COLS = 11
 # DATA = {}								# Dictionary of; circle / radius / spacing data values
@@ -64,10 +76,51 @@ class Pygame_2048:
         self.game_obj = G2048(n=n, init_spaces=init_spaces)
 
 
+def init_button_font():
+	global BUTTON_TEXT_FONT
+	if BUTTON_TEXT_FONT is None:
+		BUTTON_TEXT_FONT = pygame.font.SysFont("arial", 16)
+
+
+def calc_block_idx_font():
+	width, height = DATA["grid_space"]
+	rows = DATA["grid"].rows
+	cols = DATA["grid"].cols
+	grid_height = (height / rows) - LINE_WIDTH
+	grid_width = (width / cols) - LINE_WIDTH
+	DATA["block_idx_font"] = pygame.font.SysFont("arial", int(min(grid_width, grid_height) * 0.85))
+
+
 # Create and return text objects for blitting
 def text_objects(text, font, color=BLACK):
 	textSurface = font.render(text, True, color)
 	return textSurface, textSurface.get_rect()
+
+
+def kill_pop_up_thread():
+	if isinstance(POP_UP_THREAD, Thread):
+		if POP_UP_THREAD.is_alive():
+			DATA["mode"] = IDLE
+			POP_UP_THREAD.join()
+
+
+def reset(click, DATA):
+	print("reset")
+	l, m, r = click
+	print("data(", len(DATA), "):", DATA)
+	if "a*" in DATA:
+		del DATA["a*"]
+	if l:
+		DATA["grid"].reset_search()
+	if m:
+		DATA["grid"].reset_search_blocks()
+	if r:
+		DATA["grid"].reset_clear()
+
+
+def full_reset():
+	print("full reset")
+	init()
 
 
 # diaplay a button and listen for it to be clicked.
@@ -79,23 +132,27 @@ def text_objects(text, font, color=BLACK):
 # h			-	button height
 # ic		-	button color
 # ac		-	button color when hovering
+# cc		-	button color when clicked
 # action	-	function to be called on click
-def draw_button(msg, x, y, w, h, ic, ac, action=None):
+def draw_button(msg, x, y, w, h, ic, ac, cc, action=None):
 	global POP_UP_THREAD
 	mouse = pygame.mouse.get_pos()
 	click = tuple(pygame.mouse.get_pressed())
 
-	if msg == DATA["mode"]:
-		pygame.draw.rect(DISPLAY, SELECTION_COLOR, (x, y, w, h))
-		x += SELECTION_WIDTH
-		y += SELECTION_WIDTH
-		w -= (2 * SELECTION_WIDTH)
-		h -= (2 * SELECTION_WIDTH)
+	# if msg == DATA["mode"]:
+	# 	pygame.draw.rect(DISPLAY, SELECTION_COLOR, (x, y, w, h))
+	# 	x += SELECTION_WIDTH
+	# 	y += SELECTION_WIDTH
+	# 	w -= (2 * SELECTION_WIDTH)
+	# 	h -= (2 * SELECTION_WIDTH)
 
 	if x + w > mouse[0] > x and y + h > mouse[1] > y:
-		pygame.draw.rect(DISPLAY, ac, (x, y, w, h))
-		if click[0] == 1:
-			DATA["mode"] = msg
+		c = ac
+		# pygame.draw.rect(DISPLAY, ac, (x, y, w, h))
+		# print("click: " + str(click))
+		if click[0]:
+			c = cc
+			# DATA["mode"] = msg
 			kill_pop_up_thread()
 			if action is not None:
 				pool = ThreadPool(processes=1)
@@ -117,7 +174,7 @@ def draw_button(msg, x, y, w, h, ic, ac, action=None):
 
 				# recalculate buckets on load
 				if action == load:
-					DATA["buckets"] = calculate_buckets()
+					# DATA["buckets"] = calculate_buckets()
 					spl = "."
 					arg_split = arg[2].split(spl)
 					file_name = arg_split[0] + spl + arg_split[1][:4]
@@ -129,9 +186,11 @@ def draw_button(msg, x, y, w, h, ic, ac, action=None):
 					if sum(click) == 3:
 						full_reset()
 
-				event = pygame.event.wait()
+				# event = pygame.event.wait()
+		# pygame.draw.rect(DISPLAY, c, (x, y, w, h))
 	else:
-		pygame.draw.rect(DISPLAY, ic, (x, y, w, h))
+		c = ic
+	pygame.draw.rect(DISPLAY, c, (x, y, w, h))
 
 	BUTTON_TEXT_FONT.set_bold(True)
 	text_surf, text_rect = text_objects(msg, BUTTON_TEXT_FONT)
@@ -141,7 +200,7 @@ def draw_button(msg, x, y, w, h, ic, ac, action=None):
 
 def load_game():
     with open(LOAD_GAME_FILE, 'r') as f:
-        lines = f.readlines
+        lines = f.readlines()
         return lines
 
 
@@ -157,9 +216,38 @@ def init():
 	if not loaded_game:
 		loaded_game = G2048()
 	else:
-		loaded_game = G2048(init_grid=loaded_game)
+		loaded_game = G2048(init_spaces=loaded_game)
 	DATA["current_game"] = loaded_game
+	DATA["mode"] = "play"
+	init_button_font()
 	# DATA["game_time"] = compute_row_space()
 	# DATA["colour_scheme"] = compute_spacing()
 	# DATA["radius"] = compute_radius()
 	# DATA["circles"] = create_circles()
+
+
+def do_print():
+	print("button clicked")
+
+
+def draw_display():
+	DISPLAY.fill(BACKGROUND_COLOR)
+	# draw_circles()
+	draw_button("click me", 20, 20, 120, 120, RED, YELLOW, GREEN, do_print)
+	pygame.display.update()
+
+
+def main_loop():
+	loop = True
+	while loop:
+		events = pygame.event.get()
+		for event in events:
+			if event.type == pygame.QUIT:
+				loop = False
+		
+		draw_display()
+
+
+if __name__ == "__main__":
+	init()
+	main_loop()
