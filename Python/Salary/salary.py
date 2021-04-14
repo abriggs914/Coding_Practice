@@ -23,7 +23,7 @@ WORK_DAYS_PER_WEEK = 5
 WORK_DAY_START_TIME = 800
 WORK_DAY_END_TIME = 1700
 WORK_lUNCH_TIME = 0 #50
-INCOME_TAX_RATE = 15
+INCOME_TAX_RATE = 21.701
 
 def work_day_hours(start, end, lunch):
 	return end - start - lunch
