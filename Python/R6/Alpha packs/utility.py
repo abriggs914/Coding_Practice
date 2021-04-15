@@ -85,7 +85,7 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
 
     for k, v in d.items():
         max_key = max((len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0)), max_key)
-        max_val = max((max([len(str(v_elem)) for v_elem in v] if v else [0]) if type(v) == (list or tuple) else len(
+        max_val = max((max([len(str(v_elem)) for v_elem in v] if v else [0]) if ((type(v) == list) or (type(v) == tuple)) else len(
             str(v)) if type(v) != dict else 0), max_val)
 
     l = max(len(table_title), max(l, (max_key + max_val))) + sep
