@@ -181,11 +181,11 @@ class Salary:
 		
 		to_view = [
 			("generic reporting", generic_to_view),
-			# ("monthly reporting", monthly_to_view),
-			# ("weekly reporting", weekly_to_view),
-			# ("daily reporting", daily_to_view),
+			("monthly reporting", monthly_to_view),
+			("weekly reporting", weekly_to_view),
+			("daily reporting", daily_to_view),
 			("hourly reporting", hourly_to_view),
-			# ("minute reporting", minute_to_view),
+			("minute reporting", minute_to_view),
 			("second reporting", second_to_view)
 		]
 		
@@ -420,5 +420,7 @@ if __name__ == "__main__":
 	print("work hours per day: {0}".format(twenty_four_toString(WORK_HOURS_PER_DAY)))
 	print("work days per year: {0}".format(WORK_DAYS))
 	salary = Salary(40000)
+	# salary = Salary(45000)
+	# salary = Salary(100000)
 	print(salary)
 	run()
