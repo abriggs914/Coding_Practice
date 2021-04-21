@@ -1,54 +1,102 @@
 from utility import *
+from time import sleep
 import random
+import os
+
+clear = lambda: os.system('cls') #on Windows System
+
+class GridDimensionException(Exception):
+    def __init__(self, msg=""):
+        msg = "Grid dimension is out of bounds.\n" + msg
+        super().__init__(msg)
+
+class SnakeCrossingException(Exception):
+    def __init__(self, msg=""):
+        msg = "Snakes cannot cross each other.\n" + msg
+        super().__init__(msg)
+
+# angle must be a positive multiple of 45 degrees
+def rotate(d, a, clockwise=True):
+    dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+    if not clockwise:
+        dirs.reverse()
+    i = dirs.index(d.upper())
+    a /= 45
+    i = (i + a) % 8
+
 
 directions = {
     "N": {
         "dir": "north",
         "i": -1,
         "j": 0,
-        "opp": "S"
+        "opp": "S",
+        "bounce": "S",
+        "mirror_x": "S",
+        "mirror_y": "N"
     },
     "NE": {
         "dir": "north-east",
         "i": -1,
         "j": 1,
-        "opp": "SW"
+        "opp": "SW",
+        "bounce": "NW",
+        "mirror_x": "SE",
+        "mirror_y": "NW"
     },
     "E": {
         "dir": "east",
         "i": 0,
         "j": 1,
-        "opp": "W"
+        "opp": "W",
+        "bounce": "W",
+        "mirror_x": "E",
+        "mirror_y": "W"
     },
     "SE": {
         "dir": "south-east",
         "i": 1,
         "j": 1,
-        "opp": "NW"
+        "opp": "NW",
+        "bounce": "SW",
+        "mirror_x": "NE",
+        "mirror_y": "SW"
     },
     "S": {
         "dir": "south",
         "i": 1,
         "j": 0,
-        "opp": "N"
+        "opp": "N",
+        "bounce": "N",
+        "mirror_x": "N",
+        "mirror_y": "S"
     },
     "SW": {
         "dir": "south-west",
         "i": 1,
         "j": -1,
-        "opp": "NE"
+        "opp": "NE",
+        "bounce": "SE",
+        "mirror_x": "NW",
+        "mirror_y": "SE"
     },
     "W": {
         "dir": "west",
         "i": 0,
         "j": -1,
-        "opp": "E"
+        "opp": "E",
+        "bounce": "E",
+        "mirror_x": "W",
+        "mirror_y": "E"
     },
     "NW": {
         "dir": "north-west",
         "i": -1,
         "j": -1,
-        "opp": "SE"
+        "opp": "SE",
+        "bounce": "NE",
+        "mirror_x": "SW",
+        "mirror_y": "NE"
     }
 }
 DEFAULT_FOOD_SYMBOL = "O"
@@ -178,6 +226,9 @@ class Snake:
     def line(self):
         return [seg.ij for seg in self.segments]
 
+    def set_direction(self, d):
+        self.direction = d
+
     # Important: type(food) == Food
     def eat_food(self, food):
         segments = food_to_segment(food, self)
@@ -190,19 +241,61 @@ class Snake:
                 self.segments.append(seg)
 
     def shift(self):
-        print("segs B:", self.segments)
+        # print("self.direction", self.direction)
+        # print("segs B:", self.segments)
         self.distance_travelled += 1
         d = directions[self.direction]
         pi, pj = self.segments[0].ij
         di, dj = d["i"], d["j"]
         # self.segments[0].set(pi + di, pj + dj)
-        for i in range(len(self.segments)):
-            ci, cj = self.segments[i].ij
-            pi, pj = ci + di, cj + dj
-            self.segments[i].set(pi, pj)
-        print("segs A:", self.segments)
+        # print("line: ", self.line())
+        ni, nj = pi + di, pj + dj
 
-    def change_direction(self, d):
+        if self.wrap:
+            ni %= self.n
+            nj %= self.m
+        else:
+            if (ni < 0 or ni >= self.n or nj < 0 or nj >= self.m) and len(self.direction) == 2:
+                if ni < 0 or ni >= self.n:
+                    self.set_direction(d["mirror_x"])
+                elif nj < 0 or nj >= self.m:
+                    self.set_direction(d["mirror_y"])
+                else:
+                    self.set_direction(d["bounce"])
+                d = directions[self.direction]
+                ni, nj = pi + d["i"], pj + d["j"]
+            ti, tj = ni, nj
+            ni = max(0, min(ni, self.n - 1))
+            nj = max(0, min(nj, self.m - 1))
+            if ti != ni or tj != nj:
+                return
+
+        if ni < 0 or ni >= self.n or nj < 0 or nj >= self.m:
+            raise GridDimensionException("i: " + str(ni) + ", j: " + str(nj))
+
+        self.segments[0].set(ni, nj)
+        for i in range(1, len(self.segments)):
+            ci, cj = self.segments[i].ij
+            # pi, pj = ci + di, cj + dj
+            self.segments[i].set(pi, pj)
+            pi, pj = ci, cj
+        # print("line: ", self.line())
+        # print("segs A:", self.segments)
+
+    # def shift(self):
+    #     print("segs B:", self.segments)
+    #     self.distance_travelled += 1
+    #     d = directions[self.direction]
+    #     pi, pj = self.segments[0].ij
+    #     di, dj = d["i"], d["j"]
+    #     # self.segments[0].set(pi + di, pj + dj)
+    #     for i in range(len(self.segments)):
+    #         ci, cj = self.segments[i].ij
+    #         pi, pj = ci + di, cj + dj
+    #         self.segments[i].set(pi, pj)
+    #     print("segs A:", self.segments)
+
+    def change_direction(self,  d):
         self.direction = d
 
     def __repr__(self):
@@ -251,21 +344,42 @@ class SnakeGame:
 
         return res
 
+def crossing(s1, s2):
+    a = s1.line()
+    b = s2.line()
+    # print("a", a)
+    # print("b", b)
+    for ij in a:
+        if ij in b:
+            return True
+    return False
+
 if __name__ == "__main__":
-    snake_1 = Snake(name="snake 1", n=20, m=20, start_i=10, start_j=12, start_direction="W", wrap=True, start_length=8, default_segment_symbol="1")
-    snake_2 = Snake(name="snake 1", n=20, m=20, start_i=8, start_j=12, start_direction="NE", wrap=True, start_length=3, default_segment_symbol="2")
+    rows = 16
+    cols = 20
+
+    snake_1 = Snake(name="snake 1", n=rows, m=cols, start_i=10, start_j=12, start_direction="W", wrap=False, start_length=8, default_segment_symbol="1")
+    snake_2 = Snake(name="snake 1", n=rows, m=cols, start_i=8, start_j=12, start_direction="NE", wrap=False, start_length=3, default_segment_symbol="2")
     food_1 = Food(i=10, j=13, val=8)
-    snake_game = SnakeGame(name="game 1", n=20, m=20, start_snakes=[snake_1, snake_2], start_food=food_1)
+    snake_game = SnakeGame(name="game 1", n=rows, m=cols, start_snakes=[snake_1, snake_2], start_food=food_1)
     # print(snake)
     # print(snake.next_segment())
     # snake.eat_food(food_1)
     # print(snake)
     # print(snake.next_segment())
     print("SnakeGame:", snake_game)
-    for i in range(4):
+    snake_1.change_direction("S")
+    for i in range(60):
         snake_2.shift()
-        if i % 2 == 0:
-            new_dir = random.choice(list(directions.keys()))
-            print("New direction " + new_dir)
-            snake_2.change_direction(new_dir)
+        snake_1.shift()
+        if crossing(snake_1, snake_2):
+            raise SnakeCrossingException("snake_1 crosses snake_2")
+        # if i % 2 == 0:
+        #     new_dir = random.choice(list(directions.keys()))
+        #     print("New direction " + new_dir)
+        #     snake_2.change_direction(new_dir)
+
+        clear()
+        print("SnakeGame:", snake_game)
+        sleep(0.2)
     print("SnakeGame:", snake_game)
