@@ -226,8 +226,8 @@ class Snake:
     def line(self):
         return [seg.ij for seg in self.segments]
 
-    def set_direction(self, d):
-        self.direction = d
+    # def set_direction(self, d):
+    #     self.direction = d
 
     # Important: type(food) == Food
     def eat_food(self, food):
@@ -257,11 +257,11 @@ class Snake:
         else:
             if (ni < 0 or ni >= self.n or nj < 0 or nj >= self.m) and len(self.direction) == 2:
                 if ni < 0 or ni >= self.n:
-                    self.set_direction(d["mirror_x"])
+                    self.change_direction(d["mirror_x"])
                 elif nj < 0 or nj >= self.m:
-                    self.set_direction(d["mirror_y"])
+                    self.change_direction(d["mirror_y"])
                 else:
-                    self.set_direction(d["bounce"])
+                    self.change_direction(d["bounce"])
                 d = directions[self.direction]
                 ni, nj = pi + d["i"], pj + d["j"]
             ti, tj = ni, nj
@@ -299,7 +299,9 @@ class Snake:
         self.direction = d
 
     def __repr__(self):
-        return self.name + ", " + str(len(self.segments)) + " segments long, traversed " + str(self.distance_travelled)
+        lsegs = len(self.segments)
+        s = "-<8" + "".join(["=" for i in range(lsegs)]) + "-"
+        return self.name + ", traversed " + str(self.distance_travelled) + " { (\'" + str(self.default_segment_symbol) +  "\') " + s + " (" + str(lsegs) + ") }"
 
 class SnakeGame:
 
@@ -344,24 +346,34 @@ class SnakeGame:
 
         return res
 
-def crossing(s1, s2):
-    a = s1.line()
-    b = s2.line()
-    # print("a", a)
-    # print("b", b)
-    for ij in a:
-        if ij in b:
-            return True
-    return False
+def crossing(s1, s2=None):
+    if s2 is None and type(s1) == list:
+        crosses = []
+        for i in range(len(s1)):
+            for j in range(i + 1, len(s1)):
+                cross = crossing(s1[i], s1[j])
+                if cross:
+                    return cross
+        return False
+    else:
+        a = s1.line()
+        b = s2.line()
+        # print("a", a)
+        # print("b", b)
+        for ij in a:
+            if ij in b:
+                return str(s1) + "\n\t\tcrosses\n" + str(s2)
+        return False
 
 if __name__ == "__main__":
     rows = 16
     cols = 20
 
-    snake_1 = Snake(name="snake 1", n=rows, m=cols, start_i=10, start_j=12, start_direction="W", wrap=False, start_length=8, default_segment_symbol="1")
-    snake_2 = Snake(name="snake 1", n=rows, m=cols, start_i=8, start_j=12, start_direction="NE", wrap=False, start_length=3, default_segment_symbol="2")
+    snake_1 = Snake(name="snake 1", n=rows, m=cols, start_i=10, start_j=12, start_direction="W", wrap=False, start_length=1, default_segment_symbol="1")
+    snake_2 = Snake(name="snake 2", n=rows, m=cols, start_i=8, start_j=12, start_direction="NE", wrap=False, start_length=1, default_segment_symbol="2")
+    snake_3 = Snake(name="snake 3", n=rows, m=cols, start_i=2, start_j=2, start_direction="SE", wrap=True, start_length=1, default_segment_symbol="3")
     food_1 = Food(i=10, j=13, val=8)
-    snake_game = SnakeGame(name="game 1", n=rows, m=cols, start_snakes=[snake_1, snake_2], start_food=food_1)
+    snake_game = SnakeGame(name="game 1", n=rows, m=cols, start_snakes=[snake_1, snake_2, snake_3], start_food=food_1)
     # print(snake)
     # print(snake.next_segment())
     # snake.eat_food(food_1)
@@ -370,14 +382,17 @@ if __name__ == "__main__":
     print("SnakeGame:", snake_game)
     snake_1.change_direction("S")
     for i in range(60):
-        snake_2.shift()
         snake_1.shift()
-        if crossing(snake_1, snake_2):
-            raise SnakeCrossingException("snake_1 crosses snake_2")
-        # if i % 2 == 0:
-        #     new_dir = random.choice(list(directions.keys()))
-        #     print("New direction " + new_dir)
-        #     snake_2.change_direction(new_dir)
+        snake_2.shift()
+        snake_3.shift()
+        cross = crossing(snake_game.snakes)
+        if cross:
+            raise SnakeCrossingException(cross)
+        if i % 3 == 0:
+            for s in snake_game.snakes:
+                new_dir = random.choice(list(directions.keys()))
+                print("New direction " + new_dir)
+                s.change_direction(new_dir)
 
         clear()
         print("SnakeGame:", snake_game)
