@@ -419,7 +419,7 @@ def run():
 if __name__ == "__main__":
 	print("work hours per day: {0}".format(twenty_four_toString(WORK_HOURS_PER_DAY)))
 	print("work days per year: {0}".format(WORK_DAYS))
-	salary = Salary(40000)
+	salary = Salary(42000)
 	# salary = Salary(45000)
 	# salary = Salary(100000)
 	print(salary)
