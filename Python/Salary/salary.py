@@ -72,7 +72,7 @@ class TimeFrame(Enum):
 	SECOND = "second", 1 / SECONDS_PER_MINUTE / MINUTES_PER_HOUR / HOURS_PER_DAY
 	MINUTE = "minute", 1 / MINUTES_PER_HOUR / HOURS_PER_DAY
 	HOURLY = "hour", 1 / HOURS_PER_DAY
-	DAILY = "say", 1 
+	DAILY = "day", 1 
 	WEEKLY = "week", DAYS_PER_WEEK
 	MONTHLY = "month", DAYS_PER_MONTH
 	QUARTERLY = "quarter", DAYS_PER_YEAR / MONTHS_PER_QUARTER
