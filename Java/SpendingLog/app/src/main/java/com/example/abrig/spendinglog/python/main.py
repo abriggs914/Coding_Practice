@@ -114,7 +114,7 @@ def scotia_transactions():
 			"entity_from": me if amount < 0 else entity,
 			"entity_to": me if amount > 0 else entity,
 			"reoccurring_category": "Once",
-			"transaction_catgory": transaction_type,
+			"transaction_category": transaction_type,
 			"description": entity,
 			"date_in": date
 		}
@@ -123,8 +123,8 @@ def scotia_transactions():
 
 	print(TH.transaction_list)
 	ents = TH.entities_list.copy()
-	ents.sort(key=lambda x: x.name)
-	# ents.sort(key=lambda x: x.balance)
+	# ents.sort(key=lambda x: x.name)
+	ents.sort(key=lambda x: x.balance)
 	entities_dict = {}
 	for entity in ents:
 		entities_dict[entity.name] = {"balance": money(entity.balance)}
@@ -217,4 +217,4 @@ if __name__ == "__main__":
 	# 	for res, strings in results.items():
 	# 		print("{r}, {s}".format(r=res, s=strings))
 
-	test()
+	# test()
