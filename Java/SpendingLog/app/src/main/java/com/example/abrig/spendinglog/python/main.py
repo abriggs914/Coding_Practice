@@ -5,6 +5,7 @@ from utility import *
 from Entity import Entity
 from Transaction import Transaction
 import re
+from matplotlib import pyplot as plt
 
 
 def test():
@@ -30,9 +31,9 @@ def test():
 	}
 
 	transactions = [
-		Transaction(602.3, entities["BWS"], entities["Avery"], "Weekly", "Pay", "Pay", datetime.datetime.now()),
+		Transaction(632.42, entities["BWS"], entities["Avery"], "Weekly", "Pay", "Pay", datetime.datetime.now()),
 		Transaction(65, entities["Avery"], entities["Irving"], "Weekly", "Gas", "Gas", datetime.datetime.now()),
-		Transaction(477.5, entities["Avery"], entities["Colpitts"], "Monthly", "Rent", "Gas", datetime.datetime.now()),
+		# Transaction(477.5, entities["Avery"], entities["Colpitts"], "Monthly", "Rent", "Gas", datetime.datetime.now()),
 
 		Transaction(89.99, entities["Avery"], entities["Disney+"], "Annually", "Entertainment", "Disney+ subscription",
 					datetime.datetime.now()),
@@ -137,7 +138,7 @@ def scotia_transactions():
 
 if __name__ == "__main__":
 
-	scotia_transactions()
+	# scotia_transactions()
 
 	# PRINT = False
 	# a = "String one"
@@ -218,3 +219,4 @@ if __name__ == "__main__":
 	# 		print("{r}, {s}".format(r=res, s=strings))
 
 	test()
+	print("Hello World!")

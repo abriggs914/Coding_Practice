@@ -118,8 +118,14 @@ class TransactionHandler:
         print("a: {a}, toa: {toa}, tra: {tra}, pra: {pra}".format(a=a, toa=toa, tra=tra, pra=pra))
         return a * toa * pra
 
+    # Using a starting entity, produce a report on transactions
+    # for a given period, and / or over a predetermined list of
+    # transactions.
+    # Usage: TH.costing_report(Entity("Me"), "Daily", None, )
     def costing_report(self, entity, period, transaction=None, n=1):
         # entity = entities[entity]
+        if type(entity) != Entity:
+            entity = self.get_entity(entity)
         res = "{p} costing report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
         if transaction != None:
             if entity not in [transaction.entity_to, transaction.entity_from]:
@@ -133,8 +139,14 @@ class TransactionHandler:
 
         total_cost = 0
         for transaction in self.transaction_list:
+            print("transaction:", transaction)
             if transaction.reoccurring_category != "Once":
+                print("\ttransaction.reoccurring_category != \"Once\"", (transaction.reoccurring_category != "Once"))
+                print("\t-entity", entity)
+                print("\t-entity_to", transaction.entity_to)
+                print("\t-entity_from", transaction.entity_from)
                 if entity in [transaction.entity_to, transaction.entity_from]:
+                    print("\t\tentity in [transaction.entity_to, transaction.entity_from]", (entity in [transaction.entity_to, transaction.entity_from]))
                     cost = self.costing(transaction, period) * n
                     if transaction.entity_from == entity:
                         cost *= -1
@@ -144,6 +156,8 @@ class TransactionHandler:
 
     def earning_report(self, entity, period, transaction=None, n=1):
         # entity = entities[entity]
+        if type(entity) != Entity:
+            entity = self.get_entity(entity)
         res = "{p} earning report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
         if transaction != None:
             if entity != transaction.entity_to:
@@ -165,6 +179,8 @@ class TransactionHandler:
 
     def spending_report(self, entity, period, transaction=None, n=1):
         # entity = entities[entity]
+        if type(entity) != Entity:
+            entity = self.get_entity(entity)
         res = "{p} spending report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
         if transaction != None:
             if entity != transaction.entity_from:
