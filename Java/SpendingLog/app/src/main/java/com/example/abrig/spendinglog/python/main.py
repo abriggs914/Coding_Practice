@@ -33,7 +33,7 @@ def test():
 	transactions = [
 		Transaction(632.42, entities["BWS"], entities["Avery"], "Weekly", "Pay", "Pay", datetime.datetime.now()),
 		Transaction(65, entities["Avery"], entities["Irving"], "Weekly", "Gas", "Gas", datetime.datetime.now()),
-		# Transaction(477.5, entities["Avery"], entities["Colpitts"], "Monthly", "Rent", "Gas", datetime.datetime.now()),
+		Transaction(477.5, entities["Avery"], entities["Colpitts"], "Monthly", "Rent", "Gas", datetime.datetime.now()),
 
 		Transaction(89.99, entities["Avery"], entities["Disney+"], "Annually", "Entertainment", "Disney+ subscription",
 					datetime.datetime.now()),
@@ -218,9 +218,12 @@ if __name__ == "__main__":
 	# 	for res, strings in results.items():
 	# 		print("{r}, {s}".format(r=res, s=strings))
 
-<<<<<<< HEAD
 	test()
+
+'''
+<<<<<<< HEAD
 	print("Hello World!")
 =======
 	# test()
 >>>>>>> 2f07108745b8da92448a5e2cdb3d70de7caf4fb8
+'''
