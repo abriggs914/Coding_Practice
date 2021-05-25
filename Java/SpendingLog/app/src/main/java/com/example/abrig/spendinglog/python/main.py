@@ -136,9 +136,29 @@ def scotia_transactions():
 	print(TH.earning_report(TH.entities_list[0], "Monthly"))
 
 
+	res = {}
+	for occurrence in REOCCURRING:
+		cr = TH.costing_report("Me", occurrence)
+		er = TH.earning_report("ME", occurrence)
+		sr = TH.spending_report("Me", occurrence)
+		print("\n" + cr)
+		print("\n" + er)
+		print("\n" + sr)
+		res[occurrence] = {
+			"Costing": money(float(cr.split()[-1])),
+			"Earning": money(float(er.split()[-1])),
+			"Spending": money(float(sr.split()[-1]))
+		}
+
+	print(dict_print(REOCCURRING, min_encapsulation=True))
+
+	print(dict_print(res, "Reports"))
+	# print(dict_print(ts, "Transactions"))
+
+
 if __name__ == "__main__":
 
-	# scotia_transactions()
+	scotia_transactions()
 
 	# PRINT = False
 	# a = "String one"
@@ -218,7 +238,7 @@ if __name__ == "__main__":
 	# 	for res, strings in results.items():
 	# 		print("{r}, {s}".format(r=res, s=strings))
 
-	test()
+	# test()
 
 '''
 <<<<<<< HEAD

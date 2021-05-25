@@ -242,8 +242,8 @@ class OL(Element):
         else:
             self.e__items.append(LI(other, **kwargs))
 
-    def e__add_item(self, item, **kwargs):
-        self + (item, **kwargs)
+    def e__add_item(self, item):
+        self + item
 
     def __sub__(self, other):
         try:
