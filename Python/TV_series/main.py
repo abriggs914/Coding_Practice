@@ -417,6 +417,29 @@ family_guy = TVSeries("Family Guy", {
 	"Comedy",
 	"Disney+")
 	
+	
+its_always_sunny_in_philadelphia = TVSeries("It's Always Sunny in Philadelphia", {
+	1 : 7,
+	2 : 10,
+	3 : 15,
+	4 : 13,
+	5 : 12,
+	6 : 14,
+	7 : 13,
+	8 : 10,
+	9 : 10,
+	10 : 10,
+	11 : 10,
+	12 : 10,
+	13 : 10,
+	14 : 10},
+	22,
+	2005,
+	2019,
+	False,
+	"Comedy",
+	"Disney+")
+	
 
 series_list = [
     the_office,
@@ -447,7 +470,8 @@ series_list = [
 	the_proud_family,
 	my_name_is_earl,
 	futurama,
-	family_guy]
+	family_guy,
+	its_always_sunny_in_philadelphia]
    
 def longest_series_title(series_list) :
     num = 0

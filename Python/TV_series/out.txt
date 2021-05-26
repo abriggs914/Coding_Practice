@@ -52,7 +52,7 @@ episodes per season:		17.857142857142858
 average length of an episode:	22
 Total minutes:			2750
 Total hours:			45.833333333333336
-Where to watch:			Amazon Prime
+Where to watch:			Prime TV
 
 	Silicon Valley
 Genre:				Comedy
@@ -199,32 +199,142 @@ Where to watch:			Crave -> HBO
 
 	Letterkenny
 Genre:				Comedy
-Run (2016 -> 2020):		4 years
-number seasons:			8
-number episodes:		49
-episodes per season:		6.125
+Run (2016 -> 2021):		5 years
+number seasons:			9
+number episodes:		56
+episodes per season:		6.222222222222222
 average length of an episode:	22
-Total minutes:			1078
-Total hours:			17.966666666666665
+Total minutes:			1232
+Total hours:			20.533333333333335
 Where to watch:			Crave
+
+	Prison Break
+Genre:				Drama, Thriller
+Run (2005 -> 2017):		12 years
+number seasons:			5
+number episodes:		90
+episodes per season:		18.0
+average length of an episode:	42
+Total minutes:			3780
+Total hours:			63.0
+Where to watch:			Netflix
+
+	Scrubs
+Genre:				Comedy
+Run (2001 -> 2010):		9 years
+number seasons:			9
+number episodes:		182
+episodes per season:		20.22222222222222
+average length of an episode:	22
+Total minutes:			4004
+Total hours:			66.73333333333333
+Where to watch:			Prime TV
+
+	Yu-Gi-Oh!
+Genre:				Anime
+Run (1998 -> 2006):		8 years
+number seasons:			5
+number episodes:		236
+episodes per season:		47.2
+average length of an episode:	22
+Total minutes:			5192
+Total hours:			86.53333333333333
+Where to watch:			Prime TV
+
+	Misfits
+Genre:				Comedy
+Run (2009 -> 2013):		4 years
+number seasons:			5
+number episodes:		37
+episodes per season:		7.4
+average length of an episode:	44
+Total minutes:			1628
+Total hours:			27.133333333333333
+Where to watch:			Netflix
+
+	The Mandalorian
+Genre:				Drama, Action
+Run (2019 -> 2021):		2 years
+number seasons:			2
+number episodes:		16
+episodes per season:		8.0
+average length of an episode:	44
+Total minutes:			704
+Total hours:			11.733333333333333
+Where to watch:			Disney+
+
+	Recess
+Genre:				Comedy, Cartoon
+Run (1997 -> 2001):		4 years
+number seasons:			6
+number episodes:		68
+episodes per season:		11.333333333333334
+average length of an episode:	23
+Total minutes:			1564
+Total hours:			26.066666666666666
+Where to watch:			Disney+
+
+	The Proud Family
+Genre:				Comedy, Cartoon
+Run (2001 -> 2005):		4 years
+number seasons:			2
+number episodes:		52
+episodes per season:		26.0
+average length of an episode:	23
+Total minutes:			1196
+Total hours:			19.933333333333334
+Where to watch:			Disney+
+
+	My Name is Earl
+Genre:				Comedy
+Run (2005 -> 2009):		4 years
+number seasons:			4
+number episodes:		96
+episodes per season:		24.0
+average length of an episode:	21
+Total minutes:			2016
+Total hours:			33.6
+Where to watch:			Disney+
+
+	Futurama
+Genre:				Comedy
+Run (1999 -> 2013):		14 years
+number seasons:			10
+number episodes:		140
+episodes per season:		14.0
+average length of an episode:	22
+Total minutes:			3080
+Total hours:			51.333333333333336
+Where to watch:			Disney+
+
+	Family Guy
+Genre:				Comedy
+Run (1999 -> 2021):		22 years
+number seasons:			19
+number episodes:		369
+episodes per season:		19.42105263157895
+average length of an episode:	22
+Total minutes:			8118
+Total hours:			135.3
+Where to watch:			Disney+
 
 
 	What to watch?
 
 Series:
 
-	Curb your Enthusiasm
+	Letterkenny
 Genre:				Comedy
-Run (2000 -> 2020):		20 years
-number seasons:			10
-number episodes:		100
-episodes per season:		10.0
-average length of an episode:	30
-Total minutes:			3000
-Total hours:			50.0
-Where to watch:			Crave -> HBO
+Run (2016 -> 2021):		5 years
+number seasons:			9
+number episodes:		56
+episodes per season:		6.222222222222222
+average length of an episode:	22
+Total minutes:			1232
+Total hours:			20.533333333333335
+Where to watch:			Crave
 
-Season: 2
+Season: 4
 Episode: 4
 
 	How would you like to print the stats?
@@ -238,32 +348,44 @@ Episode: 4
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by start year...
 
-####################################################################################################################################################################################################
-###########################| start year |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| start year |###########################
-|Curb your Enthusiasm      |    2000    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    2000    |Curb your Enthusiasm      |
-|Trailer Park Boys         |    2001    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    2001    |Trailer Park Boys         |
-|Arrested Develpoment      |    2003    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    2003    |Arrested Develpoment      |
-|The Office                |    2005    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    2005    |The Office                |
-|Avatar, the Last Airbender|    2005    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    2005    |Avatar, the Last Airbender|
-|The IT Crowd              |    2006    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2006    |The IT Crowd              |
-|Breaking Bad              |    2008    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2008    |Breaking Bad              |
-|Community                 |    2009    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    2009    |Community                 |
-|Parks and Recreation      |    2009    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    2009    |Parks and Recreation      |
-|Game of Thrones           |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    2011    |Game of Thrones           |
-|Workaholics               |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    2011    |Workaholics               |
-|Black Mirror              |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    2011    |Black Mirror              |
-|Brooklyn Nine-Nine        |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    2013    |Brooklyn Nine-Nine        |
-|Peaky Blinders            |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    2013    |Peaky Blinders            |
-|Silicon Valley            |    2014    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    2014    |Silicon Valley            |
-|Better Call Saul          |    2015    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    2015    |Better Call Saul          |
-|Letterkenny               |    2016    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    2016    |Letterkenny               |
-|Final Space               |    2018    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    2018    |Final Space               |
-|Chernobyl                 |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2019    |Chernobyl                 |
-####################################################################################################################################################################################################
+#############################################################################################################################################################################################################################
+###########################| start year |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| start year |###########################
+|Recess                    |    1997    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1997    |Recess                    |
+|Yu-Gi-Oh!                 |    1998    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1998    |Yu-Gi-Oh!                 |
+|Futurama                  |    1999    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    1999    |Futurama                  |
+|Family Guy                |    1999    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    1999    |Family Guy                |
+|Curb your Enthusiasm      |    2000    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    2000    |Curb your Enthusiasm      |
+|Trailer Park Boys         |    2001    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    2001    |Trailer Park Boys         |
+|Scrubs                    |    2001    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    2001    |Scrubs                    |
+|The Proud Family          |    2001    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2001    |The Proud Family          |
+|Arrested Develpoment      |    2003    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    2003    |Arrested Develpoment      |
+|The Office                |    2005    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    2005    |The Office                |
+|Avatar, the Last Airbender|    2005    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2005    |Avatar, the Last Airbender|
+|Prison Break              |    2005    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    2005    |Prison Break              |
+|My Name is Earl           |    2005    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    2005    |My Name is Earl           |
+|The IT Crowd              |    2006    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    2006    |The IT Crowd              |
+|Breaking Bad              |    2008    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    2008    |Breaking Bad              |
+|Community                 |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    2009    |Community                 |
+|Parks and Recreation      |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    2009    |Parks and Recreation      |
+|Misfits                   |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    2009    |Misfits                   |
+|Game of Thrones           |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    2011    |Game of Thrones           |
+|Workaholics               |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    2011    |Workaholics               |
+|Black Mirror              |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    2011    |Black Mirror              |
+|Brooklyn Nine-Nine        |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    2013    |Brooklyn Nine-Nine        |
+|Peaky Blinders            |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    2013    |Peaky Blinders            |
+|Silicon Valley            |    2014    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    2014    |Silicon Valley            |
+|Better Call Saul          |    2015    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    2015    |Better Call Saul          |
+|Letterkenny               |    2016    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    2016    |Letterkenny               |
+|Final Space               |    2018    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    2018    |Final Space               |
+|Chernobyl                 |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    2019    |Chernobyl                 |
+|The Mandalorian           |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    2019    |The Mandalorian           |
+#############################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -276,21 +398,32 @@ sorting by start year...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by start year...
 
 #########################################
 ###########################| start year |
+|Recess                    |    1997    |
+|Yu-Gi-Oh!                 |    1998    |
+|Futurama                  |    1999    |
+|Family Guy                |    1999    |
 |Curb your Enthusiasm      |    2000    |
 |Trailer Park Boys         |    2001    |
+|Scrubs                    |    2001    |
+|The Proud Family          |    2001    |
 |Arrested Develpoment      |    2003    |
 |The Office                |    2005    |
 |Avatar, the Last Airbender|    2005    |
+|Prison Break              |    2005    |
+|My Name is Earl           |    2005    |
 |The IT Crowd              |    2006    |
 |Breaking Bad              |    2008    |
 |Community                 |    2009    |
 |Parks and Recreation      |    2009    |
+|Misfits                   |    2009    |
 |Game of Thrones           |    2011    |
 |Workaholics               |    2011    |
 |Black Mirror              |    2011    |
@@ -301,14 +434,15 @@ sorting by start year...
 |Letterkenny               |    2016    |
 |Final Space               |    2018    |
 |Chernobyl                 |    2019    |
+|The Mandalorian           |    2019    |
 #########################################
 
-Mean:		2009.84
-Median:		2011.00
-Pstdev:		  5.35
-Pvariance:	 28.66
-Stdev:		  5.50
-Variance:	 30.25
+Mean:		2007.59
+Median:		2008.00
+Pstdev:		  6.50
+Pvariance:	 42.24
+Stdev:		  6.61
+Variance:	 43.75
 
 	How would you like to print the stats?
 1	-	By start year
@@ -321,31 +455,44 @@ Variance:	 30.25
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by end year...
-################################################################################################################################################################################################
-###########################| end year |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| end year |###########################
-|Avatar, the Last Airbender|   2008   |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   2008   |Avatar, the Last Airbender|
-|The Office                |   2012   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   2012   |The Office                |
-|The IT Crowd              |   2013   |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   2013   |The IT Crowd              |
-|Breaking Bad              |   2013   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |   2013   |Breaking Bad              |
-|Community                 |   2015   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |   2015   |Community                 |
-|Parks and Recreation      |   2015   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |   2015   |Parks and Recreation      |
-|Workaholics               |   2017   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |   2017   |Workaholics               |
-|Trailer Park Boys         |   2018   |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   2018   |Trailer Park Boys         |
-|Arrested Develpoment      |   2019   |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |   2019   |Arrested Develpoment      |
-|Game of Thrones           |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |   2019   |Game of Thrones           |
-|Black Mirror              |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |   2019   |Black Mirror              |
-|Silicon Valley            |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |   2019   |Silicon Valley            |
-|Chernobyl                 |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2019   |Chernobyl                 |
-|Curb your Enthusiasm      |   2020   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2020   |Curb your Enthusiasm      |
-|Brooklyn Nine-Nine        |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |   2020   |Brooklyn Nine-Nine        |
-|Peaky Blinders            |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |   2020   |Peaky Blinders            |
-|Better Call Saul          |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2020   |Better Call Saul          |
-|Letterkenny               |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |   2020   |Letterkenny               |
-|Final Space               |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   2020   |Final Space               |
-################################################################################################################################################################################################
+
+#########################################################################################################################################################################################################################
+###########################| end year |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| end year |###########################
+|Recess                    |   2001   |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2001   |Recess                    |
+|The Proud Family          |   2005   |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2005   |The Proud Family          |
+|Yu-Gi-Oh!                 |   2006   |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2006   |Yu-Gi-Oh!                 |
+|Avatar, the Last Airbender|   2008   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2008   |Avatar, the Last Airbender|
+|My Name is Earl           |   2009   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   2009   |My Name is Earl           |
+|Scrubs                    |   2010   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |   2010   |Scrubs                    |
+|The Office                |   2012   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2012   |The Office                |
+|Futurama                  |   2013   |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   2013   |Futurama                  |
+|The IT Crowd              |   2013   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   2013   |The IT Crowd              |
+|Breaking Bad              |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   2013   |Breaking Bad              |
+|Misfits                   |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |   2013   |Misfits                   |
+|Community                 |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |   2015   |Community                 |
+|Parks and Recreation      |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |   2015   |Parks and Recreation      |
+|Prison Break              |   2017   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |   2017   |Prison Break              |
+|Workaholics               |   2017   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |   2017   |Workaholics               |
+|Trailer Park Boys         |   2018   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |   2018   |Trailer Park Boys         |
+|Arrested Develpoment      |   2019   |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   2019   |Arrested Develpoment      |
+|Game of Thrones           |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |   2019   |Game of Thrones           |
+|Black Mirror              |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |   2019   |Black Mirror              |
+|Silicon Valley            |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |   2019   |Silicon Valley            |
+|Chernobyl                 |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |   2019   |Chernobyl                 |
+|Curb your Enthusiasm      |   2020   |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |   2020   |Curb your Enthusiasm      |
+|Brooklyn Nine-Nine        |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |   2020   |Brooklyn Nine-Nine        |
+|Peaky Blinders            |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |   2020   |Peaky Blinders            |
+|Better Call Saul          |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |   2020   |Better Call Saul          |
+|Final Space               |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   2020   |Final Space               |
+|Family Guy                |   2021   |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2021   |Family Guy                |
+|Letterkenny               |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2021   |Letterkenny               |
+|The Mandalorian           |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   2021   |The Mandalorian           |
+#########################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -358,17 +505,28 @@ sorting by end year...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by end year...
+
 #######################################
 ###########################| end year |
+|Recess                    |   2001   |
+|The Proud Family          |   2005   |
+|Yu-Gi-Oh!                 |   2006   |
 |Avatar, the Last Airbender|   2008   |
+|My Name is Earl           |   2009   |
+|Scrubs                    |   2010   |
 |The Office                |   2012   |
+|Futurama                  |   2013   |
 |The IT Crowd              |   2013   |
 |Breaking Bad              |   2013   |
+|Misfits                   |   2013   |
 |Community                 |   2015   |
 |Parks and Recreation      |   2015   |
+|Prison Break              |   2017   |
 |Workaholics               |   2017   |
 |Trailer Park Boys         |   2018   |
 |Arrested Develpoment      |   2019   |
@@ -380,16 +538,18 @@ sorting by end year...
 |Brooklyn Nine-Nine        |   2020   |
 |Peaky Blinders            |   2020   |
 |Better Call Saul          |   2020   |
-|Letterkenny               |   2020   |
 |Final Space               |   2020   |
+|Family Guy                |   2021   |
+|Letterkenny               |   2021   |
+|The Mandalorian           |   2021   |
 #######################################
 
-Mean:		2017.16
-Median:		2019.00
-Pstdev:		  3.41
-Pvariance:	 11.61
-Stdev:		  3.50
-Variance:	 12.25
+Mean:		2015.28
+Median:		2017.00
+Pstdev:		  5.38
+Pvariance:	 28.96
+Stdev:		  5.48
+Variance:	 29.99
 
 	How would you like to print the stats?
 1	-	By start year
@@ -402,32 +562,44 @@ Variance:	 12.25
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by shortest series length...
 
-####################################################################################################################################################################################################################################
-###########################| shortest series run length |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| shortest series run length |###########################
-|Chernobyl                 |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Chernobyl                 |
-|Final Space               |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2              |Final Space               |
-|Avatar, the Last Airbender|             3              |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender|
-|Letterkenny               |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |             4              |Letterkenny               |
-|Breaking Bad              |             5              |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |             5              |Breaking Bad              |
-|Silicon Valley            |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5              |Silicon Valley            |
-|Better Call Saul          |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |             5              |Better Call Saul          |
-|Community                 |             6              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |             6              |Community                 |
-|Parks and Recreation      |             6              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |             6              |Parks and Recreation      |
-|Workaholics               |             6              |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |             6              |Workaholics               |
-|The Office                |             7              |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             7              |The Office                |
-|The IT Crowd              |             7              |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             7              |The IT Crowd              |
-|Brooklyn Nine-Nine        |             7              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |             7              |Brooklyn Nine-Nine        |
-|Peaky Blinders            |             7              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |             7              |Peaky Blinders            |
-|Game of Thrones           |             8              |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |             8              |Game of Thrones           |
-|Black Mirror              |             8              |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |             8              |Black Mirror              |
-|Arrested Develpoment      |             16             |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |             16             |Arrested Develpoment      |
-|Trailer Park Boys         |             17             |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |             17             |Trailer Park Boys         |
-|Curb your Enthusiasm      |             20             |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |             20             |Curb your Enthusiasm      |
-####################################################################################################################################################################################################################################
+#############################################################################################################################################################################################################################################################
+###########################| shortest series run length |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| shortest series run length |###########################
+|Chernobyl                 |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |             1              |Chernobyl                 |
+|Final Space               |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |Final Space               |
+|The Mandalorian           |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2              |The Mandalorian           |
+|Avatar, the Last Airbender|             3              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender|
+|Recess                    |             4              |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |Recess                    |
+|The Proud Family          |             4              |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |The Proud Family          |
+|My Name is Earl           |             4              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |My Name is Earl           |
+|Misfits                   |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |             4              |Misfits                   |
+|Breaking Bad              |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             5              |Breaking Bad              |
+|Silicon Valley            |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |             5              |Silicon Valley            |
+|Better Call Saul          |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5              |Better Call Saul          |
+|Letterkenny               |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |             5              |Letterkenny               |
+|Community                 |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |             6              |Community                 |
+|Parks and Recreation      |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |             6              |Parks and Recreation      |
+|Workaholics               |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |             6              |Workaholics               |
+|The Office                |             7              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             7              |The Office                |
+|The IT Crowd              |             7              |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             7              |The IT Crowd              |
+|Brooklyn Nine-Nine        |             7              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |             7              |Brooklyn Nine-Nine        |
+|Peaky Blinders            |             7              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |             7              |Peaky Blinders            |
+|Yu-Gi-Oh!                 |             8              |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             8              |Yu-Gi-Oh!                 |
+|Game of Thrones           |             8              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |             8              |Game of Thrones           |
+|Black Mirror              |             8              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |             8              |Black Mirror              |
+|Scrubs                    |             9              |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |             9              |Scrubs                    |
+|Prison Break              |             12             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |             12             |Prison Break              |
+|Futurama                  |             14             |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             14             |Futurama                  |
+|Arrested Develpoment      |             16             |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |             16             |Arrested Develpoment      |
+|Trailer Park Boys         |             17             |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |             17             |Trailer Park Boys         |
+|Curb your Enthusiasm      |             20             |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |             20             |Curb your Enthusiasm      |
+|Family Guy                |             22             |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |             22             |Family Guy                |
+#############################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -440,6 +612,8 @@ sorting by shortest series length...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by shortest series length...
@@ -448,11 +622,16 @@ sorting by shortest series length...
 ###########################| shortest series run length |
 |Chernobyl                 |             1              |
 |Final Space               |             2              |
+|The Mandalorian           |             2              |
 |Avatar, the Last Airbender|             3              |
-|Letterkenny               |             4              |
+|Recess                    |             4              |
+|The Proud Family          |             4              |
+|My Name is Earl           |             4              |
+|Misfits                   |             4              |
 |Breaking Bad              |             5              |
 |Silicon Valley            |             5              |
 |Better Call Saul          |             5              |
+|Letterkenny               |             5              |
 |Community                 |             6              |
 |Parks and Recreation      |             6              |
 |Workaholics               |             6              |
@@ -460,19 +639,24 @@ sorting by shortest series length...
 |The IT Crowd              |             7              |
 |Brooklyn Nine-Nine        |             7              |
 |Peaky Blinders            |             7              |
+|Yu-Gi-Oh!                 |             8              |
 |Game of Thrones           |             8              |
 |Black Mirror              |             8              |
+|Scrubs                    |             9              |
+|Prison Break              |             12             |
+|Futurama                  |             14             |
 |Arrested Develpoment      |             16             |
 |Trailer Park Boys         |             17             |
 |Curb your Enthusiasm      |             20             |
+|Family Guy                |             22             |
 #########################################################
 
-Mean:		  7.37
+Mean:		  7.72
 Median:		  6.00
-Pstdev:		  4.87
-Pvariance:	 23.71
-Stdev:		  5.00
-Variance:	 25.02
+Pstdev:		  5.25
+Pvariance:	 27.51
+Stdev:		  5.34
+Variance:	 28.49
 
 	How would you like to print the stats?
 1	-	By start year
@@ -485,32 +669,44 @@ Variance:	 25.02
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by longest series length...
 
-##################################################################################################################################################################################################################################
-###########################| longest series run length |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| longest series run length |###########################
-|Curb your Enthusiasm      |            20             |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |            20             |Curb your Enthusiasm      |
-|Trailer Park Boys         |            17             |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |            17             |Trailer Park Boys         |
-|Arrested Develpoment      |            16             |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |            16             |Arrested Develpoment      |
-|Game of Thrones           |             8             |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |             8             |Game of Thrones           |
-|Black Mirror              |             8             |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |             8             |Black Mirror              |
-|The Office                |             7             |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             7             |The Office                |
-|The IT Crowd              |             7             |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             7             |The IT Crowd              |
-|Brooklyn Nine-Nine        |             7             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |             7             |Brooklyn Nine-Nine        |
-|Peaky Blinders            |             7             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |             7             |Peaky Blinders            |
-|Community                 |             6             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |             6             |Community                 |
-|Parks and Recreation      |             6             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |             6             |Parks and Recreation      |
-|Workaholics               |             6             |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |             6             |Workaholics               |
-|Breaking Bad              |             5             |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |             5             |Breaking Bad              |
-|Silicon Valley            |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5             |Silicon Valley            |
-|Better Call Saul          |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |             5             |Better Call Saul          |
-|Letterkenny               |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |             4             |Letterkenny               |
-|Avatar, the Last Airbender|             3             |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             3             |Avatar, the Last Airbender|
-|Final Space               |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2             |Final Space               |
-|Chernobyl                 |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Chernobyl                 |
-##################################################################################################################################################################################################################################
+###########################################################################################################################################################################################################################################################
+###########################| longest series run length |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| longest series run length |###########################
+|Family Guy                |            22             |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |            22             |Family Guy                |
+|Curb your Enthusiasm      |            20             |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |            20             |Curb your Enthusiasm      |
+|Trailer Park Boys         |            17             |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |            17             |Trailer Park Boys         |
+|Arrested Develpoment      |            16             |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |            16             |Arrested Develpoment      |
+|Futurama                  |            14             |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |            14             |Futurama                  |
+|Prison Break              |            12             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |            12             |Prison Break              |
+|Scrubs                    |             9             |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |             9             |Scrubs                    |
+|Yu-Gi-Oh!                 |             8             |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             8             |Yu-Gi-Oh!                 |
+|Game of Thrones           |             8             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |             8             |Game of Thrones           |
+|Black Mirror              |             8             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |             8             |Black Mirror              |
+|The Office                |             7             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             7             |The Office                |
+|The IT Crowd              |             7             |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             7             |The IT Crowd              |
+|Brooklyn Nine-Nine        |             7             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |             7             |Brooklyn Nine-Nine        |
+|Peaky Blinders            |             7             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |             7             |Peaky Blinders            |
+|Community                 |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |             6             |Community                 |
+|Parks and Recreation      |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |             6             |Parks and Recreation      |
+|Workaholics               |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |             6             |Workaholics               |
+|Breaking Bad              |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             5             |Breaking Bad              |
+|Silicon Valley            |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |             5             |Silicon Valley            |
+|Better Call Saul          |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5             |Better Call Saul          |
+|Letterkenny               |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |             5             |Letterkenny               |
+|Recess                    |             4             |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |Recess                    |
+|The Proud Family          |             4             |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |The Proud Family          |
+|My Name is Earl           |             4             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |My Name is Earl           |
+|Misfits                   |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |             4             |Misfits                   |
+|Avatar, the Last Airbender|             3             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3             |Avatar, the Last Airbender|
+|Final Space               |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2             |Final Space               |
+|The Mandalorian           |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2             |The Mandalorian           |
+|Chernobyl                 |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |             1             |Chernobyl                 |
+###########################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -523,15 +719,22 @@ sorting by longest series length...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by longest series length...
 
 ########################################################
 ###########################| longest series run length |
+|Family Guy                |            22             |
 |Curb your Enthusiasm      |            20             |
 |Trailer Park Boys         |            17             |
 |Arrested Develpoment      |            16             |
+|Futurama                  |            14             |
+|Prison Break              |            12             |
+|Scrubs                    |             9             |
+|Yu-Gi-Oh!                 |             8             |
 |Game of Thrones           |             8             |
 |Black Mirror              |             8             |
 |The Office                |             7             |
@@ -544,18 +747,23 @@ sorting by longest series length...
 |Breaking Bad              |             5             |
 |Silicon Valley            |             5             |
 |Better Call Saul          |             5             |
-|Letterkenny               |             4             |
+|Letterkenny               |             5             |
+|Recess                    |             4             |
+|The Proud Family          |             4             |
+|My Name is Earl           |             4             |
+|Misfits                   |             4             |
 |Avatar, the Last Airbender|             3             |
 |Final Space               |             2             |
+|The Mandalorian           |             2             |
 |Chernobyl                 |             1             |
 ########################################################
 
-Mean:		  7.37
+Mean:		  7.72
 Median:		  6.00
-Pstdev:		  4.87
-Pvariance:	 23.71
-Stdev:		  5.00
-Variance:	 25.02
+Pstdev:		  5.25
+Pvariance:	 27.51
+Stdev:		  5.34
+Variance:	 28.49
 
 	How would you like to print the stats?
 1	-	By start year
@@ -568,32 +776,44 @@ Variance:	 25.02
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by least number of seasons...
 
-########################################################################################################################################################################################################################
-###########################| least number seasons |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| least number seasons |###########################
-|Chernobyl                 |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Chernobyl                 |
-|Final Space               |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2           |Final Space               |
-|Avatar, the Last Airbender|          3           |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          3           |Avatar, the Last Airbender|
-|The IT Crowd              |          4           |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          4           |The IT Crowd              |
-|Arrested Develpoment      |          5           |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          5           |Arrested Develpoment      |
-|Black Mirror              |          5           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          5           |Black Mirror              |
-|Peaky Blinders            |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          5           |Peaky Blinders            |
-|Breaking Bad              |          5           |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |          5           |Breaking Bad              |
-|Better Call Saul          |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          5           |Better Call Saul          |
-|Community                 |          6           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          6           |Community                 |
-|Silicon Valley            |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          6           |Silicon Valley            |
-|Brooklyn Nine-Nine        |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          7           |Brooklyn Nine-Nine        |
-|Parks and Recreation      |          7           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          7           |Parks and Recreation      |
-|Workaholics               |          7           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |          7           |Workaholics               |
-|Game of Thrones           |          8           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          8           |Game of Thrones           |
-|Letterkenny               |          8           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |          8           |Letterkenny               |
-|The Office                |          9           |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          9           |The Office                |
-|Curb your Enthusiasm      |          10          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          10          |Curb your Enthusiasm      |
-|Trailer Park Boys         |          12          |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          12          |Trailer Park Boys         |
-########################################################################################################################################################################################################################
+#################################################################################################################################################################################################################################################
+###########################| least number seasons |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| least number seasons |###########################
+|Chernobyl                 |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |          1           |Chernobyl                 |
+|The Proud Family          |          2           |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2           |The Proud Family          |
+|Final Space               |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2           |Final Space               |
+|The Mandalorian           |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2           |The Mandalorian           |
+|Avatar, the Last Airbender|          3           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3           |Avatar, the Last Airbender|
+|The IT Crowd              |          4           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          4           |The IT Crowd              |
+|My Name is Earl           |          4           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          4           |My Name is Earl           |
+|Arrested Develpoment      |          5           |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          5           |Arrested Develpoment      |
+|Prison Break              |          5           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          5           |Prison Break              |
+|Yu-Gi-Oh!                 |          5           |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5           |Yu-Gi-Oh!                 |
+|Black Mirror              |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          5           |Black Mirror              |
+|Peaky Blinders            |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          5           |Peaky Blinders            |
+|Breaking Bad              |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          5           |Breaking Bad              |
+|Better Call Saul          |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          5           |Better Call Saul          |
+|Misfits                   |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          5           |Misfits                   |
+|Community                 |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |          6           |Community                 |
+|Silicon Valley            |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          6           |Silicon Valley            |
+|Recess                    |          6           |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          6           |Recess                    |
+|Brooklyn Nine-Nine        |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          7           |Brooklyn Nine-Nine        |
+|Parks and Recreation      |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |          7           |Parks and Recreation      |
+|Workaholics               |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |          7           |Workaholics               |
+|Game of Thrones           |          8           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          8           |Game of Thrones           |
+|Scrubs                    |          9           |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          9           |Scrubs                    |
+|The Office                |          9           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          9           |The Office                |
+|Letterkenny               |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          9           |Letterkenny               |
+|Curb your Enthusiasm      |          10          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          10          |Curb your Enthusiasm      |
+|Futurama                  |          10          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          10          |Futurama                  |
+|Trailer Park Boys         |          12          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          12          |Trailer Park Boys         |
+|Family Guy                |          19          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          19          |Family Guy                |
+#################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -606,6 +826,8 @@ sorting by least number of seasons...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by least number of seasons...
@@ -613,32 +835,42 @@ sorting by least number of seasons...
 ###################################################
 ###########################| least number seasons |
 |Chernobyl                 |          1           |
+|The Proud Family          |          2           |
 |Final Space               |          2           |
+|The Mandalorian           |          2           |
 |Avatar, the Last Airbender|          3           |
 |The IT Crowd              |          4           |
+|My Name is Earl           |          4           |
 |Arrested Develpoment      |          5           |
+|Prison Break              |          5           |
+|Yu-Gi-Oh!                 |          5           |
 |Black Mirror              |          5           |
 |Peaky Blinders            |          5           |
 |Breaking Bad              |          5           |
 |Better Call Saul          |          5           |
+|Misfits                   |          5           |
 |Community                 |          6           |
 |Silicon Valley            |          6           |
+|Recess                    |          6           |
 |Brooklyn Nine-Nine        |          7           |
 |Parks and Recreation      |          7           |
 |Workaholics               |          7           |
 |Game of Thrones           |          8           |
-|Letterkenny               |          8           |
+|Scrubs                    |          9           |
 |The Office                |          9           |
+|Letterkenny               |          9           |
 |Curb your Enthusiasm      |          10          |
+|Futurama                  |          10          |
 |Trailer Park Boys         |          12          |
+|Family Guy                |          19          |
 ###################################################
 
-Mean:		  6.05
-Median:		  6.00
-Pstdev:		  2.63
-Pvariance:	  6.89
-Stdev:		  2.70
-Variance:	  7.27
+Mean:		  6.31
+Median:		  5.00
+Pstdev:		  3.55
+Pvariance:	 12.63
+Stdev:		  3.62
+Variance:	 13.08
 
 	How would you like to print the stats?
 1	-	By start year
@@ -651,32 +883,44 @@ Variance:	  7.27
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by most number of seasons...
 
-######################################################################################################################################################################################################################
-###########################| most number seasons |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| most number seasons |###########################
-|Trailer Park Boys         |         12          |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         12          |Trailer Park Boys         |
-|Curb your Enthusiasm      |         10          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         10          |Curb your Enthusiasm      |
-|The Office                |          9          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          9          |The Office                |
-|Game of Thrones           |          8          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          8          |Game of Thrones           |
-|Letterkenny               |          8          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |          8          |Letterkenny               |
-|Brooklyn Nine-Nine        |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          7          |Brooklyn Nine-Nine        |
-|Parks and Recreation      |          7          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          7          |Parks and Recreation      |
-|Workaholics               |          7          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |          7          |Workaholics               |
-|Community                 |          6          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          6          |Community                 |
-|Silicon Valley            |          6          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          6          |Silicon Valley            |
-|Arrested Develpoment      |          5          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          5          |Arrested Develpoment      |
-|Black Mirror              |          5          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          5          |Black Mirror              |
-|Peaky Blinders            |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          5          |Peaky Blinders            |
-|Breaking Bad              |          5          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |          5          |Breaking Bad              |
-|Better Call Saul          |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          5          |Better Call Saul          |
-|The IT Crowd              |          4          |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          4          |The IT Crowd              |
-|Avatar, the Last Airbender|          3          |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          3          |Avatar, the Last Airbender|
-|Final Space               |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2          |Final Space               |
-|Chernobyl                 |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Chernobyl                 |
-######################################################################################################################################################################################################################
+###############################################################################################################################################################################################################################################
+###########################| most number seasons |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| most number seasons |###########################
+|Family Guy                |         19          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         19          |Family Guy                |
+|Trailer Park Boys         |         12          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         12          |Trailer Park Boys         |
+|Curb your Enthusiasm      |         10          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |         10          |Curb your Enthusiasm      |
+|Futurama                  |         10          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         10          |Futurama                  |
+|Scrubs                    |          9          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          9          |Scrubs                    |
+|The Office                |          9          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          9          |The Office                |
+|Letterkenny               |          9          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          9          |Letterkenny               |
+|Game of Thrones           |          8          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          8          |Game of Thrones           |
+|Brooklyn Nine-Nine        |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          7          |Brooklyn Nine-Nine        |
+|Parks and Recreation      |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |          7          |Parks and Recreation      |
+|Workaholics               |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |          7          |Workaholics               |
+|Community                 |          6          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |          6          |Community                 |
+|Silicon Valley            |          6          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          6          |Silicon Valley            |
+|Recess                    |          6          |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          6          |Recess                    |
+|Arrested Develpoment      |          5          |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          5          |Arrested Develpoment      |
+|Prison Break              |          5          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          5          |Prison Break              |
+|Yu-Gi-Oh!                 |          5          |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5          |Yu-Gi-Oh!                 |
+|Black Mirror              |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          5          |Black Mirror              |
+|Peaky Blinders            |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          5          |Peaky Blinders            |
+|Breaking Bad              |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          5          |Breaking Bad              |
+|Better Call Saul          |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          5          |Better Call Saul          |
+|Misfits                   |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          5          |Misfits                   |
+|The IT Crowd              |          4          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          4          |The IT Crowd              |
+|My Name is Earl           |          4          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          4          |My Name is Earl           |
+|Avatar, the Last Airbender|          3          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3          |Avatar, the Last Airbender|
+|The Proud Family          |          2          |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2          |The Proud Family          |
+|Final Space               |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2          |Final Space               |
+|The Mandalorian           |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2          |The Mandalorian           |
+|Chernobyl                 |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |          1          |Chernobyl                 |
+###############################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -689,39 +933,51 @@ sorting by most number of seasons...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by most number of seasons...
 
 ##################################################
 ###########################| most number seasons |
+|Family Guy                |         19          |
 |Trailer Park Boys         |         12          |
 |Curb your Enthusiasm      |         10          |
+|Futurama                  |         10          |
+|Scrubs                    |          9          |
 |The Office                |          9          |
+|Letterkenny               |          9          |
 |Game of Thrones           |          8          |
-|Letterkenny               |          8          |
 |Brooklyn Nine-Nine        |          7          |
 |Parks and Recreation      |          7          |
 |Workaholics               |          7          |
 |Community                 |          6          |
 |Silicon Valley            |          6          |
+|Recess                    |          6          |
 |Arrested Develpoment      |          5          |
+|Prison Break              |          5          |
+|Yu-Gi-Oh!                 |          5          |
 |Black Mirror              |          5          |
 |Peaky Blinders            |          5          |
 |Breaking Bad              |          5          |
 |Better Call Saul          |          5          |
+|Misfits                   |          5          |
 |The IT Crowd              |          4          |
+|My Name is Earl           |          4          |
 |Avatar, the Last Airbender|          3          |
+|The Proud Family          |          2          |
 |Final Space               |          2          |
+|The Mandalorian           |          2          |
 |Chernobyl                 |          1          |
 ##################################################
 
-Mean:		  6.05
-Median:		  6.00
-Pstdev:		  2.63
-Pvariance:	  6.89
-Stdev:		  2.70
-Variance:	  7.27
+Mean:		  6.31
+Median:		  5.00
+Pstdev:		  3.55
+Pvariance:	 12.63
+Stdev:		  3.62
+Variance:	 13.08
 
 	How would you like to print the stats?
 1	-	By start year
@@ -734,32 +990,44 @@ Variance:	  7.27
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by least number of episodes...
 
-##########################################################################################################################################################################################################################
-###########################| least number episodes |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| least number episodes |###########################
-|Chernobyl                 |           5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           5           |Chernobyl                 |
-|Black Mirror              |          21           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          21           |Black Mirror              |
-|Final Space               |          23           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          23           |Final Space               |
-|The IT Crowd              |          25           |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          25           |The IT Crowd              |
-|Peaky Blinders            |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          30           |Peaky Blinders            |
-|Letterkenny               |          49           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |          49           |Letterkenny               |
-|Better Call Saul          |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          50           |Better Call Saul          |
-|Silicon Valley            |          53           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          53           |Silicon Valley            |
-|Avatar, the Last Airbender|          61           |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          61           |Avatar, the Last Airbender|
-|Breaking Bad              |          62           |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |          62           |Breaking Bad              |
-|Game of Thrones           |          73           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          73           |Game of Thrones           |
-|Arrested Develpoment      |          84           |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          84           |Arrested Develpoment      |
-|Workaholics               |          86           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |          86           |Workaholics               |
-|Curb your Enthusiasm      |          100          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          100          |Curb your Enthusiasm      |
-|Trailer Park Boys         |          105          |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          105          |Trailer Park Boys         |
-|Community                 |          110          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          110          |Community                 |
-|Parks and Recreation      |          125          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          125          |Parks and Recreation      |
-|Brooklyn Nine-Nine        |          143          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          143          |Brooklyn Nine-Nine        |
-|The Office                |          201          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          201          |The Office                |
-##########################################################################################################################################################################################################################
+###################################################################################################################################################################################################################################################
+###########################| least number episodes |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| least number episodes |###########################
+|Chernobyl                 |           5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |           5           |Chernobyl                 |
+|The Mandalorian           |          16           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          16           |The Mandalorian           |
+|Black Mirror              |          21           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          21           |Black Mirror              |
+|Final Space               |          23           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          23           |Final Space               |
+|The IT Crowd              |          25           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          25           |The IT Crowd              |
+|Peaky Blinders            |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          30           |Peaky Blinders            |
+|Misfits                   |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          37           |Misfits                   |
+|Better Call Saul          |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          50           |Better Call Saul          |
+|The Proud Family          |          52           |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52           |The Proud Family          |
+|Silicon Valley            |          53           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          53           |Silicon Valley            |
+|Letterkenny               |          56           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          56           |Letterkenny               |
+|Avatar, the Last Airbender|          61           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          61           |Avatar, the Last Airbender|
+|Breaking Bad              |          62           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          62           |Breaking Bad              |
+|Recess                    |          68           |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          68           |Recess                    |
+|Game of Thrones           |          73           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          73           |Game of Thrones           |
+|Arrested Develpoment      |          84           |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          84           |Arrested Develpoment      |
+|Workaholics               |          86           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |          86           |Workaholics               |
+|Prison Break              |          90           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          90           |Prison Break              |
+|My Name is Earl           |          96           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          96           |My Name is Earl           |
+|Curb your Enthusiasm      |          100          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          100          |Curb your Enthusiasm      |
+|Trailer Park Boys         |          105          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          105          |Trailer Park Boys         |
+|Community                 |          110          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |          110          |Community                 |
+|Parks and Recreation      |          125          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |          125          |Parks and Recreation      |
+|Futurama                  |          140          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          140          |Futurama                  |
+|Brooklyn Nine-Nine        |          143          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          143          |Brooklyn Nine-Nine        |
+|Scrubs                    |          182          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          182          |Scrubs                    |
+|The Office                |          201          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          201          |The Office                |
+|Yu-Gi-Oh!                 |          236          |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          236          |Yu-Gi-Oh!                 |
+|Family Guy                |          369          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          369          |Family Guy                |
+###################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -772,6 +1040,8 @@ sorting by least number of episodes...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by least number of episodes...
@@ -779,32 +1049,42 @@ sorting by least number of episodes...
 ####################################################
 ###########################| least number episodes |
 |Chernobyl                 |           5           |
+|The Mandalorian           |          16           |
 |Black Mirror              |          21           |
 |Final Space               |          23           |
 |The IT Crowd              |          25           |
 |Peaky Blinders            |          30           |
-|Letterkenny               |          49           |
+|Misfits                   |          37           |
 |Better Call Saul          |          50           |
+|The Proud Family          |          52           |
 |Silicon Valley            |          53           |
+|Letterkenny               |          56           |
 |Avatar, the Last Airbender|          61           |
 |Breaking Bad              |          62           |
+|Recess                    |          68           |
 |Game of Thrones           |          73           |
 |Arrested Develpoment      |          84           |
 |Workaholics               |          86           |
+|Prison Break              |          90           |
+|My Name is Earl           |          96           |
 |Curb your Enthusiasm      |          100          |
 |Trailer Park Boys         |          105          |
 |Community                 |          110          |
 |Parks and Recreation      |          125          |
+|Futurama                  |          140          |
 |Brooklyn Nine-Nine        |          143          |
+|Scrubs                    |          182          |
 |The Office                |          201          |
+|Yu-Gi-Oh!                 |          236          |
+|Family Guy                |          369          |
 ####################################################
 
-Mean:		 74.00
-Median:		 62.00
-Pstdev:		 47.65
-Pvariance:	2270.11
-Stdev:		 48.95
-Variance:	2396.22
+Mean:		 93.07
+Median:		 73.00
+Pstdev:		 76.01
+Pvariance:	5778.20
+Stdev:		 77.36
+Variance:	5984.57
 
 	How would you like to print the stats?
 1	-	By start year
@@ -817,32 +1097,44 @@ Variance:	2396.22
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by most number of episodes...
 
-########################################################################################################################################################################################################################
-###########################| most number episodes |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| most number episodes |###########################
-|The Office                |         201          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         201          |The Office                |
-|Brooklyn Nine-Nine        |         143          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |         143          |Brooklyn Nine-Nine        |
-|Parks and Recreation      |         125          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |         125          |Parks and Recreation      |
-|Community                 |         110          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |         110          |Community                 |
-|Trailer Park Boys         |         105          |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         105          |Trailer Park Boys         |
-|Curb your Enthusiasm      |         100          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         100          |Curb your Enthusiasm      |
-|Workaholics               |          86          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |          86          |Workaholics               |
-|Arrested Develpoment      |          84          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          84          |Arrested Develpoment      |
-|Game of Thrones           |          73          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          73          |Game of Thrones           |
-|Breaking Bad              |          62          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |          62          |Breaking Bad              |
-|Avatar, the Last Airbender|          61          |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          61          |Avatar, the Last Airbender|
-|Silicon Valley            |          53          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          53          |Silicon Valley            |
-|Better Call Saul          |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          50          |Better Call Saul          |
-|Letterkenny               |          49          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |          49          |Letterkenny               |
-|Peaky Blinders            |          30          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |          30          |Peaky Blinders            |
-|The IT Crowd              |          25          |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          25          |The IT Crowd              |
-|Final Space               |          23          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          23          |Final Space               |
-|Black Mirror              |          21          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          21          |Black Mirror              |
-|Chernobyl                 |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          5           |Chernobyl                 |
-########################################################################################################################################################################################################################
+#################################################################################################################################################################################################################################################
+###########################| most number episodes |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| most number episodes |###########################
+|Family Guy                |         369          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         369          |Family Guy                |
+|Yu-Gi-Oh!                 |         236          |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         236          |Yu-Gi-Oh!                 |
+|The Office                |         201          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         201          |The Office                |
+|Scrubs                    |         182          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         182          |Scrubs                    |
+|Brooklyn Nine-Nine        |         143          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |         143          |Brooklyn Nine-Nine        |
+|Futurama                  |         140          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         140          |Futurama                  |
+|Parks and Recreation      |         125          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |         125          |Parks and Recreation      |
+|Community                 |         110          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |         110          |Community                 |
+|Trailer Park Boys         |         105          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         105          |Trailer Park Boys         |
+|Curb your Enthusiasm      |         100          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |         100          |Curb your Enthusiasm      |
+|My Name is Earl           |          96          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          96          |My Name is Earl           |
+|Prison Break              |          90          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          90          |Prison Break              |
+|Workaholics               |          86          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |          86          |Workaholics               |
+|Arrested Develpoment      |          84          |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          84          |Arrested Develpoment      |
+|Game of Thrones           |          73          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          73          |Game of Thrones           |
+|Recess                    |          68          |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          68          |Recess                    |
+|Breaking Bad              |          62          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          62          |Breaking Bad              |
+|Avatar, the Last Airbender|          61          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          61          |Avatar, the Last Airbender|
+|Letterkenny               |          56          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          56          |Letterkenny               |
+|Silicon Valley            |          53          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          53          |Silicon Valley            |
+|The Proud Family          |          52          |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52          |The Proud Family          |
+|Better Call Saul          |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          50          |Better Call Saul          |
+|Misfits                   |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          37          |Misfits                   |
+|Peaky Blinders            |          30          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          30          |Peaky Blinders            |
+|The IT Crowd              |          25          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          25          |The IT Crowd              |
+|Final Space               |          23          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          23          |Final Space               |
+|Black Mirror              |          21          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          21          |Black Mirror              |
+|The Mandalorian           |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          16          |The Mandalorian           |
+|Chernobyl                 |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |          5           |Chernobyl                 |
+#################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -855,39 +1147,51 @@ sorting by most number of episodes...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by most number of episodes...
 
 ###################################################
 ###########################| most number episodes |
+|Family Guy                |         369          |
+|Yu-Gi-Oh!                 |         236          |
 |The Office                |         201          |
+|Scrubs                    |         182          |
 |Brooklyn Nine-Nine        |         143          |
+|Futurama                  |         140          |
 |Parks and Recreation      |         125          |
 |Community                 |         110          |
 |Trailer Park Boys         |         105          |
 |Curb your Enthusiasm      |         100          |
+|My Name is Earl           |          96          |
+|Prison Break              |          90          |
 |Workaholics               |          86          |
 |Arrested Develpoment      |          84          |
 |Game of Thrones           |          73          |
+|Recess                    |          68          |
 |Breaking Bad              |          62          |
 |Avatar, the Last Airbender|          61          |
+|Letterkenny               |          56          |
 |Silicon Valley            |          53          |
+|The Proud Family          |          52          |
 |Better Call Saul          |          50          |
-|Letterkenny               |          49          |
+|Misfits                   |          37          |
 |Peaky Blinders            |          30          |
 |The IT Crowd              |          25          |
 |Final Space               |          23          |
 |Black Mirror              |          21          |
+|The Mandalorian           |          16          |
 |Chernobyl                 |          5           |
 ###################################################
 
-Mean:		 74.00
-Median:		 62.00
-Pstdev:		 47.65
-Pvariance:	2270.11
-Stdev:		 48.95
-Variance:	2396.22
+Mean:		 93.07
+Median:		 73.00
+Pstdev:		 76.01
+Pvariance:	5778.20
+Stdev:		 77.36
+Variance:	5984.57
 
 	How would you like to print the stats?
 1	-	By start year
@@ -900,32 +1204,44 @@ Variance:	2396.22
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by shortest time...
 
-##########################################################################################################################################################################################################
-###########################| shortest time |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| shortest time |###########################
-|Chernobyl                 |      5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      5.0      |Chernobyl                 |
-|Final Space               |   8.433333    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   8.433333    |Final Space               |
-|The IT Crowd              |   9.166667    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   9.166667    |The IT Crowd              |
-|Letterkenny               |   17.966667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |   17.966667   |Letterkenny               |
-|Silicon Valley            |   19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |   19.433333   |Silicon Valley            |
-|Black Mirror              |     21.0      |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |     21.0      |Black Mirror              |
-|Avatar, the Last Airbender|   22.366667   |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   22.366667   |Avatar, the Last Airbender|
-|Peaky Blinders            |     25.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |     25.0      |Peaky Blinders            |
-|Arrested Develpoment      |   30.800000   |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |   30.800000   |Arrested Develpoment      |
-|Workaholics               |   31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |   31.533333   |Workaholics               |
-|Trailer Park Boys         |   38.500000   |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   38.500000   |Trailer Park Boys         |
-|Community                 |   40.333333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |   40.333333   |Community                 |
-|Better Call Saul          |   41.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   41.666667   |Better Call Saul          |
-|Parks and Recreation      |   45.833333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |   45.833333   |Parks and Recreation      |
-|Curb your Enthusiasm      |     50.0      |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |     50.0      |Curb your Enthusiasm      |
-|Breaking Bad              |   51.666667   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |   51.666667   |Breaking Bad              |
-|Brooklyn Nine-Nine        |   52.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |   52.433333   |Brooklyn Nine-Nine        |
-|Game of Thrones           |   60.833333   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |   60.833333   |Game of Thrones           |
-|The Office                |   73.700000   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   73.700000   |The Office                |
-##########################################################################################################################################################################################################
+###################################################################################################################################################################################################################################
+###########################| shortest time |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| shortest time |###########################
+|Chernobyl                 |      5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |      5.0      |Chernobyl                 |
+|Final Space               |   8.433333    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   8.433333    |Final Space               |
+|The IT Crowd              |   9.166667    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   9.166667    |The IT Crowd              |
+|The Mandalorian           |   11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   11.733333   |The Mandalorian           |
+|Silicon Valley            |   19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |   19.433333   |Silicon Valley            |
+|The Proud Family          |   19.933333   |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   19.933333   |The Proud Family          |
+|Letterkenny               |   20.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   20.533333   |Letterkenny               |
+|Black Mirror              |     21.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |     21.0      |Black Mirror              |
+|Avatar, the Last Airbender|   22.366667   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   22.366667   |Avatar, the Last Airbender|
+|Peaky Blinders            |     25.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |     25.0      |Peaky Blinders            |
+|Recess                    |   26.066667   |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   26.066667   |Recess                    |
+|Misfits                   |   27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |   27.133333   |Misfits                   |
+|Arrested Develpoment      |   30.800000   |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   30.800000   |Arrested Develpoment      |
+|Workaholics               |   31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |   31.533333   |Workaholics               |
+|My Name is Earl           |   33.600000   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   33.600000   |My Name is Earl           |
+|Trailer Park Boys         |   38.500000   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |   38.500000   |Trailer Park Boys         |
+|Community                 |   40.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |   40.333333   |Community                 |
+|Better Call Saul          |   41.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |   41.666667   |Better Call Saul          |
+|Parks and Recreation      |   45.833333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |   45.833333   |Parks and Recreation      |
+|Curb your Enthusiasm      |     50.0      |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |     50.0      |Curb your Enthusiasm      |
+|Futurama                  |   51.333333   |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   51.333333   |Futurama                  |
+|Breaking Bad              |   51.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   51.666667   |Breaking Bad              |
+|Brooklyn Nine-Nine        |   52.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |   52.433333   |Brooklyn Nine-Nine        |
+|Game of Thrones           |   60.833333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |   60.833333   |Game of Thrones           |
+|Prison Break              |     63.0      |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |     63.0      |Prison Break              |
+|Scrubs                    |   66.733333   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |   66.733333   |Scrubs                    |
+|The Office                |   73.700000   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   73.700000   |The Office                |
+|Yu-Gi-Oh!                 |   86.533333   |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   86.533333   |Yu-Gi-Oh!                 |
+|Family Guy                |  135.300000   |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  135.300000   |Family Guy                |
+###################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -938,6 +1254,8 @@ sorting by shortest time...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by shortest time...
@@ -947,30 +1265,40 @@ sorting by shortest time...
 |Chernobyl                 |      5.0      |
 |Final Space               |   8.433333    |
 |The IT Crowd              |   9.166667    |
-|Letterkenny               |   17.966667   |
+|The Mandalorian           |   11.733333   |
 |Silicon Valley            |   19.433333   |
+|The Proud Family          |   19.933333   |
+|Letterkenny               |   20.533333   |
 |Black Mirror              |     21.0      |
 |Avatar, the Last Airbender|   22.366667   |
 |Peaky Blinders            |     25.0      |
+|Recess                    |   26.066667   |
+|Misfits                   |   27.133333   |
 |Arrested Develpoment      |   30.800000   |
 |Workaholics               |   31.533333   |
+|My Name is Earl           |   33.600000   |
 |Trailer Park Boys         |   38.500000   |
 |Community                 |   40.333333   |
 |Better Call Saul          |   41.666667   |
 |Parks and Recreation      |   45.833333   |
 |Curb your Enthusiasm      |     50.0      |
+|Futurama                  |   51.333333   |
 |Breaking Bad              |   51.666667   |
 |Brooklyn Nine-Nine        |   52.433333   |
 |Game of Thrones           |   60.833333   |
+|Prison Break              |     63.0      |
+|Scrubs                    |   66.733333   |
 |The Office                |   73.700000   |
+|Yu-Gi-Oh!                 |   86.533333   |
+|Family Guy                |  135.300000   |
 ############################################
 
-Mean:		 33.98
-Median:		 31.53
-Pstdev:		 18.42
-Pvariance:	339.23
-Stdev:		 18.92
-Variance:	358.08
+Mean:		 40.33
+Median:		 33.60
+Pstdev:		 27.07
+Pvariance:	732.61
+Stdev:		 27.55
+Variance:	758.77
 
 	How would you like to print the stats?
 1	-	By start year
@@ -983,32 +1311,44 @@ Variance:	358.08
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by longest time...
 
-########################################################################################################################################################################################################
-###########################| longest time |1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021| longest time |###########################
-|The Office                |  73.700000   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |  73.700000   |The Office                |
-|Game of Thrones           |  60.833333   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |  60.833333   |Game of Thrones           |
-|Brooklyn Nine-Nine        |  52.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |  52.433333   |Brooklyn Nine-Nine        |
-|Breaking Bad              |  51.666667   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |  51.666667   |Breaking Bad              |
-|Curb your Enthusiasm      |     50.0     |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |     50.0     |Curb your Enthusiasm      |
-|Parks and Recreation      |  45.833333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |  45.833333   |Parks and Recreation      |
-|Better Call Saul          |  41.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |  41.666667   |Better Call Saul          |
-|Community                 |  40.333333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |  40.333333   |Community                 |
-|Trailer Park Boys         |  38.500000   |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  38.500000   |Trailer Park Boys         |
-|Workaholics               |  31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |  31.533333   |Workaholics               |
-|Arrested Develpoment      |  30.800000   |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |  30.800000   |Arrested Develpoment      |
-|Peaky Blinders            |     25.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |     25.0     |Peaky Blinders            |
-|Avatar, the Last Airbender|  22.366667   |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |  22.366667   |Avatar, the Last Airbender|
-|Black Mirror              |     21.0     |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |     21.0     |Black Mirror              |
-|Silicon Valley            |  19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |  19.433333   |Silicon Valley            |
-|Letterkenny               |  17.966667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |  17.966667   |Letterkenny               |
-|The IT Crowd              |   9.166667   |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   9.166667   |The IT Crowd              |
-|Final Space               |   8.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   8.433333   |Final Space               |
-|Chernobyl                 |     5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     5.0      |Chernobyl                 |
-########################################################################################################################################################################################################
+#################################################################################################################################################################################################################################
+###########################| longest time |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| longest time |###########################
+|Family Guy                |  135.300000  |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  135.300000  |Family Guy                |
+|Yu-Gi-Oh!                 |  86.533333   |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  86.533333   |Yu-Gi-Oh!                 |
+|The Office                |  73.700000   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |  73.700000   |The Office                |
+|Scrubs                    |  66.733333   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |  66.733333   |Scrubs                    |
+|Prison Break              |     63.0     |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |     63.0     |Prison Break              |
+|Game of Thrones           |  60.833333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |  60.833333   |Game of Thrones           |
+|Brooklyn Nine-Nine        |  52.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |  52.433333   |Brooklyn Nine-Nine        |
+|Breaking Bad              |  51.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |  51.666667   |Breaking Bad              |
+|Futurama                  |  51.333333   |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |  51.333333   |Futurama                  |
+|Curb your Enthusiasm      |     50.0     |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |     50.0     |Curb your Enthusiasm      |
+|Parks and Recreation      |  45.833333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |  45.833333   |Parks and Recreation      |
+|Better Call Saul          |  41.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |  41.666667   |Better Call Saul          |
+|Community                 |  40.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |  40.333333   |Community                 |
+|Trailer Park Boys         |  38.500000   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |  38.500000   |Trailer Park Boys         |
+|My Name is Earl           |  33.600000   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |  33.600000   |My Name is Earl           |
+|Workaholics               |  31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |  31.533333   |Workaholics               |
+|Arrested Develpoment      |  30.800000   |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  30.800000   |Arrested Develpoment      |
+|Misfits                   |  27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |  27.133333   |Misfits                   |
+|Recess                    |  26.066667   |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  26.066667   |Recess                    |
+|Peaky Blinders            |     25.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |     25.0     |Peaky Blinders            |
+|Avatar, the Last Airbender|  22.366667   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |  22.366667   |Avatar, the Last Airbender|
+|Black Mirror              |     21.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |     21.0     |Black Mirror              |
+|Letterkenny               |  20.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |  20.533333   |Letterkenny               |
+|The Proud Family          |  19.933333   |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  19.933333   |The Proud Family          |
+|Silicon Valley            |  19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |  19.433333   |Silicon Valley            |
+|The Mandalorian           |  11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |  11.733333   |The Mandalorian           |
+|The IT Crowd              |   9.166667   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   9.166667   |The IT Crowd              |
+|Final Space               |   8.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   8.433333   |Final Space               |
+|Chernobyl                 |     5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |     5.0      |Chernobyl                 |
+#################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1021,36 +1361,262 @@ sorting by longest time...
 8	-	By most number episodes
 9	-	By shortest time
 10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
 
 
 sorting by longest time...
 
 ###########################################
 ###########################| longest time |
+|Family Guy                |  135.300000  |
+|Yu-Gi-Oh!                 |  86.533333   |
 |The Office                |  73.700000   |
+|Scrubs                    |  66.733333   |
+|Prison Break              |     63.0     |
 |Game of Thrones           |  60.833333   |
 |Brooklyn Nine-Nine        |  52.433333   |
 |Breaking Bad              |  51.666667   |
+|Futurama                  |  51.333333   |
 |Curb your Enthusiasm      |     50.0     |
 |Parks and Recreation      |  45.833333   |
 |Better Call Saul          |  41.666667   |
 |Community                 |  40.333333   |
 |Trailer Park Boys         |  38.500000   |
+|My Name is Earl           |  33.600000   |
 |Workaholics               |  31.533333   |
 |Arrested Develpoment      |  30.800000   |
+|Misfits                   |  27.133333   |
+|Recess                    |  26.066667   |
 |Peaky Blinders            |     25.0     |
 |Avatar, the Last Airbender|  22.366667   |
 |Black Mirror              |     21.0     |
+|Letterkenny               |  20.533333   |
+|The Proud Family          |  19.933333   |
 |Silicon Valley            |  19.433333   |
-|Letterkenny               |  17.966667   |
+|The Mandalorian           |  11.733333   |
 |The IT Crowd              |   9.166667   |
 |Final Space               |   8.433333   |
 |Chernobyl                 |     5.0      |
 ###########################################
 
-Mean:		 33.98
-Median:		 31.53
-Pstdev:		 18.42
-Pvariance:	339.23
-Stdev:		 18.92
-Variance:	358.08
+Mean:		 40.33
+Median:		 33.60
+Pstdev:		 27.07
+Pvariance:	732.61
+Stdev:		 27.55
+Variance:	758.77
+
+	How would you like to print the stats?
+1	-	By start year
+2	-	By end year
+3	-	By shortest series run length
+4	-	By longest series run length
+5	-	By least number seasons
+6	-	By most number seasons
+7	-	By least number episodes
+8	-	By most number episodes
+9	-	By shortest time
+10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
+
+
+sorting by most episodes per season...
+
+#########################################################################################################################################################################################################################################################
+###########################| most episodes per season |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| most episodes per season |###########################
+|Yu-Gi-Oh!                 |        47.200000         |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        47.200000         |Yu-Gi-Oh!                 |
+|The Proud Family          |           26.0           |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           26.0           |The Proud Family          |
+|My Name is Earl           |           24.0           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0           |My Name is Earl           |
+|The Office                |        22.333333         |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |        22.333333         |The Office                |
+|Brooklyn Nine-Nine        |        20.428571         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |        20.428571         |Brooklyn Nine-Nine        |
+|Avatar, the Last Airbender|        20.333333         |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |        20.333333         |Avatar, the Last Airbender|
+|Scrubs                    |        20.222222         |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |        20.222222         |Scrubs                    |
+|Family Guy                |        19.421053         |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |        19.421053         |Family Guy                |
+|Community                 |        18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |        18.333333         |Community                 |
+|Prison Break              |           18.0           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |           18.0           |Prison Break              |
+|Parks and Recreation      |        17.857143         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |        17.857143         |Parks and Recreation      |
+|Arrested Develpoment      |        16.800000         |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |        16.800000         |Arrested Develpoment      |
+|Futurama                  |           14.0           |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |           14.0           |Futurama                  |
+|Breaking Bad              |        12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |        12.400000         |Breaking Bad              |
+|Workaholics               |        12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |        12.285714         |Workaholics               |
+|Final Space               |        11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |        11.500000         |Final Space               |
+|Recess                    |        11.333333         |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        11.333333         |Recess                    |
+|Curb your Enthusiasm      |           10.0           |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |           10.0           |Curb your Enthusiasm      |
+|Better Call Saul          |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |           10.0           |Better Call Saul          |
+|Game of Thrones           |         9.125000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |         9.125000         |Game of Thrones           |
+|Silicon Valley            |         8.833333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |         8.833333         |Silicon Valley            |
+|Trailer Park Boys         |         8.750000         |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         8.750000         |Trailer Park Boys         |
+|The Mandalorian           |           8.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |           8.0            |The Mandalorian           |
+|Misfits                   |         7.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |         7.400000         |Misfits                   |
+|The IT Crowd              |         6.250000         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         6.250000         |The IT Crowd              |
+|Letterkenny               |         6.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |         6.222222         |Letterkenny               |
+|Peaky Blinders            |           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |           6.0            |Peaky Blinders            |
+|Chernobyl                 |           5.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |           5.0            |Chernobyl                 |
+|Black Mirror              |         4.200000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |         4.200000         |Black Mirror              |
+#########################################################################################################################################################################################################################################################
+
+	How would you like to print the stats?
+1	-	By start year
+2	-	By end year
+3	-	By shortest series run length
+4	-	By longest series run length
+5	-	By least number seasons
+6	-	By most number seasons
+7	-	By least number episodes
+8	-	By most number episodes
+9	-	By shortest time
+10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
+
+
+sorting by most episodes per season...
+
+#######################################################
+###########################| most episodes per season |
+|Yu-Gi-Oh!                 |        47.200000         |
+|The Proud Family          |           26.0           |
+|My Name is Earl           |           24.0           |
+|The Office                |        22.333333         |
+|Brooklyn Nine-Nine        |        20.428571         |
+|Avatar, the Last Airbender|        20.333333         |
+|Scrubs                    |        20.222222         |
+|Family Guy                |        19.421053         |
+|Community                 |        18.333333         |
+|Prison Break              |           18.0           |
+|Parks and Recreation      |        17.857143         |
+|Arrested Develpoment      |        16.800000         |
+|Futurama                  |           14.0           |
+|Breaking Bad              |        12.400000         |
+|Workaholics               |        12.285714         |
+|Final Space               |        11.500000         |
+|Recess                    |        11.333333         |
+|Curb your Enthusiasm      |           10.0           |
+|Better Call Saul          |           10.0           |
+|Game of Thrones           |         9.125000         |
+|Silicon Valley            |         8.833333         |
+|Trailer Park Boys         |         8.750000         |
+|The Mandalorian           |           8.0            |
+|Misfits                   |         7.400000         |
+|The IT Crowd              |         6.250000         |
+|Letterkenny               |         6.222222         |
+|Peaky Blinders            |           6.0            |
+|Chernobyl                 |           5.0            |
+|Black Mirror              |         4.200000         |
+#######################################################
+
+Mean:		 14.56
+Median:		 12.29
+Pstdev:		  8.68
+Pvariance:	 75.30
+Stdev:		  8.83
+Variance:	 77.99
+
+	How would you like to print the stats?
+1	-	By start year
+2	-	By end year
+3	-	By shortest series run length
+4	-	By longest series run length
+5	-	By least number seasons
+6	-	By most number seasons
+7	-	By least number episodes
+8	-	By most number episodes
+9	-	By shortest time
+10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
+
+
+sorting by least episodes per season...
+
+###########################################################################################################################################################################################################################################################
+###########################| least episodes per season |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| least episodes per season |###########################
+|Black Mirror              |         4.200000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |         4.200000          |Black Mirror              |
+|Chernobyl                 |            5.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |            5.0            |Chernobyl                 |
+|Peaky Blinders            |            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |            6.0            |Peaky Blinders            |
+|Letterkenny               |         6.222222          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |         6.222222          |Letterkenny               |
+|The IT Crowd              |         6.250000          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         6.250000          |The IT Crowd              |
+|Misfits                   |         7.400000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |         7.400000          |Misfits                   |
+|The Mandalorian           |            8.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |            8.0            |The Mandalorian           |
+|Trailer Park Boys         |         8.750000          |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         8.750000          |Trailer Park Boys         |
+|Silicon Valley            |         8.833333          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |         8.833333          |Silicon Valley            |
+|Game of Thrones           |         9.125000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |         9.125000          |Game of Thrones           |
+|Curb your Enthusiasm      |           10.0            |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |           10.0            |Curb your Enthusiasm      |
+|Better Call Saul          |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |           10.0            |Better Call Saul          |
+|Recess                    |         11.333333         |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         11.333333         |Recess                    |
+|Final Space               |         11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |         11.500000         |Final Space               |
+|Workaholics               |         12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |         12.285714         |Workaholics               |
+|Breaking Bad              |         12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         12.400000         |Breaking Bad              |
+|Futurama                  |           14.0            |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |           14.0            |Futurama                  |
+|Arrested Develpoment      |         16.800000         |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         16.800000         |Arrested Develpoment      |
+|Parks and Recreation      |         17.857143         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |         17.857143         |Parks and Recreation      |
+|Prison Break              |           18.0            |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |           18.0            |Prison Break              |
+|Community                 |         18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |         18.333333         |Community                 |
+|Family Guy                |         19.421053         |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         19.421053         |Family Guy                |
+|Scrubs                    |         20.222222         |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         20.222222         |Scrubs                    |
+|Avatar, the Last Airbender|         20.333333         |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         20.333333         |Avatar, the Last Airbender|
+|Brooklyn Nine-Nine        |         20.428571         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |         20.428571         |Brooklyn Nine-Nine        |
+|The Office                |         22.333333         |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         22.333333         |The Office                |
+|My Name is Earl           |           24.0            |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0            |My Name is Earl           |
+|The Proud Family          |           26.0            |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           26.0            |The Proud Family          |
+|Yu-Gi-Oh!                 |         47.200000         |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         47.200000         |Yu-Gi-Oh!                 |
+###########################################################################################################################################################################################################################################################
+
+	How would you like to print the stats?
+1	-	By start year
+2	-	By end year
+3	-	By shortest series run length
+4	-	By longest series run length
+5	-	By least number seasons
+6	-	By most number seasons
+7	-	By least number episodes
+8	-	By most number episodes
+9	-	By shortest time
+10	-	By longest time
+11	-	By most episodes per season
+12	-	By least episodes per season
+
+
+sorting by least episodes per season...
+
+########################################################
+###########################| least episodes per season |
+|Black Mirror              |         4.200000          |
+|Chernobyl                 |            5.0            |
+|Peaky Blinders            |            6.0            |
+|Letterkenny               |         6.222222          |
+|The IT Crowd              |         6.250000          |
+|Misfits                   |         7.400000          |
+|The Mandalorian           |            8.0            |
+|Trailer Park Boys         |         8.750000          |
+|Silicon Valley            |         8.833333          |
+|Game of Thrones           |         9.125000          |
+|Curb your Enthusiasm      |           10.0            |
+|Better Call Saul          |           10.0            |
+|Recess                    |         11.333333         |
+|Final Space               |         11.500000         |
+|Workaholics               |         12.285714         |
+|Breaking Bad              |         12.400000         |
+|Futurama                  |           14.0            |
+|Arrested Develpoment      |         16.800000         |
+|Parks and Recreation      |         17.857143         |
+|Prison Break              |           18.0            |
+|Community                 |         18.333333         |
+|Family Guy                |         19.421053         |
+|Scrubs                    |         20.222222         |
+|Avatar, the Last Airbender|         20.333333         |
+|Brooklyn Nine-Nine        |         20.428571         |
+|The Office                |         22.333333         |
+|My Name is Earl           |           24.0            |
+|The Proud Family          |           26.0            |
+|Yu-Gi-Oh!                 |         47.200000         |
+########################################################
+
+Mean:		 14.56
+Median:		 12.29
+Pstdev:		  8.68
+Pvariance:	 75.30
+Stdev:		  8.83
+Variance:	 77.99
