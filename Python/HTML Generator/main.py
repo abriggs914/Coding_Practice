@@ -65,31 +65,89 @@ class HTMLFile:
                                                                            h if len(n_lines) % 2 == 0 else h + 1:]
                 print("lines:", lines, "n_lines:", og, "n_lines:", n_lines)
                 for lst in n_lines:
-                    if isinstance(lst, OL) or isinstance(lst, UL):
-                        tag_close = lst.e__tag_close
-                        tag_open = lst.e__tag_open
-                        lst = [str(lst)[: -tag_close.index(tag_open[-1])]] + lst.e__items + [tag_close]
+                    if isinstance(lst, Element):
+                        print("\n\tElement: {}, children: {}".format(lst, lst.e__get_children()))
+                        lst = lst.e__get_children()
+                    else:
+                        print("NOT AN ELEMENT <{}>".format(lst))
                     if not isinstance(lst, list):
                         lst = [lst]
-                    for line in lst:
-                        print("isinstance(line, Element):", isinstance(line, OL))
-
-                        elem = isinstance(line, Element)
-                        print("isinstance(line, Element):", isinstance(line, OL))
-                        if elem:
-                            line = str(line)
-                        print("line:", line)
-                        if line[0] == "<":
-                            if line[1] == "/":
-                                n_tabs -= 1
-                        f.write("".join(["\t" for i in range(n_tabs)]) + line + "\n")
-                        if line[0] == "<":
-                            if line[1] == "/":
-                                pass
-                            else:
-                                n_tabs += 1
-                        n_tabs += -1 if elem else 0
+                    for lst_line in lst:
+                        for line in lst_line.split("\n"):
+                            line = line.strip()
+                            if line:
+                                f.write("".join(["\t" for i in range(n_tabs)]) + line + "\n")
+                    # if not isinstance(lst, list):
+                    #     lst = [lst]
+                    # for line in lst:
+                    #     f.write("".join(["\t" for i in range(n_tabs)]) + line + "\n")
+                    # if isinstance(lst, OL) or isinstance(lst, UL):
+                    #     tag_close = lst.e__tag_close
+                    #     tag_open = lst.e__tag_open
+                    #     lst = [str(lst)[: -tag_close.index(tag_open[-1])]] + lst.e__items + [tag_close]
+                    # if not isinstance(lst, list):
+                    #     lst = [lst]
+                    # for line in lst:
+                    #     print("isinstance(line, Element):", isinstance(line, OL))
+                    #
+                    #     elem = isinstance(line, Element)
+                    #     print("isinstance(line, Element):", isinstance(line, OL))
+                    #     if elem:
+                    #         line = str(line)
+                    #     print("line:", line)
+                    #     if line[0] == "<":
+                    #         if line[1] == "/":
+                    #             n_tabs -= 1
+                    #     f.write("".join(["\t" for i in range(n_tabs)]) + line + "\n")
+                    #     if line[0] == "<":
+                    #         if line[1] == "/":
+                    #             pass
+                    #         else:
+                    #             n_tabs += 1
+                    #     n_tabs += -1 if elem else 0
             self.currently_saved = True
+########################################################################################################################
+        # n_tabs = 0
+        # with open(self.f_name, "w") as f:
+        #     for section, lines in self.lines.items():
+        #         if not lines and section not in ["top", "bottom"]:
+        #             continue
+        #         print("section:", section)
+        #         n_lines = self.tag(section)
+        #         og = n_lines.copy()
+        #         h = len(n_lines) // 2
+        #         n_lines = n_lines[:h if len(n_lines) > 1 else 1] + lines + n_lines[
+        #                                                                    h if len(n_lines) % 2 == 0 else h + 1:]
+        #         print("lines:", lines, "n_lines:", og, "n_lines:", n_lines)
+        #         for lst in n_lines:
+        #             if isinstance(lst, OL) or isinstance(lst, UL):
+        #                 tag_close = lst.e__tag_close
+        #                 tag_open = lst.e__tag_open
+        #                 lst = [str(lst)[: -tag_close.index(tag_open[-1])]] + lst.e__items + [tag_close]
+        #             if not isinstance(lst, list):
+        #                 lst = [lst]
+        #             for line in lst:
+        #                 print("isinstance(line, Element):", isinstance(line, OL))
+        #
+        #                 elem = isinstance(line, Element)
+        #                 print("isinstance(line, Element):", isinstance(line, OL))
+        #                 if elem:
+        #                     line = str(line)
+        #                 print("line:", line)
+        #                 if line[0] == "<":
+        #                     if line[1] == "/":
+        #                         n_tabs -= 1
+        #                 f.write("".join(["\t" for i in range(n_tabs)]) + line + "\n")
+        #                 if line[0] == "<":
+        #                     if line[1] == "/":
+        #                         pass
+        #                     else:
+        #                         n_tabs += 1
+        #                 n_tabs += -1 if elem else 0
+        #     self.currently_saved = True
+
+########################################################################################################################
+
         # n_tabs = 0
         # with open(self.f_name, "w") as f:
         #     for section, lines in self.lines.items():
@@ -145,6 +203,8 @@ class HTMLFile:
         #                     n_tabs += 1
         #             n_tabs += -1 if elem else 0
         #     self.currently_saved = True
+
+########################################################################################################################
 
     def open(self):
         if self.f_name in os.listdir():
@@ -216,25 +276,26 @@ if __name__ == "__main__":
     # html.add_h5("body", "Hello World!! - 5", style="color:indigo")
     # html.add_h6("body", "Hello World!! - 6", style="color:violet")
     # html.add_p("body", "This is a paragraph tag\n does it work with line breaks? let's find out!")
-    # logo = html.add_image("body", "https://www.bwstrailers.com/wp-content/uploads/2020/11/BWS-Chrome-Final-WO-Manufacturing.png")
+    logo = html.add_image("body", "https://www.bwstrailers.com/wp-content/uploads/2020/11/BWS-Chrome-Final-WO-Manufacturing.png")
     # ord_lst = html.add_ol("body", start=10)
     # ord_lst + 15
     # ord_lst + 16
     # ord_lst + 17
     # ord_lst + 25
-    uord_lst = html.add_ul("head", style="color:lime; font-weight=1800; font-size=60px")
-    uord_lst + 15
-    uord_lst + 16
-    uord_lst + LI(17, style="color:yellow; font-weight=1800; font-size=60p")
-    uord_lst + 25
+    # uord_lst = html.add_ul("head", style="color:lime; font-weight=1800; font-size=60px")
+    # uord_lst + 15
+    # uord_lst + 16
+    # uord_lst + LI(17, style="color:yellow; font-weight=1800; font-size=60p")
+    # uord_lst + 25
 
+########################################################################################################################
 
-
-    # html.add_a(logo, "https://www.youtube.com/")  #  *OR*  logo.add_link("https://www.youtube.com/")
+    html.add_a(logo, "https://www.youtube.com/")  #  *OR*  logo.add_link("https://www.youtube.com/")
     # footer_h1.e__add_link("https://www.cbc.ca")
 
     # alt="BWS Manufacturing" srcset="https://www.bwstrailers.com/wp-content/uploads/2020/11/BWS-Chrome-Final-WO-Manufacturing.png 1x, https://www.bwstrailers.com/wp-content/uploads/2020/11/BWS-Chrome-Final-WO-Manufacturing.png 2x" >
 
+########################################################################################################################
 
     html.save()
     html.open()

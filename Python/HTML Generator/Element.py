@@ -1,3 +1,6 @@
+# TODO: Convert all html creation code to list format. Main file-writer will split lists of contents and be able to
+#  write nested elements more simply then the current string-only approach.
+
 class Element:
 
     def __init__(self, desc, **kwargs):
@@ -5,6 +8,7 @@ class Element:
         for attr, val in kwargs.items():
             setattr(self, attr, val)
         self.e__link_ref = None
+        self.e__children = []
 
     # txt can be another element object.
     def e__add_link(self, a):
@@ -26,6 +30,9 @@ class Element:
 
         return " " + " ".join([k + "=\'" + str(v) + "\'" for k, v in kwargs.items()])
 
+    def e__get_children(self):
+        return self.e__children
+
 
 class Img(Element):
 
@@ -34,18 +41,25 @@ class Img(Element):
         self.e__resource = resource
         self.e__tag_open = "<img"
         self.e__tag_close = ">"
+        self.e__children = [" src=" + self.e__resource]
+
+    def e__get_children(self):
+        children = [self.e__tag_open] + self.e__children + [self.e__collect_kwargs()] + [self.e__tag_close]
+        linked = self.e__get_link()
+        if linked:
+            op, cl = linked
+            children = [op] + children + [cl]
+
+            x = [self.e__tag_open] + self.e__children + [self.e__collect_kwargs()] + [self.e__tag_close]
+            print('''{op}\n\t{eto} {kwargs} src={resource}{etc}\n{cl}'''.format(op=op, kwargs=self.e__collect_kwargs(), eto=self.e__tag_open, resource=self.e__resource, etc=self.e__tag_close, cl=cl))
+        return children
 
     def __repr__(self):
         linked = self.e__get_link()
         op, cl = "", ""
         if linked:
             op, cl = linked
-        return op + " ".join([
-            self.e__tag_open,
-            self.e__collect_kwargs(),
-            " src=" + self.e__resource,
-            self.e__tag_close
-        ]) + cl
+        return '''{op}\n\t{eto} {kwargs} src={resource}{etc}\n{cl}'''.format(op=op, kwargs=self.e__collect_kwargs(), eto=self.e__tag_open, resource=self.e__resource, etc=self.e__tag_close, cl=cl)
 
 
 class H1(Element):
@@ -243,7 +257,7 @@ class OL(Element):
             self.e__items.append(LI(other, **kwargs))
 
     def e__add_item(self, item, **kwargs):
-        self + (item, **kwargs)
+        self.__add__(item, **kwargs)
 
     def __sub__(self, other):
         try:
