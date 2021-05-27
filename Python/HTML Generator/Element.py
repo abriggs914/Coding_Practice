@@ -44,15 +44,43 @@ class Img(Element):
         self.e__children = [" src=" + self.e__resource]
 
     def e__get_children(self):
-        children = [self.e__tag_open] + self.e__children + [self.e__collect_kwargs()] + [self.e__tag_close]
+        # children = [self.e__tag_open] + self.e__children + [self.e__collect_kwargs()] + [self.e__tag_close]
         linked = self.e__get_link()
         if linked:
             op, cl = linked
-            children = [op] + children + [cl]
+            # children = [op] + children + [cl]
 
-            x = [self.e__tag_open] + self.e__children + [self.e__collect_kwargs()] + [self.e__tag_close]
-            print('''{op}\n\t{eto} {kwargs} src={resource}{etc}\n{cl}'''.format(op=op, kwargs=self.e__collect_kwargs(), eto=self.e__tag_open, resource=self.e__resource, etc=self.e__tag_close, cl=cl))
-        return children
+        #     x = [self.e__tag_open] + self.e__children + [self.e__collect_kwargs()] + [self.e__tag_close]
+        #     print('''{op}\n\t{eto} {kwargs} src={resource}{etc}\n{cl}'''.format(op=op, kwargs=self.e__collect_kwargs(), eto=self.e__tag_open, resource=self.e__resource, etc=self.e__tag_close, cl=cl))
+        # return children
+        s = str(self)
+        spl = s.split("\n")
+        tab_idxs = [i for i in range(len(s)) if s[i] == "\t"]
+        t = tab_idxs.copy()
+        tab_idxs = []
+        i = 0
+        while i < len(t):
+            j = i
+            c = 0
+            while j < len(t) - 1 and t[j] == t[j - 1] + 1:
+                j += 1
+                c += 1
+            tab_idxs.append((i, c))
+            i += j + 1
+        print("tab_idxs {}:".format(len(tab_idxs)), tab_idxs)
+        print("t {}:".format(len(t)), t)
+        print("spl {}:".format(len(spl)), spl)
+        return []
+
+
+        #     if i < len(tab_idxs) - 1:
+        #         n = tab_idxs[i + 1]
+        #
+        #     i += 1
+        # children = []
+        # for line in spl:
+        #     children.append([None for i in range()])
+
 
     def __repr__(self):
         linked = self.e__get_link()
