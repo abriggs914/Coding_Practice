@@ -86,7 +86,7 @@ class TransactionHandler:
         self.transaction_list = []
         self.entities_list = [Entity("Me")]
 
-    def  create_transaction(self, amount, entity_from, entity_to, reoccurring_category, transaction_catgory, description,
+    def create_transaction(self, amount, entity_from, entity_to, reoccurring_category, transaction_catgory, description,
                            date_in):
 
         # TODO fix this
@@ -97,7 +97,7 @@ class TransactionHandler:
             if same_entity(entity.name.lower(), entity_to.name.lower()):
                 entity_to = entity
                 et = i
-            if same_entity(entity.name.lower(),entity_from.name.lower()):
+            if same_entity(entity.name.lower(), entity_from.name.lower()):
                 entity_from = entity
                 ef = i
         if et < 0:
@@ -115,19 +115,19 @@ class TransactionHandler:
         tra = REOCCURRING[transaction.reoccurring_category]["ratio_to_annual"]
         pra = REOCCURRING[period]["ratio_from_annual"]
         a = transaction.amount
-        print("a: {a}, toa: {toa}, tra: {tra}, pra: {pra}".format(a=a, toa=toa, tra=tra, pra=pra))
+        # print("a: {a}, toa: {toa}, tra: {tra}, pra: {pra}".format(a=a, toa=toa, tra=tra, pra=pra))
         return a * toa * pra
 
-    # Using a starting entity, produce a report on transactions
-    # for a given period, and / or over a predetermined list of
-    # transactions.
-    # Usage: TH.costing_report(Entity("Me"), "Daily", None, )
+        # Using a starting entity, produce a report on transactions
+        # for a given period, and / or over a predetermined list of
+        # transactions.
+        # Usage: TH.costing_report(Entity("Me"), "Daily", None, )
     def costing_report(self, entity, period, transaction=None, n=1):
         # entity = entities[entity]
         if type(entity) != Entity:
             entity = self.get_entity(entity)
         res = "{p} costing report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
-        if transaction != None:
+        if transaction is not None:
             if entity not in [transaction.entity_to, transaction.entity_from]:
                 return "Transaction <{t}>\ndoes not effect {e}".format(t=transaction, e=entity)
             x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
@@ -136,21 +136,24 @@ class TransactionHandler:
                 cost *= -1
             res += "$ %.2f" % cost
             return res
-
         total_cost = 0
         for transaction in self.transaction_list:
-            print("transaction:", transaction)
+            # print("transaction:", transaction)
             if transaction.reoccurring_category != "Once":
-                print("\ttransaction.reoccurring_category != \"Once\"", (transaction.reoccurring_category != "Once"))
+                print("\ttransaction.reoccurring_category != \"Once\"",
+                      (transaction.reoccurring_category != "Once"))
                 print("\t-entity", entity)
                 print("\t-entity_to", transaction.entity_to)
                 print("\t-entity_from", transaction.entity_from)
                 if entity in [transaction.entity_to, transaction.entity_from]:
-                    print("\t\tentity in [transaction.entity_to, transaction.entity_from]", (entity in [transaction.entity_to, transaction.entity_from]))
+                    print("\t\tentity in [transaction.entity_to, transaction.entity_from]",
+                          (entity in [transaction.entity_to, transaction.entity_from]))
                     cost = self.costing(transaction, period) * n
                     if transaction.entity_from == entity:
                         cost *= -1
                     total_cost += cost
+            else:
+                total_cost += transaction.amount
         res += "total cost {tc}".format(tc=total_cost)
         return res
 
@@ -159,21 +162,22 @@ class TransactionHandler:
         if type(entity) != Entity:
             entity = self.get_entity(entity)
         res = "{p} earning report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
-        if transaction != None:
+        if transaction is not None:
             if entity != transaction.entity_to:
                 return "Transaction <{t}>\ndoes not effect {e}".format(t=transaction, e=entity)
             x = min(REOCCURRING[transaction.reoccurring_categoy]["occur_lifetime"], n)
             cost = self.costing(transaction, period) * x
             res += "$ %.2f" % cost
             return res
-
         total_cost = 0
         for transaction in self.transaction_list:
-            if transaction.reoccurring_category != "Once":
-                if entity == transaction.entity_to:
-                    x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
-                    cost = self.costing(transaction, period) * x
-                    total_cost += cost
+            if entity == transaction.entity_to:
+                if transaction.reoccurring_category != "Once":
+                        x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
+                        cost = self.costing(transaction, period) * x
+                        total_cost += cost
+                else:
+                    total_cost += transaction.amount
         res += "total earnings {tc}".format(tc=total_cost)
         return res
 
@@ -181,26 +185,112 @@ class TransactionHandler:
         # entity = entities[entity]
         if type(entity) != Entity:
             entity = self.get_entity(entity)
-        res = "{p} spending report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
-        if transaction != None:
+        res = "{p} spending report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity,
+                                                                       n=n)
+        if transaction is not None:
             if entity != transaction.entity_from:
                 return "Transaction <{t}>\ndoes not effect {e}".format(t=transaction, e=entity)
             x = min(REOCCURRING[transaction.reoccurring_categoy]["occur_lifetime"], n)
             cost = self.costing(transaction, period) * x
             res += "$ %.2f" % cost
             return res
-
         total_cost = 0
         for transaction in self.transaction_list:
-            if transaction.reoccurring_category != "Once":
-                if entity == transaction.entity_from:
+            print("spending total cost:", total_cost)
+            if entity == transaction.entity_from:
+                if transaction.reoccurring_category != "Once":
                     x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
                     cost = self.costing(transaction, period) * x
                     total_cost += cost
-        res += "total spendings {tc}".format(tc=total_cost)
+                else:
+                    total_cost += transaction.amount
+            res += "total spendings {tc}".format(tc=total_cost)
         return res
+    # # Using a starting entity, produce a report on transactions
+    # # for a given period, and / or over a predetermined list of
+    # # transactions.
+    # # Usage: TH.costing_report(Entity("Me"), "Daily", None, )
+    # def costing_report(self, entity, period, transaction=None, n=1):
+    #     # entity = entities[entity]
+    #     if type(entity) != Entity:
+    #         entity = self.get_entity(entity)
+    #     res = "{p} costing report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
+    #     if transaction is not None:
+    #         if entity not in [transaction.entity_to, transaction.entity_from]:
+    #             return "Transaction <{t}>\ndoes not effect {e}".format(t=transaction, e=entity)
+    #         x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
+    #         cost = self.costing(transaction, period) * x
+    #         if transaction.entity_from == entity:
+    #             cost *= -1
+    #         res += "$ %.2f" % cost
+    #         return res
+    #
+    #     total_cost = 0
+    #     for transaction in self.transaction_list:
+    #         # print("transaction:", transaction)
+    #         if transaction.reoccurring_category != "Once" or 1:
+    #             print("\ttransaction.reoccurring_category != \"Once\"", (transaction.reoccurring_category != "Once"))
+    #             print("\t-entity", entity)
+    #             print("\t-entity_to", transaction.entity_to)
+    #             print("\t-entity_from", transaction.entity_from)
+    #             if entity in [transaction.entity_to, transaction.entity_from]:
+    #                 print("\t\tentity in [transaction.entity_to, transaction.entity_from]",
+    #                       (entity in [transaction.entity_to, transaction.entity_from]))
+    #                 cost = self.costing(transaction, period) * n
+    #                 if transaction.entity_from == entity:
+    #                     cost *= -1
+    #                 total_cost += cost
+    #     res += "total cost {tc}".format(tc=total_cost)
+    #     return res
+    #
+    # def earning_report(self, entity, period, transaction=None, n=1):
+    #     # entity = entities[entity]
+    #     if type(entity) != Entity:
+    #         entity = self.get_entity(entity)
+    #     res = "{p} earning report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
+    #     if transaction is not None:
+    #         if entity != transaction.entity_to:
+    #             return "Transaction <{t}>\ndoes not effect {e}".format(t=transaction, e=entity)
+    #         x = min(REOCCURRING[transaction.reoccurring_categoy]["occur_lifetime"], n)
+    #         cost = self.costing(transaction, period) * x
+    #         res += "$ %.2f" % cost
+    #         return res
+    #
+    #     total_cost = 0
+    #     for transaction in self.transaction_list:
+    #         if transaction.reoccurring_category != "Once" or 1:
+    #             if entity == transaction.entity_to:
+    #                 x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
+    #                 cost = self.costing(transaction, period) * x
+    #                 total_cost += cost
+    #     res += "total earnings {tc}".format(tc=total_cost)
+    #     return res
+    #
+    # def spending_report(self, entity, period, transaction=None, n=1):
+    #     # entity = entities[entity]
+    #     if type(entity) != Entity:
+    #         entity = self.get_entity(entity)
+    #     res = "{p} spending report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
+    #     if transaction is not None:
+    #         if entity != transaction.entity_from:
+    #             return "Transaction <{t}>\ndoes not effect {e}".format(t=transaction, e=entity)
+    #         x = min(REOCCURRING[transaction.reoccurring_categoy]["occur_lifetime"], n)
+    #         cost = self.costing(transaction, period) * x
+    #         res += "$ %.2f" % cost
+    #         return res
+    #
+    #     total_cost = 0
+    #     for transaction in self.transaction_list:
+    #         print("spending total cost:", total_cost)
+    #         if transaction.reoccurring_category != "Once" or 1:
+    #             if entity == transaction.entity_from:
+    #                 x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
+    #                 cost = self.costing(transaction, period) * x
+    #                 total_cost += cost
+    #     res += "total spendings {tc}".format(tc=total_cost)
+    #     return res
 
-    def addTransaction(self, transaction):
+    def add_transaction(self, transaction):
         self.transaction_list.append(transaction)
         if transaction.entity_to not in self.entities_list:
             self.entities_list.append(transaction.entity_to)

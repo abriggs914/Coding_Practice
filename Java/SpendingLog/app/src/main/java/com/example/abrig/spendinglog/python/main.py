@@ -62,7 +62,7 @@ def test():
 	TH = TransactionHandler()
 
 	for t in transactions:
-		TH.addTransaction(t)
+		TH.add_transaction(t)
 
 	ts = {}
 
@@ -82,9 +82,9 @@ def test():
 		cr = TH.costing_report("Avery", occurance)
 		er = TH.earning_report("Avery", occurance)
 		sr = TH.spending_report("Avery", occurance)
-		print("\n" + cr)
-		print("\n" + er)
-		print("\n" + sr)
+		print("\ncr\t" + cr)
+		print("\ner\t" + er)
+		print("\nsr\t" + sr)
 		res[occurance] = {
 			"Costing": money(float(cr.split()[-1])),
 			"Earning": money(float(er.split()[-1])),
@@ -139,11 +139,11 @@ def scotia_transactions():
 	res = {}
 	for occurrence in REOCCURRING:
 		cr = TH.costing_report("Me", occurrence)
-		er = TH.earning_report("ME", occurrence)
+		er = TH.earning_report("Me", occurrence)
 		sr = TH.spending_report("Me", occurrence)
-		print("\n" + cr)
-		print("\n" + er)
-		print("\n" + sr)
+		print("\ncr\t" + cr)
+		print("\ner\t" + er)
+		print("\nsr\t" + sr)
 		res[occurrence] = {
 			"Costing": money(float(cr.split()[-1])),
 			"Earning": money(float(er.split()[-1])),
@@ -152,12 +152,13 @@ def scotia_transactions():
 
 	print(dict_print(REOCCURRING, min_encapsulation=True))
 
-	print(dict_print(res, "Reports"))
+	print(dict_print(res, "Scotiabank Reporting"))
 	# print(dict_print(ts, "Transactions"))
 
 
 if __name__ == "__main__":
 
+	# test()
 	scotia_transactions()
 
 	# PRINT = False

@@ -7,6 +7,11 @@ class Entity:
     def add_transaction(self, transaction):
         self.transactions_list.append(transaction)
 
+    def __eq__(self, other):
+        if isinstance(other, Entity):
+            return self.name.lower() == other.name.lower()
+        return False
+
     def __repr__(self):
         b = self.balance
         return self.name + " < $ " + ("%.2f" % b) + " >"
