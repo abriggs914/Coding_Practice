@@ -85,6 +85,8 @@ class TransactionHandler:
     def __init__(self):
         self.transaction_list = []
         self.entities_list = [Entity("Me")]
+        self.first_date = None
+        self.last_date = None
 
     def create_transaction(self, amount, entity_from, entity_to, reoccurring_category, transaction_catgory, description,
                            date_in):
@@ -108,7 +110,8 @@ class TransactionHandler:
                                   description, date_in)
         entity_to.add_transaction(transaction)
         entity_from.add_transaction(transaction)
-        self.transaction_list.append(transaction)
+        # self.add_transaction(transaction)
+        return transaction
 
     def costing(self, transaction, period):
         toa = REOCCURRING[transaction.reoccurring_category]["occur_annual"]
@@ -139,21 +142,22 @@ class TransactionHandler:
         total_cost = 0
         for transaction in self.transaction_list:
             # print("transaction:", transaction)
-            if transaction.reoccurring_category != "Once":
-                print("\ttransaction.reoccurring_category != \"Once\"",
-                      (transaction.reoccurring_category != "Once"))
-                print("\t-entity", entity)
-                print("\t-entity_to", transaction.entity_to)
-                print("\t-entity_from", transaction.entity_from)
-                if entity in [transaction.entity_to, transaction.entity_from]:
-                    print("\t\tentity in [transaction.entity_to, transaction.entity_from]",
-                          (entity in [transaction.entity_to, transaction.entity_from]))
+            if entity in [transaction.entity_to, transaction.entity_from]:
+                if transaction.reoccurring_category != "Once":
+                    print("\ttransaction.reoccurring_category != \"Once\"",
+                          (transaction.reoccurring_category != "Once"))
+                    print("\t-entity", entity)
+                    print("\t-entity_to", transaction.entity_to)
+                    print("\t-entity_from", transaction.entity_from)
                     cost = self.costing(transaction, period) * n
                     if transaction.entity_from == entity:
                         cost *= -1
                     total_cost += cost
-            else:
-                total_cost += transaction.amount
+                else:
+                    cost = transaction.amount
+                    if transaction.entity_from == entity:
+                        cost *= -1
+                    total_cost += cost
         res += "total cost {tc}".format(tc=total_cost)
         return res
 
@@ -290,8 +294,47 @@ class TransactionHandler:
     #     res += "total spendings {tc}".format(tc=total_cost)
     #     return res
 
+    def highest_debit(self, entity):
+        m = 0, None
+        for t in self.transaction_list:
+            if t.entity_from == entity:
+                if t.amount > m[0]:
+                    m = t.amount, t.dates[0]
+        return m
+
+    def highest_credit(self, entity):
+        m = 0, None
+        for t in self.transaction_list:
+            if t.entity_to == entity:
+                if t.amount > m[0]:
+                    m = t.amount, t.dates[0]
+        return m
+
+    def lowest_debit(self, entity):
+        m = float("inf"), None
+        for t in self.transaction_list:
+            if t.entity_from == entity:
+                if t.amount < m[0]:
+                    m = t.amount, t.dates[0]
+        return m
+
+    def lowest_credit(self, entity):
+        m = float("inf"), None
+        for t in self.transaction_list:
+            if t.entity_to == entity:
+                if t.amount < m[0]:
+                    m = t.amount, t.dates[0]
+        return m
+
     def add_transaction(self, transaction):
         self.transaction_list.append(transaction)
+
+        # print("DATES", transaction.dates)
+        if self.first_date is None or transaction.dates[0] < self.first_date:
+            self.first_date = transaction.dates[0]
+        if self.last_date is None or transaction.dates[0] > self.last_date:
+            self.last_date = transaction.dates[0]
+
         if transaction.entity_to not in self.entities_list:
             self.entities_list.append(transaction.entity_to)
         if transaction.entity_from not in self.entities_list:

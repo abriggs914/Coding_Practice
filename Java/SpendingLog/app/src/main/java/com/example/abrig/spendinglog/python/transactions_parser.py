@@ -8,6 +8,7 @@ transactions_dict = {}
 def populate_transactions_dict():
 	
 	with open("pcbanking.csv", 'r') as f:
+	# with open("pcbanking_test.csv", 'r') as f:
 		d = csv.DictReader(f, delimiter=',')
 		header = d.fieldnames
 		print("header: {h}".format(h=header))

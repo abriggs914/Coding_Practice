@@ -1,4 +1,5 @@
 from utility import *
+import datetime as dt
 
 
 class Transaction:
@@ -11,6 +12,7 @@ class Transaction:
         self.description = description
         self.reoccurring_category = reoccurring_category
         self.transaction_catgory = transaction_catgory
+        date_in = dt.datetime.strptime(date_in, "%m/%d/%Y")
         self.dates = []
         self.dates.append(date_in)
 

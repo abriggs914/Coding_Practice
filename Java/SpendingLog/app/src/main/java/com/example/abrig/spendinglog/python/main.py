@@ -103,6 +103,10 @@ def scotia_transactions():
 	TH = TransactionHandler()
 	me = TH.get_entity("Me")
 	print("transactions_dict {td}".format(td=transactions_dict))
+
+	tc, ti = float("inf"), 0
+	# tc = 10
+
 	for num, transaction in transactions_dict.items():
 		# amount, entity_from, entity_to, reoccurring_category, transaction_catgory, description, date_in
 		# Transaction Date, Transaction Amount, Notes, Transaction Type, Entity
@@ -110,6 +114,7 @@ def scotia_transactions():
 		entity = Entity(unclutter(transaction["Entity"]))
 		transaction_type = transaction["Transaction Type"]
 		date = transaction["Transaction Date"]
+		# TODO: if if there is no reason to use a dict here, then change to a list
 		transaction = {
 			"amount": abs(amount),
 			"entity_from": me if amount < 0 else entity,
@@ -120,9 +125,14 @@ def scotia_transactions():
 			"date_in": date
 		}
 		# print("transaction: {t}".format(t=list(transaction.values())))
-		TH.create_transaction(*list(transaction.values()))
+		transaction = TH.create_transaction(*list(transaction.values()))
+		TH.add_transaction(transaction)
+		ti += 1
+		if ti == tc:
+			break
 
-	print(TH.transaction_list)
+	print("TH.transaction_list:", TH.transaction_list)
+	print(dict_print(dict(zip(range(1, 1 + len(TH.transaction_list)), [tl.info_dict() for tl in TH.transaction_list])), "Transactions"))
 	ents = TH.entities_list.copy()
 	# ents.sort(key=lambda x: x.name)
 	ents.sort(key=lambda x: x.balance)
@@ -135,8 +145,31 @@ def scotia_transactions():
 	print(TH.spending_report(TH.entities_list[0], "Monthly"))
 	print(TH.earning_report(TH.entities_list[0], "Monthly"))
 
-
-	res = {}
+	empty = dict(zip(["Costing", "Earning", "Spending"], ["-------" for i in range(3)]))
+	lt = len(TH.transaction_list)
+	sd = TH.first_date
+	ed = TH.last_date
+	sp = (ed - sd).days
+	hd = TH.highest_debit(TH.get_entity("Me"))
+	hd = money(hd[0]) + " on " + str(hd[1])
+	ld = TH.lowest_debit(TH.get_entity("Me"))
+	ld = money(ld[0]) + " on " + str(ld[1])
+	hc = TH.highest_credit(TH.get_entity("Me"))
+	hc = money(hc[0]) + " on " + str(hc[1])
+	lc = TH.lowest_credit(TH.get_entity("Me"))
+	lc = money(lc[0]) + " on " + str(lc[1])
+	res = {
+		"# Transactions": lt,
+		"Starting": sd,
+		"Ending": ed,
+		"Span": str(sp) + " day" + ("s" if sp != 1 else ""),
+		".": empty,
+		"Highest Debit": hd,
+		"Lowest Debit": ld,
+		"Highest Credit": hc,
+		"Lowest Credit": lc,
+		"..": empty,
+	}
 	for occurrence in REOCCURRING:
 		cr = TH.costing_report("Me", occurrence)
 		er = TH.earning_report("Me", occurrence)
@@ -150,7 +183,7 @@ def scotia_transactions():
 			"Spending": money(float(sr.split()[-1]))
 		}
 
-	print(dict_print(REOCCURRING, min_encapsulation=True))
+	# print(dict_print(REOCCURRING, min_encapsulation=True))
 
 	print(dict_print(res, "Scotiabank Reporting"))
 	# print(dict_print(ts, "Transactions"))
