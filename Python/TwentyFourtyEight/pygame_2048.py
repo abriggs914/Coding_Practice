@@ -4,7 +4,9 @@ from multiprocessing.pool import ThreadPool
 from threading import Thread
 from main import *
 from colors import *
+import math
 
+pygame.init()
 
 # On start-up show main menu.
 # Main menu consists of:
@@ -31,35 +33,65 @@ from colors import *
 ##################################################
 
 # BLACK = (0, 0, 0)
-CIRCLE_MARKER_COLOR = (255, 255, 255) 	# white
-LEGEND_MARKER_COLOR = (255, 15, 15) 	# red
-BACKGROUND_COLOR = (0, 0, 0) 			# black
-CIRCLE_MARKER_SIZE = 10					# diameter of dot
-CIRCLE_BORDER_SIZE = 3					# space of the grid circle color shown
-SCREEN_PROPORTION = 0.85				# margin space for circle drawing
+CIRCLE_MARKER_COLOR = (255, 255, 255)  # white
+LEGEND_MARKER_COLOR = (255, 15, 15)  # red
+BACKGROUND_COLOR = (0, 0, 0)  # black
+CIRCLE_MARKER_SIZE = 10  # diameter of dot
+CIRCLE_BORDER_SIZE = 3  # space of the grid circle color shown
+SCREEN_PROPORTION = 0.85  # margin space for circle drawing
 SELECTION_WIDTH = 5
-BUTTON_TEXT_FONT = None  				# initialized in init_pygame function                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+BUTTON_TEXT_FONT = None  # initialized in init_pygame function
 LINE_WIDTH = 1
+
+
+def colour_func(val, start=(255, 255, 255)):
+	# print("val", val)
+	math.log(val, 2)
+	return (50, 50, 50)
+
+
+colour_scheme_blue_green = {
+	"block": ((135, 131, 131), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	2: ((8, 201, 73), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	4: ((44, 145, 78), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	8: ((44, 145, 133), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	16: ((14, 235, 209), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	32: ((0, 94, 153), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	64: ((22, 68, 117), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	128: ((2, 39, 79), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	256: ((0, 31, 105), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	512: ((0, 30, 255), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	1024: ((3, 4, 74), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	2048: ((0, 23, 66), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+	"rest": (lambda x: colour_func(x, start=(0, 23, 66)), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+}
+colour_scheme_blue_green.update({str(k): v for k, v in colour_scheme_blue_green.items() if isinstance(k, int)})
+colour_scheme_red_yellow = {}
 
 ##################################################
 ##					Game vars					##
 ##################################################
 
-DISPLAY = None							# Display surface
-TITLE = "2048"						    # title
-WIDTH = 750								# width and height
-HEIGHT = 750
+TESTING = True
+
+DISPLAY = None  # Display surface
+TITLE = "2048"  # title
+WIDTH = 650  # width and height
+HEIGHT = 650
+GRID_WIDTH = WIDTH * 0.75
+GRID_HEIGHT = HEIGHT * 0.75
 DATA = {
-    "current_screen": "main_menu",
-    "current_game": None,
-    "game_time": None,
-    "colour_scheme": None
+	"current_screen": "main_menu",
+	"current_game": None,
+	"game_time": None,
+	"colour_scheme": None
 }
 LOAD_GAME_FILE = "save.txt"
 IDLE = "idle"
 load = "load"  # initialized in init_file_handling must be done there because file_handling uses
 save = "save"  # small_pop_up and reset functions defined in this file
 POP_UP_THREAD = None
+
 
 # ROWS = 11								# Number of rows and columns
 # COLS = 11
@@ -72,8 +104,8 @@ POP_UP_THREAD = None
 
 class Pygame_2048:
 
-    def __init__(self, n=4, init_spaces=None):
-        self.game_obj = G2048(n=n, init_spaces=init_spaces)
+	def __init__(self, n=4, init_spaces=None):
+		self.game_obj = G2048(n=n, init_spaces=init_spaces)
 
 
 def init_button_font():
@@ -123,95 +155,164 @@ def full_reset():
 	init()
 
 
-# diaplay a button and listen for it to be clicked.
-# acts as a controller to update the program mode as well.
-# msg 		- 	button text
-# x			-	button x
-# y			-	button x
-# w			-	button width
-# h			-	button height
-# ic		-	button color
-# ac		-	button color when hovering
-# cc		-	button color when clicked
-# action	-	function to be called on click
-def draw_button(msg, x, y, w, h, ic, ac, cc, action=None):
-	global POP_UP_THREAD
-	mouse = pygame.mouse.get_pos()
-	click = tuple(pygame.mouse.get_pressed())
-
-	# if msg == DATA["mode"]:
-	# 	pygame.draw.rect(DISPLAY, SELECTION_COLOR, (x, y, w, h))
-	# 	x += SELECTION_WIDTH
-	# 	y += SELECTION_WIDTH
-	# 	w -= (2 * SELECTION_WIDTH)
-	# 	h -= (2 * SELECTION_WIDTH)
-
-	if x + w > mouse[0] > x and y + h > mouse[1] > y:
-		c = ac
-		# pygame.draw.rect(DISPLAY, ac, (x, y, w, h))
-		# print("click: " + str(click))
-		if click[0]:
-			c = cc
-			# DATA["mode"] = msg
-			kill_pop_up_thread()
-			if action is not None:
-				pool = ThreadPool(processes=1)
-				print("action:", action)
-				if action == reset:
-					async_result = pool.apply_async(action, (click, DATA))
-				elif action == save or action == load:
-					async_result = pool.apply_async(action, (DATA, DISPLAY))
-				else:
-					async_result = pool.apply_async(action, ())
-				f_args = async_result.get()
-				if f_args:
-					f, arg = f_args
-					kill_pop_up_thread()
-					POP_UP_THREAD = Thread(target=f, args=arg)
-					POP_UP_THREAD.start()
-				else:
-					print("no function")
-
-				# recalculate buckets on load
-				if action == load:
-					# DATA["buckets"] = calculate_buckets()
-					spl = "."
-					arg_split = arg[2].split(spl)
-					file_name = arg_split[0] + spl + arg_split[1][:4]
-					pygame.display.set_caption(TITLE + file_name.rjust(120, " "))
-					init_button_font()
-					calc_block_idx_font()
-				elif action == reset and sum(click) > 1:
-					pygame.display.set_caption(TITLE)
-					if sum(click) == 3:
-						full_reset()
-
-				# event = pygame.event.wait()
-		# pygame.draw.rect(DISPLAY, c, (x, y, w, h))
-	else:
-		c = ic
-	pygame.draw.rect(DISPLAY, c, (x, y, w, h))
-
-	BUTTON_TEXT_FONT.set_bold(True)
-	text_surf, text_rect = text_objects(msg, BUTTON_TEXT_FONT)
-	text_rect.center = ((x + (w / 2)), (y + (h / 2)))
-	DISPLAY.blit(text_surf, text_rect)
+# # diaplay a button and listen for it to be clicked.
+# # acts as a controller to update the program mode as well.
+# # msg 		- 	button text
+# # x			-	button x
+# # y			-	button x
+# # w			-	button width
+# # h			-	button height
+# # ic		-	button color
+# # ac		-	button color when hovering
+# # cc		-	button color when clicked
+# # action	-	function to be called on click
+# def draw_square(msg, x, y, w, h, ic, ac, cc, action=None):
+# 	global POP_UP_THREAD
+# 	mouse = pygame.mouse.get_pos()
+# 	click = tuple(pygame.mouse.get_pressed())
+#
+# 	if x + w > mouse[0] > x and y + h > mouse[1] > y:
+# 		c = ac
+# 		# pygame.draw.rect(DISPLAY, ac, (x, y, w, h))
+# 		# print("click: " + str(click))
+# 		if click[0]:
+# 			c = cc
+# 			# DATA["mode"] = msg
+# 			kill_pop_up_thread()
+# 			if action is not None:
+# 				pool = ThreadPool(processes=1)
+# 				print("action:", action)
+# 				if action == reset:
+# 					async_result = pool.apply_async(action, (click, DATA))
+# 				elif action == save or action == load:
+# 					async_result = pool.apply_async(action, (DATA, DISPLAY))
+# 				else:
+# 					async_result = pool.apply_async(action, ())
+# 				f_args = async_result.get()
+# 				if f_args:
+# 					f, arg = f_args
+# 					kill_pop_up_thread()
+# 					POP_UP_THREAD = Thread(target=f, args=arg)
+# 					POP_UP_THREAD.start()
+# 				else:
+# 					print("no function")
+#
+# 				# recalculate buckets on load
+# 				if action == load:
+# 					# DATA["buckets"] = calculate_buckets()
+# 					spl = "."
+# 					arg_split = arg[2].split(spl)
+# 					file_name = arg_split[0] + spl + arg_split[1][:4]
+# 					pygame.display.set_caption(TITLE + file_name.rjust(120, " "))
+# 					init_button_font()
+# 					calc_block_idx_font()
+# 				elif action == reset and sum(click) > 1:
+# 					pygame.display.set_caption(TITLE)
+# 					if sum(click) == 3:
+# 						full_reset()
+#
+# 				# event = pygame.event.wait()
+# 		# pygame.draw.rect(DISPLAY, c, (x, y, w, h))
+# 	else:
+# 		c = ic
+# 	pygame.draw.rect(DISPLAY, c, (x, y, w, h))
+#
+# 	BUTTON_TEXT_FONT.set_bold(True)
+# 	text_surf, text_rect = text_objects(msg, BUTTON_TEXT_FONT)
+# 	text_rect.center = ((x + (w / 2)), (y + (h / 2)))
+# 	DISPLAY.blit(text_surf, text_rect)
+#
+#
+# # diaplay a button and listen for it to be clicked.
+# # acts as a controller to update the program mode as well.
+# # msg 		- 	button text
+# # x			-	button x
+# # y			-	button x
+# # w			-	button width
+# # h			-	button height
+# # ic		-	button color
+# # ac		-	button color when hovering
+# # cc		-	button color when clicked
+# # action	-	function to be called on click
+# def draw_button(msg, x, y, w, h, ic, ac, cc, action=None):
+# 	global POP_UP_THREAD
+# 	mouse = pygame.mouse.get_pos()
+# 	click = tuple(pygame.mouse.get_pressed())
+#
+# 	# if msg == DATA["mode"]:
+# 	# 	pygame.draw.rect(DISPLAY, SELECTION_COLOR, (x, y, w, h))
+# 	# 	x += SELECTION_WIDTH
+# 	# 	y += SELECTION_WIDTH
+# 	# 	w -= (2 * SELECTION_WIDTH)
+# 	# 	h -= (2 * SELECTION_WIDTH)
+#
+# 	if x + w > mouse[0] > x and y + h > mouse[1] > y:
+# 		c = ac
+# 		# pygame.draw.rect(DISPLAY, ac, (x, y, w, h))
+# 		# print("click: " + str(click))
+# 		if click[0]:
+# 			c = cc
+# 			# DATA["mode"] = msg
+# 			kill_pop_up_thread()
+# 			if action is not None:
+# 				pool = ThreadPool(processes=1)
+# 				print("action:", action)
+# 				if action == reset:
+# 					async_result = pool.apply_async(action, (click, DATA))
+# 				elif action == save or action == load:
+# 					async_result = pool.apply_async(action, (DATA, DISPLAY))
+# 				else:
+# 					async_result = pool.apply_async(action, ())
+# 				f_args = async_result.get()
+# 				if f_args:
+# 					f, arg = f_args
+# 					kill_pop_up_thread()
+# 					POP_UP_THREAD = Thread(target=f, args=arg)
+# 					POP_UP_THREAD.start()
+# 				else:
+# 					print("no function")
+#
+# 				# recalculate buckets on load
+# 				if action == load:
+# 					# DATA["buckets"] = calculate_buckets()
+# 					spl = "."
+# 					arg_split = arg[2].split(spl)
+# 					file_name = arg_split[0] + spl + arg_split[1][:4]
+# 					pygame.display.set_caption(TITLE + file_name.rjust(120, " "))
+# 					init_button_font()
+# 					calc_block_idx_font()
+# 				elif action == reset and sum(click) > 1:
+# 					pygame.display.set_caption(TITLE)
+# 					if sum(click) == 3:
+# 						full_reset()
+#
+# 				# event = pygame.event.wait()
+# 		# pygame.draw.rect(DISPLAY, c, (x, y, w, h))
+# 	else:
+# 		c = ic
+# 	pygame.draw.rect(DISPLAY, c, (x, y, w, h))
+#
+# 	BUTTON_TEXT_FONT.set_bold(True)
+# 	text_surf, text_rect = text_objects(msg, BUTTON_TEXT_FONT)
+# 	text_rect.center = ((x + (w / 2)), (y + (h / 2)))
+# 	DISPLAY.blit(text_surf, text_rect)
 
 
 def load_game():
-    with open(LOAD_GAME_FILE, 'r') as f:
-        lines = f.readlines()
-        return lines
+	if TESTING:
+		return [[None, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 8192, 16384, 32768]]
+	with open(LOAD_GAME_FILE, 'r') as f:
+		lines = f.readlines()
+		return lines
 
 
 # Initialize the DATA dictionary.
 # Called immediately on run, before the main loop.
 def init():
 	global DISPLAY
-	pygame.init()
 	DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 	pygame.display.set_caption(TITLE)
-		
+
 	loaded_game = load_game()
 	if not loaded_game:
 		loaded_game = G2048()
@@ -219,11 +320,15 @@ def init():
 		loaded_game = G2048(init_spaces=loaded_game)
 	DATA["current_game"] = loaded_game
 	DATA["mode"] = "play"
+	DATA["colour_scheme"] = colour_scheme_blue_green
+	DATA["colour_func_type"] = type(colour_func)
 	init_button_font()
-	# DATA["game_time"] = compute_row_space()
-	# DATA["colour_scheme"] = compute_spacing()
-	# DATA["radius"] = compute_radius()
-	# DATA["circles"] = create_circles()
+
+
+# DATA["game_time"] = compute_row_space()
+# DATA["colour_scheme"] = compute_spacing()
+# DATA["radius"] = compute_radius()
+# DATA["circles"] = create_circles()
 
 
 def do_print():
@@ -231,20 +336,97 @@ def do_print():
 
 
 def draw_display():
+	global DISPLAY
 	DISPLAY.fill(BACKGROUND_COLOR)
+	grid = DATA["current_game"].grid
+	colour_scheme = DATA["colour_scheme"]
+	w, h = GRID_WIDTH, GRID_HEIGHT
+	s = 20
+	p = 35
+	# print("grid", DATA["current_game"])
 	# draw_circles()
-	draw_button("click me", 20, 20, 120, 120, RED, YELLOW, GREEN, do_print)
+	# draw_button("click me", 20, 20, 120, 120, RED, YELLOW, GREEN, do_print)
+
+	# print(dict_print(DATA, "DATA"))
+
+	n = len(grid)
+	m = len(grid[0])
+
+	bs = (2 * p) + ((n - 1) * s)
+	w_rs = w - bs
+	h_rs = h - bs
+	cw = w_rs / m
+	ch = h_rs / n
+
+	x0, y0 = p, p
+	# cw, ch = 120, 120
+	cells = {}
+	for i, row in enumerate(grid):
+		for j, col in enumerate(row):
+			# print("col", col)
+			if col is None:
+				col = "block"
+			val = col
+			if isinstance(col, int) or (isinstance(col, str) and col.isdigit()):
+				if 0 <= col <= 2048:
+					col = col
+				else:
+					col = "rest"
+			c, f, fc = colour_scheme[col]
+			if isinstance(c, type(colour_func)):
+				c = c(val)
+			x = x0 + (j * (cw + s))
+			y = y0 + (i * (ch + s))
+			# print("i", i, "j", j, "\nx", x, "y", y, "\nc", c)
+			# print("c", c, "typr(\"c\")", type(c), "isinstance(\"'function'\")", isinstance(c, type(colour_func)))
+
+			cells[str(i) + " - " + str(j)] = {"ij": (i, j), "colour": c, "x": x, "y": y, "w": cw, "h": ch}
+			pygame.draw.rect(DISPLAY, c, (x, y, cw, ch))
+
+			text_surf, text_rect = text_objects(str(val), f, fc)
+			text_rect.center = ((x + (cw / 2)), (y + (ch / 2)))
+			DISPLAY.blit(text_surf, text_rect)
+		cells["r"] = n
+		cells["c"] = m
+	DATA["cells"] = cells
+	# sleep(5)
+
+	# c = RED
+	# x, y, w, h = 20, 20, 120, 120
+
+	#
+	# 	BUTTON_TEXT_FONT.set_bold(True)
+	# 	text_surf, text_rect = text_objects(msg, BUTTON_TEXT_FONT)
+	# 	text_rect.center = ((x + (w / 2)), (y + (h / 2)))
+	# 	DISPLAY.blit(text_surf, text_rect)
+
 	pygame.display.update()
 
 
 def main_loop():
 	loop = True
+	mouse_state = None
 	while loop:
 		events = pygame.event.get()
 		for event in events:
 			if event.type == pygame.QUIT:
 				loop = False
-		
+			elif event.type == pygame.MOUSEBUTTONDOWN:
+				pos = pygame.mouse.get_pos()
+				cells = DATA["cells"]
+				r = cells["r"]
+				c = cells["c"]
+				print("pos", pos)
+				for i in range(r):
+					for j in range(c):
+						cx, cy = DATA["cells"][str(i) + " - " + str(j)]["x"], DATA["cells"][str(i) + " - " + str(j)]["y"]
+						cw, ch = DATA["cells"][str(i) + " - " + str(j)]["w"], DATA["cells"][str(i) + " - " + str(j)]["h"]
+						if cx <= pos[0] <= cx + cw and cy <= pos[1] <= cy + ch:
+							cell = DATA["current_game"].grid[i][j]
+							print("Clicked", cell)
+
+
+
 		draw_display()
 
 
