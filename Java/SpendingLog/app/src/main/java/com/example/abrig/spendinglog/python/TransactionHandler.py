@@ -126,40 +126,50 @@ class TransactionHandler:
         # transactions.
         # Usage: TH.costing_report(Entity("Me"), "Daily", None, )
     def costing_report(self, entity, period, transaction=None, n=1):
-        # entity = entities[entity]
-        if type(entity) != Entity:
-            entity = self.get_entity(entity)
         res = "{p} costing report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
-        if transaction is not None:
-            if entity not in [transaction.entity_to, transaction.entity_from]:
-                return "Transaction <{t}>\ndoes not effect {e}".format(t=transaction, e=entity)
-            x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
-            cost = self.costing(transaction, period) * x
-            if transaction.entity_from == entity:
-                cost *= -1
-            res += "$ %.2f" % cost
-            return res
-        total_cost = 0
-        for transaction in self.transaction_list:
-            # print("transaction:", transaction)
-            if entity in [transaction.entity_to, transaction.entity_from]:
-                if transaction.reoccurring_category != "Once":
-                    print("\ttransaction.reoccurring_category != \"Once\"",
-                          (transaction.reoccurring_category != "Once"))
-                    print("\t-entity", entity)
-                    print("\t-entity_to", transaction.entity_to)
-                    print("\t-entity_from", transaction.entity_from)
-                    cost = self.costing(transaction, period) * n
-                    if transaction.entity_from == entity:
-                        cost *= -1
-                    total_cost += cost
-                else:
-                    cost = transaction.amount
-                    if transaction.entity_from == entity:
-                        cost *= -1
-                    total_cost += cost
+        er = self.earning_report(entity, period, transaction, n)
+        sr = self.spending_report(entity, period, transaction, n)
+        er = float(er.split()[-1].strip())
+        sr = float(sr.split()[-1].strip())
+        total_cost = er - sr
         res += "total cost {tc}".format(tc=total_cost)
         return res
+
+        # # entity = entities[entity]
+        # if type(entity) != Entity:
+        #     entity = self.get_entity(entity)
+        # res = "{p} costing report for {e}\nNum periods: {n}\n".format(p=REOCCURRING[period]["pname"], e=entity, n=n)
+        # if transaction is not None:
+        #     if entity not in [transaction.entity_to, transaction.entity_from]:
+        #         return "Transaction <{t}>\ndoes not effect {e}".format(t=transaction, e=entity)
+        #     x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
+        #     cost = self.costing(transaction, period) * x
+        #     if transaction.entity_from == entity:
+        #         cost *= -1
+        #     res += "$ %.2f" % cost
+        #     return res
+        # total_cost = 0
+        # for transaction in self.transaction_list:
+        #     # print("transaction:", transaction)
+        #     if entity in [transaction.entity_to, transaction.entity_from]:
+        #         if transaction.reoccurring_category != "Once":
+        #             print("\ttransaction.reoccurring_category != \"Once\"",
+        #                   (transaction.reoccurring_category != "Once"))
+        #             print("\t-entity", entity)
+        #             print("\t-entity_to", transaction.entity_to)
+        #             print("\t-entity_from", transaction.entity_from)
+        #             cost = self.costing(transaction, period) * n
+        #             if transaction.entity_from == entity:
+        #                 cost *= -1
+        #             total_cost += cost
+        #         else:
+        #             cost = transaction.amount
+        #             cost = self.costing(transaction, period) * n
+        #             if transaction.entity_from == entity:
+        #                 cost *= -1
+        #             total_cost += cost
+        # res += "total cost {tc}".format(tc=total_cost)
+        # return res
 
     def earning_report(self, entity, period, transaction=None, n=1):
         # entity = entities[entity]
@@ -181,7 +191,8 @@ class TransactionHandler:
                         cost = self.costing(transaction, period) * x
                         total_cost += cost
                 else:
-                    total_cost += transaction.amount
+                    # total_cost += transaction.amount
+                    total_cost += self.costing(transaction, period) * n
         res += "total earnings {tc}".format(tc=total_cost)
         return res
 
@@ -200,14 +211,15 @@ class TransactionHandler:
             return res
         total_cost = 0
         for transaction in self.transaction_list:
-            print("spending total cost:", total_cost)
+            # print("spending total cost:", total_cost)
             if entity == transaction.entity_from:
                 if transaction.reoccurring_category != "Once":
                     x = min(REOCCURRING[transaction.reoccurring_category]["occur_lifetime"], n)
                     cost = self.costing(transaction, period) * x
                     total_cost += cost
                 else:
-                    total_cost += transaction.amount
+                    # total_cost += transaction.amount
+                    total_cost += self.costing(transaction, period) * n
             res += "total spendings {tc}".format(tc=total_cost)
         return res
     # # Using a starting entity, produce a report on transactions
@@ -293,6 +305,22 @@ class TransactionHandler:
     #                 total_cost += cost
     #     res += "total spendings {tc}".format(tc=total_cost)
     #     return res
+
+    def average_debit(self, entity):
+        m = [0, 0]
+        for t in self.transaction_list:
+            if t.entity_from == entity:
+                m[0] += t.amount
+                m[1] += 1
+        return m[0] / m[1]
+
+    def average_credit(self, entity):
+        m = [0, 0]
+        for t in self.transaction_list:
+            if t.entity_to == entity:
+                m[0] += t.amount
+                m[1] += 1
+        return m[0] / m[1]
 
     def highest_debit(self, entity):
         m = 0, None

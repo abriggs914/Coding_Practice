@@ -152,10 +152,12 @@ def scotia_transactions():
 	sp = (ed - sd).days
 	hd = TH.highest_debit(TH.get_entity("Me"))
 	hd = money(hd[0]) + " on " + str(hd[1])
+	ad = TH.average_debit(TH.get_entity("Me"))
 	ld = TH.lowest_debit(TH.get_entity("Me"))
 	ld = money(ld[0]) + " on " + str(ld[1])
 	hc = TH.highest_credit(TH.get_entity("Me"))
 	hc = money(hc[0]) + " on " + str(hc[1])
+	ac = TH.average_credit(TH.get_entity("Me"))
 	lc = TH.lowest_credit(TH.get_entity("Me"))
 	lc = money(lc[0]) + " on " + str(lc[1])
 	res = {
@@ -165,8 +167,10 @@ def scotia_transactions():
 		"Span": str(sp) + " day" + ("s" if sp != 1 else ""),
 		".": empty,
 		"Highest Debit": hd,
+		"Average Debit": ad,
 		"Lowest Debit": ld,
 		"Highest Credit": hc,
+		"Average Credit": ac,
 		"Lowest Credit": lc,
 		"..": empty,
 	}
