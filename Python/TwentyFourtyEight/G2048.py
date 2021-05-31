@@ -85,22 +85,27 @@ class G2048:
 		for i in range(self.n):
 			for j in range(self.n):
 				if self.grid[i][j] == None:
+					print("\tContains a None cell")
 					return True
 				if i > 0:
 					# up
 					if self.grid[i - 1][j] == self.grid[i][j]:
+						print("\tup")
 						return True
 				if i < self.n - 1:
 					# down
 					if self.grid[i + 1][j] == self.grid[i][j]:
+						print("\tdown")
 						return True
 				if j > 0:
 					# left
 					if self.grid[i][j - 1] == self.grid[i][j]:
+						print("\tleft")
 						return True
 				if j < self.n - 1:
 					# right
 					if self.grid[i][j + 1] == self.grid[i][j]:
+						print("\tright")
 						return True
 		return False
 		# init_grid = [row.copy() for row in self.grid]

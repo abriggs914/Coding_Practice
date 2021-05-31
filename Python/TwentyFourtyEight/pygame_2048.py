@@ -406,13 +406,19 @@ def draw_display():
 def main_loop():
 	loop = True
 	mouse_state = None
+	game = DATA["current_game"]
 	while loop:
 		events = pygame.event.get()
 		for event in events:
+			print("game:",game)
+			pos = pygame.mouse.get_pos()
+			# print("mouse_state", mouse_state, "event", event)
+			# if mouse_state and event != pygame.MOUSEMOTION:
+			# 	print("mouse_state:", mouse_state)
 			if event.type == pygame.QUIT:
 				loop = False
-			elif event.type == pygame.MOUSEBUTTONDOWN:
-				pos = pygame.mouse.get_pos()
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				print("\tmouse button down", "mouse_state", mouse_state)
 				cells = DATA["cells"]
 				r = cells["r"]
 				c = cells["c"]
@@ -422,12 +428,54 @@ def main_loop():
 						cx, cy = DATA["cells"][str(i) + " - " + str(j)]["x"], DATA["cells"][str(i) + " - " + str(j)]["y"]
 						cw, ch = DATA["cells"][str(i) + " - " + str(j)]["w"], DATA["cells"][str(i) + " - " + str(j)]["h"]
 						if cx <= pos[0] <= cx + cw and cy <= pos[1] <= cy + ch:
-							cell = DATA["current_game"].grid[i][j]
+							cell = game.grid[i][j]
 							print("Clicked", cell)
+							mouse_state = [cell, pos, False]
+							# pygame.event.wait(pygame.MOUSEMOTION)
+							# pygame.event.wait(pygame.MOUSEBUTTONUP)
 
+							# lc, mc, rc = pygame.mouse.get_pressed(3)
+							# print("holding lc", lc, "mc:", mc, "rc:", rc)
+							# mouse_state = None
+							# print("released!")
+				# print("pygame.mouse.get_pressed(1)", pygame.mouse.get_pressed(3))
+				# while lc:
+				# 	print("holding lc", lc, "mc:", mc, "rc:", rc)
+				# 	mouse_state = None
+				# 	print("released!")
+				# 	lc, mc, rc = pygame.mouse.get_pressed(3)
 
+			if event.type == pygame.MOUSEMOTION:
+				if mouse_state:
+					mouse_state[2]= True
 
+			if event.type == pygame.MOUSEBUTTONUP:
+				print("\tmouse button up", "mouse_state", mouse_state)
+				if mouse_state and mouse_state[2]:
+					# if mouse_state[1] != pos:
+					lc, mc, rc = pygame.mouse.get_pressed(3)
+					print("holding lc", lc, "mc:", mc, "rc:", rc)
+					print("released!")
+					xd = mouse_state[1][0] - pos[0]
+					yd = mouse_state[1][1] - pos[1]
+					mouse_state = None
+					print("xd:", xd, "yd:", yd)
+					if abs(xd) >= abs(yd):
+						if xd >= 0:
+							game.shift_grid("LEFT")
+							print("shift LEFT")
+						else:
+							game.shift_grid("RIGHT")
+							print("shift RIGHT")
+					else:
+						if yd >= 0:
+							game.shift_grid("UP")
+							print("shift UP")
+						else:
+							game.shift_grid("DOWN")
+							print("shift DOWN")
 		draw_display()
+		loop = game.playable()
 
 
 if __name__ == "__main__":
