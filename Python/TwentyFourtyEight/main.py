@@ -234,6 +234,20 @@ def move_tests():
 				"right"
 			],
 			[[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, None, 4, 16]]
+		],
+		"test_24 shift up on a partially full grid": [
+			[
+				[[None, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 8192, 16384, 32768]],
+				"up"
+			],
+			[[16, 2, 4, 8], [256, 32, 64, 128], [4096, 512, 1024, 2048], [None, 8192, 16384, 32768]]
+		],
+		"test_25 shift left on a partially full grid": [
+			[
+				[[None, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 8192, 16384, 32768]],
+				"left"
+			],
+			[[2, 4, 8, None], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 8192, 16384, 32768]]
 		]
 	}
 
@@ -258,6 +272,34 @@ def move_tests():
 					"up"
 				],
 				True
+			],
+			"test_4 shift left on a partially full grid": [
+				[
+					[[None, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 8192, 16384, 32768]],
+					"left"
+				],
+				True
+			],
+			"test_5 shift up on a partially full grid": [
+				[
+					[[None, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 8192, 16384, 32768]],
+					"up"
+				],
+				True
+			],
+			"test_6 shift right on a partially full grid": [
+				[
+					[[None, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 8192, 16384, 32768]],
+					"right"
+				],
+				False
+			],
+			"test_7 shift left on a partially full grid": [
+				[
+					[[None, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 8192, 16384, 32768]],
+					"down"
+				],
+				False
 			]
 		}
 	
@@ -323,8 +365,8 @@ if __name__ == "__main__":
 	game.shift_grid(game.shift_options["RIGHT"])
 	print(game)
 	"""
-	# move_tests()
-	play_game()
+	move_tests()
+	# play_game()
 	# play_game(start_grid=[[1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, 16]])
 	# play_game([[None, None, None, None], [2, None, None, None], [2, None, None, None], [4, 2, 4, 4]])
 	# play_game(gen_moves=False, start_grid=[[None, None, None, 2], [None, None, None, 4], [None, 2, 4, 2], [None, 2, 2, 4]])

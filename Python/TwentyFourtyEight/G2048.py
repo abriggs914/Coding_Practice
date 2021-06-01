@@ -52,9 +52,9 @@ def get_move_input():
 
 class G2048:
 
-	def __init__(self, n=4, init_spaces=None):
-	
-		self.random_tile_values = [2, 4]
+	def __init__(self, n=4, init_spaces=None, random_tile_values=(2, 4)):
+
+		self.random_tile_values = random_tile_values
 		self.shift_options = {
 			"UP": "up",
 			"DOWN": "down",
@@ -65,6 +65,8 @@ class G2048:
 		self.n = n
 		self.grid = [[None for j in range(n)] for i in range(n)]
 		self.largest_tile = None
+		self.score = 0
+		self.hi_score = 0
 		self.history = []
 		
 		if init_spaces:
@@ -99,18 +101,38 @@ class G2048:
 			sub_dirs = []
 			if ei == 0 and up not in dirs:
 				sub_dirs.append(up)
-			elif ei == self.n - 1 and down not in dirs:
+			if ei == self.n - 1 and down not in dirs:
 				sub_dirs.append(down)
-			elif ej == 0 and left not in dirs:
+			if ej == 0 and left not in dirs:
 				sub_dirs.append(left)
-			elif ej == self.n - 1 and right not in dirs:
+			if ej == self.n - 1 and right not in dirs:
 				sub_dirs.append(right)
-			if len(dirs) == 4:
-				break
+			dirs += sub_dirs
 
 		g = self.grid
 
-		
+		# check matching grid cells
+		for i in range(self.n):
+			for j in range(self.n):
+				v = g[i][j]
+				if i < self.n - 1:
+					if v == g[i + 1][j]:
+						if down not in dirs:
+							dirs.append(down)
+						if up not in dirs:
+							dirs.append(up)
+				if j < self.n - 1:
+					if v == g[i][j + 1]:
+						if left not in dirs:
+							dirs.append(left)
+						if right not in dirs:
+							dirs.append(right)
+				if len(dirs) == 4:
+					break
+			if len(dirs) == 4:
+				break
+		return dirs
+
 	def playable(self):
 		for i in range(self.n):
 			for j in range(self.n):
@@ -168,8 +190,12 @@ class G2048:
 		i, j = rand.choice(empty_cells)
 		v = rand.choice(self.random_tile_values)
 		self.grid[i][j] = v
+		self.score += v
+		self.hi_score = max(self.hi_score, self.score)
 
 	def shift_grid(self, direction):
+		self.history.append((self.score, self.hi_score, direction, [row.copy() for row in self.grid]))
+		direction = direction.lower()
 		so = self.shift_options
 		init_grid = [row.copy() for row in self.grid]
 		def shift():
@@ -187,6 +213,8 @@ class G2048:
 							if self.grid[r][i] == self.grid[r][k]:
 								self.place(r, i, self.grid[r][i] * 2)
 								self.grid[r][k] = None
+								self.score += self.grid[r][i]
+								self.hi_score = max(self.hi_score, self.score)
 							else:
 								k = i
 						i = k
@@ -223,7 +251,6 @@ class G2048:
 		if self.grid == init_grid:
 			return False
 
-		self.history.append((direction, [row.copy() for row in self.grid]))
 		return True
 
 	def test_move(self, direction):
@@ -237,6 +264,19 @@ class G2048:
 			str(len(self.history)),
 			str(self.grid)
 		]
+
+	def reset(self):
+		self.grid = [[None for j in range(self.n)] for i in range(self.n)]
+		self.score = 0
+		self.history = []
+
+	def undo(self):
+		if self.history:
+			history_point = self.history.pop()
+			score, hi_score, dir, grid = history_point
+			self.score = score
+			self.hi_score = hi_score
+			self.grid = [row.copy() for row in grid]
 
 	def play(self, gen_moves=True):
 		once = False

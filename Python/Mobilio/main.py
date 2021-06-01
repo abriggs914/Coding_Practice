@@ -7,7 +7,8 @@ entries = [
 	("2021-05-26 00:30:00", 0.348944),
 	("2021-05-26 00:31:00", 0.348939),
 	("2021-05-27 00:30:00", 0.348185),
-	("2021-05-31 00:30:00", 0.344921)
+	("2021-05-31 00:30:00", 0.344921),
+	("2021-06-01 00:30:00", 0.344017)
 ]
 
 es = lambda vs: (dt.datetime.strptime(vs[0], "%Y-%m-%d %H:%M:%S"), vs[1])
@@ -51,3 +52,8 @@ else:
 	gain = 1 / abs(td)
 dd = mad - mid
 print("By waiting {} days, I have the potential to gain {} Mobilio per point.".format(dd.days, gain))
+balance = float(input("enter a point balance:\n"))
+old = balance / entries[0][1]
+new = balance / entries[-1][1]
+dif = new - old
+print("With a balance of {} points\nI could have made: {} Mobilio\nNow I will make: {} Mobilio\nDifference of {} Mobilio".format(balance, old, new, dif))
