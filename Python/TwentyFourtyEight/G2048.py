@@ -80,12 +80,42 @@ class G2048:
 				if self.grid[i][j] is None:
 					res.append((i, j))
 		return res
+
+	def playable_directions(self):
+		empty_cells = self.find_empty_cells()
+		edges = [cell for cell in empty_cells if (cell[0] == 0 or cell[0] == self.n - 1) or (cell[1] == 0 or cell[1] == self.n - 1)]
+
+		# if middle indexes are excluded, then you can move any direction
+		if len(empty_cells) != len(edges):
+			return "UP", "RIGHT", "DOWN", "LEFT"
+
+		# check remaining none spaces
+		dirs = []
+		up = "UP"
+		down = "DOWN"
+		left = "LEFT"
+		right = "RIGHT"
+		for ei, ej in edges:
+			sub_dirs = []
+			if ei == 0 and up not in dirs:
+				sub_dirs.append(up)
+			elif ei == self.n - 1 and down not in dirs:
+				sub_dirs.append(down)
+			elif ej == 0 and left not in dirs:
+				sub_dirs.append(left)
+			elif ej == self.n - 1 and right not in dirs:
+				sub_dirs.append(right)
+			if len(dirs) == 4:
+				break
+
+		g = self.grid
+
 		
 	def playable(self):
 		for i in range(self.n):
 			for j in range(self.n):
 				if self.grid[i][j] == None:
-					print("\tContains a None cell")
+					# print("\tContains a None cell")
 					return True
 				if i > 0:
 					# up
@@ -131,7 +161,6 @@ class G2048:
 						max_tile = (p, q, gv)
 			self.largest_tile = max_tile
 
-		
 	def gen_random_tile(self):
 		empty_cells = self.find_empty_cells()
 		if not empty_cells:
@@ -139,9 +168,8 @@ class G2048:
 		i, j = rand.choice(empty_cells)
 		v = rand.choice(self.random_tile_values)
 		self.grid[i][j] = v
-		
 
-	def shift_grid(self, dir):
+	def shift_grid(self, direction):
 		so = self.shift_options
 		init_grid = [row.copy() for row in self.grid]
 		def shift():
@@ -168,11 +196,11 @@ class G2048:
 				self.grid[r] = [v for v in self.grid[r] if v is not None]
 				self.grid[r] += [None for j in range(lr - len(self.grid[r]))]
 
-		if dir == so["UP"]:
+		if direction == so["UP"]:
 			self.grid = np.transpose(self.grid).tolist()
 			shift()
 			self.grid = np.transpose(self.grid).tolist()
-		elif dir == so["DOWN"]:
+		elif direction == so["DOWN"]:
 			self.grid = np.transpose(self.grid).tolist()
 			self.grid.reverse()
 			for row in self.grid:
@@ -182,7 +210,7 @@ class G2048:
 				row.reverse()
 			self.grid.reverse()
 			self.grid = np.transpose(self.grid).tolist()
-		elif dir == so["RIGHT"]:
+		elif direction == so["RIGHT"]:
 			for row in self.grid:
 				row.reverse()
 			shift()
@@ -195,8 +223,12 @@ class G2048:
 		if self.grid == init_grid:
 			return False
 
-		self.history.append((dir, [row.copy() for row in self.grid]))
+		self.history.append((direction, [row.copy() for row in self.grid]))
 		return True
+
+	def test_move(self, direction):
+		temp = G2048(self.n, self.grid.copy())
+		return temp.shift_grid(direction)
 
 	def get_record_entry(self):
 		return [
