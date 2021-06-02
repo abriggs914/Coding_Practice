@@ -1,8 +1,10 @@
-import locale
+from locale import currency, setlocale, LC_ALL
+from math import e, ceil
+from random import random, choice
 
 #	General Utility functions
-#	Version............1.0
-#	Date........2021-05-31
+#	Version............1.1
+#	Date........2021-06-02
 #	Author....Avery Briggs
 
 TAB = "    "
@@ -207,8 +209,8 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
 
 def money(v):
     # return "$ %.2f" % v
-    locale.setlocale(locale.LC_ALL, "")
-    m = locale.currency(v, grouping=True)
+    setlocale(LC_ALL, "")
+    m = currency(v, grouping=True)
     i = m.index("$") + 1
     return m[:i] + " " + m[i:]
 
@@ -365,3 +367,101 @@ def same_calendar_day(d1, d2):
         d1.month == d2.month,
         d1.day == d2.day
     ])
+
+
+def pyth(a=None, b=None, c=None):
+	if all([a is None, b is None, c is None]):
+		return None
+	if c is None:
+		if a is not None and b is not None:
+			return {"a": a, "b": b, "c": (a**2 + b**2)**0.5}
+	elif a is None:
+		if b is not None and c is not None:
+			return {"a": (c**2 - b**2)**0.5, "b": b, "c": c}
+	elif b is None:
+		if a is not None and c is not None:
+			return {"a": a, "b": (c**2 - a**2)**0.5, "c": c}
+	return {"a": a, "b": b, "c": c}
+		
+		
+def sigmoid(x):
+	return 1 / (1 + (e ** -x))
+	
+	
+def random_in_range(a, b):
+	return ((max(a, b) - min(a, b)) * random()) + min(a, b)
+	
+	
+def max_idx(lst):
+	max_val = None, float("-inf")
+	for i, el in enumerate(lst):
+		if el > max_val:
+			max_val = i, el
+	return max_val
+	
+	
+def min_idx(lst):
+	min_val = None, float("inf")
+	for i, el in enumerate(lst):
+		if el < max_val:
+			min_val = i, el
+	return min_val
+	
+	
+# Usage:
+# (val, weight) where weight is a float or integer.
+# float weights must sum to 1 or less, indicatiing a percentage of 100.
+# A whole integer will be considered as a ratio value.
+# l1 = [(1, 0.7), (2, 0.3)]  # '1' 70% of the time, '2' 30 percent of the time
+# l2 = [(0, 0.05), (1, 0.05), (2, 0.05), (3, 0.1), (4, 0.2), (5, 0.05), (6, 10), (7, 2), (8, 3)]
+# 5% of the time: '0', '1', '2', '5', '3' 10% of the time, '4' 20% of the time, and 10 individual counts of 6, 2 of 7 and 3 counts of 8.
+# l3 = [("Avery", 5), ("Jordan", 15), ("Briggs", 2)]
+# List of 5 counts of 'Avery', 15 counts of 'Jordan', and 2 counts of 'Briggs'
+# weighted_choice(l1)
+# Returns a radnom choice from a generated weighted list.
+def weighted_choice(weighted_lst):
+	item_scalar = 10
+	lst_len = 1000
+	res = []
+	whole = []
+	fract = []
+	fract_sum = 0
+	sum_count = 0 
+	for el in weighted_lst:
+		if isinstance(el, list) or isinstance(el, tuple):
+			if len(el) == 2:
+				val, weight = el
+				if str(weight).startswith("0."):
+					fract.append(el)
+					fract_sum += weight
+					sum_count += weight * lst_len
+				else:
+					whole.append(el)
+	# print("Whole:", whole)
+	# print("Fract:", fract)
+	if fract_sum > 1:
+		print("Fract:", fract)
+		raise ValueError("Fractional weights sum to more than 1.")
+	
+	remaining = lst_len - sum_count
+	remaining = remaining if remaining != 0 else 1
+	sum_whole = sum([weight for val, weight in whole])
+	sum_whole = sum_whole if sum_whole != 0 else 1
+	p = sum_whole / remaining
+	
+	for val, weight in fract:
+		print("item_scalar:", item_scalar, "p:", p, "weight:", weight, "lst_len:", lst_len)
+		s = ceil(item_scalar * p * weight * lst_len)
+		print("\ts:",s)
+		res += [val for i in range(s)]
+		
+	for val, weight in whole:
+		print("{} x {}".format(weight, val))
+		res += [val for i in range(ceil(weight))]
+		
+	print("\tres", res)
+	if res:
+		return choice(res)
+	if isinstance(weighted_lst, list) or isinstance(weighted_lst, tuple):
+		return choice(weighted_lst)
+	return None

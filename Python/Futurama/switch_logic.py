@@ -14,19 +14,19 @@ hermes = "Hermes"
 
 switches = []
 
-switches.append((fry, must))
-switches.append((zoid, afro))
-switches.append((must, zoid))
-switches.append((afro, fry))
-switches.append((prof, must))
-switches.append((bucket, afro))
-switches.append((must, leela))
-switches.append((afro, king))
-switches.append((hermes, must))
-switches.append((bender, afro))
-switches.append((must, amy))
-switches.append((afro, prof))
-switches.append((bucket, must))
+switches.append((fry, must))	#	A
+switches.append((zoid, afro))	#	B
+switches.append((must, zoid))	#	C
+switches.append((afro, fry))	#	D
+switches.append((prof, must))	#	E
+switches.append((bucket, afro))	#	F
+switches.append((must, leela))	#	G
+switches.append((afro, king))	#	H
+switches.append((hermes, must))	#	I
+switches.append((bender, afro))	#	J
+switches.append((must, amy))	#	K
+switches.append((afro, prof))	#	L
+switches.append((bucket, must))	#	M
 
 people = {fry: [], must: [], zoid: [], afro: [], prof: [], bucket: [], leela: [], king: [], hermes: [], bender: [], amy: []}
 

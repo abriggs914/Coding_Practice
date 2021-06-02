@@ -140,10 +140,10 @@ if history:
 	print("\n\nTotal spent: $ %.2f" % total_spent)
 	print("Largest order:", largest_order)
 	print("Smallest order:", smallest_order)
-	print("Highest spending month:", highest_spending_month, "Spent:", highest_spending_month[0].get_monthly_spending(highest_spending_month[1]), "Orders:", highest_spending_month[0].months[calendar.month_name[highest_spending_month[1]]])
-	print("least spending month:", least_spending_month, "Spent:", least_spending_month[0].get_monthly_spending(least_spending_month[1]), "Orders:", least_spending_month[0].months[calendar.month_name[least_spending_month[1]]])
-	print("Highest spending year:", highest_spending_year, "Spent:", highest_spending_year.balance)
-	print("least spending year:", least_spending_year, "Spent:", least_spending_year.balance)
+	print("Highest spending month:", highest_spending_month, "Spent:", money(highest_spending_month[0].get_monthly_spending(highest_spending_month[1])), "Orders:", highest_spending_month[0].months[calendar.month_name[highest_spending_month[1]]])
+	print("least spending month:", least_spending_month, "Spent:", money(least_spending_month[0].get_monthly_spending(least_spending_month[1])), "Orders:", least_spending_month[0].months[calendar.month_name[least_spending_month[1]]])
+	print("Highest spending year:", highest_spending_year, "Spent:", money(highest_spending_year.balance))
+	print("least spending year:", least_spending_year, "Spent:", money(least_spending_year.balance))
 	
 def amazon_recent():
 	orders = {
@@ -203,10 +203,11 @@ def amazon_recent():
 				quantites[typ]["Price"] += price
 				quantites[typ]["Pieces"] += pieces
 			else:
-				quantites[typ] = {}
-				quantites[typ]["Qty"] = qty
-				quantites[typ]["Price"] = price
-				quantites[typ]["Pieces"] = pieces
+				quantites[typ] = {
+					"Qty": qty,
+					"Price": price,
+					"Pieces": pieces
+				}
 				
 	for item in quantites:
 		quantites[item]["Cost / Item"] = money(quantites[item]["Price"] / max(1, quantites[item]["Qty"]))
