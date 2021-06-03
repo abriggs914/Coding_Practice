@@ -286,7 +286,7 @@ def draw_button(msg, x, y, w, h, ic, ac, cc, f, fc, action=None):
 			kill_pop_up_thread()
 			if action is not None:
 				pool = ThreadPool(processes=1)
-				print("action:", action)
+				# print("action:", action)
 				# if action == reset:
 				# 	async_result = pool.apply_async(action, (click, DATA))
 				# elif action == save or action == load:
@@ -300,8 +300,8 @@ def draw_button(msg, x, y, w, h, ic, ac, cc, f, fc, action=None):
 					kill_pop_up_thread()
 					POP_UP_THREAD = Thread(target=f, args=arg)
 					POP_UP_THREAD.start()
-				else:
-					print("no function")
+				# else:
+				# 	print("no function")
 
 				# recalculate buckets on load
 				if action == load:
@@ -317,7 +317,8 @@ def draw_button(msg, x, y, w, h, ic, ac, cc, f, fc, action=None):
 					if sum(click) == 3:
 						full_reset()
 
-				# event = pygame.event.wait()
+				pygame.event.clear()
+				event = pygame.event.wait(pygame.MOUSEBUTTONUP)
 		# pygame.draw.rect(DISPLAY, c, (x, y, w, h))
 	else:
 		c = ic
@@ -347,9 +348,9 @@ def init():
 
 	loaded_game = load_game()
 	if not loaded_game:
-		loaded_game = G2048()
+		loaded_game = G2048(random_tile_values=[2])
 	else:
-		loaded_game = G2048(init_spaces=loaded_game)
+		loaded_game = G2048(init_spaces=loaded_game, random_tile_values=[2])
 	DATA["current_game"] = loaded_game
 	DATA["mode"] = "play"
 	# DATA["colour_scheme"] = colour_scheme_blue_green
@@ -437,7 +438,7 @@ def draw_display():
 
 	sbkg, sf, sfc = DATA["colour_scheme"]["score"]
 	pygame.draw.rect(DISPLAY, sbkg, (sx, sy, sw, sh))
-	msg = "score: {}".format(game.score)
+	msg = "Score: {}".format(game.score)
 	# BUTTON_TEXT_FONT.set_bold(True)
 	text_surf, text_rect = text_objects(msg, sf, sfc)
 	text_rect.center = ((sx + (sw / 2)), (sy + (sh / 2)))

@@ -6,13 +6,12 @@ import random as rand
 from utility import *
 import keyboard as kbd
 
-
-clear = lambda: os.system('cls') #on Windows System
+clear = lambda: os.system('cls')  # on Windows System
 
 
 def grid_print(grid):
 	res = "\n"
-	lenstr_no_none = lambda x : lenstr(x) if x != None else lenstr("-")
+	lenstr_no_none = lambda x: lenstr(x) if x != None else lenstr("-")
 	lt = max([max(list(map(lenstr_no_none, row))) for row in grid])
 	min_width = 2 + lt
 	for row in grid:
@@ -28,7 +27,7 @@ def write_score(game):
 	with open(file_name, 'a') as f:
 		f.write("\n" + ";;".join(game.get_record_entry()))
 
-		
+
 def get_move_input():
 	print("Up, down, left, or right?")
 	while True:
@@ -42,12 +41,14 @@ def get_move_input():
 			return "right"
 		elif kbd.is_pressed('q'):
 			return "quit"
-	# valid = ["W", "A", "S", "D"]
-	# legend = ["UP", "LEFT", "DOWN", "RIGHT"]
-	# inp = ""
-	# while inp.upper() not in valid:
-		# inp = input("Up, down, left, or right?")
-	# return legend[valid.index(inp.upper())].lower()
+
+
+# valid = ["W", "A", "S", "D"]
+# legend = ["UP", "LEFT", "DOWN", "RIGHT"]
+# inp = ""
+# while inp.upper() not in valid:
+# inp = input("Up, down, left, or right?")
+# return legend[valid.index(inp.upper())].lower()
 
 
 class G2048:
@@ -61,20 +62,20 @@ class G2048:
 			"LEFT": "left",
 			"RIGHT": "right",
 		}
-	
+
 		self.n = n
 		self.grid = [[None for j in range(n)] for i in range(n)]
 		self.largest_tile = None
 		self.score = 0
 		self.hi_score = 0
 		self.history = []
-		
+
 		if init_spaces:
 			for i in range(n):
 				for j in range(n):
 					if init_spaces[i][j]:
 						self.place(i, j, init_spaces[i][j])
-		
+
 	def find_empty_cells(self):
 		res = []
 		for i in range(self.n):
@@ -85,7 +86,8 @@ class G2048:
 
 	def playable_directions(self):
 		empty_cells = self.find_empty_cells()
-		edges = [cell for cell in empty_cells if (cell[0] == 0 or cell[0] == self.n - 1) or (cell[1] == 0 or cell[1] == self.n - 1)]
+		edges = [cell for cell in empty_cells if
+				 (cell[0] == 0 or cell[0] == self.n - 1) or (cell[1] == 0 or cell[1] == self.n - 1)]
 
 		# if middle indexes are excluded, then you can move any direction
 		if len(empty_cells) != len(edges):
@@ -160,16 +162,17 @@ class G2048:
 						# print("\tright")
 						return True
 		return False
-		# init_grid = [row.copy() for row in self.grid]
-		# so = self.shift_options
-		# moves = []
-		# for dir, name in so.items():
-		# 	res = self.shift_grid(name)
-		# 	moves.append(res)
-		# 	if res:
-		# 		self.grid = init_grid
-		# return len(self.find_empty_cells()) > 0 or any(moves)
-		
+
+	# init_grid = [row.copy() for row in self.grid]
+	# so = self.shift_options
+	# moves = []
+	# for dir, name in so.items():
+	# 	res = self.shift_grid(name)
+	# 	moves.append(res)
+	# 	if res:
+	# 		self.grid = init_grid
+	# return len(self.find_empty_cells()) > 0 or any(moves)
+
 	def place(self, i, j, v):
 		self.grid[i][j] = v
 		if self.largest_tile is None:
@@ -198,6 +201,7 @@ class G2048:
 		direction = direction.lower()
 		so = self.shift_options
 		init_grid = [row.copy() for row in self.grid]
+
 		def shift():
 			for r, row in enumerate(self.grid):
 				i = 0
@@ -206,7 +210,7 @@ class G2048:
 					if self.grid[r][i] is not None:
 						k = i + 1
 						while k < lr:
-							if self.grid[r][k] != None:
+							if self.grid[r][k] is not None:
 								break
 							k += 1
 						if k < lr:
@@ -299,7 +303,7 @@ class G2048:
 				else:
 					once = True
 				time.sleep(0.15)
-		
+
 		clear()
 		print(self)
 		print("\n\tGame over!\n\n")
@@ -314,7 +318,10 @@ class G2048:
 
 	def __repr__(self):
 		res = "\n"
-		lenstr_no_none = lambda x : lenstr(x) if x != None else lenstr("-")
+
+		def lenstr_no_none(x):
+			return lenstr(x) if x is not None else lenstr("-")
+
 		lt = max([max(list(map(lenstr_no_none, row))) for row in self.grid])
 		min_width = 2 + lt
 		for row in self.grid:
