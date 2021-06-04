@@ -195,6 +195,7 @@ class G2048:
 		self.grid[i][j] = v
 		self.score += v
 		self.hi_score = max(self.hi_score, self.score)
+		return v, i, j
 
 	def shift_grid(self, direction):
 		self.history.append((self.score, self.hi_score, direction, [row.copy() for row in self.grid]))

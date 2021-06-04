@@ -5,6 +5,7 @@ from threading import Thread
 from main import *
 from colors import *
 import math
+import keyboard as kbd
 
 pygame.init()
 
@@ -67,7 +68,14 @@ colour_scheme_blue_green = {
 	"score": ((77, 140, 18), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
 	"hi-score": ((8, 187, 246), pygame.font.SysFont("helvetica", 16, bold=1), (66, 75, 78)),
 	"undo": ((11, 84, 0), (0, 143, 99), (36, 183, 137), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
-	"reset": ((0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
+	"reset": ((0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"menu_title_font": (pygame.font.SysFont("comic sans", 25, bold=1), (255, 255, 255)),
+	"new_game": ((0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"resume_game": ((0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"leaderboard": ((0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"settings": ((0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"colour_scheme_adj": ((0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"dims_adj": ((0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
 colour_scheme_blue_green.update({str(k): v for k, v in colour_scheme_blue_green.items() if isinstance(k, int)})
 colour_scheme_red_yellow = {
@@ -87,7 +95,14 @@ colour_scheme_red_yellow = {
 	"score": ((119, 0, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
 	"hi-score": ((222, 206, 76), pygame.font.SysFont("helvetica", 16, bold=1), (66, 75, 78)),
 	"undo": ((149, 133, 0), (185, 166, 6), (246, 221, 13), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
-	"reset": ((153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
+	"reset": ((153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"menu_title_font": (pygame.font.SysFont("comic sans", 25, bold=1), (202, 215, 98)),
+	"new_game": ((153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"resume_game": ((153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"leaderboard": ((153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"settings": ((153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"colour_scheme_adj": ((153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+	"dims_adj": ((153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
 colour_scheme_red_yellow.update({str(k): v for k, v in colour_scheme_red_yellow.items() if isinstance(k, int)})
 
@@ -118,6 +133,9 @@ IDLE = "idle"
 load = "load"  # initialized in init_file_handling must be done there because file_handling uses
 save = "save"  # small_pop_up and reset functions defined in this file
 POP_UP_THREAD = None
+MENU_STATUS = None
+MENU_HOME = "MENU_HOME"
+MENU_SETTINGS = "MENU_SETTINGS"
 
 
 # ROWS = 11								# Number of rows and columns
@@ -249,7 +267,7 @@ def full_reset():
 # 	text_rect.center = ((x + (w / 2)), (y + (h / 2)))
 # 	DISPLAY.blit(text_surf, text_rect)
 
-f = 1
+fafdsd = 1
 
 # diaplay a button and listen for it to be clicked.
 # acts as a controller to update the program mode as well.
@@ -342,9 +360,10 @@ def load_game():
 # Initialize the DATA dictionary.
 # Called immediately on run, before the main loop.
 def init():
-	global DISPLAY, GRID_X, GRID_Y
+	global DISPLAY, MENU_STATUS, GRID_X, GRID_Y
 	DISPLAY = pygame.display.set_mode((WIDTH, HEIGHT))
 	pygame.display.set_caption(TITLE)
+	MENU_STATUS = MENU_HOME
 
 	loaded_game = load_game()
 	if not loaded_game:
@@ -353,8 +372,8 @@ def init():
 		loaded_game = G2048(init_spaces=loaded_game, random_tile_values=[2])
 	DATA["current_game"] = loaded_game
 	DATA["mode"] = "play"
-	# DATA["colour_scheme"] = colour_scheme_blue_green
-	DATA["colour_scheme"] = colour_scheme_red_yellow
+	DATA["colour_scheme"] = colour_scheme_blue_green
+	# DATA["colour_scheme"] = colour_scheme_red_yellow
 	DATA["colour_func_type"] = type(colour_func)
 	init_button_font()
 
@@ -372,6 +391,215 @@ def init():
 
 def do_print():
 	print("button clicked")
+
+
+def draw_menu():
+	global DISPLAY, MENU_STATUS
+	DISPLAY.fill(BACKGROUND_COLOR)
+	game = DATA["current_game"]
+	colour_scheme = DATA["colour_scheme"]
+	f, fc = colour_scheme["menu_title_font"]
+	nic, nac, ncc, nf, nfc = colour_scheme["new_game"]
+	ric, rac, rcc, rf, rfc = colour_scheme["resume_game"]
+	lic, lac, lcc, lf, lfc = colour_scheme["leaderboard"]
+	sic, sac, scc, sf, sfc = colour_scheme["settings"]
+	cic, cac, ccc, cf, cfc = colour_scheme["colour_scheme_adj"]
+	dic, dac, dcc, df, dfc = colour_scheme["dims_adj"]
+	ww, wh = WIDTH, HEIGHT
+	v_space = wh * 0.05
+	h_space = ww * 0.02
+
+	x_title = ww * 0.2
+	y_title = wh * 0.06
+	w_title = ww * 0.6
+	h_title = wh * 0.1
+	x_btn = ww * 0.3
+	y_btn = y_title + h_title + v_space
+	w_btn = ww * 0.4
+	h_btn = wh * 0.06
+
+	if MENU_STATUS == MENU_HOME:
+
+		text_surf, text_rect = text_objects("Welcome to 2048!", f, fc)
+		text_rect.center = ((x_title + (w_title / 2)), (y_title + (h_title / 2)))
+		DISPLAY.blit(text_surf, text_rect)
+
+		draw_button("Play New Game", x_btn, y_btn + (0 * (h_btn + v_space)), w_btn, h_btn, nic, nac, ncc, nf, nfc, new_game)
+		draw_button("Resume Game", x_btn, y_btn + (1 * (h_btn + v_space)), w_btn, h_btn, ric, rac, rcc, rf, rfc, resume_game)
+		draw_button("Leaderboard", x_btn, y_btn + (2 * (h_btn + v_space)), w_btn, h_btn, lic, lac, lcc, lf, lfc, leaderboard)
+		draw_button("Settings", x_btn, y_btn + (3 * (h_btn + v_space)), w_btn, h_btn, sic, sac, scc, sf, sfc, settings)
+
+	elif MENU_STATUS == MENU_SETTINGS:
+		draw_button(
+			"Colour Scheme",
+			x_btn,
+			y_btn + (0 * (h_btn + v_space)),
+			w_btn,
+			h_btn,
+			cic,
+			cac,
+			ccc,
+			cf,
+			cfc,
+			change_colour_scheme
+		)
+		draw_button(
+			"Change Grid Size",
+			x_btn,
+			y_btn + (1 * (h_btn + v_space)),
+			w_btn,
+			h_btn,
+			cic,
+			cac,
+			ccc,
+			cf,
+			cfc,
+			change_dims
+		)
+		hw_btn = w_btn / 2
+		inc_dec_v_space = v_space / 10
+		draw_button(
+			"",
+			x_btn,
+			y_btn + (2 * (h_btn + v_space)),
+			hw_btn * 0.125,
+			(h_btn / 2) - inc_dec_v_space,
+			cic,
+			cac,
+			ccc,
+			cf,
+			cfc,
+			increment_dims
+		)
+		draw_button(
+			"",
+			x_btn,
+			y_btn + (2 * (h_btn + v_space)) + (h_btn / 2) + inc_dec_v_space,
+			hw_btn * 0.125,
+			(h_btn / 2) - inc_dec_v_space,
+			cic,
+			cac,
+			ccc,
+			cf,
+			cfc,
+			decrement_dims
+		)
+
+		draw_text_input(
+			x_btn,
+			y_btn + (3 * (h_btn + v_space)),
+			w_btn,
+			h_btn,
+			(110, 110, 110),
+			(216, 42, 42),
+			pygame.font.SysFont("arial", 14),
+			(114, 146, 176)
+		)
+
+	pygame.display.update()
+
+#
+# def draw_settings():
+# 	global DISPLAY
+# 	DISPLAY.fill(BACKGROUND_COLOR)
+# 	game = DATA["current_game"]
+# 	colour_scheme = DATA["colour_scheme"]
+# 	f, fc = colour_scheme["menu_title_font"]
+# 	ww, wh = WIDTH, HEIGHT
+# 	v_space = wh * 0.05
+#
+# 	x_title = ww * 0.2
+# 	y_title = wh * 0.06
+# 	w_title = ww * 0.6
+# 	h_title = wh * 0.1
+# 	x_btn = ww * 0.3
+# 	y_btn = y_title + h_title + v_space
+# 	w_btn = ww * 0.4
+# 	h_btn = wh * 0.06
+#
+# 	draw_button("Colour Scheme", x_btn, y_btn + (3 * (h_btn + v_space)), w_btn, h_btn, cic, cac, ccc, cf, cfc, change_colour_scheme)
+# 	draw_button("Change Grid Size", x_btn, y_btn + (4 * (h_btn + v_space)), w_btn, h_btn, cic, cac, ccc, cf, cfc, change_dims)
+# 	pygame.display.update()
+
+
+def draw_text_input(x, y, w, h, ic, ac, f, fc):
+	global DISPLAY
+	mouse = pygame.mouse.get_pos()
+	click = tuple(pygame.mouse.get_pressed())
+	input_box = pygame.Rect(x, y, w, h)
+	active = False
+	if click[0]:
+		# If the user clicked on the input_box rect.
+		if input_box.collidepoint(mouse):
+			# Toggle the active variable.
+			active = not active
+		else:
+			active = False
+		# Change the current color of the input box.
+		color = ac if active else ic
+
+	pygame.key.set_text_input_rect(input_box)
+	pygame.key.start_text_input()
+	print("pressed", pressed)
+	text = ""
+	if pressed:
+		if active:
+			if pressed == pygame.K_RETURN:
+				print(text)
+				text = ""
+			elif pressed == pygame.K_BACKSPACE:
+				text = pressed[:-1]
+			else:
+				text += pressed
+	pygame.key.stop_text_input()
+	txt_surface = f.render(text, True, fc)
+	width = max(200, txt_surface.get_width()+10)
+	input_box.w = width
+	DISPLAY.blit(txt_surface, (input_box.x+5, input_box.y+5))
+	pygame.draw.rect(DISPLAY, fc, input_box, 2)
+
+
+def new_game():
+	print("new game")
+
+
+def resume_game():
+	print("resume game")
+
+
+def leaderboard():
+	print("leaderboard")
+
+
+def settings():
+	global MENU_STATUS
+	print("settings")
+	MENU_STATUS = MENU_SETTINGS
+	# loop = True
+	# while loop:
+	# 	events = pygame.event.get()
+	# 	kbd_q = kbd.is_pressed('q')
+	# 	for event in events:
+	# 		pos = pygame.mouse.get_pos()
+	# 		if kbd_q or event.type == pygame.QUIT:
+	# 			loop = False
+	# 	draw_settings()
+
+
+def increment_dims():
+	print("increment dims")
+
+
+def decrement_dims():
+	print("decrement dims")
+
+
+def change_colour_scheme():
+	print("change colour scheme")
+
+
+def change_dims():
+	print("change dims")
 
 
 def draw_display():
@@ -483,6 +711,17 @@ def undo(**args):
 	DATA["current_game"].undo()
 
 
+def menu_loop():
+	loop = True
+	while loop:
+		events = pygame.event.get()
+		kbd_q = kbd.is_pressed('q')
+		for event in events:
+			pos = pygame.mouse.get_pos()
+			if kbd_q or event.type == pygame.QUIT:
+				loop = False
+		draw_menu()
+
 def main_loop():
 	loop = True
 	mouse_state = None
@@ -491,6 +730,20 @@ def main_loop():
 	while loop:
 		# print("score:", game.score)
 		events = pygame.event.get()
+
+		kbd_w = kbd.is_pressed('w')
+		kbd_ua = kbd.is_pressed('up')
+		kbd_a = kbd.is_pressed('a')
+		kbd_la = kbd.is_pressed('left')
+		kbd_s = kbd.is_pressed('s')
+		kbd_da = kbd.is_pressed('down')
+		kbd_d = kbd.is_pressed('d')
+		kbd_ra = kbd.is_pressed('right')
+		str_dir_keys = ["kbd_w", "kbd_ua", "kbd_a", "kbd_la", "kbd_s", "kbd_da", "kbd_d", "kbd_ra"]
+		dir_keys = [kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra]
+		a_dir_keys = any(dir_keys)
+		kbd_q = kbd.is_pressed('q')
+
 		if change:
 			print("game:", game)
 			change = False
@@ -499,10 +752,13 @@ def main_loop():
 			# print("mouse_state", mouse_state, "event", event)
 			# if mouse_state and event != pygame.MOUSEMOTION:
 			# 	print("mouse_state:", mouse_state)
-			if event.type == pygame.QUIT:
+			if kbd_q or event.type == pygame.QUIT:
 				loop = False
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				print("\tmouse button down", "mouse_state", mouse_state)
+			if a_dir_keys or event.type == pygame.MOUSEBUTTONDOWN:
+				if event.type == pygame.MOUSEBUTTONDOWN:
+					print("\tmouse button down", "mouse_state", mouse_state)
+				else:
+					print("dir_keys:", "\n\t" + dict_print(dict(zip(str_dir_keys, dir_keys)), "dir_keys"))
 				cells = DATA["cells"]
 				r = cells["r"]
 				c = cells["c"]
@@ -532,46 +788,72 @@ def main_loop():
 			old_grid = DATA["current_game"].grid.copy()
 			valid_shift = False
 
+			# used to simulate long press + drag mouse event
 			if event.type == pygame.MOUSEMOTION:
 				if mouse_state:
-					mouse_state[2]= True
+					mouse_state[2] = True
 
-			if event.type == pygame.MOUSEBUTTONUP:
+			if a_dir_keys or event.type == pygame.MOUSEBUTTONUP:
 				print("\tmouse button up", "mouse_state", mouse_state)
-				if mouse_state and mouse_state[2]:
+				if a_dir_keys or (mouse_state and mouse_state[2]):
 					# if mouse_state[1] != pos:
 					lc, mc, rc = pygame.mouse.get_pressed(3)
-					print("holding lc", lc, "mc:", mc, "rc:", rc)
-					print("released!")
-					xd = mouse_state[1][0] - pos[0]
-					yd = mouse_state[1][1] - pos[1]
+					if mouse_state and mouse_state[2]:
+						xd = mouse_state[1][0] - pos[0]
+						yd = mouse_state[1][1] - pos[1]
+						print("holding lc", lc, "mc:", mc, "rc:", rc)
+						print("released!")
+					else:
+						print("a_dir_keys:", a_dir_keys)
+						if kbd_la or kbd_a:
+							# left
+							xd = 1
+							yd = 0
+						elif kbd_ra or kbd_d:
+							# right
+							xd = -1
+							yd = 0
+						elif kbd_ua or kbd_w:
+							# up
+							xd = 1
+							yd = 2
+						elif kbd_da or kbd_s:
+							# down
+							xd = 1
+							yd = -2
+
 					mouse_state = None
 					valid_shift = False
 					print("xd:", xd, "yd:", yd)
 					if abs(xd) >= abs(yd):
 						if xd >= 0:
 							valid_shift = game.shift_grid("LEFT")
-							print("shift LEFT")
+							print("shifting LEFT VALID: {}".format(valid_shift))
 							change = True
 						else:
 							valid_shift = game.shift_grid("RIGHT")
-							print("shift RIGHT")
+							print("shifting RIGHT VALID: {}".format(valid_shift))
 							change = True
 					else:
 						if yd >= 0:
 							valid_shift = game.shift_grid("UP")
-							print("shift UP")
+							print("shifting UP VALID: {}".format(valid_shift))
 							change = True
 						else:
 							valid_shift = game.shift_grid("DOWN")
-							print("shift DOWN")
+							print("shifting DOWN VALID: {}".format(valid_shift))
 							change = True
-				if valid_shift and change and DATA["current_game"].grid != old_grid:
-					game.gen_random_tile()
+				if valid_shift and change:  # and DATA["current_game"].grid != old_grid:
+					new_tile = game.gen_random_tile()
+					print("new_tile:", new_tile)
 		draw_display()
+		if not loop:
+			break
 		loop = game.playable()
+
 
 
 if __name__ == "__main__":
 	init()
+	menu_loop()
 	main_loop()
