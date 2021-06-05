@@ -34,9 +34,9 @@ pygame.init()
 ##################################################
 
 # BLACK = (0, 0, 0)
-CIRCLE_MARKER_COLOR = (255, 255, 255)  # white
-LEGEND_MARKER_COLOR = (255, 15, 15)  # red
-BACKGROUND_COLOR = (0, 0, 0)  # black
+# CIRCLE_MARKER_COLOR = (255, 255, 255)  # white
+# LEGEND_MARKER_COLOR = (255, 15, 15)  # red
+# BACKGROUND_COLOR = "#ffffff" #(0, 0, 0)  # black
 CIRCLE_MARKER_SIZE = 10  # diameter of dot
 CIRCLE_BORDER_SIZE = 3  # space of the grid circle color shown
 SCREEN_PROPORTION = 0.85  # margin space for circle drawing
@@ -48,10 +48,14 @@ LINE_WIDTH = 1
 def colour_func(val, start=(255, 255, 255)):
     # print("val", val)
     math.log(val, 2)
-    return (50, 50, 50)
+    return 50, 50, 50
 
 
 colour_scheme_blue_green = {
+    "name": ("Blue Green", pygame.font.SysFont("helvetica", 18, bold=1), (0, 23, 66)),
+    "background": (26, 62, 135),
+    "increment_arrow": (89, 199, 20),
+    "decrement_arrow": (89, 199, 20),
     "block": ((135, 131, 131), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     2: ((8, 201, 73), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
     4: ((44, 145, 78), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
@@ -71,20 +75,26 @@ colour_scheme_blue_green = {
     "reset": ((0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "menu_title_font": (pygame.font.SysFont("comic sans", 25, bold=1), (255, 255, 255)),
     "new_game": (
-        (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (70, 166, 38), (85, 204, 45), (111, 237, 69), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "resume_game": (
-        (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (31, 122, 0), (56, 189, 11), (94, 252, 40), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "leaderboard": (
-        (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (49, 176, 72), (42, 212, 73), (64, 245, 97), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "settings": (
-        (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (25, 148, 89), (43, 186, 117), (81, 232, 159), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "colour_scheme_adj": (
-        (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (21, 93, 140), (43, 130, 186), (87, 184, 247), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "dims_adj": (
-        (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
+        (0, 43, 99), (8, 74, 161), (40, 118, 222), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "return_main": (
+        (68, 91, 173), (94, 122, 219), (138, 156, 222), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
 colour_scheme_blue_green.update({str(k): v for k, v in colour_scheme_blue_green.items() if isinstance(k, int)})
 colour_scheme_red_yellow = {
+    "name": ("Red Yellow", pygame.font.SysFont("helvetica", 18, bold=1), (171, 0, 0)),
+    "background": (74, 31, 30),
+    "increment_arrow": (252, 245, 15),
+    "decrement_arrow": (252, 245, 15),
     "block": ((135, 131, 131), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     2: ((202, 215, 90), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
     4: ((242, 57, 47), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
@@ -106,55 +116,67 @@ colour_scheme_red_yellow = {
         (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "menu_title_font": (pygame.font.SysFont("comic sans", 25, bold=1), (202, 215, 98)),
     "new_game": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (200, 209, 19), (242, 252, 33), (225, 232, 74), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "resume_game": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (201, 121, 0), (227, 156, 50), (245, 179, 81), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "leaderboard": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (171, 83, 0), (217, 121, 30), (237, 145, 57), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "settings": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (171, 28, 0), (222, 42, 7), (245, 66, 32), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "colour_scheme_adj": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (156, 26, 9), (194, 36, 16), (201, 51, 32), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "dims_adj": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
+        (156, 0, 0), (176, 19, 19), (207, 41, 41), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "return_main": (
+        (209, 50, 50), (237, 71, 71), (222, 104, 104), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
 colour_scheme_red_yellow.update({str(k): v for k, v in colour_scheme_red_yellow.items() if isinstance(k, int)})
 colour_scheme_red_grey = {
+    "name": ("Red Grey", pygame.font.SysFont("helvetica", 18, bold=1), (224, 0, 0)),
+    "background": (138, 10, 10),
+    "increment_arrow": (31, 16, 16),
+    "decrement_arrow": (31, 16, 16),
     "block": ((135, 131, 131), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
-    2: ((202, 215, 90), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    4: ((242, 57, 47), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    8: ((227, 165, 2), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    16: ((227, 119, 2), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    32: ((193, 100, 0), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    64: ((171, 73, 32), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    128: ((168, 126, 5), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    256: ((168, 50, 5), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    512: ((134, 34, 20), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    1024: ((170, 77, 19), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    2048: ((171, 0, 0), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    "rest": (lambda x: colour_func(x, start=(171, 0, 0)), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    "score": ((119, 0, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
-    "hi-score": ((222, 206, 76), pygame.font.SysFont("helvetica", 16, bold=1), (66, 75, 78)),
+    2: ((176, 21, 21), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    4: ((97, 40, 40), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    8: ((110, 71, 71), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    16: ((252, 43, 43), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    32: ((79, 11, 11), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    64: ((191, 99, 99), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    128: ((56, 9, 9), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    256: ((140, 0, 0), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    512: ((115, 95, 95), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    1024: ((74, 34, 34), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    2048: ((224, 0, 0), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    "rest": (lambda x: colour_func(x, start=(224, 0, 0)), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    "score": ((133, 30, 30), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "hi-score": ((224, 0, 0), pygame.font.SysFont("helvetica", 16, bold=1), (66, 75, 78)),
     "undo": (
         (149, 133, 0), (185, 166, 6), (246, 221, 13), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "reset": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
-    "menu_title_font": (pygame.font.SysFont("comic sans", 25, bold=1), (202, 215, 98)),
+        (173, 16, 16), (242, 39, 39), (219, 75, 75), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "menu_title_font": (pygame.font.SysFont("comic sans", 25, bold=1), (145, 0, 0)),
     "new_game": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (97, 80, 80), (133, 98, 98), (173, 123, 123), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "resume_game": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (82, 53, 53), (122, 75, 75), (163, 96, 96), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "leaderboard": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (79, 34, 34), (138, 52, 52), (191, 71, 71), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "settings": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (82, 24, 24), (133, 28, 28), (191, 33, 33), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "colour_scheme_adj": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+        (94, 8, 8), (130, 12, 12), (173, 19, 19), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "dims_adj": (
-        (153, 61, 0), (186, 87, 21), (255, 101, 0), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
+        (143, 0, 0), (201, 16, 16), (255, 43, 43), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "return_main": (
+        (209, 50, 50), (237, 71, 71), (222, 104, 104), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
 colour_scheme_red_grey.update({str(k): v for k, v in colour_scheme_red_grey.items() if isinstance(k, int)})
 colour_scheme_blue_white = {
+    "name": ("Blue White", pygame.font.SysFont("helvetica", 18, bold=1), (0, 23, 66)),
+    "background": (26, 62, 135),
+    "increment_arrow": (179, 199, 255),
+    "decrement_arrow": (179, 199, 255),
     "block": ((135, 131, 131), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     2: ((8, 201, 73), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
     4: ((44, 145, 78), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
@@ -184,9 +206,18 @@ colour_scheme_blue_white = {
     "colour_scheme_adj": (
         (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "dims_adj": (
-        (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
+        (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "return_main": (
+        (68, 91, 173), (94, 122, 219), (138, 156, 222), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
 colour_scheme_blue_white.update({str(k): v for k, v in colour_scheme_blue_white.items() if isinstance(k, int)})
+
+VALID_COLOUR_SCHEMES = (
+    colour_scheme_blue_green,
+    colour_scheme_red_yellow,
+    colour_scheme_red_grey,
+    colour_scheme_blue_white
+)
 
 ##################################################
 ##					Game vars					##
@@ -272,7 +303,8 @@ class InputBox:
                         self.text += txt
                         DATA["input_dims"] = int(self.text)
                 # Re-render the text.
-                self.txt_surface = self.f.render(self.text, True, self.fc)
+                if self.text:
+                    self.txt_surface = self.f.render(self.text, True, self.fc)
 
     def increment(self):
         self.text = int(self.text) + 1
@@ -310,7 +342,6 @@ class DemoGrid:
 
     def draw(self):
         global DISPLAY
-        # DISPLAY.fill(BACKGROUND_COLOR)
         game = self.game
         grid = game.grid
         colour_scheme = self.colour_scheme
@@ -581,9 +612,10 @@ def init():
         loaded_game = G2048(init_spaces=loaded_game, random_tile_values=[2])
     DATA["current_game"] = loaded_game
     DATA["mode"] = "play"
-    DATA["colour_scheme"] = colour_scheme_blue_green
-    # DATA["colour_scheme"] = colour_scheme_red_yellow
-    DATA["colour_func_type"] = type(colour_func)
+    # DATA["colour_scheme"] = colour_scheme_blue_green
+    DATA["colour_scheme"] = colour_scheme_red_yellow
+    # DATA["colour_scheme"] = colour_scheme_red_grey
+    # DATA["colour_func_type"] = type(colour_func)
     init_button_font()
 
     # print("w:", WIDTH, "h:", HEIGHT, "gw:", GRID_WIDTH, "gh:", GRID_HEIGHT, "p:", PAD, "s:", SPACE)
@@ -593,17 +625,41 @@ def init():
     DATA["input_dims"] = MIN_DIMS
 
 
-# DATA["game_time"] = compute_row_space()
-# DATA["colour_scheme"] = compute_spacing()
-# DATA["radius"] = compute_radius()
-# DATA["circles"] = create_circles()
+def draw_return_main(ww, wh, colour_scheme):
+    bic, bac, bcc, bf, bfc = colour_scheme["return_main"]
+    x = ww * 0.05
+    y = wh * 0.05
+    w = ww * 0.10
+    h = wh * 0.10
+    # <-  4 points, 3 lines
+    p1 = (x + (w / 2), y + (h * 0.35))
+    p2 = (x + (w * 0.2), y + (h / 2))
+    p3 = (x + (w - (w * 0.2)), y + (h / 2))
+    p4 = (x + (w / 2), y + (h - (h * 0.35)))
+    draw_button(
+        "",
+        x,
+        y,
+        w,
+        h,
+        bic,
+        bac,
+        bcc,
+        bf,
+        bfc,
+        return_to_main
+    )
+    pygame.draw.line(DISPLAY, (255, 255, 255), p2, p1, 5)
+    pygame.draw.line(DISPLAY, (255, 255, 255), p2, p3, 5)
+    pygame.draw.line(DISPLAY, (255, 255, 255), p2, p4, 5)
 
 
 def draw_menu(event):
-    global DISPLAY, MENU_STATUS, INPUT_BOX_DIMS
-    DISPLAY.fill(BACKGROUND_COLOR)
-    game = DATA["current_game"]
+    global DISPLAY, DATA, MENU_STATUS, INPUT_BOX_DIMS
     colour_scheme = DATA["colour_scheme"]
+    bg = colour_scheme["background"]
+    DISPLAY.fill(bg)
+    game = DATA["current_game"]
     f, fc = colour_scheme["menu_title_font"]
     nic, nac, ncc, nf, nfc = colour_scheme["new_game"]
     ric, rac, rcc, rf, rfc = colour_scheme["resume_game"]
@@ -638,14 +694,8 @@ def draw_menu(event):
                     leaderboard)
         draw_button("Settings", x_btn, y_btn + (3 * (h_btn + v_space)), w_btn, h_btn, sic, sac, scc, sf, sfc, settings)
 
-    elif MENU_SETTINGS == MENU_COLOUR_SCHEME:
-        colour_schemes = [
-            colour_scheme_blue_green,
-            colour_scheme_red_yellow,
-            colour_scheme_red_grey,
-            colour_scheme_blue_white
-        ]
-        l = len(colour_schemes)
+    elif MENU_STATUS == MENU_COLOUR_SCHEME:
+        l = len(VALID_COLOUR_SCHEMES)
 
         def c_p_r_f(x):
             return 2 if x == 0 or (x % 3 != 0 and x < 7) else 3
@@ -657,7 +707,8 @@ def draw_menu(event):
         row_per_col = r_p_c_f(l)
         w_demo = ((ww - (2 * PAD) - ((col_per_row - 1) * h_space)) / max(1, col_per_row))  #
         h_demo = ((wh - (2 * PAD) - ((row_per_col - 1) * v_space)) / max(1, row_per_col))  #
-        for i, cs in enumerate(colour_schemes):
+        clicked = [0 for i in range(len(VALID_COLOUR_SCHEMES))]
+        for i, cs in enumerate(VALID_COLOUR_SCHEMES):
             r = i // col_per_row
             c = i % col_per_row
             x = PAD + (c * (w_demo + h_space))
@@ -666,11 +717,32 @@ def draw_menu(event):
             # vals = {"h_space": h_space, "i": i, "(r, c)": (r, c), "x": x, "y": y, "cpr": col_per_row, "rpc:": row_per_col, "rect:": rect}
             # print(dict_print(vals, "Vals"))
             # print("i", i, "(r, c)", (r, c), "(rpc, cpr)", (row_per_col, col_per_row), "rect: <{}>".format(i), rect)
-            draw_button("COLOUR SCHEME AREA {}".format(i), x, y, w_demo, h_demo, sic, sac, scc, sf, sfc, settings)
-            demo_grid = DemoGrid(x, y, w_demo, h_demo, cs)
+
+            def check():
+                clicked[i] = 1
+
+            draw_button("COLOUR SCHEME AREA {}".format(i), x, y, w_demo, h_demo, sic, sac, scc, sf, sfc, check)
+            tbc = (0, 0, 0)
+            name, nmf, nmfc = cs["name"]
+            snmfc = sum(nmfc)
+            if snmfc < 200:
+                tbc = (255, 255, 255)
+            pygame.draw.rect(DISPLAY, tbc, (x, y, w_demo, (h_demo * 0.1)))
+            text_surf, text_rect = text_objects(name, nmf, nmfc)
+            text_rect.center = ((x + (w_demo / 2)), (y + ((h_demo * 0.1) / 2)))
+            DISPLAY.blit(text_surf, text_rect)
+
+            demo_grid = DemoGrid(x, y + (h_demo * 0.1), w_demo, h_demo * 0.9, cs)
             demo_grid.draw()
 
+        new_cs = [i for i, v in enumerate(clicked) if v]
+        if new_cs:
+            DATA["colour_scheme"] = VALID_COLOUR_SCHEMES[new_cs[0]]
+            MENU_STATUS = MENU_SETTINGS
+        # print("clicked", clicked, "new_cs:", new_cs)
+
     elif MENU_STATUS == MENU_SETTINGS:
+        draw_return_main(ww, wh, colour_scheme)
         draw_button(
             "Colour Scheme",
             x_btn,
@@ -699,12 +771,23 @@ def draw_menu(event):
         # )
         hw_btn = w_btn / 2
         inc_dec_v_space = v_space / 10
+
+        x_ia = x_btn + (w_btn - (h_space + ((hw_btn + h_space) / 2))) + h_space
+        y_ia = y_btn + (1 * (h_btn + v_space))
+        w_ia = hw_btn * 0.125
+        h_ia = (h_btn / 2) - inc_dec_v_space
+
+        x_da = x_btn + (w_btn - (h_space + ((hw_btn + h_space) / 2))) + h_space
+        y_da = y_btn + (1 * (h_btn + v_space)) + (h_btn / 2) + inc_dec_v_space
+        w_da = hw_btn * 0.125
+        h_da = (h_btn / 2) - inc_dec_v_space
+
         draw_button(
             "",
-            x_btn + (w_btn - (h_space + ((hw_btn + h_space) / 2))) + h_space,
-            y_btn + (1 * (h_btn + v_space)),
-            hw_btn * 0.125,
-            (h_btn / 2) - inc_dec_v_space,
+            x_ia,
+            y_ia,
+            w_ia,
+            h_ia,
             cic,
             cac,
             ccc,
@@ -714,10 +797,10 @@ def draw_menu(event):
         )
         draw_button(
             "",
-            x_btn + (w_btn - (h_space + ((hw_btn + h_space) / 2))) + h_space,
-            y_btn + (1 * (h_btn + v_space)) + (h_btn / 2) + inc_dec_v_space,
-            hw_btn * 0.125,
-            (h_btn / 2) - inc_dec_v_space,
+            x_da,
+            y_da,
+            w_da,
+            h_da,
             cic,
             cac,
             ccc,
@@ -725,6 +808,25 @@ def draw_menu(event):
             cfc,
             decrement_dims
         )
+
+        ialc = colour_scheme["increment_arrow"]
+        dalc = colour_scheme["increment_arrow"]
+
+        # <-  4 points, 3 lines
+        ia_p1 = (x_ia + (w_ia * 0.15), y_ia + (h_ia * 0.65))
+        ia_p2 = (x_ia + (w_ia / 2), y_ia + (h_ia * 0.2))
+        ia_p3 = (x_ia + (w_ia * 0.85), y_ia + (h_ia * 0.65))
+
+        pygame.draw.line(DISPLAY, ialc, ia_p1, ia_p2, 5)
+        pygame.draw.line(DISPLAY, ialc, ia_p3, ia_p2, 5)
+
+        da_p1 = (x_da + (w_da * 0.15), y_da + (h_da * 0.35))
+        da_p2 = (x_da + (w_da / 2), y_da + (h_da * 0.8))
+        da_p3 = (x_da + (w_da * 0.85), y_da + (h_da * 0.35))
+
+        pygame.draw.line(DISPLAY, dalc, da_p1, da_p2, 5)
+        pygame.draw.line(DISPLAY, dalc, da_p3, da_p2, 5)
+
 
         # draw_text_input(
         # 	x_btn,
@@ -840,6 +942,12 @@ def settings():
     MENU_STATUS = MENU_SETTINGS
 
 
+def return_to_main():
+    global MENU_STATUS
+    print("returning to main menu")
+    MENU_STATUS = MENU_HOME
+
+
 # loop = True
 # while loop:
 # 	events = pygame.event.get()
@@ -866,9 +974,9 @@ def decrement_dims():
 
 
 def change_colour_scheme():
-    global MENU_SETTINGS
+    global MENU_STATUS
     print("change colour scheme")
-    MENU_SETTINGS = MENU_COLOUR_SCHEME
+    MENU_STATUS = MENU_COLOUR_SCHEME
 
 
 # def change_dims():
@@ -877,10 +985,11 @@ def change_colour_scheme():
 
 def draw_display():
     global DISPLAY
-    DISPLAY.fill(BACKGROUND_COLOR)
+    colour_scheme = DATA["colour_scheme"]
+    bg = colour_scheme["background"]
+    DISPLAY.fill(bg)
     game = DATA["current_game"]
     grid = game.grid
-    colour_scheme = DATA["colour_scheme"]
     w, h = GRID_WIDTH, GRID_HEIGHT
     # print("grid", DATA["current_game"])
     # draw_circles()
@@ -1013,11 +1122,12 @@ def menu_loop():
         h_btn,
         (110, 110, 110),
         (216, 42, 42),
-        pygame.font.SysFont("arial", 14),
+        pygame.font.SysFont("arial", 18),
         (114, 146, 176),
         text=str(DATA["input_dims"]),
         min_width=30
     )
+    # TODO: review above hardcoded values
     while loop:
         events = pygame.event.get()
         kbd_q = kbd.is_pressed('q')
@@ -1094,7 +1204,6 @@ def main_loop():
             # 	print("released!")
             # 	lc, mc, rc = pygame.mouse.get_pressed(3)
 
-            old_grid = DATA["current_game"].grid.copy()
             valid_shift = False
 
             # used to simulate long press + drag mouse event
