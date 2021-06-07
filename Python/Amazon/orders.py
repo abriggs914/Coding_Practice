@@ -181,12 +181,11 @@ def amazon_recent():
 		"2021-06-01": [
 			(1, 2, 2, "D", 62.80),
 			(1, 3, 3, "B", 36.99),
-			(1, 1, 1, "TS", 12.99),
-			(1, 12, 24, "SH", 19.99),
+			(1, 1, 1, "B", 12.99),
+			(1, 12, 24, "S", 19.99),
 			(1, 6, 12, "S", 18.67),
 			(1, 12, 12, "P", 29.69),
-			(1, 12, 12, "P", 29.69),
-			(1, 12, 24, "P", 24.99),
+			(1, 12, 24, "S", 24.99),
 			(1, 2, 2, "SH", 37.45),
 			(1, 3, 3, "SH", 24.62),
 		]
@@ -220,3 +219,23 @@ def amazon_recent():
 	print(dict_print(quantites, "Qunatities"))
 	
 amazon_recent()
+
+transactions = [
+	(datetime.datetime(2021, 6, 1, 0, 0), -189.0),
+	(datetime.datetime(2021, 6, 1, 0, 0), -123.45),
+	(datetime.datetime(2021, 6, 1, 0, 0), -22.99),
+	(datetime.datetime(2021, 6, 1, 0, 0), -37.45),
+	(datetime.datetime(2021, 6, 1, 0, 0), -62.8),
+	(datetime.datetime(2021, 6, 1, 0, 0), -34.5),
+	(datetime.datetime(2021, 6, 2, 0, 0), -24.99),
+	(datetime.datetime(2021, 6, 5, 0, 0), -24.99),
+	(datetime.datetime(2021, 6, 5, 0, 0), 24.99),
+	(datetime.datetime(2021, 6, 5, 0, 0), -15.99),
+	(datetime.datetime(2021, 6, 5, 0, 0), 189.0),
+	(datetime.datetime(2021, 6, 5, 0, 0), -69.52),
+	(datetime.datetime(2021, 6, 7, 0, 0), -90.85),
+	(datetime.datetime(2021, 6, 7, 0, 0), -36.99),
+	(datetime.datetime(2021, 6, 7, 0, 0), -103.49)
+]
+sps = sum([t for d, t in transactions])
+print("sps:", sps)

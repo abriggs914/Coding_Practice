@@ -809,9 +809,11 @@ def draw_menu(event):
                 for j, title in enumerate(header):
                     x_cell = x_sc + ((j + 1) * (w_sc + h_space + lw))
                     text_surf, text_rect = text_objects(title, lbf, lbfc)
-                    text_rect.center = ((x_cell + (w_sc / 2)), (y_sc + (h_sc / 2)))
+                    text_rect.center = ((x_cell + ((w_sc + lw) / 2)), (y_sc + (h_sc / 2)))
                     DISPLAY.blit(text_surf, text_rect)
-                    pygame.draw.line(DISPLAY, lbfc, (x_cell, y_sc), (x_cell, h_lb * inc_h))
+                    pygame.draw.rect(DISPLAY, lbfc, (x_cell, y_sc, w_sc, h_sc))
+                    if j > 0:
+                        pygame.draw.line(DISPLAY, lbfc, (x_cell, y_sc), (x_cell, h_lb * inc_h))
 
         pygame.draw.rect(DISPLAY, (255, 255, 255), (x_lbb, y_lbb, w_lb, (1 * (h_lb + h_space))))
 
