@@ -1,3 +1,4 @@
+import csv
 import os
 import time
 import datetime
@@ -7,6 +8,42 @@ from utility import *
 import keyboard as kbd
 
 clear = lambda: os.system('cls')  # on Windows System
+
+
+class ScoreHistory:
+
+	def __init__(self, date_str, hi_til_loc, score, grid_str):
+		self.date_str = date_str
+		self.date = datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+		self.hi_til_loc = list(hi_til_loc.split(", "))
+		self.hi_tile_r = int(self.hi_til_loc[0][1:])
+		self.hi_tile_c = int(self.hi_til_loc[1])
+		self.hi_tile_v = int(self.hi_til_loc[2][:-1])
+		self.score = score
+		self.grid_str = grid_str
+
+		# self.game = G2048()
+
+	def __eq__(self, other):
+		return isinstance(other, ScoreHistory) and all([
+			self.date_str == other.date_str,
+			self.hi_til_loc == other.hi_til_loc,
+			self.score == other.score,
+			self.grid_str == other.grid_str
+		])
+
+	def __lt__(self, other):
+		if not isinstance(other, ScoreHistory):
+			raise ValueError("\"{}\" of type \"{}\" cannot be compared to \"{}\"".format(other, type(other), type(self)))
+		return self.score < other.score
+
+	def __le__(self, other):
+		if not isinstance(other, ScoreHistory):
+			raise ValueError("\"{}\" of type \"{}\" cannot be compared to \"{}\"".format(other, type(other), type(self)))
+		return self.score <= other.score
+
+	def __repr__(self):
+		return "{} on {}".format(self.hi_tile_v, self.date_str)
 
 
 def grid_print(grid):
@@ -26,6 +63,29 @@ def write_score(game):
 	file_name = "score_history.csv"
 	with open(file_name, 'a') as f:
 		f.write("\n" + ";;".join(game.get_record_entry()))
+
+
+def read_high_scores(last_n=None):
+	file_name = "score_history.csv"
+	delim = ";;"
+	n = last_n
+	histories = []
+	with open(file_name, 'r') as f:
+		header = None
+		for i, line in enumerate(f.readlines()):
+			if i == 0:
+				header = [s.strip() for s in line[0].split(delim) if s]
+			else:
+				# print("line", line)
+				l = [s.strip() for s in line.split(delim) if s]
+				# d = dict(zip())
+				histories.append(ScoreHistory(*l))
+			if n and isinstance(n, int) and n > 1:
+				if i >= n:
+					break
+	# print("histories:", histories)
+	return histories
+
 
 
 def get_move_input():
@@ -263,8 +323,11 @@ class G2048:
 		return temp.shift_grid(direction)
 
 	def get_record_entry(self):
+		d = datetime.datetime.now()
+		# %Y-%m-%d %H:%M:%f
+		d = d.strftime("%Y-%m-%d %H:%M:%S")
 		return [
-			str(datetime.datetime.now()),
+			str(d),
 			str(self.largest_tile),
 			str(len(self.history)),
 			str(self.grid)

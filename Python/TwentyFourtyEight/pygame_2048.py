@@ -86,6 +86,11 @@ colour_scheme_blue_green = {
         (21, 93, 140), (43, 130, 186), (87, 184, 247), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "dims_adj": (
         (0, 43, 99), (8, 74, 161), (40, 118, 222), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "rng": (pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "rng_hint": (pygame.font.SysFont("helvetica", 12, bold=1), (255, 255, 255)),
+    "show_2048": (
+        (0, 43, 99), (8, 74, 161), (40, 118, 222), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "leaderboard_background": ((0, 23, 66), pygame.font.SysFont("helvetica", 16), (255, 255, 255)),
     "return_main": (
         (68, 91, 173), (94, 122, 219), (138, 156, 222), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
@@ -127,6 +132,11 @@ colour_scheme_red_yellow = {
         (156, 26, 9), (194, 36, 16), (201, 51, 32), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "dims_adj": (
         (156, 0, 0), (176, 19, 19), (207, 41, 41), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "rng": (pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "rng_hint": (pygame.font.SysFont("helvetica", 12, bold=1), (255, 255, 255)),
+    "show_2048": (
+        (156, 0, 0), (176, 19, 19), (207, 41, 41), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "leaderboard_background": ((171, 0, 0), pygame.font.SysFont("helvetica", 16), (255, 255, 255)),
     "return_main": (
         (209, 50, 50), (237, 71, 71), (222, 104, 104), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
@@ -134,8 +144,8 @@ colour_scheme_red_yellow.update({str(k): v for k, v in colour_scheme_red_yellow.
 colour_scheme_red_grey = {
     "name": ("Red Grey", pygame.font.SysFont("helvetica", 18, bold=1), (224, 0, 0)),
     "background": (138, 10, 10),
-    "increment_arrow": (31, 16, 16),
-    "decrement_arrow": (31, 16, 16),
+    "increment_arrow": (135, 131, 131),
+    "decrement_arrow": (135, 131, 131),
     "block": ((135, 131, 131), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     2: ((176, 21, 21), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
     4: ((97, 40, 40), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
@@ -155,7 +165,7 @@ colour_scheme_red_grey = {
         (149, 133, 0), (185, 166, 6), (246, 221, 13), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "reset": (
         (173, 16, 16), (242, 39, 39), (219, 75, 75), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
-    "menu_title_font": (pygame.font.SysFont("comic sans", 25, bold=1), (145, 0, 0)),
+    "menu_title_font": (pygame.font.SysFont("comic sans", 25, bold=1), (107, 88, 88)),
     "new_game": (
         (97, 80, 80), (133, 98, 98), (173, 123, 123), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "resume_game": (
@@ -168,27 +178,32 @@ colour_scheme_red_grey = {
         (94, 8, 8), (130, 12, 12), (173, 19, 19), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "dims_adj": (
         (143, 0, 0), (201, 16, 16), (255, 43, 43), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "rng": (pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "rng_hint": (pygame.font.SysFont("helvetica", 12, bold=1), (255, 255, 255)),
+    "show_2048": (
+        (143, 0, 0), (201, 16, 16), (255, 43, 43), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "leaderboard_background": ((224, 0, 0), pygame.font.SysFont("helvetica", 16), (255, 255, 255)),
     "return_main": (
         (209, 50, 50), (237, 71, 71), (222, 104, 104), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
 colour_scheme_red_grey.update({str(k): v for k, v in colour_scheme_red_grey.items() if isinstance(k, int)})
 colour_scheme_blue_white = {
     "name": ("Blue White", pygame.font.SysFont("helvetica", 18, bold=1), (0, 23, 66)),
-    "background": (26, 62, 135),
+    "background": (1, 27, 82),
     "increment_arrow": (179, 199, 255),
     "decrement_arrow": (179, 199, 255),
     "block": ((135, 131, 131), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
-    2: ((8, 201, 73), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    4: ((44, 145, 78), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    8: ((44, 145, 133), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    16: ((14, 235, 209), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    32: ((0, 94, 153), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    64: ((22, 68, 117), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    128: ((2, 39, 79), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    256: ((0, 31, 105), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    512: ((0, 30, 255), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    1024: ((3, 4, 74), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
-    2048: ((0, 23, 66), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
+    2: ((0, 255, 225), pygame.font.SysFont("arial", 16, bold=1), (26, 39, 51)),
+    4: ((255, 255, 255), pygame.font.SysFont("arial", 16, bold=1), (26, 39, 51)),
+    8: ((45, 119, 189), pygame.font.SysFont("arial", 16, bold=1), (26, 39, 51)),
+    16: ((199, 220, 255), pygame.font.SysFont("arial", 16, bold=1), (26, 39, 51)),
+    32: ((19, 155, 189), pygame.font.SysFont("arial", 16, bold=1), (26, 39, 51)),
+    64: ((156, 235, 255), pygame.font.SysFont("arial", 16, bold=1), (26, 39, 51)),
+    128: ((85, 170, 250), pygame.font.SysFont("arial", 16, bold=1), (26, 39, 51)),
+    256: ((0, 71, 214), pygame.font.SysFont("arial", 16, bold=1), (26, 39, 51)),
+    512: ((0, 22, 184), pygame.font.SysFont("arial", 16, bold=1), (74, 93, 247)),
+    1024: ((42, 54, 145), pygame.font.SysFont("arial", 16, bold=1), (117, 154, 189)),
+    2048: ((0, 7, 64), pygame.font.SysFont("arial", 16, bold=1), (74, 93, 247)),
     "rest": (lambda x: colour_func(x, start=(0, 23, 66)), pygame.font.SysFont("arial", 16, bold=1), (255, 255, 255)),
     "score": ((77, 140, 18), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "hi-score": ((8, 187, 246), pygame.font.SysFont("helvetica", 16, bold=1), (66, 75, 78)),
@@ -207,6 +222,11 @@ colour_scheme_blue_white = {
         (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
     "dims_adj": (
         (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "rng": (pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "rng_hint": (pygame.font.SysFont("helvetica", 12, bold=1), (255, 255, 255)),
+    "show_2048": (
+        (0, 33, 113), (30, 65, 149), (0, 73, 255), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255)),
+    "leaderboard_background": ((0, 7, 64), pygame.font.SysFont("helvetica", 16), (74, 93, 247)),
     "return_main": (
         (68, 91, 173), (94, 122, 219), (138, 156, 222), pygame.font.SysFont("helvetica", 16, bold=1), (255, 255, 255))
 }
@@ -250,10 +270,19 @@ MENU_STATUS = None
 MENU_HOME = "MENU_HOME"
 MENU_SETTINGS = "MENU_SETTINGS"
 MENU_COLOUR_SCHEME = "MENU_COLOUR_SCHEME"
+MENU_LEADERBOARD = "MENU_LEADERBOARD"
+LEADERBOARD_SORT_REVERSE = False
+LEADERBOARD_SORT_DATE = "LEADERBOARD_SORT_DATE"
+LEADERBOARD_SORT_SCORE = "LEADERBOARD_SORT_SCORE"
+LEADERBOARD_SORT_HI_TILE = "LEADERBOARD_SORT_HI_TILE"
+LEADERBOARD_SORT_MOVES = "LEADERBOARD_SORT_MOVES"
+LEADERBOARD_SORT_STATUS = (LEADERBOARD_SORT_DATE, LEADERBOARD_SORT_REVERSE)
 MODE_PLAY = False
 INPUT_BOX_DIMS = None
+INPUT_BOX_RNG = None
 MAX_DIMS = 10
 MIN_DIMS = 2
+SHOW_2048 = True
 
 
 # ROWS = 11								# Number of rows and columns
@@ -266,7 +295,7 @@ MIN_DIMS = 2
 
 class InputBox:
 
-    def __init__(self, x, y, w, h, ic, ac, f, fc, text='', min_width=20):
+    def __init__(self, x, y, w, h, ic, ac, f, fc, text='', min_width=20, numeric=False, char_limit=None, n_limit=None):
         self.rect = pygame.Rect(x, y, w, h)
         self.ic = ic
         self.ac = ac
@@ -277,12 +306,34 @@ class InputBox:
         self.txt_surface = self.f.render(self.text, True, self.colour)
         self.active = False
         self.min_width = min_width
+        self.numeric = numeric
+        max_chars = char_limit = w / f.size(" ")[0]
+        if not char_limit:
+            char_limit = max_chars
+        char_limit = min(max_chars, char_limit)
+        self.char_limit = char_limit
+        if not n_limit or not isinstance(n_limit, range):
+            print("adjust n_limit")
+            if isinstance(n_limit, int):
+                n_limit = range(2, n_limit)
+            else:
+                n_limit = range(5)
+        n_start = 1
+        n_stop = max(2, min(10, n_limit.stop))
+        self.n_limit = range(min(n_start, n_stop), max(n_start, n_stop), 1)
+
+    def count_n(self):
+        txt = self.text
+        nums = [s.strip() for s in txt.split(",") if s.strip().isdigit()]
+        return len(nums)
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             # If the user clicked on the input_box rect.
             if self.rect.collidepoint(event.pos):
                 # Toggle the active variable.
+                # if self.active:
+
                 self.active = not self.active
             else:
                 self.active = False
@@ -299,9 +350,16 @@ class InputBox:
                     self.text = self.text[:-1]
                 else:
                     txt = event.unicode
-                    if str(txt).isdigit():
-                        self.text += txt
-                        DATA["input_dims"] = int(self.text)
+                    cn = self.count_n()
+                    if len(self.text) < self.char_limit and ((cn in self.n_limit) or (cn < self.n_limit.start)):
+                        if self.numeric:
+                            if str(txt).isdigit():
+                                self.text += txt
+                                # DATA["input_dims"] = int(self.text)
+                        else:
+                            self.text += txt
+                            # DATA["input_dims"] = self.text
+
                 # Re-render the text.
                 if self.text:
                     self.txt_surface = self.f.render(self.text, True, self.fc)
@@ -315,6 +373,9 @@ class InputBox:
     def set_text(self, txt):
         self.text = txt
 
+    def clear(self):
+        self.set_text("")
+
     def update(self):
         # Resize the box if the text is too long.
         width = max(self.min_width, self.txt_surface.get_width() + 10)
@@ -326,6 +387,7 @@ class InputBox:
         screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
         # Blit the rect.
         pygame.draw.rect(screen, self.colour, self.rect, 2)
+        draw_button("X", self.rect.right + 10, self.rect.y, 20, 20, self.ic, self.ac, self.colour, self.f, self.fc, self.clear)
 
 
 class DemoGrid:
@@ -387,6 +449,7 @@ class DemoGrid:
 
                 pygame.draw.rect(DISPLAY, c, (x, y, cw, ch))
 
+                val = val if val != "block" else ""
                 text_surf, text_rect = text_objects(str(val), f, fc)
                 text_rect.center = ((x + (cw / 2)), (y + (ch / 2)))
                 DISPLAY.blit(text_surf, text_rect)
@@ -613,8 +676,9 @@ def init():
     DATA["current_game"] = loaded_game
     DATA["mode"] = "play"
     # DATA["colour_scheme"] = colour_scheme_blue_green
-    DATA["colour_scheme"] = colour_scheme_red_yellow
+    # DATA["colour_scheme"] = colour_scheme_red_yellow
     # DATA["colour_scheme"] = colour_scheme_red_grey
+    DATA["colour_scheme"] = colour_scheme_blue_white
     # DATA["colour_func_type"] = type(colour_func)
     init_button_font()
 
@@ -655,7 +719,7 @@ def draw_return_main(ww, wh, colour_scheme):
 
 
 def draw_menu(event):
-    global DISPLAY, DATA, MENU_STATUS, INPUT_BOX_DIMS
+    global DISPLAY, DATA, MENU_STATUS, INPUT_BOX_DIMS, INPUT_BOX_RNG
     colour_scheme = DATA["colour_scheme"]
     bg = colour_scheme["background"]
     DISPLAY.fill(bg)
@@ -667,6 +731,10 @@ def draw_menu(event):
     sic, sac, scc, sf, sfc = colour_scheme["settings"]
     cic, cac, ccc, cf, cfc = colour_scheme["colour_scheme_adj"]
     dic, dac, dcc, df, dfc = colour_scheme["dims_adj"]
+    slic, slac, slcc, slf, slfc = colour_scheme["show_2048"]
+    rngf, rngfc = colour_scheme["rng"]
+    rnghf, rnghfc = colour_scheme["rng_hint"]
+    lbbg, lbf, lbfc = colour_scheme["leaderboard_background"]
     ww, wh = WIDTH, HEIGHT
     v_space = wh * 0.05
     h_space = ww * 0.02
@@ -693,6 +761,66 @@ def draw_menu(event):
         draw_button("Leaderboard", x_btn, y_btn + (2 * (h_btn + v_space)), w_btn, h_btn, lic, lac, lcc, lf, lfc,
                     leaderboard)
         draw_button("Settings", x_btn, y_btn + (3 * (h_btn + v_space)), w_btn, h_btn, sic, sac, scc, sf, sfc, settings)
+
+    elif MENU_STATUS == MENU_LEADERBOARD:
+        draw_return_main(ww, wh, colour_scheme)
+        scores = read_high_scores()
+
+        x_lb = ww * 0.2
+        y_lb = y_title + h_title
+        w_lb = ww * 0.6
+        h_lb = wh * 0.06
+
+        if LEADERBOARD_SORT_STATUS[0] == LEADERBOARD_SORT_SCORE:
+            scores.sort(key=lambda s: s.score)
+        elif LEADERBOARD_SORT_STATUS[0] == LEADERBOARD_SORT_HI_TILE:
+            scores.sort(key=lambda s: s.hi_tile_v)
+        elif LEADERBOARD_SORT_STATUS[0] == LEADERBOARD_SORT_DATE:
+            scores.sort(key=lambda s: s.date)
+        elif LEADERBOARD_SORT_STATUS[0] == LEADERBOARD_SORT_MOVES:
+            scores.sort(key=lambda s: s.moves)
+
+        asc_desc = "Ascending"
+        if LEADERBOARD_SORT_STATUS[1]:
+            scores.sort(reverse=1)
+            asc_desc = "Descending"
+
+        text_surf, text_rect = text_objects("Leaderboard", df, dfc)
+        text_rect.center = ((x_lb + (w_lb / 2)), (y_lb + (h_btn / 2)))
+        DISPLAY.blit(text_surf, text_rect)
+
+        max_h = 7
+        inc_h = max(0, min(max_h, len(scores)))
+        x_lbb = x_lb
+        y_lbb = y_lb + (min(max_h + 1, inc_h + 2) * (h_lb + h_space))
+        w_lbb = (w_lb / 5) - h_space
+        h_lbb = (1 * (h_lb + h_space))
+
+        pygame.draw.rect(DISPLAY, lbbg, (x_lb, y_lb + (1 * (h_lb + h_space)), w_lb, (inc_h * (h_lb + h_space))))
+
+        header = ["Date", "Score", "Max Tile", "Moves"]
+        lw = 4
+        x_sc = x_lb + 5
+        y_sc = y_lb + (1 * (h_lb + h_space)) + 5
+        w_sc = (w_lb / len(header)) - v_space - lw - 10
+        h_sc = h_lb - 10
+        for i, score in enumerate(scores):
+            if i == 0:
+                for j, title in enumerate(header):
+                    x_cell = x_sc + ((j + 1) * (w_sc + h_space + lw))
+                    text_surf, text_rect = text_objects(title, lbf, lbfc)
+                    text_rect.center = ((x_cell + (w_sc / 2)), (y_sc + (h_sc / 2)))
+                    DISPLAY.blit(text_surf, text_rect)
+                    pygame.draw.line(DISPLAY, lbfc, (x_cell, y_sc), (x_cell, h_lb * inc_h))
+
+        pygame.draw.rect(DISPLAY, (255, 255, 255), (x_lbb, y_lbb, w_lb, (1 * (h_lb + h_space))))
+
+        bf = pygame.font.SysFont("arial", 12)
+        draw_button("By Date", x_lbb + (0 * (h_space + w_lbb)) + 5, y_lbb + 5, w_lbb - 10, h_lbb - 10, lic, lac, lcc, bf, lfc, sort_leaderboard_by_date)
+        draw_button("By Score", x_lbb + (1 * (h_space + w_lbb)) + 5, y_lbb + 5, w_lbb - 10, h_lbb - 10, lic, lac, lcc, bf, lfc, sort_leaderboard_by_score)
+        draw_button("By Hi Tile", x_lbb + (2 * (h_space + w_lbb)) + 5, y_lbb + 5, w_lbb - 10, h_lbb - 10, lic, lac, lcc, bf, lfc, sort_leaderboard_by_hi_tile)
+        draw_button("By Moves", x_lbb + (3 * (h_space + w_lbb)) + 5, y_lbb + 5, w_lbb - 10, h_lbb - 10, lic, lac, lcc, bf, lfc, sort_leaderboard_by_moves)
+        draw_button(asc_desc, x_lbb + (4 * (h_space + w_lbb)) + 5, y_lbb + 5, w_lbb - 10, h_lbb - 10, lic, lac, lcc, bf, lfc, sort_leaderboard_reverse)
 
     elif MENU_STATUS == MENU_COLOUR_SCHEME:
         l = len(VALID_COLOUR_SCHEMES)
@@ -721,15 +849,17 @@ def draw_menu(event):
             def check():
                 clicked[i] = 1
 
-            draw_button("COLOUR SCHEME AREA {}".format(i), x, y, w_demo, h_demo, sic, sac, scc, sf, sfc, check)
+            draw_button("".format(i), x, y, w_demo, h_demo, sic, sac, scc, sf, sfc, check)
             tbc = (0, 0, 0)
             name, nmf, nmfc = cs["name"]
             snmfc = sum(nmfc)
             if snmfc < 200:
                 tbc = (255, 255, 255)
-            pygame.draw.rect(DISPLAY, tbc, (x, y, w_demo, (h_demo * 0.1)))
+            pygame.draw.rect(DISPLAY, tbc, (x + (w_demo * 0.1), y + ((h_demo * 0.1) * 0.2), w_demo * 0.8, ((h_demo * 0.1) * 0.8)))
             text_surf, text_rect = text_objects(name, nmf, nmfc)
-            text_rect.center = ((x + (w_demo / 2)), (y + ((h_demo * 0.1) / 2)))
+            # text_rect.center = ((x + (w_demo / 2)), (y + ((h_demo * 0.1) / 2)))
+            cent = ((x + (w_demo * 0.1)) + ((w_demo * 0.8) / 2), (y + ((h_demo * 0.1) * 0.2)) + (((h_demo * 0.1) * 0.8) / 2))
+            text_rect.center = cent
             DISPLAY.blit(text_surf, text_rect)
 
             demo_grid = DemoGrid(x, y + (h_demo * 0.1), w_demo, h_demo * 0.9, cs)
@@ -756,19 +886,7 @@ def draw_menu(event):
             cfc,
             change_colour_scheme
         )
-        # draw_button(
-        # 	"Change Grid Size",
-        # 	x_btn,
-        # 	y_btn + (1 * (h_btn + v_space)),
-        # 	w_btn,
-        # 	h_btn,
-        # 	cic,
-        # 	cac,
-        # 	ccc,
-        # 	cf,
-        # 	cfc,
-        # 	change_dims
-        # )
+
         hw_btn = w_btn / 2
         inc_dec_v_space = v_space / 10
 
@@ -847,14 +965,69 @@ def draw_menu(event):
         w_label_dims = w_btn - (h_space + ((hw_btn + h_space) / 2))
         h_label_dims = h_btn
 
-        # print(x_label_dims
-        # y_label_dims
-        # w_label_dims
-        # h_label_dims = h_btn)
-
-        text_surf, text_rect = text_objects("# Rows X Columns", f, fc)
+        text_surf, text_rect = text_objects("# Rows X Columns", df, dfc)
         text_rect.center = ((x_label_dims + (w_label_dims / 2)), (y_label_dims + (h_label_dims / 2)))
         DISPLAY.blit(text_surf, text_rect)
+
+        x_label_rng = x_btn
+        y_label_rng = y_btn + (2 * (h_btn + v_space))
+        w_label_rng = w_btn - (h_space + ((hw_btn + h_space) / 2))
+        h_label_rng = h_btn
+
+        text_surf, text_rect = text_objects("Random tiles", rngf, rngfc)
+        text_rect.center = ((x_label_rng + (w_label_rng / 2)), (y_label_rng + (h_label_rng / 2)))
+        DISPLAY.blit(text_surf, text_rect)
+
+        fs = f.get_linesize()
+        txt_w, txt_h = f.size("Random Tiles")
+        n_f = f
+        text_surf, text_rect = text_objects("ex. '2, 4'", rnghf, rnghfc)
+        text_rect.center = ((x_label_rng + (w_label_rng / 2)), ((y_label_rng + txt_h) + (h_label_rng / 2)))
+        DISPLAY.blit(text_surf, text_rect)
+
+        INPUT_BOX_RNG.handle_event(event)
+        INPUT_BOX_RNG.update()
+        INPUT_BOX_RNG.draw(DISPLAY)
+
+        c_s2048 = 0.85
+        ic_s2048 = 1 - c_s2048
+
+        draw_button(
+            "Show 2048",
+            x_btn,
+            y_btn + (3 * (h_btn + v_space)),
+            w_btn * c_s2048,
+            h_btn,
+            slic,
+            slac,
+            slcc,
+            slf,
+            slfc,
+            show_2048
+        )
+
+        x_cb = x_btn + (w_btn * c_s2048) + 5
+        y_cb = y_btn + (3 * (h_btn + v_space))
+        w_cb = (w_btn - 5) * ic_s2048
+        h_cb = h_btn
+
+        x_icb = x_btn + (w_btn * c_s2048) + 5 + 5
+        y_icb = y_btn + (3 * (h_btn + v_space)) + 5
+        w_icb = (w_btn - 5) * ic_s2048 - 10
+        h_icb = h_btn - 10
+
+        # pygame.draw.rect(DISPLAY, slic, (x_cb, y_cb, w_cb, h_cb))
+        draw_button("", x_cb, y_cb, w_cb, h_cb, slic, slic, slcc, slf, slfc, show_2048)
+        pygame.draw.rect(DISPLAY, slac, (x_icb, y_icb, w_icb, h_icb))
+
+        if SHOW_2048:
+            p1 = (x_icb + (0.15 * w_icb), y_icb + (0.6 * h_icb))
+            p2 = (x_icb + (0.45 * w_icb), y_icb + (0.8 * h_icb))
+            p3 = (x_icb + (0.8 * w_icb), y_icb + (0.25 * h_icb))
+            pygame.draw.line(DISPLAY, ialc, p1, p2, 4)
+            pygame.draw.line(DISPLAY, ialc, p2, p3, 4)
+
+
 
     pygame.display.update()
 
@@ -933,13 +1106,47 @@ def resume_game():
 
 
 def leaderboard():
+    global MENU_STATUS
     print("leaderboard")
+    MENU_STATUS = MENU_LEADERBOARD
 
 
 def settings():
     global MENU_STATUS
     print("settings")
     MENU_STATUS = MENU_SETTINGS
+
+
+def sort_leaderboard_by_date():
+    global LEADERBOARD_SORT_STATUS
+    LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_DATE, LEADERBOARD_SORT_REVERSE
+
+
+def sort_leaderboard_by_score():
+    global LEADERBOARD_SORT_STATUS
+    LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_SCORE, LEADERBOARD_SORT_STATUS
+
+
+def sort_leaderboard_by_hi_tile():
+    global LEADERBOARD_SORT_STATUS
+    LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_HI_TILE, LEADERBOARD_SORT_STATUS
+
+
+def sort_leaderboard_by_moves():
+    global LEADERBOARD_SORT_STATUS
+    LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_MOVES, LEADERBOARD_SORT_STATUS
+
+
+def sort_leaderboard_reverse():
+    global LEADERBOARD_SORT_STATUS, LEADERBOARD_SORT_REVERSE
+    print("LEADERBOARD_SORT_STATUS:", LEADERBOARD_SORT_STATUS, "LEADERBOARD_SORT_REVERSE", LEADERBOARD_SORT_REVERSE)
+    LEADERBOARD_SORT_REVERSE = not LEADERBOARD_SORT_REVERSE
+    LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_STATUS[0], LEADERBOARD_SORT_REVERSE
+
+
+def show_2048():
+    global SHOW_2048
+    SHOW_2048 = not SHOW_2048
 
 
 def return_to_main():
@@ -1031,6 +1238,7 @@ def draw_display():
             cells[str(i) + " - " + str(j)] = {"ij": (i, j), "colour": c, "x": x, "y": y, "w": cw, "h": ch}
             pygame.draw.rect(DISPLAY, c, (x, y, cw, ch))
 
+            val = val if val != "block" else ""
             text_surf, text_rect = text_objects(str(val), f, fc)
             text_rect.center = ((x + (cw / 2)), (y + (ch / 2)))
             DISPLAY.blit(text_surf, text_rect)
@@ -1094,7 +1302,7 @@ def undo():
 
 
 def menu_loop():
-    global INPUT_BOX_DIMS
+    global INPUT_BOX_DIMS, INPUT_BOX_RNG
     loop = True
 
     ww, wh = WIDTH, HEIGHT
@@ -1125,7 +1333,34 @@ def menu_loop():
         pygame.font.SysFont("arial", 18),
         (114, 146, 176),
         text=str(DATA["input_dims"]),
-        min_width=30
+        min_width=30,
+        numeric=True,
+        char_limit=25,
+        n_limit=5
+    )
+
+    x_label_rng = x_btn
+    y_label_rng = y_btn + (2 * (h_btn + v_space))
+    w_label_rng = w_btn - (h_space + ((hw_btn + h_space) / 2))
+    h_label_rng = h_btn
+
+    INPUT_BOX_RNG = InputBox(
+        # x_btn + (hw_btn * 0.125) + h_space + ((w_btn + h_space) / 2),
+        # (x_btn) + ((w_label_rng - (0.45 * w_label_rng)) / 2),
+        x_label_rng + w_label_rng,# - (w_btn * 0.45),
+        # w_btn - (h_space + ((hw_btn + h_space) / 2))
+        y_label_rng + h_space,
+        w_btn * 0.45,
+        h_btn,
+        (110, 110, 110),
+        (216, 42, 42),
+        pygame.font.SysFont("arial", 18),
+        (114, 146, 176),
+        text=str(DATA["input_dims"]),
+        min_width=80,
+        numeric=False,
+        char_limit=25,
+        n_limit=10
     )
     # TODO: review above hardcoded values
     while loop:
