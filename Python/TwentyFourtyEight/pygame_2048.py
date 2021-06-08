@@ -785,36 +785,70 @@ def draw_menu(event):
             scores.sort(reverse=1)
             asc_desc = "Descending"
 
+        # print("scores\n\t", scores)
+
         text_surf, text_rect = text_objects("Leaderboard", df, dfc)
         text_rect.center = ((x_lb + (w_lb / 2)), (y_lb + (h_btn / 2)))
         DISPLAY.blit(text_surf, text_rect)
 
-        max_h = 7
-        inc_h = max(0, min(max_h, len(scores)))
+        max_h = 6
+        inc_h = 1 + max(0, min(max_h, len(scores)))
         x_lbb = x_lb
         y_lbb = y_lb + (min(max_h + 1, inc_h + 2) * (h_lb + h_space))
         w_lbb = (w_lb / 5) - h_space
         h_lbb = (1 * (h_lb + h_space))
 
         pygame.draw.rect(DISPLAY, lbbg, (x_lb, y_lb + (1 * (h_lb + h_space)), w_lb, (inc_h * (h_lb + h_space))))
+        # pygame.draw.rect(DISPLAY, (255,255,255), (x_lb, y_lb + (1 * (h_lb + h_space)), w_lb, (inc_h * (h_lb + h_space))))
 
         header = ["Date", "Score", "Max Tile", "Moves"]
+        funcs = [sort_leaderboard_by_date, sort_leaderboard_by_score, sort_leaderboard_by_hi_tile, sort_leaderboard_by_moves]
         lw = 4
+        lh = len(header)
         x_sc = x_lb + 5
         y_sc = y_lb + (1 * (h_lb + h_space)) + 5
-        w_sc = (w_lb / len(header)) - v_space - lw - 10
-        h_sc = h_lb - 10
-        for i, score in enumerate(scores):
+        w_sc = w_lb - 10
+        h_sc = ((inc_h * (h_lb + h_space)) - 10) / max_h
+        # w_sc = ((w_sc - h_space - lw) / len(header))
+        w_sc = (w_sc / lh) - (h_space / 2)
+        # pygame.draw.line(DISPLAY, lbfc, (x_sc - ((lw + h_space) / lh), y_sc),
+        #                  (x_sc - ((lw + h_space) / lh), y_sc + (h_sc * max_h)), 3)
+        # print("x_sc:", x_sc, "y_sc", y_sc, "(x_sc, y_sc, x_sc, y_sc + (h_sc")
+        for i, score in enumerate(scores[:max_h]):
+            dat = list(score)
             if i == 0:
                 for j, title in enumerate(header):
-                    x_cell = x_sc + ((j + 1) * (w_sc + h_space + lw))
+                    x_cell = x_sc + (j * (w_sc + ((lw + h_space) / 2)))
+                    # background column button
+                    # pygame.draw.rect(DISPLAY, lbfc, (x_cell, y_sc, w_sc, h_sc))
+                    draw_button("", x_cell, y_sc, w_sc, h_sc * max_h, lbbg, lbfc, lbfc, lbf, lbfc, funcs[j])
                     text_surf, text_rect = text_objects(title, lbf, lbfc)
-                    text_rect.center = ((x_cell + ((w_sc + lw) / 2)), (y_sc + (h_sc / 2)))
+                    text_rect.center = ((x_cell + ((w_sc) / 2)), (y_sc + (h_sc / 2)))
                     DISPLAY.blit(text_surf, text_rect)
-                    pygame.draw.rect(DISPLAY, lbfc, (x_cell, y_sc, w_sc, h_sc))
-                    if j > 0:
-                        pygame.draw.line(DISPLAY, lbfc, (x_cell, y_sc), (x_cell, h_lb * inc_h))
 
+                    for k, d in enumerate(dat):
+                        x_t = x_sc + (k * (w_sc + ((lw + h_space) / 2)))
+                        y_t = y_sc + (1 * (h_sc - ((v_space + lw) / 2)))
+                        text_surf, text_rect = text_objects(str(d), lbf, lbfc)
+                        text_rect.center = ((x_t + ((w_sc) / 2)), (y_t + (h_sc / 2)))
+                        DISPLAY.blit(text_surf, text_rect)
+                    if j > 0:
+                        pygame.draw.line(DISPLAY, lbfc, (x_cell - ((lw + h_space) / lh), y_sc), (x_cell - ((lw + h_space) / lh), y_sc + (h_sc * inc_h)), 3)
+                        # pygame.draw.line(DISPLAY, (0,255,0), (x_cell - ((lw + h_space) / lh) + (h_space / 2), y_sc), (x_cell - ((lw + h_space) / 2) + (h_space / 2), h_lb * inc_h))
+
+            else:
+                for k, d in enumerate(dat):
+                    x_t = x_sc + (k * (w_sc + ((lw + h_space) / 2)))
+                    y_t = y_sc + ((i + 1) * (h_sc))
+                    text_surf, text_rect = text_objects(str(d), lbf, lbfc)
+                    text_rect.center = ((x_t + ((w_sc) / 2)), (y_t + (h_sc / 2)))
+                    DISPLAY.blit(text_surf, text_rect)
+
+        pygame.draw.line(DISPLAY, lbfc, (x_sc, y_sc), (x_sc, y_sc + (h_sc * max_h)), 3)  # left
+        pygame.draw.line(DISPLAY, lbfc, (x_sc + w_lb - 10, y_sc), (x_sc + w_lb - 10, y_sc + (h_sc * max_h)), 3)  # right
+        pygame.draw.line(DISPLAY, lbfc, (x_sc, y_sc), (x_sc + w_lb - 10, y_sc), 3)  # top
+        pygame.draw.line(DISPLAY, lbfc, (x_sc, y_sc + h_sc), (x_sc + w_lb - 10, y_sc + h_sc), 3)  # top
+        pygame.draw.line(DISPLAY, lbfc, (x_sc, y_sc + (h_sc * max_h)), (x_sc + w_lb - 10, y_sc + (h_sc * max_h)), 3)  # bottom
         pygame.draw.rect(DISPLAY, (255, 255, 255), (x_lbb, y_lbb, w_lb, (1 * (h_lb + h_space))))
 
         bf = pygame.font.SysFont("arial", 12)
@@ -1121,21 +1155,25 @@ def settings():
 
 def sort_leaderboard_by_date():
     global LEADERBOARD_SORT_STATUS
+    print("sorting by date")
     LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_DATE, LEADERBOARD_SORT_REVERSE
 
 
 def sort_leaderboard_by_score():
     global LEADERBOARD_SORT_STATUS
+    print("sorting by score")
     LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_SCORE, LEADERBOARD_SORT_STATUS
 
 
 def sort_leaderboard_by_hi_tile():
     global LEADERBOARD_SORT_STATUS
+    print("sorting by hi tile")
     LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_HI_TILE, LEADERBOARD_SORT_STATUS
 
 
 def sort_leaderboard_by_moves():
     global LEADERBOARD_SORT_STATUS
+    print("sorting by moves")
     LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_MOVES, LEADERBOARD_SORT_STATUS
 
 

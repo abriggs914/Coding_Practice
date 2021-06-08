@@ -12,7 +12,7 @@ clear = lambda: os.system('cls')  # on Windows System
 
 class ScoreHistory:
 
-	def __init__(self, date_str, hi_til_loc, score, grid_str):
+	def __init__(self, date_str, hi_til_loc, score, grid_str, moves):
 		self.date_str = date_str
 		self.date = datetime.datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
 		self.hi_til_loc = list(hi_til_loc.split(", "))
@@ -21,8 +21,14 @@ class ScoreHistory:
 		self.hi_tile_v = int(self.hi_til_loc[2][:-1])
 		self.score = score
 		self.grid_str = grid_str
+		self.moves = moves
 
 		# self.game = G2048()
+
+	def __iter__(self):
+		lst = [self.date, self.score, self.hi_tile_v, self.moves]
+		for l in lst:
+			yield l
 
 	def __eq__(self, other):
 		return isinstance(other, ScoreHistory) and all([
@@ -129,6 +135,7 @@ class G2048:
 		self.score = 0
 		self.hi_score = 0
 		self.history = []
+		self.moves = 0
 
 		if init_spaces:
 			for i in range(n):
@@ -315,6 +322,7 @@ class G2048:
 
 		if self.grid == init_grid:
 			return False
+		self.moves += 1
 
 		return True
 
@@ -330,13 +338,15 @@ class G2048:
 			str(d),
 			str(self.largest_tile),
 			str(len(self.history)),
-			str(self.grid)
+			str(self.grid),
+			str(self.moves)
 		]
 
 	def reset(self):
 		self.grid = [[None for j in range(self.n)] for i in range(self.n)]
 		self.score = 0
 		self.history = []
+		self.moves = 0
 
 	def undo(self):
 		if self.history:
@@ -345,6 +355,7 @@ class G2048:
 			self.score = score
 			self.hi_score = hi_score
 			self.grid = [row.copy() for row in grid]
+			self.moves -= 1
 
 	def play(self, gen_moves=True):
 		once = False
