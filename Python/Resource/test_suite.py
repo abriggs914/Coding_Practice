@@ -149,5 +149,14 @@ def do_test():
 # ]
 # run_multiple_tests(tests_to_run)
 
-if __name__ == "__main__":
-	do_test()
+# class TestDriver:
+# 	class FuncDriver:
+#
+# 	def __init__(self, name=None, func=None):
+# 		self.name = name if name is not None else "Un-named"
+# 		self.func = func if func is not None else print
+# 		self.test_sets = []
+# 	def
+#
+# if __name__ == "__main__":
+# 	do_test()

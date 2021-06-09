@@ -3,8 +3,8 @@ from math import e, ceil
 from random import random, choice
 
 #	General Utility functions
-#	Version............1.1
-#	Date........2021-06-04
+#	Version............1.2
+#	Date........2021-06-08
 #	Author....Avery Briggs
 
 TAB = "    "
@@ -20,9 +20,9 @@ def lenstr(x):
 
 
 def minmax(a, b):
-	if a <= b:
-		return a, b
-	return b, a
+    if a <= b:
+        return a, b
+    return b, a
 
 
 def avg(lst):
@@ -92,7 +92,8 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
 
     for k, v in d.items():
         max_key = max((len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0)), max_key)
-        max_val = max((max([len(str(v_elem)) for v_elem in v] if v else [0]) if ((type(v) == list) or (type(v) == tuple)) else len(
+        max_val = max((max([len(str(v_elem)) for v_elem in v] if v else [0]) if (
+                    (type(v) == list) or (type(v) == tuple)) else len(
             str(v)) if type(v) != dict else 0), max_val)
 
     l = max(len(table_title), max(l, (max_key + max_val))) + sep
@@ -290,46 +291,46 @@ def show(arr):
             res += "}"
     res += "}\n"
     print(res)
-	
-	
+
+
 def add_business_days(d, bd, holidays=None):
-	if holidays == None:
-		holidays = []
-	i = 0
-	t = dt.datetime(d.year, d.month, d.day)
-	# print("holidays: " + str(holidays))
-	while i < bd:
-		t = t + dt.timedelta(days=1)
-		# print("t: " + str(t) + ", (t not in holidays): " + str(t not in holidays))
-		if t.weekday() < 5 and t not in holidays:
-			i += 1
-	return t
+    if holidays == None:
+        holidays = []
+    i = 0
+    t = dt.datetime(d.year, d.month, d.day)
+    # print("holidays: " + str(holidays))
+    while i < bd:
+        t = t + dt.timedelta(days=1)
+        # print("t: " + str(t) + ", (t not in holidays): " + str(t not in holidays))
+        if t.weekday() < 5 and t not in holidays:
+            i += 1
+    return t
 
 
 def business_days_between(d1, d2, holidays=None):
-	business_days = 0
-	if holidays == None:
-		holidays = []
-	date_1 = d1 if type(d1) == dt.datetime else dt.datetime.strptime(d1, "%d-%b-%y")
-	date_2 = d2 if type(d2) == dt.datetime else dt.datetime.strptime(d2, "%d-%b-%y")
+    business_days = 0
+    if holidays == None:
+        holidays = []
+    date_1 = d1 if type(d1) == dt.datetime else dt.datetime.strptime(d1, "%d-%b-%y")
+    date_2 = d2 if type(d2) == dt.datetime else dt.datetime.strptime(d2, "%d-%b-%y")
 
-	date_1, date_2 = minmax(date_1, date_2)
+    date_1, date_2 = minmax(date_1, date_2)
 
-	diff = (date_2 - date_1).days
-	temp = date_1
-	for i in range(diff):
-		temp = date_1 + dt.timedelta(days=i+1)
-		if temp.weekday() < 5 and temp not in holidays: # Monday == 0, Sunday == 6 
-			business_days += 1
-	i = 0
-	while temp.weekday() >= 5 or temp in holidays:
-		temp = temp + dt.timedelta(days=1)
-		if temp not in holidays:
-			business_days += 1
-			break
-	# print("temp: {temp}\ndate_2: {date_2}\ntemp < date_2: {td2}".format(temp=temp, date_2=date_2, td2=(temp < date_2)))
-	# print("business_days: " + str(business_days))
-	return business_days
+    diff = (date_2 - date_1).days
+    temp = date_1
+    for i in range(diff):
+        temp = date_1 + dt.timedelta(days=i + 1)
+        if temp.weekday() < 5 and temp not in holidays:  # Monday == 0, Sunday == 6
+            business_days += 1
+    i = 0
+    while temp.weekday() >= 5 or temp in holidays:
+        temp = temp + dt.timedelta(days=1)
+        if temp not in holidays:
+            business_days += 1
+            break
+    # print("temp: {temp}\ndate_2: {date_2}\ntemp < date_2: {td2}".format(temp=temp, date_2=date_2, td2=(temp < date_2)))
+    # print("business_days: " + str(business_days))
+    return business_days
 
 
 def intersection(a, b):
@@ -340,7 +341,7 @@ def intersection(a, b):
         if i in m:
             res.append(i)
     return res
-    
+
 
 def disjoint(a, b):
     overlap = intersection(a, b)
@@ -352,16 +353,18 @@ def disjoint(a, b):
 
 
 def isfloat(value):
-  try:
-    float(value)
-    return True
-  except ValueError:
-    return False
-	
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
+
 
 def same_calendar_day(d1, d2):
     if type(d1) != type(d2) and type(d1) != datetime.datetime:
-        raise ValueError("Check types of d1: <{d1}> and d2: <{d2}>.\nBoth values must be datetime.datetime objects.".format(d1=d1, d2=d2))
+        raise ValueError(
+            "Check types of d1: <{d1}> and d2: <{d2}>.\nBoth values must be datetime.datetime objects.".format(d1=d1,
+                                                                                                               d2=d2))
     return all([
         d1.year == d2.year,
         d1.month == d2.month,
@@ -370,44 +373,44 @@ def same_calendar_day(d1, d2):
 
 
 def pyth(a=None, b=None, c=None):
-	if all([a is None, b is None, c is None]):
-		return None
-	if c is None:
-		if a is not None and b is not None:
-			return {"a": a, "b": b, "c": (a**2 + b**2)**0.5}
-	elif a is None:
-		if b is not None and c is not None:
-			return {"a": (c**2 - b**2)**0.5, "b": b, "c": c}
-	elif b is None:
-		if a is not None and c is not None:
-			return {"a": a, "b": (c**2 - a**2)**0.5, "c": c}
-	return {"a": a, "b": b, "c": c}
-		
-		
+    if all([a is None, b is None, c is None]):
+        return None
+    if c is None:
+        if a is not None and b is not None:
+            return {"a": a, "b": b, "c": (a ** 2 + b ** 2) ** 0.5}
+    elif a is None:
+        if b is not None and c is not None:
+            return {"a": (c ** 2 - b ** 2) ** 0.5, "b": b, "c": c}
+    elif b is None:
+        if a is not None and c is not None:
+            return {"a": a, "b": (c ** 2 - a ** 2) ** 0.5, "c": c}
+    return {"a": a, "b": b, "c": c}
+
+
 def sigmoid(x):
-	return 1 / (1 + (e ** -x))
-	
-	
+    return 1 / (1 + (e ** -x))
+
+
 def random_in_range(a, b):
-	return ((max(a, b) - min(a, b)) * random()) + min(a, b)
-	
-	
+    return ((max(a, b) - min(a, b)) * random()) + min(a, b)
+
+
 def max_idx(lst):
-	max_val = None, float("-inf")
-	for i, el in enumerate(lst):
-		if el > max_val:
-			max_val = i, el
-	return max_val
-	
-	
+    max_val = None, float("-inf")
+    for i, el in enumerate(lst):
+        if el > max_val:
+            max_val = i, el
+    return max_val
+
+
 def min_idx(lst):
-	min_val = None, float("inf")
-	for i, el in enumerate(lst):
-		if el < max_val:
-			min_val = i, el
-	return min_val
-	
-	
+    min_val = None, float("inf")
+    for i, el in enumerate(lst):
+        if el < min_val:
+            min_val = i, el
+    return min_val
+
+
 # Usage:
 # (val, weight) where weight is a float or integer.
 # float weights must sum to 1 or less, indicatiing a percentage of 100.
@@ -420,68 +423,167 @@ def min_idx(lst):
 # weighted_choice(l1)
 # Returns a radnom choice from a generated weighted list.
 def weighted_choice(weighted_lst):
-	item_scalar = 10
-	lst_len = 1000
-	res = []
-	whole = []
-	fract = []
-	fract_sum = 0
-	sum_count = 0 
-	for el in weighted_lst:
-		if isinstance(el, list) or isinstance(el, tuple):
-			if len(el) == 2:
-				val, weight = el
-				if str(weight).startswith("0."):
-					fract.append(el)
-					fract_sum += weight
-					sum_count += weight * lst_len
-				else:
-					whole.append(el)
-	# print("Whole:", whole)
-	# print("Fract:", fract)
-	if fract_sum > 1:
-		print("Fract:", fract)
-		raise ValueError("Fractional weights sum to more than 1.")
-	
-	remaining = lst_len - sum_count
-	remaining = remaining if remaining != 0 else 1
-	sum_whole = sum([weight for val, weight in whole])
-	sum_whole = sum_whole if sum_whole != 0 else 1
-	p = sum_whole / remaining
-	
-	for val, weight in fract:
-		print("item_scalar:", item_scalar, "p:", p, "weight:", weight, "lst_len:", lst_len)
-		s = ceil(item_scalar * p * weight * lst_len)
-		print("\ts:",s)
-		res += [val for i in range(s)]
-		
-	for val, weight in whole:
-		print("{} x {}".format(weight, val))
-		res += [val for i in range(ceil(weight))]
-		
-	print("\tres", res)
-	if res:
-		return choice(res)
-	if isinstance(weighted_lst, list) or isinstance(weighted_lst, tuple):
-		return choice(weighted_lst)
-	return None
+    item_scalar = 10
+    lst_len = 1000
+    res = []
+    whole = []
+    fract = []
+    fract_sum = 0
+    sum_count = 0
+    for el in weighted_lst:
+        if isinstance(el, list) or isinstance(el, tuple):
+            if len(el) == 2:
+                val, weight = el
+                if str(weight).startswith("0."):
+                    fract.append(el)
+                    fract_sum += weight
+                    sum_count += weight * lst_len
+                else:
+                    whole.append(el)
+    # print("Whole:", whole)
+    # print("Fract:", fract)
+    if fract_sum > 1:
+        print("Fract:", fract)
+        raise ValueError("Fractional weights sum to more than 1.")
+
+    remaining = lst_len - sum_count
+    remaining = remaining if remaining != 0 else 1
+    sum_whole = sum([weight for val, weight in whole])
+    sum_whole = sum_whole if sum_whole != 0 else 1
+    p = sum_whole / remaining
+
+    for val, weight in fract:
+        print("item_scalar:", item_scalar, "p:", p, "weight:", weight, "lst_len:", lst_len)
+        s = ceil(item_scalar * p * weight * lst_len)
+        print("\ts:", s)
+        res += [val for i in range(s)]
+
+    for val, weight in whole:
+        print("{} x {}".format(weight, val))
+        res += [val for i in range(ceil(weight))]
+
+    print("\tres", res)
+    if res:
+        return choice(res)
+    if isinstance(weighted_lst, list) or isinstance(weighted_lst, tuple):
+        return choice(weighted_lst)
+    return None
 
 
 def lbs_kg(lbs):
-	return 0.453592 * lbs
-	
-	
+    """
+    lbs_kg(args) -> int() or float()
+    Convert N pounds to Kilograms.
+    1 Lbs = 0.453592 Kg
+    :param lbs: int or float value in pounds.
+    :return: int or float value in kilograms.
+    """
+    if not isinstance(lbs, int) or isinstance(lbs, float):
+        raise ValueError("Cannot convert \"{}\" of type: \"{}\" to kilograms.".format(lbs, type(lbs)))
+    return 0.453592 * lbs
+
+
 def kg_lbs(kg):
-	if kg == 0:
-		return 0
-	return 1 / lbs_kg(kg)
+    """
+    kg_lbs(args) -> int() or float()
+    Convert N Kilograms to pounds.
+    1 Lbs = 0.453592 Kg
+    :param kg: int or float value in kilograms.
+    :return: int or float value in pounds.
+    """
+    if not isinstance(kg, int) or isinstance(kg, float):
+        raise ValueError("Cannot convert \"{}\" of type: \"{}\" to pounds.".format(kg, type(kg)))
+    if kg == 0:
+        return 0
+    return 1 / lbs_kg(kg)
 
 
 def miles_km(miles):
-	return 1.60934 * miles
-	
-	
+    """
+    miles_km(args) -> int() or float()
+    Convert N Miles to Kilometers.
+    1 Mi = 1.60934 Km
+    :param miles: int or float value in miles.
+    :return: int or float value in kilometers.
+    """
+    if not isinstance(miles, int) or isinstance(miles, float):
+        raise ValueError("Cannot convert \"{}\" of type: \"{}\" to miles.".format(miles, type(miles)))
+    return 1.60934 * miles
+
+
 def km_miles(km):
-	if km == 0:
-		return 0
-	return 1 / miles_km(km)
+    """
+    km_miles(args) -> int() or float()
+    Convert N Kilometers to Miles.
+    1 Mi = 1.60934 Km.
+    :param km: int or float value in kilometers.
+    :return: int or float value in miles.
+    """
+    if not isinstance(km, int) or isinstance(km, float):
+        raise ValueError("Cannot convert \"{}\" of type: \"{}\" to kilometers.".format(km, type(km)))
+    if km == 0:
+        return 0
+    return 1 / miles_km(km)
+
+
+def flatten(lst):
+    """
+    flatten(args) -> list()
+    Flatten a multi-dimensional list into a single dimension.
+    Non-list objects are returned in a list.
+    :param lst: list object with one or more dimensions.
+    :return: list object with one dimension.
+    """
+    if not isinstance(lst, list):
+        return [lst]
+    if not lst:
+        return lst
+    return [*flatten(lst[0]), *flatten(lst[1:])]
+
+
+# Clamp an number between small and large values.
+def clamp(s, v, l):
+    return max(s, min(v, l))
+
+
+# Darken an RGB color using a proportion p (0-1)
+def darken(c, p):
+    r, g, b = c
+    r = clamp(0, round(r - (255 * p)), 255)
+    g = clamp(0, round(g - (255 * p)), 255)
+    b = clamp(0, round(b - (255 * p)), 255)
+    return r, g, b
+
+
+# Brighten an RGB color using a proportion p (0-1)
+def brighten(c, p):
+    r, g, b = c
+    r = clamp(0, round(r + (255 * p)), 255)
+    g = clamp(0, round(g + (255 * p)), 255)
+    b = clamp(0, round(b + (255 * p)), 255)
+    return r, g, b
+	
+
+# return random RGB color
+def random_color():
+    return (
+        random.randint(10, 245),
+        random.randint(10, 245),
+        random.randint(10, 245)
+    )
+
+
+# Rotate a 2D point about the origin, a given amount of degrees.
+def rotate_on_origin(px, py, theta):
+    t = math.radians(theta)
+    x = (px * math.cos(t)) - (py * math.sin(t))
+    y = (px * math.sin(t)) + (py * math.cos(t))
+    return x, y
+
+
+# Rotate a 2D point around any central point, a given amount of degrees.
+def rotate_point(cx, cy, px, py, theta):
+    xd = 0 - cx
+    yd = 0 - cy
+    rx, ry = rotate_on_origin(px + xd, py + yd, theta)
+    return rx - xd, ry - yd

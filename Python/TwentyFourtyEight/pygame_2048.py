@@ -6,6 +6,7 @@ from main import *
 from colors import *
 import math
 import keyboard as kbd
+from pygame_utility import *
 
 pygame.init()
 
@@ -283,6 +284,8 @@ INPUT_BOX_RNG = None
 MAX_DIMS = 10
 MIN_DIMS = 2
 SHOW_2048 = True
+LEADERBOARD_TABLE = None
+LEADERBOARD_BUTTONBAR = None
 
 
 # ROWS = 11								# Number of rows and columns
@@ -785,6 +788,17 @@ def draw_menu(event):
             scores.sort(reverse=1)
             asc_desc = "Descending"
 
+        assert isinstance(LEADERBOARD_TABLE, Table)
+        assert isinstance(LEADERBOARD_BUTTONBAR, ButtonBar)
+        LEADERBOARD_TABLE.clear_rows()
+        for score in scores:
+            new_row = TableRow(pygame, DISPLAY)
+            new_row.add_content(score.cells())
+            LEADERBOARD_TABLE.add_row(new_row)
+
+        LEADERBOARD_TABLE.draw()
+        LEADERBOARD_BUTTONBAR.draw()
+        nacas = """
         # print("scores\n\t", scores)
 
         text_surf, text_rect = text_objects("Leaderboard", df, dfc)
@@ -857,6 +871,7 @@ def draw_menu(event):
         draw_button("By Hi Tile", x_lbb + (2 * (h_space + w_lbb)) + 5, y_lbb + 5, w_lbb - 10, h_lbb - 10, lic, lac, lcc, bf, lfc, sort_leaderboard_by_hi_tile)
         draw_button("By Moves", x_lbb + (3 * (h_space + w_lbb)) + 5, y_lbb + 5, w_lbb - 10, h_lbb - 10, lic, lac, lcc, bf, lfc, sort_leaderboard_by_moves)
         draw_button(asc_desc, x_lbb + (4 * (h_space + w_lbb)) + 5, y_lbb + 5, w_lbb - 10, h_lbb - 10, lic, lac, lcc, bf, lfc, sort_leaderboard_reverse)
+"""
 
     elif MENU_STATUS == MENU_COLOUR_SCHEME:
         l = len(VALID_COLOUR_SCHEMES)
@@ -1153,31 +1168,31 @@ def settings():
     MENU_STATUS = MENU_SETTINGS
 
 
-def sort_leaderboard_by_date():
+def sort_leaderboard_by_date(*args):
     global LEADERBOARD_SORT_STATUS
     print("sorting by date")
     LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_DATE, LEADERBOARD_SORT_REVERSE
 
 
-def sort_leaderboard_by_score():
+def sort_leaderboard_by_score(*args):
     global LEADERBOARD_SORT_STATUS
     print("sorting by score")
     LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_SCORE, LEADERBOARD_SORT_STATUS
 
 
-def sort_leaderboard_by_hi_tile():
+def sort_leaderboard_by_hi_tile(*args):
     global LEADERBOARD_SORT_STATUS
     print("sorting by hi tile")
     LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_HI_TILE, LEADERBOARD_SORT_STATUS
 
 
-def sort_leaderboard_by_moves():
+def sort_leaderboard_by_moves(*args):
     global LEADERBOARD_SORT_STATUS
     print("sorting by moves")
     LEADERBOARD_SORT_STATUS = LEADERBOARD_SORT_MOVES, LEADERBOARD_SORT_STATUS
 
 
-def sort_leaderboard_reverse():
+def sort_leaderboard_reverse(*args):
     global LEADERBOARD_SORT_STATUS, LEADERBOARD_SORT_REVERSE
     print("LEADERBOARD_SORT_STATUS:", LEADERBOARD_SORT_STATUS, "LEADERBOARD_SORT_REVERSE", LEADERBOARD_SORT_REVERSE)
     LEADERBOARD_SORT_REVERSE = not LEADERBOARD_SORT_REVERSE
@@ -1342,7 +1357,7 @@ def undo():
 
 
 def menu_loop():
-    global INPUT_BOX_DIMS, INPUT_BOX_RNG
+    global INPUT_BOX_DIMS, INPUT_BOX_RNG, LEADERBOARD_TABLE, LEADERBOARD_BUTTONBAR
     loop = True
 
     ww, wh = WIDTH, HEIGHT
@@ -1402,6 +1417,31 @@ def menu_loop():
         char_limit=25,
         n_limit=10
     )
+
+    scores = read_high_scores()
+    x_lb = ww * 0.2
+    y_lb = y_title + h_title
+    w_lb = ww * 0.6
+    h_lb = wh * 0.06
+    max_h = 6
+    inc_h = 1 + max(0, min(max_h, len(scores)))
+    x_lbb = x_lb
+    y_lbb = y_lb + (min(max_h + 1, inc_h + 2) * (h_lb + h_space))
+    w_lbb = (w_lb / 5) - h_space
+    h_lbb = (1 * (h_lb + h_space))
+    lbbg, lbf, lbfc = DATA["colour_scheme"]["leaderboard_background"]
+    LEADERBOARD_TABLE = Table(pygame, DISPLAY, x=x_lb, y=y_lb + (1 * (h_lb + h_space)), w=w_lb, h=(inc_h * (h_lb + h_space)), c=lbbg, font=lbf, title="LeaderBoard", header=["Date", "Score", "Hi Tile", "Moves"])
+
+    # pygame.draw.rect(DISPLAY, (255, 255, 255), (x_lbb, y_lbb, w_lb, (1 * (h_lb + h_space))))
+    LEADERBOARD_BUTTONBAR = ButtonBar(pygame, DISPLAY, x=x_lbb, y=y_lbb, w=w_lb, h=(1 * (h_lb + h_space)), font=lbf, bg=lbbg, proportion=0.95)
+
+    names = ["by date", "by score", "highest tile", "moves", "reverse"]
+    ics = [BLUE, GREEN, RED, DARK_GRAY, WHITE]
+    acs = [GREEN, RED, DARK_GRAY, BLUE, GREEN]
+    actions = [sort_leaderboard_by_date, sort_leaderboard_by_score, sort_leaderboard_by_hi_tile, sort_leaderboard_by_moves, sort_leaderboard_reverse]
+    lst = [names, ics, acs, actions, names]
+    for i in range(len(names)):
+        LEADERBOARD_BUTTONBAR.add_button(*[l[i] if j < 4 else tuple([l[i]]) for j, l in enumerate(lst)])
     # TODO: review above hardcoded values
     while loop:
         events = pygame.event.get()

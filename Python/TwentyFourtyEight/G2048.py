@@ -48,6 +48,9 @@ class ScoreHistory:
 			raise ValueError("\"{}\" of type \"{}\" cannot be compared to \"{}\"".format(other, type(other), type(self)))
 		return self.score <= other.score
 
+	def cells(self):
+		return list(map(str, list(self)))
+
 	def __repr__(self):
 		return "{} on {}".format(self.hi_tile_v, self.date_str)
 
