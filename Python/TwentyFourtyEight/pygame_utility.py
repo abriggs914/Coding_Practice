@@ -34,6 +34,8 @@ def text_objects(text, font, color=BLACK):
 # Ensure that a text will fit into a given pygame.Rect object.
 # Adjusts the message using new line characters to fit width-wise.
 def wrap_text(msg, r, font):
+    if not isinstance(msg, str):
+        msg = str(msg)
     txt = ""
     for c in msg:
         txt += c
@@ -513,8 +515,14 @@ class ButtonBar(Widget):
         yd = self.h - hp  # difference between total height and proportional height
         xi = self.x + (xd / 2)  # starting x
         yi = self.y + (yd / 2)  # starting y
-        wi = wp / max(1, (nb if self.is_horizontal else wp))  # single button width
-        hi = hp / max(1, (nb if not self.is_horizontal else hp))  # single button height
+        dw = max(1, (nb if self.is_horizontal else wp))
+        dh = max(1, (nb if not self.is_horizontal else hp))
+        wi = wp / dw  # single button width
+        hi = hp / dh  # single button height
+
+        wi = wp if dw == wp else wi
+        hi = hp if dh == hp else hi
+        print("hp", hp, "hi", hi)
 
         # draw background
         self.game.draw.rect(self.display, self.bg, (self.x, self.y, self.w, self.h))

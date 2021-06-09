@@ -1,10 +1,10 @@
 from locale import currency, setlocale, LC_ALL
-from math import e, ceil
+from math import e, ceil, sin, cos, radians
 from random import random, choice
 
 #	General Utility functions
-#	Version............1.2
-#	Date........2021-06-08
+#	Version............1.3
+#	Date........2021-06-09
 #	Author....Avery Briggs
 
 TAB = "    "
@@ -30,6 +30,43 @@ def avg(lst):
         return sum(lst) / max(1, len(lst))
     except TypeError:
         return 0
+
+
+def median(lst):
+    if not isinstance(lst, list) and not isinstance(lst, str):
+        raise TypeError("Cannot find median of \"{}\" of type: \"{}\".".format(lst, type(lst)))
+    if not lst:
+        return None
+
+    lt = lst.copy()
+    lt.sort()
+    l = len(lt)
+    if l == 1:
+        return lt
+    else:
+        h = l // 2
+        o = (l % 2) == 1
+        f = [] if o else lt[h - 1: h]
+        return f + lt[h: h + 1]
+
+
+def mode(lst):
+    if not isinstance(lst, list) and not isinstance(lst, str):
+        raise TypeError("Cannot find mode of \"{}\" of type: \"{}\".".format(lst, type(lst)))
+    d = {}
+    mv = float("-inf")
+    for el in lst:
+        if el in d:
+            v = d[el] + 1
+        else:
+            v = 1
+
+        d[el] = v
+        if v > mv:
+            mv = v
+
+    print("mv", mv, "d", d)
+    return [k for k, v in d.items() if v == mv]
 
 
 def pad_centre(text, l, pad_str=" "):
@@ -93,7 +130,7 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
     for k, v in d.items():
         max_key = max((len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0)), max_key)
         max_val = max((max([len(str(v_elem)) for v_elem in v] if v else [0]) if (
-                    (type(v) == list) or (type(v) == tuple)) else len(
+                (type(v) == list) or (type(v) == tuple)) else len(
             str(v)) if type(v) != dict else 0), max_val)
 
     l = max(len(table_title), max(l, (max_key + max_val))) + sep
@@ -462,7 +499,7 @@ def weighted_choice(weighted_lst):
         print("{} x {}".format(weight, val))
         res += [val for i in range(ceil(weight))]
 
-    print("\tres", res)
+    # print("\tres", res)
     if res:
         return choice(res)
     if isinstance(weighted_lst, list) or isinstance(weighted_lst, tuple):
@@ -542,6 +579,7 @@ def flatten(lst):
 
 
 # Clamp an number between small and large values.
+# Inclusive start, exclusive end.
 def clamp(s, v, l):
     return max(s, min(v, l))
 
@@ -562,7 +600,7 @@ def brighten(c, p):
     g = clamp(0, round(g + (255 * p)), 255)
     b = clamp(0, round(b + (255 * p)), 255)
     return r, g, b
-	
+
 
 # return random RGB color
 def random_color():
@@ -573,17 +611,21 @@ def random_color():
     )
 
 
-# Rotate a 2D point about the origin, a given amount of degrees.
+# Rotate a 2D point about the origin, a given amount of degrees. Counterclockwise
 def rotate_on_origin(px, py, theta):
-    t = math.radians(theta)
-    x = (px * math.cos(t)) - (py * math.sin(t))
-    y = (px * math.sin(t)) + (py * math.cos(t))
+    t = radians(theta)
+    x = (px * cos(t)) - (py * sin(t))
+    y = (px * sin(t)) + (py * cos(t))
     return x, y
 
 
-# Rotate a 2D point around any central point, a given amount of degrees.
+# Rotate a 2D point around any central point, a given amount of degrees. Counterclockwise
 def rotate_point(cx, cy, px, py, theta):
     xd = 0 - cx
     yd = 0 - cy
     rx, ry = rotate_on_origin(px + xd, py + yd, theta)
     return rx - xd, ry - yd
+
+
+def bar(a, b):
+    return "{} |".format(percent(a / b)) + "".join(["#" if i < int((10 * a) / b) else " " for i in range(10)]) + "|"

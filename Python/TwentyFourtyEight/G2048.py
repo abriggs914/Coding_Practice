@@ -19,9 +19,9 @@ class ScoreHistory:
 		self.hi_tile_r = int(self.hi_til_loc[0][1:])
 		self.hi_tile_c = int(self.hi_til_loc[1])
 		self.hi_tile_v = int(self.hi_til_loc[2][:-1])
-		self.score = score
+		self.score = int(score)
 		self.grid_str = grid_str
-		self.moves = moves
+		self.moves = int(moves)
 
 		# self.game = G2048()
 
@@ -49,7 +49,12 @@ class ScoreHistory:
 		return self.score <= other.score
 
 	def cells(self):
-		return list(map(str, list(self)))
+		return [
+			str(self.date_str),
+			self.hi_tile_v,
+			self.score,
+			self.moves
+		]
 
 	def __repr__(self):
 		return "{} on {}".format(self.hi_tile_v, self.date_str)
