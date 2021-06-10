@@ -50,7 +50,7 @@ class ScoreHistory:
 
 	def cells(self):
 		return [
-			str(self.date_str),
+			dt.datetime.strftime(self.date, "%Y-%m-%d"),
 			self.hi_tile_v,
 			self.score,
 			self.moves

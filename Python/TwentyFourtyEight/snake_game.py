@@ -347,7 +347,7 @@ class SnakeGame:
         return res
 
 def crossing(s1, s2=None):
-    if s2 is None and type(s1) == list:
+    if s2 is None and isinstance(s1, list):
         crosses = []
         for i in range(len(s1)):
             for j in range(i + 1, len(s1)):

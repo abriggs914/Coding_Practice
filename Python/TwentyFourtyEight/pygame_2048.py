@@ -473,10 +473,10 @@ def calc_block_idx_font():
     DATA["block_idx_font"] = pygame.font.SysFont("arial", int(min(grid_width, grid_height) * 0.85))
 
 
-# Create and return text objects for blitting
-def text_objects(text, font, color=BLACK):
-    text_surface = font.render(text, True, color)
-    return text_surface, text_surface.get_rect()
+# # Create and return text objects for blitting
+# def text_objects(text, font, color=BLACK):
+#     text_surface = font.render(text, True, color)
+#     return text_surface, text_surface.get_rect()
 
 
 def kill_pop_up_thread():
@@ -773,19 +773,19 @@ def draw_menu(event):
         y_lb = y_title + h_title
         w_lb = ww * 0.6
         h_lb = wh * 0.06
+        rev = LEADERBOARD_SORT_STATUS[1]
 
         if LEADERBOARD_SORT_STATUS[0] == LEADERBOARD_SORT_SCORE:
-            scores.sort(key=lambda s: s.score)
+            scores.sort(key=lambda s: s.score, reverse=not rev)
         elif LEADERBOARD_SORT_STATUS[0] == LEADERBOARD_SORT_HI_TILE:
-            scores.sort(key=lambda s: s.hi_tile_v)
+            scores.sort(key=lambda s: s.hi_tile_v, reverse=not rev)
         elif LEADERBOARD_SORT_STATUS[0] == LEADERBOARD_SORT_DATE:
-            scores.sort(key=lambda s: s.date)
+            scores.sort(key=lambda s: s.date, reverse=rev)
         elif LEADERBOARD_SORT_STATUS[0] == LEADERBOARD_SORT_MOVES:
-            scores.sort(key=lambda s: s.moves)
+            scores.sort(key=lambda s: s.moves, reverse=not rev)
 
         asc_desc = "Ascending"
-        if LEADERBOARD_SORT_STATUS[1]:
-            scores.sort(reverse=1)
+        if rev:
             asc_desc = "Descending"
 
         assert isinstance(LEADERBOARD_TABLE, Table)

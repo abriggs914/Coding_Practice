@@ -1,10 +1,11 @@
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice
+import datetime as dt
 
 #	General Utility functions
 #	Version............1.3
-#	Date........2021-06-09
+#	Date........2021-06-10
 #	Author....Avery Briggs
 
 TAB = "    "

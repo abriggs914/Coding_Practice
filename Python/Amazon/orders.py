@@ -235,7 +235,9 @@ transactions = [
 	(datetime.datetime(2021, 6, 5, 0, 0), -69.52),
 	(datetime.datetime(2021, 6, 7, 0, 0), -90.85),
 	(datetime.datetime(2021, 6, 7, 0, 0), -36.99),
-	(datetime.datetime(2021, 6, 7, 0, 0), -103.49)
+	(datetime.datetime(2021, 6, 7, 0, 0), -103.49),
+	(datetime.datetime(2021, 6, 9, 0, 0), 69.52),
+	(datetime.datetime(2021, 6, 9, 0, 0), -32.53)
 ]
 sps = sum([t for d, t in transactions])
 print("sps:", sps)

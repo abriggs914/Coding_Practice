@@ -41,7 +41,7 @@ class G2048:
 	def playable(self):
 		for i in range(self.n):
 			for j in range(self.n):
-				if self.grid[i][j] == None:
+				if self.grid[i][j] is None:
 					return True
 				if i > 0:
 					# up
@@ -96,6 +96,7 @@ class G2048:
 	def shift_grid(self, dir):
 		so = self.shift_options
 		init_grid = [row.copy() for row in self.grid]
+
 		def shift():
 			for r, row in enumerate(self.grid):
 				i = 0
@@ -104,7 +105,7 @@ class G2048:
 					if self.grid[r][i] is not None:
 						k = i + 1
 						while k < lr:
-							if self.grid[r][k] != None:
+							if self.grid[r][k] is not None:
 								break
 							k += 1
 						if k < lr:

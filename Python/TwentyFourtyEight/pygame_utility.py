@@ -435,6 +435,9 @@ class Button(Widget):
                 if self.toggleable:
                     self.toggle()
                     self.game.event.wait()
+
+                self.game.event.clear()
+                event = self.game.event.wait(self.game.MOUSEBUTTONUP)
             # check scrolling
             elif self.scrollable:
                 event = self.game.event.poll()
@@ -522,7 +525,7 @@ class ButtonBar(Widget):
 
         wi = wp if dw == wp else wi
         hi = hp if dh == hp else hi
-        print("hp", hp, "hi", hi)
+        # print("hp", hp, "hi", hi)
 
         # draw background
         self.game.draw.rect(self.display, self.bg, (self.x, self.y, self.w, self.h))
