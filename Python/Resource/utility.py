@@ -4,8 +4,8 @@ from random import random, choice
 import datetime as dt
 
 #	General Utility functions
-#	Version............1.3
-#	Date........2021-06-10
+#	Version............1.4
+#	Date........2021-06-15
 #	Author....Avery Briggs
 
 TAB = "    "
@@ -630,3 +630,10 @@ def rotate_point(cx, cy, px, py, theta):
 
 def bar(a, b):
     return "{} |".format(percent(a / b)) + "".join(["#" if i < int((10 * a) / b) else " " for i in range(10)]) + "|"
+
+
+def lstindex(lst, target):
+	for i, val in enumerate(lst):
+		if val == target:
+			return i
+	return -1
