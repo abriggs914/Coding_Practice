@@ -3,10 +3,12 @@ from math import e, ceil, sin, cos, radians
 from random import random, choice
 import datetime as dt
 
-#	General Utility functions
-#	Version............1.5
-#	Date........2021-06-15
-#	Author....Avery Briggs
+"""
+    General Utility functions
+    Version............1.6
+    Date........2021-06-17
+    Author....Avery Briggs
+"""
 
 TAB = "    "
 SEPARATOR = "  -  "
@@ -399,7 +401,7 @@ def isfloat(value):
 
 
 def same_calendar_day(d1, d2):
-    if type(d1) != type(d2) and type(d1) != datetime.datetime:
+    if type(d1) != type(d2) and type(d1) != dt.datetime:
         raise ValueError(
             "Check types of d1: <{d1}> and d2: <{d2}>.\nBoth values must be datetime.datetime objects.".format(d1=d1,
                                                                                                                d2=d2))
@@ -633,15 +635,15 @@ def bar(a, b):
 
 
 def lstindex(lst, target):
-	for i, val in enumerate(lst):
-		if val == target:
-			return i
-	return -1
-	
+    for i, val in enumerate(lst):
+        if val == target:
+            return i
+    return -1
+
 
 def cos_x(degrees, amplitude=1, period=1, phase_shift=0, vertical_shift=0):
-	return (amplitude * (cos(period * (degrees + phase_shift)))) + vertical_shift
-	
+    return (amplitude * (cos(period * (degrees + phase_shift)))) + vertical_shift
+
 
 def sin_x(degrees, amplitude=1, period=1, phase_shift=0, vertical_shift=0):
-	return (amplitude * (sin(period * (degrees + phase_shift)))) + vertical_shift
+    return (amplitude * (sin(period * (degrees + phase_shift)))) + vertical_shift
