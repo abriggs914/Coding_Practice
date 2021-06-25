@@ -24,7 +24,8 @@ entries = [
 	("2021-06-18 08:30:00", 0.339882),
 	("2021-06-21 08:30:00", 0.339336),
 	("2021-06-22 08:30:00", 0.339133),
-	("2021-06-23 08:30:00", 0.338951)
+	("2021-06-23 08:30:00", 0.338951),
+	("2021-06-24 08:30:00", 0.338815)
 ]
 
 es = lambda vs: (dt.datetime.strptime(vs[0], "%Y-%m-%d %H:%M:%S"), vs[1])
@@ -72,4 +73,4 @@ balance = float(input("enter a point balance:\n"))
 old = balance / entries[0][1]
 new = balance / entries[-1][1]
 dif = new - old
-print("With a balance of {} points\nI could have made: {} Mobilio\nNow I will make: {} Mobilio\nDifference of {} Mobilio".format(balance, old, new, dif))
+print("With a balance of {} points\nI could have made: {} Mobilio on <Date>\nNow I will make: {} Mobilio on <Date>\nDifference of {} Mobilio".format(balance, old, new, dif))
