@@ -9,7 +9,6 @@ average length of an episode:	22
 Total minutes:			4422
 Total hours:			73.7
 Where to watch:			Netflix
-
 	Community
 Genre:				Comedy
 Run (2009 -> 2015):		6 years
@@ -20,7 +19,6 @@ average length of an episode:	22
 Total minutes:			2420
 Total hours:			40.333333333333336
 Where to watch:			Amazon Prime
-
 	Game of Thrones
 Genre:				Drama, Adventure
 Run (2011 -> 2019):		8 years
@@ -31,7 +29,6 @@ average length of an episode:	50
 Total minutes:			3650
 Total hours:			60.833333333333336
 Where to watch:			Crave -> HBO
-
 	Final Space
 Genre:				Comedy, Sci-fi
 Run (2018 -> 2020):		2 years
@@ -42,7 +39,6 @@ average length of an episode:	22
 Total minutes:			506
 Total hours:			8.433333333333334
 Where to watch:			Netflix
-
 	Parks and Recreation
 Genre:				Comedy
 Run (2009 -> 2015):		6 years
@@ -53,7 +49,6 @@ average length of an episode:	22
 Total minutes:			2750
 Total hours:			45.833333333333336
 Where to watch:			Prime TV
-
 	Silicon Valley
 Genre:				Comedy
 Run (2014 -> 2019):		5 years
@@ -64,7 +59,6 @@ average length of an episode:	22
 Total minutes:			1166
 Total hours:			19.433333333333334
 Where to watch:			Crave -> HBO
-
 	Brooklyn Nine-Nine
 Genre:				Comedy
 Run (2013 -> 2020):		7 years
@@ -75,6 +69,249 @@ average length of an episode:	22
 Total minutes:			3146
 Total hours:			52.43333333333333
 Where to watch:			Netflix
+	Workaholics
+Genre:				Comedy
+Run (2011 -> 2017):		6 years
+number seasons:			7
+number episodes:		86
+episodes per season:		12.285714285714286
+average length of an episode:	22
+Total minutes:			1892
+Total hours:			31.533333333333335
+Where to watch:			Crave
+	Trailer Park Boys
+Genre:				Comedy
+Run (2001 -> 2018):		17 years
+number seasons:			12
+number episodes:		105
+episodes per season:		8.75
+average length of an episode:	22
+Total minutes:			2310
+Total hours:			38.5
+Where to watch:			Netflix
+	Arrested Develpoment
+Genre:				Comedy
+Run (2003 -> 2019):		16 years
+number seasons:			5
+number episodes:		84
+episodes per season:		16.8
+average length of an episode:	22
+Total minutes:			1848
+Total hours:			30.8
+Where to watch:			Netflix
+	Chernobyl
+Genre:				Drama, Documentary
+Run (2019 -> 2019):		1 year
+number seasons:			1
+number episodes:		5
+episodes per season:		5.0
+average length of an episode:	60
+Total minutes:			300
+Total hours:			5.0
+Where to watch:			Crave -> HBO
+	Breaking Bad
+Genre:				Drama, Thriller
+Run (2008 -> 2013):		5 years
+number seasons:			5
+number episodes:		62
+episodes per season:		12.4
+average length of an episode:	50
+Total minutes:			3100
+Total hours:			51.666666666666664
+Where to watch:			Netflix
+	Black Mirror
+Genre:				Drama, Sci-fi
+Run (2011 -> 2019):		8 years
+number seasons:			5
+number episodes:		21
+episodes per season:		4.2
+average length of an episode:	60
+Total minutes:			1260
+Total hours:			21.0
+Where to watch:			Netflix
+	Better Call Saul
+Genre:				Drama, Law
+Run (2015 -> 2020):		5 years
+number seasons:			5
+number episodes:		50
+episodes per season:		10.0
+average length of an episode:	50
+Total minutes:			2500
+Total hours:			41.666666666666664
+Where to watch:			Netflix
+	The IT Crowd
+Genre:				Comedy, Tech
+Run (2006 -> 2013):		7 years
+number seasons:			4
+number episodes:		25
+episodes per season:		6.25
+average length of an episode:	22
+Total minutes:			550
+Total hours:			9.166666666666666
+Where to watch:			Netflix
+	Avatar, the Last Airbender
+Genre:				Drama, Adventure
+Run (2005 -> 2008):		3 years
+number seasons:			3
+number episodes:		61
+episodes per season:		20.333333333333332
+average length of an episode:	22
+Total minutes:			1342
+Total hours:			22.366666666666667
+Where to watch:			Netflix
+	Peaky Blinders
+Genre:				Drama, Period
+Run (2013 -> 2020):		7 years
+number seasons:			5
+number episodes:		30
+episodes per season:		6.0
+average length of an episode:	50
+Total minutes:			1500
+Total hours:			25.0
+Where to watch:			Netflix
+	Curb your Enthusiasm
+Genre:				Comedy
+Run (2000 -> 2020):		20 years
+number seasons:			10
+number episodes:		100
+episodes per season:		10.0
+average length of an episode:	30
+Total minutes:			3000
+Total hours:			50.0
+Where to watch:			Crave -> HBO
+	Letterkenny
+Genre:				Comedy
+Run (2016 -> 2021):		5 years
+number seasons:			9
+number episodes:		56
+episodes per season:		6.222222222222222
+average length of an episode:	22
+Total minutes:			1232
+Total hours:			20.533333333333335
+Where to watch:			Crave
+	Prison Break
+Genre:				Drama, Thriller
+Run (2005 -> 2017):		12 years
+number seasons:			5
+number episodes:		90
+episodes per season:		18.0
+average length of an episode:	42
+Total minutes:			3780
+Total hours:			63.0
+Where to watch:			Netflix
+	Scrubs
+Genre:				Comedy
+Run (2001 -> 2010):		9 years
+number seasons:			9
+number episodes:		182
+episodes per season:		20.22222222222222
+average length of an episode:	22
+Total minutes:			4004
+Total hours:			66.73333333333333
+Where to watch:			Prime TV
+	Yu-Gi-Oh!
+Genre:				Anime
+Run (1998 -> 2006):		8 years
+number seasons:			5
+number episodes:		236
+episodes per season:		47.2
+average length of an episode:	22
+Total minutes:			5192
+Total hours:			86.53333333333333
+Where to watch:			Prime TV
+	Misfits
+Genre:				Comedy
+Run (2009 -> 2013):		4 years
+number seasons:			5
+number episodes:		37
+episodes per season:		7.4
+average length of an episode:	44
+Total minutes:			1628
+Total hours:			27.133333333333333
+Where to watch:			Netflix
+	The Mandalorian
+Genre:				Drama, Action
+Run (2019 -> 2021):		2 years
+number seasons:			2
+number episodes:		16
+episodes per season:		8.0
+average length of an episode:	44
+Total minutes:			704
+Total hours:			11.733333333333333
+Where to watch:			Disney+
+	Recess
+Genre:				Comedy, Cartoon
+Run (1997 -> 2001):		4 years
+number seasons:			6
+number episodes:		68
+episodes per season:		11.333333333333334
+average length of an episode:	23
+Total minutes:			1564
+Total hours:			26.066666666666666
+Where to watch:			Disney+
+	The Proud Family
+Genre:				Comedy, Cartoon
+Run (2001 -> 2005):		4 years
+number seasons:			2
+number episodes:		52
+episodes per season:		26.0
+average length of an episode:	23
+Total minutes:			1196
+Total hours:			19.933333333333334
+Where to watch:			Disney+
+	My Name is Earl
+Genre:				Comedy
+Run (2005 -> 2009):		4 years
+number seasons:			4
+number episodes:		96
+episodes per season:		24.0
+average length of an episode:	21
+Total minutes:			2016
+Total hours:			33.6
+Where to watch:			Disney+
+	Futurama
+Genre:				Comedy
+Run (1999 -> 2013):		14 years
+number seasons:			10
+number episodes:		140
+episodes per season:		14.0
+average length of an episode:	22
+Total minutes:			3080
+Total hours:			51.333333333333336
+Where to watch:			Disney+
+	Family Guy
+Genre:				Comedy
+Run (1999 -> 2021):		22 years
+number seasons:			19
+number episodes:		369
+episodes per season:		19.42105263157895
+average length of an episode:	22
+Total minutes:			8118
+Total hours:			135.3
+Where to watch:			Disney+
+	It's Always Sunny in Philadelphia
+Genre:				Comedy
+Run (2005 -> 2019):		14 years
+number seasons:			14
+number episodes:		154
+episodes per season:		11.0
+average length of an episode:	22
+Total minutes:			3388
+Total hours:			56.46666666666667
+Where to watch:			Disney+
+	The Last Man on Earth
+Genre:				Comedy
+Run (2015 -> 2018):		3 years
+number seasons:			4
+number episodes:		67
+episodes per season:		16.75
+average length of an episode:	22
+Total minutes:			1474
+Total hours:			24.566666666666666
+Where to watch:			Disney+
+
+	What to watch?
+Series:
 
 	Workaholics
 Genre:				Comedy
@@ -86,285 +323,8 @@ average length of an episode:	22
 Total minutes:			1892
 Total hours:			31.533333333333335
 Where to watch:			Crave
-
-	Trailer Park Boys
-Genre:				Comedy
-Run (2001 -> 2018):		17 years
-number seasons:			12
-number episodes:		105
-episodes per season:		8.75
-average length of an episode:	22
-Total minutes:			2310
-Total hours:			38.5
-Where to watch:			Netflix
-
-	Arrested Develpoment
-Genre:				Comedy
-Run (2003 -> 2019):		16 years
-number seasons:			5
-number episodes:		84
-episodes per season:		16.8
-average length of an episode:	22
-Total minutes:			1848
-Total hours:			30.8
-Where to watch:			Netflix
-
-	Chernobyl
-Genre:				Drama, Documentary
-Run (2019 -> 2019):		1 year
-number seasons:			1
-number episodes:		5
-episodes per season:		5.0
-average length of an episode:	60
-Total minutes:			300
-Total hours:			5.0
-Where to watch:			Crave -> HBO
-
-	Breaking Bad
-Genre:				Drama, Thriller
-Run (2008 -> 2013):		5 years
-number seasons:			5
-number episodes:		62
-episodes per season:		12.4
-average length of an episode:	50
-Total minutes:			3100
-Total hours:			51.666666666666664
-Where to watch:			Netflix
-
-	Black Mirror
-Genre:				Drama, Sci-fi
-Run (2011 -> 2019):		8 years
-number seasons:			5
-number episodes:		21
-episodes per season:		4.2
-average length of an episode:	60
-Total minutes:			1260
-Total hours:			21.0
-Where to watch:			Netflix
-
-	Better Call Saul
-Genre:				Drama, Law
-Run (2015 -> 2020):		5 years
-number seasons:			5
-number episodes:		50
-episodes per season:		10.0
-average length of an episode:	50
-Total minutes:			2500
-Total hours:			41.666666666666664
-Where to watch:			Netflix
-
-	The IT Crowd
-Genre:				Comedy, Tech
-Run (2006 -> 2013):		7 years
-number seasons:			4
-number episodes:		25
-episodes per season:		6.25
-average length of an episode:	22
-Total minutes:			550
-Total hours:			9.166666666666666
-Where to watch:			Netflix
-
-	Avatar, the Last Airbender
-Genre:				Drama, Adventure
-Run (2005 -> 2008):		3 years
-number seasons:			3
-number episodes:		61
-episodes per season:		20.333333333333332
-average length of an episode:	22
-Total minutes:			1342
-Total hours:			22.366666666666667
-Where to watch:			Netflix
-
-	Peaky Blinders
-Genre:				Drama, Period
-Run (2013 -> 2020):		7 years
-number seasons:			5
-number episodes:		30
-episodes per season:		6.0
-average length of an episode:	50
-Total minutes:			1500
-Total hours:			25.0
-Where to watch:			Netflix
-
-	Curb your Enthusiasm
-Genre:				Comedy
-Run (2000 -> 2020):		20 years
-number seasons:			10
-number episodes:		100
-episodes per season:		10.0
-average length of an episode:	30
-Total minutes:			3000
-Total hours:			50.0
-Where to watch:			Crave -> HBO
-
-	Letterkenny
-Genre:				Comedy
-Run (2016 -> 2021):		5 years
-number seasons:			9
-number episodes:		56
-episodes per season:		6.222222222222222
-average length of an episode:	22
-Total minutes:			1232
-Total hours:			20.533333333333335
-Where to watch:			Crave
-
-	Prison Break
-Genre:				Drama, Thriller
-Run (2005 -> 2017):		12 years
-number seasons:			5
-number episodes:		90
-episodes per season:		18.0
-average length of an episode:	42
-Total minutes:			3780
-Total hours:			63.0
-Where to watch:			Netflix
-
-	Scrubs
-Genre:				Comedy
-Run (2001 -> 2010):		9 years
-number seasons:			9
-number episodes:		182
-episodes per season:		20.22222222222222
-average length of an episode:	22
-Total minutes:			4004
-Total hours:			66.73333333333333
-Where to watch:			Prime TV
-
-	Yu-Gi-Oh!
-Genre:				Anime
-Run (1998 -> 2006):		8 years
-number seasons:			5
-number episodes:		236
-episodes per season:		47.2
-average length of an episode:	22
-Total minutes:			5192
-Total hours:			86.53333333333333
-Where to watch:			Prime TV
-
-	Misfits
-Genre:				Comedy
-Run (2009 -> 2013):		4 years
-number seasons:			5
-number episodes:		37
-episodes per season:		7.4
-average length of an episode:	44
-Total minutes:			1628
-Total hours:			27.133333333333333
-Where to watch:			Netflix
-
-	The Mandalorian
-Genre:				Drama, Action
-Run (2019 -> 2021):		2 years
-number seasons:			2
-number episodes:		16
-episodes per season:		8.0
-average length of an episode:	44
-Total minutes:			704
-Total hours:			11.733333333333333
-Where to watch:			Disney+
-
-	Recess
-Genre:				Comedy, Cartoon
-Run (1997 -> 2001):		4 years
-number seasons:			6
-number episodes:		68
-episodes per season:		11.333333333333334
-average length of an episode:	23
-Total minutes:			1564
-Total hours:			26.066666666666666
-Where to watch:			Disney+
-
-	The Proud Family
-Genre:				Comedy, Cartoon
-Run (2001 -> 2005):		4 years
-number seasons:			2
-number episodes:		52
-episodes per season:		26.0
-average length of an episode:	23
-Total minutes:			1196
-Total hours:			19.933333333333334
-Where to watch:			Disney+
-
-	My Name is Earl
-Genre:				Comedy
-Run (2005 -> 2009):		4 years
-number seasons:			4
-number episodes:		96
-episodes per season:		24.0
-average length of an episode:	21
-Total minutes:			2016
-Total hours:			33.6
-Where to watch:			Disney+
-
-	Futurama
-Genre:				Comedy
-Run (1999 -> 2013):		14 years
-number seasons:			10
-number episodes:		140
-episodes per season:		14.0
-average length of an episode:	22
-Total minutes:			3080
-Total hours:			51.333333333333336
-Where to watch:			Disney+
-
-	Family Guy
-Genre:				Comedy
-Run (1999 -> 2021):		22 years
-number seasons:			19
-number episodes:		369
-episodes per season:		19.42105263157895
-average length of an episode:	22
-Total minutes:			8118
-Total hours:			135.3
-Where to watch:			Disney+
-
-	It's Always Sunny in Philadelphia
-Genre:				Comedy
-Run (2005 -> 2019):		14 years
-number seasons:			14
-number episodes:		154
-episodes per season:		11.0
-average length of an episode:	22
-Total minutes:			3388
-Total hours:			56.46666666666667
-Where to watch:			Disney+
-
-
-	What to watch?
-
-Series:
-
-	Silicon Valley
-Genre:				Comedy
-Run (2014 -> 2019):		5 years
-number seasons:			6
-number episodes:		53
-episodes per season:		8.833333333333334
-average length of an episode:	22
-Total minutes:			1166
-Total hours:			19.433333333333334
-Where to watch:			Crave -> HBO
-
-Season: 2
-Episode: 4
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Season: 4 Episode: 5
 sorting by start year...
-
 ###########################################################################################################################################################################################################################################
 ##################################| start year |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| start year |##################################
 |Recess                           |    1997    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1997    |Recess                           |
@@ -393,29 +353,13 @@ sorting by start year...
 |Peaky Blinders                   |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    2013    |Peaky Blinders                   |
 |Silicon Valley                   |    2014    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    2014    |Silicon Valley                   |
 |Better Call Saul                 |    2015    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    2015    |Better Call Saul                 |
+|The Last Man on Earth            |    2015    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    2015    |The Last Man on Earth            |
 |Letterkenny                      |    2016    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    2016    |Letterkenny                      |
 |Final Space                      |    2018    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    2018    |Final Space                      |
 |Chernobyl                        |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    2019    |Chernobyl                        |
 |The Mandalorian                  |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    2019    |The Mandalorian                  |
 ###########################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by start year...
-
 ################################################
 ##################################| start year |
 |Recess                           |    1997    |
@@ -444,36 +388,20 @@ sorting by start year...
 |Peaky Blinders                   |    2013    |
 |Silicon Valley                   |    2014    |
 |Better Call Saul                 |    2015    |
+|The Last Man on Earth            |    2015    |
 |Letterkenny                      |    2016    |
 |Final Space                      |    2018    |
 |Chernobyl                        |    2019    |
 |The Mandalorian                  |    2019    |
 ################################################
 
-Mean:		2007.50
-Median:		2007.00
-Pstdev:		  6.41
-Pvariance:	 41.05
-Stdev:		  6.52
-Variance:	 42.47
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		2007.74
+Median:		2008.00
+Pstdev:		  6.44
+Pvariance:	 41.48
+Stdev:		  6.55
+Variance:	 42.86
 sorting by end year...
-
 #######################################################################################################################################################################################################################################
 ##################################| end year |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| end year |##################################
 |Recess                           |   2001   |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2001   |Recess                           |
@@ -492,6 +420,7 @@ sorting by end year...
 |Prison Break                     |   2017   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |   2017   |Prison Break                     |
 |Workaholics                      |   2017   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |   2017   |Workaholics                      |
 |Trailer Park Boys                |   2018   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |   2018   |Trailer Park Boys                |
+|The Last Man on Earth            |   2018   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |   2018   |The Last Man on Earth            |
 |Arrested Develpoment             |   2019   |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   2019   |Arrested Develpoment             |
 |It's Always Sunny in Philadelphia|   2019   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   2019   |It's Always Sunny in Philadelphia|
 |Game of Thrones                  |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |   2019   |Game of Thrones                  |
@@ -507,24 +436,7 @@ sorting by end year...
 |Letterkenny                      |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2021   |Letterkenny                      |
 |The Mandalorian                  |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   2021   |The Mandalorian                  |
 #######################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by end year...
-
 ##############################################
 ##################################| end year |
 |Recess                           |   2001   |
@@ -543,6 +455,7 @@ sorting by end year...
 |Prison Break                     |   2017   |
 |Workaholics                      |   2017   |
 |Trailer Park Boys                |   2018   |
+|The Last Man on Earth            |   2018   |
 |Arrested Develpoment             |   2019   |
 |It's Always Sunny in Philadelphia|   2019   |
 |Game of Thrones                  |   2019   |
@@ -559,36 +472,20 @@ sorting by end year...
 |The Mandalorian                  |   2021   |
 ##############################################
 
-Mean:		2015.40
-Median:		2017.50
-Pstdev:		  5.33
-Pvariance:	 28.44
-Stdev:		  5.42
-Variance:	 29.42
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		2015.48
+Median:		2018.00
+Pstdev:		  5.27
+Pvariance:	 27.73
+Stdev:		  5.35
+Variance:	 28.66
 sorting by shortest series length...
-
 ###########################################################################################################################################################################################################################################################################
 ##################################| shortest series run length |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| shortest series run length |##################################
 |Chernobyl                        |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |             1              |Chernobyl                        |
 |Final Space                      |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |Final Space                      |
 |The Mandalorian                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2              |The Mandalorian                  |
 |Avatar, the Last Airbender       |             3              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender       |
+|The Last Man on Earth            |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3              |The Last Man on Earth            |
 |Recess                           |             4              |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |Recess                           |
 |The Proud Family                 |             4              |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |The Proud Family                 |
 |My Name is Earl                  |             4              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |My Name is Earl                  |
@@ -616,30 +513,14 @@ sorting by shortest series length...
 |Curb your Enthusiasm             |             20             |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |             20             |Curb your Enthusiasm             |
 |Family Guy                       |             22             |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |             22             |Family Guy                       |
 ###########################################################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by shortest series length...
-
 ################################################################
 ##################################| shortest series run length |
 |Chernobyl                        |             1              |
 |Final Space                      |             2              |
 |The Mandalorian                  |             2              |
 |Avatar, the Last Airbender       |             3              |
+|The Last Man on Earth            |             3              |
 |Recess                           |             4              |
 |The Proud Family                 |             4              |
 |My Name is Earl                  |             4              |
@@ -668,30 +549,13 @@ sorting by shortest series length...
 |Family Guy                       |             22             |
 ################################################################
 
-Mean:		  7.93
-Median:		  6.50
-Pstdev:		  5.28
-Pvariance:	 27.86
-Stdev:		  5.37
-Variance:	 28.82
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		  7.77
+Median:		  6.00
+Pstdev:		  5.27
+Pvariance:	 27.72
+Stdev:		  5.35
+Variance:	 28.65
 sorting by longest series length...
-
 #########################################################################################################################################################################################################################################################################
 ##################################| longest series run length |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| longest series run length |##################################
 |Family Guy                       |            22             |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |            22             |Family Guy                       |
@@ -721,28 +585,12 @@ sorting by longest series length...
 |My Name is Earl                  |             4             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |My Name is Earl                  |
 |Misfits                          |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |             4             |Misfits                          |
 |Avatar, the Last Airbender       |             3             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3             |Avatar, the Last Airbender       |
+|The Last Man on Earth            |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3             |The Last Man on Earth            |
 |Final Space                      |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2             |Final Space                      |
 |The Mandalorian                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2             |The Mandalorian                  |
 |Chernobyl                        |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |             1             |Chernobyl                        |
 #########################################################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by longest series length...
-
 ###############################################################
 ##################################| longest series run length |
 |Family Guy                       |            22             |
@@ -772,35 +620,19 @@ sorting by longest series length...
 |My Name is Earl                  |             4             |
 |Misfits                          |             4             |
 |Avatar, the Last Airbender       |             3             |
+|The Last Man on Earth            |             3             |
 |Final Space                      |             2             |
 |The Mandalorian                  |             2             |
 |Chernobyl                        |             1             |
 ###############################################################
 
-Mean:		  7.93
-Median:		  6.50
-Pstdev:		  5.28
-Pvariance:	 27.86
-Stdev:		  5.37
-Variance:	 28.82
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		  7.77
+Median:		  6.00
+Pstdev:		  5.27
+Pvariance:	 27.72
+Stdev:		  5.35
+Variance:	 28.65
 sorting by least number of seasons...
-
 ###############################################################################################################################################################################################################################################################
 ##################################| least number seasons |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| least number seasons |##################################
 |Chernobyl                        |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |          1           |Chernobyl                        |
@@ -810,6 +642,7 @@ sorting by least number of seasons...
 |Avatar, the Last Airbender       |          3           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3           |Avatar, the Last Airbender       |
 |The IT Crowd                     |          4           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          4           |The IT Crowd                     |
 |My Name is Earl                  |          4           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          4           |My Name is Earl                  |
+|The Last Man on Earth            |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          4           |The Last Man on Earth            |
 |Arrested Develpoment             |          5           |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          5           |Arrested Develpoment             |
 |Prison Break                     |          5           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          5           |Prison Break                     |
 |Yu-Gi-Oh!                        |          5           |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5           |Yu-Gi-Oh!                        |
@@ -834,24 +667,7 @@ sorting by least number of seasons...
 |It's Always Sunny in Philadelphia|          14          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          14          |It's Always Sunny in Philadelphia|
 |Family Guy                       |          19          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          19          |Family Guy                       |
 ###############################################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by least number of seasons...
-
 ##########################################################
 ##################################| least number seasons |
 |Chernobyl                        |          1           |
@@ -861,6 +677,7 @@ sorting by least number of seasons...
 |Avatar, the Last Airbender       |          3           |
 |The IT Crowd                     |          4           |
 |My Name is Earl                  |          4           |
+|The Last Man on Earth            |          4           |
 |Arrested Develpoment             |          5           |
 |Prison Break                     |          5           |
 |Yu-Gi-Oh!                        |          5           |
@@ -886,30 +703,13 @@ sorting by least number of seasons...
 |Family Guy                       |          19          |
 ##########################################################
 
-Mean:		  6.57
-Median:		  5.50
-Pstdev:		  3.76
-Pvariance:	 14.11
-Stdev:		  3.82
-Variance:	 14.60
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		  6.48
+Median:		  5.00
+Pstdev:		  3.72
+Pvariance:	 13.86
+Stdev:		  3.78
+Variance:	 14.32
 sorting by most number of seasons...
-
 #############################################################################################################################################################################################################################################################
 ##################################| most number seasons |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| most number seasons |##################################
 |Family Guy                       |         19          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         19          |Family Guy                       |
@@ -937,30 +737,14 @@ sorting by most number of seasons...
 |Misfits                          |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          5          |Misfits                          |
 |The IT Crowd                     |          4          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          4          |The IT Crowd                     |
 |My Name is Earl                  |          4          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          4          |My Name is Earl                  |
+|The Last Man on Earth            |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          4          |The Last Man on Earth            |
 |Avatar, the Last Airbender       |          3          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3          |Avatar, the Last Airbender       |
 |The Proud Family                 |          2          |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2          |The Proud Family                 |
 |Final Space                      |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2          |Final Space                      |
 |The Mandalorian                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2          |The Mandalorian                  |
 |Chernobyl                        |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |          1          |Chernobyl                        |
 #############################################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by most number of seasons...
-
 #########################################################
 ##################################| most number seasons |
 |Family Guy                       |         19          |
@@ -988,6 +772,7 @@ sorting by most number of seasons...
 |Misfits                          |          5          |
 |The IT Crowd                     |          4          |
 |My Name is Earl                  |          4          |
+|The Last Man on Earth            |          4          |
 |Avatar, the Last Airbender       |          3          |
 |The Proud Family                 |          2          |
 |Final Space                      |          2          |
@@ -995,30 +780,13 @@ sorting by most number of seasons...
 |Chernobyl                        |          1          |
 #########################################################
 
-Mean:		  6.57
-Median:		  5.50
-Pstdev:		  3.76
-Pvariance:	 14.11
-Stdev:		  3.82
-Variance:	 14.60
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		  6.48
+Median:		  5.00
+Pstdev:		  3.72
+Pvariance:	 13.86
+Stdev:		  3.78
+Variance:	 14.32
 sorting by least number of episodes...
-
 #################################################################################################################################################################################################################################################################
 ##################################| least number episodes |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| least number episodes |##################################
 |Chernobyl                        |           5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |           5           |Chernobyl                        |
@@ -1034,6 +802,7 @@ sorting by least number of episodes...
 |Letterkenny                      |          56           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          56           |Letterkenny                      |
 |Avatar, the Last Airbender       |          61           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          61           |Avatar, the Last Airbender       |
 |Breaking Bad                     |          62           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          62           |Breaking Bad                     |
+|The Last Man on Earth            |          67           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          67           |The Last Man on Earth            |
 |Recess                           |          68           |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          68           |Recess                           |
 |Game of Thrones                  |          73           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          73           |Game of Thrones                  |
 |Arrested Develpoment             |          84           |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          84           |Arrested Develpoment             |
@@ -1052,24 +821,7 @@ sorting by least number of episodes...
 |Yu-Gi-Oh!                        |          236          |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          236          |Yu-Gi-Oh!                        |
 |Family Guy                       |          369          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          369          |Family Guy                       |
 #################################################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by least number of episodes...
-
 ###########################################################
 ##################################| least number episodes |
 |Chernobyl                        |           5           |
@@ -1085,6 +837,7 @@ sorting by least number of episodes...
 |Letterkenny                      |          56           |
 |Avatar, the Last Airbender       |          61           |
 |Breaking Bad                     |          62           |
+|The Last Man on Earth            |          67           |
 |Recess                           |          68           |
 |Game of Thrones                  |          73           |
 |Arrested Develpoment             |          84           |
@@ -1104,30 +857,13 @@ sorting by least number of episodes...
 |Family Guy                       |          369          |
 ###########################################################
 
-Mean:		 95.10
-Median:		 78.50
-Pstdev:		 75.53
-Pvariance:	5705.22
-Stdev:		 76.82
-Variance:	5901.96
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		 94.19
+Median:		 73.00
+Pstdev:		 74.47
+Pvariance:	5545.83
+Stdev:		 75.70
+Variance:	5730.69
 sorting by most number of episodes...
-
 ###############################################################################################################################################################################################################################################################
 ##################################| most number episodes |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| most number episodes |##################################
 |Family Guy                       |         369          |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         369          |Family Guy                       |
@@ -1147,6 +883,7 @@ sorting by most number of episodes...
 |Arrested Develpoment             |          84          |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          84          |Arrested Develpoment             |
 |Game of Thrones                  |          73          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |          73          |Game of Thrones                  |
 |Recess                           |          68          |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          68          |Recess                           |
+|The Last Man on Earth            |          67          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          67          |The Last Man on Earth            |
 |Breaking Bad                     |          62          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          62          |Breaking Bad                     |
 |Avatar, the Last Airbender       |          61          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          61          |Avatar, the Last Airbender       |
 |Letterkenny                      |          56          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          56          |Letterkenny                      |
@@ -1161,24 +898,7 @@ sorting by most number of episodes...
 |The Mandalorian                  |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          16          |The Mandalorian                  |
 |Chernobyl                        |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |          5           |Chernobyl                        |
 ###############################################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by most number of episodes...
-
 ##########################################################
 ##################################| most number episodes |
 |Family Guy                       |         369          |
@@ -1198,6 +918,7 @@ sorting by most number of episodes...
 |Arrested Develpoment             |          84          |
 |Game of Thrones                  |          73          |
 |Recess                           |          68          |
+|The Last Man on Earth            |          67          |
 |Breaking Bad                     |          62          |
 |Avatar, the Last Airbender       |          61          |
 |Letterkenny                      |          56          |
@@ -1213,30 +934,13 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 95.10
-Median:		 78.50
-Pstdev:		 75.53
-Pvariance:	5705.22
-Stdev:		 76.82
-Variance:	5901.96
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		 94.19
+Median:		 73.00
+Pstdev:		 74.47
+Pvariance:	5545.83
+Stdev:		 75.70
+Variance:	5730.69
 sorting by shortest time...
-
 #################################################################################################################################################################################################################################################
 ##################################| shortest time |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| shortest time |##################################
 |Chernobyl                        |      5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |      5.0      |Chernobyl                        |
@@ -1248,6 +952,7 @@ sorting by shortest time...
 |Letterkenny                      |   20.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   20.533333   |Letterkenny                      |
 |Black Mirror                     |     21.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |     21.0      |Black Mirror                     |
 |Avatar, the Last Airbender       |   22.366667   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   22.366667   |Avatar, the Last Airbender       |
+|The Last Man on Earth            |   24.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |   24.566667   |The Last Man on Earth            |
 |Peaky Blinders                   |     25.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |     25.0      |Peaky Blinders                   |
 |Recess                           |   26.066667   |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   26.066667   |Recess                           |
 |Misfits                          |   27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |   27.133333   |Misfits                          |
@@ -1270,24 +975,7 @@ sorting by shortest time...
 |Yu-Gi-Oh!                        |   86.533333   |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   86.533333   |Yu-Gi-Oh!                        |
 |Family Guy                       |  135.300000   |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  135.300000   |Family Guy                       |
 #################################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by shortest time...
-
 ###################################################
 ##################################| shortest time |
 |Chernobyl                        |      5.0      |
@@ -1299,6 +987,7 @@ sorting by shortest time...
 |Letterkenny                      |   20.533333   |
 |Black Mirror                     |     21.0      |
 |Avatar, the Last Airbender       |   22.366667   |
+|The Last Man on Earth            |   24.566667   |
 |Peaky Blinders                   |     25.0      |
 |Recess                           |   26.066667   |
 |Misfits                          |   27.133333   |
@@ -1322,30 +1011,13 @@ sorting by shortest time...
 |Family Guy                       |  135.300000   |
 ###################################################
 
-Mean:		 40.87
-Median:		 36.05
-Pstdev:		 26.77
-Pvariance:	716.58
-Stdev:		 27.23
-Variance:	741.29
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		 40.34
+Median:		 33.60
+Pstdev:		 26.49
+Pvariance:	701.76
+Stdev:		 26.93
+Variance:	725.15
 sorting by longest time...
-
 ###############################################################################################################################################################################################################################################
 ##################################| longest time |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| longest time |##################################
 |Family Guy                       |  135.300000  |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  135.300000  |Family Guy                       |
@@ -1369,6 +1041,7 @@ sorting by longest time...
 |Misfits                          |  27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |  27.133333   |Misfits                          |
 |Recess                           |  26.066667   |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  26.066667   |Recess                           |
 |Peaky Blinders                   |     25.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |     25.0     |Peaky Blinders                   |
+|The Last Man on Earth            |  24.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |  24.566667   |The Last Man on Earth            |
 |Avatar, the Last Airbender       |  22.366667   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |  22.366667   |Avatar, the Last Airbender       |
 |Black Mirror                     |     21.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |     21.0     |Black Mirror                     |
 |Letterkenny                      |  20.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |  20.533333   |Letterkenny                      |
@@ -1379,24 +1052,7 @@ sorting by longest time...
 |Final Space                      |   8.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   8.433333   |Final Space                      |
 |Chernobyl                        |     5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |     5.0      |Chernobyl                        |
 ###############################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by longest time...
-
 ##################################################
 ##################################| longest time |
 |Family Guy                       |  135.300000  |
@@ -1420,6 +1076,7 @@ sorting by longest time...
 |Misfits                          |  27.133333   |
 |Recess                           |  26.066667   |
 |Peaky Blinders                   |     25.0     |
+|The Last Man on Earth            |  24.566667   |
 |Avatar, the Last Airbender       |  22.366667   |
 |Black Mirror                     |     21.0     |
 |Letterkenny                      |  20.533333   |
@@ -1431,30 +1088,13 @@ sorting by longest time...
 |Chernobyl                        |     5.0      |
 ##################################################
 
-Mean:		 40.87
-Median:		 36.05
-Pstdev:		 26.77
-Pvariance:	716.58
-Stdev:		 27.23
-Variance:	741.29
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		 40.34
+Median:		 33.60
+Pstdev:		 26.49
+Pvariance:	701.76
+Stdev:		 26.93
+Variance:	725.15
 sorting by most episodes per season...
-
 #######################################################################################################################################################################################################################################################################
 ##################################| most episodes per season |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| most episodes per season |##################################
 |Yu-Gi-Oh!                        |        47.200000         |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        47.200000         |Yu-Gi-Oh!                        |
@@ -1469,6 +1109,7 @@ sorting by most episodes per season...
 |Prison Break                     |           18.0           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |           18.0           |Prison Break                     |
 |Parks and Recreation             |        17.857143         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |        17.857143         |Parks and Recreation             |
 |Arrested Develpoment             |        16.800000         |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |        16.800000         |Arrested Develpoment             |
+|The Last Man on Earth            |        16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |        16.750000         |The Last Man on Earth            |
 |Futurama                         |           14.0           |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |           14.0           |Futurama                         |
 |Breaking Bad                     |        12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |        12.400000         |Breaking Bad                     |
 |Workaholics                      |        12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |        12.285714         |Workaholics                      |
@@ -1488,24 +1129,7 @@ sorting by most episodes per season...
 |Chernobyl                        |           5.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |           5.0            |Chernobyl                        |
 |Black Mirror                     |         4.200000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |         4.200000         |Black Mirror                     |
 #######################################################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by most episodes per season...
-
 ##############################################################
 ##################################| most episodes per season |
 |Yu-Gi-Oh!                        |        47.200000         |
@@ -1520,6 +1144,7 @@ sorting by most episodes per season...
 |Prison Break                     |           18.0           |
 |Parks and Recreation             |        17.857143         |
 |Arrested Develpoment             |        16.800000         |
+|The Last Man on Earth            |        16.750000         |
 |Futurama                         |           14.0           |
 |Breaking Bad                     |        12.400000         |
 |Workaholics                      |        12.285714         |
@@ -1540,30 +1165,13 @@ sorting by most episodes per season...
 |Black Mirror                     |         4.200000         |
 ##############################################################
 
-Mean:		 14.44
-Median:		 11.89
-Pstdev:		  8.56
-Pvariance:	 73.20
-Stdev:		  8.70
-Variance:	 75.72
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
+Mean:		 14.52
+Median:		 12.29
+Pstdev:		  8.43
+Pvariance:	 71.00
+Stdev:		  8.57
+Variance:	 73.37
 sorting by least episodes per season...
-
 #########################################################################################################################################################################################################################################################################
 ##################################| least episodes per season |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| least episodes per season |##################################
 |Black Mirror                     |         4.200000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |         4.200000          |Black Mirror                     |
@@ -1584,6 +1192,7 @@ sorting by least episodes per season...
 |Workaholics                      |         12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |         12.285714         |Workaholics                      |
 |Breaking Bad                     |         12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         12.400000         |Breaking Bad                     |
 |Futurama                         |           14.0            |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |           14.0            |Futurama                         |
+|The Last Man on Earth            |         16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |         16.750000         |The Last Man on Earth            |
 |Arrested Develpoment             |         16.800000         |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         16.800000         |Arrested Develpoment             |
 |Parks and Recreation             |         17.857143         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |         17.857143         |Parks and Recreation             |
 |Prison Break                     |           18.0            |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |           18.0            |Prison Break                     |
@@ -1597,24 +1206,7 @@ sorting by least episodes per season...
 |The Proud Family                 |           26.0            |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           26.0            |The Proud Family                 |
 |Yu-Gi-Oh!                        |         47.200000         |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         47.200000         |Yu-Gi-Oh!                        |
 #########################################################################################################################################################################################################################################################################
-
-	How would you like to print the stats?
-1	-	By start year
-2	-	By end year
-3	-	By shortest series run length
-4	-	By longest series run length
-5	-	By least number seasons
-6	-	By most number seasons
-7	-	By least number episodes
-8	-	By most number episodes
-9	-	By shortest time
-10	-	By longest time
-11	-	By most episodes per season
-12	-	By least episodes per season
-
-
 sorting by least episodes per season...
-
 ###############################################################
 ##################################| least episodes per season |
 |Black Mirror                     |         4.200000          |
@@ -1635,6 +1227,7 @@ sorting by least episodes per season...
 |Workaholics                      |         12.285714         |
 |Breaking Bad                     |         12.400000         |
 |Futurama                         |           14.0            |
+|The Last Man on Earth            |         16.750000         |
 |Arrested Develpoment             |         16.800000         |
 |Parks and Recreation             |         17.857143         |
 |Prison Break                     |           18.0            |
@@ -1649,9 +1242,45 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.44
-Median:		 11.89
-Pstdev:		  8.56
-Pvariance:	 73.20
-Stdev:		  8.70
-Variance:	 75.72
+Mean:		 14.52
+Median:		 12.29
+Pstdev:		  8.43
+Pvariance:	 71.00
+Stdev:		  8.57
+Variance:	 73.37
+
+
+--  Episodes Comparison  --
+
+          -                                            | 1  | 2  | 3  | 4  | 5  | 6  | 7  | 8  | 9  | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 |
+    1     -  Black Mirror..............................| 3  | 3  | 6  | 6  | 3  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    2     -  Chernobyl.................................| 5  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    3     -  Peaky Blinders............................| 6  | 6  | 6  | 6  | 6  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    4     -  Letterkenny...............................| 6  | 6  | 6  | 6  | 6  | 6  | 6  | 7  | 7  |    |    |    |    |    |    |    |    |    |    |
+    5     -  The IT Crowd..............................| 6  | 6  | 6  | 7  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    6     -  Misfits...................................| 6  | 7  | 8  | 8  | 8  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    7     -  The Mandalorian...........................| 8  | 8  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    8     -  Trailer Park Boys.........................| 6  | 7  | 8  | 8  | 10 | 6  | 10 | 10 | 10 | 10 | 10 | 10 |    |    |    |    |    |    |    |
+    9     -  Silicon Valley............................| 8  | 10 | 10 | 10 | 8  | 7  |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    10    -  Game of Thrones...........................| 10 | 10 | 10 | 10 | 10 | 10 | 7  | 6  |    |    |    |    |    |    |    |    |    |    |    |
+    11    -  Curb your Enthusiasm......................| 10 | 10 | 10 | 10 | 10 | 10 | 10 | 10 | 10 | 10 |    |    |    |    |    |    |    |    |    |
+    12    -  Better Call Saul..........................| 10 | 10 | 10 | 10 | 10 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    13    -  It's Always Sunny in Philadelphia.........| 7  | 10 | 15 | 13 | 12 | 14 | 13 | 10 | 10 | 10 | 10 | 10 | 10 | 10 |    |    |    |    |    |
+    14    -  Recess....................................| 13 | 13 | 8  | 23 | 5  | 6  |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    15    -  Final Space...............................| 10 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    16    -  Workaholics...............................| 10 | 10 | 20 | 13 | 13 | 10 | 10 |    |    |    |    |    |    |    |    |    |    |    |    |
+    17    -  Breaking Bad..............................| 7  | 13 | 13 | 13 | 16 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    18    -  Futurama..................................| 9  | 20 | 15 | 12 | 16 | 16 | 13 | 13 | 13 | 13 |    |    |    |    |    |    |    |    |    |
+    19    -  The Last Man on Earth.....................| 13 | 18 | 18 | 18 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    20    -  Arrested Develpoment......................| 22 | 18 | 13 | 15 | 16 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    21    -  Parks and Recreation......................| 6  | 24 | 16 | 22 | 22 | 22 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |
+    22    -  Prison Break..............................| 22 | 22 | 13 | 24 | 9  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    23    -  Community.................................| 25 | 24 | 22 | 13 | 13 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    24    -  Family Guy................................| 7  | 21 | 22 | 30 | 18 | 12 | 16 | 21 | 18 | 23 | 22 | 21 | 18 | 20 | 20 | 20 | 20 | 20 | 20 |
+    25    -  Scrubs....................................| 24 | 22 | 22 | 25 | 24 | 22 | 11 | 19 | 13 |    |    |    |    |    |    |    |    |    |    |
+    26    -  Avatar, the Last Airbender................| 20 | 20 | 21 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    27    -  Brooklyn Nine-Nine........................| 22 | 23 | 23 | 22 | 22 | 18 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |
+    28    -  The Office................................| 6  | 22 | 25 | 19 | 28 | 26 | 26 | 24 | 25 |    |    |    |    |    |    |    |    |    |    |
+    29    -  My Name is Earl...........................| 24 | 23 | 22 | 27 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    30    -  The Proud Family..........................| 21 | 31 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    31    -  Yu-Gi-Oh!.................................| 49 | 48 | 47 | 40 | 52 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
