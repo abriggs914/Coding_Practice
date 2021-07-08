@@ -59,6 +59,7 @@
                     Me.Functions.Add(func)
                 End If
             Next
+            d = "Avery"
         End Sub
 
         Public Sub Greeting()
