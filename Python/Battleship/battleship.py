@@ -8,12 +8,12 @@ class Battleship:
         self.n = n
         self.m = m
         self.grid = [[None for j in range(self.m)] for i in range(self.n)]
-        self.grid = [[None, 1, None, None, 2], [3, 4, None, None, 5]]
-        self.grid = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]]
+        # self.grid = [[None, 1, None, None, 2], [3, 4, None, None, 5]]
+        # self.grid = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]]
         # self.grid = [list(range(i * 5, (i * 5) + 5)) for i in range(8)]
         print("grid:", self.grid)
-        self.n = len(self.grid)
-        self.m = len(self.grid[0])
+        # self.n = len(self.grid)
+        # self.m = len(self.grid[0])
 
     def gen_ship(self, i=None, j=None, length=None):
         if self.is_playable():
@@ -29,6 +29,7 @@ class Battleship:
         return False
 
     def lines(self, filter_none=False):
+        """Return a list of all possible cell lines."""
         PAD = "PAD"
         n = self.n
         m = self.m
@@ -39,6 +40,7 @@ class Battleship:
         print("1 temp_grid:", temp_grid)
         if m < n:
             grid, temp_grid = temp_grid, grid
+            n, m = m, n
         print("2 grid     :", grid)
         print("2 temp_grid:", temp_grid)
         res += temp_grid
@@ -57,6 +59,7 @@ class Battleship:
         print("3 temp:", temp)
         # print("len[]({}), len[0]({})".format(len(temp), len(temp[0])))
 
+        print("N x M: ({} x {})".format(n, m))
         for i in range(n):
             for j in range(m):
                 v = grid[i][j]
@@ -66,14 +69,14 @@ class Battleship:
                 if (j - s) == 0 and (i - s) != 0:
                     d1 += m - 1
 
-                f = min(i, m - j)
-                npr = i - f, (m - j) - f
+                f = max(0, min(i, m - j - 1))
+                npr = i - f, j + f
                 d2 = n + m + (npr[0] + npr[1])
                 print("npr:", npr, "f:", f)
-                if (j - s) == 0 and (i - s) != 0:
+                if (j + f) == m and (i - f) != 0:
                     d2 += m - 1
                 d2 += (n + m - 1)
-                print("i:", i, "j:", j, "v:", v, "d1:", d1, "d2:", d2, "di:", (n+m-1))
+                print("i:", i, "| j:", j, "| v:", v, "| d1:", d1, "| d2:", d2, "| di:", (n+m-1))
                 temp[i].append((i, j, v))
                 temp[j + n].append((i, j, v))
                 temp[d1].append((i, j, v))
