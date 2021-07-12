@@ -9,6 +9,7 @@ class Battleship:
         self.m = m
         self.grid = [[None for j in range(self.m)] for i in range(self.n)]
         self.grid = [[None, 1, None, None, 2], [3, 4, None, None, 5]]
+        self.grid = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]]
         # self.grid = [list(range(i * 5, (i * 5) + 5)) for i in range(8)]
         print("grid:", self.grid)
         self.n = len(self.grid)
@@ -26,6 +27,81 @@ class Battleship:
                 if None in row:
                     return True
         return False
+
+    def lines(self, filter_none=False):
+        PAD = "PAD"
+        n = self.n
+        m = self.m
+        grid = self.grid
+        res = [row.copy() for row in grid]
+        temp_grid = [[grid[j][i] for j in range(n)] for i in range(m)]
+        print("1 grid     :", grid)
+        print("1 temp_grid:", temp_grid)
+        if m < n:
+            grid, temp_grid = temp_grid, grid
+        print("2 grid     :", grid)
+        print("2 temp_grid:", temp_grid)
+        res += temp_grid
+        oo = (n + m) % 2
+        di = abs(n - m) + 1 + oo
+        ts = int(((n + m - 1) - di) / 2) + oo
+        a = ts - 1
+
+        lc = 0
+        cc = 0
+        e = 0
+        t = (3 * n) + (3 * m) - 2
+        temp = [[] for i in range(t)]
+        print("3 grid     :", grid)
+        print("3 temp_grid:", temp_grid)
+        print("3 temp:", temp)
+        # print("len[]({}), len[0]({})".format(len(temp), len(temp[0])))
+
+        for i in range(n):
+            for j in range(m):
+                v = grid[i][j]
+                s = min(i, j)
+                npl = i - s, j - s
+                d1 = n + m + (npl[0] + npl[1])
+                if (j - s) == 0 and (i - s) != 0:
+                    d1 += m - 1
+
+                f = min(i, m - j)
+                npr = i - f, (m - j) - f
+                d2 = n + m + (npr[0] + npr[1])
+                print("npr:", npr, "f:", f)
+                if (j - s) == 0 and (i - s) != 0:
+                    d2 += m - 1
+                d2 += (n + m - 1)
+                print("i:", i, "j:", j, "v:", v, "d1:", d1, "d2:", d2, "di:", (n+m-1))
+                temp[i].append((i, j, v))
+                temp[j + n].append((i, j, v))
+                temp[d1].append((i, j, v))
+                temp[d2].append((i, j, v))
+        print("4 grid     :", grid)
+        print("4 temp_grid:", temp_grid)
+        print("4 temp:", temp)
+
+        for tt in temp:
+            print("\t\t", [ttt[2] for ttt in tt])
+
+        print("ts:", ts, "\nd:", di, "\ntemp2:", temp)
+        if filter_none:
+            filtered_temp = []
+            for line in temp:
+                has_none = False
+                filtered_line = []
+                print("line", line)
+                for i, j, v in line:
+                    if filtered_line and v is None:
+                        filtered_temp.append(filtered_line)
+                        filtered_line = []
+                    elif v is not None:
+                        filtered_line.append((i, j, v))
+                if filtered_line:
+                    filtered_temp.append(filtered_line)
+            temp = filtered_temp.copy()
+        return temp
 
     # def lines(self, filter_none=False):
     #     n = self.n
@@ -78,51 +154,65 @@ class Battleship:
     #         temp = filtered_temp.copy()
     #     return temp
 
-    def lines(self, filter_none=False):
-        n = self.n
-        m = self.m
-        grid = self.grid
-        res = [row.copy() for row in grid]
-        temp = [[grid[j][i] for j in range(n)] for i in range(m)]
-        print("grid:", grid)
-        print("temp:", temp)
-        if m < n:
-            grid, temp = temp, grid
-        res += temp
-        d = abs(n - m) + 1
-        ts = int(((n + m - 1) - d) / 2)
-
-        lc = 0
-        cc = 0
-        e = 0
-        temp = [[] for i in range(d + (2 * ts))]
-        while e < d:
-            c = 0
-            while c < min(n, m):
-                temp[e].append((c, c + e, grid[c][c + e]))
-                c += 1
-            e += 1
-
-        for i in range(self.n):
-            for j in range(self.m):
-
-        print("ts:", ts, "\nd:", d, "\ntemp2:", temp)
-        if filter_none:
-            filtered_temp = []
-            for line in temp:
-                has_none = False
-                filtered_line = []
-                print("line", line)
-                for i, j, v in line:
-                    if filtered_line and v is None:
-                        filtered_temp.append(filtered_line)
-                        filtered_line = []
-                    elif v is not None:
-                        filtered_line.append((i, j, v))
-                if filtered_line:
-                    filtered_temp.append(filtered_line)
-            temp = filtered_temp.copy()
-        return temp
+    # def lines(self, filter_none=False):
+    #     PAD = "PAD"
+    #     n = self.n
+    #     m = self.m
+    #     grid = self.grid
+    #     res = [row.copy() for row in grid]
+    #     temp_grid = [[grid[j][i] for j in range(n)] for i in range(m)]
+    #     print("1 grid     :", grid)
+    #     print("1 temp_grid:", temp_grid)
+    #     if m < n:
+    #         grid, temp_grid = temp_grid, grid
+    #     print("2 grid     :", grid)
+    #     print("2 temp_grid:", temp_grid)
+    #     res += temp_grid
+    #     oo = (n + m) % 2
+    #     d = abs(n - m) + 1 + oo
+    #     ts = int(((n + m - 1) - d) / 2) + oo
+    #     a = ts - 1
+    #
+    #     lc = 0
+    #     cc = 0
+    #     e = 0
+    #     temp = [[] for i in range(d + (4 * ts))]
+    #     print("len[]({}), len[0]({})".format(len(temp), len(temp[0])))
+    #     while e < d:
+    #         c = 0
+    #         while c < min(n, m):
+    #             print("e", e, "c", c)
+    #             temp[e].append((c, c, grid[c][c]))
+    #             c += 1
+    #         e += 1
+    #     print("temp:", temp)
+    #
+    #     for i in range(self.n):
+    #         temp_grid[i] = [PAD for p in range(a)] + temp_grid[i] + [PAD for p in range(a)]
+    #
+    #     for i, row in enumerate(temp_grid):
+    #         if 0 <= (i - a):
+    #             v = temp_grid[i][i]
+    #             print("v:", v)
+    #         # for j, v in enumerate(row):
+    #
+    #     print("ts:", ts, "\nd:", d, "\ntemp2:", temp)
+    #     if filter_none:
+    #         filtered_temp = []
+    #         for line in temp:
+    #             has_none = False
+    #             filtered_line = []
+    #             print("line", line)
+    #             for i, j, v in line:
+    #                 if filtered_line and v is None:
+    #                     filtered_temp.append(filtered_line)
+    #                     filtered_line = []
+    #                 elif v is not None:
+    #                     filtered_line.append((i, j, v))
+    #             if filtered_line:
+    #                 filtered_temp.append(filtered_line)
+    #         temp = filtered_temp.copy()
+    #     return temp
 
     def max_length_available(self):
         if self.grid:
