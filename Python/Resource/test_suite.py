@@ -160,3 +160,65 @@ def do_test():
 #
 # if __name__ == "__main__":
 # 	do_test()
+
+if __name__ == "__main__":
+	def func_def():
+		pass
+
+	class TestSuite:
+		"""Class used to run a batch of tests on functions"""
+
+		def __init__(
+				self,
+				test_funcs=None,
+				tests=None,
+				name="Untitled Test Suite"
+		):
+			if not isinstance(test_funcs, list) and not isinstance(test_funcs, type(func_def)):
+				test_funcs = {}
+			if not isinstance(tests, list) and not isinstance(tests, dict):
+				tests = {}
+
+			self.test_func = test_funcs
+			self.tests = tests
+			self.name = name
+
+			self.test_batches = {}
+
+			if not tests:
+				tests = [{} for i in range(len(test_funcs))]
+			for func, test_sets in zip(test_funcs, tests):
+				self.test_batches[func] = test_sets
+
+		def __repr__(self):
+			keys = ["test_func", "tests", "name", "test_batches"]
+			vals = [getattr(self, key) for key in keys]
+			max_key = max([len(key) for key in keys])
+			max_val = max([lenstr(val) for val in vals])
+			res = dict(zip([key.ljust(max_key) for key in keys], [str(val).rjust(max_val) for val in vals]))
+			return dict_print(res, "self")
+
+	oya = str()
+	oyb = list()
+	oyc = dict()
+	oyd = int()
+	oye = float()
+	oyf = object()
+	oyg = func_def
+
+	tya = type(oya)
+	tyb = type(oyb)
+	tyc = type(oyc)
+	tyd = type(oyd)
+	tye = type(oye)
+	tyf = type(oyf)
+	tfg = type(oyg)
+
+	TS1 = TestSuite()
+	print("TS1 after creation:\n\n", TS1)
+	TS2 = TestSuite(test_funcs=[lambda x : x], tests={"test": [["arg"], "arg"]})
+	print("TS2 after creation:\n\n", TS2)
+
+
+	TS3 = TestSuite(test_funcs=[lambda x : x], tests={"test": [["arg"], "arg"]})
+	print("TS3 after creation:\n\n", TS3)
