@@ -30,3 +30,9 @@ for c in T_costs:
 		l = (lw**0.5) / inTy
 		w = l
 		print("c: $ {c}, h: {h}\", lw: {lw} y^2, lxw: ({l}\" x {w}\", v: {v})".format(c=c, h=h, lw=lw, l=l, w=w, v=vertex(inTy * h * rate, 0, -c)))
+
+for c, h in zip(T_costs, heights):
+	lw = sol_lw(c, h)
+	l = (lw**0.5) / inTy
+	w = l
+	print("c: $ {c}, h: {h}\", lw: {lw} y^2, lxw: ({l}\" x {w}\", v: {v})".format(c=c, h=h, lw=lw, l=l, w=w, v=vertex(inTy * h * rate, 0, -c)))

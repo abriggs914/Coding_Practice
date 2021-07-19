@@ -1,11 +1,13 @@
 #	General Utility file of RGB colour values
-#	Version............1.0
-#	Date........2021-06-15
+#	Version............1.1
+#	Date........2021-07-19
 #	Author....Avery Briggs
 
 BWS_RED = (171, 35, 40)  # Crimson red
 BWS_BLACK = (37, 40, 42)  # Black
 BWS_GREY = (162, 170, 173)
+
+STARGATE_BLUE = (27, 69, 129)
 
 BLACK = (0, 0, 0)  # Black
 WHITE = (255, 255, 255)  # White
