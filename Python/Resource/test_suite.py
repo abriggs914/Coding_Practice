@@ -220,5 +220,5 @@ if __name__ == "__main__":
 	print("TS2 after creation:\n\n", TS2)
 
 
-	TS3 = TestSuite(test_funcs=[lambda x : x], tests={"test": [["arg"], "arg"]})
+	TS3 = TestSuite(test_funcs=[lambda x : x, lambda x : str(x) + " 1"], tests={"test": [["arg"], "arg"]})
 	print("TS3 after creation:\n\n", TS3)

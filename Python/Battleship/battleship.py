@@ -90,7 +90,7 @@ class Battleship:
                 temp[d2].append((i, j, v))
         # print("4 grid     :", grid)
         # print("4 temp_grid:", temp_grid)
-        # print("4 temp:", temp)
+        # print("4 temp:", tem                                                                                                                                                                                                                                                    p)
 
         # print("ts:", ts, "\nd:", di, "\ntemp2:", temp)
         if filter_none or filter_vals:
