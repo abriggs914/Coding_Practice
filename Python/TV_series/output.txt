@@ -319,21 +319,31 @@ average length of an episode:	22
 Total minutes:			814
 Total hours:			13.566666666666666
 Where to watch:			Disney+
+	Brickleberry
+Genre:				Comedy
+Run (2012 -> 2015):		3 years
+number seasons:			3
+number episodes:		36
+episodes per season:		12.0
+average length of an episode:	22
+Total minutes:			792
+Total hours:			13.2
+Where to watch:			Disney+
 
 	What to watch?
 Series:
 
-	Final Space
-Genre:				Comedy, Sci-fi
-Run (2018 -> 2020):		2 years
-number seasons:			2
-number episodes:		23
-episodes per season:		11.5
-average length of an episode:	22
-Total minutes:			506
-Total hours:			8.433333333333334
+	Black Mirror
+Genre:				Drama, Sci-fi
+Run (2011 -> 2019):		8 years
+number seasons:			5
+number episodes:		21
+episodes per season:		4.2
+average length of an episode:	60
+Total minutes:			1260
+Total hours:			21.0
 Where to watch:			Netflix
-Season: 1 Episode: 6
+Season: 1 Episode: 3
 sorting by start year...
 ###########################################################################################################################################################################################################################################
 ##################################| start year |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| start year |##################################
@@ -359,6 +369,7 @@ sorting by start year...
 |Game of Thrones                  |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    2011    |Game of Thrones                  |
 |Workaholics                      |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    2011    |Workaholics                      |
 |Black Mirror                     |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    2011    |Black Mirror                     |
+|Brickleberry                     |    2012    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    2012    |Brickleberry                     |
 |Brooklyn Nine-Nine               |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    2013    |Brooklyn Nine-Nine               |
 |Peaky Blinders                   |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    2013    |Peaky Blinders                   |
 |Silicon Valley                   |    2014    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    2014    |Silicon Valley                   |
@@ -395,6 +406,7 @@ sorting by start year...
 |Game of Thrones                  |    2011    |
 |Workaholics                      |    2011    |
 |Black Mirror                     |    2011    |
+|Brickleberry                     |    2012    |
 |Brooklyn Nine-Nine               |    2013    |
 |Peaky Blinders                   |    2013    |
 |Silicon Valley                   |    2014    |
@@ -407,12 +419,12 @@ sorting by start year...
 |The Mandalorian                  |    2019    |
 ################################################
 
-Mean:		2008.03
-Median:		2008.50
-Pstdev:		  6.54
-Pvariance:	 42.78
-Stdev:		  6.65
-Variance:	 44.16
+Mean:		2008.15
+Median:		2009.00
+Pstdev:		  6.48
+Pvariance:	 41.95
+Stdev:		  6.58
+Variance:	 43.26
 sorting by end year...
 #######################################################################################################################################################################################################################################
 ##################################| end year |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| end year |##################################
@@ -429,6 +441,7 @@ sorting by end year...
 |Misfits                          |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |   2013   |Misfits                          |
 |Community                        |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |   2015   |Community                        |
 |Parks and Recreation             |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |   2015   |Parks and Recreation             |
+|Brickleberry                     |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |   2015   |Brickleberry                     |
 |Prison Break                     |   2017   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |   2017   |Prison Break                     |
 |Workaholics                      |   2017   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |   2017   |Workaholics                      |
 |Trailer Park Boys                |   2018   |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |   2018   |Trailer Park Boys                |
@@ -465,6 +478,7 @@ sorting by end year...
 |Misfits                          |   2013   |
 |Community                        |   2015   |
 |Parks and Recreation             |   2015   |
+|Brickleberry                     |   2015   |
 |Prison Break                     |   2017   |
 |Workaholics                      |   2017   |
 |Trailer Park Boys                |   2018   |
@@ -486,12 +500,12 @@ sorting by end year...
 |The Mandalorian                  |   2021   |
 ##############################################
 
-Mean:		2015.56
+Mean:		2015.55
 Median:		2018.00
-Pstdev:		  5.20
-Pvariance:	 27.06
-Stdev:		  5.29
-Variance:	 27.93
+Pstdev:		  5.12
+Pvariance:	 26.25
+Stdev:		  5.20
+Variance:	 27.07
 sorting by shortest series length...
 ###########################################################################################################################################################################################################################################################################
 ##################################| shortest series run length |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| shortest series run length |##################################
@@ -500,6 +514,7 @@ sorting by shortest series length...
 |Final Space                      |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |Final Space                      |
 |The Mandalorian                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2              |The Mandalorian                  |
 |Avatar, the Last Airbender       |             3              |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender       |
+|Brickleberry                     |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |             3              |Brickleberry                     |
 |The Last Man on Earth            |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3              |The Last Man on Earth            |
 |Recess                           |             4              |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |Recess                           |
 |The Proud Family                 |             4              |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |The Proud Family                 |
@@ -536,6 +551,7 @@ sorting by shortest series length...
 |Final Space                      |             2              |
 |The Mandalorian                  |             2              |
 |Avatar, the Last Airbender       |             3              |
+|Brickleberry                     |             3              |
 |The Last Man on Earth            |             3              |
 |Recess                           |             4              |
 |The Proud Family                 |             4              |
@@ -565,12 +581,12 @@ sorting by shortest series length...
 |Family Guy                       |             22             |
 ################################################################
 
-Mean:		  7.56
+Mean:		  7.42
 Median:		  6.00
-Pstdev:		  5.31
-Pvariance:	 28.25
-Stdev:		  5.40
-Variance:	 29.16
+Pstdev:		  5.29
+Pvariance:	 28.00
+Stdev:		  5.37
+Variance:	 28.88
 sorting by longest series length...
 #########################################################################################################################################################################################################################################################################
 ##################################| longest series run length |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| longest series run length |##################################
@@ -601,6 +617,7 @@ sorting by longest series length...
 |My Name is Earl                  |             4             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |My Name is Earl                  |
 |Misfits                          |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |             4             |Misfits                          |
 |Avatar, the Last Airbender       |             3             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3             |Avatar, the Last Airbender       |
+|Brickleberry                     |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |             3             |Brickleberry                     |
 |The Last Man on Earth            |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3             |The Last Man on Earth            |
 |Final Space                      |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2             |Final Space                      |
 |The Mandalorian                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2             |The Mandalorian                  |
@@ -637,6 +654,7 @@ sorting by longest series length...
 |My Name is Earl                  |             4             |
 |Misfits                          |             4             |
 |Avatar, the Last Airbender       |             3             |
+|Brickleberry                     |             3             |
 |The Last Man on Earth            |             3             |
 |Final Space                      |             2             |
 |The Mandalorian                  |             2             |
@@ -644,12 +662,12 @@ sorting by longest series length...
 |Chernobyl                        |             1             |
 ###############################################################
 
-Mean:		  7.56
+Mean:		  7.42
 Median:		  6.00
-Pstdev:		  5.31
-Pvariance:	 28.25
-Stdev:		  5.40
-Variance:	 29.16
+Pstdev:		  5.29
+Pvariance:	 28.00
+Stdev:		  5.37
+Variance:	 28.88
 sorting by least number of seasons...
 ###############################################################################################################################################################################################################################################################
 ##################################| least number seasons |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| least number seasons |##################################
@@ -659,6 +677,7 @@ sorting by least number of seasons...
 |The Mandalorian                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2           |The Mandalorian                  |
 |The Mick                         |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |          2           |The Mick                         |
 |Avatar, the Last Airbender       |          3           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3           |Avatar, the Last Airbender       |
+|Brickleberry                     |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          3           |Brickleberry                     |
 |The IT Crowd                     |          4           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          4           |The IT Crowd                     |
 |My Name is Earl                  |          4           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          4           |My Name is Earl                  |
 |The Last Man on Earth            |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          4           |The Last Man on Earth            |
@@ -695,6 +714,7 @@ sorting by least number of seasons...
 |The Mandalorian                  |          2           |
 |The Mick                         |          2           |
 |Avatar, the Last Airbender       |          3           |
+|Brickleberry                     |          3           |
 |The IT Crowd                     |          4           |
 |My Name is Earl                  |          4           |
 |The Last Man on Earth            |          4           |
@@ -723,12 +743,12 @@ sorting by least number of seasons...
 |Family Guy                       |          19          |
 ##########################################################
 
-Mean:		  6.34
+Mean:		  6.24
 Median:		  5.00
-Pstdev:		  3.75
-Pvariance:	 14.04
-Stdev:		  3.81
-Variance:	 14.49
+Pstdev:		  3.73
+Pvariance:	 13.94
+Stdev:		  3.79
+Variance:	 14.38
 sorting by most number of seasons...
 #############################################################################################################################################################################################################################################################
 ##################################| most number seasons |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| most number seasons |##################################
@@ -759,6 +779,7 @@ sorting by most number of seasons...
 |My Name is Earl                  |          4          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          4          |My Name is Earl                  |
 |The Last Man on Earth            |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          4          |The Last Man on Earth            |
 |Avatar, the Last Airbender       |          3          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3          |Avatar, the Last Airbender       |
+|Brickleberry                     |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          3          |Brickleberry                     |
 |The Proud Family                 |          2          |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2          |The Proud Family                 |
 |Final Space                      |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2          |Final Space                      |
 |The Mandalorian                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2          |The Mandalorian                  |
@@ -795,6 +816,7 @@ sorting by most number of seasons...
 |My Name is Earl                  |          4          |
 |The Last Man on Earth            |          4          |
 |Avatar, the Last Airbender       |          3          |
+|Brickleberry                     |          3          |
 |The Proud Family                 |          2          |
 |Final Space                      |          2          |
 |The Mandalorian                  |          2          |
@@ -802,12 +824,12 @@ sorting by most number of seasons...
 |Chernobyl                        |          1          |
 #########################################################
 
-Mean:		  6.34
+Mean:		  6.24
 Median:		  5.00
-Pstdev:		  3.75
-Pvariance:	 14.04
-Stdev:		  3.81
-Variance:	 14.49
+Pstdev:		  3.73
+Pvariance:	 13.94
+Stdev:		  3.79
+Variance:	 14.38
 sorting by least number of episodes...
 #################################################################################################################################################################################################################################################################
 ##################################| least number episodes |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| least number episodes |##################################
@@ -817,6 +839,7 @@ sorting by least number of episodes...
 |Final Space                      |          23           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          23           |Final Space                      |
 |The IT Crowd                     |          25           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          25           |The IT Crowd                     |
 |Peaky Blinders                   |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          30           |Peaky Blinders                   |
+|Brickleberry                     |          36           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          36           |Brickleberry                     |
 |Misfits                          |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          37           |Misfits                          |
 |The Mick                         |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |          37           |The Mick                         |
 |Better Call Saul                 |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          50           |Better Call Saul                 |
@@ -853,6 +876,7 @@ sorting by least number of episodes...
 |Final Space                      |          23           |
 |The IT Crowd                     |          25           |
 |Peaky Blinders                   |          30           |
+|Brickleberry                     |          36           |
 |Misfits                          |          37           |
 |The Mick                         |          37           |
 |Better Call Saul                 |          50           |
@@ -881,12 +905,12 @@ sorting by least number of episodes...
 |Family Guy                       |          369          |
 ###########################################################
 
-Mean:		 92.41
-Median:		 70.50
-Pstdev:		 73.97
-Pvariance:	5471.55
-Stdev:		 75.15
-Variance:	5648.06
+Mean:		 90.70
+Median:		 68.00
+Pstdev:		 73.48
+Pvariance:	5399.24
+Stdev:		 74.62
+Variance:	5567.97
 sorting by most number of episodes...
 ###############################################################################################################################################################################################################################################################
 ##################################| most number episodes |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| most number episodes |##################################
@@ -916,6 +940,7 @@ sorting by most number of episodes...
 |Better Call Saul                 |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          50          |Better Call Saul                 |
 |Misfits                          |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          37          |Misfits                          |
 |The Mick                         |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |          37          |The Mick                         |
+|Brickleberry                     |          36          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          36          |Brickleberry                     |
 |Peaky Blinders                   |          30          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          30          |Peaky Blinders                   |
 |The IT Crowd                     |          25          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          25          |The IT Crowd                     |
 |Final Space                      |          23          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          23          |Final Space                      |
@@ -952,6 +977,7 @@ sorting by most number of episodes...
 |Better Call Saul                 |          50          |
 |Misfits                          |          37          |
 |The Mick                         |          37          |
+|Brickleberry                     |          36          |
 |Peaky Blinders                   |          30          |
 |The IT Crowd                     |          25          |
 |Final Space                      |          23          |
@@ -960,12 +986,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 92.41
-Median:		 70.50
-Pstdev:		 73.97
-Pvariance:	5471.55
-Stdev:		 75.15
-Variance:	5648.06
+Mean:		 90.70
+Median:		 68.00
+Pstdev:		 73.48
+Pvariance:	5399.24
+Stdev:		 74.62
+Variance:	5567.97
 sorting by shortest time...
 #################################################################################################################################################################################################################################################
 ##################################| shortest time |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| shortest time |##################################
@@ -973,6 +999,7 @@ sorting by shortest time...
 |Final Space                      |   8.433333    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   8.433333    |Final Space                      |
 |The IT Crowd                     |   9.166667    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   9.166667    |The IT Crowd                     |
 |The Mandalorian                  |   11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   11.733333   |The Mandalorian                  |
+|Brickleberry                     |   13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |   13.200000   |Brickleberry                     |
 |The Mick                         |   13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |   13.566667   |The Mick                         |
 |Silicon Valley                   |   19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |   19.433333   |Silicon Valley                   |
 |The Proud Family                 |   19.933333   |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   19.933333   |The Proud Family                 |
@@ -1009,6 +1036,7 @@ sorting by shortest time...
 |Final Space                      |   8.433333    |
 |The IT Crowd                     |   9.166667    |
 |The Mandalorian                  |   11.733333   |
+|Brickleberry                     |   13.200000   |
 |The Mick                         |   13.566667   |
 |Silicon Valley                   |   19.433333   |
 |The Proud Family                 |   19.933333   |
@@ -1039,12 +1067,12 @@ sorting by shortest time...
 |Family Guy                       |  135.300000   |
 ###################################################
 
-Mean:		 39.51
-Median:		 32.57
-Pstdev:		 26.49
-Pvariance:	701.53
-Stdev:		 26.91
-Variance:	724.16
+Mean:		 38.71
+Median:		 31.53
+Pstdev:		 26.47
+Pvariance:	700.61
+Stdev:		 26.88
+Variance:	722.50
 sorting by longest time...
 ###############################################################################################################################################################################################################################################
 ##################################| longest time |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| longest time |##################################
@@ -1076,6 +1104,7 @@ sorting by longest time...
 |The Proud Family                 |  19.933333   |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  19.933333   |The Proud Family                 |
 |Silicon Valley                   |  19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |  19.433333   |Silicon Valley                   |
 |The Mick                         |  13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |  13.566667   |The Mick                         |
+|Brickleberry                     |  13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |  13.200000   |Brickleberry                     |
 |The Mandalorian                  |  11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |  11.733333   |The Mandalorian                  |
 |The IT Crowd                     |   9.166667   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   9.166667   |The IT Crowd                     |
 |Final Space                      |   8.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   8.433333   |Final Space                      |
@@ -1112,18 +1141,19 @@ sorting by longest time...
 |The Proud Family                 |  19.933333   |
 |Silicon Valley                   |  19.433333   |
 |The Mick                         |  13.566667   |
+|Brickleberry                     |  13.200000   |
 |The Mandalorian                  |  11.733333   |
 |The IT Crowd                     |   9.166667   |
 |Final Space                      |   8.433333   |
 |Chernobyl                        |     5.0      |
 ##################################################
 
-Mean:		 39.51
-Median:		 32.57
-Pstdev:		 26.49
-Pvariance:	701.53
-Stdev:		 26.91
-Variance:	724.16
+Mean:		 38.71
+Median:		 31.53
+Pstdev:		 26.47
+Pvariance:	700.61
+Stdev:		 26.88
+Variance:	722.50
 sorting by most episodes per season...
 #######################################################################################################################################################################################################################################################################
 ##################################| most episodes per season |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| most episodes per season |##################################
@@ -1144,6 +1174,7 @@ sorting by most episodes per season...
 |Futurama                         |           14.0           |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |           14.0           |Futurama                         |
 |Breaking Bad                     |        12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |        12.400000         |Breaking Bad                     |
 |Workaholics                      |        12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |        12.285714         |Workaholics                      |
+|Brickleberry                     |           12.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |           12.0           |Brickleberry                     |
 |Final Space                      |        11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |        11.500000         |Final Space                      |
 |Recess                           |        11.333333         |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        11.333333         |Recess                           |
 |It's Always Sunny in Philadelphia|           11.0           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           11.0           |It's Always Sunny in Philadelphia|
@@ -1180,6 +1211,7 @@ sorting by most episodes per season...
 |Futurama                         |           14.0           |
 |Breaking Bad                     |        12.400000         |
 |Workaholics                      |        12.285714         |
+|Brickleberry                     |           12.0           |
 |Final Space                      |        11.500000         |
 |Recess                           |        11.333333         |
 |It's Always Sunny in Philadelphia|           11.0           |
@@ -1197,12 +1229,12 @@ sorting by most episodes per season...
 |Black Mirror                     |         4.200000         |
 ##############################################################
 
-Mean:		 14.64
-Median:		 12.34
-Pstdev:		  8.32
-Pvariance:	 69.26
-Stdev:		  8.46
-Variance:	 71.50
+Mean:		 14.56
+Median:		 12.29
+Pstdev:		  8.21
+Pvariance:	 67.37
+Stdev:		  8.34
+Variance:	 69.48
 sorting by least episodes per season...
 #########################################################################################################################################################################################################################################################################
 ##################################| least episodes per season |1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022| least episodes per season |##################################
@@ -1221,6 +1253,7 @@ sorting by least episodes per season...
 |It's Always Sunny in Philadelphia|           11.0            |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           11.0            |It's Always Sunny in Philadelphia|
 |Recess                           |         11.333333         |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         11.333333         |Recess                           |
 |Final Space                      |         11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |         11.500000         |Final Space                      |
+|Brickleberry                     |           12.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |           12.0            |Brickleberry                     |
 |Workaholics                      |         12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |         12.285714         |Workaholics                      |
 |Breaking Bad                     |         12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         12.400000         |Breaking Bad                     |
 |Futurama                         |           14.0            |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |           14.0            |Futurama                         |
@@ -1257,6 +1290,7 @@ sorting by least episodes per season...
 |It's Always Sunny in Philadelphia|           11.0            |
 |Recess                           |         11.333333         |
 |Final Space                      |         11.500000         |
+|Brickleberry                     |           12.0            |
 |Workaholics                      |         12.285714         |
 |Breaking Bad                     |         12.400000         |
 |Futurama                         |           14.0            |
@@ -1276,12 +1310,12 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.64
-Median:		 12.34
-Pstdev:		  8.32
-Pvariance:	 69.26
-Stdev:		  8.46
-Variance:	 71.50
+Mean:		 14.56
+Median:		 12.29
+Pstdev:		  8.21
+Pvariance:	 67.37
+Stdev:		  8.34
+Variance:	 69.48
 
 
 --  Episodes Comparison  --
@@ -1302,20 +1336,21 @@ Variance:	 71.50
     13    -  It's Always Sunny in Philadelphia.........| 7  | 10 | 15 | 13 | 12 | 14 | 13 | 10 | 10 | 10 | 10 | 10 | 10 | 10 |    |    |    |    |    |
     14    -  Recess....................................| 13 | 13 | 8  | 23 | 5  | 6  |    |    |    |    |    |    |    |    |    |    |    |    |    |
     15    -  Final Space...............................| 10 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    16    -  Workaholics...............................| 10 | 10 | 20 | 13 | 13 | 10 | 10 |    |    |    |    |    |    |    |    |    |    |    |    |
-    17    -  Breaking Bad..............................| 7  | 13 | 13 | 13 | 16 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    18    -  Futurama..................................| 9  | 20 | 15 | 12 | 16 | 16 | 13 | 13 | 13 | 13 |    |    |    |    |    |    |    |    |    |
-    19    -  The Last Man on Earth.....................| 13 | 18 | 18 | 18 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    20    -  Arrested Develpoment......................| 22 | 18 | 13 | 15 | 16 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    21    -  Parks and Recreation......................| 6  | 24 | 16 | 22 | 22 | 22 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |
-    22    -  Prison Break..............................| 22 | 22 | 13 | 24 | 9  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    23    -  Community.................................| 25 | 24 | 22 | 13 | 13 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    24    -  The Mick..................................| 17 | 20 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    25    -  Family Guy................................| 7  | 21 | 22 | 30 | 18 | 12 | 16 | 21 | 18 | 23 | 22 | 21 | 18 | 20 | 20 | 20 | 20 | 20 | 20 |
-    26    -  Scrubs....................................| 24 | 22 | 22 | 25 | 24 | 22 | 11 | 19 | 13 |    |    |    |    |    |    |    |    |    |    |
-    27    -  Avatar, the Last Airbender................| 20 | 20 | 21 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    28    -  Brooklyn Nine-Nine........................| 22 | 23 | 23 | 22 | 22 | 18 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |
-    29    -  The Office................................| 6  | 22 | 25 | 19 | 28 | 26 | 26 | 24 | 25 |    |    |    |    |    |    |    |    |    |    |
-    30    -  My Name is Earl...........................| 24 | 23 | 22 | 27 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    31    -  The Proud Family..........................| 21 | 31 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
-    32    -  Yu-Gi-Oh!.................................| 49 | 48 | 47 | 40 | 52 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    16    -  Brickleberry..............................| 10 | 13 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    17    -  Workaholics...............................| 10 | 10 | 20 | 13 | 13 | 10 | 10 |    |    |    |    |    |    |    |    |    |    |    |    |
+    18    -  Breaking Bad..............................| 7  | 13 | 13 | 13 | 16 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    19    -  Futurama..................................| 9  | 20 | 15 | 12 | 16 | 16 | 13 | 13 | 13 | 13 |    |    |    |    |    |    |    |    |    |
+    20    -  The Last Man on Earth.....................| 13 | 18 | 18 | 18 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    21    -  Arrested Develpoment......................| 22 | 18 | 13 | 15 | 16 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    22    -  Parks and Recreation......................| 6  | 24 | 16 | 22 | 22 | 22 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |
+    23    -  Prison Break..............................| 22 | 22 | 13 | 24 | 9  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    24    -  Community.................................| 25 | 24 | 22 | 13 | 13 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    25    -  The Mick..................................| 17 | 20 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    26    -  Family Guy................................| 7  | 21 | 22 | 30 | 18 | 12 | 16 | 21 | 18 | 23 | 22 | 21 | 18 | 20 | 20 | 20 | 20 | 20 | 20 |
+    27    -  Scrubs....................................| 24 | 22 | 22 | 25 | 24 | 22 | 11 | 19 | 13 |    |    |    |    |    |    |    |    |    |    |
+    28    -  Avatar, the Last Airbender................| 20 | 20 | 21 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    29    -  Brooklyn Nine-Nine........................| 22 | 23 | 23 | 22 | 22 | 18 | 13 |    |    |    |    |    |    |    |    |    |    |    |    |
+    30    -  The Office................................| 6  | 22 | 25 | 19 | 28 | 26 | 26 | 24 | 25 |    |    |    |    |    |    |    |    |    |    |
+    31    -  My Name is Earl...........................| 24 | 23 | 22 | 27 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    32    -  The Proud Family..........................| 21 | 31 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+    33    -  Yu-Gi-Oh!.................................| 49 | 48 | 47 | 40 | 52 |    |    |    |    |    |    |    |    |    |    |    |    |    |    |

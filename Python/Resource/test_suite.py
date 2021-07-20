@@ -171,13 +171,12 @@ if __name__ == "__main__":
 		def __init__(
 				self,
 				test_funcs=None,
-				tests=None,
 				name="Untitled Test Suite"
 		):
 			if not isinstance(test_funcs, list) and not isinstance(test_funcs, type(func_def)):
-				test_funcs = {}
-			if not isinstance(tests, list) and not isinstance(tests, dict):
-				tests = {}
+				test_funcs = []
+			# if not isinstance(tests, list) and not isinstance(tests, dict):
+			tests = []
 
 			self.test_func = test_funcs
 			self.tests = tests

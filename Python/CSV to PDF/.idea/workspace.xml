@@ -3,6 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="0a0719fc-1cfe-46c3-a293-23c224cf3860" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../Mobilio/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Mobilio/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Resource/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Resource/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Resource/test_suite.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Resource/test_suite.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TV_series/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../TV_series/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TV_series/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../TV_series/output.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
