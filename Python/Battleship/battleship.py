@@ -79,14 +79,18 @@ class Battleship:
         # print("3 temp_grid:", temp_grid)
         # print("3 temp:", temp)
 
-        if not isinstance(filter_syms, list):
+        if filter_syms and not isinstance(filter_syms, list):
             filter_syms = [filter_syms]
+        else:
+            filter_syms = []
 
         # print("N x M: ({} x {})".format(n, m))
+        tally = 0
         for i in range(n):
             for j in range(m):
                 v = grid[i][j]
                 if v in filter_syms:
+                    tally += 1
                     continue
                 s = min(i, j)
                 npl = i - s, j - s
@@ -111,6 +115,10 @@ class Battleship:
         # print("4 temp_grid:", temp_grid)
         # print("4 temp:", tem                                                                                                                                                                                                                                                    p)
 
+        print("before ({}): {}".format(len(temp), temp))
+        temp = temp[:len(temp) - tally]
+        print("after ({}): {}".format(len(temp), temp))
+
         # print("ts:", ts, "\nd:", di, "\ntemp2:", temp)
         if filter_none or filter_vals:
             filtered_temp = []
@@ -126,7 +134,7 @@ class Battleship:
                             filtered_line = []
                         elif v is not None:
                             filtered_line.append((i, j, v))
-                    elif filter_vals:
+                    if filter_vals:
                         if filtered_line and v is not None:
                             filtered_temp.append(filtered_line)
                             filtered_line = []
@@ -150,9 +158,9 @@ class Battleship:
 
         for tt in temp:
             if isinstance(tt, list):
-                print("\t\t", [ttt[2] for ttt in tt])
+                print("2\t\t", [ttt for ttt in tt])
             else:
-                print("\t{}".format(tt))
+                print("2\t{}".format(tt))
         return temp
 
     # def lines(self, filter_none=False):

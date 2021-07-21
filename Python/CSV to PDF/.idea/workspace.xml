@@ -2,16 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a0719fc-1cfe-46c3-a293-23c224cf3860" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Mobilio/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Mobilio/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Resource/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Resource/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Resource/test_suite.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Resource/test_suite.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TV_series/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../TV_series/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../TV_series/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../TV_series/output.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/QuoteEmail.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fillable_pdf 2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fillable_pdf.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simple_checkboxes.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simple_form.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testplot.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testplot.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/watermark.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Battleship/.idea/Battleship.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Battleship/.idea/Battleship.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Battleship/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Battleship/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Battleship/battleship.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Battleship/battleship.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Battleship/repl_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Battleship/repl_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -28,14 +45,18 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/Packages/PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0/LocalCache/local-packages/Python39/site-packages" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ABriggs\Documents\Coding Practice\Coding_Practice\Python\CSV to PDF" />
       <recent name="C:\Users\ABriggs\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\local-packages\Python39\site-packages" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ABriggs\Documents\Coding Practice\Coding_Practice\Python\CSV to PDF" />
+    </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.fillable_pdf">
     <configuration name="csv_class" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="CSV to PDF" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -57,6 +78,31 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="fillable_pdf" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="CSV to PDF" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\ABriggs\Documents\BWS\CSV to PDF\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fillable_pdf.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.csv_class" />
+      <item itemvalue="Python.fillable_pdf" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
