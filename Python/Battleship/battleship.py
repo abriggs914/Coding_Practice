@@ -1,7 +1,13 @@
 import random
+from utility import *
 
 
 class Battleship:
+
+    SYM_HIT = "HIT"
+    SYM_MISS = "MIS"
+    SYM_SHIP = "SHP"
+    SYM_BLANK = "BLK"
 
     def __init__(self, n, m, random_ship_lengths=None):
         self.random_ship_lengths = [1, 2, 3, 4, 5] if random_ship_lengths is None else random_ship_lengths
@@ -13,7 +19,7 @@ class Battleship:
         # self.grid = [list(range(i * 5, (i * 5) + 5)) for i in range(8)]
         # self.n = len(self.grid)
         # self.m = len(self.grid[0])
-        self.grid[1][1] = 1
+        self.grid[1][1] = Battleship.SYM_HIT
         print("grid:", self.grid)
 
     def gen_ship(self, i=None, j=None, length=None):
@@ -29,14 +35,22 @@ class Battleship:
                     return True
         return False
 
-    def lines(self, filter_none=False, filter_vals=False, filter_unique=False):
+    def lines(self, filter_none=False, filter_vals=False, filter_syms=None, filter_unique=False):
         """
         Return a list of all possible cell lines.
         :param filter_none: Remove any cells with a None entry. => 2D List OR 1D List
-        :param filter_vals: Remove any cells with a non_None entry. => 1D List ONLY
-        :param filter_unique: Return each filtered cell only once. => 2D List OR 1D List
+        :param filter_vals: Remove any cells with a non_None entry. => 2D List OR 1D List
+        :param filter_syms: Remove any cells with matching symbols. => 2D List OR 1D List
+        :param filter_unique: Return each filtered cell only once. => 1D List ONLY
         :return: List of lines formed by filtered cells OR List of filtered cells
         """
+        print(dict_print({
+            "filter_none": filter_none,
+            "filter_vals": filter_vals,
+            "filter_syms": filter_syms,
+            "filter_unique": filter_unique
+        }))
+
         PAD = "PAD"
         n = self.n
         m = self.m
@@ -65,10 +79,15 @@ class Battleship:
         # print("3 temp_grid:", temp_grid)
         # print("3 temp:", temp)
 
+        if not isinstance(filter_syms, list):
+            filter_syms = [filter_syms]
+
         # print("N x M: ({} x {})".format(n, m))
         for i in range(n):
             for j in range(m):
                 v = grid[i][j]
+                if v in filter_syms:
+                    continue
                 s = min(i, j)
                 npl = i - s, j - s
                 d1 = (npl[0] + npl[1])
