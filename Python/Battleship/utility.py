@@ -5,8 +5,8 @@ import datetime as dt
 
 """
 	General Utility functions
-	Version............1.7
-	Date........2021-07-08
+	Version............1.8
+	Date........2021-07-22
 	Author....Avery Briggs
 """
 
@@ -438,7 +438,7 @@ def random_in_range(a, b):
 def max_idx(lst):
 	max_val = None, float("-inf")
 	for i, el in enumerate(lst):
-		if el > max_val:
+		if el > max_val[1]:
 			max_val = i, el
 	return max_val
 

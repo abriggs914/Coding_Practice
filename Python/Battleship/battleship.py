@@ -24,9 +24,23 @@ class Battleship:
 
     def gen_ship(self, i=None, j=None, length=None):
         if self.is_playable():
-            available = self.lines(True)
-            max_length = max([len([])])
-            length = random.choice(self.random_ship_lengths) if length is None else length
+            available = self.lines(filter_vals=True)
+            max_length = max([len([line]) for line in available])
+            print("max_length", max_length, "\navailable:", available)
+            print("STUFF", list(map(len, available)))
+            max_length, max_line = max_idx(list(map(len, available)))
+            choice_idx = min(max_line, choice(self.random_ship_lengths) if length is None else length)
+            print(dict_print({
+                "available": available,
+                "max_length_idx": max_length,
+                "available[max_length]": available[max_length],
+                "max_line": max_line,
+                "length": length,
+                "choice_idx": choice_idx,
+                "line_choice": available[choice_idx]
+            }, "Generating Ship"))
+            for c_i, c_j, c_v in available[choice_idx]:
+                self.place(c_i, c_j, Battleship.SYM_SHIP)
 
     def is_playable(self):
         if self.grid:
@@ -34,6 +48,9 @@ class Battleship:
                 if None in row:
                     return True
         return False
+
+    def place(self, i, j, val):
+        self.grid[i][j] = val
 
     def lines(self, filter_none=False, filter_vals=False, filter_syms=None, filter_unique=False):
         """
@@ -115,9 +132,7 @@ class Battleship:
         # print("4 temp_grid:", temp_grid)
         # print("4 temp:", tem                                                                                                                                                                                                                                                    p)
 
-        print("before ({}): {}".format(len(temp), temp))
         temp = temp[:len(temp) - tally]
-        print("after ({}): {}".format(len(temp), temp))
 
         # print("ts:", ts, "\nd:", di, "\ntemp2:", temp)
         if filter_none or filter_vals:
@@ -135,9 +150,7 @@ class Battleship:
                         elif v is not None:
                             filtered_line.append((i, j, v))
                     if filter_vals:
-                        print("filtered_line: {}, v: {}".format(filtered_line, v))
                         if filtered_line and v is not None:
-                            print("\tfiltered_temp:", filtered_temp)
                             filtered_temp.append(filtered_line)
                             filtered_line = []
                         elif v is None:
@@ -149,7 +162,8 @@ class Battleship:
                         #     filtered_line.append((i, j, v))
                 if filtered_line:
                     filtered_temp.append(filtered_line)
-            temp = filtered_temp.copy()
+
+            temp = [ft.copy() for ft in filtered_temp]
 
         if filter_unique:
             checked_cells = {}
@@ -165,9 +179,9 @@ class Battleship:
 
         for tt in temp:
             if isinstance(tt, list):
-                print("2\t\t", [ttt for ttt in tt])
+                print("Line:\t\t", [ttt for ttt in tt])
             else:
-                print("2\t{}".format(tt))
+                print("Line:\t{}".format(tt))
         return temp
 
     # def lines(self, filter_none=False):
@@ -286,4 +300,7 @@ class Battleship:
             for row in self.grid:
                 if None in row:
                     pass
+
+    def __repr__(self):
+        return "\n\tGrid\n\n" + "\n".join(["|" + "|".join([pad_centre(ln, 5) for ln in list(map(str, line))]) + "|" for line in self.grid]) + "\n"
 
