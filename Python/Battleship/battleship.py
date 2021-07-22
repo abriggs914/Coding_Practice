@@ -135,11 +135,18 @@ class Battleship:
                         elif v is not None:
                             filtered_line.append((i, j, v))
                     if filter_vals:
+                        print("filtered_line: {}, v: {}".format(filtered_line, v))
                         if filtered_line and v is not None:
+                            print("\tfiltered_temp:", filtered_temp)
                             filtered_temp.append(filtered_line)
                             filtered_line = []
                         elif v is None:
                             filtered_line.append((i, j, v))
+                        # if filtered_line and v is not None:
+                        #     filtered_temp.append(filtered_line)
+                        #     filtered_line = []
+                        # elif v is None:
+                        #     filtered_line.append((i, j, v))
                 if filtered_line:
                     filtered_temp.append(filtered_line)
             temp = filtered_temp.copy()
