@@ -2,6 +2,7 @@ from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice
 import datetime as dt
+import shutil
 
 """
 	General Utility functions
@@ -9,13 +10,6 @@ import datetime as dt
 	Date........2021-07-22
 	Author....Avery Briggs
 """
-
-TAB = "    "
-SEPARATOR = "  -  "
-TABLE_DIVIDER = "|"
-
-
-# Utility functions
 
 
 def lenstr(x):
@@ -110,10 +104,10 @@ def text_size(txt):
 # table_title		-	If a table is created, then display the title in the first
 #						column directly above the row names.
 def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_header=False, min_encapsulation=True,
-			   table_title=""):
+			   table_title="", TAB="    ", SEPARATOR="  -  ", TABLE_DIVIDER="|"):
 	if not d or not n or type(d) != dict:
 		return "None"
-	m = "\n--  " + str(n).title() + "  --\n\n"
+	m = "\n{}--  ".format(TAB[:len(TAB) // 2]) + str(n).title() + "  --\n\n"
 	fill = 0
 
 	# max_key = max([len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0) for k in d.keys()])
@@ -653,3 +647,7 @@ def cos_x(degrees, amplitude=1, period=1, phase_shift=0, vertical_shift=0):
 
 def sin_x(degrees, amplitude=1, period=1, phase_shift=0, vertical_shift=0):
 	return (amplitude * (sin(period * (degrees + phase_shift)))) + vertical_shift
+
+
+def get_terminal_columns():
+	return shutil.get_terminal_size().columns

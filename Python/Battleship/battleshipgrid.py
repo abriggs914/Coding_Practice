@@ -4,43 +4,149 @@ from utility import *
 
 class Battleship:
 
+    def __init__(self, name, cells=None):
+        self.name = name
+        self.cells = cells if cells is not None else []
+
+    def get_ij(self):
+        return [(i, j) for i, j, v in self.cells]
+
+    def __repr__(self):
+        return "\n\t-- {} --\n\t\t{}".format(self.name, "\n\t\t".join(list(map(str, self.cells))))
+
+
+class BattleshipPlayer:
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return "{}".format(self.name)
+
+
+class BattleshipGame:
+
+    def __init__(self, name, players=None, grid=None, ships=None):
+        self.name = name
+        self.players = players
+        self.grid = grid
+        self.ships = ships
+
+        self.turn_number = 0
+
+    def game_grid(self):
+        t_cols = get_terminal_columns()
+        n = self.grid.n
+        m = self.grid.m
+        orientation = "H"
+        mid_space = "  "
+        legend_x_w = lenstr(m)
+        legend_y_w = lenstr(n)
+
+        gg = ""
+        c_count = 0
+        r_count = 0
+
+        if t_cols < ((2 * m) + 30):
+            orientation = "V"
+
+        if orientation == "H":
+            h_border = "".join(["#" for i in range((2 * m) + 30)])
+            gg = "\n" + h_border + "\n\t|\tTurn #\t{tn}".format(tn=self.turn_number) + "|\n"
+            c_count += 1
+            gg += "| " + "Top row legend"
+
+        return gg
+
+
+
+    def __repr__(self):
+        # return "\n\tBattleship Game: {nm}\n\n\t\tTurn:\t\t\t{tn}\n\t\tPlayer 1:\t\t{p1}\n\t\tPlayer 2:\t\t{p2}\n{gd}".format(nm=self.name, tn=self.turn_number, p1 = self.players[0], p2=self.players[1], gd=self.grid)
+        return "\n\tBattleship Game: {nm}\n\n\t\t{dp}\n{gd}".format(nm=self.name, dp=dict_print({
+            "Turn #": self.turn_number,
+            "Player 1": self.players[0],
+            "Player 2": self.players[1]
+        }, "Battleship Data", marker=" ", TAB="        "), gd=self.grid)
+
+
+class BattleshipGrid:
+
     SYM_HIT = "HIT"
     SYM_MISS = "MIS"
     SYM_SHIP = "SHP"
     SYM_BLANK = "BLK"
 
-    def __init__(self, n, m, random_ship_lengths=None):
-        self.random_ship_lengths = [1, 2, 3, 4, 5] if random_ship_lengths is None else random_ship_lengths
+    def __init__(self, n, m, random_ship_lengths=None, rnd_shp_max_size=False):
+        self.random_ship_lengths = [1, 2, 3, 4, 5]
+        if random_ship_lengths is not None:
+            if isinstance(random_ship_lengths, list):
+                self.random_ship_lengths += random_ship_lengths
+            else:
+                raise ValueError("Cannot initialize \"random_ship_lengths\" with the param: \"{}\"".format(random_ship_lengths))
+        if rnd_shp_max_size:
+            if n not in self.random_ship_lengths:
+                self.random_ship_lengths += [n]
+            if m not in self.random_ship_lengths:
+                self.random_ship_lengths += [m]
         self.n = n
         self.m = m
         self.grid = [[None for j in range(self.m)] for i in range(self.n)]
+        self.battleships = []
         # self.grid = [[None, 1, None, None, 2], [3, 4, None, None, 5]]
         # self.grid = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]]
         # self.grid = [list(range(i * 5, (i * 5) + 5)) for i in range(8)]
         # self.n = len(self.grid)
         # self.m = len(self.grid[0])
-        self.grid[1][1] = Battleship.SYM_HIT
         print("grid:", self.grid)
 
-    def gen_ship(self, i=None, j=None, length=None):
+    def open_cell(self, i, j):
+        return self.grid[i][j] is None
+
+    def hit_cell(self, i, j):
+        return self.grid[i][j] == BattleshipGrid.SYM_HIT
+
+    def miss_cell(self, i, j):
+        return self.grid[i][j] == BattleshipGrid.SYM_BLANK
+
+    def gen_random_cell(self):
+        i, j, v = choice(self.lines(filter_vals=True, filter_unique=True))
+        return i, j
+
+    def gen_ship(self, i=None, j=None, length=None, number=1):
         if self.is_playable():
             available = self.lines(filter_vals=True)
             max_length = max([len([line]) for line in available])
             print("max_length", max_length, "\navailable:", available)
             print("STUFF", list(map(len, available)))
             max_length, max_line = max_idx(list(map(len, available)))
-            choice_idx = min(max_line, choice(self.random_ship_lengths) if length is None else length)
-            print(dict_print({
-                "available": available,
-                "max_length_idx": max_length,
-                "available[max_length]": available[max_length],
-                "max_line": max_line,
-                "length": length,
-                "choice_idx": choice_idx,
-                "line_choice": available[choice_idx]
-            }, "Generating Ship"))
-            for c_i, c_j, c_v in available[choice_idx]:
-                self.place(c_i, c_j, Battleship.SYM_SHIP)
+            available_ship_lens = [sl for sl in self.random_ship_lengths if sl <= max_line]
+            remaining_lines = [line for line in available if len(line) <= max_line and len(line) in available_ship_lens]
+            if not remaining_lines:
+                raise ValueError("Not enough space to spawn a new ship.")
+
+            chosen_line = choice(remaining_lines)
+            # print(dict_print({
+            #     "available": available,
+            #     "max_length_idx": max_length,
+            #     "available[max_length]": available[max_length],
+            #     "available_ships": available_ship_lens,
+            #     "max_line": max_line,
+            #     "remaining_lines": remaining_lines,
+            #     "choice_idx": chosen_line,
+            # }, "Generating Ship"))
+
+            battleship = Battleship(
+                "Battleship #{}".format(str(len(self.battleships) + 1).rjust(2, "0")),
+                chosen_line
+            )
+            self.battleships.append(battleship)
+            print(battleship)
+            for c_i, c_j, c_v in chosen_line:
+                self.place(c_i, c_j, BattleshipGrid.SYM_SHIP)
+        else:
+            raise ValueError("Unable to generate a new battleship on current grid. No available cells.")
+        if 1 < number:
+            self.gen_ship(i=i, j=j, length=length, number=number - 1)
 
     def is_playable(self):
         if self.grid:

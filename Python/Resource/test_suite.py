@@ -1,17 +1,12 @@
-import shutil
 import inspect
 from utility import *
 
 """
 	General Test Suite Driver
-	Version............1.0
-	Date........2021-07-20
+	Version............1.1
+	Date........2021-07-22
 	Author....Avery Briggs
 """
-
-
-def get_terminal_columns():
-    return shutil.get_terminal_size().columns
 
 
 def run_tests(func, test_set):
