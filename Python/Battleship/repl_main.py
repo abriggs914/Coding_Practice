@@ -24,7 +24,7 @@ def main():
     print("repl_main")
     # testing_area()
 
-    battleship_grid = BattleshipGrid(4, 6, rnd_shp_max_size=True)
+    battleship_grid = BattleshipGrid(15, 11, rnd_shp_max_size=True)
     battleship_player_1 = BattleshipPlayer("Player 1")
     battleship_player_2 = BattleshipPlayer("Player 2")
     battleship_players = [battleship_player_1, battleship_player_2]
@@ -36,3 +36,6 @@ def main():
     print(battleship_game)
     # battleship2.gen_ship(number=2)
     # print(battleship2)
+
+    battleship_game.grids[0].gen_ship(number=3)
+    print(battleship_game.game_grid())

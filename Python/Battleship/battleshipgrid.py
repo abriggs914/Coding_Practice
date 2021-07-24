@@ -1,4 +1,5 @@
 import random
+import copy
 from utility import *
 
 
@@ -27,34 +28,68 @@ class BattleshipPlayer:
 class BattleshipGame:
 
     def __init__(self, name, players=None, grid=None, ships=None):
+        assert isinstance(name, str)
+        assert isinstance(players, list)
+        assert not players or all([isinstance(p, BattleshipPlayer) for p in players])
+        assert isinstance(grid, BattleshipGrid)
+        assert isinstance(ships, list)
+        assert not ships or all([isinstance(s, Battleship) for s in ships])
         self.name = name
         self.players = players
         self.grid = grid
+        self.grids = [copy.copy(grid) for player in players]
         self.ships = ships
 
         self.turn_number = 0
 
     def game_grid(self):
-        t_cols = get_terminal_columns()
+        t_cols = get_terminal_columns() + 100 #TODO: this isn't working right.
         n = self.grid.n
         m = self.grid.m
+        left_margin = "    "
         orientation = "H"
         mid_space = "  "
         legend_x_w = lenstr(m)
         legend_y_w = lenstr(n)
 
         gg = ""
-        c_count = 0
-        r_count = 0
 
-        if t_cols < ((2 * m) + 30):
+        C = 40
+        w = (4 * (m + 2)) + C - len(left_margin) - 2
+        if t_cols < w:
             orientation = "V"
 
         if orientation == "H":
-            h_border = "".join(["#" for i in range((2 * m) + 30)])
-            gg = "\n" + h_border + "\n\t|\tTurn #\t{tn}".format(tn=self.turn_number) + "|\n"
-            c_count += 1
-            gg += "| " + "Top row legend"
+
+            def line_gen(txt, new_line=True):
+                return "{lm}#".format(lm=left_margin) + pad_centre(txt, w) + "#" + ("\n" if new_line else "")
+
+            h_border = "".join(["#" for i in range(w + 2)])
+            gg = "\n" + left_margin + h_border + "\n"
+            gg += line_gen("Turn # {tn}".format(lm=left_margin, tn=self.turn_number))
+            col_names = [str(i).rjust(2, "0") for i in range(1, m + 1)]
+            header_div = ["__" for i in range(len(col_names))]
+            row_names = [chr(i).rjust(2) for i in range(65, 65+n)]
+            print("row_names", row_names)
+            C -= 2
+            gg += line_gen("Player 1" + "".join(" " for i in range(C)) + "Player 2`")
+            gg += line_gen("  |" + "|".join(col_names) + "|" + "".join([" " for i in range(C - (2 * m))]) + "|" + "|".join(col_names) + "|")
+            gg += line_gen("  |" + "|".join(header_div) + "|" + "".join([" " for i in range(C - (2 * m))]) + "|" + "|".join(header_div) + "|")
+            for i in range(n):
+                games_line = "".join([" " for i in range(w - 1)])
+                for j in range(m):
+                    cell_v1 = self.grids[0].grid[i][j] if self.grids[0].grid[i][j] is not None else ""
+                    cell_v2 = self.grids[1].grid[i][j] if self.grids[1].grid[i][j] is not None else ""
+                    txt_v1 = pad_centre(str(cell_v1)[:2], 2) + "|"
+                    txt_v2 = pad_centre(str(cell_v2)[:2], 2) + "|"
+                    ss = (j * 3) + 3
+                    print("Cell({}, {}): Player 1: {}, Player 2: {}, ss: {}".format(i, j, cell_v1, cell_v2, ss))
+                    if j == 0:
+                        games_line = row_names[i] + "|" + games_line[:ss + m + C - 5] + row_names[i] + "|" + games_line[ss + m + C + 3:]
+                    games_line = games_line[:ss] + txt_v1 + games_line[ss + 3:]
+                    games_line = games_line[:ss + m + C + 1] + txt_v2 + games_line[ss + m + C + 4:]
+                gg += line_gen(games_line)
+            gg += left_margin + h_border + "\n"
 
         return gg
 
@@ -78,6 +113,7 @@ class BattleshipGrid:
 
     def __init__(self, n, m, random_ship_lengths=None, rnd_shp_max_size=False):
         self.random_ship_lengths = [1, 2, 3, 4, 5]
+        self.rnd_shp_max_size = rnd_shp_max_size
         if random_ship_lengths is not None:
             if isinstance(random_ship_lengths, list):
                 self.random_ship_lengths += random_ship_lengths
@@ -90,6 +126,10 @@ class BattleshipGrid:
                 self.random_ship_lengths += [m]
         self.n = n
         self.m = m
+        if (26 * 26) < n:
+            raise ValueError("Too many rows to initialize a grid.")
+        if 100 < m:
+            raise ValueError("Too many columns to initialize a grid.")
         self.grid = [[None for j in range(self.m)] for i in range(self.n)]
         self.battleships = []
         # self.grid = [[None, 1, None, None, 2], [3, 4, None, None, 5]]
@@ -125,15 +165,15 @@ class BattleshipGrid:
                 raise ValueError("Not enough space to spawn a new ship.")
 
             chosen_line = choice(remaining_lines)
-            # print(dict_print({
-            #     "available": available,
-            #     "max_length_idx": max_length,
-            #     "available[max_length]": available[max_length],
-            #     "available_ships": available_ship_lens,
-            #     "max_line": max_line,
-            #     "remaining_lines": remaining_lines,
-            #     "choice_idx": chosen_line,
-            # }, "Generating Ship"))
+            print(dict_print({
+                "available": available,
+                "max_length_idx": max_length,
+                "available[max_length]": available[max_length],
+                "available_ships": available_ship_lens,
+                "max_line": max_line,
+                "remaining_lines": remaining_lines,
+                "choice_idx": chosen_line,
+            }, "Generating Ship"))
 
             battleship = Battleship(
                 "Battleship #{}".format(str(len(self.battleships) + 1).rjust(2, "0")),
@@ -156,6 +196,8 @@ class BattleshipGrid:
         return False
 
     def place(self, i, j, val):
+        print("placing: {} in ({}, {})".format(val, i, j))
+        print("self.grid({}):".format(len(self.grid)), self.grid)
         self.grid[i][j] = val
 
     def lines(self, filter_none=False, filter_vals=False, filter_syms=None, filter_unique=False):
@@ -400,6 +442,9 @@ class BattleshipGrid:
     #                 filtered_temp.append(filtered_line)
     #         temp = filtered_temp.copy()
     #     return temp
+
+    def __copy__(self):
+        return BattleshipGrid(self.n, self.m, self.random_ship_lengths, self.rnd_shp_max_size)
 
     def max_length_available(self):
         if self.grid:
