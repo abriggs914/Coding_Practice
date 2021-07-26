@@ -1,16 +1,28 @@
 import random
 import copy
 from utility import *
+import numpy as np
 
 
 class Battleship:
 
     def __init__(self, name, cells=None):
         self.name = name
-        self.cells = cells if cells is not None else []
+        cells = cells if cells is not None else []
+        new_cells = []
+        for cell in cells:
+            c = cell
+            if len(cell) != 3:
+                c = (*cell, None)
+            new_cells.append(c)
+        self.cells = new_cells
+        print("CELLS_IN:", self.cells)
 
     def get_ij(self):
         return [(i, j) for i, j, v in self.cells]
+
+    def __copy__(self):
+        return Battleship(self.name, self.cells.copy())
 
     def __repr__(self):
         return "\n\t-- {} --\n\t\t{}".format(self.name, "\n\t\t".join(list(map(str, self.cells))))
@@ -36,11 +48,27 @@ class BattleshipGame:
         assert not ships or all([isinstance(s, Battleship) for s in ships])
         self.name = name
         self.players = players
-        self.grid = grid
-        self.grids = [copy.copy(grid) for player in players]
         self.ships = ships
 
+        for ship in ships:
+            grid.add_battleship(ship)
+        self.grid = grid
+        self.grids = [copy.copy(grid) for player in players]
+
+
         self.turn_number = 0
+
+    def get_player_1_grid(self):
+        return self.grids[0]
+
+    def get_player_2_grid(self):
+        return self.grids[1]
+
+    def get_player_1(self):
+        return self.players[0]
+
+    def get_player_2(self):
+        return self.players[1]
 
     def game_grid(self):
         t_cols = get_terminal_columns() + 100 #TODO: this isn't working right.
@@ -80,6 +108,9 @@ class BattleshipGame:
                 for j in range(m):
                     cell_v1 = self.grids[0].grid[i][j] if self.grids[0].grid[i][j] is not None else ""
                     cell_v2 = self.grids[1].grid[i][j] if self.grids[1].grid[i][j] is not None else ""
+
+                    cell_v1, cell_v2 = "T1", "T2"
+
                     txt_v1 = pad_centre(str(cell_v1)[:2], 2) + "|"
                     txt_v2 = pad_centre(str(cell_v2)[:2], 2) + "|"
                     ss = (j * 3) + 3
@@ -87,7 +118,8 @@ class BattleshipGame:
                     if j == 0:
                         games_line = row_names[i] + "|" + games_line[:ss + m + C - 5] + row_names[i] + "|" + games_line[ss + m + C + 3:]
                     games_line = games_line[:ss] + txt_v1 + games_line[ss + 3:]
-                    games_line = games_line[:ss + m + C + 1] + txt_v2 + games_line[ss + m + C + 4:]
+                    games_line = games_line[:ss + m + C + 1] + txt_v2 + games_line[ss + m + C + 4 + 1:]
+                    # print("\t\tgames_line:", games_line)
                 gg += line_gen(games_line)
             gg += left_margin + h_border + "\n"
 
@@ -111,14 +143,14 @@ class BattleshipGrid:
     SYM_SHIP = "SHP"
     SYM_BLANK = "BLK"
 
-    def __init__(self, n, m, random_ship_lengths=None, rnd_shp_max_size=False):
+    def __init__(self, n, m, random_ship_lengths=None, rnd_shp_max_size=False, ships=None):
         self.random_ship_lengths = [1, 2, 3, 4, 5]
         self.rnd_shp_max_size = rnd_shp_max_size
         if random_ship_lengths is not None:
             if isinstance(random_ship_lengths, list):
                 self.random_ship_lengths += random_ship_lengths
             else:
-                raise ValueError("Cannot initialize \"random_ship_lengths\" with the param: \"{}\"".format(random_ship_lengths))
+                raise ValueError("Cannot initialize \"random_ship_lengths\" with the param: \"{}\".".format(random_ship_lengths))
         if rnd_shp_max_size:
             if n not in self.random_ship_lengths:
                 self.random_ship_lengths += [n]
@@ -131,13 +163,29 @@ class BattleshipGrid:
         if 100 < m:
             raise ValueError("Too many columns to initialize a grid.")
         self.grid = [[None for j in range(self.m)] for i in range(self.n)]
-        self.battleships = []
+        print("IN:", ships)
+        if not isinstance(ships, list):
+            ships = [ships]
+
+        # not players or all([isinstance(p, BattleshipPlayer) for p in players])
+        print("BEFORE:", ships)
+        if ships and not all([isinstance(s, Battleship) for s in ships]):
+            ships = []
+        self.battleships = ships if ships is not None else []
+        print("CREATING BATTLESHIPS:", self.battleships)
+        for ship in self.battleships:
+            print("adding battleship:", ship)
+            self.add_battleship(ship)
         # self.grid = [[None, 1, None, None, 2], [3, 4, None, None, 5]]
         # self.grid = [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9]]
         # self.grid = [list(range(i * 5, (i * 5) + 5)) for i in range(8)]
         # self.n = len(self.grid)
         # self.m = len(self.grid[0])
         print("grid:", self.grid)
+
+        if m < n:
+            self.grid = np.transpose(self.grid).tolist()
+            self.n, self.m, = m, n
 
     def open_cell(self, i, j):
         return self.grid[i][j] is None
@@ -151,6 +199,12 @@ class BattleshipGrid:
     def gen_random_cell(self):
         i, j, v = choice(self.lines(filter_vals=True, filter_unique=True))
         return i, j
+
+    def add_battleship(self, battleship):
+        self.battleships.append(battleship)
+        print(battleship)
+        for c_i, c_j in battleship.get_ij():
+            self.place(c_i, c_j, BattleshipGrid.SYM_SHIP)
 
     def gen_ship(self, i=None, j=None, length=None, number=1):
         if self.is_playable():
@@ -179,10 +233,7 @@ class BattleshipGrid:
                 "Battleship #{}".format(str(len(self.battleships) + 1).rjust(2, "0")),
                 chosen_line
             )
-            self.battleships.append(battleship)
-            print(battleship)
-            for c_i, c_j, c_v in chosen_line:
-                self.place(c_i, c_j, BattleshipGrid.SYM_SHIP)
+            self.add_battleship(battleship)
         else:
             raise ValueError("Unable to generate a new battleship on current grid. No available cells.")
         if 1 < number:
@@ -325,11 +376,11 @@ class BattleshipGrid:
                         valid_cells.append(cell)
             temp = valid_cells.copy()
 
-        for tt in temp:
-            if isinstance(tt, list):
-                print("Line:\t\t", [ttt for ttt in tt])
-            else:
-                print("Line:\t{}".format(tt))
+        # for tt in temp:
+        #     if isinstance(tt, list):
+        #         print("Line:\t\t", [ttt for ttt in tt])
+        #     else:
+        #         print("Line:\t{}".format(tt))
         return temp
 
     # def lines(self, filter_none=False):
@@ -444,7 +495,9 @@ class BattleshipGrid:
     #     return temp
 
     def __copy__(self):
-        return BattleshipGrid(self.n, self.m, self.random_ship_lengths, self.rnd_shp_max_size)
+        for bs in self.battleships:
+            print("bs:\t", bs)
+        return BattleshipGrid(self.n, self.m, self.random_ship_lengths, self.rnd_shp_max_size, ships=[copy.copy(bs) for bs in self.battleships])
 
     def max_length_available(self):
         if self.grid:

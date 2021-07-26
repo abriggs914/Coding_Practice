@@ -183,7 +183,7 @@ def write_file():
 		
 		
 		for i in range(len(metric_possibilities)) :
-			f.write(print_time_line_horizontal_write(series_list, 1995, 2022))
+			f.write(print_time_line_horizontal_write(series_list, 1988, 2022))
 			f.write(print_series_stats_write(series_list))
 			
 		

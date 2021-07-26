@@ -476,6 +476,46 @@ brickleberry = TVSeries("Brickleberry", {
 	"Comedy",
 	"Disney+")
 	
+the_simpsons = TVSeries("The Simpsons", {
+	1: 13,
+	2: 22,
+	3: 24,
+	4: 22,
+	5: 22,
+	6: 25,
+	7: 25,
+	8: 25,
+	9: 25,
+	10: 23,
+	11: 22,
+	12: 21,
+	13: 22,
+	14: 22,
+	15: 22,
+	16: 21,
+	17: 22,
+	18: 22,
+	19: 20,
+	20: 21,
+	21: 23,
+	22: 22,
+	23: 22,
+	24: 22,
+	25: 22,
+	26: 22,
+	27: 22,
+	28: 22,
+	29: 21,
+	30: 23,
+	31: 22,
+	32: 22},
+	22,
+	1989,
+	2021,
+	True,
+	"Comedy",
+	"Disney+")
+	
 
 series_list = [
     the_office,
@@ -510,7 +550,8 @@ series_list = [
 	its_always_sunny_in_philadelphia,
 	the_last_man_on_earth,
 	the_mick,
-	brickleberry
+	brickleberry,
+	the_simpsons
 ]
    
 def longest_series_title(series_list) :
@@ -708,5 +749,5 @@ if __name__ == "__main__" :
     
     
   for i in range(len(metric_possibilities)) :
-    print(print_time_line_horizontal(series_list, 1995, 2022))
+    print(print_time_line_horizontal(series_list, 1988, 2022))
     print(print_series_stats(series_list))
