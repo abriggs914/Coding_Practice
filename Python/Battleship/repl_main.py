@@ -57,3 +57,5 @@ def main():
     # print("battleship1", battleship_1)
     # print("copy.copy(battleship1)", copy.copy(battleship_1))
     # print("battleship1", battleship_1)
+    c = copy.copy(battleship_game.grids[0])
+    print("c", c)
