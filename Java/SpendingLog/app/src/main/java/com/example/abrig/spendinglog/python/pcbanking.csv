@@ -1,666 +1,1501 @@
 Transaction Date, Transaction Amount, Notes, Transaction Type, Entity
-7/19/2021,-55.41,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-7/19/2021,-10.35,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-7/19/2021,-12.75,-,"POS Purchase           ","FPOS MARY BROWN'S 3500   FREDE"
-7/19/2021,-92.40,-,"POS Purchase           ","FPOS WALMART STORE #3032 FREDE"
-7/17/2021,-9.75,-,"POS Purchase           ","FPOS MCDONALD'S #5483    FREDE"
-7/16/2021,-200.00,-,"POS Purchase           ","CNB #016                 FREDE"
-7/16/2021,-29.79,-,"POS Purchase           ","FPOS PETRO-CANADA        LAKE "
-7/16/2021,-6.92,-,"POS Purchase           ","FPOS TIM HORTONS #2598   WOODS"
-7/16/2021,-55.40,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-7/15/2021,612.55,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-7/12/2021,-57.55,-,"POS Purchase           ","FPOS RED APPLE #54401    FLORE"
-7/9/2021,-55.03,-,"POS Purchase           ","FPOS IRVING/FLORENCEVILLEFLORE"
-7/8/2021,612.55,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-7/5/2021,149.75,-,"Provincial Payment     ","CANADA                       "
-7/5/2021,-54.40,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-7/5/2021,-23.00,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-7/3/2021,-68.88,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-7/3/2021,-91.88,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-7/2/2021,-477.50,000000040,"Cheque                 ",""
-7/2/2021,-8.04,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-6/30/2021,-609.77,-,"Miscellaneous Payment  ","NSLSC                        "
-6/30/2021,-16.95,-,"Service Charge         ","MONTHLY FEES"
-6/30/2021,-200.00,-,"POS Purchase           ","CNB #016                 FREDE"
-6/30/2021,-26.53,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-6/30/2021,609.44,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-6/25/2021,-53.06,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-6/24/2021,-6.46,-,"Miscellaneous Payment  ","PAYPAL                       "
-6/24/2021,-20.00,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-6/24/2021,-13.20,-,"POS Purchase           ","FPOS WENDY'S RESTAURANT QFREDE"
-6/24/2021,-50.03,-,"POS Purchase           ","FPOS GRAB N GO WATERVILLEWATER"
-6/24/2021,629.23,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-6/23/2021,-24.95,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/23/2021,-79.90,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/23/2021,-34.49,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/23/2021,-34.49,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/23/2021,-39.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/22/2021,-149.44,-,"POS Purchase           ","OPOS DRI*FITBIT, INC.    order"
-6/22/2021,-200.00,-,"POS Purchase           ","CNB #018                 PERTH"
-6/22/2021,-52.79,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-6/22/2021,-31.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/21/2021,-773.99,-,"POS Purchase           ","KEITH'S SERVICE CENTRE   BATH "
-6/21/2021,-24.62,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/21/2021,-92.44,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/21/2021,-36.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/19/2021,-1.50,-,"POS Purchase           ","FPOS RILEY BROOK HOLDINGSRILEY"
-6/19/2021,-22.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/19/2021,-52.89,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/19/2021,-21.53,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/18/2021,-52.78,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-6/17/2021,629.23,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-6/14/2021,-119.99,-,"POS Purchase           ","CNB #018                 PERTH"
-6/14/2021,-26.57,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-6/14/2021,-8.95,-,"POS Purchase           ","FPOS BK #09448           WATER"
-6/14/2021,-13.78,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-6/14/2021,36.99,-,"Correction             ","581157742260480               "
-6/11/2021,-100.00,-,"POS Purchase           ","FPOS CNB #016            FREDE"
-6/11/2021,-20.29,-,"POS Purchase           ","FPOS PETRO-CANADA        LAKE "
-6/11/2021,-2.02,-,"POS Purchase           ","FPOS TIM HORTONS #2598   WOODS"
-6/11/2021,-50.77,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-6/10/2021,629.23,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-6/9/2021,-32.53,-,"POS Purchase           ","OPOS AMZN Mktp CA*2X1K43AWWW.A"
-6/9/2021,69.52,-,"Correction             ","OPOS AMZN Mktp CA*2X1K43AWWW.A"
-6/7/2021,-103.49,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/7/2021,500.00,-,"DEPOSIT                ","FREE INTERAC E-TRANSFER"
-6/7/2021,500.00,-,"DEPOSIT                ","FREE INTERAC E-TRANSFER"
-6/7/2021,-90.85,-,"POS Purchase           ","OPOS Amazon.ca Prime Membamazo"
-6/7/2021,-36.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/5/2021,-24.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/5/2021,24.99,-,"Correction             ","OPOS AMAZON.COM   PMTS - WWW.A"
-6/5/2021,-15.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/5/2021,189.00,-,"Correction             ","OPOS AMAZON.COM   PMTS - WWW.A"
-6/5/2021,-69.52,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/4/2021,-52.50,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-6/3/2021,629.23,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-6/2/2021,-24.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/1/2021,-477.50,000000039,"Cheque                 ",""
-6/1/2021,-189.00,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/1/2021,-123.45,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/1/2021,-22.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/1/2021,-37.45,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/1/2021,-62.80,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/1/2021,-34.50,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-5/31/2021,-643.80,-,"Miscellaneous Payment  ","NSLSC                        "
-5/31/2021,-16.95,-,"Service Charge         ","MONTHLY FEES"
-5/28/2021,-51.51,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-5/27/2021,-100.00,-,"POS Purchase           ","FPOS CNB #018            PERTH"
-5/27/2021,629.23,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-5/25/2021,-6.30,-,"Miscellaneous Payment  ","PAYPAL                       "
-5/21/2021,-700.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-5/21/2021,-73.39,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-5/20/2021,731.07,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-5/18/2021,-149.99,-,"POS Purchase           ","CNB #018                 PERTH"
-5/18/2021,-79.99,-,"POS Purchase           ","FPOS CNB #018            PERTH"
-5/17/2021,-12.52,-,"POS Purchase           ","FPOS DAIRY QUEEN #12192  WOODS"
-5/17/2021,-30.00,-,"POS Purchase           ","MURRAY'S IRVING          BEARD"
-5/17/2021,-2.02,-,"POS Purchase           ","FPOS TIM HORTONS #2598   WOODS"
-5/17/2021,-8.37,-,"POS Purchase           ","MCDONALD'S #1808         FREDE"
-5/15/2021,-50.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-5/14/2021,-31.81,-,"POS Purchase           ","OPOS Greco Online        90289"
-5/14/2021,-29.79,-,"POS Purchase           ","FPOS PETRO-CANADA        LAKE "
-5/14/2021,-58.27,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-5/13/2021,-21.15,-,"POS Purchase           ","OPOS 16.99 WNBA LIVEACCESPLAIN"
-5/13/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-5/11/2021,-18.36,-,"POS Purchase           ","FPOS MARK'S THE SPOT     BEECH"
-5/7/2021,-49.60,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-5/6/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-5/3/2021,-477.50,000000038,"Cheque                 ",""
-4/30/2021,-16.95,-,"Service Charge         ","MONTHLY FEES"
-4/30/2021,-60.00,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-4/30/2021,-100.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-4/29/2021,-9.99,-,"POS Purchase           ","FPOS TIM HORTONS #2853   BRIST"
-4/29/2021,-2000.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-4/29/2021,3000.00,-,"DEPOSIT                ","INTERAC E-TRANSFER RTN"
-4/29/2021,-3000.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-4/29/2021,-22.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-4/29/2021,-22.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-4/29/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-4/27/2021,-20.00,-,"Miscellaneous Payment  ","PAYPAL                       "
-4/26/2021,-6.53,-,"Miscellaneous Payment  ","PAYPAL                       "
-4/23/2021,-6.08,-,"POS Purchase           ","FPOS SMITH DRUGS         FLORE"
-4/23/2021,-75.01,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-4/22/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-4/21/2021,25.00,-,"Credit Memo            ","ADJUSTMENT OTHER"
-4/21/2021,-32.55,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-4/20/2021,-15.17,-,"Miscellaneous Payment  ","PAYPAL                       "
-4/19/2021,-16.53,-,"POS Purchase           ","FPOS DAIRY QUEEN #12192  WOODS"
-4/19/2021,-161.51,-,"POS Purchase           ","WALMART STORE #1043      WOODS"
-4/19/2021,-15.26,-,"POS Purchase           ","FPOS WENDY'S RESTAURANT QFREDE"
-4/16/2021,-55.00,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-4/15/2021,-11.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-4/15/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-4/13/2021,-30.66,-,"Miscellaneous Payment  ","PAYPAL                       "
-4/10/2021,-10.32,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-4/9/2021,-55.01,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-4/8/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-4/1/2021,-477.50,000000037,"Cheque                 ",""
-4/1/2021,-55.00,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-4/1/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-4/1/2021,149.00,-,"Provincial Payment     ","CANADA                       "
-3/31/2021,-49.99,-,"POS Purchase","FPOS CNB #018            PERTH ANDOVNBCA"
-3/31/2021,-110.99,-,"POS Purchase","CNB #018                 PERTH ANDOVNBCA"
-3/26/2021,-55.01,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-3/25/2021,-28.99,-,"POS Purchase           ","OPOS AMZN Mktp CA*K09SB8DWWW.A"
-3/25/2021,141.97,-,"Correction             ","OPOS AMZN Mktp CA*K09SB8DWWW.A"
-3/25/2021,-112.98,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-3/25/2021,-141.97,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-3/25/2021,-28.97,-,"POS Purchase           ","OPOS Amazon.ca           AMAZO"
-3/25/2021,-180.43,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-3/25/2021,-33.51,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-3/25/2021,-28.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-3/25/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-3/24/2021,-6.53,-,"Miscellaneous Payment  ","PAYPAL                       "
-3/22/2021,-59.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-3/20/2021,-93.46,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-3/20/2021,-47.96,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-3/19/2021,-250.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-3/19/2021,-70.00,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-3/18/2021,-29.89,-,"Miscellaneous Payment  ","PAYPAL                       "
-3/18/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-3/17/2021,-25.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-3/15/2021,-10.09,-,"POS Purchase           ","FPOS MARK'S THE SPOT     BEECH"
-3/15/2021,-26.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-3/13/2021,-7.69,-,"POS Purchase           ","FPOS Subway              Water"
-3/13/2021,-35.00,-,"POS Purchase           ","FPOS WATERVILLE IRVING 15WATER"
-3/13/2021,-1.46,-,"POS Purchase           ","FPOS DAIRY QUEEN #12192  WOODS"
-3/12/2021,-25.49,-,"POS Purchase           ","FPOS PETRO-CANADA        LAKE "
-3/12/2021,-55.00,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-3/11/2021,-11.61,-,"POS Purchase           ","FPOS TIM HORTONS #2853   BRIST"
-3/11/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-3/5/2021,-10.98,-,"POS Purchase           ","DINER DOWN UNDER         BATH "
-3/4/2021,-4.38,-,"POS Purchase           ","CENTREVILLE VALUFOODS    CENTR"
-3/4/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-3/3/2021,-79.42,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-3/2/2021,-5.07,-,"Miscellaneous Payment  ","PAYPAL                       "
-3/2/2021,-10.54,-,"POS Purchase           ","FPOS MARK'S THE SPOT     BEECH"
-3/1/2021,-477.50,000000036,"Cheque                 ",""
-2/27/2021,-15.95,-,"Service Charge         ","MONTHLY FEES"
-2/27/2021,-11.44,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-2/26/2021,-5.51,-,"POS Purchase           ","FPOS SMITH DRUGS         FLORE"
-2/26/2021,-72.55,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-2/26/2021,-150.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-2/25/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-2/24/2021,-6.59,-,"Miscellaneous Payment  ","PAYPAL                       "
-2/18/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-2/17/2021,-71.73,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-2/13/2021,-55.28,-,"POS Purchase           ","TINA'S KITCHEN           HARTL"
-2/12/2021,-19.73,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-2/12/2021,-98.90,-,"POS Purchase           ","FPOS WALMART STORE #3032 FREDE"
-2/12/2021,-175.93,-,"POS Purchase           ","WALMART STORE #3032      FREDE"
-2/12/2021,-89.98,-,"POS Purchase           ","CNB #016                 FREDE"
-2/12/2021,-60.00,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-2/11/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-2/9/2021,-89.99,-,"Miscellaneous Payment  ","PAYPAL                       "
-2/5/2021,-5.74,-,"POS Purchase           ","OPOS PrimeVideo.ca       www.a"
-2/5/2021,-65.43,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-2/4/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-2/1/2021,-477.50,000000035,"Cheque                 ",""
-2/1/2021,-4.60,-,"POS Purchase           ","FPOS GCDS625 BRISTOL     BRIST"
-1/30/2021,-15.95,-,"Service Charge         ","MONTHLY FEES"
-1/29/2021,-60.00,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-1/28/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-1/26/2021,-6.64,-,"Miscellaneous Payment  ","PAYPAL                       "
-1/25/2021,-85.99,-,"POS Purchase           ","FPOS CNB #018            PERTH"
-1/22/2021,-55.00,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-1/21/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-1/18/2021,-41.41,-,"POS Purchase           ","FPOS RAYNER'S AUTOMOTIVE FLORE"
-1/15/2021,-10.91,-,"Miscellaneous Payment  ","PAYPAL                       "
-1/15/2021,-20.27,-,"Miscellaneous Payment  ","PAYPAL                       "
-1/15/2021,-62.15,-,"POS Purchase           ","FLORENCEVILLE IRVING     WEST "
-1/14/2021,602.30,-,"Payroll Deposit        ","BWS MANUFACTURING LTD        "
-1/13/2021,-50.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-1/8/2021,-5.51,-,"POS Purchase           ","FPOS SMITH DRUGS         FLORE"
-1/7/2021,-55.01,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-1/5/2021,-50.00,-,"POS Purchase           ","FPOS CNB #018            PERTH"
-1/5/2021,-251.75,-,"POS Purchase           ","OPOS 191.88 CODECADEMY   +1844"
-1/5/2021,16.84,-,"DEPOSIT                ","INTERAC E-TRANSFER"
-1/5/2021,-16.84,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-1/5/2021,-38.88,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-1/5/2021,149.00,-,"Provincial Payment     ","CANADA                       "
-1/4/2021,-477.50,000000034,"Cheque                 ",""
-12/31/2020,-16.09,-,"Miscellaneous Payment  ","PAYPAL                       "
-12/31/2020,-7.69,-,"Miscellaneous Payment  ","PAYPAL                       "
-12/31/2020,-15.95,-,"Service Charge         ","MONTHLY FEES"
-12/30/2020,-49.13,-,"POS Purchase           ","OPOS MARKS.COM/LEQUIPEUR.86680"
-12/30/2020,-28.31,-,"POS Purchase           ","OPOS MARKS.COM/LEQUIPEUR.86680"
-12/29/2020,-29.19,-,"Miscellaneous Payment  ","PAYPAL                       "
-12/29/2020,-48.54,-,"POS Purchase           ","OPOS MARKS.COM/LEQUIPEUR.86680"
-12/29/2020,125.98,-,"Correction             ","CORRECTION                    "
-12/29/2020,-125.98,-,"POS Purchase           ","OPOS MARKS.COM/LEQUIPEUR.86680"
-12/24/2020,-6.74,-,"Miscellaneous Payment  ","PAYPAL                       "
-12/24/2020,-5.49,-,"Miscellaneous Payment  ","PAYPAL                       "
-12/24/2020,285.00,-,"Accounts Payable       ","UNIVERSITY OF NEW BRUNSWICK  "
-12/21/2020,-70.00,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-12/16/2020,500.00,-,"ABM Deposit",""
-12/11/2020,-57.91,-,"POS Purchase           ","GIANT TIGER #118         GRAND"
-12/10/2020,250.00,-,"ABM Deposit",""
-12/3/2020,-3.24,-,"POS Purchase           ","FPOS FLORENCEVILLE ESSO  WEST "
-12/1/2020,-477.50,000000033,"Cheque                 ",""
-11/30/2020,-643.80,-,"Miscellaneous Payment  ","NSLSC                        "
-11/30/2020,-37.36,-,"Miscellaneous Payment  ","PAYPAL                       "
-11/30/2020,-100.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-11/30/2020,-605.00,-,"WITHDRAWAL             ","FREE INTERAC E-TRANSFER"
-11/27/2020,1000.00,-,"DEPOSIT                ",""
-11/25/2020,-56.96,-,"Miscellaneous Payment  ","PAYPAL                       "
-11/25/2020,-2.89,-,"Miscellaneous Payment  ","PAYPAL                       "
-11/25/2020,-6.82,-,"Miscellaneous Payment  ","PAYPAL                       "
-11/16/2020,-2.22,-,"POS Purchase           ","FPOS TIM HORTONS #2598   WOODS"
-11/16/2020,-11.48,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-11/13/2020,-34.44,-,"POS Purchase           ","FPOS FLORENCEVILLE IRVINGWEST "
-11/12/2020,-57.24,-,"POS Purchase           ","FPOS BRENNAN HOME HARDWARFLORE"
-11/10/2020,-47.99,-,"POS Purchase           ","FPOS CNB #018            PERTH"
-11/10/2020,-9.99,-,"POS Purchase           ","OPOS Spotify P1218E1D37  Stock"
-11/9/2020,-59.30,-,"POS Purchase           ","MARK'S THE SPOT          BEECH"
-11/3/2020,-4.00,-,"POS Purchase           ","OPOS SC* ONLINE PAYMENT  INTER"
-11/2/2020,-477.50,000000032,"Cheque                 ",""
-11/2/2020,-643.80,-,"Miscellaneous Payment  ","NSLSC                        "
-10/26/2020,-6.83,-,"Miscellaneous Payment  ","PAYPAL                       "
-10/26/2020,-60.00,-,"POS Purchase           ","FPOS MARK'S THE SPOT     BEECH"
-10/20/2020,-44.99,-,"POS Purchase           ","FPOS CNB #018            PERTH"
-10/16/2020,-11.83,-,"Miscellaneous Payment  ","PAYPAL                       "
-10/13/2020,-60.00,-,"POS Purchase           ","FPOS MARK'S THE SPOT     BEECH"
-10/10/2020,-9.99,-,"POS Purchase           ","OPOS Spotify P11ADFDDFA  Stock"
-10/9/2020,-129.88,-,"POS Purchase           ","WALMART STORE #3032      FREDE"
-10/5/2020,149.00,-,"Provincial Payment     ","CANADA                       "
-10/3/2020,-4.00,-,"POS Purchase           ","OPOS CV-Resume           85521"
-10/1/2020,-477.50,000000031,"Cheque                 ",""
-9/28/2020,-84.39,-,"Miscellaneous Payment  ","PAYPAL                       "
-9/24/2020,-6.91,-,"Miscellaneous Payment  ","PAYPAL                       "
-9/22/2020,-47.79,-,"POS Purchase           ","FPOS MARK'S THE SPOT     BEECH"
-9/17/2020,4.99,-,"Correction             ","460254728065740               "
-9/15/2020,-4.99,-,"Debit Memo             ","ADJUSTMENT OTHER"
-9/10/2020,-4.99,-,"POS Purchase           ","OPOS Spotify P1141E5D3C  Stock"
-9/8/2020,-7.69,-,"POS Purchase           ","FPOS MCDONALD'S #6659   QGRAND"
-9/5/2020,-20.00,-,"POS Purchase           ","CIRCLE K / IRVING #201   WAASI"
-9/4/2020,40.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-9/4/2020,1250.00,-,"Federal Payment        ","CANADA                       "
-9/3/2020,23.38,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-9/3/2020,-4.00,-,"POS Purchase           ","OPOS SC* ONLINE PAYMENT  INTER"
-9/2/2020,-30.00,-,"POS Purchase           ","FPOS IRVING/FLORENCEVILLEFLORE"
-9/1/2020,-477.50,-,"Miscellaneous Payment  ","Colpitts Developments        "
-9/1/2020,-32.55,-,"POS Purchase           ","OPOS Amazon.ca           AMAZO"
-8/29/2020,-6.20,-,"POS Purchase           ","DAIRY QUEEN #12192       WOODS"
-8/27/2020,-22.48,-,"POS Purchase           ","FPOS CO-OP #9283         FLORE"
-8/27/2020,-7.50,-,"Service Charge         ",""
-8/27/2020,-467.50,-,"Debit Memo             ","DRAFT PURCHASE"
-8/26/2020,-28.74,-,"Miscellaneous Payment  ","PAYPAL                       "
-8/25/2020,-6.86,-,"Miscellaneous Payment  ","PAYPAL                       "
-8/11/2020,-32.42,-,"Miscellaneous Payment  ","PAYPAL                       "
-8/10/2020,-4.99,-,"POS Purchase           ","OPOS Spotify P10DB0D4BE  Stock"
-8/6/2020,-90.00,-,"POS Purchase           ","FPOS SNB - BRISTOL       FLORE"
-8/5/2020,-23.38,-,"POS Purchase           ","OPOS 16.99 WNBA LIVEACCESPLAIN"
-8/5/2020,1.37,-,"Correction             ","580212122550514               "
-8/4/2020,-467.50,000000029,"Cheque                 ",""
-8/3/2020,-4.00,-,"POS Purchase           ","OPOS SC* ONLINE PAYMENT  INTER"
-7/30/2020,-162.00,-,"POS Purchase           ","OPOS SERVICE NB - ONLINE FREDE"
-7/29/2020,-1.37,-,"POS Purchase           ","OPOS 1.00 WNBA LIVEACCESSPLAIN"
-7/28/2020,1250.00,-,"Federal Payment        ","CANADA                       "
-7/24/2020,-6.99,-,"Miscellaneous Payment  ","PAYPAL                       "
-7/24/2020,63.20,-,"Correction             ","380199712163293               "
-7/23/2020,-2.02,-,"POS Purchase           ","FPOS TIM HORTONS #2848   FREDE"
-7/23/2020,-2.52,-,"POS Purchase           ","FPOS TIM HORTONS #2598   WOODS"
-7/17/2020,-63.20,-,"POS Purchase           ","OPOS PAPA JOHN'S PIZZA #1FREDE"
-7/17/2020,42.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-7/17/2020,-32.60,-,"POS Purchase           ","FPOS MARITIME BUS        FREDE"
-7/16/2020,-43.19,-,"POS Purchase           ","FPOS WATERVILLE IRVING 15WATER"
-7/10/2020,-4.99,-,"POS Purchase           ","OPOS Spotify P107B0FD46  Stock"
-7/9/2020,-0.00,-,"Service Charge         ","MB-FREE EMAIL MONEY TRF"
-7/9/2020,-467.50,-,"WITHDRAWAL             ","MB-EMAIL MONEY TRF"
-7/8/2020,467.50,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-7/8/2020,-6.66,-,"POS Purchase           ","FPOS TIM HORTONS #2598   WOODS"
-7/6/2020,-50.00,-,"POS Purchase           ","MURRAY'S IRVING          BEARD"
-7/3/2020,-4.00,-,"POS Purchase           ","OPOS BLD*Resume          85521"
-7/3/2020,149.00,-,"Provincial Payment     ","CANADA                       "
-6/30/2020,-0.00,-,"Service Charge         ","MB-FREE EMAIL MONEY TRF"
-6/30/2020,-467.50,-,"WITHDRAWAL             ","MB-EMAIL MONEY TRF"
-6/29/2020,-0.00,-,"Service Charge         ","MB-FREE EMAIL MONEY TRF"
-6/29/2020,-50.00,-,"WITHDRAWAL             ","MB-EMAIL MONEY TRF"
-6/24/2020,-7.06,-,"Miscellaneous Payment  ","PAYPAL                       "
-6/19/2020,1250.00,-,"Federal Payment        ","CANADA                       "
-6/18/2020,-29.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-6/11/2020,362.50,-,"DEPOSIT                ","MB-DEP"
-6/10/2020,-4.99,-,"POS Purchase           ","OPOS Spotify P1016DF90E  Stock"
-6/8/2020,-0.00,-,"Service Charge         ","MB-FREE EMAIL MONEY TRF"
-6/8/2020,-467.50,-,"WITHDRAWAL             ","MB-EMAIL MONEY TRF"
-6/3/2020,-4.00,-,"POS Purchase           ","OPOS BLD*Resume          85521"
-5/26/2020,-7.28,-,"Miscellaneous Payment  ","PAYPAL                       "
-5/25/2020,-10.25,-,"POS Purchase           ","FPOS TACO BOYZ           FREDE"
-5/22/2020,-67.96,-,"POS Purchase           ","FPOS SOBEYS #375         FREDE"
-5/21/2020,-467.50,000000027,"Cheque                 ",""
-5/20/2020,1250.00,-,"Federal Payment        ","CANADA                       "
-5/14/2020,-10.00,-,"Miscellaneous Payment  ","PAYPAL                       "
-5/13/2020,-32.32,-,"POS Purchase           ","FPOS 9283 CARLETON CO-OP FLORE"
-5/11/2020,-4.99,-,"POS Purchase           ","OPOS Spotify P0FAEF62A7  Stock"
-5/5/2020,-519.83,-,"Miscellaneous Payment  ","EnergieNB Power              "
-5/4/2020,-520.38,-,"POS Purchase           ","OPOS BELL ALIANT ONLINE #SAINT"
-5/4/2020,-4.00,-,"POS Purchase           ","OPOS BLD*Resume          85521"
-5/1/2020,-0.00,-,"Service Charge         ","MB-FREE EMAIL MONEY TRF"
-5/1/2020,-100.00,-,"WITHDRAWAL             ","MB-EMAIL MONEY TRF"
-4/29/2020,100.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-4/29/2020,460.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-4/27/2020,-25.88,-,"POS Purchase           ","FPOS MCDONALD'S #1808    FREDE"
-4/24/2020,-50.00,-,"Miscellaneous Payment  ","PAYPAL                       "
-4/24/2020,-7.38,-,"Miscellaneous Payment  ","PAYPAL                       "
-4/18/2020,-1.00,-,"POS Purchase           ","OPOS BLD*Resume          85521"
-4/18/2020,-1.95,-,"POS Purchase           ","OPOS BLD*Resume          85521"
-4/18/2020,-122.57,-,"POS Purchase           ","WAL-MART #1067           FREDE"
-4/16/2020,-18.96,-,"POS Purchase           ","OPOS DOMINO'S PIZZA #1090FREDE"
-4/16/2020,-0.00,-,"Service Charge         ","MB-FREE EMAIL MONEY TRF"
-4/16/2020,-140.00,-,"WITHDRAWAL             ","MB-EMAIL MONEY TRF"
-4/11/2020,-56.37,-,"POS Purchase           ","OPOS PAPA JOHN'S PIZZA #1FREDE"
-4/11/2020,-4.99,-,"POS Purchase           ","OPOS Spotify P0F4ACEEDB  Stock"
-4/9/2020,-58.96,-,"POS Purchase           ","FPOS IRVING/BOAT CLUB    FREDE"
-4/9/2020,290.00,-,"GST                    ","CANADA                       "
-4/3/2020,-46.97,-,"POS Purchase           ","OPOS PAPA JOHN'S PIZZA #1FREDE"
-4/3/2020,-0.00,-,"Service Charge         ","MB-FREE EMAIL MONEY TRF"
-4/3/2020,-270.00,-,"WITHDRAWAL             ","MB-EMAIL MONEY TRF"
-4/3/2020,147.50,-,"Provincial Payment     ","CANADA                       "
-4/1/2020,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-3/28/2020,2514.00,-,"DEPOSIT                ","MB-DEP"
-3/26/2020,-17.06,-,"POS Purchase           ","FPOS SOBEYS #375         FREDE"
-3/26/2020,-8.04,-,"POS Purchase           ","FPOS CANADIAN TIRE #0035 FREDE"
-3/24/2020,-7.50,-,"Miscellaneous Payment  ","PAYPAL                       "
-3/23/2020,100.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-3/20/2020,10.00,-,"DEPOSIT                ","PC-EMAIL MONEY TRF"
-3/18/2020,20.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-3/14/2020,20.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-3/12/2020,-40.10,-,"POS Purchase           ","FPOS IRVING/BOAT CLUB    FREDE"
-3/12/2020,-12.91,-,"POS Purchase           ","RINGO'S BAR & GRILL      FREDE"
-3/11/2020,-34.15,-,"POS Purchase           ","FPOS SOBEYS #349         FREDE"
-3/10/2020,-4.99,-,"POS Purchase           ","OPOS Spotify P0EE6E8930  Stock"
-3/9/2020,98.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-3/7/2020,-7.97,-,"POS Purchase           ","FPOS TIM HORTONS #0276   FREDE"
-3/4/2020,-55.53,-,"POS Purchase           ","PIZZA HUT                FREDE"
-3/4/2020,-4.44,-,"POS Purchase           ","FPOS TIM HORTONS #2131   FREDE"
-3/3/2020,-200.00,-,"Miscellaneous Payment  ","EnergieNB Power              "
-3/2/2020,-179.77,-,"Miscellaneous Payment  ","EnergieNB Power              "
-3/2/2020,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-3/2/2020,-11.65,-,"POS Purchase           ","FPOS A&W MAIN STREET PLAZFREDE"
-2/29/2020,-7.97,-,"POS Purchase           ","FPOS TIM HORTONS #2131   FREDE"
-2/26/2020,-1.49,-,"POS Purchase           ","FPOS ATLANTIC SUPERSTORE FREDE"
-2/25/2020,-6.87,-,"Miscellaneous Payment  ","PAYPAL                       "
-2/24/2020,-8.94,-,"POS Purchase           ","FPOS MCDONALD'S #29096   FREDE"
-2/24/2020,-28.11,-,"POS Purchase           ","WAL-MART #3032           FREDE"
-2/24/2020,-57.31,-,"POS Purchase           ","FPOS CIRCLE K / IRVING  QFREDE"
-2/22/2020,-9.68,-,"POS Purchase           ","FPOS TIM HORTONS #1705   FREDE"
-2/21/2020,-36.79,-,"Miscellaneous Payment  ","PAYPAL                       "
-2/20/2020,-21.24,-,"POS Purchase           ","FPOS SOBEYS #849         FREDE"
-2/19/2020,-21.15,-,"POS Purchase           ","DOMINO'S PIZZA #10902    FREDE"
-2/18/2020,-29.89,-,"Miscellaneous Payment  ","PAYPAL                       "
-2/18/2020,-8.82,-,"POS Purchase           ","FPOS MCDONALD'S #29097   OROMO"
-2/18/2020,-0.00,-,"Service Charge         ","MB-FREE EMAIL MONEY TRF"
-2/18/2020,-100.00,-,"WITHDRAWAL             ","MB-EMAIL MONEY TRF"
-2/17/2020,-12.05,-,"POS Purchase           ","FPOS CANADIAN TIRE #0035 FREDE"
-2/17/2020,-11.10,-,"POS Purchase           ","FPOS TIM HORTONS #0276   FREDE"
-2/15/2020,-8.74,-,"POS Purchase           ","FPOS BK #03282           FREDE"
-2/15/2020,-51.10,-,"POS Purchase           ","FPOS CLIFFE STREET GRAB NFREDE"
-2/14/2020,-23.57,-,"POS Purchase           ","FPOS SOBEYS #375         FREDE"
-2/14/2020,-6.85,-,"POS Purchase           ","FPOS TIM HORTONS #0176   FREDE"
-2/13/2020,-100.00,-,"Miscellaneous Payment  ","PAYPAL                       "
-2/12/2020,-11.01,-,"POS Purchase           ","FPOS DAIRY QUEEN #12079  FREDE"
-2/12/2020,-71.63,-,"POS Purchase           ","WALMARTSTORE#1067        FREDE"
-2/12/2020,-180.00,-,"ABM Withdrawal",""
-2/11/2020,-12.01,-,"POS Purchase           ","FPOS MCDONALD'S #5483    FREDE"
-2/10/2020,-4.99,-,"POS Purchase           ","OPOS Spotify P0E89649A6  Stock"
-2/5/2020,-12.49,-,"POS Purchase           ","FPOS 9283 CARLETON CO-OP FLORE"
-2/3/2020,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-2/3/2020,-4.00,-,"POS Purchase           ","FPOS TIM HORTONS #2598   WOODS"
-2/3/2020,-65.00,-,"POS Purchase           ","FPOS MURRAY'S IRVING     BEARD"
-1/31/2020,-471.42,-,"POS Purchase           ","OPOS BELL ALIANT ONLINE #SAINT"
-1/30/2020,-6.89,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-1/30/2020,-12.29,-,"POS Purchase           ","SOBEYS 375               FREDE"
-1/29/2020,-25.49,-,"POS Purchase           ","FPOS HANWELL ROAD IRVING HANWE"
-1/29/2020,-8.05,-,"POS Purchase           ","FPOS BURGER KING #20441  FREDE"
-1/29/2020,-34.50,-,"POS Purchase           ","FPOS MOFFITT'S CONVENIENCHARVE"
-1/28/2020,-13.20,-,"POS Purchase           ","FPOS A&W #7218           FREDE"
-1/27/2020,-8.04,-,"POS Purchase           ","FPOS BURGER KING #23282  FREDE"
-1/27/2020,-61.95,-,"POS Purchase           ","FPOS IRVING/BOAT CLUB    FREDE"
-1/25/2020,-16.41,-,"POS Purchase           ","FPOS PITA PIT            FREDE"
-1/24/2020,-6.81,-,"Miscellaneous Payment  ","PAYPAL                       "
-1/23/2020,-13.10,-,"POS Purchase           ","FPOS WENDY'S RESTAURANT QFREDE"
-1/21/2020,-16.20,-,"POS Purchase           ","FPOS TACO BOYZ           FREDE"
-1/21/2020,-52.02,-,"POS Purchase           ","WAL-MART #3032           FREDE"
-1/21/2020,-100.00,-,"ABM Withdrawal",""
-1/18/2020,-8.57,-,"POS Purchase           ","FPOS TIM HORTONS # 945   FREDE"
-1/17/2020,-43.47,-,"POS Purchase           ","SOBEYS 375               FREDE"
-1/15/2020,-11.60,-,"POS Purchase           ","FPOS BURGER KING #20441  FREDE"
-1/15/2020,-6.85,-,"POS Purchase           ","FPOS TIM HORTONS #2131   FREDE"
-1/14/2020,-24.82,-,"POS Purchase           ","FPOS DAIRY SHOP/GISELE'S FREDE"
-1/13/2020,-50.00,-,"POS Purchase           ","FPOS CIRCLE K / IRVING  QFREDE"
-1/10/2020,-13.09,-,"POS Purchase           ","FPOS A&W MAIN STREET PLAZFREDE"
-1/10/2020,1189.00,-,"ABM Deposit",""
-1/10/2020,-4.99,-,"POS Purchase           ","OPOS Spotify P0E2BD45D7  Stock"
-1/9/2020,-7.29,-,"POS Purchase           ","FPOS MCDONALD'S #5483    FREDE"
-1/7/2020,-4.01,-,"POS Purchase           ","FPOS IRVING STATION #1170CHIPM"
-1/7/2020,-61.89,-,"POS Purchase           ","FPOS IRVING/BOAT CLUB    FREDE"
-1/6/2020,-255.95,-,"POS Purchase           ","OPOS 191.88 CODECADEMY   91728"
-1/6/2020,-21.58,-,"POS Purchase           ","WAL-MART #3032           FREDE"
-1/3/2020,147.50,-,"Provincial Payment     ","CANADA                       "
-1/2/2020,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-12/27/2019,-13.89,-,"POS Purchase           ","FPOS MANCHU WOK RESTAURANFREDE"
-12/27/2019,155.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-12/24/2019,-6.83,-,"Miscellaneous Payment  ","PAYPAL                       "
-12/23/2019,-30.00,-,"POS Purchase           ","MURRAY'S IRVING          BEARD"
-12/23/2019,-8.80,-,"POS Purchase           ","FPOS TIM HORTONS #2131   FREDE"
-12/21/2019,-14.81,-,"POS Purchase           ","FPOS SUBWAY # 5290       FREDE"
-12/21/2019,-180.00,-,"ABM Withdrawal",""
-12/19/2019,-3.16,-,"POS Purchase           ","FPOS TIM HORTONS #1791   MINTO"
-12/18/2019,-44.88,-,"POS Purchase           ","DOMINO'S PIZZA #10902    FREDE"
-12/17/2019,-27.51,-,"POS Purchase           ","FPOS SOBEYS #849        QFREDE"
-12/14/2019,-9.49,-,"POS Purchase           ","FPOS MCDONALD'S #1808    FREDE"
-12/13/2019,-24.00,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-12/12/2019,-15.68,-,"POS Purchase           ","FPOS DAIRY SHOP/GISELE'S FREDE"
-12/10/2019,-4.99,-,"POS Purchase           ","OPOS Spotify P0DCCEAEA3  Stock"
-12/9/2019,-4.13,-,"POS Purchase           ","FPOS PAPA JOHN'S PIZZA   FREDE"
-12/9/2019,-21.83,-,"POS Purchase           ","OPOS PAPA JOHN'S PIZZA #1FREDE"
-12/9/2019,-16.12,-,"POS Purchase           ","FPOS A&W #7218           FREDE"
-12/7/2019,-13.00,-,"POS Purchase           ","PITA PIT                 FREDE"
-12/7/2019,-27.45,-,"POS Purchase           ","CHECKER CAB              RICHI"
-12/6/2019,-68.99,-,"Miscellaneous Payment  ","PAYPAL                       "
-12/6/2019,-4.11,-,"POS Purchase           ","TIM HORTON'S T-DOMESTI   MISSI"
-12/2/2019,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-12/2/2019,-3.76,-,"POS Purchase           ","FPOS TIM HORTON'S T-DOMESMISSI"
-12/2/2019,1.12,-,"DEPOSIT                ",""
-12/2/2019,-9.51,-,"POS Purchase           ","FPOS MCDONALD'S #29096   FREDE"
-12/2/2019,-3.45,-,"POS Purchase           ","WAL-MART #3032           FREDE"
-12/2/2019,-42.19,-,"POS Purchase           ","WAL-MART #3032           FREDE"
-12/2/2019,-10.90,-,"POS Purchase           ","FPOS TIM HORTONS #0176   FREDE"
-11/29/2019,-102.67,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-11/29/2019,-459.94,-,"POS Purchase           ","OPOS Amazon.ca           Seatt"
-11/28/2019,-6.21,-,"POS Purchase           ","FPOS UNIVERSITY OF NEW BRFREDE"
-11/26/2019,-6.89,-,"Miscellaneous Payment  ","PAYPAL                       "
-11/26/2019,-12.75,-,"POS Purchase           ","FPOS MARY BROWN'S 3500   FREDE"
-11/25/2019,-33.72,-,"POS Purchase           ","FPOS SOBEYS 375          FREDE"
-11/21/2019,-5.74,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-11/20/2019,-24.13,-,"POS Purchase           ","CANNON'S CROSS PUB       FREDE"
-11/20/2019,-79.90,-,"POS Purchase           ","FPOS CIRCLE K / IRVING  QFREDE"
-11/19/2019,-15.90,-,"POS Purchase           ","OPOS Amazon.ca           Seatt"
-11/18/2019,-135.30,-,"Miscellaneous Payment  ","EnergieNB Power              "
-11/18/2019,-15.99,-,"POS Purchase           ","OPOS AMZN Mktp CA        WWW.A"
-11/18/2019,-180.00,-,"ABM Withdrawal",""
-11/18/2019,-12.05,-,"POS Purchase           ","FPOS WENDY'S RESTAURANT QFREDE"
-11/18/2019,-132.17,-,"POS Purchase           ","WALMARTSTORE#1067        FREDE"
-11/16/2019,-0.00,-,"Service Charge         ","PC-FREE EMAIL MONEY TRF"
-11/16/2019,-60.00,-,"WITHDRAWAL             ","PC-EMAIL MONEY TRF"
-11/16/2019,-350.01,-,"POS Purchase           ","OPOS BELL ALIANT ONLINE #SAINT"
-11/16/2019,-11.49,-,"POS Purchase           ","FPOS SUBWAY # 11109      FREDE"
-11/13/2019,-12.75,-,"POS Purchase           ","FPOS BURGER KING #19448  WATER"
-11/13/2019,-40.00,-,"POS Purchase           ","FPOS WATERVILLE IRVING 15WATER"
-11/13/2019,-13.33,-,"POS Purchase           ","FPOS MARY BROWN'S 3500   FREDE"
-11/13/2019,-180.00,-,"POS Purchase           ","SERVICE CANADA FREDERI   FREDE"
-11/12/2019,-23.00,-,"POS Purchase           ","HARVEY STUDIOS           FREDE"
-11/12/2019,-4.99,-,"POS Purchase           ","OPOS Spotify P0D70EFBFE  Stock"
-11/12/2019,-7.77,-,"POS Purchase           ","FPOS TIM HORTONS #0276   FREDE"
-11/9/2019,-10.45,-,"POS Purchase           ","BURGER KING #20441       FREDE"
-11/7/2019,-99.99,-,"POS Purchase           ","CNB #016                 FREDE"
-11/5/2019,-30.15,-,"POS Purchase           ","FPOS SOBEYS #849        QFREDE"
-11/4/2019,-70.00,-,"POS Purchase           ","CIRCLE K / IRVING #201   FREDE"
-11/1/2019,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-11/1/2019,-6.90,-,"POS Purchase           ","FPOS DAIRY SHOP/GISELE'S FREDE"
-10/29/2019,-75.01,-,"POS Purchase           ","SOBEYS #849        QPS   FREDE"
-10/28/2019,-10.45,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-10/26/2019,-13.33,-,"POS Purchase           ","FPOS MARY BROWN'S 3500   FREDE"
-10/25/2019,-91.99,-,"Miscellaneous Payment  ","PAYPAL                       "
-10/24/2019,-6.80,-,"Miscellaneous Payment  ","PAYPAL                       "
-10/22/2019,-28.74,-,"Miscellaneous Payment  ","PAYPAL                       "
-10/18/2019,-32.08,-,"POS Purchase           ","FPOS SOBEYS #849        QFREDE"
-10/15/2019,-180.00,-,"ABM Withdrawal",""
-10/15/2019,-60.00,-,"POS Purchase           ","FPOS WATERVILLE IRVING 15WATER"
-10/12/2019,-6.24,-,"POS Purchase           ","FPOS TIM HORTONS #2131   FREDE"
-10/10/2019,-4.99,-,"POS Purchase           ","OPOS Spotify P0D1553710  Stock"
-10/8/2019,-7.97,-,"POS Purchase           ","FPOS TIM HORTONS #0176   FREDE"
-10/8/2019,-59.98,-,"POS Purchase           ","FPOS SOBEYS #849        QFREDE"
-10/5/2019,-30.00,-,"POS Purchase           ","DOMINO'S PIZZA #10902    FREDE"
-10/4/2019,-11.26,-,"POS Purchase           ","FPOS MCDONALD'S #1808    FREDE"
-10/4/2019,-6.90,-,"POS Purchase           ","FPOS DAIRY SHOP/GISELE'S FREDE"
-10/4/2019,147.50,-,"Provincial Payment     ","CANADA                       "
-10/3/2019,-7.97,-,"POS Purchase           ","FPOS TIM HORTONS #0176   FREDE"
-10/2/2019,-0.00,-,"Service Charge         ","MB-FREE EMAIL MONEY TRF"
-10/2/2019,-60.00,-,"WITHDRAWAL             ","MB-EMAIL MONEY TRF"
-10/1/2019,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-10/1/2019,-47.46,-,"POS Purchase           ","GRECO PIZZA              FREDE"
-9/27/2019,-10.92,-,"POS Purchase           ","CELLAR PUB (CA100)       FREDE"
-9/24/2019,-6.89,-,"Miscellaneous Payment  ","PAYPAL                       "
-9/24/2019,-32.50,-,"POS Purchase           ","FPOS SOBEYS #849        QFREDE"
-9/21/2019,-12.16,-,"POS Purchase           ","FPOS WENDY'S RESTAURANT QFREDE"
-9/21/2019,-7.63,-,"POS Purchase           ","FPOS SOBEYS 375          FREDE"
-9/21/2019,-70.18,-,"POS Purchase           ","FPOS CIRCLE K / IRVING  QFREDE"
-9/19/2019,-6.89,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-9/17/2019,-6.90,-,"POS Purchase           ","FPOS DAIRY SHOP/GISELE'S FREDE"
-9/14/2019,-14.79,-,"POS Purchase           ","FPOS A&W #7218           FREDE"
-9/12/2019,-6.90,-,"POS Purchase           ","FPOS DAIRY SHOP/GISELE'S FREDE"
-9/11/2019,-180.00,-,"ABM Withdrawal",""
-9/10/2019,-4.99,-,"POS Purchase           ","OPOS Spotify P0CB386227  Stock"
-9/5/2019,-191.78,-,"POS Purchase           ","WAL-MART #3032           FREDE"
-9/4/2019,4207.25,-,"Student Loan           ","NB STUDENT LOAN              "
-9/4/2019,-82.00,-,"POS Purchase           ","UNB FINANCIAL SERVICES   FREDE"
-9/3/2019,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-9/3/2019,-5.75,-,"POS Purchase           ","FPOS TIM HORTONS #2853   BRIST"
-8/30/2019,-11.49,-,"Miscellaneous Payment  ","PAYPAL                       "
-8/27/2019,-50.16,-,"Miscellaneous Payment  ","EnergieNB Power              "
-8/27/2019,-326.01,-,"POS Purchase           ","OPOS BELL ALIANT ONLINE #SAINT"
-8/26/2019,-48.00,-,"POS Purchase           ","FPOS PERTH ANDOVER/IRVINGPERTH"
-8/23/2019,-27.24,-,"POS Purchase           ","FPOS TORONTO ZOO - RETAILSCARB"
-8/23/2019,-13.59,-,"POS Purchase           ","FPOS TORONTO ZOO - RETAILSCARB"
-8/22/2019,-58.58,-,"POS Purchase           ","HOCKEY HALL OF FAME      TORON"
-8/22/2019,-88.14,-,"POS Purchase           ","CN TOWER RETAIL STORE    TORON"
-8/21/2019,-39.52,-,"POS Purchase           ","WAL-MART #3054           MISSI"
-8/19/2019,-10.99,-,"POS Purchase           ","OPOS STEAMGAMES.COM      425-9"
-8/16/2019,520.00,-,"ABM Deposit",""
-8/16/2019,-13.86,-,"POS Purchase           ","DINER DOWN UNDER         BATH "
-8/10/2019,-4.99,-,"POS Purchase           ","OPOS Spotify P0C3751BE6  Stock"
-8/8/2019,-12.24,-,"POS Purchase           ","FPOS BURGER KING #19448  WATER"
-8/5/2019,-13.66,-,"POS Purchase           ","FPOS SUBWAY # 5290       FREDE"
-8/5/2019,-55.00,-,"POS Purchase           ","FPOS IRVING #15886       WOODS"
-8/2/2019,360.00,-,"ABM Deposit",""
-8/1/2019,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-8/1/2019,-162.00,-,"POS Purchase           ","OPOS SERVICE NB - ONLINE FREDE"
-7/26/2019,600.00,-,"ABM Deposit",""
-7/18/2019,-0.00,-,"Service Charge         ","PC-FREE EMAIL MONEY TRF"
-7/18/2019,-40.00,-,"WITHDRAWAL             ","PC-EMAIL MONEY TRF"
-7/16/2019,-6.88,-,"POS Purchase           ","BURGER KING #19448       WATER"
-7/16/2019,-61.87,-,"POS Purchase           ","FPOS WATERVILLE IRVING 15WATER"
-7/15/2019,-102.13,-,"POS Purchase           ","9283 CARLETON CO-OP      FLORE"
-7/11/2019,-183.95,-,"POS Purchase           ","OPOS FITBIT, INC. UF3CV4387762"
-7/10/2019,-4.99,-,"POS Purchase           ","OPOS Spotify P0BC0B1632  Stock"
-7/8/2019,67.12,-,"Insurance              ","AMERICAN INCOME              "
-7/5/2019,297.00,-,"ABM Deposit",""
-7/5/2019,147.50,-,"Provincial Payment     ","CANADA                       "
-7/4/2019,-31.98,-,"POS Purchase           ","FPOS DOMINO'S PIZZA #1090FREDE"
-7/4/2019,-315.69,-,"POS Purchase           ","OPOS BELL ALIANT ONLINE #SAINT"
-7/4/2019,-6.90,-,"POS Purchase           ","FPOS DAIRY SHOP/GISELE'S FREDE"
-7/3/2019,-320.00,-,"Correction             ",""
-7/3/2019,340.00,-,"DEPOSIT                ",""
-7/2/2019,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-6/28/2019,320.00,-,"ABM Deposit",""
-6/24/2019,35.00,-,"DEPOSIT                ","MB-EMAIL MONEY TRF"
-6/19/2019,-151.44,-,"POS Purchase           ","#284 SPORT CHEK          FREDE"
-6/19/2019,-3.91,-,"POS Purchase           ","FPOS TIM HORTONS #2853   BRIST"
-6/18/2019,-2.77,-,"Miscellaneous Payment  ","PAYPAL                       "
-6/17/2019,-54.72,-,"POS Purchase           ","FPOS WATERVILLE IRVING 15WATER"
-6/11/2019,-149.44,-,"POS Purchase           ","#284 SPORT CHEK          FREDE"
-6/11/2019,-25.04,-,"POS Purchase           ","FPOS MANCHU WOK RESTAURANFREDE"
-6/10/2019,-13.99,-,"POS Purchase           ","OPOS CINEPLEX #8030 WEB QTORON"
-6/10/2019,-4.99,-,"POS Purchase           ","OPOS Spotify P0B480BBD8  Stock"
-6/10/2019,-160.21,-,"POS Purchase           ","WAL-MART #3032           FREDE"
-6/10/2019,-15.49,-,"POS Purchase           ","FPOS SUBWAY # 20599      FREDE"
-6/7/2019,-12.87,-,"POS Purchase           ","FPOS SOBEYS #349        QFREDE"
-6/6/2019,-67.12,-,"Insurance              ","AMERICAN INCOME              "
-6/6/2019,-44.85,-,"POS Purchase           ","OPOS Amazon.ca Prime Membamazo"
-6/6/2019,-56.25,-,"POS Purchase           ","DOMINO'S PIZZA #10902    FREDE"
-6/3/2019,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-5/29/2019,-19.83,-,"POS Purchase           ","THE HILLTOP              FREDE"
-5/28/2019,-33.71,-,"POS Purchase           ","GRECO PIZZA              FREDE"
-5/28/2019,-200.00,-,"ABM Withdrawal",""
-5/28/2019,-150.00,-,"POS Purchase           ","SOBEYS 375               FREDE"
-5/28/2019,-62.17,-,"POS Purchase           ","FPOS CIRCLE K / IRVING  QFREDE"
-5/27/2019,-3.89,-,"Miscellaneous Payment  ","PAYPAL                       "
-5/25/2019,-1.54,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-5/22/2019,-16.08,-,"POS Purchase           ","FPOS TIM HORTONS #0176   FREDE"
-5/21/2019,-6.90,-,"POS Purchase           ","FPOS DAIRY SHOP/GISELE'S FREDE"
-5/21/2019,-4.36,-,"POS Purchase           ","FPOS MCDONALD'S #1808    FREDE"
-5/21/2019,-32.88,-,"POS Purchase           ","FPOS CINEPLEX #6111      FREDE"
-5/18/2019,-0.00,-,"Service Charge         ","PC-FREE EMAIL MONEY TRF"
-5/18/2019,-500.00,-,"WITHDRAWAL             ","PC-EMAIL MONEY TRF"
-5/17/2019,-32.65,-,"POS Purchase           ","GRECO PIZZA              FREDE"
-5/15/2019,-7.46,-,"POS Purchase           ","FPOS TIM HORTONS #0276   FREDE"
-5/14/2019,-6.95,-,"Miscellaneous Payment  ","PAYPAL                       "
-5/14/2019,-8.05,-,"POS Purchase           ","FPOS SOBEYS 375          FREDE"
-5/14/2019,-43.00,-,"POS Purchase           ","FPOS CRUISER HOLDINGS INCCHARL"
-5/13/2019,221.80,-,"Tax Refund             ","CANADA                       "
-5/11/2019,0.34,-,"POS Return             ","OPOS 0.26 Amazon.com     Amzn."
-5/10/2019,-4.29,-,"POS Purchase           ","FPOS TIM HORTONS #2848   FREDE"
-5/10/2019,-4.99,-,"POS Purchase           ","OPOS Spotify P0ACCBD915  Stock"
-5/9/2019,-7.23,-,"POS Purchase           ","GRECO PIZZA              FREDE"
-5/9/2019,-36.99,-,"POS Purchase           ","FPOS ALCOOL NB LIQUOR  #0FREDE"
-5/9/2019,-31.71,-,"POS Purchase           ","THE SNOOTY FOX           FREDE"
-5/9/2019,-30.00,-,"POS Purchase           ","FPOS MURRAY'S IRVING     BEARD"
-5/8/2019,-4.91,-,"POS Purchase           ","FPOS GLENN'S GROCERY LTD.FLORE"
-5/8/2019,-12.24,-,"POS Purchase           ","DOMINO'S PIZZA #10902    FREDE"
-5/8/2019,-149.44,-,"POS Purchase           ","#284 SPORT CHEK          FREDE"
-5/8/2019,-3.71,-,"POS Purchase           ","FPOS TIM HORTONS #2853   BRIST"
-5/6/2019,-54.27,-,"Miscellaneous Payment  ","EnergieNB Power              "
-5/6/2019,-12.62,-,"POS Purchase           ","FPOS BURGER KING #23282  FREDE"
-5/6/2019,-20.00,-,"POS Purchase           ","CLIFFE STREET IRVING     FREDE"
-5/6/2019,-20.00,-,"POS Purchase           ","RINGO'S BAR & GRILL      FREDE"
-5/4/2019,-160.40,-,"POS Purchase           ","OPOS BELL ALIANT ONLINE #SAINT"
-5/3/2019,-23.31,-,"POS Purchase           ","GRECO PIZZA              FREDE"
-5/2/2019,-19.83,-,"POS Purchase           ","EASTSIDE MARIOS #8794    FREDE"
-5/2/2019,-6.90,-,"POS Purchase           ","FPOS DAIRY SHOP/GISELE'S FREDE"
-5/1/2019,-370.00,-,"Rent/Lease             ","SKYFALL                      "
-5/1/2019,-28.74,-,"Miscellaneous Payment  ","PAYPAL                       "
-5/1/2019,-12.41,-,"POS Purchase           ","FPOS MARY BROWN'S 3500   FREDE"
-4/30/2019,-15.39,-,"POS Purchase           ","SUBWAY # 5290            FREDE"
-4/30/2019,-40.00,-,"POS Purchase           ","FPOS CIRCLE K / IRVING  QFREDE"
-4/29/2019,-5.74,-,"POS Purchase           ","FPOS CINEPLEX #6111      FREDE"
-4/29/2019,-9.42,-,"POS Purchase           ","FPOS WENDY'S RESTAURANT QFREDE"
-4/29/2019,-9.53,-,"POS Purchase           ","FPOS TIM HORTONS #0176   FREDE"
-4/29/2019,-0.00,-,"Service Charge         ","PC-FREE EMAIL MONEY TRF"
-4/29/2019,-60.00,-,"WITHDRAWAL             ","PC-EMAIL MONEY TRF"
-4/25/2019,-3.89,-,"Miscellaneous Payment  ","PAYPAL                       "
-4/25/2019,-15.52,-,"POS Purchase           ","CELLAR PUB (CA100)       FREDE"
-4/25/2019,1719.00,-,"DEPOSIT                ",""
-4/18/2019,-11.49,-,"Miscellaneous Payment  ","PAYPAL                       "
-4/18/2019,-19.39,-,"POS Purchase           ","DOMINO'S PIZZA #10902    FREDE"
-4/17/2019,-13.44,-,"POS Purchase           ","FPOS MANCHU WOK RESTAURANFREDE"
-4/17/2019,-30.90,-,"POS Purchase           ","WAL-MART #3032           FREDE"
-4/17/2019,-80.00,-,"POS Purchase           ","FPOS CIRCLE K / IRVING  QFREDE"
-4/17/2019,-180.00,-,"ABM Withdrawal",""
-4/16/2019,-7.66,-,"POS Purchase           ","FPOS TIM HORTONS #2131   FREDE"
-4/15/2019,-6.91,-,"Miscellaneous Payment  ","PAYPAL                       "
-4/15/2019,-33.28,-,"POS Purchase           ","GRECO PIZZA              FREDE"
-4/15/2019,-9.41,-,"POS Purchase           ","FPOS WENDY'S RESTAURANT QFREDE"
-4/11/2019,-11.59,-,"POS Purchase           ","FPOS MARY BROWN'S 3500   FREDE"
-4/10/2019,-4.99,-,"POS Purchase           ","OPOS Spotify P0A56621F8  Stock"
-4/10/2019,-6.43,-,"POS Purchase           ","FPOS TIM HORTONS #0176   FREDE"
-4/9/2019,-10.35,-,"POS Purchase           ","FPOS DAIRY QUEEN #12176  FREDE"
-4/9/2019,-28.80,-,"POS Purchase           ","FPOS SOBEYS #849        QFREDE"
-4/8/2019,-1.36,-,"POS Purchase           ","FPOS UNIV OF NEW BRUNSWICFREDE"
-4/6/2019,-2.96,-,"POS Purchase           ","MAIL N MART              FREDE"
-4/6/2019,-20.25,-,"POS Purchase           ","RINGO'S BAR & GRILL      FREDE"
-4/5/2019,161.90,-,"Provincial Payment     ","CANADA                       "
-4/2/2019,-160.00,-,"ABM Withdrawal",""
-4/2/2019,-51.87,-,"POS Purchase           ","FPOS SOBEYS #849        QFREDE"
-4/1/2019,-362.50,-,"Rent/Lease             ","SKYFALL                      "
-4/1/2019,-11.83,-,"POS Purchase           ","FPOS WENDY'S RESTAURANT QFREDE"
+7/19/2021,-55.41,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+7/19/2021,-10.35,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+7/19/2021,-12.75,-,POS Purchase           ,FPOS MARY BROWN'S 3500   FREDE
+7/19/2021,-92.4,-,POS Purchase           ,FPOS WALMART STORE #3032 FREDE
+7/17/2021,-9.75,-,POS Purchase           ,FPOS MCDONALD'S #5483    FREDE
+7/16/2021,-200,-,POS Purchase           ,CNB #016                 FREDE
+7/16/2021,-29.79,-,POS Purchase           ,FPOS PETRO-CANADA        LAKE 
+7/16/2021,-6.92,-,POS Purchase           ,FPOS TIM HORTONS #2598   WOODS
+7/16/2021,-55.4,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+7/15/2021,612.55,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+7/12/2021,-57.55,-,POS Purchase           ,FPOS RED APPLE #54401    FLORE
+7/9/2021,-55.03,-,POS Purchase           ,FPOS IRVING/FLORENCEVILLEFLORE
+7/8/2021,612.55,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+7/5/2021,149.75,-,Provincial Payment     ,CANADA                       
+7/5/2021,-54.4,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+7/5/2021,-23,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+7/3/2021,-68.88,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+7/3/2021,-91.88,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+7/2/2021,-477.5,40,Cheque                 ,
+7/2/2021,-8.04,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+6/30/2021,-609.77,-,Miscellaneous Payment  ,NSLSC                        
+6/30/2021,-16.95,-,Service Charge         ,MONTHLY FEES
+6/30/2021,-200,-,POS Purchase           ,CNB #016                 FREDE
+6/30/2021,-26.53,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+6/30/2021,609.44,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+6/25/2021,-53.06,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+6/24/2021,-6.46,-,Miscellaneous Payment  ,PAYPAL                       
+6/24/2021,-20,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+6/24/2021,-13.2,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+6/24/2021,-50.03,-,POS Purchase           ,FPOS GRAB N GO WATERVILLEWATER
+6/24/2021,629.23,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+6/23/2021,-24.95,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/23/2021,-79.9,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/23/2021,-34.49,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/23/2021,-34.49,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/23/2021,-39.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/22/2021,-149.44,-,POS Purchase           ,"OPOS DRI*FITBIT, INC.    order"
+6/22/2021,-200,-,POS Purchase           ,CNB #018                 PERTH
+6/22/2021,-52.79,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+6/22/2021,-31.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/21/2021,-773.99,-,POS Purchase           ,KEITH'S SERVICE CENTRE   BATH 
+6/21/2021,-24.62,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/21/2021,-92.44,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/21/2021,-36.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/19/2021,-1.5,-,POS Purchase           ,FPOS RILEY BROOK HOLDINGSRILEY
+6/19/2021,-22.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/19/2021,-52.89,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/19/2021,-21.53,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/18/2021,-52.78,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+6/17/2021,629.23,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+6/14/2021,-119.99,-,POS Purchase           ,CNB #018                 PERTH
+6/14/2021,-26.57,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+6/14/2021,-8.95,-,POS Purchase           ,FPOS BK #09448           WATER
+6/14/2021,-13.78,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+6/14/2021,36.99,-,Correction             ,5.81158E+14
+6/11/2021,-100,-,POS Purchase           ,FPOS CNB #016            FREDE
+6/11/2021,-20.29,-,POS Purchase           ,FPOS PETRO-CANADA        LAKE 
+6/11/2021,-2.02,-,POS Purchase           ,FPOS TIM HORTONS #2598   WOODS
+6/11/2021,-50.77,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+6/10/2021,629.23,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+6/9/2021,-32.53,-,POS Purchase           ,OPOS AMZN Mktp CA*2X1K43AWWW.A
+6/9/2021,69.52,-,Correction             ,OPOS AMZN Mktp CA*2X1K43AWWW.A
+6/7/2021,-103.49,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/7/2021,500,-,DEPOSIT                ,FREE INTERAC E-TRANSFER
+6/7/2021,500,-,DEPOSIT                ,FREE INTERAC E-TRANSFER
+6/7/2021,-90.85,-,POS Purchase           ,OPOS Amazon.ca Prime Membamazo
+6/7/2021,-36.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/5/2021,-24.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/5/2021,24.99,-,Correction             ,OPOS AMAZON.COM   PMTS - WWW.A
+6/5/2021,-15.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/5/2021,189,-,Correction             ,OPOS AMAZON.COM   PMTS - WWW.A
+6/5/2021,-69.52,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/4/2021,-52.5,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+6/3/2021,629.23,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+6/2/2021,-24.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/1/2021,-477.5,39,Cheque                 ,
+6/1/2021,-189,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/1/2021,-123.45,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/1/2021,-22.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/1/2021,-37.45,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/1/2021,-62.8,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/1/2021,-34.5,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+5/31/2021,-643.8,-,Miscellaneous Payment  ,NSLSC                        
+5/31/2021,-16.95,-,Service Charge         ,MONTHLY FEES
+5/28/2021,-51.51,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+5/27/2021,-100,-,POS Purchase           ,FPOS CNB #018            PERTH
+5/27/2021,629.23,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+5/25/2021,-6.3,-,Miscellaneous Payment  ,PAYPAL                       
+5/21/2021,-700,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+5/21/2021,-73.39,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+5/20/2021,731.07,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+5/18/2021,-149.99,-,POS Purchase           ,CNB #018                 PERTH
+5/18/2021,-79.99,-,POS Purchase           ,FPOS CNB #018            PERTH
+5/17/2021,-12.52,-,POS Purchase           ,FPOS DAIRY QUEEN #12192  WOODS
+5/17/2021,-30,-,POS Purchase           ,MURRAY'S IRVING          BEARD
+5/17/2021,-2.02,-,POS Purchase           ,FPOS TIM HORTONS #2598   WOODS
+5/17/2021,-8.37,-,POS Purchase           ,MCDONALD'S #1808         FREDE
+5/15/2021,-50,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+5/14/2021,-31.81,-,POS Purchase           ,OPOS Greco Online        90289
+5/14/2021,-29.79,-,POS Purchase           ,FPOS PETRO-CANADA        LAKE 
+5/14/2021,-58.27,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+5/13/2021,-21.15,-,POS Purchase           ,OPOS 16.99 WNBA LIVEACCESPLAIN
+5/13/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+5/11/2021,-18.36,-,POS Purchase           ,FPOS MARK'S THE SPOT     BEECH
+5/7/2021,-49.6,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+5/6/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+5/3/2021,-477.5,38,Cheque                 ,
+4/30/2021,-16.95,-,Service Charge         ,MONTHLY FEES
+4/30/2021,-60,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+4/30/2021,-100,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+4/29/2021,-9.99,-,POS Purchase           ,FPOS TIM HORTONS #2853   BRIST
+4/29/2021,-2000,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+4/29/2021,3000,-,DEPOSIT                ,INTERAC E-TRANSFER RTN
+4/29/2021,-3000,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+4/29/2021,-22.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+4/29/2021,-22.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+4/29/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+4/27/2021,-20,-,Miscellaneous Payment  ,PAYPAL                       
+4/26/2021,-6.53,-,Miscellaneous Payment  ,PAYPAL                       
+4/23/2021,-6.08,-,POS Purchase           ,FPOS SMITH DRUGS         FLORE
+4/23/2021,-75.01,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+4/22/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+4/21/2021,25,-,Credit Memo            ,ADJUSTMENT OTHER
+4/21/2021,-32.55,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+4/20/2021,-15.17,-,Miscellaneous Payment  ,PAYPAL                       
+4/19/2021,-16.53,-,POS Purchase           ,FPOS DAIRY QUEEN #12192  WOODS
+4/19/2021,-161.51,-,POS Purchase           ,WALMART STORE #1043      WOODS
+4/19/2021,-15.26,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+4/16/2021,-55,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+4/15/2021,-11.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+4/15/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+4/13/2021,-30.66,-,Miscellaneous Payment  ,PAYPAL                       
+4/10/2021,-10.32,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+4/9/2021,-55.01,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+4/8/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+4/1/2021,-477.5,37,Cheque                 ,
+4/1/2021,-55,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+4/1/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+4/1/2021,149,-,Provincial Payment     ,CANADA                       
+3/31/2021,-49.99,-,POS Purchase,FPOS CNB #018            PERTH ANDOVNBCA
+3/31/2021,-110.99,-,POS Purchase,CNB #018                 PERTH ANDOVNBCA
+3/26/2021,-55.01,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+3/25/2021,-28.99,-,POS Purchase           ,OPOS AMZN Mktp CA*K09SB8DWWW.A
+3/25/2021,141.97,-,Correction             ,OPOS AMZN Mktp CA*K09SB8DWWW.A
+3/25/2021,-112.98,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+3/25/2021,-141.97,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+3/25/2021,-28.97,-,POS Purchase           ,OPOS Amazon.ca           AMAZO
+3/25/2021,-180.43,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+3/25/2021,-33.51,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+3/25/2021,-28.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+3/25/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+3/24/2021,-6.53,-,Miscellaneous Payment  ,PAYPAL                       
+3/22/2021,-59.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+3/20/2021,-93.46,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+3/20/2021,-47.96,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+3/19/2021,-250,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+3/19/2021,-70,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+3/18/2021,-29.89,-,Miscellaneous Payment  ,PAYPAL                       
+3/18/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+3/17/2021,-25,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+3/15/2021,-10.09,-,POS Purchase           ,FPOS MARK'S THE SPOT     BEECH
+3/15/2021,-26.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+3/13/2021,-7.69,-,POS Purchase           ,FPOS Subway              Water
+3/13/2021,-35,-,POS Purchase           ,FPOS WATERVILLE IRVING 15WATER
+3/13/2021,-1.46,-,POS Purchase           ,FPOS DAIRY QUEEN #12192  WOODS
+3/12/2021,-25.49,-,POS Purchase           ,FPOS PETRO-CANADA        LAKE 
+3/12/2021,-55,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+3/11/2021,-11.61,-,POS Purchase           ,FPOS TIM HORTONS #2853   BRIST
+3/11/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+3/5/2021,-10.98,-,POS Purchase           ,DINER DOWN UNDER         BATH 
+3/4/2021,-4.38,-,POS Purchase           ,CENTREVILLE VALUFOODS    CENTR
+3/4/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+3/3/2021,-79.42,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+3/2/2021,-5.07,-,Miscellaneous Payment  ,PAYPAL                       
+3/2/2021,-10.54,-,POS Purchase           ,FPOS MARK'S THE SPOT     BEECH
+3/1/2021,-477.5,36,Cheque                 ,
+2/27/2021,-15.95,-,Service Charge         ,MONTHLY FEES
+2/27/2021,-11.44,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+2/26/2021,-5.51,-,POS Purchase           ,FPOS SMITH DRUGS         FLORE
+2/26/2021,-72.55,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+2/26/2021,-150,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+2/25/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+2/24/2021,-6.59,-,Miscellaneous Payment  ,PAYPAL                       
+2/18/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+2/17/2021,-71.73,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+2/13/2021,-55.28,-,POS Purchase           ,TINA'S KITCHEN           HARTL
+2/12/2021,-19.73,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+2/12/2021,-98.9,-,POS Purchase           ,FPOS WALMART STORE #3032 FREDE
+2/12/2021,-175.93,-,POS Purchase           ,WALMART STORE #3032      FREDE
+2/12/2021,-89.98,-,POS Purchase           ,CNB #016                 FREDE
+2/12/2021,-60,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+2/11/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+2/9/2021,-89.99,-,Miscellaneous Payment  ,PAYPAL                       
+2/5/2021,-5.74,-,POS Purchase           ,OPOS PrimeVideo.ca       www.a
+2/5/2021,-65.43,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+2/4/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+2/1/2021,-477.5,35,Cheque                 ,
+2/1/2021,-4.6,-,POS Purchase           ,FPOS GCDS625 BRISTOL     BRIST
+1/30/2021,-15.95,-,Service Charge         ,MONTHLY FEES
+1/29/2021,-60,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+1/28/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+1/26/2021,-6.64,-,Miscellaneous Payment  ,PAYPAL                       
+1/25/2021,-85.99,-,POS Purchase           ,FPOS CNB #018            PERTH
+1/22/2021,-55,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+1/21/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+1/18/2021,-41.41,-,POS Purchase           ,FPOS RAYNER'S AUTOMOTIVE FLORE
+1/15/2021,-10.91,-,Miscellaneous Payment  ,PAYPAL                       
+1/15/2021,-20.27,-,Miscellaneous Payment  ,PAYPAL                       
+1/15/2021,-62.15,-,POS Purchase           ,FLORENCEVILLE IRVING     WEST 
+1/14/2021,602.3,-,Payroll Deposit        ,BWS MANUFACTURING LTD        
+1/13/2021,-50,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+1/8/2021,-5.51,-,POS Purchase           ,FPOS SMITH DRUGS         FLORE
+1/7/2021,-55.01,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+1/5/2021,-50,-,POS Purchase           ,FPOS CNB #018            PERTH
+1/5/2021,-251.75,-,POS Purchase           ,OPOS 191.88 CODECADEMY   +1844
+1/5/2021,16.84,-,DEPOSIT                ,INTERAC E-TRANSFER
+1/5/2021,-16.84,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+1/5/2021,-38.88,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+1/5/2021,149,-,Provincial Payment     ,CANADA                       
+1/4/2021,-477.5,34,Cheque                 ,
+12/31/2020,-16.09,-,Miscellaneous Payment  ,PAYPAL                       
+12/31/2020,-7.69,-,Miscellaneous Payment  ,PAYPAL                       
+12/31/2020,-15.95,-,Service Charge         ,MONTHLY FEES
+12/30/2020,-49.13,-,POS Purchase           ,OPOS MARKS.COM/LEQUIPEUR.86680
+12/30/2020,-28.31,-,POS Purchase           ,OPOS MARKS.COM/LEQUIPEUR.86680
+12/29/2020,-29.19,-,Miscellaneous Payment  ,PAYPAL                       
+12/29/2020,-48.54,-,POS Purchase           ,OPOS MARKS.COM/LEQUIPEUR.86680
+12/29/2020,125.98,-,Correction             ,CORRECTION                    
+12/29/2020,-125.98,-,POS Purchase           ,OPOS MARKS.COM/LEQUIPEUR.86680
+12/24/2020,-6.74,-,Miscellaneous Payment  ,PAYPAL                       
+12/24/2020,-5.49,-,Miscellaneous Payment  ,PAYPAL                       
+12/24/2020,285,-,Accounts Payable       ,UNIVERSITY OF NEW BRUNSWICK  
+12/21/2020,-70,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+12/16/2020,500,-,ABM Deposit,
+12/11/2020,-57.91,-,POS Purchase           ,GIANT TIGER #118         GRAND
+12/10/2020,250,-,ABM Deposit,
+12/3/2020,-3.24,-,POS Purchase           ,FPOS FLORENCEVILLE ESSO  WEST 
+12/1/2020,-477.5,33,Cheque                 ,
+11/30/2020,-643.8,-,Miscellaneous Payment  ,NSLSC                        
+11/30/2020,-37.36,-,Miscellaneous Payment  ,PAYPAL                       
+11/30/2020,-100,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+11/30/2020,-605,-,WITHDRAWAL             ,FREE INTERAC E-TRANSFER
+11/27/2020,1000,-,DEPOSIT                ,
+11/25/2020,-56.96,-,Miscellaneous Payment  ,PAYPAL                       
+11/25/2020,-2.89,-,Miscellaneous Payment  ,PAYPAL                       
+11/25/2020,-6.82,-,Miscellaneous Payment  ,PAYPAL                       
+11/16/2020,-2.22,-,POS Purchase           ,FPOS TIM HORTONS #2598   WOODS
+11/16/2020,-11.48,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+11/13/2020,-34.44,-,POS Purchase           ,FPOS FLORENCEVILLE IRVINGWEST 
+11/12/2020,-57.24,-,POS Purchase           ,FPOS BRENNAN HOME HARDWARFLORE
+11/10/2020,-47.99,-,POS Purchase           ,FPOS CNB #018            PERTH
+11/10/2020,-9.99,-,POS Purchase           ,OPOS Spotify P1218E1D37  Stock
+11/9/2020,-59.3,-,POS Purchase           ,MARK'S THE SPOT          BEECH
+11/3/2020,-4,-,POS Purchase           ,OPOS SC* ONLINE PAYMENT  INTER
+11/2/2020,-477.5,32,Cheque                 ,
+11/2/2020,-643.8,-,Miscellaneous Payment  ,NSLSC                        
+10/26/2020,-6.83,-,Miscellaneous Payment  ,PAYPAL                       
+10/26/2020,-60,-,POS Purchase           ,FPOS MARK'S THE SPOT     BEECH
+10/20/2020,-44.99,-,POS Purchase           ,FPOS CNB #018            PERTH
+10/16/2020,-11.83,-,Miscellaneous Payment  ,PAYPAL                       
+10/13/2020,-60,-,POS Purchase           ,FPOS MARK'S THE SPOT     BEECH
+10/10/2020,-9.99,-,POS Purchase           ,OPOS Spotify P11ADFDDFA  Stock
+10/9/2020,-129.88,-,POS Purchase           ,WALMART STORE #3032      FREDE
+10/5/2020,149,-,Provincial Payment     ,CANADA                       
+10/3/2020,-4,-,POS Purchase           ,OPOS CV-Resume           85521
+10/1/2020,-477.5,31,Cheque                 ,
+9/28/2020,-84.39,-,Miscellaneous Payment  ,PAYPAL                       
+9/24/2020,-6.91,-,Miscellaneous Payment  ,PAYPAL                       
+9/22/2020,-47.79,-,POS Purchase           ,FPOS MARK'S THE SPOT     BEECH
+9/17/2020,4.99,-,Correction             ,4.60255E+14
+9/15/2020,-4.99,-,Debit Memo             ,ADJUSTMENT OTHER
+9/10/2020,-4.99,-,POS Purchase           ,OPOS Spotify P1141E5D3C  Stock
+9/8/2020,-7.69,-,POS Purchase           ,FPOS MCDONALD'S #6659   QGRAND
+9/5/2020,-20,-,POS Purchase           ,CIRCLE K / IRVING #201   WAASI
+9/4/2020,40,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+9/4/2020,1250,-,Federal Payment        ,CANADA                       
+9/3/2020,23.38,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+9/3/2020,-4,-,POS Purchase           ,OPOS SC* ONLINE PAYMENT  INTER
+9/2/2020,-30,-,POS Purchase           ,FPOS IRVING/FLORENCEVILLEFLORE
+9/1/2020,-477.5,-,Miscellaneous Payment  ,Colpitts Developments        
+9/1/2020,-32.55,-,POS Purchase           ,OPOS Amazon.ca           AMAZO
+8/29/2020,-6.2,-,POS Purchase           ,DAIRY QUEEN #12192       WOODS
+8/27/2020,-22.48,-,POS Purchase           ,FPOS CO-OP #9283         FLORE
+8/27/2020,-7.5,-,Service Charge         ,
+8/27/2020,-467.5,-,Debit Memo             ,DRAFT PURCHASE
+8/26/2020,-28.74,-,Miscellaneous Payment  ,PAYPAL                       
+8/25/2020,-6.86,-,Miscellaneous Payment  ,PAYPAL                       
+8/11/2020,-32.42,-,Miscellaneous Payment  ,PAYPAL                       
+8/10/2020,-4.99,-,POS Purchase           ,OPOS Spotify P10DB0D4BE  Stock
+8/6/2020,-90,-,POS Purchase           ,FPOS SNB - BRISTOL       FLORE
+8/5/2020,-23.38,-,POS Purchase           ,OPOS 16.99 WNBA LIVEACCESPLAIN
+8/5/2020,1.37,-,Correction             ,5.80212E+14
+8/4/2020,-467.5,29,Cheque                 ,
+8/3/2020,-4,-,POS Purchase           ,OPOS SC* ONLINE PAYMENT  INTER
+7/30/2020,-162,-,POS Purchase           ,OPOS SERVICE NB - ONLINE FREDE
+7/29/2020,-1.37,-,POS Purchase           ,OPOS 1.00 WNBA LIVEACCESSPLAIN
+7/28/2020,1250,-,Federal Payment        ,CANADA                       
+7/24/2020,-6.99,-,Miscellaneous Payment  ,PAYPAL                       
+7/24/2020,63.2,-,Correction             ,3.802E+14
+7/23/2020,-2.02,-,POS Purchase           ,FPOS TIM HORTONS #2848   FREDE
+7/23/2020,-2.52,-,POS Purchase           ,FPOS TIM HORTONS #2598   WOODS
+7/17/2020,-63.2,-,POS Purchase           ,OPOS PAPA JOHN'S PIZZA #1FREDE
+7/17/2020,42,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+7/17/2020,-32.6,-,POS Purchase           ,FPOS MARITIME BUS        FREDE
+7/16/2020,-43.19,-,POS Purchase           ,FPOS WATERVILLE IRVING 15WATER
+7/10/2020,-4.99,-,POS Purchase           ,OPOS Spotify P107B0FD46  Stock
+7/9/2020,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+7/9/2020,-467.5,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+7/8/2020,467.5,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+7/8/2020,-6.66,-,POS Purchase           ,FPOS TIM HORTONS #2598   WOODS
+7/6/2020,-50,-,POS Purchase           ,MURRAY'S IRVING          BEARD
+7/3/2020,-4,-,POS Purchase           ,OPOS BLD*Resume          85521
+7/3/2020,149,-,Provincial Payment     ,CANADA                       
+6/30/2020,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+6/30/2020,-467.5,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+6/29/2020,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+6/29/2020,-50,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+6/24/2020,-7.06,-,Miscellaneous Payment  ,PAYPAL                       
+6/19/2020,1250,-,Federal Payment        ,CANADA                       
+6/18/2020,-29.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+6/11/2020,362.5,-,DEPOSIT                ,MB-DEP
+6/10/2020,-4.99,-,POS Purchase           ,OPOS Spotify P1016DF90E  Stock
+6/8/2020,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+6/8/2020,-467.5,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+6/3/2020,-4,-,POS Purchase           ,OPOS BLD*Resume          85521
+5/26/2020,-7.28,-,Miscellaneous Payment  ,PAYPAL                       
+5/25/2020,-10.25,-,POS Purchase           ,FPOS TACO BOYZ           FREDE
+5/22/2020,-67.96,-,POS Purchase           ,FPOS SOBEYS #375         FREDE
+5/21/2020,-467.5,27,Cheque                 ,
+5/20/2020,1250,-,Federal Payment        ,CANADA                       
+5/14/2020,-10,-,Miscellaneous Payment  ,PAYPAL                       
+5/13/2020,-32.32,-,POS Purchase           ,FPOS 9283 CARLETON CO-OP FLORE
+5/11/2020,-4.99,-,POS Purchase           ,OPOS Spotify P0FAEF62A7  Stock
+5/5/2020,-519.83,-,Miscellaneous Payment  ,EnergieNB Power              
+5/4/2020,-520.38,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+5/4/2020,-4,-,POS Purchase           ,OPOS BLD*Resume          85521
+5/1/2020,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+5/1/2020,-100,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+4/29/2020,100,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+4/29/2020,460,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+4/27/2020,-25.88,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+4/24/2020,-50,-,Miscellaneous Payment  ,PAYPAL                       
+4/24/2020,-7.38,-,Miscellaneous Payment  ,PAYPAL                       
+4/18/2020,-1,-,POS Purchase           ,OPOS BLD*Resume          85521
+4/18/2020,-1.95,-,POS Purchase           ,OPOS BLD*Resume          85521
+4/18/2020,-122.57,-,POS Purchase           ,WAL-MART #1067           FREDE
+4/16/2020,-18.96,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+4/16/2020,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+4/16/2020,-140,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+4/11/2020,-56.37,-,POS Purchase           ,OPOS PAPA JOHN'S PIZZA #1FREDE
+4/11/2020,-4.99,-,POS Purchase           ,OPOS Spotify P0F4ACEEDB  Stock
+4/9/2020,-58.96,-,POS Purchase           ,FPOS IRVING/BOAT CLUB    FREDE
+4/9/2020,290,-,GST                    ,CANADA                       
+4/3/2020,-46.97,-,POS Purchase           ,OPOS PAPA JOHN'S PIZZA #1FREDE
+4/3/2020,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+4/3/2020,-270,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+4/3/2020,147.5,-,Provincial Payment     ,CANADA                       
+4/1/2020,-370,-,Rent/Lease             ,SKYFALL                      
+3/28/2020,2514,-,DEPOSIT                ,MB-DEP
+3/26/2020,-17.06,-,POS Purchase           ,FPOS SOBEYS #375         FREDE
+3/26/2020,-8.04,-,POS Purchase           ,FPOS CANADIAN TIRE #0035 FREDE
+3/24/2020,-7.5,-,Miscellaneous Payment  ,PAYPAL                       
+3/23/2020,100,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+3/20/2020,10,-,DEPOSIT                ,PC-EMAIL MONEY TRF
+3/18/2020,20,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+3/14/2020,20,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+3/12/2020,-40.1,-,POS Purchase           ,FPOS IRVING/BOAT CLUB    FREDE
+3/12/2020,-12.91,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+3/11/2020,-34.15,-,POS Purchase           ,FPOS SOBEYS #349         FREDE
+3/10/2020,-4.99,-,POS Purchase           ,OPOS Spotify P0EE6E8930  Stock
+3/9/2020,98,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+3/7/2020,-7.97,-,POS Purchase           ,FPOS TIM HORTONS #0276   FREDE
+3/4/2020,-55.53,-,POS Purchase           ,PIZZA HUT                FREDE
+3/4/2020,-4.44,-,POS Purchase           ,FPOS TIM HORTONS #2131   FREDE
+3/3/2020,-200,-,Miscellaneous Payment  ,EnergieNB Power              
+3/2/2020,-179.77,-,Miscellaneous Payment  ,EnergieNB Power              
+3/2/2020,-370,-,Rent/Lease             ,SKYFALL                      
+3/2/2020,-11.65,-,POS Purchase           ,FPOS A&W MAIN STREET PLAZFREDE
+2/29/2020,-7.97,-,POS Purchase           ,FPOS TIM HORTONS #2131   FREDE
+2/26/2020,-1.49,-,POS Purchase           ,FPOS ATLANTIC SUPERSTORE FREDE
+2/25/2020,-6.87,-,Miscellaneous Payment  ,PAYPAL                       
+2/24/2020,-8.94,-,POS Purchase           ,FPOS MCDONALD'S #29096   FREDE
+2/24/2020,-28.11,-,POS Purchase           ,WAL-MART #3032           FREDE
+2/24/2020,-57.31,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+2/22/2020,-9.68,-,POS Purchase           ,FPOS TIM HORTONS #1705   FREDE
+2/21/2020,-36.79,-,Miscellaneous Payment  ,PAYPAL                       
+2/20/2020,-21.24,-,POS Purchase           ,FPOS SOBEYS #849         FREDE
+2/19/2020,-21.15,-,POS Purchase           ,DOMINO'S PIZZA #10902    FREDE
+2/18/2020,-29.89,-,Miscellaneous Payment  ,PAYPAL                       
+2/18/2020,-8.82,-,POS Purchase           ,FPOS MCDONALD'S #29097   OROMO
+2/18/2020,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+2/18/2020,-100,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+2/17/2020,-12.05,-,POS Purchase           ,FPOS CANADIAN TIRE #0035 FREDE
+2/17/2020,-11.1,-,POS Purchase           ,FPOS TIM HORTONS #0276   FREDE
+2/15/2020,-8.74,-,POS Purchase           ,FPOS BK #03282           FREDE
+2/15/2020,-51.1,-,POS Purchase           ,FPOS CLIFFE STREET GRAB NFREDE
+2/14/2020,-23.57,-,POS Purchase           ,FPOS SOBEYS #375         FREDE
+2/14/2020,-6.85,-,POS Purchase           ,FPOS TIM HORTONS #0176   FREDE
+2/13/2020,-100,-,Miscellaneous Payment  ,PAYPAL                       
+2/12/2020,-11.01,-,POS Purchase           ,FPOS DAIRY QUEEN #12079  FREDE
+2/12/2020,-71.63,-,POS Purchase           ,WALMARTSTORE#1067        FREDE
+2/12/2020,-180,-,ABM Withdrawal,
+2/11/2020,-12.01,-,POS Purchase           ,FPOS MCDONALD'S #5483    FREDE
+2/10/2020,-4.99,-,POS Purchase           ,OPOS Spotify P0E89649A6  Stock
+2/5/2020,-12.49,-,POS Purchase           ,FPOS 9283 CARLETON CO-OP FLORE
+2/3/2020,-370,-,Rent/Lease             ,SKYFALL                      
+2/3/2020,-4,-,POS Purchase           ,FPOS TIM HORTONS #2598   WOODS
+2/3/2020,-65,-,POS Purchase           ,FPOS MURRAY'S IRVING     BEARD
+1/31/2020,-471.42,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+1/30/2020,-6.89,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+1/30/2020,-12.29,-,POS Purchase           ,SOBEYS 375               FREDE
+1/29/2020,-25.49,-,POS Purchase           ,FPOS HANWELL ROAD IRVING HANWE
+1/29/2020,-8.05,-,POS Purchase           ,FPOS BURGER KING #20441  FREDE
+1/29/2020,-34.5,-,POS Purchase           ,FPOS MOFFITT'S CONVENIENCHARVE
+1/28/2020,-13.2,-,POS Purchase           ,FPOS A&W #7218           FREDE
+1/27/2020,-8.04,-,POS Purchase           ,FPOS BURGER KING #23282  FREDE
+1/27/2020,-61.95,-,POS Purchase           ,FPOS IRVING/BOAT CLUB    FREDE
+1/25/2020,-16.41,-,POS Purchase           ,FPOS PITA PIT            FREDE
+1/24/2020,-6.81,-,Miscellaneous Payment  ,PAYPAL                       
+1/23/2020,-13.1,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+1/21/2020,-16.2,-,POS Purchase           ,FPOS TACO BOYZ           FREDE
+1/21/2020,-52.02,-,POS Purchase           ,WAL-MART #3032           FREDE
+1/21/2020,-100,-,ABM Withdrawal,
+1/18/2020,-8.57,-,POS Purchase           ,FPOS TIM HORTONS # 945   FREDE
+1/17/2020,-43.47,-,POS Purchase           ,SOBEYS 375               FREDE
+1/15/2020,-11.6,-,POS Purchase           ,FPOS BURGER KING #20441  FREDE
+1/15/2020,-6.85,-,POS Purchase           ,FPOS TIM HORTONS #2131   FREDE
+1/14/2020,-24.82,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+1/13/2020,-50,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+1/10/2020,-13.09,-,POS Purchase           ,FPOS A&W MAIN STREET PLAZFREDE
+1/10/2020,1189,-,ABM Deposit,
+1/10/2020,-4.99,-,POS Purchase           ,OPOS Spotify P0E2BD45D7  Stock
+1/9/2020,-7.29,-,POS Purchase           ,FPOS MCDONALD'S #5483    FREDE
+1/7/2020,-4.01,-,POS Purchase           ,FPOS IRVING STATION #1170CHIPM
+1/7/2020,-61.89,-,POS Purchase           ,FPOS IRVING/BOAT CLUB    FREDE
+1/6/2020,-255.95,-,POS Purchase           ,OPOS 191.88 CODECADEMY   91728
+1/6/2020,-21.58,-,POS Purchase           ,WAL-MART #3032           FREDE
+1/3/2020,147.5,-,Provincial Payment     ,CANADA                       
+1/2/2020,-370,-,Rent/Lease             ,SKYFALL                      
+12/27/2019,-13.89,-,POS Purchase           ,FPOS MANCHU WOK RESTAURANFREDE
+12/27/2019,155,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+12/24/2019,-6.83,-,Miscellaneous Payment  ,PAYPAL                       
+12/23/2019,-30,-,POS Purchase           ,MURRAY'S IRVING          BEARD
+12/23/2019,-8.8,-,POS Purchase           ,FPOS TIM HORTONS #2131   FREDE
+12/21/2019,-14.81,-,POS Purchase           ,FPOS SUBWAY # 5290       FREDE
+12/21/2019,-180,-,ABM Withdrawal,
+12/19/2019,-3.16,-,POS Purchase           ,FPOS TIM HORTONS #1791   MINTO
+12/18/2019,-44.88,-,POS Purchase           ,DOMINO'S PIZZA #10902    FREDE
+12/17/2019,-27.51,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+12/14/2019,-9.49,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+12/13/2019,-24,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+12/12/2019,-15.68,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+12/10/2019,-4.99,-,POS Purchase           ,OPOS Spotify P0DCCEAEA3  Stock
+12/9/2019,-4.13,-,POS Purchase           ,FPOS PAPA JOHN'S PIZZA   FREDE
+12/9/2019,-21.83,-,POS Purchase           ,OPOS PAPA JOHN'S PIZZA #1FREDE
+12/9/2019,-16.12,-,POS Purchase           ,FPOS A&W #7218           FREDE
+12/7/2019,-13,-,POS Purchase           ,PITA PIT                 FREDE
+12/7/2019,-27.45,-,POS Purchase           ,CHECKER CAB              RICHI
+12/6/2019,-68.99,-,Miscellaneous Payment  ,PAYPAL                       
+12/6/2019,-4.11,-,POS Purchase           ,TIM HORTON'S T-DOMESTI   MISSI
+12/2/2019,-370,-,Rent/Lease             ,SKYFALL                      
+12/2/2019,-3.76,-,POS Purchase           ,FPOS TIM HORTON'S T-DOMESMISSI
+12/2/2019,1.12,-,DEPOSIT                ,
+12/2/2019,-9.51,-,POS Purchase           ,FPOS MCDONALD'S #29096   FREDE
+12/2/2019,-3.45,-,POS Purchase           ,WAL-MART #3032           FREDE
+12/2/2019,-42.19,-,POS Purchase           ,WAL-MART #3032           FREDE
+12/2/2019,-10.9,-,POS Purchase           ,FPOS TIM HORTONS #0176   FREDE
+11/29/2019,-102.67,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+11/29/2019,-459.94,-,POS Purchase           ,OPOS Amazon.ca           Seatt
+11/28/2019,-6.21,-,POS Purchase           ,FPOS UNIVERSITY OF NEW BRFREDE
+11/26/2019,-6.89,-,Miscellaneous Payment  ,PAYPAL                       
+11/26/2019,-12.75,-,POS Purchase           ,FPOS MARY BROWN'S 3500   FREDE
+11/25/2019,-33.72,-,POS Purchase           ,FPOS SOBEYS 375          FREDE
+11/21/2019,-5.74,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+11/20/2019,-24.13,-,POS Purchase           ,CANNON'S CROSS PUB       FREDE
+11/20/2019,-79.9,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+11/19/2019,-15.9,-,POS Purchase           ,OPOS Amazon.ca           Seatt
+11/18/2019,-135.3,-,Miscellaneous Payment  ,EnergieNB Power              
+11/18/2019,-15.99,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+11/18/2019,-180,-,ABM Withdrawal,
+11/18/2019,-12.05,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+11/18/2019,-132.17,-,POS Purchase           ,WALMARTSTORE#1067        FREDE
+11/16/2019,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+11/16/2019,-60,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+11/16/2019,-350.01,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+11/16/2019,-11.49,-,POS Purchase           ,FPOS SUBWAY # 11109      FREDE
+11/13/2019,-12.75,-,POS Purchase           ,FPOS BURGER KING #19448  WATER
+11/13/2019,-40,-,POS Purchase           ,FPOS WATERVILLE IRVING 15WATER
+11/13/2019,-13.33,-,POS Purchase           ,FPOS MARY BROWN'S 3500   FREDE
+11/13/2019,-180,-,POS Purchase           ,SERVICE CANADA FREDERI   FREDE
+11/12/2019,-23,-,POS Purchase           ,HARVEY STUDIOS           FREDE
+11/12/2019,-4.99,-,POS Purchase           ,OPOS Spotify P0D70EFBFE  Stock
+11/12/2019,-7.77,-,POS Purchase           ,FPOS TIM HORTONS #0276   FREDE
+11/9/2019,-10.45,-,POS Purchase           ,BURGER KING #20441       FREDE
+11/7/2019,-99.99,-,POS Purchase           ,CNB #016                 FREDE
+11/5/2019,-30.15,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+11/4/2019,-70,-,POS Purchase           ,CIRCLE K / IRVING #201   FREDE
+11/1/2019,-370,-,Rent/Lease             ,SKYFALL                      
+11/1/2019,-6.9,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+10/29/2019,-75.01,-,POS Purchase           ,SOBEYS #849        QPS   FREDE
+10/28/2019,-10.45,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+10/26/2019,-13.33,-,POS Purchase           ,FPOS MARY BROWN'S 3500   FREDE
+10/25/2019,-91.99,-,Miscellaneous Payment  ,PAYPAL                       
+10/24/2019,-6.8,-,Miscellaneous Payment  ,PAYPAL                       
+10/22/2019,-28.74,-,Miscellaneous Payment  ,PAYPAL                       
+10/18/2019,-32.08,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+10/15/2019,-180,-,ABM Withdrawal,
+10/15/2019,-60,-,POS Purchase           ,FPOS WATERVILLE IRVING 15WATER
+10/12/2019,-6.24,-,POS Purchase           ,FPOS TIM HORTONS #2131   FREDE
+10/10/2019,-4.99,-,POS Purchase           ,OPOS Spotify P0D1553710  Stock
+10/8/2019,-7.97,-,POS Purchase           ,FPOS TIM HORTONS #0176   FREDE
+10/8/2019,-59.98,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+10/5/2019,-30,-,POS Purchase           ,DOMINO'S PIZZA #10902    FREDE
+10/4/2019,-11.26,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+10/4/2019,-6.9,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+10/4/2019,147.5,-,Provincial Payment     ,CANADA                       
+10/3/2019,-7.97,-,POS Purchase           ,FPOS TIM HORTONS #0176   FREDE
+10/2/2019,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+10/2/2019,-60,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+10/1/2019,-370,-,Rent/Lease             ,SKYFALL                      
+10/1/2019,-47.46,-,POS Purchase           ,GRECO PIZZA              FREDE
+9/27/2019,-10.92,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+9/24/2019,-6.89,-,Miscellaneous Payment  ,PAYPAL                       
+9/24/2019,-32.5,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+9/21/2019,-12.16,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+9/21/2019,-7.63,-,POS Purchase           ,FPOS SOBEYS 375          FREDE
+9/21/2019,-70.18,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+9/19/2019,-6.89,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+9/17/2019,-6.9,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+9/14/2019,-14.79,-,POS Purchase           ,FPOS A&W #7218           FREDE
+9/12/2019,-6.9,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+9/11/2019,-180,-,ABM Withdrawal,
+9/10/2019,-4.99,-,POS Purchase           ,OPOS Spotify P0CB386227  Stock
+9/5/2019,-191.78,-,POS Purchase           ,WAL-MART #3032           FREDE
+9/4/2019,4207.25,-,Student Loan           ,NB STUDENT LOAN              
+9/4/2019,-82,-,POS Purchase           ,UNB FINANCIAL SERVICES   FREDE
+9/3/2019,-370,-,Rent/Lease             ,SKYFALL                      
+9/3/2019,-5.75,-,POS Purchase           ,FPOS TIM HORTONS #2853   BRIST
+8/30/2019,-11.49,-,Miscellaneous Payment  ,PAYPAL                       
+8/27/2019,-50.16,-,Miscellaneous Payment  ,EnergieNB Power              
+8/27/2019,-326.01,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+8/26/2019,-48,-,POS Purchase           ,FPOS PERTH ANDOVER/IRVINGPERTH
+8/23/2019,-27.24,-,POS Purchase           ,FPOS TORONTO ZOO - RETAILSCARB
+8/23/2019,-13.59,-,POS Purchase           ,FPOS TORONTO ZOO - RETAILSCARB
+8/22/2019,-58.58,-,POS Purchase           ,HOCKEY HALL OF FAME      TORON
+8/22/2019,-88.14,-,POS Purchase           ,CN TOWER RETAIL STORE    TORON
+8/21/2019,-39.52,-,POS Purchase           ,WAL-MART #3054           MISSI
+8/19/2019,-10.99,-,POS Purchase           ,OPOS STEAMGAMES.COM      425-9
+8/16/2019,520,-,ABM Deposit,
+8/16/2019,-13.86,-,POS Purchase           ,DINER DOWN UNDER         BATH 
+8/10/2019,-4.99,-,POS Purchase           ,OPOS Spotify P0C3751BE6  Stock
+8/8/2019,-12.24,-,POS Purchase           ,FPOS BURGER KING #19448  WATER
+8/5/2019,-13.66,-,POS Purchase           ,FPOS SUBWAY # 5290       FREDE
+8/5/2019,-55,-,POS Purchase           ,FPOS IRVING #15886       WOODS
+8/2/2019,360,-,ABM Deposit,
+8/1/2019,-370,-,Rent/Lease             ,SKYFALL                      
+8/1/2019,-162,-,POS Purchase           ,OPOS SERVICE NB - ONLINE FREDE
+7/26/2019,600,-,ABM Deposit,
+7/18/2019,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+7/18/2019,-40,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+7/16/2019,-6.88,-,POS Purchase           ,BURGER KING #19448       WATER
+7/16/2019,-61.87,-,POS Purchase           ,FPOS WATERVILLE IRVING 15WATER
+7/15/2019,-102.13,-,POS Purchase           ,9283 CARLETON CO-OP      FLORE
+7/11/2019,-183.95,-,POS Purchase           ,"OPOS FITBIT, INC. UF3CV4387762"
+7/10/2019,-4.99,-,POS Purchase           ,OPOS Spotify P0BC0B1632  Stock
+7/8/2019,67.12,-,Insurance              ,AMERICAN INCOME              
+7/5/2019,297,-,ABM Deposit,
+7/5/2019,147.5,-,Provincial Payment     ,CANADA                       
+7/4/2019,-31.98,-,POS Purchase           ,FPOS DOMINO'S PIZZA #1090FREDE
+7/4/2019,-315.69,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+7/4/2019,-6.9,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+7/3/2019,-320,-,Correction             ,
+7/3/2019,340,-,DEPOSIT                ,
+7/2/2019,-370,-,Rent/Lease             ,SKYFALL                      
+6/28/2019,320,-,ABM Deposit,
+6/24/2019,35,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+6/19/2019,-151.44,-,POS Purchase           ,#284 SPORT CHEK          FREDE
+6/19/2019,-3.91,-,POS Purchase           ,FPOS TIM HORTONS #2853   BRIST
+6/18/2019,-2.77,-,Miscellaneous Payment  ,PAYPAL                       
+6/17/2019,-54.72,-,POS Purchase           ,FPOS WATERVILLE IRVING 15WATER
+6/11/2019,-149.44,-,POS Purchase           ,#284 SPORT CHEK          FREDE
+6/11/2019,-25.04,-,POS Purchase           ,FPOS MANCHU WOK RESTAURANFREDE
+6/10/2019,-13.99,-,POS Purchase           ,OPOS CINEPLEX #8030 WEB QTORON
+6/10/2019,-4.99,-,POS Purchase           ,OPOS Spotify P0B480BBD8  Stock
+6/10/2019,-160.21,-,POS Purchase           ,WAL-MART #3032           FREDE
+6/10/2019,-15.49,-,POS Purchase           ,FPOS SUBWAY # 20599      FREDE
+6/7/2019,-12.87,-,POS Purchase           ,FPOS SOBEYS #349        QFREDE
+6/6/2019,-67.12,-,Insurance              ,AMERICAN INCOME              
+6/6/2019,-44.85,-,POS Purchase           ,OPOS Amazon.ca Prime Membamazo
+6/6/2019,-56.25,-,POS Purchase           ,DOMINO'S PIZZA #10902    FREDE
+6/3/2019,-370,-,Rent/Lease             ,SKYFALL                      
+5/29/2019,-19.83,-,POS Purchase           ,THE HILLTOP              FREDE
+5/28/2019,-33.71,-,POS Purchase           ,GRECO PIZZA              FREDE
+5/28/2019,-200,-,ABM Withdrawal,
+5/28/2019,-150,-,POS Purchase           ,SOBEYS 375               FREDE
+5/28/2019,-62.17,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+5/27/2019,-3.89,-,Miscellaneous Payment  ,PAYPAL                       
+5/25/2019,-1.54,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+5/22/2019,-16.08,-,POS Purchase           ,FPOS TIM HORTONS #0176   FREDE
+5/21/2019,-6.9,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+5/21/2019,-4.36,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+5/21/2019,-32.88,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+5/18/2019,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+5/18/2019,-500,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+5/17/2019,-32.65,-,POS Purchase           ,GRECO PIZZA              FREDE
+5/15/2019,-7.46,-,POS Purchase           ,FPOS TIM HORTONS #0276   FREDE
+5/14/2019,-6.95,-,Miscellaneous Payment  ,PAYPAL                       
+5/14/2019,-8.05,-,POS Purchase           ,FPOS SOBEYS 375          FREDE
+5/14/2019,-43,-,POS Purchase           ,FPOS CRUISER HOLDINGS INCCHARL
+5/13/2019,221.8,-,Tax Refund             ,CANADA                       
+5/11/2019,0.34,-,POS Return             ,OPOS 0.26 Amazon.com     Amzn.
+5/10/2019,-4.29,-,POS Purchase           ,FPOS TIM HORTONS #2848   FREDE
+5/10/2019,-4.99,-,POS Purchase           ,OPOS Spotify P0ACCBD915  Stock
+5/9/2019,-7.23,-,POS Purchase           ,GRECO PIZZA              FREDE
+5/9/2019,-36.99,-,POS Purchase           ,FPOS ALCOOL NB LIQUOR  #0FREDE
+5/9/2019,-31.71,-,POS Purchase           ,THE SNOOTY FOX           FREDE
+5/9/2019,-30,-,POS Purchase           ,FPOS MURRAY'S IRVING     BEARD
+5/8/2019,-4.91,-,POS Purchase           ,FPOS GLENN'S GROCERY LTD.FLORE
+5/8/2019,-12.24,-,POS Purchase           ,DOMINO'S PIZZA #10902    FREDE
+5/8/2019,-149.44,-,POS Purchase           ,#284 SPORT CHEK          FREDE
+5/8/2019,-3.71,-,POS Purchase           ,FPOS TIM HORTONS #2853   BRIST
+5/6/2019,-54.27,-,Miscellaneous Payment  ,EnergieNB Power              
+5/6/2019,-12.62,-,POS Purchase           ,FPOS BURGER KING #23282  FREDE
+5/6/2019,-20,-,POS Purchase           ,CLIFFE STREET IRVING     FREDE
+5/6/2019,-20,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+5/4/2019,-160.4,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+5/3/2019,-23.31,-,POS Purchase           ,GRECO PIZZA              FREDE
+5/2/2019,-19.83,-,POS Purchase           ,EASTSIDE MARIOS #8794    FREDE
+5/2/2019,-6.9,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+5/1/2019,-370,-,Rent/Lease             ,SKYFALL                      
+5/1/2019,-28.74,-,Miscellaneous Payment  ,PAYPAL                       
+5/1/2019,-12.41,-,POS Purchase           ,FPOS MARY BROWN'S 3500   FREDE
+4/30/2019,-15.39,-,POS Purchase           ,SUBWAY # 5290            FREDE
+4/30/2019,-40,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+4/29/2019,-5.74,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+4/29/2019,-9.42,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+4/29/2019,-9.53,-,POS Purchase           ,FPOS TIM HORTONS #0176   FREDE
+4/29/2019,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+4/29/2019,-60,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+4/25/2019,-3.89,-,Miscellaneous Payment  ,PAYPAL                       
+4/25/2019,-15.52,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+4/25/2019,1719,-,DEPOSIT                ,
+4/18/2019,-11.49,-,Miscellaneous Payment  ,PAYPAL                       
+4/18/2019,-19.39,-,POS Purchase           ,DOMINO'S PIZZA #10902    FREDE
+4/17/2019,-13.44,-,POS Purchase           ,FPOS MANCHU WOK RESTAURANFREDE
+4/17/2019,-30.9,-,POS Purchase           ,WAL-MART #3032           FREDE
+4/17/2019,-80,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+4/17/2019,-180,-,ABM Withdrawal,
+4/16/2019,-7.66,-,POS Purchase           ,FPOS TIM HORTONS #2131   FREDE
+4/15/2019,-6.91,-,Miscellaneous Payment  ,PAYPAL                       
+4/15/2019,-33.28,-,POS Purchase           ,GRECO PIZZA              FREDE
+4/15/2019,-9.41,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+4/11/2019,-11.59,-,POS Purchase           ,FPOS MARY BROWN'S 3500   FREDE
+4/10/2019,-4.99,-,POS Purchase           ,OPOS Spotify P0A56621F8  Stock
+4/10/2019,-6.43,-,POS Purchase           ,FPOS TIM HORTONS #0176   FREDE
+4/9/2019,-10.35,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+4/9/2019,-28.8,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+4/8/2019,-1.36,-,POS Purchase           ,FPOS UNIV OF NEW BRUNSWICFREDE
+4/6/2019,-2.96,-,POS Purchase           ,MAIL N MART              FREDE
+4/6/2019,-20.25,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+4/5/2019,161.9,-,Provincial Payment     ,CANADA                       
+4/2/2019,-160,-,ABM Withdrawal,
+4/2/2019,-51.87,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+4/1/2019,-362.5,-,Rent/Lease             ,SKYFALL                      
+4/1/2019,-11.83,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+9/28/2018,-6.31,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+9/27/2018,-13.22,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+9/25/2018,-64.72,-,POS Purchase           ,SOBEYS #849        QPS   FREDE
+9/25/2018,85.95,-,DEPOSIT                ,PC-EMAIL MONEY TRF
+9/24/2018,-21.84,-,POS Purchase           ,FPOS DAIRY SHOP/GISELE'S FREDE
+9/22/2018,-7.12,-,POS Purchase           ,FPOS TIM HORTONS #0105# QFREDE
+9/21/2018,-11.49,-,Miscellaneous Payment  ,PAYPAL                       
+9/19/2018,-150.05,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+9/19/2018,-60,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+9/18/2018,-61.13,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+9/17/2018,-14.03,-,POS Purchase           ,FPOS A&W #7218           FREDE
+9/17/2018,-6.08,-,POS Purchase           ,FPOS TIM HORTONS #2131# QFREDE
+9/14/2018,-39.47,-,Miscellaneous Payment  ,EnergieNB Power              
+9/13/2018,-6.79,-,Miscellaneous Payment  ,PAYPAL                       
+9/13/2018,-48.9,-,POS Purchase           ,EASTSIDE MARIOS #8794    FREDE
+9/12/2018,-200,-,WITHDRAWAL             ,
+9/11/2018,-35.34,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+9/10/2018,-8.03,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+9/10/2018,-4.99,-,POS Purchase           ,OPOS Spotify P0763C8738  Stock
+9/10/2018,-15.84,-,POS Purchase           ,FPOS MANCHU WOK RESTAURANFREDE
+9/10/2018,-39.54,-,POS Purchase           ,OPOS Amazon.ca           AMAZO
+9/8/2018,-10,-,POS Purchase           ,OPOS AMZN Mktp CA        WWW.A
+9/8/2018,-35.99,-,POS Purchase           ,FPOS ALCOOL NB LIQUOR  #0FREDE
+9/8/2018,-17.45,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+9/7/2018,-5.68,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+9/6/2018,4764,-,Student Loan           ,NB STUDENT LOAN              
+9/5/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+9/5/2018,-20,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+9/5/2018,-167,-,POS Purchase           ,UNB DESIGN WORKS CAMPS   FREDE
+9/4/2018,-362.5,-,Rent/Lease             ,SKYFALL                      
+9/4/2018,-38.98,-,POS Purchase           ,WAL-MART #3032           FREDE
+9/4/2018,18.75,-,Student Loan           ,CANADA                       
+8/30/2018,-80.01,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+8/30/2018,-23.78,-,POS Purchase           ,THE SNOOTY FOX           FREDE
+8/29/2018,-35.38,-,POS Purchase           ,DOMINO'S PIZZA #10902    FREDE
+8/29/2018,-20.02,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+8/28/2018,-104.41,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+8/27/2018,-6.08,-,POS Purchase           ,FPOS TIM HORTONS #2848# QFREDE
+8/27/2018,-154.72,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+8/27/2018,-12.59,-,POS Purchase           ,FPOS A&W #7218           FREDE
+8/25/2018,-35.99,-,POS Purchase           ,FPOS ALCOOL NB LIQUOR  #0FREDE
+8/25/2018,-9,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+8/23/2018,-1.94,-,POS Purchase           ,FPOS TIM HORTONS #2853# QBRIST
+8/21/2018,-31.04,-,POS Purchase           ,DINER DOWN UNDER         BATH 
+8/15/2018,-44.42,-,Miscellaneous Payment  ,EnergieNB Power              
+8/15/2018,-75,-,POS Purchase           ,CIRCLE K / IRVING #201   FREDE
+8/15/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+8/15/2018,-200,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+8/14/2018,-6.78,-,Miscellaneous Payment  ,PAYPAL                       
+8/14/2018,-20.16,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+8/14/2018,-86.2,-,POS Purchase           ,WAL-MART #3032           FREDE
+8/13/2018,-27.12,-,POS Purchase           ,KING STREET ALE HOUSE    FREDE
+8/13/2018,-6.31,-,POS Purchase           ,FPOS TIM HORTONS #2131# QFREDE
+8/13/2018,-18,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+8/11/2018,-200,-,ABM Withdrawal,
+8/10/2018,-20.16,-,POS Purchase           ,EASTSIDE MARIOS #8794    FREDE
+8/10/2018,-4.99,-,POS Purchase           ,OPOS Spotify P0701A2854  Stock
+8/9/2018,-35.35,-,POS Purchase           ,OPOS Amazon.ca           AMAZO
+8/8/2018,2016,-,EI                     ,CANADA                       
+8/7/2018,-5.5,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+8/7/2018,-71.41,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+8/6/2018,40,-,DEPOSIT                ,PC-EMAIL MONEY TRF
+8/2/2018,4138,-,EI                     ,CANADA                       
+8/1/2018,-362.5,-,Rent/Lease             ,SKYFALL                      
+7/31/2018,-26.91,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+7/30/2018,-29.9,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+7/27/2018,-153.2,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+7/27/2018,-162,-,POS Purchase           ,OPOS SERVICE NB - ONLINE FREDE
+7/27/2018,-14.81,-,POS Purchase           ,FPOS SUBWAY # 5290       FREDE
+7/25/2018,-11.16,-,POS Purchase           ,FPOS A&W #7218           FREDE
+7/24/2018,-83.19,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+7/23/2018,-27.73,-,Miscellaneous Payment  ,EnergieNB Power              
+7/23/2018,-100,-,ABM Withdrawal,
+7/23/2018,-9.06,-,POS Purchase           ,FPOS CANADIAN TIRE #0035 FREDE
+7/23/2018,-60.02,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+7/18/2018,-5.99,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+7/17/2018,-66.91,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+7/13/2018,-6.8,-,Miscellaneous Payment  ,PAYPAL                       
+7/11/2018,-15.82,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+7/11/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+7/11/2018,-40,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+7/10/2018,-48.59,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+7/10/2018,-4.99,-,POS Purchase           ,OPOS Spotify P06A7E5780  Stock
+7/5/2018,-12.59,-,POS Purchase           ,FPOS A&W #7218           FREDE
+7/5/2018,161.9,-,Provincial Payment     ,CANADA                       
+7/3/2018,-38.21,-,Miscellaneous Payment  ,EnergieNB Power              
+7/3/2018,-362.5,-,Rent/Lease             ,SKYFALL                      
+7/3/2018,-12,-,POS Purchase           ,PITA PIT                 FREDE
+7/3/2018,-52.63,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+6/29/2018,-19.11,-,Miscellaneous Payment  ,EnergieNB Power              
+6/29/2018,114.31,-,DEPOSIT                ,PC-EMAIL MONEY TRF
+6/28/2018,-158.62,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+6/28/2018,166,-,ABM Deposit,
+6/28/2018,280,-,DEPOSIT                ,
+6/26/2018,-34.94,-,POS Purchase           ,OPOS Amazon *Marketplce CWWW.A
+6/25/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+6/25/2018,-175,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+6/22/2018,-9,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+6/22/2018,-50.52,-,POS Purchase           ,WAL-MART #3032           FREDE
+6/19/2018,-13.8,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+6/18/2018,-42.99,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+6/13/2018,-6.72,-,Miscellaneous Payment  ,PAYPAL                       
+6/13/2018,-71,-,POS Purchase           ,FPOS COSTCO GAS W1090    FREDE
+6/13/2018,-6.9,-,POS Purchase           ,JACOBS DAIRY SHOP        FREDE
+6/11/2018,-4.99,-,POS Purchase           ,OPOS Spotify P064BFC458  Stock
+6/9/2018,-35.99,-,POS Purchase           ,FPOS ALCOOL NB LIQUOR  #0FREDE
+6/8/2018,-14.31,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+6/8/2018,-12.99,-,POS Purchase           ,OPOS Amazon *Marketplce CWWW.A
+6/6/2018,-44.85,-,POS Purchase           ,OPOS Amazon.ca Prime Membamazo
+6/5/2018,-47.52,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+6/5/2018,-11.16,-,POS Purchase           ,FPOS A&W #7218           FREDE
+6/2/2018,-95.94,-,POS Purchase           ,WAL-MART #3032           FREDE
+6/2/2018,-15.99,-,POS Purchase           ,OPOS Amazon *Marketplce CWWW.A
+6/1/2018,-35.89,-,POS Purchase           ,DOMINO'S PIZZA #10902    FREDE
+6/1/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+6/1/2018,-362.5,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+5/31/2018,-118.14,-,Miscellaneous Payment  ,EnergieNB Power              
+5/30/2018,-21.88,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+5/30/2018,-21.88,-,POS Purchase           ,OPOS BELL ALIANT ONLINE #SAINT
+5/29/2018,-13.25,-,Miscellaneous Payment  ,PAYPAL                       
+5/29/2018,-13.25,-,Miscellaneous Payment  ,PAYPAL                       
+5/29/2018,4025,-,Student Loan           ,NB STUDENT LOAN              
+5/29/2018,-76,-,POS Purchase           ,FPOS UNB SECURITY        FREDE
+5/28/2018,-22,-,POS Purchase           ,DR LILLIAN C LINTON PR   FLORE
+5/28/2018,-30.01,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+5/22/2018,-53.13,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+5/15/2018,-6.6,-,Miscellaneous Payment  ,PAYPAL                       
+5/15/2018,-80.02,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+5/15/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+5/15/2018,-35,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+5/10/2018,-4.99,-,POS Purchase           ,OPOS Spotify P05ECF0E74  Stock
+5/9/2018,-20,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+5/9/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+5/9/2018,-387.5,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+5/8/2018,-4.04,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+5/8/2018,-91.73,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+5/3/2018,-5.74,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+5/3/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+5/3/2018,-220,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+5/1/2018,362.5,-,Correction             ,
+5/1/2018,-362.5,-,Rent/Lease             ,SKYFALL                      
+5/1/2018,-70.04,-,POS Purchase           ,WAL-MART #3032           FREDE
+5/1/2018,-43.62,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+5/1/2018,1451,-,ABM Deposit,
+4/30/2018,-25,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+4/30/2018,-2.17,-,POS Purchase           ,FPOS TIM HORTONS #2853# QBRIST
+4/28/2018,-40,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+4/28/2018,-12.87,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+4/27/2018,-5.74,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+4/27/2018,-15.85,-,POS Purchase           ,FPOS MANCHU WOK RESTAURANFREDE
+4/26/2018,-24.42,-,POS Purchase           ,PIZZA DELIGHT PROSPECT   FREDE
+4/26/2018,-8.91,-,POS Purchase           ,FPOS TIM HORTONS #2131# QFREDE
+4/25/2018,-13.25,-,Miscellaneous Payment  ,PAYPAL                       
+4/24/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+4/24/2018,-140,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+4/24/2018,-11.59,-,POS Purchase           ,FPOS SUBWAY # 20599      FREDE
+4/24/2018,-8.5,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+4/23/2018,-75.99,-,POS Purchase           ,FPOS HANWELL ROAD IRVING HANWE
+4/23/2018,-5.15,-,POS Purchase           ,FPOS TIM HORTONS #0276# QFREDE
+4/21/2018,-14.06,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+4/20/2018,-23.52,-,POS Purchase           ,FPOS MCGINNIS LANDING    FREDE
+4/19/2018,-12.28,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+4/18/2018,-8.58,-,POS Purchase           ,FPOS TIM HORTONS #0176# QFREDE
+4/17/2018,-8.15,-,Miscellaneous Payment  ,PAYPAL                       
+4/17/2018,-71.77,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+4/16/2018,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+4/16/2018,-60,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+4/16/2018,-8.02,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+4/14/2018,-22.33,-,POS Purchase           ,GRECO PIZZA              FREDE
+4/13/2018,-6.51,-,Miscellaneous Payment  ,PAYPAL                       
+4/12/2018,-2.05,-,POS Purchase           ,FPOS UNIV OF NEW BRUNSWICFREDE
+4/10/2018,-1.14,-,POS Purchase           ,FPOS TIM HORTONS #2131# QFREDE
+4/10/2018,-60.63,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+4/10/2018,-4.99,-,POS Purchase           ,OPOS Spotify P05932B849  Stock
+4/9/2018,-14.49,-,POS Purchase           ,PAPA GEORGIOS PIZZA      FREDE
+4/9/2018,20,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+4/7/2018,-70.01,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+4/7/2018,-42.99,-,POS Purchase           ,ALCOOL NB LIQUOR  #045   FREDE
+4/7/2018,-6.89,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+4/6/2018,-362.5,25,Cheque                 ,
+4/5/2018,166.64,-,Provincial Payment     ,CANADA                       
+4/4/2018,920.58,-,Tax Refund             ,CANADA                       
+4/2/2018,-290,23,Cheque                 ,
+3/31/2018,-7.35,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+3/31/2018,-42.16,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+3/28/2018,-27.6,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+3/27/2018,-200,-,WITHDRAWAL             ,
+3/26/2018,-38.59,-,POS Purchase           ,OPOS Amazon.ca           AMAZO
+3/26/2018,-41.99,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+3/24/2018,-18.63,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+3/23/2018,-29.32,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+3/21/2018,-35.04,-,POS Purchase           ,JUNGLE JIM'S EATERY -    FREDE
+3/20/2018,-2.59,-,POS Purchase           ,FPOS DOLLARAMA # 337     FREDE
+3/20/2018,-73.99,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+3/20/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+3/20/2018,-45,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+3/19/2018,-2.17,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+3/19/2018,-9.18,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+3/17/2018,-2.17,-,POS Purchase           ,FPOS TIM HORTONS #2598   WOODS
+3/17/2018,-7.45,-,POS Purchase           ,FPOS TIM HORTONS #2131# QFREDE
+3/17/2018,-40.01,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+3/16/2018,-9.2,-,POS Purchase           ,FPOS A&W #7218           FREDE
+3/13/2018,-6.63,-,Miscellaneous Payment  ,PAYPAL                       
+3/13/2018,-87.89,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+3/13/2018,-10.97,-,POS Purchase           ,FPOS A&W #7218           FREDE
+3/12/2018,-27.7,-,POS Purchase           ,HILLTOP GRILL & BEVERAGE FREDE
+3/12/2018,-21.83,-,POS Purchase           ,OPOS 16.50 THICK ASS GLASHORSH
+3/10/2018,-4.99,-,POS Purchase           ,OPOS Spotify P0536B296E  Stock
+3/5/2018,-9.82,-,POS Purchase           ,FPOS TIM HORTONS #2853# QBRIST
+3/5/2018,-44.8,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+3/3/2018,-12.65,-,POS Purchase           ,BURGER KING #23282       FREDE
+3/2/2018,-3.1,-,POS Purchase           ,FPOS UNIV OF NEW BRUNSWICFREDE
+3/1/2018,-290,22,Cheque                 ,
+3/1/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+3/1/2018,-154.6,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+2/28/2018,-104.72,-,POS Purchase           ,WAL-MART #3032           FREDE
+2/27/2018,-15.51,-,Miscellaneous Payment  ,PAYPAL                       
+2/27/2018,33,-,DEPOSIT                ,PC-EMAIL MONEY TRF
+2/27/2018,-3.45,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+2/26/2018,-30.76,-,Miscellaneous Payment  ,PAYPAL                       
+2/26/2018,15,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+2/26/2018,12,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+2/26/2018,-5.5,-,POS Purchase           ,FPOS BLACK'S            QHARVE
+2/24/2018,-16.09,-,POS Purchase           ,GRECO PIZZA              FREDE
+2/24/2018,-9.07,-,POS Purchase           ,FPOS TIM HORTONS #0276# QFREDE
+2/22/2018,-6.46,-,POS Purchase           ,THE GOODY SHOP           FREDE
+2/22/2018,-13.23,-,POS Purchase           ,FPOS PAPA JOHN'S PIZZA   FREDE
+2/20/2018,-23.23,-,POS Purchase           ,OPOS 17.99 THICK ASS GLASHORSH
+2/19/2018,-43.15,-,POS Purchase           ,GRECO PIZZA              FREDE
+2/17/2018,-10.79,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+2/17/2018,-40.03,-,POS Purchase           ,FPOS HANWELL ROAD IRVING HANWE
+2/17/2018,-39.75,-,POS Purchase           ,OPOS CINEPLEX #8030 WEB QTORON
+2/16/2018,-140,-,ABM Withdrawal,
+2/13/2018,-28.21,-,POS Purchase           ,PORTERS DINER            HANWE
+2/13/2018,-48.01,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+2/13/2018,-79.09,-,POS Purchase           ,FPOS COSTCO WHOLESALE W10FREDE
+2/13/2018,-1.85,-,POS Purchase           ,FPOS UNIV OF NEW BRUNSWICFREDE
+2/12/2018,-6.51,-,Miscellaneous Payment  ,PAYPAL                       
+2/12/2018,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+2/12/2018,-36.23,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+2/12/2018,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+2/12/2018,-80,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+2/12/2018,-10.35,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+2/12/2018,-7,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+2/12/2018,-40,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+2/10/2018,-4.99,-,POS Purchase           ,OPOS Spotify P04E533203  Stock
+2/8/2018,-27.59,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+2/6/2018,-115.95,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+2/5/2018,-5.38,-,POS Purchase           ,FPOS TIM HORTONS #0276# QFREDE
+2/3/2018,-37.93,-,POS Purchase           ,CANADIAN TIRE #0035      FREDE
+2/3/2018,-18.88,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+2/2/2018,-27.6,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+2/1/2018,-290,21,Cheque                 ,
+2/1/2018,-16.27,-,POS Purchase           ,FPOS SUBWAY # 22010      FREDE
+2/1/2018,-40,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+1/30/2018,-34.78,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+1/29/2018,-3.54,-,POS Purchase           ,FPOS TIM HORTONS #0276# QFREDE
+1/27/2018,-2.75,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+1/27/2018,-27.7,-,POS Purchase           ,HILLTOP GRILL & BEVERAGE FREDE
+1/26/2018,-4.58,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+1/25/2018,-4.32,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+1/23/2018,-71.64,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+1/22/2018,-13.31,-,POS Purchase           ,WAL-MART #3032           FREDE
+1/22/2018,-32.77,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+1/20/2018,-21.22,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+1/20/2018,-3.22,-,POS Purchase           ,THE GOODY SHOP           FREDE
+1/19/2018,-35.99,-,POS Purchase           ,FPOS ALCOOL NB LIQUOR  #0FREDE
+1/19/2018,-12.59,-,POS Purchase           ,FPOS A&W #7218           FREDE
+1/19/2018,-200,-,ABM Withdrawal,
+1/18/2018,-19.48,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+1/17/2018,-25.1,-,POS Purchase           ,EASTSIDE MARIOS #8794    FREDE
+1/16/2018,-58.78,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+1/15/2018,-6.48,-,Miscellaneous Payment  ,PAYPAL                       
+1/15/2018,-27.34,-,POS Purchase           ,CHECKER DELIVERIES       RICHI
+1/13/2018,-33.28,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+1/13/2018,-2.17,-,POS Purchase           ,FPOS TIM HORTONS #0276# QFREDE
+1/11/2018,-2.99,-,POS Purchase           ,FPOS SHOPPERS DRUG MART #FREDE
+1/11/2018,-13.44,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+1/10/2018,-4.99,-,POS Purchase           ,OPOS Spotify P049993208  Stock
+1/9/2018,-5.74,-,Miscellaneous Payment  ,PAYPAL                       
+1/9/2018,-74.38,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+1/9/2018,3498.25,-,Student Loan           ,NB STUDENT LOAN              
+1/9/2018,-34.49,-,POS Purchase           ,FPOS EB GAMES 1809       FREDR
+1/9/2018,-51,-,POS Purchase           ,FPOS AITKEN CENTER       FREDE
+1/8/2018,35,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+1/8/2018,-11.16,-,POS Purchase           ,FPOS A&W #7111           FREDE
+1/8/2018,-18.38,-,POS Purchase           ,THE SOURCE #56360        FREDE
+1/6/2018,-17.02,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+1/6/2018,-39.49,-,POS Purchase           ,FPOS ALCOOL NB LIQUOR  #0FREDE
+1/6/2018,-18.91,-,POS Purchase           ,ROTISSERIE ST HUBERT 0   MONCT
+1/6/2018,-19.4,-,POS Purchase           ,FPOS CINEPLEX #6110      DIEPP
+1/6/2018,-8.01,-,POS Purchase           ,FPOS TIM HORTONS #0739   OROMO
+1/6/2018,-72.01,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+1/5/2018,-93,-,POS Purchase           ,OPOS CINEPLEX #8030 WEB QTORON
+1/5/2018,166.64,-,Provincial Payment     ,CANADA                       
+1/4/2018,-290,20,Cheque                 ,
+1/4/2018,-35.99,-,POS Purchase           ,FPOS ALCOOL NB LIQUOR  #0FREDE
+1/3/2018,-42.26,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+1/3/2018,-81.79,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+1/3/2018,-5.7,-,POS Purchase           ,WAL-MART #3032           FREDE
+1/3/2018,-45,-,WITHDRAWAL             ,
+1/3/2018,1171,-,DEPOSIT                ,
+1/2/2018,-4.58,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+1/2/2018,-1.94,-,POS Purchase           ,FPOS TIM HORTONS #2853# QBRIST
+12/22/2017,-12.64,-,POS Purchase           ,DINER DOWN UNDER         BATH 
+12/22/2017,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+12/22/2017,-110,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+12/21/2017,-3.45,-,Miscellaneous Payment  ,PAYPAL                       
+12/20/2017,-150,-,POS Purchase           ,WINGO'S RESTAURANT       WOODS
+12/19/2017,-3.8,-,Miscellaneous Payment  ,PAYPAL                       
+12/19/2017,-27.59,-,POS Purchase           ,OPOS DOMINO'S PIZZA #1090FREDE
+12/19/2017,-39.1,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+12/18/2017,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+12/18/2017,-75,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+12/18/2017,-9.2,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+12/18/2017,-10.11,-,POS Purchase           ,FPOS TIM HORTONS #0276# QFREDE
+12/16/2017,-41,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+12/16/2017,-10.34,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+12/13/2017,-6.64,-,Miscellaneous Payment  ,PAYPAL                       
+12/13/2017,-12.62,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+12/12/2017,-21.79,-,POS Purchase           ,LINCOLN BIG STOP         WAASI
+12/11/2017,-8.87,-,POS Purchase           ,FPOS TIM HORTONS #0176# QFREDE
+12/11/2017,-4.99,-,POS Purchase           ,OPOS Spotify P0448C0A90  Stock
+12/9/2017,-30.75,-,POS Purchase           ,WAL-MART #3032           FREDE
+12/8/2017,-14.49,-,POS Purchase           ,PAPA GEORGIOS PIZZA      FREDE
+12/6/2017,-73.82,-,POS Purchase           ,OPOS Amazon *Marketplce CWWW.A
+12/6/2017,-74.58,-,POS Purchase           ,OPOS Amazon *Marketplce CWWW.A
+12/6/2017,-21.94,-,POS Purchase           ,OPOS Amazon *Marketplce CWWW.A
+12/6/2017,-14.99,-,POS Purchase           ,OPOS Amazon *Marketplce CWWW.A
+12/5/2017,-290,19,Cheque                 ,
+12/5/2017,-35.99,-,POS Purchase           ,FPOS HANWELL ROAD IRVING HANWE
+12/5/2017,-70.31,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+12/4/2017,-10.2,-,POS Purchase           ,FPOS TIM HORTONS #0176# QFREDE
+12/4/2017,60,-,DEPOSIT                ,PC-EMAIL MONEY TRF
+12/1/2017,-18.1,-,POS Purchase           ,FPOS GRECO PIZZA         FREDE
+11/30/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+11/30/2017,-75,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+11/28/2017,-52.67,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+11/27/2017,-35.07,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+11/27/2017,-40,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+11/27/2017,-17.88,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+11/24/2017,-44.45,-,Miscellaneous Payment  ,PAYPAL                       
+11/23/2017,50,-,DEPOSIT                ,PC-EMAIL MONEY TRF
+11/23/2017,-13.03,-,POS Purchase           ,FPOS TIM HORTONS #2131# QFREDE
+11/22/2017,-200,-,ABM Withdrawal,
+11/21/2017,-56.8,-,POS Purchase           ,FPOS SOBEYS #849        QFREDE
+11/18/2017,-15.38,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+11/16/2017,-46.57,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+11/14/2017,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+11/14/2017,-50,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+11/14/2017,-4.03,-,POS Purchase           ,FPOS DOLLARAMA # 337     FREDE
+11/14/2017,-54.48,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+11/14/2017,-14.03,-,POS Purchase           ,FPOS A&W #7218           FREDE
+11/14/2017,-40.02,-,POS Purchase           ,FPOS GRAB N GO WATERVILLEWATER
+11/10/2017,-4.99,-,POS Purchase           ,OPOS Spotify P03F977A59  Stock
+11/9/2017,-40.02,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+11/8/2017,-5.01,-,POS Purchase           ,FPOS GIANT TIGER #175    FREDE
+11/8/2017,-28.23,-,POS Purchase           ,WAL-MART #3032           FREDE
+11/7/2017,-98.12,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+11/7/2017,-2.17,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+11/7/2017,-11.25,-,POS Purchase           ,FPOS WENDY'S RESTAURANT QFREDE
+11/6/2017,-14.09,-,POS Purchase           ,FPOS A&W #7218           FREDE
+11/6/2017,-12.06,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+11/6/2017,-53,-,POS Purchase           ,OPOS CINEPLEX #8030 WEB QTORON
+11/4/2017,-120,-,ABM Withdrawal,
+11/2/2017,-290,18,Cheque                 ,
+11/2/2017,-136.57,-,POS Purchase           ,WAL-MART #3032           FREDE
+10/31/2017,-50.58,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+10/31/2017,-12.65,-,POS Purchase           ,LITTLE CAESER            FREDE
+10/30/2017,-26.77,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+10/27/2017,-3.08,-,POS Purchase           ,FPOS UNIVERSITY OF NEW BRFREDE
+10/25/2017,-28.74,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+10/24/2017,-51.87,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+10/24/2017,-15.53,-,POS Purchase           ,FPOS A&W #7218           FREDE
+10/23/2017,-8.15,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+10/20/2017,-1.94,-,POS Purchase           ,FPOS UNIVERSITY OF NEW BRFREDE
+10/19/2017,90.85,-,POS Return             ,OPOS Amazon.ca Prime Membamazo
+10/19/2017,-90.85,-,POS Purchase           ,OPOS Amazon.ca Prime Membamazo
+10/17/2017,-55.63,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+10/17/2017,-22.93,-,POS Purchase           ,WAL-MART #3032           FREDE
+10/17/2017,-100,-,ABM Withdrawal,
+10/16/2017,-24.72,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+10/16/2017,-3.89,-,POS Purchase           ,FPOS UNIVERSITY OF NEW BRFREDE
+10/12/2017,-19.52,-,POS Purchase           ,WAL-MART #3032           FREDE
+10/12/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+10/12/2017,-200,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+10/11/2017,-76,-,POS Purchase           ,FPOS CIRCLE K / IRVING #QWAASI
+10/11/2017,-27.97,-,POS Purchase           ,LINCOLN BIG STOP         WAASI
+10/11/2017,-5.97,-,POS Purchase           ,FPOS TIM HORTONS #1705# QFREDE
+10/10/2017,-48.67,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+10/10/2017,-4.99,-,POS Purchase           ,OPOS Spotify P03AF1197D  Stock
+10/10/2017,-15.62,-,POS Purchase           ,FPOS MCDONALD'S #17867   WOODS
+10/10/2017,-40,-,POS Purchase           ,FPOS ULTRAMAR #12659     BATH 
+10/6/2017,-32,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+10/5/2017,166.64,-,Provincial Payment     ,CANADA                       
+10/4/2017,-290,17,Cheque                 ,
+10/4/2017,-91.99,-,POS Purchase           ,OPOS Amazon.ca           Seatt
+10/3/2017,-137,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+10/3/2017,-9.53,-,POS Purchase           ,UNIVERSITY OF NEW BR     FREDE
+10/2/2017,-12.28,-,POS Purchase           ,FPOS MCDONALD'S #1808    FREDE
+10/2/2017,-25,-,POS Purchase           ,OPOS FINANCIAL AND CONSUMSAINT
+9/30/2017,-0.09,-,Overdraft Interest     ,
+9/30/2017,-34.47,-,POS Purchase           ,WAL-MART #3032           FREDE
+9/30/2017,-12.64,-,POS Purchase           ,SUBWAY # 20599           FREDE
+9/30/2017,-32.3,-,POS Purchase           ,RINGO'S BAR & GRILL      FREDE
+9/26/2017,-68.98,-,POS Purchase           ,MARK'S STORE             FREDE
+9/26/2017,-188.25,-,POS Purchase           ,#284 SPORT CHEK          FREDE
+9/26/2017,-39.62,-,POS Purchase           ,JUNGLE JIM'S EATERY -    FREDE
+9/25/2017,-44.76,-,POS Purchase           ,OPOS Amazon.ca           Seatt
+9/25/2017,-8.02,-,POS Purchase           ,WAL-MART #3032           FREDE
+9/23/2017,-23.13,-,POS Purchase           ,PAPA JOHN'S PIZZA        FREDE
+9/21/2017,-11.05,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+9/21/2017,-10.25,-,POS Purchase           ,OPOS CINEPLEX #8030 WEB QTORON
+9/20/2017,-260,-,ABM Withdrawal,
+9/20/2017,1,-,Correction             ,OPOS AMZ PRIMESUBSCRIPTIOAMAZO
+9/19/2017,-44.19,-,POS Purchase           ,SOBEYS #849        QPS   FREDE
+9/19/2017,4674,-,Student Loan           ,NB STUDENT LOAN              
+9/19/2017,-1,-,POS Purchase           ,OPOS Amazon.ca Prime Membamazo
+9/18/2017,-57.42,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+9/18/2017,-22.99,-,POS Purchase           ,OPOS Amazon *Marketplce CWWW.A
+9/18/2017,139.25,-,Student Loan           ,CANADA                       
+9/18/2017,-36.7,-,POS Purchase           ,OPOS Amazon *Marketplce CWWW.A
+9/16/2017,-9.07,-,POS Purchase           ,VANELLIS MVS074          FREDE
+9/16/2017,-10.34,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+9/15/2017,-47.06,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+9/15/2017,-20.02,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+9/15/2017,-260,-,ABM Withdrawal,
+9/15/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+9/15/2017,-45,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+9/15/2017,512.29,-,Payroll Deposit        ,BKR Management Inc.          
+9/12/2017,-5,-,Overdrawn Handling Chg.,
+9/12/2017,-9.99,-,Miscellaneous Payment  ,PAYPAL                       
+9/11/2017,-5,-,Overdrawn Handling Chg.,
+9/11/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+9/11/2017,-21,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+9/7/2017,-25,-,POS Purchase           ,OPOS FINANCIAL AND CONSUMSAINT
+9/7/2017,60,-,DEPOSIT                ,PC-EMAIL MONEY TRF
+9/5/2017,-5,-,Overdrawn Handling Chg.,
+9/5/2017,-290,16,Cheque                 ,
+9/5/2017,40,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+9/1/2017,609.06,-,Payroll Deposit        ,BKR Management Inc.          
+8/31/2017,-5,-,Overdrawn Handling Chg.,
+8/31/2017,-369,-,Miscellaneous Payment  ,NSLSC                        
+8/31/2017,-13.95,-,Service Charge         ,MONTHLY FEES
+8/31/2017,-0.22,-,Overdraft Interest     ,
+8/30/2017,-7.46,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+8/29/2017,-80,-,ABM Withdrawal,
+8/29/2017,-6.43,-,POS Purchase           ,FPOS DAIRY QUEEN #12176  FREDE
+8/28/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+8/28/2017,-1.38,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+8/28/2017,-4.42,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+8/26/2017,-1.5,-,Service Charge         ,
+8/26/2017,-24,-,ABM Withdrawal,
+8/25/2017,-17.74,-,POS Purchase           ,PIZZA DELIGHT PROSPECT   FREDE
+8/24/2017,-43.03,-,POS Purchase           ,HANWELL ROAD IRVING #1   HANWE
+8/21/2017,-3.32,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+8/21/2017,-35.7,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+8/19/2017,-399.15,-,POS Purchase           ,WAL-MART #3032           FREDE
+8/18/2017,-30.35,-,POS Purchase           ,GRECO PIZZA              FREDE
+8/18/2017,-1,-,Service Charge         ,PC-EMAIL MONEY TRF
+8/18/2017,-40,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+8/18/2017,705.54,-,Payroll Deposit        ,BKR Management Inc.          
+8/16/2017,-3.5,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+8/15/2017,-22.38,-,Miscellaneous Payment  ,PAYPAL                       
+8/15/2017,-19.06,-,Miscellaneous Payment  ,PAYPAL                       
+8/15/2017,-7.29,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+8/14/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+8/14/2017,-10.92,-,POS Purchase           ,FPOS LITTLE CAESER       FREDE
+8/14/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+8/14/2017,-85,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+8/14/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+8/14/2017,-50,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+8/11/2017,-37.84,-,POS Purchase           ,FPOS CINEPLEX #6111      FREDE
+8/11/2017,-41.59,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+8/7/2017,-5.5,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+8/4/2017,-162,-,POS Purchase           ,SNB - BRISTOL            FLORE
+8/4/2017,703.01,-,Payroll Deposit        ,BKR Management Inc.          
+8/2/2017,-5,-,Overdrawn Handling Chg.,
+8/2/2017,-290,15,Cheque                 ,
+8/1/2017,-27.55,-,POS Purchase           ,FPOS DOMINO'S PIZZA #1090FREDE
+7/31/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+7/31/2017,-369,-,Miscellaneous Payment  ,NSLSC                        
+7/31/2017,-13.95,-,Service Charge         ,MONTHLY FEES
+7/31/2017,-4.14,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/31/2017,-100,-,ABM Withdrawal,
+7/28/2017,-35.99,-,POS Purchase           ,ALCOOL NB LIQUOR  #060   FREDE
+7/27/2017,-41.92,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+7/25/2017,-38.75,-,Miscellaneous Payment  ,PAYPAL                       
+7/25/2017,-5.28,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/24/2017,-4.14,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/24/2017,-5.96,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/24/2017,-3.74,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/21/2017,-35.99,-,POS Purchase           ,FPOS ALCOOL NB LIQUOR  #0FREDE
+7/21/2017,-11.93,-,POS Purchase           ,FPOS A&W #7111           FREDE
+7/21/2017,594.73,-,Payroll Deposit        ,BKR Management Inc.          
+7/20/2017,-6.1,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/18/2017,-4.31,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/17/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+7/17/2017,-72.71,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+7/17/2017,-2.75,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/17/2017,-4.14,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/17/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+7/17/2017,-65,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+7/13/2017,-6.68,-,Miscellaneous Payment  ,PAYPAL                       
+7/13/2017,-100,-,ABM Withdrawal,
+7/13/2017,-37.99,-,POS Purchase           ,ALCOOL NB LIQUOR  #045   FREDE
+7/11/2017,-9.99,-,Miscellaneous Payment  ,PAYPAL                       
+7/11/2017,-109.3,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+7/10/2017,-3.4,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/10/2017,-50,-,POS Purchase           ,FPOS CIRCLE K / IRVING  QFREDE
+7/10/2017,-6.2,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/10/2017,-1.84,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/7/2017,-5.74,-,Miscellaneous Payment  ,PAYPAL                       
+7/7/2017,-23,-,Miscellaneous Payment  ,PAYPAL                       
+7/7/2017,545.94,-,Payroll Deposit        ,BKR Management Inc.          
+7/6/2017,-1.15,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/5/2017,-46,-,Miscellaneous Payment  ,PAYPAL                       
+7/5/2017,-40.25,-,Miscellaneous Payment  ,PAYPAL                       
+7/5/2017,-290,14,Cheque                 ,
+7/5/2017,166.64,-,Provincial Payment     ,CANADA                       
+7/4/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+7/4/2017,-70.54,-,POS Purchase           ,FPOS SOBEYS #535        QFREDE
+7/4/2017,-3.73,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/4/2017,-3.21,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/4/2017,-4.36,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+7/4/2017,-6.31,-,POS Purchase           ,BURGER KING #3422        DARTM
+6/30/2017,-369,-,Miscellaneous Payment  ,NSLSC                        
+6/30/2017,-13.95,-,Service Charge         ,MONTHLY FEES
+6/29/2017,-45.96,-,POS Purchase           ,FPOS HANWELL ROAD IRVING HANWE
+6/29/2017,-100,-,ABM Withdrawal,
+6/29/2017,-9.3,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+6/27/2017,-14.74,-,POS Purchase           ,FPOS PITA PIT            FREDE
+6/27/2017,-38.52,-,POS Purchase           ,WAL-MART #3032           FREDE
+6/26/2017,-2.81,-,POS Purchase           ,FPOS BURGER KING #3422   DARTM
+6/23/2017,587.73,-,Payroll Deposit        ,BKR Management Inc.          
+6/22/2017,87,-,ABM Deposit,
+6/21/2017,-34.14,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+6/19/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+6/19/2017,-50.02,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+6/16/2017,-5.85,-,POS Purchase           ,MRS FIELDS/PRETZLERMAK   FREDE
+6/16/2017,-11.26,-,POS Purchase           ,MANCHU WOK RESTAURANT    FREDE
+6/14/2017,-100,24,Cheque                 ,
+6/14/2017,-30.69,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+6/14/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+6/14/2017,-45,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+6/14/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+6/14/2017,-50,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+6/13/2017,-6.95,-,Miscellaneous Payment  ,PAYPAL                       
+6/13/2017,-9.99,-,Miscellaneous Payment  ,PAYPAL                       
+6/12/2017,-8.44,-,POS Purchase           ,BURGER KING #3422        DARTM
+6/12/2017,-3.67,-,POS Purchase           ,BURGER KING #3422        DARTM
+6/9/2017,669.02,-,Payroll Deposit        ,BKR Management Inc.          
+6/8/2017,-60,-,ABM Withdrawal,
+6/7/2017,-40.01,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+6/5/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+6/5/2017,-32.22,-,POS Purchase           ,WAL-MART #3032           FREDE
+6/5/2017,-11.48,-,POS Purchase           ,MANCHU WOK RESTAURANT    FREDE
+6/5/2017,-2.88,-,POS Purchase           ,BURGER KING #3422        DARTM
+6/2/2017,-290,13,Cheque                 ,
+6/1/2017,-60,-,ABM Withdrawal,
+6/1/2017,-24.99,-,POS Purchase           ,ALCOOL NB LIQUOR  #060   FREDE
+5/31/2017,-369,-,Miscellaneous Payment  ,NSLSC                        
+5/31/2017,-45.31,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+5/31/2017,-13.95,-,Service Charge         ,MONTHLY FEES
+5/30/2017,-42.99,-,POS Purchase           ,ALCOOL NB LIQUOR  #045   FREDE
+5/26/2017,-121.86,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+5/26/2017,642.4,-,Payroll Deposit        ,BKR Management Inc.          
+5/24/2017,-28.99,-,POS Purchase           ,HANWELL ROAD IRVING #1   HANWE
+5/24/2017,-4.08,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/23/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+5/23/2017,-100,-,ABM Withdrawal,
+5/23/2017,-5.23,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/23/2017,-7.52,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/20/2017,-2.75,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/20/2017,-6.89,-,POS Purchase           ,LITTLE CAESER            FREDE
+5/18/2017,-8.05,-,POS Purchase           ,DOLLARAMA # 337          FREDE
+5/16/2017,-65.54,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+5/16/2017,-31.73,-,POS Purchase           ,GIANT TIGER #175         FREDE
+5/15/2017,-7.07,-,Miscellaneous Payment  ,PAYPAL                       
+5/15/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+5/15/2017,-60,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+5/15/2017,-6.95,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/12/2017,666.13,-,Payroll Deposit        ,BKR Management Inc.          
+5/11/2017,-9.99,-,Miscellaneous Payment  ,PAYPAL                       
+5/11/2017,-3.44,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/9/2017,-100,-,ABM Withdrawal,
+5/9/2017,-5.06,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/8/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+5/8/2017,-5.8,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/8/2017,-50,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+5/6/2017,-68.98,-,POS Purchase           ,ALCOOL NB LIQUOR  #060   FREDE
+5/5/2017,-58.84,-,POS Purchase           ,ALCOOL NB LIQUOR  #060   FREDE
+5/5/2017,-68.15,-,POS Purchase           ,GIANT TIGER #175         FREDE
+5/4/2017,607.04,-,Tax Refund             ,CANADA                       
+5/4/2017,-5.69,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/3/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+5/3/2017,-59,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+5/2/2017,-290,12,Cheque                 ,
+5/2/2017,-19.62,-,POS Purchase           ,CINEPLEX #6111           FREDE
+5/1/2017,-369,-,Miscellaneous Payment  ,NSLSC                        
+5/1/2017,-3.84,-,POS Purchase           ,BURGER KING #3422        DARTM
+5/1/2017,-25,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+4/29/2017,-13.95,-,Service Charge         ,MONTHLY FEES
+4/28/2017,-52.29,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+4/28/2017,-13.47,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+4/28/2017,772.56,-,Payroll Deposit        ,BKR Management Inc.          
+4/27/2017,-100,-,ABM Withdrawal,
+4/27/2017,-120,-,ABM Withdrawal,
+4/27/2017,-9.07,-,POS Purchase           ,BURGER KING #3422        DARTM
+4/24/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CENTRES INC 
+4/24/2017,-70.78,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+4/22/2017,-3.61,-,POS Purchase           ,BURGER KING #3422        DARTM
+4/20/2017,-15.87,-,POS Purchase           ,PAPA GEORGIOS PIZZA      FREDE
+4/18/2017,-126.7,-,POS Purchase           ,THINGS                   FREDE
+4/17/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+4/17/2017,-55,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+4/17/2017,-6.43,-,POS Purchase           ,BURGER KING #3422        DARTM
+4/17/2017,-120,-,ABM Withdrawal,
+4/15/2017,-138.24,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+4/13/2017,-6.88,-,Miscellaneous Payment  ,PAYPAL                       
+4/13/2017,635.39,-,Payroll Deposit        ,BKR Management Inc.          
+4/13/2017,-3.04,-,POS Purchase           ,BURGER KING #3422        DARTM
+4/12/2017,-9.99,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+4/11/2017,-51.58,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+4/11/2017,0,-,Service Charge         ,MB-FREE EMAIL MONEY TRF
+4/11/2017,-62,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+4/10/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+4/10/2017,-13.2,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+4/10/2017,-42.55,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+4/10/2017,-4.93,-,POS Purchase           ,BURGER KING #3422        DARTM
+4/8/2017,-4.88,-,POS Purchase           ,BURGER KING #3422        DARTM
+4/7/2017,-59.22,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+4/6/2017,-6.54,-,POS Purchase           ,BURGER KING #3422        DARTM
+4/6/2017,-1.94,-,POS Purchase           ,BURGER KING #3422        DARTM
+4/5/2017,144,-,Provincial Payment     ,CANADA                       
+4/4/2017,-280,11,Cheque                 ,
+4/4/2017,-10.11,-,POS Purchase           ,BURGER KING #3422        DARTM
+4/1/2017,-54.31,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+4/1/2017,-4.36,-,POS Purchase           ,BURGER KING #3422        DARTM
+3/31/2017,-369,-,Miscellaneous Payment  ,NSLSC                        
+3/31/2017,-13.95,-,Service Charge         ,MONTHLY FEES
+3/31/2017,-6.91,-,POS Purchase           ,MAIL N MART              FREDE
+3/31/2017,767,-,DEPOSIT                ,
+3/31/2017,-1,-,Service Charge         ,PC-EMAIL MONEY TRF
+3/31/2017,-99,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+3/31/2017,271.86,-,Payroll Deposit        ,BKR Management Inc.          
+3/31/2017,-35.19,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+3/30/2017,-120,-,ABM Withdrawal,
+3/29/2017,-50.53,-,POS Purchase           ,H&R BLOCK WOODSTOCK      WOODS
+3/29/2017,-6.66,-,POS Purchase           ,MCDONALD'S #1808         FREDE
+3/27/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+3/25/2017,-71.51,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+3/24/2017,593.3,-,Payroll Deposit        ,BKR Management Inc.          
+3/21/2017,-2.29,-,POS Purchase           ,BURGER KING #3422        DARTM
+3/20/2017,-139.14,-,POS Purchase           ,CLEVE'S SPORTING GOODS   DARTM
+3/20/2017,-4.09,-,POS Purchase           ,UNIVERSITY OF NEW BR     FREDE
+3/20/2017,-30,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+3/18/2017,-5.91,-,POS Purchase           ,BURGER KING #3422        DARTM
+3/18/2017,-7.16,-,POS Purchase           ,BURGER KING #3422        DARTM
+3/17/2017,-22.97,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+3/14/2017,-6.95,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+3/14/2017,-100,-,ABM Withdrawal,
+3/14/2017,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+3/14/2017,-45,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+3/14/2017,0,-,Service Charge         ,PC-FREE EMAIL MONEY TRF
+3/14/2017,-50,-,WITHDRAWAL             ,PC-EMAIL MONEY TRF
+3/13/2017,-9.99,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+3/13/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+3/10/2017,457.05,-,Payroll Deposit        ,BKR Management Inc.          
+3/9/2017,-23.96,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+3/3/2017,-27.59,-,POS Purchase           ,CINEPLEX #6111           FREDE
+3/3/2017,-140,-,WITHDRAWAL             ,
+3/3/2017,200,-,DEPOSIT                ,
+3/2/2017,-280,10,Cheque                 ,
+2/28/2017,-369,-,Miscellaneous Payment  ,NSLSC                        
+2/28/2017,-20.06,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+2/28/2017,-12.95,-,Service Charge         ,MONTHLY FEES
+2/28/2017,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+2/28/2017,-50,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+2/28/2017,250,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+2/27/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+2/24/2017,422.1,-,Payroll Deposit        ,BKR Management Inc.          
+2/18/2017,-100,-,ABM Withdrawal,
+2/18/2017,-32.06,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+2/16/2017,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+2/16/2017,-50,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+2/14/2017,-6.75,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+2/14/2017,-4.99,-,POS Purchase           ,BURGER KING #3422        DARTM
+2/13/2017,-9.99,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+2/13/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+2/10/2017,-11.25,-,POS Purchase           ,PETRO-CANADA             LAKE 
+2/10/2017,-32.01,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+2/10/2017,343.98,-,Payroll Deposit        ,BKR Management Inc.          
+2/9/2017,-6.87,-,POS Purchase           ,BURGER KING #3422        DARTM
+2/7/2017,-4.58,-,POS Purchase           ,BURGER KING #3422        DARTM
+2/6/2017,-5.1,-,POS Purchase           ,IRVING/FLORENCEVILLE     FLORE
+2/6/2017,-40,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+2/4/2017,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+2/4/2017,-56,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+2/4/2017,100,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+2/2/2017,-280,9,Cheque                 ,
+2/2/2017,-100,-,ABM Withdrawal,
+1/31/2017,-369,-,Miscellaneous Payment  ,NSLSC                        
+1/31/2017,-12.95,-,Service Charge         ,MONTHLY FEES
+1/30/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+1/30/2017,-11.8,-,POS Purchase           ,PAPA GEORGIOS PIZZA      FREDE
+1/27/2017,439.12,-,Payroll Deposit        ,BKR Management Inc.          
+1/21/2017,-11.68,-,POS Purchase           ,WAL-MART #3032           FREDE
+1/19/2017,-120,-,ABM Withdrawal,
+1/19/2017,-17.67,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+1/19/2017,-31.09,-,POS Purchase           ,ALCOOL NB LIQUOR  #060   FREDE
+1/18/2017,-42.89,-,POS Purchase           ,WAL-MART #3032           FREDE
+1/17/2017,-6.73,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+1/16/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+1/16/2017,-44.01,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+1/16/2017,-9.73,-,POS Purchase           ,BURGER KING #3422        DARTM
+1/13/2017,-32.2,-,POS Purchase           ,CELLAR PUB (CA100)       FREDE
+1/13/2017,655.35,-,Payroll Deposit        ,BKR Management Inc.          
+1/12/2017,-9.99,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+1/12/2017,-2.52,-,POS Purchase           ,BURGER KING #3422        DARTM
+1/11/2017,-160,-,ABM Withdrawal,
+1/10/2017,-105.48,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+1/9/2017,-6.9,-,POS Purchase           ,BURGER KING #3422        DARTM
+1/7/2017,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+1/7/2017,-64,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+1/7/2017,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+1/7/2017,-43.2,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+1/5/2017,144,-,Provincial Payment     ,CANADA                       
+1/4/2017,-280,8,Cheque                 ,
+1/3/2017,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+1/3/2017,-369,-,Miscellaneous Payment  ,NSLSC                        
+1/3/2017,-72.38,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+1/3/2017,-3.94,-,POS Purchase           ,BURGER KING #3422        DARTM
+12/31/2016,-12.95,-,Service Charge         ,MONTHLY FEES
+12/30/2016,-38.77,-,POS Purchase           ,ALCOOL NB LIQUOR  #040   FREDE
+12/30/2016,-200,-,ABM Withdrawal,
+12/30/2016,666,-,ABM Deposit,
+12/30/2016,-120,-,ABM Withdrawal,
+12/30/2016,454.88,-,Payroll Deposit        ,BKR Management Inc.          
+12/29/2016,-5.85,-,POS Purchase           ,BURGER KING #3422        DARTM
+12/28/2016,-5.73,-,POS Purchase           ,BURGER KING #3422        DARTM
+12/28/2016,-86.01,-,POS Purchase           ,WAL-MART #3032           FREDE
+12/28/2016,14.92,-,POS Return             ,WAL-MART #3032           FREDE
+12/28/2016,-17.24,-,POS Purchase           ,CANADIAN TIRE #0035      FREDE
+12/28/2016,-4.57,-,POS Purchase           ,GIANT TIGER #175         FREDE
+12/22/2016,-12.36,-,POS Purchase           ,A&W #7218                FREDE
+12/22/2016,-164.71,-,POS Purchase           ,WAL-MART #3032           FREDE
+12/22/2016,-30.02,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+12/22/2016,-11.48,-,POS Purchase           ,CINEPLEX #6111           FREDE
+12/20/2016,150,-,DEPOSIT                ,MB-EMAIL MONEY TRF
+12/19/2016,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+12/19/2016,-70.99,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+12/16/2016,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+12/16/2016,-50,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+12/16/2016,476.53,-,Payroll Deposit        ,BKR Management Inc.          
+12/15/2016,-5.91,-,POS Purchase           ,BURGER KING #3422        DARTM
+12/14/2016,-6.76,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+12/13/2016,-280,7,Cheque                 ,
+12/12/2016,-9.99,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+12/12/2016,-6.9,-,POS Purchase           ,BURGER KING #3422        DARTM
+12/10/2016,-40,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+12/10/2016,-60,-,ABM Withdrawal,
+12/10/2016,-5.26,-,POS Purchase           ,MCDONALD'S #5483         FREDE
+12/7/2016,-4.01,-,POS Purchase           ,BURGER KING #3422        DARTM
+12/6/2016,-5.85,-,POS Purchase           ,BURGER KING #3422        DARTM
+12/5/2016,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+12/5/2016,-22.4,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+12/2/2016,522.54,-,Payroll Deposit        ,BKR Management Inc.          
+11/30/2016,-369,-,Miscellaneous Payment  ,NSLSC                        
+11/30/2016,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+11/30/2016,-42,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+11/28/2016,-100,-,ABM Withdrawal,
+11/26/2016,-7.8,-,POS Purchase           ,ALCOOL NB LIQUOR  #060   FREDE
+11/26/2016,-9.88,-,POS Purchase           ,PITA PIT - 176 (CA100)   FREDE
+11/25/2016,-29.49,-,POS Purchase           ,ALCOOL NB LIQUOR  #060   FREDE
+11/25/2016,-98.8,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+11/25/2016,-5.61,-,POS Purchase           ,MRS FIELDS/PRETZLERMAK   FREDE
+11/24/2016,-7.41,-,POS Purchase           ,BURGER KING #3422        DARTM
+11/23/2016,-7.39,-,POS Purchase           ,BURGER KING #3422        DARTM
+11/22/2016,-3.77,-,POS Purchase           ,BURGER KING #3422        DARTM
+11/21/2016,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+11/21/2016,-4.65,-,POS Purchase           ,BURGER KING #3422        DARTM
+11/18/2016,-24.99,-,POS Purchase           ,ALCOOL NB LIQUOR  #060   FREDE
+11/18/2016,553.25,-,Payroll Deposit        ,BKR Management Inc.          
+11/17/2016,-41.02,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+11/17/2016,60,-,DEPOSIT                ,PC-EMAIL MONEY TRF
+11/16/2016,-6.14,-,POS Purchase           ,BURGER KING #3422        DARTM
+11/14/2016,-9.99,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+11/14/2016,-6.96,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+11/10/2016,-26,-,POS Purchase           ,HANWELL ROAD IRVING #1   HANWE
+11/10/2016,-111.47,-,POS Purchase           ,WAL-MART #3032           FREDE
+11/10/2016,-10.93,-,POS Purchase           ,A&W #7111                FREDE
+11/10/2016,-6.14,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+11/8/2016,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+11/8/2016,-199,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+11/7/2016,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+11/5/2016,-41.81,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+11/4/2016,-29.29,-,POS Purchase           ,HANWELL ROAD IRVING #1   HANWE
+11/4/2016,-7.34,-,POS Purchase           ,MCDONALD'S #1808         FREDE
+11/4/2016,447.24,-,Payroll Deposit        ,BKR Management Inc.          
+11/3/2016,-5,-,POS Purchase           ,BURGER KING #3422        DARTM
+11/2/2016,-280,6,Cheque                 ,
+11/2/2016,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+11/2/2016,-31.25,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+11/2/2016,-13.79,-,POS Purchase           ,WENDY'S RESTAURANT Q1R   FREDE
+11/1/2016,-100,-,ABM Withdrawal,
+10/31/2016,-25.83,-,POS Purchase           ,DELUXE FRENCH FRIES      FREDE
+10/28/2016,-4.35,-,POS Purchase           ,TIM HORTONS #2598        WOODS
+10/27/2016,-40.3,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+10/25/2016,-43.34,-,POS Purchase           ,SOBEYS #849        QPS   FREDE
+10/24/2016,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+10/22/2016,-12.06,-,POS Purchase           ,HARVEY'S 2282            FREDE
+10/22/2016,-29.14,-,POS Purchase           ,ALCOOL NB LIQUOR  #045   FREDE
+10/21/2016,566.53,-,Payroll Deposit        ,BKR Management Inc.          
+10/19/2016,-23.57,-,POS Purchase           ,JUNGLE JIM'S EATERY -    FREDE
+10/18/2016,-25.85,-,POS Purchase           ,SPENCER GIFTS #3075      FREDE
+10/18/2016,-130.74,-,POS Purchase           ,WAL-MART #3032           FREDE
+10/17/2016,-1,-,Service Charge         ,MB-EMAIL MONEY TRF
+10/17/2016,-64,-,WITHDRAWAL             ,MB-EMAIL MONEY TRF
+10/17/2016,-7.96,-,POS Purchase           ,BURGER KING #3422        DARTM
+10/15/2016,-29.49,-,POS Purchase           ,ALCOOL NB LIQUOR  #060   FREDE
+10/15/2016,-33.32,-,POS Purchase           ,KINGSWOOD                FREDE
+10/15/2016,-26.44,-,POS Purchase           ,KINGSWOOD                FREDE
+10/14/2016,-6.82,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+10/12/2016,-11.49,-,Miscellaneous Payment  ,PAYPAL PTE LTD               
+10/12/2016,-5.45,-,POS Purchase           ,BURGER KING #3422        DARTM
+10/11/2016,-23.58,-,Miscellaneous Payment  ,GOODLIFE FITNESS CLUBS       
+10/11/2016,-30.2,-,POS Purchase           ,SOBEYS #535        QPS   FREDE
+10/7/2016,592.57,-,Payroll Deposit        ,BKR Management Inc.          
+10/6/2016,-6.66,-,POS Purchase           ,BURGER KING #3422        DARTM
+10/6/2016,-47.1,-,POS Purchase           ,CIRCLE K / IRVING  QPS   FREDE
+10/5/2016,219,-,Provincial Payment     ,CANADA                       
+10/4/2016,-280,5,Cheque                 ,
+10/4/2016,-5.68,-,POS Purchase           ,BURGER KING #3422        DARTM
+10/1/2016,-30.33,-,POS Purchase           ,GRECO PIZZA              FREDE
