@@ -2,6 +2,7 @@ import random
 from statistics import mean, median, mode, pstdev, pvariance, stdev, variance
 from tv_series import TVSeries
 
+
 the_office = TVSeries("The Office", {
     1 : 6,
     2 : 22,

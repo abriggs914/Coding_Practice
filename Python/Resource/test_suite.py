@@ -189,6 +189,7 @@ class TestSuite:
         # print("==Tests:\n\n","\n".join(list(map(str, tests_to_run))), "\n\n", tests_to_run)
         run_multiple_tests(tests_to_run)
 
+
     def __repr__(self):
         keys = ["test_func", "tests", "name"]
         vals = [getattr(self, key) for key in keys]
@@ -229,4 +230,5 @@ if __name__ == "__main__":
     TS4.set_func(lambda x: x)
     TS4.execute()
     TS4.set_func(lambda x: x + "1")
+    TS4.execute()
     TS4.execute()
