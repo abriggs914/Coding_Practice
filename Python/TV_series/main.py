@@ -2,7 +2,6 @@ import random
 from statistics import mean, median, mode, pstdev, pvariance, stdev, variance
 from tv_series import TVSeries
 
-
 the_office = TVSeries("The Office", {
     1 : 6,
     2 : 22,
@@ -510,7 +509,7 @@ the_simpsons = TVSeries("The Simpsons", {
 	30: 23,
 	31: 22,
 	32: 22},
-	22,
+	24,
 	1989,
 	2021,
 	True,

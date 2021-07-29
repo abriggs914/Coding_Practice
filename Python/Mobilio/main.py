@@ -35,7 +35,8 @@ entries = [
 	("2021-07-14 08:30:00", 0.335290),
 	("2021-07-19 08:30:00", 0.334579),
 	("2021-07-20 08:30:00", 0.334373),
-	("2021-07-23 08:30:00", 0.333917)
+	("2021-07-23 08:30:00", 0.333917),
+	("2021-07-29 08:30:00", 0.332907)
 	
 ]
 
@@ -80,7 +81,7 @@ else:
 	gain = 1 / abs(td)
 dd = mad - mid
 print("By waiting {} days, I have the potential to gain {} Mobilio per point.".format(dd.days, gain))
-balance = float(input("enter a point balance:\n"))
+balance = float(input("Enter a point balance:\n"))
 old = balance / entries[0][1]
 new = balance / entries[-1][1]
 dif = new - old
