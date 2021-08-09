@@ -1,11 +1,11 @@
-Dealer Delivery Reports as of 23-Jun-21
+Dealer Delivery Reports as of 09-Aug-21
 
 Using lead time of 5 days
 Adjusting deliveries moved back by at least 5 days 
 Adjusting deliveries moved forward by at least 7 days 
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Atlantic Powertrain & Equipment >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Atlantic Powertrain & Equipment >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -13,7 +13,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/B & D Equipment Inc. dba E & R Trailers Sales >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/B & D Equipment Inc. dba E & R Trailers Sales >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -21,7 +21,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/BWS - CDN Direct Sales >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/BWS - CDN Direct Sales >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -29,7 +29,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/BWS - US Direct Sales >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/BWS - US Direct Sales >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -37,7 +37,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/BWS Manufacturing Ltd. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/BWS Manufacturing Ltd. >>
 	The following orders need their estimated delivery dates updated.
 
  Q#      Wo#        Model      Serial #     Prod.       Mrp       P    Avail.     Est. Del.    F    New Del.  
@@ -49,7 +49,7 @@ EOF
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Clark's Truck Center >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Clark's Truck Center >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -57,7 +57,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Demountable Concepts, Inc. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Demountable Concepts, Inc. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -65,7 +65,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Department of Transportation >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Department of Transportation >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -73,7 +73,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/DH Agro Ltd. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/DH Agro Ltd. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -81,7 +81,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Diamond International Trucks Ltd. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Diamond International Trucks Ltd. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -89,7 +89,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Fleet Maintenance, Inc. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Fleet Maintenance, Inc. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -97,7 +97,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Fort Garry Industries Ltd. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Fort Garry Industries Ltd. >>
 	The following orders need their estimated delivery dates updated.
 
  Q#      Wo#      Model    Serial #    Prod.       Mrp       P      Avail.     Est. Del.    F    New Del.  
@@ -107,7 +107,7 @@ EOF
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Hale Trailer Brake & Wheel >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Hale Trailer Brake & Wheel >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -115,7 +115,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/I-29 Trailer Sales Inc. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/I-29 Trailer Sales Inc. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -123,7 +123,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/M & K Trailer Center of Grand Rapids LLC >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/M & K Trailer Center of Grand Rapids LLC >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -131,7 +131,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/McCorkle Sales Inc. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/McCorkle Sales Inc. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -139,7 +139,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Northeast Truck & Trailer Sales >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Northeast Truck & Trailer Sales >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -147,7 +147,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Nuss Truck & Equipment >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Nuss Truck & Equipment >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -155,7 +155,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Premier Technology Inc. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Premier Technology Inc. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -163,7 +163,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Redhead Equipment Ltd. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Redhead Equipment Ltd. >>
 	The following orders need their estimated delivery dates updated.
 
  Q#      Wo#        Model       Serial #     Prod.       Mrp       P    Avail.     Est. Del.    F    New Del.  
@@ -172,7 +172,7 @@ EOF
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Remorques Lewis Inc. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Remorques Lewis Inc. >>
 	The following orders need their estimated delivery dates updated.
 
  Q#      Wo#       Model      Serial #     Prod.       Mrp       P      Avail.     Est. Del.    F    New Del.  
@@ -182,7 +182,7 @@ EOF
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/S & S Trailers Sales, Inc >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/S & S Trailers Sales, Inc >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -190,7 +190,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Semi Trailer Sales >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Semi Trailer Sales >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -198,7 +198,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Stargate Mgf (2020) Ltd. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Stargate Mgf (2020) Ltd. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -206,7 +206,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Summit Trailer Ltd. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Summit Trailer Ltd. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -214,7 +214,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/TEC Equipment Inc. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/TEC Equipment Inc. >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -222,7 +222,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Trailers Plus >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Trailers Plus >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -230,7 +230,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Transit Trailer Limited >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Transit Trailer Limited >>
 	The following orders need their estimated delivery dates updated.
 
  Q#      Wo#      Model     Serial #     Prod.       Mrp       P      Avail.     Est. Del.    F    New Del.  
@@ -239,7 +239,7 @@ EOF
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Weaco Equipment >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Weaco Equipment >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  
@@ -247,7 +247,7 @@ Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F  
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Wieland Sales Inc. >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Wieland Sales Inc. >>
 	The following orders need their estimated delivery dates updated.
 
  Q#      Wo#      Model    Serial #    Prod.       Mrp       P     Avail.     Est. Del.    F    New Del.  
@@ -256,7 +256,7 @@ EOF
 EOF
 
 
-	Dealer Delivery Report for << Users/abrig/Documents/BWS/BWS/Dealer reports/Reports/Willrett Farm Equipment >>
+	Dealer Delivery Report for << Users/ABriggs/Documents/BWS/Dealer reports/Reports/Willrett Farm Equipment >>
 	The following orders need their estimated delivery dates updated.
 
 Q#   Wo#    Model    Serial #    Prod.    Mrp    P    Avail.    Est. Del.    F    New Del.  

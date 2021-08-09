@@ -595,7 +595,7 @@ def write_pdf_report(data):
     TXT_MARGIN = 5
     TABLE_MARGIN = 2
     FOOTER_MARGIN = 10
-    ori = "L"
+    ori = "P"
 
     if ori == "L":
         MAX_X, MAX_Y = MAX_Y, MAX_X

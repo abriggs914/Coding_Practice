@@ -2,21 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a0719fc-1cfe-46c3-a293-23c224cf3860" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/QuoteEmail.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fillable_pdf 2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fillable_pdf.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/output.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sample.docx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simple_checkboxes.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/simple_form.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testplot.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testplot.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/watermark.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Battleship/.idea/Battleship.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Battleship/.idea/Battleship.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Battleship/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Battleship/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Battleship/battleship.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Battleship/battleship.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Battleship/repl_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Battleship/repl_main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dealer Delivery Report.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/Dealer Delivery Report.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Orders to change.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Orders to change.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dealer_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/dealer_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simple_form.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/simple_form.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +35,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/dealer_report.py" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -56,7 +46,7 @@
       <recent name="C:\Users\ABriggs\Documents\Coding Practice\Coding_Practice\Python\CSV to PDF" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.fillable_pdf">
+  <component name="RunManager" selected="Python.dealer_report">
     <configuration name="csv_class" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="CSV to PDF" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -78,7 +68,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="fillable_pdf" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+    <configuration name="dealer_report" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="CSV to PDF" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -90,7 +80,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fillable_pdf.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dealer_report.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -101,7 +91,7 @@
     </configuration>
     <list>
       <item itemvalue="Python.csv_class" />
-      <item itemvalue="Python.fillable_pdf" />
+      <item itemvalue="Python.dealer_report" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
