@@ -367,7 +367,7 @@ class BattleshipGrid:
     def __copy__(self):
         for bs in self.battleships:
             print("bs:\t", bs)
-        return BattleshipGrid(self.n, self.m, self.random_ship_lengths, self.rnd_shp_max_size, ships=[copy.copy(bs) for bs in self.battleships])
+        return BattleshipGrid(self.n, self.m, self.random_ship_lengths, self.rnd_shp_max_size, ships=[copy(bs) for bs in self.battleships])
 
     def max_length_available(self):
         if self.grid:

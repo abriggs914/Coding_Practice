@@ -3,11 +3,12 @@ from math import e, ceil, sin, cos, radians
 from random import random, choice
 import datetime as dt
 import shutil
+import sys
 
 """
 	General Utility functions
-	Version............1.8
-	Date........2021-07-22
+	Version............1.9
+	Date........2021-08-08
 	Author....Avery Briggs
 """
 
@@ -651,3 +652,15 @@ def sin_x(degrees, amplitude=1, period=1, phase_shift=0, vertical_shift=0):
 
 def get_terminal_columns():
 	return shutil.get_terminal_size().columns
+	
+
+def is_imported(module_name):
+	return module_name in sys.modules
+
+
+def distance(start, end):
+	return ((start[0] - end[0]) ** 2 + (start[1] - end[1]) ** 2) ** 0.5
+	
+
+def dot_product(a, b):
+	return (a[0] * b[0]) + (b[0] * b[1])

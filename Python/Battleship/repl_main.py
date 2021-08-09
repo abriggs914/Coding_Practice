@@ -1,4 +1,5 @@
 from battleship_grid import *
+from battleship_game import *
 from test_suite import *
 import copy
 
