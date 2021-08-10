@@ -10,7 +10,7 @@ class TrafficSimulatorMap:
         self.h = h
         self.roadways = {}
 
-    def add_stop_sign
+    def add_stop_sign(self):
 
     @staticmethod
     def default_map(app):
