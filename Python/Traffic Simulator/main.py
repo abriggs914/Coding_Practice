@@ -1,5 +1,40 @@
 from pygame_application import *
 from colour_utility import *
+from pygame_utility import *
+
+
+class RoadWay:
+
+    def __init__(self, direction, rect, colour, n_lanes=1):
+        self.rect = rect
+        assert (isinstance(direction, list) or isinstance(direction, tuple)) and all([direct in DIRECTIONS for direct in direction])
+        # TODO; include diagonal roadway functionality
+        assert any([direction == ("N", "S"), direction == ("S", "N"), direction == ("E", "W"), direction == ("W", "E")])
+        self.direction = direction  # tuple rough directionality vie pygame_utility directions ex: ("N", "S")
+        self.colour = colour
+        self.n_lanes = n_lanes
+        self.lane_mode = "diagonal"
+
+        if direction == ("N", "S") or direction == ("S", "N"):
+            self.lane_width = rect[2] / n_lanes
+            self.lane_height = rect[3]
+            self.lane_mode = "vertical"
+        elif direction == ("E", "W") or direction == ("W", "E"):
+            self.lane_width = rect[3] / n_lanes
+            self.lane_height = rect[2]
+            self.lane_mode = "horizontal"
+
+
+class Intersection:
+
+    def __init(self, roadway_a, roadway_b):
+        self.roadway_a = roadway_a
+        self.roadway_b = roadway_b
+
+    def draw_intersection(self, game, display, colour=BLACK):
+        rect = game.Rect.colliderect(self.roadway_a.rect, self.roadway_b.rect)
+        game.draw.rect(display, colour, rect)
+
 
 class TrafficSimulatorMap:
     def __init__(self, name, game, display, w, h):
@@ -11,6 +46,45 @@ class TrafficSimulatorMap:
         self.roadways = {}
 
     def add_stop_sign(self):
+        pass
+
+    def update_intersections(self):
+        for ra_name, roadway_a in self.roadways.items():
+            for rb_name, roadway_b in self.roadways.items():
+                if ra_name != rb_name:
+                    rect_a = self.game.Rect(*roadway_a.rect)
+                    rect_b = self.game.Rect(*roadway_b.rect)
+                    rect = self.game.Rect.clip(rect_a, rect_b)
+                    if rect.size:
+                        print("\nroad a collides with road b: ({}, {})".format(ra_name, rb_name))
+                    print("R:", rect, "SIZE:", rect.size)
+
+    def draw_roadways(self, game, display, draw_lane_lines=True, lane_line_colour=WHITE, draw_yellow_line=True):
+        for r_name, roadway in self.roadways.items():
+            rect = roadway.rect
+            if isinstance(rect, list) or isinstance(rect, tuple) and len(rect) == 4:
+                rect = game.Rect(*rect)
+            else:
+                raise ValueError("rect object: <{}> is not a vaild")
+
+            if draw_lane_lines:
+                game.draw.rect(display, roadway.colour, rect)
+                n_lanes = roadway.n_lanes
+                lane_w = roadway.lane_width
+                lane_h = roadway.lane_height
+                for i in range(n_lanes - 1):
+                    print("dashed line:\n# lanes:", n_lanes, "\nlane_w:", lane_w, "\nlane_h:", lane_h, "\nmode:", roadway.lane_mode)
+                    if roadway.lane_mode == "vertical":
+                        dashed_line(game, display, lane_line_colour, ((rect.left + ((i + 1) * lane_w)), 0), ((rect.left + ((i + 1) * lane_w)), lane_h), 3, 8,
+                            seg_proportion=0.45)
+                    elif roadway.lane_mode == "horizontal":
+                        dashed_line(game, display, lane_line_colour, (0, rect.top + ((i + 1) * lane_w)), (rect.right, rect.top + ((i + 1) * lane_w)), 3, 8,
+                            seg_proportion=0.45)
+            # if draw_yellow_line:
+            #     yellow_line = roadway.yellow_line
+            #     if yellow_line == "right":
+
+
 
     @staticmethod
     def default_map(app):
@@ -29,8 +103,14 @@ class TrafficSimulatorMap:
         for i in range(hc):
             game.draw.line(display, BLACK, (0, i * hs), (w, i * hs))
 
-        game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))
-        game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))
+        tsmap.roadways = {
+            "south bound": RoadWay(("N", "S"), (w * 0.39, 0, w * 0.11, h * 0.35), BLACK, n_lanes=2),
+            "north bound": RoadWay(("S", "N"), (w * 0.5, 0, w * 0.11, h * 0.35), BLACK, n_lanes=3),
+            "east bound": RoadWay(("W", "E"), (0, h * 0.39, w * 0.35, h * 0.11), BLACK, n_lanes=2),
+            "west bound": RoadWay(("E", "W"), (0, h * 0.5, w * 0.35, h * 0.11), BLACK, n_lanes=3)
+        }
+        game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
+        game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))  # East - West
 
         # stop lines
         game.draw.line(display, WHITE, (w * 0.39, h * 0.35), (w * 0.5, h * 0.35), 3)  # north
@@ -69,6 +149,10 @@ class TrafficSimulatorMap:
 
         # dashed_line(game, display, HOTPINK, (0, 0), (w, 0), 3, 35, seg_proportion=0.9)
         # dashed_line(game, display, PURPLE, (0, 0), (w, h), 3, 35, seg_proportion=0.9)
+
+        tsmap.update_intersections()
+        tsmap.draw_roadways(game, display)
+
         return tsmap
 
 
