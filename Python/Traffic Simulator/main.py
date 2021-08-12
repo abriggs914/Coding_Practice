@@ -5,7 +5,7 @@ from pygame_utility import *
 
 class RoadWay:
 
-    def __init__(self, direction, rect, colour, n_lanes=1):
+    def __init__(self, direction, rect, colour, n_lanes=1, centre_side="left"):
         self.rect = rect
         assert (isinstance(direction, list) or isinstance(direction, tuple)) and all([direct in DIRECTIONS for direct in direction])
         # TODO; include diagonal roadway functionality
@@ -14,6 +14,7 @@ class RoadWay:
         self.colour = colour
         self.n_lanes = n_lanes
         self.lane_mode = "diagonal"
+        self.centre_side = centre_side  # left == top, right == bottom
 
         if direction == ("N", "S") or direction == ("S", "N"):
             self.lane_width = rect[2] / n_lanes
@@ -59,7 +60,7 @@ class Intersection:
     def __eq__(self, other):
         if not isinstance(other, Intersection):
             return False
-        return  self.roadway_a == other.roadway_b and self.roadway_b == other.roadway_a or self.roadway_b == other.roadway_b and self.roadway_a == other.roadway_a
+        return self.roadway_a == other.roadway_b and self.roadway_b == other.roadway_a or self.roadway_b == other.roadway_b and self.roadway_a == other.roadway_a
 
 
 class TrafficSimulatorMap:
@@ -91,13 +92,13 @@ class TrafficSimulatorMap:
                     print("R:", rect, "SIZE:", rect.size)
         self.intersections = intersections
 
-    def draw_roadways(self, draw_lane_lines=True, lane_line_colour=WHITE, draw_yellow_line=True):
+    def draw_roadways(self, draw_lane_lines=True, lane_line_colour=WHITE, draw_yellow_line=True, yellow_line_colour=YELLOW_1__YELLOW_, yellow_line_width=3):
         for r_name, roadway in self.roadways.items():
             rect = roadway.rect
             if isinstance(rect, list) or isinstance(rect, tuple) and len(rect) == 4:
                 rect = self.game.Rect(*rect)
             else:
-                raise ValueError("rect object: <{}> is not a vaild")
+                raise ValueError("rect object: <{}> is not a valid pygame.Rect object.")
 
             if draw_lane_lines:
                 self.game.draw.rect(self.display, roadway.colour, rect)
@@ -112,13 +113,30 @@ class TrafficSimulatorMap:
                     elif roadway.lane_mode == "horizontal":
                         dashed_line(self.game, self.display, lane_line_colour, (0, rect.top + ((i + 1) * lane_w)), (rect.right, rect.top + ((i + 1) * lane_w)), 3, 26,
                             seg_proportion=0.45)
-            # if draw_yellow_line:
-            #     yellow_line = roadway.yellow_line
-            #     if yellow_line == "right":\
+            if draw_yellow_line:
+                yellow_line = roadway.centre_side
+                if yellow_line in ["top", "left"]:
+                    if yellow_line == "top":
+                        line = ((rect.left, rect.top), (rect.right, rect.top))
+                    else:
+                        line = ((rect.left, rect.top), (rect.left, rect.bottom))
+                elif yellow_line in ["bottom", "right"]:
+                    if yellow_line == "bottom":
+                        line = ((rect.left, rect.bottom), (rect.right, rect.bottom))
+                    else:
+                        line = ((rect.right, rect.top), (rect.right, rect.bottom))
+                else:
+                    raise ValueError("Cannot display a yellow centre line on roadway: <{}>".format(roadway))
+
+                self.game.draw.line(self.display, yellow_line_colour, *line, yellow_line_width)
 
     def draw_intersections(self):
         for inter in self.intersections:
             inter.draw_intersection(self.game, self.display)
+
+    def draw_all(self):
+        self.draw_roadways()
+        self.draw_intersections()
 
 
     @staticmethod
@@ -132,47 +150,48 @@ class TrafficSimulatorMap:
         ws, hs = 15, 15
         wc = w // ws
         hc = h // hs
-        print("wc:", wc, "hc:", hc)
-        for i in range(wc):
-            game.draw.line(display, BLACK, (i * ws, 0), (i * ws, h))
-        for i in range(hc):
-            game.draw.line(display, BLACK, (0, i * hs), (w, i * hs))
+        # print("wc:", wc, "hc:", hc)
+        # for i in range(wc):
+        #     game.draw.line(display, BLACK, (i * ws, 0), (i * ws, h))
+        # for i in range(hc):
+        #     game.draw.line(display, BLACK, (0, i * hs), (w, i * hs))
 
         tsmap.roadways = {
-            "south bound": RoadWay(("N", "S"), (w * 0.39, 0, w * 0.11, h * 1), BLACK, n_lanes=2),
-            "north bound": RoadWay(("S", "N"), (w * 0.5, 0, w * 0.11, h * 1), BLACK, n_lanes=3),
-            "east bound": RoadWay(("W", "E"), (0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2),
-            "west bound": RoadWay(("E", "W"), (0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=3)
+            "south bound": RoadWay(("N", "S"), (w * 0.39, 0, w * 0.11, h * 1), BLACK, n_lanes=2, centre_side="right"),
+            "north bound": RoadWay(("S", "N"), (w * 0.5, 0, w * 0.11, h * 1), BLACK, n_lanes=3, centre_side="left"),
+            "east bound": RoadWay(("W", "E"), (0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="bottom"),
+            "west bound": RoadWay(("E", "W"), (0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=3, centre_side="top")
         }
-        game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
-        game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))  # East - West
+        # game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
+        # game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))  # East - West
+        #
+        # # stop lines
+        # game.draw.line(display, WHITE, (w * 0.39, h * 0.35), (w * 0.5, h * 0.35), 3)  # north
+        # game.draw.line(display, WHITE, (w * 0.5, h * 0.65), (w * 0.61, h * 0.65), 3)  # south
+        # game.draw.line(display, WHITE, (w * 0.35, h * 0.5), (w * 0.35, h * 0.61), 3)  # east
+        # game.draw.line(display, WHITE, (w * 0.65, h * 0.39), (w * 0.65, h * 0.5), 3)  # west
+        #
+        # # centre lines
+        # game.draw.line(display, YELLOW_2, (w * 0.5, 0), (w * 0.5, h * 0.35), 3)  # north
+        # game.draw.line(display, YELLOW_2, (w * 0.5, h * 0.65), (w * 0.5, h), 3)  # south
+        # game.draw.line(display, YELLOW_2, (0, h * 0.5), (w * 0.35, h * 0.5), 3)  # east
+        # game.draw.line(display, YELLOW_2, (w * 0.65, h * 0.5), (w, h * 0.5), 3)  # west
+        #
+        # # lane lines
+        # dashed_line(game, display, WHITE, (w * 0.555, 0), (w * 0.555, h * 0.35), 3, 8, seg_proportion=0.45)  # north-north
+        # dashed_line(game, display, WHITE, (w * 0.445, 0), (w * 0.445, h * 0.35), 3, 8, seg_proportion=0.45)  # south-north
+        # dashed_line(game, display, WHITE, (w * 0.555, h * 0.65), (w * 0.555, h), 3, 8, seg_proportion=0.45)  # north-south
+        # dashed_line(game, display, WHITE, (w * 0.445, h * 0.65), (w * 0.445, h), 3, 8, seg_proportion=0.45)  # south-south
+        # dashed_line(game, display, WHITE, (0, h * 0.445), (w * 0.35, h * 0.445), 3, 8, seg_proportion=0.45)  # east-east
+        # dashed_line(game, display, WHITE, (0, h * 0.555), (w * 0.35, h * 0.555), 3, 8, seg_proportion=0.45)  # west-east
+        # dashed_line(game, display, WHITE, (w * 0.65, h * 0.445), (w, h * 0.445), 3, 8, seg_proportion=0.45)  # east-west
+        # dashed_line(game, display, WHITE, (w * 0.65, h * 0.555), (w, h * 0.555), 3, 8, seg_proportion=0.45)  # west-west
+        # # game.draw.line(display, WHITE, (w * 0.445, 0), (w * 0.445, h * 0.35))  # north-north
+        # # game.draw.line(display, WHITE, (w * 0.5, h * 0.65), (w * 0.5, h), 3)  # south
+        # # game.draw.line(display, WHITE, (0, h * 0.5), (w * 0.35, h * 0.5), 3)  # east
+        # # game.draw.line(display, WHITE, (w * 0.65, h * 0.5), (w, h * 0.5), 3)  # west
 
-        # stop lines
-        game.draw.line(display, WHITE, (w * 0.39, h * 0.35), (w * 0.5, h * 0.35), 3)  # north
-        game.draw.line(display, WHITE, (w * 0.5, h * 0.65), (w * 0.61, h * 0.65), 3)  # south
-        game.draw.line(display, WHITE, (w * 0.35, h * 0.5), (w * 0.35, h * 0.61), 3)  # east
-        game.draw.line(display, WHITE, (w * 0.65, h * 0.39), (w * 0.65, h * 0.5), 3)  # west
-
-        # centre lines
-        game.draw.line(display, YELLOW_2, (w * 0.5, 0), (w * 0.5, h * 0.35), 3)  # north
-        game.draw.line(display, YELLOW_2, (w * 0.5, h * 0.65), (w * 0.5, h), 3)  # south
-        game.draw.line(display, YELLOW_2, (0, h * 0.5), (w * 0.35, h * 0.5), 3)  # east
-        game.draw.line(display, YELLOW_2, (w * 0.65, h * 0.5), (w, h * 0.5), 3)  # west
-
-        # lane lines
-        dashed_line(game, display, WHITE, (w * 0.555, 0), (w * 0.555, h * 0.35), 3, 8, seg_proportion=0.45)  # north-north
-        dashed_line(game, display, WHITE, (w * 0.445, 0), (w * 0.445, h * 0.35), 3, 8, seg_proportion=0.45)  # south-north
-        dashed_line(game, display, WHITE, (w * 0.555, h * 0.65), (w * 0.555, h), 3, 8, seg_proportion=0.45)  # north-south
-        dashed_line(game, display, WHITE, (w * 0.445, h * 0.65), (w * 0.445, h), 3, 8, seg_proportion=0.45)  # south-south
-        dashed_line(game, display, WHITE, (0, h * 0.445), (w * 0.35, h * 0.445), 3, 8, seg_proportion=0.45)  # east-east
-        dashed_line(game, display, WHITE, (0, h * 0.555), (w * 0.35, h * 0.555), 3, 8, seg_proportion=0.45)  # west-east
-        dashed_line(game, display, WHITE, (w * 0.65, h * 0.445), (w, h * 0.445), 3, 8, seg_proportion=0.45)  # east-west
-        dashed_line(game, display, WHITE, (w * 0.65, h * 0.555), (w, h * 0.555), 3, 8, seg_proportion=0.45)  # west-west
-        # game.draw.line(display, WHITE, (w * 0.445, 0), (w * 0.445, h * 0.35))  # north-north
-        # game.draw.line(display, WHITE, (w * 0.5, h * 0.65), (w * 0.5, h), 3)  # south
-        # game.draw.line(display, WHITE, (0, h * 0.5), (w * 0.35, h * 0.5), 3)  # east
-        # game.draw.line(display, WHITE, (w * 0.65, h * 0.5), (w, h * 0.5), 3)  # west
-
+        # Draw buildings
         b1 = (RED, (0, 0, w * 0.35, h * 0.35))
         b2 = (YELLOW_2, (w * 0.65, 0, w * 0.35, h * 0.35))
         b3 = (ORANGE, (0, h * 0.65, w * 0.35, h * 0.35))
@@ -181,13 +200,14 @@ class TrafficSimulatorMap:
         game.draw.rect(display, *b2)
         game.draw.rect(display, *b3)
         game.draw.rect(display, *b4)
-
-        # dashed_line(game, display, HOTPINK, (0, 0), (w, 0), 3, 35, seg_proportion=0.9)
-        # dashed_line(game, display, PURPLE, (0, 0), (w, h), 3, 35, seg_proportion=0.9)
+        #
+        # # dashed_line(game, display, HOTPINK, (0, 0), (w, 0), 3, 35, seg_proportion=0.9)
+        # # dashed_line(game, display, PURPLE, (0, 0), (w, h), 3, 35, seg_proportion=0.9)
 
         tsmap.update_intersections()
-        tsmap.draw_roadways()
-        tsmap.draw_intersections()
+        # tsmap.draw_roadways()
+        # tsmap.draw_intersections()
+        tsmap.draw_all()
 
         return tsmap
 
@@ -202,7 +222,8 @@ class TrafficSimulator(PygameApplication):
         self.map_obj = TrafficSimulatorMap.default_map(super())
 
     def set_map(self, map_obj):
-        self.map = map_obj
+        assert isinstance(map_obj, TrafficSimulatorMap)
+        self.map_obj = map_obj
 
     def run(self):
         super().run()
