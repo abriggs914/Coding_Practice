@@ -5,9 +5,13 @@ pygame.init()
 a = pygame.Rect(100, 0, 100, 300)
 b = pygame.Rect(0, 100, 200, 100)
 c = pygame.Rect.clip(a, b)
+l1 = a.clipline((0,0,100,100))
 d = pygame.Rect(199, 0, 200, 200)
 e = pygame.Rect.clip(a, d)
 print("e:", e, "size:", e.size, 'sum:', sum(e.size))
+f = pygame.Rect(100, 0, 100, 300)
+g = pygame.Rect(199, 300, 200, 100)
+print("COLLISION:", f.colliderect(g))
 
 display = pygame.display.set_mode((900, 600))
 allow_kbd_ctrls = True
@@ -33,8 +37,11 @@ while is_playing:
         pos = pygame.mouse.get_pos()
         if kbd_q or event.type == pygame.QUIT:
             is_playing = False
+        pygame.draw.rect(display, (255, 0, 0), a)
+        pygame.draw.rect(display, (0, 0, 255), b)
+        pygame.draw.rect(display, (0, 255, 0), c)
+        pygame.draw.rect(display, (0, 255, 255), d)
+
+        pygame.draw.rect(display, (255, 255, 255), f)
+        pygame.draw.rect(display, (255, 255, 255), g)
         pygame.display.update()
-    pygame.draw.rect(display, (255, 0, 0), a)
-    pygame.draw.rect(display, (0, 0, 255), b)
-    pygame.draw.rect(display, (0, 255, 0), c)
-    pygame.draw.rect(display, (0, 255, 255), d)
