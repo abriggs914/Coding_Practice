@@ -1,6 +1,8 @@
+import random
+
 #	General Utility file of RGB colour values
-#	Version............1.2
-#	Date........2021-08-09
+#	Version............1.3
+#	Date........2021-08-12
 #	Author....Avery Briggs
 
 BWS_RED = (171, 35, 40)  # Crimson red
@@ -1135,3 +1137,7 @@ def get_all_colours():
         YELLOW_3,
         YELLOW_4
     ]
+
+
+def random_colour():
+	return random.choice(get_all_colours())

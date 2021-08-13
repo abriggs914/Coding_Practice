@@ -76,7 +76,7 @@ class TrafficSimulatorMap:
     def add_stop_sign(self):
         pass
 
-    def update_intersections(self):
+    def update_intersections(self, colour=BLACK):
         intersections = []
         for ra_name, roadway_a in self.roadways.items():
             for rb_name, roadway_b in self.roadways.items():
@@ -85,7 +85,7 @@ class TrafficSimulatorMap:
                     rect_b = self.game.Rect(*roadway_b.rect)
                     rect = self.game.Rect.clip(rect_a, rect_b)
                     if sum(rect.size):
-                        inter = Intersection(roadway_a, roadway_b, self.game, colour=BURNTUMBER)
+                        inter = Intersection(roadway_a, roadway_b, self.game, colour=random_colour())
                         if inter not in intersections:
                             intersections.append(inter)
                             print("\n\troad a collides with road b: ({}, {})".format(ra_name, rb_name))
