@@ -65,26 +65,37 @@ class Intersection:
             rbr = game.Rect(*rbr)
         self.rect = game.Rect.clip(rar, rbr)
 
-    def draw_intersection(self, draw_stop_lines=True, stop_line_colour=WHITE, stop_line_width=4, draw_crosswalk=True, crosswalk_colour=(GRAY_69)):
-        print("roadwayA:", self.roadway_a, "\n\tdir:", self.roadway_a.direction)
-        print("roadwayB:", self.roadway_b, "\n\tdir:", self.roadway_b.direction)
+    def draw_intersection(self, draw_stop_lines=True, stop_line_colour=WHITE, stop_line_width=6, draw_crosswalk=True, crosswalk_colour=(GRAY_69)):
+        print("roadwayA:", self.roadway_a, "\n\tdir:", self.roadway_a.direction, "cen:", self.roadway_a.centre_side)
+        print("roadwayB:", self.roadway_b, "\n\tdir:", self.roadway_b.direction, "cen:", self.roadway_b.centre_side)
         dsa, dea = self.roadway_a.direction
         dsb, deb = self.roadway_b.direction
+        cla = self.roadway_a.centre_side
+        clb = self.roadway_b.centre_side
         r = self.rect
+        sidewalk_pad = 3
+        dist_to_stop_line = 6
         if draw_stop_lines:
             line = None
             if dsa == "S" or dsb == "S":
-                print("SOUTH")
-                self.game.draw.line(self.display, RED, (r.left + 2, r.bottom + stop_line_width), (r.right - 2, r.bottom + stop_line_width), stop_line_width)
+                if clb != "bottom":
+                # if 1:
+                    print("SOUTH")
+                    self.game.draw.line(self.display, stop_line_colour, (r.left + sidewalk_pad, r.bottom + stop_line_width + dist_to_stop_line), (r.right - sidewalk_pad, r.bottom + stop_line_width + dist_to_stop_line), stop_line_width)
             if dsa == "W" or dsb == "W":
-                print("WEST")
-                self.game.draw.line(self.display, GREEN, (r.right + stop_line_width, r.top + 2), (r.right + stop_line_width, r.bottom - 2), stop_line_width)
+                if cla != "right":
+                # if 1:
+                    print("WEST")
+                    self.game.draw.line(self.display, stop_line_colour, (r.right + stop_line_width + dist_to_stop_line, r.top + sidewalk_pad), (r.right + stop_line_width + dist_to_stop_line, r.bottom - sidewalk_pad), stop_line_width)
             if dsa == "N" or dsb == "N":
-                print("NORTH")
-                self.game.draw.line(self.display, BLUE, (r.left + 2, r.top - stop_line_width), (r.right - 2, r.top - stop_line_width), stop_line_width)
+                if clb != "top":
+                # if 1:
+                    print("NORTH")
+                    self.game.draw.line(self.display, stop_line_colour, (r.left + sidewalk_pad, r.top - stop_line_width - dist_to_stop_line), (r.right - sidewalk_pad, r.top - stop_line_width - dist_to_stop_line), stop_line_width)
             if dsa == "E" or dsb == "E":
-                print("EAST")
-                self.game.draw.line(self.display, PURPLE, (r.left - stop_line_width, r.top + 2), (r.left - stop_line_width, r.bottom - 2), stop_line_width)
+                if cla != "left":
+                    print("EAST")
+                    self.game.draw.line(self.display, stop_line_colour, (r.left - stop_line_width - dist_to_stop_line, r.top + sidewalk_pad), (r.left - stop_line_width - dist_to_stop_line, r.bottom - sidewalk_pad), stop_line_width)
         self.game.draw.rect(self.display, self.colour, self.rect)  # background
 
     def crosses(self):
@@ -118,7 +129,7 @@ class TrafficSimulatorMap:
                     rect_b = self.game.Rect(*roadway_b.rect)
                     rect = self.game.Rect.clip(rect_a, rect_b)
                     if sum(rect.size):
-                        inter = Intersection(roadway_a, roadway_b, self.game, self.display, colour=random_colour())
+                        inter = Intersection(roadway_a, roadway_b, self.game, self.display, colour=colour)
                         if inter not in intersections:
                             intersections.append(inter)
                             print("\n\troad a collides with road b: ({}, {})".format(ra_name, rb_name))

@@ -33,6 +33,21 @@ class PygameApplication:
     def set_background_colour(self, bg_colour):
         self.display.fill(bg_colour)
 
+    def colliderect_offset(self, r1, r2, offset=0, l=True, r=True):
+        assert isinstance(r1, pygame.Rect)
+        assert isinstance(r2, pygame.Rect)
+        if l and r:
+            return pygame.Rect(r1.left - offset, r1.top - offset, r1.width + (2 * offset),
+                               r1.height + (2 * offset)).colliderect(
+                pygame.Rect(r2.left - offset, r2.top - offset, r2.width + (2 * offset), r2.height + (2 * offset)))
+        elif l:
+            return pygame.Rect(r1.left - offset, r1.top - offset, r1.width + (2 * offset),
+                               r1.height + (2 * offset)).colliderect(
+                pygame.Rect(r2.left, r2.top, r2.width, r2.height))
+        else:
+            return pygame.Rect(r1.left, r1.top, r1.width,
+                               r1.height).colliderect(pygame.Rect(r2.left, r2.top, r2.width, r2.height))
+
     def init(self):
         try:
             import pygame
@@ -96,6 +111,7 @@ NORTH_WEST = 3
 
 # n dashes, n splits, spaceing
 def dashed_line(game, display, colour, start, end, width, n_segments=10, seg_proportion=0.8):
+    print("game type:", type(game))
     seg_proportion = 1 - seg_proportion
     s_e = [start, end]
     s_e.sort(key=lambda tup: tup[0])
@@ -109,7 +125,7 @@ def dashed_line(game, display, colour, start, end, width, n_segments=10, seg_pro
     for i in range(n_segments):
         p2 = (p1[0] + dxs, p1[1] + dys)
         # game.draw.circle(display, colour, p1, 3)
-        game.draw.line(display, colour, (p1[0] + (dxs * (seg_proportion / 2)), p1[1] + (dys * (seg_proportion / 2))), (p2[0] - (dxs * (seg_proportion / 2)), p2[1] - (dys * (seg_proportion / 2))), 2)
+        game.draw.line(display, colour, (p1[0] + (dxs * (seg_proportion / 2)), p1[1] + (dys * (seg_proportion / 2))), (p2[0] - (dxs * (seg_proportion / 2)), p2[1] - (dys * (seg_proportion / 2))), width)
         lx = (p2[0] - p1[0])
         ly = (p2[1] - p1[1])
         p1 = p2
