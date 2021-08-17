@@ -69,6 +69,10 @@ print("COLLISION D (t, t):", colliderect_offset(f, g, 1))
 print("f:", f)
 print("g:", g)
 
+
+# pygame.draw.circle(display, GREEN, (50, 50), 6)
+
+
 allow_kbd_ctrls = True
 is_playing = True
 

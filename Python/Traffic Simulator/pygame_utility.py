@@ -1,8 +1,8 @@
 from utility import *
 
 #	General Utility functions for pygame applications
-#	Version............1.1
-#	Date........2021-08-10
+#	Version............1.2
+#	Date........2021-08-16
 #	Author....Avery Briggs
 
 
@@ -37,7 +37,7 @@ DIRECTIONS = {
     "NE": {
         "dir": "north-east",
         "i": -1,
-        "j": 1,
+        "j": -1,
         "opp": "SW",
         "bounce": "NW",
         "mirror_x": "SE",
@@ -46,7 +46,7 @@ DIRECTIONS = {
     "E": {
         "dir": "east",
         "i": 0,
-        "j": 1,
+        "j": -1,
         "opp": "W",
         "bounce": "W",
         "mirror_x": "E",
@@ -55,7 +55,7 @@ DIRECTIONS = {
     "SE": {
         "dir": "south-east",
         "i": 1,
-        "j": 1,
+        "j": -1,
         "opp": "NW",
         "bounce": "SW",
         "mirror_x": "NE",
@@ -73,7 +73,7 @@ DIRECTIONS = {
     "SW": {
         "dir": "south-west",
         "i": 1,
-        "j": -1,
+        "j": 1,
         "opp": "NE",
         "bounce": "SE",
         "mirror_x": "NW",
@@ -82,7 +82,7 @@ DIRECTIONS = {
     "W": {
         "dir": "west",
         "i": 0,
-        "j": -1,
+        "j": 1,
         "opp": "E",
         "bounce": "E",
         "mirror_x": "W",
@@ -91,7 +91,7 @@ DIRECTIONS = {
     "NW": {
         "dir": "north-west",
         "i": -1,
-        "j": -1,
+        "j": 1,
         "opp": "SE",
         "bounce": "NE",
         "mirror_x": "SW",

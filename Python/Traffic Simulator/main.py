@@ -3,6 +3,57 @@ from colour_utility import *
 from pygame_utility import *
 
 
+class Car:
+
+    # Note x, y are coordinates of the centre of the car, not top-left.
+    def __init__(self, game, display, id_num, x, y, speed=1, name="car", colour=BLACK, img_path=None, is_circle=True, radius=6):
+        self.game = game
+        self.display = display
+        self.x = x
+        self.y = y
+        self.speed = speed
+        self.id_num = id_num
+        self.name = name
+        self.colour = colour
+        self.img_path = img_path
+        self.is_circle = is_circle
+        self.radius = radius
+        self.w = radius
+        self.h = radius
+        self.rect = self.game.Rect(x - (radius / 2), y - (radius / 2), self.w, self.h)
+
+        self.is_crashed = False
+        self.arrival = None
+        self.departure = None
+        self.pt_history = [(x, y)]
+
+    def set_arrival(self, arr):
+        self.arrival = arr
+
+    def set_departure(self, dept):
+        self.departure = dept
+
+    def add_x(self, x):
+        self.x += x
+        self.rect.left += x
+
+    def add_y(self, y):
+        self.y += y
+        self.rect.top += y
+
+    def draw(self):
+        if self.img_path is not None:
+            # draw image
+            pass
+        else:
+            self.game.draw.circle(self.display, self.colour, (self.x, self.y), self.radius)
+
+    def __eq__(self, other):
+        return isinstance(other, Car) and all([
+            self.id_num == other.id_num
+        ])
+
+
 class RoadWay:
 
     def __init__(self, direction, rect, colour, n_lanes=1, centre_side="left"):
@@ -26,13 +77,49 @@ class RoadWay:
             self.lane_height = rect[2]
             self.lane_mode = "horizontal"
 
+        self.car_queue = []
+
         self.info_print()
+
+    def valid_place(self, car):
+        if not car.rect.colliderect(self.rect):
+            return False
+        for c in self.car_queue:
+            if c != car:
+                if c.rect.colliderect(car.rect):
+                    return False
+        return True
+
+    def add_car(self, car):
+        assert isinstance(car, Car)
+        self.car_queue.append(car)
+
+    def tick(self, tick):
+        for car in self.car_queue:
+            i_inc = DIRECTIONS[self.direction[1]]["i"] * car.speed * tick
+            j_inc = DIRECTIONS[self.direction[1]]["j"] * car.speed * tick
+            if i_inc < 1 or j_inc < 1:
+                if i_inc != j_inc:
+                    if i_inc > j_inc:
+                        i_inc = 1
+                    else:
+                        j_inc = 1
+            car.add_x(j_inc)
+            car.add_y(i_inc)
+
+            # print("r", car.rect, "(i, j): ({}, {})".format(i_inc, j_inc))
+            if not self.valid_place(car):
+                # crash
+                print("crash!")
+                raise ValueError("CRASH!")
+
 
     def info_print(self):
         print(dict_print({
             "direction": self.direction,
             "colour": self.colour,
             "n_lanes": self.n_lanes,
+            "centre_side": self.centre_side,
             "lane_mode": self.lane_mode,
             "lane_width": self.lane_width,
             "lane_height": self.lane_height
@@ -44,7 +131,8 @@ class RoadWay:
             self.direction == other.direction,
             self.colour == other.colour,
             self.n_lanes == other.n_lanes,
-            self.lane_mode == other.lane_mode
+            self.lane_mode == other.lane_mode,
+            self.centre_side == other.centre_side
         ])
 
 
@@ -66,8 +154,8 @@ class Intersection:
         self.rect = game.Rect.clip(rar, rbr)
 
     def draw_intersection(self, draw_stop_lines=True, stop_line_colour=WHITE, stop_line_width=6, draw_crosswalk=True, crosswalk_colour=(GRAY_69)):
-        print("roadwayA:", self.roadway_a, "\n\tdir:", self.roadway_a.direction, "cen:", self.roadway_a.centre_side)
-        print("roadwayB:", self.roadway_b, "\n\tdir:", self.roadway_b.direction, "cen:", self.roadway_b.centre_side)
+        # print("roadwayA:", self.roadway_a, "\n\tdir:", self.roadway_a.direction, "cen:", self.roadway_a.centre_side)
+        # print("roadwayB:", self.roadway_b, "\n\tdir:", self.roadway_b.direction, "cen:", self.roadway_b.centre_side)
         dsa, dea = self.roadway_a.direction
         dsb, deb = self.roadway_b.direction
         cla = self.roadway_a.centre_side
@@ -79,22 +167,19 @@ class Intersection:
             line = None
             if dsa == "S" or dsb == "S":
                 if clb != "bottom":
-                # if 1:
-                    print("SOUTH")
+                    # print("SOUTH")
                     self.game.draw.line(self.display, stop_line_colour, (r.left + sidewalk_pad, r.bottom + stop_line_width + dist_to_stop_line), (r.right - sidewalk_pad, r.bottom + stop_line_width + dist_to_stop_line), stop_line_width)
             if dsa == "W" or dsb == "W":
                 if cla != "right":
-                # if 1:
-                    print("WEST")
+                    # print("WEST")
                     self.game.draw.line(self.display, stop_line_colour, (r.right + stop_line_width + dist_to_stop_line, r.top + sidewalk_pad), (r.right + stop_line_width + dist_to_stop_line, r.bottom - sidewalk_pad), stop_line_width)
             if dsa == "N" or dsb == "N":
                 if clb != "top":
-                # if 1:
-                    print("NORTH")
+                    # print("NORTH")
                     self.game.draw.line(self.display, stop_line_colour, (r.left + sidewalk_pad, r.top - stop_line_width - dist_to_stop_line), (r.right - sidewalk_pad, r.top - stop_line_width - dist_to_stop_line), stop_line_width)
             if dsa == "E" or dsb == "E":
                 if cla != "left":
-                    print("EAST")
+                    # print("EAST")
                     self.game.draw.line(self.display, stop_line_colour, (r.left - stop_line_width - dist_to_stop_line, r.top + sidewalk_pad), (r.left - stop_line_width - dist_to_stop_line, r.bottom - sidewalk_pad), stop_line_width)
         self.game.draw.rect(self.display, self.colour, self.rect)  # background
 
@@ -116,9 +201,25 @@ class TrafficSimulatorMap:
         self.h = h
         self.roadways = {}
         self.intersections = []
+        self.cars = {}
+        self.car_id_num = 0
+        self.clock_time = 0
 
     def add_stop_sign(self):
         pass
+
+    def add_car(self, x, y, **kwargs):
+        self.car_id_num += 1
+        car = Car(self.game, self.display, self.car_id_num, x, y, **kwargs)
+        r_name, roadway = None, None
+        for r_name, roadway in self.roadways.items():
+            if roadway.valid_place(car):
+                break
+        if roadway is not None:
+            self.roadways[r_name].add_car(car)
+            car.set_arrival(self.clock_time)
+        else:
+            raise ValueError("Unable to place car object:\n<{car}>\non current tsmap:\n<{tsmap}>".format(car=car, tsmap=self))
 
     def update_intersections(self, colour=BLACK):
         intersections = []
@@ -150,7 +251,7 @@ class TrafficSimulatorMap:
                 lane_w = roadway.lane_width
                 lane_h = roadway.lane_height
                 for i in range(n_lanes - 1):
-                    print("dashed line:\n# lanes:", n_lanes, "\nlane_w:", lane_w, "\nlane_h:", lane_h, "\nmode:", roadway.lane_mode)
+                    # print("dashed line:\n# lanes:", n_lanes, "\nlane_w:", lane_w, "\nlane_h:", lane_h, "\nmode:", roadway.lane_mode)
                     if roadway.lane_mode == "vertical":
                         dashed_line(self.game, self.display, lane_line_colour, ((rect.left + ((i + 1) * lane_w)), 0), ((rect.left + ((i + 1) * lane_w)), lane_h), 3, 26,
                             seg_proportion=0.45)
@@ -174,14 +275,21 @@ class TrafficSimulatorMap:
 
                 self.game.draw.line(self.display, yellow_line_colour, *line, yellow_line_width)
 
-    def draw_intersections(self):
+            for car in roadway.car_queue:
+                car.draw()
+
+    def draw_intersections(self, draw_stop_lines=True):
         for inter in self.intersections:
-            inter.draw_intersection(draw_stop_lines=True)
+            inter.draw_intersection(draw_stop_lines)
 
     def draw_all(self):
         self.draw_roadways()
         self.draw_intersections()
 
+    def tick(self, tick=1.0):
+        self.clock_time += tick
+        for r_name, roadway in self.roadways.items():
+            roadway.tick(tick)
 
     @staticmethod
     def default_map(app):
@@ -206,6 +314,8 @@ class TrafficSimulatorMap:
             "east bound": RoadWay(("W", "E"), (0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="bottom"),
             "west bound": RoadWay(("E", "W"), (0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=3, centre_side="top")
         }
+        print("START:", w * 0.40, ", ",  h * 0.05)
+        tsmap.add_car(w * 0.40, h * 0.05, colour=RED)
         # game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
         # game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))  # East - West
         #
@@ -270,7 +380,10 @@ class TrafficSimulator(PygameApplication):
         self.map_obj = map_obj
 
     def run(self):
-        super().run()
+        while self.is_playing:
+            self.map_obj.tick(0.5)
+            self.map_obj.draw_all()
+            super().run()
 
 
 if __name__ == '__main__':

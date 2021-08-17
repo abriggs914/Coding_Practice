@@ -57,10 +57,13 @@ class PygameApplication:
         except ImportError:
             print("\nUnable to import pygame.\nPlease try again after installing.\n")
 
+    # Call this function iteratively.
+    # Include any application specific UI / other code
+    # within the instance of the child application.
     def run(self):
         if self.display is None:
             self.init()
-        while self.is_playing:
+        if 1:
             events = pygame.event.get()
             kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra = False, False, False, False, False, False, False, False
             if self.allow_kbd_ctrls:
@@ -76,11 +79,13 @@ class PygameApplication:
                 dir_keys = [kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra]
                 a_dir_keys = any(dir_keys)
                 kbd_q = kbd.is_pressed('q')
-            for event in events:
+            for i, event in enumerate(events):
                 pos = pygame.mouse.get_pos()
                 if kbd_q or event.type == pygame.QUIT:
                     self.is_playing = False
-                pygame.display.update()
+                if i != len(events) - 1:
+                    pygame.display.flip()
+            pygame.display.flip()
 
 from utility import *
 
@@ -111,7 +116,6 @@ NORTH_WEST = 3
 
 # n dashes, n splits, spaceing
 def dashed_line(game, display, colour, start, end, width, n_segments=10, seg_proportion=0.8):
-    print("game type:", type(game))
     seg_proportion = 1 - seg_proportion
     s_e = [start, end]
     s_e.sort(key=lambda tup: tup[0])
