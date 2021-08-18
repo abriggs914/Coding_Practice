@@ -129,8 +129,9 @@ class RoadWay:
                 if self.is_exiting(car):
                     print("EXITING SUCCESSFULLY")
                 # crash
-                print("crash!")
-                raise ValueError("CRASH!")
+                else:
+                    print("crash!")
+                    raise ValueError("CRASH!")
 
 
     def info_print(self):
