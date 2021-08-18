@@ -90,6 +90,23 @@ class RoadWay:
                     return False
         return True
 
+    def is_exiting(self, car):
+        r = Rect(*self.rect)
+        a = r.top_left
+        b = r.top_right
+        c = r.bottom_left
+        d = r.bottom_right
+        top = Line(*a, *b)
+        bottom = Line(*c, *d)
+        left = Line(*a, *c)
+        right = Line(*b, *d)
+        if self.lane_mode == "vertical":
+            return not self.valid_place(car) and (r.collide_line(top) or r.collide_line(bottom))
+        elif self.lane_mode == "horizontal":
+            return not self.valid_place(car) and (r.collide_line(left) or r.collide_line(right))
+        else:
+            raise ValueError("diagonal roadways not supported yet.")
+
     def add_car(self, car):
         assert isinstance(car, Car)
         self.car_queue.append(car)
@@ -109,6 +126,8 @@ class RoadWay:
 
             # print("r", car.rect, "(i, j): ({}, {})".format(i_inc, j_inc))
             if not self.valid_place(car):
+                if self.is_exiting(car):
+                    print("EXITING SUCCESSFULLY")
                 # crash
                 print("crash!")
                 raise ValueError("CRASH!")
@@ -275,16 +294,19 @@ class TrafficSimulatorMap:
 
                 self.game.draw.line(self.display, yellow_line_colour, *line, yellow_line_width)
 
-            for car in roadway.car_queue:
-                car.draw()
-
     def draw_intersections(self, draw_stop_lines=True):
         for inter in self.intersections:
             inter.draw_intersection(draw_stop_lines)
 
+    def draw_traffic(self):
+        for r_name, roadway in self.roadways.items():
+            for car in roadway.car_queue:
+                car.draw()
+
     def draw_all(self):
         self.draw_roadways()
         self.draw_intersections()
+        self.draw_traffic()
 
     def tick(self, tick=1.0):
         self.clock_time += tick

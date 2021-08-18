@@ -1,6 +1,7 @@
 import pygame
 import keyboard as kbd
 from colour_utility import *
+from utility import *
 
 pygame.init()
 display = pygame.display.set_mode((900, 600))
@@ -73,6 +74,20 @@ print("g:", g)
 # pygame.draw.circle(display, GREEN, (50, 50), 6)
 
 
+pygame.draw.rect(display, GREEN, Rect(0, 0, 100, 100).tupl)
+pygame.draw.rect(display, YELLOW_2, Rect(0, 100, 100, 100).tupl)
+r1 = Rect(0, 0, 100, 100)
+r2 = Rect(0, 100, 100, 100)
+l1 = Line(0, -4, 140, 60)
+print("r1:", r1)
+print("r2:", r2)
+print("l1:", l1)
+print("li intersects r1:", r1.collide_line(l1))
+print("li intersects r2:", r2.collide_line(l1))
+
+
+
+
 allow_kbd_ctrls = True
 is_playing = True
 
@@ -101,8 +116,9 @@ while is_playing:
         # pygame.draw.rect(display, (0, 255, 0), c)
         # pygame.draw.rect(display, (0, 255, 255), d)
 
-        pygame.draw.rect(display, GREEN, f)
-        pygame.draw.rect(display, YELLOW_2, g)
+        pygame.draw.rect(display, GREEN, Rect(0, 0, 100, 100).tupl)
+        pygame.draw.rect(display, YELLOW_2, Rect(0, 100, 100, 100).tupl)
+        pygame.draw.line(display, ORANGE, *Line(0, -4, 140, 60).tupl)
 
         # dashed_line(pygame, display, ORANGE, (15, 45), (250, 364), 5, 60)
         pygame.display.update()

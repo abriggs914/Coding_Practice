@@ -6,10 +6,10 @@ import shutil
 import sys
 
 """
-	General Utility functions
-	Version............1.9
-	Date........2021-08-08
-	Author....Avery Briggs
+	General Utility Functions
+	Version..............1.10
+	Date...........2021-08-17
+	Author.......Avery Briggs
 """
 
 
@@ -667,3 +667,131 @@ def distance(start, end):
 def dot_product(a, b):
     return (a[0] * b[0]) + (b[0] * b[1])
 
+
+class Line:
+    def __init__(self, x1, y1, x2, y2):
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
+        self.tupl = ((x1, y1), (x2, y2))
+        self.p1 = x1, y1
+        self.p2 = x2, y2
+        div = x2 - x1
+        if div != 0:
+            self.m = (y2 - y1) / div
+        else:
+            self.m = "undefined"
+        if self.m != "undefined":
+            self.b = y1 - (x1 * self.m)
+        else:
+            self.b = "undefined"
+        self.abc = (y2 - y1, x1 - x2, ((y2 - y1) * x1) + ((x1 - x2) * y1))
+
+    def collide_point(self, x, y, is_segment=True):
+        if self.m == "undefined" or self.b == "undefined":
+            if not is_segment:
+                return self.x1 == x and self.x2 == x and min(self.y1, self.y2) <= y <= max(self.y1, self.y2)
+            else:
+                return self.x1 == x and self.x2 == x
+        if not is_segment:
+            return y == (self.m * x) + self.b
+        # print(dict_print({
+        #     "x": x,
+        #     "y": y,
+        #     "line": str(self),
+        #     "y == (self.m * x) + self.b": y == (self.m * x) + self.b,
+        #     "self.x1": self.x1,
+        #     "self.x2": self.x2,
+        #     "self.x1 <= x <= self.x2": self.x1 <= x <= self.x2,
+        #     "self.x2 <= x <= self.x1": self.x2 <= x <= self.x1,
+        #     "(self.x1 <= x <= self.x2 or self.x2 <= x <= self.x1)": (self.x1 <= x <= self.x2 or self.x2 <= x <= self.x1),
+        #     "self.y1": self.y1,
+        #     "self.y2": self.y2,
+        #     "self.y1 <= y <= self.y2": self.y1 <= y <= self.y2,
+        #     "self.y2 <= y <= self.y1": self.y2 <= y <= self.y1,
+        #     "(self.y1 <= y <= self.y2 or self.y2 <= y <= self.y1)": (self.y1 <= y <= self.y2 or self.y2 <= y <= self.y1),
+        #     "y == (self.m * x) + self.b and (self.x1 <= x <= self.x2 or self.x2 <= x <= self.x1) and (self.y1 <= y <= self.y2 or self.y2 <= y <= self.y1)": y == (self.m * x) + self.b and (self.x1 <= x <= self.x2 or self.x2 <= x <= self.x1) and (self.y1 <= y <= self.y2 or self.y2 <= y <= self.y1)
+        # }, "Collide Point Data"))
+        return y == (self.m * x) + self.b and (self.x1 <= x <= self.x2 or self.x2 <= x <= self.x1) and (
+                    self.y1 <= y <= self.y2 or self.y2 <= y <= self.y1)
+
+    def collide_line(self, line):
+        assert isinstance(line, Line)
+        a1, b1, c1 = self.abc
+        a2, b2, c2 = line.abc
+        det = a1 * b2 - a2 * b1
+        if det == 0:
+            # Lines are parallel
+            return None
+        else:
+            x = (b2 * c1 - b1 * c2) / det
+            y = (a1 * c2 - a2 * c1) / det
+            # print("self:", self)
+            # print("line:", line)
+            # print("(x, y): ({}, {})".format(x, y))
+            cs = self.collide_point(x, y)
+            cl = line.collide_point(x, y)
+            # print("self:", cs)
+            # print("line:", cl)
+            if cs and cl:
+                return x, y
+            else:
+                return None
+
+    def __repr__(self):
+        if self.m == "undefined":
+            return "x = {}".format(self.x1)
+        return "y = {}x + {}".format("%.2f" % self.m, self.b)
+
+
+class Rect:
+    def __init__(self, x, y, w, h):
+        self.x = x
+        self.y = y
+        self.width = w
+        self.height = h
+        self.tupl = (x, y, w, h)
+        self.top = y
+        self.left = x
+        self.bottom = y + h
+        self.right = x + w
+        self.center = x + (w / 2), y + (h / 2)
+        self.top_left = x, y
+        self.top_right = x + w, y
+        self.bottom_left = x, y + h
+        self.bottom_right = x + w, y + h
+
+    def collide_line(self, line):
+        assert isinstance(line, Line)
+        if 1 < 0:
+            return True
+        else:
+            top = Line(self.left, self.top, self.right, self.top)
+            bottom = Line(self.left, self.bottom, self.right, self.bottom)
+            left = Line(self.left, self.top, self.left, self.bottom)
+            right = Line(self.right, self.top, self.right, self.bottom)
+            ct = line.collide_line(top)
+            cb = line.collide_line(bottom)
+            cl = line.collide_line(left)
+            cr = line.collide_line(right)
+            # print(dict_print({
+            #     "rect": str(self),
+            #     "line": str(line),
+            #     "line.collide_line(top)": ct,
+            #     "line.collide_line(bottom)": cb,
+            #     "line.collide_line(left)": cl,
+            #     "line.collide_line(right)": cr
+            # }, "Rect.collide_line"))
+            return any(list(map(lambda x: x is not None, [
+                ct, cb, cl, cr
+            ])))
+
+    def collide_point(self, x, y):
+        return all([
+            self.x <= x <= self.right,
+            self.y <= y <= self.bottom
+        ])
+
+    def __repr__(self):
+        return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width, self.height]))) + ")>"
