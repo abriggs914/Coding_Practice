@@ -14,6 +14,7 @@ class PygameApplication:
         self.display = None
         self.is_playing = True
         self.allow_kbd_ctrls = allow_kbd_ctrls
+        self.clock = pygame.time.Clock()
         if allow_kbd_ctrls:
             if not is_imported("keyboard"):
                 import keyboard as kbd
@@ -56,6 +57,9 @@ class PygameApplication:
             pygame.display.set_caption(self.title)
         except ImportError:
             print("\nUnable to import pygame.\nPlease try again after installing.\n")
+
+    def tick(self, t):
+        self.clock.tick(t)
 
     # Call this function iteratively.
     # Include any application specific UI / other code
