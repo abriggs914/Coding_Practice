@@ -1274,3 +1274,95 @@ class HBox(Box):
 # image button
 # hyperlink
 # combobox
+
+
+if not is_imported("pygame"):
+    import pygame
+
+
+class PygameApplication:
+
+    def __init__(self, title, w, h, allow_kbd_ctrls=True, auto_init=False):
+        global kbd
+        self.title = title
+        self.w = w
+        self.h = h
+        self.display = None
+        self.is_playing = True
+        self.allow_kbd_ctrls = allow_kbd_ctrls
+        self.clock = pygame.time.Clock()
+        if allow_kbd_ctrls:
+            if not is_imported("keyboard"):
+                import keyboard as kbd
+
+        if auto_init:
+            self.init()
+
+    def get_display(self):
+        return self.display
+
+    def get_game(self):
+        return pygame
+
+    def get_dims(self):
+        return self.w, self.h
+
+    def set_background_colour(self, bg_colour):
+        self.display.fill(bg_colour)
+
+    def colliderect_offset(self, r1, r2, offset=0, l=True, r=True):
+        assert isinstance(r1, pygame.Rect)
+        assert isinstance(r2, pygame.Rect)
+        if l and r:
+            return pygame.Rect(r1.left - offset, r1.top - offset, r1.width + (2 * offset),
+                               r1.height + (2 * offset)).colliderect(
+                pygame.Rect(r2.left - offset, r2.top - offset, r2.width + (2 * offset), r2.height + (2 * offset)))
+        elif l:
+            return pygame.Rect(r1.left - offset, r1.top - offset, r1.width + (2 * offset),
+                               r1.height + (2 * offset)).colliderect(
+                pygame.Rect(r2.left, r2.top, r2.width, r2.height))
+        else:
+            return pygame.Rect(r1.left, r1.top, r1.width,
+                               r1.height).colliderect(pygame.Rect(r2.left, r2.top, r2.width, r2.height))
+
+    def init(self):
+        try:
+            import pygame
+            pygame.init()
+            self.display = pygame.display.set_mode((self.w, self.h))
+            pygame.display.set_caption(self.title)
+        except ImportError:
+            print("\nUnable to import pygame.\nPlease try again after installing.\n")
+
+    def tick(self, t):
+        self.clock.tick(t)
+
+    # Call this function iteratively.
+    # Include any application specific UI / other code
+    # within the instance of the child application.
+    def run(self):
+        if self.display is None:
+            self.init()
+        if 1:
+            events = pygame.event.get()
+            kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra = False, False, False, False, False, False, False, False
+            if self.allow_kbd_ctrls:
+                kbd_w = kbd.is_pressed('w')
+                kbd_ua = kbd.is_pressed('up')
+                kbd_a = kbd.is_pressed('a')
+                kbd_la = kbd.is_pressed('left')
+                kbd_s = kbd.is_pressed('s')
+                kbd_da = kbd.is_pressed('down')
+                kbd_d = kbd.is_pressed('d')
+                kbd_ra = kbd.is_pressed('right')
+                str_dir_keys = ["kbd_w", "kbd_ua", "kbd_a", "kbd_la", "kbd_s", "kbd_da", "kbd_d", "kbd_ra"]
+                dir_keys = [kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra]
+                a_dir_keys = any(dir_keys)
+                kbd_q = kbd.is_pressed('q')
+            for i, event in enumerate(events):
+                pos = pygame.mouse.get_pos()
+                if kbd_q or event.type == pygame.QUIT:
+                    self.is_playing = False
+                if i != len(events) - 1:
+                    pygame.display.flip()
+            pygame.display.flip()

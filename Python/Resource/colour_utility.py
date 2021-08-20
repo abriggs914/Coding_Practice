@@ -1140,12 +1140,12 @@ def get_all_colours():
 
 
 def random_colour():
-	return random.choice(get_all_colours())
-	
+    return random.choice(get_all_colours())
+
 
 def rgb_to_hex(colour):
-	return "#" + "".join([hex(x).split("x")[-1] for x in colour]).upper()
-	
+    return "#" + "".join([hex(x).split("x")[-1] for x in colour]).upper()
+
 
 def hex_to_rgb(colour):
-	return (int(c[1:3], 16), int(c[3:5], 16), int(c[5:], 16))
+    return (int(colour[1:3], 16), int(colour[3:5], 16), int(colour[5:], 16))

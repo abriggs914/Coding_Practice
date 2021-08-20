@@ -1,5 +1,6 @@
 from utility import *
 from test_suite import *
+from pygame_utility import *
 
 # test area and scratch pad
 
@@ -99,5 +100,22 @@ if __name__ == "__main__":
 
         return temp
 
-    g1 = []
-    print(rotate_matrix())
+    # g1 = []
+    # print(rotate_matrix())
+
+    title = "Testing Rect and Line classes"
+    w = 900
+    h = 600
+
+    r1 = Rect(15, 20, 25, 30)
+    l1 = Line(0, 0, 100, 100)
+
+
+    app = PygameApplication(title, w, h)
+    app.init()
+    pygame.display.set_mode((w, h))
+    while app.is_playing:
+        pygame.draw.rect(app.display, GREEN, r1.tupl)
+        pygame.draw.line(app.display, RED, *l1.tupl)
+        app.run()
+
