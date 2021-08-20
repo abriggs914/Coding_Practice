@@ -106,16 +106,16 @@ class RoadWay:
         bottom = Line(*lm(c, (-1, 1)), *lm(d, (1, 1)))
         left = Line(*lm(a, (-1, -1)), *lm(c, (-1, 1)))
         right = Line(*lm(b, (1, -1)), *lm(d, (1, 1)))
-        print(dict_print({
-            "top": top,
-            "Ctop": r.collide_line(top),
-            "bottom": bottom,
-            "Cbottom": r.collide_line(bottom),
-            "left": left,
-            "Cleft": r.collide_line(left),
-            "right": right,
-            "Cright": r.collide_line(right)
-        }))
+        # print(dict_print({
+        #     "top": top,
+        #     "Ctop": r.collide_line(top),
+        #     "bottom": bottom,
+        #     "Cbottom": r.collide_line(bottom),
+        #     "left": left,
+        #     "Cleft": r.collide_line(left),
+        #     "right": right,
+        #     "Cright": r.collide_line(right)
+        # }))
         if self.lane_mode == "vertical":
             return not self.valid_place(car) and (r.collide_line(top) or r.collide_line(bottom))
         elif self.lane_mode == "horizontal":
