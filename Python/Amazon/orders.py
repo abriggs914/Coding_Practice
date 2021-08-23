@@ -2,6 +2,8 @@ import datetime
 import calendar
 from utility import *
 
+
+
 orders = {
 	2016: [
 		("2016-10-11", 8.95)
