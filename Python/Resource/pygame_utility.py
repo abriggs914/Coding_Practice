@@ -1291,6 +1291,7 @@ class PygameApplication:
         self.is_playing = True
         self.allow_kbd_ctrls = allow_kbd_ctrls
         self.clock = pygame.time.Clock()
+        self.background_colour = BLACK
         if allow_kbd_ctrls:
             if not is_imported("keyboard"):
                 import keyboard as kbd

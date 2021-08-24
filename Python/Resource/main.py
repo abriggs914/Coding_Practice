@@ -127,17 +127,34 @@ if __name__ == "__main__":
         "r1.collide_line(l1)": r1.collide_line(l1),
         "r1": r1,
         "left": r1.left_line,
-        "collide_left": l1.collide_line(r1.left_line),
+        "collide_left": str(l1.collide_line(r1.left_line)),
         "right": r1.right_line,
-        "collide_right": l1.collide_line(r1.right_line),
+        "collide_right": str(l1.collide_line(r1.right_line)),
         "top": r1.top_line,
-        "collide_top": l1.collide_line(r1.top_line),
+        "collide_top": str(l1.collide_line(r1.top_line)),
         "bottom": r1.bottom_line,
-        "collide_bottom": l1.collide_line(r1.bottom_line),
+        "collide_bottom": str(l1.collide_line(r1.bottom_line)),
     }, "Data"))
 
+    results = {
+        "x: -1": 0,
+        "x: 0": 0,
+        "x: 1": 0,
+        "y: -1": 0,
+        "y: 0": 0,
+        "y: 1": 0,
+    }
+
     while app.is_playing:
+        app.display.fill(app.background_colour)
         pygame.draw.rect(app.display, GREEN, r1.tupl)
         pygame.draw.line(app.display, RED, *l1.tupl)
+        x_c = weighted_choice(((1, 0.95), (0, 0.025), (-1, 0.025)))
+        y_c = weighted_choice(((1, 0.5), (0, 0.25), (-1, 0.25)))
+        results["x: {}".format(x_c)] += 1
+        results["y: {}".format(y_c)] += 1
+        r1.translate(x_c, y_c)
+        l1.translate(x_c, y_c)
         app.run()
+        # print(dict_print(results, "Results"))
 
