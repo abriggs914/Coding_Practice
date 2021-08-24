@@ -3,7 +3,7 @@ from test_suite import *
 from pygame_utility import *
 
 # test area and scratch pad
-
+"""
 test_lists = [
     ([[1, 2], [3, 4]], [1, 2, 3, 4]),
     ([[[1], 2], [[3, 4]]], [1, 2, 3, 4]),
@@ -39,7 +39,7 @@ for i, vals in enumerate(test_lists[:30]):
 
 all_right = all(correct_answers)
 print("all correct", all_right)
-
+"""
 
 if __name__ == "__main__":
     def rotate_matrix(grid, n=None, m=None, filter_none=False):
@@ -110,10 +110,32 @@ if __name__ == "__main__":
     r1 = Rect(15, 20, 25, 30)
     l1 = Line(0, 0, 100, 100)
 
+    collide_line_tests = TestSuite(test_func=l1.collide_line)
+    collide_line_tests.add_test("l1 intersects r1.top_line", ([r1.top_line], True))
+    collide_line_tests.add_test("l1 intersects r1.bottom_line", ([r1.bottom_line], True))
+    collide_line_tests.add_test("l1 intersects r1.left_line", ([r1.left_line], True))
+    collide_line_tests.add_test("l1 intersects r1.right_line", ([r1.right_line], True))
+
+    collide_line_tests.execute()
+
 
     app = PygameApplication(title, w, h)
     app.init()
     pygame.display.set_mode((w, h))
+
+    print(dict_print({
+        "r1.collide_line(l1)": r1.collide_line(l1),
+        "r1": r1,
+        "left": r1.left_line,
+        "collide_left": l1.collide_line(r1.left_line),
+        "right": r1.right_line,
+        "collide_right": l1.collide_line(r1.right_line),
+        "top": r1.top_line,
+        "collide_top": l1.collide_line(r1.top_line),
+        "bottom": r1.bottom_line,
+        "collide_bottom": l1.collide_line(r1.bottom_line),
+    }, "Data"))
+
     while app.is_playing:
         pygame.draw.rect(app.display, GREEN, r1.tupl)
         pygame.draw.line(app.display, RED, *l1.tupl)

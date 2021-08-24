@@ -3,8 +3,8 @@ from utility import *
 
 """
 	General Test Suite Driver
-	Version............1.1
-	Date........2021-07-22
+	Version............1.2
+	Date........2021-08-23
 	Author....Avery Briggs
 """
 
@@ -105,6 +105,19 @@ def func_def():
     pass
 
 
+class Foo:
+    def __init__(self):
+        pass
+
+    def f1(self):
+        pass
+
+    def f2(self, f):
+        pass
+
+FOO_OBJ = Foo()
+
+
 class TestSuite:
     """Class used to run a batch of tests on functions"""
 
@@ -116,7 +129,8 @@ class TestSuite:
     ):
         self.tests = {}
         self.test_order = []
-        if not isinstance(test_func, type(func_def)):
+        if not isinstance(test_func, type(func_def)) and not isinstance(test_func, type(FOO_OBJ.f1)):
+            print("Invalid \"test_func\" passed as an initializer to TestSuite.\n\tRequired type: {}\n\tOr: {}\n\tType found: {}".format(type(func_def), type(FOO_OBJ.f2), type(test_func)))
             test_func = None
         # list of un-labeled tests or dict of labeled tests.
         if not isinstance(tests, list) and not isinstance(tests, tuple) and not isinstance(tests, dict):

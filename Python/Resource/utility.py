@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.10
-	Date...........2021-08-17
+	Version..............1.11
+	Date...........2021-08-23
 	Author.......Avery Briggs
 """
 
@@ -715,7 +715,9 @@ class Line:
     def __repr__(self):
         if self.m == "undefined":
             return "x = {}".format(self.x1)
-        return "y = {}x + {}".format("%.2f" % str(self.m), self.b)
+        if self.m == 0:
+            return "y = {}".format(self.b)
+        return "y = {}x + {}".format("%.2f" % self.m, self.b)
 
 
 class Rect:
@@ -734,6 +736,10 @@ class Rect:
         self.top_right = x + w, y
         self.bottom_left = x, y + h
         self.bottom_right = x + w, y + h
+        self.top_line = Line(*self.top_left, *self.top_right)
+        self.left_line = Line(*self.top_left, *self.bottom_left)
+        self.right_line = Line(*self.top_right, *self.bottom_right)
+        self.bottom_line = Line(*self.bottom_left, *self.bottom_right)
 
     def collide_line(self, line):
         assert isinstance(line, Line)
