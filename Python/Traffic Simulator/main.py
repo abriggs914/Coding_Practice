@@ -47,7 +47,8 @@ class Car:
             # draw image
             pass
         else:
-            self.game.draw.circle(self.display, self.colour, (self.x, self.y), self.radius)
+            self.game.draw.circle(self.display, BLUEVIOLET, (self.x, self.y), self.radius)
+            self.game.draw.rect(self.display, self.colour, self.rect)
 
     def __eq__(self, other):
         return isinstance(other, Car) and all([
@@ -101,11 +102,20 @@ class RoadWay:
         b = r.top_right
         c = r.bottom_left
         d = r.bottom_right
-        lm = lambda v, vs: (v[0] + vs[0], v[1] + vs[1])
-        top = Line(*lm(a, (-1, -1)), *lm(b, (1, -1)))
-        bottom = Line(*lm(c, (-1, 1)), *lm(d, (1, 1)))
-        left = Line(*lm(a, (-1, -1)), *lm(c, (-1, 1)))
-        right = Line(*lm(b, (1, -1)), *lm(d, (1, 1)))
+        rc = Rect(r.x, r.y, r.width, r.height)
+        top_i = rc.top_line
+        bottom_i = rc.bottom_line
+        left_i = rc.left_line
+        right_i = rc.right_line
+        top_o = top_i.translated(0, -1)
+        bottom_o = bottom_i.translated(0, 1)
+        left_o = left_i.translated(-1, 0)
+        right_o = right_i.translated(1, 0)
+        # lm = lambda v, vs: (v[0] + vs[0], v[1] + vs[1])
+        # top = Line(*lm(a, (-1, -1)), *lm(b, (1, -1)))
+        # bottom = Line(*lm(c, (-1, 1)), *lm(d, (1, 1)))
+        # left = Line(*lm(a, (-1, -1)), *lm(c, (-1, 1)))
+        # right = Line(*lm(b, (1, -1)), *lm(d, (1, 1)))
         # print(dict_print({
         #     "top": top,
         #     "Ctop": r.collide_line(top),
@@ -117,9 +127,9 @@ class RoadWay:
         #     "Cright": r.collide_line(right)
         # }, ""))
         if self.lane_mode == "vertical":
-            return not self.valid_place(car) and (r.collide_line(top) or r.collide_line(bottom))
+            return not self.valid_place(car) and (((r.collide_line(top_o) and not r.collide_line(top_i)) or (r.collide_line(bottom_o) and not r.collide_line(bottom_i))))
         elif self.lane_mode == "horizontal":
-            return not self.valid_place(car) and (r.collide_line(left) or r.collide_line(right))
+            return not self.valid_place(car) and (((r.collide_line(left_o) and not r.collide_line(left_i)) or (r.collide_line(right_o) and not r.collide_line(right_i))))
         else:
             raise ValueError("diagonal roadways not supported yet.")
 
@@ -146,7 +156,7 @@ class RoadWay:
                     print("EXITING SUCCESSFULLY:", car)
                 # crash
                 else:
-                    print("crash!")
+                    print("CRASH!\nBy : {}".format(car))
                     raise ValueError("CRASH!")
 
     def info_print(self):

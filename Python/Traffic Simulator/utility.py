@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.12
-	Date...........2021-08-24
+	Version..............1.13
+	Date...........2021-08-25
 	Author.......Avery Briggs
 """
 
@@ -730,6 +730,11 @@ class Line:
         self.y2 += y
         self.init(self.x1, self.y1, self.x2, self.y2)
 
+    def translated(self, x, y):
+        r = Line(self.x1, self.y1, self.x2, self.y2)
+        r.translate(x, y)
+        return r
+
     def __repr__(self):
         if self.m == "undefined":
             return "x = {}".format(self.x1)
@@ -822,6 +827,11 @@ class Rect:
         self.x += x
         self.y += y
         self.init(self.x, self.y, self.width, self.height)
+
+    def translated(self, x, y):
+        r = Rect(self.x, self.y, self.width, self.height)
+        r.translate(x, y)
+        return r
 
     def __repr__(self):
         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width, self.height]))) + ")>"
