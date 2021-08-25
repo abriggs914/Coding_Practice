@@ -108,6 +108,7 @@ if __name__ == "__main__":
     h = 600
 
     r1 = Rect(15, 20, 25, 30)
+    r2 = Rect(10, 10, w - 20, h - 20)
     l1 = Line(0, 0, 100, 100)
 
     collide_line_tests = TestSuite(test_func=l1.collide_line)
@@ -147,14 +148,22 @@ if __name__ == "__main__":
 
     while app.is_playing:
         app.display.fill(app.background_colour)
+        pygame.draw.rect(app.display, YELLOW_3, r2.tupl)
         pygame.draw.rect(app.display, GREEN, r1.tupl)
         pygame.draw.line(app.display, RED, *l1.tupl)
+
         x_c = weighted_choice(((1, 0.95), (0, 0.025), (-1, 0.025)))
         y_c = weighted_choice(((1, 0.5), (0, 0.25), (-1, 0.25)))
+
+        x_c = weighted_choice([0, 1])
+        y_c = weighted_choice([0, 1])
+
         results["x: {}".format(x_c)] += 1
         results["y: {}".format(y_c)] += 1
         r1.translate(x_c, y_c)
         l1.translate(x_c, y_c)
         app.run()
+        if not r2.collide_rect(r1, strictly_inside=False):
+            raise ValueError("not r2.collide_rect(r1)")
         # print(dict_print(results, "Results"))
 

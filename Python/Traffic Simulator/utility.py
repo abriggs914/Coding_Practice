@@ -488,21 +488,21 @@ def weighted_choice(weighted_lst):
     p = sum_whole / remaining
 
     for val, weight in fract:
-        print("item_scalar:", item_scalar, "p:", p, "weight:", weight, "lst_len:", lst_len)
+        # print("item_scalar:", item_scalar, "p:", p, "weight:", weight, "lst_len:", lst_len)
         s = ceil(item_scalar * p * weight * lst_len)
-        print("\ts:", s)
+        # print("\ts:", s)
         res += [val for i in range(s)]
 
     for val, weight in whole:
-        print("{} x {}".format(weight, val))
+        # print("{} x {}".format(weight, val))
         res += [val for i in range(ceil(weight))]
 
     # print("\tres", res)
     if res:
-        print("Choice from:\n\t{}".format(res))
+        # print("Choice from:\n\t{}".format(res))
         return choice(res)
     if isinstance(weighted_lst, list) or isinstance(weighted_lst, tuple):
-        print("Choice from:\n\t{}".format(weighted_lst))
+        # print("Choice from:\n\t{}".format(weighted_lst))
         return choice(weighted_lst)
     return None
 
@@ -674,6 +674,16 @@ class Line:
         self.y1 = y1
         self.x2 = x2
         self.y2 = y2
+        self.is_init = False
+        self.tupl = None
+        self.p1 = None
+        self.p2 = None
+        self.m = None
+        self.b = None
+        self.abc = None
+        self.init(x1, y1, x2, y2)
+
+    def init(self, x1, y1, x2, y2):
         self.tupl = ((x1, y1), (x2, y2))
         self.p1 = x1, y1
         self.p2 = x2, y2
@@ -687,6 +697,7 @@ class Line:
         else:
             self.b = "undefined"
         self.abc = (y2 - y1, x1 - x2, ((y2 - y1) * x1) + ((x1 - x2) * y1))
+        self.is_init = True
 
     def collide_point(self, x, y, is_segment=True):
         if self.m == "undefined" or self.b == "undefined":
@@ -712,6 +723,13 @@ class Line:
             else:
                 return None
 
+    def translate(self, x, y):
+        self.x1 += x
+        self.x2 += x
+        self.y1 += y
+        self.y2 += y
+        self.init(self.x1, self.y1, self.x2, self.y2)
+
     def __repr__(self):
         if self.m == "undefined":
             return "x = {}".format(self.x1)
@@ -726,6 +744,24 @@ class Rect:
         self.y = y
         self.width = w
         self.height = h
+        self.is_init = False
+        self.tupl = None
+        self.top = None
+        self.left = None
+        self.bottom = None
+        self.right = None
+        self.center = None
+        self.top_left = None
+        self.top_right = None
+        self.bottom_left = None
+        self.bottom_right = None
+        self.top_line = None
+        self.left_line = None
+        self.right_line = None
+        self.bottom_line = None
+        self.init(x, y, w, h)
+
+    def init(self, x, y, w, h):
         self.tupl = (x, y, w, h)
         self.top = y
         self.left = x
@@ -740,6 +776,23 @@ class Rect:
         self.left_line = Line(*self.top_left, *self.bottom_left)
         self.right_line = Line(*self.top_right, *self.bottom_right)
         self.bottom_line = Line(*self.bottom_left, *self.bottom_right)
+        self.is_init = True
+
+    def collide_rect(self, rect, strictly_inside=True):
+        if strictly_inside:
+            return all([
+                self.left < rect.left,
+                self.right > rect.right,
+                self.top < rect.top,
+                self.bottom > rect.bottom
+            ])
+        else:
+            return any([
+                self.collide_point(*rect.top_left),
+                self.collide_point(*rect.top_right),
+                self.collide_point(*rect.bottom_left),
+                self.collide_point(*rect.bottom_right)
+            ])
 
     def collide_line(self, line):
         assert isinstance(line, Line)
@@ -762,6 +815,13 @@ class Rect:
             self.x <= x <= self.right,
             self.y <= y <= self.bottom
         ])
+
+    def translate(self, x, y):
+        if not self.is_init:
+            self.init(self.x, self.y, self.width, self.height)
+        self.x += x
+        self.y += y
+        self.init(self.x, self.y, self.width, self.height)
 
     def __repr__(self):
         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width, self.height]))) + ")>"

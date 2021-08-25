@@ -1,4 +1,5 @@
 from utility import *
+from colour_utility import *
 
 #	General Utility functions for pygame applications
 #	Version............1.2

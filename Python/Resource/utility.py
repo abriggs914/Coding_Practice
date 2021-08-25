@@ -778,6 +778,22 @@ class Rect:
         self.bottom_line = Line(*self.bottom_left, *self.bottom_right)
         self.is_init = True
 
+    def collide_rect(self, rect, strictly_inside=True):
+        if strictly_inside:
+            return all([
+                self.left < rect.left,
+                self.right > rect.right,
+                self.top < rect.top,
+                self.bottom > rect.bottom
+            ])
+        else:
+            return any([
+                self.collide_point(*rect.top_left),
+                self.collide_point(*rect.top_right),
+                self.collide_point(*rect.bottom_left),
+                self.collide_point(*rect.bottom_right)
+            ])
+
     def collide_line(self, line):
         assert isinstance(line, Line)
         if self.collide_point(*line.p1) or self.collide_point(*line.p1):

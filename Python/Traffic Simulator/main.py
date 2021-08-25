@@ -436,6 +436,7 @@ class TrafficSimulator(PygameApplication):
 
     def run(self):
         tick_time = 1000
+        tick_time = 100
         tick_time = max(4, min(1000, tick_time))
         while self.is_playing:
             self.tick(tick_time)
