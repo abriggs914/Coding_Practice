@@ -10,8 +10,6 @@ class Car:
                  radius=6):
         self.game = game
         self.display = display
-        self.x = x
-        self.y = y
         self.speed = speed
         self.id_num = id_num
         self.name = name
@@ -35,19 +33,17 @@ class Car:
         self.departure = dept
 
     def add_x(self, x):
-        self.x += x
-        self.rect.left += x
+        self.rect = Rect(self.rect.x + x - (self.radius / 2), self.rect.y - (self.radius / 2), self.rect.width, self.rect.height)
 
     def add_y(self, y):
-        self.y += y
-        self.rect.top += y
+        self.rect = Rect(self.rect.x - (self.radius / 2), self.rect.y + y - (self.radius / 2), self.rect.width, self.rect.height)
 
     def draw(self):
         if self.img_path is not None:
             # draw image
             pass
         else:
-            self.game.draw.circle(self.display, BLUEVIOLET, (self.x, self.y), self.radius)
+            self.game.draw.circle(self.display, BLUEVIOLET, (self.rect.x, self.rect.y), self.radius)
             self.game.draw.rect(self.display, self.colour, self.rect.tupl)
 
     def __eq__(self, other):
@@ -89,9 +85,10 @@ class RoadWay:
         self.info_print()
 
     def valid_place(self, car, strictly_inside=False):
-        if not car.rect.collide_rect(self.rect, strictly_inside=strictly_inside):
+        if not self.rect.collide_rect(car.rect, strictly_inside=strictly_inside):
             print("\t\tearly exit")
             return False
+        # check car crashes
         for c in self.car_queue:
             if c != car:
                 if c.rect.collide_rect(car.rect, strictly_inside=strictly_inside):
@@ -423,7 +420,7 @@ class TrafficSimulatorMap:
         print("pygame collide:", pygame.rect.Rect(w * 0.39, 0, w * 0.11, h * 1).colliderect(pygame.rect.Rect(w * 0.41, h * 0.05, 6, 6)))
         print("rect collide:", Rect(w * 0.39, 0, w * 0.11, h * 1).collide_rect(Rect(w * 0.41, h * 0.05, 6, 6)))
         print("Car#1 should go on (\"N\", \"S\")")
-        tsmap.add_car(w * 0.41, h * 0.05, colour=RED)
+        tsmap.add_car(w * 0.42, h * 0.15, colour=RED)
         # game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
         # game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))  # East - West
         #
