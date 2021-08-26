@@ -21,7 +21,7 @@ class Car:
         self.radius = radius
         self.w = radius
         self.h = radius
-        self.rect = self.game.Rect(x - (radius / 2), y - (radius / 2), self.w, self.h)
+        self.rect = Rect(x - (radius / 2), y - (radius / 2), self.w, self.h)
 
         self.is_crashed = False
         self.arrival = None
@@ -48,7 +48,7 @@ class Car:
             pass
         else:
             self.game.draw.circle(self.display, BLUEVIOLET, (self.x, self.y), self.radius)
-            self.game.draw.rect(self.display, self.colour, self.rect)
+            self.game.draw.rect(self.display, self.colour, self.rect.tupl)
 
     def __eq__(self, other):
         return isinstance(other, Car) and all([
@@ -74,6 +74,7 @@ class RoadWay:
         self.lane_mode = "diagonal"
         self.centre_side = centre_side  # left == top, right == bottom
 
+        rect = rect.tupl
         if direction == ("N", "S") or direction == ("S", "N"):
             self.lane_width = rect[2] / n_lanes
             self.lane_height = rect[3]
@@ -87,21 +88,23 @@ class RoadWay:
 
         self.info_print()
 
-    def valid_place(self, car):
-        if not car.rect.colliderect(self.rect):
+    def valid_place(self, car, strictly_inside=False):
+        if not car.rect.collide_rect(self.rect, strictly_inside=strictly_inside):
+            print("\t\tearly exit")
             return False
         for c in self.car_queue:
             if c != car:
-                if c.rect.colliderect(car.rect):
+                if c.rect.collide_rect(car.rect, strictly_inside=strictly_inside):
+                    print("\t\tlate exit")
                     return False
         return True
 
     def is_exiting(self, car):
-        r = Rect(*self.rect)
-        a = r.top_left
-        b = r.top_right
-        c = r.bottom_left
-        d = r.bottom_right
+        r = Rect(*self.rect.tupl)
+        # a = r.top_left
+        # b = r.top_right
+        # c = r.bottom_left
+        # d = r.bottom_right
         rc = Rect(r.x, r.y, r.width, r.height)
         top_i = rc.top_line
         bottom_i = rc.bottom_line
@@ -111,25 +114,50 @@ class RoadWay:
         bottom_o = bottom_i.translated(0, 1)
         left_o = left_i.translated(-1, 0)
         right_o = right_i.translated(1, 0)
+        car_r = car.rect
         # lm = lambda v, vs: (v[0] + vs[0], v[1] + vs[1])
         # top = Line(*lm(a, (-1, -1)), *lm(b, (1, -1)))
         # bottom = Line(*lm(c, (-1, 1)), *lm(d, (1, 1)))
         # left = Line(*lm(a, (-1, -1)), *lm(c, (-1, 1)))
         # right = Line(*lm(b, (1, -1)), *lm(d, (1, 1)))
-        # print(dict_print({
-        #     "top": top,
-        #     "Ctop": r.collide_line(top),
-        #     "bottom": bottom,
-        #     "Cbottom": r.collide_line(bottom),
-        #     "left": left,
-        #     "Cleft": r.collide_line(left),
-        #     "right": right,
-        #     "Cright": r.collide_line(right)
-        # }, ""))
+        ie = False
         if self.lane_mode == "vertical":
-            return not self.valid_place(car) and (((r.collide_line(top_o) and not r.collide_line(top_i)) or (r.collide_line(bottom_o) and not r.collide_line(bottom_i))))
+            ie = not self.valid_place(car) and (((car_r.collide_line(top_o) and not car_r.collide_line(top_i)) or (car_r.collide_line(bottom_o) and not car_r.collide_line(bottom_i))))
+        if self.lane_mode == "vertical":
+            ie = not self.valid_place(car) and (((car_r.collide_line(left_o) and not car_r.collide_line(left_i)) or (car_r.collide_line(right_o) and not car_r.collide_line(right_i))))
+        print(dict_print({
+            "car": car.rect,
+            "self": self.rect,
+            "self.dir": str(self.direction),
+            "top_i": "{} <{}>".format(top_i, car_r.collide_line(top_i)),
+            "top_o": "{} <{}>".format(top_o, car_r.collide_line(top_o)),
+            "bottom_i": "{} <{}>".format(bottom_i, car_r.collide_line(bottom_i)),
+            "bottom_o": "{} <{}>".format(bottom_o, car_r.collide_line(bottom_o)),
+            "Cto && ~Cti": "{}".format(car_r.collide_line(top_o) and not car_r.collide_line(top_i)),
+            "Cbo && ~Cbi": "{}".format(car_r.collide_line(bottom_o) and not car_r.collide_line(bottom_i)),
+            "Cbo && ~Cbi || Cbo && ~Cbi": "{}".format((car_r.collide_line(top_o) and not car_r.collide_line(top_i)) or (car_r.collide_line(bottom_o) and not car_r.collide_line(bottom_i))),
+
+            "left_i": "{} <{}>".format(left_i, car_r.collide_line(left_i)),
+            "left_o": "{} <{}>".format(left_o, car_r.collide_line(left_o)),
+            "right_i": "{} <{}>".format(right_i, car_r.collide_line(right_i)),
+            "right_o": "{} <{}>".format(right_o, car_r.collide_line(right_o)),
+            "Clo && ~Cli": "{}".format(car_r.collide_line(left_o) and not car_r.collide_line(left_i)),
+            "Cro && ~Cri": "{}".format(car_r.collide_line(right_o) and not car_r.collide_line(right_i)),
+            "Clo && ~Cli || Cro && ~Cri": "{}".format((car_r.collide_line(left_o) and not car_r.collide_line(left_i)) or (car_r.collide_line(right_o) and not car_r.collide_line(right_i))),
+            "is_exiting: ": ie
+            # "top_o": top_o,
+            # "Ctop": r.collide_line(top),
+            # "bottom": bottom,
+            # "Cbottom": r.collide_line(bottom),
+            # "left": left,
+            # "Cleft": r.collide_line(left),
+            # "right": right,
+            # "Cright": r.collide_line(right)
+        }, "Data"))
+        if self.lane_mode == "vertical":
+            return not self.valid_place(car) and (((car_r.collide_line(top_o) and not car_r.collide_line(top_i)) or (car_r.collide_line(bottom_o) and not car_r.collide_line(bottom_i))))
         elif self.lane_mode == "horizontal":
-            return not self.valid_place(car) and (((r.collide_line(left_o) and not r.collide_line(left_i)) or (r.collide_line(right_o) and not r.collide_line(right_i))))
+            return not self.valid_place(car) and (((car_r.collide_line(left_o) and not car_r.collide_line(left_i)) or (car_r.collide_line(right_o) and not car_r.collide_line(right_i))))
         else:
             raise ValueError("diagonal roadways not supported yet.")
 
@@ -150,19 +178,23 @@ class RoadWay:
             car.add_x(j_inc)
             car.add_y(i_inc)
 
-            # print("r", car.rect, "(i, j): ({}, {})".format(i_inc, j_inc))
-            if not self.valid_place(car):
-                if self.is_exiting(car):
-                    print("EXITING SUCCESSFULLY:", car)
-                # crash
-                else:
-                    print("CRASH!\nBy : {}".format(car))
-                    raise ValueError("CRASH!")
+            self.check_collision(car)
+
+    def check_collision(self, car):
+        # print("r", car.rect, "(i, j): ({}, {})".format(i_inc, j_inc))
+        if not self.valid_place(car):
+            if self.is_exiting(car):
+                print("EXITING SUCCESSFULLY:", car)
+            # crash
+            else:
+                print("CRASH!\nBy : {}".format(car))
+                raise ValueError("CRASH!")
 
     def info_print(self):
         print(dict_print({
             "direction": self.direction,
             "colour": self.colour,
+            "rect": self.rect,
             "n_lanes": self.n_lanes,
             "centre_side": self.centre_side,
             "lane_mode": self.lane_mode,
@@ -180,6 +212,9 @@ class RoadWay:
             self.centre_side == other.centre_side
         ])
 
+    def __repr__(self):
+        return "Roadway<<{}>, <{}>>".format(self.direction, self.rect)
+
 
 class Intersection:
 
@@ -193,9 +228,9 @@ class Intersection:
         rar = self.roadway_a.rect
         rbr = self.roadway_b.rect
         if not isinstance(rar, game.Rect):
-            rar = game.Rect(*rar)
+            rar = game.Rect(*rar.tupl)
         if not isinstance(rbr, game.Rect):
-            rbr = game.Rect(*rbr)
+            rbr = game.Rect(*rbr.tupl)
         self.rect = game.Rect.clip(rar, rbr)
 
     def draw_intersection(self, draw_stop_lines=True, stop_line_colour=WHITE, stop_line_width=6, draw_crosswalk=True,
@@ -271,8 +306,11 @@ class TrafficSimulatorMap:
         car = Car(self.game, self.display, self.car_id_num, x, y, **kwargs)
         r_name, roadway = None, None
         for r_name, roadway in self.roadways.items():
-            if roadway.valid_place(car):
+            if roadway.valid_place(car, strictly_inside=True):
                 break
+            else:
+                roadway = None
+        print("\n\tNew Car:", car, "\nSelecting roadway:", roadway)
         if roadway is not None:
             self.roadways[r_name].add_car(car)
             car.set_arrival(self.clock_time)
@@ -285,8 +323,8 @@ class TrafficSimulatorMap:
         for ra_name, roadway_a in self.roadways.items():
             for rb_name, roadway_b in self.roadways.items():
                 if ra_name != rb_name:
-                    rect_a = self.game.Rect(*roadway_a.rect)
-                    rect_b = self.game.Rect(*roadway_b.rect)
+                    rect_a = self.game.Rect(*roadway_a.rect.tupl)
+                    rect_b = self.game.Rect(*roadway_b.rect.tupl)
                     rect = self.game.Rect.clip(rect_a, rect_b)
                     if sum(rect.size):
                         inter = Intersection(roadway_a, roadway_b, self.game, self.display, colour=colour)
@@ -302,8 +340,10 @@ class TrafficSimulatorMap:
             rect = roadway.rect
             if isinstance(rect, list) or isinstance(rect, tuple) and len(rect) == 4:
                 rect = self.game.Rect(*rect)
+            elif isinstance(rect, Rect):
+                rect = self.game.Rect(*rect.tupl)
             else:
-                raise ValueError("rect object: <{}> is not a valid pygame.Rect object.")
+                raise ValueError("rect object: <{}> is not a valid pygame.Rect object.".format(rect))
 
             if draw_lane_lines:
                 self.game.draw.rect(self.display, roadway.colour, rect)
@@ -374,13 +414,16 @@ class TrafficSimulatorMap:
             game.draw.line(display, BLACK, (0, i * hs), (w, i * hs))
 
         tsmap.roadways = {
-            "south bound": RoadWay(("N", "S"), (w * 0.39, 0, w * 0.11, h * 1), BLACK, n_lanes=2, centre_side="right"),
-            "north bound": RoadWay(("S", "N"), (w * 0.5, 0, w * 0.11, h * 1), BLACK, n_lanes=3, centre_side="left"),
-            "east bound": RoadWay(("W", "E"), (0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="bottom"),
-            "west bound": RoadWay(("E", "W"), (0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=3, centre_side="top")
+            "south bound": RoadWay(("N", "S"), Rect(w * 0.39, 0, w * 0.11, h * 1), BLACK, n_lanes=2, centre_side="right"),
+            "north bound": RoadWay(("S", "N"), Rect(w * 0.5, 0, w * 0.11, h * 1), BLACK, n_lanes=3, centre_side="left"),
+            "east bound": RoadWay(("W", "E"), Rect(0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="bottom"),
+            "west bound": RoadWay(("E", "W"), Rect(0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=3, centre_side="top")
         }
         print("START:", w * 0.40, ", ", h * 0.05)
-        tsmap.add_car(w * 0.40, h * 0.05, colour=RED)
+        print("pygame collide:", pygame.rect.Rect(w * 0.39, 0, w * 0.11, h * 1).colliderect(pygame.rect.Rect(w * 0.41, h * 0.05, 6, 6)))
+        print("rect collide:", Rect(w * 0.39, 0, w * 0.11, h * 1).collide_rect(Rect(w * 0.41, h * 0.05, 6, 6)))
+        print("Car#1 should go on (\"N\", \"S\")")
+        tsmap.add_car(w * 0.41, h * 0.05, colour=RED)
         # game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
         # game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))  # East - West
         #
