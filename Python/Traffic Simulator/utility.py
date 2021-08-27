@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.13
-	Date...........2021-08-25
+	Version..............1.14
+	Date...........2021-08-26
 	Author.......Avery Briggs
 """
 
@@ -513,12 +513,12 @@ def weighted_choice(weighted_lst):
 
 def lbs_kg(lbs):
     """
-    lbs_kg(args) -> int() or float()
-    Convert N pounds to Kilograms.
-    1 Lbs = 0.453592 Kg
-    :param lbs: int or float value in pounds.
-    :return: float value in kilograms.
-    """
+	lbs_kg(args) -> int() or float()
+	Convert N pounds to Kilograms.
+	1 Lbs = 0.453592 Kg
+	:param lbs: int or float value in pounds.
+	:return: float value in kilograms.
+	"""
     if not isinstance(lbs, int) or isinstance(lbs, float):
         raise ValueError("Cannot convert \"{}\" of type: \"{}\" to kilograms.".format(lbs, type(lbs)))
     return 0.453592 * lbs
@@ -526,12 +526,12 @@ def lbs_kg(lbs):
 
 def kg_lbs(kg):
     """
-    kg_lbs(args) -> int() or float()
-    Convert N Kilograms to pounds.
-    1 Lbs = 0.453592 Kg
-    :param kg: int or float value in kilograms.
-    :return: float value in pounds.
-    """
+	kg_lbs(args) -> int() or float()
+	Convert N Kilograms to pounds.
+	1 Lbs = 0.453592 Kg
+	:param kg: int or float value in kilograms.
+	:return: float value in pounds.
+	"""
     if not isinstance(kg, int) or isinstance(kg, float):
         raise ValueError("Cannot convert \"{}\" of type: \"{}\" to pounds.".format(kg, type(kg)))
     if kg == 0:
@@ -541,12 +541,12 @@ def kg_lbs(kg):
 
 def miles_km(miles):
     """
-    miles_km(args) -> int() or float()
-    Convert N Miles to Kilometers.
-    1 Mi = 1.60934 Km
-    :param miles: int or float value in miles.
-    :return: float value in kilometers.
-    """
+	miles_km(args) -> int() or float()
+	Convert N Miles to Kilometers.
+	1 Mi = 1.60934 Km
+	:param miles: int or float value in miles.
+	:return: float value in kilometers.
+	"""
     if not isinstance(miles, int) or isinstance(miles, float):
         raise ValueError("Cannot convert \"{}\" of type: \"{}\" to miles.".format(miles, type(miles)))
     return 1.60934 * miles
@@ -554,12 +554,12 @@ def miles_km(miles):
 
 def km_miles(km):
     """
-    km_miles(args) -> int() or float()
-    Convert N Kilometers to Miles.
-    1 Mi = 1.60934 Km.
-    :param km: int or float value in kilometers.
-    :return: float value in miles.
-    """
+	km_miles(args) -> int() or float()
+	Convert N Kilometers to Miles.
+	1 Mi = 1.60934 Km.
+	:param km: int or float value in kilometers.
+	:return: float value in miles.
+	"""
     if not isinstance(km, int) or isinstance(km, float):
         raise ValueError("Cannot convert \"{}\" of type: \"{}\" to kilometers.".format(km, type(km)))
     if km == 0:
@@ -569,12 +569,12 @@ def km_miles(km):
 
 def flatten(lst):
     """
-    flatten(args) -> list()
-    Flatten a multi-dimensional list into a single dimension.
-    Non-list objects are returned in a list.
-    :param lst: list object with one or more dimensions.
-    :return: list object with one dimension.
-    """
+	flatten(args) -> list()
+	Flatten a multi-dimensional list into a single dimension.
+	Non-list objects are returned in a list.
+	:param lst: list object with one or more dimensions.
+	:return: list object with one dimension.
+	"""
     if not isinstance(lst, list):
         return [lst]
     if not lst:
@@ -718,7 +718,8 @@ class Line:
         else:
             x = (b2 * c1 - b1 * c2) / det
             y = (a1 * c2 - a2 * c1) / det
-            if self.collide_point(x, y) and line.collide_point(x, y) and self.x1 <= x <= self.x2 and self.y1 <= y <= self.y2 and line.x1 <= x <= line.x2 and line.y1 <= y <= line.y2:
+            if self.collide_point(x, y) and line.collide_point(x,
+                                                               y) and self.x1 <= x <= self.x2 and self.y1 <= y <= self.y2 and line.x1 <= x <= line.x2 and line.y1 <= y <= line.y2:
                 return x, y
             else:
                 return None
@@ -777,6 +778,12 @@ class Rect:
         self.top_right = x + w, y
         self.bottom_left = x, y + h
         self.bottom_right = x + w, y + h
+        self.center_top = self.center[0], y
+        self.center_left = x, self.center[1]
+        self.center_right = x + w, self.center[1]
+        self.center_bottom = self.center[0], y + h
+        self.area = w * h
+        self.perimetre = 2 * (w + h)
         self.top_line = Line(*self.top_left, *self.top_right)
         self.left_line = Line(*self.top_left, *self.bottom_left)
         self.right_line = Line(*self.top_right, *self.bottom_right)

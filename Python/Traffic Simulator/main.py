@@ -32,18 +32,28 @@ class Car:
     def set_departure(self, dept):
         self.departure = dept
 
+    def set_rect(self, rect):
+        assert isinstance(rect, Rect)
+        self.rect = rect
+
+    def set_x(self, x):
+        self.rect = Rect(x, self.rect.y, self.rect.width, self.rect.height)
+
+    def set_y(self, y):
+        self.rect = Rect(self.rect.x, y, self.rect.width, self.rect.height)
+
     def add_x(self, x):
-        self.rect = Rect(self.rect.x + x - (self.radius / 2), self.rect.y - (self.radius / 2), self.rect.width, self.rect.height)
+        self.rect = Rect(self.rect.x + x, self.rect.y, self.rect.width, self.rect.height)
 
     def add_y(self, y):
-        self.rect = Rect(self.rect.x - (self.radius / 2), self.rect.y + y - (self.radius / 2), self.rect.width, self.rect.height)
+        self.rect = Rect(self.rect.x, self.rect.y + y, self.rect.width, self.rect.height)
 
     def draw(self):
         if self.img_path is not None:
             # draw image
             pass
         else:
-            self.game.draw.circle(self.display, BLUEVIOLET, (self.rect.x, self.rect.y), self.radius)
+            self.game.draw.circle(self.display, BLUEVIOLET, (self.rect.x + (self.radius / 2), self.rect.y + (self.radius / 2)), self.radius)
             self.game.draw.rect(self.display, self.colour, self.rect.tupl)
 
     def __eq__(self, other):
@@ -58,12 +68,13 @@ class Car:
 class RoadWay:
 
     def __init__(self, direction, rect, colour, n_lanes=1, centre_side="left"):
-        self.rect = rect
+        assert isinstance(rect, Rect)
         assert (isinstance(direction, list) or isinstance(direction, tuple)) and all(
             [direct in DIRECTIONS for direct in direction])
         # TODO; include diagonal roadway functionality
         assert any([direction == ("N", "S"), direction == ("S", "N"), direction == ("E", "W"), direction == ("W", "E")])
         assert any([centre_side == "left", centre_side == "right", centre_side == "top", centre_side == "bottom"])
+        self.rect = rect
         self.direction = direction  # tuple rough directionality vie pygame_utility directions ex: ("N", "S")
         self.colour = colour
         self.n_lanes = n_lanes
@@ -182,10 +193,20 @@ class RoadWay:
         if not self.valid_place(car):
             if self.is_exiting(car):
                 print("EXITING SUCCESSFULLY:", car)
+                self.car_queue.remove(car)
             # crash
             else:
-                print("CRASH!\nBy : {}".format(car))
+                print("CRASH!\nBy:\n\t{} \non road:\n\t{}".format(car, self))
                 raise ValueError("CRASH!")
+
+    def center_car(self, car, true_center=False):
+        sr = self.rect
+        cr = car.rect
+        c = sr.center
+        if true_center:
+            car.set_rect(*c, cr.width, cr.height)
+        else:
+
 
     def info_print(self):
         print(dict_print({

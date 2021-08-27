@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.13
-	Date...........2021-08-25
+	Version..............1.14
+	Date...........2021-08-26
 	Author.......Avery Briggs
 """
 
@@ -777,6 +777,12 @@ class Rect:
         self.top_right = x + w, y
         self.bottom_left = x, y + h
         self.bottom_right = x + w, y + h
+		self.center_top = self.center[0], y
+		self.center_left = x, self.center[1]
+		self.center_right = x + w, self.center[1]
+		self.center_bottom = self.center[0], y + h
+		self.area = w * h
+		self.perimetre = 2 * (w + h)
         self.top_line = Line(*self.top_left, *self.top_right)
         self.left_line = Line(*self.top_left, *self.bottom_left)
         self.right_line = Line(*self.top_right, *self.bottom_right)
