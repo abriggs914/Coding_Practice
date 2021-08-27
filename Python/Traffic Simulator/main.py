@@ -206,6 +206,8 @@ class RoadWay:
         if true_center:
             car.set_rect(*c, cr.width, cr.height)
         else:
+            # find center of lane and then place car there
+            pass
 
 
     def info_print(self):
