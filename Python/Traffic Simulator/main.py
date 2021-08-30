@@ -183,6 +183,7 @@ class RoadWay:
                         i_inc = 1
                     else:
                         j_inc = 1
+            print("car: <{}> ticking (i, j): ({}, {})".format(car, i_inc, j_inc))
             car.add_x(j_inc)
             car.add_y(i_inc)
 
@@ -199,7 +200,7 @@ class RoadWay:
                 print("CRASH!\nBy:\n\t{} \non road:\n\t{}".format(car, self))
                 raise ValueError("CRASH!")
 
-    def center_car(self, car, true_center=False):
+    def center_car(self, car, lane=None, true_center=False):
         sr = self.rect
         cr = car.rect
         c = sr.center
@@ -207,7 +208,23 @@ class RoadWay:
             car.set_rect(*c, cr.width, cr.height)
         else:
             # find center of lane and then place car there
-            pass
+            if self.lane_mode == "vertical":
+                lw = sr.width / max(1, self.n_lanes)
+                print("before:\nw: {}\nlw: {}\ncr: {}\nsr: {}".format(sr.width, lw, cr, sr))
+                if lane is not None and 0 <= lane <= self.n_lanes:
+                    print("lane is not None and 0 <= lane <= self.n_lanes", Rect(sr.x + (lw * (lane - 0.5)) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+                    car.set_rect(Rect(sr.x + (lw * (lane - 0.5)) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+                else:
+                    inter = int((cr.x - sr.x) / sr.width)
+                    # inter *= sr.width
+                    print("ELSE\ninter: {}".format(inter), Rect(sr.x + (lw * inter) + (lw / 2) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+                    car.set_rect(Rect(sr.x + (lw * inter) + (lw / 2) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+
+            elif self.lane_mode == "horizontal":
+                pass
+            else:
+                # todo: add diagonal support
+                pass
 
 
     def info_print(self):
@@ -338,6 +355,8 @@ class TrafficSimulatorMap:
             raise ValueError(
                 "Unable to place car object:\n<{car}>\non current tsmap:\n<{tsmap}>".format(car=car, tsmap=self))
 
+        return car
+
     def update_intersections(self, colour=BLACK):
         intersections = []
         for ra_name, roadway_a in self.roadways.items():
@@ -415,6 +434,10 @@ class TrafficSimulatorMap:
         self.clock_time += tick
         for r_name, roadway in self.roadways.items():
             roadway.tick(tick)
+            if self.clock_time >= 25:
+                for car in roadway.car_queue:
+                    roadway.center_car(car, 2)
+                    # print(car)
 
     @staticmethod
     def default_map(app):
@@ -443,7 +466,9 @@ class TrafficSimulatorMap:
         print("pygame collide:", pygame.rect.Rect(w * 0.39, 0, w * 0.11, h * 1).colliderect(pygame.rect.Rect(w * 0.41, h * 0.05, 6, 6)))
         print("rect collide:", Rect(w * 0.39, 0, w * 0.11, h * 1).collide_rect(Rect(w * 0.41, h * 0.05, 6, 6)))
         print("Car#1 should go on (\"N\", \"S\")")
-        tsmap.add_car(w * 0.42, h * 0.15, colour=RED)
+        car1 = tsmap.add_car(w * 0.42, h * 0.15, colour=RED)
+        car2 = tsmap.add_car(w * 0.56, h * 0.85, colour=MAGENTA_2)
+        # tsmap.roadways["south bound"].center_car(car)
         # game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
         # game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))  # East - West
         #
