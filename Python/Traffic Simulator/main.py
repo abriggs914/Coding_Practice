@@ -177,11 +177,16 @@ class RoadWay:
         for car in self.car_queue:
             i_inc = DIRECTIONS[self.direction[1]]["i"] * car.speed * tick
             j_inc = DIRECTIONS[self.direction[1]]["j"] * car.speed * tick
+            print("A ({}, {})".format(i_inc, j_inc))
             if i_inc < 1 or j_inc < 1:
+                print("B ({}, {})".format(i_inc, j_inc))
                 if i_inc != j_inc:
+                    print("C ({}, {})".format(i_inc, j_inc))
                     if i_inc > j_inc:
+                        print("D ({}, {})".format(i_inc, j_inc))
                         i_inc = 1
                     else:
+                        print("E ({}, {})".format(i_inc, j_inc))
                         j_inc = 1
             print("car: <{}> ticking (i, j): ({}, {})".format(car, i_inc, j_inc))
             car.add_x(j_inc)
