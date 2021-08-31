@@ -765,9 +765,9 @@ class Rect:
         self.right_line = None
         self.bottom_line = None
         self.init(x, y, w, h)
-	
-	def init(self, x, y, w, h):
-		self.tupl = (x, y, w, h)
+
+    def init(self, x, y, w, h):
+        self.tupl = (x, y, w, h)
         self.top = y
         self.left = x
         self.bottom = y + h
@@ -776,13 +776,13 @@ class Rect:
         self.top_left = x, y
         self.top_right = x + w, y
         self.bottom_left = x, y + h
-		self.bottom_right = x + w, y + h
-		self.center_top = self.center[0], y
-		self.center_left = x, self.center[1]
-		self.center_right = x + w, self.center[1]
-		self.center_bottom = self.center[0], y + h
-		self.area = w * h
-		self.perimetre = 2 * (w + h)
+        self.bottom_right = x + w, y + h
+        self.center_top = self.center[0], y
+        self.center_left = x, self.center[1]
+        self.center_right = x + w, self.center[1]
+        self.center_bottom = self.center[0], y + h
+        self.area = w * h
+        self.perimetre = 2 * (w + h)
         self.top_line = Line(*self.top_left, *self.top_right)
         self.left_line = Line(*self.top_left, *self.bottom_left)
         self.right_line = Line(*self.top_right, *self.bottom_right)
