@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version............1.2
-#	Date........2021-08-16
+#	Version............1.3
+#	Date........2021-09-01
 #	Author....Avery Briggs
 
 
@@ -30,6 +30,8 @@ DIRECTIONS = {
         "dir": "north",
         "i": -1,
         "j": 0,
+		"x": 0,
+		"y": -1,
         "opp": "S",
         "bounce": "S",
         "mirror_x": "S",
@@ -39,6 +41,8 @@ DIRECTIONS = {
         "dir": "north-east",
         "i": -1,
         "j": -1,
+		"x": 1,
+		"y": -1,
         "opp": "SW",
         "bounce": "NW",
         "mirror_x": "SE",
@@ -48,6 +52,8 @@ DIRECTIONS = {
         "dir": "east",
         "i": 0,
         "j": -1,
+		"x": 1,
+		"y": 0,
         "opp": "W",
         "bounce": "W",
         "mirror_x": "E",
@@ -57,6 +63,8 @@ DIRECTIONS = {
         "dir": "south-east",
         "i": 1,
         "j": -1,
+		"x": 1,
+		"y": 1,
         "opp": "NW",
         "bounce": "SW",
         "mirror_x": "NE",
@@ -66,6 +74,8 @@ DIRECTIONS = {
         "dir": "south",
         "i": 1,
         "j": 0,
+		"x": 0,
+		"y": 1,
         "opp": "N",
         "bounce": "N",
         "mirror_x": "N",
@@ -75,6 +85,8 @@ DIRECTIONS = {
         "dir": "south-west",
         "i": 1,
         "j": 1,
+		"x": -1,
+		"y": 1,
         "opp": "NE",
         "bounce": "SE",
         "mirror_x": "NW",
@@ -84,6 +96,8 @@ DIRECTIONS = {
         "dir": "west",
         "i": 0,
         "j": 1,
+		"x": -1,
+		"y": 0,
         "opp": "E",
         "bounce": "E",
         "mirror_x": "W",
@@ -93,6 +107,8 @@ DIRECTIONS = {
         "dir": "north-west",
         "i": -1,
         "j": 1,
+		"x": -1,
+		"y": -1,
         "opp": "SE",
         "bounce": "NE",
         "mirror_x": "SW",

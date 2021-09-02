@@ -17,6 +17,7 @@ class Car:
         self.colour = colour
         self.img_path = img_path
         self.is_circle = is_circle
+        radius = (radius if 1 <= radius <= 100 else 6) if radius is not None else 6
         self.radius = radius
         self.w = radius
         self.h = radius
@@ -115,7 +116,8 @@ class RoadWay:
                     return False
         return True
 
-    def spawn_car(self, game, display, id_num, colour, name=None, img_path=None, is_circle=True, speed=1, acceleration=0, width=None, height=None, center=None):
+    def spawn_car(self, game, display, id_num, colour, name=None, img_path=None, is_circle=True, speed=1, acceleration=0, radius=None, width=None, height=None, center=None):
+        # print("lane_mode:", self.lane_mode, "centre_side: ", self.centre_side)
         if self.lane_mode == "vertical":
             if self.centre_side == "left":
                 # S -> N
@@ -123,15 +125,18 @@ class RoadWay:
             else:
                 x, y = self.rect.center_top
         elif self.lane_mode == "horizontal":
-            if self.centre_side == "left":
+            if self.centre_side == "top":
                 # W -> E
-                x, y = self.rect.center_left
-            else:
+                # x, y = self.rect.center_left
                 x, y = self.rect.center_right
+            else:
+                # W <- E
+                # x, y = self.rect.center_right
+                x, y = self.rect.center_left
         else:
             # TODO: support diagonal car spawning.
             x, y = 1, 1
-        car = Car(game, display, id_num, x, y, speed=speed, acceleration=acceleration, name=name, colour=colour, img_path=img_path, is_circle=is_circle, width=width, height=height)
+        car = Car(game, display, id_num, x, y, speed=speed, acceleration=acceleration, name=name, colour=colour, img_path=img_path, is_circle=is_circle, radius=radius, width=width, height=height)
         self.add_car(car)
         if center is not None:
             if str(center) == "True" or str(center) == "False":
@@ -208,31 +213,32 @@ class RoadWay:
 
     def tick(self, tick):
         for car in self.car_queue:
-            i_inc = (DIRECTIONS[self.direction[1]]["i"] * car.speed * tick) + (0.5 * car.acceleration * (tick ** 2))
-            j_inc = (DIRECTIONS[self.direction[1]]["j"] * car.speed * tick) + (0.5 * car.acceleration * (tick ** 2))
+            # print("Direction: {}, (x, y): ({}, {})".format(self.direction[1], DIRECTIONS[self.direction[1]]["x"], DIRECTIONS[self.direction[1]]["y"]))
+            x_inc = (DIRECTIONS[self.direction[1]]["x"] * car.speed * tick) + (0.5 * car.acceleration * (tick ** 2))
+            y_inc = (DIRECTIONS[self.direction[1]]["y"] * car.speed * tick) + (0.5 * car.acceleration * (tick ** 2))
             if car.acceleration != 0:
-                print("i_inc: {}, j_inc: {}".format(i_inc, j_inc))
+                print("x_inc: {}, y_inc: {}".format(x_inc, y_inc))
                 print("BEFORE new speed: ", car.speed)
-                car.speed = ((car.speed ** 2) + (2 * car.acceleration * distance((car.rect.x, car.rect.x + j_inc), (car.rect.y, car.rect.y + i_inc)))) ** 0.5
+                car.speed = ((car.speed ** 2) + (2 * car.acceleration * distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc)))) ** 0.5
                 print("AFTER new speed: ", car.speed)
-            # print("A ({}, {})".format(i_inc, j_inc))
-            # if i_inc < 1 or j_inc < 1:
-            #     print("B ({}, {})".format(i_inc, j_inc))
-            #     if i_inc != j_inc:
-            #         print("C ({}, {})".format(i_inc, j_inc))
-            #         if i_inc > j_inc:
-            #             print("D ({}, {})".format(i_inc, j_inc))
-            #             i_inc = 1
+            # print("A ({}, {})".format(x_inc, y_inc))
+            # if x_inc < 1 or y_inc < 1:
+            #     print("B ({}, {})".format(x_inc, y_inc))
+            #     if x_inc != y_inc:
+            #         print("C ({}, {})".format(x_inc, y_inc))
+            #         if x_inc > y_inc:
+            #             print("D ({}, {})".format(x_inc, y_inc))
+            #             x_inc = 1
             #         else:
-            #             print("E ({}, {})".format(i_inc, j_inc))
-            #             j_inc = 1
-            # print("F ({}, {})".format(i_inc, j_inc))
-            # print("car: <{}> ticking (i, j): ({}, {})".format(car, i_inc, j_inc))
+            #             print("E ({}, {})".format(x_inc, y_inc))
+            #             y_inc = 1
+            # print("F ({}, {})".format(x_inc, y_inc))
+            # print("car: <{}> ticking (i, j): ({}, {})".format(car, x_inc, y_inc))
 
-            car.add_x(j_inc)
-            car.add_y(i_inc)
+            car.add_x(x_inc)
+            car.add_y(y_inc)
 
-            self.check_collision(car, i_tick_dist=i_inc, j_tick_dist=j_inc)
+            self.check_collision(car, i_tick_dist=y_inc + (car.rect.height / 2), j_tick_dist=x_inc + (car.rect.width / 2))
 
     def check_collision(self, car, i_tick_dist=1, j_tick_dist=1):
         # print("r", car.rect, "(i, j): ({}, {})".format(i_inc, j_inc))
@@ -242,6 +248,7 @@ class RoadWay:
                 self.car_queue.remove(car)
             # crash
             else:
+                print("i_tick_dist:", i_tick_dist, "j_tick_dist:", j_tick_dist)
                 print("CRASH!\nBy:\n\t{} \non road:\n\t{}".format(car, self))
                 raise ValueError("CRASH!")
 
@@ -414,11 +421,11 @@ class TrafficSimulatorMap:
         self.car_id_num += 1
         return self.car_id_num
 
-    def spawn_car(self, roadway_name, colour, name=None, img_path=None, is_circle=True, speed=1, acceleration=0, width=None, height=None, center=None):
+    def spawn_car(self, roadway_name, colour, name=None, img_path=None, is_circle=True, speed=1, acceleration=0.0, radius=None, width=None, height=None, center=None):
         if roadway_name not in self.roadways:
             raise ValueError("Unable to spawn a car on roadway <{}>\nbecause it has not been initialized yet.".format(roadway_name))
         id_num = self.get_new_car_id()
-        return self.roadways[roadway_name].spawn_car(self.game, self.display, id_num, colour, name=name, img_path=img_path, is_circle=is_circle, speed=speed, acceleration=acceleration, width=width, height=height, center=center)
+        return self.roadways[roadway_name].spawn_car(self.game, self.display, id_num, colour, name=name, img_path=img_path, is_circle=is_circle, speed=speed, acceleration=acceleration, radius=radius, width=width, height=height, center=center)
 
     def check_collisions(self):
         checked = {}
@@ -521,10 +528,12 @@ class TrafficSimulatorMap:
             roadway = self.roadways[r_name]
             if spawn_one and self.clock_time % 50 == 40:
                 lane_choice = choice(list(self.roadways))
-                lane_choice = choice(["north bound", "south bound", "west bound"])
+                lane_choice = choice(["north bound", "south bound", "west bound", "east bound"])
                 # self.spawn_car(lane_choice, BEIGE, center=1, acceleration=weighted_choice([(0, 3), (1, 1)]))
                 # self.spawn_car(lane_choice, BEIGE, center=1, acceleration=0.01)
-                self.spawn_car(lane_choice, BEIGE)
+                self.spawn_car(lane_choice, BEIGE, acceleration=0.01)
+                # self.spawn_car(lane_choice, BEIGE, radius=weighted_choice([(6, 8), (20, 2)]))
+                # self.spawn_car("east bound", BEIGE)
                 spawn_one = False
             roadway.tick(tick)
             if self.clock_time >= 25:
@@ -554,7 +563,7 @@ class TrafficSimulatorMap:
             "south bound": RoadWay(("N", "S"), Rect(w * 0.39, 0, w * 0.11, h * 1), BLACK, n_lanes=2, centre_side="right"),
             "north bound": RoadWay(("S", "N"), Rect(w * 0.5, 0, w * 0.11, h * 1), BLACK, n_lanes=3, centre_side="left"),
             "east bound": RoadWay(("W", "E"), Rect(0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="bottom"),
-            "west bound": RoadWay(("E", "W"), Rect(0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=1, centre_side="top")
+            "west bound": RoadWay(("E", "W"), Rect(0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="top")
         }
         print("START:", w * 0.40, ", ", h * 0.05)
         print("pygame collide:", pygame.rect.Rect(w * 0.39, 0, w * 0.11, h * 1).colliderect(pygame.rect.Rect(w * 0.41, h * 0.05, 6, 6)))
@@ -564,8 +573,10 @@ class TrafficSimulatorMap:
         # car2 = tsmap.add_car(w * 0.56, h * 0.85, colour=MAGENTA_2)
         # car3 = tsmap.add_car(w * 0.66, h * 0.42, colour=INDIANRED_3)
         # car4 = tsmap.add_car(w * 0.15, h * 0.56, colour=PINK)
-        tsmap.spawn_car("north bound", BEIGE)
-        tsmap.spawn_car("east bound", BEIGE, center=1)
+        # tsmap.spawn_car("south bound", BEIGE)
+        # tsmap.spawn_car("north bound", RED)
+        tsmap.spawn_car("east bound", BLUE_2)
+        tsmap.spawn_car("west bound", GREEN)
         # tsmap.roadways["south bound"].center_car(car)
         # game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
         # game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))  # East - West

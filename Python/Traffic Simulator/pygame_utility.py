@@ -1,8 +1,9 @@
 from utility import *
+from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version............1.2
-#	Date........2021-08-16
+#	Version............1.3
+#	Date........2021-09-01
 #	Author....Avery Briggs
 
 
@@ -13,7 +14,6 @@ LIGHT_GRAY = (175, 175, 175)  # light gray
 RED = (255, 0, 0)  # red
 GREEN = (0, 255, 0)  # green
 BLUE = (0, 0, 255)  # blue
-
 
 NORTH = 4
 NORTH_EAST = 5
@@ -29,6 +29,8 @@ DIRECTIONS = {
         "dir": "north",
         "i": -1,
         "j": 0,
+        "x": 0,
+        "y": -1,
         "opp": "S",
         "bounce": "S",
         "mirror_x": "S",
@@ -38,6 +40,8 @@ DIRECTIONS = {
         "dir": "north-east",
         "i": -1,
         "j": -1,
+        "x": 1,
+        "y": -1,
         "opp": "SW",
         "bounce": "NW",
         "mirror_x": "SE",
@@ -47,6 +51,8 @@ DIRECTIONS = {
         "dir": "east",
         "i": 0,
         "j": -1,
+        "x": 1,
+        "y": 0,
         "opp": "W",
         "bounce": "W",
         "mirror_x": "E",
@@ -56,6 +62,8 @@ DIRECTIONS = {
         "dir": "south-east",
         "i": 1,
         "j": -1,
+        "x": 1,
+        "y": 1,
         "opp": "NW",
         "bounce": "SW",
         "mirror_x": "NE",
@@ -65,6 +73,8 @@ DIRECTIONS = {
         "dir": "south",
         "i": 1,
         "j": 0,
+        "x": 0,
+        "y": 1,
         "opp": "N",
         "bounce": "N",
         "mirror_x": "N",
@@ -74,6 +84,8 @@ DIRECTIONS = {
         "dir": "south-west",
         "i": 1,
         "j": 1,
+        "x": -1,
+        "y": 1,
         "opp": "NE",
         "bounce": "SE",
         "mirror_x": "NW",
@@ -83,6 +95,8 @@ DIRECTIONS = {
         "dir": "west",
         "i": 0,
         "j": 1,
+        "x": -1,
+        "y": 0,
         "opp": "E",
         "bounce": "E",
         "mirror_x": "W",
@@ -92,6 +106,8 @@ DIRECTIONS = {
         "dir": "north-west",
         "i": -1,
         "j": 1,
+        "x": -1,
+        "y": -1,
         "opp": "SE",
         "bounce": "NE",
         "mirror_x": "SW",
@@ -284,13 +300,15 @@ class RadioGroup(Widget):
                     if new_r.colliderect(next_bounds):
                         # x_diff = new_r.right - next_bounds.x if is_horizontal else 0
                         # y_diff = new_r.bottom - next_bounds.y if not is_horizontal else 0
-                        next_bounds = self.game.Rect(next_bounds.x + x_diff, next_bounds.y + y_diff, next_bounds.width, next_bounds.height)
+                        next_bounds = self.game.Rect(next_bounds.x + x_diff, next_bounds.y + y_diff, next_bounds.width,
+                                                     next_bounds.height)
                         self.radio_buttons[i + 1].move(next_bounds)
                         print("next_bounds:", next_bounds)
                     elif self.keep_grouped:
                         # x_diff = next_bounds.x - new_r.right if is_horizontal else 0
                         # y_diff = next_bounds.y - new_r.bottom if not is_horizontal else 0
-                        next_bounds = self.game.Rect(next_bounds.x - x_diff, next_bounds.y - y_diff, next_bounds.width, next_bounds.height)
+                        next_bounds = self.game.Rect(next_bounds.x - x_diff, next_bounds.y - y_diff, next_bounds.width,
+                                                     next_bounds.height)
                         self.radio_buttons[i + 1].move(next_bounds)
                         print("next_bounds:", next_bounds)
 
@@ -1261,6 +1279,7 @@ class HBox(Box):
     def __init__(self, game, display, contents, r, p, bgc):
         super().__init__(game, display, contents, r, p, bgc, is_horizontal=True)
 
+
 # buttons & toggle buttons
 # button bar
 # scrollable bar TODO: allow a scroll bar on both the vertical and horizontal axes.
@@ -1274,3 +1293,96 @@ class HBox(Box):
 # image button
 # hyperlink
 # combobox
+
+
+# if not is_imported("pygame"):
+#     import pygame
+#
+#
+# class PygameApplication:
+#
+#     def __init__(self, title, w, h, allow_kbd_ctrls=True, auto_init=False):
+#         global kbd
+#         self.title = title
+#         self.w = w
+#         self.h = h
+#         self.display = None
+#         self.is_playing = True
+#         self.allow_kbd_ctrls = allow_kbd_ctrls
+#         self.clock = pygame.time.Clock()
+#         self.background_colour = BLACK
+#         if allow_kbd_ctrls:
+#             if not is_imported("keyboard"):
+#                 import keyboard as kbd
+#
+#         if auto_init:
+#             self.init()
+#
+#     def get_display(self):
+#         return self.display
+#
+#     def get_game(self):
+#         return pygame
+#
+#     def get_dims(self):
+#         return self.w, self.h
+#
+#     def set_background_colour(self, bg_colour):
+#         self.display.fill(bg_colour)
+#
+#     def colliderect_offset(self, r1, r2, offset=0, l=True, r=True):
+#         assert isinstance(r1, pygame.Rect)
+#         assert isinstance(r2, pygame.Rect)
+#         if l and r:
+#             return pygame.Rect(r1.left - offset, r1.top - offset, r1.width + (2 * offset),
+#                                r1.height + (2 * offset)).colliderect(
+#                 pygame.Rect(r2.left - offset, r2.top - offset, r2.width + (2 * offset), r2.height + (2 * offset)))
+#         elif l:
+#             return pygame.Rect(r1.left - offset, r1.top - offset, r1.width + (2 * offset),
+#                                r1.height + (2 * offset)).colliderect(
+#                 pygame.Rect(r2.left, r2.top, r2.width, r2.height))
+#         else:
+#             return pygame.Rect(r1.left, r1.top, r1.width,
+#                                r1.height).colliderect(pygame.Rect(r2.left, r2.top, r2.width, r2.height))
+#
+#     def init(self):
+#         try:
+#             import pygame
+#             pygame.init()
+#             self.display = pygame.display.set_mode((self.w, self.h))
+#             pygame.display.set_caption(self.title)
+#         except ImportError:
+#             print("\nUnable to import pygame.\nPlease try again after installing.\n")
+#
+#     def tick(self, t):
+#         self.clock.tick(t)
+#
+#     # Call this function iteratively.
+#     # Include any application specific UI / other code
+#     # within the instance of the child application.
+#     def run(self):
+#         if self.display is None:
+#             self.init()
+#         if 1:
+#             events = pygame.event.get()
+#             kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra = False, False, False, False, False, False, False, False
+#             if self.allow_kbd_ctrls:
+#                 kbd_w = kbd.is_pressed('w')
+#                 kbd_ua = kbd.is_pressed('up')
+#                 kbd_a = kbd.is_pressed('a')
+#                 kbd_la = kbd.is_pressed('left')
+#                 kbd_s = kbd.is_pressed('s')
+#                 kbd_da = kbd.is_pressed('down')
+#                 kbd_d = kbd.is_pressed('d')
+#                 kbd_ra = kbd.is_pressed('right')
+#                 str_dir_keys = ["kbd_w", "kbd_ua", "kbd_a", "kbd_la", "kbd_s", "kbd_da", "kbd_d", "kbd_ra"]
+#                 dir_keys = [kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra]
+#                 a_dir_keys = any(dir_keys)
+#                 kbd_q = kbd.is_pressed('q')
+#             for i, event in enumerate(events):
+#                 pos = pygame.mouse.get_pos()
+#                 if kbd_q or event.type == pygame.QUIT:
+#                     self.is_playing = False
+#                 if i != len(events) - 1:
+#                     pygame.display.flip()
+#             pygame.display.flip()
