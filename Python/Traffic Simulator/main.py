@@ -169,10 +169,10 @@ class RoadWay:
         ie = False
         if self.lane_mode == "vertical":
             # ie = not self.valid_place(car) and (((car_r.collide_line(top_o) and not car_r.collide_line(top_i)) or (car_r.collide_line(bottom_o) and not car_r.collide_line(bottom_i))))
-            ie = not r.collide_rect(car_r, strictly_inside=False) and (r.collide_rect(top_o) or r.collide_rect(bottom_o))
+            ie = not r.collide_rect(car_r, strictly_inside=False) and (top_o.collide_rect(car_r) or bottom_o.collide_rect(car_r))
         if self.lane_mode == "horizontal":
             # ie = not self.valid_place(car) and (((car_r.collide_line(left_o) and not car_r.collide_line(left_i)) or (car_r.collide_line(right_o) and not car_r.collide_line(right_i))))
-            ie = not r.collide_rect(car_r, strictly_inside=False) and (r.collide_rect(left_o) or r.collide_rect(right_o))
+            ie = not r.collide_rect(car_r, strictly_inside=False) and (left_o.collide_rect(car_r) or right_o.collide_rect(car_r))
         print(dict_print({
             "car": str(car),
             "self": self.rect,
@@ -302,7 +302,7 @@ class RoadWay:
             car.add_x(x_inc)
             car.add_y(y_inc)
 
-            self.check_collision(car, i_tick_dist=y_inc + (car.rect.height / 1), j_tick_dist=x_inc + (car.rect.width / 1))
+            self.check_collision(car, i_tick_dist=y_inc, j_tick_dist=x_inc)
 
     def check_collision(self, car, i_tick_dist=1, j_tick_dist=1):
         # print("r", car.rect, "(i, j): ({}, {})".format(i_inc, j_inc))
@@ -593,9 +593,9 @@ class TrafficSimulatorMap:
             if spawn_one and self.clock_time % 50 == 40:
                 lane_choice = choice(list(self.roadways))
                 lane_choice = choice(["north bound", "south bound", "west bound", "east bound"])
-                # self.spawn_car(lane_choice, BEIGE, center=1, acceleration=weighted_choice([(0, 3), (1, 1)]))
+                self.spawn_car(lane_choice, BEIGE, center=1, acceleration=weighted_choice([(0.03, 3), (0.001, 4), (-0.01, 1), (0, 2)]))
                 # self.spawn_car(lane_choice, BEIGE, center=1, acceleration=0.01)
-                self.spawn_car(lane_choice, BEIGE, acceleration=0.01)
+                # self.spawn_car(lane_choice, BEIGE, acceleration=0.01)
                 # self.spawn_car(lane_choice, BEIGE, radius=weighted_choice([(6, 8), (20, 2)]))
                 # self.spawn_car("east bound", BEIGE)
                 spawn_one = False
