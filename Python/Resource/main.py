@@ -41,7 +41,70 @@ all_right = all(correct_answers)
 print("all correct", all_right)
 """
 
-if __name__ == "__main__":
+def text_rect_and_line():
+    title = "Testing Rect and Line classes"
+    w = 900
+    h = 600
+
+    r1 = Rect(15, 20, 25, 30)
+    r2 = Rect(10, 10, w - 20, h - 20)
+    l1 = Line(0, 0, 100, 100)
+
+    collide_line_tests = TestSuite(test_func=l1.collide_line)
+    collide_line_tests.add_test("l1 intersects r1.top_line", ([r1.top_line], True))
+    collide_line_tests.add_test("l1 intersects r1.bottom_line", ([r1.bottom_line], True))
+    collide_line_tests.add_test("l1 intersects r1.left_line", ([r1.left_line], True))
+    collide_line_tests.add_test("l1 intersects r1.right_line", ([r1.right_line], True))
+
+    collide_line_tests.execute()
+
+    app = PygameApplication(title, w, h)
+    app.init()
+    pygame.display.set_mode((w, h))
+
+    print(dict_print({
+        "r1.collide_line(l1)": r1.collide_line(l1),
+        "r1": r1,
+        "left": r1.left_line,
+        "collide_left": str(l1.collide_line(r1.left_line)),
+        "right": r1.right_line,
+        "collide_right": str(l1.collide_line(r1.right_line)),
+        "top": r1.top_line,
+        "collide_top": str(l1.collide_line(r1.top_line)),
+        "bottom": r1.bottom_line,
+        "collide_bottom": str(l1.collide_line(r1.bottom_line)),
+    }, "Data"))
+
+    results = {
+        "x: -1": 0,
+        "x: 0": 0,
+        "x: 1": 0,
+        "y: -1": 0,
+        "y: 0": 0,
+        "y: 1": 0,
+    }
+
+    while app.is_playing:
+        app.display.fill(app.background_colour)
+        pygame.draw.rect(app.display, YELLOW_3, r2.tupl)
+        pygame.draw.rect(app.display, GREEN, r1.tupl)
+        pygame.draw.line(app.display, RED, *l1.tupl)
+
+        x_c = weighted_choice(((1, 0.95), (0, 0.025), (-1, 0.025)))
+        y_c = weighted_choice(((1, 0.5), (0, 0.25), (-1, 0.25)))
+
+        x_c = weighted_choice([0, 1])
+        y_c = weighted_choice([0, 1])
+
+        results["x: {}".format(x_c)] += 1
+        results["y: {}".format(y_c)] += 1
+        r1.translate(x_c, y_c)
+        l1.translate(x_c, y_c)
+        app.run()
+        if not r2.collide_rect(r1, strictly_inside=False):
+            raise ValueError("not r2.collide_rect(r1)")
+        # print(dict_print(results, "Results"))
+
     def rotate_matrix(grid, n=None, m=None, filter_none=False):
         """Return a list of all possible cell lines."""
         PAD = "PAD"
@@ -103,67 +166,15 @@ if __name__ == "__main__":
     # g1 = []
     # print(rotate_matrix())
 
-    title = "Testing Rect and Line classes"
-    w = 900
-    h = 600
 
-    r1 = Rect(15, 20, 25, 30)
-    r2 = Rect(10, 10, w - 20, h - 20)
-    l1 = Line(0, 0, 100, 100)
-
-    collide_line_tests = TestSuite(test_func=l1.collide_line)
-    collide_line_tests.add_test("l1 intersects r1.top_line", ([r1.top_line], True))
-    collide_line_tests.add_test("l1 intersects r1.bottom_line", ([r1.bottom_line], True))
-    collide_line_tests.add_test("l1 intersects r1.left_line", ([r1.left_line], True))
-    collide_line_tests.add_test("l1 intersects r1.right_line", ([r1.right_line], True))
-
-    collide_line_tests.execute()
-
-
-    app = PygameApplication(title, w, h)
-    app.init()
-    pygame.display.set_mode((w, h))
-
-    print(dict_print({
-        "r1.collide_line(l1)": r1.collide_line(l1),
-        "r1": r1,
-        "left": r1.left_line,
-        "collide_left": str(l1.collide_line(r1.left_line)),
-        "right": r1.right_line,
-        "collide_right": str(l1.collide_line(r1.right_line)),
-        "top": r1.top_line,
-        "collide_top": str(l1.collide_line(r1.top_line)),
-        "bottom": r1.bottom_line,
-        "collide_bottom": str(l1.collide_line(r1.bottom_line)),
-    }, "Data"))
-
-    results = {
-        "x: -1": 0,
-        "x: 0": 0,
-        "x: 1": 0,
-        "y: -1": 0,
-        "y: 0": 0,
-        "y: 1": 0,
-    }
-
+if __name__ == "__main__":
+    app = PygameApplication("Test TextBox", 600, 400)
+    game = app.get_game()
+    display = app.display
+    r1 = Rect(100, 25, 200, 100)
+    # self, game, display, rect, ic, ac, f, fc, text = '', min_width = 20, numeric = False, char_limit = None, n_limit = None, bs = 1, border_style = None
+    textbox = TextBox(game, display, r1, text="Hello World!")
     while app.is_playing:
-        app.display.fill(app.background_colour)
-        pygame.draw.rect(app.display, YELLOW_3, r2.tupl)
-        pygame.draw.rect(app.display, GREEN, r1.tupl)
-        pygame.draw.line(app.display, RED, *l1.tupl)
-
-        x_c = weighted_choice(((1, 0.95), (0, 0.025), (-1, 0.025)))
-        y_c = weighted_choice(((1, 0.5), (0, 0.25), (-1, 0.25)))
-
-        x_c = weighted_choice([0, 1])
-        y_c = weighted_choice([0, 1])
-
-        results["x: {}".format(x_c)] += 1
-        results["y: {}".format(y_c)] += 1
-        r1.translate(x_c, y_c)
-        l1.translate(x_c, y_c)
+        game.display.flip()
+        textbox.draw()
         app.run()
-        if not r2.collide_rect(r1, strictly_inside=False):
-            raise ValueError("not r2.collide_rect(r1)")
-        # print(dict_print(results, "Results"))
-

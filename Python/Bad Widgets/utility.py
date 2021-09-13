@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.16
-	Date...........2021-09-13
+	Version..............1.14
+	Date...........2021-08-26
 	Author.......Avery Briggs
 """
 
@@ -796,11 +796,6 @@ class Rect:
         self.bottom_line = Line(*self.bottom_left, *self.bottom_right)
         self.is_init = True
 
-    def __iter__(self):
-        lst = [self.x, self. y, self.width, self.height]
-        for val in lst:
-            yield val
-
     def collide_rect(self, rect, strictly_inside=True):
         if strictly_inside:
             return all([
@@ -849,15 +844,6 @@ class Rect:
     def translated(self, x, y):
         r = Rect(self.x, self.y, self.width, self.height)
         r.translate(x, y)
-        return r
-
-    def shrink(self, w_factor, h_factor):
-        self.width *= w_factor
-        self.height *= h_factor
-
-    def shrunk(self, w_factor, h_factor):
-        r = Rect(self.x, self.y, self.width, self.height)
-        r.shrink(w_factor, h_factor)
         return r
 
     def __repr__(self):

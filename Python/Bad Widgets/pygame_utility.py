@@ -2,18 +2,18 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version............1.5
-#	Date........2021-09-13
+#	Version............1.3
+#	Date........2021-09-01
 #	Author....Avery Briggs
 
 
-# BLACK = (0, 0, 0)  # black
-# WHITE = (255, 255, 255)  # white
-# DARK_GRAY = (50, 50, 50)  # dark gray
-# LIGHT_GRAY = (175, 175, 175)  # light gray
-# RED = (255, 0, 0)  # red
-# GREEN = (0, 255, 0)  # green
-# BLUE = (0, 0, 255)  # blue
+BLACK = (0, 0, 0)  # black
+WHITE = (255, 255, 255)  # white
+DARK_GRAY = (50, 50, 50)  # dark gray
+LIGHT_GRAY = (175, 175, 175)  # light gray
+RED = (255, 0, 0)  # red
+GREEN = (0, 255, 0)  # green
+BLUE = (0, 0, 255)  # blue
 
 
 NORTH = 4
@@ -153,8 +153,6 @@ def write_text(game, display, r, msg, font, bg_c=WHITE, tx_c=BLACK, wrap=True):
         to_blit.append((text_surf, text_rect))
 
     if bg_c is not None:
-        # print("rect:", r)
-        # print("rect:", type(r))
         game.draw.rect(display, bg_c, r)
     display.blits(to_blit)
 
@@ -221,227 +219,6 @@ class Widget:
 #         for b in buttons:
 #             b.set_selected(False)
 #         self.selected = Queue(self.max_selections)
-
-
-class Label(Widget):
-
-    def __init__(self, game, display, rect, init_txt="", font=None, c=WHITE, txc=BLACK, bc=BLACK, fs=16, bs=1, border_style=None, font_sel=None, c_sel=WHITE, txc_sel=BLACK, bc_sel=BLACK, fs_sel=16, bs_sel=1, border_style_sel=None, wrap_text=True):
-        super().__init__(game, display)
-        if isinstance(rect, Rect):
-            rect = game.Rect(*rect)
-        # print("rect:", rect)
-        # print("rect:", type(rect))
-        self.rect = rect
-        self.font = font if font is not None else game.font.Font(None, 16)
-        self.font_size = fs
-        self.colour = c
-        self.text_colour = txc
-        self.border_colour = bc
-        self.border_size = bs
-        self.border_style = border_style
-        self.text_str = init_txt
-        self.wrap_text = wrap_text
-        self.sel_font = font_sel if font_sel is not None else game.font.Font(None, 16)
-        self.sel_colour = c_sel
-        self.sel_text_colour = txc_sel
-        self.sel_border_colour = bc_sel
-        self.sel_font_size = fs_sel
-        self.sel_border_size = bs_sel
-        self.sel_border_style = border_style_sel
-
-        self.is_selected = False
-
-    def __repr__(self):
-        return "<TextBox txt=\"" + self.text_str + "\">"
-
-    def move(self, r):
-        pass
-
-    def resize(self, r, is_horizontal=True):
-        pass
-
-    def draw(self):
-        display = self.display
-        game = self.game
-        rect = self.rect
-        bs = self.border_size
-        trect = game.Rect(rect.x + bs, rect.y + bs, rect.width - (bs * 2), rect.height - (bs * 2))
-        if self.is_selected:
-            write_text(game, display, trect, self.text_str, self.sel_font, bg_c=self.sel_colour, tx_c=self.sel_text_colour, wrap=self.wrap_text)
-        else:
-            write_text(game, display, trect, self.text_str, self.font, bg_c=self.colour, tx_c=self.text_colour, wrap=self.wrap_text)
-
-
-class TextBox(Widget):
-
-    def __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20, numeric=False, char_limit=None, n_limit=None, bs=1, border_style=None, draw_clear_btn=True):
-        super().__init__(game, display)
-        if isinstance(rect, Rect):
-            rect = game.Rect(*rect)
-        self.rect = rect
-        self.ic = ic
-        self.ac = ac
-        self.f = f if f is not None else game.font.Font(None, 16)
-        self.fc = fc
-        self.colour = ic
-        self.text = text
-        print("game:", game)
-        print("f:", f)
-        self.txt_surface = self.f.render(self.text, True, self.colour)
-        self.active = False
-        self.min_width = min_width
-        self.numeric = numeric
-        max_chars = char_limit = rect.width / self.f.size(" ")[0]
-        if not char_limit:
-            char_limit = max_chars
-        char_limit = min(max_chars, char_limit)
-        self.char_limit = char_limit
-        if not n_limit or not isinstance(n_limit, range):
-            print("adjust n_limit")
-            if isinstance(n_limit, int):
-                n_limit = range(2, n_limit)
-            else:
-                n_limit = range(5)
-        n_start = 1
-        n_stop = max(2, min(10, n_limit.stop))
-        self.n_limit = range(min(n_start, n_stop), max(n_start, n_stop), 1)
-        self.border_size = bs
-        self.border_style = border_style
-        self.draw_clear_btn = draw_clear_btn
-
-    def count_n(self):
-        txt = self.text
-        nums = [s.strip() for s in txt.split(",") if s.strip().isdigit()]
-        return len(nums)
-
-    def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # If the user clicked on the input_box rect.
-            if self.rect.collidepoint(event.pos):
-                # Toggle the active variable.
-                # if self.active:
-
-                self.active = not self.active
-            else:
-                self.active = False
-            # Change the current color of the input box.
-            self.colour = self.ac if self.active else self.ic
-        if event.type == pygame.KEYDOWN:
-            if self.active:
-                if event.key == pygame.K_RETURN:
-                    print("new_text:", self.text)
-                    # if self.text.isdigit():
-                    # 	DATA["input_dims"] = int(self.text)
-                    self.text = ''
-                elif event.key == pygame.K_BACKSPACE:
-                    self.text = self.text[:-1]
-                else:
-                    txt = event.unicode
-                    cn = self.count_n()
-                    if len(self.text) < self.char_limit and ((cn in self.n_limit) or (cn < self.n_limit.start)):
-                        if self.numeric:
-                            if str(txt).isdigit():
-                                self.text += txt
-                                # DATA["input_dims"] = int(self.text)
-                        else:
-                            self.text += txt
-                            # DATA["input_dims"] = self.text
-
-                # Re-render the text.
-                if self.text:
-                    self.txt_surface = self.f.render(self.text, True, self.fc)
-
-    def increment(self):
-        self.text = int(self.text) + 1
-
-    def decrement(self):
-        self.text = int(self.text) - 1
-
-    def set_text(self, txt):
-        self.text = txt
-
-    def clear(self):
-        print("clearing textbox: <{}>".format(self.text))
-        self.set_text("")
-
-    def update(self):
-        # Resize the box if the text is too long.
-        width = max(self.min_width, self.txt_surface.get_width() + 10)
-        self.rect.w = width
-
-    def draw(self):
-        display = self.display
-        game = self.game
-        rect = self.rect
-        bs = self.border_size
-        trect = game.Rect(rect.x + bs, rect.y + bs, rect.width - (bs * 2), rect.height - (bs * 2))
-        self.txt_surface = self.f.render(str(self.text), True, self.colour)
-        # Blit the text.
-        display.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
-        # Blit the rect.
-        pygame.draw.rect(display, self.colour, self.rect, 2)
-        # draw_button("X", self.rect.right + 10, self.rect.y, 20, 20, self.ic, self.ac, self.colour, self.f, self.fc, self.clear)
-        if self.draw_clear_btn:
-            xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width, 0).shrunk(0.15, 0.85)
-            button = Button(game, display, "X", *xrect, WHITE, WHITE, None, action=self.clear)
-            button.enable_toggle()
-            button.draw()
-
-
-# class TextBox(Widget):
-#
-#     def __init__(self, game, display, rect, init_txt="", font=None, c=WHITE, txc=BLACK, bc=BLACK, fs=16, bs=1, border_style=None, font_sel=None, c_sel=WHITE, txc_sel=BLACK, bc_sel=BLACK, fs_sel=16, bs_sel=1, border_style_sel=None, wrap_text=True):
-#         super().__init__(game, display)
-#         if isinstance(rect, Rect):
-#             rect = game.Rect(*rect)
-#         # print("rect:", rect)
-#         # print("rect:", type(rect))
-#         self.rect = rect
-#         self.font = font if font is not None else game.font.Font(None, 16)
-#         self.font_size = fs
-#         self.colour = c
-#         self.text_colour = txc
-#         self.border_colour = bc
-#         self.border_size = bs
-#         self.border_style = border_style
-#         self.text_str = init_txt
-#         self.wrap_text = wrap_text
-#         self.sel_font = font_sel if font_sel is not None else game.font.Font(None, 16)
-#         self.sel_colour = c_sel
-#         self.sel_text_colour = txc_sel
-#         self.sel_border_colour = bc_sel
-#         self.sel_font_size = fs_sel
-#         self.sel_border_size = bs_sel
-#         self.sel_border_style = border_style_sel
-#
-#         self.is_selected = False
-#
-#     def __repr__(self):
-#         return "<TextBox txt=\"" + self.text_str + "\">"
-#
-#     def click_selection(self):
-#         print("Clicked TextBox: sel status:", self.is_selected)
-#         self.is_selected = not self.is_selected
-#
-#     def move(self, r):
-#         pass
-#
-#     def resize(self, r, is_horizontal=True):
-#         pass
-#
-#     def draw(self):
-#         display = self.display
-#         game = self.game
-#         rect = self.rect
-#         bs = self.border_size
-#         trect = game.Rect(rect.x + bs, rect.y + bs, rect.width - (bs * 2), rect.height - (bs * 2))
-#         button = Button(game, display, "", *rect, WHITE, WHITE, None, action=self.click_selection)
-#         button.enable_toggle()
-#         button.draw()
-#         if self.is_selected:
-#             write_text(game, display, trect, self.text_str, self.sel_font, bg_c=self.sel_colour, tx_c=self.sel_text_colour, wrap=self.wrap_text)
-#         else:
-#             write_text(game, display, trect, self.text_str, self.font, bg_c=self.colour, tx_c=self.text_colour, wrap=self.wrap_text)
 
 
 class RadioGroup(Widget):
@@ -1522,7 +1299,7 @@ if not is_imported("pygame"):
 
 class PygameApplication:
 
-    def __init__(self, title, w, h, allow_kbd_ctrls=True, auto_init=True):
+    def __init__(self, title, w, h, allow_kbd_ctrls=True, auto_init=False):
         global kbd
         self.title = title
         self.w = w
@@ -1581,6 +1358,9 @@ class PygameApplication:
     # Call this function iteratively.
     # Include any application specific UI / other code
     # within the instance of the child application.
+    # ex:
+    # while app.is_playing:
+    #   app.run()
     def run(self):
         if self.display is None:
             self.init()
