@@ -10,7 +10,8 @@ def main():
     r_txt = Rect(r_lbl.left, r_lbl.bottom + 5, r1.width - 4, r1.height - 4)
     frame_main = VBox(game, display, None, r1, 1, WHITE)
     label = Label(game, display, r_lbl, "Is this your Phone Number?")
-    textbox = TextBox(game, display, r_txt,ic=BROWN_3, ac=INDIGO)
+    textbox = TextBox(game, display, r_txt, ic=BROWN_3, ac=INDIGO, fc=GREEN)
+    textbox.set_text("New Text")
     frame_main.add_contents(label, textbox)
     while app.is_playing:
 

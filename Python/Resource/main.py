@@ -168,7 +168,7 @@ def text_rect_and_line():
     # print(rotate_matrix())
 
 
-if __name__ == "__main__":
+def test_TextBox():
     app = PygameApplication("Test TextBox", 600, 400)
     game = app.get_game()
     display = app.display
@@ -181,3 +181,22 @@ if __name__ == "__main__":
         event_queue = app.run()
         for event in event_queue:
             textbox.handle_event(event)
+
+
+if __name__ == "__main__":
+    app = PygameApplication("Test Box", 1100, 500)
+    game = app.get_game()
+    display = app.display
+    r1 = Rect(100, 25, 600, 250)
+    r2 = r1.translated(2, 2).shrunk(0.75, 0.2)
+    # self, game, display, rect, ic, ac, f, fc, text = '', min_width = 20, numeric = False, char_limit = None, n_limit = None, bs = 1, border_style = None
+    lbl1 = Label(game, display, r2, "Sample Label 1", c=RED, txc=WHITE, bc=FIREBRICK)
+    lbl2 = Label(game, display, r2.translated(0, 6), "Sample Label 1", c=GREEN, txc=YELLOW_3, bc=LIMEGREEN)
+    box = VBox(game, display, [], r1, 1, WHITE)
+    box.add_contents(lbl1, lbl2)
+    while app.is_playing:
+        display.fill(BLACK)
+        box.draw()
+        event_queue = app.run()
+        # for event in event_queue:
+        #     textbox.handle_event(event)

@@ -257,10 +257,10 @@ class Label(Widget):
         return "<Label txt=\"" + self.text_str + "\">"
 
     def move(self, r):
-        pass
+        self.rect = r
 
     def resize(self, r, is_horizontal=True):
-        pass
+        self.rect = r
 
     def draw(self):
         display = self.display
