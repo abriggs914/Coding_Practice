@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.16
-	Date...........2021-09-13
+	Version..............1.17
+	Date...........2021-09-14
 	Author.......Avery Briggs
 """
 
@@ -774,6 +774,8 @@ class Rect:
         self.init(x, y, w, h)
 
     def init(self, x, y, w, h):
+        self.x = x
+        self.y = y
         self.tupl = (x, y, w, h)
         self.top = y
         self.left = x

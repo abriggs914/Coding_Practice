@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version............1.5
-#	Date........2021-09-13
+#	Version............1.6
+#	Date........2021-09-14
 #	Author....Avery Briggs
 
 
@@ -138,6 +138,8 @@ def wrap_text(msg, r, font):
 
 # Writes text to the display.
 def write_text(game, display, r, msg, font, bg_c=WHITE, tx_c=BLACK, wrap=True):
+    if isinstance(r, Rect):
+        r = game.Rect(*r)
     if not msg or msg is None:
         msg = "--"
     if wrap:
@@ -161,9 +163,12 @@ def write_text(game, display, r, msg, font, bg_c=WHITE, tx_c=BLACK, wrap=True):
 
 class Widget:
 
-    def __init__(self, game, display):
+    def __init__(self, game, display, rect):
         self.game = game
         self.display = display
+        if isinstance(rect, Rect):
+            rect = game.Rect(*rect)
+        self.rect = rect
 
     def draw(self):
         print("Nothing to draw")
@@ -226,12 +231,9 @@ class Widget:
 class Label(Widget):
 
     def __init__(self, game, display, rect, init_txt="", font=None, c=WHITE, txc=BLACK, bc=BLACK, fs=16, bs=1, border_style=None, font_sel=None, c_sel=WHITE, txc_sel=BLACK, bc_sel=BLACK, fs_sel=16, bs_sel=1, border_style_sel=None, wrap_text=True):
-        super().__init__(game, display)
-        if isinstance(rect, Rect):
-            rect = game.Rect(*rect)
+        super().__init__(game, display, rect)
         # print("rect:", rect)
         # print("rect:", type(rect))
-        self.rect = rect
         self.font = font if font is not None else game.font.Font(None, 16)
         self.font_size = fs
         self.colour = c
@@ -252,7 +254,7 @@ class Label(Widget):
         self.is_selected = False
 
     def __repr__(self):
-        return "<TextBox txt=\"" + self.text_str + "\">"
+        return "<Label txt=\"" + self.text_str + "\">"
 
     def move(self, r):
         pass
@@ -274,11 +276,8 @@ class Label(Widget):
 
 class TextBox(Widget):
 
-    def __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20, numeric=False, char_limit=None, n_limit=None, bs=1, border_style=None, draw_clear_btn=True):
-        super().__init__(game, display)
-        if isinstance(rect, Rect):
-            rect = game.Rect(*rect)
-        self.rect = rect
+    def  __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20, numeric=False, char_limit=None, n_limit=None, bs=1, border_style=None, draw_clear_btn=True, editable=True, locked=False):
+        super().__init__(game, display, rect)
         self.ic = ic
         self.ac = ac
         self.f = f if f is not None else game.font.Font(None, 16)
@@ -308,6 +307,11 @@ class TextBox(Widget):
         self.border_size = bs
         self.border_style = border_style
         self.draw_clear_btn = draw_clear_btn
+        self.editable = editable
+        self.locked = locked
+
+    def __repr__(self):
+        return "<TextBox txt=\"" + self.text_str + "\">"
 
     def count_n(self):
         txt = self.text
@@ -315,50 +319,66 @@ class TextBox(Widget):
         return len(nums)
 
     def handle_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # If the user clicked on the input_box rect.
-            if self.rect.collidepoint(event.pos):
-                # Toggle the active variable.
-                # if self.active:
+        if not self.locked and self.editable:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # If the user clicked on the input_box rect.
+                if self.rect.collidepoint(event.pos):
+                    # Toggle the active variable.
+                    # if self.active:
 
-                self.active = not self.active
-            else:
-                self.active = False
-            # Change the current color of the input box.
-            self.colour = self.ac if self.active else self.ic
-        if event.type == pygame.KEYDOWN:
-            if self.active:
-                if event.key == pygame.K_RETURN:
-                    print("new_text:", self.text)
-                    # if self.text.isdigit():
-                    # 	DATA["input_dims"] = int(self.text)
-                    self.text = ''
-                elif event.key == pygame.K_BACKSPACE:
-                    self.text = self.text[:-1]
+                    self.active = not self.active
                 else:
-                    txt = event.unicode
-                    cn = self.count_n()
-                    if len(self.text) < self.char_limit and ((cn in self.n_limit) or (cn < self.n_limit.start)):
-                        if self.numeric:
-                            if str(txt).isdigit():
+                    self.active = False
+                # Change the current color of the input box.
+                self.colour = self.ac if self.active else self.ic
+            if event.type == pygame.KEYDOWN:
+                if self.active:
+                    if event.key == pygame.K_RETURN:
+                        print("new_text:", self.text)
+                        # if self.text.isdigit():
+                        # 	DATA["input_dims"] = int(self.text)
+                        self.text = ''
+                    elif event.key == pygame.K_BACKSPACE:
+                        self.text = self.text[:-1]
+                    else:
+                        txt = event.unicode
+                        cn = self.count_n()
+                        if len(self.text) < self.char_limit and ((cn in self.n_limit) or (cn < self.n_limit.start)):
+                            if self.numeric:
+                                if str(txt).isdigit():
+                                    self.text += txt
+                                    # DATA["input_dims"] = int(self.text)
+                            else:
                                 self.text += txt
-                                # DATA["input_dims"] = int(self.text)
-                        else:
-                            self.text += txt
-                            # DATA["input_dims"] = self.text
+                                # DATA["input_dims"] = self.text
 
-                # Re-render the text.
-                if self.text:
-                    self.txt_surface = self.f.render(self.text, True, self.fc)
+                    # Re-render the text.
+                    if self.text:
+                        self.txt_surface = self.f.render(self.text, True, self.fc)
 
     def increment(self):
-        self.text = int(self.text) + 1
+        try:
+            self.text = str(int(self.text) + 1)
+        except ValueError:
+            self.text = str(self.text) + "1"
 
     def decrement(self):
-        self.text = int(self.text) - 1
+        try:
+            self.text = str(int(self.text) - 1)
+        except ValueError:
+            self.text = str(self.text)[:len(str(self.text)) - 1]
+
+    def move(self, r):
+        self.rect = r
+
+    def resize(self, r):
+        self.rect = r
 
     def set_text(self, txt):
         self.text = txt
+
+    def get_text(self):
+        return self.text
 
     def clear(self):
         print("clearing textbox: <{}>".format(self.text))
@@ -367,7 +387,7 @@ class TextBox(Widget):
     def update(self):
         # Resize the box if the text is too long.
         width = max(self.min_width, self.txt_surface.get_width() + 10)
-        self.rect.w = width
+        self.rect.width = width
 
     def draw(self):
         display = self.display
@@ -381,9 +401,24 @@ class TextBox(Widget):
         # Blit the rect.
         pygame.draw.rect(display, self.colour, self.rect, 2)
         # draw_button("X", self.rect.right + 10, self.rect.y, 20, 20, self.ic, self.ac, self.colour, self.f, self.fc, self.clear)
+        xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width, 0).shrunk(0.15, 0.85)
+        irect = xrect.shrunk(0.45, 0.45).translated(0, 0)
+        drect = xrect.shrunk(0.45, 0.45).translated(0, irect.height + (xrect.height * 0.1))
+        if self.numeric:
+            iaction = None if self.locked else self.increment
+            daction = None if self.locked else self.decrement
+            ibutton = Button(game, display, "+", *irect, WHITE, WHITE, None, font_size=20, action=iaction)
+            dbutton = Button(game, display, "-", *drect, WHITE, WHITE, None, font_size=20, action=daction)
+            dbutton.enable_toggle()
+            ibutton.enable_toggle()
+            ibutton.draw()
+            dbutton.draw()
+
+            xrect = xrect.translated(irect.width + 5, 0)
         if self.draw_clear_btn:
-            xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width, 0).shrunk(0.15, 0.85)
-            button = Button(game, display, "X", *xrect, WHITE, WHITE, None, action=self.clear)
+            # xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width, 0).shrunk(0.15, 0.85)
+            action = None if self.locked else self.clear
+            button = Button(game, display, "X", *xrect, WHITE, WHITE, None, action=action)
             button.enable_toggle()
             button.draw()
 
@@ -447,7 +482,7 @@ class TextBox(Widget):
 class RadioGroup(Widget):
 
     def __init__(self, game, display, max_selections=None):
-        super().__init__(game, display)
+        super().__init__(game, display, None)
         self.max_selections = 1 if max_selections is None else max_selections
         self.radio_buttons = []
         self.selected = []
@@ -549,8 +584,8 @@ class RadioButton(Widget):
     # Must be accompanied by a RadioGroup in order to interact with the widget, otherwise
     # only shows the set selection state of the button.
     def __init__(self, game, display, rect, msg, font=None, c=None, sc=None, txc=None, bgc=None):
-        super().__init__(game, display)
-        self.bounds = rect
+        super().__init__(game, display, rect)
+        self.bounds = self.rect
         self.radius = None
         self.set_radius(self.calc_radius())
         self.msg = msg
@@ -664,19 +699,14 @@ def buttonr(game, display, msg, r, ic, ac, font, action=None, args=None):
 
 class Button(Widget):
 
-    def __init__(self, game, display, msg, x, y, w, h, ic, ac, font, action=None, args=None):
-        super().__init__(game, display)
+    def __init__(self, game, display, msg, x, y, w, h, ic, ac, font, font_size=16, action=None, args=None):
+        super().__init__(game, display, Rect(x, y, w, h))
         self.msg = msg
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
         self.ic = ic
         self.ac = ac
-        self.font = font if font is not None else game.font.Font(None, 16)
+        self.font = font if font is not None else game.font.Font(None, font_size)
         self.action = action
         self.args = args
-        self.bounds = None
         self.resize(game.Rect(x, y, w, h))
 
         self.draw_rect = ic is not None  # if ic is None, no background square is drawn
@@ -692,14 +722,10 @@ class Button(Widget):
         self.toggle_val = False
 
     def move(self, r):
-        self.x = r.x
-        self.y = r.y
-        self.bounds = self.game.Rect(self.x, self.y, self.w, self.h)
+        self.rect = r
 
     def resize(self, r):
-        self.w = r.width
-        self.h = r.height
-        self.bounds = self.game.Rect(self.x, self.y, self.w, self.h)
+        self.rect = r
 
     def enable_toggle(self):
         self.toggleable = True
@@ -734,9 +760,9 @@ class Button(Widget):
         click = self.game.mouse.get_pressed()
 
         # mouse in button bounds
-        if self.bounds.collidepoint(mouse):
+        if self.rect.collidepoint(mouse):
             if self.draw_rect:
-                self.game.draw.rect(self.display, self.ac, self.bounds)
+                self.game.draw.rect(self.display, self.ac, self.rect)
             # left click
             if click[0] == 1:
                 if self.action is not None:
@@ -761,16 +787,16 @@ class Button(Widget):
 
         elif self.toggleable and self.toggle_val:
             if self.draw_hover:
-                self.game.draw.rect(self.display, self.ac, self.bounds)
+                self.game.draw.rect(self.display, self.ac, self.rect)
         elif self.draw_rect:
-            self.game.draw.rect(self.display, self.ic, self.bounds)
+            self.game.draw.rect(self.display, self.ic, self.rect)
 
         # print("toggleable:", self.toggleable, "toggle_val:", self.toggle_val)
 
         # draw button label
         self.font.set_bold(True)
         text_surf, text_rect = text_objects(self.msg, self.font)
-        text_rect.center = ((self.bounds.x + (self.bounds.width / 2)), (self.bounds.y + (self.bounds.height / 2)))
+        text_rect.center = ((self.rect.x + (self.rect.width / 2)), (self.rect.y + (self.rect.height / 2)))
         self.display.blit(text_surf, text_rect)
 
 
@@ -788,11 +814,7 @@ class ButtonBar(Widget):
     # proportion    -   proportion of the total bar to consume
     # is_horizontal -   whether the bar is horizontal or vertical
     def __init__(self, game, display, x, y, w, h, font, bg, proportion, is_horizontal=True):
-        super().__init__(game, display)
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
+        super().__init__(game, display, Rect(x, y, w, h))
         self.font = font if font is not None else game.font.Font(None, 16)
         self.bg = bg
         self.proportion = proportion
@@ -802,13 +824,11 @@ class ButtonBar(Widget):
 
     # No need to move buttons within bar, since their placement is calculated in the draw function.
     def move(self, r):
-        self.x = r.x
-        self.y = r.y
+        self.rect = r
 
     # No need to resize buttons within bar, since their placement is calculated in the draw function.
     def resize(self, r):
-        self.w = r.w
-        self.h = r.h
+        self.rect = r
 
     # Using information, add a button to the bar.
     # msg       -   button name
@@ -822,17 +842,17 @@ class ButtonBar(Widget):
 
     def draw(self):
         nb = len(self.buttons)  # number buttons
-        wp = (self.w * self.proportion)  # width proportional
-        hp = (self.h * self.proportion)  # height proportional
-        xd = self.w - wp  # difference between total width and proportional width
-        yd = self.h - hp  # difference between total height and proportional height
-        xi = self.x + (xd / 2)  # starting x
-        yi = self.y + (yd / 2)  # starting y
+        wp = (self.rect.width * self.proportion)  # width proportional
+        hp = (self.rect.height * self.proportion)  # height proportional
+        xd = self.rect.width - wp  # difference between total width and proportional width
+        yd = self.rect.height - hp  # difference between total height and proportional height
+        xi = self.rect.x + (xd / 2)  # starting x
+        yi = self.rect.y + (yd / 2)  # starting y
         wi = wp / max(1, (nb if self.is_horizontal else wp))  # single button width
         hi = hp / max(1, (nb if not self.is_horizontal else hp))  # single button height
 
         # draw background
-        self.game.draw.rect(self.display, self.bg, (self.x, self.y, self.w, self.h))
+        self.game.draw.rect(self.display, self.bg, (self.rect.x, self.rect.y, self.rect.width, self.rect.height))
 
         # create and draw buttons
         for b, info in self.buttons.items():
@@ -848,11 +868,7 @@ class ScrollBar(Widget):
 
     def __init__(self, game, display, x, y, w, h, bar_proportion, button_c, bar_background_c, bar_c, contents,
                  content_c, is_vertical=True):
-        super().__init__(game, display)
-        self.y = y
-        self.x = x
-        self.w = w
-        self.h = h
+        super().__init__(game, display, Rect(x, y, w, h))
         self.bar_proportion = bar_proportion
         self.button_c = button_c
         self.bar_background_c = bar_background_c
@@ -877,16 +893,13 @@ class ScrollBar(Widget):
             self.content_bounds = self.game.Rect(x, y + self.bar_bounds.height, w, h - self.bar_bounds.height)
 
         self.widget_bounds = self.content_bounds.union(self.bar_bounds)
+        self.rect = self.widget_bounds
 
     def move(self, r):
-        self.x = r.x
-        self.y = r.y
-        self.set_bounds(self.x, self.y, self.w, self.h)
+        self.set_bounds(r.x, r.y, r.width, r.height)
 
     def resize(self, r):
-        self.w = r.width
-        self.h = r.height
-        self.set_bounds(self.x, self.y, self.w, self.h)
+        self.set_bounds(r.x, r.y, r.width, r.height)
 
     # Draw an arrow in 1 of 8 directions, denoted by the orientations above.
     # r     -   pygame.Rect object for sizing
@@ -1170,7 +1183,7 @@ class ScrollBar(Widget):
 class TableRow(Widget):
 
     def __init__(self, game, display):
-        super().__init__(game, display)
+        super().__init__(game, display, None)
 
         self.x = None
         self.y = None
@@ -1254,11 +1267,7 @@ class Table(Widget):
 
     # Create a generic table with a title and header.
     def __init__(self, game, display, x, y, w, h, c, font, title, header):
-        super().__init__(game, display)
-        self.x = x
-        self.y = y
-        self.width = w
-        self.height = h
+        super().__init__(game, display, Rect(x, y, w, h))
         self.c = c
         self.font = font if font is not None else game.font.Font(None, 16)
         self.title = title.title()
@@ -1268,7 +1277,6 @@ class Table(Widget):
         self.div_c = BLACK
         self.div_w = 3
 
-        self.bounds = self.game.Rect(x, y, w, h)
         self.table_rows = []
 
         self.set_header(header)
@@ -1327,9 +1335,7 @@ class Table(Widget):
         self.font = f
 
     def move(self, r):
-        self.x = r.x
-        self.y = r.y
-        self.bounds = self.game.Rect(self.x, self.y, self.width, self.height)
+        self.rect = r
         for row in self.table_rows:
             row.move(r)
         self.update_row_sizes()
@@ -1348,9 +1354,7 @@ class Table(Widget):
         #         row_r = self.game.Rect(self.x, y, self.width, rh)
         #         row.resize(row_r)
         #         y += rh
-        self.width = r.width
-        self.height = r.height
-        self.bounds = self.game.Rect(self.x, self.y, self.width, self.height)
+        self.rect = r
         for row in self.table_rows:
             row.resize(r)
         self.update_row_sizes()
@@ -1371,13 +1375,13 @@ class Table(Widget):
     # When the table is re-sized or a row is added, need to update the sizes of all rows.
     def update_row_sizes(self):
         rows = len(self.table_rows)
-        title_height = self.bounds.height * 0.1
-        space_left = self.bounds.height - title_height
+        title_height = self.rect.height * 0.1
+        space_left = self.rect.height - title_height
         row_height = space_left / max(1, rows)
         for i, row in enumerate(self.table_rows):
-            x = self.bounds.x
-            y = self.bounds.top + title_height + (row_height * i) + round((row.div_w * i) / 2)
-            w = self.bounds.width
+            x = self.rect.x
+            y = self.rect.top + title_height + (row_height * i) + round((row.div_w * i) / 2)
+            w = self.rect.width
             h = row_height
             new_bounds = self.game.Rect(x, y, w, h)
             row.update_bounds(*new_bounds)
@@ -1409,16 +1413,16 @@ class Table(Widget):
 
     def draw(self):
         # draw background
-        self.game.draw.rect(self.display, self.c, self.bounds)
+        self.game.draw.rect(self.display, self.c, self.rect)
         # draw border lines
-        self.game.draw.line(self.display, self.div_c, self.bounds.topleft, self.bounds.topright, self.div_w)
-        self.game.draw.line(self.display, self.div_c, self.bounds.topleft, self.bounds.bottomleft, self.div_w)
-        self.game.draw.line(self.display, self.div_c, self.bounds.topright, self.bounds.bottomright, self.div_w)
-        self.game.draw.line(self.display, self.div_c, self.bounds.bottomleft, self.bounds.bottomright, self.div_w)
+        self.game.draw.line(self.display, self.div_c, self.rect.topleft, self.rect.topright, self.div_w)
+        self.game.draw.line(self.display, self.div_c, self.rect.topleft, self.rect.bottomleft, self.div_w)
+        self.game.draw.line(self.display, self.div_c, self.rect.topright, self.rect.bottomright, self.div_w)
+        self.game.draw.line(self.display, self.div_c, self.rect.bottomleft, self.rect.bottomright, self.div_w)
 
         # draw title
         title_surface, title_rect = text_objects(self.title, self.font, self.title_color)
-        title_rect.center = ((self.x + (self.width / 2)), (self.y + (self.height * 0.05)))
+        title_rect.center = ((self.rect.x + (self.rect.width / 2)), (self.rect.y + (self.rect.height * 0.05)))
         self.display.blit(title_surface, title_rect)
 
         # draw each row
@@ -1435,8 +1439,7 @@ class Table(Widget):
 class Box(Widget):
 
     def __init__(self, game, display, contents, r, p, bgc, is_horizontal=True):
-        super().__init__(game, display)
-        self.bounds = r
+        super().__init__(game, display, r)
         self.contents = [] if contents is None else contents
         self.proportion = p
         self.bgc = bgc
@@ -1447,33 +1450,31 @@ class Box(Widget):
             self.contents.append(content)
 
     def move(self, r):
-        self.bounds.x = r.x
-        self.bounds.y = r.y
+        self.rect = r
 
     def resize(self, r):
-        self.bounds.width = r.width
-        self.bounds.height = r.height
+        self.rect = r
 
     def draw(self):
         nw = len(self.contents)  # number widgets
-        wp = (self.bounds.width * self.proportion)  # width proportional
-        hp = (self.bounds.height * self.proportion)  # height proportional
-        xd = self.bounds.width - wp  # difference between total width and proportional width
-        yd = self.bounds.height - hp  # difference between total height and proportional height
-        xi = self.bounds.x + (xd / 2)  # starting x
-        yi = self.bounds.y + (yd / 2)  # starting y
+        wp = (self.rect.width * self.proportion)  # width proportional
+        hp = (self.rect.height * self.proportion)  # height proportional
+        xd = self.rect.width - wp  # difference between total width and proportional width
+        yd = self.rect.height - hp  # difference between total height and proportional height
+        xi = self.rect.x + (xd / 2)  # starting x
+        yi = self.rect.y + (yd / 2)  # starting y
         wi = wp / max(1, nw) if self.is_horizontal else wp  # single widget width
         hi = hp / max(1, nw) if not self.is_horizontal else hp  # single widget height
 
         # draw background
         if self.bgc is not None:
-            self.game.draw.rect(self.display, self.bgc, self.bounds)
+            self.game.draw.rect(self.display, self.bgc, self.rect)
 
         # update bounds and draw widgets
         for i, widget in enumerate(self.contents):
             new_bounds = self.game.Rect(xi, yi, wi, hi)
             widget.move(new_bounds)
-            if isinstance(RadioGroup, widget):
+            if isinstance(widget, RadioGroup):
                 widget.resize(new_bounds, self.is_horizontal)
             else:
                 widget.resize(new_bounds)
@@ -1578,6 +1579,9 @@ class PygameApplication:
     def tick(self, t):
         self.clock.tick(t)
 
+    def get_game_queue(self):
+        return pygame.event.get()
+
     # Call this function iteratively.
     # Include any application specific UI / other code
     # within the instance of the child application.
@@ -1585,7 +1589,7 @@ class PygameApplication:
         if self.display is None:
             self.init()
         if 1:
-            events = pygame.event.get()
+            events = self.get_game_queue()
             kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra = False, False, False, False, False, False, False, False
             if self.allow_kbd_ctrls:
                 kbd_w = kbd.is_pressed('w')
@@ -1604,6 +1608,7 @@ class PygameApplication:
                 pos = pygame.mouse.get_pos()
                 if kbd_q or event.type == pygame.QUIT:
                     self.is_playing = False
-                if i != len(events) - 1:
-                    pygame.display.flip()
+                # if i != len(events) - 1:
+                #     pygame.display.flip()
             pygame.display.flip()
+        return events

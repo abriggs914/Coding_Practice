@@ -174,8 +174,10 @@ if __name__ == "__main__":
     display = app.display
     r1 = Rect(100, 25, 200, 100)
     # self, game, display, rect, ic, ac, f, fc, text = '', min_width = 20, numeric = False, char_limit = None, n_limit = None, bs = 1, border_style = None
-    textbox = TextBox(game, display, r1, text="Hello World!")
+    textbox = TextBox(game, display, r1, text="-1", numeric=True)
     while app.is_playing:
-        game.display.flip()
+        display.fill(BLACK)
         textbox.draw()
-        app.run()
+        event_queue = app.run()
+        for event in event_queue:
+            textbox.handle_event(event)
