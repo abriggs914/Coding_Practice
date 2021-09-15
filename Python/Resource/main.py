@@ -184,6 +184,8 @@ def test_TextBox():
 
 
 if __name__ == "__main__":
+    blk_lst = [val for val in dir() if "BLK_" in val]
+    print("\n\n\n".join([eval(blk)[1] for blk in blk_lst]))
     app = PygameApplication("Test Box", 1100, 500)
     game = app.get_game()
     display = app.display

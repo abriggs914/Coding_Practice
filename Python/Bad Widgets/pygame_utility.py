@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version............1.6
-#	Date........2021-09-14
+#	Version............1.7
+#	Date........2021-09-15
 #	Author....Avery Briggs
 
 
@@ -234,7 +234,7 @@ class Label(Widget):
         super().__init__(game, display, rect)
         # print("rect:", rect)
         # print("rect:", type(rect))
-        self.font = font if font is not None else game.font.Font(None, 16)
+        self.font = font if font is not None else game.font.Font(None, fs)
         self.font_size = fs
         self.colour = c
         self.text_colour = txc
@@ -243,7 +243,7 @@ class Label(Widget):
         self.border_style = border_style
         self.text_str = init_txt
         self.wrap_text = wrap_text
-        self.sel_font = font_sel if font_sel is not None else game.font.Font(None, 16)
+        self.sel_font = font_sel if font_sel is not None else game.font.Font(None, fs_sel)
         self.sel_colour = c_sel
         self.sel_text_colour = txc_sel
         self.sel_border_colour = bc_sel
@@ -276,11 +276,12 @@ class Label(Widget):
 
 class TextBox(Widget):
 
-    def  __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20, numeric=False, char_limit=None, n_limit=None, bs=1, border_style=None, draw_clear_btn=True, editable=True, locked=False):
+    def  __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20, numeric=False, char_limit=None, n_limit=None, bs=1, border_style=None, draw_clear_btn=True, editable=True, locked=False, font_size=16):
         super().__init__(game, display, rect)
         self.ic = ic
         self.ac = ac
-        self.f = f if f is not None else game.font.Font(None, 16)
+        self.font_size = font_size
+        self.f = f if f is not None else game.font.Font(None, self.font_size)
         self.fc = fc
         self.colour = ic
         self.text = text
@@ -290,11 +291,8 @@ class TextBox(Widget):
         self.active = False
         self.min_width = min_width
         self.numeric = numeric
-        max_chars = char_limit = rect.width / self.f.size(" ")[0]
-        if not char_limit:
-            char_limit = max_chars
-        char_limit = min(max_chars, char_limit)
-        self.char_limit = char_limit
+        self.char_limit = None
+        self.resize(rect)
         if not n_limit or not isinstance(n_limit, range):
             print("adjust n_limit")
             if isinstance(n_limit, int):
@@ -370,9 +368,18 @@ class TextBox(Widget):
 
     def move(self, r):
         self.rect = r
+        self.reset_char_limit()
 
     def resize(self, r):
         self.rect = r
+        self.reset_char_limit()
+
+    def reset_char_limit(self):
+        max_chars = char_limit = self.rect.width / self.f.size(" ")[0]
+        if not char_limit:
+            char_limit = max_chars
+        char_limit = min(max_chars, char_limit)
+        self.char_limit = char_limit
 
     def set_text(self, txt):
         self.text = txt
@@ -813,22 +820,25 @@ class ButtonBar(Widget):
     # bg            -   bar background color
     # proportion    -   proportion of the total bar to consume
     # is_horizontal -   whether the bar is horizontal or vertical
-    def __init__(self, game, display, x, y, w, h, font, bg, proportion, is_horizontal=True):
+    def __init__(self, game, display, x, y, w, h, font, bg, proportion, is_horizontal=True, font_size=12):
         super().__init__(game, display, Rect(x, y, w, h))
         self.font = font if font is not None else game.font.Font(None, 16)
         self.bg = bg
         self.proportion = proportion
         self.is_horizontal = is_horizontal
+        self.font_size = font_size
 
         self.buttons = {}
 
     # No need to move buttons within bar, since their placement is calculated in the draw function.
     def move(self, r):
         self.rect = r
+        # print("BtnBar moved to: ", r)
 
     # No need to resize buttons within bar, since their placement is calculated in the draw function.
     def resize(self, r):
         self.rect = r
+        # print("BtnBar resized to: ", r)
 
     # Using information, add a button to the bar.
     # msg       -   button name
@@ -849,14 +859,18 @@ class ButtonBar(Widget):
         xi = self.rect.x + (xd / 2)  # starting x
         yi = self.rect.y + (yd / 2)  # starting y
         wi = wp / max(1, (nb if self.is_horizontal else wp))  # single button width
-        hi = hp / max(1, (nb if not self.is_horizontal else hp))  # single button height
+        hi = hp / max(1, (nb if self.is_horizontal else hp))  # single button height
+
+        # print("r: {}, (wp, hp): ({}, {}), (wi, hi): ({}, {})".format(self.rect, wp, hp, wi, hi))
 
         # draw background
         self.game.draw.rect(self.display, self.bg, (self.rect.x, self.rect.y, self.rect.width, self.rect.height))
 
         # create and draw buttons
         for b, info in self.buttons.items():
-            button = Button(self.game, self.display, b, xi, yi, wi, hi, *info[:2], self.font, *info[2:])
+            # print("info:", info)
+            button = Button(self.game, self.display, b, xi, yi, wi, hi, *info[:2], self.font, self.font_size, *info[2:])
+            button.enable_toggle()
             button.draw()
             if self.is_horizontal:
                 xi += (xd / (nb + 1)) + wi
