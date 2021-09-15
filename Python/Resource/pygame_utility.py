@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version............1.6
-#	Date........2021-09-14
+#	Version............1.7
+#	Date........2021-09-15
 #	Author....Avery Briggs
 
 
@@ -30,8 +30,8 @@ DIRECTIONS = {
         "dir": "north",
         "i": -1,
         "j": 0,
-		"x": 0,
-		"y": -1,
+        "x": 0,
+        "y": -1,
         "opp": "S",
         "bounce": "S",
         "mirror_x": "S",
@@ -41,8 +41,8 @@ DIRECTIONS = {
         "dir": "north-east",
         "i": -1,
         "j": -1,
-		"x": 1,
-		"y": -1,
+        "x": 1,
+        "y": -1,
         "opp": "SW",
         "bounce": "NW",
         "mirror_x": "SE",
@@ -52,8 +52,8 @@ DIRECTIONS = {
         "dir": "east",
         "i": 0,
         "j": -1,
-		"x": 1,
-		"y": 0,
+        "x": 1,
+        "y": 0,
         "opp": "W",
         "bounce": "W",
         "mirror_x": "E",
@@ -63,8 +63,8 @@ DIRECTIONS = {
         "dir": "south-east",
         "i": 1,
         "j": -1,
-		"x": 1,
-		"y": 1,
+        "x": 1,
+        "y": 1,
         "opp": "NW",
         "bounce": "SW",
         "mirror_x": "NE",
@@ -74,8 +74,8 @@ DIRECTIONS = {
         "dir": "south",
         "i": 1,
         "j": 0,
-		"x": 0,
-		"y": 1,
+        "x": 0,
+        "y": 1,
         "opp": "N",
         "bounce": "N",
         "mirror_x": "N",
@@ -85,8 +85,8 @@ DIRECTIONS = {
         "dir": "south-west",
         "i": 1,
         "j": 1,
-		"x": -1,
-		"y": 1,
+        "x": -1,
+        "y": 1,
         "opp": "NE",
         "bounce": "SE",
         "mirror_x": "NW",
@@ -96,8 +96,8 @@ DIRECTIONS = {
         "dir": "west",
         "i": 0,
         "j": 1,
-		"x": -1,
-		"y": 0,
+        "x": -1,
+        "y": 0,
         "opp": "E",
         "bounce": "E",
         "mirror_x": "W",
@@ -107,8 +107,8 @@ DIRECTIONS = {
         "dir": "north-west",
         "i": -1,
         "j": 1,
-		"x": -1,
-		"y": -1,
+        "x": -1,
+        "y": -1,
         "opp": "SE",
         "bounce": "NE",
         "mirror_x": "SW",
@@ -230,7 +230,9 @@ class Widget:
 
 class Label(Widget):
 
-    def __init__(self, game, display, rect, init_txt="", font=None, c=WHITE, txc=BLACK, bc=BLACK, fs=16, bs=1, border_style=None, font_sel=None, c_sel=WHITE, txc_sel=BLACK, bc_sel=BLACK, fs_sel=16, bs_sel=1, border_style_sel=None, wrap_text=True):
+    def __init__(self, game, display, rect, init_txt="", font=None, c=WHITE, txc=BLACK, bc=BLACK, fs=16, bs=1,
+                 border_style=None, font_sel=None, c_sel=WHITE, txc_sel=BLACK, bc_sel=BLACK, fs_sel=16, bs_sel=1,
+                 border_style_sel=None, wrap_text=True):
         super().__init__(game, display, rect)
         # print("rect:", rect)
         # print("rect:", type(rect))
@@ -269,14 +271,20 @@ class Label(Widget):
         bs = self.border_size
         trect = game.Rect(rect.x + bs, rect.y + bs, rect.width - (bs * 2), rect.height - (bs * 2))
         if self.is_selected:
-            write_text(game, display, trect, self.text_str, self.sel_font, bg_c=self.sel_colour, tx_c=self.sel_text_colour, wrap=self.wrap_text)
+            write_text(game, display, trect, self.text_str, self.sel_font, bg_c=self.sel_colour,
+                       tx_c=self.sel_text_colour, wrap=self.wrap_text)
         else:
-            write_text(game, display, trect, self.text_str, self.font, bg_c=self.colour, tx_c=self.text_colour, wrap=self.wrap_text)
+            write_text(game, display, trect, self.text_str, self.font, bg_c=self.colour, tx_c=self.text_colour,
+                       wrap=self.wrap_text)
 
 
+# TODO allow TextBox to overwrite the inc and dec functions. ex inc on a phone number should produce phone#n => phone#n + 1.
+# TODO allow TextBox to center text
 class TextBox(Widget):
 
-    def  __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20, numeric=False, char_limit=None, n_limit=None, bs=1, border_style=None, draw_clear_btn=True, editable=True, locked=False):
+    def __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20,
+                 numeric=False, char_limit=None, n_limit=None, bs=1, border_style=None, draw_clear_btn=True,
+                 editable=True, locked=False, iaction=None, daction=None, iargs=([], {}), dargs=([], {}), text_align=None):
         super().__init__(game, display, rect)
         self.ic = ic
         self.ac = ac
@@ -309,6 +317,16 @@ class TextBox(Widget):
         self.draw_clear_btn = draw_clear_btn
         self.editable = editable
         self.locked = locked
+        self.iaction = iaction if iaction is not None else self.increment
+        self.daction = daction if daction is not None else self.decrement
+        self.iargs = iargs
+        self.dargs = dargs
+
+        if str(text_align).lower() not in ["None", "left", "center", "right"]:
+            text_align = None
+        if text_align is not None:
+            text_align = text_align.lower()
+        self.text_align = text_align
 
     def __repr__(self):
         return "<TextBox txt=\"" + self.text_str + "\">"
@@ -356,13 +374,13 @@ class TextBox(Widget):
                     if self.text:
                         self.txt_surface = self.f.render(self.text, True, self.fc)
 
-    def increment(self):
+    def increment(self, *args, **kwargs):
         try:
             self.text = str(int(self.text) + 1)
         except ValueError:
             self.text = str(self.text) + "1"
 
-    def decrement(self):
+    def decrement(self, *args, **kwargs):
         try:
             self.text = str(int(self.text) - 1)
         except ValueError:
@@ -401,14 +419,24 @@ class TextBox(Widget):
         # Blit the rect.
         pygame.draw.rect(display, self.colour, self.rect, 2)
         # draw_button("X", self.rect.right + 10, self.rect.y, 20, 20, self.ic, self.ac, self.colour, self.f, self.fc, self.clear)
-        xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width, 0).shrunk(0.15, 0.85)
+        xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width,
+                                                                                                     0).shrunk(0.15,
+                                                                                                               0.85)
         irect = xrect.shrunk(0.45, 0.45).translated(0, 0)
         drect = xrect.shrunk(0.45, 0.45).translated(0, irect.height + (xrect.height * 0.1))
         if self.numeric:
-            iaction = None if self.locked else self.increment
-            daction = None if self.locked else self.decrement
-            ibutton = Button(game, display, "+", *irect, WHITE, WHITE, None, font_size=20, action=iaction)
-            dbutton = Button(game, display, "-", *drect, WHITE, WHITE, None, font_size=20, action=daction)
+            if self.locked:
+                iaction = None
+                iargs = [], {}
+                daction = None
+                dargs = [], {}
+            else:
+                iaction = self.iaction
+                iargs = self.iargs
+                daction = self.daction
+                dargs = self.dargs
+            ibutton = Button(game, display, "+", *irect, WHITE, WHITE, None, font_size=20, action=iaction, args=iargs)
+            dbutton = Button(game, display, "-", *drect, WHITE, WHITE, None, font_size=20, action=daction, args=dargs)
             dbutton.enable_toggle()
             ibutton.enable_toggle()
             ibutton.draw()
@@ -559,13 +587,15 @@ class RadioGroup(Widget):
                     if new_r.colliderect(next_bounds):
                         # x_diff = new_r.right - next_bounds.x if is_horizontal else 0
                         # y_diff = new_r.bottom - next_bounds.y if not is_horizontal else 0
-                        next_bounds = self.game.Rect(next_bounds.x + x_diff, next_bounds.y + y_diff, next_bounds.width, next_bounds.height)
+                        next_bounds = self.game.Rect(next_bounds.x + x_diff, next_bounds.y + y_diff, next_bounds.width,
+                                                     next_bounds.height)
                         self.radio_buttons[i + 1].move(next_bounds)
                         print("next_bounds:", next_bounds)
                     elif self.keep_grouped:
                         # x_diff = next_bounds.x - new_r.right if is_horizontal else 0
                         # y_diff = next_bounds.y - new_r.bottom if not is_horizontal else 0
-                        next_bounds = self.game.Rect(next_bounds.x - x_diff, next_bounds.y - y_diff, next_bounds.width, next_bounds.height)
+                        next_bounds = self.game.Rect(next_bounds.x - x_diff, next_bounds.y - y_diff, next_bounds.width,
+                                                     next_bounds.height)
                         self.radio_buttons[i + 1].move(next_bounds)
                         print("next_bounds:", next_bounds)
 
@@ -1501,6 +1531,7 @@ class HBox(Box):
     # All widget contents are sized to fit inside box bounds.
     def __init__(self, game, display, contents, r, p, bgc):
         super().__init__(game, display, contents, r, p, bgc, is_horizontal=True)
+
 
 # buttons & toggle buttons
 # button bar
