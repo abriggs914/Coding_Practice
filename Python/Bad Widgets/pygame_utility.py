@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version............1.8
-#	Date........2021-09-16
+#	Version...........1.10
+#	Date........2021-09-18
 #	Author....Avery Briggs
 
 
@@ -169,6 +169,19 @@ class Widget:
         if isinstance(rect, Rect):
             rect = game.Rect(*rect)
         self.rect = rect
+        self.rect_obj = Rect(rect.x, rect.y, rect.width, rect.height)
+
+    def resize(self, rect):
+        if isinstance(rect, Rect):
+            rect = self.game.Rect(*rect)
+        self.rect = rect
+        self.rect_obj = Rect(rect.x, rect.y, rect.width, rect.height)
+
+    def move(self, rect):
+        if isinstance(rect, Rect):
+            rect = self.game.Rect(*rect)
+        self.rect = rect
+        self.rect_obj = Rect(rect.x, rect.y, rect.width, rect.height)
 
     def draw(self):
         print("Nothing to draw")
@@ -259,10 +272,10 @@ class Label(Widget):
         return "<Label txt=\"" + self.text_str + "\">"
 
     def move(self, r):
-        self.rect = r
+        super().move(r)
 
     def resize(self, r, is_horizontal=True):
-        self.rect = r
+        super().resize(r)
 
     def draw(self):
         display = self.display
@@ -284,7 +297,7 @@ class TextBox(Widget):
 
     def __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20,
                  numeric=False, char_limit=None, n_limit=None, bs=1, border_style=None, draw_clear_btn=True,
-                 editable=True, locked=False, iaction=None, daction=None, iargs=([], {}), dargs=([], {}), text_align=None, font_size=16):
+                 editable=True, locked=False, iaction=None, daction=None, iargs=None, dargs=None, text_align=None, font_size=16):
         super().__init__(game, display, rect)
         self.ic = ic
         self.ac = ac
@@ -390,11 +403,11 @@ class TextBox(Widget):
             self.text = str(self.text)[:len(str(self.text)) - 1]
 
     def move(self, r):
-        self.rect = r
+        super().move(r)
         self.reset_char_limit()
 
     def resize(self, r):
-        self.rect = r
+        super().resize(r)
         self.reset_char_limit()
 
     def reset_char_limit(self):
@@ -432,23 +445,23 @@ class TextBox(Widget):
         pygame.draw.rect(display, self.colour, self.rect, 2)
         # draw_button("X", self.rect.right + 10, self.rect.y, 20, 20, self.ic, self.ac, self.colour, self.f, self.fc, self.clear)
         xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width,
-                                                                                                     0).shrunk(0.15,
+                                                                                                     0).scaled(0.15,
                                                                                                                0.85)
-        irect = xrect.shrunk(0.45, 0.45).translated(0, 0)
-        drect = xrect.shrunk(0.45, 0.45).translated(0, irect.height + (xrect.height * 0.1))
+        irect = xrect.scaled(0.45, 0.45).translated(0, 0)
+        drect = xrect.scaled(0.45, 0.45).translated(0, irect.height + (xrect.height * 0.1))
         if self.numeric:
             if self.locked:
                 iaction = None
-                iargs = [], {}
+                iargs = None
                 daction = None
-                dargs = [], {}
+                dargs = None
             else:
                 iaction = self.iaction
                 iargs = self.iargs
                 daction = self.daction
                 dargs = self.dargs
-            ibutton = Button(game, display, "+", *irect, WHITE, WHITE, None, font_size=self.font_size, action=iaction, args=iargs)
-            dbutton = Button(game, display, "-", *drect, WHITE, WHITE, None, font_size=self.font_size, action=daction, args=dargs)
+            ibutton = Button(game, display, "+", irect, WHITE, WHITE, None, font_size=self.font_size, action=iaction, args=iargs)
+            dbutton = Button(game, display, "-", drect, WHITE, WHITE, None, font_size=self.font_size, action=daction, args=dargs)
             dbutton.enable_toggle()
             ibutton.enable_toggle()
             ibutton.draw()
@@ -456,9 +469,9 @@ class TextBox(Widget):
 
             xrect = xrect.translated(irect.width + 5, 0)
         if self.draw_clear_btn:
-            # xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width, 0).shrunk(0.15, 0.85)
+            # xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width, 0).scaled(0.15, 0.85)
             action = None if self.locked else self.clear
-            button = Button(game, display, "X", *xrect, WHITE, WHITE, None, action=action, font_size=self.font_size)
+            button = Button(game, display, "X", xrect, WHITE, WHITE, None, action=action, font_size=self.font_size)
             button.enable_toggle()
             button.draw()
 
@@ -736,20 +749,23 @@ class RadioButton(Widget):
 # font      -   font style
 # action	-	function to be called on click
 def buttonr(game, display, msg, r, ic, ac, font, action=None, args=None):
-    return Button(game, display, msg, *r, ic, ac, font, action, args)
+    return Button(game, display, msg, r, ic, ac, font, action, args)
 
 
 class Button(Widget):
 
-    def __init__(self, game, display, msg, x, y, w, h, ic, ac, font, font_size=16, action=None, args=None):
-        super().__init__(game, display, Rect(x, y, w, h))
+    def __init__(self, game, display, msg, rect, ic=GRAY_69, ac=None, font=None, font_size=16, action=None, args=None, text_colour=BLACK):
+        super().__init__(game, display, rect)
         self.msg = msg
         self.ic = ic
-        self.ac = ac
+        self.ac = ac if ac is not None else brighten(ic, 0.15)
         self.font = font if font is not None else game.font.Font(None, font_size)
         self.action = action
+        if args is not None:
+            if not isinstance(args, list) or not isinstance(args, tuple):
+                args = [args]
         self.args = args
-        self.resize(game.Rect(x, y, w, h))
+        self.resize(rect)
 
         self.draw_rect = ic is not None  # if ic is None, no background square is drawn
         self.draw_hover = ac is not None  # if ac is None, no hover square is drawn
@@ -762,12 +778,13 @@ class Button(Widget):
 
         self.toggleable = False
         self.toggle_val = False
+        self.text_colour = text_colour
 
     def move(self, r):
-        self.rect = r
+        super().move(r)
 
     def resize(self, r):
-        self.rect = r
+        super().resize(r)
 
     def enable_toggle(self):
         self.toggleable = True
@@ -837,7 +854,7 @@ class Button(Widget):
 
         # draw button label
         self.font.set_bold(True)
-        text_surf, text_rect = text_objects(self.msg, self.font)
+        text_surf, text_rect = text_objects(self.msg, self.font, self.text_colour)
         text_rect.center = ((self.rect.x + (self.rect.width / 2)), (self.rect.y + (self.rect.height / 2)))
         self.display.blit(text_surf, text_rect)
 
@@ -855,8 +872,8 @@ class ButtonBar(Widget):
     # bg            -   bar background color
     # proportion    -   proportion of the total bar to consume
     # is_horizontal -   whether the bar is horizontal or vertical
-    def __init__(self, game, display, x, y, w, h, font, bg, proportion, is_horizontal=True, font_size=16):
-        super().__init__(game, display, Rect(x, y, w, h))
+    def __init__(self, game, display, rect, font=None, bg=WHITE, proportion=1, is_horizontal=True, font_size=16):
+        super().__init__(game, display, rect)
         self.font = font if font is not None else game.font.Font(None, 16)
         self.bg = bg
         self.proportion = proportion
@@ -867,11 +884,11 @@ class ButtonBar(Widget):
 
     # No need to move buttons within bar, since their placement is calculated in the draw function.
     def move(self, r):
-        self.rect = r
+        super().move(r)
 
     # No need to resize buttons within bar, since their placement is calculated in the draw function.
     def resize(self, r):
-        self.rect = r
+        super().resize(r)
 
     # Using information, add a button to the bar.
     # msg       -   button name
@@ -879,6 +896,7 @@ class ButtonBar(Widget):
     # ac        -   button color when hovering
     # action    -   function to be executed on click
     # args      -   tuple of function args
+    # ex: self.add_button("Click Me", RED, brighten(RED, 0.15), eval, "print(\"Hey!\")")
     def add_button(self, msg, ic, ac, action=None, args=None):
         button = {msg: (ic, ac, action, args)}
         self.buttons.update(button)
@@ -891,8 +909,14 @@ class ButtonBar(Widget):
         yd = self.rect.height - hp  # difference between total height and proportional height
         xi = self.rect.x + (xd / 2)  # starting x
         yi = self.rect.y + (yd / 2)  # starting y
-        wi = wp / max(1, (nb if self.is_horizontal else wp))  # single button width
-        hi = hp / max(1, (nb if self.is_horizontal else hp))  # single button height
+        if self.is_horizontal:
+            wi = wp / max(1, nb)  # single button width
+            hi = hp
+        else:
+            wi = wp
+            hi = hp / max(1, nb) # single button height
+        # wi = wp / max(1, (nb if self.is_horizontal else wp))  # single button width
+        # hi = hp / max(1, (nb if self.is_horizontal else hp))  # single button height
 
         # draw background
         self.game.draw.rect(self.display, self.bg, (self.rect.x, self.rect.y, self.rect.width, self.rect.height))
@@ -900,9 +924,9 @@ class ButtonBar(Widget):
         # create and draw buttons
         for b, info in self.buttons.items():
             # button = Button(self.game, self.display, b, xi, yi, wi, hi, *info[:2], self.font, *info[2:])
-            # button.draw()
-            button = Button(self.game, self.display, b, xi, yi, wi, hi, *info[:2], self.font, self.font_size, *info[2:])
+            button = Button(self.game, self.display, b, Rect(xi, yi, wi, hi), *info[:2], self.font, self.font_size, *info[2:])
             button.enable_toggle()
+            button.draw()
             if self.is_horizontal:
                 xi += (xd / (nb + 1)) + wi
             else:
@@ -1073,10 +1097,10 @@ class ScrollBar(Widget):
         scroll_button.draw()
 
         # draw increment, decrement buttons
-        increment_button = Button(self.game, self.display, "", *increment_button_rect, self.button_c, self.button_c,
+        increment_button = Button(self.game, self.display, "", increment_button_rect, self.button_c, self.button_c,
                                   font=None,
                                   action=self.decrement_bar_pos)
-        decrement_button = Button(self.game, self.display, "", *decrement_button_rect, self.button_c, self.button_c,
+        decrement_button = Button(self.game, self.display, "", decrement_button_rect, self.button_c, self.button_c,
                                   font=None, action=self.increment_bar_pos)
         increment_button.draw()
         decrement_button.draw()
@@ -1380,7 +1404,7 @@ class Table(Widget):
         self.font = f
 
     def move(self, r):
-        self.rect = r
+        super().move(r)
         for row in self.table_rows:
             row.move(r)
         self.update_row_sizes()
@@ -1399,7 +1423,7 @@ class Table(Widget):
         #         row_r = self.game.Rect(self.x, y, self.width, rh)
         #         row.resize(row_r)
         #         y += rh
-        self.rect = r
+        super().resize(r)
         for row in self.table_rows:
             row.resize(r)
         self.update_row_sizes()
@@ -1495,10 +1519,10 @@ class Box(Widget):
             self.contents.append(content)
 
     def move(self, r):
-        self.rect = r
+        super().move(r)
 
     def resize(self, r):
-        self.rect = r
+        super().resize(r)
 
     def draw(self):
         nw = len(self.contents)  # number widgets

@@ -186,12 +186,13 @@ def test_TextBox():
         for event in event_queue:
             textbox.handle_event(event)
 
+
 def text_box():
     app = PygameApplication("Test Box", 1100, 500)
     game = app.get_game()
     display = app.display
     r1 = Rect(100, 25, 600, 250)
-    r2 = r1.translated(2, 2).shrunk(0.75, 0.2)
+    r2 = r1.translated(2, 2).scaled(0.75, 0.2)
     # self, game, display, rect, ic, ac, f, fc, text = '', min_width = 20, numeric = False, char_limit = None, n_limit = None, bs = 1, border_style = None
     lbl1 = Label(game, display, r2, "Sample Label 1", c=RED, txc=WHITE, bc=FIREBRICK)
     lbl2 = Label(game, display, r2.translated(0, 6), "Sample Label 1", c=GREEN, txc=YELLOW_3, bc=LIMEGREEN)
@@ -205,7 +206,196 @@ def text_box():
         #     textbox.handle_event(event)
 
 
+def test_buttonbar():
+    app = PygameApplication("Test Box", 1100, 500)
+    game = app.get_game()
+    display = app.display
+
+    r1 = Rect(100, 25, 600, 250)
+    r2 = r1.translated(2, 2).scaled(0.75, 0.2)
+
+    btnbar1 = ButtonBar(game, display, r1, bg=TEAL, is_horizontal=True)
+    btnbar2 = ButtonBar(game, display, r1, bg=TEAL, is_horizontal=False)
+    # self, game, display, rect, ic, ac, f, fc, text = '', min_width = 20, numeric = False, char_limit = None, n_limit = None, bs = 1, border_style = None
+    # lbl1 = Label(game, display, r2, "Sample Label 1", c=RED, txc=WHITE, bc=FIREBRICK)
+    # lbl2 = Label(game, display, r2.translated(0, 6), "Sample Label 1", c=GREEN, txc=YELLOW_3, bc=LIMEGREEN)
+    box = VBox(game, display, [], r1, 1, WHITE)
+    btnbar1.add_button("A1", VIOLET, brighten(VIOLET, 0.15), eval, "print(\"hey from A1\")")
+    btnbar1.add_button("B1", GREEN, brighten(GREEN, 0.15), eval, "print(\"hey from B1\")")
+    btnbar1.add_button("C1", LAWNGREEN, brighten(LAWNGREEN, 0.15), eval, "print(\"hey from C1\")")
+
+    btnbar2.add_button("A2", VIOLET, brighten(VIOLET, 0.15), eval, "print(\"hey from A2\")")
+    btnbar2.add_button("B2", GREEN, brighten(GREEN, 0.15), eval, "print(\"hey from B2\")")
+    btnbar2.add_button("C2", LAWNGREEN, brighten(LAWNGREEN, 0.15), eval, "print(\"hey from C2\")")
+
+    box.add_contents(btnbar1, btnbar2)
+    xp, yp = -1, -1
+    while app.is_playing:
+        display.fill(BLACK)
+        box.draw()
+        rect = box.rect_obj
+        if (rect.width + xp) < 1:
+            xp = 1
+        if (rect.height + yp) < 1:
+            yp = 1
+        if (rect.width + xp) > 500:
+            xp = -1
+        if (rect.height + yp) > 500:
+            yp = -1
+        new_rect = Rect(rect.x - xp, rect.y - yp, rect.width + (2 * xp), rect.height + (2 * yp))
+        box.resize(new_rect)
+        event_queue = app.run()
+        # print("A", box.rect_obj, new_rect, xp, yp)
+        # if 1 > new_rect.width:
+        #     xp = 1.02
+        #     new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height))
+        #     # new_rect = box.rect_obj.scaled(xp, yp)
+        #     print("\tA\t", new_rect, xp, yp)
+        # if new_rect.width >= 600:
+        #     xp = 0.99
+        #     new_rect = box.rect_obj.scaled(xp, yp)
+        #     print("\tB\t", new_rect, xp, yp)
+        # if 1 > new_rect.height:
+        #     yp = 1.02
+        #     new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width, 1))
+        #     # new_rect = box.rect_obj.scaled(xp, yp)
+        #     print("\tC\t", new_rect, xp, yp)
+        # if new_rect.height >= 600:
+        #     yp = 0.99
+        #     new_rect = box.rect_obj.scaled(xp, yp)
+        #     print("\tD\t", new_rect, xp, yp)
+        # print("B", box.rect_obj, new_rect, xp, yp)
+        # for event in event_queue:
+        #     textbox.handle_event(event)
+
+    # xp, yp = 0.99, 0.99
+    # while app.is_playing:
+    #     display.fill(BLACK)
+    #     box.draw()
+    #     new_rect = box.rect_obj.scaled(xp, yp)
+    #     print("A", box.rect_obj, new_rect, xp, yp)
+    #     if 1 > new_rect.width:
+    #         xp = 1.02
+    #         new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height))
+    #         # new_rect = box.rect_obj.scaled(xp, yp)
+    #         print("\tA\t", new_rect, xp, yp)
+    #     if new_rect.width >= 600:
+    #         xp = 0.99
+    #         new_rect = box.rect_obj.scaled(xp, yp)
+    #         print("\tB\t", new_rect, xp, yp)
+    #     if 1 > new_rect.height:
+    #         yp = 1.02
+    #         new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width, 1))
+    #         # new_rect = box.rect_obj.scaled(xp, yp)
+    #         print("\tC\t", new_rect, xp, yp)
+    #     if new_rect.height >= 600:
+    #         yp = 0.99
+    #         new_rect = box.rect_obj.scaled(xp, yp)
+    #         print("\tD\t", new_rect, xp, yp)
+    #     print("B", box.rect_obj, new_rect, xp, yp)
+    #     box.resize(new_rect)
+    #     event_queue = app.run()
+    #     # for event in event_queue:
+    #     #     textbox.handle_event(event)
+
+
+def test_phone_number():
+
+    def n_rnd_ns(n, vals=tuple(range(10))):
+        return "".join([str(random.choice(vals)) for i in range(n)])
+
+    def random_phone_number():
+        return "+1 (" + n_rnd_ns(3) + ") " + n_rnd_ns(3) + "-" + n_rnd_ns(4)
+
+    def phone_number_found():
+        print("phone_number_found")
+
+    def new_phone_number():
+        print("new_phone_number")
+        textbox.set_text(random_phone_number())
+
+    def increment_phone_number():
+        n = int(textbox.get_text().replace("(", "").replace(")", "").replace("+", "").replace(" ", "").replace("-", ""))
+        print(n)
+        n += 1
+        n = str(n)
+        textbox.set_text("+{} ({}) {}-{}".format(n[0], n[1: 4], n[4:7], n[7:]))
+
+    def decrement_phone_number():
+        n = int(textbox.get_text().replace("(", "").replace(")", "").replace("+", "").replace(" ", "").replace("-", ""))
+        print(n)
+        n -= 1
+        n = max(0, n)
+        n = str(n)
+        textbox.set_text("+{} ({}) {}-{}".format(n[0], n[1: 4], n[4:7], n[7:]))
+
+
+    app = PygameApplication("Phone Number Guess", 600, 550, auto_init=True)
+    game = app.get_game()
+    display = app.display
+
+    r1 = Rect(45, 10, 400, 300)
+    r_lbl = Rect(r1.left + 2, r1.top + 2, r1.width - 4, r1.height - 4)
+    r_txt = Rect(r_lbl.left + 6, r_lbl.bottom + 5, r1.width - 4, r1.height - 4)
+    frame_main = VBox(game, display, None, r1, 1, HOTPINK)
+    label = Label(game, display, r_lbl, "Is this your Phone Number?", fs=40)
+    textbox = TextBox(game, display, r_txt, ic=BROWN_3, ac=INDIGO, fc=GREEN, editable=False, draw_clear_btn=False, font_size=35, text_align="center", numeric=True, iaction=increment_phone_number, daction=decrement_phone_number)
+    #TODO allow TextBox to overwrite the inc and dec functions. ex inc on a phone number should produce phone#n => phone#n + 1.
+    #TODO allow TextBox to center text
+    textbox.set_text(random_phone_number())
+    btnbar = ButtonBar(game, display, r_txt, None, VIOLETRED, 1, is_horizontal=True)
+    btnbar.add_button("Yes", FORESTGREEN, GREEN, phone_number_found)
+    btnbar.add_button("No", ORCHID, FIREBRICK, new_phone_number)
+    frame_main.add_contents(label, textbox, btnbar)
+    while app.is_playing:
+
+        # call at beginning of main loop
+        display.fill(BLACK)
+
+        # Do Stuff
+        # game.draw.rect(display, CARROT, r1.tupl)
+        # print(random_phone_number())
+        frame_main.draw()
+
+        # call at end of main loop
+        event_queue = app.run()
+        for event in event_queue:
+            textbox.handle_event(event)
+
+
+def test_slider():
+
+    app = PygameApplication("Phone Number Guess", 600, 550, auto_init=True)
+    game = app.get_game()
+    display = app.display
+
+    r1 = Rect(45, 10, 400, 300)
+    r_lbl = Rect(r1.left + 2, r1.top + 2, r1.width - 4, r1.height - 4)
+    r_txt = Rect(r_lbl.left + 6, r_lbl.bottom + 5, r1.width - 4, r1.height - 4)
+    frame_main = VBox(game, display, None, r1, 1, HOTPINK)
+    label = Label(game, display, r_lbl, "Slider demo", fs=40)
+    slider = Slider(game, display, r1)
+    frame_main.add_contents(label, slider)
+    while app.is_playing:
+
+        # call at beginning of main loop
+        display.fill(BLACK)
+
+        # Do Stuff
+        # game.draw.rect(display, CARROT, r1.tupl)
+        # print(random_phone_number())
+        frame_main.draw()
+
+        # call at end of main loop
+        event_queue = app.run()
+        # for event in event_queue:
+        #     textbox.handle_event(event)
+
+
 if __name__ == "__main__":
     blk_lst = [val for val in dir() if "BLK_" in val]
     print("\n\n\n".join([eval(blk)[1] for blk in blk_lst]))
-    test_TextBox()
+    # test_TextBox()
+    # test_buttonbar()
+    # test_phone_number()
+    test_slider()

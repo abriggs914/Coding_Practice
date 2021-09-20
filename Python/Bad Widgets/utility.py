@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.17
-	Date...........2021-09-14
+	Version..............1.18
+	Date...........2021-09-18
 	Author.......Avery Briggs
 """
 
@@ -745,11 +745,22 @@ class Line:
 
 
 class Rect:
-    def __init__(self, x, y, w, h):
+    def __init__(self, x, y=None, w=None, h=None):
         self.x = x
         self.y = y
         self.width = w
         self.height = h
+        if any([y is None, w is None, h is None]):
+            if is_imported("pygame"):
+                if isinstance(x, pygame.Rect):
+                    x = x.left
+                    y = x.y
+                    w = x.width
+                    y = x.height
+                else:
+                    raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
+            else:
+                ValueError("Cannot create a rect object with <{}>.\npygame module is not imported.".format(x))
         self.is_init = False
         self.tupl = None
         self.top = None
@@ -776,6 +787,8 @@ class Rect:
     def init(self, x, y, w, h):
         self.x = x
         self.y = y
+        self.width = w
+        self.height = h
         self.tupl = (x, y, w, h)
         self.top = y
         self.left = x
@@ -853,14 +866,19 @@ class Rect:
         r.translate(x, y)
         return r
 
-    def shrink(self, w_factor, h_factor):
-        self.width *= w_factor
-        self.height *= h_factor
+    def scale(self, w_factor, h_factor):
+        self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
 
-    def shrunk(self, w_factor, h_factor):
+    def scaled(self, w_factor, h_factor):
         r = Rect(self.x, self.y, self.width, self.height)
-        r.shrink(w_factor, h_factor)
+        r.scale(w_factor, h_factor)
         return r
+
+    def move(self, rect):
+        self.init(rect.x, rect.y, rect.width, rect.height)
+
+    def resize(self, rect):
+        self.init(rect.x, rect.y, rect.width, rect.height)
 
     def __repr__(self):
         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width, self.height]))) + ")>"
