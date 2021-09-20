@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.18
-	Date...........2021-09-18
+	Version..............1.19
+	Date...........2021-09-20
 	Author.......Avery Briggs
 """
 
@@ -735,6 +735,11 @@ class Line:
         r = Line(self.x1, self.y1, self.x2, self.y2)
         r.translate(x, y)
         return r
+
+    def __iter__(self):
+        lst = [self.p1, self.p2]
+        for val in lst:
+            yield val
 
     def __repr__(self):
         if self.m == "undefined":

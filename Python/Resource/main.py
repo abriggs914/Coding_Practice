@@ -374,7 +374,7 @@ def test_slider():
     r_txt = Rect(r_lbl.left + 6, r_lbl.bottom + 5, r1.width - 4, r1.height - 4)
     frame_main = VBox(game, display, None, r1, 1, HOTPINK)
     label = Label(game, display, r_lbl, "Slider demo", fs=40)
-    slider = Slider(game, display, r1)
+    slider = Slider(game, display, r1, slider_width=3)
     frame_main.add_contents(label, slider)
     while app.is_playing:
 

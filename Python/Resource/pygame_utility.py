@@ -1583,13 +1583,13 @@ class HBox(Box):
 
 class Slider(Widget):
 
-    def __init__(self, game, display, rect, min_val=0, max_val=1, n_ticks=10, slider_colour=WHITE,
+    def __init__(self, game, display, rect, min_val=0, max_val=1, n_ticks=10, slider_colour=BLACK,
                  slider_border_colour=BLACK, slider_radius=5, line_colour=BLACK, tick_colour=BLACK, stick_to_ticks=True,
-                 start_val=None, labels=None, background_colour=GRAY_69, background_is_transparent=False):
+                 start_val=None, labels=None, background_colour=GRAY_69, background_is_transparent=False, slider_width=1, font=None):
         super().__init__(game, display, rect)
         self.min_val = min_val
         self.max_val = max_val
-        self.n_ticks = n_ticks
+        self.n_ticks = max(2, n_ticks)
         self.slider_colour = slider_colour
         self.slider_border_colour = slider_border_colour
         self.slider_radius = slider_radius
@@ -1597,9 +1597,13 @@ class Slider(Widget):
         self.tick_colour = tick_colour
         self.stick_to_ticks = stick_to_ticks
         self.start_val = start_val
-        self.labels = labels
+        self.labels = labels if labels is not None else []
+        if not isinstance(self.labels, list) and not isinstance(self.labels, tuple):
+            self.labels = [self.labels]
         self.background_colour = background_colour
         self.background_is_transparent = background_is_transparent
+        self.slider_width = slider_width
+        self.font = font if font is not None else game.font.Font(None, 16)
 
     def draw(self):
         game = self.game
@@ -1607,6 +1611,25 @@ class Slider(Widget):
         rect = self.rect
         if not self.background_is_transparent:
             game.draw.rect(display, self.background_colour, rect)
+        slider_rect = self.rect_obj.scaled(0.95, 0.5).translated(rect.width * 0.025, rect.height * 0.25)
+        line = Line(*slider_rect.center_left, *slider_rect.center_right)
+        minor_tick_width = max(1, self.slider_width - 1)
+        major_tick_width = max(1, self.slider_width)
+        game.draw.line(display, self.slider_colour, *line, self.slider_width)
+        space = slider_rect.width / (self.n_ticks - 1)
+        xc = slider_rect.x + space
+        for i, t in enumerate(range(self.n_ticks - 2)):
+            game.draw.line(display, self.slider_colour, (xc, line.y1 - 5), (xc, line.y1 + 5), minor_tick_width)
+            lbl = str(round(self.min_val + (((self.n_ticks - 2 - i) / self.n_ticks - 2)) + 1, 2))
+            if i < len(self.labels):
+                lbl = self.labels[i]
+            write_text(game, display, Rect(xc - 5, line.y1 - 20, 10, 10), lbl, self.font, self.background_colour, self.tick_colour, False)
+            xc += space
+        game.draw.line(display, self.slider_colour, (line.x1, line.y1 - 5), (line.x1, line.y1 + 5), major_tick_width)
+        game.draw.line(display, self.slider_colour, (line.x2, line.y1 - 5), (line.x2, line.y1 + 5), major_tick_width)
+        write_text(game, display, Rect(slider_rect.x - 5, line.y1 - 20, 10, 10), str(self.min_val), self.font, self.background_colour, self.tick_colour, True)
+        write_text(game, display, Rect(slider_rect.right - 5, line.y1 - 20, 10, 10), str(self.max_val), self.font, self.background_colour,
+                   self.tick_colour, True)
 
 
 # buttons & toggle buttons
