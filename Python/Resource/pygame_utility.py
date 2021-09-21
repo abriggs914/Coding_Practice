@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.12
-#	Date........2021-09-20
+#	Version...........1.13
+#	Date........2021-09-21
 #	Author....Avery Briggs
 
 
@@ -137,7 +137,7 @@ def wrap_text(msg, r, font):
 
 
 # Writes text to the display.
-def write_text(game, display, r, msg, font, bg_c=WHITE, tx_c=BLACK, wrap=True):
+def write_text(game, display, r, msg, font, bg_c=None, tx_c=BLACK, wrap=True):
     if isinstance(r, Rect):
         r = game.Rect(*r)
     if not msg or msg is None:
@@ -1585,7 +1585,7 @@ class Slider(Widget):
 
     def __init__(self, game, display, rect, min_val=0, max_val=1, n_ticks=10, slider_colour=BLACK,
                  slider_border_colour=BLACK, slider_radius=5, line_colour=BLACK, tick_colour=BLACK, stick_to_ticks=True,
-                 start_val=None, labels=None, background_colour=GRAY_69, background_is_transparent=False, slider_width=1, font=None):
+                 start_val=None, labels=None, background_colour=GRAY_69, background_is_transparent=False, slider_width=1, font=None, locked=False, lbl_format=lambda x: int(x)):
         super().__init__(game, display, rect)
         self.min_val = min_val
         self.max_val = max_val
@@ -1596,7 +1596,7 @@ class Slider(Widget):
         self.line_colour = line_colour
         self.tick_colour = tick_colour
         self.stick_to_ticks = stick_to_ticks
-        self.start_val = start_val
+        self.slider_val = start_val if start_val is not None else min_val
         self.labels = labels if labels is not None else []
         if not isinstance(self.labels, list) and not isinstance(self.labels, tuple):
             self.labels = [self.labels]
@@ -1604,6 +1604,46 @@ class Slider(Widget):
         self.background_is_transparent = background_is_transparent
         self.slider_width = slider_width
         self.font = font if font is not None else game.font.Font(None, 16)
+        self.slider_radius = slider_radius
+        self.locked = locked
+        self.lbl_format = lbl_format
+
+    def get_slider_rect(self):
+        return self.rect_obj.scaled(0.95, 0.5).translated(self.rect.width * 0.025, self.rect.height * 0.25)
+
+    def handle_event(self, event):
+        if not self.locked:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # val = self.slider_val
+                # If the user clicked on the input_box rect.
+                if self.rect.collidepoint(event.pos):
+                    slider_rect = self.get_slider_rect()
+                    x, y = event.pos
+                    if slider_rect.collide_point(x, y):
+                        # val = ((x / (self.max_val - self.min_val)) * slider_rect.width) + slider_rect.x
+                        x -= (slider_rect.x - self.rect.x)
+                        val = ((x / slider_rect.width) * (self.max_val - self.min_val)) + self.min_val - 1
+                        print("a:", val)
+                    else:
+                        if self.rect.x <= x <= slider_rect.x:
+                            val = 0
+                            print("b:", val)
+                        else:
+                            val = self.max_val
+                            print("c:", val)
+                    if self.stick_to_ticks:
+                        space = slider_rect.width / self.n_ticks
+                        ticks = [i for i in range(self.min_val, self.max_val)]
+                        best_val = None, None
+                        t = self.min_val
+                        for t in ticks:
+                            if best_val[0] is None or abs(val - t) < best_val[1]:
+                                best_val = t, abs(val - t)
+                            # print("val:", val, "t", t, "best_val:", best_val, "abs(val - t):", abs(val - t), "abs(best_val - t):", abs(best_val[1] - t))
+                        val = best_val[0]
+                    self.slider_val = clamp(self.min_val, val, self.max_val)
+                    # print("new val:", self.slider_val, "v", val)
+                # Change the current color of the input box.
 
     def draw(self):
         game = self.game
@@ -1611,25 +1651,46 @@ class Slider(Widget):
         rect = self.rect
         if not self.background_is_transparent:
             game.draw.rect(display, self.background_colour, rect)
-        slider_rect = self.rect_obj.scaled(0.95, 0.5).translated(rect.width * 0.025, rect.height * 0.25)
+        slider_rect = self.get_slider_rect()
         line = Line(*slider_rect.center_left, *slider_rect.center_right)
         minor_tick_width = max(1, self.slider_width - 1)
         major_tick_width = max(1, self.slider_width)
         game.draw.line(display, self.slider_colour, *line, self.slider_width)
-        space = slider_rect.width / (self.n_ticks - 1)
+        space = slider_rect.width / self.n_ticks
         xc = slider_rect.x + space
-        for i, t in enumerate(range(self.n_ticks - 2)):
+        for i, t in enumerate(range(self.n_ticks - 1)):
             game.draw.line(display, self.slider_colour, (xc, line.y1 - 5), (xc, line.y1 + 5), minor_tick_width)
-            lbl = str(round(self.min_val + (((self.n_ticks - 2 - i) / self.n_ticks - 2)) + 1, 2))
+            lbl = round((((i + 1) / self.n_ticks) * (self.max_val - self.min_val)) + self.min_val, 2)
             if i < len(self.labels):
                 lbl = self.labels[i]
-            write_text(game, display, Rect(xc - 5, line.y1 - 20, 10, 10), lbl, self.font, self.background_colour, self.tick_colour, False)
+            if self.lbl_format is not None:
+                lbl = self.lbl_format(lbl)
+            lbl = str(lbl)
+            if self.background_is_transparent:
+                write_text(game, display, Rect(xc - 12, line.y1 - 30, 24, 24), lbl, self.font, self.background_colour, self.tick_colour, False)
+            else:
+                write_text(game, display, Rect(xc - 12, line.y1 - 30, 24, 24), lbl, self.font, None,
+                           self.tick_colour, False)
             xc += space
         game.draw.line(display, self.slider_colour, (line.x1, line.y1 - 5), (line.x1, line.y1 + 5), major_tick_width)
         game.draw.line(display, self.slider_colour, (line.x2, line.y1 - 5), (line.x2, line.y1 + 5), major_tick_width)
-        write_text(game, display, Rect(slider_rect.x - 5, line.y1 - 20, 10, 10), str(self.min_val), self.font, self.background_colour, self.tick_colour, True)
-        write_text(game, display, Rect(slider_rect.right - 5, line.y1 - 20, 10, 10), str(self.max_val), self.font, self.background_colour,
+        min_val = str(self.min_val)
+        max_val = str(self.max_val)
+        if self.lbl_format is not None:
+            min_val = str(self.lbl_format(self.min_val))
+            max_val = str(self.lbl_format(self.max_val))
+        if self.background_is_transparent:
+            write_text(game, display, Rect(slider_rect.x - 12, line.y1 - 30, 24, 24), min_val, self.font, self.background_colour, self.tick_colour, True)
+            write_text(game, display, Rect(slider_rect.right - 12, line.y1 - 30, 24, 24), max_val, self.font, self.background_colour,
                    self.tick_colour, True)
+        else:
+            write_text(game, display, Rect(slider_rect.x - 12, line.y1 - 30, 24, 24), min_val, self.font, None, self.tick_colour, True)
+            write_text(game, display, Rect(slider_rect.right - 12, line.y1 - 30, 24, 24), max_val, self.font, None,
+                   self.tick_colour, True)
+
+        slider_x = (((self.slider_val - 1) / (self.max_val - self.min_val)) * slider_rect.width) + slider_rect.x
+        game.draw.circle(display, self.slider_border_colour, (slider_x, line.y1), self.slider_radius + 2)
+        game.draw.circle(display, self.slider_colour, (slider_x, line.y1), self.slider_radius)
 
 
 # buttons & toggle buttons

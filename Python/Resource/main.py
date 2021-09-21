@@ -374,7 +374,7 @@ def test_slider():
     r_txt = Rect(r_lbl.left + 6, r_lbl.bottom + 5, r1.width - 4, r1.height - 4)
     frame_main = VBox(game, display, None, r1, 1, HOTPINK)
     label = Label(game, display, r_lbl, "Slider demo", fs=40)
-    slider = Slider(game, display, r1, slider_width=3)
+    slider = Slider(game, display, r1, slider_width=3, min_val=1, max_val=10, n_ticks=9, stick_to_ticks=True)
     frame_main.add_contents(label, slider)
     while app.is_playing:
 
@@ -388,8 +388,8 @@ def test_slider():
 
         # call at end of main loop
         event_queue = app.run()
-        # for event in event_queue:
-        #     textbox.handle_event(event)
+        for event in event_queue:
+            slider.handle_event(event)
 
 
 if __name__ == "__main__":
