@@ -2,7 +2,6 @@ from utility import *
 from test_suite import *
 from pygame_utility import *
 
-
 # test area and scratch pad
 """
 test_lists = [
@@ -41,6 +40,7 @@ for i, vals in enumerate(test_lists[:30]):
 all_right = all(correct_answers)
 print("all correct", all_right)
 """
+
 
 def text_rect_and_line():
     title = "Testing Rect and Line classes"
@@ -153,7 +153,7 @@ def text_rect_and_line():
                 if (j + f) == m and (i - f) != 0:
                     d2 += m - 1
                 d2 += (n + m - 1)
-                print("i:", i, "| j:", j, "| v:", v, "| d1:", d1, "| d2:", d2, "| di:", (n+m-1))
+                print("i:", i, "| j:", j, "| v:", v, "| d1:", d1, "| d2:", d2, "| di:", (n + m - 1))
                 temp[i].append((i, j, v))
                 temp[j + n].append((i, j, v))
                 temp[d1].append((i, j, v))
@@ -300,7 +300,6 @@ def test_buttonbar():
 
 
 def test_phone_number():
-
     def n_rnd_ns(n, vals=tuple(range(10))):
         return "".join([str(random.choice(vals)) for i in range(n)])
 
@@ -329,7 +328,6 @@ def test_phone_number():
         n = str(n)
         textbox.set_text("+{} ({}) {}-{}".format(n[0], n[1: 4], n[4:7], n[7:]))
 
-
     app = PygameApplication("Phone Number Guess", 600, 550, auto_init=True)
     game = app.get_game()
     display = app.display
@@ -339,9 +337,11 @@ def test_phone_number():
     r_txt = Rect(r_lbl.left + 6, r_lbl.bottom + 5, r1.width - 4, r1.height - 4)
     frame_main = VBox(game, display, None, r1, 1, HOTPINK)
     label = Label(game, display, r_lbl, "Is this your Phone Number?", fs=40)
-    textbox = TextBox(game, display, r_txt, ic=BROWN_3, ac=INDIGO, fc=GREEN, editable=False, draw_clear_btn=False, font_size=35, text_align="center", numeric=True, iaction=increment_phone_number, daction=decrement_phone_number)
-    #TODO allow TextBox to overwrite the inc and dec functions. ex inc on a phone number should produce phone#n => phone#n + 1.
-    #TODO allow TextBox to center text
+    textbox = TextBox(game, display, r_txt, ic=BROWN_3, ac=INDIGO, fc=GREEN, editable=False, draw_clear_btn=False,
+                      font_size=35, text_align="center", numeric=True, iaction=increment_phone_number,
+                      daction=decrement_phone_number)
+    # TODO allow TextBox to overwrite the inc and dec functions. ex inc on a phone number should produce phone#n => phone#n + 1.
+    # TODO allow TextBox to center text
     textbox.set_text(random_phone_number())
     btnbar = ButtonBar(game, display, r_txt, None, VIOLETRED, 1, is_horizontal=True)
     btnbar.add_button("Yes", FORESTGREEN, GREEN, phone_number_found)
@@ -364,7 +364,6 @@ def test_phone_number():
 
 
 def test_slider():
-
     app = PygameApplication("Phone Number Guess", 600, 550, auto_init=True)
     game = app.get_game()
     display = app.display
@@ -374,7 +373,7 @@ def test_slider():
     r_txt = Rect(r_lbl.left + 6, r_lbl.bottom + 5, r1.width - 4, r1.height - 4)
     frame_main = VBox(game, display, None, r1, 1, HOTPINK)
     label = Label(game, display, r_lbl, "Slider demo", fs=40)
-    slider = Slider(game, display, r1, slider_width=3, min_val=1, max_val=10, n_ticks=9, stick_to_ticks=True)
+    slider = Slider(game, display, r1, slider_width=3, min_val=-10, max_val=1000, n_ticks=100, stick_to_ticks=False)
     frame_main.add_contents(label, slider)
     while app.is_playing:
 
@@ -392,10 +391,18 @@ def test_slider():
             slider.handle_event(event)
 
 
+def test_reduce():
+    TS = TestSuite(test_func=[reduce], tests={"test": [[[1, 2, 3, 4, 5, 6], 0.33, "left"], [1, 2]]})
+    TS = TestSuite(test_func=reduce, tests=[[[1, 2, 3, 4, 5, 6], 0.33, "left"], [1, 2]])
+    print("TS after creation:\n\n", TS)
+    TS.execute()
+
+
 if __name__ == "__main__":
     blk_lst = [val for val in dir() if "BLK_" in val]
     print("\n\n\n".join([eval(blk)[1] for blk in blk_lst]))
     # test_TextBox()
     # test_buttonbar()
     # test_phone_number()
-    test_slider()
+    # test_slider()
+    test_reduce()

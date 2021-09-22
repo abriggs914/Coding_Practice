@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.13
-#	Date........2021-09-21
+#	Version...........1.14
+#	Date........2021-09-22
 #	Author....Avery Briggs
 
 
@@ -1607,16 +1607,21 @@ class Slider(Widget):
         self.slider_radius = slider_radius
         self.locked = locked
         self.lbl_format = lbl_format
+        self.dragging = False
+
+    def get_val(self):
+        return self.slider_val
 
     def get_slider_rect(self):
         return self.rect_obj.scaled(0.95, 0.5).translated(self.rect.width * 0.025, self.rect.height * 0.25)
 
     def handle_event(self, event):
         if not self.locked:
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == self.game.MOUSEBUTTONDOWN:
                 # val = self.slider_val
                 # If the user clicked on the input_box rect.
                 if self.rect.collidepoint(event.pos):
+                    self.dragging = True
                     slider_rect = self.get_slider_rect()
                     x, y = event.pos
                     if slider_rect.collide_point(x, y):
@@ -1644,6 +1649,34 @@ class Slider(Widget):
                     self.slider_val = clamp(self.min_val, val, self.max_val)
                     # print("new val:", self.slider_val, "v", val)
                 # Change the current color of the input box.
+            elif event.type == pygame.MOUSEMOTION:
+                if self.dragging:
+                    # val = self.slider_val
+                    # If the user clicked on the input_box rect.
+                    if self.rect.collidepoint(event.pos):
+                        slider_rect = self.get_slider_rect()
+                        x, y = event.pos
+                        x -= (slider_rect.x - self.rect.x)
+                        # if slider_rect.collide_point(x, y):
+                        #     val = ((x / slider_rect.width) * (self.max_val - self.min_val)) + self.min_val - 1
+                        # else:
+                        val = ((x / slider_rect.width) * (self.max_val - self.min_val)) + self.min_val - 1
+                        if self.stick_to_ticks:
+                            ticks = [i for i in range(self.min_val, self.max_val + 1)]
+                            best_val = None, None
+                            t = self.min_val
+                            for t in ticks:
+                                if best_val[0] is None or abs(val - t) < best_val[1]:
+                                    best_val = t, abs(val - t)
+                                # print("val:", val, "t", t, "best_val:", best_val, "abs(val - t):", abs(val - t), "abs(best_val - t):", abs(best_val[1] - t))
+                            val = best_val[0]
+                        self.slider_val = clamp(self.min_val, val, self.max_val)
+                        # print("new val:", self.slider_val, "v", val)
+                    # Change the current color of the input box.
+            elif event.type == self.game.MOUSEBUTTONUP:
+                if event.button == 1:
+                    self.dragging = False
+
 
     def draw(self):
         game = self.game
@@ -1658,6 +1691,7 @@ class Slider(Widget):
         game.draw.line(display, self.slider_colour, *line, self.slider_width)
         space = slider_rect.width / self.n_ticks
         xc = slider_rect.x + space
+        tick_labels = reduce(list(range(self.n_ticks - 1)), "")
         for i, t in enumerate(range(self.n_ticks - 1)):
             game.draw.line(display, self.slider_colour, (xc, line.y1 - 5), (xc, line.y1 + 5), minor_tick_width)
             lbl = round((((i + 1) / self.n_ticks) * (self.max_val - self.min_val)) + self.min_val, 2)

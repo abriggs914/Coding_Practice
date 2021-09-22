@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.19
-	Date...........2021-09-20
+	Version..............1.20
+	Date...........2021-09-22
 	Author.......Avery Briggs
 """
 
@@ -666,6 +666,32 @@ def distance(start, end):
 
 def dot_product(a, b):
     return (a[0] * b[0]) + (b[0] * b[1])
+
+
+def reduce(lst, p, how="left"):
+    if not isinstance(how, str):
+        how = str(how)
+    how = how.lower()
+    if how not in ["left", "center", "right", "distributed"]:
+        how = "distributed"
+
+    l = len(lst)
+    n_items = ceil(l * p)
+    if n_items <= 0:
+        return []
+
+    if how == "left":
+        return lst[:n_items + 1]
+    elif how == "center":
+        a = (l - n_items) // 2
+        b = (l + n_items) // 2
+        if l % 2 == 1:
+            b += 1
+        return lst[a:b]
+    elif how == "right":
+        return lst[n_items:]
+    else:
+        return lst
 
 
 class Line:
