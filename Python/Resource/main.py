@@ -390,17 +390,29 @@ def test_slider():
         for event in event_queue:
             slider.handle_event(event)
 
+def test_block_letters():
+    blk_lst = [val for val in dir() if "BLK_" in val]
+    print("\n\n\n".join([eval(blk)[1] for blk in blk_lst]))
+
 
 def test_reduce():
-    TS = TestSuite(test_func=[reduce], tests={"test": [[[1, 2, 3, 4, 5, 6], 0.33, "left"], [1, 2]]})
-    TS = TestSuite(test_func=reduce, tests=[[[1, 2, 3, 4, 5, 6], 0.33, "left"], [1, 2]])
+    # TS = TestSuite(test_func=[reduce], tests={"test": [[[1, 2, 3, 4, 5, 6], 0.33, "left"], [1, 2]]})
+    # TS = TestSuite(test_func=reduce, tests=[[[1, 2, 3, 4, 5, 6], 0.33, "left"], [1, 2]])
+    TS = TestSuite()
+    TS.set_func(reduce)
+    TS.add_test("Test left 1", [[[1, 2, 3, 4, 5, 6], 0.33, "left"], [1, 2]])
+    TS.add_test("Test right 1", [[[1, 2, 3, 4, 5, 6], 0.33, "right"], [5, 6]])
+    TS.add_test("Test center 1", [[[1, 2, 3, 4, 5, 6], 0.33, "center"], [3, 4]])
+    TS.add_test("Test distributed 1", [[[1, 2, 3, 4, 5, 6], 0.33, "distributed"], [1, 4]])
+    TS.add_test("Test distributed 2", [[[1, 2, 3, 4, 5, 6], 0.5, "distributed"], [1, 3, 5]])
+    TS.add_test("Test center 2", [[list(range(-15, 48, 3)), 0.5, "CENTER"], list(range(0, 33, 3))])
     print("TS after creation:\n\n", TS)
-    TS.execute()
+    # TS.execute()
+    TS.execute_log()
 
 
 if __name__ == "__main__":
-    blk_lst = [val for val in dir() if "BLK_" in val]
-    print("\n\n\n".join([eval(blk)[1] for blk in blk_lst]))
+    # test_block_letters()
     # test_TextBox()
     # test_buttonbar()
     # test_phone_number()

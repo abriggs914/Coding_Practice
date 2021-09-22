@@ -676,12 +676,12 @@ def reduce(lst, p, how="left"):
         how = "distributed"
 
     l = len(lst)
-    n_items = ceil(l * p)
+    n_items = round(l * p)
     if n_items <= 0:
         return []
 
     if how == "left":
-        return lst[:n_items + 1]
+        return lst[:n_items]
     elif how == "center":
         a = (l - n_items) // 2
         b = (l + n_items) // 2
@@ -689,9 +689,9 @@ def reduce(lst, p, how="left"):
             b += 1
         return lst[a:b]
     elif how == "right":
-        return lst[n_items:]
+        return lst[l - n_items:]
     else:
-        return lst
+        return lst[0: l: l // n_items]
 
 
 class Line:

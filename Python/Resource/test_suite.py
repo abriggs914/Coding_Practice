@@ -3,8 +3,8 @@ from utility import *
 
 """
 	General Test Suite Driver
-	Version............1.2
-	Date........2021-08-23
+	Version............1.3
+	Date........2021-09-22
 	Author....Avery Briggs
 """
 
@@ -70,7 +70,12 @@ def run_multiple_tests(tests_to_run):
         func, test_set = test
         num_tests += len(test_set)
         test_results_passed, test_results_failed = run_tests(func, test_set)
-        name = func.__name__ + " - line " + str(int(str(inspect.findsource(func)).split()[-1][
+        print("inspect.stack()", inspect.stack())
+        print("inspect.stack()[1]", inspect.stack()[1])
+        print("inspect.stack()[1][0]", inspect.stack()[1][0])
+        print("inspect.getmodule(inspect.stack()[1][0])", inspect.getmodule(inspect.stack()[1][0]))
+        print("inspect.getmodule(inspect.stack()[1][0]).__file__", inspect.getmodule(inspect.stack()[1][0]).__file__)
+        name = func.__name__ + inspect.getmodule(inspect.stack()[1][0]).__file__ + " - line " + str(int(str(inspect.findsource(func)).split()[-1][
                                                     :-1]) + 1)  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
         if name not in failed_tests:
             failed_tests[name] = []
@@ -99,6 +104,7 @@ def run_multiple_tests(tests_to_run):
         print("\t\t-\t" + func + "\n\t\t\t>\t" + "\n\t\t\t>\t".join(
             test_name for test_name in failed_test_results) + "\n")
     print(border)
+    return passed_tests, failed_tests
 
 
 def func_def():
@@ -129,16 +135,18 @@ class TestSuite:
     ):
         self.tests = {}
         self.test_order = []
+        self.passed = None
+        self.failed = None
         if not isinstance(test_func, type(func_def)) and not isinstance(test_func, type(FOO_OBJ.f1)):
             print("Invalid \"test_func\" passed as an initializer to TestSuite.\n\tRequired type: {}\n\tOr: {}\n\tType found: {}".format(type(func_def), type(FOO_OBJ.f2), type(test_func)))
             test_func = None
         # list of un-labeled tests or dict of labeled tests.
         if not isinstance(tests, list) and not isinstance(tests, tuple) and not isinstance(tests, dict):
             tests = {}
-        # print("tests:", tests)
+        print("Tests:", tests)
         if isinstance(tests, list) or isinstance(tests, tuple):
             for tst in tests:
-                # print("tst:", tst)
+                print("tst:", tst)
                 if (not isinstance(tst, list) and not isinstance(tst, tuple)) or len(tst) != 2:
                     if isinstance(tst, dict):
                         raise TypeError(
@@ -201,8 +209,29 @@ class TestSuite:
         for k in keys:
             tests_to_run.append((self.test_func, {k: self.tests[k]}))
         # print("==Tests:\n\n","\n".join(list(map(str, tests_to_run))), "\n\n", tests_to_run)
-        run_multiple_tests(tests_to_run)
+        passed, failed = run_multiple_tests(tests_to_run)
 
+        if isinstance(self.passed, dict):
+            self.passed.clear()
+        elif self.passed is None:
+            self.passed = {}
+        if isinstance(self.failed, dict):
+            self.failed.clear()
+        elif self.failed is None:
+            self.failed = {}
+        self.passed.update(passed)
+        self.failed.update(failed)
+
+    def execute_log(self, exec=False):
+        if exec or (self.passed is None or self.failed is None):
+            self.execute()
+
+        lpass = sum([len(tst_lst) for key, tst_lst in self.passed.items()])
+        lfail = sum([len(tst_lst) for key, tst_lst in self.failed.items()])
+        pass_ratio = "{} / {}".format(lpass, len(self.tests))
+        fail_ratio = "{} / {}".format(lfail, len(self.tests))
+        print(dict_print(self.passed, "Passed Test Results ({})".format(pass_ratio)))
+        print(dict_print(self.failed, "Failed Test Results ({})".format(fail_ratio)))
 
     def __repr__(self):
         keys = ["test_func", "tests", "name"]
