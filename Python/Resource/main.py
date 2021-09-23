@@ -406,6 +406,7 @@ def test_reduce():
     TS.add_test("Test distributed 1", [[[1, 2, 3, 4, 5, 6], 0.33, "distributed"], [1, 4]])
     TS.add_test("Test distributed 2", [[[1, 2, 3, 4, 5, 6], 0.5, "distributed"], [1, 3, 5]])
     TS.add_test("Test center 2", [[list(range(-15, 48, 3)), 0.5, "CENTER"], list(range(0, 33, 3))])
+    TS.add_test("Test center 2", [[list(range(-15, 48, 3)), 1, "CENTER"], list(range(-15, 48, 3))])
     print("TS after creation:\n\n", TS)
     # TS.execute()
     TS.execute_log()

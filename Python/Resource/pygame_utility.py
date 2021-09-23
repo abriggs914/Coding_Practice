@@ -1616,6 +1616,8 @@ class Slider(Widget):
         return self.rect_obj.scaled(0.95, 0.5).translated(self.rect.width * 0.025, self.rect.height * 0.25)
 
     def get_tick_labels(self, lst_in=None, reduce_lst=False, p=0.5, how="distributed"):
+        if p == 0:
+            return []
         diff = self.max_val - self.min_val
         step = diff // self.n_ticks - 1
         if lst_in is not None:
@@ -1627,6 +1629,8 @@ class Slider(Widget):
             lst = [round((i * step) + self.min_val, 2) for i in range(self.n_ticks)]
         if reduce_lst:
             lst = reduce(lst, p, how)
+        if not lst:
+            return []
         last = self.max_val - lst[-1]
         lst[-1] += last
         return lst
@@ -1709,12 +1713,20 @@ class Slider(Widget):
         og_lbls = self.get_tick_labels()
         # og_lbls = [round((((i + 1) / self.n_ticks) * diff) + self.min_val, 2) for i in range(self.n_ticks - 1)]
 
-        tick_labels = self.get_tick_labels(og_lbls, True, 0.1, how="distributed")
+        total_lbl_width = sum([self.font.size(str(lbl))[0] for lbl in og_lbls])
+        # print("BEGIN TTL:", total_lbl_width)
+        p = 1
+        tick_labels = self.get_tick_labels(og_lbls, True, p, how="distributed")
+        while total_lbl_width > slider_rect.width:
+            # print("P:", p, "w:", total_lbl_width)
+            p -= 0.01
+            tick_labels = self.get_tick_labels(og_lbls, True, p, how="distributed")
+            total_lbl_width = sum([self.font.size(str(lbl))[0] for lbl in tick_labels])
 
         n_ticks = len(tick_labels) - 1
         space = slider_rect.width / n_ticks
         xc = slider_rect.x + space
-        print("og_lbls:", og_lbls, "\ntick_lbls:", tick_labels)
+        # print("og_lbls:", og_lbls, "\ntick_lbls:", tick_labels)
         for i, t in enumerate(range(n_ticks)):
             game.draw.line(display, self.slider_colour, (xc, line.y1 - 5), (xc, line.y1 + 5), minor_tick_width)
             # lbl = round((((i + 1) / self.n_ticks) * diff) + self.min_val, 2)
