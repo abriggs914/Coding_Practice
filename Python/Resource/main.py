@@ -416,5 +416,5 @@ if __name__ == "__main__":
     # test_TextBox()
     # test_buttonbar()
     # test_phone_number()
-    # test_slider()
-    test_reduce()
+    test_slider()
+    # test_reduce()

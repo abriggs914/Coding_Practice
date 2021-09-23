@@ -32,6 +32,22 @@ def run_tests(func, test_set):
         div = "".join(["-" for i in range(w // 2 - len(work_above) // 2)])
         print(div + work_below + div)
         result = func(*args)
+
+        stk = inspect.stack()
+        # print("XX inspect.stack()  ", stk)
+        # print("XX A utility.py in :", str(stk)[:str(stk).index("\\utility.py")])
+        # print("XX B utility.py in :", ("utility.py" in str(stk)))
+        # print("XX C utility.py in :", ("\\utility.py" in str(stk)))
+        # print("XX D utility.py in :", str(stk).index("\\utility.py"))
+        # print("XX E utility.py in :", str(stk)[str(stk).index("\\utility.py"):])
+        # print("XX inspect.stack()[1]", stk[1])
+        # print("XX inspect.stack()[1][0]", stk[1][0])
+        # print("XX inspect.getmodule(inspect.stack()[1][0])", inspect.getmodule(stk[1][0]))
+        # print("XX inspect.getmodule(inspect.stack()[1][0]).__file__", inspect.getmodule(stk[1][0]).__file__)
+        # name = func.__name__ + inspect.getmodule(stk[1][0]).__file__ + " - line " + str(
+        #     int(str(inspect.findsource(func)).split()[-1][
+        #         :-1]) + 1)  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
+
         print(div + work_above + div)
         is_desired_result = (result == desired_answer)
 
@@ -70,12 +86,20 @@ def run_multiple_tests(tests_to_run):
         func, test_set = test
         num_tests += len(test_set)
         test_results_passed, test_results_failed = run_tests(func, test_set)
-        print("inspect.stack()", inspect.stack())
-        print("inspect.stack()[1]", inspect.stack()[1])
-        print("inspect.stack()[1][0]", inspect.stack()[1][0])
-        print("inspect.getmodule(inspect.stack()[1][0])", inspect.getmodule(inspect.stack()[1][0]))
-        print("inspect.getmodule(inspect.stack()[1][0]).__file__", inspect.getmodule(inspect.stack()[1][0]).__file__)
-        name = func.__name__ + inspect.getmodule(inspect.stack()[1][0]).__file__ + " - line " + str(int(str(inspect.findsource(func)).split()[-1][
+        stk = inspect.stack()
+        # print("inspect.stack()  ", stk)
+        # print("A utility.py in :", str(stk)[:str(stk).index("\\utility.py")])
+        # print("B utility.py in :", ("utility.py" in str(stk)))
+        # print("C utility.py in :", ("\\utility.py" in str(stk)))
+        # print("D utility.py in :", str(stk).index("\\utility.py"))
+        # print("E utility.py in :", str(stk)[str(stk).index("\\utility.py"):])
+        # print("inspect.stack()[1]", stk[1])
+        # print("inspect.stack()[1][0]", stk[1][0])
+        # print("inspect.getmodule(inspect.stack()[1][0])", inspect.getmodule(stk[1][0]))
+        # print("inspect.getmodule(inspect.stack()[1][0]).__file__", inspect.getmodule(stk[1][0]).__file__)
+        # name = func.__name__ + inspect.getmodule(stk[1][0]).__file__ + " - line " + str(int(str(inspect.findsource(func)).split()[-1][
+        #                                             :-1]) + 1)  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
+        name = func.__name__ + " - line " + str(int(str(inspect.findsource(func)).split()[-1][
                                                     :-1]) + 1)  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
         if name not in failed_tests:
             failed_tests[name] = []

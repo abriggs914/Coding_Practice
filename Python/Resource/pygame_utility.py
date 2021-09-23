@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.14
-#	Date........2021-09-22
+#	Version...........1.15
+#	Date........2021-09-23
 #	Author....Avery Briggs
 
 
@@ -1615,6 +1615,22 @@ class Slider(Widget):
     def get_slider_rect(self):
         return self.rect_obj.scaled(0.95, 0.5).translated(self.rect.width * 0.025, self.rect.height * 0.25)
 
+    def get_tick_labels(self, lst_in=None, reduce_lst=False, p=0.5, how="distributed"):
+        diff = self.max_val - self.min_val
+        step = diff // self.n_ticks - 1
+        if lst_in is not None:
+            lst = lst_in
+        else:
+            # lst = list(range(self.min_val, self.max_val, step))
+            # lst = [round((((i + 1) / self.n_ticks) * diff) + self.min_val, 2) for i in range(self.min_val, self.max_val, step)]
+            # lst = [round((i * step) + self.min_val, 2) for i in range(self.min_val, self.max_val, step)]
+            lst = [round((i * step) + self.min_val, 2) for i in range(self.n_ticks)]
+        if reduce_lst:
+            lst = reduce(lst, p, how)
+        last = self.max_val - lst[-1]
+        lst[-1] += last
+        return lst
+
     def handle_event(self, event):
         if not self.locked:
             if event.type == self.game.MOUSEBUTTONDOWN:
@@ -1689,12 +1705,20 @@ class Slider(Widget):
         minor_tick_width = max(1, self.slider_width - 1)
         major_tick_width = max(1, self.slider_width)
         game.draw.line(display, self.slider_colour, *line, self.slider_width)
-        space = slider_rect.width / self.n_ticks
+        diff = self.max_val - self.min_val
+        og_lbls = self.get_tick_labels()
+        # og_lbls = [round((((i + 1) / self.n_ticks) * diff) + self.min_val, 2) for i in range(self.n_ticks - 1)]
+
+        tick_labels = self.get_tick_labels(og_lbls, True, 0.1, how="distributed")
+
+        n_ticks = len(tick_labels) - 1
+        space = slider_rect.width / n_ticks
         xc = slider_rect.x + space
-        tick_labels = reduce(list(range(self.n_ticks - 1)), "")
-        for i, t in enumerate(range(self.n_ticks - 1)):
+        print("og_lbls:", og_lbls, "\ntick_lbls:", tick_labels)
+        for i, t in enumerate(range(n_ticks)):
             game.draw.line(display, self.slider_colour, (xc, line.y1 - 5), (xc, line.y1 + 5), minor_tick_width)
-            lbl = round((((i + 1) / self.n_ticks) * (self.max_val - self.min_val)) + self.min_val, 2)
+            # lbl = round((((i + 1) / self.n_ticks) * diff) + self.min_val, 2)
+            lbl = og_lbls[i]
             if i < len(self.labels):
                 lbl = self.labels[i]
             if self.lbl_format is not None:
@@ -1722,7 +1746,7 @@ class Slider(Widget):
             write_text(game, display, Rect(slider_rect.right - 12, line.y1 - 30, 24, 24), max_val, self.font, None,
                    self.tick_colour, True)
 
-        slider_x = (((self.slider_val - 1) / (self.max_val - self.min_val)) * slider_rect.width) + slider_rect.x
+        slider_x = (((self.slider_val - 1) / diff) * slider_rect.width) + slider_rect.x
         game.draw.circle(display, self.slider_border_colour, (slider_x, line.y1), self.slider_radius + 2)
         game.draw.circle(display, self.slider_colour, (slider_x, line.y1), self.slider_radius)
 

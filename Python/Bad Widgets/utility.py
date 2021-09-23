@@ -7,8 +7,8 @@ import sys
 
 """
 	General Utility Functions
-	Version..............1.18
-	Date...........2021-09-18
+	Version..............1.20
+	Date...........2021-09-22
 	Author.......Avery Briggs
 """
 
@@ -668,6 +668,32 @@ def dot_product(a, b):
     return (a[0] * b[0]) + (b[0] * b[1])
 
 
+def reduce(lst, p, how="left"):
+    if not isinstance(how, str):
+        how = str(how)
+    how = how.lower()
+    if how not in ["left", "center", "right", "distributed"]:
+        how = "distributed"
+
+    l = len(lst)
+    n_items = round(l * p)
+    if n_items <= 0:
+        return []
+
+    if how == "left":
+        return lst[:n_items]
+    elif how == "center":
+        a = (l - n_items) // 2
+        b = (l + n_items) // 2
+        if l % 2 == 1:
+            b += 1
+        return lst[a:b]
+    elif how == "right":
+        return lst[l - n_items:]
+    else:
+        return lst[0: l: l // n_items]
+
+
 class Line:
     def __init__(self, x1, y1, x2, y2):
         self.x1 = x1
@@ -735,6 +761,11 @@ class Line:
         r = Line(self.x1, self.y1, self.x2, self.y2)
         r.translate(x, y)
         return r
+
+    def __iter__(self):
+        lst = [self.p1, self.p2]
+        for val in lst:
+            yield val
 
     def __repr__(self):
         if self.m == "undefined":

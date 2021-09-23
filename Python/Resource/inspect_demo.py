@@ -1,4 +1,5 @@
 import inspect
+import traceback
 
 def foo(a, b):
 	try:
@@ -31,3 +32,7 @@ module = inspect.getmodule(frame[0])
 print("module:", module)
 filename = module.__file__
 print("filename:", filename)
+import math
+
+x = math.sin(1)
+print(traceback.format_stack())
