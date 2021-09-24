@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.15
-#	Date........2021-09-23
+#	Version...........1.16
+#	Date........2021-09-24
 #	Author....Avery Briggs
 
 
@@ -1608,6 +1608,7 @@ class Slider(Widget):
         self.locked = locked
         self.lbl_format = lbl_format
         self.dragging = False
+        self.tick_labels = []
 
     def get_val(self):
         return self.slider_val
@@ -1615,7 +1616,7 @@ class Slider(Widget):
     def get_slider_rect(self):
         return self.rect_obj.scaled(0.95, 0.5).translated(self.rect.width * 0.025, self.rect.height * 0.25)
 
-    def get_tick_labels(self, lst_in=None, reduce_lst=False, p=0.5, how="distributed"):
+    def gen_tick_labels(self, lst_in=None, reduce_lst=False, p=0.5, how="distributed"):
         if p == 0:
             return []
         diff = self.max_val - self.min_val
@@ -1658,7 +1659,7 @@ class Slider(Widget):
                             print("c:", val)
                     if self.stick_to_ticks:
                         space = slider_rect.width / self.n_ticks
-                        ticks = [i for i in range(self.min_val, self.max_val)]
+                        ticks = self.tick_labels
                         best_val = None, None
                         t = self.min_val
                         for t in ticks:
@@ -1667,7 +1668,7 @@ class Slider(Widget):
                             # print("val:", val, "t", t, "best_val:", best_val, "abs(val - t):", abs(val - t), "abs(best_val - t):", abs(best_val[1] - t))
                         val = best_val[0]
                     self.slider_val = clamp(self.min_val, val, self.max_val)
-                    # print("new val:", self.slider_val, "v", val)
+                    print("new val:", self.slider_val, "v", val)
                 # Change the current color of the input box.
             elif event.type == pygame.MOUSEMOTION:
                 if self.dragging:
@@ -1710,19 +1711,20 @@ class Slider(Widget):
         major_tick_width = max(1, self.slider_width)
         game.draw.line(display, self.slider_colour, *line, self.slider_width)
         diff = self.max_val - self.min_val
-        og_lbls = self.get_tick_labels()
+        og_lbls = self.gen_tick_labels()
         # og_lbls = [round((((i + 1) / self.n_ticks) * diff) + self.min_val, 2) for i in range(self.n_ticks - 1)]
 
         total_lbl_width = sum([self.font.size(str(lbl))[0] for lbl in og_lbls])
         # print("BEGIN TTL:", total_lbl_width)
         p = 1
-        tick_labels = self.get_tick_labels(og_lbls, True, p, how="distributed")
+        tick_labels = self.gen_tick_labels(og_lbls, True, p, how="distributed")
         while total_lbl_width > slider_rect.width:
             # print("P:", p, "w:", total_lbl_width)
             p -= 0.01
-            tick_labels = self.get_tick_labels(og_lbls, True, p, how="distributed")
+            tick_labels = self.gen_tick_labels(og_lbls, True, p, how="distributed")
             total_lbl_width = sum([self.font.size(str(lbl))[0] for lbl in tick_labels])
 
+        self.tick_labels = tick_labels
         n_ticks = len(tick_labels) - 1
         space = slider_rect.width / n_ticks
         xc = slider_rect.x + space

@@ -390,6 +390,7 @@ def test_slider():
         for event in event_queue:
             slider.handle_event(event)
 
+
 def test_block_letters():
     blk_lst = [val for val in dir() if "BLK_" in val]
     print("\n\n\n".join([eval(blk)[1] for blk in blk_lst]))
@@ -412,10 +413,62 @@ def test_reduce():
     TS.execute_log()
 
 
+def test_directions():
+    t_arr = (
+        (1, 2, 3),
+        (4, 5, 6),
+        (7, 8, 9)
+    )
+
+    def get_ij(arr, i, j):
+        if not 0 <= i < len(arr):
+            return None
+        if not 0 <= i < len(arr[i]):
+            return None
+        return arr[i][j]
+
+    def test_ij(direction, start_i=0, start_j=0, arr=t_arr):
+        direction = DIRECTIONS[direction]
+        i = direction["i"]
+        j = direction["j"]
+        return get_ij(arr, start_i + i, start_j + j)
+
+    def test_xy(direction, start_y=0, start_x=0, arr=t_arr):
+        direction = DIRECTIONS[direction]
+        x = direction["x"]
+        y = direction["y"]
+        return get_ij(arr, start_y + y, start_x + x)
+
+    TS1 = TestSuite()
+    TS1.set_func(test_ij)
+    TS1.add_test("Test North from arr[1][1]", [["N", 1, 1], 2])
+    TS1.add_test("Test South from arr[1][1]", [["S", 1, 1], 8])
+    TS1.add_test("Test East from arr[1][1]", [["E", 1, 1], 4])
+    TS1.add_test("Test West from arr[1][1]", [["W", 1, 1], 6])
+    TS1.add_test("Test North-East from arr[1][1]", [["NE", 1, 1], 1])
+    TS1.add_test("Test North-West from arr[1][1]", [["NW", 1, 1], 3])
+    TS1.add_test("Test South-East from arr[1][1]", [["SE", 1, 1], 7])
+    TS1.add_test("Test South-West from arr[1][1]", [["SW", 1, 1], 9])
+    TS1.execute_log(True)
+
+    TS2 = TestSuite()
+    TS2.set_func(test_xy)
+    TS2.add_test("Test North from arr[1][1]", [["N", 1, 1], 2])
+    TS2.add_test("Test South from arr[1][1]", [["S", 1, 1], 8])
+    TS2.add_test("Test East from arr[1][1]", [["E", 1, 1], 4])
+    TS2.add_test("Test West from arr[1][1]", [["W", 1, 1], 6])
+    TS2.add_test("Test North-East from arr[1][1]", [["NE", 1, 1], 1])
+    TS2.add_test("Test North-West from arr[1][1]", [["NW", 1, 1], 3])
+    TS2.add_test("Test South-East from arr[1][1]", [["SE", 1, 1], 7])
+    TS2.add_test("Test South-West from arr[1][1]", [["SW", 1, 1], 9])
+    TS2.execute_log(True)
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
     # test_buttonbar()
     # test_phone_number()
-    test_slider()
     # test_reduce()
+    # test_slider()
+    test_directions()
