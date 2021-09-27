@@ -108,13 +108,16 @@ class RoadWay:
             print("\t\tearly exit")
             return False
         # check car crashes
+        self.check_car_crash(car, strictly_inside)
+        return True
+
+    def check_car_crash(self, car, strictly_inside=False):
         for c in self.car_queue:
             if c != car:
                 if c.rect.collide_rect(car.rect, strictly_inside=strictly_inside):
                     print("\t\tlate exit\nCar: {}\n\tcollides with:\n{}".format(car, c))
                     print("Car Queue:\n\t{}".format("\n\t".join([str(cc) for cc in self.car_queue])))
                     return False
-        return True
 
     def spawn_car(self, game, display, id_num, colour, name=None, img_path=None, is_circle=True, speed=1, acceleration=0, radius=None, width=None, height=None, center=None):
         # print("lane_mode:", self.lane_mode, "centre_side: ", self.centre_side)
@@ -281,9 +284,18 @@ class RoadWay:
             x_inc = (DIRECTIONS[self.direction[1]]["x"] * car.speed * tick) + (0.5 * car.acceleration * (tick ** 2))
             y_inc = (DIRECTIONS[self.direction[1]]["y"] * car.speed * tick) + (0.5 * car.acceleration * (tick ** 2))
             if car.acceleration != 0:
-                print("x_inc: {}, y_inc: {}".format(x_inc, y_inc))
-                print("BEFORE new speed: ", car.speed)
-                car.speed = ((car.speed ** 2) + (2 * car.acceleration * distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc)))) ** 0.5
+                # print("x_inc: {}, y_inc: {}".format(x_inc, y_inc))
+                # print("BEFORE new speed: ", car.speed)
+                # print("car.acceleration", car.acceleration)
+                # print("car.rect:", car.rect)
+                # print("(car.speed ** 2): ", (car.speed ** 2))
+                # print("(car.rect.x, car.rect.x + x_inc)", (car.rect.x, car.rect.x + x_inc))
+                # print("(car.rect.y, car.rect.y + y_inc)", (car.rect.y, car.rect.y + y_inc))
+                # print("distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc))", distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc)))
+                # print("(2 * car.acceleration * distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc)))", (2 * car.acceleration * distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc))))
+                # print("((car.speed ** 2) + (2 * car.acceleration * distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc))))", ((car.speed ** 2) + (2 * car.acceleration * distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc)))))
+                # print("((car.speed ** 2) + (2 * car.acceleration * distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc)))) ** 0.5", ((car.speed ** 2) + (2 * car.acceleration * distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc)))) ** 0.5)
+                car.speed = max(0, ((car.speed ** 2) + (2 * car.acceleration * distance((car.rect.x, car.rect.x + x_inc), (car.rect.y, car.rect.y + y_inc)))) ** 0.5)
                 print("AFTER new speed: ", car.speed)
             # print("A ({}, {})".format(x_inc, y_inc))
             # if x_inc < 1 or y_inc < 1:
@@ -312,6 +324,8 @@ class RoadWay:
                 self.car_queue.remove(car)
             # crash
             # check type of crash. with other car, or landscape
+            elif self.check_car_crash(car):
+                print("car crashed with another car")
             else:
                 print("i_tick_dist:", i_tick_dist, "j_tick_dist:", j_tick_dist)
                 print("CRASH!\nBy:\n\t{} \non road:\n\t{}".format(car, self))
