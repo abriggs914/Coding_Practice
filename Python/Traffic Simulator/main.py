@@ -311,6 +311,7 @@ class RoadWay:
                 print("EXITING SUCCESSFULLY:", car)
                 self.car_queue.remove(car)
             # crash
+            # check type of crash. with other car, or landscape
             else:
                 print("i_tick_dist:", i_tick_dist, "j_tick_dist:", j_tick_dist)
                 print("CRASH!\nBy:\n\t{} \non road:\n\t{}".format(car, self))

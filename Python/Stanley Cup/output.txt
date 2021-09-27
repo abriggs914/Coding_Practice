@@ -1,0 +1,1198 @@
+header ['Year', 'Winning Team', 'WCoach', 'Games', 'Losing Team', 'LCoach', 'Winning Goal']
+
+  --  Untitled  --
+
+    Year..................................1927
+    Winning Team...............Ottawa Senators
+    WCoach...........................Dave Gill
+    Games................................2–0–2
+    Losing Team..................Boston Bruins
+    LCoach............................Art Ross
+    Winning Goal.....Cy Denneny (7:30, second)
+
+
+  --  Untitled  --
+
+    Year....................................1928
+    Winning Team................New York Rangers
+    WCoach................Lester Patrick-playing
+    Games....................................3–2
+    Losing Team.................Montreal Maroons
+    LCoach..........................Eddie Gerard
+    Winning Goal.....Frank Boucher (3:35, third)
+
+
+  --  Untitled  --
+
+    Year...................................1929
+    Winning Team..................Boston Bruins
+    WCoach.............................Art Ross
+    Games...................................2–0
+    Losing Team................New York Rangers
+    LCoach.......................Lester Patrick
+    Winning Goal.....Bill Carson (18:02, third)
+
+
+  --  Untitled  --
+
+    Year....................................1930
+    Winning Team..............Montreal Canadiens
+    WCoach............................Cecil Hart
+    Games....................................2–0
+    Losing Team....................Boston Bruins
+    LCoach..............................Art Ross
+    Winning Goal.....Howie Morenz (1:00, second)
+
+
+  --  Untitled  --
+
+    Year.....................................1931
+    Winning Team...............Montreal Canadiens
+    WCoach.............................Cecil Hart
+    Games.....................................3–2
+    Losing Team...............Chicago Black Hawks
+    LCoach.............................Dick Irvin
+    Winning Goal.....Johnny Gagnon (9:59, second)
+
+
+  --  Untitled  --
+
+    Year..................................1932
+    Winning Team...........Toronto Maple Leafs
+    WCoach..........................Dick Irvin
+    Games..................................3–0
+    Losing Team...............New York Rangers
+    LCoach......................Lester Patrick
+    Winning Goal.....Ace Bailey (15:07, third)
+
+
+  --  Untitled  --
+
+    Year.............................1933
+    Winning Team.........New York Rangers
+    WCoach.................Lester Patrick
+    Games.............................3–1
+    Losing Team.......Toronto Maple Leafs
+    LCoach.....................Dick Irvin
+    Winning Goal.....Bill Cook (7:34, OT)
+
+
+  --  Untitled  --
+
+    Year......................................1934
+    Winning Team...............Chicago Black Hawks
+    WCoach............................Tommy Gorman
+    Games......................................3–1
+    Losing Team..................Detroit Red Wings
+    LCoach..............................Jack Adams
+    Winning Goal.....Mush March (10:05, second OT)
+
+
+  --  Untitled  --
+
+    Year........................................1935
+    Winning Team....................Montreal Maroons
+    WCoach..............................Tommy Gorman
+    Games........................................3–0
+    Losing Team..................Toronto Maple Leafs
+    LCoach................................Dick Irvin
+    Winning Goal.....Baldy Northcott (16:18, second)
+
+
+  --  Untitled  --
+
+    Year.................................1936
+    Winning Team............Detroit Red Wings
+    WCoach.........................Jack Adams
+    Games.................................3–1
+    Losing Team...........Toronto Maple Leafs
+    LCoach.........................Dick Irvin
+    Winning Goal.....Pete Kelly (9:45, third)
+
+
+  --  Untitled  --
+
+    Year...................................1937
+    Winning Team..............Detroit Red Wings
+    WCoach...........................Jack Adams
+    Games...................................3–2
+    Losing Team................New York Rangers
+    LCoach.......................Lester Patrick
+    Winning Goal.....Marty Barry (19:22, first)
+
+
+  --  Untitled  --
+
+    Year..................................1938
+    Winning Team...........Chicago Black Hawks
+    WCoach........................Bill Stewart
+    Games..................................3–1
+    Losing Team............Toronto Maple Leafs
+    LCoach..........................Dick Irvin
+    Winning Goal.....Carl Voss (16:45, second)
+
+
+  --  Untitled  --
+
+    Year.....................................1939
+    Winning Team....................Boston Bruins
+    WCoach...............................Art Ross
+    Games.....................................4–1
+    Losing Team...............Toronto Maple Leafs
+    LCoach.............................Dick Irvin
+    Winning Goal.....Roy Conacher (17:54, second)
+
+
+  --  Untitled  --
+
+    Year.................................1940
+    Winning Team.............New York Rangers
+    WCoach......................Frank Boucher
+    Games.................................4–2
+    Losing Team...........Toronto Maple Leafs
+    LCoach.........................Dick Irvin
+    Winning Goal.....Bryan Hextall (2:07, OT)
+
+
+  --  Untitled  --
+
+    Year...................................1941
+    Winning Team..................Boston Bruins
+    WCoach.......................Cooney Weiland
+    Games...................................4–0
+    Losing Team...............Detroit Red Wings
+    LCoach...........................Jack Adams
+    Winning Goal.....Bobby Bauer (8:43, second)
+
+
+  --  Untitled  --
+
+    Year....................................1942
+    Winning Team.............Toronto Maple Leafs
+    WCoach...............................Hap Day
+    Games....................................4–3
+    Losing Team................Detroit Red Wings
+    LCoach............................Jack Adams
+    Winning Goal.....Pete Langelle (9:48, third)
+
+
+  --  Untitled  --
+
+    Year...................................1943
+    Winning Team..............Detroit Red Wings
+    WCoach...........................Jack Adams
+    Games...................................4–0
+    Losing Team...................Boston Bruins
+    LCoach.............................Art Ross
+    Winning Goal.....Joe Carveth (12:09, first)
+
+
+  --  Untitled  --
+
+    Year.............................1944
+    Winning Team.......Montreal Canadiens
+    WCoach.....................Dick Irvin
+    Games.............................4–0
+    Losing Team.......Chicago Black Hawks
+    LCoach..................Paul Thompson
+    Winning Goal.....Toe Blake (9:12, OT)
+
+
+  --  Untitled  --
+
+    Year..................................1945
+    Winning Team...........Toronto Maple Leafs
+    WCoach.............................Hap Day
+    Games..................................4–3
+    Losing Team..............Detroit Red Wings
+    LCoach..........................Jack Adams
+    Winning Goal.....Babe Pratt (12:14, third)
+
+
+  --  Untitled  --
+
+    Year.................................1946
+    Winning Team...........Montreal Canadiens
+    WCoach.........................Dick Irvin
+    Games.................................4–1
+    Losing Team.................Boston Bruins
+    LCoach........................Dit Clapper
+    Winning Goal.....Toe Blake (11:06, third)
+
+
+  --  Untitled  --
+
+    Year...................................1947
+    Winning Team............Toronto Maple Leafs
+    WCoach..............................Hap Day
+    Games...................................4–2
+    Losing Team..............Montreal Canadiens
+    LCoach...........................Dick Irvin
+    Winning Goal.....Ted Kennedy (14:39, third)
+
+
+  --  Untitled  --
+
+    Year....................................1948
+    Winning Team.............Toronto Maple Leafs
+    WCoach...............................Hap Day
+    Games....................................4–0
+    Losing Team................Detroit Red Wings
+    LCoach............................Tommy Ivan
+    Winning Goal.....Harry Watson (11:13, first)
+
+
+  --  Untitled  --
+
+    Year....................................1949
+    Winning Team.............Toronto Maple Leafs
+    WCoach...............................Hap Day
+    Games....................................4–0
+    Losing Team................Detroit Red Wings
+    LCoach............................Tommy Ivan
+    Winning Goal.....Cal Gardner (19:45, second)
+
+
+  --  Untitled  --
+
+    Year.......................................1950
+    Winning Team..................Detroit Red Wings
+    WCoach...............................Tommy Ivan
+    Games.......................................4–3
+    Losing Team....................New York Rangers
+    LCoach.............................Lynn Patrick
+    Winning Goal.....Pete Babando (8:31, second OT)
+
+
+  --  Untitled  --
+
+    Year................................1951
+    Winning Team.........Toronto Maple Leafs
+    WCoach.......................Joe Primeau
+    Games................................4–1
+    Losing Team...........Montreal Canadiens
+    LCoach........................Dick Irvin
+    Winning Goal.....Bill Barilko (2:53, OT)
+
+
+  --  Untitled  --
+
+    Year....................................1952
+    Winning Team...............Detroit Red Wings
+    WCoach............................Tommy Ivan
+    Games....................................4–0
+    Losing Team...............Montreal Canadiens
+    LCoach............................Dick Irvin
+    Winning Goal.....Metro Prystai (6:50, first)
+
+
+  --  Untitled  --
+
+    Year..............................1953
+    Winning Team........Montreal Canadiens
+    WCoach......................Dick Irvin
+    Games..............................4–1
+    Losing Team..............Boston Bruins
+    LCoach....................Lynn Patrick
+    Winning Goal.....Elmer Lach (1:22, OT)
+
+
+  --  Untitled  --
+
+    Year................................1954
+    Winning Team...........Detroit Red Wings
+    WCoach........................Tommy Ivan
+    Games................................4–3
+    Losing Team...........Montreal Canadiens
+    LCoach........................Dick Irvin
+    Winning Goal.....Tony Leswick (4:20, OT)
+
+
+  --  Untitled  --
+
+    Year....................................1955
+    Winning Team...............Detroit Red Wings
+    WCoach.........................Jimmy Skinner
+    Games....................................4–3
+    Losing Team...............Montreal Canadiens
+    LCoach............................Dick Irvin
+    Winning Goal.....Gordie Howe (19:49, second)
+
+
+  --  Untitled  --
+
+    Year........................................1956
+    Winning Team..................Montreal Canadiens
+    WCoach.................................Toe Blake
+    Games........................................4–1
+    Losing Team....................Detroit Red Wings
+    LCoach.............................Jimmy Skinner
+    Winning Goal.....Maurice Richard (15:08, second)
+
+
+  --  Untitled  --
+
+    Year....................................1957
+    Winning Team..............Montreal Canadiens
+    WCoach.............................Toe Blake
+    Games....................................4–1
+    Losing Team....................Boston Bruins
+    LCoach..........................Milt Schmidt
+    Winning Goal.....Dickie Moore (0:14, second)
+
+
+  --  Untitled  --
+
+    Year.........................................1958
+    Winning Team...................Montreal Canadiens
+    WCoach..................................Toe Blake
+    Games.........................................4–2
+    Losing Team.........................Boston Bruins
+    LCoach...............................Milt Schmidt
+    Winning Goal.....Bernie Geoffrion (19:26, second)
+
+
+  --  Untitled  --
+
+    Year....................................1959
+    Winning Team..............Montreal Canadiens
+    WCoach.............................Toe Blake
+    Games....................................4–1
+    Losing Team..............Toronto Maple Leafs
+    LCoach..........................Punch Imlach
+    Winning Goal.....Marcel Bonin (9:55, second)
+
+
+  --  Untitled  --
+
+    Year....................................1960
+    Winning Team..............Montreal Canadiens
+    WCoach.............................Toe Blake
+    Games....................................4–0
+    Losing Team..............Toronto Maple Leafs
+    LCoach..........................Punch Imlach
+    Winning Goal.....Jean Beliveau (8:16, first)
+
+
+  --  Untitled  --
+
+    Year....................................1961
+    Winning Team.............Chicago Black Hawks
+    WCoach...........................Rudy Pilous
+    Games....................................4–2
+    Losing Team................Detroit Red Wings
+    LCoach..............................Sid Abel
+    Winning Goal.....Ab McDonald (18:49, second)
+
+
+  --  Untitled  --
+
+    Year.................................1962
+    Winning Team..........Toronto Maple Leafs
+    WCoach.......................Punch Imlach
+    Games.................................4–2
+    Losing Team...........Chicago Black Hawks
+    LCoach........................Rudy Pilous
+    Winning Goal.....Dick Duff (14:14, third)
+
+
+  --  Untitled  --
+
+    Year...................................1963
+    Winning Team............Toronto Maple Leafs
+    WCoach.........................Punch Imlach
+    Games...................................4–1
+    Losing Team...............Detroit Red Wings
+    LCoach.............................Sid Abel
+    Winning Goal.....Eddie Shack (13:28, third)
+
+
+  --  Untitled  --
+
+    Year....................................1964
+    Winning Team.............Toronto Maple Leafs
+    WCoach..........................Punch Imlach
+    Games....................................4–3
+    Losing Team................Detroit Red Wings
+    LCoach..............................Sid Abel
+    Winning Goal.....Andy Bathgate (3:04, first)
+
+
+  --  Untitled  --
+
+    Year....................................1965
+    Winning Team..............Montreal Canadiens
+    WCoach.............................Toe Blake
+    Games....................................4–3
+    Losing Team..............Chicago Black Hawks
+    LCoach............................Billy Reay
+    Winning Goal.....Jean Beliveau (0:14, first)
+
+
+  --  Untitled  --
+
+    Year.................................1966
+    Winning Team...........Montreal Canadiens
+    WCoach..........................Toe Blake
+    Games.................................4–2
+    Losing Team.............Detroit Red Wings
+    LCoach...........................Sid Abel
+    Winning Goal.....Henri Richard (2:20, OT)
+
+
+  --  Untitled  --
+
+    Year...................................1967
+    Winning Team............Toronto Maple Leafs
+    WCoach.........................Punch Imlach
+    Games...................................4–2
+    Losing Team..............Montreal Canadiens
+    LCoach............................Toe Blake
+    Winning Goal.....Jim Pappin (19:24, second)
+
+
+  --  Untitled  --
+
+    Year......................................1968
+    Winning Team................Montreal Canadiens
+    WCoach...............................Toe Blake
+    Games......................................4–0
+    Losing Team....................St. Louis Blues
+    LCoach...........................Scotty Bowman
+    Winning Goal.....J. C. Tremblay (11:40, third)
+
+
+  --  Untitled  --
+
+    Year....................................1969
+    Winning Team..............Montreal Canadiens
+    WCoach...........................Claude Ruel
+    Games....................................4–0
+    Losing Team..................St. Louis Blues
+    LCoach.........................Scotty Bowman
+    Winning Goal.....John Ferguson (3:02, third)
+
+
+  --  Untitled  --
+
+    Year.............................1970
+    Winning Team............Boston Bruins
+    WCoach...................Harry Sinden
+    Games.............................4–0
+    Losing Team...........St. Louis Blues
+    LCoach..................Scotty Bowman
+    Winning Goal.....Bobby Orr (0:40, OT)
+
+
+  --  Untitled  --
+
+    Year....................................1971
+    Winning Team..............Montreal Canadiens
+    WCoach............................Al MacNeil
+    Games....................................4–3
+    Losing Team..............Chicago Black Hawks
+    LCoach............................Billy Reay
+    Winning Goal.....Henri Richard (2:34, third)
+
+
+  --  Untitled  --
+
+    Year.................................1972
+    Winning Team................Boston Bruins
+    WCoach........................Tom Johnson
+    Games.................................4–2
+    Losing Team..............New York Rangers
+    LCoach......................Emile Francis
+    Winning Goal.....Bobby Orr (11:18, first)
+
+
+  --  Untitled  --
+
+    Year.....................................1973
+    Winning Team...............Montreal Canadiens
+    WCoach..........................Scotty Bowman
+    Games.....................................4–2
+    Losing Team...............Chicago Black Hawks
+    LCoach.............................Billy Reay
+    Winning Goal.....Yvan Cournoyer (8:13, third)
+
+
+  --  Untitled  --
+
+    Year.....................................1974
+    Winning Team..............Philadelphia Flyers
+    WCoach.............................Fred Shero
+    Games.....................................4–2
+    Losing Team.....................Boston Bruins
+    LCoach...........................Bep Guidolin
+    Winning Goal.....Rick MacLeish (14:48, first)
+
+
+  --  Untitled  --
+
+    Year................................1975
+    Winning Team.........Philadelphia Flyers
+    WCoach........................Fred Shero
+    Games................................4–2
+    Losing Team...............Buffalo Sabres
+    LCoach.......................Floyd Smith
+    Winning Goal.....Bob Kelly (0:11, third)
+
+
+  --  Untitled  --
+
+    Year...................................1976
+    Winning Team.............Montreal Canadiens
+    WCoach........................Scotty Bowman
+    Games...................................4–0
+    Losing Team.............Philadelphia Flyers
+    LCoach...........................Fred Shero
+    Winning Goal.....Guy Lafleur (14:18, third)
+
+
+  --  Untitled  --
+
+    Year...................................1977
+    Winning Team.............Montreal Canadiens
+    WCoach........................Scotty Bowman
+    Games...................................4–0
+    Losing Team...................Boston Bruins
+    LCoach...........................Don Cherry
+    Winning Goal.....Jacques Lemaire (4:32, OT)
+
+
+  --  Untitled  --
+
+    Year.....................................1978
+    Winning Team...............Montreal Canadiens
+    WCoach..........................Scotty Bowman
+    Games.....................................4–2
+    Losing Team.....................Boston Bruins
+    LCoach.............................Don Cherry
+    Winning Goal.....Mario Tremblay (9:20, first)
+
+
+  --  Untitled  --
+
+    Year.......................................1979
+    Winning Team.................Montreal Canadiens
+    WCoach............................Scotty Bowman
+    Games.......................................4–1
+    Losing Team....................New York Rangers
+    LCoach...............................Fred Shero
+    Winning Goal.....Jacques Lemaire (1:02, second)
+
+
+  --  Untitled  --
+
+    Year...............................1980
+    Winning Team.........New York Islanders
+    WCoach........................Al Arbour
+    Games...............................4–2
+    Losing Team.........Philadelphia Flyers
+    LCoach........................Pat Quinn
+    Winning Goal.....Bob Nystrom (7:11, OT)
+
+
+  --  Untitled  --
+
+    Year....................................1981
+    Winning Team..............New York Islanders
+    WCoach.............................Al Arbour
+    Games....................................4–1
+    Losing Team............Minnesota North Stars
+    LCoach...........................Glen Sonmor
+    Winning Goal.....Wayne Merrick (5:37, first)
+
+
+  --  Untitled  --
+
+    Year..................................1982
+    Winning Team............New York Islanders
+    WCoach...........................Al Arbour
+    Games..................................4–0
+    Losing Team..............Vancouver Canucks
+    LCoach.......................Roger Neilson
+    Winning Goal.....Mike Bossy (5:00, second)
+
+
+  --  Untitled  --
+
+    Year..................................1983
+    Winning Team............New York Islanders
+    WCoach...........................Al Arbour
+    Games..................................4–0
+    Losing Team................Edmonton Oilers
+    LCoach.........................Glen Sather
+    Winning Goal.....Mike Bossy (12:39, first)
+
+
+  --  Untitled  --
+
+    Year....................................1984
+    Winning Team.................Edmonton Oilers
+    WCoach...........................Glen Sather
+    Games....................................4–1
+    Losing Team...............New York Islanders
+    LCoach.............................Al Arbour
+    Winning Goal.....Ken Linseman (0:38, second)
+
+
+  --  Untitled  --
+
+    Year...................................1985
+    Winning Team................Edmonton Oilers
+    WCoach..........................Glen Sather
+    Games...................................4–1
+    Losing Team.............Philadelphia Flyers
+    LCoach..........................Mike Keenan
+    Winning Goal.....Paul Coffey (17:57, first)
+
+
+  --  Untitled  --
+
+    Year...................................1986
+    Winning Team.............Montreal Canadiens
+    WCoach..........................Jean Perron
+    Games...................................4–1
+    Losing Team..................Calgary Flames
+    LCoach..........................Bob Johnson
+    Winning Goal.....Bobby Smith (10:30, third)
+
+
+  --  Untitled  --
+
+    Year...................................1987
+    Winning Team................Edmonton Oilers
+    WCoach..........................Glen Sather
+    Games...................................4–3
+    Losing Team.............Philadelphia Flyers
+    LCoach..........................Mike Keenan
+    Winning Goal.....Jari Kurri (14:59, second)
+
+
+  --  Untitled  --
+
+    Year.....................................1988
+    Winning Team..................Edmonton Oilers
+    WCoach............................Glen Sather
+    Games.....................................4–0
+    Losing Team.....................Boston Bruins
+    LCoach.........................Terry O'Reilly
+    Winning Goal.....Wayne Gretzky (9:44, second)
+
+
+  --  Untitled  --
+
+    Year....................................1989
+    Winning Team..................Calgary Flames
+    WCoach...........................Terry Crisp
+    Games....................................4–2
+    Losing Team...............Montreal Canadiens
+    LCoach.............................Pat Burns
+    Winning Goal.....Doug Gilmour (11:02, third)
+
+
+  --  Untitled  --
+
+    Year.....................................1990
+    Winning Team..................Edmonton Oilers
+    WCoach...........................John Muckler
+    Games.....................................4–1
+    Losing Team.....................Boston Bruins
+    LCoach...........................Mike Milbury
+    Winning Goal.....Craig Simpson (9:31, second)
+
+
+  --  Untitled  --
+
+    Year.....................................1991
+    Winning Team..............Pittsburgh Penguins
+    WCoach............................Bob Johnson
+    Games.....................................4–2
+    Losing Team.............Minnesota North Stars
+    LCoach.............................Bob Gainey
+    Winning Goal.....Ulf Samuelsson (2:00, first)
+
+
+  --  Untitled  --
+
+    Year..................................1992
+    Winning Team...........Pittsburgh Penguins
+    WCoach.......................Scotty Bowman
+    Games..................................4–0
+    Losing Team.............Chicago Blackhawks
+    LCoach.........................Mike Keenan
+    Winning Goal.....Ron Francis (7:59, third)
+
+
+  --  Untitled  --
+
+    Year...................................1993
+    Winning Team.............Montreal Canadiens
+    WCoach.......................Jacques Demers
+    Games...................................4–1
+    Losing Team...............Los Angeles Kings
+    LCoach........................Barry Melrose
+    Winning Goal.....Kirk Muller (3:51, second)
+
+
+  --  Untitled  --
+
+    Year.....................................1994
+    Winning Team.................New York Rangers
+    WCoach............................Mike Keenan
+    Games.....................................4–3
+    Losing Team.................Vancouver Canucks
+    LCoach..............................Pat Quinn
+    Winning Goal.....Mark Messier (13:29, second)
+
+
+  --  Untitled  --
+
+    Year...................................1995
+    Winning Team..............New Jersey Devils
+    WCoach......................Jacques Lemaire
+    Games...................................4–0
+    Losing Team...............Detroit Red Wings
+    LCoach........................Scotty Bowman
+    Winning Goal.....Neal Broten (7:56, second)
+
+
+  --  Untitled  --
+
+    Year...................................1996
+    Winning Team.............Colorado Avalanche
+    WCoach........................Marc Crawford
+    Games...................................4–0
+    Losing Team................Florida Panthers
+    LCoach.........................Doug MacLean
+    Winning Goal.....Uwe Krupp (4:31, third OT)
+
+
+  --  Untitled  --
+
+    Year.......................................1997
+    Winning Team..................Detroit Red Wings
+    WCoach............................Scotty Bowman
+    Games.......................................4–0
+    Losing Team.................Philadelphia Flyers
+    LCoach.............................Terry Murray
+    Winning Goal.....Darren McCarty (13:02, second)
+
+
+  --  Untitled  --
+
+    Year.......................................1998
+    Winning Team..................Detroit Red Wings
+    WCoach............................Scotty Bowman
+    Games.......................................4–0
+    Losing Team.................Washington Capitals
+    LCoach...............................Ron Wilson
+    Winning Goal.....Martin Lapointe (2:26, second)
+
+
+  --  Untitled  --
+
+    Year.....................................1999
+    Winning Team.....................Dallas Stars
+    WCoach..........................Ken Hitchcock
+    Games.....................................4–2
+    Losing Team....................Buffalo Sabres
+    LCoach.............................Lindy Ruff
+    Winning Goal.....Brett Hull (14:51, third OT)
+
+
+  --  Untitled  --
+
+    Year.......................................2000
+    Winning Team..................New Jersey Devils
+    WCoach.................Larry Robinson (interim)
+    Games.......................................4–2
+    Losing Team........................Dallas Stars
+    LCoach............................Ken Hitchcock
+    Winning Goal.....Jason Arnott (8:20, second OT)
+
+
+  --  Untitled  --
+
+    Year....................................2001
+    Winning Team..............Colorado Avalanche
+    WCoach...........................Bob Hartley
+    Games....................................4–3
+    Losing Team................New Jersey Devils
+    LCoach........................Larry Robinson
+    Winning Goal.....Alex Tanguay (4:57, second)
+
+
+  --  Untitled  --
+
+    Year.........................................2002
+    Winning Team....................Detroit Red Wings
+    WCoach..............................Scotty Bowman
+    Games.........................................4–1
+    Losing Team...................Carolina Hurricanes
+    LCoach...............................Paul Maurice
+    Winning Goal.....Brendan Shanahan (14:04, second)
+
+
+  --  Untitled  --
+
+    Year....................................2003
+    Winning Team...............New Jersey Devils
+    WCoach.............................Pat Burns
+    Games....................................4–3
+    Losing Team..........Mighty Ducks of Anaheim
+    LCoach..........................Mike Babcock
+    Winning Goal.....Michael Rupp (2:22, second)
+
+
+  --  Untitled  --
+
+    Year.........................................2004
+    Winning Team..................Tampa Bay Lightning
+    WCoach............................John Tortorella
+    Games.........................................4–3
+    Losing Team........................Calgary Flames
+    LCoach..............................Darryl Sutter
+    Winning Goal.....Ruslan Fedotenko (14:38, second)
+
+
+  --  Untitled  --
+
+    Year.........................................2006
+    Winning Team..................Carolina Hurricanes
+    WCoach...........................Peter Laviolette
+    Games.........................................4–3
+    Losing Team.......................Edmonton Oilers
+    LCoach............................Craig MacTavish
+    Winning Goal.....Frantisek Kaberle (4:18, second)
+
+
+  --  Untitled  --
+
+    Year....................................2007
+    Winning Team...................Anaheim Ducks
+    WCoach.........................Randy Carlyle
+    Games....................................4–1
+    Losing Team..................Ottawa Senators
+    LCoach..........................Bryan Murray
+    Winning Goal.....Travis Moen (15:44, second)
+
+
+  --  Untitled  --
+
+    Year........................................2008
+    Winning Team...................Detroit Red Wings
+    WCoach..............................Mike Babcock
+    Games........................................4–2
+    Losing Team..................Pittsburgh Penguins
+    LCoach...........................Michel Therrien
+    Winning Goal.....Henrik Zetterberg (7:36, third)
+
+
+  --  Untitled  --
+
+    Year......................................2009
+    Winning Team...............Pittsburgh Penguins
+    WCoach..............................Dan Bylsma
+    Games......................................4–3
+    Losing Team..................Detroit Red Wings
+    LCoach............................Mike Babcock
+    Winning Goal.....Maxime Talbot (10:07, second)
+
+
+  --  Untitled  --
+
+    Year................................2010
+    Winning Team..........Chicago Blackhawks
+    WCoach..................Joel Quenneville
+    Games................................4–2
+    Losing Team..........Philadelphia Flyers
+    LCoach..................Peter Laviolette
+    Winning Goal.....Patrick Kane (4:06, OT)
+
+
+  --  Untitled  --
+
+    Year........................................2011
+    Winning Team.......................Boston Bruins
+    WCoach.............................Claude Julien
+    Games........................................4–3
+    Losing Team....................Vancouver Canucks
+    LCoach...........................Alain Vigneault
+    Winning Goal.....Patrice Bergeron (14:37, first)
+
+
+  --  Untitled  --
+
+    Year...................................2012
+    Winning Team..............Los Angeles Kings
+    WCoach........................Darryl Sutter
+    Games...................................4–2
+    Losing Team...............New Jersey Devils
+    LCoach.........................Peter DeBoer
+    Winning Goal.....Jeff Carter (12:45, first)
+
+
+  --  Untitled  --
+
+    Year....................................2013
+    Winning Team..............Chicago Blackhawks
+    WCoach......................Joel Quenneville
+    Games....................................4–2
+    Losing Team....................Boston Bruins
+    LCoach.........................Claude Julien
+    Winning Goal.....Dave Bolland (19:01, third)
+
+
+  --  Untitled  --
+
+    Year.........................................2014
+    Winning Team....................Los Angeles Kings
+    WCoach..............................Darryl Sutter
+    Games.........................................4–1
+    Losing Team......................New York Rangers
+    LCoach............................Alain Vigneault
+    Winning Goal.....Alec Martinez (14:43, second OT)
+
+
+  --  Untitled  --
+
+    Year.....................................2015
+    Winning Team...............Chicago Blackhawks
+    WCoach.......................Joel Quenneville
+    Games.....................................4–2
+    Losing Team...............Tampa Bay Lightning
+    LCoach.............................Jon Cooper
+    Winning Goal.....Duncan Keith (17:13, second)
+
+
+  --  Untitled  --
+
+    Year...................................2016
+    Winning Team............Pittsburgh Penguins
+    WCoach........................Mike Sullivan
+    Games...................................4–2
+    Losing Team.................San Jose Sharks
+    LCoach.........................Peter DeBoer
+    Winning Goal.....Kris Letang (7:46, second)
+
+
+  --  Untitled  --
+
+    Year........................................2017
+    Winning Team.................Pittsburgh Penguins
+    WCoach.............................Mike Sullivan
+    Games........................................4–2
+    Losing Team..................Nashville Predators
+    LCoach..........................Peter Laviolette
+    Winning Goal.....Patric Hornqvist (18:25, third)
+
+
+  --  Untitled  --
+
+    Year..................................2018
+    Winning Team...........Washington Capitals
+    WCoach.........................Barry Trotz
+    Games..................................4–1
+    Losing Team...........Vegas Golden Knights
+    LCoach......................Gerard Gallant
+    Winning Goal.....Lars Eller (12:23, third)
+
+
+  --  Untitled  --
+
+    Year........................................2019
+    Winning Team.....................St. Louis Blues
+    WCoach....................Craig Berube (interim)
+    Games........................................4–3
+    Losing Team........................Boston Bruins
+    LCoach.............................Bruce Cassidy
+    Winning Goal.....Alex Pietrangelo (19:52, first)
+
+
+  --  Untitled  --
+
+    Year.....................................2020
+    Winning Team..............Tampa Bay Lightning
+    WCoach.............................Jon Cooper
+    Games.....................................4–2
+    Losing Team......................Dallas Stars
+    LCoach.................Rick Bowness (interim)
+    Winning Goal.....Brayden Point (12:23, first)
+
+
+  --  Untitled  --
+
+    Year.....................................2021
+    Winning Team..............Tampa Bay Lightning
+    WCoach.............................Jon Cooper
+    Games.....................................4–1
+    Losing Team................Montreal Canadiens
+    LCoach...........Dominique Ducharme (interim)
+    Winning Goal......Ross Colton (13:27, second)
+
+
+  --  Data_By_Year  --
+
+                 | Year |    Winning Team     |          WCoach          | Games |       Losing Team       |            LCoach            |           Winning Goal           |
+    1995.........| 1995 |  New Jersey Devils  |     Jacques Lemaire      |  4–0  |    Detroit Red Wings    |        Scotty Bowman         |    Neal Broten (7:56, second)    |
+    1996.........| 1996 | Colorado Avalanche  |      Marc Crawford       |  4–0  |    Florida Panthers     |         Doug MacLean         |    Uwe Krupp (4:31, third OT)    |
+    1997.........| 1997 |  Detroit Red Wings  |      Scotty Bowman       |  4–0  |   Philadelphia Flyers   |         Terry Murray         |  Darren McCarty (13:02, second)  |
+    1998.........| 1998 |  Detroit Red Wings  |      Scotty Bowman       |  4–0  |   Washington Capitals   |          Ron Wilson          |  Martin Lapointe (2:26, second)  |
+    1999.........| 1999 |    Dallas Stars     |      Ken Hitchcock       |  4–2  |     Buffalo Sabres      |          Lindy Ruff          |   Brett Hull (14:51, third OT)   |
+    2000.........| 2000 |  New Jersey Devils  | Larry Robinson (interim) |  4–2  |      Dallas Stars       |        Ken Hitchcock         |  Jason Arnott (8:20, second OT)  |
+    2001.........| 2001 | Colorado Avalanche  |       Bob Hartley        |  4–3  |    New Jersey Devils    |        Larry Robinson        |   Alex Tanguay (4:57, second)    |
+    2002.........| 2002 |  Detroit Red Wings  |      Scotty Bowman       |  4–1  |   Carolina Hurricanes   |         Paul Maurice         | Brendan Shanahan (14:04, second) |
+    2003.........| 2003 |  New Jersey Devils  |        Pat Burns         |  4–3  | Mighty Ducks of Anaheim |         Mike Babcock         |   Michael Rupp (2:22, second)    |
+    2004.........| 2004 | Tampa Bay Lightning |     John Tortorella      |  4–3  |     Calgary Flames      |        Darryl Sutter         | Ruslan Fedotenko (14:38, second) |
+    2006.........| 2006 | Carolina Hurricanes |     Peter Laviolette     |  4–3  |     Edmonton Oilers     |       Craig MacTavish        | Frantisek Kaberle (4:18, second) |
+    2007.........| 2007 |    Anaheim Ducks    |      Randy Carlyle       |  4–1  |     Ottawa Senators     |         Bryan Murray         |   Travis Moen (15:44, second)    |
+    2008.........| 2008 |  Detroit Red Wings  |       Mike Babcock       |  4–2  |   Pittsburgh Penguins   |       Michel Therrien        | Henrik Zetterberg (7:36, third)  |
+    2009.........| 2009 | Pittsburgh Penguins |        Dan Bylsma        |  4–3  |    Detroit Red Wings    |         Mike Babcock         |  Maxime Talbot (10:07, second)   |
+    2010.........| 2010 | Chicago Blackhawks  |     Joel Quenneville     |  4–2  |   Philadelphia Flyers   |       Peter Laviolette       |     Patrick Kane (4:06, OT)      |
+    2011.........| 2011 |    Boston Bruins    |      Claude Julien       |  4–3  |    Vancouver Canucks    |       Alain Vigneault        | Patrice Bergeron (14:37, first)  |
+    2012.........| 2012 |  Los Angeles Kings  |      Darryl Sutter       |  4–2  |    New Jersey Devils    |         Peter DeBoer         |    Jeff Carter (12:45, first)    |
+    2013.........| 2013 | Chicago Blackhawks  |     Joel Quenneville     |  4–2  |      Boston Bruins      |        Claude Julien         |   Dave Bolland (19:01, third)    |
+    2014.........| 2014 |  Los Angeles Kings  |      Darryl Sutter       |  4–1  |    New York Rangers     |       Alain Vigneault        | Alec Martinez (14:43, second OT) |
+    2015.........| 2015 | Chicago Blackhawks  |     Joel Quenneville     |  4–2  |   Tampa Bay Lightning   |          Jon Cooper          |   Duncan Keith (17:13, second)   |
+    2016.........| 2016 | Pittsburgh Penguins |      Mike Sullivan       |  4–2  |     San Jose Sharks     |         Peter DeBoer         |    Kris Letang (7:46, second)    |
+    2017.........| 2017 | Pittsburgh Penguins |      Mike Sullivan       |  4–2  |   Nashville Predators   |       Peter Laviolette       | Patric Hornqvist (18:25, third)  |
+    2018.........| 2018 | Washington Capitals |       Barry Trotz        |  4–1  |  Vegas Golden Knights   |        Gerard Gallant        |    Lars Eller (12:23, third)     |
+    2019.........| 2019 |   St. Louis Blues   |  Craig Berube (interim)  |  4–3  |      Boston Bruins      |        Bruce Cassidy         | Alex Pietrangelo (19:52, first)  |
+    2020.........| 2020 | Tampa Bay Lightning |        Jon Cooper        |  4–2  |      Dallas Stars       |    Rick Bowness (interim)    |   Brayden Point (12:23, first)   |
+    2021.........| 2021 | Tampa Bay Lightning |        Jon Cooper        |  4–1  |   Montreal Canadiens    | Dominique Ducharme (interim) |   Ross Colton (13:27, second)    |
+
+
+  --  Data By Team  --
+
+                                    |              WYear               |      LYear       | appearances | W% (per appearance) | L% (per appearance) | Appearance % (1995 to 2021) | Appearance W% (1995 to 2021) | Appearance L% (1995 to 2021) |                 Anaheim Ducks                 |                 Boston Bruins                 |                Buffalo Sabres                 |                Calgary Flames                 |              Carolina Hurricanes              |              Chicago Blackhawks               |              Colorado Avalanche               |                 Dallas Stars                  |                  Detroit Red Wings                  |                Edmonton Oilers                |               Florida Panthers                |               Los Angeles Kings               |            Mighty Ducks of Anaheim            |              Montreal Canadiens               |              Nashville Predators              |               New Jersey Devils               |               New York Rangers                |                Ottawa Senators                |              Philadelphia Flyers              |                 Pittsburgh Penguins                 |                San Jose Sharks                |                St. Louis Blues                |              Tampa Bay Lightning              |               Vancouver Canucks               |             Vegas Golden Knights              |              Washington Capitals              |              greatest_rival               |           most_lost_to            |           most_won_against            |
+    New Jersey Devils...............|     ['1995', '2000', '2003']     | ['2001', '2012'] |      5      |         0.6         |         0.4         |           19.23 %           |           11.54 %            |            7.69 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2001']} | {'won_against': ['2000'], 'lost_against': []} |    {'won_against': ['1995'], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2012']} | {'won_against': ['2003'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |      ('Los Angeles Kings', ['2012'])      |  ('Los Angeles Kings', ['2012'])  | ('Mighty Ducks of Anaheim', ['2003']) |
+    Detroit Red Wings...............| ['1997', '1998', '2002', '2008'] | ['1995', '2009'] |      6      | 0.6666666666666666  | 0.3333333333333333  |           23.08 %           |           15.38 %            |            7.69 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2002'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['1995']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['1997'], 'lost_against': []} | {'won_against': ['2008'], 'lost_against': ['2009']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['1998'], 'lost_against': []} | ('Pittsburgh Penguins', ['2008', '2009']) | ('Pittsburgh Penguins', ['2009']) |   ('Pittsburgh Penguins', ['2008'])   |
+    Colorado Avalanche..............|         ['1996', '2001']         |        []        |      2      |         1.0         |         0.0         |           7.69 %            |            7.69 %            |            0.00 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    | {'won_against': ['1996'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2001'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |      ('New Jersey Devils', ['2001'])      |                                   |    ('New Jersey Devils', ['2001'])    |
+    Florida Panthers................|                []                |     ['1996']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['1996']} |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Colorado Avalanche', ['1996'])      | ('Colorado Avalanche', ['1996'])  |                                       |
+    Philadelphia Flyers.............|                []                | ['1997', '2010'] |      2      |         0.0         |         1.0         |           7.69 %            |            0.00 %            |            7.69 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2010']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': ['1997']}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Chicago Blackhawks', ['2010'])      | ('Chicago Blackhawks', ['2010'])  |                                       |
+    Washington Capitals.............|             ['2018']             |     ['1998']     |      2      |         0.5         |         0.5         |           7.69 %            |            3.85 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': ['1998']}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2018'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    ('Vegas Golden Knights', ['2018'])     |  ('Detroit Red Wings', ['1998'])  |  ('Vegas Golden Knights', ['2018'])   |
+    Dallas Stars....................|             ['1999']             | ['2000', '2020'] |      3      | 0.3333333333333333  | 0.6666666666666666  |           11.54 %           |            3.85 %            |            7.69 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['1999'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2000']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2020']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Tampa Bay Lightning', ['2020'])     | ('Tampa Bay Lightning', ['2020']) |     ('Buffalo Sabres', ['1999'])      |
+    Buffalo Sabres..................|                []                |     ['1999']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['1999']} |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |        ('Dallas Stars', ['1999'])         |    ('Dallas Stars', ['1999'])     |                                       |
+    Carolina Hurricanes.............|             ['2006']             |     ['2002']     |      2      |         0.5         |         0.5         |           7.69 %            |            3.85 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': ['2002']}    | {'won_against': ['2006'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       ('Edmonton Oilers', ['2006'])       |  ('Detroit Red Wings', ['2002'])  |     ('Edmonton Oilers', ['2006'])     |
+    Mighty Ducks of Anaheim.........|                []                |     ['2003']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2003']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |      ('New Jersey Devils', ['2003'])      |  ('New Jersey Devils', ['2003'])  |                                       |
+    Tampa Bay Lightning.............|     ['2004', '2020', '2021']     |     ['2015']     |      4      |        0.75         |        0.25         |           15.38 %           |           11.54 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2004'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2015']} |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2020'], 'lost_against': []} |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2021'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Montreal Canadiens', ['2021'])      | ('Chicago Blackhawks', ['2015'])  |   ('Montreal Canadiens', ['2021'])    |
+    Calgary Flames..................|                []                |     ['2004']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2004']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Tampa Bay Lightning', ['2004'])     | ('Tampa Bay Lightning', ['2004']) |                                       |
+    Edmonton Oilers.................|                []                |     ['2006']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2006']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Carolina Hurricanes', ['2006'])     | ('Carolina Hurricanes', ['2006']) |                                       |
+    Anaheim Ducks...................|             ['2007']             |        []        |      1      |         1.0         |         0.0         |           3.85 %            |            3.85 %            |            0.00 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2007'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       ('Ottawa Senators', ['2007'])       |                                   |     ('Ottawa Senators', ['2007'])     |
+    Ottawa Senators.................|                []                |     ['2007']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            | {'won_against': [], 'lost_against': ['2007']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |        ('Anaheim Ducks', ['2007'])        |    ('Anaheim Ducks', ['2007'])    |                                       |
+    Pittsburgh Penguins.............|     ['2009', '2016', '2017']     |     ['2008']     |      4      |        0.75         |        0.25         |           15.38 %           |           11.54 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2009'], 'lost_against': ['2008']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2017'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       | {'won_against': ['2016'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |  ('Detroit Red Wings', ['2009', '2008'])  |  ('Detroit Red Wings', ['2008'])  |   ('Nashville Predators', ['2017'])   |
+    Chicago Blackhawks..............|     ['2010', '2013', '2015']     |        []        |      3      |         1.0         |         0.0         |           11.54 %           |           11.54 %            |            0.00 %            |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2013'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2010'], 'lost_against': []} |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2015'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Tampa Bay Lightning', ['2015'])     |                                   |   ('Tampa Bay Lightning', ['2015'])   |
+    Boston Bruins...................|             ['2011']             | ['2013', '2019'] |      3      | 0.3333333333333333  | 0.6666666666666666  |           11.54 %           |            3.85 %            |            7.69 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2013']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2019']} |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2011'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       ('St. Louis Blues', ['2019'])       |   ('St. Louis Blues', ['2019'])   |    ('Vancouver Canucks', ['2011'])    |
+    Vancouver Canucks...............|                []                |     ['2011']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2011']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |        ('Boston Bruins', ['2011'])        |    ('Boston Bruins', ['2011'])    |                                       |
+    Los Angeles Kings...............|         ['2012', '2014']         |        []        |      2      |         1.0         |         0.0         |           7.69 %            |            7.69 %            |            0.00 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2012'], 'lost_against': []} | {'won_against': ['2014'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |      ('New York Rangers', ['2014'])       |                                   |    ('New York Rangers', ['2014'])     |
+    New York Rangers................|                []                |     ['2014']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2014']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |      ('Los Angeles Kings', ['2014'])      |  ('Los Angeles Kings', ['2014'])  |                                       |
+    San Jose Sharks.................|                []                |     ['2016']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': ['2016']}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Pittsburgh Penguins', ['2016'])     | ('Pittsburgh Penguins', ['2016']) |                                       |
+    Nashville Predators.............|                []                |     ['2017']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': ['2017']}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Pittsburgh Penguins', ['2017'])     | ('Pittsburgh Penguins', ['2017']) |                                       |
+    Vegas Golden Knights............|                []                |     ['2018']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2018']} |     ('Washington Capitals', ['2018'])     | ('Washington Capitals', ['2018']) |                                       |
+    St. Louis Blues.................|             ['2019']             |        []        |      1      |         1.0         |         0.0         |           3.85 %            |            3.85 %            |            0.00 %            |    {'won_against': [], 'lost_against': []}    | {'won_against': ['2019'], 'lost_against': []} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |        ('Boston Bruins', ['2019'])        |                                   |      ('Boston Bruins', ['2019'])      |
+    Montreal Canadiens..............|                []                |     ['2021']     |      1      |         0.0         |         1.0         |           3.85 %            |            0.00 %            |            3.85 %            |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |       {'won_against': [], 'lost_against': []}       |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    | {'won_against': [], 'lost_against': ['2021']} |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |    {'won_against': [], 'lost_against': []}    |     ('Tampa Bay Lightning', ['2021'])     | ('Tampa Bay Lightning', ['2021']) |                                       |
+
+parsed teams:
+ Anaheim Ducks
+Boston Bruins
+Buffalo Sabres
+Calgary Flames
+Carolina Hurricanes
+Chicago Blackhawks
+Colorado Avalanche
+Dallas Stars
+Detroit Red Wings
+Edmonton Oilers
+Florida Panthers
+Los Angeles Kings
+Mighty Ducks of Anaheim
+Montreal Canadiens
+Nashville Predators
+New Jersey Devils
+New York Rangers
+Ottawa Senators
+Philadelphia Flyers
+Pittsburgh Penguins
+San Jose Sharks
+St. Louis Blues
+Tampa Bay Lightning
+Vancouver Canucks
+Vegas Golden Knights
+Washington Capitals
+
+  --  Data By Team  --
+
+                                         |          WYear           |      LYear       | appearances | W% (per appearance) | L% (per appearance) | Appearance % (1995 to 2021) | Appearance W% (1995 to 2021) | Appearance L% (1995 to 2021) |
+    Jacques Lemaire......................|         ['1995']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Scotty Bowman........................| ['1997', '1998', '2002'] |     ['1995']     |      4      |       75.00 %       |       25.00 %       |     0.15384615384615385     |     0.11538461538461539      |     0.038461538461538464     |
+    Marc Crawford........................|         ['1996']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Doug MacLean.........................|            []            |     ['1996']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Terry Murray.........................|            []            |     ['1997']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Ron Wilson...........................|            []            |     ['1998']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Ken Hitchcock........................|         ['1999']         |     ['2000']     |      2      |       50.00 %       |       50.00 %       |     0.07692307692307693     |     0.038461538461538464     |     0.038461538461538464     |
+    Lindy Ruff...........................|            []            |     ['1999']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Larry Robinson (interim).............|         ['2000']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Bob Hartley..........................|         ['2001']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Larry Robinson.......................|            []            |     ['2001']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Paul Maurice.........................|            []            |     ['2002']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Pat Burns............................|         ['2003']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Mike Babcock.........................|         ['2008']         | ['2003', '2009'] |      3      |       33.33 %       |       66.67 %       |     0.11538461538461539     |     0.038461538461538464     |     0.07692307692307693      |
+    John Tortorella......................|         ['2004']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Darryl Sutter........................|     ['2012', '2014']     |     ['2004']     |      3      |       66.67 %       |       33.33 %       |     0.11538461538461539     |     0.07692307692307693      |     0.038461538461538464     |
+    Peter Laviolette.....................|         ['2006']         | ['2010', '2017'] |      3      |       33.33 %       |       66.67 %       |     0.11538461538461539     |     0.038461538461538464     |     0.07692307692307693      |
+    Craig MacTavish......................|            []            |     ['2006']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Randy Carlyle........................|         ['2007']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Bryan Murray.........................|            []            |     ['2007']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Michel Therrien......................|            []            |     ['2008']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Dan Bylsma...........................|         ['2009']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Joel Quenneville.....................| ['2010', '2013', '2015'] |        []        |      3      |      100.00 %       |       0.00 %        |     0.11538461538461539     |     0.11538461538461539      |             0.0              |
+    Claude Julien........................|         ['2011']         |     ['2013']     |      2      |       50.00 %       |       50.00 %       |     0.07692307692307693     |     0.038461538461538464     |     0.038461538461538464     |
+    Alain Vigneault......................|            []            | ['2011', '2014'] |      2      |       0.00 %        |      100.00 %       |     0.07692307692307693     |             0.0              |     0.07692307692307693      |
+    Peter DeBoer.........................|            []            | ['2012', '2016'] |      2      |       0.00 %        |      100.00 %       |     0.07692307692307693     |             0.0              |     0.07692307692307693      |
+    Jon Cooper...........................|     ['2020', '2021']     |     ['2015']     |      3      |       66.67 %       |       33.33 %       |     0.11538461538461539     |     0.07692307692307693      |     0.038461538461538464     |
+    Mike Sullivan........................|     ['2016', '2017']     |        []        |      2      |      100.00 %       |       0.00 %        |     0.07692307692307693     |     0.07692307692307693      |             0.0              |
+    Barry Trotz..........................|         ['2018']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Gerard Gallant.......................|            []            |     ['2018']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Craig Berube (interim)...............|         ['2019']         |        []        |      1      |      100.00 %       |       0.00 %        |    0.038461538461538464     |     0.038461538461538464     |             0.0              |
+    Bruce Cassidy........................|            []            |     ['2019']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Rick Bowness (interim)...............|            []            |     ['2020']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+    Dominique Ducharme (interim).........|            []            |     ['2021']     |      1      |       0.00 %        |      100.00 %       |    0.038461538461538464     |             0.0              |     0.038461538461538464     |
+
+parsed coaches:
+ Alain Vigneault
+Barry Trotz
+Bob Hartley
+Bruce Cassidy
+Bryan Murray
+Claude Julien
+Craig Berube (interim)
+Craig MacTavish
+Dan Bylsma
+Darryl Sutter
+Dominique Ducharme (interim)
+Doug MacLean
+Gerard Gallant
+Jacques Lemaire
+Joel Quenneville
+John Tortorella
+Jon Cooper
+Ken Hitchcock
+Larry Robinson
+Larry Robinson (interim)
+Lindy Ruff
+Marc Crawford
+Michel Therrien
+Mike Babcock
+Mike Sullivan
+Pat Burns
+Paul Maurice
+Peter DeBoer
+Peter Laviolette
+Randy Carlyle
+Rick Bowness (interim)
+Ron Wilson
+Scotty Bowman
+Terry Murray
