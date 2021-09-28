@@ -24,6 +24,97 @@ SOUTH_WEST = 1
 WEST = 2
 NORTH_WEST = 3
 
+# DIRECTIONS = {
+#     "N": {
+#         "dir": "north",
+#         "i": -1,
+#         "j": 0,
+#         "x": 0,
+#         "y": -1,
+#         "opp": "S",
+#         "bounce": "S",
+#         "mirror_x": "S",
+#         "mirror_y": "N"
+#     },
+#     "NE": {
+#         "dir": "north-east",
+#         "i": -1,
+#         "j": -1,
+#         "x": 1,
+#         "y": -1,
+#         "opp": "SW",
+#         "bounce": "NW",
+#         "mirror_x": "SE",
+#         "mirror_y": "NW"
+#     },
+#     "E": {
+#         "dir": "east",
+#         "i": 0,
+#         "j": -1,
+#         "x": 1,
+#         "y": 0,
+#         "opp": "W",
+#         "bounce": "W",
+#         "mirror_x": "E",
+#         "mirror_y": "W"
+#     },
+#     "SE": {
+#         "dir": "south-east",
+#         "i": 1,
+#         "j": -1,
+#         "x": 1,
+#         "y": 1,
+#         "opp": "NW",
+#         "bounce": "SW",
+#         "mirror_x": "NE",
+#         "mirror_y": "SW"
+#     },
+#     "S": {
+#         "dir": "south",
+#         "i": 1,
+#         "j": 0,
+#         "x": 0,
+#         "y": 1,
+#         "opp": "N",
+#         "bounce": "N",
+#         "mirror_x": "N",
+#         "mirror_y": "S"
+#     },
+#     "SW": {
+#         "dir": "south-west",
+#         "i": 1,
+#         "j": 1,
+#         "x": -1,
+#         "y": 1,
+#         "opp": "NE",
+#         "bounce": "SE",
+#         "mirror_x": "NW",
+#         "mirror_y": "SE"
+#     },
+#     "W": {
+#         "dir": "west",
+#         "i": 0,
+#         "j": 1,
+#         "x": -1,
+#         "y": 0,
+#         "opp": "E",
+#         "bounce": "E",
+#         "mirror_x": "W",
+#         "mirror_y": "E"
+#     },
+#     "NW": {
+#         "dir": "north-west",
+#         "i": -1,
+#         "j": 1,
+#         "x": -1,
+#         "y": -1,
+#         "opp": "SE",
+#         "bounce": "NE",
+#         "mirror_x": "SW",
+#         "mirror_y": "NE"
+#     }
+# }
+
 DIRECTIONS = {
     "N": {
         "dir": "north",
