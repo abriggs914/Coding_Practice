@@ -10,8 +10,8 @@ import webbrowser
 
 """
 	General PDF Creation Class
-	Version................1.0
-	Date............2021-09-27
+	Version................1.1
+	Date............2021-09-29
 	Author........Avery Briggs
 """
 
@@ -41,10 +41,10 @@ class PDF(FPDF):
             self.h = 297
         self.page_heights = [0]
 
-    def titles(self, title, x, y, w, h, colour, align="C", border=0):
+    def titles(self, title, x, y, w, h, colour, align="C", border=0, font=('Arial', 'B', 16)):
         # self.set_fill_color(*BWS_GREY)
         # self.rect(0, 0, 210, 20, "FD")
-        self.set_font('Arial', 'B', 16)
+        self.set_font(*font)
         self.set_xy(x, y)
         self.set_text_color(*colour)
         self.cell(w=w, h=h, align=align, txt=title, border=border)

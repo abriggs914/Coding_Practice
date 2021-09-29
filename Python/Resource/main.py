@@ -464,6 +464,54 @@ def test_directions():
     TS2.execute_log(True)
 
 
+def test_date_suffix(day):
+    s_day = str(day)
+    print("sday: \"{}\"".format(s_day))
+    if s_day[-1] == "1":
+        res = "st"
+        print("A sday: {}".format(s_day))
+        if len(s_day) > 1:
+            if s_day[-2] == "1":
+                res = "th"
+    elif s_day[-1] == "2":
+        res = "nd"
+        if len(s_day) > 1:
+            print("B sday: {}, s_day[-2]: {}".format(s_day, s_day[-2]))
+            if s_day[-2] == "1":
+                res = "th"
+    elif s_day[-1] == "3":
+        res = "rd"
+        print("C sday: {}".format(s_day))
+        if len(s_day) > 1:
+            if s_day[-2] == "1":
+                res = "th"
+    else:
+        print("D sday: {}".format(s_day))
+        res = "th"
+    return res
+
+
+# Takes "2021-08-03" -< August 3rd, 2021
+def datestr_format(date_str):
+    date_obj = dt.datetime.fromisoformat(date_str)
+    suffix = date_suffix(date_obj.day)
+    res = dt.datetime.strftime(date_obj, "%B %d###, %Y").replace("###", suffix)
+    s_res = res.split(" ")
+    x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
+    res = " ".join([s_res[0], x, s_res[2]])
+    return res
+
+
+def test_datestr_format(date_list):
+    TS = TestSuite()
+    TS.set_func(date_str_format)
+    for i, date_data in enumerate(date_list):
+        print("i: {}, date_data: {}".format(i, date_data))
+        date, ans = date_data
+        TS.add_test(str(i), [[date], ans])
+    TS.execute_log()
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -471,4 +519,19 @@ if __name__ == "__main__":
     # test_phone_number()
     # test_reduce()
     # test_slider()
-    test_directions()
+    # test_directions()
+    # test_datestr_format([
+    #     ("2021-08-01", "August 1st, 2021"),
+    #     ("2021-08-02", "August 2nd, 2021"),
+    #     ("2021-08-03", "August 3rd, 2021"),
+    #     ("2021-08-04", "August 4th, 2021"),
+    #     ("2021-08-05", "August 5th, 2021"),
+    #     ("2021-08-08", "August 8th, 2021"),
+    #     ("2021-08-10", "August 10th, 2021"),
+    #     ("2021-08-31", "August 31st, 2021"),
+    #     ("2021-08-21", "August 21st, 2021"),
+    #     ("2021-08-11", "August 11th, 2021"),
+    #     ("2021-08-12", "August 12th, 2021")
+    # ])
+
+    # test_money_str_format
