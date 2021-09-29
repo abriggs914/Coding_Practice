@@ -6,12 +6,13 @@ from pygame_utility import *
 class Car:
 
     # Note x, y are coordinates of the centre of the car, not top-left.
-    def __init__(self, game, display, id_num, x, y, speed=1, acceleration=0, name="car", colour=BLACK, img_path=None, is_circle=True,
+    def __init__(self, game, display, id_num, x, y, direction, speed=1, acceleration=0, name="car", colour=BLACK, img_path=None, is_circle=True,
                  radius=6, width=None, height=None):
         self.game = game
         self.display = display
         self.speed = speed
         self.acceleration = acceleration
+        self.direction = direction
         self.id_num = id_num
         self.name = name
         self.colour = colour
@@ -28,6 +29,8 @@ class Car:
         if width is not None and height is not None:
             self.radius = max(width, height)
         self.rect = Rect(x - (radius / 2), y - (radius / 2), self.w, self.h)
+        self.stop_light_colour_inactive = darken(RED, 0.5)
+        self.stop_light_colour_active = CRIMSON
 
         self.is_crashed = False
         self.arrival = None
@@ -57,12 +60,26 @@ class Car:
         self.rect = Rect(self.rect.x, self.rect.y + y, self.rect.width, self.rect.height)
 
     def draw(self):
-        if self.img_path is not None:
-            # draw image
-            pass
+        if self.is_circle:
+            if self.img_path is not None:
+                # draw image
+                pass
+            else:
+                self.game.draw.circle(self.display, BLUEVIOLET, (self.rect.x + (self.radius / 2), self.rect.y + (self.radius / 2)), self.radius)
+                self.game.draw.rect(self.display, self.colour, self.rect.tupl)
         else:
-            self.game.draw.circle(self.display, BLUEVIOLET, (self.rect.x + (self.radius / 2), self.rect.y + (self.radius / 2)), self.radius)
-            self.game.draw.rect(self.display, self.colour, self.rect.tupl)
+            if self.img_path is not None:
+                # draw image
+                pass
+            else:
+                self.game.draw.rect(self.display, self.colour, self.rect.tupl)
+                if self.acceleration < 0:
+                    # breaking
+                    self.game.draw.rect(self.display, self.stop_light_colour_active, self.rect.tupl)
+                    self.game.draw.rect(self.display, self.stop_light_colour_active, self.rect.tupl)
+                else:
+                    self.game.draw.rect(self.display, self.stop_light_colour_inactive, self.rect.tupl)
+                    self.game.draw.rect(self.display, self.stop_light_colour_inactive, self.rect.tupl)
 
     def __eq__(self, other):
         return isinstance(other, Car) and all([
@@ -94,10 +111,18 @@ class RoadWay:
             self.lane_width = rect[2] / n_lanes
             self.lane_height = rect[3]
             self.lane_mode = "vertical"
+            if self.centre_side == "top":
+                self.centre_side = "left"
+            if self.centre_side == "bottom":
+                self.centre_side = "right"
         elif direction == ("E", "W") or direction == ("W", "E"):
             self.lane_width = rect[3] / n_lanes
             self.lane_height = rect[2]
             self.lane_mode = "horizontal"
+            if self.centre_side == "left":
+                self.centre_side = "top"
+            if self.centre_side == "right":
+                self.centre_side = "bottom"
 
         self.car_queue = []
 
@@ -131,15 +156,15 @@ class RoadWay:
             if self.centre_side == "top":
                 # W -> E
                 # x, y = self.rect.center_left
-                x, y = self.rect.center_right
+                x, y = self.rect.center_left
             else:
                 # W <- E
                 # x, y = self.rect.center_right
-                x, y = self.rect.center_left
+                x, y = self.rect.center_right
         else:
             # TODO: support diagonal car spawning.
             x, y = 1, 1
-        car = Car(game, display, id_num, x, y, speed=speed, acceleration=acceleration, name=name, colour=colour, img_path=img_path, is_circle=is_circle, radius=radius, width=width, height=height)
+        car = Car(game, display, id_num, x, y, self.direction, speed=speed, acceleration=acceleration, name=name, colour=colour, img_path=img_path, is_circle=is_circle, radius=radius, width=width, height=height)
         self.add_car(car)
         if center is not None:
             if str(center) == "True" or str(center) == "False":
@@ -276,13 +301,15 @@ class RoadWay:
 
     def add_car(self, car):
         assert isinstance(car, Car)
+        car.direction = self.direction
         self.car_queue.append(car)
 
     def tick(self, tick):
         for car in self.car_queue:
-            print("Direction: {}, (x, y): ({}, {})".format(self.direction[1], DIRECTIONS[self.direction[1]]["x"], DIRECTIONS[self.direction[1]]["y"]))
+            print("BEFORE\t\tDirection: {}, (x, y): ({}, {})".format(self.direction[1], DIRECTIONS[self.direction[1]]["x"], DIRECTIONS[self.direction[1]]["y"]))
             x_inc = (DIRECTIONS[self.direction[1]]["x"] * car.speed * tick) + (0.5 * car.acceleration * (tick ** 2))
             y_inc = (DIRECTIONS[self.direction[1]]["y"] * car.speed * tick) + (0.5 * car.acceleration * (tick ** 2))
+            print("AFTER\t\tDirection: {}, (x, y): ({}, {})".format(self.direction[1], DIRECTIONS[self.direction[1]]["x"], DIRECTIONS[self.direction[1]]["y"]))
             if car.acceleration != 0:
                 # print("x_inc: {}, y_inc: {}".format(x_inc, y_inc))
                 # print("BEFORE new speed: ", car.speed)
@@ -315,9 +342,9 @@ class RoadWay:
             # print("car: <{}> ticking (i, j): ({}, {})".format(car, x_inc, y_inc))
 
 
-            self.check_collision(car, i_tick_dist=y_inc, j_tick_dist=x_inc)
             car.add_x(x_inc)
             car.add_y(y_inc)
+            self.check_collision(car, i_tick_dist=y_inc, j_tick_dist=x_inc)
 
     def check_collision(self, car, i_tick_dist=1, j_tick_dist=1):
         print("r", car.rect, "(i, j): ({}, {})".format(i_tick_dist, j_tick_dist))
@@ -483,7 +510,7 @@ class TrafficSimulatorMap:
 
     def add_car(self, x, y, **kwargs):
         self.car_id_num += 1
-        car = Car(self.game, self.display, self.car_id_num, x, y, **kwargs)
+        car = Car(self.game, self.display, self.car_id_num, x, y, None, **kwargs)
         r_name, roadway = None, None
         for r_name, roadway in self.roadways.items():
             if roadway.valid_place(car, strictly_inside=True):
@@ -619,7 +646,7 @@ class TrafficSimulatorMap:
                 # self.spawn_car("east bound", BEIGE)
                 spawn_one = False
             roadway.tick(tick)
-            print("cars in queue:", roadway.car_queue)
+            print("cars in queue", roadway, ":", roadway.car_queue)
             if self.clock_time >= 25:
                 for car in roadway.car_queue:
                     roadway.center_car(car, 2)
@@ -647,9 +674,9 @@ class TrafficSimulatorMap:
             "south bound": RoadWay(("N", "S"), Rect(w * 0.39, 0, w * 0.11, h * 1), BLACK, n_lanes=2, centre_side="right"),
             "north bound": RoadWay(("S", "N"), Rect(w * 0.5, 0, w * 0.11, h * 1), BLACK, n_lanes=3, centre_side="left"),
             "east bound": RoadWay(("W", "E"), Rect(0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="top"),
-            "west bound": RoadWay(("E", "W"), Rect(0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="bottom"),
-            "NORTH 2 bound": RoadWay(("S", "N"), Rect(w * 0.76, 0, w * 0.11, h), BLACK, n_lanes=6, centre_side="left"),
-            "WEST 2 bound": RoadWay(("E", "W"), Rect(0, h * 0.24, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="top")
+            "west bound": RoadWay(("E", "W"), Rect(0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="bottom")
+            # "NORTH 2 bound": RoadWay(("S", "N"), Rect(w * 0.76, 0, w * 0.11, h), BLACK, n_lanes=6, centre_side="left"),
+            # "WEST 2 bound": RoadWay(("E", "W"), Rect(0, h * 0.24, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="top")
         }
         print("START:", w * 0.40, ", ", h * 0.05)
         print("pygame collide:", pygame.rect.Rect(w * 0.39, 0, w * 0.11, h * 1).colliderect(pygame.rect.Rect(w * 0.41, h * 0.05, 6, 6)))
