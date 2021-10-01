@@ -4,6 +4,7 @@ from random import random, choice
 import datetime as dt
 import shutil
 import sys
+import os
 
 """
 	General Utility Functions
@@ -243,11 +244,13 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
     return m
 
 
-def money(v):
+def money(v, int_only=False):
     # return "$ %.2f" % v
     setlocale(LC_ALL, "")
     m = currency(v, grouping=True)
     i = m.index("$") + 1
+    if int_only:
+        return (m[:i] + " " + m[i:]).split(".")[0]
     return m[:i] + " " + m[i:]
 
 
@@ -1206,6 +1209,19 @@ def date_str_format(date_str):
     x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
     res = " ".join([s_res[0], x, s_res[2]])
     return res
+
+
+# Appends a counter '(1)' to a given file path to avoid overwriting.
+def next_available_file_name(path):
+    counter = 0
+    path.replace("\\", "/")
+    og_path = path
+    while os.path.exists(path):
+        counter += 1
+        spl = og_path.split(".")
+        path = ".".join(spl[:-1]) + " ({}).".format(counter) + spl[-1]
+    path.replace("/", "\\")
+    return path
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
