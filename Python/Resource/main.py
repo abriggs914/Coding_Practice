@@ -512,6 +512,44 @@ def test_datestr_format(date_list):
     TS.execute_log()
 
 
+def find_north_side():
+    r = Rect2(135, 135, 100, 100, 45)
+    d = 0, 20
+    print(r)
+
+    app = PygameApplication("Test TextBox", 600, 400)
+    game = app.get_game()
+    display = app.display
+    # r1 = Rect(100, 25, 200, 100)
+    # self, game, display, rect, ic, ac, f, fc, text = '', min_width = 20, numeric = False, char_limit = None, n_limit = None, bs = 1, border_style = None
+    # textbox = TextBox(game, display, r1, text="-1", numeric=True, daction=print_hi, dargs=None)
+    while app.is_playing:
+        display.fill(BLACK)
+        # textbox.draw()
+        p1 = r.p1
+        p2 = r.p2
+        p3 = r.p3
+        p4 = r.p4
+        game.draw.line(display, RED, p1, p2)
+        game.draw.line(display, GREEN, p2, p3)
+        game.draw.line(display, BLUE, p3, p4)
+        game.draw.line(display, YELLOW_3, p4, p1)
+
+        game.draw.circle(display, TAN, d, 3)
+        d = d[0] + 1, d[1] + 1
+        print("d", d, "collision:", r.collide_point(*d))
+        if r.collide_point(*d):
+            break
+        event_queue = app.run()
+        # for event in event_queue:
+        #     textbox.handle_event(event)
+        # app.run()
+
+
+def test_find_north_side():
+    find_north_side()
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -535,3 +573,4 @@ if __name__ == "__main__":
     # ])
 
     # test_money_str_format
+    test_find_north_side()

@@ -73,6 +73,8 @@ class Car:
                 pass
             else:
                 self.game.draw.rect(self.display, self.colour, self.rect.tupl)
+                
+                rect_ds_bl =
                 if self.acceleration < 0:
                     # breaking
                     self.game.draw.rect(self.display, self.stop_light_colour_active, self.rect.tupl)
