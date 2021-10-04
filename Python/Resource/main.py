@@ -538,14 +538,48 @@ def test_new_rect():
         display.fill(BLACK)
 
         r0 = Rect2(rx, ry, rw, rh, a + 0)
-        r1 = Rect2(rx, ry, rw, rh, a + 45)
-        r2 = Rect2(rx, ry, rw, rh, a + 90)
-        r3 = Rect2(rx, ry, rw, rh, a + 135)
-        r4 = Rect2(rx, ry, rw, rh, a + 180)
-        r5 = Rect2(rx, ry, rw, rh, a + 225)
-        r6 = Rect2(rx, ry, rw, rh, a + 270)
-        r7 = Rect2(rx, ry, rw, rh, a + 315)
+        r1 = Rect2(rx, ry, rw, rh, a + 30)
+        r2 = Rect2(rx, ry, rw, rh, a + 60)
+        r3 = Rect2(rx, ry, rw, rh, a + 90)
+        r4 = Rect2(rx, ry, rw, rh, a + 120)
+        r5 = Rect2(rx, ry, rw, rh, a + 150)
+        r6 = Rect2(rx, ry, rw, rh, a + 180)
+        r7 = Rect2(rx, ry, rw, rh, a + 210)
+        r8 = Rect2(rx, ry, rw, rh, a + 240)
+        r9 = Rect2(rx, ry, rw, rh, a + 270)
+        r10 = Rect2(rx, ry, rw, rh, a + 300)
+        r11 = Rect2(rx, ry, rw, rh, a + 330)
+        r12 = Rect2(rx, ry, rw, rh, a + 360)
         # r5 = Rect2(rx, ry, rw, rh, a + )
+
+        def draw_rect3(r):
+            # textbox.draw()
+            p1 = r.p1
+            p2 = r.p2
+            p3 = r.p3
+            p4 = r.p4
+            game.draw.line(display, WHITE, p1, p2)
+            game.draw.line(display, WHITE, p2, p3)
+            game.draw.line(display, WHITE, p3, p4)
+            game.draw.line(display, WHITE, p4, p1)
+
+            pa1 = r.max_encapsulating_rect.p1
+            pa2 = r.max_encapsulating_rect.p2
+            pa3 = r.max_encapsulating_rect.p3
+            pa4 = r.max_encapsulating_rect.p4
+            game.draw.line(display, WHITE, pa1, pa2)
+            game.draw.line(display, WHITE, pa2, pa3)
+            game.draw.line(display, WHITE, pa3, pa4)
+            game.draw.line(display, WHITE, pa4, pa1)
+
+            pi1 = r.min_encapsulating_rect.p1
+            pi2 = r.min_encapsulating_rect.p2
+            pi3 = r.min_encapsulating_rect.p3
+            pi4 = r.min_encapsulating_rect.p4
+            game.draw.line(display, WHITE, pi1, pi2)
+            game.draw.line(display, WHITE, pi2, pi3)
+            game.draw.line(display, WHITE, pi3, pi4)
+            game.draw.line(display, WHITE, pi4, pi1)
 
         def draw_rect2(r):
             # textbox.draw()
@@ -618,14 +652,28 @@ def test_new_rect():
         # draw_rect1(r6)
         # draw_rect1(r7)
 
-        draw_rect2(r0)
-        draw_rect2(r1)
-        draw_rect2(r2)
-        draw_rect2(r3)
-        draw_rect2(r4)
-        draw_rect2(r5)
-        draw_rect2(r6)
-        draw_rect2(r7)
+        # draw_rect2(r0)
+        # draw_rect2(r1)
+        # draw_rect2(r2)
+        # draw_rect2(r3)
+        # draw_rect2(r4)
+        # draw_rect2(r5)
+        # draw_rect2(r6)
+        # draw_rect2(r7)
+
+        draw_rect3(r0)
+        draw_rect3(r1)
+        draw_rect3(r2)
+        draw_rect3(r3)
+        draw_rect3(r4)
+        draw_rect3(r5)
+        draw_rect3(r6)
+        draw_rect3(r7)
+        draw_rect3(r8)
+        draw_rect3(r9)
+        draw_rect3(r10)
+        draw_rect3(r11)
+        draw_rect3(r12)
 
         if r.collide_point(*d):
             break
@@ -785,5 +833,5 @@ if __name__ == "__main__":
 
     # test_money_str_format
     # test_find_north_side()
-    # test_new_rect()
-    test_rect_collision()
+    test_new_rect()
+    # test_rect_collision()

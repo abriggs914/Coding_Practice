@@ -714,9 +714,9 @@ class TrafficSimulatorMap:
         # car2 = tsmap.add_car(w * 0.56, h * 0.85, colour=MAGENTA_2)
         # car3 = tsmap.add_car(w * 0.66, h * 0.42, colour=INDIANRED_3)
         # car4 = tsmap.add_car(w * 0.15, h * 0.56, colour=PINK)
-        tsmap.spawn_car("south bound", BEIGE, radius=16, is_circle=False, acceleration=-0.99)
-        tsmap.spawn_car("north bound", TEAL, radius=16, is_circle=False, acceleration=-0.99)
-        tsmap.spawn_car("east bound", BLUE_2, radius=16, is_circle=False, acceleration=-0.99)
+        tsmap.spawn_car("south bound", BEIGE, radius=16, is_circle=False, acceleration=-1)
+        tsmap.spawn_car("north bound", TEAL, radius=16, is_circle=False, acceleration=-0.6)
+        tsmap.spawn_car("east bound", BLUE_2, radius=16, is_circle=False, acceleration=0.01)
         tsmap.spawn_car("west bound", GREEN, radius=16, is_circle=False, acceleration=-0.99)
         # tsmap.roadways["south bound"].center_car(car)
         # game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
