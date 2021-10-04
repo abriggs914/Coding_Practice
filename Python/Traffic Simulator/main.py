@@ -28,7 +28,7 @@ class Car:
             self.h = height
         if width is not None and height is not None:
             self.radius = max(width, height)
-        self.rect = Rect(x - (radius / 2), y - (radius / 2), self.w, self.h)
+        self.rect = Rect2(x - (radius / 2), y - (radius / 2), self.w, self.h)
         self.stop_light_colour_inactive = darken(RED, 0.5)
         self.stop_light_colour_active = CRIMSON
 
@@ -44,20 +44,36 @@ class Car:
         self.departure = dept
 
     def set_rect(self, rect):
-        assert isinstance(rect, Rect)
+        assert isinstance(rect, Rect2)
         self.rect = rect
 
     def set_x(self, x):
-        self.rect = Rect(x, self.rect.y, self.rect.width, self.rect.height)
+        self.rect = Rect2(x, self.rect.y, self.rect.width, self.rect.height)
 
     def set_y(self, y):
-        self.rect = Rect(self.rect.x, y, self.rect.width, self.rect.height)
+        self.rect = Rect2(self.rect.x, y, self.rect.width, self.rect.height)
 
     def add_x(self, x):
-        self.rect = Rect(self.rect.x + x, self.rect.y, self.rect.width, self.rect.height)
+        self.rect = Rect2(self.rect.x + x, self.rect.y, self.rect.width, self.rect.height)
 
     def add_y(self, y):
-        self.rect = Rect(self.rect.x, self.rect.y + y, self.rect.width, self.rect.height)
+        self.rect = Rect2(self.rect.x, self.rect.y + y, self.rect.width, self.rect.height)
+
+    def brake_light_rects(self):
+        # TODO integrate diagonal cars
+        d = self.direction[-1]
+        wf, hf = 0.02, 0.02
+        wf, hf = 1, 1
+        bl_w = max(1, (self.rect.width / 2) * wf)
+        bl_h = max(1, (self.rect.height / 2) * hf)
+        left, right = None, None
+        if d == "N" or 1:
+            line = self.rect.bottom_line
+            x1 = line.x1 + ((line.x2 - line.x1) * 0.32)
+            x2 = line.x1 + ((line.x2 - line.x1) * 0.98)
+            left = Rect2(x1, line.y1, bl_w, bl_h)
+            right = Rect2(x2, line.y1, bl_w, bl_h)
+        return left, right
 
     def draw(self):
         if self.is_circle:
@@ -74,14 +90,20 @@ class Car:
             else:
                 self.game.draw.rect(self.display, self.colour, self.rect.tupl)
                 
-                rect_ds_bl =
+                rect_ds_bl, rect_ps_bl = self.brake_light_rects()
+                print("rect_ds_bl", rect_ds_bl)
+                print("rect_ps_bl", rect_ps_bl)
+                if rect_ds_bl is None:
+                    rect_ds_bl = self.rect.tupl
+                if rect_ps_bl is None:
+                    rect_ps_bl = self.rect.tupl
                 if self.acceleration < 0:
                     # breaking
-                    self.game.draw.rect(self.display, self.stop_light_colour_active, self.rect.tupl)
-                    self.game.draw.rect(self.display, self.stop_light_colour_active, self.rect.tupl)
+                    self.game.draw.rect(self.display, self.stop_light_colour_active, rect_ds_bl.tupl)
+                    self.game.draw.rect(self.display, self.stop_light_colour_active, rect_ps_bl.tupl)
                 else:
-                    self.game.draw.rect(self.display, self.stop_light_colour_inactive, self.rect.tupl)
-                    self.game.draw.rect(self.display, self.stop_light_colour_inactive, self.rect.tupl)
+                    self.game.draw.rect(self.display, self.stop_light_colour_inactive, rect_ds_bl.tupl)
+                    self.game.draw.rect(self.display, self.stop_light_colour_inactive, rect_ps_bl.tupl)
 
     def __eq__(self, other):
         return isinstance(other, Car) and all([
@@ -95,7 +117,7 @@ class Car:
 class RoadWay:
 
     def __init__(self, direction, rect, colour, n_lanes=1, centre_side="left"):
-        assert isinstance(rect, Rect)
+        assert isinstance(rect, Rect2)
         assert (isinstance(direction, list) or isinstance(direction, tuple)) and all(
             [direct in DIRECTIONS for direct in direction])
         # TODO; include diagonal roadway functionality
@@ -152,17 +174,21 @@ class RoadWay:
             if self.centre_side == "left":
                 # S -> N
                 x, y = self.rect.center_bottom
+                y -= radius
             else:
                 x, y = self.rect.center_top
+                y += radius
         elif self.lane_mode == "horizontal":
             if self.centre_side == "top":
                 # W -> E
                 # x, y = self.rect.center_left
                 x, y = self.rect.center_left
+                x += radius
             else:
                 # W <- E
                 # x, y = self.rect.center_right
                 x, y = self.rect.center_right
+                x -= radius
         else:
             # TODO: support diagonal car spawning.
             x, y = 1, 1
@@ -176,20 +202,20 @@ class RoadWay:
         return car
 
     def is_exiting(self, car, i_tick_dist=1, j_tick_dist=1):
-        r = Rect(*self.rect.tupl)
+        r = Rect2(*self.rect.tupl)
         # a = r.top_left
         # b = r.top_right
         # c = r.bottom_left
         # d = r.bottom_right
-        rc = Rect(r.x, r.y, r.width, r.height)
+        rc = Rect2(r.x, r.y, r.width, r.height)
         top_i = rc.top_line
         bottom_i = rc.bottom_line
         left_i = rc.left_line
         right_i = rc.right_line
-        top_o = Rect(rc.left, rc.top + -1 * abs(i_tick_dist), rc.width, abs(i_tick_dist))  # top_i.translated(0, -1 * abs(i_tick_dist))
-        bottom_o = Rect(rc.left, rc.bottom, rc.width, abs(i_tick_dist))  # bottom_i.translated(0, 1 * abs(i_tick_dist))
-        left_o = Rect(rc.left + -1 * abs(j_tick_dist), rc.top, abs(j_tick_dist), rc.height)  # left_i.translated(-1 * abs(j_tick_dist), 0)
-        right_o = Rect(rc.right, rc.top, abs(j_tick_dist), rc.height)  # right_i.translated(1 * abs(j_tick_dist), 0)
+        top_o = Rect2(rc.left, rc.top + -1 * abs(i_tick_dist), rc.width, abs(i_tick_dist))  # top_i.translated(0, -1 * abs(i_tick_dist))
+        bottom_o = Rect2(rc.left, rc.bottom, rc.width, abs(i_tick_dist))  # bottom_i.translated(0, 1 * abs(i_tick_dist))
+        left_o = Rect2(rc.left + -1 * abs(j_tick_dist), rc.top, abs(j_tick_dist), rc.height)  # left_i.translated(-1 * abs(j_tick_dist), 0)
+        right_o = Rect2(rc.right, rc.top, abs(j_tick_dist), rc.height)  # right_i.translated(1 * abs(j_tick_dist), 0)
         car_r = car.rect
         # lm = lambda v, vs: (v[0] + vs[0], v[1] + vs[1])
         # top = Line(*lm(a, (-1, -1)), *lm(b, (1, -1)))
@@ -237,12 +263,12 @@ class RoadWay:
         else:
             raise ValueError("diagonal roadways not supported yet.")
 
-        # r = Rect(*self.rect.tupl)
+        # r = Rect2(*self.rect.tupl)
         # # a = r.top_left
         # # b = r.top_right
         # # c = r.bottom_left
         # # d = r.bottom_right
-        # rc = Rect(r.x, r.y, r.width, r.height)
+        # rc = Rect2(r.x, r.y, r.width, r.height)
         # top_i = rc.top_line
         # bottom_i = rc.bottom_line
         # left_i = rc.left_line
@@ -376,23 +402,23 @@ class RoadWay:
                 lw = sr.width / max(1, self.n_lanes)
                 # print("before:\nw: {}\nlw: {}\ncr: {}\nsr: {}".format(sr.width, lw, cr, sr))
                 if lane is not None and 0 <= lane <= self.n_lanes:
-                    # print("lane is not None and 0 <= lane <= self.n_lanes", Rect(sr.x + (lw * (lane - 0.5)) - (cr.width / 2), car.rect.y, cr.width, cr.height))
-                    car.set_rect(Rect(sr.x + (lw * (lane - 0.5)) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+                    # print("lane is not None and 0 <= lane <= self.n_lanes", Rect2(sr.x + (lw * (lane - 0.5)) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+                    car.set_rect(Rect2(sr.x + (lw * (lane - 0.5)) - (cr.width / 2), car.rect.y, cr.width, cr.height))
                 else:
                     inter = int((cr.x - sr.x) / sr.width)
-                    # print("ELSE\ninter: {}".format(inter), Rect(sr.x + (lw * inter) + (lw / 2) - (cr.width / 2), car.rect.y, cr.width, cr.height))
-                    car.set_rect(Rect(sr.x + (lw * inter) + (lw / 2) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+                    # print("ELSE\ninter: {}".format(inter), Rect2(sr.x + (lw * inter) + (lw / 2) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+                    car.set_rect(Rect2(sr.x + (lw * inter) + (lw / 2) - (cr.width / 2), car.rect.y, cr.width, cr.height))
 
             elif self.lane_mode == "horizontal":
                 lw = sr.height / max(1, self.n_lanes)
                 # print("before:\nw: {}\nlw: {}\ncr: {}\nsr: {}".format(sr.height, lw, cr, sr))
                 if lane is not None and 0 <= lane <= self.n_lanes:
-                    # print("lane is not None and 0 <= lane <= self.n_lanes", Rect(sr.x + (lw * (lane - 0.5)) - (cr.width / 2), car.rect.y, cr.width, cr.height))
-                    car.set_rect(Rect(cr.x, sr.y + (lw * (lane - 0.5)) - (cr.width / 2), cr.width, cr.height))
+                    # print("lane is not None and 0 <= lane <= self.n_lanes", Rect2(sr.x + (lw * (lane - 0.5)) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+                    car.set_rect(Rect2(cr.x, sr.y + (lw * (lane - 0.5)) - (cr.width / 2), cr.width, cr.height))
                 else:
                     inter = int((cr.x - sr.x) / sr.width)
-                    # print("ELSE\ninter: {}".format(inter), Rect(sr.x + (lw * inter) + (lw / 2) - (cr.width / 2), car.rect.y, cr.width, cr.height))
-                    car.set_rect(Rect(cr.x, sr.y + (lw * inter) + (lw / 2) - (cr.width / 2), cr.width, cr.height))
+                    # print("ELSE\ninter: {}".format(inter), Rect2(sr.x + (lw * inter) + (lw / 2) - (cr.width / 2), car.rect.y, cr.width, cr.height))
+                    car.set_rect(Rect2(cr.x, sr.y + (lw * inter) + (lw / 2) - (cr.width / 2), cr.width, cr.height))
 
             else:
                 # todo: add diagonal support
@@ -581,7 +607,7 @@ class TrafficSimulatorMap:
             rect = roadway.rect
             if isinstance(rect, list) or isinstance(rect, tuple) and len(rect) == 4:
                 rect = self.game.Rect(*rect)
-            elif isinstance(rect, Rect):
+            elif isinstance(rect, Rect2):
                 rect = self.game.Rect(*rect.tupl)
             else:
                 raise ValueError("rect object: <{}> is not a valid pygame.Rect object.".format(rect))
@@ -673,25 +699,25 @@ class TrafficSimulatorMap:
             game.draw.line(display, BLACK, (0, i * hs), (w, i * hs))
 
         tsmap.roadways = {
-            "south bound": RoadWay(("N", "S"), Rect(w * 0.39, 0, w * 0.11, h * 1), BLACK, n_lanes=2, centre_side="right"),
-            "north bound": RoadWay(("S", "N"), Rect(w * 0.5, 0, w * 0.11, h * 1), BLACK, n_lanes=3, centre_side="left"),
-            "east bound": RoadWay(("W", "E"), Rect(0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="top"),
-            "west bound": RoadWay(("E", "W"), Rect(0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="bottom")
-            # "NORTH 2 bound": RoadWay(("S", "N"), Rect(w * 0.76, 0, w * 0.11, h), BLACK, n_lanes=6, centre_side="left"),
-            # "WEST 2 bound": RoadWay(("E", "W"), Rect(0, h * 0.24, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="top")
+            "south bound": RoadWay(("N", "S"), Rect2(w * 0.39, 0, w * 0.11, h * 1), BLACK, n_lanes=2, centre_side="right"),
+            "north bound": RoadWay(("S", "N"), Rect2(w * 0.5, 0, w * 0.11, h * 1), BLACK, n_lanes=3, centre_side="left"),
+            "east bound": RoadWay(("W", "E"), Rect2(0, h * 0.5, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="top"),
+            "west bound": RoadWay(("E", "W"), Rect2(0, h * 0.39, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="bottom")
+            # "NORTH 2 bound": RoadWay(("S", "N"), Rect2(w * 0.76, 0, w * 0.11, h), BLACK, n_lanes=6, centre_side="left"),
+            # "WEST 2 bound": RoadWay(("E", "W"), Rect2(0, h * 0.24, w * 1, h * 0.11), BLACK, n_lanes=2, centre_side="top")
         }
         print("START:", w * 0.40, ", ", h * 0.05)
         print("pygame collide:", pygame.rect.Rect(w * 0.39, 0, w * 0.11, h * 1).colliderect(pygame.rect.Rect(w * 0.41, h * 0.05, 6, 6)))
-        print("rect collide:", Rect(w * 0.39, 0, w * 0.11, h * 1).collide_rect(Rect(w * 0.41, h * 0.05, 6, 6)))
+        print("rect collide:", Rect2(w * 0.39, 0, w * 0.11, h * 1).collide_rect(Rect2(w * 0.41, h * 0.05, 6, 6)))
         print("Car#1 should go on (\"N\", \"S\")")
         # car1 = tsmap.add_car(w * 0.42, h * 0.15, colour=RED)
         # car2 = tsmap.add_car(w * 0.56, h * 0.85, colour=MAGENTA_2)
         # car3 = tsmap.add_car(w * 0.66, h * 0.42, colour=INDIANRED_3)
         # car4 = tsmap.add_car(w * 0.15, h * 0.56, colour=PINK)
-        tsmap.spawn_car("south bound", BEIGE)
-        tsmap.spawn_car("north bound", RED)
-        tsmap.spawn_car("east bound", BLUE_2)
-        tsmap.spawn_car("west bound", GREEN)
+        tsmap.spawn_car("south bound", BEIGE, radius=16, is_circle=False, acceleration=-0.99)
+        tsmap.spawn_car("north bound", TEAL, radius=16, is_circle=False, acceleration=-0.99)
+        tsmap.spawn_car("east bound", BLUE_2, radius=16, is_circle=False, acceleration=-0.99)
+        tsmap.spawn_car("west bound", GREEN, radius=16, is_circle=False, acceleration=-0.99)
         # tsmap.roadways["south bound"].center_car(car)
         # game.draw.rect(display, BLACK, (w * 0.39, 0, w * 0.22, h))  # North - South
         # game.draw.rect(display, BLACK, (0, h * 0.39, w, h * 0.22))  # East - West

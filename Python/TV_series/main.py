@@ -518,6 +518,17 @@ the_simpsons = TVSeries("The Simpsons", {
 	"Disney+")
 	
 
+solar_opposites = TVSeries("Solar Opposites", {
+	1 : 8,
+	2 : 8},
+	24,
+	2020,
+	2021,
+	True,
+	"Comedy",
+	"Disney+")
+	
+
 series_list = [
     the_office,
     community,
@@ -552,7 +563,8 @@ series_list = [
 	the_last_man_on_earth,
 	the_mick,
 	brickleberry,
-	the_simpsons
+	the_simpsons,
+	solar_opposites
 ]
    
 def longest_series_title(series_list) :

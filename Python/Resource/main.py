@@ -512,19 +512,194 @@ def test_datestr_format(date_list):
     TS.execute_log()
 
 
-def find_north_side():
-    r = Rect2(135, 135, 100, 100, 45)
+def test_new_rect():
+    w, h = 1100, 900
+    app = PygameApplication("Test TextBox", w, h)
+    game = app.get_game()
+    display = app.display
+
+    wh = min(w, h)
+    rx = w / 2
+    ry = h / 2
+    rw = (wh * 0.25) / 2
+    rh = (wh * 0.25) / 2
+
+    a = 0
+    diff = 1
+    r = Rect2(rx, ry, rw, rh, a)
     d = 0, 20
     print(r)
 
-    app = PygameApplication("Test TextBox", 600, 400)
-    game = app.get_game()
-    display = app.display
+
     # r1 = Rect(100, 25, 200, 100)
     # self, game, display, rect, ic, ac, f, fc, text = '', min_width = 20, numeric = False, char_limit = None, n_limit = None, bs = 1, border_style = None
     # textbox = TextBox(game, display, r1, text="-1", numeric=True, daction=print_hi, dargs=None)
     while app.is_playing:
         display.fill(BLACK)
+
+        r0 = Rect2(rx, ry, rw, rh, a + 0)
+        r1 = Rect2(rx, ry, rw, rh, a + 45)
+        r2 = Rect2(rx, ry, rw, rh, a + 90)
+        r3 = Rect2(rx, ry, rw, rh, a + 135)
+        r4 = Rect2(rx, ry, rw, rh, a + 180)
+        r5 = Rect2(rx, ry, rw, rh, a + 225)
+        r6 = Rect2(rx, ry, rw, rh, a + 270)
+        r7 = Rect2(rx, ry, rw, rh, a + 315)
+        # r5 = Rect2(rx, ry, rw, rh, a + )
+
+        def draw_rect2(r):
+            # textbox.draw()
+            p1 = r.p1
+            p2 = r.p2
+            p3 = r.p3
+            p4 = r.p4
+            game.draw.line(display, WHITE, p1, p2)
+            game.draw.line(display, WHITE, p2, p3)
+            game.draw.line(display, WHITE, p3, p4)
+            game.draw.line(display, WHITE, p4, p1)
+
+            pa1 = r.max_encapsulating_rect.p1
+            pa2 = r.max_encapsulating_rect.p2
+            pa3 = r.max_encapsulating_rect.p3
+            pa4 = r.max_encapsulating_rect.p4
+            game.draw.line(display, WHITE, pa1, pa2)
+            game.draw.line(display, WHITE, pa2, pa3)
+            game.draw.line(display, WHITE, pa3, pa4)
+            game.draw.line(display, WHITE, pa4, pa1)
+
+            pi1 = r.min_encapsulating_rect.p1
+            pi2 = r.min_encapsulating_rect.p2
+            pi3 = r.min_encapsulating_rect.p3
+            pi4 = r.min_encapsulating_rect.p4
+            game.draw.line(display, WHITE, pi1, pi2)
+            game.draw.line(display, WHITE, pi2, pi3)
+            game.draw.line(display, WHITE, pi3, pi4)
+            game.draw.line(display, WHITE, pi4, pi1)
+
+        def draw_rect1(r):
+            # textbox.draw()
+            p1 = r.p1
+            p2 = r.p2
+            p3 = r.p3
+            p4 = r.p4
+            game.draw.line(display, RED, p1, p2)
+            game.draw.line(display, GREEN, p2, p3)
+            game.draw.line(display, BLUE, p3, p4)
+            game.draw.line(display, YELLOW_3, p4, p1)
+
+            pa1 = r.max_encapsulating_rect.p1
+            pa2 = r.max_encapsulating_rect.p2
+            pa3 = r.max_encapsulating_rect.p3
+            pa4 = r.max_encapsulating_rect.p4
+            game.draw.line(display, ORANGE, pa1, pa2)
+            game.draw.line(display, PURPLE, pa2, pa3)
+            game.draw.line(display, ROYALBLUE, pa3, pa4)
+            game.draw.line(display, TAN, pa4, pa1)
+
+            pi1 = r.min_encapsulating_rect.p1
+            pi2 = r.min_encapsulating_rect.p2
+            pi3 = r.min_encapsulating_rect.p3
+            pi4 = r.min_encapsulating_rect.p4
+            game.draw.line(display, LIMEGREEN, pi1, pi2)
+            game.draw.line(display, SKYBLUE, pi2, pi3)
+            game.draw.line(display, WHITE, pi3, pi4)
+            game.draw.line(display, BROWN_1, pi4, pi1)
+
+        game.draw.circle(display, TAN, d, 3)
+        # d = d[0] + 1, d[1] + 1
+        # print("d", d, "collision:", r.collide_point(*d))
+        #
+        # draw_rect1(r0)
+        # draw_rect1(r1)
+        # draw_rect1(r2)
+        # draw_rect1(r3)
+        # draw_rect1(r4)
+        # draw_rect1(r5)
+        # draw_rect1(r6)
+        # draw_rect1(r7)
+
+        draw_rect2(r0)
+        draw_rect2(r1)
+        draw_rect2(r2)
+        draw_rect2(r3)
+        draw_rect2(r4)
+        draw_rect2(r5)
+        draw_rect2(r6)
+        draw_rect2(r7)
+
+        if r.collide_point(*d):
+            break
+        event_queue = app.run()
+        for event in event_queue:
+            if event.type == game.KEYDOWN:
+                if event.key == game.K_UP:
+                    d = (d[0], d[1] - 1)
+                if event.key == game.K_DOWN:
+                    d = (d[0], d[1] + 1)
+                if event.key == game.K_LEFT:
+                    d = (d[0] - 1, d[1])
+                if event.key == game.K_RIGHT:
+                    d = (d[0] + 1, d[1])
+            # textbox.handle_event(event)
+        # app.run()
+        a += diff
+        a = a % 360
+        # if a >= 359:
+        #     diff = -1
+        # elif a < 1:
+        #     diff = 1
+
+        app.clock.tick(25)
+
+
+def test_find_north_side():
+
+    def find_north_side(r):
+        return r.top_line
+
+    def find_south_side(r):
+        return r.bottom_line
+
+    def find_east_side(r):
+        return r.right_line
+
+    def find_west_side(r):
+        return r.left_line
+
+    r = Rect2(0, 0, 10, 10)
+    nl = Line(0, 0, 10, 0)
+    sl = Line(0, 10, 10, 10)
+    el = Line(10, 0, 10, 10)
+    wl = Line(0, 0, 0, 10)
+    TS = TestSuite()
+    TS.set_func(find_north_side)
+    TS.add_test("north", [[r], nl])
+    TS.execute_log()
+    TS = TestSuite()
+    TS.set_func(find_south_side)
+    TS.add_test("south", [[r], sl])
+    TS.execute_log()
+    TS = TestSuite()
+    TS.set_func(find_east_side)
+    TS.add_test("east", [[r], el])
+    TS.execute_log()
+    TS = TestSuite()
+    TS.set_func(find_west_side)
+    TS.add_test("west", [[r], wl])
+    TS.execute_log()
+
+
+def test_rect_collision():
+    vals = range(0, 200)
+    r = Rect2(30, 30, 100, 100)
+    pts = [(choice(vals), choice(vals)) for i in range(50)]
+
+    w, h = 1100, 900
+    app = PygameApplication("Test TextBox", w, h)
+    game = app.get_game()
+    display = app.display
+
+    def draw_rect(r):
         # textbox.draw()
         p1 = r.p1
         p2 = r.p2
@@ -535,19 +710,55 @@ def find_north_side():
         game.draw.line(display, BLUE, p3, p4)
         game.draw.line(display, YELLOW_3, p4, p1)
 
-        game.draw.circle(display, TAN, d, 3)
-        d = d[0] + 1, d[1] + 1
-        print("d", d, "collision:", r.collide_point(*d))
-        if r.collide_point(*d):
-            break
+        pa1 = r.max_encapsulating_rect.p1
+        pa2 = r.max_encapsulating_rect.p2
+        pa3 = r.max_encapsulating_rect.p3
+        pa4 = r.max_encapsulating_rect.p4
+        game.draw.line(display, ORANGE, pa1, pa2)
+        game.draw.line(display, PURPLE, pa2, pa3)
+        game.draw.line(display, ROYALBLUE, pa3, pa4)
+        game.draw.line(display, TAN, pa4, pa1)
+
+        pi1 = r.min_encapsulating_rect.p1
+        pi2 = r.min_encapsulating_rect.p2
+        pi3 = r.min_encapsulating_rect.p3
+        pi4 = r.min_encapsulating_rect.p4
+        game.draw.line(display, LIMEGREEN, pi1, pi2)
+        game.draw.line(display, SKYBLUE, pi2, pi3)
+        game.draw.line(display, WHITE, pi3, pi4)
+        game.draw.line(display, BROWN_1, pi4, pi1)
+
+    while app.is_playing:
+        display.fill(BLACK)
+        draw_rect(r)
+        for pt in pts:
+            if r.collide_point(*pt, strictly_inside=False):
+                color = RED
+            else:
+                color = GREEN
+            game.draw.circle(display, color, pt, 2)
+
         event_queue = app.run()
-        # for event in event_queue:
-        #     textbox.handle_event(event)
-        # app.run()
+        for event in event_queue:
+            pass
+        app.clock.tick(25)
 
+    p = pts[0]
+    p = (85,85)
+    print("p1:", p)
+    print("r", r)
+    print("r.top", r.top_line)
+    print("r.left", r.left_line)
+    print("r.bottom", r.bottom_line)
+    print("r.right", r.right_line)
+    print("(x, y) <= top:", p <= r.top_line)
+    print("(x, y, 0) <= left:", (*p, 0) <= r.left_line)
+    print("(x, y, 1) <= left:", (*p, 1) <= r.left_line)
+    print("(x, y, 0) >= right:", (*p, 0) >= r.right_line)
+    print("(x, y, 1) >= right:", (*p, 1) >= r.right_line)
+    print("(x, y) >= bottom:", p >= r.bottom_line)
+    print("r.collide_point(*p)", r.collide_point(*p))
 
-def test_find_north_side():
-    find_north_side()
 
 
 if __name__ == "__main__":
@@ -573,4 +784,6 @@ if __name__ == "__main__":
     # ])
 
     # test_money_str_format
-    test_find_north_side()
+    # test_find_north_side()
+    # test_new_rect()
+    test_rect_collision()

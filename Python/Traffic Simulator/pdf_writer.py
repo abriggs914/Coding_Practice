@@ -1,0 +1,1503 @@
+import datetime
+import math
+import os
+import random
+
+from utility import *
+from colour_utility import *
+from fpdf import FPDF
+import webbrowser
+
+"""
+	General PDF Creation Class
+	Version................1.1
+	Date............2021-09-29
+	Author........Avery Briggs
+"""
+
+MAX_Y = 297
+MAX_X = 210
+MARGIN_LINES_WIDTH = 3
+MARGIN_LINES_MARGIN = 5
+TITLE_HEIGHT = 12
+TITLE_MARGIN = 15
+TABLE_MARGIN = 10
+FOOTER_MARGIN = 10
+TXT_MARGIN = 10
+FILE_NAME = "test.pdf"
+
+
+class PDF(FPDF):
+
+    def __init__(self, file_name, **kwargs):
+        super().__init__(**kwargs)
+        self.file_name = file_name
+
+        if self.cur_orientation == "L":
+            self.w = 297
+            self.h = 210
+        else:
+            self.w = 210
+            self.h = 297
+        self.page_heights = [0]
+
+    def titles(self, title, x, y, w, h, colour, align="C", border=0, font=('Arial', 'B', 16)):
+        # self.set_fill_color(*BWS_GREY)
+        # self.rect(0, 0, 210, 20, "FD")
+        self.set_font(*font)
+        self.set_xy(x, y)
+        self.set_text_color(*colour)
+        self.cell(w=w, h=h, align=align, txt=title, border=border)
+
+    def texts(self, x, y, w, h, name, font=('Arial', '', 12), font_colour=BLACK):
+        before = self.get_x(), self.get_y()
+        if name in os.listdir():
+            with open(name, 'rb') as xy:
+                txt = xy.read().decode('latin-1')
+        else:
+            txt = name
+        print("description:", txt[:15])
+        print("before: ({}, {})".format(*before))
+        self.set_xy(x, y)
+        self.set_text_color(*font_colour)
+        self.set_font(*font)
+        self.multi_cell(w, h, txt, align='J')
+        after = self.get_x(), self.get_y()
+        print("after: ({}, {})".format(*after))
+        print("diff: ({}, {})".format(after[0] - before[0], after[1] - before[1]))
+        return after[0] - before[0], after[1] - before[1]
+
+    def add_image(self, name, x, y, w, h, type='', link=''):
+        self.image(name, x, y, w, h, type, link)
+
+    def open_in_browser(self):
+        webbrowser.open(self.file_name)
+
+    def margin_border(self, border_colour, content_colour, border_width=MARGIN_LINES_WIDTH):
+        self.margin_lines(MARGIN_LINES_MARGIN, MARGIN_LINES_MARGIN, self.w - (2 * MARGIN_LINES_MARGIN),
+                          self.h - (2 * MARGIN_LINES_MARGIN), border_colour, content_colour, border_width)
+
+    def margin_lines(self, x, y, w, h, border_colour, content_colour, border_width=MARGIN_LINES_WIDTH):
+        self.set_fill_color(*border_colour)  # color for outer rectangle
+        self.rect(x, y, w, h, 'DF')
+        self.set_fill_color(*content_colour)  # color for inner rectangle
+        self.rect(x + border_width, y + border_width, w - (2 * border_width), h - (2 * border_width), 'FD')
+
+        # self.rect(5.0, 5.0, 200.0, 287.0)
+
+        # self.set_line_width(0.0)
+        # self.line(5.0, 5.0, 205.0, 5.0)  # top one
+        # self.line(5.0, 292.0, 205.0, 292.0)  # bottom one
+        # self.line(5.0, 5.0, 5.0, 292.0)  # left one
+        # self.line(205.0, 5.0, 205.0, 292.0)  # right one
+
+    def footer(self):
+        old_colour = list(map(lambda colo: int(255 * float(colo.strip())), self.text_color.split(" ")[: -1]))
+        self.set_text_color(*BLACK)
+        # Go to 1.5 cm from bottom
+        self.set_y(-15)
+        # Select Arial italic 8
+        self.set_font('Arial', 'I', 8)
+        # Print centered page number
+        self.cell(0, 10, 'Page %s' % self.page_no(), 0, 0, 'C')
+        self.set_text_color(*old_colour)
+
+    def preprocess_contents(self, contents):
+        print("IN\n", contents)
+        if not isinstance(contents, dict) or not dict:
+            raise ValueError("Parameter \"contents\" must be a populated dict object.")
+        res = {}
+        for k, v in contents.items():
+            is_list = False
+            if not isinstance(v, dict):
+                if isinstance(v, list):
+                    i = 0
+                    for i, col in enumerate(v):
+                        if not isinstance(col, dict):
+                            break
+                        res.update({str(k) + "".join([" " for j in range(i)]): col})
+                    if i == len(v) - 1:
+                        is_list = True
+                        continue
+                raise ValueError(
+                    "Parameter \"contents\" is not of the correct format.\nNeeds to be a dict of dictionaries")
+            if not is_list:
+                res.update({k: v})
+
+        print("OUT\n", res)
+        return res
+
+    def time_stamp(self):
+        date = datetime.datetime.now()
+        old_colour = list(map(lambda colo: int(255 * float(colo.strip())), self.text_color.split(" ")[: -1]))
+        self.set_text_color(*BLACK)
+        # Go to 1.5 cm from bottom
+        self.set_xy(self.w - 60, -15)
+        # Select Arial italic 8
+        self.set_font('Arial', 'I', 8)
+        # Print centered page number
+        txt = "Prepared: {} at {}".format(
+            datetime.datetime.strftime(date, "%Y-%m-%d"),
+            datetime.datetime.strftime(date, "%I:%M:%S %p")
+        )
+        self.cell(0, 10, txt, 0, 0, 'C')
+        self.set_text_color(*old_colour)
+
+    def table(
+            self,
+            title,
+            x,
+            y,
+            w,
+            contents,
+            desc_txt="",
+            header_colours=(BLACK, WHITE),
+            colours=(WHITE, BLACK),
+            header_height=10,
+            cell_height=5,
+            title_v_margin=5,
+            title_h_margin=5,
+            title_height=10,
+            title_colour=BWS_RED,
+            top_margin=5,
+            bottom_margin=5,
+            left_margin=5,
+            right_margin=5,
+            line_width=0,
+            top_link_colours=(WHITE, TEAL),
+            footer_colours=(BLACK, WHITE),
+            new_page_for_table=False,
+            # new_page_for_table=True,
+            show_row_names=False,
+            include_top_chart_link=True,
+            include_top_doc_link=False,
+            start_with_header=True,
+            row_name_col_lbl="",
+            border_colour=BWS_RED,
+            content_colour=WHITE,
+            cell_border_style=1,
+            null_entry="",
+            col_align=None,
+            header_font=('Arial', 'B', 14),
+            cell_font=('Arial', '', 8)
+            # time_stamp=False
+    ):
+        contents = self.preprocess_contents(contents)
+
+        def add_new_page():
+            old_colour = list(map(lambda colo: int(255 * float(colo.strip())), self.fill_color.split(" ")[: -1]))
+            self.add_page()
+            # self.margin_lines(MARGIN_LINES_MARGIN, MARGIN_LINES_MARGIN, MAX_X - (2 * MARGIN_LINES_MARGIN),
+            #                   MAX_Y - (2 * MARGIN_LINES_MARGIN), BWS_RED, WHITE)
+            self.margin_border(border_colour, content_colour)
+            self.set_xy(cx, MARGIN_LINES_MARGIN + MARGIN_LINES_WIDTH + top_margin)
+            self.set_fill_color(*footer_colours[0])
+            # self.rect(0, self.h - FOOTER_MARGIN, self.w, FOOTER_MARGIN, 'FD')
+            self.set_fill_color(*old_colour)
+
+        if new_page_for_table:
+            include_top_doc_link = True
+
+        cx = cy = 0
+
+        header = []
+        content_lst = [[]]
+        title_page = self.page_no()
+
+        otx = x + left_margin
+        oty = y + top_margin
+        ocx = otx
+        ocy = oty + line_width + title_v_margin
+
+        for i, itms in enumerate(contents):
+            row = itms
+            col_vals = contents[row]
+            if not isinstance(col_vals, list):
+                col_vals = [col_vals]
+            print("row:", row, "col_vals:", col_vals)
+            content_lst.append([])
+            for col in col_vals:
+                for head, value in col.items():
+                    h_names = [h[0] if h else "" for h in header]
+                    j = lstindex(h_names, head)
+                    mhv = max(len(str(head)), len(str(value)))
+                    if j == -1:
+                        header.append((head, mhv))
+                        content_lst[0].append(head)
+                    else:
+                        header[j] = (head, max(header[j][1], mhv))
+
+                    h_names = [h[0] if h else "" for h in header]
+                    j = lstindex(h_names, head)
+                    c = len(content_lst[i + 1])
+                    if 0 < i:
+                        d = c - j
+                        # print("i: ", i, "c:", c, "d:", d, "j:", j, "value:", value, "content_list[i]:", content_lst[i + 1])
+                        if d <= 0:
+                            content_lst[i + 1] += [None for k in range(abs(d))]
+                    if j < c:
+                        content_lst[i + 1][j] = value
+                    else:
+                        content_lst[i + 1].append(value)
+
+        n_rows = len(contents)
+        n_cols = len(header)
+        # table_height = (2 * title_v_margin) + title_height + top_margin + bottom_margin + (
+        #             n_rows * cell_height) + header_height
+
+        # self.set_fill_color(*GREEN_2)
+        # self.rect(x + table_count, y, w, table_height, "FD")
+        # table_count += 5
+
+        # self.set_fill_color(*BWS_BLACK)
+
+        print("before")
+        print(content_lst)
+        if show_row_names:
+            n_cols += 1
+            header.insert(0, (row_name_col_lbl, 1))
+            keys = [header[0]] + list(contents.keys())
+            for i in range(n_rows + 1):
+                if i == 0:
+                    content_lst[0].insert(0, header[0][0])
+                else:
+                    k = keys[i]
+                    content_lst[i].insert(0, k)
+        print("after")
+        print(content_lst)
+
+        for row in content_lst:
+            row += [None for i in range(max(0, n_cols - len(row)))]
+
+        width = w - (2 * left_margin)
+        cell_width = width / n_cols
+
+        # self.set_fill_color(*BWS_GREY)
+        # cch = cell_height + (line_width / 2)
+        pages = 0
+        i_off = 0
+        space_used = 0
+        page_space_used = 0
+        # print("ocy:", ocy, "height:", height, "self.h:", self.h)
+
+        dth = 0 if desc_txt is None else 40
+        print("\t\tTITLE", title)
+        print("self.get_y() + title_height + (5 * title_v_margin) + dth + (2 * top_margin):",
+              (self.get_y() + title_height + (5 * title_v_margin) + dth + (2 * top_margin)))
+        if new_page_for_table or (
+                self.get_y() + title_height + (5 * title_v_margin) + dth + (2 * top_margin)) >= self.h:
+            print("\tNew page to start the chart. new_page_for_table={}".format(new_page_for_table))
+            add_new_page()
+            page_left = self.h
+            pages += 1
+            # i_off += i
+            page_space_used += space_used
+            space_used = 0
+            ocy = 0
+            oty = 0
+            title_page = self.page_no()
+
+        # Begin Writing to page
+
+        self.line(otx - left_margin, oty + (title_v_margin / 2) + top_margin - 2, otx - left_margin + w,
+                  oty + (title_v_margin / 2) + top_margin - 2)
+        self.titles(title, otx - left_margin, oty + (title_v_margin / 2) + top_margin, w,
+                    title_height, title_colour)
+
+        ocy += title_height + title_v_margin
+
+        x_txt = y_txt = 0
+        if desc_txt:
+            y_txt = oty + (title_v_margin / 2) + top_margin + title_height + title_v_margin
+            x_txt, y_txt = self.texts(otx, y_txt, 0, 5, desc_txt)
+            ocy += y_txt
+        print("y_txt:", y_txt, "oty + (title_v_margin / 2) + top_margin:", (oty + (title_v_margin / 2) + top_margin),
+              "title_height:", title_height, "oty + (title_v_margin / 2) + top_margin + title_height",
+              oty + (title_v_margin / 2) + top_margin + title_height)
+
+        off = 0
+        i = 0
+        rh = 0
+        self.set_xy(ocx, ocy)
+        while i in range(n_rows + 1):
+
+            if i == 0:
+                self.set_font(*header_font)
+                self.set_fill_color(*header_colours[0])
+                self.set_text_color(*header_colours[1])
+                ch = header_height
+            else:
+                self.set_font(*cell_font)
+                fill_colour = colours[0][(i - 1) % len(colours[0])]
+                font_colour = colours[1][(i - 1) % len(colours[1])]
+                self.set_fill_color(*fill_colour)
+                self.set_text_color(*font_colour)
+                ch = cell_height
+
+            def row_height():
+                self.set_font(*cell_font)
+                """
+                # print("self.get_string_width(str(content_lst[i][4]).strip():", self.get_string_width(str(content_lst[i][4]).strip()), "content_lst[i][4]):", content_lst[i][4])
+                # print("max([]):", (max(
+                #     [self.get_string_width(str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) for q in range(n_cols)]
+                # )))
+                # print("max([]) / cell_width:", (max([self.get_string_width(str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) for q in range(n_cols)]) / cell_width))
+                # print("[math.ceil(self.get_string_width(str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) / cell_width) for q in range(n_cols)]\n\t", [math.ceil(self.get_string_width(str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) / cell_width) for q in range(n_cols)])
+                # print("max([ceil(string_w(str(c_lst[i={i}][q]).strip() if c_lst[i={i}][q] is not None else null_entry) / cell_width) for q in range(n_cols={nc})]): {r}".format(i=i, nc=n_cols, r=(max([math.ceil(self.get_string_width(str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) / cell_width) for q in range(n_cols)]))))
+                # return max([math.ceil(self.get_string_width(str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) / cell_width) for q in range(n_cols)])
+                """
+                """
+                res = 0
+                for q in range(n_cols):
+                    ct = str(content_lst[i][q])#.strip()
+                    sct = math.ceil(self.get_string_width(ct))
+                    cww = math.floor(cell_width - 4.55)
+                    sctd = self.get_string_width(str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) / cww
+                    csctd = math.ceil(sctd)
+
+                    sp_splt = ct.split(" ")
+                    line = ""
+                    line_c = 1
+                    for ij, word in enumerate(sp_splt):
+                        spf = "" if ij == 0 else " "
+                        spe = "" if ij == n_cols - 1 else " "
+                        line += spf + word.strip()
+                        ln = line + spe
+                        print("line ({}) ({}): <{}> math.ceil(math.ceil(self.get_string_width(ln)) / cww): {}".format(len(ln), math.ceil(self.get_string_width(ln)), ln, (math.ceil(math.ceil(self.get_string_width(ln)) / cww))))
+                        if math.ceil(math.ceil(self.get_string_width(ln)) / cww) > 1:
+                            print("\tBREAK line ({}) ({}): <{}>".format(len(ln), self.get_string_width(ln), ln))
+                            line_c += 1
+                            line = ""
+
+                    res = max(res, line_c - csctd)
+
+                    res = max(res, csctd)
+                    print(dict_print({"ct": ct, "ch": ch, "sct": sct, "cww": cww, "sctd": sctd, "csctd": csctd, "line_C": line_c, "res": res}, "Calculated values"))
+                return res
+                """
+
+                res = 0
+                for q in range(n_cols):
+                    ct = str(content_lst[i][q])  # .strip()
+                    sct = math.ceil(self.get_string_width(ct))
+                    cww = math.floor(cell_width - 5)
+                    sctd = self.get_string_width(
+                        str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) / cww
+                    csctd = math.ceil(sctd)
+
+                    sp_splt = ct.split(" ")
+                    line = ""
+                    line_c = 1
+                    for ij, word in enumerate(sp_splt):
+                        spf = "" if ij == 0 else " "
+                        spe = "" if ij == n_cols - 1 else " "
+                        line += spf + word.strip()
+                        ln = line + spe
+                        if ij < len(sp_splt) - 1:
+                            next_word = sp_splt[ij + 1]
+                            if self.get_string_width(ln + next_word) >= cww:
+                                print("\tBREAK line ({}) ({}): <{}>".format(len(ln), self.get_string_width(ln), ln))
+                                line_c += 1
+                                line = ""
+                                ln = ""
+                    res = max(res, line_c)
+                    # if res:
+                    # print()
+                res = max(1, res - 1)
+                # if res > 1:
+                #     res -= 1
+                return res
+
+            trh = row_height()
+            rh += trh - 1
+            print("trh:", trh)
+            och = ch
+            ch = max(ch, ch * (trh - 1))
+
+            # cy = ocy + (((i + rh - pages) * cell_height) + (((1 if pages else 0) + off) * header_height) + max(0, ((1 if i else 0) * header_height) - 5)) - (
+            #         1 * page_space_used) + FOOTER_MARGIN + top_margin + title_v_margin
+            # print("\tself.get_y():", self.get_y(), "ch:", ch, "self.h:", self.h, "(self.get_y() + ch):", (self.get_y() + ch), "(self.get_y() + ch) >= self.h:", (self.get_y() + ch) >= self.h)
+            # print("\tcy:", cy, "ch:", ch, "self.h:", self.h, "(cy + ch):", (cy + ch), "(cy + ch) >= self.h:", ((cy + ch) >= self.h))
+            # print("\t\t(self.get_y() + max(cell_height, header_height)):", (self.get_y() + max(cell_height, header_height)), "\n\t\tself.h - (2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height:", (self.h - (2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height), "\n\t\t(self.get_y() + max(cell_height, header_height)) >= self.h - (2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height:", (self.get_y() + max(cell_height, header_height)) >= (self.h - (2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height))
+            np = False
+            if i == 0:
+                if (self.get_y() + max(cell_height, header_height, (max(0, (trh)) * och))) >= self.h - (
+                        2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height - y_txt:
+                    np = True
+            elif (self.get_y() + max(cell_height, header_height, (max(0, (trh)) * och))) >= self.h - (
+                    2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN)):
+                np = True
+
+            if np:
+                add_new_page()
+                page_left = self.h
+                pages += 1
+                print("\tpage break on line i={}, start next page with header: {}".format(i, start_with_header))
+                i_off += i
+                page_space_used += space_used
+                space_used = 0
+                ocy = 0
+
+            space_used += ch + (max(0, (trh - 2)) * och)
+            j = 0
+            cy = self.get_y()  # - (max(0, trh - 2) * och)
+            wo_10015162 = False
+            m_c_y = cy
+            while j in range(n_cols):
+                if start_with_header and np:
+                    cell_value = str(content_lst[0][j]).strip() if content_lst[0][j] is not None else null_entry
+                    print("cv:", cell_value)
+                    self.set_font('Arial', 'B', 14)
+                    self.set_fill_color(*header_colours[0])
+                    self.set_text_color(*header_colours[1])
+                    ch = header_height
+                else:
+                    cell_value = str(content_lst[i][j]).strip() if content_lst[i][j] is not None else null_entry
+                cw = cell_width + (line_width / 2)
+                cx = ocx + (j * cw)
+                # cy = ocy + (((i - i_off) * ch) + max(0, ((1 if i else 0) * cch) - 5)) - (pages * height)
+                # cy = self.get_y()#ocy + (((i + rh - pages) * cell_height) + (((1 if (start_with_header and np) else 1) + off) * header_height) + max(0, ((1 if i else 0) * header_height) - 5)) - (
+                #   1 * page_space_used) + FOOTER_MARGIN + top_margin + title_v_margin
+                # if rh:
+                #     cy -= cell_height
+                # print(
+                #     "pages: {} i: {} j: {} cx: {} cy: {}, self.get_y: {} cv: {} su: {} psu: {}".format(pages, i, j, cx,
+                #                                                                                        cy,
+                #                                                                                        self.get_y(),
+                #                                                                                        cell_value,
+                #                                                                                        space_used,
+                #                                                                                        page_space_used))
+                # self.rect(cx, cy, cell_width, ch, 'DF')
+                # self.texts(cx + (cw / 2), cy + (ch / 2), cell_value)
+                # self.texts(cx, cy, cell_value)
+                if cy >= self.h:
+                    raise ValueError("cy {} is too high".format(cy))
+                align = "C"
+                if isinstance(col_align, list):
+                    if j < len(col_align):
+                        align = col_align[j]
+                elif isinstance(col_align, dict):
+                    col_name = header[j][0]
+                    # print("\t\tcol_name:", col_name)
+                    if col_name in col_align:
+                        align = col_align[col_name]
+
+                self.set_xy(cx, cy)
+                # self.cell(cell_width, ch, cell_value, cell_border_style, 1, align, fill=1)
+                if trh - 1:
+                    bs = "F" + ("" if not cell_border_style else "D")
+                    # old_colo = list(map(lambda abc: int(255 * float(abc.strip())), self.fill_color.split(" ")[:3]))
+                    # print("old_colo:", old_colo)
+                    # self.set_fill_color(*TURQUOISE)
+                    w_off = 1
+                    # self.rect(cx - w_off, cy, cell_width + (2 * w_off), (max(0, (trh)) * och), bs)
+                    # self.set_fill_color(*old_colo)
+                bef = self.get_y()
+                self.multi_cell(w=cell_width, h=och, txt=cell_value[:300], border=cell_border_style, align=align,
+                                fill=1)
+                aft = self.get_y()
+                m_c_y = max(m_c_y, self.get_y(), max(0, (trh if trh > 1 else 0)) * och)
+                # x, y, name, font=('Arial', '', 12), font_colour=BLACK
+                j += 1
+                print(
+                    "page: {}\n\t(i, j): ({}, {})\n\t(cx, cy): ({}, {})\n\tself.get_y: {}\n\tcv: {} su: {} psu: {}\n\t(aft, bef): ({}, {})\n\ttrh: {}\n\tm_c_y: {}".format(
+                        pages, i, j, cx,
+                        cy,
+                        self.get_y(),
+                        cell_value,
+                        space_used,
+                        page_space_used, aft, bef, trh, m_c_y))
+
+                if cell_value == "10015162":
+                    wo_10015162 = True
+
+            if start_with_header and np:
+                i -= 1
+                off += 1
+            i += 1
+            print("\t\tcy:", cy, "\n\t\tself.get_y()", self.get_y())
+            # self.set_y(cy + och + (max(0, (trh if trh > 1 else 0)) * och))
+            self.set_y(m_c_y)
+            # if wo_10015162:
+            #     raise ValueError("Hey ")
+
+        # self.rect(x, y, w, height, 'FD')
+
+        y_link = self.get_y() + title_v_margin
+        if include_top_chart_link:
+            self.set_fill_color(*top_link_colours[0])
+            self.set_text_color(*top_link_colours[1])
+            self.set_xy(ocx + width - 30, y_link)
+            self.cell(30, 5, "Top of Chart", 1, 1, 'C', fill=1,
+                      link=("{}/{}#page={}".format(os.getcwd(), self.file_name, title_page)))
+
+        if include_top_doc_link:
+            self.set_fill_color(*top_link_colours[0])
+            self.set_text_color(*top_link_colours[1])
+            self.set_xy(ocx + width - 65, y_link)
+            self.cell(30, 5, "Top of Document", 1, 1, 'C', fill=1,
+                      link=("{}/{}#page={}".format(os.getcwd(), self.file_name, 1)))
+
+        # if time_stamp:
+        #     self.time_stamp()
+
+        # self.line(otx - left_margin, self.get_y() + title_v_margin + 2, otx - left_margin + w, self.get_y() + title_v_margin + 2)
+        # self.link(ocx, self.get_y() + title_v_margin, 30, 30, FILE_NAME + "#page={}".format(title_page))
+        print("self.w:", self.w, "width:", width)
+        print("header:", header)
+        # print("\n##\n" + "\n".join(list(map(str, content_lst))) + "\n##\n")
+        print("(N x M): ({} x {})".format(n_rows, n_cols))
+        # print("(H x W): ({} x {})".format(height, width))
+        print("(CH x CW): ({} x {})".format(cell_height, cell_width))
+
+        return cx, cy
+
+    def table(
+            self,
+            title,
+            x,
+            y,
+            w,
+            contents,
+            desc_txt="",
+            header_colours=(BLACK, WHITE),
+            colours=(WHITE, BLACK),
+            header_height=10,
+            cell_height=5,
+            title_v_margin=5,
+            title_h_margin=5,
+            title_height=10,
+            title_colour=BWS_RED,
+            top_margin=8,
+            bottom_margin=8,
+            left_margin=8,
+            right_margin=8,
+            line_width=0,
+            top_link_colours=(WHITE, TEAL),
+            footer_colours=(BLACK, WHITE),
+            new_page_for_table=False,
+            # new_page_for_table=True,
+            show_row_names=False,
+            include_top_chart_link=True,
+            include_top_doc_link=False,
+            start_with_header=True,
+            row_name_col_lbl="",
+            border_colour=BWS_RED,
+            content_colour=WHITE,
+            cell_border_style=1,
+            null_entry="",
+            col_align=None,
+            header_font=('Arial', 'B', 14),
+            cell_font=('Arial', '', 10)
+            # time_stamp=False
+    ):
+        contents = self.preprocess_contents(contents)
+
+        def add_new_page():
+            old_colour = list(map(lambda colo: int(255 * float(colo.strip())), self.fill_color.split(" ")[: -1]))
+            self.add_page()
+            # self.margin_lines(MARGIN_LINES_MARGIN, MARGIN_LINES_MARGIN, MAX_X - (2 * MARGIN_LINES_MARGIN),
+            #                   MAX_Y - (2 * MARGIN_LINES_MARGIN), BWS_RED, WHITE)
+            self.margin_border(border_colour, content_colour)
+            self.set_xy(cx, MARGIN_LINES_MARGIN + MARGIN_LINES_WIDTH + top_margin)
+            self.set_fill_color(*footer_colours[0])
+            # self.rect(0, self.h - FOOTER_MARGIN, self.w, FOOTER_MARGIN, 'FD')
+            self.set_fill_color(*old_colour)
+
+        if new_page_for_table:
+            include_top_doc_link = True
+
+        cx = cy = 0
+
+        header = []
+        content_lst = [[]]
+        title_page = self.page_no()
+
+        otx = x + left_margin
+        oty = y + top_margin
+        ocx = otx
+        ocy = oty + line_width + title_v_margin
+
+        for i, itms in enumerate(contents):
+            row = itms
+            col_vals = contents[row]
+            if not isinstance(col_vals, list):
+                col_vals = [col_vals]
+            print("row:", row, "col_vals:", col_vals)
+            content_lst.append([])
+            for col in col_vals:
+                for head, value in col.items():
+                    h_names = [h[0] if h else "" for h in header]
+                    j = lstindex(h_names, head)
+                    mhv = max(len(str(head)), len(str(value)))
+                    if j == -1:
+                        header.append((head, mhv))
+                        content_lst[0].append(head)
+                    else:
+                        header[j] = (head, max(header[j][1], mhv))
+
+                    h_names = [h[0] if h else "" for h in header]
+                    j = lstindex(h_names, head)
+                    c = len(content_lst[i + 1])
+                    if 0 < i:
+                        d = c - j
+                        # print("i: ", i, "c:", c, "d:", d, "j:", j, "value:", value, "content_list[i]:", content_lst[i + 1])
+                        if d <= 0:
+                            content_lst[i + 1] += [None for k in range(abs(d))]
+                    if j < c:
+                        content_lst[i + 1][j] = value
+                    else:
+                        content_lst[i + 1].append(value)
+
+        n_rows = len(contents)
+        n_cols = len(header)
+        # table_height = (2 * title_v_margin) + title_height + top_margin + bottom_margin + (
+        #             n_rows * cell_height) + header_height
+
+        # self.set_fill_color(*GREEN_2)
+        # self.rect(x + table_count, y, w, table_height, "FD")
+        # table_count += 5
+
+        # self.set_fill_color(*BWS_BLACK)
+
+        print("before")
+        print(content_lst)
+        if show_row_names:
+            n_cols += 1
+            header.insert(0, (row_name_col_lbl, 1))
+            keys = [header[0]] + list(contents.keys())
+            for i in range(n_rows + 1):
+                if i == 0:
+                    content_lst[0].insert(0, header[0][0])
+                else:
+                    k = keys[i]
+                    content_lst[i].insert(0, k)
+        print("after")
+        print(content_lst)
+
+        for row in content_lst:
+            row += [None for i in range(max(0, n_cols - len(row)))]
+
+        width = w - (2 * left_margin)
+        cell_width = width / n_cols
+
+        # self.set_fill_color(*BWS_GREY)
+        # cch = cell_height + (line_width / 2)
+        pages = 0
+        i_off = 0
+        space_used = 0
+        page_space_used = 0
+        # print("ocy:", ocy, "height:", height, "self.h:", self.h)
+
+        dth = 0 if desc_txt is None else 40
+        print("\t\tTITLE", title)
+        print("self.get_y() + title_height + (5 * title_v_margin) + dth + (2 * top_margin):",
+              (self.get_y() + title_height + (5 * title_v_margin) + dth + (2 * top_margin)))
+        if new_page_for_table or (
+                self.get_y() + title_height + (5 * title_v_margin) + dth + (2 * top_margin)) >= self.h:
+            print("\tNew page to start the chart. new_page_for_table={}".format(new_page_for_table))
+            add_new_page()
+            page_left = self.h
+            pages += 1
+            # i_off += i
+            page_space_used += space_used
+            space_used = 0
+            ocy = 0
+            oty = 0
+            title_page = self.page_no()
+
+        # Begin Writing to page
+
+        self.line(otx - left_margin, oty + (title_v_margin / 2) + top_margin - 2, otx - left_margin + w,
+                  oty + (title_v_margin / 2) + top_margin - 2)
+        self.titles(title, otx - left_margin, oty + (title_v_margin / 2) + top_margin, w,
+                    title_height, title_colour)
+
+        x_txt = y_txt = 0
+        if desc_txt:
+            y_txt = oty + (title_v_margin / 2) + top_margin + title_height + title_v_margin
+            x_txt, y_txt = self.texts(otx, y_txt, 0, 5, desc_txt)
+            ocy += y_txt
+        print("y_txt:", y_txt, "oty + (title_v_margin / 2) + top_margin:", (oty + (title_v_margin / 2) + top_margin),
+              "title_height:", title_height, "oty + (title_v_margin / 2) + top_margin + title_height",
+              oty + (title_v_margin / 2) + top_margin + title_height)
+
+        off = 0
+        i = 0
+        rh = 0
+        while i in range(n_rows + 1):
+
+            if i == 0:
+                self.set_font(*header_font)
+                self.set_fill_color(*header_colours[0])
+                self.set_text_color(*header_colours[1])
+                ch = header_height
+            else:
+                self.set_font(*cell_font)
+                fill_colour = colours[0][(i - 1) % len(colours[0])]
+                font_colour = colours[1][(i - 1) % len(colours[1])]
+                self.set_fill_color(*fill_colour)
+                self.set_text_color(*font_colour)
+                ch = cell_height
+
+            def row_height():
+                self.set_font(*cell_font)
+                # if i == 0:
+                #     cv = max([self.get_string_width(str(content_lst[0][j]).strip() if content_lst[0][j] is not None else null_entry)])
+                # else:
+                #     cv = str(content_lst[i][j]).strip() if content_lst[i][j] is not None else null_entry
+                print("self.get_string_width(str(content_lst[i][4]).strip():",
+                      self.get_string_width(str(content_lst[i][4]).strip()), "content_lst[i][4]):", content_lst[i][4])
+                print("max([]):", (max(
+                    [self.get_string_width(
+                        str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) for q in
+                        range(n_cols)]
+                )))
+                print("max([]) / cell_width:", (max([self.get_string_width(
+                    str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) for q in
+                    range(n_cols)]) / cell_width))
+                return max([math.ceil(self.get_string_width(
+                    str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) / cell_width) for q
+                            in range(n_cols)])
+                # if i == 0:
+                #     return math.ceil(max([self.get_string_width(str(content_lst[0][q]).strip() if content_lst[0][q] is not None else null_entry) for q in range(n_cols)]) / cell_width)
+                # else:
+                #     return math.ceil(max([self.get_string_width(
+                #         str(content_lst[i][q]).strip() if content_lst[i][q] is not None else null_entry) for q in
+                #                           range(n_cols)]) / cell_width)
+
+            trh = row_height()
+            # rh += trh - 1
+            print("rh:", rh)
+            ch = max(ch, ch * rh)
+
+            cy = ocy + (((i + rh - pages) * cell_height) + (((1 if pages else 0) + off) * header_height) + max(0, (
+                    (1 if i else 0) * header_height) - 5)) - (
+                         1 * page_space_used) + FOOTER_MARGIN + top_margin + title_v_margin
+            # print("\tself.get_y():", self.get_y(), "ch:", ch, "self.h:", self.h, "(self.get_y() + ch):", (self.get_y() + ch), "(self.get_y() + ch) >= self.h:", (self.get_y() + ch) >= self.h)
+            # print("\tcy:", cy, "ch:", ch, "self.h:", self.h, "(cy + ch):", (cy + ch), "(cy + ch) >= self.h:", ((cy + ch) >= self.h))
+            print("\t\t(self.get_y() + max(cell_height, header_height)):",
+                  (self.get_y() + max(cell_height, header_height)),
+                  "\n\t\tself.h - (2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height:",
+                  (self.h - (2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height),
+                  "\n\t\t(self.get_y() + max(cell_height, header_height)) >= self.h - (2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height:",
+                  (self.get_y() + max(cell_height, header_height)) >= (self.h - (
+                          2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height))
+            np = False
+            if i == 0:
+                if (self.get_y() + max(cell_height, header_height)) >= self.h - (
+                        2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + title_v_margin)) - title_height - y_txt:
+                    np = True
+            elif (self.get_y() + max(cell_height, header_height)) >= self.h - (
+                    2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN)):
+                np = True
+
+            if np:
+                add_new_page()
+                page_left = self.h
+                pages += 1
+                print("\tpage break on line i={}, start next page with header: {}".format(i, start_with_header))
+                i_off += i
+                page_space_used += space_used
+                space_used = 0
+                ocy = 0
+
+            space_used += ch
+            j = 0
+            while j in range(n_cols):
+                if start_with_header and np:
+                    cell_value = str(content_lst[0][j]).strip() if content_lst[0][j] is not None else null_entry
+                    print("cv:", cell_value)
+                    self.set_font('Arial', 'B', 14)
+                    self.set_fill_color(*header_colours[0])
+                    self.set_text_color(*header_colours[1])
+                    ch = header_height
+                else:
+                    cell_value = str(content_lst[i][j]).strip() if content_lst[i][j] is not None else null_entry
+                cw = cell_width + (line_width / 2)
+                cx = ocx + (j * cw)
+                # cy = ocy + (((i - i_off) * ch) + max(0, ((1 if i else 0) * cch) - 5)) - (pages * height)
+                cy = ocy + (((i + rh - pages) * cell_height) + (
+                        ((1 if (start_with_header and np) else 1) + off) * header_height) + max(0, (
+                        (1 if i else 0) * header_height) - 5)) - (
+                             1 * page_space_used) + FOOTER_MARGIN + top_margin + title_v_margin
+                # if rh:
+                #     cy -= cell_height
+                print(
+                    "pages: {} i: {} j: {} cx: {} cy: {}, self.get_y: {} cv: {} su: {} psu: {}".format(pages, i, j, cx,
+                                                                                                       cy,
+                                                                                                       self.get_y(),
+                                                                                                       cell_value,
+                                                                                                       space_used,
+                                                                                                       page_space_used))
+                # self.rect(cx, cy, cell_width, ch, 'DF')
+                # self.texts(cx + (cw / 2), cy + (ch / 2), cell_value)
+                # self.texts(cx, cy, cell_value)
+                if cy >= self.h:
+                    raise ValueError("cy {} is too high".format(cy))
+                align = "C"
+                if isinstance(col_align, list):
+                    if j < len(col_align):
+                        align = col_align[j]
+                elif isinstance(col_align, dict):
+                    col_name = header[j][0]
+                    # print("\t\tcol_name:", col_name)
+                    if col_name in col_align:
+                        align = col_align[col_name]
+
+                self.set_xy(cx, cy)
+                self.cell(cell_width, ch, cell_value, cell_border_style, 1, align, fill=1)
+                # x, y, name, font=('Arial', '', 12), font_colour=BLACK
+                j += 1
+            if start_with_header and np:
+                i -= 1
+                off += 1
+            i += 1
+
+        # self.rect(x, y, w, height, 'FD')
+
+        y_link = self.get_y() + title_v_margin
+        if include_top_chart_link:
+            self.set_fill_color(*top_link_colours[0])
+            self.set_text_color(*top_link_colours[1])
+            self.set_xy(ocx + width - 30, y_link)
+            self.cell(30, 5, "Top of Chart", 1, 1, 'C', fill=1,
+                      link=("{}/{}#page={}".format(os.getcwd(), self.file_name, title_page)))
+
+        if include_top_doc_link:
+            self.set_fill_color(*top_link_colours[0])
+            self.set_text_color(*top_link_colours[1])
+            self.set_xy(ocx + width - 65, y_link)
+            self.cell(30, 5, "Top of Document", 1, 1, 'C', fill=1,
+                      link=("{}/{}#page={}".format(os.getcwd(), self.file_name, 1)))
+
+        # if time_stamp:
+        #     self.time_stamp()
+
+        # self.line(otx - left_margin, self.get_y() + title_v_margin + 2, otx - left_margin + w, self.get_y() + title_v_margin + 2)
+        # self.link(ocx, self.get_y() + title_v_margin, 30, 30, FILE_NAME + "#page={}".format(title_page))
+        print("self.w:", self.w, "width:", width)
+        print("header:", header)
+        # print("\n##\n" + "\n".join(list(map(str, content_lst))) + "\n##\n")
+        print("(N x M): ({} x {})".format(n_rows, n_cols))
+        # print("(H x W): ({} x {})".format(height, width))
+        print("(CH x CW): ({} x {})".format(cell_height, cell_width))
+
+        return cx, cy
+
+
+def random_test_set(n, start=0, end=None, step=1):
+    step = max(1, step)
+    if end is None:
+        end = start + (n * step)
+    if end < start:
+        start, end = end, start
+    if start + (n * step) != end:
+        end = start + (n * step)
+    r_keys = ["a", "b", "c", "d", "e"]
+
+    def random_test_entry(m):
+        return {choice(r_keys): int(round(random_in_range(1, 101))) for i in range(m)}
+
+    return {i: random_test_entry(choice(list(range(5)))) for i in range(start, end, step)}
+
+
+if __name__ == "__main__":
+    pdf = PDF(FILE_NAME, orientation='P', unit='mm', format='A4')
+    pdf.set_auto_page_break(True, margin=5)
+    pdf.set_title("Dealer Delivery Reports")
+    pdf.set_author('Avery Briggs')
+    pdf.add_page()
+
+    # pdf.margin_lines(MARGIN_LINES_MARGIN, MARGIN_LINES_MARGIN, MAX_X - (2 * MARGIN_LINES_MARGIN),
+    #                  MAX_Y - (2 * MARGIN_LINES_MARGIN), BWS_RED, WHITE)
+    pdf.margin_border(BWS_RED, WHITE)
+    pdf.titles("Dealer Delivery Reports", MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN,
+               TITLE_MARGIN + MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN,
+               MAX_X - (2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN)), TITLE_HEIGHT, BWS_BLACK)
+
+    date = datetime.datetime.now()
+    pdf.texts(
+        MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN + TXT_MARGIN,
+        TABLE_MARGIN + MARGIN_LINES_WIDTH + TITLE_HEIGHT + TITLE_MARGIN,
+        0,
+        10,
+        "Prepared at {} on {}".format(
+            datetime.datetime.strftime(date, "%I:%M:%S %p"),
+            datetime.datetime.strftime(date, "%Y-%m-%d")
+        ),
+        font=('Arial', '', 10)
+    )
+
+    # TABLE_X = 5 + MARGIN_LINES_WIDTH + TABLE_MARGIN
+    # TABLE_Y = 10 + MARGIN_LINES_WIDTH + TABLE_MARGIN
+    TABLE_W = (MAX_X - (2 * (MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN)) - (2 * TABLE_MARGIN))
+    # TABLE_H = 200 - (2 * (MARGIN_LINES_WIDTH + TABLE_MARGIN))
+
+    contents_1 = {
+        1: {"a": 1, "b": 2, "c": 1},
+        2: {"a": 2, "b": 563, "c": 2, "d": 15},
+        3: {"a": 3, "b": 3, "c": 3, "d": 5},
+        4: {"a": 4, "b": 4, "c": 4, "d": 5},
+        5: {"c": 44, "d": 6},
+        8: {"b": "Really lo", "d": 54566678898, "a": "This stri"},
+        6: {"e": 2},
+        9: {"e": 22},
+        10: {"d": 24},
+        11: {"b": 16},
+        7: {"e": 21, "d": 5, "a": 13},
+        12: {'d': 55, 'c': 90, 'a': 84},
+        13: {'c': 92, 'b': 86},
+        14: {'a': 36},
+        15: {'b': 54},
+        16: {'b': 57},
+        17: {'b': 31, 'a': 83, 'd': 23, 'c': 55},
+        18: {'d': 63, 'a': 31, 'c': 72},
+        19: {'c': 85},
+        20: {'b': 96, 'a': 12, 'e': 30},
+        21: {'b': 25, 'e': 55},
+        22: {'d': 77, 'c': 24, 'a': 28},
+        23: {'d': 40, 'c': 82},
+        24: {'e': 84, 'd': 57},
+        25: {'e': 89},
+        26: {'a': 90},
+        27: {'a': 93, 'c': 30, 'e': 22},
+        28: {'c': 80},
+        29: {'b': 5, 'c': 64, 'e': 35},
+        30: {'e': 76, 'c': 88},
+        31: {'e': 68, 'b': 49, 'a': 24, 'c': 78},
+        32: {'a': 0, 'e': 34, 'c': 44, 'd': 25},
+        33: {'d': 68, 'a': 19, 'b': 63},
+        34: {'e': 74, 'c': 2},
+        35: {'b': 24, 'e': 92, 'c': 98},
+        36: {'d': 82, 'e': 23, 'c': 46},
+        37: {'e': 62, 'a': 94},
+        38: {'d': 59, 'c': 32},
+        39: {'e': 48},
+        40: {'b': 79, 'a': 93, 'd': 61, 'e': 12}
+    }
+    contents_2 = {
+        1: {"a": 1, "b": 2, "c": 1},
+        2: {"a": 2, "b": 563, "c": 2, "d": 15},
+        3: {"a": 3, "b": 3, "c": 3, "d": 5},
+        4: {"a": 4, "b": 4, "c": 4, "d": 5},
+        8: {"b": "Really lo", "d": 54566678898, "a": "This stri"},
+        6: {"e": 2},
+        9: {"e": 22},
+        10: {"d": 24},
+        7: {"e": 21, "d": 5, "a": 13},
+        12: {'d': 55, 'c': 90, 'a': 84},
+        13: {'c': 92, 'b': 86},
+        15: {'b': 54},
+        17: {'b': 31, 'a': 83, 'd': 23, 'c': 55},
+        18: {'d': 63, 'a': 31, 'c': 72},
+        22: {'d': 77, 'c': 24, 'a': 28},
+        23: {'d': 40, 'c': 82},
+        26: {'a': 90},
+        27: {'a': 93, 'c': 30, 'e': 22},
+        30: {'e': 76, 'c': 88},
+        31: {'e': 68, 'b': 49, 'a': 24, 'c': 78},
+        32: {'a': 0, 'e': 34, 'c': 44, 'd': 25},
+        33: {'d': 68, 'a': 19, 'b': 63},
+        34: {'e': 74, 'c': 2},
+        38: {'d': 59, 'c': 32},
+        39: {'e': 48},
+        40: {'b': 79, 'a': 93, 'd': 61, 'e': 12}
+    }
+    contents_3 = {
+        1: {"a": 1, "b": 2, "c": 154654654457112245748},
+        2: {"a": 2, "b": 563, "c": 2, "d": 15},
+        3: {"a": 3, "b": 3, "c": 3, "d": 5},
+        4: {"a": 4, "b": 4, "c": 4, "d": 5},
+        8: {"b": "Really lo", "d": 54566678898, "a": "This stri"},
+        6: {"e": 2},
+        17: {'b': 31, 'a': 83, 'd': 23, 'c': 55},
+        18: {'d': 63, 'a': 31, 'c': 72},
+        30: {'e': 76, 'c': 88},
+        31: {'e': 68, 'b': 49, 'a': 24, 'c': 78},
+        40: {'b': 79, 'a': 93, 'd': 61, 'e': 12}
+    }
+    contents_4 = {
+        41: {'b': 87},
+        42: {'b': 17, 'd': 21, 'a': 95},
+        43: {'d': 19, 'e': 99, 'c': 26},
+        44: {'c': 42, 'e': 43},
+        45: {'b': 13},
+        46: {'a': 12, 'd': 80},
+        47: {'a': 97, 'e': 82},
+        48: {'b': 85, 'c': 38},
+        49: {'e': 4},
+        50: {'e': 3, 'c': 93},
+        51: {'d': 61, 'b': 8, 'a': 88},
+        52: {'d': 37, 'b': 86, 'c': 70},
+        53: {'b': 40},
+        54: {'b': 49, 'a': 80, 'd': 58},
+        55: {'a': 48},
+        56: {'b': 70},
+        57: {'a': 51, 'c': 24},
+        58: {'e': 59, 'b': 100, 'a': 50},
+        59: {'c': 2, 'a': 80, 'b': 41},
+        60: {'c': 32, 'e': 37},
+        61: {'a': 29, 'd': 30, 'e': 25},
+        62: {'a': 74, 'c': 63},
+        63: {'e': 10, 'c': 25},
+        64: {'e': 23},
+        65: {'b': 14, 'c': 49},
+        66: {'e': 72, 'c': 72, 'd': 73},
+        67: {'d': 13, 'b': 48, 'a': 66, 'c': 10},
+        68: {'a': 42},
+        69: {'d': 80, 'b': 70},
+        70: {'c': 82, 'd': 49, 'b': 3},
+        71: {'b': 30, 'c': 98, 'a': 54},
+        72: {'b': 90, 'c': 15, 'e': 6, 'd': 94},
+        73: {'c': 75, 'b': 40, 'a': 82},
+        74: {'c': 22, 'e': 87},
+        75: {'d': 55, 'e': 8, 'a': 8},
+        76: {'b': 18, 'e': 7, 'd': 65},
+        77: {'d': 14, 'a': 56},
+        78: {'b': 68},
+        79: {'c': 17, 'a': 16, 'd': 59},
+        80: {'e': 34, 'a': 50, 'b': 20},
+        81: {'b': 54, 'e': 24, 'd': 52, 'a': 6},
+        82: {'c': 27, 'd': 50, 'a': 15},
+        83: {'b': 77},
+        84: {'e': 21, 'b': 37},
+        85: {'d': 41, 'c': 26, 'b': 18},
+        86: {'d': 54, 'b': 19},
+        87: {'a': 86, 'd': 24, 'c': 49},
+        88: {'a': 60, 'c': 48},
+        89: {'d': 20, 'c': 9},
+        90: {'e': 53, 'b': 27},
+        91: {'e': 28, 'd': 57, 'c': 18, 'a': 8},
+        92: {'c': 37, 'b': 47}, 93: {'e': 40, 'c': 35},
+        94: {'d': 24},
+        95: {'b': 40},
+        96: {'d': 79, 'e': 41},
+        97: {'c': 36, 'a': 74, 'e': 47},
+        98: {'b': 89, 'a': 73},
+        99: {'b': 56, 'c': 55, 'a': 5, 'e': 72},
+        100: {'b': 38},
+        101: {'a': 86, 'b': 40, 'e': 37, 'c': 41},
+        102: {'d': 54, 'a': 32, 'b': 37},
+        103: {'d': 63, 'a': 9, 'e': 58},
+        104: {'a': 65, 'b': 69},
+        105: {'c': 15},
+        106: {'c': 38, 'e': 4, 'a': 16, 'b': 71},
+        107: {'e': 65, 'b': 31},
+        108: {'b': 19, 'e': 80},
+        109: {'c': 62},
+        110: {'d': 49},
+        111: {'c': 45, 'e': 65, 'b': 66, 'd': 95},
+        112: {'a': 93, 'e': 89, 'd': 60, 'c': 36},
+        113: {'c': 68, 'b': 78},
+        114: {'a': 16, 'c': 88},
+        115: {'e': 33, 'b': 26},
+        116: {'b': 36, 'e': 47, 'a': 98},
+        117: {'e': 92, 'b': 68, 'd': 53, 'a': 3},
+        118: {'e': 58, 'a': 84, 'b': 43},
+        119: {'a': 71, 'c': 67, 'd': 42},
+        120: {'a': 12},
+        121: {'b': 13, 'c': 93, 'e': 88, 'd': 1},
+        122: {'e': 49, 'c': 67, 'b': 73},
+        123: {'a': 40, 'd': 90, 'b': 84, 'c': 18},
+        124: {'e': 72},
+        125: {'b': 91, 'd': 100},
+        126: {'d': 75, 'c': 72},
+        127: {'c': 90, 'e': 38, 'a': 18, 'd': 21},
+        128: {'a': 57, 'b': 84, 'e': 73},
+        129: {'c': 93, 'e': 51, 'b': 77},
+        130: {'b': 19, 'a': 86, 'c': 26},
+        131: {'e': 51, 'a': 33, 'd': 8},
+        132: {'b': 83, 'a': 73, 'e': 20},
+        133: {'d': 81, 'b': 2},
+        134: {'b': 41, 'c': 52, 'a': 95},
+        135: {'b': 23, 'd': 43, 'c': 17},
+        136: {'b': 71, 'e': 88, 'd': 49},
+        137: {'a': 96, 'e': 96, 'd': 42, 'b': 85},
+        138: {'a': 1, 'c': 55},
+        139: {'b': 12, 'e': 88, 'c': 18},
+        140: {'e': 68},
+        141: {'a': 95, 'd': 65, 'e': 21, 'c': 91},
+        142: {'e': 74, 'a': 75},
+        143: {'b': 61},
+        144: {'a': 49, 'e': 80, 'd': 86},
+        145: {'e': 92, 'd': 72},
+        146: {'c': 26},
+        147: {'e': 7, 'b': 91, 'd': 41, 'a': 17},
+        148: {'a': 25, 'd': 100, 'e': 17},
+        149: {'c': 81, 'a': 43, 'b': 59},
+        150: {'a': 70, 'e': 51, 'b': 7},
+        151: {'a': 86, 'b': 99},
+        152: {'e': 30, 'c': 71, 'd': 10},
+        153: {'c': 38},
+        154: {'b': 85},
+        155: {'b': 89, 'e': 77, 'd': 13},
+        156: {'d': 43, 'a': 23},
+        157: {'e': 85},
+        158: {'c': 8},
+        159: {'b': 73, 'a': 72},
+        160: {'e': 48},
+        161: {'a': 57, 'b': 49, 'e': 88},
+        162: {'d': 83, 'c': 50},
+        163: {'a': 88, 'b': 33, 'e': 51, 'c': 3},
+        164: {'d': 63, 'c': 97},
+        165: {'e': 75, 'a': 20, 'c': 95},
+        166: {'b': 77},
+        167: {'e': 4, 'a': 64},
+        168: {'d': 48, 'a': 50, 'b': 12, 'c': 41},
+        169: {'b': 96}, 170: {'e': 87},
+        171: {'b': 8, 'a': 62, 'e': 26},
+        172: {'c': 61, 'b': 45, 'a': 11},
+        173: {'a': 61},
+        174: {'a': 48, 'b': 28, 'e': 30},
+        175: {'a': 12},
+        176: {'a': 57, 'c': 48, 'd': 41, 'b': 32},
+        177: {'a': 97, 'c': 48, 'b': 20},
+        178: {'a': 60, 'e': 54, 'd': 33},
+        179: {'a': 44, 'b': 17},
+        180: {'d': 60},
+        181: {'a': 8, 'b': 46, 'd': 24},
+        182: {'e': 14, 'a': 28},
+        183: {'a': 40, 'c': 6},
+        184: {'e': 9, 'c': 80, 'b': 48},
+        185: {'d': 48},
+        186: {'d': 9, 'c': 52, 'b': 84},
+        187: {'a': 93, 'b': 52, 'd': 3},
+        188: {'b': 24},
+        189: {'d': 3, 'c': 27},
+        190: {'c': 37, 'e': 8},
+        191: {'a': 52, 'e': 34},
+        192: {'e': 14, 'd': 90, 'c': 38},
+        193: {'e': 39, 'a': 98, 'c': 79},
+        194: {'d': 34},
+        195: {'e': 74},
+        196: {'d': 51, 'a': 78, 'c': 57},
+        197: {'e': 43, 'b': 75},
+        198: {'a': 71, 'c': 27},
+        199: {'e': 52},
+        200: {'c': 80, 'e': 60},
+        201: {'c': 27, 'd': 97, 'b': 64},
+        202: {'e': 70, 'c': 66},
+        203: {'e': 5},
+        204: {'b': 49},
+        205: {'d': 29, 'c': 15},
+        206: {'a': 10, 'c': 59},
+        207: {'e': 22, 'd': 36, 'b': 99},
+        208: {'a': 38, 'c': 8},
+        209: {'d': 20, 'a': 26, 'e': 14},
+        210: {'c': 20, 'b': 46},
+        211: {'d': 21, 'a': 14},
+        212: {'e': 25, 'd': 34, 'c': 18},
+        213: {'a': 74},
+        214: {'a': 14, 'b': 1},
+        215: {'a': 64, 'e': 53, 'c': 72},
+        216: {'d': 66, 'e': 87, 'a': 80},
+        217: {'e': 77, 'd': 75},
+        218: {'e': 81, 'd': 61},
+        219: {'d': 17},
+        220: {'d': 69, 'e': 90},
+        221: {'a': 34},
+        222: {'e': 21, 'c': 72, 'd': 6},
+        223: {'e': 31, 'd': 64},
+        224: {'d': 77, 'a': 1},
+        225: {'a': 67, 'd': 74},
+        226: {'b': 97, 'c': 55, 'd': 41},
+        227: {'a': 69, 'b': 93, 'd': 89},
+        228: {'d': 67, 'e': 18, 'b': 37, 'a': 32},
+        229: {'e': 97, 'c': 21},
+        230: {'e': 70, 'c': 69},
+        231: {'a': 98, 'e': 31},
+        232: {'e': 69},
+        233: {'b': 47, 'e': 86},
+        234: {'e': 67},
+        235: {'b': 63, 'e': 56, 'a': 63, 'd': 51},
+        236: {'d': 49, 'a': 8},
+        237: {'a': 90, 'b': 11, 'c': 7},
+        238: {'a': 3},
+        239: {'e': 37, 'd': 57},
+        240: {'d': 40, 'e': 36},
+        241: {'b': 59, 'd': 35, 'e': 81},
+        242: {'b': 46},
+        243: {'a': 65, 'c': 35},
+        244: {'c': 80, 'a': 16},
+        245: {'a': 37, 'c': 81, 'b': 34},
+        246: {'d': 56, 'a': 98},
+        247: {'c': 53, 'a': 46, 'd': 84},
+        248: {'a': 45, 'e': 21},
+        249: {'b': 17, 'a': 26, 'c': 54, 'e': 64},
+        250: {'c': 50, 'b': 14, 'e': 12},
+        251: {'a': 33, 'b': 95},
+        252: {'a': 31, 'e': 8, 'c': 51},
+        253: {'b': 48, 'd': 44},
+        254: {'b': 75, 'e': 66},
+        255: {'b': 96, 'd': 77},
+        256: {'b': 65, 'd': 27},
+        257: {'b': 47, 'a': 9},
+        258: {'b': 18, 'e': 33},
+        259: {'e': 77, 'c': 16, 'd': 43},
+        260: {'a': 1, 'b': 38, 'c': 27},
+        261: {'c': 83},
+        262: {'e': 66, 'd': 55, 'b': 86},
+        263: {'b': 94, 'c': 78, 'e': 65},
+        264: {'b': 59},
+        265: {'e': 12, 'a': 43},
+        266: {'c': 84},
+        267: {'c': 69, 'a': 86, 'e': 56, 'd': 71},
+        268: {'c': 36, 'b': 16},
+        269: {'e': 77, 'c': 97},
+        270: {'a': 86, 'e': 72},
+        271: {'c': 18},
+        272: {'a': 14},
+        273: {'c': 26, 'd': 12, 'a': 59, 'e': 98},
+        274: {'e': 70},
+        275: {'b': 55, 'e': 70, 'c': 22},
+        276: {'a': 40, 'c': 18, 'd': 9},
+        277: {'c': 33, 'a': 87, 'b': 74},
+        278: {'e': 6, 'd': 13, 'a': 98},
+        279: {'b': 64, 'd': 37},
+        280: {'c': 55},
+        281: {'b': 46},
+        282: {'c': 77, 'a': 54},
+        283: {'e': 74, 'c': 98, 'd': 46},
+        284: {'c': 54, 'e': 76, 'a': 8},
+        285: {'e': 14, 'd': 21},
+        286: {'c': 72},
+        287: {'c': 89},
+        288: {'c': 43, 'e': 66},
+        289: {'a': 29, 'b': 49, 'e': 85, 'c': 46},
+        290: {'b': 43, 'c': 61},
+        291: {'e': 41, 'd': 42},
+        292: {'c': 15, 'b': 13},
+        293: {'b': 67},
+        294: {'c': 18, 'e': 71, 'd': 9, 'b': 1, 'a': 17},
+        295: {'a': 29, 'b': 7, 'c': 69},
+        296: {'d': 49},
+        297: {'b': 61, 'd': 71, 'a': 36, 'e': 91},
+        298: {'e': 28, 'c': 51, 'b': 18},
+        299: {'a': 70, 'd': 95, 'e': 94},
+        300: {'a': 63, 'c': 57},
+        301: {'b': 8},
+        302: {'b': 8},
+        303: {'b': 81, 'd': 15, 'e': 100},
+        304: {'e': 54, 'd': 75, 'c': 15, 'b': 2},
+        305: {'d': 95, 'e': 95, 'b': 58},
+        306: {'d': 15, 'c': 76, 'b': 97},
+        307: {'d': 6, 'c': 89},
+        308: {'d': 46, 'b': 90},
+        309: {'d': 53},
+        310: {'e': 40, 'b': 27},
+        311: {'a': 13, 'e': 20, 'b': 53},
+        312: {'c': 10, 'e': 66},
+        313: {'b': 32, 'e': 62, 'a': 70},
+        314: {'d': 75, 'e': 61},
+        315: {'d': 80},
+        316: {'c': 68},
+        317: {'b': 33, 'e': 41},
+        318: {'a': 98, 'c': 54},
+        319: {'d': 27},
+        320: {'c': 84, 'a': 66},
+        321: {'b': 36, 'd': 47},
+        322: {'a': 92, 'c': 26, 'e': 8, 'd': 92},
+        323: {'e': 63, 'b': 77, 'd': 17},
+        324: {'d': 99},
+        325: {'e': 7, 'a': 19, 'c': 100, 'b': 65},
+        326: {'c': 30, 'b': 6, 'a': 54},
+        327: {'d': 32},
+        328: {'d': 57, 'e': 98},
+        329: {'b': 92, 'c': 77, 'e': 75},
+        330: {'d': 54}, 331: {'a': 7},
+        332: {'c': 68, 'b': 79},
+        333: {'d': 12, 'b': 75, 'c': 41},
+        334: {'a': 27, 'e': 16},
+        335: {'c': 75, 'e': 37},
+        336: {'b': 8},
+        337: {'e': 62, 'a': 11, 'b': 30},
+        338: {'c': 33, 'd': 14, 'a': 23},
+        339: {'a': 34, 'b': 8, 'c': 85, 'e': 55},
+        340: {'e': 31, 'c': 47},
+        341: {'c': 20, 'e': 74, 'a': 18},
+        342: {'c': 28},
+        343: {'c': 46, 'a': 8, 'd': 18},
+        344: {'d': 20, 'b': 73, 'e': 98},
+        345: {'e': 14, 'b': 10},
+        346: {'e': 72, 'd': 49},
+        347: {'e': 81},
+        348: {'d': 61, 'c': 57},
+        349: {'a': 21},
+        350: {'b': 48, 'a': 58},
+        351: {'b': 58, 'c': 21},
+        352: {'d': 27, 'a': 16, 'c': 31},
+        353: {'d': 49, 'c': 36, 'a': 46},
+        354: {'a': 76, 'b': 49, 'e': 89},
+        355: {'c': 28},
+        356: {'e': 36, 'c': 49, 'a': 85},
+        357: {'c': 43, 'e': 39, 'a': 45},
+        358: {'b': 51, 'c': 45},
+        359: {'d': 22},
+        360: {'a': 98, 'b': 63, 'c': 68},
+        361: {'e': 80, 'c': 50, 'd': 65, 'b': 70},
+        362: {'c': 73, 'd': 60},
+        363: {'c': 25, 'a': 52},
+        364: {'d': 89, 'e': 66, 'a': 39},
+        365: {'c': 96, 'b': 49, 'a': 98, 'e': 3},
+        366: {'d': 67},
+        367: {'b': 15, 'a': 41, 'e': 82},
+        368: {'e': 55, 'a': 78, 'd': 94, 'c': 92},
+        369: {'b': 46}, 370: {'b': 38, 'a': 43},
+        371: {'c': 75, 'b': 30},
+        372: {'d': 61, 'b': 75},
+        373: {'b': 95, 'e': 80, 'c': 40},
+        374: {'b': 46, 'd': 12},
+        375: {'e': 64, 'd': 15, 'b': 29, 'a': 57},
+        376: {'e': 71},
+        377: {'d': 80},
+        378: {'e': 8, 'c': 6},
+        379: {'c': 91, 'e': 79, 'b': 36},
+        380: {'b': 66, 'e': 10, 'd': 89},
+        381: {'b': 30},
+        382: {'a': 89, 'd': 95},
+        383: {'e': 98, 'a': 92},
+        384: {'c': 63, 'e': 45, 'd': 19},
+        385: {'e': 87},
+        386: {'b': 89, 'a': 3, 'c': 58, 'e': 79},
+        387: {'e': 89, 'c': 33, 'b': 89, 'd': 61},
+        388: {'e': 35},
+        389: {'a': 66},
+        390: {'d': 23, 'c': 86, 'e': 46, 'a': 95},
+        391: {'d': 26}
+    }
+    contents_5 = {'Worked': {'monday': 0, 'tuesday': 0, 'wednesday': 0, 'thursday': 0, 'friday': 0},
+                  'Total': {'monday': 0, 'tuesday': 0, 'wednesday': 0, 'thursday': 0, 'friday': 0},
+                  'Off': {'monday': 0, 'tuesday': 0, 'wednesday': 0, 'thursday': 0, 'friday': 0},
+                  'Percentage Worked': {'monday': 0, 'tuesday': 0, 'wednesday': 0, 'thursday': 0, 'friday': 0}}
+
+    TABLE_X = TABLE_MARGIN + MARGIN_LINES_WIDTH + MARGIN_LINES_MARGIN
+    TABLE_Y = TABLE_MARGIN + MARGIN_LINES_WIDTH + TITLE_HEIGHT + TITLE_MARGIN
+
+    TABLE_LEFT_MARGIN = 8
+    TITLE_V_MARGIN = 5
+
+    table1 = pdf.table(
+        title="Remorques Lewis",
+        x=TABLE_X,
+        y=TABLE_Y,
+        w=TABLE_W,
+        contents=contents_3,
+        header_colours=[BLACK, BWS_RED],
+        colours=[[BWS_RED, BWS_GREY, BWS_BLACK], [BWS_BLACK, BWS_RED, BWS_RED]]
+    )
+
+    print("1. (TABLE_X, TABLE_Y): ({}, {})".format(TABLE_X, TABLE_Y))
+    TABLE_Y = table1[1] + (2 * TABLE_MARGIN)
+    print("2. (TABLE_X, TABLE_Y): ({}, {})".format(TABLE_X, TABLE_Y))
+
+    table2 = pdf.table(
+        title="NorthEast",
+        x=TABLE_X,
+        y=TABLE_Y,
+        w=TABLE_W,
+        contents=contents_1,
+        header_colours=[BLACK, BWS_RED],
+        colours=[[BWS_RED, BWS_GREY, BWS_BLACK], [BWS_BLACK, BWS_RED, BWS_RED]]
+    )
+
+    TABLE_Y = table2[1] + (2 * TABLE_MARGIN)
+
+    table3 = pdf.table(
+        title="Fort Garry International Ltd.",
+        x=TABLE_X,
+        y=TABLE_Y,
+        w=TABLE_W,
+        contents=contents_2,
+        header_colours=[BLACK, BWS_RED],
+        colours=[[BWS_RED, BWS_GREY, BWS_BLACK], [BWS_BLACK, BWS_RED, BWS_RED]]
+    )
+
+    TABLE_Y = table3[1] + (2 * TABLE_MARGIN)
+
+    table4 = pdf.table(
+        title="Diamond International",
+        x=TABLE_X,
+        y=TABLE_Y,
+        w=TABLE_W,
+        contents=contents_4,
+        header_colours=[BLACK, BWS_RED],
+        colours=[[BLUEVIOLET, GREEN_2, YELLOW_4, BLUE, RED, ORANGE],
+                 [WHITE, BLACK, BLACK, ORANGE, BLUE, WHITE]],
+        desc_txt="This is Diamond's dealer delivery report for this period.\nHow about those new lines?\t\tWhat about these tabs?",
+        new_page_for_table=True,
+        show_row_names=True,
+        start_with_header=False
+    )
+
+    TABLE_Y = table4[1] + (2 * TABLE_MARGIN)
+
+    table5 = pdf.table(
+        title="Weekdays",
+        x=TABLE_X,
+        y=TABLE_Y,
+        w=TABLE_W,
+        contents=contents_5,
+        header_colours=[BLACK, BWS_RED],
+        colours=[[BLACK],
+                 [WHITE]],
+        desc_txt="This is Diamond's dealer delivery report for this period.\nHow about those new lines?\t\tWhat about these tabs?"
+    )
+
+    TABLE_Y = table5[1] + (2 * TABLE_MARGIN)
+
+    table6 = pdf.table(
+        title="Random Test Set",
+        x=TABLE_X,
+        y=TABLE_Y,
+        w=TABLE_W,
+        contents=random_test_set(30, start=60, step=101),
+        header_colours=[BLACK, BWS_RED],
+        colours=[[BLACK],
+                 [WHITE]],
+        desc_txt="This is a random test set",
+        show_row_names=True
+    )
+
+    TABLE_Y = table6[1] + (2 * TABLE_MARGIN)
+
+    table7 = pdf.table(
+        title="Clean Table",
+        x=TABLE_X,
+        y=TABLE_Y,
+        w=TABLE_W,
+        left_margin=TABLE_LEFT_MARGIN,
+        title_v_margin=TITLE_V_MARGIN,
+        contents=random_test_set(43),
+        header_colours=[GRAY_30, BLACK],
+        colours=[[WHITE, GRAY_69],
+                 [BLACK]],
+        desc_txt="Plain black, white and grey table, more professional looking.\nWith bits of extra text\nHere\nAnd Here\n\tAnd over here.",
+        show_row_names=True,
+        include_top_doc_link=True,
+        new_page_for_table=False,
+        row_name_col_lbl="Number"
+    )
+
+    # pdf.line(15, 25, 15, 26)
+    # pdf.line(25, 25, 25, 27)
+    # pdf.line(35, 25, 35, 28)
+    # pdf.line(45, 25, 45, 29)
+    # pdf.line(55, 25, 55, 30)
+    # pdf.line(0, 35, 5, 35)
+    # pdf.line(0, 35, 8, 35)
+
+    pdf.output(FILE_NAME, 'F')
+
+    print("table1:", table1)
+    print("table2:", table2)
+    print("table3:", table3)
+    print("table4:", table4)
+    webbrowser.open(FILE_NAME)
+
+    print(dict_print({
+        "TABLE_MARGIN": TABLE_MARGIN,
+        "MARGIN_LINES_MARGIN": MARGIN_LINES_MARGIN,
+        "MARGIN_LINES_WIDTH": MARGIN_LINES_WIDTH,
+        "TABLE_W": TABLE_W
+    }, "Values"))
