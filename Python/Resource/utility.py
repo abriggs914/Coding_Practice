@@ -1080,6 +1080,11 @@ class Rect2:
         self.bottom_line = None
         self.left_line = None
 
+        self.diagonal_p1_p3 = None
+        self.diagonal_p3_p1 = None
+        self.diagonal_p2_p4 = None
+        self.diagonal_p4_p2 = None
+
         self.init(x, y, w, h, a)
 
     def init(self, x, y, w, h, a):
@@ -1139,6 +1144,11 @@ class Rect2:
         self.center_left = self.left, self.center[1]
         self.center_right = self.right, self.center[1]
         self.center_bottom = self.center[0], self.bottom
+
+        self.diagonal_p1_p3 = Line(*self.p1, *self.p3)
+        self.diagonal_p3_p1 = Line(*self.p3, *self.p2)
+        self.diagonal_p2_p4 = Line(*self.p2, *self.p4)
+        self.diagonal_p4_p2 = Line(*self.p4, *self.p2)
 
         # Calculations done on the main rect object
         self.area = w * h
