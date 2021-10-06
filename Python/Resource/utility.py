@@ -8,8 +8,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.26
-	Date...........2021-10-04
+	Version..............1.27
+	Date...........2021-10-06
 	Author.......Avery Briggs
 """
 
@@ -396,6 +396,16 @@ def isfloat(value):
         return True
     except ValueError:
         return False
+
+
+def isnumber(value):
+    if isinstance(value, int) or isinstance(value, float):
+        return True
+    if isinstance(value, str):
+        if value.count("-") < 2:
+            if value.replace("-", "").isnumeric():
+                return True
+    return False
 
 
 def same_calendar_day(d1, d2):

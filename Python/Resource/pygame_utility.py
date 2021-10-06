@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.16
-#	Date........2021-09-24
+#	Version...........1.17
+#	Date........2021-10-06
 #	Author....Avery Briggs
 
 
@@ -138,7 +138,7 @@ def wrap_text(msg, r, font):
 
 # Writes text to the display.
 def write_text(game, display, r, msg, font, bg_c=None, tx_c=BLACK, wrap=True):
-    if isinstance(r, Rect):
+    if isinstance(r, Rect2):
         r = game.Rect(*r)
     if not msg or msg is None:
         msg = "--"
@@ -166,22 +166,22 @@ class Widget:
     def __init__(self, game, display, rect):
         self.game = game
         self.display = display
-        if isinstance(rect, Rect):
-            rect = game.Rect(*rect)
+        if isinstance(rect, Rect2):
+            rect = game.Rect(*rect.tupl)
         self.rect = rect
-        self.rect_obj = Rect(rect.x, rect.y, rect.width, rect.height)
+        self.rect_obj = Rect2(rect.x, rect.y, rect.width, rect.height)
 
     def resize(self, rect):
-        if isinstance(rect, Rect):
-            rect = self.game.Rect(*rect)
+        if isinstance(rect, Rect2):
+            rect = self.game.Rect(*rect.tupl)
         self.rect = rect
-        self.rect_obj = Rect(rect.x, rect.y, rect.width, rect.height)
+        self.rect_obj = Rect2(rect.x, rect.y, rect.width, rect.height)
 
     def move(self, rect):
-        if isinstance(rect, Rect):
-            rect = self.game.Rect(*rect)
+        if isinstance(rect, Rect2):
+            rect = self.game.Rect(*rect.tupl)
         self.rect = rect
-        self.rect_obj = Rect(rect.x, rect.y, rect.width, rect.height)
+        self.rect_obj = Rect2(rect.x, rect.y, rect.width, rect.height)
 
     def draw(self):
         print("Nothing to draw")
@@ -297,11 +297,12 @@ class TextBox(Widget):
 
     def __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20,
                  numeric=False, char_limit=None, n_limit=None, bs=1, border_style=None, draw_clear_btn=True,
-                 editable=True, locked=False, iaction=None, daction=None, iargs=None, dargs=None, text_align=None, font_size=16):
+                 editable=True, locked=False, iaction=None, daction=None, iargs=None, dargs=None, text_align=None,
+                 fs=16):
         super().__init__(game, display, rect)
         self.ic = ic
         self.ac = ac
-        self.font_size = font_size
+        self.font_size = fs
         self.f = f if f is not None else game.font.Font(None, self.font_size)
         self.fc = fc
         self.colour = ic
@@ -349,7 +350,7 @@ class TextBox(Widget):
 
     def count_n(self):
         txt = self.text
-        nums = [s.strip() for s in txt.split(",") if s.strip().isdigit()]
+        nums = [s.strip() for s in txt.split(",") if isnumber(s.strip())]
         return len(nums)
 
     def handle_event(self, event):
@@ -379,7 +380,7 @@ class TextBox(Widget):
                         cn = self.count_n()
                         if len(self.text) < self.char_limit and ((cn in self.n_limit) or (cn < self.n_limit.start)):
                             if self.numeric:
-                                if str(txt).isdigit():
+                                if isnumber(str(txt)) or (len(self.text) == 0 and str(txt) == "-"):
                                     self.text += txt
                                     # DATA["input_dims"] = int(self.text)
                             else:
@@ -439,7 +440,7 @@ class TextBox(Widget):
         bs = self.border_size
         trect = game.Rect(rect.x + bs, rect.y + bs, rect.width - (bs * 2), rect.height - (bs * 2))
         txt = str(self.text)
-        #TODO fix this
+        # TODO fix this
         # if self.text_align == "center":
         #     txt = pad_centre(txt, )
         # elif self.text_align == "right":
@@ -453,7 +454,7 @@ class TextBox(Widget):
         # Blit the rect.
         pygame.draw.rect(display, self.colour, self.rect, 2)
         # draw_button("X", self.rect.right + 10, self.rect.y, 20, 20, self.ic, self.ac, self.colour, self.f, self.fc, self.clear)
-        xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width,
+        xrect = Rect2(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width,
                                                                                                      0).scaled(0.15,
                                                                                                                0.85)
         irect = xrect.scaled(0.45, 0.45).translated(0, 0)
@@ -469,8 +470,10 @@ class TextBox(Widget):
                 iargs = self.iargs
                 daction = self.daction
                 dargs = self.dargs
-            ibutton = Button(game, display, "+", irect, WHITE, WHITE, None, font_size=self.font_size, action=iaction, args=iargs)
-            dbutton = Button(game, display, "-", drect, WHITE, WHITE, None, font_size=self.font_size, action=daction, args=dargs)
+            ibutton = Button(game, display, "+", irect, WHITE, WHITE, None, font_size=self.font_size, action=iaction,
+                             args=iargs)
+            dbutton = Button(game, display, "-", drect, WHITE, WHITE, None, font_size=self.font_size, action=daction,
+                             args=dargs)
             dbutton.enable_toggle()
             ibutton.enable_toggle()
             ibutton.draw()
@@ -495,7 +498,7 @@ class TextBox(Widget):
 #         # print("rect:", type(rect))
 #         self.rect = rect
 #         self.font = font if font is not None else game.font.Font(None, 16)
-#         self.font_size = fs
+#         self.fs = fs
 #         self.colour = c
 #         self.text_colour = txc
 #         self.border_colour = bc
@@ -763,7 +766,8 @@ def buttonr(game, display, msg, r, ic, ac, font, action=None, args=None):
 
 class Button(Widget):
 
-    def __init__(self, game, display, msg, rect, ic=GRAY_69, ac=None, font=None, font_size=16, action=None, args=None, text_colour=BLACK):
+    def __init__(self, game, display, msg, rect, ic=GRAY_69, ac=None, font=None, font_size=16, action=None, args=None,
+                 text_colour=BLACK):
         super().__init__(game, display, rect)
         self.msg = msg
         self.ic = ic
@@ -923,7 +927,7 @@ class ButtonBar(Widget):
             hi = hp
         else:
             wi = wp
-            hi = hp / max(1, nb) # single button height
+            hi = hp / max(1, nb)  # single button height
         # wi = wp / max(1, (nb if self.is_horizontal else wp))  # single button width
         # hi = hp / max(1, (nb if self.is_horizontal else hp))  # single button height
 
@@ -933,7 +937,8 @@ class ButtonBar(Widget):
         # create and draw buttons
         for b, info in self.buttons.items():
             # button = Button(self.game, self.display, b, xi, yi, wi, hi, *info[:2], self.font, *info[2:])
-            button = Button(self.game, self.display, b, Rect(xi, yi, wi, hi), *info[:2], self.font, self.font_size, *info[2:])
+            button = Button(self.game, self.display, b, Rect2(xi, yi, wi, hi), *info[:2], self.font, self.font_size,
+                            *info[2:])
             button.enable_toggle()
             button.draw()
             if self.is_horizontal:
@@ -946,7 +951,7 @@ class ScrollBar(Widget):
 
     def __init__(self, game, display, x, y, w, h, bar_proportion, button_c, bar_background_c, bar_c, contents,
                  content_c, is_vertical=True):
-        super().__init__(game, display, Rect(x, y, w, h))
+        super().__init__(game, display, Rect2(x, y, w, h))
         self.bar_proportion = bar_proportion
         self.button_c = button_c
         self.bar_background_c = bar_background_c
@@ -1345,7 +1350,7 @@ class Table(Widget):
 
     # Create a generic table with a title and header.
     def __init__(self, game, display, x, y, w, h, c, font, title, header):
-        super().__init__(game, display, Rect(x, y, w, h))
+        super().__init__(game, display, Rect2(x, y, w, h))
         self.c = c
         self.font = font if font is not None else game.font.Font(None, 16)
         self.title = title.title()
@@ -1585,7 +1590,8 @@ class Slider(Widget):
 
     def __init__(self, game, display, rect, min_val=0, max_val=1, n_ticks=10, slider_colour=BLACK,
                  slider_border_colour=BLACK, slider_radius=5, line_colour=BLACK, tick_colour=BLACK, stick_to_ticks=True,
-                 start_val=None, labels=None, background_colour=GRAY_69, background_is_transparent=False, slider_width=1, font=None, locked=False, lbl_format=lambda x: int(x)):
+                 start_val=None, labels=None, background_colour=GRAY_69, background_is_transparent=False,
+                 slider_width=1, font=None, locked=False, lbl_format=lambda x: int(x)):
         super().__init__(game, display, rect)
         self.min_val = min_val
         self.max_val = max_val
@@ -1698,7 +1704,6 @@ class Slider(Widget):
                 if event.button == 1:
                     self.dragging = False
 
-
     def draw(self):
         game = self.game
         display = self.display
@@ -1739,9 +1744,10 @@ class Slider(Widget):
                 lbl = self.lbl_format(lbl)
             lbl = str(lbl)
             if self.background_is_transparent:
-                write_text(game, display, Rect(xc - 12, line.y1 - 30, 24, 24), lbl, self.font, self.background_colour, self.tick_colour, False)
+                write_text(game, display, Rect2(xc - 12, line.y1 - 30, 24, 24), lbl, self.font, self.background_colour,
+                           self.tick_colour, False)
             else:
-                write_text(game, display, Rect(xc - 12, line.y1 - 30, 24, 24), lbl, self.font, None,
+                write_text(game, display, Rect2(xc - 12, line.y1 - 30, 24, 24), lbl, self.font, None,
                            self.tick_colour, False)
             xc += space
         game.draw.line(display, self.slider_colour, (line.x1, line.y1 - 5), (line.x1, line.y1 + 5), major_tick_width)
@@ -1752,13 +1758,16 @@ class Slider(Widget):
             min_val = str(self.lbl_format(self.min_val))
             max_val = str(self.lbl_format(self.max_val))
         if self.background_is_transparent:
-            write_text(game, display, Rect(slider_rect.x - 12, line.y1 - 30, 24, 24), min_val, self.font, self.background_colour, self.tick_colour, True)
-            write_text(game, display, Rect(slider_rect.right - 12, line.y1 - 30, 24, 24), max_val, self.font, self.background_colour,
-                   self.tick_colour, True)
+            write_text(game, display, Rect2(slider_rect.x - 12, line.y1 - 30, 24, 24), min_val, self.font,
+                       self.background_colour, self.tick_colour, True)
+            write_text(game, display, Rect2(slider_rect.right - 12, line.y1 - 30, 24, 24), max_val, self.font,
+                       self.background_colour,
+                       self.tick_colour, True)
         else:
-            write_text(game, display, Rect(slider_rect.x - 12, line.y1 - 30, 24, 24), min_val, self.font, None, self.tick_colour, True)
-            write_text(game, display, Rect(slider_rect.right - 12, line.y1 - 30, 24, 24), max_val, self.font, None,
-                   self.tick_colour, True)
+            write_text(game, display, Rect2(slider_rect.x - 12, line.y1 - 30, 24, 24), min_val, self.font, None,
+                       self.tick_colour, True)
+            write_text(game, display, Rect2(slider_rect.right - 12, line.y1 - 30, 24, 24), max_val, self.font, None,
+                       self.tick_colour, True)
 
         slider_x = (((self.slider_val - 1) / diff) * slider_rect.width) + slider_rect.x
         game.draw.circle(display, self.slider_border_colour, (slider_x, line.y1), self.slider_radius + 2)
@@ -1849,6 +1858,28 @@ class PygameApplication:
     # Call this function iteratively.
     # Include any application specific UI / other code
     # within the instance of the child application.
+    # Example:
+    #
+    #    def main_loop():
+    #        app = PygameApplication("Create Custom WO Update Queries", 750, 500)
+    #        game = app.get_game()
+    #        display = app.display
+    #
+    #        while app.is_playing:
+    #            display.fill(BLACK)
+    #
+    #            # draw widgets and objects here
+    #
+    #            event_queue = app.run()
+    #            for event in event_queue:
+    #
+    #                # handle events
+    #
+    #                pass
+    #
+    #            app.clock.tick(30)
+    #
+
     def run(self):
         if self.display is None:
             self.init()
