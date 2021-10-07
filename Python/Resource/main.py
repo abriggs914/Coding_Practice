@@ -808,6 +808,58 @@ def test_rect_collision():
     print("r.collide_point(*p)", r.collide_point(*p))
 
 
+def test_menubar():
+    app = PygameApplication("Create Custom WO Update Queries", 750, 500)
+    game = app.get_game()
+    display = app.display
+
+    x = 0
+    y = 0
+    w = 200
+    h = 50
+    button_data = {}
+    bc = GRAY_69
+    fs = 16
+    bs = 1
+    font = None
+    menubar = MenuBar(game, display, x, y, w, h, button_data, bc, fs, bs, font)
+
+    while app.is_playing:
+        display.fill(BLACK)
+
+        # draw widgets and objects here
+        menubar.draw()
+
+        event_queue = app.run()
+        for event in event_queue:
+
+            # handle events
+
+            pass
+
+        app.clock.tick(30)
+
+
+def test_hyperlink():
+    app = PygameApplication("Create Custom WO Update Queries", 750, 500)
+    game = app.get_game()
+    display = app.display
+
+    while app.is_playing:
+        display.fill(BLACK)
+
+        # draw widgets and objects here
+
+        event_queue = app.run()
+        for event in event_queue:
+
+            # handle events
+
+            pass
+
+        app.clock.tick(30)
+
+
 
 if __name__ == "__main__":
     # test_block_letters()
@@ -833,5 +885,7 @@ if __name__ == "__main__":
 
     # test_money_str_format
     # test_find_north_side()
-    test_new_rect()
+    # test_new_rect()
     # test_rect_collision()
+    test_menubar()
+    # test_hyperlink()

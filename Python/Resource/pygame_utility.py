@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.17
-#	Date........2021-10-06
+#	Version...........1.18
+#	Date........2021-10-07
 #	Author....Avery Briggs
 
 
@@ -455,8 +455,8 @@ class TextBox(Widget):
         pygame.draw.rect(display, self.colour, self.rect, 2)
         # draw_button("X", self.rect.right + 10, self.rect.y, 20, 20, self.ic, self.ac, self.colour, self.f, self.fc, self.clear)
         xrect = Rect2(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width,
-                                                                                                     0).scaled(0.15,
-                                                                                                               0.85)
+                                                                                                      0).scaled(0.15,
+                                                                                                                0.85)
         irect = xrect.scaled(0.45, 0.45).translated(0, 0)
         drect = xrect.scaled(0.45, 0.45).translated(0, irect.height + (xrect.height * 0.1))
         if self.numeric:
@@ -1774,6 +1774,25 @@ class Slider(Widget):
         game.draw.circle(display, self.slider_colour, (slider_x, line.y1), self.slider_radius)
 
 
+class MenuBar(Widget):
+
+    # button_data must be a dict of 2-item tuple objects.
+    # ex:
+    #   "open": ()
+    def __init__(self, game, display, x, y, w, h, button_data, bc, fs, bs, font):
+        super().__init__(game, display, Rect2(x, y, w, h))
+        self.button_data = button_data
+        self.background_colour = bc
+        self.font_size = fs
+        self.border_style = bs
+        self.font = font
+
+    def draw(self):
+        game = self.game
+        display = self.display
+        game.draw.rect(display, self.background_colour, self.rect)
+
+
 # buttons & toggle buttons
 # button bar
 # scrollable bar TODO: allow a scroll bar on both the vertical and horizontal axes.
@@ -1788,6 +1807,7 @@ class Slider(Widget):
 # hyperlink
 # combobox
 # slider
+# menubar
 
 
 if not is_imported("pygame"):
@@ -1795,6 +1815,16 @@ if not is_imported("pygame"):
 
 
 class PygameApplication:
+    TOP_LEFT = 1
+    TOP = 2
+    TOP_CENTER = 3
+    TOP_RIGHT = 4
+    CENTER_LEFT = 5
+    CENTER = 6
+    CENTER_RIGHT = 7
+    BOTTOM_LEFT = 8
+    BOTTOM_CENTER = 9
+    BOTTOM_RIGHT = 10
 
     def __init__(self, title, w, h, allow_kbd_ctrls=True, auto_init=True):
         global kbd
@@ -1840,6 +1870,21 @@ class PygameApplication:
             return pygame.Rect(r1.left, r1.top, r1.width,
                                r1.height).colliderect(pygame.Rect(r2.left, r2.top, r2.width, r2.height))
 
+    def add_menubar(self, pos):
+        if pos not in [
+            self.TOP_LEFT,
+            self.TOP,
+            self.TOP_CENTER,
+            self.TOP_RIGHT,
+            self.CENTER_LEFT,
+            self.CENTER,
+            self.CENTER_RIGHT,
+            self.BOTTOM_LEFT,
+            self.BOTTOM_CENTER,
+            self.BOTTOM_RIGHT
+        ]:
+            pos = self.TOP_LEFT
+
     def init(self):
         try:
             import pygame
@@ -1883,27 +1928,26 @@ class PygameApplication:
     def run(self):
         if self.display is None:
             self.init()
-        if 1:
-            events = self.get_game_queue()
-            kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra = False, False, False, False, False, False, False, False
-            if self.allow_kbd_ctrls:
-                kbd_w = kbd.is_pressed('w')
-                kbd_ua = kbd.is_pressed('up')
-                kbd_a = kbd.is_pressed('a')
-                kbd_la = kbd.is_pressed('left')
-                kbd_s = kbd.is_pressed('s')
-                kbd_da = kbd.is_pressed('down')
-                kbd_d = kbd.is_pressed('d')
-                kbd_ra = kbd.is_pressed('right')
-                str_dir_keys = ["kbd_w", "kbd_ua", "kbd_a", "kbd_la", "kbd_s", "kbd_da", "kbd_d", "kbd_ra"]
-                dir_keys = [kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra]
-                a_dir_keys = any(dir_keys)
-                kbd_q = kbd.is_pressed('q')
-            for i, event in enumerate(events):
-                pos = pygame.mouse.get_pos()
-                if kbd_q or event.type == pygame.QUIT:
-                    self.is_playing = False
-                # if i != len(events) - 1:
-                #     pygame.display.flip()
-            pygame.display.flip()
+        events = self.get_game_queue()
+        kbd_q, kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra = False, False, False, False, False, False, False, False, False
+        if self.allow_kbd_ctrls:
+            kbd_w = kbd.is_pressed('w')
+            kbd_ua = kbd.is_pressed('up')
+            kbd_a = kbd.is_pressed('a')
+            kbd_la = kbd.is_pressed('left')
+            kbd_s = kbd.is_pressed('s')
+            kbd_da = kbd.is_pressed('down')
+            kbd_d = kbd.is_pressed('d')
+            kbd_ra = kbd.is_pressed('right')
+            str_dir_keys = ["kbd_w", "kbd_ua", "kbd_a", "kbd_la", "kbd_s", "kbd_da", "kbd_d", "kbd_ra"]
+            dir_keys = [kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra]
+            a_dir_keys = any(dir_keys)
+            kbd_q = kbd.is_pressed('q')
+        for i, event in enumerate(events):
+            pos = pygame.mouse.get_pos()
+            if kbd_q or event.type == pygame.QUIT:
+                self.is_playing = False
+            # if i != len(events) - 1:
+            #     pygame.display.flip()
+        pygame.display.flip()
         return events
