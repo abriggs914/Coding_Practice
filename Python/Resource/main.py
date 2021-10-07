@@ -813,6 +813,15 @@ def test_menubar():
     game = app.get_game()
     display = app.display
 
+    def open_file():
+        print("open_file")
+    def leaf1_func():
+        print("leaf1_func")
+    def leaf2_func():
+        print("leaf2_func")
+    def delete_func():
+        print("delete_func")
+
     x = 0
     y = 0
     w = 200
@@ -822,7 +831,7 @@ def test_menubar():
     fs = 16
     bs = 1
     font = None
-    menubar = MenuBar(game, display, x, y, w, h, button_data, bc, fs, bs, font)
+    menubar = MenuBar(game, display, x, y, w, h, {"file": {"open": open_file, "branch": {"leaf1": leaf1_func, "leaf2": leaf2_func}}, "edit": {"delete": delete_func}}, bc, fs, bs, font)
 
     while app.is_playing:
         display.fill(BLACK)

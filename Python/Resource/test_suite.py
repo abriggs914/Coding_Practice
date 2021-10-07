@@ -3,9 +3,9 @@ from utility import *
 
 """
 	General Test Suite Driver
-	Version............1.3
-	Date........2021-09-22
-	Author....Avery Briggs
+	Version...............1.4
+	Date...........2021-10-07
+	Author.......Avery Briggs
 """
 
 
@@ -129,23 +129,6 @@ def run_multiple_tests(tests_to_run):
             test_name for test_name in failed_test_results) + "\n")
     print(border)
     return passed_tests, failed_tests
-
-
-def func_def():
-    pass
-
-
-class Foo:
-    def __init__(self):
-        pass
-
-    def f1(self):
-        pass
-
-    def f2(self, f):
-        pass
-
-FOO_OBJ = Foo()
 
 
 class TestSuite:

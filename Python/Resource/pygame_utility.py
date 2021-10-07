@@ -1776,21 +1776,49 @@ class Slider(Widget):
 
 class MenuBar(Widget):
 
-    # button_data must be a dict of 2-item tuple objects.
+    # button_data must be tree structure of dict objects.
+    # Leaves denoted by a function signature and args.
     # ex:
-    #   "open": ()
-    def __init__(self, game, display, x, y, w, h, button_data, bc, fs, bs, font):
+    #   {"file": {"open": open_file, "branch": {"leaf1": leaf1_func, "leaf2": leaf2_func}}}
+    def __init__(self, game, display, x, y, w, h, button_data, bc, fs, bs, font, tile_height=15):
         super().__init__(game, display, Rect2(x, y, w, h))
-        self.button_data = button_data
         self.background_colour = bc
         self.font_size = fs
         self.border_style = bs
         self.font = font
+        self.is_clicked = False
+
+        self.button_data = self.validate_button_data(button_data)
+        print(dict_print(self.button_data, "Parsed Button Data"))
+
+    def validate_button_data(self, button_data):
+        def validate_tree(btn_data):
+            print("btn_data:", btn_data)
+            if isinstance(btn_data, dict):
+                for k, v in btn_data.items():
+                    print("k: t=\'{}\' [{}], v: t=\'{}\' [{}]".format(k, type(k), v, type(v)))
+                    if isinstance(v, dict):
+                        if validate_tree(v):
+                            continue
+                    elif isfunc(v) or isclassmethod(v):
+                        continue
+                    print("exit a")
+                    return False
+                return True
+            print("exit b")
+            return False
+        return button_data if validate_tree(button_data) else {}
 
     def draw(self):
         game = self.game
         display = self.display
-        game.draw.rect(display, self.background_colour, self.rect)
+        rect = self.rect
+        game.draw.rect(display, self.background_colour, rect)
+
+        btns = self.button_data
+        n_drop_downs = len(btns)
+        w_drop_down = rect.w / n_drop_downs
+        # rect_dd =
 
 
 # buttons & toggle buttons

@@ -6,12 +6,39 @@ import shutil
 import sys
 import os
 
+
 """
 	General Utility Functions
-	Version..............1.27
-	Date...........2021-10-06
+	Version..............1.28
+	Date...........2021-10-07
 	Author.......Avery Briggs
 """
+
+
+def func_def():
+    pass
+
+
+class Foo:
+    def __init__(self):
+        pass
+
+    def f1(self):
+        pass
+
+    def f2(self, f):
+        pass
+
+
+FOO_OBJ = Foo()
+
+
+def isfunc(f):
+    return isinstance(f, type(func_def))
+
+
+def isclassmethod(m):
+    return isinstance(m, type(FOO_OBJ.f1))
 
 
 def lenstr(x):
@@ -792,7 +819,8 @@ class Line:
                         v = self.y_at_x(ox)
                         # return (oy < v) if v is not None else bool(none_result)
                         return (oy < v) if v is not None else (ox < self.x_at_y(oy))
-        raise TypeError("Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
+        raise TypeError(
+            "Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
 
     # comparison object "other" must be a tuple of:
     #   (x, y, none_result) -> None comparisons return none_result
@@ -810,7 +838,8 @@ class Line:
                         v = self.y_at_x(ox)
                         # return (oy <= v) if v is not None else bool(none_result)
                         return (oy <= v) if v is not None else (ox <= self.x_at_y(oy))
-        raise TypeError("Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
+        raise TypeError(
+            "Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
 
     # comparison object "other" must be a tuple of:
     #   (x, y, none_result) -> None comparisons return none_result
@@ -828,7 +857,8 @@ class Line:
                         v = self.y_at_x(ox)
                         # return (oy > v) if v is not None else bool(none_result)
                         return (oy > v) if v is not None else (ox > self.x_at_y(oy))
-        raise TypeError("Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
+        raise TypeError(
+            "Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
 
     # comparison object "other" must be a tuple of:
     #   (x, y, none_result) -> None comparisons return none_result
@@ -846,7 +876,8 @@ class Line:
                         v = self.y_at_x(ox)
                         # return (oy >= v) if v is not None else bool(none_result)
                         return (oy >= v) if v is not None else (ox >= self.x_at_y(oy))
-        raise TypeError("Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
+        raise TypeError(
+            "Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
 
     def y_at_x(self, x):
         if self.m == "undefined":
@@ -1135,7 +1166,8 @@ class Rect2:
         self.left = self.max_encapsulating_rect.x
         self.bottom = self.max_encapsulating_rect.y + self.max_encapsulating_rect.height
         self.right = self.max_encapsulating_rect.x + self.max_encapsulating_rect.width
-        self.center = self.left + (self.max_encapsulating_rect.width / 2), self.top + (self.max_encapsulating_rect.height / 2)
+        self.center = self.left + (self.max_encapsulating_rect.width / 2), self.top + (
+                self.max_encapsulating_rect.height / 2)
         self.top_left = self.left, self.top
         self.top_right = self.right, self.top
         self.bottom_left = self.left, self.bottom
@@ -1155,7 +1187,7 @@ class Rect2:
         self.perimeter = 2 * (w + h)
 
     def __iter__(self):
-        lst = [self.x, self. y, self.width, self.height, self.angle]
+        lst = [self.x, self.y, self.width, self.height, self.angle]
         for val in lst:
             yield val
 
@@ -1170,7 +1202,9 @@ class Rect2:
                 isinstance(y, float)
             ])
         ]):
-            raise TypeError("Cannot determine if x=\"{}\" of type: \"{}\" y=\"{}\" of type: \"{}\" collides with Rect object. Requires int and / or float objects.".format(x, type(x), y, type(y)))
+            raise TypeError(
+                "Cannot determine if x=\"{}\" of type: \"{}\" y=\"{}\" of type: \"{}\" collides with Rect object. Requires int and / or float objects.".format(
+                    x, type(x), y, type(y)))
         if strictly_inside:
             return all([
                 (x, y, 1) < self.l1,
@@ -1188,7 +1222,9 @@ class Rect2:
 
     def collide_line(self, line, strictly_inside=False):
         if not isinstance(line, Line):
-            raise TypeError("Cannot determine if line=\"{}\" of type: \"{}\" collides with Rect object. Requires Line object.".format(line, type(line)))
+            raise TypeError(
+                "Cannot determine if line=\"{}\" of type: \"{}\" collides with Rect object. Requires Line object.".format(
+                    line, type(line)))
         if strictly_inside:
             return all([
                 self.collide_point(*line.p1),
@@ -1202,7 +1238,9 @@ class Rect2:
 
     def collide_rect(self, rect, strictly_inside=False):
         if not isinstance(rect, Rect2):
-            raise TypeError("Cannot determine if rect=\"{}\" of type: \"{}\" collides with Rect object. Requires Rect object.".format(rect, type(rect)))
+            raise TypeError(
+                "Cannot determine if rect=\"{}\" of type: \"{}\" collides with Rect object. Requires Rect object.".format(
+                    rect, type(rect)))
         if strictly_inside:
             return all([
                 self.collide_point(*rect.p1),
@@ -1241,8 +1279,6 @@ class Rect2:
         r = Rect2(*self)
         r.rotate(a)
         return r
-
-
 
     #     if any([y is None, w is None, h is None]):
     #         if is_imported("pygame"):
