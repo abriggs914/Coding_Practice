@@ -17,7 +17,7 @@ def populate_transactions_dict():
 		# 	print(l)
 		transaction_dict = dict(zip([i for i in range(len(lines))], lines))
 		print(dict_print(transaction_dict, "lines", number=True))
-		print("transactions_dict {td}".format(td=transaction_dict))
+		# print("transactions_dict {td}".format(td=transaction_dict))
 		return transaction_dict
 
 

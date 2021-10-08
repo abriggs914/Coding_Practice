@@ -1,7 +1,7 @@
 import datetime
 from transactions_parser import *
 from TransactionHandler import *
-from utility import *
+from pygame_utility import *
 from Entity import Entity
 from Transaction import Transaction
 import re
@@ -238,8 +238,65 @@ def temp_main():
 	# print(TH.earning_report(TH.entities_list[0], "Monthly"))
 
 
+def quick_view():
+	transactions_dict = populate_transactions_dict()
+	app = PygameApplication("Transaction History", 750, 500)
+	game = app.get_game()
+	display = app.display
+
+	entities = {"Me": 0}
+	values_spending = []
+	labels_spending = []
+	keys = list(transactions_dict.keys())
+	keys.sort()
+	for t_num in keys:
+		t = transactions_dict[t_num]
+		d = t["Transaction Date"]
+		a = float(t["Transaction Amount"])
+		y = t["Transaction Type"]
+		n = t["Notes"]
+		e = t["Entity"]
+		if e not in entities:
+			entities[e] = [-1 * a, [t]]
+		else:
+			entities[e] = [entities[e][0] + (-1 * a), entities[e][1] + [t]]
+		entities["Me"] += a
+		if d not in labels_spending:
+			labels_spending.append(d)
+			values_spending.append(0)
+		values_spending[labels_spending.index(d)] += a
+
+	plt.plot(labels_spending, values_spending)
+	plt.show()
+
+	# print(dict_print(entities, "Entities"))
+	label_start_date = Label(game, display, Rect2(25, 10, 160, 32), "Start Date:", fs=26)
+	label_end_date = Label(game, display, Rect2(25, 42, 160, 32), "End Date:", fs=26)
+	tbox_start_date = TextBox(game, display, Rect2(185, 10, 160, 32))
+	tbox_end_date = TextBox(game, display, Rect2(185, 42, 160, 32))
+
+	while app.is_playing:
+		display.fill(BLACK)
+
+		label_start_date.draw()
+		label_end_date.draw()
+		tbox_start_date.draw()
+		tbox_end_date.draw()
+
+		# draw widgets and objects here
+		event_queue = app.run()
+		for event in event_queue:
+			# handle events
+			tbox_start_date.handle_event(event)
+			tbox_end_date.handle_event(event)
+
+		app.clock.tick(30)
+
+
+
 if __name__ == "__main__":
-	temp_main()
+	quick_view()
+	# temp_main()
 
 	# test()
 	# scotia_transactions()
