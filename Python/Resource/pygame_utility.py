@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.18
-#	Date........2021-10-07
+#	Version...........1.19
+#	Date........2021-10-12
 #	Author....Avery Briggs
 
 
