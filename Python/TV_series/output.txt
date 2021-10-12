@@ -384,24 +384,35 @@ Total minutes:			384
 Total hours:			6.4
 Where to watch:			Disney+
 
+	The Orville
+Genre:				Comedy
+Run (2017 -> 2022):		5 years
+number seasons:			3
+number episodes:		37
+episodes per season:		12.333333333333334
+average length of an episode:	44
+Total minutes:			1628
+Total hours:			27.133333333333333
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Trailer Park Boys
+	Scrubs
 Genre:				Comedy
-Run (2001 -> 2018):		17 years
-number seasons:			12
-number episodes:		105
-episodes per season:		8.75
+Run (2001 -> 2010):		9 years
+number seasons:			9
+number episodes:		182
+episodes per season:		20.22222222222222
 average length of an episode:	22
-Total minutes:			2310
-Total hours:			38.5
-Where to watch:			Netflix
+Total minutes:			4004
+Total hours:			66.73333333333333
+Where to watch:			Prime TV
 
-Season: 3
-Episode: 6
+Season: 7
+Episode: 3
 
 	How would you like to print the stats?
 1	-	By start year
@@ -453,6 +464,7 @@ sorting by start year...
 |The Last Man on Earth            |    2015    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    2015    |The Last Man on Earth            |
 |Letterkenny                      |    2016    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    2016    |Letterkenny                      |
 |The Mick                         |    2017    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    2017    |The Mick                         |
+|The Orville                      |    2017    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    2017    |The Orville                      |
 |Final Space                      |    2018    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    2018    |Final Space                      |
 |Chernobyl                        |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    2019    |Chernobyl                        |
 |The Mandalorian                  |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    2019    |The Mandalorian                  |
@@ -509,18 +521,19 @@ sorting by start year...
 |The Last Man on Earth            |    2015    |
 |Letterkenny                      |    2016    |
 |The Mick                         |    2017    |
+|The Orville                      |    2017    |
 |Final Space                      |    2018    |
 |Chernobyl                        |    2019    |
 |The Mandalorian                  |    2019    |
 |Solar Opposites                  |    2020    |
 ################################################
 
-Mean:		2007.94
+Mean:		2008.19
 Median:		2009.00
-Pstdev:		  7.35
-Pvariance:	 54.00
-Stdev:		  7.46
-Variance:	 55.58
+Pstdev:		  7.40
+Pvariance:	 54.71
+Stdev:		  7.50
+Variance:	 56.28
 
 	How would you like to print the stats?
 1	-	By start year
@@ -576,6 +589,7 @@ sorting by end year...
 |Letterkenny                      |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2021   |Letterkenny                      |
 |The Mandalorian                  |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   2021   |The Mandalorian                  |
 |Solar Opposites                  |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |   2021   |Solar Opposites                  |
+|The Orville                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|   2022   |The Orville                      |
 ##########################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -632,14 +646,15 @@ sorting by end year...
 |Letterkenny                      |   2021   |
 |The Mandalorian                  |   2021   |
 |Solar Opposites                  |   2021   |
+|The Orville                      |   2022   |
 ##############################################
 
-Mean:		2015.86
+Mean:		2016.03
 Median:		2018.00
-Pstdev:		  5.13
-Pvariance:	 26.35
-Stdev:		  5.21
-Variance:	 27.13
+Pstdev:		  5.16
+Pvariance:	 26.64
+Stdev:		  5.23
+Variance:	 27.40
 
 	How would you like to print the stats?
 1	-	By start year
@@ -676,6 +691,7 @@ sorting by shortest series length...
 |Silicon Valley                   |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |             5              |Silicon Valley                   |
 |Better Call Saul                 |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5              |Better Call Saul                 |
 |Letterkenny                      |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |             5              |Letterkenny                      |
+|The Orville                      |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|             5              |The Orville                      |
 |Community                        |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |             6              |Community                        |
 |Parks and Recreation             |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |             6              |Parks and Recreation             |
 |Workaholics                      |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |             6              |Workaholics                      |
@@ -732,6 +748,7 @@ sorting by shortest series length...
 |Silicon Valley                   |             5              |
 |Better Call Saul                 |             5              |
 |Letterkenny                      |             5              |
+|The Orville                      |             5              |
 |Community                        |             6              |
 |Parks and Recreation             |             6              |
 |Workaholics                      |             6              |
@@ -753,12 +770,12 @@ sorting by shortest series length...
 |The Simpsons                     |             32             |
 ################################################################
 
-Mean:		  7.94
+Mean:		  7.86
 Median:		  6.00
-Pstdev:		  6.68
-Pvariance:	 44.57
-Stdev:		  6.77
-Variance:	 45.88
+Pstdev:		  6.60
+Pvariance:	 43.56
+Stdev:		  6.69
+Variance:	 44.81
 
 	How would you like to print the stats?
 1	-	By start year
@@ -802,6 +819,7 @@ sorting by longest series length...
 |Silicon Valley                   |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |             5             |Silicon Valley                   |
 |Better Call Saul                 |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5             |Better Call Saul                 |
 |Letterkenny                      |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |             5             |Letterkenny                      |
+|The Orville                      |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|             5             |The Orville                      |
 |Recess                           |             4             |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |Recess                           |
 |The Proud Family                 |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |The Proud Family                 |
 |My Name is Earl                  |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |My Name is Earl                  |
@@ -858,6 +876,7 @@ sorting by longest series length...
 |Silicon Valley                   |             5             |
 |Better Call Saul                 |             5             |
 |Letterkenny                      |             5             |
+|The Orville                      |             5             |
 |Recess                           |             4             |
 |The Proud Family                 |             4             |
 |My Name is Earl                  |             4             |
@@ -872,12 +891,12 @@ sorting by longest series length...
 |Solar Opposites                  |             1             |
 ###############################################################
 
-Mean:		  7.94
+Mean:		  7.86
 Median:		  6.00
-Pstdev:		  6.68
-Pvariance:	 44.57
-Stdev:		  6.77
-Variance:	 45.88
+Pstdev:		  6.60
+Pvariance:	 43.56
+Stdev:		  6.69
+Variance:	 44.81
 
 	How would you like to print the stats?
 1	-	By start year
@@ -904,6 +923,7 @@ sorting by least number of seasons...
 |The Mandalorian                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          2           |The Mandalorian                  |
 |The Mick                         |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |          2           |The Mick                         |
 |Solar Opposites                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |          2           |Solar Opposites                  |
+|The Orville                      |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|          3           |The Orville                      |
 |Avatar, the Last Airbender       |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3           |Avatar, the Last Airbender       |
 |Brickleberry                     |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          3           |Brickleberry                     |
 |The IT Crowd                     |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          4           |The IT Crowd                     |
@@ -960,6 +980,7 @@ sorting by least number of seasons...
 |The Mandalorian                  |          2           |
 |The Mick                         |          2           |
 |Solar Opposites                  |          2           |
+|The Orville                      |          3           |
 |Avatar, the Last Airbender       |          3           |
 |Brickleberry                     |          3           |
 |The IT Crowd                     |          4           |
@@ -991,12 +1012,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          32          |
 ##########################################################
 
-Mean:		  6.86
+Mean:		  6.75
 Median:		  5.00
-Pstdev:		  5.68
-Pvariance:	 32.24
-Stdev:		  5.76
-Variance:	 33.18
+Pstdev:		  5.63
+Pvariance:	 31.74
+Stdev:		  5.71
+Variance:	 32.65
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1044,6 +1065,7 @@ sorting by most number of seasons...
 |The IT Crowd                     |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          4          |The IT Crowd                     |
 |My Name is Earl                  |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          4          |My Name is Earl                  |
 |The Last Man on Earth            |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          4          |The Last Man on Earth            |
+|The Orville                      |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|          3          |The Orville                      |
 |Avatar, the Last Airbender       |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3          |Avatar, the Last Airbender       |
 |Brickleberry                     |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          3          |Brickleberry                     |
 |The Proud Family                 |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2          |The Proud Family                 |
@@ -1100,6 +1122,7 @@ sorting by most number of seasons...
 |The IT Crowd                     |          4          |
 |My Name is Earl                  |          4          |
 |The Last Man on Earth            |          4          |
+|The Orville                      |          3          |
 |Avatar, the Last Airbender       |          3          |
 |Brickleberry                     |          3          |
 |The Proud Family                 |          2          |
@@ -1110,12 +1133,12 @@ sorting by most number of seasons...
 |Chernobyl                        |          1          |
 #########################################################
 
-Mean:		  6.86
+Mean:		  6.75
 Median:		  5.00
-Pstdev:		  5.68
-Pvariance:	 32.24
-Stdev:		  5.76
-Variance:	 33.18
+Pstdev:		  5.63
+Pvariance:	 31.74
+Stdev:		  5.71
+Variance:	 32.65
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1145,6 +1168,7 @@ sorting by least number of episodes...
 |Peaky Blinders                   |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          30           |Peaky Blinders                   |
 |Brickleberry                     |          36           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          36           |Brickleberry                     |
 |Misfits                          |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          37           |Misfits                          |
+|The Orville                      |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|          37           |The Orville                      |
 |The Mick                         |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |          37           |The Mick                         |
 |Better Call Saul                 |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          50           |Better Call Saul                 |
 |The Proud Family                 |          52           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52           |The Proud Family                 |
@@ -1201,6 +1225,7 @@ sorting by least number of episodes...
 |Peaky Blinders                   |          30           |
 |Brickleberry                     |          36           |
 |Misfits                          |          37           |
+|The Orville                      |          37           |
 |The Mick                         |          37           |
 |Better Call Saul                 |          50           |
 |The Proud Family                 |          52           |
@@ -1229,12 +1254,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          706          |
 ###########################################################
 
-Mean:		106.14
-Median:		 68.00
-Pstdev:		125.81
-Pvariance:	15828.64
-Stdev:		127.65
-Variance:	16294.18
+Mean:		104.22
+Median:		 67.50
+Pstdev:		124.57
+Pvariance:	15518.06
+Stdev:		126.34
+Variance:	15961.43
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1281,6 +1306,7 @@ sorting by most number of episodes...
 |The Proud Family                 |          52          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52          |The Proud Family                 |
 |Better Call Saul                 |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          50          |Better Call Saul                 |
 |Misfits                          |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          37          |Misfits                          |
+|The Orville                      |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|          37          |The Orville                      |
 |The Mick                         |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |          37          |The Mick                         |
 |Brickleberry                     |          36          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          36          |Brickleberry                     |
 |Peaky Blinders                   |          30          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |          30          |Peaky Blinders                   |
@@ -1337,6 +1363,7 @@ sorting by most number of episodes...
 |The Proud Family                 |          52          |
 |Better Call Saul                 |          50          |
 |Misfits                          |          37          |
+|The Orville                      |          37          |
 |The Mick                         |          37          |
 |Brickleberry                     |          36          |
 |Peaky Blinders                   |          30          |
@@ -1348,12 +1375,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		106.14
-Median:		 68.00
-Pstdev:		125.81
-Pvariance:	15828.64
-Stdev:		127.65
-Variance:	16294.18
+Mean:		104.22
+Median:		 67.50
+Pstdev:		124.57
+Pvariance:	15518.06
+Stdev:		126.34
+Variance:	15961.43
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1390,6 +1417,7 @@ sorting by shortest time...
 |Peaky Blinders                   |     25.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |     25.0      |Peaky Blinders                   |
 |Recess                           |   26.066667   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   26.066667   |Recess                           |
 |Misfits                          |   27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |   27.133333   |Misfits                          |
+|The Orville                      |   27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|   27.133333   |The Orville                      |
 |Arrested Develpoment             |   30.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   30.800000   |Arrested Develpoment             |
 |Workaholics                      |   31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |   31.533333   |Workaholics                      |
 |My Name is Earl                  |   33.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   33.600000   |My Name is Earl                  |
@@ -1446,6 +1474,7 @@ sorting by shortest time...
 |Peaky Blinders                   |     25.0      |
 |Recess                           |   26.066667   |
 |Misfits                          |   27.133333   |
+|The Orville                      |   27.133333   |
 |Arrested Develpoment             |   30.800000   |
 |Workaholics                      |   31.533333   |
 |My Name is Earl                  |   33.600000   |
@@ -1467,12 +1496,12 @@ sorting by shortest time...
 |The Simpsons                     |  282.400000   |
 ###################################################
 
-Mean:		 44.75
-Median:		 31.53
-Pstdev:		 48.48
-Pvariance:	2350.65
-Stdev:		 49.19
-Variance:	2419.78
+Mean:		 44.26
+Median:		 31.17
+Pstdev:		 47.89
+Pvariance:	2293.73
+Stdev:		 48.57
+Variance:	2359.27
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1513,6 +1542,7 @@ sorting by longest time...
 |Workaholics                      |  31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |  31.533333   |Workaholics                      |
 |Arrested Develpoment             |  30.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  30.800000   |Arrested Develpoment             |
 |Misfits                          |  27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |  27.133333   |Misfits                          |
+|The Orville                      |  27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|  27.133333   |The Orville                      |
 |Recess                           |  26.066667   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  26.066667   |Recess                           |
 |Peaky Blinders                   |     25.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |     25.0     |Peaky Blinders                   |
 |The Last Man on Earth            |  24.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |  24.566667   |The Last Man on Earth            |
@@ -1569,6 +1599,7 @@ sorting by longest time...
 |Workaholics                      |  31.533333   |
 |Arrested Develpoment             |  30.800000   |
 |Misfits                          |  27.133333   |
+|The Orville                      |  27.133333   |
 |Recess                           |  26.066667   |
 |Peaky Blinders                   |     25.0     |
 |The Last Man on Earth            |  24.566667   |
@@ -1586,12 +1617,12 @@ sorting by longest time...
 |Chernobyl                        |     5.0      |
 ##################################################
 
-Mean:		 44.75
-Median:		 31.53
-Pstdev:		 48.48
-Pvariance:	2350.65
-Stdev:		 49.19
-Variance:	2419.78
+Mean:		 44.26
+Median:		 31.17
+Pstdev:		 47.89
+Pvariance:	2293.73
+Stdev:		 48.57
+Variance:	2359.27
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1629,6 +1660,7 @@ sorting by most episodes per season...
 |The Last Man on Earth            |        16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |        16.750000         |The Last Man on Earth            |
 |Futurama                         |           14.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |           14.0           |Futurama                         |
 |Breaking Bad                     |        12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |        12.400000         |Breaking Bad                     |
+|The Orville                      |        12.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|        12.333333         |The Orville                      |
 |Workaholics                      |        12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |        12.285714         |Workaholics                      |
 |Brickleberry                     |           12.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |           12.0           |Brickleberry                     |
 |Final Space                      |        11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |        11.500000         |Final Space                      |
@@ -1685,6 +1717,7 @@ sorting by most episodes per season...
 |The Last Man on Earth            |        16.750000         |
 |Futurama                         |           14.0           |
 |Breaking Bad                     |        12.400000         |
+|The Orville                      |        12.333333         |
 |Workaholics                      |        12.285714         |
 |Brickleberry                     |           12.0           |
 |Final Space                      |        11.500000         |
@@ -1705,12 +1738,12 @@ sorting by most episodes per season...
 |Black Mirror                     |         4.200000         |
 ##############################################################
 
-Mean:		 14.59
-Median:		 12.29
-Pstdev:		  8.15
-Pvariance:	 66.36
-Stdev:		  8.26
-Variance:	 68.31
+Mean:		 14.52
+Median:		 12.31
+Pstdev:		  8.04
+Pvariance:	 64.65
+Stdev:		  8.15
+Variance:	 66.50
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1749,6 +1782,7 @@ sorting by least episodes per season...
 |Final Space                      |         11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |         11.500000         |Final Space                      |
 |Brickleberry                     |           12.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |           12.0            |Brickleberry                     |
 |Workaholics                      |         12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |         12.285714         |Workaholics                      |
+|The Orville                      |         12.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|         12.333333         |The Orville                      |
 |Breaking Bad                     |         12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         12.400000         |Breaking Bad                     |
 |Futurama                         |           14.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |           14.0            |Futurama                         |
 |The Last Man on Earth            |         16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |         16.750000         |The Last Man on Earth            |
@@ -1805,6 +1839,7 @@ sorting by least episodes per season...
 |Final Space                      |         11.500000         |
 |Brickleberry                     |           12.0            |
 |Workaholics                      |         12.285714         |
+|The Orville                      |         12.333333         |
 |Breaking Bad                     |         12.400000         |
 |Futurama                         |           14.0            |
 |The Last Man on Earth            |         16.750000         |
@@ -1824,9 +1859,9 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.59
-Median:		 12.29
-Pstdev:		  8.15
-Pvariance:	 66.36
-Stdev:		  8.26
-Variance:	 68.31
+Mean:		 14.52
+Median:		 12.31
+Pstdev:		  8.04
+Pvariance:	 64.65
+Stdev:		  8.15
+Variance:	 66.50

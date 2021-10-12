@@ -775,7 +775,7 @@ class Button(Widget):
         self.font = font if font is not None else game.font.Font(None, font_size)
         self.action = action
         if args is not None:
-            if not isinstance(args, list) or not isinstance(args, tuple):
+            if not isinstance(args, list) and not isinstance(args, tuple):
                 args = [args]
         self.args = args
         self.resize(rect)

@@ -1,4 +1,5 @@
 import datetime
+import numpy as np
 from transactions_parser import *
 from TransactionHandler import *
 from pygame_utility import *
@@ -239,49 +240,127 @@ def temp_main():
 
 
 def quick_view():
-	transactions_dict = populate_transactions_dict()
 	app = PygameApplication("Transaction History", 750, 500)
 	game = app.get_game()
 	display = app.display
 
-	entities = {"Me": 0}
-	values_spending = []
-	labels_spending = []
-	keys = list(transactions_dict.keys())
-	keys.sort()
-	for t_num in keys:
-		t = transactions_dict[t_num]
-		d = t["Transaction Date"]
-		a = float(t["Transaction Amount"])
-		y = t["Transaction Type"]
-		n = t["Notes"]
-		e = t["Entity"]
-		if e not in entities:
-			entities[e] = [-1 * a, [t]]
-		else:
-			entities[e] = [entities[e][0] + (-1 * a), entities[e][1] + [t]]
-		entities["Me"] += a
-		if d not in labels_spending:
-			labels_spending.append(d)
-			values_spending.append(0)
-		values_spending[labels_spending.index(d)] += a
+	current_data = []
 
-	plt.plot(labels_spending, values_spending)
-	plt.show()
+	# show_graph_data("2021-01-01", "2021-10-11")
 
-	# print(dict_print(entities, "Entities"))
 	label_start_date = Label(game, display, Rect2(25, 10, 160, 32), "Start Date:", fs=26)
 	label_end_date = Label(game, display, Rect2(25, 42, 160, 32), "End Date:", fs=26)
 	tbox_start_date = TextBox(game, display, Rect2(185, 10, 160, 32))
 	tbox_end_date = TextBox(game, display, Rect2(185, 42, 160, 32))
+	control_panel = ButtonBar(game, display, Rect2(25, 450, 160, 32), is_horizontal=False)
+	results_window = TextBox(game, display, Rect2(400, 10, 200, 450), locked=True, draw_clear_btn=False, text="Run a report")
+
+	def show_graph_data(current_data, start_date=None, end_date=None, entity_name=None, transaction_type=None):
+
+		print(dict_print({"start_date": start_date, "end_date": end_date, "entity_name": entity_name,
+						  "transaction_type": transaction_type}))
+
+		transactions_dict = populate_transactions_dict()
+
+		for k, v in transactions_dict.items():
+			d = datetime.datetime.strptime(v["Transaction Date"], "%m/%d/%Y")
+			v["Transaction Date"] = d.strftime("%Y-%m-%d")
+
+		entities = {"Me": 0}
+		values_spending = []
+		labels_spending = []
+		keys = list(transactions_dict.keys())
+		keys.sort(reverse=True)
+
+		print("keys1:", keys)
+
+		if start_date is not None and end_date is not None:
+
+			start_date = start_date.replace(" ", "")
+			t_keys = []
+			for k in keys:
+				v = transactions_dict[k]
+				# print("start_date:", start_date, "v[\"Transaction Date\"]", v["Transaction Date"], "end_date:", end_date, "start_date <= v[\"Transaction Date\"] <= end_date", start_date <= v["Transaction Date"] <= end_date)
+				if start_date <= v["Transaction Date"] <= end_date:
+					t_keys.append(k)
+			keys = t_keys
+
+		print("keys2", keys)
+
+		for t_num in keys:
+			t = transactions_dict[t_num]
+			d = t["Transaction Date"]
+			a = float(t["Transaction Amount"])
+			y = t["Transaction Type"]
+			n = t["Notes"]
+			e = t["Entity"]
+			if e not in entities:
+				entities[e] = [-1 * a, [t]]
+			else:
+				entities[e] = [entities[e][0] + (-1 * a), entities[e][1] + [t]]
+			entities["Me"] += a
+			if d not in labels_spending:
+				labels_spending.append(d)
+				values_spending.append(0)
+			values_spending[labels_spending.index(d)] += a
+
+		if labels_spending:
+			plt.plot(labels_spending, values_spending)
+			step = ceil(len(labels_spending) / 20)
+			plt.xticks(ticks=np.arange(0, (len(labels_spending) + step), step), rotation=65)
+			plt.tight_layout()
+			fig = plt.savefig("graph_image.png", transparent=True)
+			plt.show()
+		# print(dict_print({e: (v[0] if e != "Me" else v) for e, v in entities.items()}, "Entities"))
+
+			current_data.append({k: transactions_dict[k] for k in keys})
+			current_data = current_data[-5:]
+		else:
+			print("nothing to show")
+
+	def update_results_window():
+		if current_data:
+			most_recent = current_data[-1]
+			nt = len(most_recent)
+			spent, earned = 0, 0
+			for tn, t in transactions_dict.items():
+				val = t["Transaction Amount"]
+				if val < 0:
+					spent += val
+				else:
+					earned += val
+			results_window.set_text(
+				"""{} -> {}
+				
+				N Transactions: {}
+				Spent:          {}
+				Earned:         {}
+				Diff:           {}
+				""".format(tbox_start_date.get_text(), tbox_end_date.get_text(), nt, spent, earned, (earned - spent)))
+
+			f_name = "graph_image.png"
+			img_surf = game.image.load(f_name)
+			display.blit(img_surf, (20, 20))
+		else:
+			results_window.set_text("Run a report")
+
+
+	tbox_start_date.set_text("2021-01-01")
+	tbox_end_date.set_text("2021-10-10")
+
 
 	while app.is_playing:
 		display.fill(BLACK)
+		control_panel.buttons.clear()
 
 		label_start_date.draw()
 		label_end_date.draw()
 		tbox_start_date.draw()
 		tbox_end_date.draw()
+		control_panel.add_button("Refresh Window", YELLOW_3, YELLOW_2, update_results_window)
+		control_panel.add_button("View Graph", GREEN_3, GREEN_2, show_graph_data, [current_data, tbox_start_date.get_text(), tbox_end_date.get_text()])
+		control_panel.draw()
+		results_window.draw()
 
 		# draw widgets and objects here
 		event_queue = app.run()

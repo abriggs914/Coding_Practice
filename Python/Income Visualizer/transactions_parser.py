@@ -11,12 +11,12 @@ def populate_transactions_dict():
 	# with open("pcbanking_test.csv", 'r') as f:
 		d = csv.DictReader(f, delimiter=',')
 		header = d.fieldnames
-		print("header: {h}".format(h=header))
+		# print("header: {h}".format(h=header))
 		lines = [{k.strip(): v.strip() for k, v in line.items()} for line in d]
 		# for l in lines:
 		# 	print(l)
 		transaction_dict = dict(zip([i for i in range(len(lines))], lines))
-		print(dict_print(transaction_dict, "lines", number=True))
+		# print(dict_print(transaction_dict, "lines", number=True))
 		# print("transactions_dict {td}".format(td=transaction_dict))
 		return transaction_dict
 
