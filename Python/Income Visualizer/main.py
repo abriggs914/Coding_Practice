@@ -240,7 +240,7 @@ def temp_main():
 
 
 def quick_view():
-	app = PygameApplication("Transaction History", 750, 500)
+	app = PygameApplication("Transaction History", 1200, 700)
 	game = app.get_game()
 	display = app.display
 
@@ -248,12 +248,12 @@ def quick_view():
 
 	# show_graph_data("2021-01-01", "2021-10-11")
 
-	label_start_date = Label(game, display, Rect2(25, 10, 160, 32), "Start Date:", fs=26)
-	label_end_date = Label(game, display, Rect2(25, 42, 160, 32), "End Date:", fs=26)
-	tbox_start_date = TextBox(game, display, Rect2(185, 10, 160, 32))
-	tbox_end_date = TextBox(game, display, Rect2(185, 42, 160, 32))
-	control_panel = ButtonBar(game, display, Rect2(25, 450, 160, 32), is_horizontal=False)
-	results_window = TextBox(game, display, Rect2(400, 10, 200, 450), locked=True, draw_clear_btn=False, text="Run a report")
+	label_start_date = Label(game, display, Rect2(750, 10, 160, 32), "Start Date:", fs=26)
+	label_end_date = Label(game, display, Rect2(750, 42, 160, 32), "End Date:", fs=26)
+	tbox_start_date = TextBox(game, display, Rect2(910, 10, 160, 32))
+	tbox_end_date = TextBox(game, display, Rect2(910, 42, 160, 32))
+	control_panel = ButtonBar(game, display, Rect2(25, 550, 160, 32), is_horizontal=False)
+	results_window = TextBox(game, display, Rect2(750, 100, 350, 450), locked=True, draw_clear_btn=False, text="Run a report")
 
 	def show_graph_data(current_data, start_date=None, end_date=None, entity_name=None, transaction_type=None):
 
@@ -309,7 +309,7 @@ def quick_view():
 			step = ceil(len(labels_spending) / 20)
 			plt.xticks(ticks=np.arange(0, (len(labels_spending) + step), step), rotation=65)
 			plt.tight_layout()
-			fig = plt.savefig("graph_image.png", transparent=True)
+			fig = plt.savefig("graph_image.png", transparent=False)
 			plt.show()
 		# print(dict_print({e: (v[0] if e != "Me" else v) for e, v in entities.items()}, "Entities"))
 
@@ -337,12 +337,14 @@ def quick_view():
 				Earned:         {}
 				Diff:           {}
 				""".format(tbox_start_date.get_text(), tbox_end_date.get_text(), nt, spent, earned, (earned - spent)))
-
-			f_name = "graph_image.png"
-			img_surf = game.image.load(f_name)
-			display.blit(img_surf, (20, 20))
 		else:
 			results_window.set_text("Run a report")
+
+	def draw_results():
+		if current_data:
+			f_name = "graph_image.png"
+			img_surf = game.image.load(f_name)
+			display.blit(img_surf, (30, 30))
 
 
 	tbox_start_date.set_text("2021-01-01")
@@ -361,6 +363,7 @@ def quick_view():
 		control_panel.add_button("View Graph", GREEN_3, GREEN_2, show_graph_data, [current_data, tbox_start_date.get_text(), tbox_end_date.get_text()])
 		control_panel.draw()
 		results_window.draw()
+		draw_results()
 
 		# draw widgets and objects here
 		event_queue = app.run()

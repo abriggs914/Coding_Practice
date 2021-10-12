@@ -1817,7 +1817,19 @@ class MenuBar(Widget):
 
         btns = self.button_data
         n_drop_downs = len(btns)
-        w_drop_down = rect.w / n_drop_downs
+        w_drop_down = rect.w / max(1, n_drop_downs)
+        mouse = self.game.mouse.get_pos()
+        click = self.game.mouse.get_pressed()
+        # print("click:", click, "mouse:", mouse)
+        if self.is_clicked or click[0]:
+            print("click")
+            if rect.collidepoint(mouse):
+                # print("mouse[0]: {}\nrect.x: {}\n(mouse[0] - rect.x): {}\nint((mouse[0] - rect.x) // w_drop_down): {}".format(mouse[0], rect.x, (mouse[0] - rect.x), int((mouse[0] - rect.x) // w_drop_down)))
+                top_btn = int((mouse[0] - rect.x) // w_drop_down)
+                print("{} clicked {}".format(top_btn, list(btns)[top_btn]))
+                
+        if click[0]:
+            self.is_clicked = not self.is_clicked
         # rect_dd =
 
 
