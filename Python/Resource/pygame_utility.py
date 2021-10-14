@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.20
-#	Date........2021-10-13
+#	Version...........1.21
+#	Date........2021-10-14
 #	Author....Avery Briggs
 
 
@@ -1810,6 +1810,98 @@ class MenuBar(Widget):
             return False
         return button_data if validate_tree(button_data) else {}
 
+    # def draw(self):
+    #     game = self.game
+    #     display = self.display
+    #     rect = self.rect
+    #     game.draw.rect(display, self.background_colour, rect)
+    #
+    #     btns = self.button_data
+    #
+    #     n_drop_downs = len(btns)
+    #     w_drop_down = rect.w / max(1, n_drop_downs)
+    #     mouse = self.game.mouse.get_pos()
+    #     click = self.game.mouse.get_pressed()
+    #
+    #     for i, key in enumerate(btns):
+    #         dat = btns[key]
+    #         write_text(game, display, game.Rect(rect.x + (i * w_drop_down), rect.y, w_drop_down, rect.h), key, game.font.Font(None, 16))
+    #
+    #     def rec_menu(last_rect, press_key, rem_btn_data, d=0):
+    #         print("last_rect: {}\npress_key: {}\nrem_btn_data: {}".format(last_rect, press_key, rem_btn_data))
+    #         dat = rem_btn_data[press_key]
+    #         sub_data = []
+    #         for i, k in enumerate(dat):
+    #             print("DRAWING K: {}".format(k))
+    #             v = dat[k]
+    #             if d == 0:
+    #                 new_rect = last_rect
+    #             else:
+    #                 new_rect = game.Rect(last_rect.x + last_rect.w, last_rect.y + (i * last_rect.h), last_rect.w,
+    #                                  last_rect.h)
+    #             game.draw.rect(display, self.background_colour, new_rect)
+    #             write_text(game, display, new_rect, k, game.font.Font(None, 16))
+    #             if new_rect.collidepoint(mouse):
+    #                 # rec_menu(new_rect, k, v)
+    #                 if isinstance(v, dict):
+    #                     sub_data.append((new_rect, k, dat, d + 1))
+    #                 else:
+    #                     # leaf node
+    #                     if click[0]:
+    #                         print("evoke function: {}".format(v))
+    #
+    #         for sd in sub_data:
+    #             rec_menu(*sd)
+    #
+    #     # print("click:", click, "mouse:", mouse)
+    #     # rect_bg = rect
+    #     handle = False
+    #     if self.is_clicked or click[0]:
+    #         # if rect not in self.state:
+    #         #     self.state.append(rect)
+    #         if rect.collidepoint(mouse):
+    #             # print("mouse[0]: {}\nrect.x: {}\n(mouse[0] - rect.x): {}\nint((mouse[0] - rect.x) // w_drop_down): {}".format(mouse[0], rect.x, (mouse[0] - rect.x), int((mouse[0] - rect.x) // w_drop_down)))
+    #             top_btn = int((mouse[0] - rect.x) // w_drop_down)
+    #             print("{} clicked {}".format(top_btn, list(btns)[top_btn]))
+    #             sub_data = btns[list(btns)[top_btn]]
+    #             rect_bg = game.Rect(rect.x + (top_btn * w_drop_down), rect.y + rect.h, rect.w, rect.h * len(sub_data))
+    #             game.draw.rect(display, self.background_colour, rect_bg)
+    #             if self.is_clicked:
+    #                 self.state.clear()
+    #             if (rect_bg, list(btns)[top_btn], btns) not in self.state:
+    #                 self.state.append((rect_bg, list(btns)[top_btn], btns))
+    #             handle = True
+    #
+    #             rec_menu(rect_bg, list(btns)[top_btn], btns)
+    #             # for dat in sub_data:
+    #         # else:
+    #         #     self.is_clicked = False
+    #         if any(list(map(lambda x: x.collidepoint(mouse), [state[0] for state in self.state]))):
+    #             print("rect_bg", self.state)
+    #             # game.draw.rect(display, self.background_colour, rect_bg)
+    #             for tpl in self.state:
+    #                 r, k, v = tpl
+    #                 game.draw.rect(display, self.background_colour, r)
+    #                 rec_menu(*tpl)
+    #             handle = True
+    #
+    #         # t = []
+    #         # for r in self.state:
+    #         #     if r.collidepoint(mouse):
+    #         #         t.append(r)
+    #         # self.state = t
+    #
+    #         if not handle:
+    #             self.state.clear()
+    #
+    #     if not handle:
+    #         self.is_clicked = False
+    #     if click[0]:
+    #         self.is_clicked = not self.is_clicked
+    #         game.event.wait()
+    #
+    #     # rect_dd =
+
     def draw(self):
         game = self.game
         display = self.display
@@ -1826,17 +1918,6 @@ class MenuBar(Widget):
         for i, key in enumerate(btns):
             dat = btns[key]
             write_text(game, display, game.Rect(rect.x + (i * w_drop_down), rect.y, w_drop_down, rect.h), key, game.font.Font(None, 16))
-
-        def rec_menu(last_rect, press_key, rem_btn_data):
-            print("last_rect: {}\npress_key: {}\nrem_btn_data: {}".format(last_rect, press_key, rem_btn_data))
-            dat = rem_btn_data[press_key]
-            for i, k in enumerate(dat):
-                v = dat[k]
-                new_rect = game.Rect(last_rect.x + last_rect.w, last_rect.y + (i * last_rect.h), last_rect.w,
-                                     last_rect.h)
-                game.draw.rect(display, self.background_colour, new_rect)
-                if new_rect.collidepoint(mouse):
-                    rec_menu(new_rect, k, v)
 
         # print("click:", click, "mouse:", mouse)
         # rect_bg = rect
