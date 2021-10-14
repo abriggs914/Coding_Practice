@@ -1787,10 +1787,10 @@ class MenuBar(Widget):
         self.border_style = bs
         self.font = font
         self.is_clicked = False
-        self.state = []
 
         self.button_data = self.validate_button_data(button_data)
         print(dict_print(self.button_data, "Parsed Button Data"))
+        self.state = list(self.button_data)
 
     def validate_button_data(self, button_data):
         def validate_tree(btn_data):
