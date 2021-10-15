@@ -1916,6 +1916,8 @@ class MenuBar(Widget):
         mouse = self.game.mouse.get_pos()
         click = self.game.mouse.get_pressed()
 
+        # instead of drawing the top and the the sides, draw each iteratively using the state path.
+
         for i, key in enumerate(btns):
             dat = btns[key]
             write_text(game, display, game.Rect(rect.x + (i * w_drop_down), rect.y, w_drop_down, rect.h), key, game.font.Font(None, 16))
