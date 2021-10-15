@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.21
-#	Date........2021-10-14
+#	Version...........1.22
+#	Date........2021-10-15
 #	Author....Avery Briggs
 
 
@@ -1809,6 +1809,7 @@ class MenuBar(Widget):
             print("exit b")
             return False
         return button_data if validate_tree(button_data) else {}
+
 
     # def draw(self):
     #     game = self.game
