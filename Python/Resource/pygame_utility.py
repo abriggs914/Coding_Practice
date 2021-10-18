@@ -1950,6 +1950,15 @@ class MenuBar(Widget):
                 if not self.state:
                     for i, k in enumerate(sub_data):
                         rect_btn = game.Rect(rect_bg.x, start_y + (i * rect.h), rect_bg.w, rect.h)
+
+                        game.draw.line(display, LIMEGREEN, (rect_btn.x, rect_btn.y), (rect_btn.x, rect_btn.y + rect_btn.h),
+                                       2)
+                        game.draw.line(display, LIMEGREEN, (rect_btn.x, rect_btn.y), (rect_btn.x + rect_btn.w, rect_btn.y),
+                                       2)
+                        game.draw.line(display, LIMEGREEN, (rect_btn.x + rect_btn.w, rect_btn.y),
+                                       (rect_btn.x + rect_btn.w, rect_btn.y + rect_btn.h), 2)
+                        game.draw.line(display, LIMEGREEN, (rect_btn.x, rect_btn.y + rect_btn.h),
+                                       (rect_btn.x + rect_btn.w, rect_btn.y + rect_btn.h), 2)
                         tpl = (rect_btn, k, sub_data[k])
                         if tpl not in self.state:
                             self.state.append(tpl)
