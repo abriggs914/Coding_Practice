@@ -809,7 +809,7 @@ def test_rect_collision():
 
 
 def test_menubar():
-    app = PygameApplication("Create Custom WO Update Queries", 750, 500)
+    app = PygameApplication("Create Custom WO Update Queries", 1350, 500)
     game = app.get_game()
     display = app.display
 
@@ -819,8 +819,22 @@ def test_menubar():
         print("leaf1_func")
     def leaf2_func():
         print("leaf2_func")
+    def leaf3_func():
+        print("leaf3_func")
+    def leaf4_func():
+        print("leaf4_func")
+    def leaf5_func():
+        print("leaf5_func")
+    def leaf6_func():
+        print("leaf6_func")
+    def leaf7_func():
+        print("leaf7_func")
+    def leaf8_func():
+        print("leaf8_func")
     def delete_func():
         print("delete_func")
+    def filter_text():
+        print("filter_text")
 
     x = 0
     y = 0
@@ -832,12 +846,47 @@ def test_menubar():
     bs = 1
     font = None
     menubar = MenuBar(game, display, x, y, w, h, {"file": {"open": open_file, "branch": {"leaf1": leaf1_func, "leaf2": leaf2_func}}, "edit": {"delete": delete_func}}, bc, fs, bs, font)
+    menubar2 = MenuBar(game, display, 250, 50, w, h, {
+        "file": {
+            "open": open_file,
+            "branch": {
+                "leaf1": leaf1_func,
+                "leaf2": leaf2_func
+            }
+        },
+        "edit": {
+            "delete": delete_func
+        },
+        "filter": {
+            "by text": filter_text,
+            "branch 1": {
+                "v 1": leaf1_func,
+                "branch 2": {
+                    "branch 3": {
+                        "v 3": leaf3_func,
+                        "branch 4": {
+                            "branch 5": {
+                                "v 4": leaf4_func,
+                                "v 5": leaf5_func,
+                                "v 6": leaf6_func
+                            },
+                            "v 7": leaf7_func
+                        },
+                        "v 8": leaf8_func
+                    }
+                },
+                "v 2": leaf1_func,
+                "leaf2": leaf2_func
+            }
+        },
+    }, bc, fs, bs, font)
 
     while app.is_playing:
         display.fill(BLACK)
 
         # draw widgets and objects here
         menubar.draw()
+        menubar2.draw()
 
         event_queue = app.run()
         for event in event_queue:
