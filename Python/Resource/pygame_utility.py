@@ -2088,7 +2088,7 @@ class ListBox(Widget):
         approx_height = sum([w.rect.h for w in self.items])
 
         if approx_height > rect.h:
-            a
+            az
 
         for item in self.items:
             i_rect = game.Rect()
