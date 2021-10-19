@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.25
-#	Date........2021-10-18
+#	Version...........1.26
+#	Date........2021-10-19
 #	Author....Avery Briggs
 
 
@@ -760,8 +760,8 @@ class RadioButton(Widget):
 # ac		-	button color when hovering
 # font      -   font style
 # action	-	function to be called on click
-def buttonr(game, display, msg, r, ic, ac, font, action=None, args=None):
-    return Button(game, display, msg, r, ic, ac, font, action, args)
+def buttonr(game, display, msg, r, ic, ac, font, fs=12, action=None, args=None):
+    return Button(game, display, msg, r, ic, ac, font, fs, action, args)
 
 
 class Button(Widget):
@@ -849,7 +849,7 @@ class Button(Widget):
             # check scrolling
             elif self.scrollable:
                 event = self.game.event.poll()
-                if event.type == self.game.locals.MOUSEBUTTONDOWN or event.type == self.game.locals.MOUSEBUTTONUP:
+                if event.type == self.game.MOUSEBUTTONDOWN or event.type == self.game.MOUSEBUTTONUP:
                     # scroll up
                     if event.button == 4:
                         self.scroll_up_func(*self.scroll_up_args)
@@ -1782,6 +1782,7 @@ class MenuBar(Widget):
     #   {"file": {"open": open_file, "branch": {"leaf1": leaf1_func, "leaf2": leaf2_func}}}
     def __init__(self, game, display, x, y, w, h, button_data, bc, fs, bs, font, tile_height=15):
         super().__init__(game, display, Rect2(x, y, w, h))
+        print("self.rect:", self.rect)
         self.background_colour = bc
         self.font_size = fs
         self.border_style = bs
@@ -1924,21 +1925,20 @@ class MenuBar(Widget):
             dat = btns[key]
             write_text(game, display, game.Rect(rect.x + (i * w_drop_down), rect.y, w_drop_down, rect.h), key, game.font.Font(None, 16))
 
-        game.draw.line(display, RED, (rect.x, rect.y), (rect.x, rect.y + rect.h), 2)
-        game.draw.line(display, RED, (rect.x, rect.y), (rect.x + rect.w, rect.y), 2)
-        game.draw.line(display, RED, (rect.x + rect.w, rect.y), (rect.x + rect.w, rect.y + rect.h), 2)
-        game.draw.line(display, RED, (rect.x, rect.y + rect.h), (rect.x + rect.w, rect.y + rect.h), 2)
+        game.draw.line(display, PURPLE, (rect.x, rect.y), (rect.x, rect.y + rect.h), 2)
+        game.draw.line(display, PURPLE, (rect.x, rect.y), (rect.x + rect.w, rect.y), 2)
+        game.draw.line(display, PURPLE, (rect.x + rect.w, rect.y), (rect.x + rect.w, rect.y + rect.h), 2)
+        game.draw.line(display, PURPLE, (rect.x, rect.y + rect.h), (rect.x + rect.w, rect.y + rect.h), 2)
 
         # print("click:", click, "mouse:", mouse)
         # rect_bg = rect
         handle = False
         if self.is_clicked or click[0]:
-            # if rect not in self.state:
-            #     self.state.append(rect)
+            # print("{} : is_clicked, rect: {}, mouse: {}".format(self.is_clicked, rect, mouse))
             if rect.collidepoint(mouse):
                 # print("mouse[0]: {}\nrect.x: {}\n(mouse[0] - rect.x): {}\nint((mouse[0] - rect.x) // w_drop_down): {}".format(mouse[0], rect.x, (mouse[0] - rect.x), int((mouse[0] - rect.x) // w_drop_down)))
                 top_btn = int((mouse[0] - rect.x) // w_drop_down)
-                print("{} clicked {}".format(top_btn, list(btns)[top_btn]))
+                # print("{} clicked {}".format(top_btn, list(btns)[top_btn]))
                 sub_data = btns[list(btns)[top_btn]]
                 l = len(btns[list(btns)[top_btn]])
                 l = len(sub_data)
@@ -1950,15 +1950,6 @@ class MenuBar(Widget):
                 if not self.state:
                     for i, k in enumerate(sub_data):
                         rect_btn = game.Rect(rect_bg.x, start_y + (i * rect.h), rect_bg.w, rect.h)
-
-                        game.draw.line(display, LIMEGREEN, (rect_btn.x, rect_btn.y), (rect_btn.x, rect_btn.y + rect_btn.h),
-                                       2)
-                        game.draw.line(display, LIMEGREEN, (rect_btn.x, rect_btn.y), (rect_btn.x + rect_btn.w, rect_btn.y),
-                                       2)
-                        game.draw.line(display, LIMEGREEN, (rect_btn.x + rect_btn.w, rect_btn.y),
-                                       (rect_btn.x + rect_btn.w, rect_btn.y + rect_btn.h), 2)
-                        game.draw.line(display, LIMEGREEN, (rect_btn.x, rect_btn.y + rect_btn.h),
-                                       (rect_btn.x + rect_btn.w, rect_btn.y + rect_btn.h), 2)
                         tpl = (rect_btn, k, sub_data[k])
                         if tpl not in self.state:
                             self.state.append(tpl)
@@ -1989,6 +1980,7 @@ class MenuBar(Widget):
 
             if any(list(map(lambda x: x.collidepoint(mouse), [state[0] for state in self.state]))):
                 handle = True
+
             if not handle:
                 self.state.clear()
 
@@ -1996,9 +1988,111 @@ class MenuBar(Widget):
             self.is_clicked = False
         if click[0]:
             self.is_clicked = not self.is_clicked
-            game.event.wait()
+            game.event.wait(8)
+            # game.event.clear()
 
         # rect_dd =
+
+
+class ListBox(Widget):
+
+    def __init__(
+            self,
+            game,
+            display,
+            x,
+            y,
+            w,
+            h,
+            items=None,
+            bgf=None,
+            bgfs=14,
+            bgfc=BLACK,
+            bgc=GRAY_69,
+            sf=None,
+            sfs=12,
+            sbgc=WHITE,
+            sfc=BLACK,
+            sibgc=ROYALBLUE,
+            sif=None,
+            sifs=16,
+            sifc=WHITE,
+            title=None,
+            tf=None,
+            tfs=16,
+            tfc=BLACK,
+            selectable=True,
+            multi_select=False,
+            select_limit=None,
+            min_encapsulation=True,
+            scrollable_x=True,
+            editable=False,
+            shiftable=False
+    ):
+        super().__init__(game, display, Rect2(x, y, w, h))
+        self.bgf = bgf if bgf is not None else game.font.Font(None, bgfs)
+        self.bgfs = bgfs
+        self.bgfc = bgfc
+        self.bgc = bgc
+        self.sf = sf if sf is not None else game.font.Font(None, sfs)
+        self.sfs = sfs
+        self.sbgc = sbgc
+        self.sfc = sfc
+        self.sibgc = sibgc
+        self.sif = sif if sif is not None else game.font.Font(None, sifs)
+        self.sifs = sifs
+        self.sifc = sifc
+        self.title = title
+        self.tf = tf if tf is not None else game.font.Font(None, tfs)
+        self.tfs = tfs
+        self.tfc = tfc
+        self.selectable = selectable
+        self.multi_select = multi_select
+        self.select_limit = select_limit
+        self.min_encapsulation = min_encapsulation
+        self.scrollable_x = scrollable_x
+        self.editable = editable
+        self.shiftable = shiftable
+
+        self.items = self.validate(items)
+        self.selected_items = []
+
+    def validate(self, items):
+        valid_items = []
+        if items is None:
+            items = []
+        for item in items:
+            if not isinstance(item, Widget):
+                str_val = str(item)
+                txt_surf, txt_rect = text_objects(str_val, self.sf, self.sfc)
+                item = Label(self.game, self.display, txt_rect, str_val, self.sf, self.sbgc, self.sfc, fs=self.sfs)
+            valid_items.append(item)
+        return valid_items
+
+    def draw(self):
+        game = self.game
+        display = self.display
+        rect = self.rect
+
+        game.draw.rect(display, self.bgc, rect)
+
+        t_rect = game.Rect(0, 0, 0, 0)
+        if self.title is not None:
+            t_rect = game.Rect(rect.x, rect.y, rect.w, rect.h * 0.1)
+            write_text(game, display, t_rect, self.title, self.tf, self.bgc, self.tfc)
+
+        tm, lm, bm, rm = t_rect.h + max(1, (rect.h * 0.02)), max(1, (rect.w * 0.02)), max(1, (rect.h * 0.02)), max(1, (rect.w * 0.02))
+        s_rect = game.Rect(rect.x + lm, rect.y + tm, rect.w - (lm + rm), rect.h - (tm + bm))
+        game.draw.rect(display, self.sbgc, s_rect)
+
+        approx_height = sum([w.rect.h for w in self.items])
+
+        if approx_height > rect.h:
+            a
+
+        for item in self.items:
+            i_rect = game.Rect()
+            item.draw()
 
 
 # buttons & toggle buttons

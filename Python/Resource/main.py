@@ -846,7 +846,7 @@ def test_menubar():
     bs = 1
     font = None
     menubar = MenuBar(game, display, x, y, w, h, {"file": {"open": open_file, "branch": {"leaf1": leaf1_func, "leaf2": leaf2_func}}, "edit": {"delete": delete_func}}, bc, fs, bs, font)
-    menubar2 = MenuBar(game, display, 250, 50, w, h, {
+    menubar2 = MenuBar(game, display, 250, 50, w + 1, h + 1, {
         "file": {
             "open": open_file,
             "branch": {
@@ -885,8 +885,33 @@ def test_menubar():
         display.fill(BLACK)
 
         # draw widgets and objects here
-        menubar.draw()
+        # menubar.draw()
         menubar2.draw()
+
+        event_queue = app.run()
+        for event in event_queue:
+
+            # handle events
+
+            pass
+
+        app.clock.tick(30)
+
+
+def test_listbox():
+    app = PygameApplication("Testing ListBox Widgets", 750, 500)
+    game = app.get_game()
+    display = app.display
+
+    x, y, w, h = 125, 40, 250, 400
+
+    listbox1 = ListBox(game, display, x, y, w, h, title="ListBox 1", items=["Hey", "This", "is", "a", "listbox"])
+
+    while app.is_playing:
+        display.fill(BLACK)
+
+        # draw widgets and objects here
+        listbox1.draw()
 
         event_queue = app.run()
         for event in event_queue:
@@ -907,6 +932,32 @@ def test_hyperlink():
         display.fill(BLACK)
 
         # draw widgets and objects here
+
+        event_queue = app.run()
+        for event in event_queue:
+
+            # handle events
+
+            pass
+
+        app.clock.tick(30)
+
+
+def test_scrollbar():
+    app = PygameApplication("Create Custom WO Update Queries", 750, 500)
+    game = app.get_game()
+    display = app.display
+
+    sbv = ScrollBar(game=pygame, display=display, x=10, y=10, w=300, h=300, bar_proportion=0.08, button_c=DARK_GRAY,
+                    bar_background_c=LIGHT_GRAY, bar_c=BLUE, contents=None, content_c=RED, is_vertical=True)
+
+    sbv.add_contents(1)
+
+    while app.is_playing:
+        display.fill(BLACK)
+
+        # draw widgets and objects here
+        sbv.draw()
 
         event_queue = app.run()
         for event in event_queue:
@@ -945,5 +996,7 @@ if __name__ == "__main__":
     # test_find_north_side()
     # test_new_rect()
     # test_rect_collision()
-    test_menubar()
+    # test_menubar()
+    # test_listbox()
+    test_scrollbar()
     # test_hyperlink()
