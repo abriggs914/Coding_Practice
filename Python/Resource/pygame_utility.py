@@ -2,8 +2,8 @@ from utility import *
 from colour_utility import *
 
 #	General Utility functions for pygame applications
-#	Version...........1.26
-#	Date........2021-10-19
+#	Version...........1.27
+#	Date........2021-10-20
 #	Author....Avery Briggs
 
 
@@ -1128,6 +1128,31 @@ class ScrollBar(Widget):
 
         # draw content background
         self.game.draw.rect(self.display, self.content_c, self.content_bounds)
+
+        game = self.game
+        display = self.display
+        rect = self.rect
+
+        game.draw.rect(display, self.bgc, rect)
+
+        t_rect = game.Rect(0, 0, 0, 0)
+        if self.title is not None:
+            t_rect = game.Rect(rect.x, rect.y, rect.w, rect.h * 0.1)
+            write_text(game, display, t_rect, self.title, self.tf, self.bgc, self.tfc)
+
+        tm, lm, bm, rm = t_rect.h + max(1, (rect.h * 0.02)), max(1, (rect.w * 0.02)), max(1, (rect.h * 0.02)), max(1, (
+                    rect.w * 0.02))
+        s_rect = game.Rect(rect.x + lm, rect.y + tm, rect.w - (lm + rm), rect.h - (tm + bm))
+        game.draw.rect(display, self.sbgc, s_rect)
+
+        approx_height = sum([w.rect.h for w in self.items])
+
+        if approx_height > rect.h:
+            az
+
+        for item in self.items:
+            i_rect = game.Rect()
+            item.draw()
 
     # def draw(self):
     #     background = self.game.Rect(self.x, self.y, self.w, self.h)
