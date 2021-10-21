@@ -173,18 +173,22 @@ def print_hi():
 
 
 def test_TextBox():
-    app = PygameApplication("Test TextBox", 600, 400)
+    app = PygameApplication("Test TextBox", 600, 600)
     game = app.get_game()
     display = app.display
-    r1 = Rect(100, 25, 200, 100)
+    r1 = Rect2(100, 25, 200, 100)
+    r2 = Rect2(75, 210, 250, 200)
     # self, game, display, rect, ic, ac, f, fc, text = '', min_width = 20, numeric = False, char_limit = None, n_limit = None, bs = 1, border_style = None
-    textbox = TextBox(game, display, r1, text="-1", numeric=True, daction=print_hi, dargs=None)
+    textbox1 = TextBox(game, display, r1, text="-1", numeric=True, daction=print_hi, dargs=None)
+    textbox2 = TextBox(game, display, r2, text="-1", numeric=False, daction=print_hi, dargs=None)
     while app.is_playing:
         display.fill(BLACK)
-        textbox.draw()
+        textbox1.draw()
+        textbox2.draw()
         event_queue = app.run()
         for event in event_queue:
-            textbox.handle_event(event)
+            textbox1.handle_event(event)
+            textbox2.handle_event(event)
 
 
 def text_box():
@@ -972,7 +976,7 @@ def test_scrollbar():
 
 if __name__ == "__main__":
     # test_block_letters()
-    # test_TextBox()
+    test_TextBox()
     # test_buttonbar()
     # test_phone_number()
     # test_reduce()

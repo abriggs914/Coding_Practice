@@ -355,7 +355,7 @@ class TextBox(Widget):
 
     def handle_event(self, event):
         if not self.locked and self.editable:
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == self.game.MOUSEBUTTONDOWN:
                 # If the user clicked on the input_box rect.
                 if self.rect.collidepoint(event.pos):
                     # Toggle the active variable.
@@ -366,14 +366,14 @@ class TextBox(Widget):
                     self.active = False
                 # Change the current color of the input box.
                 self.colour = self.ac if self.active else self.ic
-            if event.type == pygame.KEYDOWN:
+            if event.type == self.game.KEYDOWN:
                 if self.active:
-                    if event.key == pygame.K_RETURN:
+                    if event.key == self.game.K_RETURN:
                         print("new_text:", self.text)
                         # if self.text.isdigit():
                         # 	DATA["input_dims"] = int(self.text)
                         self.text = ''
-                    elif event.key == pygame.K_BACKSPACE:
+                    elif event.key == self.game.K_BACKSPACE:
                         self.text = self.text[:-1]
                     else:
                         txt = event.unicode
@@ -390,6 +390,9 @@ class TextBox(Widget):
                     # Re-render the text.
                     if self.text:
                         self.txt_surface = self.f.render(self.text, True, self.fc)
+
+                self.game.event.clear()
+                gj
 
     def increment(self, *args, **kwargs):
         try:
@@ -439,6 +442,12 @@ class TextBox(Widget):
         rect = self.rect
         bs = self.border_size
         trect = game.Rect(rect.x + bs, rect.y + bs, rect.width - (bs * 2), rect.height - (bs * 2))
+
+
+
+
+
+
         txt = str(self.text)
         # TODO fix this
         # if self.text_align == "center":
@@ -450,6 +459,12 @@ class TextBox(Widget):
 
         # Blit the text.
         display.blit(self.txt_surface, text_rect)
+
+
+
+
+
+
         # display.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
         # Blit the rect.
         pygame.draw.rect(display, self.colour, self.rect, 2)
