@@ -10,7 +10,7 @@ class Transaction:
     def __init__(self, amount, entity_from, entity_to=None, date=None):
         global TRANSACTION_ID_COUNTER
         TRANSACTION_ID_COUNTER += 1
-        self.id = str(TRANSACTION_ID_COUNTER).rjust(2, "0")
+        self.id_num = str(TRANSACTION_ID_COUNTER).rjust(2, "0")
         self.amount = amount
         self.entity_from = entity_from
         self.entity_to = entity_to
@@ -20,10 +20,10 @@ class Transaction:
         self.date = date
 
     def __eq__(self, other):
-        return isinstance(other, Entity) and self.id == other.id
+        return isinstance(other, Entity) and self.id == other.id_num
 
     def __repr__(self):
-        return "<Transaction #{}: Date: {}, amount: {}, from: \"{}\" to: \"{}\">".format(self.id, self.date, money(self.amount), self.entity_from.name, self.entity_to.name)
+        return "<Transaction #{}: Date: {}, amount: {}, from: \"{}\" to: \"{}\">".format(self.id_num, self.date, money(self.amount), self.entity_from.name, self.entity_to.name)
 
 
 class Entity:
@@ -34,7 +34,7 @@ class Entity:
         if name == "**POT**":
             name = name.replace("*", "")
             ENTITY_ID_COUNTER = 0
-        self.id = str(ENTITY_ID_COUNTER).rjust(2, "0")
+        self.id_num = str(ENTITY_ID_COUNTER).rjust(2, "0")
         self.name = name
         self.balance = start_balance
         self.transactions_list = []
@@ -47,10 +47,10 @@ class Entity:
         self.balance += amount
 
     def __eq__(self, other):
-        return isinstance(other, Entity) and self.id == other.id
+        return isinstance(other, Entity) and self.id_num == other.id_num
 
     def __repr__(self):
-        return "<Entity #{}: \"{}\", BAL: {}>".format(self.id, self.name, money(self.balance))
+        return "<Entity #{}: \"{}\", BAL: {}>".format(self.id_num, self.name, money(self.balance))
 
 
 class LogBook:
@@ -74,11 +74,16 @@ class LogBook:
     def create_transaction(self, amount, entity_from, entity_to, date=None):
         self.add_transaction(Transaction(amount, entity_from, entity_to, date))
 
-    def who_pays_who(self):
+    def who_pays_who(self, include_pot=False):
         # people_to_check = who(name_str)
         people_to_check = self.entities_list
-        people_who_pay = [person for person in people_to_check if person["OWES"] > 0]
-        people_who_get = [person for person in people_to_check if person["OWES"] < 0]
+        if not include_pot:
+            removed = [p for p in people_to_check if p.id_num != "00"]
+            if len(removed) != len(people_to_check):
+                people_to_check = removed
+
+        people_who_pay = [person for person in people_to_check if person.balance > 0]
+        people_who_get = [person for person in people_to_check if person.balance < 0]
         print("people_who_pay:", people_who_pay)
         print("people_who_get:", people_who_get)
         first_pass = True
@@ -95,8 +100,8 @@ class LogBook:
                 j = 0
                 while j < len(people_who_get):
                     person_b = people_who_get[j]
-                    owe_a = 0 if "OWES" not in person_a else person_a["OWES"]
-                    owe_b = 0 if "OWES" not in person_b else person_b["OWES"]
+                    owe_a = person_a.balance
+                    owe_b = person_b.balance
                     # print("1 OWES_a: {}, OWES_b: {}, owe_a + owe_b: {}".format(owe_a, owe_b, owe_a + owe_b), "COND:", (not first_pass and (owe_a >= owe_b and ((owe_a + owe_b) > 0)) and (owe_a < 0 or owe_b < 0)))
                     if owe_a == 0:
                         people_who_pay.remove(person_a)
@@ -178,10 +183,10 @@ class LogBook:
             dict_print(
                 {
                     "Amount": money(pr[0]),
-                    "Payer": pr[1]["LET"],
-                    "Payee": pr[2]["LET"]
+                    "Payer": pr[1].name,
+                    "Payee": pr[2].name
                 },
-                "{} -> {}".format(pr[1]["LET"], pr[2]["LET"])
+                "{} -> {}".format(pr[1].name, pr[2].name)
             ) for pr in pay_pairs
         ])))
 
@@ -192,13 +197,20 @@ class LogBook:
 if __name__ == "__main__":
     POT = Entity("**POT**", 0)
     entity_01 = Entity("01", 0)
+    entity_02 = Entity("02", 0)
     transaction_01 = Transaction(10, entity_01, POT)
+    transaction_02 = Transaction(100, entity_02, POT)
     logbook = LogBook()
     logbook.add_transaction(transaction_01)
+    logbook.add_transaction(transaction_02)
 
     print(dict_print({
         "Entity_POT": POT,
         "Entity_01": entity_01,
+        "Entity_02": entity_02,
         "Transaction_01": transaction_01,
+        "Transaction_02": transaction_02,
         "LogBook": logbook
     }, "VALUES"))
+
+    logbook.who_pays_who(1)
