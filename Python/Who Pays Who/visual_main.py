@@ -75,14 +75,15 @@ if __name__ == "__main__":
                 col_rect.x += entity_col_offset  # not quite
 
                 # print("ent.balance / largest_money", ent.balance / largest_money)
-                col_rect.h *= abs(ent.balance / largest_money)
+                money_handled = abs(ent.spending_balance) + abs(ent.earning_balance)
+                col_rect.h *= abs(money_handled / largest_money)
                 col_rect.y = (chart_rect.y + chart_rect.h) - (col_rect.h + bottom_chart_offset)
 
                 game.draw.rect(display, random_color(), col_rect)
                 t_curr_y = col_rect.y
                 for j, t in enumerate(ent.transactions_list):
-                    # t_height = abs(t.amount / ent.spending_balance) * col_rect.h
-                    t_height = (t.amount / largest_money) * chart_rect.h
+                    t_height = abs(t.amount / money_handled) * col_rect.h
+                    # t_height = (t.amount / largest_money) * chart_rect.h
                     # print("e", ent, "t", t, "t_height:", t_height)
                     t_rect = game.Rect(col_rect.x, t_curr_y, col_rect.w, t_height)
                     t_curr_y += t_height
@@ -102,6 +103,7 @@ if __name__ == "__main__":
                 c += 1
                 name_rect = game.Rect(col_rect.x, col_rect.y + col_rect.h + top_name_space, col_rect.w, title_height)
                 write_text(game, display, name_rect, ent.name, game.font.SysFont("Arial", 12))
+                
 
 
     while app.is_playing:

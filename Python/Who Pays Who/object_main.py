@@ -96,6 +96,9 @@ class LogBook:
     def get_pot_entity(self):
         return self.entity_look_up(0)
 
+    def even_pot_split(self):
+        return self.get_pot_entity().balance / max(1, len(self.entities_list) - 1)
+
     def who_pays_who(self, pot_pays_out=False):
         pot = self.get_pot_entity()
         if pot is None:
