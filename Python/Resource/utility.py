@@ -1,6 +1,6 @@
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
-from random import random, choice
+from random import random, choice, randint
 import datetime as dt
 import shutil
 import sys
@@ -9,8 +9,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.28
-	Date...........2021-10-07
+	Version..............1.29
+	Date...........2021-10-23
 	Author.......Avery Briggs
 """
 
@@ -649,9 +649,9 @@ def brighten(c, p):
 # return random RGB color
 def random_color():
     return (
-        random.randint(10, 245),
-        random.randint(10, 245),
-        random.randint(10, 245)
+        randint(10, 245),
+        randint(10, 245),
+        randint(10, 245)
     )
 
 

@@ -104,6 +104,13 @@ payments = [
 # payments = [
 #     Payment("Mother's Day Supper (Wingo's)", "AK", "P", 100, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d"))
 # ]
+#
+# payments = [
+#     Payment("T", "A", "P", 10, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+#     Payment("T", "K", "P", 100, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+#     Payment("T", "A", "P", 30, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d"))
+# ]
+#
 owe_val = 0
 payments_to_pot = []
 transactors = []

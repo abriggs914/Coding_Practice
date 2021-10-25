@@ -1,0 +1,91 @@
+
+--  Values  --
+
+    e_pot..............<Entity #00: "POT", BAL: $ 764.01>
+    e_avery.........<Entity #01: "Avery", BAL: $ -219.99>
+    e_kristen.....<Entity #02: "Kristen", BAL: $ -368.28>
+    e_emily..........<Entity #03: "Emily", BAL: $ -80.74>
+    e_hayley........<Entity #04: "Hayley", BAL: $ -95.00>
+
+
+--  Untitled  --
+
+              | ID |   LET   |   BAL   |        OWES         |
+    0.........| 01 |  Avery  | -219.99 | -28.98750000000001  |
+    1.........| 00 |   POT   | 764.01  |      955.0125       |
+    2.........| 02 | Kristen | -368.28 | -177.27749999999997 |
+    3.........| 03 |  Emily  | -80.74  |      110.2625       |
+    4.........| 04 | Hayley  |   -95   |       96.0025       |
+
+POT: <Entity #00: "POT", BAL: $ 764.01>
+people_who_pay: [{'ID': '03', 'LET': 'Emily', 'BAL': -80.74, 'OWES': 110.2625}, {'ID': '04', 'LET': 'Hayley', 'BAL': -95, 'OWES': 96.0025}]
+people_who_get: [{'ID': '01', 'LET': 'Avery', 'BAL': -219.99, 'OWES': -28.98750000000001}, {'ID': '02', 'LET': 'Kristen', 'BAL': -368.28, 'OWES': -177.27749999999997}]
+Who pays who:
+
+--  Emily -> Avery  --
+
+    Amount.....$ 28.99
+    Payer........Emily
+    Payee........Avery
+
+
+--  Hayley -> Kristen  --
+
+    Amount.....$ 96.00
+    Payer.......Hayley
+    Payee......Kristen
+
+
+--  Emily -> Kristen  --
+
+    Amount.....$ 81.27
+    Payer........Emily
+    Payee......Kristen
+
+pair: (28.98750000000001, {'ID': '03', 'LET': 'Emily', 'BAL': -109.7275, 'OWES': 81.27499999999999}, {'ID': '01', 'LET': 'Avery', 'BAL': -330.2525, 'OWES': 0.0})
+	T: <Transaction #12: Date: 2021-10-23 01:31:35.822139, amount: $ 28.99, from: "Emily" to: "Avery">
+pair: (96.0025, {'ID': '04', 'LET': 'Hayley', 'BAL': -95, 'OWES': 96.0025}, {'ID': '02', 'LET': 'Kristen', 'BAL': -545.5575, 'OWES': 1.4210854715202004e-14})
+	T: <Transaction #13: Date: 2021-10-23 01:31:35.822139, amount: $ 96.00, from: "Hayley" to: "Kristen">
+pair: (81.27499999999999, {'ID': '03', 'LET': 'Emily', 'BAL': -109.7275, 'OWES': 81.27499999999999}, {'ID': '02', 'LET': 'Kristen', 'BAL': -545.5575, 'OWES': 1.4210854715202004e-14})
+	T: <Transaction #14: Date: 2021-10-23 01:31:35.822139, amount: $ 81.27, from: "Emily" to: "Kristen">
+Entities: [<Entity #01: "Avery", BAL: $ -191.00>, <Entity #00: "POT", BAL: $ 764.01>, <Entity #02: "Kristen", BAL: $ -191.00>, <Entity #03: "Emily", BAL: $ -191.00>, <Entity #04: "Hayley", BAL: $ -191.00>]
+
+--  Untitled  --
+
+    ID..............01
+    NAME.........Avery
+    BAL......-191.0025
+    N_T..............5
+
+
+--  Untitled  --
+
+    ID...........00
+    NAME........POT
+    BAL......764.01
+    N_T...........8
+
+
+--  Untitled  --
+
+    ID..............02
+    NAME.......Kristen
+    BAL......-191.0025
+    N_T..............5
+
+
+--  Untitled  --
+
+    ID..............03
+    NAME.........Emily
+    BAL......-191.0025
+    N_T..............7
+
+
+--  Untitled  --
+
+    ID..............04
+    NAME........Hayley
+    BAL......-191.0025
+    N_T..............3
+
