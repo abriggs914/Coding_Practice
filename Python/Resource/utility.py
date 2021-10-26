@@ -1436,7 +1436,7 @@ def date_suffix(day):
     return res
 
 
-# Takes "2021-08-03" -< August 3rd, 2021
+# Takes "2021-08-03" -> August 3rd, 2021
 def date_str_format(date_str):
     date_obj = dt.datetime.fromisoformat(date_str)
     suffix = date_suffix(date_obj.day)

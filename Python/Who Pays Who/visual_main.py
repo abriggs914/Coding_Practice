@@ -66,6 +66,7 @@ if __name__ == "__main__":
 
         c = 0
         border_width = 1
+        col_rects = []
         for i, ent in enumerate(logbook_3.entities_list):
             if ent.id_num != e_pot.id_num:
                 col_rect = game.Rect(
@@ -73,13 +74,15 @@ if __name__ == "__main__":
                     chart_rect.y + top_chart_offset, entity_col_w,
                     chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height))
                 col_rect.x += entity_col_offset  # not quite
+                col_rects.append((i, col_rect))
 
                 # print("ent.balance / largest_money", ent.balance / largest_money)
                 money_handled = abs(ent.spending_balance) + abs(ent.earning_balance)
                 col_rect.h *= abs(money_handled / largest_money)
                 col_rect.y = (chart_rect.y + chart_rect.h) - (col_rect.h + bottom_chart_offset)
 
-                game.draw.rect(display, random_color(), col_rect)
+                # game.draw.rect(display, random_color(), col_rect)
+                game.draw.rect(display, BLACK, col_rect)
                 t_curr_y = col_rect.y
                 for j, t in enumerate(ent.transactions_list):
                     t_height = abs(t.amount / money_handled) * col_rect.h
@@ -103,8 +106,20 @@ if __name__ == "__main__":
                 c += 1
                 name_rect = game.Rect(col_rect.x, col_rect.y + col_rect.h + top_name_space, col_rect.w, title_height)
                 write_text(game, display, name_rect, ent.name, game.font.SysFont("Arial", 12))
-                
 
+        even_y = (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * abs(logbook_3.even_pot_split() / largest_money)
+        even_y = (chart_rect.y + chart_rect.h) - (even_y + bottom_chart_offset)
+        even_paid_line = Line(col_rects[0][1].x, even_y, col_rects[-1][1].x + col_rects[-1][1].w, even_y)
+        # print("even_paid_line:", even_paid_line)
+        game.draw.line(display, ORANGE, even_paid_line.p1, even_paid_line.p2, 5)
+
+        space_tick = (chart_rect.h - bottom_chart_offset - top_offset) / largest_money
+        # space_tick = 1 / tick_space
+        t_rect_h = (chart_rect.h - bottom_chart_offset - top_chart_offset) / ((largest_money // 100) + 1)
+        for i in range(0, ceil(largest_money), 100):
+            tick_rect = game.Rect(chart_rect.x, i * space_tick, 2 * entity_col_offset, t_rect_h)
+            tick_rect.y = (chart_rect.y + chart_rect.h) - (tick_rect.y + bottom_chart_offset) - (t_rect_h / 2)
+            write_text(game, display, tick_rect, str(i), game.font.SysFont("Arial", 12))
 
     while app.is_playing:
         display.fill(BLACK)
@@ -131,5 +146,6 @@ if __name__ == "__main__":
         logbook_3.add_transaction(transaction)
 
     print("Entities:", logbook_3.entities_list)
+    print("Even split::", money(logbook_3.even_pot_split()))
     for ent in logbook_3.entities_list:
         print(dict_print(ent.info_dict()))

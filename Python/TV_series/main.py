@@ -541,6 +541,19 @@ the_orville = TVSeries("The Orville", {
 	"Disney+")
 	
 
+mr_robot = TVSeries("Mr. Robot", {
+	1 : 10,
+	2 : 12,
+	3 : 10,
+	4 : 13},
+	65,
+	2015,
+	2019,
+	False,
+	"Drama / Thriller",
+	"Prime TV")
+	
+
 series_list = [
     the_office,
     community,
@@ -577,7 +590,8 @@ series_list = [
 	brickleberry,
 	the_simpsons,
 	solar_opposites,
-	the_orville
+	the_orville,
+	mr_robot
 ]
    
 def longest_series_title(series_list) :
