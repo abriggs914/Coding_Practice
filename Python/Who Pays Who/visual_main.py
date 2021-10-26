@@ -51,7 +51,7 @@ if __name__ == "__main__":
     top_name_space = 10
     title_height = 20
 
-    largest_money = max([e.balance for e in logbook_3.entities_list])
+    largest_money = max([abs(e.balance) for e in logbook_3.entities_list if e != e_pot])
     chart_rect = game.Rect(margin, margin + top_offset, (w - (2 * margin)) / 2, h - (2 * margin) - top_offset)
     n_entities = len(logbook_3.entities_list) - 1
     entity_col_w = chart_rect.w / max(1, n_entities)
@@ -96,12 +96,14 @@ if __name__ == "__main__":
                     t_in_rect.w -= 2 * border_width
                     t_in_rect.h -= 2 * border_width
 
-                    if t.entity_to == e_pot:
+                    if t.entity_from == ent:
                         game.draw.rect(display, RED, t_rect)
                         game.draw.rect(display, BLUE, t_in_rect)
                     else:
                         game.draw.rect(display, GREEN, t_rect)
                         game.draw.rect(display, LIMEGREEN, t_in_rect)
+
+                write_text(game, display, game.Rect(col_rect.x, col_rect.y - 20, col_rect.w, 20), money(abs(ent.spending_balance) + abs(ent.earning_balance)), game.font.SysFont("Arial", 12))
 
                 c += 1
                 name_rect = game.Rect(col_rect.x, col_rect.y + col_rect.h + top_name_space, col_rect.w, title_height)
@@ -115,8 +117,8 @@ if __name__ == "__main__":
 
         space_tick = (chart_rect.h - bottom_chart_offset - top_offset) / largest_money
         # space_tick = 1 / tick_space
-        t_rect_h = (chart_rect.h - bottom_chart_offset - top_chart_offset) / ((largest_money // 100) + 1)
-        for i in range(0, ceil(largest_money), 100):
+        t_rect_h = (chart_rect.h - bottom_chart_offset - top_chart_offset) / max(1, ((largest_money // 100) + 1))
+        for i in range(0, ceil(largest_money + 100), 100):
             tick_rect = game.Rect(chart_rect.x, i * space_tick, 2 * entity_col_offset, t_rect_h)
             tick_rect.y = (chart_rect.y + chart_rect.h) - (tick_rect.y + bottom_chart_offset) - (t_rect_h / 2)
             write_text(game, display, tick_rect, str(i), game.font.SysFont("Arial", 12))
