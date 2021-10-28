@@ -1,9 +1,11 @@
 import random
 
 #	General Utility file of RGB colour values
-#	Version............1.4
-#	Date........2021-08-19
+#	Version............1.5
+#	Date........2021-10-27
 #	Author....Avery Briggs
+
+WILDERNESS_MINT = (98, 152, 100)
 
 BWS_RED = (171, 35, 40)  # Crimson red
 BWS_BLACK = (37, 40, 42)  # Black
@@ -571,6 +573,7 @@ YELLOW_4 = (139, 139, 0)
 
 def get_all_colours():
     return [
+        WILDERBESS_MINT,
         BWS_RED,
         BWS_BLACK,
         BWS_GREY,
