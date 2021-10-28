@@ -19,12 +19,17 @@ if __name__ == "__main__":
     e_emily = Entity("Emily", 0)
     e_hayley = Entity("Hayley", 0)
     logbook_3 = LogBook()
+
     logbook_3.create_transaction(15, e_avery, e_pot)
     logbook_3.create_transaction(15, e_kristen, e_pot)
-    logbook_3.create_transaction(40, e_emily, e_pot)
-    logbook_3.create_transaction(20, e_avery, e_pot)
-    logbook_3.create_transaction(50, e_hayley, e_pot)
-    logbook_3.create_transaction(100, e_kristen, e_hayley)
+    logbook_3.create_transaction(15, e_kristen, e_emily)
+
+    # logbook_3.create_transaction(15, e_avery, e_pot)
+    # logbook_3.create_transaction(15, e_kristen, e_pot)
+    # logbook_3.create_transaction(40, e_emily, e_pot)
+    # logbook_3.create_transaction(20, e_avery, e_pot)
+    # logbook_3.create_transaction(50, e_hayley, e_pot)
+    # logbook_3.create_transaction(100, e_kristen, e_hayley)
 
     # logbook_3.create_transaction(100, e_avery,
     #                              e_pot)  # Payment("Mother's Day Supper (Wingo's)", "A", "P", 100, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
@@ -73,20 +78,36 @@ if __name__ == "__main__":
     entity_col_w = chart_rect.w / max(1, n_entities)
     entity_col_offset = (entity_col_w * 0.15) / 2
     entity_col_w *= 0.8
+    smallest_money = 0
+    largest_money = 0
 
     def change_chart(new_mode):
         global CHART_VIEW_MODE
         CHART_VIEW_MODE = new_mode
 
+    def money_at_y(y_val):
+        pass
+
+    def y_at_money(money_val):
+        # # return (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * abs(largest_money) / max(1, (abs(largest_money) + abs(smallest_money)))
+        # return (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * (
+        #             (abs(money_val) + max(abs(largest_money), abs(smallest_money))) / max(1, (
+        #                 abs(largest_money) + abs(smallest_money))))
+        t_money = abs(largest_money) + abs(smallest_money)
+        print("calc y for m={}: {}".format(money_val, (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * ((
+            t_money - (money_val + abs(smallest_money))) / max(1, (
+                        t_money)))))
+        return (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * ((
+            t_money - (money_val + abs(smallest_money))) / max(1, (
+                        t_money)))
+
     def draw_chart():
-        global w, h
+        global w, h, largest_money, smallest_money
         game.draw.rect(display, WHITE, chart_rect)
 
         c = 0
         border_width = 1
         col_rects = []
-        smallest_money = 0
-        largest_money = 0
 
         # draw these after the money gridlines are drawn
         drawables = []
@@ -97,7 +118,7 @@ if __name__ == "__main__":
             return
 
         if CHART_VIEW_MODE == SUM_OF_MONEY_HANDLED:
-            largest_money = max([abs(e.balance) for e in logbook_3.entities_list if e != e_pot])
+            largest_money = max([abs(e.spending_balance) + abs(e.earning_balance) for e in logbook_3.entities_list if e != e_pot])
             largest_money = max(largest_money, logbook_3.even_pot_split())
             for i, ent in enumerate(logbook_3.entities_list):
                 if ent.id_num != e_pot.id_num:
@@ -161,7 +182,7 @@ if __name__ == "__main__":
                     drawables.append((game.draw.rect, (display, BLACK, col_rect_spent)))
                     t_curr_y_spent = col_rect_spent.y
                     for j, t in enumerate(ent.transactions_list):
-                        t_height_spent = abs(t.amount / money_handled) * col_rect_spent.h
+                        t_height_spent = abs(t.amount / max(1, money_handled)) * col_rect_spent.h
                         # t_height_spent = (t.amount / largest_money) * chart_rect.h
                         # print("e", ent, "t", t, "t_height_spent:", t_height_spent)
                         t_rect_spent = game.Rect(col_rect_spent.x, t_curr_y_spent, col_rect_spent.w, t_height_spent)
@@ -240,6 +261,7 @@ if __name__ == "__main__":
             # even_y = (chart_rect.y + chart_rect.h) - (even_y + bottom_chart_offset)
             # zero_y = chart_rect.bottom - ((abs(largest_money) / max(1, (abs(largest_money) + abs(smallest_money))) * chart_rect.h) + bottom_chart_offset + top_chart_offset)
             zero_y = even_y
+            zero_y = y_at_money(0)
             true_zero = Line(chart_rect.left, zero_y, chart_rect.right, zero_y)
             drawables.append((game.draw.line, (display, WILDERNESS_MINT, true_zero.p1, true_zero.p2, 3)))
             for i, ent in enumerate(logbook_3.entities_list):
@@ -253,8 +275,13 @@ if __name__ == "__main__":
 
                     # print("ent.balance / largest_money", ent.balance / largest_money)
                     money_handled = ent.balance
-                    col_rect_spent.h *= abs(money_handled / largest_money)
+                    col_rect_spent.h *= abs(money_handled) / (abs(largest_money) + abs(smallest_money))
                     col_rect_spent.y = chart_rect.bottom - (col_rect_spent.h + bottom_chart_offset)
+                    # else:
+                    col_rect_spent.y = y_at_money(ent.balance)
+                    col_rect_spent.h *= 2
+                    col_rect_spent.y -= (col_rect_spent.h / 2)
+
 
                     # game.draw.rect(display, random_color(), col_rect_spent)
                     drawables.append((game.draw.rect, (display, VIOLETRED, col_rect_spent)))
@@ -355,8 +382,8 @@ if __name__ == "__main__":
                 even_paid_line = Line(col_rects[0][1].x, even_y, col_rects[-1][1].right, even_y)
                 drawables.append((game.draw.line, (display, ORANGE, even_paid_line.p1, even_paid_line.p2, 3)))
 
-                space_tick = (chart_rect.h - bottom_chart_offset - top_offset) / largest_money
-                t_rect_h = (chart_rect.h - bottom_chart_offset - top_chart_offset) / max(1, ((largest_money // 100) + 1))
+                space_tick = (chart_rect.h - bottom_chart_offset - top_offset) / max(1, (abs(largest_money) + abs(smallest_money)))
+                t_rect_h = (chart_rect.h - bottom_chart_offset - top_chart_offset) / max(1, (((abs(largest_money) + abs(smallest_money)) // 100) + 1))
                 for i in range(0, ceil(largest_money + 100), 100):
                     tick_rect = game.Rect(chart_rect.x + 5, i * space_tick, 5 * entity_col_offset, t_rect_h)
                     tick_rect.y = (chart_rect.y + chart_rect.h) - (tick_rect.y + bottom_chart_offset) - (t_rect_h / 2)
@@ -381,10 +408,10 @@ if __name__ == "__main__":
             for f, args in drawables:
                 f(*args)
 
-        # print(dict_print({
-        #     "largest_money": largest_money,
-        #     "smallest_money": smallest_money,
-        # }))
+        print(dict_print({
+            "largest_money": largest_money,
+            "smallest_money": smallest_money,
+        }))
 
 
     chart_view_ctrl_bar = ButtonBar(game, display, game.Rect(chart_rect.right + 30, chart_rect.y, 200, chart_rect.h), is_horizontal=False)
