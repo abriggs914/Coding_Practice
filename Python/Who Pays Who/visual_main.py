@@ -20,9 +20,9 @@ if __name__ == "__main__":
     e_hayley = Entity("Hayley", 0)
     logbook_3 = LogBook()
 
-    logbook_3.create_transaction(15, e_avery, e_pot)
-    logbook_3.create_transaction(15, e_kristen, e_pot)
-    logbook_3.create_transaction(15, e_kristen, e_emily)
+    logbook_3.create_transaction(100, e_avery, e_pot)
+    logbook_3.create_transaction(100, e_kristen, e_pot)
+    logbook_3.create_transaction(100, e_kristen, e_emily)
 
     # logbook_3.create_transaction(15, e_avery, e_pot)
     # logbook_3.create_transaction(15, e_kristen, e_pot)
@@ -94,12 +94,15 @@ if __name__ == "__main__":
         #             (abs(money_val) + max(abs(largest_money), abs(smallest_money))) / max(1, (
         #                 abs(largest_money) + abs(smallest_money))))
         t_money = abs(largest_money) + abs(smallest_money)
-        print("calc y for m={}: {}".format(money_val, (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * ((
-            t_money - (money_val + abs(smallest_money))) / max(1, (
-                        t_money)))))
-        return (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * ((
-            t_money - (money_val + abs(smallest_money))) / max(1, (
-                        t_money)))
+        mp = (abs(smallest_money) + abs(money_val)) / max(1, t_money)
+        # print("calc y for m={}: {}".format(money_val, (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * ((
+        #     t_money - (money_val + abs(smallest_money))) / max(1, (
+        #                 t_money)))))
+        # return (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * ((
+        #     t_money - (money_val + abs(smallest_money))) / max(1, (
+        #                 t_money)))
+        print("mp", mp, "h:", (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)), "C(y)", (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * mp)
+        return ((chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * mp) + (top_chart_offset + title_height)
 
     def draw_chart():
         global w, h, largest_money, smallest_money
@@ -250,11 +253,14 @@ if __name__ == "__main__":
                     name_rect_spent = game.Rect(col_rect_spent.x, col_rect_spent.y + col_rect_spent.h + top_name_space, col_rect_spent.w, title_height)
                     drawables.append((write_text, (game, display, name_rect_spent, ent.name, game.font.SysFont("Arial", 12))))
         elif CHART_VIEW_MODE == BALANCE:
-            include_negatives = True
             largest_money = max([e.balance for e in logbook_3.entities_list if e != e_pot])
             lg1 = largest_money
             smallest_money = min([e.balance for e in logbook_3.entities_list if e != e_pot])
             largest_money = max(abs(largest_money) + abs(smallest_money), logbook_3.even_pot_split())
+            drawables.append((game.draw.line, (display, GREEN, (chart_rect.left, y_at_money(0)), (chart_rect.right, y_at_money(0)))))
+            drawables.append((game.draw.line, (display, PURPLE, (chart_rect.left, y_at_money(10)), (chart_rect.right, y_at_money(10)))))
+            print("LM: {}, SM: {}".format(money(largest_money), money(smallest_money)))
+            include_negatives = True
             # print("largest: {}, smallest: {}, largest2: {}".format(lg1, smallest_money, largest_money))
 
             even_y = (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * abs(largest_money) / max(1, (abs(largest_money) + abs(smallest_money)))
@@ -275,12 +281,12 @@ if __name__ == "__main__":
 
                     # print("ent.balance / largest_money", ent.balance / largest_money)
                     money_handled = ent.balance
-                    col_rect_spent.h *= abs(money_handled) / (abs(largest_money) + abs(smallest_money))
-                    col_rect_spent.y = chart_rect.bottom - (col_rect_spent.h + bottom_chart_offset)
+                    col_rect_spent.h *= (abs(money_handled) + abs(smallest_money)) / max(1, (abs(largest_money) + abs(smallest_money)))
+                    # col_rect_spent.y = chart_rect.bottom - (col_rect_spent.h + bottom_chart_offset)
                     # else:
                     col_rect_spent.y = y_at_money(ent.balance)
-                    col_rect_spent.h *= 2
-                    col_rect_spent.y -= (col_rect_spent.h / 2)
+                    # col_rect_spent.h *= 2
+                    # col_rect_spent.y -= (col_rect_spent.h / 2)
 
 
                     # game.draw.rect(display, random_color(), col_rect_spent)
