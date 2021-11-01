@@ -384,6 +384,108 @@ if __name__ == "__main__":
                     c += 1
                     name_rect_spent = game.Rect(col_rect_spent.x, col_rect_spent.y + col_rect_spent.h + top_name_space, col_rect_spent.w + col_rect_earned.w, title_height)
                     drawables.append((write_text, (game, display, name_rect_spent, ent.name, game.font.SysFont("Arial", 12))))
+        elif CHART_VIEW_MODE == ALL:
+            include_negatives = True
+            largest_money = max(
+                [max(abs(e.spending_balance), abs(e.earning_balance), abs(e.balance)) for e in logbook_3.entities_list if e != e_pot])
+            largest_money = max(largest_money, logbook_3.even_pot_split())
+            for i, ent in enumerate(logbook_3.entities_list):
+                if ent.id_num != e_pot.id_num:
+                    col_rect_spent = game.Rect(
+                        chart_rect.x + (c * ((entity_col_w / 1) + entity_col_offset)) + (entity_col_offset / (1 / 3)),
+                        chart_rect.y + top_chart_offset, (entity_col_w / 3),
+                        chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height))
+                    col_rect_spent.x += entity_col_offset  # not quite
+                    col_rect_earned = game.Rect(
+                        chart_rect.x + (c * ((entity_col_w / 1) + entity_col_offset)) + (
+                                    entity_col_offset / (1 / 3)) + (entity_col_w / 3),
+                        chart_rect.y + top_chart_offset, (entity_col_w / 2),
+                        chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height))
+                    col_rect_balance = game.Rect(
+                        chart_rect.x + (c * ((entity_col_w / 1) + entity_col_offset)) + (
+                                    entity_col_offset / (1 / 3)) + (entity_col_w / 3),
+                        chart_rect.y + top_chart_offset, (entity_col_w / 2),
+                        chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height))
+                    col_rect_earned.x += entity_col_offset  # not quite
+                    col_rect_balance.x += (2 * entity_col_offset)  # not quite
+                    col_rects.append((i, col_rect_spent))
+                    col_rects.append((i, col_rect_earned))
+                    col_rects.append((i, col_rect_balance))
+
+                    # print("ent.balance / largest_money", ent.balance / largest_money)
+                    money_spent = abs(ent.spending_balance)
+                    money_earned = abs(ent.earning_balance)
+                    money_balance = ent.balance
+                    col_rect_spent.h *= abs(money_spent / largest_money)
+                    col_rect_earned.h *= abs(money_earned / largest_money)
+                    col_rect_balance.h *= abs(money_balance / largest_money)
+                    # col_rect_spent.y = (chart_rect.y + chart_rect.h) - (col_rect_spent.h + bottom_chart_offset)
+                    # col_rect_earned.y = (chart_rect.y + chart_rect.h) - (col_rect_earned.h + bottom_chart_offset)
+                    # col_rect_balance.y = (chart_rect.y + chart_rect.h) - (col_rect_balance.h + bottom_chart_offset)
+                    col_rect_spent.y = y_at_money(money_spent)  # (chart_rect.y + chart_rect.h) - (col_rect_spent.h + bottom_chart_offset)
+                    col_rect_earned.y = y_at_money(money_earned)  # (chart_rect.y + chart_rect.h) - (col_rect_earned.h + bottom_chart_offset)
+                    col_rect_balance.y = y_at_money(money_balance)  # (chart_rect.y + chart_rect.h) - (col_rect_balance.h + bottom_chart_offset)
+
+                    # game.draw.rect(display, random_color(), col_rect_spent)
+                    drawables.append((game.draw.rect, (display, BLACK, col_rect_spent)))
+                    drawables.append((game.draw.rect, (display, BLACK, col_rect_earned)))
+                    drawables.append((game.draw.rect, (display, BLACK, col_rect_balance)))
+                    t_curr_y_spent = col_rect_spent.y
+                    t_curr_y_earned = col_rect_earned.y
+                    t_curr_y_balance = col_rect_balance.y
+                    for j, t in enumerate(ent.transactions_list):
+                        t_height_spent = abs(t.amount / max(1, money_spent)) * col_rect_spent.h
+                        t_height_earned = abs(t.amount / max(1, money_earned)) * col_rect_earned.h
+                        t_height_balance = abs(t.amount / max(1, money_balance)) * col_rect_balance.h
+                        # t_height_spent = (t.amount / largest_money) * chart_rect.h
+                        # print("e", ent, "t", t, "t_height_spent:", t_height_spent)
+                        t_rect_spent = game.Rect(col_rect_spent.x, t_curr_y_spent, col_rect_spent.w, t_height_spent)
+                        t_rect_earned = game.Rect(col_rect_earned.x, t_curr_y_earned, col_rect_earned.w,
+                                                  t_height_earned)
+                        t_rect_balance = game.Rect(col_rect_balance.x, t_curr_y_balance, col_rect_balance.w,
+                                                  t_height_balance)
+                        t_in_rect_spent = t_rect_spent
+                        t_in_rect_spent.x += border_width
+                        t_in_rect_spent.y += border_width
+                        t_in_rect_spent.w -= 2 * border_width
+                        t_in_rect_spent.h -= 2 * border_width
+                        t_in_rect_earned = t_rect_earned
+                        t_in_rect_earned.x += border_width
+                        t_in_rect_earned.y += border_width
+                        t_in_rect_earned.w -= 2 * border_width
+                        t_in_rect_earned.h -= 2 * border_width
+                        t_rect_balance = t_rect_balance
+                        t_rect_balance.x += border_width
+                        t_rect_balance.y += border_width
+                        t_rect_balance.w -= 2 * border_width
+                        t_rect_balance.h -= 2 * border_width
+
+                        if t.entity_from == ent:
+                            t_curr_y_spent += t_height_spent
+                            drawables.append((game.draw.rect, (display, RED, t_rect_spent)))
+                            drawables.append((game.draw.rect, (display, BLUE, t_in_rect_spent)))
+                        else:
+                            t_curr_y_earned += t_height_earned
+                            drawables.append((game.draw.rect, (display, GREEN, t_rect_earned)))
+                            drawables.append((game.draw.rect, (display, LIMEGREEN, t_in_rect_earned)))
+                        t_curr_y_balance += t_height_balance
+                        drawables.append((game.draw.rect, (display, YELLOW_2, t_rect_balance)))
+
+                    drawables.append((write_text, (
+                    game, display, game.Rect(col_rect_spent.x, col_rect_spent.y - 20, col_rect_spent.w, 20),
+                    money(abs(ent.spending_balance)), game.font.SysFont("Arial", 12))))
+                    drawables.append((write_text, (
+                    game, display, game.Rect(col_rect_earned.x, col_rect_earned.y - 20, col_rect_earned.w, 20),
+                    money(abs(ent.earning_balance)), game.font.SysFont("Arial", 12))))
+                    drawables.append((write_text, (
+                    game, display, game.Rect(col_rect_balance.x, col_rect_balance.y - 20, col_rect_balance.w, 20),
+                    money(abs(ent.balance)), game.font.SysFont("Arial", 12))))
+
+                    c += 1
+                    name_rect_spent = game.Rect(col_rect_spent.x, col_rect_spent.y + col_rect_spent.h + top_name_space,
+                                                col_rect_spent.w + col_rect_earned.w, title_height)
+                    drawables.append(
+                        (write_text, (game, display, name_rect_spent, ent.name, game.font.SysFont("Arial", 12))))
 
         if col_rects:
             if include_negatives:
