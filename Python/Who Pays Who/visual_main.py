@@ -1,5 +1,6 @@
 from pygame_utility import *
 from object_main import *
+from math import floor
 
 if __name__ == "__main__":
 
@@ -11,6 +12,7 @@ if __name__ == "__main__":
     SUM_OF_MONEY_EARNED_V_SPENT = "SUM_OF_MONEY_EARNED_V_SPENT"
     BALANCE = "BALANCE"
     ALL = "ALL"
+    SUMMARY = "SUMMARY"
     EXIT = "EXIT"
 
     e_pot = Entity("**POT**", 0)
@@ -20,9 +22,9 @@ if __name__ == "__main__":
     e_hayley = Entity("Hayley", 0)
     logbook_3 = LogBook()
 
-    logbook_3.create_transaction(100, e_avery, e_pot)
-    logbook_3.create_transaction(100, e_kristen, e_pot)
-    logbook_3.create_transaction(100, e_kristen, e_emily)
+    # logbook_3.create_transaction(100, e_avery, e_pot)
+    # logbook_3.create_transaction(100, e_kristen, e_pot)
+    # logbook_3.create_transaction(100, e_kristen, e_emily)
 
     # logbook_3.create_transaction(15, e_avery, e_pot)
     # logbook_3.create_transaction(15, e_kristen, e_pot)
@@ -31,28 +33,28 @@ if __name__ == "__main__":
     # logbook_3.create_transaction(50, e_hayley, e_pot)
     # logbook_3.create_transaction(100, e_kristen, e_hayley)
 
-    # logbook_3.create_transaction(100, e_avery,
-    #                              e_pot)  # Payment("Mother's Day Supper (Wingo's)", "A", "P", 100, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
-    # logbook_3.create_transaction(17.58, e_kristen,
-    #                              e_pot)  # Payment("Mother's Day Supper (Wingo's)", "K", "P", 17.58, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
-    # logbook_3.create_transaction(115.74, e_emily,
-    #                              e_pot)  # Payment("Mother's Day Present ()", "E", "P", 115.74, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
-    # logbook_3.create_transaction(55, e_hayley,
-    #                              e_emily)  # Payment("Hayley paid Emily", "H", "E", 55, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
-    # logbook_3.create_transaction(170.7, e_kristen,
-    #                              e_pot)  # Payment("Father's Day Present (Air Fryer)", "K", "P", 170.7, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
-    # logbook_3.create_transaction(40, e_avery,
-    #                              e_emily)  # Payment("Father's Day Boating", "A", "E", 40, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
-    # logbook_3.create_transaction(50, e_emily,
-    #                              e_pot)  # Payment("Father's Day Boating", "E", "P", 50, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
-    # logbook_3.create_transaction(40, e_hayley,
-    #                              e_pot)  # Payment("Father's Day Boating", "H", "P", 40, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
-    # logbook_3.create_transaction(10, e_emily,
-    #                              e_avery)  # Payment("Father's Day Boating", "E", "A", 10, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
-    # logbook_3.create_transaction(180, e_kristen,
-    #                              e_pot)  # Payment("Spotify", "K", "P", 180, datetime.datetime.strptime("2021-08-04", "%Y-%m-%d")),
-    # logbook_3.create_transaction(89.99, e_avery,
-    #                              e_pot)  # Payment("Disney+", "A", "P", 89.99, datetime.datetime.strptime("2021-08-04", "%Y-%m-%d"))
+    logbook_3.create_transaction(100, e_avery,
+                                 e_pot)  # Payment("Mother's Day Supper (Wingo's)", "A", "P", 100, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    logbook_3.create_transaction(17.58, e_kristen,
+                                 e_pot)  # Payment("Mother's Day Supper (Wingo's)", "K", "P", 17.58, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    logbook_3.create_transaction(115.74, e_emily,
+                                 e_pot)  # Payment("Mother's Day Present ()", "E", "P", 115.74, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    logbook_3.create_transaction(55, e_hayley,
+                                 e_emily)  # Payment("Hayley paid Emily", "H", "E", 55, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    logbook_3.create_transaction(170.7, e_kristen,
+                                 e_pot)  # Payment("Father's Day Present (Air Fryer)", "K", "P", 170.7, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    logbook_3.create_transaction(40, e_avery,
+                                 e_emily)  # Payment("Father's Day Boating", "A", "E", 40, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    logbook_3.create_transaction(50, e_emily,
+                                 e_pot)  # Payment("Father's Day Boating", "E", "P", 50, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    logbook_3.create_transaction(40, e_hayley,
+                                 e_pot)  # Payment("Father's Day Boating", "H", "P", 40, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    logbook_3.create_transaction(10, e_emily,
+                                 e_avery)  # Payment("Father's Day Boating", "E", "A", 10, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    logbook_3.create_transaction(180, e_kristen,
+                                 e_pot)  # Payment("Spotify", "K", "P", 180, datetime.datetime.strptime("2021-08-04", "%Y-%m-%d")),
+    logbook_3.create_transaction(89.99, e_avery,
+                                 e_pot)  # Payment("Disney+", "A", "P", 89.99, datetime.datetime.strptime("2021-08-04", "%Y-%m-%d"))
 
     print(dict_print({
         "e_pot": e_pot,
@@ -94,15 +96,17 @@ if __name__ == "__main__":
         #             (abs(money_val) + max(abs(largest_money), abs(smallest_money))) / max(1, (
         #                 abs(largest_money) + abs(smallest_money))))
         t_money = abs(largest_money) + abs(smallest_money)
-        mp = (abs(smallest_money) + abs(money_val)) / max(1, t_money)
+        mp = (abs(smallest_money) + money_val) / max(1, t_money)
         # print("calc y for m={}: {}".format(money_val, (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * ((
         #     t_money - (money_val + abs(smallest_money))) / max(1, (
         #                 t_money)))))
         # return (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * ((
         #     t_money - (money_val + abs(smallest_money))) / max(1, (
         #                 t_money)))
-        print("mp", mp, "h:", (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)), "C(y)", (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * mp)
-        return ((chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * mp) + (top_chart_offset + title_height)
+        # print("mp", mp, "h:", (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)), "C(y)", (chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * mp)
+        # print("money_val:", money_val, "-> ", ((chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * mp))
+        # return ((chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * mp) #+ (top_chart_offset + title_height)
+        return (chart_rect.bottom - bottom_chart_offset) - ((chart_rect.h - (bottom_chart_offset + top_chart_offset + title_height)) * mp) #+ (top_chart_offset + title_height)
 
     def draw_chart():
         global w, h, largest_money, smallest_money
@@ -257,9 +261,7 @@ if __name__ == "__main__":
             lg1 = largest_money
             smallest_money = min([e.balance for e in logbook_3.entities_list if e != e_pot])
             largest_money = max(abs(largest_money) + abs(smallest_money), logbook_3.even_pot_split())
-            drawables.append((game.draw.line, (display, GREEN, (chart_rect.left, y_at_money(0)), (chart_rect.right, y_at_money(0)))))
-            drawables.append((game.draw.line, (display, PURPLE, (chart_rect.left, y_at_money(10)), (chart_rect.right, y_at_money(10)))))
-            print("LM: {}, SM: {}".format(money(largest_money), money(smallest_money)))
+            # print("LM: {}, SM: {}".format(money(largest_money), money(smallest_money)))
             include_negatives = True
             # print("largest: {}, smallest: {}, largest2: {}".format(lg1, smallest_money, largest_money))
 
@@ -269,7 +271,7 @@ if __name__ == "__main__":
             zero_y = even_y
             zero_y = y_at_money(0)
             true_zero = Line(chart_rect.left, zero_y, chart_rect.right, zero_y)
-            drawables.append((game.draw.line, (display, WILDERNESS_MINT, true_zero.p1, true_zero.p2, 3)))
+            # drawables.append((game.draw.line, (display, WILDERNESS_MINT, true_zero.p1, true_zero.p2, 3)))
             for i, ent in enumerate(logbook_3.entities_list):
                 if ent.id_num != e_pot.id_num:
                     col_rect_spent = game.Rect(
@@ -281,10 +283,12 @@ if __name__ == "__main__":
 
                     # print("ent.balance / largest_money", ent.balance / largest_money)
                     money_handled = ent.balance
-                    col_rect_spent.h *= (abs(money_handled) + abs(smallest_money)) / max(1, (abs(largest_money) + abs(smallest_money)))
+                    col_rect_spent.h *= (abs(money_handled) + abs(0)) / max(1, (abs(largest_money) + abs(smallest_money)))
                     # col_rect_spent.y = chart_rect.bottom - (col_rect_spent.h + bottom_chart_offset)
                     # else:
                     col_rect_spent.y = y_at_money(ent.balance)
+                    if ent.balance < 0:
+                        col_rect_spent.y -= col_rect_spent.h
                     # col_rect_spent.h *= 2
                     # col_rect_spent.y -= (col_rect_spent.h / 2)
 
@@ -390,7 +394,7 @@ if __name__ == "__main__":
 
                 space_tick = (chart_rect.h - bottom_chart_offset - top_offset) / max(1, (abs(largest_money) + abs(smallest_money)))
                 t_rect_h = (chart_rect.h - bottom_chart_offset - top_chart_offset) / max(1, (((abs(largest_money) + abs(smallest_money)) // 100) + 1))
-                for i in range(0, ceil(largest_money + 100), 100):
+                for i in range(floor(smallest_money), ceil(largest_money) + 100, 100):
                     tick_rect = game.Rect(chart_rect.x + 5, i * space_tick, 5 * entity_col_offset, t_rect_h)
                     tick_rect.y = (chart_rect.y + chart_rect.h) - (tick_rect.y + bottom_chart_offset) - (t_rect_h / 2)
                     i += smallest_money
@@ -414,10 +418,10 @@ if __name__ == "__main__":
             for f, args in drawables:
                 f(*args)
 
-        print(dict_print({
-            "largest_money": largest_money,
-            "smallest_money": smallest_money,
-        }))
+        # print(dict_print({
+        #     "largest_money": largest_money,
+        #     "smallest_money": smallest_money,
+        # }))
 
 
     chart_view_ctrl_bar = ButtonBar(game, display, game.Rect(chart_rect.right + 30, chart_rect.y, 200, chart_rect.h), is_horizontal=False)
@@ -427,6 +431,7 @@ if __name__ == "__main__":
     chart_view_ctrl_bar.add_button("Sum of Money Spent VS Earned", GRAY_36, GRAY_60, change_chart, (SUM_OF_MONEY_EARNED_V_SPENT))
     chart_view_ctrl_bar.add_button("Balance", GRAY_36, GRAY_60, change_chart, (BALANCE))
     chart_view_ctrl_bar.add_button("All", GRAY_26, GRAY_50, change_chart, (ALL))
+    chart_view_ctrl_bar.add_button("Who Pays Who Summary", SILVER, WHITE, change_chart, (SUMMARY))
     chart_view_ctrl_bar.add_button("Exit", RED_4__DARKRED_, INDIANRED_3, change_chart, (EXIT))
 
 

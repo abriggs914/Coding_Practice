@@ -25,7 +25,7 @@ last_day = datetime.date.fromisoformat("2021-12-31")
 year_l, week_l, weekday_l = last_day.isocalendar()
 
 pay_per_week = 612.55
-starting_balance = 4000
+starting_balance = 4950
 remaining_pay_periods = (last_day - next_pay_day).days // 7
 pay_remaining = remaining_pay_periods * pay_per_week
 
