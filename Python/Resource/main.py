@@ -47,8 +47,8 @@ def text_rect_and_line():
     w = 900
     h = 600
 
-    r1 = Rect(15, 20, 25, 30)
-    r2 = Rect(10, 10, w - 20, h - 20)
+    r1 = Rect2(15, 20, 25, 30)
+    r2 = Rect2(10, 10, w - 20, h - 20)
     l1 = Line(0, 0, 100, 100)
 
     collide_line_tests = TestSuite(test_func=l1.collide_line)
@@ -976,7 +976,7 @@ def test_scrollbar():
 
 if __name__ == "__main__":
     # test_block_letters()
-    test_TextBox()
+    # test_TextBox()
     # test_buttonbar()
     # test_phone_number()
     # test_reduce()
@@ -996,11 +996,12 @@ if __name__ == "__main__":
     #     ("2021-08-12", "August 12th, 2021")
     # ])
 
+    text_rect_and_line()
     # test_money_str_format
     # test_find_north_side()
     # test_new_rect()
     # test_rect_collision()
     # test_menubar()
     # test_listbox()
-    test_scrollbar()
+    # test_scrollbar()
     # test_hyperlink()

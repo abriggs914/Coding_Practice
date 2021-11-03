@@ -6,11 +6,10 @@ import shutil
 import sys
 import os
 
-
 """
 	General Utility Functions
-	Version..............1.29
-	Date...........2021-10-23
+	Version..............1.30
+	Date...........2021-11-03
 	Author.......Avery Briggs
 """
 
@@ -784,11 +783,22 @@ class Line:
         else:
             x = (b2 * c1 - b1 * c2) / det
             y = (a1 * c2 - a2 * c1) / det
-            if self.collide_point(x, y) and line.collide_point(x,
-                                                               y) and self.x1 <= x <= self.x2 and self.y1 <= y <= self.y2 and line.x1 <= x <= line.x2 and line.y1 <= y <= line.y2:
-                return x, y
-            else:
-                return None
+            sx1, sy1 = self.p1
+            sx2, sy2 = self.p2
+            sx1, sx2 = minmax(sx1, sx2)
+            sy1, sy2 = minmax(sy1, sy2)
+            lx1, ly1 = line.p1
+            lx2, ly2 = line.p2
+            lx1, lx2 = minmax(lx1, lx2)
+            ly1, ly2 = minmax(ly1, ly2)
+        #         if self.collide_point(x, y) and line.collide_point(x,
+        #                                                            y) and self.x1 <= x <= self.x2 and self.y1 <= y <= self.y2 and line.x1 <= x <= line.x2 and line.y1 <= y <= line.y2:
+
+        if self.collide_point(x, y) and line.collide_point(x,
+                                                           y) and sx1 <= x <= sx2 and sy1 <= y <= sy2 and lx1 <= x <= lx2 and ly1 <= y <= ly2:
+            return x, y
+        else:
+            return None
 
     def __eq__(self, other):
         return isinstance(other, Line) and (all([

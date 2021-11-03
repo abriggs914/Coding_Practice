@@ -9,6 +9,7 @@ if __name__ == '__main__':
     rect = game.Rect(0, 0, w, h)
     btn_area_rect = game.Rect(w * 0.675, h * 0.05, w * 0.3, h * 0.08)
 
+    detect_collisions = True
     left_post = (w * 0.35, h * 0.65)
     right_post = (w * 0.65, h * 0.65)
     dragging = False
@@ -58,14 +59,64 @@ if __name__ == '__main__':
             game.draw.circle(display, BLUE, proj_pos, 5)
             game.draw.line(display, RED_3, click_pos, half_pos, 3)
         elif firing:
-            speed = (speed[0] + acceleration[0], speed[1] + acceleration[1])
-            proj_pos = (proj_pos[0] + speed[0], proj_pos[1] + speed[1])
-            game.draw.circle(display, BLUE, proj_pos, 5)
-            if not rect.collidepoint(proj_pos):
-                firing = False
-                proj_pos = (0, 0)
-                acceleration = (0, 0)
-                speed = (0, 0)
+            if detect_collisions:
+                speed = (speed[0] + acceleration[0], speed[1] + acceleration[1])
+                # proj_pos = (proj_pos[0] + speed[0], proj_pos[1] + speed[1])
+                next_pos = (proj_pos[0] + speed[0], proj_pos[1] + speed[1])
+                line_proj = Line(*proj_pos, *next_pos)
+                line_top = Line(*rect.topleft, *rect.topright)
+                line_right = Line(*rect.topright, *rect.bottomright)
+                line_bottom = Line(*rect.bottomleft, *rect.bottomright)
+                line_left = Line(*rect.topleft, *rect.bottomleft)
+                if not rect.collidepoint(next_pos):
+                    print("line_proj: {}, p1: {}, p2: {}".format(line_proj, line_proj.p1, line_proj.p2))
+                    print("line_top: {}, p1: {}, p2: {}".format(line_top, line_top.p1, line_top.p2))
+                    print("line_right: {}, p1: {}, p2: {}".format(line_right, line_right.p1, line_right.p2))
+                    print("line_bottom: {}, p1: {}, p2: {}".format(line_bottom, line_bottom.p1, line_bottom.p2))
+                    print("line_left: {}, p1: {}, p2: {}".format(line_left, line_left.p1, line_left.p2))
+                    if line_proj.collide_line(line_top):
+                        print("hit top")
+                        proj_pos = (proj_pos[0], rect.top)
+                        speed = (speed[0], -speed[1])
+                    elif line_proj.collide_line(line_right):
+                        print("hit right")
+                        # firing = False
+                        proj_pos = (rect.right, proj_pos[1])
+                        # acceleration = (0, 0)
+                        speed = (-speed[0], speed[1])
+                    elif line_proj.collide_line(line_bottom):
+                        print("hit bottom")
+                        proj_pos = (proj_pos[0], rect.bottom)
+                        speed = (speed[0], -speed[1])
+                    elif line_proj.collide_line(line_left):
+                        print("hit left")
+                        proj_pos = (rect.left, proj_pos[1])
+                        speed = (speed[0], -speed[1])
+                    elif Rect2(rect.x, rect.y, rect.w, rect.h).collide_line(line_proj) is None:
+                        print("COMPLETELY OUTSIDE???")
+                        firing = False
+                        proj_pos = (0, 0)
+                        acceleration = (0, 0)
+                        speed = (0, 0)
+                    else:
+                        print("ELSE")
+                        firing = False
+                        proj_pos = (0, 0)
+                        acceleration = (0, 0)
+                        speed = (0, 0)
+                else:
+                    print("inside")
+                proj_pos = next_pos
+                game.draw.circle(display, BLUE, proj_pos, 5)
+            else:
+                speed = (speed[0] + acceleration[0], speed[1] + acceleration[1])
+                proj_pos = (proj_pos[0] + speed[0], proj_pos[1] + speed[1])
+                game.draw.circle(display, BLUE, proj_pos, 5)
+                if not rect.collidepoint(proj_pos):
+                    firing = False
+                    proj_pos = (0, 0)
+                    acceleration = (0, 0)
+                    speed = (0, 0)
 
         game.display.flip()
 
