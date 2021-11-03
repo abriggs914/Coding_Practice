@@ -50,6 +50,12 @@ def minmax(a, b):
     return b, a
 
 
+def maxmin(a, b):
+    if a < b:
+        return b, a
+    return a, b
+
+
 def avg(lst):
     try:
         return sum(lst) / max(1, len(lst))
@@ -772,7 +778,7 @@ class Line:
         return y == (self.m * x) + self.b and (self.x1 <= x <= self.x2 or self.x2 <= x <= self.x1) and (
                 self.y1 <= y <= self.y2 or self.y2 <= y <= self.y1)
 
-    def collide_line(self, line):
+    def collide_line(self, line, rounding=None):
         assert isinstance(line, Line)
         a1, b1, c1 = self.abc
         a2, b2, c2 = line.abc
@@ -781,16 +787,28 @@ class Line:
             # Lines are parallel
             return None
         else:
-            x = (b2 * c1 - b1 * c2) / det
-            y = (a1 * c2 - a2 * c1) / det
-            sx1, sy1 = self.p1
-            sx2, sy2 = self.p2
-            sx1, sx2 = minmax(sx1, sx2)
-            sy1, sy2 = minmax(sy1, sy2)
-            lx1, ly1 = line.p1
-            lx2, ly2 = line.p2
-            lx1, lx2 = minmax(lx1, lx2)
-            ly1, ly2 = minmax(ly1, ly2)
+            if rounding is not None:
+                x = round((b2 * c1 - b1 * c2) / det, 3)
+                y = round((a1 * c2 - a2 * c1) / det, 3)
+                sx1, sy1 = map(lambda xc: round(xc, 3), list(self.p1))
+                sx2, sy2 = map(lambda xc: round(xc, 3), list(self.p2))
+                sx1, sx2 = map(lambda xc: round(xc, 3), list(minmax(sx1, sx2)))
+                sy1, sy2 = map(lambda xc: round(xc, 3), list(minmax(sy1, sy2)))
+                lx1, ly1 = map(lambda xc: round(xc, 3), list(line.p1))
+                lx2, ly2 = map(lambda xc: round(xc, 3), list(line.p2))
+                lx1, lx2 = map(lambda xc: round(xc, 3), list(minmax(lx1, lx2)))
+                ly1, ly2 = map(lambda xc: round(xc, 3), list(minmax(ly1, ly2)))
+            else:
+                x = (b2 * c1 - b1 * c2) / det
+                y = (a1 * c2 - a2 * c1) / det
+                sx1, sy1 = map(lambda xc: xc, list(self.p1))
+                sx2, sy2 = map(lambda xc: xc, list(self.p2))
+                sx1, sx2 = map(lambda xc: xc, list(minmax(sx1, sx2)))
+                sy1, sy2 = map(lambda xc: xc, list(minmax(sy1, sy2)))
+                lx1, ly1 = map(lambda xc: xc, list(line.p1))
+                lx2, ly2 = map(lambda xc: xc, list(line.p2))
+                lx1, lx2 = map(lambda xc: xc, list(minmax(lx1, lx2)))
+                ly1, ly2 = map(lambda xc: xc, list(minmax(ly1, ly2)))
         #         if self.collide_point(x, y) and line.collide_point(x,
         #                                                            y) and self.x1 <= x <= self.x2 and self.y1 <= y <= self.y2 and line.x1 <= x <= line.x2 and line.y1 <= y <= line.y2:
 

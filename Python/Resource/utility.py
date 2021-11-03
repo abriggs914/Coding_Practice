@@ -50,6 +50,12 @@ def minmax(a, b):
     return b, a
 
 
+def maxmin(a, b):
+    if a < b:
+        return b, a
+    return a, b
+
+
 def avg(lst):
     try:
         return sum(lst) / max(1, len(lst))

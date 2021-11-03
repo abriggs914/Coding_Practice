@@ -60,38 +60,39 @@ if __name__ == '__main__':
             game.draw.line(display, RED_3, click_pos, half_pos, 3)
         elif firing:
             if detect_collisions:
-                speed = (speed[0] + acceleration[0], speed[1] + acceleration[1])
+                speed = (round(speed[0] + acceleration[0], 3), round(speed[1] + acceleration[1], 3))
                 # proj_pos = (proj_pos[0] + speed[0], proj_pos[1] + speed[1])
-                next_pos = (proj_pos[0] + speed[0], proj_pos[1] + speed[1])
+                next_pos = (round(proj_pos[0] + speed[0], 3), round(proj_pos[1] + speed[1], 3))
                 line_proj = Line(*proj_pos, *next_pos)
                 line_top = Line(*rect.topleft, *rect.topright)
                 line_right = Line(*rect.topright, *rect.bottomright)
                 line_bottom = Line(*rect.bottomleft, *rect.bottomright)
                 line_left = Line(*rect.topleft, *rect.bottomleft)
+                print("p: {}, n: {}".format(proj_pos, next_pos))
                 if not rect.collidepoint(next_pos):
-                    print("line_proj: {}, p1: {}, p2: {}".format(line_proj, line_proj.p1, line_proj.p2))
+                    print("line_proj: {}, ptd: {}".format(line_proj, flatten(list(line_proj))))
                     print("line_top: {}, p1: {}, p2: {}".format(line_top, line_top.p1, line_top.p2))
                     print("line_right: {}, p1: {}, p2: {}".format(line_right, line_right.p1, line_right.p2))
                     print("line_bottom: {}, p1: {}, p2: {}".format(line_bottom, line_bottom.p1, line_bottom.p2))
                     print("line_left: {}, p1: {}, p2: {}".format(line_left, line_left.p1, line_left.p2))
-                    if line_proj.collide_line(line_top):
+                    if line_proj.collide_line(line_top, rounding=0):
                         print("hit top")
                         proj_pos = (proj_pos[0], rect.top)
                         speed = (speed[0], -speed[1])
-                    elif line_proj.collide_line(line_right):
+                    elif line_proj.collide_line(line_right, rounding=0):
                         print("hit right")
                         # firing = False
                         proj_pos = (rect.right, proj_pos[1])
                         # acceleration = (0, 0)
                         speed = (-speed[0], speed[1])
-                    elif line_proj.collide_line(line_bottom):
+                    elif line_proj.collide_line(line_bottom, rounding=0):
                         print("hit bottom")
                         proj_pos = (proj_pos[0], rect.bottom)
                         speed = (speed[0], -speed[1])
-                    elif line_proj.collide_line(line_left):
+                    elif line_proj.collide_line(line_left, rounding=0):
                         print("hit left")
                         proj_pos = (rect.left, proj_pos[1])
-                        speed = (speed[0], -speed[1])
+                        speed = (-speed[0], speed[1])
                     elif Rect2(rect.x, rect.y, rect.w, rect.h).collide_line(line_proj) is None:
                         print("COMPLETELY OUTSIDE???")
                         firing = False
