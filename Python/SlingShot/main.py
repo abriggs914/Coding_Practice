@@ -91,11 +91,13 @@ if __name__ == '__main__':
                     # if line_proj.collide_line(line_top, rounding=0):
                     if next_pos[1] <= rect.top:
                         print("hit top")
-                        proj_pos = (proj_pos[0], rect.top)
+                        next_pos = (next_pos[0], rect.top)
                         # speed = (speed[0], -speed[1])
                         pt, wall = collide(CR, speed, (-1 * speed[0], -1 * speed[1]), 1, 1)
                         print("speed:", speed, "pt:", pt)
-                        speed = pt[0], -1 * pt[1]
+                        # speed = pt[0], -1 * pt[1]
+                        speed = pt
+                        next_pos = (round(next_pos[0] + speed[0], 3), round(next_pos[1] + speed[1], 3))
                     # elif line_proj.collide_line(line_right, rounding=0):
                     elif next_pos[0] >= rect.right:
                         print("hit right")
