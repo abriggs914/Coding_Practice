@@ -1,6 +1,5 @@
 from pygame_utility import *
 
-
 if __name__ == '__main__':
     w, h = 750, 500
     app = PygameApplication("Slingshot", w, h)
@@ -16,12 +15,25 @@ if __name__ == '__main__':
     firing = False
     acceleration = (0, 0)
     speed = (0, 0)
+    CR = 0.25
     click_pos = (0, 0)
     proj_pos = (0, 0)
     half_pos = ((right_post[0] + left_post[0]) / 2, (right_post[1] + left_post[1]) / 2)
 
+
     def draw_length():
         return distance(click_pos, half_pos)
+
+
+    def collide_1d(cr, via, vib, ma, mb):
+        assert ma > 0 and mb > 0, "Masses must be non-negative"
+        return ((cr * mb * (vib - via)) + (ma * via) + (mb * vib)) / (ma + mb)
+
+
+    def collide(cr, va, vb, ma, mb):
+        return (collide_1d(cr, va[0], vb[0], ma, mb), collide_1d(cr, va[1], vb[1], ma, mb)), (
+            collide_1d(cr, vb[0], va[0], mb, ma), collide_1d(cr, vb[1], va[1], mb, ma))
+
 
     while app.is_playing:
         display.fill(BLACK)
@@ -30,7 +42,8 @@ if __name__ == '__main__':
         game.draw.circle(display, GRAY_60, left_post, 5)
         game.draw.circle(display, GRAY_60, right_post, 5)
         game.draw.rect(display, WHITE, btn_area_rect)
-        game.draw.rect(display, BLACK, game.Rect(btn_area_rect.x + 1, btn_area_rect.y + 1, btn_area_rect.w - 2, btn_area_rect.h - 2))
+        game.draw.rect(display, BLACK,
+                       game.Rect(btn_area_rect.x + 1, btn_area_rect.y + 1, btn_area_rect.w - 2, btn_area_rect.h - 2))
 
         event_queue = app.run()
         for event in event_queue:
@@ -75,21 +88,28 @@ if __name__ == '__main__':
                     print("line_right: {}, p1: {}, p2: {}".format(line_right, line_right.p1, line_right.p2))
                     print("line_bottom: {}, p1: {}, p2: {}".format(line_bottom, line_bottom.p1, line_bottom.p2))
                     print("line_left: {}, p1: {}, p2: {}".format(line_left, line_left.p1, line_left.p2))
-                    if line_proj.collide_line(line_top, rounding=0):
+                    # if line_proj.collide_line(line_top, rounding=0):
+                    if next_pos[1] <= rect.top:
                         print("hit top")
                         proj_pos = (proj_pos[0], rect.top)
-                        speed = (speed[0], -speed[1])
-                    elif line_proj.collide_line(line_right, rounding=0):
+                        # speed = (speed[0], -speed[1])
+                        pt, wall = collide(CR, speed, (-1 * speed[0], -1 * speed[1]), 1, 1)
+                        print("speed:", speed, "pt:", pt)
+                        speed = pt[0], -1 * pt[1]
+                    # elif line_proj.collide_line(line_right, rounding=0):
+                    elif next_pos[0] >= rect.right:
                         print("hit right")
                         # firing = False
                         proj_pos = (rect.right, proj_pos[1])
                         # acceleration = (0, 0)
                         speed = (-speed[0], speed[1])
-                    elif line_proj.collide_line(line_bottom, rounding=0):
+                    # elif line_proj.collide_line(line_bottom, rounding=0):
+                    elif next_pos[1] >= rect.bottom:
                         print("hit bottom")
                         proj_pos = (proj_pos[0], rect.bottom)
                         speed = (speed[0], -speed[1])
-                    elif line_proj.collide_line(line_left, rounding=0):
+                    # elif line_proj.collide_line(line_left, rounding=0):
+                    elif next_pos[0] <= rect.left:
                         print("hit left")
                         proj_pos = (rect.left, proj_pos[1])
                         speed = (-speed[0], speed[1])
