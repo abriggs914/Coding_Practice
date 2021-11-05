@@ -71,6 +71,8 @@ if __name__ == '__main__':
             game.draw.line(display, RED, click_pos, right_post, 2)
             game.draw.circle(display, BLUE, proj_pos, 5)
             game.draw.line(display, RED_3, click_pos, half_pos, 3)
+            acceleration = (0, 0)
+            speed = (0, 0)
         elif firing:
             if detect_collisions:
                 speed = (round(speed[0] + acceleration[0], 3), round(speed[1] + acceleration[1], 3))
@@ -94,10 +96,15 @@ if __name__ == '__main__':
                         next_pos = (next_pos[0], rect.top)
                         # speed = (speed[0], -speed[1])
                         pt, wall = collide(CR, speed, (-1 * speed[0], -1 * speed[1]), 1, 1)
-                        print("speed:", speed, "pt:", pt)
+                        print("speed:", speed, "pt:", pt, "acceleration:", acceleration)
                         # speed = pt[0], -1 * pt[1]
-                        speed = pt
+                        speed = round(pt[0], 3), round(pt[1], 3)
                         next_pos = (round(next_pos[0] + speed[0], 3), round(next_pos[1] + speed[1], 3))
+                        if speed[0] == 0 and speed[1] == 0:
+                            firing = False
+                            proj_pos = (0, 0)
+                            acceleration = (0, 0)
+                            speed = (0, 0)
                     # elif line_proj.collide_line(line_right, rounding=0):
                     elif next_pos[0] >= rect.right:
                         print("hit right")
