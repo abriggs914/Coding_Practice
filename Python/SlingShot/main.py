@@ -12,15 +12,18 @@ if __name__ == '__main__':
     left_post = (w * 0.35, h * 0.65)
     right_post = (w * 0.65, h * 0.65)
     dragging = False
+    releasing = False
     firing = False
     gf = 0.998
     gravity = (0, 1)
     acceleration = gravity
     speed = (0, 0)
     CR = 0.25
+    TOL = 0.0001
     click_pos = (0, 0)
     proj_pos = (0, 0)
     half_pos = ((right_post[0] + left_post[0]) / 2, (right_post[1] + left_post[1]) / 2)
+    pull_length = None
 
 
     def draw_length():
@@ -62,10 +65,11 @@ if __name__ == '__main__':
             elif event.type == game.MOUSEBUTTONUP:
                 if dragging:
                     dragging = False
-                    firing = True
+                    releasing = True
                     x_diff = (half_pos[0] - click_pos[0]) / w
                     y_diff = (half_pos[1] - click_pos[1]) / h
                     speed = (x_diff * draw_length(), y_diff * draw_length())
+                    pull_length = draw_length()
 
         if dragging:
             proj_pos = click_pos
@@ -73,9 +77,9 @@ if __name__ == '__main__':
             game.draw.line(display, RED, click_pos, right_post, 2)
             game.draw.circle(display, BLUE, proj_pos, 5)
             game.draw.line(display, RED_3, click_pos, half_pos, 3)
-            acceleration = (0, 0)
+            # acceleration = (0, 0)
             speed = (0, 0)
-        elif firing:
+        elif firing or releasing:
             if detect_collisions:
                 speed = (round(speed[0] + acceleration[0], 3), round(speed[1] + acceleration[1], 3))
                 # proj_pos = (proj_pos[0] + speed[0], proj_pos[1] + speed[1])
@@ -110,47 +114,53 @@ if __name__ == '__main__':
                         # # elif line_proj.collide_line(line_right, rounding=0):
                         print("hit top")
                         # firing = False
-                        proj_pos = (proj_pos[0], rect.top)
+                        proj_pos = (proj_pos[0], rect.top + TOL)
                         # acceleration = (0, 0)
                         acceleration = acceleration[0] * 0.5, acceleration[1] * 0.5
                         speed = (speed[0], -speed[1])
-                    elif next_pos[0] >= rect.right:
+                    if next_pos[0] >= rect.right:
                         print("hit right")
                         # firing = False
-                        proj_pos = (rect.right, proj_pos[1])
+                        proj_pos = (rect.right - TOL, proj_pos[1])
                         # acceleration = (0, 0)
                         acceleration = acceleration[0] * gf, acceleration[1] * gf
                         speed = (-speed[0], speed[1])
                     # elif line_proj.collide_line(line_bottom, rounding=0):
-                    elif next_pos[1] >= rect.bottom:
+                    if next_pos[1] >= rect.bottom:
                         print("hit bottom")
-                        proj_pos = (proj_pos[0], rect.bottom)
+                        proj_pos = (proj_pos[0], rect.bottom - TOL)
                         acceleration = acceleration[0] * gf, acceleration[1] * gf
                         speed = (speed[0], -speed[1])
                     # elif line_proj.collide_line(line_left, rounding=0):
-                    elif next_pos[0] <= rect.left:
+                    if next_pos[0] <= rect.left:
                         print("hit left")
-                        proj_pos = (rect.left, proj_pos[1])
+                        proj_pos = (rect.left + TOL, proj_pos[1])
                         acceleration = acceleration[0] * gf, acceleration[1] * gf
                         speed = (-speed[0], speed[1])
-                    else:
-                        print("ELSE")
-                        firing = False
-                        proj_pos = (0, 0)
-                        acceleration = (0, 0)
-                        speed = (0, 0)
-                    if not rect.collidepoint(proj_pos) and not rect.collidepoint(next_pos):
+                    # else:
+                    #     print("ELSE")
+                    #     firing = False
+                    #     proj_pos = (0, 0)
+                    #     acceleration = (0, 0)
+                    #     speed = (0, 0)
+                    if not (rect.collidepoint(proj_pos) or rect.collidepoint(next_pos)):
+                        print("rect:", rect)
+                        print("proj_pos:", proj_pos, "C:", rect.collidepoint(proj_pos))
+                        print("next_pos:", next_pos, "C:", rect.collidepoint(next_pos))
                         print("COMPLETELY OUTSIDE???")
                         firing = False
                         proj_pos = (0, 0)
                         acceleration = (0, 0)
                         speed = (0, 0)
                 else:
-                    print("inside")
+                    # print("inside")
                     acceleration = gravity[0] * (1 + gf), gravity[1] * (1 + gf)
                     # speed = speed[0] + acceleration[0], speed[1] + acceleration[1]
-                speed = speed[0] + acceleration[0], speed[1] + acceleration[1]
-                proj_pos = next_pos
+
+                if not releasing:
+                    speed = speed[0] + acceleration[0], speed[1] + acceleration[1]
+
+                proj_pos = clamp(rect.left + TOL, next_pos[0], rect.right - TOL), clamp(rect.top + TOL, next_pos[1], rect.bottom - TOL)
                 game.draw.circle(display, BLUE, proj_pos, 5)
             else:
                 speed = (speed[0] + acceleration[0], speed[1] + acceleration[1])
