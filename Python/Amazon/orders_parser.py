@@ -1,6 +1,7 @@
 import csv
 from utility import *
 
+
 class Entry:
 	def __init__(self, date, amount, tax, o_type, qty):
 		self.date = date
