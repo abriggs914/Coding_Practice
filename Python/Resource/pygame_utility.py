@@ -1,9 +1,10 @@
 from utility import *
 from colour_utility import *
+import pyperclip
 
 #	General Utility functions for pygame applications
-#	Version...........1.27
-#	Date........2021-10-20
+#	Version...........1.29
+#	Date........2021-11-17
 #	Author....Avery Briggs
 
 
@@ -346,7 +347,7 @@ class TextBox(Widget):
         self.text_align = text_align
 
     def __repr__(self):
-        return "<TextBox txt=\"" + self.text_str + "\">"
+        return "<TextBox txt=\"" + self.text + "\">"
 
     def count_n(self):
         txt = self.text
@@ -375,6 +376,10 @@ class TextBox(Widget):
                         self.text = ''
                     elif event.key == self.game.K_BACKSPACE:
                         self.text = self.text[:-1]
+                    elif event.key == self.game.K_v:
+                        keys = self.game.key.get_pressed()
+                        if keys[self.game.K_LCTRL] or keys[self.game.K_RCTRL]:
+                            self.text = pyperclip.paste()
                     else:
                         txt = event.unicode
                         cn = self.count_n()
@@ -392,7 +397,6 @@ class TextBox(Widget):
                         self.txt_surface = self.f.render(self.text, True, self.fc)
 
                 self.game.event.clear()
-                gj
 
     def increment(self, *args, **kwargs):
         try:
@@ -2248,7 +2252,7 @@ class PygameApplication:
     # Example:
     #
     #    def main_loop():
-    #        app = PygameApplication("Create Custom WO Update Queries", 750, 500)
+    #        app = PygameApplication("Name Goes Here!", 750, 500)
     #        game = app.get_game()
     #        display = app.display
     #
@@ -2285,6 +2289,7 @@ class PygameApplication:
             dir_keys = [kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra]
             a_dir_keys = any(dir_keys)
             kbd_q = kbd.is_pressed('q')
+			
         for i, event in enumerate(events):
             pos = pygame.mouse.get_pos()
             if kbd_q or event.type == pygame.QUIT:

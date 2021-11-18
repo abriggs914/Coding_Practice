@@ -32,6 +32,9 @@ time_months = lambda A, P, r, n: math.log(A / P) / (n * math.log(1 + (r / n))) *
 future_value = lambda P, r, n, t: P * math.pow((1 + (r / n)), (n * t))
 present_value = lambda A, r, n, t: A / ((1 + (r / n)) ** (n * t))
 interest = lambda A, P, n, t: 100 * n * (math.pow((A / P), (1 / ((n * t)))) - 1)
+gain = lambda P, r, n, t: future_value(P, r, n, t) - P
+# gain(5000, 0.005, 12, 1.5)
+# 5000 down at 0.5% monthly compounding interest for 1.5 years = $37.63
 
 question1 = """
 Zack purchased a bond with a face value of ${FV} for ${PV} to build a new sports
