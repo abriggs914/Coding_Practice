@@ -3,13 +3,15 @@ from statistics import mean, median, mode, pstdev, pvariance, stdev, variance
 from tv_series import TVSeries
 from main import *
 from utility import *
+import os
 
 
 # Run this file to update output.txt.
 
 
 def write_file():
-	file_name = "output.txt"
+	file_name = r"C:\Users\abrig\Documents\Coding_Practice\Python\TV_series\out.txt"
+	assert os.path.isfile(file_name)
 	with open(file_name, "w") as f:
         
 		def print_time_line_horizontal_write(series_list, start_year, end_year) :

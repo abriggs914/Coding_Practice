@@ -3,8 +3,8 @@ from colour_utility import *
 import pyperclip
 
 #	General Utility functions for pygame applications
-#	Version...........1.29
-#	Date........2021-11-17
+#	Version...........1.30
+#	Date........2021-11-28
 #	Author....Avery Briggs
 
 
@@ -292,6 +292,7 @@ class Label(Widget):
                        wrap=self.wrap_text)
 
 
+# https://github.com/DYGV/pygame_textinput/blob/590aaa6e1d129df63934d179d9deb19d42b5b257/pygame_textinput/textinput.py
 # TODO allow TextBox to overwrite the inc and dec functions. ex inc on a phone number should produce phone#n => phone#n + 1.
 # TODO allow TextBox to center text
 class TextBox(Widget):

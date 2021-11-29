@@ -520,7 +520,7 @@ the_simpsons = TVSeries("The Simpsons", {
 
 solar_opposites = TVSeries("Solar Opposites", {
 	1 : 8,
-	2 : 8},
+	2 : 9},
 	24,
 	2020,
 	2021,
@@ -552,6 +552,29 @@ mr_robot = TVSeries("Mr. Robot", {
 	False,
 	"Drama / Thriller",
 	"Prime TV")
+	
+criminal_minds = TVSeries("Criminal Minds", {
+	1: 22,
+	2: 23,
+	3: 20,
+	4: 26,
+	5: 23,
+	6: 24,
+	7: 24,
+	8: 24,
+	9: 24,
+	10: 23,
+	11: 22,
+	12: 22,
+	13: 22,
+	14: 15,
+	15: 10},
+	44,
+	2005,
+	2020,
+	True,
+	"Thriller / Drama",
+	"Disney+")
 	
 
 series_list = [
@@ -591,7 +614,8 @@ series_list = [
 	the_simpsons,
 	solar_opposites,
 	the_orville,
-	mr_robot
+	mr_robot,
+	criminal_minds
 ]
    
 def longest_series_title(series_list) :
