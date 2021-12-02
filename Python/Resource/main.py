@@ -973,6 +973,21 @@ def test_scrollbar():
         app.clock.tick(30)
 
 
+def test_random_date():
+	dates = [random_date() for i in range(300)]
+	for d in dates:
+		print("D: {}".format(d))
+		print("d: {}, parsed: {}".format(d, dt.date.fromisoformat(d)))
+		
+	calendar = set()
+	while len(calendar) < (2026 - 1995) * 365:
+		d = random_date(1995, 2026)
+		calendar.add(d)
+	
+	calendar = list(calendar)
+	calendar.sort()
+	print("calendar: ", calendar)
+
 
 if __name__ == "__main__":
     # test_block_letters()
@@ -996,7 +1011,7 @@ if __name__ == "__main__":
     #     ("2021-08-12", "August 12th, 2021")
     # ])
 
-    text_rect_and_line()
+    # text_rect_and_line()
     # test_money_str_format
     # test_find_north_side()
     # test_new_rect()
@@ -1005,3 +1020,4 @@ if __name__ == "__main__":
     # test_listbox()
     # test_scrollbar()
     # test_hyperlink()
+	test_random_date()
