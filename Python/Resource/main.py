@@ -5,37 +5,37 @@ from pygame_utility import *
 # test area and scratch pad
 """
 test_lists = [
-    ([[1, 2], [3, 4]], [1, 2, 3, 4]),
-    ([[[1], 2], [[3, 4]]], [1, 2, 3, 4]),
-    ([1, 2, 3, 4], [1, 2, 3, 4]),
-    ([[[[[[[[[[[1]], 2]], 3]], 4]]]]], [1, 2, 3, 4]),
-    (None, [None]),
-    ([], []),
-    (0, [0]),
-    (1, [1]),
-    (dict(), [dict()]),
-    (tuple(), [tuple()]),
-    (list(), list()),
-    (int(), [int()]),
-    (float(), [float()]),
-    (True, [True]),
-    (False, [False]),
-    (bool(), [bool()]),
-    ({1: [1, 2]}, [{1: [1, 2]}]),
-    (print, [print])
+	([[1, 2], [3, 4]], [1, 2, 3, 4]),
+	([[[1], 2], [[3, 4]]], [1, 2, 3, 4]),
+	([1, 2, 3, 4], [1, 2, 3, 4]),
+	([[[[[[[[[[[1]], 2]], 3]], 4]]]]], [1, 2, 3, 4]),
+	(None, [None]),
+	([], []),
+	(0, [0]),
+	(1, [1]),
+	(dict(), [dict()]),
+	(tuple(), [tuple()]),
+	(list(), list()),
+	(int(), [int()]),
+	(float(), [float()]),
+	(True, [True]),
+	(False, [False]),
+	(bool(), [bool()]),
+	({1: [1, 2]}, [{1: [1, 2]}]),
+	(print, [print])
 ]
 
 
 correct_answers = []
 for i, vals in enumerate(test_lists[:30]):
-    lst, ans = vals
-    res = flatten(lst)
-    right = ans == res
-    correct_answers.append(right)
-    print("\n\n\t\t{}\n\n\tIN:\n".format(i + 1) + str(lst))
-    print("\tOUT:\n" + str(res))
-    print("\tANS:\n" + str(ans))
-    print("\tRIGHT:\n" + str(right))
+	lst, ans = vals
+	res = flatten(lst)
+	right = ans == res
+	correct_answers.append(right)
+	print("\n\n\t\t{}\n\n\tIN:\n".format(i + 1) + str(lst))
+	print("\tOUT:\n" + str(res))
+	print("\tANS:\n" + str(ans))
+	print("\tRIGHT:\n" + str(right))
 
 all_right = all(correct_answers)
 print("all correct", all_right)
@@ -104,7 +104,7 @@ def text_rect_and_line():
         app.run()
         if not r2.collide_rect(r1, strictly_inside=False):
             raise ValueError("not r2.collide_rect(r1)")
-        # print(dict_print(results, "Results"))
+    # print(dict_print(results, "Results"))
 
     def rotate_matrix(grid, n=None, m=None, filter_none=False):
         """Return a list of all possible cell lines."""
@@ -164,8 +164,9 @@ def text_rect_and_line():
 
         return temp
 
-    # g1 = []
-    # print(rotate_matrix())
+
+# g1 = []
+# print(rotate_matrix())
 
 
 def print_hi():
@@ -206,8 +207,8 @@ def text_box():
         display.fill(BLACK)
         box.draw()
         event_queue = app.run()
-        # for event in event_queue:
-        #     textbox.handle_event(event)
+    # for event in event_queue:
+    #     textbox.handle_event(event)
 
 
 def test_buttonbar():
@@ -249,58 +250,59 @@ def test_buttonbar():
         new_rect = Rect(rect.x - xp, rect.y - yp, rect.width + (2 * xp), rect.height + (2 * yp))
         box.resize(new_rect)
         event_queue = app.run()
-        # print("A", box.rect_obj, new_rect, xp, yp)
-        # if 1 > new_rect.width:
-        #     xp = 1.02
-        #     new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height))
-        #     # new_rect = box.rect_obj.scaled(xp, yp)
-        #     print("\tA\t", new_rect, xp, yp)
-        # if new_rect.width >= 600:
-        #     xp = 0.99
-        #     new_rect = box.rect_obj.scaled(xp, yp)
-        #     print("\tB\t", new_rect, xp, yp)
-        # if 1 > new_rect.height:
-        #     yp = 1.02
-        #     new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width, 1))
-        #     # new_rect = box.rect_obj.scaled(xp, yp)
-        #     print("\tC\t", new_rect, xp, yp)
-        # if new_rect.height >= 600:
-        #     yp = 0.99
-        #     new_rect = box.rect_obj.scaled(xp, yp)
-        #     print("\tD\t", new_rect, xp, yp)
-        # print("B", box.rect_obj, new_rect, xp, yp)
-        # for event in event_queue:
-        #     textbox.handle_event(event)
-
-    # xp, yp = 0.99, 0.99
-    # while app.is_playing:
-    #     display.fill(BLACK)
-    #     box.draw()
+    # print("A", box.rect_obj, new_rect, xp, yp)
+    # if 1 > new_rect.width:
+    #     xp = 1.02
+    #     new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height))
+    #     # new_rect = box.rect_obj.scaled(xp, yp)
+    #     print("\tA\t", new_rect, xp, yp)
+    # if new_rect.width >= 600:
+    #     xp = 0.99
     #     new_rect = box.rect_obj.scaled(xp, yp)
-    #     print("A", box.rect_obj, new_rect, xp, yp)
-    #     if 1 > new_rect.width:
-    #         xp = 1.02
-    #         new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height))
-    #         # new_rect = box.rect_obj.scaled(xp, yp)
-    #         print("\tA\t", new_rect, xp, yp)
-    #     if new_rect.width >= 600:
-    #         xp = 0.99
-    #         new_rect = box.rect_obj.scaled(xp, yp)
-    #         print("\tB\t", new_rect, xp, yp)
-    #     if 1 > new_rect.height:
-    #         yp = 1.02
-    #         new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width, 1))
-    #         # new_rect = box.rect_obj.scaled(xp, yp)
-    #         print("\tC\t", new_rect, xp, yp)
-    #     if new_rect.height >= 600:
-    #         yp = 0.99
-    #         new_rect = box.rect_obj.scaled(xp, yp)
-    #         print("\tD\t", new_rect, xp, yp)
-    #     print("B", box.rect_obj, new_rect, xp, yp)
-    #     box.resize(new_rect)
-    #     event_queue = app.run()
-    #     # for event in event_queue:
-    #     #     textbox.handle_event(event)
+    #     print("\tB\t", new_rect, xp, yp)
+    # if 1 > new_rect.height:
+    #     yp = 1.02
+    #     new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width, 1))
+    #     # new_rect = box.rect_obj.scaled(xp, yp)
+    #     print("\tC\t", new_rect, xp, yp)
+    # if new_rect.height >= 600:
+    #     yp = 0.99
+    #     new_rect = box.rect_obj.scaled(xp, yp)
+    #     print("\tD\t", new_rect, xp, yp)
+    # print("B", box.rect_obj, new_rect, xp, yp)
+    # for event in event_queue:
+    #     textbox.handle_event(event)
+
+
+# xp, yp = 0.99, 0.99
+# while app.is_playing:
+#     display.fill(BLACK)
+#     box.draw()
+#     new_rect = box.rect_obj.scaled(xp, yp)
+#     print("A", box.rect_obj, new_rect, xp, yp)
+#     if 1 > new_rect.width:
+#         xp = 1.02
+#         new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height))
+#         # new_rect = box.rect_obj.scaled(xp, yp)
+#         print("\tA\t", new_rect, xp, yp)
+#     if new_rect.width >= 600:
+#         xp = 0.99
+#         new_rect = box.rect_obj.scaled(xp, yp)
+#         print("\tB\t", new_rect, xp, yp)
+#     if 1 > new_rect.height:
+#         yp = 1.02
+#         new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width, 1))
+#         # new_rect = box.rect_obj.scaled(xp, yp)
+#         print("\tC\t", new_rect, xp, yp)
+#     if new_rect.height >= 600:
+#         yp = 0.99
+#         new_rect = box.rect_obj.scaled(xp, yp)
+#         print("\tD\t", new_rect, xp, yp)
+#     print("B", box.rect_obj, new_rect, xp, yp)
+#     box.resize(new_rect)
+#     event_queue = app.run()
+#     # for event in event_queue:
+#     #     textbox.handle_event(event)
 
 
 def test_phone_number():
@@ -534,7 +536,6 @@ def test_new_rect():
     d = 0, 20
     print(r)
 
-
     # r1 = Rect(100, 25, 200, 100)
     # self, game, display, rect, ic, ac, f, fc, text = '', min_width = 20, numeric = False, char_limit = None, n_limit = None, bs = 1, border_style = None
     # textbox = TextBox(game, display, r1, text="-1", numeric=True, daction=print_hi, dargs=None)
@@ -554,6 +555,7 @@ def test_new_rect():
         r10 = Rect2(rx, ry, rw, rh, a + 300)
         r11 = Rect2(rx, ry, rw, rh, a + 330)
         r12 = Rect2(rx, ry, rw, rh, a + 360)
+
         # r5 = Rect2(rx, ry, rw, rh, a + )
 
         def draw_rect3(r):
@@ -692,7 +694,7 @@ def test_new_rect():
                     d = (d[0] - 1, d[1])
                 if event.key == game.K_RIGHT:
                     d = (d[0] + 1, d[1])
-            # textbox.handle_event(event)
+        # textbox.handle_event(event)
         # app.run()
         a += diff
         a = a % 360
@@ -705,7 +707,6 @@ def test_new_rect():
 
 
 def test_find_north_side():
-
     def find_north_side(r):
         return r.top_line
 
@@ -796,7 +797,7 @@ def test_rect_collision():
         app.clock.tick(25)
 
     p = pts[0]
-    p = (85,85)
+    p = (85, 85)
     print("p1:", p)
     print("r", r)
     print("r.top", r.top_line)
@@ -819,24 +820,34 @@ def test_menubar():
 
     def open_file():
         print("open_file")
+
     def leaf1_func():
         print("leaf1_func")
+
     def leaf2_func():
         print("leaf2_func")
+
     def leaf3_func():
         print("leaf3_func")
+
     def leaf4_func():
         print("leaf4_func")
+
     def leaf5_func():
         print("leaf5_func")
+
     def leaf6_func():
         print("leaf6_func")
+
     def leaf7_func():
         print("leaf7_func")
+
     def leaf8_func():
         print("leaf8_func")
+
     def delete_func():
         print("delete_func")
+
     def filter_text():
         print("filter_text")
 
@@ -849,7 +860,9 @@ def test_menubar():
     fs = 16
     bs = 1
     font = None
-    menubar = MenuBar(game, display, x, y, w, h, {"file": {"open": open_file, "branch": {"leaf1": leaf1_func, "leaf2": leaf2_func}}, "edit": {"delete": delete_func}}, bc, fs, bs, font)
+    menubar = MenuBar(game, display, x, y, w, h,
+                      {"file": {"open": open_file, "branch": {"leaf1": leaf1_func, "leaf2": leaf2_func}},
+                       "edit": {"delete": delete_func}}, bc, fs, bs, font)
     menubar2 = MenuBar(game, display, 250, 50, w + 1, h + 1, {
         "file": {
             "open": open_file,
@@ -894,7 +907,6 @@ def test_menubar():
 
         event_queue = app.run()
         for event in event_queue:
-
             # handle events
 
             pass
@@ -919,7 +931,6 @@ def test_listbox():
 
         event_queue = app.run()
         for event in event_queue:
-
             # handle events
 
             pass
@@ -939,7 +950,6 @@ def test_hyperlink():
 
         event_queue = app.run()
         for event in event_queue:
-
             # handle events
 
             pass
@@ -965,7 +975,6 @@ def test_scrollbar():
 
         event_queue = app.run()
         for event in event_queue:
-
             # handle events
 
             pass
@@ -974,19 +983,19 @@ def test_scrollbar():
 
 
 def test_random_date():
-	dates = [random_date() for i in range(300)]
-	for d in dates:
-		print("D: {}".format(d))
-		print("d: {}, parsed: {}".format(d, dt.date.fromisoformat(d)))
-		
-	calendar = set()
-	while len(calendar) < (2026 - 1995) * 365:
-		d = random_date(1995, 2026)
-		calendar.add(d)
-	
-	calendar = list(calendar)
-	calendar.sort()
-	print("calendar: ", calendar)
+    dates = [random_date() for i in range(300)]
+    for d in dates:
+        print("D: {}".format(d))
+        print("d: {}, parsed: {}".format(d, dt.date.fromisoformat(d)))
+
+    calendar = set()
+    while len(calendar) < (2026 - 1995) * 365:
+        d = random_date(1995, 2026)
+        calendar.add(d)
+
+    calendar = list(calendar)
+    calendar.sort()
+    print("calendar: ", calendar)
 
 
 if __name__ == "__main__":
@@ -1014,10 +1023,10 @@ if __name__ == "__main__":
     # text_rect_and_line()
     # test_money_str_format
     # test_find_north_side()
-    # test_new_rect()
-    # test_rect_collision()
-    # test_menubar()
-    # test_listbox()
-    # test_scrollbar()
-    # test_hyperlink()
-	test_random_date()
+    test_new_rect()  # This one looks cool
+# test_rect_collision()
+# test_menubar()
+# test_listbox()
+# test_scrollbar()
+# test_hyperlink()
+# test_random_date()
