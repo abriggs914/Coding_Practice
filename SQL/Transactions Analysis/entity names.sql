@@ -1,0 +1,105 @@
+SELECT
+	[Entity]
+FROM (
+	SELECT LTRIM(RTRIM(REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+				REPLACE(
+					REPLACE(
+						LOWER([dbo].sv_RemoveSymbols([dbo].sv_RemoveNumbers([Entity]))),
+						'!',
+						''
+						),
+					'frede',
+					''),
+					'fred',
+					''
+				),
+					'wate',
+					''),
+					'dart',
+					''
+				),
+					'flor',
+					''),
+					'cent',
+					''
+				),
+					'rich',
+					''),
+					'toro',
+					''
+				),
+					'wood',
+					''),
+					'pert',
+					''
+				),
+					'fpos',
+					''),
+					'hanw',
+					''
+				),
+					'opos',
+					''),
+					'stoc',
+					''
+				),
+					'store',
+					''),
+					'restaurant',
+					''
+				),
+					'beec',
+					''),
+					'orom',
+					''
+				),
+					'lak',
+					''),
+					'bris',
+					''
+				),
+					'  ',
+					' '),
+					'rictonnbc',
+					''
+				),
+					'waas',
+					''),
+					'www',
+					''
+				),
+					'nbc',
+					''),
+					'q',
+					''
+				)
+				))
+	AS [Entity] FROM [ScotiaTransactions] GROUP BY [Entity]
+) AS [A]
+GROUP BY [Entity]
+ORDER BY [Entity]
+--SELECT regexp_replace([Entity], '[[:digit:]]+', '#') FROM [ScotiaTransactions]
