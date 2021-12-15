@@ -1,6 +1,6 @@
 from utility import *
 from colour_utility import *
-import pyperclip
+#import pyperclip
 
 #	General Utility functions for pygame applications
 #	Version...........1.30
