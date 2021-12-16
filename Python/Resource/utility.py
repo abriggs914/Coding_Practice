@@ -8,8 +8,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.31
-	Date...........2021-12-01
+	Version..............1.32
+	Date...........2021-12-16
 	Author.......Avery Briggs
 """
 
@@ -364,7 +364,7 @@ def show(arr):
 
 
 def add_business_days(d, bd, holidays=None):
-    if holidays == None:
+    if holidays is None:
         holidays = []
     i = 0
     t = dt.datetime(d.year, d.month, d.day)
@@ -379,7 +379,7 @@ def add_business_days(d, bd, holidays=None):
 
 def business_days_between(d1, d2, holidays=None):
     business_days = 0
-    if holidays == None:
+    if holidays is None:
         holidays = []
     date_1 = d1 if type(d1) == dt.datetime else dt.datetime.strptime(d1, "%d-%b-%y")
     date_2 = d2 if type(d2) == dt.datetime else dt.datetime.strptime(d2, "%d-%b-%y")
