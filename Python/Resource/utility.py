@@ -9,8 +9,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.33
-	Date...........2021-12-17
+	Version..............1.34
+	Date...........2021-12-23
 	Author.......Avery Briggs
 """
 
@@ -1522,9 +1522,9 @@ def is_date(date_in, fmt="%Y-%m-%d"):
         d = datetime.datetime.strptime(date_in, fmt)
         return True
     except TypeError:
-        print("Can not determine id date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
+        print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
     except ValueError:
-        print("Can not determine id date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
+        print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
     return False
 
 
