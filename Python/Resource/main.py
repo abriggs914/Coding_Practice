@@ -998,6 +998,24 @@ def test_random_date():
     print("calendar: ", calendar)
 
 
+def test_iscolour():
+    TS = TestSuite()
+    TS.set_func(iscolour)
+    TS.add_test("Simple tuple", [[(238, 130, 238)], True])
+    TS.add_test("Out of bounds tuple", [[(2138, 130, 238)], False])
+    TS.add_test("Str of a tuple", [[str((238, 130, 238))], False])
+    TS.add_test("Hex string 1", [["#AFAFAF"], True])
+    TS.add_test("Hex string 2", [["AFAFAF"], True])
+    TS.add_test("Hex string 3", [["AFAFAF#"], False])
+    TS.add_test("Hex string 4", [["AFA#AF"], False])
+    TS.add_test("Hex string 5", [["995842"], True])
+    TS.add_test("Invalid Hex string 1", [["#gFAFAF"], False])
+    TS.add_test("Invalid Hex string 2", [["##FAFAF"], False])
+    TS.add_test("Invalid Hex string 3", [["#######"], False])
+    TS.add_test("Invalid Hex string 4", [["123456#"], False])
+    TS.execute_log()
+
+
 def test_alert_colour():
 
     app = PygameApplication("Testing Alert Colour", 750, 500)
@@ -1005,9 +1023,9 @@ def test_alert_colour():
     display = app.display
     box_colour = GRAY_17
     min_n = 0
-    max_n = 100
+    max_n = 25
 
-    start_c = VIOLET
+    start_c = FORESTGREEN
     end_c = AQUAMARINE_2
     print("start_c:", start_c)
     print("end_c:", end_c)
@@ -1030,28 +1048,9 @@ def test_alert_colour():
         box.bgc = box_colour
         print("bc:", box_colour)
 
+    box_colour = start_c
     text_box = TextBox(game, display, game.Rect(200, 0, 400, 100), text="0", editable=False, draw_clear_btn=False, fs=35, text_align="center", numeric=True, iaction=increment_colour, daction=decrement_colour, n_limit=range(10))
     box = Box(game, display, None, game.Rect(0, 100, 750, 200), 1, bgc=box_colour)
-
-    def gradient(x, n, c1, c2):
-        assert isnumber(x), "Parameter \"x\": ({}) needs to be a number".format(x)
-        assert isnumber(n), "Parameter \"n\": ({}) needs to be a number".format(n)
-        assert iscolour(c1), "Parameter \"c1\": ({}) needs to be a colour".format(c1)
-        assert iscolour(c2), "Parameter \"c2\": ({}) needs to be a colour".format(c2)
-        assert x <= n, "Parameter \"x\": ({}) needs to be less than or equal to parameter \"n\": ({})".format(x, n)
-        r1, g1, b1 = c1
-        r2, g2, b2 = c2
-        p = abs(x / n)
-        r_diff = p * abs(r1 - r2)
-        g_diff = p * abs(g1 - g2)
-        b_diff = p * abs(b1 - b2)
-        if r1 >= r2:
-            r_diff *= -1
-        if g1 >= g2:
-            g_diff *= -1
-        if b1 >= b2:
-            b_diff *= -1
-        return r1 + r_diff, g1 + g_diff, b1 + b_diff
 
     def alert_colour_g(x, n):
         r1, g1, b1 = GREEN
@@ -1077,6 +1076,14 @@ def test_alert_colour():
             text_box.handle_event(event)
 
         app.clock.tick(30)
+
+
+def test_is_date():
+    TS = TestSuite()
+    TS.set_func(is_date)
+    TS.add_test("Standard date string", [["2021-12-30"], True])
+    TS.add_test("Invalid date string", [["2021-12-32"], False])
+    TS.execute_log()
 
 
 if __name__ == "__main__":
@@ -1112,4 +1119,6 @@ if __name__ == "__main__":
     # test_scrollbar()
     # test_hyperlink()
     # test_random_date()
-    test_alert_colour()
+    # test_iscolour()
+    # test_alert_colour()
+    test_is_date()

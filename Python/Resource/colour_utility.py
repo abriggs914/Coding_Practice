@@ -1,8 +1,8 @@
 import random
 
 #	General Utility file of RGB colour values
-#	Version............1.7
-#	Date........2021-12-24
+#	Version............1.8
+#	Date........2021-12-30
 #	Author....Avery Briggs
 
 WILDERNESS_MINT = (98, 152, 100)
@@ -1744,6 +1744,9 @@ def hex_to_rgb(colour):
 
 
 def iscolour(c, g=None, b=None):
+    print("c: <{}>, t: <{}>".format(c, type(c)))
+    print("c: <{}>, t: <{}>".format(g, type(g)))
+    print("c: <{}>, t: <{}>".format(b, type(b)))
     if g is not None and b is not None:
         if isinstance(c, list):
             c = c + [g, b]
@@ -1751,18 +1754,47 @@ def iscolour(c, g=None, b=None):
             c = (*c, g, b)
         elif isinstance(c, int) or isinstance(c, float):
             c = [c] + [g, b]
-    if (isinstance(c, list) or isinstance(c, list)) and len(c) == 3:
+    if (isinstance(c, tuple) or isinstance(c, list)) and len(c) == 3:
         if all([(isinstance(x, int) or isinstance(x, float)) and -1 < x < 256 for x in c]):
             return True
     elif isinstance(c, str) and (len(c) == 7 or len(c) == 6):
+        print("str parsing")
         if len(c) == 7:
             if c[0] != "#":
                 return False
             c = c[1:]
+        valid = list(map(str, range(10))) + [chr(97 + x) for x in range(6)] + [chr(65 + x) for x in range(6)]
+        print("valid: {}".format(valid))
         for i in c:
-            if i not in list(range(10)) + [chr(97 + x) for x in range(7)] + [chr(55 + x) for x in range(7)]:
+            if i not in valid:
                 return False
         return True
 
     return False
 
+
+def gradient(x, n, c1, c2):
+    """Using increments, calculate a colour between two colours.
+    ex. gradient(5, 10, BLACK, WHITE) -> A colour 5/10 te way between c1 & c2.
+                                      -> .
+    :rtype: Tuple object representing an RGB colour (R, G, B)
+    """
+    assert isinstance(x, int) or isinstance(x, float), "Parameter \"x\": ({}) needs to be a number.".format(x)
+    assert isinstance(n, int) or isinstance(n, float), "Parameter \"n\": ({}) needs to be a number.".format(n)
+    assert iscolour(c1), "Parameter \"c1\": ({}) needs to be a colour.".format(c1)
+    assert iscolour(c2), "Parameter \"c2\": ({}) needs to be a colour.".format(c2)
+    assert x <= n, "Parameter \"x\": ({}) needs to be less than or equal to parameter \"n\": ({}).".format(x, n)
+    assert 0 < n, "Parameter \"n\": ({}) must be non-zero and positive.".format(n)
+    r1, g1, b1 = c1
+    r2, g2, b2 = c2
+    p = abs(x / n)
+    r_diff = p * abs(r1 - r2)
+    g_diff = p * abs(g1 - g2)
+    b_diff = p * abs(b1 - b2)
+    if r1 >= r2:
+        r_diff *= -1
+    if g1 >= g2:
+        g_diff *= -1
+    if b1 >= b2:
+        b_diff *= -1
+    return r1 + r_diff, g1 + g_diff, b1 + b_diff

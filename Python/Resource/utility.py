@@ -1,4 +1,3 @@
-import datetime
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice, randint
@@ -9,8 +8,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.35
-	Date...........2021-12-24
+	Version..............1.36
+	Date...........2021-12-30
 	Author.......Avery Briggs
 """
 
@@ -1532,6 +1531,7 @@ def alert_colour(x, n):
     assert isnumber(x), "Parameter \"x\": ({}) needs to be a number".format(x)
     assert isnumber(n), "Parameter \"n\": ({}) needs to be a number".format(n)
     assert x <= n, "Parameter \"x\": ({}) needs to be less than or equal to parameter \"n\": ({})".format(x, n)
+    assert 0 < n, "Parameter \"n\": ({}) must be non-zero and positive".format(n)
     t_diff = 255
     x = abs(x / n) * t_diff
     return x, 255 - x, 0
