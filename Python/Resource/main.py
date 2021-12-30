@@ -998,6 +998,87 @@ def test_random_date():
     print("calendar: ", calendar)
 
 
+def test_alert_colour():
+
+    app = PygameApplication("Testing Alert Colour", 750, 500)
+    game = app.get_game()
+    display = app.display
+    box_colour = GRAY_17
+    min_n = 0
+    max_n = 100
+
+    start_c = VIOLET
+    end_c = AQUAMARINE_2
+    print("start_c:", start_c)
+    print("end_c:", end_c)
+
+    def increment_colour():
+        n = int(text_box.text)
+        n += 1
+        n = min(n, max_n)
+        box_colour = gradient(n, max_n, start_c, end_c)
+        text_box.set_text(str(n))
+        box.bgc = box_colour
+        print("bc:", box_colour)
+
+    def decrement_colour():
+        n = int(text_box.text)
+        n -= 1
+        n = max(min_n, n)
+        box_colour = gradient(n, max_n, start_c, end_c)
+        text_box.set_text(str(n))
+        box.bgc = box_colour
+        print("bc:", box_colour)
+
+    text_box = TextBox(game, display, game.Rect(200, 0, 400, 100), text="0", editable=False, draw_clear_btn=False, fs=35, text_align="center", numeric=True, iaction=increment_colour, daction=decrement_colour, n_limit=range(10))
+    box = Box(game, display, None, game.Rect(0, 100, 750, 200), 1, bgc=box_colour)
+
+    def gradient(x, n, c1, c2):
+        assert isnumber(x), "Parameter \"x\": ({}) needs to be a number".format(x)
+        assert isnumber(n), "Parameter \"n\": ({}) needs to be a number".format(n)
+        assert iscolour(c1), "Parameter \"c1\": ({}) needs to be a colour".format(c1)
+        assert iscolour(c2), "Parameter \"c2\": ({}) needs to be a colour".format(c2)
+        assert x <= n, "Parameter \"x\": ({}) needs to be less than or equal to parameter \"n\": ({})".format(x, n)
+        r1, g1, b1 = c1
+        r2, g2, b2 = c2
+        p = abs(x / n)
+        r_diff = p * abs(r1 - r2)
+        g_diff = p * abs(g1 - g2)
+        b_diff = p * abs(b1 - b2)
+        if r1 >= r2:
+            r_diff *= -1
+        if g1 >= g2:
+            g_diff *= -1
+        if b1 >= b2:
+            b_diff *= -1
+        return r1 + r_diff, g1 + g_diff, b1 + b_diff
+
+    def alert_colour_g(x, n):
+        r1, g1, b1 = GREEN
+        r2, g2, b2 = RED
+        t_diff = (g1 - g2) + (r2 - r1)
+        incs = t_diff / n
+        p = x / n
+        x = p * t_diff
+        gp = 255 - min(255, x)
+        rp = max(0, x - 255)
+        return rp, gp, 0
+
+    while app.is_playing:
+        display.fill(BLACK)
+
+        # draw widgets and objects here
+        text_box.draw()
+        box.draw()
+
+        event_queue = app.run()
+        for event in event_queue:
+            # handle events
+            text_box.handle_event(event)
+
+        app.clock.tick(30)
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1023,10 +1104,12 @@ if __name__ == "__main__":
     # text_rect_and_line()
     # test_money_str_format
     # test_find_north_side()
-    test_new_rect()  # This one looks cool
-# test_rect_collision()
-# test_menubar()
-# test_listbox()
-# test_scrollbar()
-# test_hyperlink()
-# test_random_date()
+    # test_new_rect()  # This one looks cool
+
+    # test_rect_collision()
+    # test_menubar()
+    # test_listbox()
+    # test_scrollbar()
+    # test_hyperlink()
+    # test_random_date()
+    test_alert_colour()

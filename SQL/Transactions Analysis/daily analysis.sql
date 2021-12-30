@@ -1,6 +1,12 @@
 
 EXEC [dbo].sp_CollectEntityData @entity_name='bws', @start_date='2015-12-10', @end_date='2025-12-10'
---EXEC [dbo].sp_CollectEntityData @entity_name='cnb', @start_date='2015-12-10', @end_date='2025-12-10'
+EXEC [dbo].sp_CollectEntityData @entity_name='walmart', @start_date='2015-12-10', @end_date='2025-12-10'
+EXEC [dbo].sp_CollectEntityData @entity_name='nslsc', @start_date='2015-12-10', @end_date='2025-12-10'
+EXEC [dbo].sp_CollectEntityData @entity_name='bath', @start_date='2015-12-10', @end_date='2025-12-10'
+EXEC [dbo].sp_CollectEntityData @entity_name='cnb', @start_date='2015-12-10', @end_date='2025-12-10'
+EXEC [dbo].sp_CollectEntityData @entity_name='irving', @start_date='2015-12-10', @end_date='2025-12-10'
+EXEC [dbo].sp_CollectEntityData @entity_name='amazon', @start_date='2015-12-10', @end_date='2025-12-10'
+EXEC [dbo].sp_CollectEntityData @entity_name='fred', @start_date='2015-12-10', @end_date='2025-12-10'
 
 DECLARE @data TABLE ([ID] INT IDENTITY(1, 1), [Date] DATETIME, [# Debits] INT, [# Credits] INT, [# Tranasactions] INT, [Total Spent] FLOAT, [Total Earned] FLOAT, [Total] FLOAT)
 

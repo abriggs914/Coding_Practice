@@ -9,8 +9,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.34
-	Date...........2021-12-23
+	Version..............1.35
+	Date...........2021-12-24
 	Author.......Avery Briggs
 """
 
@@ -1526,6 +1526,15 @@ def is_date(date_in, fmt="%Y-%m-%d"):
     except ValueError:
         print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
     return False
+
+
+def alert_colour(x, n):
+    assert isnumber(x), "Parameter \"x\": ({}) needs to be a number".format(x)
+    assert isnumber(n), "Parameter \"n\": ({}) needs to be a number".format(n)
+    assert x <= n, "Parameter \"x\": ({}) needs to be less than or equal to parameter \"n\": ({})".format(x, n)
+    t_diff = 255
+    x = abs(x / n) * t_diff
+    return x, 255 - x, 0
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

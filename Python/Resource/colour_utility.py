@@ -1,8 +1,8 @@
 import random
 
 #	General Utility file of RGB colour values
-#	Version............1.6
-#	Date........2021-11-21
+#	Version............1.7
+#	Date........2021-12-24
 #	Author....Avery Briggs
 
 WILDERNESS_MINT = (98, 152, 100)
@@ -1741,3 +1741,28 @@ def rgb_to_hex(colour):
 
 def hex_to_rgb(colour):
     return (int(colour[1:3], 16), int(colour[3:5], 16), int(colour[5:], 16))
+
+
+def iscolour(c, g=None, b=None):
+    if g is not None and b is not None:
+        if isinstance(c, list):
+            c = c + [g, b]
+        elif isinstance(c, tuple):
+            c = (*c, g, b)
+        elif isinstance(c, int) or isinstance(c, float):
+            c = [c] + [g, b]
+    if (isinstance(c, list) or isinstance(c, list)) and len(c) == 3:
+        if all([(isinstance(x, int) or isinstance(x, float)) and -1 < x < 256 for x in c]):
+            return True
+    elif isinstance(c, str) and (len(c) == 7 or len(c) == 6):
+        if len(c) == 7:
+            if c[0] != "#":
+                return False
+            c = c[1:]
+        for i in c:
+            if i not in list(range(10)) + [chr(97 + x) for x in range(7)] + [chr(55 + x) for x in range(7)]:
+                return False
+        return True
+
+    return False
+
