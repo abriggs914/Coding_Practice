@@ -1,0 +1,18 @@
+DECLARE @d AS DATETIME;
+DECLARE @t AS DATETIME;
+SET @d = '2022-01-31';
+
+DECLARE @i AS INT;
+SET @i = 0;
+
+WHILE @i < 15 BEGIN
+	
+	SELECT @d AS [Today]
+	SET @i = @i + 1;
+	SET @t = DATEADD(MONTH, 1, @d);
+	WHILE DATEPART(MONTH, DATEADD(DAY, 1, @t)) = DATEPART(MONTH, @t) BEGIN
+		SET @t = DATEADD(DAY, 1, @t);
+	END
+	SET @d = @t;
+
+END
