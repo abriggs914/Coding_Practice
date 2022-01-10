@@ -1,0 +1,1 @@
+SELECT * FROM [ScotiaTransactions] ORDER BY [Date] DESC
