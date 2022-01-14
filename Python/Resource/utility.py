@@ -1,6 +1,7 @@
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice, randint
+from plyer import notification
 import datetime as dt
 import shutil
 import sys
@@ -8,8 +9,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.36
-	Date...........2021-12-30
+	Version..............1.37
+	Date...........2022-01-14
 	Author.......Avery Briggs
 """
 
@@ -1535,6 +1536,22 @@ def alert_colour(x, n):
     t_diff = 255
     x = abs(x / n) * t_diff
     return x, 255 - x, 0
+
+
+def notify(message, title="", app_icon=None, timeout=5):
+    if app_icon is not None:
+        notification.notify(
+            title=title,
+            message=message,
+            app_icon=(app_icon),
+            timeout=timeout  # seconds
+        )
+    else:
+        notification.notify(
+            title=title,
+            message=message,
+            timeout=timeout  # seconds
+        )
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
