@@ -1,12 +1,12 @@
 
-EXEC [dbo].sp_CollectEntityData @entity_name='bws', @start_date='2015-12-10', @end_date='2025-12-10'
-EXEC [dbo].sp_CollectEntityData @entity_name='walmart', @start_date='2015-12-10', @end_date='2025-12-10'
-EXEC [dbo].sp_CollectEntityData @entity_name='nslsc', @start_date='2015-12-10', @end_date='2025-12-10'
-EXEC [dbo].sp_CollectEntityData @entity_name='bath', @start_date='2015-12-10', @end_date='2025-12-10'
-EXEC [dbo].sp_CollectEntityData @entity_name='cnb', @start_date='2015-12-10', @end_date='2025-12-10'
-EXEC [dbo].sp_CollectEntityData @entity_name='irving', @start_date='2015-12-10', @end_date='2025-12-10'
-EXEC [dbo].sp_CollectEntityData @entity_name='amazon', @start_date='2015-12-10', @end_date='2025-12-10'
-EXEC [dbo].sp_CollectEntityData @entity_name='fred', @start_date='2015-12-10', @end_date='2025-12-10'
+--EXEC [dbo].sp_CollectEntityData @entity_name='bws', @start_date='2015-12-10', @end_date='2025-12-10'
+--EXEC [dbo].sp_CollectEntityData @entity_name='walmart', @start_date='2015-12-10', @end_date='2025-12-10'
+--EXEC [dbo].sp_CollectEntityData @entity_name='nslsc', @start_date='2015-12-10', @end_date='2025-12-10'
+--EXEC [dbo].sp_CollectEntityData @entity_name='bath', @start_date='2015-12-10', @end_date='2025-12-10'
+--EXEC [dbo].sp_CollectEntityData @entity_name='cnb', @start_date='2015-12-10', @end_date='2025-12-10'
+--EXEC [dbo].sp_CollectEntityData @entity_name='irving', @start_date='2015-12-10', @end_date='2025-12-10'
+--EXEC [dbo].sp_CollectEntityData @entity_name='amazon', @start_date='2015-12-10', @end_date='2025-12-10'
+--EXEC [dbo].sp_CollectEntityData @entity_name='fred', @start_date='2015-12-10', @end_date='2025-12-10'
 
 DECLARE @data TABLE ([ID] INT IDENTITY(1, 1), [Date] DATETIME, [# Debits] INT, [# Credits] INT, [# Tranasactions] INT, [Total Spent] FLOAT, [Total Earned] FLOAT, [Total] FLOAT)
 
@@ -14,6 +14,7 @@ DECLARE @i INT;
 DECLARE @d AS DATETIME;
 
 SET @d = (SELECT MIN([Date]) FROM [ScotiaTransactions]);
+SET @d = CAST(YEAR(@d) AS NVARCHAR(4)) + '-01-01';
 
 WHILE @d < GETDATE() BEGIN
 	
@@ -38,7 +39,7 @@ WHILE @d < GETDATE() BEGIN
 		FROM
 			[ScotiaTransactions]
 		WHERE
-			[Date] BETWEEN @d AND DATEADD(DAY, 6, DATEADD(HOUR, 23, DATEADD(MINUTE, 59, DATEADD(SECOND, 59, @d))))
+			[Date] BETWEEN @d AND DATEADD(DAY, 364, DATEADD(HOUR, 23, DATEADD(MINUTE, 59, DATEADD(SECOND, 59, @d))))
 			AND [Amount] < 0
 		UNION (
 			SELECT
@@ -52,14 +53,14 @@ WHILE @d < GETDATE() BEGIN
 			FROM
 				[ScotiaTransactions]
 			WHERE
-				[Date] BETWEEN @d AND DATEADD(DAY, 6, DATEADD(HOUR, 23, DATEADD(MINUTE, 59, DATEADD(SECOND, 59, @d))))
+				[Date] BETWEEN @d AND DATEADD(DAY, 364, DATEADD(HOUR, 23, DATEADD(MINUTE, 59, DATEADD(SECOND, 59, @d))))
 				AND [Amount] >= 0
 		)
 	) AS [Src]
 	GROUP BY
 		[Date]
 
-	SET @d = DATEADD(DAY, 7, @d);
+	SET @d = DATEADD(YEAR, 1, @d);
 
 END
 
@@ -73,4 +74,4 @@ SELECT
 	SUM([Total]) AS [Total]
 FROM
 	@data
-SELECT COUNT(*) AS [# Non-Transaction Weeks] FROM @data WHERE [Total] IS NULL
+SELECT COUNT(*) AS [# Non-Transaction Years] FROM @data WHERE [Total] IS NULL
