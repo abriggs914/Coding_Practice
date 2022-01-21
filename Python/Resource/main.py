@@ -1087,6 +1087,27 @@ def test_is_date():
     TS.execute_log()
 
 
+def test_date_manipulation():
+    TS1 = TestSuite()
+    TS1.set_func(first_of_day)
+    TS1.add_test("2022-01-02", [[dt.datetime(2022,1,2,12,12)], dt.datetime(2022,1,2)])
+    TS1.add_test("2022-01-31", [[dt.datetime(2022,1,31,5,30,30)], dt.datetime(2022,1,31)])
+    TS1.execute_log()
+
+    TS2 = TestSuite()
+    TS2.set_func(first_of_week)
+    TS2.add_test("2022-01-02", [[dt.datetime(2022,1,2,12,12)], dt.datetime(2022,1,2,12,12)])
+    TS2.add_test("2022-01-04", [[dt.datetime(2022,1,4,12,12)], dt.datetime(2022,1,2,12,12)])
+    TS2.add_test("2022-01-31", [[dt.datetime(2022,1,31,5,30,30)], dt.datetime(2022,1,30,5,30,30)])
+    TS2.execute_log()
+
+    TS3 = TestSuite()
+    TS3.set_func(first_of_month)
+    TS3.add_test("2022-01-02", [[dt.datetime(2022,1,2,12,12)], dt.datetime(2022,1,1,12,12)])
+    TS3.add_test("2022-01-31", [[dt.datetime(2022,1,31,5,30,30)], dt.datetime(2022,1,1,5,30,30)])
+    TS3.execute_log()
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1122,4 +1143,5 @@ if __name__ == "__main__":
     # test_random_date()
     # test_iscolour()
     # test_alert_colour()
-    test_is_date()
+    # test_is_date()
+    test_date_manipulation()

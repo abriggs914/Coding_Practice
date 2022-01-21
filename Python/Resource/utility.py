@@ -9,8 +9,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.37
-	Date...........2022-01-14
+	Version..............1.38
+	Date...........2022-01-21
 	Author.......Avery Briggs
 """
 
@@ -1526,6 +1526,24 @@ def is_date(date_in, fmt="%Y-%m-%d"):
     except ValueError:
         print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
     return False
+
+
+def first_of_day(date_in):
+    assert isinstance(date_in, dt.datetime)
+    return dt.datetime(date_in.year, date_in.month, date_in.day)
+
+
+def first_of_week(date_in):
+    assert isinstance(date_in, dt.datetime)
+    print("date_in:", date_in)
+    # return dt.datetime.fromisoformat("2022-02-02")
+    return dt.datetime.fromisocalendar(date_in.isocalendar().year, date_in.isocalendar().week, 7) + dt.timedelta(hours=date_in.hour, minutes=date_in.minute, seconds=date_in.second)
+    # return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
+
+
+def first_of_month(date_in):
+    assert isinstance(date_in, dt.datetime)
+    return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
 
 
 def alert_colour(x, n):
