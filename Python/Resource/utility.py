@@ -10,7 +10,7 @@ import os
 """
 	General Utility Functions
 	Version..............1.38
-	Date...........2022-01-21
+	Date...........2022-01-24
 	Author.......Avery Briggs
 """
 
@@ -1516,10 +1516,10 @@ def random_date(start_year=1, end_year=10000, start_m=None, start_d=None):
 
 
 def is_date(date_in, fmt="%Y-%m-%d"):
-    if isinstance(date_in, datetime.datetime) or isinstance(date_in, datetime.date):
+    if isinstance(date_in, dt.datetime) or isinstance(date_in, dt.date):
         return True
     try:
-        d = datetime.datetime.strptime(date_in, fmt)
+        d = dt.datetime.strptime(date_in, fmt)
         return True
     except TypeError:
         print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
@@ -1537,7 +1537,9 @@ def first_of_week(date_in):
     assert isinstance(date_in, dt.datetime)
     print("date_in:", date_in)
     # return dt.datetime.fromisoformat("2022-02-02")
-    return dt.datetime.fromisocalendar(date_in.isocalendar().year, date_in.isocalendar().week, 7) + dt.timedelta(hours=date_in.hour, minutes=date_in.minute, seconds=date_in.second)
+    wd = 0 if date_in.isocalendar()[2] == 7 else date_in.isocalendar()[2]
+    return date_in + dt.timedelta(days=-wd)
+    # return dt.datetime.fromisocalendar(date_in.isocalendar()[0], date_in.isocalendar()[1], 1) + dt.timedelta(hours=date_in.hour, minutes=date_in.minute, seconds=date_in.second)
     # return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
 
 
