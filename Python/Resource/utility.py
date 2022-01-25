@@ -409,7 +409,7 @@ def intersection(a, b):
     l = a if len(a) >= len(b) else b
     m = b if len(a) >= len(b) else a
     for i in l:
-        if j in m:
+        if i in m:
             res.append(i)
     return res
 

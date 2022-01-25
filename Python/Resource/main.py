@@ -1108,6 +1108,20 @@ def test_date_manipulation():
     TS3.execute_log()
 
 
+def test_intersection():
+    TS1 = TestSuite()
+    evens = list(range(0, 25, 2))
+    odds = list(range(1, 25, 2))
+    by_3 = list(range(0, 25, 3))
+    by_6 = list(range(0, 25, 6))
+    by_4 = list(range(0, 25, 4))
+    TS1.set_func(intersection)
+    TS1.add_test("evens and odds", [[evens, odds], []])
+    TS1.add_test("by 3s and by 6s", [[by_3, by_6], by_6])
+    TS1.add_test("by 6s and by 4s", [[by_6, by_4], [i for i in range(0, 25, 1) if i % 4 == i % 6 == 0]])
+    TS1.execute_log()
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1144,4 +1158,5 @@ if __name__ == "__main__":
     # test_iscolour()
     # test_alert_colour()
     # test_is_date()
-    test_date_manipulation()
+    # test_date_manipulation()
+    test_intersection()
