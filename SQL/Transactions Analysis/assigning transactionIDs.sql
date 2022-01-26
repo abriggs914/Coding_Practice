@@ -7,7 +7,7 @@
 BEGIN TRAN;
 
 DECLARE @id AS INT;
-SET @id = 14;
+SET @id = 27;
 
 SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] IS NULL
 
@@ -16,12 +16,14 @@ UPDATE
 SET
 	[TransactionTypeID] = @id
 WHERE
-	[TransactionID] = 1708
+	[TransactionID] = 1339
 	
 SELECT * FROM [ScotiaTransactionTypes] ORDER BY [TransactionType], [TransactionSubType]
-SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] IS NOT NULL ORDER BY [Entity]
-SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] IS NULL ORDER BY [Entity]
+SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] IS NULL ORDER BY [Date] DESC
+SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] IS NOT NULL ORDER BY [Date] DESC
 SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] = @id ORDER BY [Entity]
 
 ROLLBACK;
 COMMIT;
+
+SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] = 23 ORDER BY [Entity]
