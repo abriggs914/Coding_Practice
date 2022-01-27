@@ -9,8 +9,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.38
-	Date...........2022-01-24
+	Version..............1.39
+	Date...........2022-01-26
 	Author.......Avery Briggs
 """
 
@@ -435,8 +435,8 @@ def isnumber(value):
     if isinstance(value, int) or isinstance(value, float):
         return True
     if isinstance(value, str):
-        if value.count("-") < 2:
-            if value.replace("-", "").isnumeric():
+        if value.count("-") < 2 and value.count(".") < 2:
+            if value.replace("-", "").replace(".", "").isnumeric():
                 return True
     return False
 

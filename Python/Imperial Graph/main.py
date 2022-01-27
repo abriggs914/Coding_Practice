@@ -271,7 +271,7 @@ if __name__ == '__main__':
     im_petameter.add_connection(im_terameter, 1/10, False, "inverse")
     im_exameter.add_connection(im_petameter, 1/10, False, "inverse")
     im_decimeter.add_connection(im_meter, 10, False, "inverse")
-    im_centimeter.add_connection(im_centimeter, 10, False, "inverse")
+    im_centimeter.add_connection(im_decimeter, 10, False, "inverse")
     im_millimeter.add_connection(im_centimeter, 10, False, "inverse")
     im_micrometer.add_connection(im_millimeter, 10, False, "inverse")
     im_nanometer.add_connection(im_micrometer, 10, False, "inverse")
@@ -394,6 +394,7 @@ if __name__ == '__main__':
 
 
     def convert_callback():
+        print("isnumber(input_val.get()):", isnumber(input_val.get()))
         if input_val.get() and isnumber(input_val.get()):
             if clicked_a.get() and clicked_b.get():
                 if clicked_a.get() != clicked_b.get():

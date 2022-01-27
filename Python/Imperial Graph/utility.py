@@ -1,6 +1,7 @@
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice, randint
+from plyer import notification
 import datetime as dt
 import shutil
 import sys
@@ -8,8 +9,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.30
-	Date...........2021-11-03
+	Version..............1.39
+	Date...........2022-01-26
 	Author.......Avery Briggs
 """
 
@@ -364,7 +365,7 @@ def show(arr):
 
 
 def add_business_days(d, bd, holidays=None):
-    if holidays == None:
+    if holidays is None:
         holidays = []
     i = 0
     t = dt.datetime(d.year, d.month, d.day)
@@ -379,7 +380,7 @@ def add_business_days(d, bd, holidays=None):
 
 def business_days_between(d1, d2, holidays=None):
     business_days = 0
-    if holidays == None:
+    if holidays is None:
         holidays = []
     date_1 = d1 if type(d1) == dt.datetime else dt.datetime.strptime(d1, "%d-%b-%y")
     date_2 = d2 if type(d2) == dt.datetime else dt.datetime.strptime(d2, "%d-%b-%y")
@@ -408,7 +409,7 @@ def intersection(a, b):
     l = a if len(a) >= len(b) else b
     m = b if len(a) >= len(b) else a
     for i in l:
-        if j in m:
+        if i in m:
             res.append(i)
     return res
 
@@ -434,8 +435,8 @@ def isnumber(value):
     if isinstance(value, int) or isinstance(value, float):
         return True
     if isinstance(value, str):
-        if value.count("-") < 2:
-            if value.replace("-", "").isnumeric():
+        if value.count("-") < 2 and value.count(".") < 2:
+            if value.replace("-", "").replace(".", "").isnumeric():
                 return True
     return False
 
@@ -1474,6 +1475,103 @@ def next_available_file_name(path):
         path = ".".join(spl[:-1]) + " ({}).".format(counter) + spl[-1]
     path.replace("/", "\\")
     return path
+
+
+# leap year calculation: https://www.timeanddate.com/date/leapyear.html
+def random_date(start_year=1, end_year=10000, start_m=None, start_d=None):
+    start_year, end_year = minmax(start_year, end_year)
+    start_year = clamp(1, start_year, end_year)
+    end_year = clamp(start_year + 1, end_year + 1, 10000)
+
+    r_y = list(range(start_year, end_year))
+    r_m = list(range(1, 13))
+    r_d = list(range(1, 32))
+    r_dsm = list(range(1, 31))
+    r_df = list(range(1, 29))
+    r_dfl = list(range(1, 30))
+    r_sm = [2, 4, 6, 9, 11]
+    y = choice(r_y)
+    m = choice(r_m)
+    if start_m in r_m:
+        m = start_m
+    if m in r_sm:
+        d = choice(r_dsm)
+        if start_d in r_dsm:
+            d = start_d
+    else:
+        d = choice(r_d)
+        if start_d in r_d:
+            d = start_d
+
+    if m == 2:
+        d = choice(r_df)
+        if start_d in r_df:
+            d = start_d
+        if y % 4 == 0 and (y % 100 != 0 or y % 400 == 0):
+            d = choice(r_dfl)
+            if start_d in r_dfl:
+                d = start_d
+
+    return "{}-{}-{}".format(("0000" + str(y))[-4:], ("00" + str(m))[-2:], ("00" + str(d))[-2:])
+
+
+def is_date(date_in, fmt="%Y-%m-%d"):
+    if isinstance(date_in, dt.datetime) or isinstance(date_in, dt.date):
+        return True
+    try:
+        d = dt.datetime.strptime(date_in, fmt)
+        return True
+    except TypeError:
+        print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
+    except ValueError:
+        print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
+    return False
+
+
+def first_of_day(date_in):
+    assert isinstance(date_in, dt.datetime)
+    return dt.datetime(date_in.year, date_in.month, date_in.day)
+
+
+def first_of_week(date_in):
+    assert isinstance(date_in, dt.datetime)
+    print("date_in:", date_in)
+    # return dt.datetime.fromisoformat("2022-02-02")
+    wd = 0 if date_in.isocalendar()[2] == 7 else date_in.isocalendar()[2]
+    return date_in + dt.timedelta(days=-wd)
+    # return dt.datetime.fromisocalendar(date_in.isocalendar()[0], date_in.isocalendar()[1], 1) + dt.timedelta(hours=date_in.hour, minutes=date_in.minute, seconds=date_in.second)
+    # return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
+
+
+def first_of_month(date_in):
+    assert isinstance(date_in, dt.datetime)
+    return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
+
+
+def alert_colour(x, n):
+    assert isnumber(x), "Parameter \"x\": ({}) needs to be a number".format(x)
+    assert isnumber(n), "Parameter \"n\": ({}) needs to be a number".format(n)
+    assert x <= n, "Parameter \"x\": ({}) needs to be less than or equal to parameter \"n\": ({})".format(x, n)
+    assert 0 < n, "Parameter \"n\": ({}) must be non-zero and positive".format(n)
+    t_diff = 255
+    x = abs(x / n) * t_diff
+    return x, 255 - x, 0
+
+
+def notify(message, title="", app_icon=None, timeout=5):
+    if app_icon is not None:
+        notification.notify(
+            title=title,
+            message=message,
+            app_icon=(app_icon),
+            timeout=timeout  # seconds
+        )
+    else:
+        notification.notify(
+            title=title,
+            message=message,
+            timeout=timeout  # seconds
+        )
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
