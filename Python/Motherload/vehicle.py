@@ -10,7 +10,8 @@ class Vehicle:
                  hull=None,
                  storage=None,
                  propeller=None,
-                 fuel_tank=None
+                 fuel_tank=None,
+                 text_symbol="V"
                  ):
         self.id_no = id_no
         self.name = name
@@ -26,3 +27,4 @@ class Vehicle:
         self.storage = storage
         self.propeller = propeller
         self.fuel_tank = fuel_tank
+        self.text_symbol = text_symbol
