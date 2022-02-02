@@ -22,17 +22,7 @@ class MotherloadGame:
     def set_grid(self, grid):
         assert isinstance(grid, Grid)
         self.grid = grid
-        v, cx, cy = self.grid.get_active_vehicle()
-
-        if v is None:
-            cx, cy = self.grid.grid_data_in["width"] // 2, self.grid.grid_data_in["ground_level"]
-
-        self.view_rect = (
-            max(0, (cx - (self.grid.grid_data_in["width"]) // 2)),
-            max(0, (cy - (self.grid.grid_data_in["height"]) // 2)),
-            self.view_rect_w,
-            self.view_rect_h
-        )
+        self.update_view_rect()
 
     def main_loop(self):
         app = PygameApplication("Name Goes Here!", 750, 500)
@@ -67,15 +57,30 @@ class MotherloadGame:
                     cvy = 0 if cvy < 0 else (rows - 1 if cvy >= rows else cvy)
                     cvx = 0 if cvx < 0 else (cols - 1 if cvx >= cols else cvx)
                     g1.set_vehicle(vehicle, (cvx, cvy))
+                    self.update_view_rect()
 
                     os.system('cls' if os.name == 'nt' else 'clear')
                     g1.print_tile_symbols()
                     print("mgl:", self.view_rect)
-                    print("VIEW:", "\n".join([row for row in self.grid.tiles[self.view_rect[1]:self.view_rect[3]]]))
-                    print("VIEW:", "\n".join([row[self.view_rect[0]:self.view_rect[3]] for row in self.grid.tiles[self.view_rect[1]:self.view_rect[3]]]))
+                    # print("VIEW:", "\n".join([str(row) for row in self.grid.tiles[self.view_rect[1]:self.view_rect[3]]]))
+                    # print("VIEW:", "\n".join([str(row[self.view_rect[0]:self.view_rect[3]]) for row in self.grid.tiles[self.view_rect[1]:self.view_rect[3]]]))
                 # if event[:4]
 
         app.clock.tick(30)
+
+    def update_view_rect(self):
+        v, cx, cy = self.grid.get_active_vehicle()
+
+        if v is None:
+            cy, cx = self.grid.grid_data_in["width"] // 2, self.grid.grid_data_in["ground_level"]
+
+        self.view_rect = (
+            max(0, (cx - (self.grid.grid_data_in["width"]) // 2)),
+            max(0, (cy - (self.grid.grid_data_in["height"]) // 2)),
+            self.view_rect_w,
+            self.view_rect_h
+        )
+
 
 
 if __name__ == '__main__':
