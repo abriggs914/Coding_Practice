@@ -5,7 +5,7 @@ from vehicle import *
 
 COLOUR_TILE_AIR = WHITE
 DURABILITY_TILE_AIR = 0
-COLOUR_TILE_DIRT = BROWN_1
+COLOUR_TILE_DIRT = BROWN_3
 DURABILITY_TILE_DIRT = 1
 
 
@@ -100,8 +100,8 @@ class Grid:
                     gems.append((TileDirt(COLOUR_TILE_DIRT, DURABILITY_TILE_DIRT), ns_ps))
                     # print("gems:", gems)
                     tile = weighted_choice(gems)
-                    if isinstance(tile, Gem):
-                        print("Adding Gem \"{}\" at ({}, {})".format(tile, r, c))
+                    # if isinstance(tile, Gem):
+                    #     print("Adding Gem \"{}\" at ({}, {})".format(tile, r, c))
                 row.append(tile)
             tiles.append(row)
 

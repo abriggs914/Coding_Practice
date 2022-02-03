@@ -19,20 +19,44 @@ class MotherloadGame:
         self.view_rect_w = 25
         self.view_rect_h = 18
 
+        self.app = PygameApplication("Name Goes Here!", 750, 500)
+        self.game = self.app.get_game()
+        self.display = self.app.display
+
+        self.drawing_rect = self.game.Rect(25, 25, 700, 450)
+        self.drawing_rect_colour = GRAY_45
+        self.tile_border_width = 1
+
     def set_grid(self, grid):
         assert isinstance(grid, Grid)
         self.grid = grid
         self.update_view_rect()
 
     def main_loop(self):
-        app = PygameApplication("Name Goes Here!", 750, 500)
-        game = app.get_game()
-        display = app.display
+        app = self.app
+        game = self.game
+        display = self.display
 
         while app.is_playing:
             display.fill(BLACK)
 
             # draw widgets and objects here
+            game.draw.rect(display, self.drawing_rect_colour, self.drawing_rect)
+
+            tiles_list = self.grid.tiles
+            ix, iy = self.drawing_rect.topleft
+            # draw tiles:
+            xb1, yb1, xbd, ybd = self.view_rect
+            xb2 = xb1 + xbd
+            yb2 = yb1 + ybd
+            tbw = self.tile_border_width
+            # print("\t\t(xb1: {}, xb2: {}, xbd: {}, yb1: {}, yb2 {}, ybd: {})".format(xb1, xb2, xbd, yb1, yb2, ybd))
+            th = self.drawing_rect.height / len(tiles_list[yb1: yb2 + 1])
+            for i, row in enumerate(tiles_list[yb1: yb2 + 1]):
+                tw = self.drawing_rect.width / len(row[xb1: xb2 + 1])
+                for j, tile in enumerate(row[xb1: xb2 + 1]):
+                    tile_rect = game.Rect(ix + (j * tw) + tbw, iy + (i * th) + tbw, tw - (2 * tbw), th - (2 * tbw))
+                    game.draw.rect(display, tile.colour, tile_rect)
 
             event_queue = app.run()
             for event in event_queue:
@@ -60,26 +84,37 @@ class MotherloadGame:
                     self.update_view_rect()
 
                     os.system('cls' if os.name == 'nt' else 'clear')
-                    g1.print_tile_symbols()
+                    # g1.print_tile_symbols()
                     print("mgl:", self.view_rect)
                     # print("VIEW:", "\n".join([str(row) for row in self.grid.tiles[self.view_rect[1]:self.view_rect[3]]]))
                     # print("VIEW:", "\n".join([str(row[self.view_rect[0]:self.view_rect[3]]) for row in self.grid.tiles[self.view_rect[1]:self.view_rect[3]]]))
                 # if event[:4]
-
+            polled = game.event.poll()
+            if str(polled) != "<Event(0-NoEvent {})>":
+                print("peeking:", polled)
         app.clock.tick(30)
 
     def update_view_rect(self):
-        v, cx, cy = self.grid.get_active_vehicle()
+        v, cy, cx = self.grid.get_active_vehicle()
 
         if v is None:
             cy, cx = self.grid.grid_data_in["width"] // 2, self.grid.grid_data_in["ground_level"]
 
+        print("update_view_rect: ({}, {})".format(cx, cy))
+
         self.view_rect = (
-            max(0, (cx - (self.grid.grid_data_in["width"]) // 2)),
-            max(0, (cy - (self.grid.grid_data_in["height"]) // 2)),
+            max(0, min(cx - (self.view_rect_w // 2), self.grid.grid_data_in["width"] - self.view_rect_w)),
+            max(0, min(cy - (self.view_rect_h // 2), self.grid.grid_data_in["height"] - self.view_rect_h)),
             self.view_rect_w,
             self.view_rect_h
         )
+
+        # self.view_rect = (
+        #     max(0, (cx - (self.grid.grid_data_in["width"] // 2))),
+        #     max(0, (cy - (self.grid.grid_data_in["height"] // 2))),
+        #     self.view_rect_w,
+        #     self.view_rect_h
+        # )
 
 
 
