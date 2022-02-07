@@ -1,6 +1,9 @@
 class Vehicle:
 
-    def __init__(self, id_no, name, pos, colour,
+    state_falling = "falling"
+    state_hovering = "hovering"
+
+    def __init__(self, id_no, name, rect, colour,
                  x_vel=0,
                  y_vel=0,
                  x_acc=0,
@@ -15,7 +18,7 @@ class Vehicle:
                  ):
         self.id_no = id_no
         self.name = name
-        self.pos = pos
+        self.rect = rect
         self.colour = colour
         self.x_vel = x_vel
         self.y_vel = y_vel
@@ -28,3 +31,11 @@ class Vehicle:
         self.propeller = propeller
         self.fuel_tank = fuel_tank
         self.text_symbol = text_symbol
+
+        self.state = self.state_falling
+
+    def set_hovering(self):
+        self.state = self.state_hovering
+
+    def set_falling(self):
+        self.state = self.state_falling

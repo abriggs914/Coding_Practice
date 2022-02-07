@@ -16,7 +16,7 @@ UPDATE
 SET
 	[TransactionTypeID] = @id
 WHERE
-	[TransactionID] IN (1695, 1684, 1666)
+	[TransactionID] IN  ()
 	
 SELECT * FROM [ScotiaTransactionTypes] ORDER BY [TransactionType], [TransactionSubType]
 SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] IS NULL ORDER BY [TransactionTypeID], [Date] DESC

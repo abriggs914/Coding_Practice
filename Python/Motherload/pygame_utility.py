@@ -2292,7 +2292,7 @@ class PygameApplication:
             kbd_q = kbd.is_pressed('q')
 			
         for i, event in enumerate(events):
-            pos = pygame.mouse.get_pos()
+            # pos = pygame.mouse.get_pos()
             if kbd_q or event.type == pygame.QUIT:
                 self.is_playing = False
             # if i != len(events) - 1:

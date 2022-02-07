@@ -25,7 +25,7 @@ WHILE @d < GETDATE() BEGIN
 		SUM([# Debits]) + SUM([# Credits]),
 		SUM([Total Spent]),
 		SUM([Total Earned]),
-		AVG([Total])
+		SUM([Total])
 	FROM (
 		SELECT
 			@d AS [Date],
