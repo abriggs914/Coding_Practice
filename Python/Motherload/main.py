@@ -114,12 +114,12 @@ class MotherloadGame:
             cvx += dx
 
 
-            print("1, (cvx, cvy): ({}, {}), (dx, dy): ({}, {}), (x_vel, y_vel): ({}, {}), (x_acc, y_acc): ({}, {}), (nx_vel, vy_vel): ({}, {}), self.grid.r_c_at_x_y({}), d.rect: {}".format(cvx, cvy, dx, dy, x_vel, y_vel, x_acc, y_acc, vehicle.x_vel, vehicle.y_vel, self.grid.r_c_at_x_y(cvx, cvy), self.grid.drawing_rect))
+            print("1, (cvx, cvy): ({}, {}), (dx, dy): ({}, {}), (x_vel, y_vel): ({}, {}), (x_acc, y_acc): ({}, {}), (nx_vel, vy_vel): ({}, {}), self.grid.r_c_at_x_y({}), d.rect: {}, t.rect: {}".format(cvx, cvy, dx, dy, x_vel, y_vel, x_acc, y_acc, vehicle.x_vel, vehicle.y_vel, self.grid.r_c_at_x_y(cvx, cvy), self.grid.drawing_rect, "None" if self.grid.tile_at_x_y(cvx, cvy) is None else self.grid.tile_at_x_y(cvx, cvy).rect))
             d_rect = self.grid.drawing_rect
-            cvx = min(d_rect.right-1, max(d_rect.left, cvx))
-            cvy = min(d_rect.bottom-1, max(d_rect.top, cvy))
+            cvx = min(d_rect.right-2, max(d_rect.left, cvx))
+            cvy = min(d_rect.bottom-2, max(d_rect.top, cvy))
 
-            print("2, (cvx, cvy): ({}, {}), (dx, dy): ({}, {}), (x_vel, y_vel): ({}, {}), (x_acc, y_acc): ({}, {}), (nx_vel, vy_vel): ({}, {}), self.grid.r_c_at_x_y({}), d.rect: {}".format(cvx, cvy, dx, dy, x_vel, y_vel, x_acc, y_acc, vehicle.x_vel, vehicle.y_vel, self.grid.r_c_at_x_y(cvx, cvy), self.grid.drawing_rect))
+            print("2, (cvx, cvy): ({}, {}), (dx, dy): ({}, {}), (x_vel, y_vel): ({}, {}), (x_acc, y_acc): ({}, {}), (nx_vel, vy_vel): ({}, {}), self.grid.r_c_at_x_y({}), d.rect: {}, t.rect: {}".format(cvx, cvy, dx, dy, x_vel, y_vel, x_acc, y_acc, vehicle.x_vel, vehicle.y_vel, self.grid.r_c_at_x_y(cvx, cvy), self.grid.drawing_rect, "None" if self.grid.tile_at_x_y(cvx, cvy) is None else self.grid.tile_at_x_y(cvx, cvy).rect))
             cvy, cvx = self.grid.r_c_at_x_y(cvx, cvy)
 
             # Move vehicle(s)
