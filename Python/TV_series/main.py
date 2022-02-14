@@ -578,6 +578,32 @@ criminal_minds = TVSeries("Criminal Minds", {
 	"Disney+")
 	
 
+baskets = TVSeries("Baskets", {
+	1 : 10,
+	2 : 10,
+	3 : 10,
+	4 : 10},
+	22,
+	2016,
+	2019,
+	False,
+	"Comedy",
+	"Disney+")
+	
+	
+sherlock = TVSeries("Sherlock", {
+	1 : 3,
+	2 : 3,
+	3 : 3,
+	4 : 4},
+	90,
+	2010,
+	2017,
+	False,
+	"Mystery / Crime / Drama",
+	"Prime TV")
+	
+
 series_list = [
     the_office,
     community,
@@ -616,7 +642,9 @@ series_list = [
 	solar_opposites,
 	the_orville,
 	mr_robot,
-	criminal_minds
+	criminal_minds,
+	baskets,
+	sherlock
 ]
    
 def longest_series_title(series_list) :

@@ -264,41 +264,87 @@ class Grid:
         assert 0 <= c < self.grid_data_in["width"], "Col \"{}\" from param pos: \"{}\" is out of range ({}, {}).".format(pos[1], pos, 0, self.grid_data_in["width"])
         self.tiles[r][c] = gem
 
-    # Requires a Vehicle object and (row, col) grid coordinates
+    # # Requires a Vehicle object and (row, col) grid coordinates
+    # def set_vehicle(self, vehicle, pos):
+    #     assert isinstance(vehicle, Vehicle), "Cannot insert non-vehicle value \"{}\" into this grid.".format(vehicle)
+    #     assert (isinstance(pos, tuple) or isinstance(pos, list)) and len(pos) == 2, "Parameter pos \"{}\" must be a tuple / list of length 2"
+    #     c, r = pos
+    #     assert 0 <= r < self.grid_data_in["height"], "Row \"{}\" from param pos: \"{}\" is out of range ({}, {}).".format(pos[0], pos, 0, self.grid_data_in["height"])
+    #     assert 0 <= c < self.grid_data_in["width"], "Col \"{}\" from param pos: \"{}\" is out of range ({}, {}).".format(pos[1], pos, 0, self.grid_data_in["width"])
+    #
+    #     cv, cy, cx = self.get_active_vehicle()
+    #
+    #     # Clear the grid square where the vehicle just was
+    #     if cv is not None:
+    #         tr = cv.rect
+    #         self.tiles[cy][cx] = TileAir(COLOUR_TILE_AIR, DURABILITY_TILE_AIR, tr)
+    #
+    #     ix, iy = self.drawing_rect.topleft
+    #     xb1, yb1, xbd, ybd = self.view_rect
+    #     xb2 = xb1 + xbd
+    #     yb2 = yb1 + ybd
+    #     tbw = self.tile_border_width
+    #     th = self.drawing_rect.height / len(self.tiles[yb1: yb2 + 1])
+    #     tw = self.drawing_rect.width / len(self.tiles[xb1: xb2 + 1])
+    #     tile_rect = self.game.Rect(ix + (c * tw) + tbw, iy + (r * th) + tbw, tw - (2 * tbw), th - (2 * tbw))
+    #     m = max(0, min(1, self.grid_data_in["vehicle_magnifier"]))
+    #     n_w = tile_rect.width * m
+    #     n_h = tile_rect.height * m
+    #     d_w = tile_rect.width - n_w
+    #     d_h = tile_rect.height - n_h
+    #     n_x1 = tile_rect.left + (d_w / 2)
+    #     n_y1 = tile_rect.top + (d_h / 2)
+    #     n_tr = self.game.Rect(n_x1, n_y1, n_w, n_h)
+    #
+    #     vehicle.rect = n_tr
+    #     self.tiles[r][c] = vehicle
+    #     self.active_vehicle = vehicle, r, c
+
+    # Requires a Vehicle object and (x, y) coordinates
     def set_vehicle(self, vehicle, pos):
-        assert isinstance(vehicle, Vehicle), "Cannot insert non-vehicle value \"{}\" into this grid.".format(vehicle)
-        assert (isinstance(pos, tuple) or isinstance(pos, list)) and len(pos) == 2, "Parameter pos \"{}\" must be a tuple / list of length 2"
-        c, r = pos
-        assert 0 <= r < self.grid_data_in["height"], "Row \"{}\" from param pos: \"{}\" is out of range ({}, {}).".format(pos[0], pos, 0, self.grid_data_in["height"])
-        assert 0 <= c < self.grid_data_in["width"], "Col \"{}\" from param pos: \"{}\" is out of range ({}, {}).".format(pos[1], pos, 0, self.grid_data_in["width"])
-
-        cv, cy, cx = self.get_active_vehicle()
-
-        # Clear the grid square where the vehicle just was
-        if cv is not None:
-            tr = cv.rect
-            self.tiles[cy][cx] = TileAir(COLOUR_TILE_AIR, DURABILITY_TILE_AIR, tr)
-
-        ix, iy = self.drawing_rect.topleft
-        xb1, yb1, xbd, ybd = self.view_rect
-        xb2 = xb1 + xbd
-        yb2 = yb1 + ybd
-        tbw = self.tile_border_width
-        th = self.drawing_rect.height / len(self.tiles[yb1: yb2 + 1])
-        tw = self.drawing_rect.width / len(self.tiles[xb1: xb2 + 1])
-        tile_rect = self.game.Rect(ix + (c * tw) + tbw, iy + (r * th) + tbw, tw - (2 * tbw), th - (2 * tbw))
-        m = max(0, min(1, self.grid_data_in["vehicle_magnifier"]))
-        n_w = tile_rect.width * m
-        n_h = tile_rect.height * m
-        d_w = tile_rect.width - n_w
-        d_h = tile_rect.height - n_h
-        n_x1 = tile_rect.left + (d_w / 2)
-        n_y1 = tile_rect.top + (d_h / 2)
-        n_tr = self.game.Rect(n_x1, n_y1, n_w, n_h)
-
-        vehicle.rect = n_tr
-        self.tiles[r][c] = vehicle
-        self.active_vehicle = vehicle, r, c
+        print("set_vehicle:", *pos, vehicle.rect.width, vehicle.rect.height)
+        vehicle.rect = self.game.Rect(*pos, vehicle.rect.width, vehicle.rect.height)
+        self.active_vehicle = vehicle, *pos
+        # r, c = self.r_c_at_x_y(*pos, bind=True)
+        # self.tiles[r][c] = vehicle
+        # assert isinstance(vehicle, Vehicle), "Cannot insert non-vehicle value \"{}\" into this grid.".format(vehicle)
+        # assert (isinstance(pos, tuple) or isinstance(pos, list)) and len(
+        #     pos) == 2, "Parameter pos \"{}\" must be a tuple / list of length 2"
+        # c, r = pos
+        # assert 0 <= r < self.grid_data_in[
+        #     "height"], "Row \"{}\" from param pos: \"{}\" is out of range ({}, {}).".format(pos[0], pos, 0,
+        #                                                                                     self.grid_data_in["height"])
+        # assert 0 <= c < self.grid_data_in[
+        #     "width"], "Col \"{}\" from param pos: \"{}\" is out of range ({}, {}).".format(pos[1], pos, 0,
+        #                                                                                    self.grid_data_in["width"])
+        #
+        # cv, cy, cx = self.get_active_vehicle()
+        #
+        # # Clear the grid square where the vehicle just was
+        # if cv is not None:
+        #     tr = cv.rect
+        #     self.tiles[cy][cx] = TileAir(COLOUR_TILE_AIR, DURABILITY_TILE_AIR, tr)
+        #
+        # ix, iy = self.drawing_rect.topleft
+        # xb1, yb1, xbd, ybd = self.view_rect
+        # xb2 = xb1 + xbd
+        # yb2 = yb1 + ybd
+        # tbw = self.tile_border_width
+        # th = self.drawing_rect.height / len(self.tiles[yb1: yb2 + 1])
+        # tw = self.drawing_rect.width / len(self.tiles[xb1: xb2 + 1])
+        # tile_rect = self.game.Rect(ix + (c * tw) + tbw, iy + (r * th) + tbw, tw - (2 * tbw), th - (2 * tbw))
+        # m = max(0, min(1, self.grid_data_in["vehicle_magnifier"]))
+        # n_w = tile_rect.width * m
+        # n_h = tile_rect.height * m
+        # d_w = tile_rect.width - n_w
+        # d_h = tile_rect.height - n_h
+        # n_x1 = tile_rect.left + (d_w / 2)
+        # n_y1 = tile_rect.top + (d_h / 2)
+        # n_tr = self.game.Rect(n_x1, n_y1, n_w, n_h)
+        #
+        # vehicle.rect = n_tr
+        # self.tiles[r][c] = vehicle
+        # self.active_vehicle = vehicle, r, c
 
     def get_active_vehicle(self):
         return self.active_vehicle
@@ -337,14 +383,36 @@ class Grid:
                     return r, c
         return None, None
 
-    def r_c_at_x_y(self, x, y):
+    def r_c_at_x_y(self, x, y, bind=False):
         # print("({}, {})".format(x, y))
+        bound = None, None
+        tile_top_left, ttlr, ttlc = None, None, None
+        tile_bottom_right, tbrr, tbrc = None, None, None
         for r, tile_row in enumerate(self.tiles):
             for c, tile in enumerate(tile_row):
+                if r == 0 and c == 0:
+                    tile_top_left = tile.rect, r, c
+                if r == len(self.tiles) - 1 and c == len(self.tiles[r]) - 1:
+                    tile_bottom_right = tile.rect, r, c
                 # print("(" + str(r) + ", " + str(c) + ") tile.rect:", tile.rect, "tile.rect.collidepoint((x, y):", tile.rect.collidepoint((x, y)))
                 if tile.rect.collidepoint((x, y)):
                     return r, c
-        return None, None
+                elif bind:
+                    if tile.rect.left <= x <= tile.rect.right:
+                        if tile.rect.top <= y <= tile.rect.bottom:
+                            bound = r, c
+        if bound[0] is None and bound[1] is None:
+            if tile_top_left[0] and tile_bottom_right[0]:
+                if x < tile_top_left[0].left:
+                    bound = bound[0], tile_top_left[2]
+                if y < tile_top_left[0].top:
+                    bound = tile_top_left[1], bound[1]
+                if x > tile_bottom_right[0].right:
+                    bound = bound[0], tile_bottom_right[2]
+                if y > tile_bottom_right[0].bottom:
+                    bound = tile_bottom_right[1], bound[1]
+        print("({}, {}) bound to ({}, {})".format(x, y, *bound))
+        return bound
 
     def x_y_at_r_c(self, r, c):
         if r in range(len(self.tiles)):
