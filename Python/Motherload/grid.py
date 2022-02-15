@@ -116,8 +116,6 @@ class Grid:
         self.drawing_rect_colour = GRAY_45
         self.tile_border_width = 0
 
-        self.update_view_rect()
-
 
 
 
@@ -178,6 +176,7 @@ class Grid:
 
         self.tiles = tiles
         print("post_init tiles:", self.tiles)
+        self.update_view_rect()
         self.is_init = True
 
     def print_tile_symbols(self):
@@ -190,8 +189,8 @@ class Grid:
         print("\n" + "\n".join(syms) + "\n")
 
     def update_view_rect(self):
-        v, cy, cx = self.get_active_vehicle()
-
+        v, cy, cx, r, c = self.get_active_vehicle_pos()
+        cy, cx = r, c
         if v is None:
             cy, cx = self.grid_data_in["width"] // 2, self.grid_data_in["ground_level"]
 
@@ -302,7 +301,14 @@ class Grid:
 
     # Requires a Vehicle object and (x, y) coordinates
     def set_vehicle(self, vehicle, pos):
-        print("set_vehicle:", *pos, vehicle.rect.width, vehicle.rect.height)
+        if not self.drawing_rect.collidepoint(pos):
+            print("setting off drawing rect")
+            # pos = self.x_y_at_r_c(*self.r_c_at_x_y(*pos, True))
+        dr = self.drawing_rect
+        # vehicle, *args = self.get_active_vehicle()
+        vr = vehicle.rect
+        pos = min(dr.right - vr.width, max(dr.left, pos[0])), min(dr.bottom - vr.height, max(dr.top, pos[1]))
+        # print("set_vehicle:", *pos, vehicle.rect.width, vehicle.rect.height)
         vehicle.rect = self.game.Rect(*pos, vehicle.rect.width, vehicle.rect.height)
         self.active_vehicle = vehicle, *pos
         # r, c = self.r_c_at_x_y(*pos, bind=True)
@@ -349,6 +355,14 @@ class Grid:
     def get_active_vehicle(self):
         return self.active_vehicle
 
+    def get_active_vehicle_pos(self):
+        v, x, y = self.get_active_vehicle()
+        if x is not None and y is not None:
+            r, c = self.r_c_at_x_y(x, y, True)
+        else:
+            r, c = None, None
+        return c, x, y, r, c
+
     def get_drawing_tiles(self):
         tiles_list = self.tiles
         xb1, yb1, xbd, ybd = self.view_rect.left, self.view_rect.top, self.view_rect.width, self.view_rect.height
@@ -384,7 +398,7 @@ class Grid:
         return None, None
 
     def r_c_at_x_y(self, x, y, bind=False):
-        # print("({}, {})".format(x, y))
+        print("({}, {})".format(x, y))
         bound = None, None
         tile_top_left, ttlr, ttlc = None, None, None
         tile_bottom_right, tbrr, tbrc = None, None, None

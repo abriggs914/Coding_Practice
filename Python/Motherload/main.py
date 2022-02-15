@@ -39,12 +39,12 @@ class MotherloadGame:
         t_sec = self.grid.grid_data_in["tick_time"]
 
         dx, dy = 0, 0
-        vehicle, cvy, cvx = self.grid.get_active_vehicle()
+        vehicle, cvx, cvy = self.grid.get_active_vehicle()
         print("vehicle:", vehicle)
 
         while app.is_playing:
             display.fill(BLACK)
-            vehicle, cvy, cvx = self.grid.get_active_vehicle()
+            vehicle, cvx, cvy = self.grid.get_active_vehicle()
 
             # draw widgets and objects here
 
@@ -60,30 +60,22 @@ class MotherloadGame:
 
             # Draw vehicle
             vehicle = self.grid.get_active_vehicle()[0]
-            print("drawing vehicle:", vehicle.rect)
+            print("drawing vehicle:", vehicle.rect, "x: {}, maxx:{}, y: {}, maxy:{}".format(vehicle.x_vel, vehicle.x_vel_max, vehicle.y_vel, vehicle.y_vel_max))
             game.draw.rect(display, vehicle.colour, vehicle.rect)
 
             # Handle Events
-            change_x, change_y = 0, 0
+            change_x, change_y = vehicle.x_vel, vehicle.y_vel
             event_queue = app.run()
             for event in event_queue:
                 if event.type == pygame.KEYDOWN:
                     k = event.key
-                    if k == game.K_UP:
+                    if k == game.K_UP or k == game.K_w:
                         dy = -vehicle.y_acc
-                    elif k == game.K_LEFT:
+                    elif k == game.K_LEFT or k == game.K_a:
                         dx = -vehicle.x_acc
-                    elif k == game.K_DOWN:
+                    elif k == game.K_DOWN or k == game.K_s:
                         dy = vehicle.y_acc
-                    elif k == game.K_RIGHT:
-                        dx = vehicle.x_acc
-                    elif k == game.K_w:
-                        dy = -vehicle.y_acc
-                    elif k == game.K_a:
-                        dx = -vehicle.x_acc
-                    elif k == game.K_s:
-                        dy = vehicle.y_acc
-                    elif k == game.K_d:
+                    elif k == game.K_RIGHT or k == game.K_d:
                         dx = vehicle.x_acc
                 elif event.type == pygame.KEYUP:
                     if event.key in (game.K_UP, game.K_DOWN, game.K_w, game.K_s):
@@ -91,6 +83,7 @@ class MotherloadGame:
                     if event.key in (game.K_LEFT, game.K_RIGHT, game.K_a, game.K_d):
                         dx = 0
 
+            # print("dx: {}, dy: {}".format(dx, dy))
             change_x += dx
             change_y += dy
             if abs(change_x) >= vehicle.x_vel_max:  # If max_speed is exceeded.
@@ -109,6 +102,8 @@ class MotherloadGame:
 
             cvx += change_x
             cvy += change_y
+            vehicle.x_vel = change_x
+            vehicle.y_vel = change_y
             # self.grid.set_vehicle(vehicle, (cvx, cvy))
 
 
@@ -199,9 +194,15 @@ class MotherloadGame:
             # # if not isinstance(tile_to_be_c, TileAir):
             # #     print("collide with tile:", tile_to_be_c, "type(tile):", type(tile_to_be_c))
 
-            ncvx, ncvy = self.grid.r_c_at_x_y(cvx, cvy, bind=True)
-            print("cvx:", cvx, ", cvy:", cvy, ", ncvx:", ncvx, ", ncvy:", ncvy)
+            # ncvx, ncvy = self.grid.r_c_at_x_y(cvx, cvy, bind=True)
+            # print("cvx:", cvx, ", cvy:", cvy, ", ncvx:", ncvx, ", ncvy:", ncvy)
             # self.grid.set_vehicle(vehicle, (ncvx, ncvy))
+
+            dr = self.grid.drawing_rect
+            if not (dr.left <= cvx <= (dr.right - vehicle.rect.width)):
+                vehicle.x_vel = 0
+            if not (dr.top <= cvx <= (dr.bottom - vehicle.rect.height)):
+                vehicle.y_vel = 0
             self.grid.set_vehicle(vehicle, (cvx, cvy))
 
             self.grid.update_view_rect()
