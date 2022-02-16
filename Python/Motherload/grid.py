@@ -88,7 +88,7 @@ class Grid:
         self.active_vehicle = None, None, None
 
         # TODO HARDCODE
-        self.view_rect = None
+        self.view_rect = None  # This rect stores (r, c, w, h) of the viewing rect
         self.view_rect_w = 25
         self.view_rect_h = 18
 
@@ -190,18 +190,24 @@ class Grid:
 
     def update_view_rect(self):
         v, cy, cx, r, c = self.get_active_vehicle_pos()
-        cy, cx = r, c
         if v is None:
-            cy, cx = self.grid_data_in["width"] // 2, self.grid_data_in["ground_level"]
+            r, c = self.grid_data_in["ground_level"] * 2, self.grid_data_in["width"]
 
         # print("update_view_rect: ({}, {})".format(cx, cy))
 
-        self.view_rect = self.game.Rect(
-            max(0, min(cx - (self.view_rect_w // 2), self.grid_data_in["width"] - self.view_rect_w)),
-            max(0, min(cy - (self.view_rect_h // 2), self.grid_data_in["height"] - self.view_rect_h)),
-            self.view_rect_w,
-            self.view_rect_h
-        )
+        # (r, c, w, h)
+        self.view_rect = {
+            "row": max(0, min(r - (self.view_rect_h // 2), self.grid_data_in["height"] - self.view_rect_h)),
+            "col": max(0, min(c - (self.view_rect_w // 2), self.grid_data_in["width"] - self.view_rect_w)),
+            "width": self.view_rect_w,
+            "height": self.view_rect_h
+        }
+        # self.view_rect = self.game.Rect(
+        #     max(0, min(cy - (self.view_rect_h // 2), self.grid_data_in["height"] - self.view_rect_h)),
+        #     max(0, min(cx - (self.view_rect_w // 2), self.grid_data_in["width"] - self.view_rect_w)),
+        #     self.view_rect_w,
+        #     self.view_rect_h
+        # )
 
         self.update_viewing_tiles()
 
@@ -213,12 +219,13 @@ class Grid:
         ix, iy = self.drawing_rect.topleft
         # draw tiles:
         # xb1, yb1, xbd, ybd = self.view_rect
-        xb1, yb1, xbd, ybd = self.view_rect.left, self.view_rect.top, self.view_rect.width, self.view_rect.height
-        # xb2 = xb1 + xbd
-        # yb2 = yb1 + ybd
-        xb1, yb1 = yb1, xb1
-        xb2 = yb1 + ybd
-        yb2 = xb1 + xbd
+        # xb1, yb1, xbd, ybd = self.view_rect.left, self.view_rect.top, self.view_rect.width, self.view_rect.height
+        # # xb2 = xb1 + xbd
+        # # yb2 = yb1 + ybd
+        # xb1, yb1 = yb1, xb1
+        # xb2 = yb1 + ybd
+        # yb2 = xb1 + xbd
+        xbd, ybd = self.view_rect["width"], self.view_rect["height"]
 
         # return [row[yb1: yb2 + 1] for row in tiles_list[xb1: xb2 + 1]]
 
@@ -230,15 +237,15 @@ class Grid:
             for j, tile in enumerate(row):
                 tile_rect = self.game.Rect(ix + (j * tw) + tbw, iy + (i * th) + tbw, tw - (2 * tbw), th - (2 * tbw))
                 # print("(i, j): ({}, {}), tw: {}, th: {}, rect: {}".format(i, j, tw, th, tile_rect))
-                if isinstance(tile, Vehicle):
-                    m = self.grid_data_in["vehicle_magnifier"]
-                    n_w = tile_rect.width * m
-                    n_h = tile_rect.height * m
-                    d_w = tile_rect.width - n_w
-                    d_h = tile_rect.height - n_h
-                    n_x1 = tile_rect.left + (d_w / 2)
-                    n_y1 = tile_rect.top + (d_h / 2)
-                    tile_rect = self.game.Rect(n_x1, n_y1, n_w, n_h)
+                # if isinstance(tile, Vehicle):
+                #     m = self.grid_data_in["vehicle_magnifier"]
+                #     n_w = tile_rect.width * m
+                #     n_h = tile_rect.height * m
+                #     d_w = tile_rect.width - n_w
+                #     d_h = tile_rect.height - n_h
+                #     n_x1 = tile_rect.left + (d_w / 2)
+                #     n_y1 = tile_rect.top + (d_h / 2)
+                #     tile_rect = self.game.Rect(n_x1, n_y1, n_w, n_h)
 
                 tiles_list[i][j].rect = tile_rect
 
@@ -361,11 +368,11 @@ class Grid:
             r, c = self.r_c_at_x_y(x, y, True)
         else:
             r, c = None, None
-        return c, x, y, r, c
+        return v, x, y, r, c
 
     def get_drawing_tiles(self):
         tiles_list = self.tiles
-        xb1, yb1, xbd, ybd = self.view_rect.left, self.view_rect.top, self.view_rect.width, self.view_rect.height
+        xb1, yb1, xbd, ybd = self.view_rect["col"], self.view_rect["row"], self.view_rect["width"], self.view_rect["height"]
         xb2 = xb1 + xbd
         yb2 = yb1 + ybd
         # print("\t\t(xb1: {}, xb2: {}, xbd: {}, yb1: {}, yb2 {}, ybd: {})".format(xb1, xb2, xbd, yb1, yb2, ybd))

@@ -59,8 +59,8 @@ class MotherloadGame:
                     game.draw.rect(display, tile.colour, tile.rect)
 
             # Draw vehicle
-            vehicle = self.grid.get_active_vehicle()[0]
-            print("drawing vehicle:", vehicle.rect, "x: {}, maxx:{}, y: {}, maxy:{}".format(vehicle.x_vel, vehicle.x_vel_max, vehicle.y_vel, vehicle.y_vel_max))
+            # vehicle, vx, vy = self.grid.get_active_vehicle()
+            print("drawing vehicle:", vehicle.rect, "x: {}, maxx:{}, y: {}, maxy:{}, Tile: {}".format(vehicle.x_vel, vehicle.x_vel_max, vehicle.y_vel, vehicle.y_vel_max, self.grid.tile_at_x_y(cvx, cvy)))
             game.draw.rect(display, vehicle.colour, vehicle.rect)
 
             # Handle Events
