@@ -189,7 +189,7 @@ class Grid:
         print("\n" + "\n".join(syms) + "\n")
 
     def update_view_rect(self):
-        v, cy, cx, r, c = self.get_active_vehicle_pos()
+        v, cx, cy, r, c = self.get_active_vehicle_pos()
         if v is None:
             r, c = self.grid_data_in["ground_level"] * 2, self.grid_data_in["width"]
 

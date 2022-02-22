@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<div class="ITR Body" id="ITR Body ID 001" >
+			<pre>
+				import csv
+				import xlwt
+				from xlwt import Workbook
+
+				# Create an excel worksheet to store MTG card data dump.
+
+				if __name__ == "__main__":
+					<var>fn</var> = "Collection.csv"
+					<var>lines</var> = []
+					with open(fn, "r") as f:
+						<var>lines</var> = f.readlines()
+					
+					if lines:
+						<var>wb</var> = Workbook()
+						
+						# add_sheet is used to create sheet.
+						<var>sheet1</var> = wb.add_sheet("Sheet 1")
+						
+						# writing in (r, c, Value) format
+						for i, line in enumerate(lines):
+							<var>spl_line</var> = line.split("\t")
+							for j, val in enumerate(spl_line):
+								sheet1.write(i, j, val)
+						
+					
+						wb.save("cards.xls")
+			</pre>
+		</div>
+	</body>
+	<footer>
+		<h6>
+			Note: Request attachments will be included in future emails once BWS has transitioned to Office 365.
+		</h6>
+	</footer>	
+</html> 
