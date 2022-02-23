@@ -1,54 +1,17 @@
 from colour_utility import *
 from utility import *
 from vehicle import *
+from TileDirt import *
+from TileAir import *
+from GemIron import *
+from GemQuartz import *
+from GemDiamond import *
 
 
 COLOUR_TILE_AIR = WHITE
 DURABILITY_TILE_AIR = 0
 COLOUR_TILE_DIRT = BROWN_3
 DURABILITY_TILE_DIRT = 1
-
-
-class Tile:
-    def __init__(self, text_symbol, colour, durability, rect):
-        self.text_symbol = text_symbol
-        self.colour = colour
-        self.durability = durability
-        self.rect = rect
-
-    def __eq__(self, other):
-        return isinstance(other, Tile) and other.text_symbol == self.text_symbol and other.rect == self.rect
-
-
-class TileAir(Tile):
-    def __init__(self, colour, durability, rect, text_symbol=" "):
-        super().__init__(text_symbol, colour, durability, rect)
-
-
-class TileDirt(Tile):
-    def __init__(self, colour, durability, rect, text_symbol="O"):
-        super().__init__(text_symbol, colour, durability, rect)
-
-
-class Gem(Tile):
-    def __init__(self, name, colour, durability, rect, text_symbol):
-        super().__init__(text_symbol, colour, durability, rect)
-        self.name = name
-
-
-class GemDiamond(Gem):
-    def __init__(self, colour, durability, rect=None, name="Diamond", text_symbol="D"):
-        super().__init__(name, colour, durability, rect, text_symbol)
-
-
-class GemQuartz(Gem):
-    def __init__(self, colour, durability, rect=None, name="Quartz", text_symbol="Q"):
-        super().__init__(name, colour, durability, rect, text_symbol)
-
-
-class GemIron(Gem):
-    def __init__(self, colour, durability, rect=None, name="Iron", text_symbol="I"):
-        super().__init__(name, colour, durability, rect, text_symbol)
 
 
 class Grid:
