@@ -7,7 +7,7 @@
 BEGIN TRAN;
 
 DECLARE @id AS INT;
-SET @id = 11;
+SET @id = 5;
 
 SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] IS NULL
 
@@ -16,9 +16,9 @@ UPDATE
 SET
 	[TransactionTypeID] = @id
 WHERE
-	[TransactionID] IN  ()
+	[TransactionID] IN  (1946, 1952)
 	
-SELECT * FROM [ScotiaTransactionTypes] ORDER BY [TransactionType], [TransactionSubType]
+SELECT [ScotiaTransactionTypes].*, COUNT([ScotiaTransactions].[TransactionID] ) AS [#] FROM [ScotiaTransactionTypes] LEFT JOIN [ScotiaTransactions] ON [ScotiaTransactions].[TransactionTypeID] = [ScotiaTransactionTypes].[TransactionTypeID] GROUP BY [ScotiaTransactionTypes].[TransactionTypeID], [ScotiaTransactionTypes].[TransactionType], [ScotiaTransactionTypes].[TransactionSubType] ORDER BY [TransactionType], [TransactionSubType]
 SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] IS NULL ORDER BY [TransactionTypeID], [Date] DESC
 SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] IS NOT NULL ORDER BY [TransactionTypeID], [Date] DESC
 SELECT * FROM [ScotiaTransactions] WHERE [TransactionTypeID] = @id ORDER BY [TransactionTypeID], [Entity]
