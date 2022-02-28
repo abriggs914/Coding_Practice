@@ -15,5 +15,9 @@ list_of_movies = [
 	"Deadpool"
 	"Public Enemies",
 	"Oblivion",
-	"The Tomorrow War"
+	"The Tomorrow War",
+	"Kingsman The Secret Service",
+	"Kingsman The Golden Circle",
+	"The Kingsman",
+	"The A-Team"
 ]
