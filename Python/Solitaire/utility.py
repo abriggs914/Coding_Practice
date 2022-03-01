@@ -652,7 +652,7 @@ def brighten(c, p):
     return r, g, b
 
 
-# return random RGB color
+# return random_draw RGB color
 def random_color():
     return (
         randint(10, 245),
