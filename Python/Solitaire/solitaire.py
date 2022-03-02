@@ -79,7 +79,14 @@ class Card:
         return isinstance(other, Card) and self.same_face(other) and self.same_suit(other)
 
     def gen_image_url(self):
-        return r"""C:\Users\ABriggs\Documents\Coding Practice\Coding_Practice\Resources\Cards\{}""".format(self.suit["name"].lower() + "_" + self.value + ".png")
+        # Location on work computer
+        url = r"""C:\Users\ABriggs\Documents\Coding Practice\Coding_Practice\Resources\Cards\{}""".format(self.suit["name"].lower() + "_" + self.value + ".png")
+        if not os.path.exists(url):
+            # location on home computer
+            url = r"""C:\Users\abrig\Documents\Coding_Practice\Resources\Cards\cropped\{}""".format(self.suit["name"].lower() + "_" + self.value + ".png")
+            if not os.path.exists(url):
+                raise FileNotFoundError(f"Cant find image file: \"{url}\"")
+        return url
 
     def __eq__(self, other):
         return isinstance(other, Card) and all([
@@ -158,7 +165,14 @@ class Deck:
         return len(self.cards)
 
     def gen_image_url(self):
-        return r"""C:\Users\ABriggs\Documents\Coding Practice\Coding_Practice\Resources\Cards\back_blue_&_yellow_diamonds.png"""
+        # Location on work computer
+        url = r"""C:\Users\ABriggs\Documents\Coding Practice\Coding_Practice\Resources\Cards\back_blue_&_yellow_diamonds.png"""
+        if not os.path.exists(url):
+            # location on home computer
+            url = r"""C:\Users\abrig\Documents\Coding_Practice\Resources\Cards\back_blue_&_yellow_diamonds.png"""
+            if not os.path.exists(url):
+                raise FileNotFoundError(f"Cant find image file: \"{url}\"")
+        return url
 
     def init_cards(self):
         suits = self.suits
@@ -198,6 +212,9 @@ class Deck:
         return self.cards
 
 
+class SolitaireGameOverError(Exception):
+    pass
+
 class Solitaire:
     def __init__(
             self,
@@ -210,6 +227,7 @@ class Solitaire:
         # print(f"hand {len(hand)} :", hand)
 
         self.n_resets = n_resets
+        self.n_resets_used = 0
         self.n_cols = n_cols
 
         self.discard_pile = []
@@ -294,3 +312,24 @@ class Solitaire:
             if card.value == Card.VALID_FACE[Card.VALID_FACE.index(top_card.value) + 1]:
                 return True
         return False
+
+    def can_draw(self):
+        return len(self.deck) > 0
+
+    def can_reset(self):
+        return self.n_resets > self.n_resets_used
+
+    def reset(self):
+        self.n_resets_used += 1
+        if self.n_resets_used > self.n_resets:
+            raise SolitaireGameOverError("You are out of resets.")
+        self.deck.cards = self.deck.discarded
+        self.deck.discarded = []
+        self.shuffle()
+
+    def get_top_card(self, col_idx):
+        assert col_idx in range(self.n_cols)
+        col = self.columns[col_idx]
+        if col:
+            return col[-1]
+        return None
