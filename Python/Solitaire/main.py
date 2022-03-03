@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # s.shuffle()
     # s.draw_card()
 
-    WIDTH, HEIGHT = 1600, 1000
+    WIDTH, HEIGHT = 900, 600
     W_CARD, H_CARD = 75, 135
     W_CARD, H_CARD = 178, 267
     F_W_CARD, F_H_CARD = 2 * 0.055, 6 * 0.055
