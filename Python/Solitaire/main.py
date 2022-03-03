@@ -2,7 +2,6 @@ import pygame
 from colour_utility import *
 from solitaire import *
 
-
 if __name__ == '__main__':
 
     # s.columns[0].append(Card(13, Suit.HEARTS))
@@ -21,22 +20,25 @@ if __name__ == '__main__':
     # s.draw_card()
 
     WIDTH, HEIGHT = 1600, 1000
-    WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Solitaire")
-    FONT = pygame.font.SysFont("comicsans", 16)
-
     W_CARD, H_CARD = 75, 135
     W_CARD, H_CARD = 178, 267
+    F_W_CARD, F_H_CARD = 2 * 0.055, 6 * 0.055
+
     LEFT_MOST, TOP_MOST = 35, 35
     X_SHIFT = -10
     Y_SHIFT = 20
     SPACE = 15
     RECT_DRAW_PILE = pygame.Rect(LEFT_MOST, TOP_MOST, W_CARD, H_CARD)
-    RECT_DISCARD_PILE = pygame.Rect(RECT_DRAW_PILE.left + (1 * (RECT_DRAW_PILE.width + (2 * SPACE) + X_SHIFT)), TOP_MOST, W_CARD, H_CARD)
-    RECT_FOUNDATION_1 = pygame.Rect(RECT_DRAW_PILE.left + (4 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD, H_CARD)
-    RECT_FOUNDATION_2 = pygame.Rect(RECT_DRAW_PILE.left + (5 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD, H_CARD)
-    RECT_FOUNDATION_3 = pygame.Rect(RECT_DRAW_PILE.left + (6 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD, H_CARD)
-    RECT_FOUNDATION_4 = pygame.Rect(RECT_DRAW_PILE.left + (7 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD, H_CARD)
+    RECT_DISCARD_PILE = pygame.Rect(RECT_DRAW_PILE.left + (1 * (RECT_DRAW_PILE.width + (2 * SPACE) + X_SHIFT)),
+                                    TOP_MOST, W_CARD, H_CARD)
+    RECT_FOUNDATION_1 = pygame.Rect(RECT_DRAW_PILE.left + (4 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD,
+                                    H_CARD)
+    RECT_FOUNDATION_2 = pygame.Rect(RECT_DRAW_PILE.left + (5 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD,
+                                    H_CARD)
+    RECT_FOUNDATION_3 = pygame.Rect(RECT_DRAW_PILE.left + (6 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD,
+                                    H_CARD)
+    RECT_FOUNDATION_4 = pygame.Rect(RECT_DRAW_PILE.left + (7 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD,
+                                    H_CARD)
     COL_TOP = TOP_MOST + RECT_FOUNDATION_1.height + SPACE
     N_COLS = 7
     RECT_COLUMN_1 = pygame.Rect(RECT_DRAW_PILE.left + (1 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
@@ -47,18 +49,55 @@ if __name__ == '__main__':
     RECT_COLUMN_6 = pygame.Rect(RECT_DRAW_PILE.left + (6 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
     RECT_COLUMN_7 = pygame.Rect(RECT_DRAW_PILE.left + (7 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
 
-    CARD_IMAGES = dict(zip(list(map(str, s.deck.cards)), [pygame.image.load(_img) for _img in [img.image for img in s.deck.cards]]))
-    print(f"[img.image for img in s.deck.cards]{len([img.image for img in s.deck.cards])}:", [img.image for img in s.deck.cards])
+    # Load images once
+    CARD_IMAGES = dict(
+        zip(list(map(str, s.deck.cards)), [pygame.image.load(_img) for _img in [img.image for img in s.deck.cards]]))
+    print(f"[img.image for img in s.deck.cards]{len([img.image for img in s.deck.cards])}:",
+          [img.image for img in s.deck.cards])
     DECK_IMAGE = pygame.image.load(s.deck.image)
 
     CARD_SELECTED = {}
 
-    # resize the images
-    for img in CARD_IMAGES.keys():
-        CARD_IMAGES[img] = pygame.transform.scale(CARD_IMAGES[img], (W_CARD, H_CARD))
-    DECK_IMAGE = pygame.transform.scale(DECK_IMAGE, (W_CARD, H_CARD))
 
+    def update_window_dims(w, h):
+        global WIDTH, HEIGHT, W_CARD, H_CARD, COL_TOP, RECT_DRAW_PILE, RECT_DISCARD_PILE, RECT_FOUNDATION_1, RECT_FOUNDATION_2, RECT_FOUNDATION_3, RECT_FOUNDATION_4, RECT_COLUMN_1, RECT_COLUMN_2, RECT_COLUMN_3, RECT_COLUMN_4, RECT_COLUMN_5, RECT_COLUMN_6, RECT_COLUMN_7, DECK_IMAGE, CARD_IMAGES, CARD_SELECTED
+        WIDTH, HEIGHT = w, h
+        W_CARD, H_CARD = int(F_W_CARD * WIDTH), int(F_H_CARD * HEIGHT)
+        RECT_DRAW_PILE = pygame.Rect(LEFT_MOST, TOP_MOST, W_CARD, H_CARD)
+        RECT_DISCARD_PILE = pygame.Rect(RECT_DRAW_PILE.left + (1 * (RECT_DRAW_PILE.width + (2 * SPACE) + X_SHIFT)),
+                                        TOP_MOST, W_CARD, H_CARD)
+        RECT_FOUNDATION_1 = pygame.Rect(RECT_DRAW_PILE.left + (4 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD,
+                                        H_CARD)
+        RECT_FOUNDATION_2 = pygame.Rect(RECT_DRAW_PILE.left + (5 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD,
+                                        H_CARD)
+        RECT_FOUNDATION_3 = pygame.Rect(RECT_DRAW_PILE.left + (6 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD,
+                                        H_CARD)
+        RECT_FOUNDATION_4 = pygame.Rect(RECT_DRAW_PILE.left + (7 * (RECT_DRAW_PILE.width + SPACE)), TOP_MOST, W_CARD,
+                                        H_CARD)
+        COL_TOP = TOP_MOST + RECT_FOUNDATION_1.height + SPACE
+        RECT_COLUMN_1 = pygame.Rect(RECT_DRAW_PILE.left + (1 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
+        RECT_COLUMN_2 = pygame.Rect(RECT_DRAW_PILE.left + (2 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
+        RECT_COLUMN_3 = pygame.Rect(RECT_DRAW_PILE.left + (3 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
+        RECT_COLUMN_4 = pygame.Rect(RECT_DRAW_PILE.left + (4 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
+        RECT_COLUMN_5 = pygame.Rect(RECT_DRAW_PILE.left + (5 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
+        RECT_COLUMN_6 = pygame.Rect(RECT_DRAW_PILE.left + (6 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
+        RECT_COLUMN_7 = pygame.Rect(RECT_DRAW_PILE.left + (7 * (RECT_DRAW_PILE.width + SPACE)), COL_TOP, W_CARD, H_CARD)
+        print(f"WIDTH: {WIDTH}, HEIGHT: {HEIGHT}\nW_CARD: {W_CARD}, H_CARD: {H_CARD}\nRECT_DRAW_PILE: {RECT_DRAW_PILE}\nRECT_DISCARD_PILE: {RECT_DISCARD_PILE}\nRECT_FOUNDATION_1: {RECT_FOUNDATION_1}\nRECT_FOUNDATION_2: {RECT_FOUNDATION_2}\nRECT_FOUNDATION_3: {RECT_FOUNDATION_3}\nRECT_FOUNDATION_4: {RECT_FOUNDATION_4}\nCOL_TOP: {COL_TOP}\nRECT_COLUMN_1: {RECT_COLUMN_1}\nRECT_COLUMN_2: {RECT_COLUMN_2}\nRECT_COLUMN_3: {RECT_COLUMN_3}\nRECT_COLUMN_4: {RECT_COLUMN_4}\nRECT_COLUMN_5: {RECT_COLUMN_5}\nRECT_COLUMN_6: {RECT_COLUMN_6}\nRECT_COLUMN_7: {RECT_COLUMN_7}")
+
+        # resize the images
+        for img in CARD_IMAGES.keys():
+            # print(f"img: {img}, W_CARD: {W_CARD}, H_CARD: {H_CARD}")
+            CARD_IMAGES[img] = pygame.transform.scale(CARD_IMAGES[img], (W_CARD, H_CARD))
+        DECK_IMAGE = pygame.transform.scale(DECK_IMAGE, (W_CARD, H_CARD))
+
+
+    update_window_dims(WIDTH, HEIGHT)
     dict_print(CARD_IMAGES, "Card-images")
+
+    WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+    pygame.display.set_caption("Solitaire")
+    FONT = pygame.font.SysFont("comicsans", 16)
+
 
     def draw_drawing_pile(do_flip=False):
         drawing_pile = s.deck.cards
@@ -71,7 +110,8 @@ if __name__ == '__main__':
                 image = DECK_IMAGE
 
             for i in range(min(3, len(s.deck)) - 1, -1, -1):
-                shift_rect = pygame.Rect((i * X_SHIFT) + RECT_DRAW_PILE.left, RECT_DRAW_PILE.top, RECT_DRAW_PILE.width, RECT_DRAW_PILE.height)
+                shift_rect = pygame.Rect((i * X_SHIFT) + RECT_DRAW_PILE.left, RECT_DRAW_PILE.top, RECT_DRAW_PILE.width,
+                                         RECT_DRAW_PILE.height)
                 WIN.blit(image, shift_rect)  # to represent deck
             WIN.blit(image, RECT_DRAW_PILE)  # draw_pile
         else:
@@ -80,6 +120,7 @@ if __name__ == '__main__':
 
         if do_flip:
             pygame.display.flip()
+
 
     def draw_discard_pile(do_flip=False):
         discard_pile = s.deck.discarded
@@ -92,7 +133,8 @@ if __name__ == '__main__':
                 image = CARD_IMAGES[str(top_card)]
 
                 for i in range(min(3, len(s.deck.discarded)) - 1, -1, -1):
-                    shift_rect = pygame.Rect((i * X_SHIFT) + RECT_DISCARD_PILE.left, RECT_DISCARD_PILE.top, RECT_DISCARD_PILE.width, RECT_DISCARD_PILE.height)
+                    shift_rect = pygame.Rect((i * X_SHIFT) + RECT_DISCARD_PILE.left, RECT_DISCARD_PILE.top,
+                                             RECT_DISCARD_PILE.width, RECT_DISCARD_PILE.height)
                     WIN.blit(image, shift_rect)  # to represent deck
                 if not CARD_SELECTED or top_card != CARD_SELECTED["card"]:
                     WIN.blit(image, RECT_DISCARD_PILE)  # discard_pile
@@ -105,6 +147,7 @@ if __name__ == '__main__':
         if do_flip:
             pygame.display.flip()
 
+
     def draw_foundations(do_flip=False):
         founds = s.foundations
         for i, found in founds.items():
@@ -112,9 +155,10 @@ if __name__ == '__main__':
                 top_card = found[-1]
                 top_card.show = True
                 image = CARD_IMAGES[str(top_card)]
-                WIN.blit(image, eval(f"RECT_FOUNDATION_{i+1}"))  # discard_pile
+                WIN.blit(image, eval(f"RECT_FOUNDATION_{i + 1}"))  # discard_pile
         if do_flip:
             pygame.display.flip()
+
 
     def draw_columns(do_flip=False):
         columns = s.columns
@@ -122,20 +166,27 @@ if __name__ == '__main__':
             # print(f"i: {i}, c: {cols}")
             if cols:
                 image = DECK_IMAGE
-                rect = eval(f"RECT_COLUMN_{i+1}")
+                rect = eval(f"RECT_COLUMN_{i + 1}")
                 ys = len(cols) - 1
+                top_card = cols[-1]
                 for j in range(ys):
                     shift_rect = pygame.Rect(rect.left, (j * Y_SHIFT) + rect.top, rect.width, rect.height)
+                    if CARD_SELECTED and top_card == CARD_SELECTED["card"]:
+                        shift_rect = pygame.Rect(CARD_SELECTED["rect"].left, (((ys - 1 - j) + 0) * Y_SHIFT) + (CARD_SELECTED["rect"].top - (CARD_SELECTED["rect"].height / 2)), CARD_SELECTED["rect"].width, CARD_SELECTED["rect"].height)
                     WIN.blit(image, shift_rect)
 
-                top_card = cols[-1]
                 top_card.show = True
                 image = CARD_IMAGES[str(top_card)]
                 rect.top += (Y_SHIFT * (len(cols) - 1))
-                WIN.blit(image, rect)
+                if not CARD_SELECTED or top_card != CARD_SELECTED["card"]:
+                    WIN.blit(image, rect)  # discard_pile
+                else:
+                    WIN.blit(image, CARD_SELECTED["rect"])  # discard_pile
+                # WIN.blit(image, rect)
                 # rect.top = COL_TOP
         if do_flip:
             pygame.display.flip()
+
 
     def clicked_deck():
         if s.can_draw():
@@ -147,13 +198,16 @@ if __name__ == '__main__':
 
         pygame.display.flip()
 
+
     def reset_column_heights():
         for i in range(N_COLS):
             if CARD_SELECTED:
                 if CARD_SELECTED["col_idx"] == i:
+                    # print("skipping:", i)
                     continue
             rect = eval(f"RECT_COLUMN_{i + 1}")
             rect.top = COL_TOP
+
 
     run = True
     clock = pygame.time.Clock()
@@ -164,15 +218,9 @@ if __name__ == '__main__':
         reset_column_heights()
         WIN.fill(BLACK)
 
-        draw_drawing_pile()
-        draw_discard_pile()
-        draw_foundations()
-        draw_columns()
-
-        pygame.display.flip()
-
         if CARD_SELECTED:
-            print("CARD_SELECTED:", CARD_SELECTED["card"])
+            pass
+            # print("CARD_SELECTED:", CARD_SELECTED["card"])
 
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -186,35 +234,49 @@ if __name__ == '__main__':
                     rect = eval(f"RECT_COLUMN_{i + 1}")
                     if rect.collidepoint(*mouse_pos):
                         # clicked_column
-                        CARD_SELECTED = {
+                        CARD_SELECTED.update({
                             "card": s.get_top_card(i),
                             "col_idx": i,
-                            "rect": rect,
-                            "og_rect": pygame.Rect(rect.left, rect.top, rect.width, rect.height)
-                        }
+                            "rect": pygame.Rect(rect.left, rect.top, rect.width, rect.height),
+                            "og_rect": rect
+                        })
                 if RECT_DISCARD_PILE.collidepoint(*mouse_pos):
-                    CARD_SELECTED = {
+                    CARD_SELECTED.update({
                         "card": s.deck.discarded[-1],
                         "col_idx": None,
-                        "rect": RECT_DISCARD_PILE,
-                        "og_rect": pygame.Rect(RECT_DISCARD_PILE.left, RECT_DISCARD_PILE.top, RECT_DISCARD_PILE.width, RECT_DISCARD_PILE.height)
-                    }
+                        "og_rect": RECT_DISCARD_PILE,
+                        "rect": pygame.Rect(RECT_DISCARD_PILE.left, RECT_DISCARD_PILE.top,
+                                               RECT_DISCARD_PILE.width, RECT_DISCARD_PILE.height)
+                        # "og_rect": pygame.Rect(CARD_SELECTED["og_rect"].left, CARD_SELECTED["og_rect"].top,
+                        #                        CARD_SELECTED["og_rect"].width, CARD_SELECTED["og_rect"].height)
+                    })
             elif event.type == pygame.MOUSEMOTION:
-                    if CARD_SELECTED:
-                        n_rect = CARD_SELECTED["rect"]
-                        n_rect.center = mouse_pos
-                        CARD_SELECTED = {
-                            "card": CARD_SELECTED["card"],
-                            "col_idx": CARD_SELECTED["col_idx"],
-                            "rect": n_rect,
-                            "og_rect": pygame.Rect(CARD_SELECTED["og_rect"].left, CARD_SELECTED["og_rect"].top, CARD_SELECTED["og_rect"].width, CARD_SELECTED["og_rect"].height)
-                        }
+                if CARD_SELECTED:
+                    n_rect = CARD_SELECTED["rect"]
+                    n_rect.center = mouse_pos
+                    CARD_SELECTED.update({
+                        # "card": CARD_SELECTED["card"],
+                        # "col_idx": CARD_SELECTED["col_idx"],
+                        "rect": n_rect
+                        # "og_rect": pygame.Rect(CARD_SELECTED["og_rect"].left, CARD_SELECTED["og_rect"].top,
+                        #                        CARD_SELECTED["og_rect"].width, CARD_SELECTED["og_rect"].height)
+                    })
+                    # pygame.display.update(CARD_SELECTED["rect"])
+
             elif event.type == pygame.MOUSEBUTTONUP:
                 if CARD_SELECTED:
-                    CARD_SELECTED["rect"] = CARD_SELECTED["og_rect"]
-                    print("returning: rect: <{}> to <{}>".format(CARD_SELECTED["rect"], CARD_SELECTED["og_rect"]))
+                    print("returning rect: <{}> to <{}>".format(CARD_SELECTED["rect"], CARD_SELECTED["og_rect"]))
+                    CARD_SELECTED.update({"rect": CARD_SELECTED["og_rect"]})
                     CARD_SELECTED = {}
 
-        pygame.display.update()
+            elif event.type == pygame.VIDEORESIZE:
+                w, h = event.dict["size"]
+                update_window_dims(w, h)
+
+        draw_drawing_pile()
+        draw_discard_pile()
+        draw_foundations()
+        draw_columns()
+        pygame.display.flip()
 
     pygame.quit()
