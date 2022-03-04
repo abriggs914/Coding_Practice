@@ -22,12 +22,14 @@ if __name__ == '__main__':
     WIDTH, HEIGHT = 900, 600
     W_CARD, H_CARD = 75, 135
     W_CARD, H_CARD = 178, 267
-    F_W_CARD, F_H_CARD = 2 * 0.055, 6 * 0.055
+    F_W_CARD, F_H_CARD = 2 * 0.045, 6 * 0.05
 
     LEFT_MOST, TOP_MOST = 35, 35
     X_SHIFT = -10
-    Y_SHIFT = 20
-    SPACE = 15
+    Y_SHIFT = 35
+    COL_OFFSET = 0  # cards behind the top_card's rect will be shifted this many in thr x direction
+    SPACE = 35  # space between card piles. needs to be large enough to support (7 + 13) * COL_OFFSET to prevent
+    #             cards from one column overlapping another.
     RECT_DRAW_PILE = pygame.Rect(LEFT_MOST, TOP_MOST, W_CARD, H_CARD)
     RECT_DISCARD_PILE = pygame.Rect(RECT_DRAW_PILE.left + (1 * (RECT_DRAW_PILE.width + (2 * SPACE) + X_SHIFT)),
                                     TOP_MOST, W_CARD, H_CARD)
@@ -170,10 +172,16 @@ if __name__ == '__main__':
                 ys = len(cols) - 1
                 top_card = cols[-1]
                 for j in range(ys):
-                    shift_rect = pygame.Rect(rect.left, (j * Y_SHIFT) + rect.top, rect.width, rect.height)
+                    # print(f"{j * ' '}ys: {ys}, j: {j}, (j * Y_SHIFT): {j * Y_SHIFT}")
+                    shift_rect = pygame.Rect(rect.left + ((ys - j) * COL_OFFSET), (j * Y_SHIFT) + rect.top,
+                                             rect.width, rect.height)
                     if CARD_SELECTED and top_card == CARD_SELECTED["card"]:
-                        shift_rect = pygame.Rect(CARD_SELECTED["rect"].left, (((ys - 1 - j) + 0) * Y_SHIFT) + (CARD_SELECTED["rect"].top - (CARD_SELECTED["rect"].height / 2)), CARD_SELECTED["rect"].width, CARD_SELECTED["rect"].height)
+                        # shift_rect = pygame.Rect(CARD_SELECTED["rect"].left, (((ys - 1 - j) + 0) * Y_SHIFT) + (CARD_SELECTED["rect"].top - (CARD_SELECTED["rect"].height / 2)), CARD_SELECTED["rect"].width, CARD_SELECTED["rect"].height)
+                        # shift_rect = pygame.Rect(CARD_SELECTED["rect"].left + ((ys - j) * COL_OFFSET), (j * Y_SHIFT) + (CARD_SELECTED["rect"].top - (CARD_SELECTED["rect"].height / 2)), CARD_SELECTED["rect"].width, CARD_SELECTED["rect"].height)
+                        shift_rect = pygame.Rect(CARD_SELECTED["rect"].left + ((ys - j) * COL_OFFSET), (j * Y_SHIFT) + CARD_SELECTED["rect"].top,
+                                                 CARD_SELECTED["rect"].width, CARD_SELECTED["rect"].height)
                     WIN.blit(image, shift_rect)
+                    # pygame.draw.rect(WIN, INDIGO, shift_rect)
 
                 top_card.show = True
                 image = CARD_IMAGES[str(top_card)]
@@ -181,7 +189,8 @@ if __name__ == '__main__':
                 if not CARD_SELECTED or top_card != CARD_SELECTED["card"]:
                     WIN.blit(image, rect)  # discard_pile
                 else:
-                    WIN.blit(image, CARD_SELECTED["rect"])  # discard_pile
+                    WIN.blit(image, pygame.Rect(CARD_SELECTED["rect"].left, CARD_SELECTED["rect"].top + (Y_SHIFT * (len(cols) - 1)),
+                                                CARD_SELECTED["rect"].width, CARD_SELECTED["rect"].height))
                 # WIN.blit(image, rect)
                 # rect.top = COL_TOP
         if do_flip:
