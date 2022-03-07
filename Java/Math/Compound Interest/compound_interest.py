@@ -13,6 +13,7 @@ Calculate time, solve for t
 t = ln(A/P) / n[ln(1 + r/n)] = [ ln(A) - ln(P) ] / n[ln(1 + r/n)]
 """
 
+
 """
 A = the value of the accrued investment/loan
 P = the principal amount
@@ -20,6 +21,7 @@ r = the annual interest rate (decimal)
 n = the number of times that interest is compounded per unit t
 t = the time the money is invested or borrowed for
 """
+
 
 A = 10000
 P = 4200
