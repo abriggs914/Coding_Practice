@@ -33,6 +33,8 @@ class Card:
         self._image = value
 
     def set_show(self, value):
+        if value:
+            print(f"showing {self}")
         self._show = value
 
     def get_value(self):
@@ -157,6 +159,7 @@ class Deck:
         self.suits = suits
 
         self.cards = []
+        self.og_cards = []
         self.discarded = []
 
         self.init_cards()
@@ -178,6 +181,7 @@ class Deck:
         suits = self.suits
         p = int(self.size / len(suits))
         self.cards = [Card((i % p) + 1, suits[i // p]) for i in range(self.size)]
+        self.og_cards = [Card((i % p) + 1, suits[i // p]) for i in range(self.size)]
         print("self.cards:", self.cards)
 
     def shuffle(self):
@@ -205,7 +209,10 @@ class Deck:
         return list(hand)
 
     def reset(self):
-        self.cards = self.cards + self.discarded
+        self.cards = [card for card in self.og_cards]
+        self.discarded = []
+        for card in self.cards:
+            card.show = False
         self.shuffle()
 
     def get_cards(self):
@@ -319,13 +326,30 @@ class Solitaire:
     def can_reset(self):
         return self.n_resets > self.n_resets_used
 
-    def reset(self):
+    def stack(self, from_col, to_col, card):
+        assert self.can_stack_col(to_col, card)
+        print(f"self.discard_pile: {self.discard_pile}")
+        print(f"self.deck.discarded: {self.deck.discarded}")
+        print(f"self.deck: {self.deck}")
+        if from_col in range(self.n_cols):
+            self.columns[to_col].append(card)
+            self.columns[from_col].remove(card)
+        elif from_col == "discard_pile":
+            self.columns[to_col].append(card)
+            self.deck.discarded.remove(card)
+        # card.show = True
+        print(f"self.cols: {self.columns}")
+
+    def reset(self, do_shuffle=True):
         self.n_resets_used += 1
         if self.n_resets_used > self.n_resets:
             raise SolitaireGameOverError("You are out of resets.")
         self.deck.cards = self.deck.discarded
+        for card in self.deck.cards:
+            card.show = False
         self.deck.discarded = []
-        self.shuffle()
+        if do_shuffle:
+            self.shuffle()
 
     def get_top_card(self, col_idx):
         assert col_idx in range(self.n_cols)
