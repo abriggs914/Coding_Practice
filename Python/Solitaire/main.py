@@ -308,7 +308,7 @@ if __name__ == '__main__':
                 top_cards = cols[-n_shown:]
                 if check_card_selected("offset"):
                     offset = CARD_SELECTED["offset"]
-                    # print(f"offset: {offset}")
+                    print(f"offset: {offset}, ys: {ys}")
                 for j in range(ys):
                     # col_card = cols[j]
                     # print(f"{j * ' '}ys: {ys}, j: {j}, (j * Y_SHIFT): {j * Y_SHIFT}")
@@ -324,7 +324,8 @@ if __name__ == '__main__':
                     WIN.blit(image, shift_rect)
                     # pygame.draw.rect(WIN, INDIGO, shift_rect)
 
-                for j, top_card in enumerate(top_cards[-max(1, n_shown):]):
+                top_card_list = top_cards[-max(1, n_shown):]
+                for j, top_card in enumerate(top_card_list):
                     if not top_card.show:
                         # print(f"\tsetting top_card: {top_card}, n_shown: {n_shown}, top_cards: {top_cards}")
                         top_card.show = True
@@ -342,8 +343,11 @@ if __name__ == '__main__':
                         WIN.blit(image, top_rect)
                         WIN.blit(image_small, top_right_rect)
                     else:
-                        WIN.blit(image, pygame.Rect(CARD_SELECTED["rect"].left, CARD_SELECTED["rect"].top + (Y_SHIFT * (len(cols) - 1)),
-                                                    CARD_SELECTED["rect"].width, CARD_SELECTED["rect"].height))
+                        # print(f"top: {CARD_SELECTED['rect'].top} calc: {CARD_SELECTED['rect'].top + (Y_SHIFT * ys)}, ((len(cols) - 1) - j): {((len(top_card_list) - 1) - j)}")
+                        fan_rect = pygame.Rect(CARD_SELECTED["rect"].left, CARD_SELECTED["rect"].top + (Y_SHIFT * ys),
+                                                    CARD_SELECTED["rect"].width, CARD_SELECTED["rect"].height)
+                        WIN.blit(image, fan_rect)
+                        # pygame.draw.rect(WIN, TURQUOISE, fan_rect)
                 # WIN.blit(image, rect)
                 # rect.top = COL_TOP
         if do_flip:
