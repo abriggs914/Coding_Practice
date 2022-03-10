@@ -15,7 +15,7 @@ public class WPWEntity {
     }
 
     public String toString(){
-        return "<Entity n: %s b: %f".format(this.name, this.balance);
+        return "<Entity n: %s b: %s".format(this.name, this.balance);
     }
 
     public static void main(String[] args) {
