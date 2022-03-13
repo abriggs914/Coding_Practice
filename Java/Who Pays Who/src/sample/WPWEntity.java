@@ -1,20 +1,27 @@
 package sample;
+import java.util.ArrayList;
 
 public class WPWEntity {
 
+    public final static WPWEntity POT = new WPWEntity("Pot");
+
     private String name;
     private double balance;
+    private ArrayList<Double> balanceHistory;
 
     public WPWEntity(String nameIn) {
-        System.out.println("A name: " + nameIn);
-        new WPWEntity(nameIn, 0);
+        this.init(nameIn, 0.0);
     }
 
     public WPWEntity(String nameIn, double balance) {
-        System.out.println("B name: " + nameIn);
+        this.init(nameIn, balance);
+    }
+
+    private void init(String nameIn, double balanceIn) {
         this.name = nameIn;
-        System.out.println("C name: " + this.name);
-        this.balance = balance;
+        this.balance = balanceIn;
+        this.balanceHistory = new ArrayList<>();
+        this.balanceHistory.add(this.balance);
     }
 
     public String getName() {
@@ -33,6 +40,15 @@ public class WPWEntity {
         this.balance = balance;
     }
 
+    public void addFromBalance(double amount) {
+        this.setBalance(balance - amount);
+    }
+
+    public void addToBalance(double amount) {
+        this.setBalance(balance + amount);
+    }
+
+    @Override
     public String toString(){
         return "<Entity n: {" + name + "}, b: {" + balance + "}";
     }
