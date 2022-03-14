@@ -10,6 +10,7 @@ public class WPWTransaction {
     private HashMap<WPWEntity, Double> fromData;
     private WPWEntity toEntity;
     private double total;
+    private boolean isProcessed;
 
     public WPWTransaction(Date dateIn, HashMap<WPWEntity, Double> fromDataIn, WPWEntity toEntityIn) {
         this.init(dateIn, fromDataIn, toEntityIn);
@@ -20,6 +21,7 @@ public class WPWTransaction {
         this.fromData = fromDataIn;
         this.toEntity = toEntityIn;
         this.total = this.calcFromTotal();
+        this.isProcessed = false;
     }
 
     public Date getDate() {
@@ -44,6 +46,14 @@ public class WPWTransaction {
 
     public void setToEntity(WPWEntity toEntityIn) {
         this.toEntity = toEntityIn;
+    }
+
+    public boolean isProcessed() {
+        return isProcessed;
+    }
+
+    public void setProcessed(boolean processed) {
+        isProcessed = processed;
     }
 
     public ArrayList<WPWEntity> getEntities() {

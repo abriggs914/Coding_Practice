@@ -10,6 +10,7 @@ import static java.lang.Math.*;
 public class WPWLedger {
 
     private ArrayList<WPWTransaction> transactions;
+    private ArrayList<WPWTransaction> closedTransactions;
     private boolean hasProcessed;
 
     public WPWLedger() {
@@ -18,6 +19,7 @@ public class WPWLedger {
 
     private void init() {
         this.transactions = new ArrayList<>();
+        this.closedTransactions = new ArrayList<>();
         this.hasProcessed = false;
     }
 
@@ -25,22 +27,24 @@ public class WPWLedger {
      * Calculate the value that each entity should have chipped into the overall pot.
      * @return double value representing how much each entity should contribute.
      */
-    public double calcEqualShare() {
+    public double calcEqualShare(boolean reprocess) {
         double share = 0;
         for (WPWTransaction transaction : this.transactions) {
-            HashMap<WPWEntity, Double> fromData = transaction.getFromData();
-            WPWEntity toEntity = transaction.getToEntity();
-            double amount;
-            if (toEntity == WPWEntity.POT) {
-                for (WPWEntity entity : fromData.keySet()) {
-                    if (entity != WPWEntity.POT) {
-                        amount = fromData.get(entity);
-                        share += amount;
+            if (reprocess || !transaction.isProcessed()) {
+                HashMap<WPWEntity, Double> fromData = transaction.getFromData();
+                WPWEntity toEntity = transaction.getToEntity();
+                double amount;
+                if (toEntity == WPWEntity.POT) {
+                    for (WPWEntity entity : fromData.keySet()) {
+                        if (entity != WPWEntity.POT) {
+                            amount = fromData.get(entity);
+                            share += amount;
+                        }
                     }
                 }
             }
         }
-        int n = this.getAllEntities(false).size();
+        int n = this.getAllEntities(false, reprocess).size();
         n = ((n == 0)? 1 : n);
         return share / n;
     }
@@ -49,13 +53,23 @@ public class WPWLedger {
      * Get a list of all unique entities from the transactions list.
      * @return ArrayList of WPWEntity objects.
      */
-    public ArrayList<WPWEntity> getAllEntities() {
+    public ArrayList<WPWEntity> getAllEntities(boolean excludeClosed) {
         ArrayList<WPWEntity> entities = new ArrayList<>();
         for (WPWTransaction transaction : this.transactions) {
             ArrayList<WPWEntity> entity_list = transaction.getEntities();
             for (WPWEntity entity : entity_list) {
                 if (!entities.contains(entity)) {
                     entities.add(entity);
+                }
+            }
+        }
+        if (!excludeClosed) {
+            for (WPWTransaction transaction : this.closedTransactions) {
+                ArrayList<WPWEntity> entity_list = transaction.getEntities();
+                for (WPWEntity entity : entity_list) {
+                    if (!entities.contains(entity)) {
+                        entities.add(entity);
+                    }
                 }
             }
         }
@@ -66,13 +80,15 @@ public class WPWLedger {
      * Get a list of all unique entities from the transactions list.
      * @return ArrayList of WPWEntity objects.
      */
-    public ArrayList<WPWEntity> getAllEntities(boolean includePot) {
+    public ArrayList<WPWEntity> getAllEntities(boolean includePot, boolean reprocess) {
         ArrayList<WPWEntity> entities = new ArrayList<>();
         for (WPWTransaction transaction : this.transactions) {
-            ArrayList<WPWEntity> entity_list = transaction.getEntities(includePot);
-            for (WPWEntity entity : entity_list) {
-                if (!entities.contains(entity)) {
-                    entities.add(entity);
+            if (reprocess || !transaction.isProcessed()) {
+                ArrayList<WPWEntity> entity_list = transaction.getEntities(includePot);
+                for (WPWEntity entity : entity_list) {
+                    if (!entities.contains(entity)) {
+                        entities.add(entity);
+                    }
                 }
             }
         }
@@ -303,7 +319,7 @@ public class WPWLedger {
      * @return WPWEntity object if matching name found else null.
      */
     public WPWEntity lookUpEntity(String name) {
-        ArrayList<WPWEntity> entities = this.getAllEntities();
+        ArrayList<WPWEntity> entities = this.getAllEntities(false);
         for (WPWEntity entity : entities) {
             if (entity.getName() == name) {
                 return entity;
@@ -336,34 +352,41 @@ public class WPWLedger {
         return hasProcessed;
     }
 
+    public int transactionCount() {
+        return this.transactions.size() + this.closedTransactions.size();
+    }
+
     /**
      * Call this after all transactions have been finalized.
      * This does a pass of all entities and updates their balances.
      */
-    public void processTransaction() {
+    public void processTransaction(boolean reprocess) {
         HashMap<WPWEntity, Double> fromData;
         double amount;
         for (WPWTransaction transaction : this.transactions) {
-            fromData = transaction.getFromData();
-            for (WPWEntity entity : fromData.keySet()) {
-                amount = fromData.get(entity);
-                entity.addFromBalance(amount);
+            if (reprocess || !transaction.isProcessed()) {
+                fromData = transaction.getFromData();
+                for (WPWEntity entity : fromData.keySet()) {
+                    amount = fromData.get(entity);
+                    entity.addFromBalance(amount);
+                }
+                transaction.getToEntity().addToBalance(transaction.calcFromTotal());
+                transaction.setProcessed(true);
             }
-            transaction.getToEntity().addToBalance(transaction.calcFromTotal());
         }
         this.setHasProcessed(true);
     }
 
-    public HashMap<WPWEntity, Double> getOwingEntities(boolean getCopies) {
+    public HashMap<WPWEntity, Double> getOwingEntities(boolean getCopies, boolean reprocess) {
         HashMap<WPWEntity, Double> owingEntities = new HashMap<>();
         if (!this.hasProcessed) {
             System.out.println("This ledger has not processed it's transactions yet.\nUnable to return owing entities.");
             return owingEntities;
         }
-        double eqShare = this.calcEqualShare();
+        double eqShare = this.calcEqualShare(reprocess);
         double balance;
         double diff;
-        for (WPWEntity entity : this.getAllEntities(false)) {
+        for (WPWEntity entity : this.getAllEntities(false, reprocess)) {
             balance = entity.getBalance();
             diff = balance + eqShare;
             if (diff > 0) {
@@ -378,16 +401,16 @@ public class WPWLedger {
         return owingEntities;
     }
 
-    public HashMap<WPWEntity, Double> getOwedEntities(boolean getCopies) {
+    public HashMap<WPWEntity, Double> getOwedEntities(boolean getCopies, boolean reprocess) {
         HashMap<WPWEntity, Double> owedEntities = new HashMap<>();
         if (!this.hasProcessed) {
             System.out.println("This ledger has not processed it's transactions yet.\nUnable to return owing entities.");
             return owedEntities;
         }
-        double eqShare = this.calcEqualShare();
+        double eqShare = this.calcEqualShare(reprocess);
         double balance;
         double diff;
-        for (WPWEntity entity : this.getAllEntities(false)) {
+        for (WPWEntity entity : this.getAllEntities(false, reprocess)) {
             balance = entity.getBalance();
             diff = balance + eqShare;
             if (diff < 0) {
@@ -404,14 +427,15 @@ public class WPWLedger {
 
     // h -> a 20 arraylist<hashmap<WPWEntity, hashmap<WPWEntity, Double>>>
     // e -> k 15
-    public ArrayList<HashMap<WPWEntity, HashMap<WPWEntity, Double>>> whoPaysWho(boolean useCopies) {
+    public ArrayList<HashMap<WPWEntity, HashMap<WPWEntity, Double>>> whoPaysWho(boolean useCopies, boolean reprocess) {
+        reprocess = true;
         ArrayList<HashMap<WPWEntity, HashMap<WPWEntity, Double>>> payers = new ArrayList<>();
         if (!this.hasProcessed) {
             System.out.println("This ledger has not processed it's transactions yet.\nUnable to calculate who should pay who yet.");
             return payers;
         }
-        HashMap<WPWEntity, Double> owingEntities = this.getOwingEntities(useCopies);
-        HashMap<WPWEntity, Double> owedEntities = this.getOwedEntities(useCopies);
+        HashMap<WPWEntity, Double> owingEntities = this.getOwingEntities(useCopies, reprocess);
+        HashMap<WPWEntity, Double> owedEntities = this.getOwedEntities(useCopies, reprocess);
         int ogn = owingEntities.size();
         int odn = owedEntities.size();
         if (ogn == 0) {
@@ -422,10 +446,12 @@ public class WPWLedger {
         }
         if (odn == 0 || ogn == 0) {
             System.out.println("Error not enough entities owing {" + ogn + "} compared to owed: {" + odn + "}");
+            System.out.println("owed: " + owedEntities);
+            System.out.println("owing: " + owingEntities);
             return payers;
         }
 
-        double eqShare = this.calcEqualShare();
+        double eqShare = this.calcEqualShare(reprocess);
         double owingD;
         double owedD;
         double diff;
@@ -545,9 +571,43 @@ public class WPWLedger {
         return payers;
     }
 
+    /**
+     *
+     * @param payers
+     */
+    public void squareWhoPaysWho(ArrayList<HashMap<WPWEntity, HashMap<WPWEntity, Double>>> payers) {
+        double amount;
+        for (HashMap<WPWEntity, HashMap<WPWEntity, Double>> fromMap : payers) {
+            for (WPWEntity wpwFromEntity : fromMap.keySet()) {
+                WPWEntity fromEntity = this.lookUpEntity(wpwFromEntity.getName());
+                HashMap<WPWEntity, Double> toMap = fromMap.get(wpwFromEntity);
+                for (WPWEntity wpwToEntity : toMap.keySet()) {
+                    WPWEntity toEntity = this.lookUpEntity(wpwToEntity.getName());
+                    amount = toMap.get(wpwToEntity);
+//                    System.out.println("amount: " + amount + ", from: " + fromEntity + ", to: " + toEntity);
+                    fromEntity.addFromBalance(amount);
+                    toEntity.addToBalance(amount);
+                }
+            }
+        }
+    }
+
+    public int closeTransactions(boolean processed) {
+        int count = 0;
+        ArrayList<WPWTransaction> toRemove = new ArrayList<>();
+        for (WPWTransaction transaction : this.transactions) {
+            if (processed || transaction.isProcessed()) {
+                this.closedTransactions.add(transaction);
+                toRemove.add(transaction);
+            }
+        }
+        this.transactions.removeAll(toRemove);
+        return count;
+    }
+
     @Override
     public String toString() {
-        return "<WPWLedger nTransactions: {" + transactions.size() + "}, involving nEntities: {" + this.getAllEntities().size() + "}>";
+        return "<WPWLedger nTransactions: {" + this.transactionCount() + "}, involving nEntities: {" + this.getAllEntities(false).size() + "}>";
     }
 
     /**

@@ -5,6 +5,30 @@ import java.util.HashMap;
 
 public class Main {
 
+    private static void viewLedger(WPWLedger ledger, boolean doSquare, boolean reprocess) {
+        System.out.println("\n\tLedger\n" + ledger);
+        System.out.println("Equal Share {" + ledger.calcEqualShare(true) + "}");
+
+        ArrayList<HashMap<WPWEntity, HashMap<WPWEntity, Double>>> whoPaysWho = ledger.whoPaysWho(true, reprocess);
+        StringBuilder whoPaysWhoS = new StringBuilder();
+        for (HashMap<WPWEntity, HashMap<WPWEntity, Double>> fromMap : whoPaysWho) {
+            for (WPWEntity fromEntity : fromMap.keySet()) {
+                whoPaysWhoS.append("\tFrom: ").append(fromEntity);
+                HashMap<WPWEntity, Double> toMap = fromMap.get(fromEntity);
+                for (WPWEntity toPay : toMap.keySet()) {
+                    whoPaysWhoS.append("\n\t\tTo: ").append(toPay).append("\t\t$").append(toMap.get(toPay));
+                }
+            }
+            whoPaysWhoS.append("\n");
+        }
+        if (doSquare) {
+            ledger.squareWhoPaysWho(whoPaysWho);
+        }
+        System.out.println("\n\tledger.whoPaysWho()\n" + whoPaysWhoS);
+        System.out.println("\n\tEntities WPH:\n" + WPWLedger.collectEntities(whoPaysWho));
+        System.out.println("\n\tEntities LED:\n" + ledger.getAllEntities(false));
+    }
+
     private static void runTest1() {
         ArrayList<WPWEntity> entities = new ArrayList<>();
         entities.add(new WPWEntity("Avery"));
@@ -52,31 +76,35 @@ public class Main {
         WPWLedger ledger = new WPWLedger();
         ledger.setTransactions(ts1);
 
-        System.out.println("Equal Share {" + ledger.calcEqualShare() + "}");
+        System.out.println("Equal Share {" + ledger.calcEqualShare(false) + "}");
     }
 
     private static void runTest3() {
         WPWLedger ledger = new WPWLedger();
+
+//        boolean reprocess = false;  // reprocess previously processed transactions
+//        boolean getCopies = true;  // when running WhoPaysWho, do not modify actual ledger entities, only copies.
+
         ledger.createNewTransaction("Avery", 47.5);
         ledger.createNewTransaction("Kristen", 27.5);
         ledger.createNewTransaction("Emily", 20);
         ledger.createNewTransaction("Hayley", 5);
 //        ledger.createNewTransaction("Hayley", 20, "Avery");
-        System.out.println("Equal Share {" + ledger.calcEqualShare() + "}");
+        System.out.println("Equal Share {" + ledger.calcEqualShare(false) + "}");
         System.out.println(ledger);
-        System.out.println(ledger.getAllEntities(true));
+        System.out.println(ledger.getAllEntities(true, true));
         System.out.println(ledger.getTransactions());
 
-        ledger.processTransaction();
+        ledger.processTransaction(false);
 
         System.out.println("\n\tledger\n" + ledger);
-        System.out.println("\n\tledger.getAllEntities(true)\n" + ledger.getAllEntities(true));
+        System.out.println("\n\tledger.getAllEntities(true)\n" + ledger.getAllEntities(true, true));
         System.out.println("\n\tledger.getTransactions()\n" + ledger.getTransactions());
 
-        System.out.println("\n\tledger.getOwingEntities()\n" + ledger.getOwingEntities(true));
-        System.out.println("\n\tledger.getOwedEntities()\n" + ledger.getOwedEntities(true));
+        System.out.println("\n\tledger.getOwingEntities()\n" + ledger.getOwingEntities(true, false));
+        System.out.println("\n\tledger.getOwedEntities()\n" + ledger.getOwedEntities(true, false));
 
-        ArrayList<HashMap<WPWEntity, HashMap<WPWEntity, Double>>> whoPaysWho = ledger.whoPaysWho(false);
+        ArrayList<HashMap<WPWEntity, HashMap<WPWEntity, Double>>> whoPaysWho = ledger.whoPaysWho(false, false);
         String whoPaysWhoS = "";
         for (HashMap<WPWEntity, HashMap<WPWEntity, Double>> fromMap : whoPaysWho) {
             for (WPWEntity fromEntity : fromMap.keySet()) {
@@ -128,10 +156,10 @@ public class Main {
         ledger.createNewTransaction("Emily", 20, "Hayley");
 
 
-        ledger.processTransaction();
-        System.out.println("Equal Share {" + ledger.calcEqualShare() + "}");
+        ledger.processTransaction(false);
+        System.out.println("Equal Share {" + ledger.calcEqualShare(false) + "}");
 
-        ArrayList<HashMap<WPWEntity, HashMap<WPWEntity, Double>>> whoPaysWho = ledger.whoPaysWho(false);
+        ArrayList<HashMap<WPWEntity, HashMap<WPWEntity, Double>>> whoPaysWho = ledger.whoPaysWho(false, false);
         StringBuilder whoPaysWhoS = new StringBuilder();
         for (HashMap<WPWEntity, HashMap<WPWEntity, Double>> fromMap : whoPaysWho) {
             for (WPWEntity fromEntity : fromMap.keySet()) {
@@ -145,14 +173,40 @@ public class Main {
         }
         System.out.println("\n\tledger.whoPaysWho()\n" + whoPaysWhoS);
         System.out.println("\n\tEntities:\n" + WPWLedger.collectEntities(whoPaysWho));
-        System.out.println("\n\tEntities:\n" + ledger.getAllEntities());
+        System.out.println("\n\tEntities:\n" + ledger.getAllEntities(false));
 //        System.out.println(ledger.getAllEntities(true));
+    }
+
+    private static void runTest5() {
+        WPWLedger ledger = new WPWLedger();
+
+        ledger.createNewTransaction("Avery", 25);
+        ledger.createNewTransaction("Kristen", 75);
+        ledger.createNewTransaction("Emily", 25, "Hayley");
+        ledger.createNewTransaction("Hayley", 50, "Kristen");
+        ledger.createNewTransaction("Avery", 100);
+        ledger.createNewTransaction("Kristen", 75);
+        ledger.createNewTransaction("Emily", 50);
+        ledger.createNewTransaction("Hayley", 100);
+        ledger.createNewTransaction("Emily", 20, "Hayley");
+
+        ledger.processTransaction(false);
+        viewLedger(ledger, true, false);
+        ledger.closeTransactions(true);
+
+        ledger.createNewTransaction("Avery", 25);
+        ledger.createNewTransaction("Kristen", 15);
+
+        ledger.processTransaction(false);
+        viewLedger(ledger, true, false);
+        ledger.closeTransactions(true);
     }
 
     public static void main(String[] args) {
 //        runTest1();
 //        runTest2();
 //        runTest3();
-        runTest4();
+//        runTest4();
+        runTest5();
     }
 }
