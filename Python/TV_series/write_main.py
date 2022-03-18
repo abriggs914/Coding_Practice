@@ -11,7 +11,8 @@ import os
 
 def write_file():
 	file_name = r"C:\Users\abrig\Documents\Coding_Practice\Python\TV_series\out.txt"
-	assert os.path.isfile(file_name)
+	if not os.path.isfile(file_name):
+		file_name = r"""C:\Users\ABriggs\Documents\Coding Practice\Coding_Practice\Python\TV_series\out.txt"""
 	with open(file_name, "w") as f:
         
 		def print_time_line_horizontal_write(series_list, start_year, end_year) :

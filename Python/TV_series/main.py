@@ -413,7 +413,7 @@ family_guy = TVSeries("Family Guy", {
 	19 : 20},
 	22,
 	1999,
-	2021,
+	2022,
 	True,
 	"Comedy",
 	"Disney+")
@@ -512,7 +512,7 @@ the_simpsons = TVSeries("The Simpsons", {
 	32: 22},
 	24,
 	1989,
-	2021,
+	2022,
 	True,
 	"Comedy",
 	"Disney+")
@@ -603,6 +603,22 @@ sherlock = TVSeries("Sherlock", {
 	"Mystery / Crime / Drama",
 	"Prime TV")
 	
+	
+malcolm_in_the_middle = TVSeries("Malcolm in the Middle", {
+	1: 16,
+	2: 25,
+	3: 22,
+	4: 22,
+	5: 22,
+	6: 22,
+	7: 22},
+	24,
+	2000,
+	2006,
+	False,
+	"Comedy",
+	"Disney+")
+	
 
 series_list = [
     the_office,
@@ -644,7 +660,8 @@ series_list = [
 	mr_robot,
 	criminal_minds,
 	baskets,
-	sherlock
+	sherlock,
+	malcolm_in_the_middle
 ]
    
 def longest_series_title(series_list) :
