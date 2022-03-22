@@ -3,14 +3,15 @@ from math import e, ceil, sin, cos, radians
 from random import random, choice, randint
 from plyer import notification
 import datetime as dt
+import calendar
 import shutil
 import sys
 import os
 
 """
 	General Utility Functions
-	Version..............1.39
-	Date...........2022-01-26
+	Version..............1.40
+	Date...........2022-03-21
 	Author.......Avery Briggs
 """
 
@@ -1546,6 +1547,13 @@ def first_of_week(date_in):
 def first_of_month(date_in):
     assert isinstance(date_in, dt.datetime)
     return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
+
+
+def end_of_month(date_in):
+    assert isinstance(date_in, dt.datetime), "Parameter date_in needs to be a datetime.datetime object."
+    y, m = date_in.year, date_in.month
+    num_days = calendar.monthrange(y, m)[-1]
+    return dt.datetime(y, m, num_days)
 
 
 def alert_colour(x, n):
