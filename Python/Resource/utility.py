@@ -10,8 +10,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.40
-	Date...........2022-03-21
+	Version..............1.41
+	Date...........2022-03-23
 	Author.......Avery Briggs
 """
 
@@ -1580,6 +1580,13 @@ def notify(message, title="", app_icon=None, timeout=5):
             message=message,
             timeout=timeout  # seconds
         )
+
+
+def print_by_line(value, do_print=True):
+    lines = "[" + "\n".join(list(map(str, list(value)))) + "]"
+    if not do_print:
+        return lines
+    print(lines)
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
