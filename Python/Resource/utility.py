@@ -10,8 +10,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.41
-	Date...........2022-03-23
+	Version..............1.42
+	Date...........2022-03-24
 	Author.......Avery Briggs
 """
 
@@ -1588,6 +1588,11 @@ def print_by_line(value, do_print=True):
         return lines
     print(lines)
 
+
+def hours_diff(d1, d2):
+	assert isinstance(d1, dt.datetime), f"Parameter d1: \"{d1}\" needs to be a datetime.datetime instance."
+	assert isinstance(d2, dt.datetime), f"Parameter d2: \"{d2}\" needs to be a datetime.datetime instance."
+	return ((d2 - d1).days * 24) + ((d2 - d1).seconds / (60 * 60))
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
 BLK_TWO = "2", "22222\n    2\n22222\n2    \n22222"
