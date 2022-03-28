@@ -35,5 +35,13 @@ list_of_movies = [
 	"Kingsman The Golden Circle",
 	"The Kingsman",
 	"The A-Team",
-	"Need For Speed"
+	"Need For Speed",
+	"SuperTroopers",
+	"SuperTroopers 2",
+	{
+		"Alien": [
+			"Alien",
+			"Aliens",
+		]
+	}
 ]
