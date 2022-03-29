@@ -1,61 +1,11 @@
-import pygame
-
-
-pygame.init()
-display = pygame.display.set_mode((640, 480))
-clock = pygame.time.Clock()
-GRAY = pygame.Color('gray12')
-display_width, display_height = display.get_size()
-x = display_width * 0.45
-y = display_height * 0.8
-x_change = 0
-accel_x = 0
-max_speed = 15
-
-crashed = False
-while not crashed:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-                crashed = True
-        elif event.type == pygame.KEYDOWN:
-            # Set the acceleration value.
-            if event.key == pygame.K_LEFT:
-                accel_x = -.2
-            elif event.key == pygame.K_RIGHT:
-                accel_x = .2
-        elif event.type == pygame.KEYUP:
-            if event.key in (pygame.K_LEFT, pygame.K_RIGHT):
-                accel_x = 0
-
-    x_change += accel_x  # Accelerate.
-    if abs(x_change) >= max_speed:  # If max_speed is exceeded.
-        # Normalize the x_change and multiply it with the max_speed.
-        x_change = x_change/abs(x_change) * max_speed
-
-    # Decelerate if no key is pressed.
-    if accel_x == 0:
-        x_change *= 0.92
-
-    x += x_change  # Move the object.
-
-    display.fill(GRAY)
-    pygame.draw.rect(display, (0, 120, 250), (x, y, 20, 40))
-
-    pygame.display.update()
-    clock.tick(60)
-
-pygame.quit()
-
-
-version_2 = """
-
 from colour_utility import *
 from utility import *
 import pygame
 
 #	General main loop structure for pygame.
+#	Includes 2D motion + acceleration controls.
 #	Version............1.0
-#	Date........2022-03-11
+#	Date........2022-03-29
 #	Author....Avery Briggs
 
 
@@ -70,8 +20,7 @@ if __name__ == "__main__":
 
     running = True
 
-    x, y = 0, 0
-    x, y = 1, 1
+    x, y = WIDTH / 2, HEIGHT / 2
     max_speed = 15
     x_change = 0
     y_change = 0
@@ -86,6 +35,7 @@ if __name__ == "__main__":
     mallow_rect.center = x, y
 
     while running:
+        CLOCK.tick(FPS)
 
         # reset window
         WINDOW.fill(BLACK)
@@ -145,7 +95,5 @@ if __name__ == "__main__":
         # pygame.display.flip()
         # draw everything, or pass a surface or shape to update only that portion.
         pygame.display.update()
-        CLOCK.tick(FPS)
 
     pygame.quit()
-"""
