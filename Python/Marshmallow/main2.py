@@ -2,13 +2,17 @@ from colour_utility import *
 from utility import *
 import pygame
 
+#	General main loop structure for pygame.
+#	Version............1.0
+#	Date........2022-03-11
+#	Author....Avery Briggs
+
 
 class PObject:
 
-    N_OBJECTS = 0
-
     def __init__(
             self,
+            obj_id,
             x,
             y,
             rect=None,
@@ -35,7 +39,7 @@ class PObject:
         self.y_change = y_change
         self.x_acceleration = x_acceleration
         self.y_acceleration = y_acceleration
-        self.obj_id = self.new_id()
+        self.obj_id = obj_id
         self.rect = rect
         self.colour = colour
         self.name = name
@@ -48,10 +52,9 @@ class PObject:
         self.y_gravity = y_gravity
         self.width = width
         self.height = height
-        self.proposed_move = None
 
         self.init(
-            self.obj_id,
+            obj_id,
             x,
             y,
             rect=rect,
@@ -65,9 +68,7 @@ class PObject:
             x_gravity=x_gravity,
             y_gravity=y_gravity,
             width=width,
-            height=height,
-            proposed_move=self.proposed_move
-        )
+            height=height)
 
     def init(
             self,
@@ -89,9 +90,7 @@ class PObject:
             x_gravity=0,
             y_gravity=0.9,
             width=20,
-            height=20,
-            proposed_move=None
-    ):
+            height=20):
         if rect is None:
             rect = pygame.Rect(x, y, width, height)
 
@@ -119,11 +118,6 @@ class PObject:
         self.y_gravity = y_gravity
         self.width = width
         self.height = height
-        self.proposed_move = proposed_move
-
-    def new_id(self):
-        self.N_OBJECTS += 1
-        return self.N_OBJECTS
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -141,84 +135,6 @@ class PObject:
                 self.x_acceleration = 0
             if event.key in (pygame.K_UP, pygame.K_DOWN):
                 self.y_acceleration = 0
-
-    def propose_move(self, event, bounds, move_data_in=None):
-        us = move_data_in is None
-        x_acceleration = self.x_acceleration if us else move_data_in['x_acceleration']
-        y_acceleration = self.y_acceleration if us else move_data_in['y_acceleration']
-        if event is None:
-            # print(f'no event type')
-            pass
-        elif event.type == pygame.KEYDOWN:
-            # Set the acceleration value.
-            if event.key == pygame.K_LEFT:
-                x_acceleration = -self.x_acceleration_rate
-            if event.key == pygame.K_RIGHT:
-                x_acceleration = self.x_acceleration_rate
-            if event.key == pygame.K_UP:
-                y_acceleration = -self.y_acceleration_rate
-            if event.key == pygame.K_DOWN:
-                y_acceleration = self.y_acceleration_rate
-        elif event.type == pygame.KEYUP:
-            if event.key in (pygame.K_LEFT, pygame.K_RIGHT):
-                x_acceleration = 0
-            if event.key in (pygame.K_UP, pygame.K_DOWN):
-                y_acceleration = 0
-
-        x_change = (self.x_change if us else move_data_in['x_change']) + x_acceleration  # Accelerate.
-        y_change = (self.y_change if us else move_data_in['y_change']) + y_acceleration  # Accelerate.
-        if abs(x_change) >= self.max_speed:  # If max_speed is exceeded.
-            # Normalize the x_change and multiply it with the max_speed.
-            x_change = x_change / abs(x_change) * self.max_speed
-        if abs(y_change) >= self.max_speed:  # If max_speed is exceeded.
-            # Normalize the x_change and multiply it with the max_speed.
-            y_change = y_change / abs(y_change) * self.max_speed
-
-        # Decelerate if no key is pressed.
-        if x_acceleration == 0:
-            x_change *= self.x_de_acceleration_rate
-        if y_acceleration == 0:
-            y_change *= self.y_de_acceleration_rate
-
-        # Add effect of gravity
-        x_change += self.x_gravity
-        y_change += self.y_gravity
-
-        # Move the object
-        x = self.x if us else move_data_in['x']
-        y = self.y if us else move_data_in['y']
-        x = clamp(bounds.left + (self.width / 2), x + x_change, bounds.right - (self.width / 2))  # Move the object.
-        y = clamp(bounds.top + (self.height / 2), y + y_change, bounds.bottom - (self.height / 2))  # Move the object.
-
-        rect = pygame.Rect(self.rect)
-        rect.center = x, y
-        move_data = {
-            'x': x,
-            'y': y,
-            'x_change': x_change,
-            'y_change': y_change,
-            'x_acceleration': x_acceleration,
-            'y_acceleration': y_acceleration,
-            'rect': rect
-        }
-        self.proposed_move = move_data
-        return move_data
-
-    def move_commit(self):
-        if self.proposed_move is None:
-            # print("nothing to commit")
-            return
-            # raise ValueError("No move proposed to commit.")
-        move_data = self.proposed_move
-        self.x = move_data['x']
-        self.y = move_data['y']
-        self.x_change = move_data['x_change']
-        self.y_change = move_data['y_change']
-        self.x_acceleration = move_data['y_acceleration']
-        self.y_acceleration = move_data['x_acceleration']
-        self.rect = move_data['rect']
-        # print(dict_print(move_data, "Committing..."))
-        self.proposed_move = None
 
     def move(self, bounds):
         self.x_change += self.x_acceleration  # Accelerate.
@@ -248,9 +164,6 @@ class PObject:
 
     def draw(self, window):
         pygame.draw.rect(window, self.colour, self.rect)
-
-    def __eq__(self, other):
-        return isinstance(other, PObject) and self.obj_id == other.obj_id
 
     def __getitem__(self, item):
         d = {
@@ -283,8 +196,27 @@ class PObject:
             # https://stackoverflow.com/questions/52725278/during-handling-of-the-above-exception-another-exception-occurred
             raise KeyError(message) from None
 
-    def __repr__(self):
-        return f"<PObject id:{self.obj_id}, name:{self.name}, rect:{self.rect}>"
+    # def __dict__(self):
+    #     return {
+    #         'x': self.x,
+    #         'y': self.y,
+    #         'xy': self.xy,
+    #         'obj_id': self.obj_id,
+    #         'rect': self.rect,
+    #         'colour': self.colour,
+    #         'name': self.name,
+    #         'max_speed': self.max_speed,
+    #         'x_acceleration_rate': self.x_acceleration_rate,
+    #         'y_acceleration_rate': self.y_acceleration_rate,
+    #         'x_de_acceleration_rate': self.x_de_acceleration_rate,
+    #         'y_de_acceleration_rate': self.y_de_acceleration_rate,
+    #         'x_gravity': self.x_gravity,
+    #         'y_gravity': self.y_gravity,
+    #         'width': self.width,
+    #         'height': self.height
+    #     }
+
+
 
 
 if __name__ == "__main__":
@@ -298,9 +230,26 @@ if __name__ == "__main__":
 
     running = True
 
-    p_objects = []
-    po1 = PObject(50, 50, height=100)
-    p_objects.append(po1)
+    # working vars
+    x, y = WIDTH / 2, HEIGHT / 2
+    x_change = 0
+    y_change = 0
+    x_acceleration = 0
+    y_acceleration = 0
+
+    # constants (unless changed...)
+    max_speed = 15
+    x_acceleration_rate = 1  # rate of x acceleration
+    y_acceleration_rate = 1.5  # rate of y acceleration
+    x_de_acceleration_rate = 0.9  # rate of x friction
+    y_de_acceleration_rate = 0.9  # rate of y friction
+    x_gravity = 0
+    y_gravity = 0.9
+    m_width, m_height = 20, 40
+    rect = pygame.Rect(0, 0, m_width, m_height)
+    rect.center = x, y
+
+    po1 = PObject('0001', 50, 50, height=100)
 
     while running:
         CLOCK.tick(FPS)
@@ -308,35 +257,67 @@ if __name__ == "__main__":
         # reset window
         WINDOW.fill(BLACK)
 
-        # handle events
-        events = pygame.event.get()
-        for p_obj in p_objects:
-            # print(f"obj: {p_obj}")
-            move_data = p_obj.propose_move(None, WINDOW.get_rect())
-            # TODO check collisions
-            for event in events:
-                # print(f"event: {event}")
-                move_data = p_obj.propose_move(event, WINDOW.get_rect(), move_data)
-                p_obj_x = move_data['x']
-                p_obj_y = move_data['y']
-                p_obj_x_change = move_data['x_change']
-                p_obj_y_change = move_data['y_change']
-                p_obj_x_acceleration = move_data['y_acceleration']
-                p_obj_y_acceleration = move_data['x_acceleration']
-                p_obj_rect = move_data['rect']
+        # # begin drawing
+        # text_surface = FONT_DEFAULT.render("Demo Text", True, GREEN_4, GRAY_27)
+        # text_rect = text_surface.get_rect()
+        # text_rect.center = WINDOW.get_rect().center
+        # WINDOW.blit(text_surface, text_rect)
 
-                # p_obj.handle_event(event)
-                # p_obj.move(WINDOW.get_rect())
+        # handle events
+        for event in pygame.event.get():
+            po1.handle_event(event)
             if event.type == pygame.QUIT:
                 running = False
                 break
+            elif event.type == pygame.KEYDOWN:
+                # Set the acceleration value.
+                if event.key == pygame.K_LEFT:
+                    x_acceleration = -x_acceleration_rate
+                if event.key == pygame.K_RIGHT:
+                    x_acceleration = x_acceleration_rate
+                if event.key == pygame.K_UP:
+                    y_acceleration = -y_acceleration_rate
+                if event.key == pygame.K_DOWN:
+                    y_acceleration = y_acceleration_rate
+            elif event.type == pygame.KEYUP:
+                if event.key in (pygame.K_LEFT, pygame.K_RIGHT):
+                    x_acceleration = 0
+                if event.key in (pygame.K_UP, pygame.K_DOWN):
+                    y_acceleration = 0
 
-        for p_obj in p_objects:
-            # p_obj.move(WINDOW.get_rect())
-            p_obj.move_commit()
-            p_obj.draw(WINDOW)
+        x_change += x_acceleration  # Accelerate.
+        y_change += y_acceleration  # Accelerate.
+        if abs(x_change) >= max_speed:  # If max_speed is exceeded.
+            # Normalize the x_change and multiply it with the max_speed.
+            x_change = x_change / abs(x_change) * max_speed
+        if abs(y_change) >= max_speed:  # If max_speed is exceeded.
+            # Normalize the x_change and multiply it with the max_speed.
+            y_change = y_change / abs(y_change) * max_speed
+
+        # Decelerate if no key is pressed.
+        if x_acceleration == 0:
+            x_change *= x_de_acceleration_rate
+        if y_acceleration == 0:
+            y_change *= y_de_acceleration_rate
+
+        # Add effect of gravity
+        x_change += x_gravity
+        y_change += y_gravity
+
+        # Move the object
+        win_rect = WINDOW.get_rect()
+        x = clamp(win_rect.left + (m_width / 2), x + x_change, win_rect.right - (m_width / 2))  # Move the object.
+        y = clamp(win_rect.top + (m_height / 2), y + y_change, win_rect.bottom - (m_height / 2))  # Move the object.
+
+        rect.center = x, y
+        pygame.draw.rect(WINDOW, (0, 120, 250), rect)
+        po1.move(WINDOW.get_rect())
+        po1.draw(WINDOW)
 
         # update the display
+        # draw everything
+        # pygame.display.flip()
+        # draw everything, or pass a surface or shape to update only that portion.
         pygame.display.update()
 
     # print(po1)
