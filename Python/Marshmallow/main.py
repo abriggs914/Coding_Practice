@@ -3,9 +3,20 @@ from utility import *
 import pygame
 
 
-class PObject:
+N_OBJECTS = 0
 
-    N_OBJECTS = 0
+
+def new_id():
+    global N_OBJECTS
+    N_OBJECTS += 1
+    return N_OBJECTS
+
+
+def pad_rect(rect, padding):
+    return pygame.Rect(rect.x - padding, rect.y - padding, rect.w + (2 * padding), rect.h + (2 * padding))
+
+
+class PObject:
 
     def __init__(
             self,
@@ -15,8 +26,8 @@ class PObject:
             name=None,
             colour=RED,
             max_speed=15,
-            x_change=0,  # inital x speed
-            y_change=0,  # inital y speed
+            x_change=0,  # initial x speed
+            y_change=0,  # initial y speed
             x_acceleration=0,  # initial x acceleration
             y_acceleration=0,  # initial y acceleration
             x_acceleration_rate=1,  # rate of x acceleration
@@ -28,15 +39,17 @@ class PObject:
             width=20,
             height=20
     ):
-        self.x = x
-        self.y = y
-        self.xy = x, y
+        self._x = x
+        self._y = y
+        self._xy = x, y
+        self._rect = rect
+        self._width = width
+        self._height = height
         self.x_change = x_change
         self.y_change = y_change
         self.x_acceleration = x_acceleration
         self.y_acceleration = y_acceleration
-        self.obj_id = self.new_id()
-        self.rect = rect
+        self.obj_id = new_id()
         self.colour = colour
         self.name = name
         self.max_speed = max_speed
@@ -46,8 +59,6 @@ class PObject:
         self.y_de_acceleration_rate = y_de_acceleration_rate
         self.x_gravity = x_gravity
         self.y_gravity = y_gravity
-        self.width = width
-        self.height = height
         self.proposed_move = None
 
         self.init(
@@ -121,10 +132,6 @@ class PObject:
         self.height = height
         self.proposed_move = proposed_move
 
-    def new_id(self):
-        self.N_OBJECTS += 1
-        return self.N_OBJECTS
-
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             # Set the acceleration value.
@@ -143,6 +150,8 @@ class PObject:
                 self.y_acceleration = 0
 
     def propose_move(self, event, bounds, move_data_in=None):
+        if move_data_in:
+            print(dict_print(move_data_in, "Move data in"))
         us = move_data_in is None
         x_acceleration = self.x_acceleration if us else move_data_in['x_acceleration']
         y_acceleration = self.y_acceleration if us else move_data_in['y_acceleration']
@@ -191,7 +200,9 @@ class PObject:
         y = clamp(bounds.top + (self.height / 2), y + y_change, bounds.bottom - (self.height / 2))  # Move the object.
 
         rect = pygame.Rect(self.rect)
+        print(f"pre-commit A rect: {rect}")
         rect.center = x, y
+        print(f"pre-commit B rect: {rect}")
         move_data = {
             'x': x,
             'y': y,
@@ -214,11 +225,47 @@ class PObject:
         self.y = move_data['y']
         self.x_change = move_data['x_change']
         self.y_change = move_data['y_change']
-        self.x_acceleration = move_data['y_acceleration']
-        self.y_acceleration = move_data['x_acceleration']
+        self.x_acceleration = move_data['x_acceleration']
+        self.y_acceleration = move_data['y_acceleration']
         self.rect = move_data['rect']
-        # print(dict_print(move_data, "Committing..."))
+        print(dict_print(move_data, "Committing..."))
         self.proposed_move = None
+
+    def check_collisions(self, other_objects):
+        """Return T if this object is colliding with another."""
+        # y_rest = self.resting_y(other_objects)
+        # if y_rest:
+        #     raise ValueError("RESTING Y")
+        for other in other_objects:
+            assert isinstance(other, PObject)
+            # print(f"other: {other}")
+            if self != other:
+                if self.rect.colliderect(other.rect):
+                    # print(f"self: {self} is colliding with other: {other}")
+                    return True
+        return False
+
+    def resting_y(self, other_objects, inc=True, threshold=0):
+        sorted_objects = [obj for obj in other_objects]
+        sorted_objects.sort(key=lambda o: o.rect.y)
+        rect = pad_rect(self.rect, threshold)
+        # print(f"sorted: {sorted_objects}")
+        # print(f"og: {other_objects}")
+        for other in sorted_objects:
+            if self != other:
+                if inc:
+                    # print(f"other.rect.top == rect.bottom: a:{other.rect.bottom}, b:{rect.top}, c:{other.rect.bottom == rect.top}")
+                    if other.rect.bottom == rect.top:
+                        if other.rect.left <= rect.centerx <= other.rect.right:
+                            print("resting underneath something")
+                            return True
+                else:
+                    if other.rect.top == rect.bottom:
+                        if other.rect.left <= rect.centerx <= other.rect.right:
+                            print("resting on top of something")
+                            return True
+        return False
+
 
     def move(self, bounds):
         self.x_change += self.x_acceleration  # Accelerate.
@@ -249,16 +296,88 @@ class PObject:
     def draw(self, window):
         pygame.draw.rect(window, self.colour, self.rect)
 
+    def get_x(self):
+        return self._x
+
+    def set_x(self, value):
+        self._x = value
+        if self._rect is not None and self.rect.centerx != self._x:
+            self.rect.centerx = self._x
+
+    def del_x(self):
+        del self._x
+
+    def get_y(self):
+        return self._y
+
+    def set_y(self, value):
+        self._y = value
+        if self._rect is not None and self.rect.centery != self._y:
+            self.rect.centery = self._y
+
+    def del_y(self):
+        del self._y
+
+    def get_xy(self):
+        return self._xy
+
+    def set_xy(self, value):
+        self._xy = value
+        if self._rect is not None and self.rect.center != self._xy:
+            self.rect.center = self._xy
+
+    def del_xy(self):
+        del self._xy
+
+    def get_width(self):
+        return self._width
+
+    def set_width(self, value):
+        self._width = value
+        if self._rect.width != self._width:
+            self._rect.width = self._width
+
+    def del_width(self):
+        del self._width
+
+    def get_height(self):
+        return self._height
+
+    def set_height(self, value):
+        self._height = value
+        if self._rect.height != self._height:
+            self._rect.height = self._height
+
+    def del_height(self):
+        del self._height
+
+    def get_rect(self):
+        return self._rect
+
+    def set_rect(self, value):
+        self._rect = value
+        if self._x != self._rect.centerx:
+            self._x = self._rect.centerx
+        if self._y != self._rect.centery:
+            self._y = self._rect.centery
+        if self._width != self._rect.width:
+            self._width = self._rect.width
+        if self._height != self._rect.height:
+            self._height = self._rect.height
+
+    def del_rect(self):
+        del self._rect
+
     def __eq__(self, other):
         return isinstance(other, PObject) and self.obj_id == other.obj_id
 
     def __getitem__(self, item):
         d = {
-            'x': self.x,
-            'y': self.y,
-            'xy': self.xy,
+            'x': self._x,
+            'y': self._y,
+            'xy': self._xy,
             'obj_id': self.obj_id,
-            'rect': self.rect,
+            'rect': self._rect,
             'colour': self.colour,
             'name': self.name,
             'max_speed': self.max_speed,
@@ -268,8 +387,8 @@ class PObject:
             'y_de_acceleration_rate': self.y_de_acceleration_rate,
             'x_gravity': self.x_gravity,
             'y_gravity': self.y_gravity,
-            'width': self.width,
-            'height': self.height
+            'width': self._width,
+            'height': self._height
         }
         try:
             return d[item]
@@ -284,7 +403,14 @@ class PObject:
             raise KeyError(message) from None
 
     def __repr__(self):
-        return f"<PObject id:{self.obj_id}, name:{self.name}, rect:{self.rect}>"
+        return f"<PObject id:{self.obj_id}, name:{self.name}, rect:{self._rect}>"
+
+    x = property(get_x, set_x, del_x, 'X position of this object')
+    y = property(get_y, set_y, del_y, 'Y position of this object')
+    xy = property(get_xy, set_xy, del_xy, 'X and Y position of this object')
+    rect = property(get_rect, set_rect, del_rect, 'pygame.Rect object representing the position of this object')
+    width = property(get_width, set_width, del_width, 'Width of this object')
+    height = property(get_height, set_height, del_height, 'Height of this object')
 
 
 if __name__ == "__main__":
@@ -299,8 +425,12 @@ if __name__ == "__main__":
     running = True
 
     p_objects = []
-    po1 = PObject(50, 50, height=100)
-    p_objects.append(po1)
+    # po1 = PObject(52, 50, height=100)
+    # po2 = PObject(50, 150, height=100, colour=GREEN)
+    # p_objects.append(po1)
+    # p_objects.append(po2)
+    for i in range(10):
+        p_objects.append(PObject(i * (30 + (2 * i)), 5 + (i * 15), colour=random_colour()))
 
     while running:
         CLOCK.tick(FPS)
@@ -313,26 +443,41 @@ if __name__ == "__main__":
         for p_obj in p_objects:
             # print(f"obj: {p_obj}")
             move_data = p_obj.propose_move(None, WINDOW.get_rect())
+            if p_obj.check_collisions(p_objects):
+                if p_obj.resting_y(p_objects) or p_obj.resting_y(p_objects, False):
+                    p_obj.proposed_move['y'] = p_obj.rect.y
+                    p_obj.proposed_move['y_change'] = 0
+                    p_obj.proposed_move['y_acceleration'] = 0
+                    print("ADJUSTING A")
+                else:
+                    p_obj.proposed_move = None
+                # raise ValueError("ADJUSTING A")
             # TODO check collisions
             for event in events:
+                if event.type == pygame.QUIT:
+                    running = False
+                    break
                 # print(f"event: {event}")
                 move_data = p_obj.propose_move(event, WINDOW.get_rect(), move_data)
+                print(dict_print(move_data, "Move Data Out"))
+                if p_obj.check_collisions(p_objects):
+                    if p_obj.resting_y(p_objects) or p_obj.resting_y(p_objects, False):
+                        # print("resting underneath something")
+                        p_obj.proposed_move['y'] = p_obj.rect.y
+                        p_obj.proposed_move['y_change'] = 0
+                        p_obj.proposed_move['y_acceleration'] = 0
+                        print("ADJUSTING B")
+                    else:
+                        p_obj.proposed_move = None
+                    # raise ValueError("ADJUSTING B")
                 p_obj_x = move_data['x']
                 p_obj_y = move_data['y']
                 p_obj_x_change = move_data['x_change']
                 p_obj_y_change = move_data['y_change']
-                p_obj_x_acceleration = move_data['y_acceleration']
-                p_obj_y_acceleration = move_data['x_acceleration']
+                p_obj_x_acceleration = move_data['x_acceleration']
+                p_obj_y_acceleration = move_data['y_acceleration']
                 p_obj_rect = move_data['rect']
 
-                # p_obj.handle_event(event)
-                # p_obj.move(WINDOW.get_rect())
-            if event.type == pygame.QUIT:
-                running = False
-                break
-
-        for p_obj in p_objects:
-            # p_obj.move(WINDOW.get_rect())
             p_obj.move_commit()
             p_obj.draw(WINDOW)
 
