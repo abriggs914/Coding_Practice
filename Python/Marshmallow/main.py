@@ -104,7 +104,8 @@ class PObject:
             proposed_move=None
     ):
         if rect is None:
-            rect = pygame.Rect(x, y, width, height)
+            rect = pygame.Rect(0, 0, width, height)
+            rect.center = x, y
 
         # ensure these match
         width, height = rect.w, rect.h
@@ -245,6 +246,27 @@ class PObject:
                     return True
         return False
 
+    def resting_x(self, other_objects, inc=True, threshold=0):
+        sorted_objects = [obj for obj in other_objects]
+        sorted_objects.sort(key=lambda o: o.rect.x)
+        rect = pad_rect(self.rect, threshold)
+        # print(f"sorted: {sorted_objects}")
+        # print(f"og: {other_objects}")
+        for other in sorted_objects:
+            if self != other:
+                if inc:
+                    # print(f"other.rect.top == rect.bottom: a:{other.rect.bottom}, b:{rect.top}, c:{other.rect.bottom == rect.top}")
+                    if other.rect.right == rect.left:
+                        if other.rect.top <= rect.centery <= other.rect.bottom:
+                            print("resting to the right of something")
+                            return True
+                else:
+                    if other.rect.left == rect.right:
+                        if other.rect.top <= rect.centery <= other.rect.bottom:
+                            print("resting the right of something")
+                            return True
+        return False
+
     def resting_y(self, other_objects, inc=True, threshold=0):
         sorted_objects = [obj for obj in other_objects]
         sorted_objects.sort(key=lambda o: o.rect.y)
@@ -265,7 +287,6 @@ class PObject:
                             print("resting on top of something")
                             return True
         return False
-
 
     def move(self, bounds):
         self.x_change += self.x_acceleration  # Accelerate.
@@ -425,12 +446,12 @@ if __name__ == "__main__":
     running = True
 
     p_objects = []
-    # po1 = PObject(52, 50, height=100)
-    # po2 = PObject(50, 150, height=100, colour=GREEN)
-    # p_objects.append(po1)
-    # p_objects.append(po2)
-    for i in range(10):
-        p_objects.append(PObject(i * (30 + (2 * i)), 5 + (i * 15), colour=random_colour()))
+    po1 = PObject(52, 35)
+    po2 = PObject(50, 150, colour=GREEN)
+    p_objects.append(po1)
+    p_objects.append(po2)
+    # for i in range(10):
+    #     p_objects.append(PObject(i * (30 + (2 * i)), 5 + (i * 15), colour=random_colour()))
 
     while running:
         CLOCK.tick(FPS)
@@ -444,13 +465,29 @@ if __name__ == "__main__":
             # print(f"obj: {p_obj}")
             move_data = p_obj.propose_move(None, WINDOW.get_rect())
             if p_obj.check_collisions(p_objects):
+                handled = False
                 if p_obj.resting_y(p_objects) or p_obj.resting_y(p_objects, False):
+                    old_rect = pygame.Rect(p_obj.proposed_move['rect'])
+                    old_rect.center = p_obj.proposed_move['rect'].centerx, p_obj.rect.y
+                    p_obj.proposed_move['rect'] = old_rect
                     p_obj.proposed_move['y'] = p_obj.rect.y
                     p_obj.proposed_move['y_change'] = 0
                     p_obj.proposed_move['y_acceleration'] = 0
-                    print("ADJUSTING A")
-                else:
+                    handled = True
+                    print("ADJUSTING A1")
+                if p_obj.resting_x(p_objects) or p_obj.resting_x(p_objects, False):
+                    old_rect = pygame.Rect(p_obj.proposed_move['rect'])
+                    old_rect.center = p_obj.rect.x, p_obj.proposed_move['rect'].centery
+                    p_obj.proposed_move['rect'] = old_rect
+                    p_obj.proposed_move['x'] = p_obj.rect.x
+                    p_obj.proposed_move['x_change'] = 0
+                    p_obj.proposed_move['y_acceleration'] = 0
+                    handled = True
+                    print("ADJUSTING A2")
+                if not handled:
                     p_obj.proposed_move = None
+                # else:
+                #     p_obj.proposed_move = None
                 # raise ValueError("ADJUSTING A")
             # TODO check collisions
             for event in events:
@@ -461,14 +498,30 @@ if __name__ == "__main__":
                 move_data = p_obj.propose_move(event, WINDOW.get_rect(), move_data)
                 print(dict_print(move_data, "Move Data Out"))
                 if p_obj.check_collisions(p_objects):
+                    handled = False
                     if p_obj.resting_y(p_objects) or p_obj.resting_y(p_objects, False):
                         # print("resting underneath something")
+                        old_rect = pygame.Rect(p_obj.proposed_move['rect'])
+                        old_rect.center = p_obj.proposed_move['rect'].centerx, p_obj.rect.y
+                        p_obj.proposed_move['rect'] = old_rect
                         p_obj.proposed_move['y'] = p_obj.rect.y
                         p_obj.proposed_move['y_change'] = 0
                         p_obj.proposed_move['y_acceleration'] = 0
+                        handled = True
                         print("ADJUSTING B")
-                    else:
+                    if p_obj.resting_x(p_objects) or p_obj.resting_x(p_objects, False):
+                        old_rect = pygame.Rect(p_obj.proposed_move['rect'])
+                        old_rect.center = p_obj.rect.x, p_obj.proposed_move['rect'].centery
+                        p_obj.proposed_move['rect'] = old_rect
+                        p_obj.proposed_move['x'] = p_obj.rect.x
+                        p_obj.proposed_move['x_change'] = 0
+                        p_obj.proposed_move['y_acceleration'] = 0
+                        handled = True
+                        print("ADJUSTING B2")
+                    if not handled:
                         p_obj.proposed_move = None
+                    # else:
+                    #     p_obj.proposed_move = None
                     # raise ValueError("ADJUSTING B")
                 p_obj_x = move_data['x']
                 p_obj_y = move_data['y']
