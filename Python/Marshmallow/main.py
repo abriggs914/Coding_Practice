@@ -485,6 +485,7 @@ if __name__ == "__main__":
                     handled = True
                     print("ADJUSTING A2")
                 if not handled:
+                    print("ADJUSTING A3")
                     p_obj.proposed_move = None
                 # else:
                 #     p_obj.proposed_move = None
@@ -502,7 +503,7 @@ if __name__ == "__main__":
                     if p_obj.resting_y(p_objects) or p_obj.resting_y(p_objects, False):
                         # print("resting underneath something")
                         old_rect = pygame.Rect(p_obj.proposed_move['rect'])
-                        old_rect.center = p_obj.proposed_move['rect'].centerx, p_obj.rect.y
+                        old_rect.center = old_rect.centerx, p_obj.rect.y
                         p_obj.proposed_move['rect'] = old_rect
                         p_obj.proposed_move['y'] = p_obj.rect.y
                         p_obj.proposed_move['y_change'] = 0
@@ -519,6 +520,7 @@ if __name__ == "__main__":
                         handled = True
                         print("ADJUSTING B2")
                     if not handled:
+                        print("ADJUSTING B3")
                         p_obj.proposed_move = None
                     # else:
                     #     p_obj.proposed_move = None
