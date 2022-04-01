@@ -246,10 +246,10 @@ class PObject:
                     return True
         return False
 
-    def resting_x(self, other_objects, inc=True, threshold=0):
+    def resting_x(self, other_objects, inc=True, threshold=0, use_proposed=False):
         sorted_objects = [obj for obj in other_objects]
         sorted_objects.sort(key=lambda o: o.rect.x)
-        rect = pad_rect(self.rect, threshold)
+        rect = pad_rect(self.rect if not use_proposed else self.proposed_move['rect'], threshold)
         # print(f"sorted: {sorted_objects}")
         # print(f"og: {other_objects}")
         for other in sorted_objects:
@@ -267,10 +267,10 @@ class PObject:
                             return True
         return False
 
-    def resting_y(self, other_objects, inc=True, threshold=0):
+    def resting_y(self, other_objects, inc=True, threshold=0, use_proposed=False):
         sorted_objects = [obj for obj in other_objects]
         sorted_objects.sort(key=lambda o: o.rect.y)
-        rect = pad_rect(self.rect, threshold)
+        rect = pad_rect(self.rect if not use_proposed else self.proposed_move['rect'], threshold)
         # print(f"sorted: {sorted_objects}")
         # print(f"og: {other_objects}")
         for other in sorted_objects:
@@ -464,26 +464,27 @@ if __name__ == "__main__":
         for p_obj in p_objects:
             # print(f"obj: {p_obj}")
             move_data = p_obj.propose_move(None, WINDOW.get_rect())
+            if p_obj.resting_y(p_objects, threshold=1, use_proposed=True) or p_obj.resting_y(p_objects, False, threshold=1, use_proposed=True):
+                old_rect = pygame.Rect(p_obj.proposed_move['rect'])
+                old_rect.center = p_obj.proposed_move['rect'].centerx, p_obj.rect.y
+                p_obj.proposed_move['rect'] = old_rect
+                p_obj.proposed_move['y'] = p_obj.rect.y
+                p_obj.proposed_move['y_change'] = 0
+                p_obj.proposed_move['y_acceleration'] = 0
+                handled = True
+                print("ADJUSTING A1")
+            if p_obj.resting_x(p_objects, threshold=1, use_proposed=True) or p_obj.resting_x(p_objects, False, threshold=1, use_proposed=True):
+                old_rect = pygame.Rect(p_obj.proposed_move['rect'])
+                old_rect.center = p_obj.rect.x, p_obj.proposed_move['rect'].centery
+                p_obj.proposed_move['rect'] = old_rect
+                p_obj.proposed_move['x'] = p_obj.rect.x
+                p_obj.proposed_move['x_change'] = 0
+                p_obj.proposed_move['y_acceleration'] = 0
+                handled = True
+                print("ADJUSTING A2")
             if p_obj.check_collisions(p_objects):
                 handled = False
-                if p_obj.resting_y(p_objects) or p_obj.resting_y(p_objects, False):
-                    old_rect = pygame.Rect(p_obj.proposed_move['rect'])
-                    old_rect.center = p_obj.proposed_move['rect'].centerx, p_obj.rect.y
-                    p_obj.proposed_move['rect'] = old_rect
-                    p_obj.proposed_move['y'] = p_obj.rect.y
-                    p_obj.proposed_move['y_change'] = 0
-                    p_obj.proposed_move['y_acceleration'] = 0
-                    handled = True
-                    print("ADJUSTING A1")
-                if p_obj.resting_x(p_objects) or p_obj.resting_x(p_objects, False):
-                    old_rect = pygame.Rect(p_obj.proposed_move['rect'])
-                    old_rect.center = p_obj.rect.x, p_obj.proposed_move['rect'].centery
-                    p_obj.proposed_move['rect'] = old_rect
-                    p_obj.proposed_move['x'] = p_obj.rect.x
-                    p_obj.proposed_move['x_change'] = 0
-                    p_obj.proposed_move['y_acceleration'] = 0
-                    handled = True
-                    print("ADJUSTING A2")
+
                 if not handled:
                     print("ADJUSTING A3")
                     p_obj.proposed_move = None
@@ -498,27 +499,27 @@ if __name__ == "__main__":
                 # print(f"event: {event}")
                 move_data = p_obj.propose_move(event, WINDOW.get_rect(), move_data)
                 print(dict_print(move_data, "Move Data Out"))
+                if p_obj.resting_y(p_objects, threshold=1, use_proposed=True) or p_obj.resting_y(p_objects, False, threshold=1, use_proposed=True):
+                    # print("resting underneath something")
+                    old_rect = pygame.Rect(p_obj.proposed_move['rect'])
+                    old_rect.center = old_rect.centerx, p_obj.rect.y
+                    p_obj.proposed_move['rect'] = old_rect
+                    p_obj.proposed_move['y'] = p_obj.rect.y
+                    p_obj.proposed_move['y_change'] = 0
+                    p_obj.proposed_move['y_acceleration'] = 0
+                    handled = True
+                    print("ADJUSTING B1")
+                if p_obj.resting_x(p_objects, threshold=1, use_proposed=True) or p_obj.resting_x(p_objects, False, threshold=1, use_proposed=True):
+                    old_rect = pygame.Rect(p_obj.proposed_move['rect'])
+                    old_rect.center = p_obj.rect.x, p_obj.proposed_move['rect'].centery
+                    p_obj.proposed_move['rect'] = old_rect
+                    p_obj.proposed_move['x'] = p_obj.rect.x
+                    p_obj.proposed_move['x_change'] = 0
+                    p_obj.proposed_move['y_acceleration'] = 0
+                    handled = True
+                    print("ADJUSTING B2")
                 if p_obj.check_collisions(p_objects):
                     handled = False
-                    if p_obj.resting_y(p_objects) or p_obj.resting_y(p_objects, False):
-                        # print("resting underneath something")
-                        old_rect = pygame.Rect(p_obj.proposed_move['rect'])
-                        old_rect.center = old_rect.centerx, p_obj.rect.y
-                        p_obj.proposed_move['rect'] = old_rect
-                        p_obj.proposed_move['y'] = p_obj.rect.y
-                        p_obj.proposed_move['y_change'] = 0
-                        p_obj.proposed_move['y_acceleration'] = 0
-                        handled = True
-                        print("ADJUSTING B")
-                    if p_obj.resting_x(p_objects) or p_obj.resting_x(p_objects, False):
-                        old_rect = pygame.Rect(p_obj.proposed_move['rect'])
-                        old_rect.center = p_obj.rect.x, p_obj.proposed_move['rect'].centery
-                        p_obj.proposed_move['rect'] = old_rect
-                        p_obj.proposed_move['x'] = p_obj.rect.x
-                        p_obj.proposed_move['x_change'] = 0
-                        p_obj.proposed_move['y_acceleration'] = 0
-                        handled = True
-                        print("ADJUSTING B2")
                     if not handled:
                         print("ADJUSTING B3")
                         p_obj.proposed_move = None
