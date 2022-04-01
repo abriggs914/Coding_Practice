@@ -1,5 +1,7 @@
 from utility import *
 
+# Turn this into a graph.
+
 fry = "Fry"
 leela = "Leela"
 zoid = "Zoidberg"
