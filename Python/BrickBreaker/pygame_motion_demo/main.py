@@ -7,7 +7,7 @@ from map_parser import *
 if __name__ == "__main__":
 
     map_001 = JMap("map_001.json")
-    map_001.bounce_bottom = True  # testing
+    map_001.bounce_bottom = True
     map_001.test_map()
     print(dict_print(map_001.__dict__, map_001.name))
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
         map_001.draw(WINDOW)
 
         # begin drawing
-        text_surface = FONT_DEFAULT.render(f"# bounces: {map_001.balls[0].n_bounces}, # breaks: {map_001.balls[0].n_breaks}", True, GREEN_4, GRAY_27)
+        text_surface = FONT_DEFAULT.render(f"{WINDOW.get_rect()}", True, GREEN_4, GRAY_27)
         text_rect = text_surface.get_rect()
         text_rect.center = WINDOW.get_rect().center
         WINDOW.blit(text_surface, text_rect)

@@ -23,8 +23,6 @@ class Ball:
         self.max_y_speed = max_y_speed
 
         self.visible = visible or 1
-        self.n_bounces = 0
-        self.n_breaks = 0
 
     def get_x(self):
         return self._x
@@ -103,53 +101,27 @@ class Ball:
             if diff < self.radius and jmap.bounce_right:
                 self.x_speed *= -1
                 self.x = bounds.right + diff
-                self.n_bounces += 1
         elif self.x_speed < 0:
             diff = (bounds.left + self.radius) - nlx
             if diff > 0 and jmap.bounce_left:
                 self.x_speed *= -1
                 self.x = bounds.left + diff + self.radius
-                self.n_bounces += 1
         if self.y_speed > 0:
             diff = bounds.bottom - nty
             if diff < self.radius and jmap.bounce_bottom:
                 self.y_speed *= -1
                 self.y = bounds.bottom + diff
-                self.n_bounces += 1
         elif self.y_speed < 0:
             diff = (bounds.top + self.radius) - nby
             if diff > 0 and jmap.bounce_top:
                 self.y_speed *= -1
                 self.y = bounds.top + diff + self.radius
-                self.n_bounces += 1
 
-        bound_x = clamp(bounds.left + self.radius, self.x, bounds.right - self.radius)
-        bound_y = clamp(bounds.top + self.radius, self.y, bounds.bottom - self.radius)
-        motion = Line(bound_x, bound_y, *self.centre)
-        for row in jmap.map:
-            for col in row:
-                if distance(col.rect.center, self.centre) <= self.radius:
-                    print(f"checking: {col}")
-                    side_left = Line(*col.rect.topleft, *col.rect.bottomleft)
-                    side_top = Line(*col.rect.topleft, *col.rect.topright)
-                    side_right = Line(*col.rect.topright, *col.rect.bottomright)
-                    side_bottom = Line(*col.rect.bottomleft, *col.rect.bottomright)
-                    if motion.collide_line(side_top):
-                        print("motion.collide_line(side_top)")
-                        raise ValueError("AHHH1")
-                    elif motion.collide_line(side_left):
-                        print("motion.collide_line(side_left)")
-                        raise ValueError("AHHH2")
-                    elif motion.collide_line(side_right):
-                        print("motion.collide_line(side_right)")
-                        raise ValueError("AHHH3")
-                    elif motion.collide_line(side_bottom):
-                        print("motion.collide_line(side_bottom)")
-                        raise ValueError("AHHH4")
+        # for row in jmap.map:
+        #     for col in row:
 
-
-        self.x = bound_x
-        self.y = bound_y
+        self.x = clamp(bounds.left + self.radius, self.x, bounds.right - self.radius)
+        self.y = clamp(bounds.top + self.radius, self.y, bounds.bottom - self.radius)
 
     def draw(self, window):
         if self.visible:
@@ -158,9 +130,6 @@ class Ball:
     x = property(get_x, set_x)
     y = property(get_y, set_y)
     centre = property(get_centre, set_centre)
-
-    def __repr__(self):
-        return f"<Ball x,y=({self.x}, {self.y}), r={self.radius}>"
 
 
 class Brick:
@@ -348,9 +317,9 @@ class JMap:
                                 print(f"hit: col {col}, ball: {ball}, old: {old}, new: {col.curr_hp}")
                                 if col.curr_hp == 0 and col.breakable:
                                     print(f"breaking col: {col}")
-                                    ball.n_breaks += 1
 
             ball.draw(window)
+
 
     def is_valid(self):
         return self._valid
