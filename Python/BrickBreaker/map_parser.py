@@ -94,6 +94,7 @@ class Ball:
         nrx = self.x + self.x_speed  # + self.radius
         nty = self.y + self.y_speed  # - self.radius
         nby = self.y + self.y_speed  # + self.radius
+        ogx, ogy = self.centre
         self.x += self.x_speed
         self.y += self.y_speed
 
@@ -125,28 +126,49 @@ class Ball:
 
         bound_x = clamp(bounds.left + self.radius, self.x, bounds.right - self.radius)
         bound_y = clamp(bounds.top + self.radius, self.y, bounds.bottom - self.radius)
-        motion = Line(bound_x, bound_y, *self.centre)
+        motion = Line(bound_x, bound_y, ogx, ogy)
         for row in jmap.map:
             for col in row:
-                if distance(col.rect.center, self.centre) <= self.radius:
-                    print(f"checking: {col}")
-                    side_left = Line(*col.rect.topleft, *col.rect.bottomleft)
-                    side_top = Line(*col.rect.topleft, *col.rect.topright)
-                    side_right = Line(*col.rect.topright, *col.rect.bottomright)
-                    side_bottom = Line(*col.rect.bottomleft, *col.rect.bottomright)
-                    if motion.collide_line(side_top):
-                        print("motion.collide_line(side_top)")
-                        raise ValueError("AHHH1")
-                    elif motion.collide_line(side_left):
-                        print("motion.collide_line(side_left)")
-                        raise ValueError("AHHH2")
-                    elif motion.collide_line(side_right):
-                        print("motion.collide_line(side_right)")
-                        raise ValueError("AHHH3")
-                    elif motion.collide_line(side_bottom):
-                        print("motion.collide_line(side_bottom)")
-                        raise ValueError("AHHH4")
-
+                if not isinstance(col, BrickEmpty) and not isinstance(col, BrickWall) and not isinstance(col, BrickPaddle):
+                    if col.visible():
+                        if distance(col.rect.center, self.centre) <= self.radius:
+                            print(f"checking: {col}")
+                            side_left = Line(*col.rect.topleft, *col.rect.bottomleft)
+                            side_top = Line(*col.rect.topleft, *col.rect.topright)
+                            side_right = Line(*col.rect.topright, *col.rect.bottomright)
+                            side_bottom = Line(*col.rect.bottomleft, *col.rect.bottomright)
+                            old = col.curr_hp
+                            print(f"top: {side_top}, left: {side_left}, right: {side_right}, bottom: {side_bottom}, motion: {motion}, rect: {col.rect}, ball: {self}, bound x,y=({bound_x}, {bound_y}), (p1, p2): ({motion.p1}, {motion.p2})")
+                            hit = False
+                            hx = True
+                            if cxy := motion.collide_line(side_top):
+                                print("motion.collide_line(side_top)")
+                                hit = True
+                                hx = False
+                                # raise ValueError("AHHH1")
+                            elif cxy := motion.collide_line(side_left):
+                                print("motion.collide_line(side_left)")
+                                hit = True
+                                # raise ValueError("AHHH2")
+                            elif cxy := motion.collide_line(side_right):
+                                print("motion.collide_line(side_right)")
+                                hit = True
+                                # raise ValueError("AHHH3")
+                            elif cxy := motion.collide_line(side_bottom):
+                                print("motion.collide_line(side_bottom)")
+                                hit = True
+                                hx = False
+                                # raise ValueError("AHHH4")
+                            if hit and distance(cxy, self.centre) <= self.radius:
+                                col.curr_hp = clamp(0, col.curr_hp - 1, col.hp)
+                                print(f"hit: col {col}, ball: {self}, old: {old}, new: {col.curr_hp}")
+                                if col.curr_hp == 0 and col.breakable:
+                                    print(f"breaking col: {col}")
+                                    self.n_breaks += 1
+                                if hx:
+                                    self.x_speed *= -1
+                                else:
+                                    self.y_speed *= -1
 
         self.x = bound_x
         self.y = bound_y
@@ -187,7 +209,8 @@ class Brick:
 
     def draw(self, window):
         if self.visible():
-            pygame.draw.rect(window, self.curr_colour(), self.rect)
+            # pygame.draw.rect(window, brighten(self.curr_colour(), 0.6), self.rect)
+            pygame.draw.rect(window, self.curr_colour(), pygame.Rect(self.rect.x+1, self.rect.y+1, self.rect.w-2, self.rect.h-2))
 
     def __repr__(self):
         return self.char
@@ -241,7 +264,8 @@ class JMap:
         # print(f"X::: {0, 0, self.width, self.height}")
         self._rect = None
         self.map = []
-        self.balls = []
+        self.balls = {}
+        self.active_balls = []
 
     def test_map(self):
         self.tested = False
@@ -322,13 +346,14 @@ class JMap:
                 max_x_speed = 10 if 'max_x_speed' not in ball_dat else ball_dat['max_x_speed']
                 max_y_speed = 10 if 'max_y_speed' not in ball_dat else ball_dat['max_y_speed']
                 breakable = hp is not None
-                self.balls.append(Ball(0, 0, ball_dat['radius'], colours, max_x_speed, max_y_speed, hp, breakable))
+                # self.balls[k] = (Ball(0, 0, ball_dat['radius'], colours, max_x_speed, max_y_speed, hp, breakable))
+                self.balls[k] = lambda x, y: Ball(x, y, radius=ball_dat['radius'], colours=colours, max_x_speed=max_x_speed, max_y_speed=max_y_speed, hp=hp, breakable=breakable)
 
         self.tested = True
         self.valid = True
 
     def move(self, window):
-        for ball in self.balls:
+        for ball in self.active_balls:
             ball.move(window.get_rect(), self)
 
     def draw(self, window):
@@ -336,21 +361,26 @@ class JMap:
             for col in row:
                 # print(f"col: {col}")
                 col.draw(window)
-        for ball in self.balls:
-            for row in self.map:
-                for col in row:
-                # print(f"col: {col}")
-                    if not isinstance(col, BrickEmpty):
-                        if distance(col.rect.center, ball.centre) < ball.radius:
-                            if col.visible():
-                                old = col.curr_hp
-                                col.curr_hp = clamp(0, col.curr_hp - 1, col.hp)
-                                print(f"hit: col {col}, ball: {ball}, old: {old}, new: {col.curr_hp}")
-                                if col.curr_hp == 0 and col.breakable:
-                                    print(f"breaking col: {col}")
-                                    ball.n_breaks += 1
+        for ball in self.active_balls:
+            # for row in self.map:
+            #     for col in row:
+            #     # print(f"col: {col}")
+            #         if not isinstance(col, BrickEmpty):
+            #             if distance(col.rect.center, ball.centre) < ball.radius:
+            #                 if col.visible():
+            #                     old = col.curr_hp
+            #                     col.curr_hp = clamp(0, col.curr_hp - 1, col.hp)
+            #                     print(f"hit: col {col}, ball: {ball}, old: {old}, new: {col.curr_hp}")
+            #                     if col.curr_hp == 0 and col.breakable:
+            #                         print(f"breaking col: {col}")
+            #                         ball.n_breaks += 1
 
             ball.draw(window)
+
+    def add_ball(self, x, y, key=None):
+        if key is not None:
+            self.active_balls.append(self.balls[key](x, y))
+        print(f"New key: {key}, balls: {self.active_balls}, balls: {self.balls}")
 
     def is_valid(self):
         return self._valid
