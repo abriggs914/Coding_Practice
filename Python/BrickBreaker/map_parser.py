@@ -8,7 +8,7 @@ import pygame.draw
 
 class Ball:
 
-    def __init__(self, x, y, radius, colours, max_x_speed=10, max_y_speed=10, hp=None, breakable=False, visible=False):
+    def __init__(self, x, y, radius=1, colours=WHITE, max_x_speed=10, max_y_speed=10, hp=None, breakable=False, visible=False):
         self._x = x
         self._y = y
         self.radius = radius
@@ -347,7 +347,8 @@ class JMap:
                 max_y_speed = 10 if 'max_y_speed' not in ball_dat else ball_dat['max_y_speed']
                 breakable = hp is not None
                 # self.balls[k] = (Ball(0, 0, ball_dat['radius'], colours, max_x_speed, max_y_speed, hp, breakable))
-                self.balls[k] = lambda x, y: Ball(x, y, radius=ball_dat['radius'], colours=colours, max_x_speed=max_x_speed, max_y_speed=max_y_speed, hp=hp, breakable=breakable)
+                # self.balls[k] = lambda x, y: Ball(x, y, radius=ball_dat['radius'], colours=colours, max_x_speed=max_x_speed, max_y_speed=max_y_speed, hp=hp, breakable=breakable)
+                self.balls[k] = {'x': 0, 'y': 0, 'radius':ball_dat['radius'], 'colours':colours, 'max_x_speed':max_x_speed, 'max_y_speed':max_y_speed, 'hp':hp, 'breakable':breakable}
 
         self.tested = True
         self.valid = True
@@ -378,9 +379,13 @@ class JMap:
             ball.draw(window)
 
     def add_ball(self, x, y, key=None):
+        new_ball = None
         if key is not None:
-            self.active_balls.append(self.balls[key](x, y))
+            new_ball = Ball(**self.balls[key])
+            new_ball.centre = x, y
+            self.active_balls.append(new_ball)
         print(f"New key: {key}, balls: {self.active_balls}, balls: {self.balls}")
+        return new_ball
 
     def is_valid(self):
         return self._valid

@@ -11,7 +11,10 @@ if __name__ == "__main__":
     map_001.test_map()
     print(dict_print(map_001.__dict__, map_001.name))
 
-    map_001.add_ball(300, 600, "normal")
+    ball_01 = map_001.add_ball(300, 600, "normal")
+    # ball_01 = map_001.add_ball(300, 600, "large")
+    ball_01.x_speed = -10
+    ball_01.y_speed = 10
 
     # map_001.balls[0].centre = 50, 50
     # map_001.balls[1].centre = 150, 250
@@ -35,6 +38,8 @@ if __name__ == "__main__":
 
         # reset window
         WINDOW.fill(BLACK)
+        ball_01.x_speed = weighted_choice([(-10, 0.9), (-9, 0.1)])
+        ball_01.y_speed = weighted_choice([(10, 0.9), (9, 0.1)])
 
         map_001.draw(WINDOW)
 
