@@ -10,8 +10,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.42
-	Date...........2022-03-24
+	Version..............1.43
+	Date...........2022-04-05
 	Author.......Avery Briggs
 """
 
@@ -829,7 +829,11 @@ class Line:
             if len(other) == 2:
                 if all([isinstance(x, int) or isinstance(x, float) for x in other]):
                     ox, oy = other
-                    return oy < self.y_at_x(ox)
+                    # print(f"ox, oy: ({ox}, {oy})")
+                    yax = self.y_at_x(ox)
+                    if yax is not None:
+                        return oy < self.y_at_x(ox)
+                    return self.x1 == self.x2 and self.x1 < ox
             elif len(other) == 3:
                 if all([isinstance(x, int) or isinstance(x, float) for x in other[:2]]):
                     if isinstance(other[2], bool) or (isinstance(other[2], int) and other[2] in [0, 1]):
@@ -848,7 +852,11 @@ class Line:
             if len(other) == 2:
                 if all([isinstance(x, int) or isinstance(x, float) for x in other]):
                     ox, oy = other
-                    return oy <= self.y_at_x(ox)
+                    # print(f"ox, oy: ({ox}, {oy})")
+                    yax = self.y_at_x(ox)
+                    if yax is not None:
+                        return oy < self.y_at_x(ox)
+                    return self.x1 == self.x2 and self.x1 < ox
             elif len(other) == 3:
                 if all([isinstance(x, int) or isinstance(x, float) for x in other[:2]]):
                     if isinstance(other[2], bool) or (isinstance(other[2], int) and other[2] in [0, 1]):
@@ -867,7 +875,14 @@ class Line:
             if len(other) == 2:
                 if all([isinstance(x, int) or isinstance(x, float) for x in other]):
                     ox, oy = other
-                    return oy > self.y_at_x(ox)
+                    # return oy > self.y_at_x(ox)
+
+                    # print(f"ox, oy: ({ox}, {oy})")
+                    yax = self.y_at_x(ox)
+                    if yax is not None:
+                        return oy < self.y_at_x(ox)
+                    return self.x1 == self.x2 and self.x1 > ox
+
             elif len(other) == 3:
                 if all([isinstance(x, int) or isinstance(x, float) for x in other[:2]]):
                     if isinstance(other[2], bool) or (isinstance(other[2], int) and other[2] in [0, 1]):
@@ -886,7 +901,14 @@ class Line:
             if len(other) == 2:
                 if all([isinstance(x, int) or isinstance(x, float) for x in other]):
                     ox, oy = other
-                    return oy >= self.y_at_x(ox)
+                    # return oy >= self.y_at_x(ox)
+
+                    # print(f"ox, oy: ({ox}, {oy})")
+                    yax = self.y_at_x(ox)
+                    if yax is not None:
+                        return oy < self.y_at_x(ox)
+                    return self.x1 == self.x2 and self.x1 > ox
+
             elif len(other) == 3:
                 if all([isinstance(x, int) or isinstance(x, float) for x in other[:2]]):
                     if isinstance(other[2], bool) or (isinstance(other[2], int) and other[2] in [0, 1]):

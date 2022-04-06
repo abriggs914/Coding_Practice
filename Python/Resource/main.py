@@ -1122,6 +1122,31 @@ def test_intersection():
     TS1.execute_log()
 
 
+def test_line_inequality():
+    line_1 = Line(0, 0, 0, 10)
+    line_2 = Line(0, 0, 10, 0)
+    line_3 = Line(0, 0, 10**0.5, 10**0.5)
+    print(f"1: {line_1}, 2: {line_2}, 3: {line_3}")
+    point = 8, 8
+    print(f"line_1 < point: {line_1 < point}")
+    print(f"line_1 <= point: {line_1 <= point}")
+    print(f"line_1 > point: {line_1 > point}")
+    print(f"line_1 >= point: {line_1 >= point}")
+    print(f"line_1 == point: {line_1 == point}")
+
+    print(f"line_2 < point: {line_2 < point}")
+    print(f"line_2 <= point: {line_2 <= point}")
+    print(f"line_2 > point: {line_2 > point}")
+    print(f"line_2 >= point: {line_2 >= point}")
+    print(f"line_2 == point: {line_2 == point}")
+
+    print(f"line_3 < point: {line_3 < point}")
+    print(f"line_3 <= point: {line_3 <= point}")
+    print(f"line_3 > point: {line_3 > point}")
+    print(f"line_3 >= point: {line_3 >= point}")
+    print(f"line_3 == point: {line_3 == point}")
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1147,7 +1172,7 @@ if __name__ == "__main__":
     # text_rect_and_line()
     # test_money_str_format
     # test_find_north_side()
-    test_new_rect()  # This one looks cool
+    # test_new_rect()  # This one looks cool
 
     # test_rect_collision()
     # test_menubar()
@@ -1159,4 +1184,5 @@ if __name__ == "__main__":
     # test_alert_colour()
     # test_is_date()
     # test_date_manipulation()
-    test_intersection()
+    # test_intersection()
+    test_line_inequality()
