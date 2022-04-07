@@ -55,7 +55,7 @@ class DataSet:
                             if k_ent in self.data[date_k_date]['Raw']:
                                 raise ValueError(f"Key \'{k_ent}\' already has an entry for date: \'{date_k_date}\'")
                             self.data[date_k_date]['Raw'].update({k_ent: v})
-                            self.data[date_k_date]['Ordered'].append((k_ent, v))
+                            self.data[date_k_date]['Ordered'].append((k_ent, v, random_color()))
                             self.data[date_k_date]['Ordered'].sort(key=lambda tup: tup[1])
                 except KeyError as ke:
                     print(f'Invalid json format. KeyError:', ke)
@@ -112,52 +112,62 @@ class DataSetViewer:
         self.dataset = DataSet(file_name, mode=mode)
         if not self.dataset.is_valid():
             raise ValueError(f"This dataset cannot be viewed \'{self.dataset.file_name}\'")
+        self.dataset_date_keys = self.dataset.date_keys()
         self.current_key = self.next_date_key()
+        self.current_frame = -1
         self.current_frame = self.next_frame()
         print(f"keys? :{self.current_key}")
 
-    def frames_list(self):
-        for i in range(self.frames_per_point):
-            yield i
+    # def frames_list(self):
+    #     for i in range(self.frames_per_point):
+    #         yield i
+
+    def move_next_frame(self):
+        self.current_frame = self.next_frame()
+
+    def move_next_date_key(self):
+        self.current_key = self.next_date_key()
 
     def next_frame(self):
-        return self.frames_list().__next__()
+        return (self.current_frame + 1) % self.frames_per_point
 
     def next_date_key(self):
-        return self.dataset.date_keys().__next__()
+        return self.dataset_date_keys.__next__()
 
     def compute_move_distance(self, top_n_lst, rect, reverse, ys):
-        frame_n = self.current_frame
+        frame_n = self.current_frame + 1
         next_key = self.dataset.next_key(self.current_key)
         top_n = len(top_n_lst)
         if next_key is None:
             pass
         next_top_n = self.dataset.top_n(top_n, date_key=next_key, reverse=reverse)
         next_ents = [tup[0] for tup in next_top_n]
-        print(f"top_n:{top_n_lst}, next:{next_top_n}")
+        # print(f"top_n:{top_n_lst}, next:{next_top_n}")
         y_diffs = []
 
         for i, pair in enumerate(top_n_lst):
+            n_idx = None
             if pair[0] not in next_ents:
                 # go to bottom:
                 ogy = ys[i]
                 nwy = rect.bottom
             else:
                 ogy = ys[i]
-                nwy = ys[next_ents.index(pair[0])]
-                print(f"ogy:{ogy}, ony:{nwy}")
+                n_idx = next_ents.index(pair[0])
+                nwy = ys[n_idx]
+            print(f"ogy:{ogy}, ony:{nwy}, place_change=o={i}->n:{n_idx}")
             diff = nwy - ogy
             p = frame_n / self.frames_per_point
-            print(f"diff:{diff}, p: {p}")
+            # print(f"diff:{diff}, p: {p}")
             diff *= p
             y_diffs.append(diff)
+        # print(f"RESULT: {y_diffs}")
         return y_diffs
 
-
-    def draw(self, window, top_n=5, reverse=False):
+    def draw(self, window, top_num=5, reverse=False):
         date_key = self.current_key
         rect = window.get_rect()
-        top_n = self.dataset.top_n(top_n, date_key, reverse=reverse)
+        top_n = self.dataset.top_n(top_num, date_key, reverse=reverse)
 
         # title
         text_surface = FONT_DEFAULT.render(self.window_name(), True, GREEN_4, GRAY_27)
@@ -166,20 +176,39 @@ class DataSetViewer:
         text_rect.y = 10
         window.blit(text_surface, text_rect)
 
+        # date_key
+        text_surface = FONT_DEFAULT.render(f"Today: {self.current_key}", True, GREEN_4, GRAY_27)
+        text_rect = text_surface.get_rect()
+        text_rect.centerx = rect.centerx
+        text_rect.y = text_rect.bottom + 10
+        window.blit(text_surface, text_rect)
+
         # backdrop
         marg = 15
-        rem_h = rect.height - (text_rect.height + text_rect.y)
+        rem_h = rect.height - text_rect.bottom
         d_rect = pygame.Rect(marg, text_rect.bottom + marg, rect.width - (2 * marg), rem_h - (2 * marg))
         pygame.draw.rect(window, SNOW_3, d_rect)
 
         h = (((d_rect.h * 0.8) - (2 * marg)) / len(top_n)) * 0.9
         # print(f"h:{h}, dr:{d_rect}")
         ys = [d_rect.y + ((h + marg) * i) + (h / 2) for i in range(len(top_n))]
+
+        # place labels
+        for i in range(top_num):
+            text_surface = FONT_DEFAULT.render(f"{i}", True, GREEN_4, GRAY_27)
+            text_rect = text_surface.get_rect()
+            text_rect.x = d_rect.x + marg
+            # text_rect.y = d_rect.y + ((i + 0.5) * (h + (2 * marg)))
+            text_rect.y = ys[i] + (h / 2) - marg
+            window.blit(text_surface, text_rect)
+
         move_distances = self.compute_move_distance(top_n, d_rect, reverse, ys)
         print(f"md: {move_distances}")
-        for y, yd in zip(ys, move_distances):
-            pygame.draw.rect(window, random_color(), pygame.Rect(d_rect.x + 10, y + yd, 200, h))
-        self.current_frame = self.next_frame()
+        for i, yydt in enumerate(zip(ys, move_distances, top_n)):
+            y, yd, ent = yydt
+            colour = ent[2]
+            pygame.draw.rect(window, colour, pygame.Rect(text_rect.right + marg, y + yd, 200, h))
+        # self.current_frame = self.next_frame()
 
 
 
@@ -191,7 +220,7 @@ class DataSetViewer:
 
 
 if __name__ == "__main__":
-    ds1 = DataSetViewer("dataset_001.json")
+    ds1 = DataSetViewer("dataset_001.json",frames_per_point=100)
     print(ds1.dataset)
     print(f'top_(3): {ds1.dataset.top_n(3, ds1.dataset.date_range[0], 1)}')
     print(f'top_(8): {ds1.dataset.top_n(8, ds1.dataset.date_range[0])}')
@@ -200,7 +229,7 @@ if __name__ == "__main__":
     WIDTH, HEIGHT = 750, 550
     WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
     CLOCK = pygame.time.Clock()
-    FPS = 24
+    FPS = 10
 
     FONT_DEFAULT = pygame.font.Font(None, 36)
 
@@ -208,12 +237,17 @@ if __name__ == "__main__":
 
     while running:
         CLOCK.tick(FPS)
+        last_frame = ds1.current_frame
+        ds1.move_next_frame()
+        new_frame = ds1.current_frame
+        if new_frame < last_frame:
+            ds1.move_next_date_key()
 
         # reset window
         WINDOW.fill(BLACK)
 
         # begin drawing
-        ds1.draw(WINDOW, top_n=4)
+        ds1.draw(WINDOW, top_num=4)
         # handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
