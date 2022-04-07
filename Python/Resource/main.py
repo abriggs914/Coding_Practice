@@ -1147,6 +1147,11 @@ def test_line_inequality():
     print(f"line_3 == point: {line_3 == point}")
 
 
+def test_lineSeg():
+    line_1 = LineSeg(0, 0, 10, 0)
+    print(f"collides: {line_1.collide_point(-5, 0)}")
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1185,4 +1190,5 @@ if __name__ == "__main__":
     # test_is_date()
     # test_date_manipulation()
     # test_intersection()
-    test_line_inequality()
+    # test_line_inequality()
+    test_lineSeg()
