@@ -85,7 +85,7 @@ class DataSet:
                             # if k_ent in self.data[date_k_date]['Raw']:
                             self.data[date_k_date]['Raw'].update({k_ent: v})
                             # if not entities_passed:
-                            self.data[date_k_date]['Ordered'].append((k_ent, v, self.entities[k_ent]['colour']))
+                            self.data[date_k_date]['Ordered'].append((k_ent, v, (self.entities[k_ent]['colour'], self.entities[k_ent]['border_colour'], self.entities[k_ent]['font_colour'], self.entities[k_ent]['font_back_colour'])))
                             self.data[date_k_date]['Ordered'].sort(key=lambda tup: tup[1])
                     # if entities_passed:
                     #     for date_k_date in self.dates:
@@ -134,6 +134,18 @@ class DataSet:
         if idx != len(self.dates) - 1:
             return self.dates[idx + 1]
 
+    def data_range(self, date_key, lbound=None, reverse=False):
+        data_range = None, None
+        if self.data[date_key]['Ordered']:
+            data_range = self.data[date_key]['Ordered'][0][1], self.data[date_key]['Ordered'][-1][1]
+        if data_range[0] is not None and (data_range[0] > data_range[1] or reverse and data_range[0] < data_range[1]):
+            data_range[0], data_range = data_range[1], data_range[0]
+        if lbound is not None:
+            # use this to ensure that all bars have a non-zero width
+            if lbound < data_range[0]:
+                data_range = lbound, data_range[1]
+        return data_range
+
     def __repr__(self):
         if not self.is_valid():
             return f"< **INVALID** DataSet>"
@@ -142,15 +154,21 @@ class DataSet:
 
 class DataSetViewer:
 
-    def __init__(self, file_name, frames_per_point=10, time_per_point=1000, name="Untitled Dataset", mode='daily'):
+    def __init__(self, file_name, frames_per_point=10, time_per_point=1000, name="Untitled Dataset", mode='daily', min_width=10):
         self.name = name
         self.frames_per_point = frames_per_point
         self.time_per_point = time_per_point
         self.dataset = DataSet(file_name, mode=mode)
         if not self.dataset.is_valid():
-            raise ValueError(f"This dataset cannot be viewed \'{self.dataset.file_name}\'")
+            raise ValueError(f"This dataset cannot be viewed '{self.dataset.file_name}'")
+        if not 0 <= min_width < 100:
+            raise ValueError(f"Parameter 'min_width' must be a number between 0 < x <= 100. This represents the proportion of the bar that must be shown")
+        self.min_width = min_width
         self.dataset_date_keys = self.dataset.date_keys()
         self.current_key = self.next_date_key()
+        # self.current_data_range = self.dataset.data_range(self.current_key, lbound=self.dataset.data_range(self.current_key)[0] - 1)
+        self.current_data_range = self.dataset.data_range(self.current_key)
+        self.adjust_min_width()
         self.current_frame = -1
         self.current_frame = self.next_frame()
         print(f"keys? :{self.current_key}")
@@ -164,6 +182,13 @@ class DataSetViewer:
 
     def move_next_date_key(self):
         self.current_key = self.next_date_key()
+        self.current_data_range = self.dataset.data_range(self.current_key)
+        self.adjust_min_width()
+
+    def adjust_min_width(self):
+        # if no binding is passed, the minimum value will have a calculated width of 0
+        # diff = self.current_data_range[1] - self.current_data_range[0]
+        self.current_data_range = self.current_data_range[0] - self.min_width, self.current_data_range[1]
 
     def next_frame(self):
         return (self.current_frame + 1) % self.frames_per_point
@@ -181,6 +206,9 @@ class DataSetViewer:
         next_ents = [tup[0] for tup in next_top_n]
         # print(f"top_n:{top_n_lst}, next:{next_top_n}")
         y_diffs = []
+        x_diffs = []
+        # drange = self.dataset.data_range(next_key)
+        # drange = drange[0] + self.min_width, drange[1]
 
         for i, pair in enumerate(top_n_lst):
             n_idx = None
@@ -192,19 +220,30 @@ class DataSetViewer:
                 ogy = ys[i]
                 n_idx = next_ents.index(pair[0])
                 nwy = ys[n_idx]
+            ogx = rect.w
+
+            nwx = self.dataset.data[next_key]['Raw'][pair[0]]
             print(f"ogy:{ogy}, ony:{nwy}, place_change=o={i}->n:{n_idx}")
-            diff = nwy - ogy
+            y_diff = nwy - ogy
+            x_diff = (nwx - ogx) + self.min_width
             p = frame_n / self.frames_per_point
             # print(f"diff:{diff}, p: {p}")
-            diff *= p
-            y_diffs.append(diff)
+            x_diff *= p
+            y_diff *= p
+            x_diffs.append(x_diff)
+            y_diffs.append(y_diff)
         # print(f"RESULT: {y_diffs}")
-        return y_diffs
+        return x_diffs, y_diffs
 
     def draw(self, window, top_num=5, reverse=False):
         date_key = self.current_key
         rect = window.get_rect()
         top_n = self.dataset.top_n(top_num, date_key, reverse=reverse)
+        drange = self.current_data_range
+        # if reverse and drange[0] < drange[1]:
+        #     self.current_data_range = self.current_data_range[1], self.current_data_range[0]
+        # elif not reverse and drange[1] < drange[0]:
+        #     self.current_data_range = self.current_data_range[1], self.current_data_range[0]
 
         # title
         text_surface = FONT_DEFAULT.render(self.window_name(), True, GREEN_4, GRAY_27)
@@ -229,10 +268,11 @@ class DataSetViewer:
         h = (((d_rect.h * 0.8) - (2 * marg)) / len(top_n)) * 0.9
         # print(f"h:{h}, dr:{d_rect}")
         ys = [d_rect.y + ((h + marg) * i) + (h / 2) for i in range(len(top_n))]
+        # xs =
 
         # place labels
         for i in range(top_num):
-            text_surface = FONT_DEFAULT.render(f"{i}", True, GREEN_4, GRAY_27)
+            text_surface = FONT_DEFAULT.render(f"{i+1}", True, GREEN_4, GRAY_27)
             text_rect = text_surface.get_rect()
             text_rect.x = d_rect.x + marg
             # text_rect.y = d_rect.y + ((i + 0.5) * (h + (2 * marg)))
@@ -241,13 +281,31 @@ class DataSetViewer:
 
         move_distances = self.compute_move_distance(top_n, d_rect, reverse, ys)
         print(f"md: {move_distances}")
-        for i, yydt in enumerate(zip(ys, move_distances, top_n)):
-            y, yd, ent = yydt
-            colour = ent[2]
-            pygame.draw.rect(window, colour, pygame.Rect(text_rect.right + marg, y + yd, 200, h))
+        print("data_range:", drange)
+        print(f"lens({len(ys)}, {len(move_distances)}, {len(top_n)})")
+        for i, yxdydt in enumerate(zip(ys, *move_distances, top_n)):
+            y, xd, yd, ent = yxdydt
+            ent, v, colours = ent
+            colour, border_colour, font_colour, font_back_colour = colours
+            # w = 200
+            bw = 3
+            bw = clamp(0, bw, h - (2 * bw))
+            left_most = text_rect.right + marg
+            # p = abs(v - abs(drange[0])) / min(1, abs(drange[1]) - abs(drange[0]))
+            p = abs(v - drange[0]) / abs(drange[1] - drange[0])
+            w = (p * (d_rect.w - left_most)) + xd
+            print(f"\t{p=}, {d_rect.w=}, {v=}, {drange=}, numer={abs(v - drange[0])} / denom={abs(drange[1] - drange[0])}, Rw={d_rect.w - left_most}, {p * (d_rect.w - left_most)}")
+            pygame.draw.rect(window, border_colour, pygame.Rect(left_most, y + yd, w, h))
+            pygame.draw.rect(window, colour, pygame.Rect(left_most + bw, y + yd + bw, w - (2 * bw), h - (2 * bw)))
+            text_surface = FONT_DEFAULT.render(f"{ent}", True, font_colour, font_back_colour)
+            name_rect = text_surface.get_rect()
+            name_rect.x = w + left_most - name_rect.w - (marg / 2)
+            print(f"name: {ent} name_rect: {name_rect}")
+            # name_rect.x = 250
+            name_rect.centery = y + yd + marg
+            window.blit(text_surface, name_rect)
+
         # self.current_frame = self.next_frame()
-
-
 
     def window_name(self):
         return f"{self.name}"
@@ -257,7 +315,7 @@ class DataSetViewer:
 
 
 if __name__ == "__main__":
-    ds1 = DataSetViewer("dataset_001.json", frames_per_point=100)
+    ds1 = DataSetViewer("dataset_001.json", frames_per_point=100, min_width=1)
     print(ds1.dataset)
     print(f'top_(3): {ds1.dataset.top_n(3, ds1.dataset.date_range[0], 1)}')
     print(f'top_(8): {ds1.dataset.top_n(8, ds1.dataset.date_range[0])}')
