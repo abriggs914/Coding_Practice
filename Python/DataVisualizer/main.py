@@ -30,15 +30,35 @@ class DataSet:
             raise FileNotFoundError(f"Cannot find data set file \'{file_name}\'")
         self.data = {}
         self.dates = []
-        self.entities = []
+        self.entities = {}
         self.date_range = None, None
 
         self.invalid = True
+        entities_passed = False
         with open(file_name, 'r') as f:
             if file_name.endswith('.json'):
                 try:
                     json_dat = json.load(f)
-                    for k_date, v_ekv in json_dat.items():
+                    for i, k_date_v_ekv in enumerate(json_dat.items()):
+                        k_date, v_ekv = k_date_v_ekv
+                        # Check for 'ENTITIES' KEY
+                        if k_date == "ENTITIES":
+                            if i == 0:
+                                entities_passed = True
+                                for k_ent, ent_dat in v_ekv.items():
+                                    self.entities.update({k_ent: {
+                                        "name": ent_dat["name"],
+                                        "colour": eval(ent_dat["colour"]),
+                                        "border_colour": eval(ent_dat["border_colour"] if "border_colour" in ent_dat else ent_dat["colour"]),
+                                        "font_colour": eval(ent_dat["font_colour"] if "font_colour" in ent_dat else "BLACK"),
+                                        "font_back_colour": eval(ent_dat["font_back_colour"] if "font_back_colour" in ent_dat else "WHITE"),
+                                        "image_path": ent_dat["image_path"]
+                                    }})
+                                    # self.data[date_k_date]['Ordered'].append((k_ent, v, self.entities[k_ent]['colour']))
+                                    # self.data[date_k_date]['Ordered'].sort(key=lambda tup: tup[1])
+                                continue
+                            else:
+                                raise json.JSONDecodeError("Key \'ENTITIES\' must be the first entry in the json data.", self.file_name, 0)
                         date_k_date = dt.datetime.strptime(k_date, self.strp_format)
                         if self.date_range[0] is None:
                             self.date_range = date_k_date, date_k_date
@@ -50,22 +70,39 @@ class DataSet:
                             self.data[date_k_date] = {'Raw': {}, 'Ordered': []}
                         self.dates.append(date_k_date)
                         for k_ent, v in v_ekv.items():
-                            if k_ent not in self.entities:
-                                self.entities.append(k_ent)
-                            if k_ent in self.data[date_k_date]['Raw']:
-                                raise ValueError(f"Key \'{k_ent}\' already has an entry for date: \'{date_k_date}\'")
+                            if entities_passed:
+                                if k_ent not in self.entities:
+                                    raise ValueError(f"Key \'{k_ent}\' not found in \'ENTITIES\' on date: \'{date_k_date}\'")
+                            else:
+                                self.entities.update({k_ent: {
+                                    "name": "UNNAMED",
+                                    "colour": eval("BLACK"),
+                                    "border_colour": eval("BLACK"),
+                                    "font_colour": eval("BLACK"),
+                                    "font_back_colour": eval("WHITE"),
+                                    "image_path": None
+                                }})
+                            # if k_ent in self.data[date_k_date]['Raw']:
                             self.data[date_k_date]['Raw'].update({k_ent: v})
-                            self.data[date_k_date]['Ordered'].append((k_ent, v, random_color()))
+                            # if not entities_passed:
+                            self.data[date_k_date]['Ordered'].append((k_ent, v, self.entities[k_ent]['colour']))
                             self.data[date_k_date]['Ordered'].sort(key=lambda tup: tup[1])
+                    # if entities_passed:
+                    #     for date_k_date in self.dates:
+                    #         self.data[date_k_date]['Ordered'].append((k_ent, self.data[date_k_date]['Raw'][], self.entities[k_ent]['colour']))
+                    #         self.data[date_k_date]['Ordered'].sort(key=lambda tup: tup[1])
                 except KeyError as ke:
                     print(f'Invalid json format. KeyError:', ke)
+                except json.JSONDecodeError as de:
+                    print(f'Invalid json format. JSONDecodeError:', de)
                 except ValueError as ve:
                     print(f'Invalid json format. ValueError:', ve)
                 else:
                     self.invalid = False
 
         self.dates.sort()
-        self.entities.sort()
+        print(dict_print(self.entities))
+        print(dict_print(self.data))
 
     def __len__(self):
         return len(self.data)
@@ -220,7 +257,7 @@ class DataSetViewer:
 
 
 if __name__ == "__main__":
-    ds1 = DataSetViewer("dataset_001.json",frames_per_point=100)
+    ds1 = DataSetViewer("dataset_001.json", frames_per_point=100)
     print(ds1.dataset)
     print(f'top_(3): {ds1.dataset.top_n(3, ds1.dataset.date_range[0], 1)}')
     print(f'top_(8): {ds1.dataset.top_n(8, ds1.dataset.date_range[0])}')
@@ -247,7 +284,7 @@ if __name__ == "__main__":
         WINDOW.fill(BLACK)
 
         # begin drawing
-        ds1.draw(WINDOW, top_num=4)
+        ds1.draw(WINDOW, top_num=7)
         # handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
