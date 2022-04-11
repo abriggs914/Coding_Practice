@@ -90,6 +90,7 @@ entries = [
 ]
 
 
+
 es = lambda vs: (dt.datetime.strptime(vs[0], "%Y-%m-%d %H:%M:%S"), vs[1])
 lst = list(map(es, entries))
 print("entries:", entries)
