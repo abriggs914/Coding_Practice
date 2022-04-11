@@ -199,6 +199,7 @@ class DataSetViewer:
     def compute_move_distance(self, top_n_lst, rect, reverse, ys):
         frame_n = self.current_frame + 1
         next_key = self.dataset.next_key(self.current_key)
+        drange = self.current_data_range
         top_n = len(top_n_lst)
         if next_key is None:
             pass
@@ -222,13 +223,19 @@ class DataSetViewer:
                 nwy = ys[n_idx]
             ogx = rect.w
 
-            nwx = self.dataset.data[next_key]['Raw'][pair[0]]
-            print(f"ogy:{ogy}, ony:{nwy}, place_change=o={i}->n:{n_idx}")
+            v1 = self.dataset.data[self.current_key]['Raw'][pair[0]]  # the value
+            v2 = self.dataset.data[next_key]['Raw'][pair[0]]  # the value
+            vd = v2 - v1
+            tw = rect.w
+            p = abs(vd - drange[0]) / abs(drange[1] - drange[0])
+            x_diff = p * tw
+            # print(f"ogy:{ogy}, ony:{nwy}, place_change=o={i}->n:{n_idx}")
+            # print(f"ogx:{ogx}, nwx:{nwx}, place_change=o={i}->n:{n_idx}, X:{self.dataset.data[next_key]['Raw'][pair[0]]}")
             y_diff = nwy - ogy
-            x_diff = (nwx - ogx) + self.min_width
+            # x_diff = (nwx - ogx) + self.min_width
             p = frame_n / self.frames_per_point
             # print(f"diff:{diff}, p: {p}")
-            x_diff *= p
+            # x_diff *= p
             y_diff *= p
             x_diffs.append(x_diff)
             y_diffs.append(y_diff)
@@ -279,10 +286,18 @@ class DataSetViewer:
             text_rect.y = ys[i] + (h / 2) - marg
             window.blit(text_surface, text_rect)
 
-        move_distances = self.compute_move_distance(top_n, d_rect, reverse, ys)
+        left_most = text_rect.right + marg
+        bar_rect = pygame.Rect(d_rect)
+        bar_rect.x += left_most
+        bar_rect.w -= left_most
+        pygame.draw.rect(window, PURPLE_3, bar_rect)
+        move_distances = self.compute_move_distance(top_n, bar_rect, reverse, ys)
         print(f"md: {move_distances}")
         print("data_range:", drange)
-        print(f"lens({len(ys)}, {len(move_distances)}, {len(top_n)})")
+        print("\n\t" + "\n\t".join(list(map(str, [ys, move_distances[0], move_distances[1], top_n]))))
+        print(f"lens({len(ys)}, {len(move_distances[0])}, {len(move_distances[1])}, {len(top_n)})")
+        # print(f"lens({ys}, {move_distances[0]}, {move_distances[1]}, {top_n})")
+        drange = drange[0], drange[1] + self.min_width
         for i, yxdydt in enumerate(zip(ys, *move_distances, top_n)):
             y, xd, yd, ent = yxdydt
             ent, v, colours = ent
@@ -290,13 +305,18 @@ class DataSetViewer:
             # w = 200
             bw = 3
             bw = clamp(0, bw, h - (2 * bw))
-            left_most = text_rect.right + marg
             # p = abs(v - abs(drange[0])) / min(1, abs(drange[1]) - abs(drange[0]))
             p = abs(v - drange[0]) / abs(drange[1] - drange[0])
-            w = (p * (d_rect.w - left_most)) + xd
-            print(f"\t{p=}, {d_rect.w=}, {v=}, {drange=}, numer={abs(v - drange[0])} / denom={abs(drange[1] - drange[0])}, Rw={d_rect.w - left_most}, {p * (d_rect.w - left_most)}")
-            pygame.draw.rect(window, border_colour, pygame.Rect(left_most, y + yd, w, h))
-            pygame.draw.rect(window, colour, pygame.Rect(left_most + bw, y + yd + bw, w - (2 * bw), h - (2 * bw)))
+            print(f"\t{v=}, {drange=}, {p=}, f= {v - drange[0]} / {drange[1] - drange[0]}: {p=}")
+            w = (p * (bar_rect.w)) + xd + left_most
+            print(f"\tRESULT: {pygame.Rect(bar_rect.x, y + yd, w, h)}")
+            # w = (1 * (d_rect.w - left_most)) + xd
+            print(f"\t{w=}, {left_most=}, {p=}, {bar_rect.w=}, {v=}, {drange=}, numer={abs(v - drange[0])} / denom={abs(drange[1] - drange[0])}, Rw={bar_rect.w - left_most}, {p * (bar_rect.w - left_most)}, {xd=}, {yd=}")
+            # pygame.draw.rect(window, border_colour, pygame.Rect(left_most, y + yd, w, h))
+            # pygame.draw.rect(window, colour, pygame.Rect(left_most + bw, y + yd + bw, w - (2 * bw), h - (2 * bw)))
+            # w =
+            pygame.draw.rect(window, border_colour, pygame.Rect(bar_rect.x, y + yd, w, h))
+            pygame.draw.rect(window, colour, pygame.Rect(bar_rect.x + bw, y + yd + bw, w - (2 * bw), h - (2 * bw)))
             text_surface = FONT_DEFAULT.render(f"{ent}", True, font_colour, font_back_colour)
             name_rect = text_surface.get_rect()
             name_rect.x = w + left_most - name_rect.w - (marg / 2)
