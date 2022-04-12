@@ -1,6 +1,7 @@
 import random
 from statistics import mean, median, mode, pstdev, pvariance, stdev, variance
 from tv_series import TVSeries
+from utility import pad_centre
 
 
 the_office = TVSeries("The Office", {
@@ -410,8 +411,9 @@ family_guy = TVSeries("Family Guy", {
 	16 : 20,
 	17 : 20,
 	18 : 20,
-	19 : 20},
-	22,
+	19 : 20,
+	20 : 20},
+	24,
 	1999,
 	2022,
 	True,
@@ -509,7 +511,8 @@ the_simpsons = TVSeries("The Simpsons", {
 	29: 21,
 	30: 23,
 	31: 22,
-	32: 22},
+	32: 22,
+	33: 22},
 	24,
 	1989,
 	2022,
@@ -844,6 +847,38 @@ def print_series_stats(series_list) :
       res += "\nStdev:\t\t" + "{0:6.2f}".format(stdev(stats_list))
       res += "\nVariance:\t" + "{0:6.2f}".format(variance(stats_list))
     return res
+       
+def print_time_line_horizontal_ongoing(series_list, start_year, end_year) :
+    metric = (False, lambda s : s.start_year, metric_possibilities[0])
+    metric_val = ""
+    if metric :
+        rev_val = metric[0]
+        sort_metric = metric[1]
+        metric_val = metric[2]
+        series_list.sort(reverse=rev_val, key=sort_metric)
+        
+    longest_title_len = longest_series_title(series_list) + len("\t")
+    space_border = "".join(["#" for i in range(longest_title_len)])
+    
+    year_border = space_border
+    year_border += "| " + metric_val + " " if metric else "" 
+    year_border += "|" + "|".join([str(i) for i in range(start_year, end_year + 1)]) + "|"
+    year_border += " " + metric_val + " |" if metric else "" 
+    year_border += space_border
+    
+    top_border = "".join(["#" for i in range(len(year_border))])
+    res = top_border + "\n" + year_border + "\n"
+	
+    res += "|" + "{0:{1}}".format("Concurrent", longest_title_len - 1) + "| " + metric_val + " "
+    for year in range(start_year, end_year + 1) :
+        year_count = 0
+        for series in series_list :
+            if series.start_year <= year and year <= series.end_year :
+                year_count += 1
+        # res += "|" + "".join(["*" for i in range(len(str(year)))]) + "|"
+        res += "|" + pad_centre(str(year_count), 4)
+    res += "| " + metric_val + " |" + "{0:{1}}".format("Concurrent", longest_title_len - 1) + "|\n" + top_border
+    return res
 
 if __name__ == "__main__" :
   for series in series_list :
@@ -859,5 +894,6 @@ if __name__ == "__main__" :
     
     
   for i in range(len(metric_possibilities)) :
-    print(print_time_line_horizontal(series_list, 1988, 2022))
+    print(print_time_line_horizontal(series_list, 1988, 2023))
     print(print_series_stats(series_list))
+  print("\n" + print_time_line_horizontal_ongoing(series_list, 1988, 2023))
