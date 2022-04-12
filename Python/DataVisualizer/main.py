@@ -156,18 +156,20 @@ class DataSetViewer:
 
     def __init__(self, file_name, frames_per_point=10, time_per_point=1000, name="Untitled Dataset", mode='daily', min_width=10):
         self.name = name
-        self.frames_per_point = frames_per_point
-        self.time_per_point = time_per_point
+        self.frames_per_point = frames_per_point  # number of frames between data points
+        self.time_per_point = time_per_point  # calculated using fps to ensure frames_per_point is shown in the timeframe
         self.dataset = DataSet(file_name, mode=mode)
         if not self.dataset.is_valid():
             raise ValueError(f"This dataset cannot be viewed '{self.dataset.file_name}'")
         if not 0 <= min_width < 100:
             raise ValueError(f"Parameter 'min_width' must be a number between 0 < x <= 100. This represents the proportion of the bar that must be shown")
-        self.min_width = min_width
-        self.dataset_date_keys = self.dataset.date_keys()
-        self.current_key = self.next_date_key()
+        self.min_width = min_width  # minimum width in pixels, of each bar
+        self.dataset_date_keys = self.dataset.date_keys()  # generator to retrieve date keys for this dataset
+        self.used_keys = []  # list to track visited date keys
+        self.current_key = self.next_date_key()  # the current key for this dataset.data
         # self.current_data_range = self.dataset.data_range(self.current_key, lbound=self.dataset.data_range(self.current_key)[0] - 1)
-        self.current_data_range = self.dataset.data_range(self.current_key)
+        self.current_data_range = self.dataset.data_range(self.current_key)  # store the max and min values in this dataset.
+
         self.adjust_min_width()
         self.current_frame = -1
         self.current_frame = self.next_frame()
@@ -181,6 +183,7 @@ class DataSetViewer:
         self.current_frame = self.next_frame()
 
     def move_next_date_key(self):
+        self.used_keys.append(self.current_key)
         self.current_key = self.next_date_key()
         self.current_data_range = self.dataset.data_range(self.current_key)
         self.adjust_min_width()
@@ -201,10 +204,11 @@ class DataSetViewer:
         next_key = self.dataset.next_key(self.current_key)
         drange = self.current_data_range
         top_n = len(top_n_lst)
-        if next_key is None:
-            pass
-        next_top_n = self.dataset.top_n(top_n, date_key=next_key, reverse=reverse)
-        next_ents = [tup[0] for tup in next_top_n]
+        if next_key:
+            next_top_n = self.dataset.top_n(top_n, date_key=next_key, reverse=reverse)
+            next_ents = [tup[0] for tup in next_top_n]
+        else:
+            print(f"len(dataset): {len(self.dataset)}, used_keys: {self.used_keys}")
         # print(f"top_n:{top_n_lst}, next:{next_top_n}")
         y_diffs = []
         x_diffs = []
@@ -212,6 +216,14 @@ class DataSetViewer:
         # drange = drange[0] + self.min_width, drange[1]
 
         for i, pair in enumerate(top_n_lst):
+            tw = rect.w
+            v1 = self.dataset.data[self.current_key]['Raw'][pair[0]]  # the value
+            if next_key is None:
+                p = abs(v1 - drange[0]) / abs(drange[1] - drange[0])
+                x_diff = rect.w - (p * tw)
+                x_diffs.append(x_diff)
+                y_diffs.append(0)
+                continue
             n_idx = None
             if pair[0] not in next_ents:
                 # go to bottom:
@@ -223,11 +235,13 @@ class DataSetViewer:
                 nwy = ys[n_idx]
             ogx = rect.w
 
-            v1 = self.dataset.data[self.current_key]['Raw'][pair[0]]  # the value
             v2 = self.dataset.data[next_key]['Raw'][pair[0]]  # the value
             vd = v2 - v1
-            tw = rect.w
-            p = abs(vd - drange[0]) / abs(drange[1] - drange[0])
+            p = frame_n / self.frames_per_point
+            vx = v1 + (vd * p)
+            vd = v1
+            p = abs(vx - drange[0]) / abs(drange[1] - drange[0])
+            print(f"pair: {pair}, CK: {self.current_key}, v1->v2: ({v1}->{v2}), p: {p}")
             x_diff = p * tw
             # print(f"ogy:{ogy}, ony:{nwy}, place_change=o={i}->n:{n_idx}")
             # print(f"ogx:{ogx}, nwx:{nwx}, place_change=o={i}->n:{n_idx}, X:{self.dataset.data[next_key]['Raw'][pair[0]]}")
@@ -237,6 +251,8 @@ class DataSetViewer:
             # print(f"diff:{diff}, p: {p}")
             # x_diff *= p
             y_diff *= p
+            # x_diff *= p
+            x_diff = rect.w - x_diff
             x_diffs.append(x_diff)
             y_diffs.append(y_diff)
         # print(f"RESULT: {y_diffs}")
@@ -309,6 +325,9 @@ class DataSetViewer:
             p = abs(v - drange[0]) / abs(drange[1] - drange[0])
             print(f"\t{v=}, {drange=}, {p=}, f= {v - drange[0]} / {drange[1] - drange[0]}: {p=}")
             w = (p * (bar_rect.w)) + xd + left_most
+            w = (p * (bar_rect.w - left_most)) + xd
+            w = xd
+            # w = bar_rect.w - xd
             print(f"\tRESULT: {pygame.Rect(bar_rect.x, y + yd, w, h)}")
             # w = (1 * (d_rect.w - left_most)) + xd
             print(f"\t{w=}, {left_most=}, {p=}, {bar_rect.w=}, {v=}, {drange=}, numer={abs(v - drange[0])} / denom={abs(drange[1] - drange[0])}, Rw={bar_rect.w - left_most}, {p * (bar_rect.w - left_most)}, {xd=}, {yd=}")
@@ -335,7 +354,7 @@ class DataSetViewer:
 
 
 if __name__ == "__main__":
-    ds1 = DataSetViewer("dataset_001.json", frames_per_point=100, min_width=1)
+    ds1 = DataSetViewer("dataset_003.json", frames_per_point=50, min_width=0)
     print(ds1.dataset)
     print(f'top_(3): {ds1.dataset.top_n(3, ds1.dataset.date_range[0], 1)}')
     print(f'top_(8): {ds1.dataset.top_n(8, ds1.dataset.date_range[0])}')
@@ -362,7 +381,8 @@ if __name__ == "__main__":
         WINDOW.fill(BLACK)
 
         # begin drawing
-        ds1.draw(WINDOW, top_num=7)
+        ds1.draw(WINDOW, top_num=3)
+
         # handle events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

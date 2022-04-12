@@ -1,0 +1,51 @@
+{
+  "ENTITIES": {
+    "A": {
+      "name": "A",
+      "colour": "AQUAMARINE_1__AQUAMARINE_",
+      "border_colour": "ORANGE_2",
+      "font_colour": "IVORY_2",
+      "font_back_colour": "GRAY_11",
+      "image_path": null
+    },
+    "B": {
+      "name": "B",
+      "colour": "BROWN_1",
+      "image_path": null
+    },
+    "C": {
+      "name": "C",
+      "colour": "CHARTREUSE_4",
+      "image_path": null
+    },
+    "D": {
+      "name": "D",
+      "colour": "DARKORCHID_4",
+      "image_path": null
+    },
+    "E": {
+      "name": "E",
+      "colour": "GOLDENROD_1",
+      "image_path": null
+    },
+    "F": {
+      "name": "F",
+      "colour": "LIGHTBLUE_4",
+      "image_path": null
+    },
+    "G": {
+      "name": "G",
+      "colour": "ORANGERED_1__ORANGERED_",
+      "image_path": null
+    }
+  },
+  "2011-12-31": {
+    "A": 0.08,
+    "B": 0.22,
+    "C": 0.9,
+    "D": 0.57,
+    "E": 0.36,
+    "F": 0.39,
+    "G": 0.23
+  }
+}
