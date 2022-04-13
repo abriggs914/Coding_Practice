@@ -123,6 +123,11 @@ class DataSet:
         finally:
             return top_n
 
+    def n_data_points(self, date_key):
+        if date_key not in self.data:
+            raise KeyError(f"\'{date_key}\' key not found in dataset.")
+        return len(self.data[date_key]['Raw'])
+
     def date_keys(self):
         for date in self.dates:
             yield date
@@ -191,7 +196,8 @@ class DataSetViewer:
     def adjust_min_width(self):
         # if no binding is passed, the minimum value will have a calculated width of 0
         # diff = self.current_data_range[1] - self.current_data_range[0]
-        self.current_data_range = self.current_data_range[0] - self.min_width, self.current_data_range[1]
+        # self.current_data_range = self.current_data_range[0] - self.min_width, self.current_data_range[1]
+        self.current_data_range = self.current_data_range[0], self.current_data_range[1]
 
     def next_frame(self):
         return (self.current_frame + 1) % self.frames_per_point
@@ -258,8 +264,16 @@ class DataSetViewer:
         # print(f"RESULT: {y_diffs}")
         return x_diffs, y_diffs
 
-    def draw(self, window, top_num=5, reverse=False):
+    def draw(self, window, top_num=None, reverse=False):
         date_key = self.current_key
+        n_points = top_num
+        nps = self.dataset.n_data_points(date_key)
+        if top_num is None:
+            n_points = nps
+            if n_points > 5:
+                n_points = 5
+        top_num = clamp(0, n_points, nps)
+        print(f"top_n: {top_num}")
         rect = window.get_rect()
         top_n = self.dataset.top_n(top_num, date_key, reverse=reverse)
         drange = self.current_data_range
@@ -313,7 +327,8 @@ class DataSetViewer:
         print("\n\t" + "\n\t".join(list(map(str, [ys, move_distances[0], move_distances[1], top_n]))))
         print(f"lens({len(ys)}, {len(move_distances[0])}, {len(move_distances[1])}, {len(top_n)})")
         # print(f"lens({ys}, {move_distances[0]}, {move_distances[1]}, {top_n})")
-        drange = drange[0], drange[1] + self.min_width
+        # drange = drange[0], drange[1] + self.min_width
+        drange = drange[0], drange[1]
         for i, yxdydt in enumerate(zip(ys, *move_distances, top_n)):
             y, xd, yd, ent = yxdydt
             ent, v, colours = ent
@@ -381,7 +396,7 @@ if __name__ == "__main__":
         WINDOW.fill(BLACK)
 
         # begin drawing
-        ds1.draw(WINDOW, top_num=3)
+        ds1.draw(WINDOW, top_num=12)
 
         # handle events
         for event in pygame.event.get():
