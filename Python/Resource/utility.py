@@ -10,8 +10,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.43
-	Date...........2022-04-06
+	Version..............1.44
+	Date...........2022-04-13
 	Author.......Avery Briggs
 """
 
@@ -633,33 +633,6 @@ def flatten(lst):
 # Inclusive start, exclusive end.
 def clamp(s, v, l):
     return max(s, min(v, l))
-
-
-# Darken an RGB color using a proportion p (0-1)
-def darken(c, p):
-    r, g, b = c
-    r = clamp(0, round(r - (255 * p)), 255)
-    g = clamp(0, round(g - (255 * p)), 255)
-    b = clamp(0, round(b - (255 * p)), 255)
-    return r, g, b
-
-
-# Brighten an RGB color using a proportion p (0-1)
-def brighten(c, p):
-    r, g, b = c
-    r = clamp(0, round(r + (255 * p)), 255)
-    g = clamp(0, round(g + (255 * p)), 255)
-    b = clamp(0, round(b + (255 * p)), 255)
-    return r, g, b
-
-
-# return random RGB color
-def random_color():
-    return (
-        randint(10, 245),
-        randint(10, 245),
-        randint(10, 245)
-    )
 
 
 # Rotate a 2D point about the origin, a given amount of degrees. Counterclockwise
