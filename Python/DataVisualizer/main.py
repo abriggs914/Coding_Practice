@@ -320,7 +320,7 @@ class DataSetViewer:
         bar_rect = pygame.Rect(d_rect)
         bar_rect.x += left_most
         bar_rect.w -= left_most
-        pygame.draw.rect(window, PURPLE_3, bar_rect)
+        pygame.draw.rect(window, SNOW_4, bar_rect)
         move_distances = self.compute_move_distance(top_n, bar_rect, reverse, ys)
         print(f"md: {move_distances}")
         print("data_range:", drange)
@@ -369,7 +369,8 @@ class DataSetViewer:
 
 
 if __name__ == "__main__":
-    ds1 = DataSetViewer("dataset_001.json", frames_per_point=50, min_width=0)
+    # ds1 = DataSetViewer("dataset_001.json", frames_per_point=50, min_width=0)
+    ds1 = DataSetViewer("dataset_001.json", frames_per_point=200, min_width=0)
     print(ds1.dataset)
     print(f'top_(3): {ds1.dataset.top_n(3, ds1.dataset.date_range[0], 1)}')
     print(f'top_(8): {ds1.dataset.top_n(8, ds1.dataset.date_range[0])}')

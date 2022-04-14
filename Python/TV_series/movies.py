@@ -83,5 +83,10 @@ list_of_movies = [
 			"Alien 3",
 			"Alien Resurrection",
 		]
+	},
+	{
+		"Predator": [
+			"Predator"
+		]
 	}
 ]
