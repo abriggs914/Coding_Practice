@@ -1,0 +1,123 @@
+{
+  "ENTITIES": {
+    "A": {
+      "name": "A",
+      "colour": "AQUAMARINE_1__AQUAMARINE_",
+      "border_colour": "ORANGE_2",
+      "font_colour": "IVORY_2",
+      "font_back_colour": "GRAY_11",
+      "image_path": null
+    },
+    "B": {
+      "name": "B",
+      "colour": "BROWN_1",
+      "image_path": null
+    },
+    "C": {
+      "name": "C",
+      "colour": "CHARTREUSE_4",
+      "image_path": null
+    },
+    "D": {
+      "name": "D",
+      "colour": "DARKORCHID_4",
+      "image_path": null
+    },
+    "E": {
+      "name": "E",
+      "colour": "GOLDENROD_1",
+      "image_path": null
+    },
+    "F": {
+      "name": "F",
+      "colour": "LIGHTBLUE_4",
+      "image_path": null
+    },
+    "G": {
+      "name": "G",
+      "colour": "ORANGERED_1__ORANGERED_",
+      "image_path": null
+    }
+  },
+  "2022-04-12": {
+    "A": 1,
+    "B": 2,
+    "C": 3,
+    "D": 4,
+    "E": 5,
+    "F": 6,
+    "G": 7
+  },
+  "2022-04-13": {
+    "A": 2,
+    "B": 3,
+    "C": 4,
+    "D": 5,
+    "E": 6,
+    "F": 7,
+    "G": 1
+  },
+  "2022-04-14": {
+    "A": 3,
+    "B": 4,
+    "C": 5,
+    "D": 6,
+    "E": 7,
+    "F": 1,
+    "G": 2
+  },
+  "2022-04-15": {
+    "A": 4,
+    "B": 5,
+    "C": 6,
+    "D": 7,
+    "E": 1,
+    "F": 2,
+    "G": 3
+  },
+  "2022-04-16": {
+    "A": 5,
+    "B": 6,
+    "C": 7,
+    "D": 1,
+    "E": 2,
+    "F": 3,
+    "G": 4
+  },
+  "2022-04-17": {
+    "A": 6,
+    "B": 7,
+    "C": 1,
+    "D": 2,
+    "E": 3,
+    "F": 4,
+    "G": 5
+  },
+  "2022-04-18": {
+    "A": 7,
+    "B": 1,
+    "C": 2,
+    "D": 3,
+    "E": 4,
+    "F": 5,
+    "G": 6
+  },
+  "2022-04-19": {
+    "A": 7,
+    "B": 2,
+    "C": 3,
+    "D": 4,
+    "E": 5,
+    "F": 6,
+    "G": 7
+  },
+  "2022-04-20": {
+    "A": 7,
+    "B": 3,
+    "C": 4,
+    "D": 5,
+    "E": 6,
+    "F": 7,
+    "G": 1
+  }
+}
