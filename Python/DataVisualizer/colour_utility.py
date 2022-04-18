@@ -1,8 +1,9 @@
 import random
+from utility import clamp
 
 #	General Utility file of RGB colour values
-#	Version............1.8
-#	Date........2021-12-30
+#	Version............1.9
+#	Date........2022-04-13
 #	Author....Avery Briggs
 
 WILDERNESS_MINT = (98, 152, 100)
@@ -1798,3 +1799,30 @@ def gradient(x, n, c1, c2):
     if b1 >= b2:
         b_diff *= -1
     return r1 + r_diff, g1 + g_diff, b1 + b_diff
+
+
+# Darken an RGB color using a proportion p (0-1)
+def darken(c, p):
+    r, g, b = c
+    r = clamp(0, round(r - (255 * p)), 255)
+    g = clamp(0, round(g - (255 * p)), 255)
+    b = clamp(0, round(b - (255 * p)), 255)
+    return r, g, b
+
+
+# Brighten an RGB color using a proportion p (0-1)
+def brighten(c, p):
+    r, g, b = c
+    r = clamp(0, round(r + (255 * p)), 255)
+    g = clamp(0, round(g + (255 * p)), 255)
+    b = clamp(0, round(b + (255 * p)), 255)
+    return r, g, b
+
+
+# return random RGB color
+def random_color():
+    return (
+        randint(10, 245),
+        randint(10, 245),
+        randint(10, 245)
+    )

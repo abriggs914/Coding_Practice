@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/../../Python/DataVisualizer/dataset_nhl_team_wins.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Python/Resource/colour_sampler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Python/DataVisualizer/.idea/DataVisualizer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/DataVisualizer/.idea/DataVisualizer.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Python/DataVisualizer/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/DataVisualizer/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Python/DataVisualizer/colour_utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/DataVisualizer/colour_utility.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Python/DataVisualizer/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/DataVisualizer/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Python/Resource/colour_utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Python/Resource/colour_utility.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SQL/Transactions Analysis/Transactions Analysis.accdb" beforeDir="false" afterPath="$PROJECT_DIR$/../../SQL/Transactions Analysis/Transactions Analysis.accdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../SQL/Transactions Analysis/pcbanking.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../SQL/Transactions Analysis/pcbanking.xlsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,26 +195,11 @@
       <Host>localhost</Host>
       <Port>5050</Port>
     </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file enabled="true" id="idea.log" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Main" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="Android Studio default JDK" />
+      <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../../../../../../Program Files/Java/jdk-15.0.1" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="sample.Main" />
       <module name="Who Pays Who" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="sample.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method v="2">
@@ -236,6 +230,15 @@
       </option>
       <properties />
       <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file enabled="true" id="idea.log" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

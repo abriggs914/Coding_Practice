@@ -2,8 +2,8 @@ import random
 from utility import clamp
 
 #	General Utility file of RGB colour values
-#	Version............1.9
-#	Date........2022-04-13
+#	Version...........1.10
+#	Date........2022-04-15
 #	Author....Avery Briggs
 
 WILDERNESS_MINT = (98, 152, 100)
@@ -1724,8 +1724,11 @@ def get_all_colours(rtype=list, return_hex=False):
 		return lst
 
 
-def random_colour():
-    return random.choice(get_all_colours())
+def random_colour(name=False):
+	if not name:
+		return random.choice(get_all_colours())
+	else:
+		return random.choice(list(get_all_colours(dict).keys()))
 
 
 #def rgb_to_hex(colour):
