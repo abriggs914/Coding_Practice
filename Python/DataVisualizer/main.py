@@ -254,17 +254,24 @@ class DataSetViewer:
         print("")
         drange = self.current_data_range
         top_n = len(top_n_lst)
+        next_ents = []
+        next_top_n = []
         if next_key:
             next_top_n = self.dataset.top_n(top_n, date_key=next_key, reverse=reverse)
             next_ents = [tup[0] for tup in next_top_n]
         else:
             print(f"len(dataset): {len(self.dataset)}, used_keys: {self.used_keys}")
+        top_n_lst_ents = [tnl[0] for tnl in top_n_lst]
+        from_bottom = [(i, ent[1], ent[0]) for i, ent in enumerate(next_top_n) if ent[0] not in top_n_lst_ents]
         print(f"top_n_lst: {[tnl[0] for tnl in top_n_lst]}")
         print(f"next_ents: {next_ents}")
-        for c_key, c_v, c_c in top_n_lst:
-            # print(f"ckey: {c_key} not in next_ents")
-            if c_key not in next_ents:
-                print(f"ckey: {c_key} not in next_ents")
+        print(f"from_bottom: {from_bottom}")
+
+            # for c_key, c_v, c_c in top_n_lst:
+        # for c_key, c_v, c_c in top_n_lst:
+        #     # print(f"ckey: {c_key} not in next_ents")
+        #     if c_key not in next_ents:
+        #         print(f"ckey: {c_key} not in next_ents")
         # print(f"top_n:{top_n_lst}, next:{next_top_n}")
         y_diffs = []
         x_diffs = []
@@ -290,6 +297,17 @@ class DataSetViewer:
                 print("LAST")
                 continue
             n_idx = None
+            fbie = [(fbi, fbv, fbe) for fbi, fbv, fbe in from_bottom if fbi == i]
+            print(f"FBIE: {fbie}")
+            if fbie:
+                # raise ValueError(f"Raising e: {fbie[0]} from the bottom to {i}")
+
+                # v_diffs.append(drange[0])
+                # x_diffs.append(((fbie[0][1] - drange[0]) * pf) + drange[0])
+                # y_diffs.append((rect.bottom - ys[i]) * pf)
+                # continue
+                pass
+                # raise ValueError(f"Raising e: {fbie[0][1]} from the bottom to {i}")
             if pair[0] not in next_ents:
                 # go to bottom:
                 ogy = ys[i]

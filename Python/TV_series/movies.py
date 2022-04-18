@@ -1,4 +1,5 @@
 
+
 list_of_movies = [
 	{
 		"Star Wars": [
@@ -90,3 +91,10 @@ list_of_movies = [
 		]
 	}
 ]
+
+
+if __name__ == "__main__":
+	n_collections = len(list_of_movies)
+	n_movies = sum([1 if isinstance(mov, str) else sum([len(v) for m, v in mov.items()]) for mov in list_of_movies])
+	print(f"N collections: {n_collections}")
+	print(f"N movies: {n_movies}")
