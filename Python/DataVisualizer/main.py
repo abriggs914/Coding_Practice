@@ -179,6 +179,16 @@ class DataSet:
             raise KeyError(f"\'{ent_key}\' key not found in dataset entities.")
         return self.entities[ent_key]["image"]
 
+    def get_colours(self, ent_key):
+        if ent_key not in self.entities:
+            raise KeyError(f"\'{ent_key}\' key not found in dataset entities.")
+        return {
+            "colour": self.entities[ent_key]["colour"],
+            "border_colour": self.entities[ent_key]["border_colour"],
+            "font_colour": self.entities[ent_key]["font_colour"],
+            "font_back_colour": self.entities[ent_key]["font_back_colour"]
+        }
+
     def __repr__(self):
         if not self.is_valid():
             return f"< **INVALID** DataSet>"
@@ -250,6 +260,7 @@ class DataSetViewer:
 
     def compute_move_distance(self, top_n_lst, rect, reverse, ys):
         frame_n = self.current_frame + 1
+        pf = frame_n / self.frames_per_point
         next_key = self.dataset.next_key(self.current_key)
         print("")
         drange = self.current_data_range
@@ -277,10 +288,9 @@ class DataSetViewer:
         x_diffs = []
         v_diffs = []
 
+        tw = rect.w
         TTLS = {}
         for i, pair in enumerate(top_n_lst):
-            tw = rect.w
-            pf = frame_n / self.frames_per_point
             v1 = self.dataset.data[self.current_key]['Raw'][pair[0]]  # the value
             if next_key is None:
                 p = abs(v1 - drange[0]) / abs(drange[1] - drange[0])
@@ -337,9 +347,11 @@ class DataSetViewer:
         # print(f"RESULT 1: {y_diffs}")
         # print(f"RESULT 2: {x_diffs}")
         # print(f"RESULT 3: {v_diffs}")
-        return x_diffs, y_diffs, v_diffs
+        return x_diffs, y_diffs, v_diffs, from_bottom
 
     def draw(self, window, top_num=None, reverse=False):
+        frame_n = self.current_frame + 1
+        pf = frame_n / self.frames_per_point
         bw = self.bw
         marg = self.marg
         date_key = self.current_key
@@ -405,7 +417,7 @@ class DataSetViewer:
         bar_rect.x += left_most
         bar_rect.w -= left_most
         pygame.draw.rect(window, SNOW_4, bar_rect)
-        move_distances = self.compute_move_distance(top_n, bar_rect, reverse, ys)
+        *move_distances, from_bottom = self.compute_move_distance(top_n, bar_rect, reverse, ys)
 
         # print(f"md: {move_distances}")
         # print("data_range:", drange)
@@ -446,7 +458,44 @@ class DataSetViewer:
                 window.blit(image, pygame.Rect(bar_rect.x - (hx + 10) + bw, y + yd + bw, w, h).topright)
             window.blit(text_surface, name_rect)
 
-        # self.current_frame = self.next_frame()
+        # # self.current_frame = self.next_frame()
+        # next_key = self.dataset.next_key(self.current_key)
+        # print("")
+        # drange = self.current_data_range
+        # # top_n = len(top_n_lst)
+        # next_ents = []
+        # next_top_n = []
+        # if next_key:
+        #     next_top_n = self.dataset.top_n(top_n, date_key=next_key, reverse=reverse)
+        #     next_ents = [tup[0] for tup in next_top_n]
+        # else:
+        #     print(f"len(dataset): {len(self.dataset)}, used_keys: {self.used_keys}")
+        if from_bottom:
+            for place, value, ent_name in from_bottom:
+                v1 = 2
+                vd = ((v1 - value) * pf) + v1
+                w = 300
+                colour, border_colour, font_colour, font_back_colour = list(self.dataset.get_colours(ent_name).values())
+
+                hd = (bar_rect.h - ys[place]) * pf
+                hd = ys[place-1] + ((bar_rect.h - ys[place]) * (1 - pf))
+                final_bar_rect = pygame.Rect(bar_rect.x, bar_rect.y + hd, w, h)
+                pygame.draw.rect(window, border_colour, final_bar_rect)
+                pygame.draw.rect(window, colour, pygame.Rect(bar_rect.x + bw, bar_rect.y + hd + bw, w - (2 * bw), h - (2 * bw)))
+                text_surface = FONT_DEFAULT.render(f"{ent_name}: {self.formatter(vd)}", True, font_colour, font_back_colour)
+                name_rect = text_surface.get_rect()
+                name_rect.x = w + left_most - name_rect.w - (marg / 2)
+                # print(f"name: {ent} name_rect: {name_rect}")
+                # name_rect.centery = y + yd + marg  # top of the bar
+                name_rect.centery = final_bar_rect.centery  # center of the bar
+                # print(f"ENT: {ent}, t: {type(ent)}")
+                image = self.dataset.get_image(ent_name)
+                if ent_name is not None:
+                    name_rect.x -= hx
+                    window.blit(image, pygame.Rect(bar_rect.x - (hx + 10) + bw, bar_rect.y + hd + bw, w, h).topright)
+                window.blit(text_surface, name_rect)
+
+
 
     def window_name(self):
         return f"{self.name}"
@@ -467,7 +516,7 @@ if __name__ == "__main__":
     # print(f'top_(8): {ds1.dataset.top_n(8, ds1.dataset.date_range[0])}')
 
     pygame.init()
-    WIDTH, HEIGHT = 750, 550
+    WIDTH, HEIGHT = 1600, 950
     WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
     CLOCK = pygame.time.Clock()
 
@@ -487,7 +536,7 @@ if __name__ == "__main__":
         WINDOW.fill(BLACK)
 
         # begin drawing
-        ds1.draw(WINDOW, top_num=8, reverse=True)
+        ds1.draw(WINDOW, top_num=32, reverse=True)
 
         # handle events
         for event in pygame.event.get():
