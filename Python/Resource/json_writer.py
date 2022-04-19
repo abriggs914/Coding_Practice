@@ -1,0 +1,128 @@
+
+
+"""
+	General JSON Writer class
+	Version...............1.1
+	Date...........2022-04-19
+	Author.......Avery Briggs
+"""
+
+
+class JSONWriter:
+
+    def __init__(self, output_file=None):
+        self.output_file = output_file
+        self.tab_depth = 0
+        self.string = ""
+        self.started = False
+
+    def start(self):
+        self.started = True
+        self.ooj(use_tab=False)
+
+    def stop(self):
+        self.coj(next=False)
+
+    def reset(self):
+        self.tab_depth = 0
+        self.string = ""
+        self.started = False
+
+    def save(self, file_name=None):
+        if not self.started:
+            self.start()
+            self.stop()
+        if self.output_file is not None or file_name is not None:
+            fn = self.output_file if self.output_file is not None else file_name
+            if "." not in fn:
+                fn = fn + ".json"
+            try:
+                with open(fn, "w") as f:
+                    f.write(self.string)
+            except FileNotFoundError:
+                raise FileNotFoundError("File not Found error")
+        else:
+            raise FileExistsError("Cannot create a file without a name.")
+
+    def tdp(self):
+        s = self.tab_depth * "\t"
+        self.string += s
+        return s
+
+    def ooj(self, use_tab=True):
+        self.tab_depth += 1
+        s = ((self.tab_depth - 1) * "\t" if use_tab else "") + "{\n"
+        self.string += s
+        return s
+
+    def coj(self, next=False):
+        self.tab_depth -= 1
+        s = "\n" + max(0, self.tab_depth) * "\t" + "}" + ("," if next else "")
+        self.string += s
+        return s
+
+    def okey(self, k_name, new_line=True):
+        s = ("\n" if new_line else "") + self.tdp() + f"\"{k_name}\": " + self.ooj(use_tab=False)
+        self.string += s
+        return s
+
+    def ckey(self, next=False):
+        s = self.tdp() + self.coj(next=next)
+        self.string += s
+        return s
+
+    def wkv(self, k, v, next=False, new_line=False):
+        """Remember to properly pass 'next' and 'new_line' params to ensure valid JSON"""
+        x = "\"" if isinstance(v, str) else ""
+        if v == "null":
+            x = ""
+        s = "{t}\"{k}\": {x}{v}{x}{n}{l}".format(t=self.tdp(), k=k, v=v, n=',' if next else '', l='\n' if new_line else '', x=x)
+        self.string += s
+        return s
+
+    def wakv(self, k, *v, next=False, new_line=False):
+        """Remember to properly pass 'next' and 'new_line' params to ensure valid JSON"""
+        print(f"k: {k} <{type(k)}>, v: {v} <{type(v)}>")
+        if not isinstance(k, list) and not isinstance(k, tuple):
+            k = [k]
+        
+        return ""
+        x = "\"" if isinstance(v, str) else ""
+        if v == "null":
+            x = ""
+        s = "{t}\"{k}\": {x}{v}{x}{n}{l}".format(t=self.tdp(), k=k, v=v, n=',' if next else '', l='\n' if new_line else '', x=x)
+        self.string += s
+        return s
+
+
+def test_1():
+    jw = JSONWriter()
+    jw.start()
+    jw.stop()
+    jw.save("demo")
+    print(f"STR: <{jw.string}>")
+
+
+def test_2():
+    jw = JSONWriter()
+    jw.start()
+    jw.wkv("key1", "value1")
+    jw.stop()
+    jw.save("demo")
+    print(f"STR: <{jw.string}>")
+
+
+def test_3():
+    jw = JSONWriter()
+    jw.start()
+    jw.wakv("key1", "Value1", "key2", "Value2")
+    jw.wakv(["key3", "Value3", "key4", "Value4"])
+    jw.stop()
+    jw.save("demo")
+    print(f"STR: <{jw.string}>")
+
+
+if __name__ == "__main__":
+    test_1()
+    test_2()
+    test_3()
