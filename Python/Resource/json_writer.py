@@ -1,9 +1,10 @@
+from utility import *
 
 
 """
 	General JSON Writer class
-	Version...............1.1
-	Date...........2022-04-19
+	Version...............1.2
+	Date...........2022-04-20
 	Author.......Avery Briggs
 """
 
@@ -15,6 +16,7 @@ class JSONWriter:
         self.tab_depth = 0
         self.string = ""
         self.started = False
+        self.items = {}
 
     def start(self):
         self.started = True
@@ -51,6 +53,8 @@ class JSONWriter:
 
     def ooj(self, use_tab=True):
         self.tab_depth += 1
+        if self.tab_depth not in self.items:
+            self.items.update({self.tab_depth: []})
         s = ((self.tab_depth - 1) * "\t" if use_tab else "") + "{\n"
         self.string += s
         return s
@@ -73,11 +77,28 @@ class JSONWriter:
 
     def wkv(self, k, v, next=False, new_line=False):
         """Remember to properly pass 'next' and 'new_line' params to ensure valid JSON"""
+        print(f"TD: {self.tab_depth}")
         x = "\"" if isinstance(v, str) else ""
         if v == "null":
             x = ""
         s = "{t}\"{k}\": {x}{v}{x}{n}{l}".format(t=self.tdp(), k=k, v=v, n=',' if next else '', l='\n' if new_line else '', x=x)
+        add_new = False
+        add_tab = False
+        # asdg = self.string[-1] == '\t'
+        # print(f"EW: <{self.string[-1]}> ==NL: {(asdg)} ==T: {asdg}")
+        if self.string.endswith("\n"):
+            add_new = True
+        if self.string.endswith("\t"):
+            add_new = True
+        adjust = not self.string.strip().endswith(",") and self.items[self.tab_depth]
+        if adjust:
+            self.string = self.string.strip() + ","
+        if add_new and adjust:
+            self.string = self.string.strip() + "\n"
+        # if add_tab and adjust:
+        #     self.string += "\t"
         self.string += s
+        self.items[self.tab_depth].append((k, v))
         return s
 
     def wakv(self, k, *v, next=False, new_line=False):
@@ -85,14 +106,24 @@ class JSONWriter:
         print(f"k: {k} <{type(k)}>, v: {v} <{type(v)}>")
         if not isinstance(k, list) and not isinstance(k, tuple):
             k = [k]
-        
-        return ""
-        x = "\"" if isinstance(v, str) else ""
-        if v == "null":
-            x = ""
-        s = "{t}\"{k}\": {x}{v}{x}{n}{l}".format(t=self.tdp(), k=k, v=v, n=',' if next else '', l='\n' if new_line else '', x=x)
-        self.string += s
+        v = list(v)
+        lst = k + v
+        evens = [v for i, v in enumerate(lst) if i % 2 == 0]
+        odds = [v for i, v in enumerate(lst) if i % 2 == 1]
+        l = len(lst) // 2
+        print(f"l: {l}")
+        s = ""
+        for i, even_odd in enumerate(zip(evens, odds)):
+            even, odd = even_odd
+            s += self.wkv(even, odd, next=i != (l - 1), new_line=i != (l - 1))
+            print(f"i != (l - 1): i: {i}, l: {l}, r: {i != (l - 1)}, s: <{s}>")
         return s
+        # x = "\"" if isinstance(v, str) else ""
+        # if v == "null":
+        #     x = ""
+        # s = "{t}\"{k}\": {x}{v}{x}{n}{l}".format(t=self.tdp(), k=k, v=v, n=',' if next else '', l='\n' if new_line else '', x=x)
+        # self.string += s
+        # return s
 
 
 def test_1():
@@ -120,6 +151,7 @@ def test_3():
     jw.stop()
     jw.save("demo")
     print(f"STR: <{jw.string}>")
+    print(dict_print(jw.items, "Items"))
 
 
 if __name__ == "__main__":
