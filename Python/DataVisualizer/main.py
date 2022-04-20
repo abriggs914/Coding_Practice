@@ -453,7 +453,7 @@ class DataSetViewer:
             name_rect.centery = final_bar_rect.centery  # center of the bar
             # print(f"ENT: {ent}, t: {type(ent)}")
             image = self.dataset.get_image(ent)
-            if ent is not None:
+            if ent is not None and image is not None:
                 name_rect.x -= hx
                 window.blit(image, pygame.Rect(bar_rect.x - (hx + 10) + bw, y + yd + bw, w, h).topright)
             window.blit(text_surface, name_rect)
@@ -509,8 +509,8 @@ if __name__ == "__main__":
     FPP = 100
     FPS = 10
     TPP = FPP / FPS
-    # ds1 = DataSetViewer("dataset_001.json", frames_per_point=25, min_width=100)
-    ds1 = DataSetViewer("dataset_nhl_team_wins.json", mode="annually", name="Stanley Cup Winners 1927-2021", frames_per_point=15, min_width=300, value_fmt="int")
+    ds1 = DataSetViewer("dataset_004.json", frames_per_point=25, min_width=100, value_fmt="float3")
+    # ds1 = DataSetViewer("dataset_nhl_team_wins.json", mode="annually", name="Stanley Cup Winners 1927-2021", frames_per_point=15, min_width=300, value_fmt="int")
     # print(ds1.dataset)
     # print(f'top_(3): {ds1.dataset.top_n(3, ds1.dataset.date_range[0], 1)}')
     # print(f'top_(8): {ds1.dataset.top_n(8, ds1.dataset.date_range[0])}')

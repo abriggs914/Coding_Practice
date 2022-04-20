@@ -1186,7 +1186,7 @@ if __name__ == "__main__":
     # test_hyperlink()
     # test_random_date()
     # test_iscolour()
-    # test_alert_colour()
+    test_alert_colour()
     # test_is_date()
     # test_date_manipulation()
     # test_intersection()
