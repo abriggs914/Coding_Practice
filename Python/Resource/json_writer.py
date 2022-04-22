@@ -1,6 +1,5 @@
 from utility import *
 
-
 """
 	General JSON Writer class
 	Version...............1.2
@@ -15,24 +14,44 @@ class JSONWriter:
         self.tab = "    "
         self.output_file = output_file
         self.tab_depth = 0
-        self.string = ""
-        self.started = False
+        self._string = ""
+        self.started = False, None
         self.items = {}
 
-    def start(self):
-        self.started = True
-        self.ooj(use_tab=False)
+    def get_string(self):
+        return self._string
+
+    def set_string(self, value):
+        if not self.started[0]:
+            raise ValueError(
+                "Cannot begin writing to this json file because it has not been \'started\' yet.\nYou must call \'start()\' before values canbe written.")
+        self._string = value
+
+    def del_string(self):
+        del self._string
+
+    def start(self, obj=True):
+        self.started = True, obj
+        if obj:
+            self.ooj(use_tab=False)
+        else:
+            self.oar(use_tab=False)
 
     def stop(self):
-        self.coj(next=False)
+        if not self.started[0]:
+            raise ValueError("Cannot stop, writing has not started yet")
+        if self.started[1]:
+            self.coj(next=False)
+        else:
+            self.car(next=False)
 
     def reset(self):
         self.tab_depth = 0
         self.string = ""
-        self.started = False
+        self.started = False, None
 
     def save(self, file_name=None):
-        if not self.started:
+        if not self.started[0]:
             self.start()
             self.stop()
         if self.output_file is not None or file_name is not None:
@@ -47,11 +66,14 @@ class JSONWriter:
         else:
             raise FileExistsError("Cannot create a file without a name.")
 
-    def tdp(self):
+    def tdp(self, depth=None, write=True):
         # s = self.tab_depth * "\t"
-        s = self.tab_depth * self.tab
-        print(f"TDP s: <{s}>, td: {self.tab_depth}")
-        self.string += s
+        s = (self.tab_depth if depth is None else depth) * self.tab
+        print(f"A: <{self.string}>")
+        print(f"TDP s: <{s}>, td: {(self.tab_depth if depth is None else depth)}")
+        if write:
+            self.string += s
+        print(f"B: <{self.string}>")
         return s
 
     def ooj(self, use_tab=True):
@@ -70,8 +92,24 @@ class JSONWriter:
         self.string += s
         return s
 
+    def oar(self, use_tab=True):
+        self.tab_depth += 1
+        if self.tab_depth not in self.items:
+            self.items.update({self.tab_depth: {}})
+        # s = ((self.tab_depth - 1) * "\t" if use_tab else "") + "{\n"
+        s = ((self.tab_depth - 1) * self.tab if use_tab else "") + "[\n"
+        self.string += s
+        return s
+
+    def car(self, next=False):
+        self.tab_depth -= 1
+        # s = "\n" + max(0, self.tab_depth) * "\t" + "}" + ("," if next else "")
+        s = "\n" + max(0, self.tab_depth) * self.tab + "]" + ("," if next else "")
+        self.string += s
+        return s
+
     def okey(self, k_name, new_line=True):
-        s = ("\n" if new_line else "") + self.tdp() + f"\"{k_name}\": " + self.ooj(use_tab=False)
+        s = ("\n" if new_line else "") + self.tdp(write=False) + f"\"{k_name}\": " + self.ooj(use_tab=False)
         self.string += s
         return s
 
@@ -86,7 +124,15 @@ class JSONWriter:
         x = "\"" if isinstance(v, str) else ""
         if v == "null":
             x = ""
-        s = "{t}\"{k}\": {x}{v}{x}{n}{l}".format(t=self.tdp(), k=k, v=v, n=',' if next else '', l='\n' if new_line else '', x=x)
+        if isinstance(v, bool):
+            if v:
+                v = "true"
+            else:
+                v = "false"
+        print("\'f\': <{}>".format(k))
+        s = "{t}\"{k}\": {x}{v}{x}{n}{l}".format(t=self.tdp(depth=1, write=False), k=k, v=v, n=',' if next else '',
+                                                 l='\n' if new_line else '', x=x)
+        print("CALC S: <{}>".format(s))
         # s = "{t}\"{k}\": {x}{v}{x}{n}{l}".format(t="@", k=k, v=v, n=',' if next else '', l='\n' if new_line else '', x=x)
         add_new = False
         add_tab = False
@@ -98,6 +144,7 @@ class JSONWriter:
             add_new = True
             add_tab = True
         adjust = not self.string.strip().endswith(",") and self.items[self.tab_depth]
+        print("adjust: {}".format(adjust))
         if adjust:
             self.string = self.string.strip() + ","
         if add_new and adjust:
@@ -142,11 +189,36 @@ class JSONWriter:
         # self.string += s
         # return s
 
+    def wel(self, el, next=False, new_line=True):
+        s = "{t}{x}{e}{x}{c}{n}".format(t=self.tdp(depth=1), e=el, c=", " if next else "", n="\n" if new_line else "",
+                                        x="\"" if isinstance(el, str) else "")
+        self.string += s
+        return s
+
+    def war(self, a):
+        if isinstance(a, tuple):
+            a = list(a)
+        if not isinstance(a, list):
+            raise TypeError("Param \'a\' must be either a list or a tuple, got: \'{}\'".format(type(a)))
+        self.oar()
+        for i, el in enumerate(a):
+            x = i != len(a) - 1
+            self.wel(el, next=x, new_line=x)
+        self.car()
+        s = str()
+        self.string += s
+        return s
+
+    def woj(self, o):
+        pass
+
     def record(self, k, v, depth=None):
         d = self.tab_depth if depth is None else depth
         if k in self.items[d]:
             raise KeyError("This k=\'{}\' cannot be duplicated within the same nesting.")
         self.items[d][k] = v
+
+    string = property(get_string, set_string, del_string)
 
 
 def test_1():
@@ -184,7 +256,8 @@ def test_4():
     jw = JSONWriter()
     jw.start()
     jw.wakv("key1", "Value1", "key2", "Value2")  # passing multiple keys + values
-    jw.wakv(["key3", "Value3", "key4", "Value4"])  # passing list of multiple keys + values
+    jw.wakv(["key3", False, "key4", True])  # passing list of multiple keys + values
+    jw.wakv(["key5", 18, "key6", 19.2])  # passing list of multiple keys + values
     jw.okey("List")
     jw.ckey()
     # jw.wakv({"key5": "Value5", "key6": "Value6"})  # passing dict of multiple keys + values
@@ -196,8 +269,19 @@ def test_4():
     print(dict_print(jw.items, "Items"))
 
 
+def test_5():
+    jw = JSONWriter()
+    jw.start(obj=False)
+    jw.war([1, 2, "three", """four""", 5.5])
+    jw.stop()
+    jw.save("demo")
+    print(f"STR: <{jw.string}>")
+    print(dict_print(jw.items, "Items"))
+
+
 if __name__ == "__main__":
-    test_1()
-    test_2()
+    # test_1()
+    # test_2()
     test_3()
-    test_4()
+    # test_4()
+    # test_5()
