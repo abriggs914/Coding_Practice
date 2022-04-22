@@ -1,7 +1,10 @@
 {
     "key1": "Value1",
-    "key2": "Value2",    "key3": "Value3",
-    "key4": "Value4",    "key5": "Value5",
-    "key6": "Value6",    "5": "Value5",
-    "6": "Value6"
+    "key2": "Value2",
+    "key3": false,
+    "key4": true,
+    "key5": 18,
+    "key6": 19.2    
+}    
+}
 }

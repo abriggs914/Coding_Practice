@@ -2,8 +2,8 @@ from utility import *
 
 """
 	General JSON Writer class
-	Version...............1.2
-	Date...........2022-04-20
+	Version...............1.4
+	Date...........2022-04-22
 	Author.......Avery Briggs
 """
 
@@ -15,7 +15,7 @@ class JSONWriter:
         self.output_file = output_file
         self.tab_depth = 0
         self._string = ""
-        self.started = False, None
+        self.started = False, None, False  # has started, writing object, has stopped
         self.items = {}
 
     def get_string(self):
@@ -24,14 +24,14 @@ class JSONWriter:
     def set_string(self, value):
         if not self.started[0]:
             raise ValueError(
-                "Cannot begin writing to this json file because it has not been \'started\' yet.\nYou must call \'start()\' before values canbe written.")
+                "\n\tCannot begin writing to this json file because it has not been \'started\' yet.\n\tYou must call \'start()\' before values can be written.")
         self._string = value
 
     def del_string(self):
         del self._string
 
     def start(self, obj=True):
-        self.started = True, obj
+        self.started = True, obj, False
         if obj:
             self.ooj(use_tab=False)
         else:
@@ -44,15 +44,18 @@ class JSONWriter:
             self.coj(next=False)
         else:
             self.car(next=False)
+        self.started = *self.started[:2], True
 
     def reset(self):
         self.tab_depth = 0
         self.string = ""
-        self.started = False, None
+        self.started = False, None, False
 
     def save(self, file_name=None):
         if not self.started[0]:
-            self.start()
+            raise ValueError("\n\tCannot save this json file because nothing has been written to it.\n\tYou must call \'start()\' and \'stop()\' to enable writing and saving.")
+        elif not self.started[2]:
+            # allow saving without calling close first. This will do it for you.
             self.stop()
         if self.output_file is not None or file_name is not None:
             fn = self.output_file if self.output_file is not None else file_name
@@ -80,8 +83,11 @@ class JSONWriter:
         self.tab_depth += 1
         if self.tab_depth not in self.items:
             self.items.update({self.tab_depth: {}})
+            x = ""
+        else:
+            x = ",\n"
         # s = ((self.tab_depth - 1) * "\t" if use_tab else "") + "{\n"
-        s = ((self.tab_depth - 1) * self.tab if use_tab else "") + "{\n"
+        s = ((self.tab_depth - 1) * self.tab if use_tab else "") + x + "{\n"
         self.string += s
         return s
 
@@ -138,13 +144,13 @@ class JSONWriter:
         add_tab = False
         # asdg = self.string[-1] == '\t'
         # print(f"EW: <{self.string[-1]}> ==NL: {(asdg)} ==T: {asdg}")
-        if self.string.endswith("\n"):
-            add_new = True
+        add_new = True
+        # if self.string.endswith("\n"):
         if self.string.endswith(self.tab):
             add_new = True
             add_tab = True
-        adjust = not self.string.strip().endswith(",") and self.items[self.tab_depth]
-        print("adjust: {}".format(adjust))
+        adjust = not bool(self.string.strip().endswith(",")) and bool(self.items[self.tab_depth])
+        print("adjusted: {}, an: {}, at: {}".format(adjust, add_new, add_tab))
         if adjust:
             self.string = self.string.strip() + ","
         if add_new and adjust:
@@ -201,12 +207,13 @@ class JSONWriter:
         if not isinstance(a, list):
             raise TypeError("Param \'a\' must be either a list or a tuple, got: \'{}\'".format(type(a)))
         self.oar()
+        s = ""
         for i, el in enumerate(a):
             x = i != len(a) - 1
-            self.wel(el, next=x, new_line=x)
+            s += self.wel(el, next=x, new_line=x)
         self.car()
-        s = str()
-        self.string += s
+        # s = str()
+        # self.string += s
         return s
 
     def woj(self, o):
@@ -227,6 +234,7 @@ def test_1():
     jw.stop()
     jw.save("demo")
     print(f"STR: <{jw.string}>")
+    print(f"STR: <" + jw.string + ">")
 
 
 def test_2():
@@ -243,8 +251,8 @@ def test_3():
     jw.start()
     jw.wakv("key1", "Value1", "key2", "Value2")  # passing multiple keys + values
     jw.wakv(["key3", "Value3", "key4", "Value4"])  # passing list of multiple keys + values
-    jw.wakv({"key5": "Value5", "key6": "Value6"})  # passing dict of multiple keys + values
-    jw.wakv(["5", "Value5", "6", "Value6"], ["a", "b"])  # multiple lists of multiple keys + values
+    # jw.wakv({"key5": "Value5", "key6": "Value6"})  # passing dict of multiple keys + values
+    # jw.wakv(["5", "Value5", "6", "Value6"], ["a", "b"])  # multiple lists of multiple keys + values
     # jw.wakv({"key5": "Value5", "key6": "Value6"}, ["a", "b"])  # ensure this doesnt work
     jw.stop()
     jw.save("demo")
@@ -258,7 +266,7 @@ def test_4():
     jw.wakv("key1", "Value1", "key2", "Value2")  # passing multiple keys + values
     jw.wakv(["key3", False, "key4", True])  # passing list of multiple keys + values
     jw.wakv(["key5", 18, "key6", 19.2])  # passing list of multiple keys + values
-    jw.okey("List")
+    # jw.okey("List")
     jw.ckey()
     # jw.wakv({"key5": "Value5", "key6": "Value6"})  # passing dict of multiple keys + values
     # jw.wakv(["5", "Value5", "6", "Value6"], ["a", "b"])  # multiple lists of multiple keys + values
@@ -273,7 +281,7 @@ def test_5():
     jw = JSONWriter()
     jw.start(obj=False)
     jw.war([1, 2, "three", """four""", 5.5])
-    jw.stop()
+    # jw.stop()
     jw.save("demo")
     print(f"STR: <{jw.string}>")
     print(dict_print(jw.items, "Items"))
@@ -282,6 +290,6 @@ def test_5():
 if __name__ == "__main__":
     # test_1()
     # test_2()
-    test_3()
-    # test_4()
+    # test_3()
+    test_4()
     # test_5()
