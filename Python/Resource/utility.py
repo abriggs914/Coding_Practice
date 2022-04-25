@@ -10,8 +10,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.44
-	Date...........2022-04-13
+	Version..............1.45
+	Date...........2022-04-25
 	Author.......Avery Briggs
 """
 
@@ -1410,6 +1410,12 @@ class Rect2:
     #
     # def resize(self, rect):
     #     self.init(rect.x, rect.y, rect.width, rect.height)
+
+    def sq_rect(self):
+        return self.x, self.y, self.w, self.h
+    
+    def tkinter_rect(self):
+        return *self.top_left, *self.bottom_right
 
     def __repr__(self):
         return "<rect(p1:({}), p2:({}), p3:({}), p4:({}))>".format(self.p1, self.p2, self.p3, self.p4)
