@@ -1,10 +1,8 @@
 {
-    "key1": "Value1",
-    "key2": "Value2",
-    "key3": false,
-    "key4": true,
-    "key5": 18,
-    "key6": 19.2    
-}    
-}
+    {
+        "key1": "Value1",
+        "key2": "Value2",
+        "key3": "Value3",
+        "key4": "Value4"
+    }
 }
