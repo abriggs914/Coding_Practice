@@ -126,6 +126,27 @@ class JSONWriter:
 
     def set_string(self, value):
         # if not self.started[0]:
+        # safe_leave = False
+        # if self.safe:
+        #     if not self.state.started:
+        #         print("WARNING wrinting has begun in safe mode without calling \'start()\' on this file.")
+        #         typ = type(value)
+        #         obj = False
+        #         single = True
+        #         if typ in [int, float, str, bool]:
+        #             obj = False
+        #         elif typ in [dict]:
+        #             obj = True
+        #         if single:
+        #             if obj:
+        #                 self.wel(value)
+        #             else:
+        #                 self.
+        #         self.start(obj=obj)
+        #
+        # if safe_leave:
+        #     return
+
         if not self.state.started:
             raise self.StateException(
                 "\n\tCannot begin writing to this json file because it has not been \'started\' yet.\n\tYou must call \'start()\' before values can be written.")
