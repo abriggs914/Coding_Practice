@@ -10,8 +10,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.45
-	Date...........2022-04-25
+	Version..............1.46
+	Date...........2022-04-27
 	Author.......Avery Briggs
 """
 
@@ -1413,12 +1413,13 @@ class Rect2:
 
     def sq_rect(self):
         return self.x, self.y, self.w, self.h
-    
+
     def tkinter_rect(self):
-        return *self.top_left, *self.bottom_right
+        return Rect2(*self.top_left, *self.bottom_right)
 
     def __repr__(self):
-        return "<rect(p1:({}), p2:({}), p3:({}), p4:({}))>".format(self.p1, self.p2, self.p3, self.p4)
+        # return "<rect(p1:({}), p2:({}), p3:({}), p4:({}))>".format(self.p1, self.p2, self.p3, self.p4)
+        return f"<rect: {self.x=}, {self.y=}, {self.w=}, {self.h}>"
 
 
 def date_suffix(day):
@@ -1579,9 +1580,23 @@ def print_by_line(value, do_print=True):
 
 
 def hours_diff(d1, d2):
-	assert isinstance(d1, dt.datetime), f"Parameter d1: \"{d1}\" needs to be a datetime.datetime instance."
-	assert isinstance(d2, dt.datetime), f"Parameter d2: \"{d2}\" needs to be a datetime.datetime instance."
-	return ((d2 - d1).days * 24) + ((d2 - d1).seconds / (60 * 60))
+    assert isinstance(d1, dt.datetime), f"Parameter d1: \"{d1}\" needs to be a datetime.datetime instance."
+    assert isinstance(d2, dt.datetime), f"Parameter d2: \"{d2}\" needs to be a datetime.datetime instance."
+    return ((d2 - d1).days * 24) + ((d2 - d1).seconds / (60 * 60))
+
+
+def rect2_to_tkinter(rect):
+    assert isinstance(rect, Rect2), "Error value is not a valid Rect2 object."
+    assert rect.a == 0, "This Rect2 object is at a non-zero angle."
+    return [rect.x, rect.y, rect.w + rect.x, rect.h + rect.y]
+
+
+def tkinter_to_rect2(rect):
+    assert isinstance(rect, list) or isinstance(rect, tuple), f"Error value is not a valid list or tuple representing a tkinter rect., got <{type(rect)}>, v=<{rect}>"
+    assert len(rect) == 4, "This list is too long"
+    x1, y1, x2, y2 = rect
+    return Rect2(x1, y1, x2 - x1, y2 - y1)
+
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
 BLK_TWO = "2", "22222\n    2\n22222\n2    \n22222"
