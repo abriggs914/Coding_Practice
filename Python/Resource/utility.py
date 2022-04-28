@@ -10,8 +10,8 @@ import os
 
 """
 	General Utility Functions
-	Version..............1.46
-	Date...........2022-04-27
+	Version..............1.47
+	Date...........2022-04-28
 	Author.......Avery Briggs
 """
 
@@ -1419,7 +1419,8 @@ class Rect2:
 
     def __repr__(self):
         # return "<rect(p1:({}), p2:({}), p3:({}), p4:({}))>".format(self.p1, self.p2, self.p3, self.p4)
-        return f"<rect: {self.x=}, {self.y=}, {self.w=}, {self.h}>"
+        x, y, w, h, a = self
+        return f"<rect: {x=}, {y=}, {w=}, {h=}, {a=}>"
 
 
 def date_suffix(day):
@@ -1586,7 +1587,9 @@ def hours_diff(d1, d2):
 
 
 def rect2_to_tkinter(rect):
-    assert isinstance(rect, Rect2), "Error value is not a valid Rect2 object."
+    if (isinstance(rect, tuple) or isinstance(rect, list)) and len(rect) in (4, 5):
+        rect = Rect2(*rect)
+    assert isinstance(rect, Rect2), f"Error value is not a valid Rect2 object. got: <{type(rect)}, v: <{rect}>>"
     assert rect.a == 0, "This Rect2 object is at a non-zero angle."
     return [rect.x, rect.y, rect.w + rect.x, rect.h + rect.y]
 
