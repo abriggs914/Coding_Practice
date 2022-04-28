@@ -91,6 +91,7 @@ orders = {
 	]
 }
 
+
 class YearHistory:
 
 	def __init__(self, year):
