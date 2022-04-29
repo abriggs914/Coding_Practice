@@ -8,12 +8,26 @@ import shutil
 import sys
 import os
 
-"""
+
+VERSION = \
+"""	
 	General Utility Functions
-	Version..............1.47
-	Date...........2022-04-28
+	Version..............1.48
+	Date...........2022-04-29
 	Author.......Avery Briggs
 """
+
+
+def VERSION_NUMBER():
+    return float(VERSION.split("\n")[2].split(".")[-2] + "." + VERSION.split("\n")[2].split(".")[-1])
+
+
+def VERSION_DATE():
+    return VERSION.split("\n")[3].split(".")[-1]
+
+
+def VERSION_AUTHOR():
+    return VERSION.split("\n")[4].split(".")[-1]
 
 
 def func_def():
@@ -46,7 +60,8 @@ def lenstr(x):
     return len(str(x))
 
 
-def minmax(a, b):
+def minmax(a, *b):
+    
     if a <= b:
         return a, b
     return b, a
@@ -1128,6 +1143,7 @@ class Rect2:
         self.y = y
         self.w = w
         self.h = h
+        self.a = a
         self.width = w
         self.height = h
         self.angle = a
@@ -1259,6 +1275,7 @@ class Rect2:
 
     def translate(self, x, y):
         self.init(self.x + x, self.y + y, self.width, self.height, self.angle)
+        return self
 
     def translated(self, x, y):
         return Rect2(self.x + x, self.y + y, self.width, self.height, self.angle)
@@ -1267,6 +1284,7 @@ class Rect2:
         w = abs(w)
         h = abs(h)
         self.init(self.x, self.y, self.width * w, self.height * h, self.angle)
+        return self
 
     def scaled(self, x, y):
         r = Rect2(*self)
@@ -1275,6 +1293,7 @@ class Rect2:
 
     def rotate(self, a):
         self.init(self.x, self.y, self.width, self.height, self.angle + a)
+        return self
 
     def rotated(self, a):
         r = Rect2(*self)
@@ -1587,6 +1606,7 @@ def hours_diff(d1, d2):
 
 
 def rect2_to_tkinter(rect):
+    """Rect2 (left, top, w, h) -> (left, top, right, bottom)"""
     if (isinstance(rect, tuple) or isinstance(rect, list)) and len(rect) in (4, 5):
         rect = Rect2(*rect)
     assert isinstance(rect, Rect2), f"Error value is not a valid Rect2 object. got: <{type(rect)}, v: <{rect}>>"
@@ -1595,6 +1615,7 @@ def rect2_to_tkinter(rect):
 
 
 def tkinter_to_rect2(rect):
+    """Tlinter (left, top, right, bottom) -> Rect2 (left, top, w, h)"""
     assert isinstance(rect, list) or isinstance(rect, tuple), f"Error value is not a valid list or tuple representing a tkinter rect., got <{type(rect)}>, v=<{rect}>"
     assert len(rect) == 4, "This list is too long"
     x1, y1, x2, y2 = rect
