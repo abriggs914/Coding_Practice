@@ -2,8 +2,8 @@ from random import randint, choice
 from utility import clamp
 
 #	General Utility file of RGB colour values
-#	Version...........1.11
-#	Date........2022-04-25
+#	Version...........1.12
+#	Date........2022-05-03
 #	Author....Avery Briggs
 
 WILDERNESS_MINT = (98, 152, 100)
@@ -1835,3 +1835,24 @@ def random_color():
         randint(10, 245),
         randint(10, 245)
     )
+
+
+def font_foreground(colour_in, threshold=255*3/2):
+    """Given a background colour and a minimum threshold, return BLACK or WHITE to ensure a font of this colour will be visible on the background."""
+    assert iscolour(colour_in), "Error cannot infer the correct font fore-colour from a non colour object."
+    try:
+        if isinstance(colour_in, str):
+            colour_in = hex_to_rgb(colour_in)
+        s = sum(colour_in)
+        if s < threshold:
+            # return WHITE on BLACK
+            return WHITE
+        else:
+            # return BLACK on WHITE
+            return BLACK
+    except ValueError as ve:
+        raise ValueError(f"Error cannot convert \'{colour_in}\' to a valid RGB colour scheme.", ve)
+    except IndexError as ie:
+        raise IndexError(f"Error cannot convert \'{colour_in}\' to a valid RGB colour scheme.", ie)
+    except TypeError as te:
+        raise TypeError(f"Error cannot convert \'{colour_in}\' to a valid RGB colour scheme.", te)

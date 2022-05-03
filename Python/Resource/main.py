@@ -1153,6 +1153,23 @@ def test_lineSeg():
     print(f"collides: {line_1.collide_point(-5, 0)}")
 
 
+def test_font_foreground():
+    print(dict_print({
+        "c1": {
+            "colour": RED,
+            "fc1": font_foreground(RED)
+        },
+        "c2": {
+            "colour": rgb_to_hex(RED),
+            "fc1": font_foreground(rgb_to_hex(RED))
+        },
+        "c3": {
+            "colour": WHITE,
+            "fc1": font_foreground(WHITE)
+        }
+    }))
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1187,9 +1204,10 @@ if __name__ == "__main__":
     # test_hyperlink()
     # test_random_date()
     # test_iscolour()
-    test_alert_colour()
+    # test_alert_colour()
     # test_is_date()
     # test_date_manipulation()
     # test_intersection()
     # test_line_inequality()
-    test_lineSeg()
+    # test_lineSeg()
+    test_font_foreground()
