@@ -2,13 +2,19 @@
 
 list_of_movies = [
 	{
+		"MCU": [
+			
+		]
+	},
+	{
 		"Star Wars": [
 			"Episode IV - A New Hope",
 			"Episode V - The Empire Strikes Back",
 			"Episode VI - Return of the Jedi",
 			"Episode I - The Phantom Menace",
 			"Episode II - Attack of the Clones",
-			"Episode III - Revenge of the Sith"
+			"Episode III - Revenge of the Sith",
+			"Episode IV - The Forece Awakens",
 			"Rogue One"
 		]
 	},
@@ -87,9 +93,19 @@ list_of_movies = [
 	},
 	{
 		"Predator": [
-			"Predator"
+			"Predator",
+			"Predator 2",
+			"Predators",
+			"The Predator"
 		]
-	}
+	},
+	{
+		"Aliens vs. Predator": [
+			"AVP",
+			"AVP Requiem"
+		]
+	},
+	"Prometheus"
 ]
 
 
