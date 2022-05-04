@@ -2,8 +2,8 @@ from random import randint, choice
 from utility import clamp
 
 #	General Utility file of RGB colour values
-#	Version...........1.12
-#	Date........2022-05-03
+#	Version...........1.13
+#	Date........2022-05-04
 #	Author....Avery Briggs
 
 WILDERNESS_MINT = (98, 152, 100)
@@ -1739,22 +1739,30 @@ def random_colour(name=False):
 #    return "#" + "".join([hex(x).split("x")[-1] for x in colour]).upper()
 
 def rgb_to_hex(colour):
+    if is_hex_colour(colour):
+        return colour
     r, g, b = None, None, None
     try:
         r, g, b = colour
         return "#{}{}{}".format(*list(map(lambda x: hex(int(x) % 256)[2:].rjust(2, "0"), [r, g, b]))).upper()
     except ValueError:
         raise ValueError("Failed to convert r: {}, g: {}, b: {} values to a hex colour.".format(r, g, b))
+    except TypeError:
+        raise TypeError("Failed to convert r: {}, g: {}, b: {} values to a hex colour.".format(r, g, b))
 
 
 def hex_to_rgb(colour):
-    return (int(colour[1:3], 16), int(colour[3:5], 16), int(colour[5:], 16))
+    if is_rgb_colour(colour):
+        return colour
+    try:
+        return (int(colour[1:3], 16), int(colour[3:5], 16), int(colour[5:], 16))
+    except ValueError:
+        raise ValueError("Failed to convert colour: {} to a valid RGB colour.".format(colour))
+    except TypeError:
+        raise TypeError("Failed to convert colour: {} to a valid RGB colour.".format(colour))
 
 
-def iscolour(c, g=None, b=None):
-    print("c: <{}>, t: <{}>".format(c, type(c)))
-    print("c: <{}>, t: <{}>".format(g, type(g)))
-    print("c: <{}>, t: <{}>".format(b, type(b)))
+def is_rgb_colour(c, g=None, b=None):
     if g is not None and b is not None:
         if isinstance(c, list):
             c = c + [g, b]
@@ -1765,17 +1773,62 @@ def iscolour(c, g=None, b=None):
     if (isinstance(c, tuple) or isinstance(c, list)) and len(c) == 3:
         if all([(isinstance(x, int) or isinstance(x, float)) and -1 < x < 256 for x in c]):
             return True
-    elif isinstance(c, str) and (len(c) == 7 or len(c) == 6):
-        print("str parsing")
+    return False
+
+
+def is_hex_colour(c):
+    if isinstance(c, str) and (len(c) == 7 or len(c) == 6):
         if len(c) == 7:
             if c[0] != "#":
                 return False
             c = c[1:]
         valid = list(map(str, range(10))) + [chr(97 + x) for x in range(6)] + [chr(65 + x) for x in range(6)]
-        print("valid: {}".format(valid))
         for i in c:
             if i not in valid:
                 return False
+        return True
+    return False
+
+
+# def iscolour(c, g=None, b=None):
+#     print("c: <{}>, t: <{}>".format(c, type(c)))
+#     print("c: <{}>, t: <{}>".format(g, type(g)))
+#     print("c: <{}>, t: <{}>".format(b, type(b)))
+#     if g is not None and b is not None:
+#         if isinstance(c, list):
+#             c = c + [g, b]
+#         elif isinstance(c, tuple):
+#             c = (*c, g, b)
+#         elif isinstance(c, int) or isinstance(c, float):
+#             c = [c] + [g, b]
+#     if (isinstance(c, tuple) or isinstance(c, list)) and len(c) == 3:
+#         if all([(isinstance(x, int) or isinstance(x, float)) and -1 < x < 256 for x in c]):
+#             return True
+#     elif isinstance(c, str) and (len(c) == 7 or len(c) == 6):
+#         # print("str parsing")
+#         if len(c) == 7:
+#             if c[0] != "#":
+#                 return False
+#             c = c[1:]
+#         valid = list(map(str, range(10))) + [chr(97 + x) for x in range(6)] + [chr(65 + x) for x in range(6)]
+#         # print("valid: {}".format(valid))
+#         for i in c:
+#             if i not in valid:
+#                 return False
+#         return True
+#     elif isinstance(c, str) and g is None and b is None:
+#         if c in COLOURS:
+#             return True
+#     return False
+
+
+def iscolour(c, g=None, b=None):
+    print("c: <{}>, t: <{}>".format(c, type(c)))
+    print("c: <{}>, t: <{}>".format(g, type(g)))
+    print("c: <{}>, t: <{}>".format(b, type(b)))
+    if is_rgb_colour(c, g, b):
+        return True
+    elif is_hex_colour(c):
         return True
     elif isinstance(c, str) and g is None and b is None:
         if c in COLOURS:
