@@ -2,8 +2,8 @@ from random import randint, choice
 from utility import clamp
 
 #	General Utility file of RGB colour values
-#	Version...........1.13
-#	Date........2022-05-04
+#	Version...........1.14
+#	Date........2022-05-05
 #	Author....Avery Briggs
 
 WILDERNESS_MINT = (98, 152, 100)
@@ -1716,14 +1716,16 @@ COLOURS = dict(zip(colour_names_list, [{"R": r, "G": g, "B": b} for r, g, b in c
 def get_all_colours(rtype=list, return_hex=False):
 
     if return_hex:
-        lst = [rgb_to_hex(c) for c in lst]
+        lst = [rgb_to_hex(c) for c in colour_values_list]
+    else:
+        lst = colour_values_list
 
     if rtype == dict:
-        return dict(zip(names, lst))
+        return dict(zip(colour_names_list, lst))
     elif isinstance(rtype, str) and rtype.lower() == "both":
-        return names, lst
+        return colour_names_list, lst
     elif isinstance(rtype, str) and rtype.lower() == "names":
-        return names
+        return colour_names_list
     else:
         return lst
 
@@ -1732,7 +1734,7 @@ def random_colour(name=False):
     if not name:
         return choice(get_all_colours())
     else:
-        return choice(list(get_all_colours(dict).keys()))
+        return choice(list(get_all_colours(rtype=dict).keys()))
 
 
 # def rgb_to_hex(colour):
