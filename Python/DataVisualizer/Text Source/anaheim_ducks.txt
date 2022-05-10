@@ -1,0 +1,123 @@
+==Anaheim Ducks==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Detroit Red Wings]]
+| 6
+| align=left| [[1997 Stanley Cup playoffs|1997]], [[1999 Stanley Cup playoffs|1999]], '''[[2003 Stanley Cup playoffs|2003]]''', '''[[2007 Stanley Cup playoffs|2007]]''', [[2009 Stanley Cup playoffs|2009]], [[2013 Stanley Cup playoffs|2013]]
+| 32
+| 2–4
+| .333
+|-
+| [[Calgary Flames]]
+| 3
+| align=left| '''[[2006 Stanley Cup playoffs|2006]]''', '''[[2015 Stanley Cup playoffs|2015]]''', '''[[2017 Stanley Cup playoffs|2017]]'''
+| 16
+| 3–0
+| 1.000
+|-
+| [[Dallas Stars]]
+| 3
+| align=left| '''[[2003 Stanley Cup playoffs|2003]]''', [[2008 Stanley Cup playoffs|2008]], '''[[2014 Stanley Cup playoffs|2014]]'''
+| 18
+| 2–1
+| .667
+|-
+| [[Nashville Predators]]
+| 3
+| align=left| [[2011 Stanley Cup playoffs|2011]], [[2016 Stanley Cup playoffs|2016]], [[2017 Stanley Cup playoffs|2017]]
+| 19
+| 0–3
+| .000
+|-
+| [[Minnesota Wild]]
+| 2
+| align=left| '''[[2003 Stanley Cup playoffs|2003]]''', '''[[2007 Stanley Cup playoffs|2007]]'''
+| 9
+| 2–0
+| 1.000
+|-
+| [[Edmonton Oilers]]
+| 2
+| align=left| [[2006 Stanley Cup playoffs|2006]], '''[[2017 Stanley Cup playoffs|2017]]'''
+| 12
+| 1–1
+| .500
+|-
+| [[San Jose Sharks]]
+| 2
+| align=left| '''[[2009 Stanley Cup playoffs|2009]]''', [[2018 Stanley Cup playoffs|2018]]
+| 10
+| 1–1
+| .500
+|-
+| [[Arizona Coyotes]]
+| 1
+| align=left| '''[[1997 Stanley Cup playoffs|1997]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[Colorado Avalanche]]
+| 1
+| align=left| '''[[2006 Stanley Cup playoffs|2006]]'''
+| 4
+| 1–0
+| 1.000
+|-
+| [[Ottawa Senators]]
+| 1
+| align=left| '''[[2007 Stanley Cup playoffs|2007]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Vancouver Canucks]]
+| 1
+| align=left| '''[[2007 Stanley Cup playoffs|2007]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Winnipeg Jets]]
+| 1
+| align=left| '''[[2015 Stanley Cup playoffs|2015]]'''
+| 4
+| 1–0
+| 1.000
+|-
+| [[Chicago Blackhawks]]
+| 1
+| align=left| [[2015 Stanley Cup playoffs|2015]]
+| 7
+| 0–1
+| .000
+|-
+| [[Los Angeles Kings]]
+| 1
+| align=left| [[2014 Stanley Cup playoffs|2014]]
+| 7
+| 0–1
+| .000
+|-
+| [[New Jersey Devils]]
+| 1
+| align=left| [[2003 Stanley Cup playoffs|2003]]
+| 7
+| 0–1
+| .000
+|-
+! width="150"|Totals
+! width="30"|29
+! 
+! width="40"|162
+! width="40"|16–13
+! width="40"|.552
+|}

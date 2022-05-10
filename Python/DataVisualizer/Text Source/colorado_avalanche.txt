@@ -1,0 +1,179 @@
+==Colorado Avalanche==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Detroit Red Wings]]
+| 6
+| align=left| '''[[1996 Stanley Cup playoffs|1996]]''', [[1997 Stanley Cup playoffs|1997]], '''[[1999 Stanley Cup playoffs|1999]]''', '''[[2000 Stanley Cup playoffs|2000]]''', [[2002 Stanley Cup playoffs|2002]], [[2008 Stanley Cup playoffs|2008]]
+| 34
+| 3–3
+| .500
+|-
+| [[Dallas Stars]]
+| 5
+| align=left| [[1999 Stanley Cup playoffs|1999]], [[2000 Stanley Cup playoffs|2000]], '''[[2004 Stanley Cup playoffs|2004]]''', '''[[2006 Stanley Cup playoffs|2006]]''', [[2020 Stanley Cup playoffs|2020]]
+| 32
+| 2–3
+| .400
+|-
+| [[Montreal Canadiens]]
+| 5
+| align=left| '''[[1982 Stanley Cup playoffs|1982]]''', [[1984 Stanley Cup playoffs|1984]], '''[[1985 Stanley Cup playoffs|1985]]''', [[1987 Stanley Cup playoffs|1987]], [[1993 Stanley Cup playoffs|1993]]
+| 31
+| 2–3
+| .400
+|-
+| [[San Jose Sharks]]
+| 5
+| align=left| '''[[1999 Stanley Cup playoffs|1999]]''', '''[[2002 Stanley Cup playoffs|2002]]''', [[2004 Stanley Cup playoffs|2004]], [[2010 Stanley Cup playoffs|2010]], [[2019 Stanley Cup playoffs|2019]]
+| 32
+| 2–3
+| .400
+|-
+| [[Minnesota Wild]]
+| 3
+| align=left| [[2003 Stanley Cup playoffs|2003]], '''[[2008 Stanley Cup playoffs|2008]]''', [[2014 Stanley Cup playoffs|2014]]
+| 20
+| 1–2
+| .333
+|-
+| [[Arizona Coyotes]]
+| 2
+| align=left| '''[[2000 Stanley Cup playoffs|2000]]''', '''[[2020 Stanley Cup playoffs|2020]]'''
+| 10
+| 2–0
+| 1.000
+|-
+| [[Buffalo Sabres]]
+| 2
+| align=left| '''[[1984 Stanley Cup playoffs|1984]]''', '''[[1985 Stanley Cup playoffs|1985]]'''
+| 8
+| 2–0
+| 1.000
+|-
+| [[Chicago Blackhawks]]
+| 2
+| align=left| '''[[1996 Stanley Cup playoffs|1996]]''', '''[[1997 Stanley Cup playoffs|1997]]'''
+| 12
+| 2–0
+| 1.000
+|-
+| [[Los Angeles Kings]]
+| 2
+| align=left| '''[[2001 Stanley Cup playoffs|2001]]''', '''[[2002 Stanley Cup playoffs|2002]]'''
+| 14
+| 2–0
+| 1.000
+|-
+| [[St. Louis Blues]]
+| 2
+| align=left| '''[[2001 Stanley Cup playoffs|2001]]''', '''[[2021 Stanley Cup playoffs|2021]]'''
+| 10
+| 2–0
+| 1.000
+|-
+| [[Vancouver Canucks]]
+| 2
+| align=left| '''[[1996 Stanley Cup playoffs|1996]]''', '''[[2001 Stanley Cup playoffs|2001]]'''
+| 10
+| 2–0
+| 1.000
+|-
+| [[Boston Bruins]]
+| 2
+| align=left| '''[[1982 Stanley Cup playoffs|1982]]''', [[1983 Stanley Cup playoffs|1983]]
+| 11
+| 1–1
+| .500
+|-
+| [[Carolina Hurricanes]]
+| 2
+| align=left| [[1986 Stanley Cup playoffs|1986]], '''[[1987 Stanley Cup playoffs|1987]]'''
+| 9
+| 1–1
+| .500
+|-
+| [[Edmonton Oilers]]
+| 2
+| align=left| '''[[1997 Stanley Cup playoffs|1997]]''', [[1998 Stanley Cup playoffs|1998]]
+| 12
+| 1–1
+| .500
+|-
+| [[Nashville Predators]]
+| 2
+| align=left| [[2018 Stanley Cup playoffs|2018]], ''[[2022 Stanley Cup playoffs|2022]]''
+| 6
+| 0–1
+| .000
+|-
+| [[Philadelphia Flyers]]
+| 2
+| align=left| [[1981 Stanley Cup playoffs|1981]], [[1985 Stanley Cup playoffs|1985]]
+| 11
+| 0–2
+| .000
+|-
+| [[Calgary Flames]]
+| 1
+| align=left| '''[[2019 Stanley Cup playoffs|2019]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Florida Panthers]]
+| 1
+| align=left| '''[[1996 Stanley Cup playoffs|1996]]'''
+| 4
+| 1–0
+| 1.000
+|-
+| [[New Jersey Devils]]
+| 1
+| align=left| '''[[2001 Stanley Cup playoffs|2001]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[Anaheim Ducks]]
+| 1
+| align=left| [[2006 Stanley Cup playoffs|2006]]
+| 4
+| 0–1
+| .000
+|-
+| [[New York Islanders]]
+| 1
+| align=left| [[1982 Stanley Cup playoffs|1982]]
+| 4
+| 0–1
+| .000
+|-
+| [[New York Rangers]]
+| 1
+| align=left| [[1995 Stanley Cup playoffs|1995]]
+| 6
+| 0–1
+| .000
+|-
+| [[Vegas Golden Knights]]
+| 1
+| align=left| [[2021 Stanley Cup playoffs|2021]]
+| 7
+| 0–1
+| .000
+|-
+! width="150"|Totals<ref group="nb">Games played totals against Dallas, St. Louis and Vegas include one round-robin game from the 2020 Stanley Cup playoffs. As these games were played only to determine playoff seeding, they are not considered to be a complete series and are not counted in the occurrences section or the total series win–loss records.</ref>
+! width="30"|53
+! 
+! width="40"|299
+! width="40"|28–24
+! width="40"|.538
+|}

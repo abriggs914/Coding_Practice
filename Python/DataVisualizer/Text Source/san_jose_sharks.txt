@@ -1,0 +1,148 @@
+==San Jose Sharks==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[St. Louis Blues]]
+| 6
+| align=left| '''[[2000 Stanley Cup playoffs|2000]]''', [[2001 Stanley Cup playoffs|2001]], '''[[2004 Stanley Cup playoffs|2004]]''', [[2012 Stanley Cup playoffs|2012]], '''[[2016 Stanley Cup playoffs|2016]]''', [[2019 Stanley Cup playoffs|2019]]
+| 35
+| 3–3
+| .500
+|-
+| [[Colorado Avalanche]]
+| 5
+| align=left| [[1999 Stanley Cup playoffs|1999]], [[2002 Stanley Cup playoffs|2002]], '''[[2004 Stanley Cup playoffs|2004]]''', '''[[2010 Stanley Cup playoffs|2010]]''', '''[[2019 Stanley Cup playoffs|2019]]'''
+| 32
+| 3–2
+| .600
+|-
+| [[Detroit Red Wings]]
+| 5
+| align=left| '''[[1994 Stanley Cup playoffs|1994]]''', [[1995 Stanley Cup playoffs|1995]], [[2007 Stanley Cup playoffs|2007]], '''[[2010 Stanley Cup playoffs|2010]]''', '''[[2011 Stanley Cup playoffs|2011]]'''
+| 29
+| 3–2
+| .600
+|-
+| [[Los Angeles Kings]]
+| 4
+| align=left| '''[[2011 Stanley Cup playoffs|2011]]''', [[2013 Stanley Cup playoffs|2013]], [[2014 Stanley Cup playoffs|2014]], '''[[2016 Stanley Cup playoffs|2016]]'''
+| 25
+| 2–2
+| .500
+|-
+| [[Nashville Predators]]
+| 3
+| align=left| '''[[2006 Stanley Cup playoffs|2006]]''', '''[[2007 Stanley Cup playoffs|2007]]''', '''[[2016 Stanley Cup playoffs|2016]]'''
+| 17
+| 3–0
+| 1.000
+|-
+| [[Calgary Flames]]
+| 3
+| align=left| '''[[1995 Stanley Cup playoffs|1995]]''', [[2004 Stanley Cup playoffs|2004]], '''[[2008 Stanley Cup playoffs|2008]]'''
+| 20
+| 2–1
+| .667
+|-
+| [[Dallas Stars]]
+| 3
+| align=left| [[1998 Stanley Cup playoffs|1998]], [[2000 Stanley Cup playoffs|2000]], [[2008 Stanley Cup playoffs|2008]]
+| 17
+| 0–3
+| .000
+|-
+| [[Anaheim Ducks]]
+| 2
+| align=left| [[2009 Stanley Cup playoffs|2009]], '''[[2018 Stanley Cup playoffs|2018]]'''
+| 10
+| 1–1
+| .500
+|-
+| [[Vancouver Canucks]]
+| 2
+| align=left|  [[2011 Stanley Cup playoffs|2011]], '''[[2013 Stanley Cup playoffs|2013]]'''
+| 9
+| 1–1
+| .500
+|-
+| [[Vegas Golden Knights]]
+| 2
+| align=left| [[2018 Stanley Cup playoffs|2018]], '''[[2019 Stanley Cup playoffs|2019]]'''
+| 13
+| 1–1
+| .500
+|-
+| [[Edmonton Oilers]]
+| 2
+| align=left| [[2006 Stanley Cup playoffs|2006]], [[2017 Stanley Cup playoffs|2017]]
+| 12
+| 0–2
+| .000
+|-
+| [[Arizona Coyotes]]
+| 1
+| align=left| '''[[2002 Stanley Cup playoffs|2002]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Chicago Blackhawks]]
+| 1
+| align=left| [[2010 Stanley Cup playoffs|2010]]
+| 4
+| 0–1
+| .000
+|-
+| [[Pittsburgh Penguins]]
+| 1
+| align=left| [[2016 Stanley Cup playoffs|2016]]
+| 6
+| 0–1
+| .000
+|-
+| [[Toronto Maple Leafs]]
+| 1
+| align=left| [[1994 Stanley Cup playoffs|1994]]
+| 7
+| 0–1
+| .000
+|-
+! width="150"|Totals
+! width="30"|41
+! 
+! width="40"|241
+! width="40"|20–21
+! width="40"|.489
+|}
+<!-- Leave hidden until they qualify for the Stanley Cup playoffs ==Seattle Kraken==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[TBD]]
+| 0
+| align=left| 
+| 0
+| 0–0
+| .000
+|-
+! width="150"|Totals
+! width="30"|0
+! 
+! width="40"|0
+! width="40"|0–0
+! width="40"|.000
+|}-->

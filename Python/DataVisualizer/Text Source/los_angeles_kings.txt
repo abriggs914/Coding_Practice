@@ -1,0 +1,151 @@
+==Los Angeles Kings==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Edmonton Oilers]]
+| 8
+| align=left| '''[[1982 Stanley Cup playoffs|1982]]''', [[1985 Stanley Cup playoffs|1985]], [[1987 Stanley Cup playoffs|1987]], '''[[1989 Stanley Cup playoffs|1989]]''', [[1990 Stanley Cup playoffs|1990]], [[1991 Stanley Cup playoffs|1991]], [[1992 Stanley Cup playoffs|1992]], ''[[2022 Stanley Cup playoffs|2022]]''
+| 36
+| 2–5
+| .286
+|-
+| [[Calgary Flames]]
+| 6
+| align=left| '''[[1976 Stanley Cup playoffs|1976]]''', '''[[1977 Stanley Cup playoffs|1977]]''', [[1988 Stanley Cup playoffs|1988]], [[1989 Stanley Cup playoffs|1989]], '''[[1990 Stanley Cup playoffs|1990]]''', '''[[1993 Stanley Cup playoffs|1993]]'''
+| 26
+| 4–2
+| .667
+|-
+| [[Vancouver Canucks]]
+| 5
+| align=left| [[1982 Stanley Cup playoffs|1982]], '''[[1991 Stanley Cup playoffs|1991]]''', '''[[1993 Stanley Cup playoffs|1993]]''', [[2010 Stanley Cup playoffs|2010]], '''[[2012 Stanley Cup playoffs|2012]]'''
+| 28
+| 3–2
+| .600
+|-
+| [[St. Louis Blues]]
+| 4
+| align=left| [[1969 Stanley Cup playoffs|1969]], [[1998 Stanley Cup playoffs|1998]], '''[[2012 Stanley Cup playoffs|2012]]''', '''[[2013 Stanley Cup playoffs|2013]]'''
+| 18
+| 2–2
+| .500
+|-
+| [[San Jose Sharks]]
+| 4
+| align=left| [[2011 Stanley Cup playoffs|2011]], '''[[2013 Stanley Cup playoffs|2013]]''', '''[[2014 Stanley Cup playoffs|2014]]''', [[2016 Stanley Cup playoffs|2016]]
+| 22
+| 2–2
+| .500
+|-
+| [[Chicago Blackhawks]]
+| 3
+| align=left| [[1974 Stanley Cup playoffs|1974]], [[2013 Stanley Cup playoffs|2013]], '''[[2014 Stanley Cup playoffs|2014]]'''
+| 17
+| 1–2
+| .333
+|-
+| [[New York Rangers]]
+| 3
+| align=left| [[1979 Stanley Cup playoffs|1979]], [[1981 Stanley Cup playoffs|1981]], '''[[2014 Stanley Cup playoffs|2014]]'''
+| 11
+| 1–2
+| .333
+|-
+| [[Toronto Maple Leafs]]
+| 3
+| align=left| [[1975 Stanley Cup playoffs|1975]], [[1978 Stanley Cup playoffs|1978]], '''[[1993 Stanley Cup playoffs|1993]]'''
+| 12
+| 1–2
+| .333
+|-
+| [[Detroit Red Wings]]
+| 2
+| align=left| [[2000 Stanley Cup playoffs|2000]], '''[[2001 Stanley Cup playoffs|2001]]'''
+| 10
+| 1–1
+| .500
+|-
+| [[Boston Bruins]]
+| 2
+| align=left| [[1976 Stanley Cup playoffs|1976]], [[1977 Stanley Cup playoffs|1977]]
+| 13
+| 0–2
+| .000
+|-
+| [[Colorado Avalanche]]
+| 2
+| align=left| [[2001 Stanley Cup playoffs|2001]], [[2002 Stanley Cup playoffs|2002]]
+| 14
+| 0–2
+| .000
+|-
+| [[Anaheim Ducks]]
+| 1
+| align=left| '''[[2014 Stanley Cup playoffs|2014]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[Arizona Coyotes]]
+| 1
+| align=left| '''[[2012 Stanley Cup playoffs|2012]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[California Golden Seals]]
+| 1
+| align=left| '''[[1969 Stanley Cup playoffs|1969]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[New Jersey Devils]]
+| 1
+| align=left| '''[[2012 Stanley Cup playoffs|2012]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Dallas Stars]]
+| 1
+| align=left| [[1968 Stanley Cup playoffs|1968]]
+| 7
+| 0–1
+| .000
+|-
+| [[Montreal Canadiens]]
+| 1
+| align=left| [[1993 Stanley Cup playoffs|1993]]
+| 5
+| 0–1
+| .000
+|-
+| [[New York Islanders]]
+| 1
+| align=left| [[1980 Stanley Cup playoffs|1980]]
+| 4
+| 0–1
+| .000
+|-
+| [[Vegas Golden Knights]]
+| 1
+| align=left| [[2018 Stanley Cup playoffs|2018]]
+| 4
+| 0–1
+| .000
+|-
+! width="150"|Totals
+! width="30"|50
+! 
+! width="40"|255
+! width="40"|21–28
+! width="40"|.429
+|}

@@ -1,0 +1,102 @@
+==Ottawa Senators==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Pittsburgh Penguins]]
+| 5
+| align=left| '''[[2007 Stanley Cup playoffs|2007]]''', [[2008 Stanley Cup playoffs|2008]], [[2010 Stanley Cup playoffs|2010]], [[2013 Stanley Cup playoffs|2013]], [[2017 Stanley Cup playoffs|2017]]
+| 27
+| 1–4
+| .200
+|-
+| [[Buffalo Sabres]]
+| 4
+| align=left| [[1997 Stanley Cup playoffs|1997]], [[1999 Stanley Cup playoffs|1999]], [[2006 Stanley Cup playoffs|2006]], '''[[2007 Stanley Cup playoffs|2007]]'''
+| 21
+| 1–3
+| .250
+|-
+| [[Toronto Maple Leafs]]
+| 4
+| align=left| [[2000 Stanley Cup playoffs|2000]], [[2001 Stanley Cup playoffs|2001]], [[2002 Stanley Cup playoffs|2002]], [[2004 Stanley Cup playoffs|2004]]
+| 24
+| 0–4
+| .000
+|-
+| [[New Jersey Devils]]
+| 3
+| align=left| '''[[1998 Stanley Cup playoffs|1998]]''', [[2003 Stanley Cup playoffs|2003]], '''[[2007 Stanley Cup playoffs|2007]]'''
+| 18
+| 2–1
+| .667
+|-
+| [[Philadelphia Flyers]]
+| 2
+| align=left| '''[[2002 Stanley Cup playoffs|2002]]''', '''[[2003 Stanley Cup playoffs|2003]]'''
+| 11
+| 2–0
+| 1.000
+|-
+| [[Montreal Canadiens]]
+| 2
+| align=left| '''[[2013 Stanley Cup playoffs|2013]]''', [[2015 Stanley Cup playoffs|2015]]
+| 11
+| 1–1
+| .500
+|-
+| [[New York Rangers]]
+| 2
+| align=left| [[2012 Stanley Cup playoffs|2012]], '''[[2017 Stanley Cup playoffs|2017]]'''
+| 13
+| 1–1
+| .500
+|-
+| [[Boston Bruins]]
+| 1
+| align=left| '''[[2017 Stanley Cup playoffs|2017]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[New York Islanders]]
+| 1
+| align=left| '''[[2003 Stanley Cup playoffs|2003]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Tampa Bay Lightning]]
+| 1
+| align=left| '''[[2006 Stanley Cup playoffs|2006]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Anaheim Ducks]]
+| 1
+| align=left| [[2007 Stanley Cup playoffs|2007]]
+| 5
+| 0–1
+| .000
+|-
+| [[Washington Capitals]]
+| 1
+| align=left| [[1998 Stanley Cup playoffs|1998]]
+| 5
+| 0–1
+| .000
+|-
+! width="150"|Totals
+! width="30"|27
+! 
+! width="40"|151
+! width="40"|11–16
+! width="40"|.407
+|}

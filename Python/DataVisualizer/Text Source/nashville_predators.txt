@@ -1,0 +1,102 @@
+==Nashville Predators==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Anaheim Ducks]]
+| 3
+| align=left| '''[[2011 Stanley Cup playoffs|2011]]''', '''[[2016 Stanley Cup playoffs|2016]]''', '''[[2017 Stanley Cup playoffs|2017]]'''
+| 19
+| 3–0
+| 1.000
+|-
+| [[Chicago Blackhawks]]
+| 3
+| align=left| [[2010 Stanley Cup playoffs|2010]], [[2015 Stanley Cup playoffs|2015]], '''[[2017 Stanley Cup playoffs|2017]]'''
+| 16
+| 1–2
+| .333
+|-
+| [[Detroit Red Wings]]
+| 3
+| align=left| [[2004 Stanley Cup playoffs|2004]], [[2008 Stanley Cup playoffs|2008]], '''[[2012 Stanley Cup playoffs|2012]]'''
+| 17
+| 1–2
+| .333
+|-
+| [[San Jose Sharks]]
+| 3
+| align=left| [[2006 Stanley Cup playoffs|2006]], [[2007 Stanley Cup playoffs|2007]], [[2016 Stanley Cup playoffs|2016]]
+| 17
+| 0–3
+| .000
+|-
+| [[Colorado Avalanche]]
+| 2
+| align=left| '''[[2018 Stanley Cup playoffs|2018]]''', ''[[2022 Stanley Cup playoffs|2022]]''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Arizona Coyotes]]
+| 2
+| align=left| [[2012 Stanley Cup playoffs|2012]], [[2020 Stanley Cup playoffs|2020]]
+| 9
+| 0–2
+| .000
+|-
+| [[St. Louis Blues]]
+| 1
+| align=left| '''[[2017 Stanley Cup playoffs|2017]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Carolina Hurricanes]]
+| 1
+| align=left| [[2021 Stanley Cup playoffs|2021]]
+| 6
+| 0–1
+| .000
+|-
+| [[Dallas Stars]]
+| 1
+| align=left| [[2019 Stanley Cup playoffs|2019]]
+| 6
+| 0–1
+| .000
+|-
+| [[Pittsburgh Penguins]]
+| 1
+| align=left| [[2017 Stanley Cup playoffs|2017]]
+| 6
+| 0–1
+| .000
+|-
+| [[Vancouver Canucks]]
+| 1
+| align=left| [[2011 Stanley Cup playoffs|2011]]
+| 6
+| 0–1
+| .000
+|-
+| [[Winnipeg Jets]]
+| 1
+| align=left| [[2018 Stanley Cup playoffs|2018]]
+| 7
+| 0–1
+| .000
+|-
+! width="150"|Totals
+! width="30"|22
+! 
+! width="40"|121
+! width="40"|7–14
+! width="40"|.333
+|}

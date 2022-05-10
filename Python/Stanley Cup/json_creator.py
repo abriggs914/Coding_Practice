@@ -4,6 +4,8 @@ from colour_utility import *
 
 file_name = "past winners.csv"
 dataset_001 = "dataset_nhl_team_wins.json"
+dataset_002 = "dataset_nhl_team_losses.json"
+dataset_003 = "dataset_nhl_team_apperances.json"
 # skip 2005 back fill
 
 with open(file_name) as csv_file:
@@ -190,6 +192,47 @@ with open(file_name) as csv_file:
 				d1json.write(wkv(team_name, team_counts[team_name], next=(j != len(teams_list) - 1)))
 			d1json.write(ckey(next=(i != len(data_by_year) - 1)))
 		d1json.write(coj())
+	
+	team_counts = dict(zip(teams_list, [0 for _ in teams_list]))
+	with open(dataset_002, "w") as d2json:
+		d2json.write(ooj())
+		d2json.write(okey("ENTITIES", new_line=False))
+		for i, team_name in enumerate(teams_list):
+			d2json.write(okey(team_name))
+			d2json.write(wkv("name", team_name))
+			d2json.write(wkv("colour", random_colour(name=True)))
+			d2json.write(wkv("image_path", "null", next=False))
+			d2json.write(ckey(next=(i != len(teams_list) - 1)))
+		d2json.write(ckey(next=True))
+		for i, year_year_dat in enumerate(data_by_year.items()):
+			year, year_dat = year_year_dat
+			team_counts[year_dat["Losing Team"]] += 1
+			d2json.write(okey(year))
+			for j, team_name in enumerate(teams_list):
+				d2json.write(wkv(team_name, team_counts[team_name], next=(j != len(teams_list) - 1)))
+			d2json.write(ckey(next=(i != len(data_by_year) - 1)))
+		d2json.write(coj())
+	
+	team_counts = dict(zip(teams_list, [0 for _ in teams_list]))
+	with open(dataset_003, "w") as d3json:
+		d3json.write(ooj())
+		d3json.write(okey("ENTITIES", new_line=False))
+		for i, team_name in enumerate(teams_list):
+			d3json.write(okey(team_name))
+			d3json.write(wkv("name", team_name))
+			d3json.write(wkv("colour", random_colour(name=True)))
+			d3json.write(wkv("image_path", "null", next=False))
+			d3json.write(ckey(next=(i != len(teams_list) - 1)))
+		d3json.write(ckey(next=True))
+		for i, year_year_dat in enumerate(data_by_year.items()):
+			year, year_dat = year_year_dat
+			team_counts[year_dat["Winning Team"]] += 1
+			team_counts[year_dat["Losing Team"]] += 1
+			d3json.write(okey(year))
+			for j, team_name in enumerate(teams_list):
+				d3json.write(wkv(team_name, team_counts[team_name], next=(j != len(teams_list) - 1)))
+			d3json.write(ckey(next=(i != len(data_by_year) - 1)))
+		d3json.write(coj())
 					
 	
 	##################################################################################################################

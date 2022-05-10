@@ -1,0 +1,137 @@
+==Calgary Flames==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Vancouver Canucks]]
+| 7
+| align=left| [[1982 Stanley Cup playoffs|1982]], '''[[1983 Stanley Cup playoffs|1983]]''', '''[[1984 Stanley Cup playoffs|1984]]''', '''[[1989 Stanley Cup playoffs|1989]]''', [[1994 Stanley Cup playoffs|1994]], '''[[2004 Stanley Cup playoffs|2004]]''', '''[[2015 Stanley Cup playoffs|2015]]'''
+| 38
+| 5–2
+| .714
+|-
+| [[Los Angeles Kings]]
+| 6
+| align=left| [[1976 Stanley Cup playoffs|1976]], [[1977 Stanley Cup playoffs|1977]], '''[[1988 Stanley Cup playoffs|1988]]''', '''[[1989 Stanley Cup playoffs|1989]]''', [[1990 Stanley Cup playoffs|1990]], [[1993 Stanley Cup playoffs|1993]]
+| 26
+| 2–4
+| .333
+|-
+| [[Edmonton Oilers]]
+| 5
+| align=left| [[1983 Stanley Cup playoffs|1983]], [[1984 Stanley Cup playoffs|1984]], '''[[1986 Stanley Cup playoffs|1986]]''', [[1988 Stanley Cup playoffs|1988]], [[1991 Stanley Cup playoffs|1991]]
+| 30
+| 1–4
+| .200
+|-
+| [[Chicago Blackhawks]]
+| 4
+| align=left| '''[[1981 Stanley Cup playoffs|1981]]''', '''[[1989 Stanley Cup playoffs|1989]]''', [[1996 Stanley Cup playoffs|1996]], [[2009 Stanley Cup playoffs|2009]]
+| 18
+| 2–2
+| .500
+|-
+| [[Arizona Coyotes]]
+| 3
+| align=left| [[1985 Stanley Cup playoffs|1985]], '''[[1986 Stanley Cup playoffs|1986]]''', [[1987 Stanley Cup playoffs|1987]]
+| 13
+| 1–2
+| .333
+|-
+| [[Detroit Red Wings]]
+| 3
+| align=left| [[1978 Stanley Cup playoffs|1978]], '''[[2004 Stanley Cup playoffs|2004]]''', [[2007 Stanley Cup playoffs|2007]]
+| 14
+| 1–2
+| .333
+|-
+| [[San Jose Sharks]]
+| 3
+| align=left| [[1995 Stanley Cup playoffs|1995]], '''[[2004 Stanley Cup playoffs|2004]]''', [[2008 Stanley Cup playoffs|2008]]
+| 20
+| 1–2
+| .333
+|-
+| [[Anaheim Ducks]]
+| 3
+| align=left| [[2006 Stanley Cup playoffs|2006]], [[2015 Stanley Cup playoffs|2015]], [[2017 Stanley Cup playoffs|2017]]
+| 16
+| 0–3
+| .000
+|-
+| [[Dallas Stars]]
+| 3
+| align=left| [[1981 Stanley Cup playoffs|1981]], [[2020 Stanley Cup playoffs|2020]], ''[[2022 Stanley Cup playoffs|2022]]''
+| 12
+| 0–2
+| .000
+|-
+| [[Montreal Canadiens]]
+| 2
+| align=left| [[1986 Stanley Cup playoffs|1986]], '''[[1989 Stanley Cup playoffs|1989]]'''
+| 11
+| 1–1
+| .500
+|-
+| [[Philadelphia Flyers]]
+| 2
+| align=left| [[1974 Stanley Cup playoffs|1974]], '''[[1981 Stanley Cup playoffs|1981]]'''
+| 11
+| 1–1
+| .500
+|-
+| [[St. Louis Blues]]
+| 1
+| align=left| '''[[1986 Stanley Cup playoffs|1986]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[Winnipeg Jets]]
+| 1
+| align=left| '''[[2020 Stanley Cup playoffs|2020]]'''
+| 4
+| 1–0
+| 1.000
+|-
+| [[Colorado Avalanche]]
+| 1
+| align=left| [[2019 Stanley Cup playoffs|2019]]
+| 5
+| 0–1
+| .000
+|-
+| [[New York Rangers]]
+| 1
+| align=left| [[1980 Stanley Cup playoffs|1980]]
+| 4
+| 0–1
+| .000
+|-
+| [[Tampa Bay Lightning]]
+| 1
+| align=left| [[2004 Stanley Cup playoffs|2004]]
+| 7
+| 0–1
+| .000
+|-
+| [[Toronto Maple Leafs]]
+| 1
+| align=left| [[1979 Stanley Cup playoffs|1979]]
+| 2
+| 0–1
+| .000
+|-
+! width="150"|Totals
+! width="30"|47
+! 
+! width="40"|238
+! width="40"|17–29
+! width="40"|.370
+|}

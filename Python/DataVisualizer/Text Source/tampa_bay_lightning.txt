@@ -1,0 +1,137 @@
+==Tampa Bay Lightning==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[New York Islanders]]
+| 4
+| align=left| '''[[2004 Stanley Cup playoffs|2004]]''', '''[[2016 Stanley Cup playoffs|2016]]''', '''[[2020 Stanley Cup playoffs|2020]]''', '''[[2021 Stanley Cup playoffs|2021]]'''
+| 24
+| 4–0
+| 1.000
+|-
+| [[Montreal Canadiens]]
+| 4
+| align=left| '''[[2004 Stanley Cup playoffs|2004]]''', [[2014 Stanley Cup playoffs|2014]], '''[[2015 Stanley Cup playoffs|2015]]''', '''[[2021 Stanley Cup playoffs|2021]]'''
+| 19
+| 3–1
+| .750
+|-
+| [[Boston Bruins]]
+| 3
+| align=left| [[2011 Stanley Cup playoffs|2011]], '''[[2018 Stanley Cup playoffs|2018]]''', '''[[2020 Stanley Cup playoffs|2020]]'''
+| 18
+| 2–1
+| .667
+|-
+| [[Washington Capitals]]
+| 3
+| align=left| '''[[2003 Stanley Cup playoffs|2003]]''', '''[[2011 Stanley Cup playoffs|2011]]''', [[2018 Stanley Cup playoffs|2018]]
+| 18
+| 2–1
+| .667
+|-
+| [[New Jersey Devils]]
+| 3
+| align=left| [[2003 Stanley Cup playoffs|2003]], [[2007 Stanley Cup playoffs|2007]], '''[[2018 Stanley Cup playoffs|2018]]'''
+| 16
+| 1–2
+| .333
+|-
+| [[Detroit Red Wings]]
+| 2
+| align=left| '''[[2015 Stanley Cup playoffs|2015]]''', '''[[2016 Stanley Cup playoffs|2016]]'''
+| 12
+| 2–0
+| 1.000
+|-
+| [[Columbus Blue Jackets]]
+| 2
+| align=left| [[2019 Stanley Cup playoffs|2019]], '''[[2020 Stanley Cup playoffs|2020]]'''
+| 9
+| 1–1
+| .500
+|-
+| [[Philadelphia Flyers]]
+| 2
+| align=left| [[1996 Stanley Cup playoffs|1996]], '''[[2004 Stanley Cup playoffs|2004]]'''
+| 14
+| 1–1
+| .500
+|-
+| [[Pittsburgh Penguins]]
+| 2
+| align=left| '''[[2011 Stanley Cup playoffs|2011]]''', [[2016 Stanley Cup playoffs|2016]]
+| 14
+| 1–1
+| .500
+|-
+| [[Calgary Flames]]
+| 1
+| align=left| '''[[2004 Stanley Cup playoffs|2004]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[Carolina Hurricanes]]
+| 1
+| align=left| '''[[2021 Stanley Cup playoffs|2021]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Dallas Stars]]
+| 1
+| align=left| '''[[2020 Stanley Cup playoffs|2020]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Florida Panthers]]
+| 1
+| align=left| '''[[2021 Stanley Cup playoffs|2021]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[New York Rangers]]
+| 1
+| align=left| '''[[2015 Stanley Cup playoffs|2015]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[Chicago Blackhawks]]
+| 1
+| align=left| [[2015 Stanley Cup playoffs|2015]]
+| 6
+| 0–1
+| .000
+|-
+| [[Ottawa Senators]]
+| 1
+| align=left| [[2006 Stanley Cup playoffs|2006]]
+| 5
+| 0–1
+| .000
+|-
+| [[Toronto Maple Leafs]]
+| 1
+| align=left| ''[[2022 Stanley Cup playoffs|2022]]''
+| 0
+| 0–0
+| .000
+|-
+! width="150"|Totals<ref group="nb">Games played totals against Boston, Philadelphia and Washington include one round-robin game from the 2020 Stanley Cup playoffs. As these games were played only to determine playoff seeding, they are not considered to be a complete series and are not counted in the occurrences section or the total series win–loss records.</ref>
+! width="30"|33
+! 
+! width="40"|185
+! width="40"|22–10
+! width="40"|.688
+|}

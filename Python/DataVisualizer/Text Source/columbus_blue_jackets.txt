@@ -1,0 +1,60 @@
+==Columbus Blue Jackets==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Tampa Bay Lightning]]
+| 2
+| align=left| '''[[2019 Stanley Cup playoffs|2019]]''', [[2020 Stanley Cup playoffs|2020]]
+| 9
+| 1–1
+| .500
+|-
+| [[Pittsburgh Penguins]]
+| 2
+| align=left| [[2014 Stanley Cup playoffs|2014]], [[2017 Stanley Cup playoffs|2017]]
+| 11
+| 0–2
+| .000
+|-
+| [[Toronto Maple Leafs]]
+| 1
+| align=left| '''[[2020 Stanley Cup playoffs|2020]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Boston Bruins]]
+| 1
+| align=left| [[2019 Stanley Cup playoffs|2019]]
+| 6
+| 0–1
+| .000
+|-
+| [[Detroit Red Wings]]
+| 1
+| align=left| [[2009 Stanley Cup playoffs|2009]]
+| 4
+| 0–1
+| .000
+|-
+| [[Washington Capitals]]
+| 1
+| align=left| [[2018 Stanley Cup playoffs|2018]]
+| 6
+| 0–1
+| .000
+|-
+! width="150"|Totals
+! width="30"|8
+! 
+! width="40"|41
+! width="40"|2–6
+! width="40"|.250
+|}

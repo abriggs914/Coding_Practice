@@ -510,7 +510,9 @@ if __name__ == "__main__":
     FPS = 10
     TPP = FPP / FPS
     # ds1 = DataSetViewer("dataset_004.json", frames_per_point=25, min_width=100, value_fmt="float3")
-    ds1 = DataSetViewer("dataset_nhl_team_wins.json", mode="annually", name="Stanley Cup Winners 1927-2021", frames_per_point=15, min_width=300, value_fmt="int")
+    # ds1 = DataSetViewer("dataset_nhl_team_wins.json", mode="annually", name="Stanley Cup Winners 1927-2021", frames_per_point=15, min_width=300, value_fmt="int")
+    # ds1 = DataSetViewer("dataset_nhl_team_losses.json", mode="annually", name="Stanley Cup Runner-Ups 1927-2021", frames_per_point=15, min_width=300, value_fmt="int")
+    ds1 = DataSetViewer("dataset_nhl_team_apperances.json", mode="annually", name="Stanley Cup Appearances 1927-2021", frames_per_point=15, min_width=300, value_fmt="int")
     # print(ds1.dataset)
     # print(f'top_(3): {ds1.dataset.top_n(3, ds1.dataset.date_range[0], 1)}')
     # print(f'top_(8): {ds1.dataset.top_n(8, ds1.dataset.date_range[0])}')
@@ -536,7 +538,7 @@ if __name__ == "__main__":
         WINDOW.fill(BLACK)
 
         # begin drawing
-        ds1.draw(WINDOW, top_num=32, reverse=True)
+        ds1.draw(WINDOW, top_num=15, reverse=True)
 
         # handle events
         for event in pygame.event.get():

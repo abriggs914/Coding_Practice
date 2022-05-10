@@ -1,0 +1,172 @@
+==Dallas Stars==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[St. Louis Blues]]
+| 14
+| align=left| [[1968 Stanley Cup playoffs|1968]], [[1970 Stanley Cup playoffs|1970]], '''[[1971 Stanley Cup playoffs|1971]]''', [[1972 Stanley Cup playoffs|1972]], '''[[1984 Stanley Cup playoffs|1984]]''', '''[[1985 Stanley Cup playoffs|1985]]''', [[1986 Stanley Cup playoffs|1986]], [[1989 Stanley Cup playoffs|1989]], '''[[1991 Stanley Cup playoffs|1991]]''', '''[[1994 Stanley Cup playoffs|1994]]''', '''[[1999 Stanley Cup playoffs|1999]]''', [[2001 Stanley Cup playoffs|2001]], [[2016 Stanley Cup playoffs|2016]], [[2019 Stanley Cup playoffs|2019]]
+| 81
+| 6–8
+| .429
+|-
+| [[Edmonton Oilers]]
+| 8
+| align=left| [[1984 Stanley Cup playoffs|1984]], '''[[1991 Stanley Cup playoffs|1991]]''', [[1997 Stanley Cup playoffs|1997]], '''[[1998 Stanley Cup playoffs|1998]]''', '''[[1999 Stanley Cup playoffs|1999]]''', '''[[2000 Stanley Cup playoffs|2000]]''', '''[[2001 Stanley Cup playoffs|2001]]''', '''[[2003 Stanley Cup playoffs|2003]]'''
+| 42
+| 6–2
+| .750
+|-
+| [[Chicago Blackhawks]]
+| 6
+| align=left| [[1982 Stanley Cup playoffs|1982]], [[1983 Stanley Cup playoffs|1983]], '''[[1984 Stanley Cup playoffs|1984]]''', [[1985 Stanley Cup playoffs|1985]], [[1990 Stanley Cup playoffs|1990]], '''[[1991 Stanley Cup playoffs|1991]]''' 
+| 33
+| 2–4
+| .333
+|-
+| [[Colorado Avalanche]]
+| 5
+| align=left| '''[[1999 Stanley Cup playoffs|1999]]''', '''[[2000 Stanley Cup playoffs|2000]]''', [[2004 Stanley Cup playoffs|2004]], [[2006 Stanley Cup playoffs|2006]], '''[[2020 Stanley Cup playoffs|2020]]'''
+| 32
+| 3–2
+| .600
+|-
+| [[Detroit Red Wings]]
+| 4
+| align=left| [[1992 Stanley Cup playoffs|1992]], [[1995 Stanley Cup playoffs|1995]], [[1998 Stanley Cup playoffs|1998]], [[2008 Stanley Cup playoffs|2008]]
+| 24
+| 0–4
+| .000
+|-
+| [[San Jose Sharks]]
+| 3
+| align=left| '''[[1998 Stanley Cup playoffs|1998]]''', '''[[2000 Stanley Cup playoffs|2000]]''', '''[[2008 Stanley Cup playoffs|2008]]'''
+| 17
+| 3–0
+| 1.000
+|-
+| [[Buffalo Sabres]]
+| 3
+| align=left| [[1977 Stanley Cup playoffs|1977]], '''[[1981 Stanley Cup playoffs|1981]]''', '''[[1999 Stanley Cup playoffs|1999]]'''
+| 13
+| 2–1
+| .667
+|-
+| [[Calgary Flames]]
+| 3
+| align=left| '''[[1981 Stanley Cup playoffs|1981]]''', '''[[2020 Stanley Cup playoffs|2020]]''', ''[[2022 Stanley Cup playoffs|2022]]''
+| 12
+| 2–0
+| 1.000
+|-
+| [[Anaheim Ducks]]
+| 3
+| align=left| [[2003 Stanley Cup playoffs|2003]], '''[[2008 Stanley Cup playoffs|2008]]''', [[2014 Stanley Cup playoffs|2014]]
+| 18
+| 1–2
+| .333
+|-
+| [[Toronto Maple Leafs]]
+| 2
+| align=left| '''[[1980 Stanley Cup playoffs|1980]]''', '''[[1983 Stanley Cup playoffs|1983]]'''
+| 7
+| 2–0
+| 1.000
+|-
+| [[Montreal Canadiens]]
+| 2
+| align=left| [[1971 Stanley Cup playoffs|1971]], '''[[1980 Stanley Cup playoffs|1980]]'''
+| 13
+| 1–1
+| .500
+|-
+| [[Philadelphia Flyers]]
+| 2
+| align=left| [[1973 Stanley Cup playoffs|1973]], [[1980 Stanley Cup playoffs|1980]]
+| 11
+| 0–2
+| .000
+|-
+| [[Vancouver Canucks]]
+| 2
+| align=left| [[1994 Stanley Cup playoffs|1994]], [[2007 Stanley Cup playoffs|2007]]
+| 12
+| 0–2
+| .000
+|-
+| [[Boston Bruins]]
+| 1
+| align=left| '''[[1981 Stanley Cup playoffs|1981]]'''
+| 3
+| 1–0
+| 1.000
+|-
+| [[Los Angeles Kings]]
+| 1
+| align=left| '''[[1968 Stanley Cup playoffs|1968]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[Minnesota Wild]]
+| 1
+| align=left| '''[[2016 Stanley Cup playoffs|2016]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Nashville Predators]]
+| 1
+| align=left| '''[[2019 Stanley Cup playoffs|2019]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Vegas Golden Knights]]
+| 1
+| align=left| '''[[2020 Stanley Cup playoffs|2020]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[New Jersey Devils]]
+| 1
+| align=left| [[2000 Stanley Cup playoffs|2000]]
+| 6
+| 0–1
+| .000
+|-
+| [[New York Islanders]]
+| 1
+| align=left| [[1981 Stanley Cup playoffs|1981]]
+| 5
+| 0–1
+| .000
+|-
+| [[Pittsburgh Penguins]]
+| 1
+| align=left| [[1991 Stanley Cup playoffs|1991]]
+| 6
+| 0–1
+| .000
+|-
+| [[Tampa Bay Lightning]]
+| 1
+| align=left| [[2020 Stanley Cup playoffs|2020]]
+| 6
+| 0–1
+| .000
+|-
+! width="150"|Totals<ref group="nb">Games played totals against Colorado, St. Louis and Vegas include one round-robin game from the 2020 Stanley Cup playoffs. As these games were played only to determine playoff seeding, they are not considered to be a complete series and are not counted in the occurrences section or the total series win–loss records.</ref>
+! width="30"|66
+! 
+! width="40"|366
+! width="40"|33–32
+! width="40"|.508
+|}

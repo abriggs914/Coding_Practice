@@ -1,0 +1,193 @@
+==Detroit Red Wings==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Toronto Maple Leafs]]
+| 23
+| align=left| [[1929 Stanley Cup playoffs|1929]], '''[[1934 Stanley Cup playoffs|1934]]''', '''[[1936 Stanley Cup playoffs|1936]]''', [[1939 Stanley Cup playoffs|1939]], [[1940 Stanley Cup playoffs|1940]], [[1942 Stanley Cup playoffs|1942]], '''[[1943 Stanley Cup playoffs|1943]]''', [[1945 Stanley Cup playoffs|1945]], [[1947 Stanley Cup playoffs|1947]], [[1948 Stanley Cup playoffs|1948]], [[1949 Stanley Cup playoffs|1949]], '''[[1950 Stanley Cup playoffs|1950]]''', '''[[1952 Stanley Cup playoffs|1952]]''', '''[[1954 Stanley Cup playoffs|1954]]''', '''[[1955 Stanley Cup playoffs|1955]]''', '''[[1956 Stanley Cup playoffs|1956]]''', [[1960 Stanley Cup playoffs|1960]], '''[[1961 Stanley Cup playoffs|1961]]''', [[1963 Stanley Cup playoffs|1963]], [[1964 Stanley Cup playoffs|1964]], '''[[1987 Stanley Cup playoffs|1987]]''', '''[[1988 Stanley Cup playoffs|1988]]''', [[1993 Stanley Cup playoffs|1993]]
+| 117
+| 11–12
+| .478
+|-
+| [[Chicago Blackhawks]]
+| 16
+| align=left| [[1934 Stanley Cup playoffs|1934]], '''[[1941 Stanley Cup playoffs|1941]]''', [[1944 Stanley Cup playoffs|1944]], [[1961 Stanley Cup playoffs|1961]], '''[[1963 Stanley Cup playoffs|1963]]''', '''[[1964 Stanley Cup playoffs|1964]]''', [[1965 Stanley Cup playoffs|1965]], '''[[1966 Stanley Cup playoffs|1966]]''', [[1970 Stanley Cup playoffs|1970]], [[1985 Stanley Cup playoffs|1985]], '''[[1987 Stanley Cup playoffs|1987]]''', [[1989 Stanley Cup playoffs|1989]], [[1992 Stanley Cup playoffs|1992]], '''[[1995 Stanley Cup playoffs|1995]]''', '''[[2009 Stanley Cup playoffs|2009]]''', [[2013 Stanley Cup playoffs|2013]]
+| 81
+| 7–9
+| .438
+|-
+| [[Montreal Canadiens]]
+| 12
+| align=left| '''[[1937 Stanley Cup playoffs|1937]]''', '''[[1939 Stanley Cup playoffs|1939]]''', '''[[1942 Stanley Cup playoffs|1942]]''', '''[[1949 Stanley Cup playoffs|1949]]''', [[1951 Stanley Cup playoffs|1951]], '''[[1952 Stanley Cup playoffs|1952]]''', '''[[1954 Stanley Cup playoffs|1954]]''', '''[[1955 Stanley Cup playoffs|1955]]''', [[1956 Stanley Cup playoffs|1956]], [[1958 Stanley Cup playoffs|1958]], [[1966 Stanley Cup playoffs|1966]], [[1978 Stanley Cup playoffs|1978]]
+| 62
+| 7–5
+| .583
+|-
+| [[Boston Bruins]]
+| 8
+| align=left| [[1941 Stanley Cup playoffs|1941]], '''[[1942 Stanley Cup playoffs|1942]]''', '''[[1943 Stanley Cup playoffs|1943]]''', '''[[1945 Stanley Cup playoffs|1945]]''', [[1946 Stanley Cup playoffs|1946]], [[1953 Stanley Cup playoffs|1953]], [[1957 Stanley Cup playoffs|1957]], [[2014 Stanley Cup playoffs|2014]]
+| 38
+| 3–5
+| .375
+|-
+| [[St. Louis Blues]]
+| 7
+| align=left| [[1984 Stanley Cup playoffs|1984]], '''[[1988 Stanley Cup playoffs|1988]]''', [[1991 Stanley Cup playoffs|1991]], '''[[1996 Stanley Cup playoffs|1996]]''', '''[[1997 Stanley Cup playoffs|1997]]''', '''[[1998 Stanley Cup playoffs|1998]]''', '''[[2002 Stanley Cup playoffs|2002]]'''
+| 40
+| 5–2
+| .714
+|-
+| [[Anaheim Ducks]]
+| 6
+| align=left| '''[[1997 Stanley Cup playoffs|1997]]''', '''[[1999 Stanley Cup playoffs|1999]]''', [[2003 Stanley Cup playoffs|2003]], [[2007 Stanley Cup playoffs|2007]], '''[[2009 Stanley Cup playoffs|2009]]''', '''[[2013 Stanley Cup playoffs|2013]]'''
+| 32
+| 4–2
+| .667
+|-
+| [[Colorado Avalanche]]
+| 6
+| align=left| [[1996 Stanley Cup playoffs|1996]], '''[[1997 Stanley Cup playoffs|1997]]''', [[1999 Stanley Cup playoffs|1999]], [[2000 Stanley Cup playoffs|2000]], '''[[2002 Stanley Cup playoffs|2002]]''', '''[[2008 Stanley Cup playoffs|2008]]'''
+| 34
+| 3–3
+| .500
+|-
+| [[New York Rangers]]
+| 5
+| align=left| [[1933 Stanley Cup playoffs|1933]], '''[[1937 Stanley Cup playoffs|1937]]''', '''[[1941 Stanley Cup playoffs|1941]]''', '''[[1948 Stanley Cup playoffs|1948]]''', '''[[1950 Stanley Cup playoffs|1950]]'''
+| 23
+| 4–1
+| .800
+|-
+| [[San Jose Sharks]]
+| 5
+| align=left| [[1994 Stanley Cup playoffs|1994]], '''[[1995 Stanley Cup playoffs|1995]]''', '''[[2007 Stanley Cup playoffs|2007]]''', [[2010 Stanley Cup playoffs|2010]], [[2011 Stanley Cup playoffs|2011]]
+| 29
+| 2–3
+| .400
+|-
+| [[Arizona Coyotes]]
+| 4
+| align=left| '''[[1996 Stanley Cup playoffs|1996]]''', '''[[1998 Stanley Cup playoffs|1998]]''', '''[[2010 Stanley Cup playoffs|2010]]''', '''[[2011 Stanley Cup playoffs|2011]]'''
+| 23
+| 4–0
+| 1.000
+|-
+| [[Dallas Stars]]
+| 4
+| align=left| '''[[1992 Stanley Cup playoffs|1992]]''', '''[[1995 Stanley Cup playoffs|1995]]''', '''[[1998 Stanley Cup playoffs|1998]]''', '''[[2008 Stanley Cup playoffs|2008]]'''
+| 24
+| 4–0
+| 1.000
+|-
+| [[Calgary Flames]]
+| 3
+| align=left| '''[[1978 Stanley Cup playoffs|1978]]''', [[2004 Stanley Cup playoffs|2004]], '''[[2007 Stanley Cup playoffs|2007]]'''
+| 14
+| 2–1
+| .667
+|-
+| [[Montreal Maroons]]
+| 3
+| align=left| [[1932 Stanley Cup playoffs|1932]], '''[[1933 Stanley Cup playoffs|1933]]''', '''[[1936 Stanley Cup playoffs|1936]]'''
+| 7
+| 2–1
+| .667
+|-
+| [[Nashville Predators]]
+| 3
+| align=left| '''[[2004 Stanley Cup playoffs|2004]]''', '''[[2008 Stanley Cup playoffs|2008]]''', [[2012 Stanley Cup playoffs|2012]]
+| 17
+| 2–1
+| .667
+|-
+| [[Edmonton Oilers]]
+| 3
+| align=left| [[1987 Stanley Cup playoffs|1987]], [[1988 Stanley Cup playoffs|1988]], [[2006 Stanley Cup playoffs|2006]]
+| 16
+| 0–3
+| .000
+|-
+| [[Los Angeles Kings]]
+| 2
+| align=left| '''[[2000 Stanley Cup playoffs|2000]]''', [[2001 Stanley Cup playoffs|2001]]
+| 10
+| 1–1
+| .500
+|-
+| [[Pittsburgh Penguins]]
+| 2
+| align=left| '''[[2008 Stanley Cup playoffs|2008]]''', [[2009 Stanley Cup playoffs|2009]]
+| 13
+| 1–1
+| .500
+|-
+| [[Tampa Bay Lightning]]
+| 2
+| align=left| [[2015 Stanley Cup playoffs|2015]], [[2016 Stanley Cup playoffs|2016]]
+| 12
+| 0–2
+| .000
+|-
+| [[Carolina Hurricanes]]
+| 1
+| align=left| '''[[2002 Stanley Cup playoffs|2002]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Columbus Blue Jackets]]
+| 1
+| align=left| '''[[2009 Stanley Cup playoffs|2009]]'''
+| 4
+| 1–0
+| 1.000
+|-
+| [[New York Americans]]
+| 1
+| align=left| '''[[1940 Stanley Cup playoffs|1940]]'''
+| 3
+| 1–0
+| 1.000
+|-
+| [[Philadelphia Flyers]]
+| 1
+| align=left| '''[[1997 Stanley Cup playoffs|1997]]'''
+| 4
+| 1–0
+| 1.000
+|-
+| [[Vancouver Canucks]]
+| 1
+| align=left| '''[[2002 Stanley Cup playoffs|2002]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Washington Capitals]]
+| 1
+| align=left| '''[[1998 Stanley Cup playoffs|1998]]'''
+| 4
+| 1–0
+| 1.000
+|-
+| [[New Jersey Devils]]
+| 1
+| align=left| [[1995 Stanley Cup playoffs|1995]]
+| 4
+| 0–1
+| .000
+|-
+! width="150"|Totals
+! width="30"|121
+! 
+! width="40"|622
+! width="40"|68–53
+! width="40"|.562
+|}

@@ -1,0 +1,130 @@
+==Washington Capitals==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Pittsburgh Penguins]]
+| 11
+| align=left| [[1991 Stanley Cup playoffs|1991]], [[1992 Stanley Cup playoffs|1992]], '''[[1994 Stanley Cup playoffs|1994]]''', [[1995 Stanley Cup playoffs|1995]], [[1996 Stanley Cup playoffs|1996]], [[2000 Stanley Cup playoffs|2000]], [[2001 Stanley Cup playoffs|2001]], [[2009 Stanley Cup playoffs|2009]], [[2016 Stanley Cup playoffs|2016]], [[2017 Stanley Cup playoffs|2017]], '''[[2018 Stanley Cup playoffs|2018]]'''
+| 68
+| 2–9
+| .182
+|-
+| [[New York Rangers]]
+| 9
+| align=left| [[1986 Stanley Cup playoffs|1986]], '''[[1990 Stanley Cup playoffs|1990]]''', '''[[1991 Stanley Cup playoffs|1991]]''', [[1994 Stanley Cup playoffs|1994]], '''[[2009 Stanley Cup playoffs|2009]]''', '''[[2011 Stanley Cup playoffs|2011]]''', [[2012 Stanley Cup playoffs|2012]], [[2013 Stanley Cup playoffs|2013]], [[2015 Stanley Cup playoffs|2015]]
+| 55
+| 4–5
+| .444
+|-
+| [[New York Islanders]]
+| 8
+| align=left| [[1983 Stanley Cup playoffs|1983]], [[1984 Stanley Cup playoffs|1984]], [[1985 Stanley Cup playoffs|1985]], '''[[1986 Stanley Cup playoffs|1986]]''', [[1987 Stanley Cup playoffs|1987]], [[1993 Stanley Cup playoffs|1993]], '''[[2015 Stanley Cup playoffs|2015]]''', [[2020 Stanley Cup playoffs|2020]]
+| 42
+| 2–6
+| .250
+|-
+| [[Philadelphia Flyers]]
+| 5
+| align=left| '''[[1984 Stanley Cup playoffs|1984]]''', '''[[1988 Stanley Cup playoffs|1988]]''', [[1989 Stanley Cup playoffs|1989]], [[2008 Stanley Cup playoffs|2008]], '''[[2016 Stanley Cup playoffs|2016]]'''
+| 30
+| 3–2
+| .600
+|-
+| [[Boston Bruins]]
+| 4
+| align=left| [[1990 Stanley Cup playoffs|1990]], '''[[1998 Stanley Cup playoffs|1998]]''', '''[[2012 Stanley Cup playoffs|2012]]''', [[2021 Stanley Cup playoffs|2021]]
+| 23
+| 2–2
+| .500
+|-
+| [[Tampa Bay Lightning]]
+| 3
+| align=left| [[2003 Stanley Cup playoffs|2003]], [[2011 Stanley Cup playoffs|2011]], '''[[2018 Stanley Cup playoffs|2018]]'''
+| 18
+| 1–2
+| .333
+|-
+| [[New Jersey Devils]]
+| 2
+| align=left| [[1988 Stanley Cup playoffs|1988]], '''[[1990 Stanley Cup playoffs|1990]]'''
+| 13
+| 1–1
+| .500
+|-
+| [[Buffalo Sabres]]
+| 1
+| align=left| '''[[1998 Stanley Cup playoffs|1998]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Columbus Blue Jackets]]
+| 1
+| align=left| '''[[2018 Stanley Cup playoffs|2018]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Ottawa Senators]]
+| 1
+| align=left| '''[[1998 Stanley Cup playoffs|1998]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Toronto Maple Leafs]]
+| 1
+| align=left| '''[[2017 Stanley Cup playoffs|2017]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Vegas Golden Knights]]
+| 1
+| align=left| '''[[2018 Stanley Cup playoffs|2018]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Carolina Hurricanes]]
+| 1
+| align=left| [[2019 Stanley Cup playoffs|2019]]
+| 7
+| 0–1
+| .000
+|-
+| [[Detroit Red Wings]]
+| 1
+| align=left| [[1998 Stanley Cup playoffs|1998]]
+| 4
+| 0–1
+| .000
+|-
+| [[Florida Panthers]]
+| 1
+| align=left| ''[[2022 Stanley Cup playoffs|2022]]''
+| 0
+| 0–0
+| .000
+|-
+| [[Montreal Canadiens]]
+| 1
+| align=left| [[2010 Stanley Cup playoffs|2010]]
+| 7
+| 0–1
+| .000
+|-
+! width="150"|Totals<ref group="nb">Games played totals against Boston, Philadelphia and Tampa Bay include one round-robin game from the 2020 Stanley Cup playoffs. As these games were played only to determine playoff seeding, they are not considered to be a complete series and are not counted in the occurrences section or the total series win–loss records.</ref>
+! width="30"|51
+! 
+! width="40"|295
+! width="40"|20–30
+! width="40"|.400
+|}

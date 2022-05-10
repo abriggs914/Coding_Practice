@@ -1,0 +1,95 @@
+==Arizona Coyotes==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Edmonton Oilers]]
+| 6
+| align=left| [[1983 Stanley Cup playoffs|1983]], [[1984 Stanley Cup playoffs|1984]], [[1985 Stanley Cup playoffs|1985]], [[1987 Stanley Cup playoffs|1987]], [[1988 Stanley Cup playoffs|1988]], [[1990 Stanley Cup playoffs|1990]] 
+| 26
+| 0–6
+| .000
+|-
+| [[Detroit Red Wings]]
+| 4
+| align=left| [[1996 Stanley Cup playoffs|1996]], [[1998 Stanley Cup playoffs|1998]], [[2010 Stanley Cup playoffs|2010]], [[2011 Stanley Cup playoffs|2011]]
+| 23
+| 0–4
+| .000
+|-
+| [[Calgary Flames]]
+| 3
+| align=left| '''[[1985 Stanley Cup playoffs|1985]]''', [[1986 Stanley Cup playoffs|1986]], '''[[1987 Stanley Cup playoffs|1987]]'''
+| 13
+| 2–1
+| .667
+|-
+| [[Nashville Predators]]
+| 2
+| align=left| '''[[2012 Stanley Cup playoffs|2012]]''', '''[[2020 Stanley Cup playoffs|2020]]'''
+| 9
+| 2–0
+| 1.000
+|-
+| [[Colorado Avalanche]]
+| 2
+| align=left| [[2000 Stanley Cup playoffs|2000]], [[2020 Stanley Cup playoffs|2020]]
+| 10
+| 0–2
+| .000
+|-
+| [[St. Louis Blues]]
+| 2
+| align=left| [[1982 Stanley Cup playoffs|1982]], [[1999 Stanley Cup playoffs|1999]]
+| 11
+| 0–2
+| .000
+|-
+| [[Vancouver Canucks]]
+| 2
+| align=left| [[1992 Stanley Cup playoffs|1992]], [[1993 Stanley Cup playoffs|1993]]
+| 13
+| 0–2
+| .000
+|-
+| [[Chicago Blackhawks]]
+| 1
+| align=left| '''[[2012 Stanley Cup playoffs|2012]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Anaheim Ducks]]
+| 1
+| align=left| [[1997 Stanley Cup playoffs|1997]]
+| 7
+| 0–1
+| .000
+|-
+| [[Los Angeles Kings]]
+| 1
+| align=left| [[2012 Stanley Cup playoffs|2012]]
+| 5
+| 0–1
+| .000
+|-
+| [[San Jose Sharks]]
+| 1
+| align=left| [[2002 Stanley Cup playoffs|2002]]
+| 5
+| 0–1
+| .000
+|-
+! width="150"|Totals
+! width="30"|25
+! 
+! width="40"|129
+! width="40"|5–20
+! width="40"|.200
+|}

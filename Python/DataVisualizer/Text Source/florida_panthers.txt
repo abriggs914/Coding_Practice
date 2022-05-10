@@ -1,0 +1,81 @@
+==Florida Panthers==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[New Jersey Devils]]
+| 2
+| align=left| [[2000 Stanley Cup playoffs|2000]], [[2012 Stanley Cup playoffs|2012]]
+| 11
+| 0–2
+| .000
+|-
+| [[New York Islanders]]
+| 2
+| align=left| [[2016 Stanley Cup playoffs|2016]], [[2020 Stanley Cup playoffs|2020]]
+| 10
+| 0–2
+| .000
+|-
+| [[Boston Bruins]]
+| 1
+| align=left| '''[[1996 Stanley Cup playoffs|1996]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Philadelphia Flyers]]
+| 1
+| align=left| '''[[1996 Stanley Cup playoffs|1996]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Pittsburgh Penguins]]
+| 1
+| align=left| '''[[1996 Stanley Cup playoffs|1996]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[Colorado Avalanche]]
+| 1
+| align=left| [[1996 Stanley Cup playoffs|1996]]
+| 4
+| 0–1
+| .000
+|-
+| [[New York Rangers]]
+| 1
+| align=left| [[1997 Stanley Cup playoffs|1997]]
+| 5
+| 0–1
+| .000
+|-
+| [[Tampa Bay Lightning]]
+| 1
+| align=left| [[2021 Stanley Cup playoffs|2021]]
+| 6
+| 0–1
+| .000
+|-
+| [[Washington Capitals]]
+| 1
+| align=left| ''[[2022 Stanley Cup playoffs|2022]]''
+| 0
+| 0–0
+| .000
+|-
+! width="150"|Totals
+! width="30"|11
+! 
+! width="40"|54
+! width="40"|3–7
+! width="40"|.300
+|}

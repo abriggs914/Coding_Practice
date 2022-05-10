@@ -1,0 +1,193 @@
+==Montreal Canadiens==
+
+{| class="wikitable sortable" style="text-align: center; width: 75%;"
+|-
+! width="150"|Opponent
+! width="30"|{{abbr|S|Series}}
+! Occurrences
+! width="40"|{{abbr|GP|Games Played}}
+! width="40"|{{abbr|Rec|Record}}
+! width="40"|{{abbr|%|Winning Percentage}}
+|-
+| [[Boston Bruins]]
+| 34
+| align=left| [[1929 Stanley Cup playoffs|1929]], '''[[1930 Stanley Cup playoffs|1930]]''', '''[[1931 Stanley Cup playoffs|1931]]''', [[1943 Stanley Cup playoffs|1943]], '''[[1946 Stanley Cup playoffs|1946]]''', '''[[1947 Stanley Cup playoffs|1947]]''', '''[[1952 Stanley Cup playoffs|1952]]''', '''[[1953 Stanley Cup playoffs|1953]]''', '''[[1954 Stanley Cup playoffs|1954]]''', '''[[1955 Stanley Cup playoffs|1955]]''', '''[[1957 Stanley Cup playoffs|1957]]''', '''[[1958 Stanley Cup playoffs|1958]]''', '''[[1968 Stanley Cup playoffs|1968]]''', '''[[1969 Stanley Cup playoffs|1969]]''', '''[[1971 Stanley Cup playoffs|1971]]''', '''[[1977 Stanley Cup playoffs|1977]]''', '''[[1978 Stanley Cup playoffs|1978]]''', '''[[1979 Stanley Cup playoffs|1979]]''', '''[[1984 Stanley Cup playoffs|1984]]''', '''[[1985 Stanley Cup playoffs|1985]]''', '''[[1986 Stanley Cup playoffs|1986]]''', '''[[1987 Stanley Cup playoffs|1987]]''', [[1988 Stanley Cup playoffs|1988]], '''[[1989 Stanley Cup playoffs|1989]]''', [[1990 Stanley Cup playoffs|1990]], [[1991 Stanley Cup playoffs|1991]], [[1992 Stanley Cup playoffs|1992]], [[1994 Stanley Cup playoffs|1994]], '''[[2002 Stanley Cup playoffs|2002]]''', '''[[2004 Stanley Cup playoffs|2004]]''', '''[[2008 Stanley Cup playoffs|2008]]''', [[2009 Stanley Cup playoffs|2009]], [[2011 Stanley Cup playoffs|2011]], '''[[2014 Stanley Cup playoffs|2014]]'''
+| 177
+| 25–9
+| .735
+|-
+| [[Chicago Blackhawks]]
+| 17
+| align=left| '''[[1930 Stanley Cup playoffs|1930]]''', '''[[1931 Stanley Cup playoffs|1931]]''', [[1934 Stanley Cup playoffs|1934]], [[1938 Stanley Cup playoffs|1938]], [[1941 Stanley Cup playoffs|1941]], '''[[1944 Stanley Cup playoffs|1944]]''', '''[[1946 Stanley Cup playoffs|1946]]''', '''[[1953 Stanley Cup playoffs|1953]]''', '''[[1959 Stanley Cup playoffs|1959]]''', '''[[1960 Stanley Cup playoffs|1960]]''', [[1961 Stanley Cup playoffs|1961]], [[1962 Stanley Cup playoffs|1962]], '''[[1965 Stanley Cup playoffs|1965]]''', '''[[1968 Stanley Cup playoffs|1968]]''', '''[[1971 Stanley Cup playoffs|1971]]''', '''[[1973 Stanley Cup playoffs|1973]]''', '''[[1976 Stanley Cup playoffs|1976]]'''
+| 81
+| 12–5
+| .706
+|-
+| [[Toronto Maple Leafs]]
+| 16
+| align=left| [[1918 Stanley Cup playoffs|1918]], '''[[1925 Stanley Cup playoffs|1925]]''', '''[[1944 Stanley Cup playoffs|1944]]''', [[1945 Stanley Cup playoffs|1945]], [[1947 Stanley Cup playoffs|1947]], [[1951 Stanley Cup playoffs|1951]], '''[[1959 Stanley Cup playoffs|1959]]''', '''[[1960 Stanley Cup playoffs|1960]]''', [[1963 Stanley Cup playoffs|1963]], [[1964 Stanley Cup playoffs|1964]], '''[[1965 Stanley Cup playoffs|1965]]''', '''[[1966 Stanley Cup playoffs|1966]]''', [[1967 Stanley Cup playoffs|1967]], '''[[1978 Stanley Cup playoffs|1978]]''', '''[[1979 Stanley Cup playoffs|1979]]''', '''[[2021 Stanley Cup playoffs|2021]]'''
+| 78
+| 9–7
+| .563
+|-
+| [[New York Rangers]]
+| 16
+| align=left| '''[[1930 Stanley Cup playoffs|1930]]''', [[1932 Stanley Cup playoffs|1932]], [[1933 Stanley Cup playoffs|1933]], [[1935 Stanley Cup playoffs|1935]], [[1950 Stanley Cup playoffs|1950]], '''[[1956 Stanley Cup playoffs|1956]]''', '''[[1957 Stanley Cup playoffs|1957]]''', '''[[1967 Stanley Cup playoffs|1967]]''', '''[[1969 Stanley Cup playoffs|1969]]''', [[1972 Stanley Cup playoffs|1972]], [[1974 Stanley Cup playoffs|1974]], '''[[1979 Stanley Cup playoffs|1979]]''', '''[[1986 Stanley Cup playoffs|1986]]''', [[1996 Stanley Cup playoffs|1996]], [[2014 Stanley Cup playoffs|2014]], [[2017 Stanley Cup playoffs|2017]]
+| 73
+| 7–9
+| .438
+|-
+| [[Detroit Red Wings]]
+| 12
+| align=left| [[1937 Stanley Cup playoffs|1937]], [[1939 Stanley Cup playoffs|1939]], [[1942 Stanley Cup playoffs|1942]], [[1949 Stanley Cup playoffs|1949]], '''[[1951 Stanley Cup playoffs|1951]]''', [[1952 Stanley Cup playoffs|1952]], [[1954 Stanley Cup playoffs|1954]], [[1955 Stanley Cup playoffs|1955]], '''[[1956 Stanley Cup playoffs|1956]]''', '''[[1958 Stanley Cup playoffs|1958]]''', '''[[1966 Stanley Cup playoffs|1966]]''', '''[[1978 Stanley Cup playoffs|1978]]'''
+| 62
+| 5–7
+| .417
+|-
+| [[Carolina Hurricanes]]
+| 7
+| align=left| '''[[1980 Stanley Cup playoffs|1980]]''', '''[[1986 Stanley Cup playoffs|1986]]''', '''[[1988 Stanley Cup playoffs|1988]]''', '''[[1989 Stanley Cup playoffs|1989]]''', '''[[1992 Stanley Cup playoffs|1992]]''', [[2002 Stanley Cup playoffs|2002]], [[2006 Stanley Cup playoffs|2006]]
+| 39
+| 5–2
+| .714
+|-
+| [[Buffalo Sabres]]
+| 7
+| align=left| '''[[1973 Stanley Cup playoffs|1973]]''', [[1975 Stanley Cup playoffs|1975]], [[1983 Stanley Cup playoffs|1983]], '''[[1990 Stanley Cup playoffs|1990]]''', '''[[1991 Stanley Cup playoffs|1991]]''', '''[[1993 Stanley Cup playoffs|1993]]''', [[1998 Stanley Cup playoffs|1998]]
+| 35
+| 4–3
+| .571
+|-
+| [[Philadelphia Flyers]]
+| 7
+| align=left| '''[[1973 Stanley Cup playoffs|1973]]''', '''[[1976 Stanley Cup playoffs|1976]]''', [[1987 Stanley Cup playoffs|1987]], '''[[1989 Stanley Cup playoffs|1989]]''', [[2008 Stanley Cup playoffs|2008]], [[2010 Stanley Cup playoffs|2010]], [[2020 Stanley Cup playoffs|2020]]
+| 37
+| 3–4
+| .429
+|-
+| [[Colorado Avalanche]]
+| 5
+| align=left| [[1982 Stanley Cup playoffs|1982]], '''[[1984 Stanley Cup playoffs|1984]]''', [[1985 Stanley Cup playoffs|1985]], '''[[1987 Stanley Cup playoffs|1987]]''', '''[[1993 Stanley Cup playoffs|1993]]'''
+| 31
+| 3–2
+| .600
+|-
+| [[New York Islanders]]
+| 4
+| align=left| '''[[1976 Stanley Cup playoffs|1976]]''', '''[[1977 Stanley Cup playoffs|1977]]''', [[1984 Stanley Cup playoffs|1984]], '''[[1993 Stanley Cup playoffs|1993]]'''
+| 22
+| 3–1
+| .750
+|-
+| [[Ottawa Senators (original)]]
+| 4
+| align=left| '''[[1919 Stanley Cup playoffs|1919]]''', [[1923 Stanley Cup playoffs|1923]], '''[[1924 Stanley Cup playoffs|1924]]''', [[1927 Stanley Cup playoffs|1927]]
+| 11
+| 2–2
+| .500
+|-
+| [[Tampa Bay Lightning]]
+| 4
+| align=left| [[2004 Stanley Cup playoffs|2004]], '''[[2014 Stanley Cup playoffs|2014]]''', [[2015 Stanley Cup playoffs|2015]], [[2021 Stanley Cup playoffs|2021]]
+| 19
+| 1–3
+| .250
+|-
+| [[Pittsburgh Penguins]]
+| 3
+| align=left| '''[[1998 Stanley Cup playoffs|1998]]''', '''[[2010 Stanley Cup playoffs|2010]]''', '''[[2020 Stanley Cup playoffs|2020]]'''
+| 17
+| 3–0
+| 1.000
+|-
+| [[St. Louis Blues]]
+| 3
+| align=left| '''[[1968 Stanley Cup playoffs|1968]]''', '''[[1969 Stanley Cup playoffs|1969]]''', '''[[1977 Stanley Cup playoffs|1977]]'''
+| 12
+| 3–0
+| 1.000
+|-
+| [[Calgary Flames]]
+| 2
+| align=left| '''[[1986 Stanley Cup playoffs|1986]]''', [[1989 Stanley Cup playoffs|1989]]
+| 11
+| 1–1
+| .500
+|-
+| [[Dallas Stars]]
+| 2
+| align=left| '''[[1971 Stanley Cup playoffs|1971]]''', [[1980 Stanley Cup playoffs|1980]]
+| 13
+| 1–1
+| .500
+|-
+| [[Montreal Maroons]]
+| 2
+| align=left| '''[[1927 Stanley Cup playoffs|1927]]''', [[1928 Stanley Cup playoffs|1928]]
+| 4
+| 1–1
+| .500
+|-
+| [[Ottawa Senators]]
+| 2
+| align=left| [[2013 Stanley Cup playoffs|2013]], '''[[2015 Stanley Cup playoffs|2015]]'''
+| 11
+| 1–1
+| .500
+|-
+| [[Los Angeles Kings]]
+| 1
+| align=left| '''[[1993 Stanley Cup playoffs|1993]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Vancouver Canucks]]
+| 1
+| align=left| '''[[1975 Stanley Cup playoffs|1975]]'''
+| 5
+| 1–0
+| 1.000
+|-
+| [[Washington Capitals]]
+| 1
+| align=left| '''[[2010 Stanley Cup playoffs|2010]]'''
+| 7
+| 1–0
+| 1.000
+|-
+| [[Vegas Golden Knights]]
+| 1
+| align=left| '''[[2021 Stanley Cup playoffs|2021]]'''
+| 6
+| 1–0
+| 1.000
+|-
+| [[Winnipeg Jets]]
+| 1
+| align=left| '''[[2021 Stanley Cup playoffs|2021]]'''
+| 4
+| 1–0
+| 1.000
+|-
+| [[Edmonton Oilers]]
+| 1
+| align=left| [[1981 Stanley Cup playoffs|1981]]
+| 3
+| 0–1
+| .000
+|-
+| [[New Jersey Devils]]
+| 1
+| align=left| [[1997 Stanley Cup playoffs|1997]]
+| 5
+| 0–1
+| .000
+|-
+! width="150"|Totals<ref group="nb">Totals only include series and games played against NHL franchises and excludes four series and thirteen Stanley Cup playoff games; including eleven Stanley Cup Finals games played from 1919–1925.</ref>
+! width="30"|154
+! 
+! width="40"|768
+! width="40"|94–60
+! width="40"|.610
+|}
