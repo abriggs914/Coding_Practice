@@ -2,8 +2,8 @@ from random import randint, choice
 from utility import clamp
 
 #	General Utility file of RGB colour values
-#	Version...........1.14
-#	Date........2022-05-05
+#	Version...........1.15
+#	Date........2022-05-11
 #	Author....Avery Briggs
 
 WILDERNESS_MINT = (98, 152, 100)
@@ -1825,9 +1825,9 @@ def is_hex_colour(c):
 
 
 def iscolour(c, g=None, b=None):
-    print("c: <{}>, t: <{}>".format(c, type(c)))
-    print("c: <{}>, t: <{}>".format(g, type(g)))
-    print("c: <{}>, t: <{}>".format(b, type(b)))
+    # print("c: <{}>, t: <{}>".format(c, type(c)))
+    # print("c: <{}>, t: <{}>".format(g, type(g)))
+    # print("c: <{}>, t: <{}>".format(b, type(b)))
     if is_rgb_colour(c, g, b):
         return True
     elif is_hex_colour(c):
@@ -1867,6 +1867,10 @@ def gradient(x, n, c1, c2):
 
 # Darken an RGB color using a proportion p (0-1)
 def darken(c, p):
+    if is_hex_colour(c):
+        c = hex_to_rgb(c)
+    if not iscolour(c):
+        raise ValueError(f"Error cannot brighten non-colour object: {c}")
     r, g, b = c
     r = clamp(0, round(r - (255 * p)), 255)
     g = clamp(0, round(g - (255 * p)), 255)
@@ -1876,6 +1880,10 @@ def darken(c, p):
 
 # Brighten an RGB color using a proportion p (0-1)
 def brighten(c, p):
+    if is_hex_colour(c):
+        c = hex_to_rgb(c)
+    if not iscolour(c):
+        raise ValueError(f"Error cannot brighten non-colour object: {c}")
     r, g, b = c
     r = clamp(0, round(r + (255 * p)), 255)
     g = clamp(0, round(g + (255 * p)), 255)
