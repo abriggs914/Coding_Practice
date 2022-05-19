@@ -576,7 +576,7 @@ criminal_minds = TVSeries("Criminal Minds", {
 	44,
 	2005,
 	2020,
-	True,
+	False,
 	"Thriller / Drama",
 	"Disney+")
 	
@@ -622,6 +622,26 @@ malcolm_in_the_middle = TVSeries("Malcolm in the Middle", {
 	"Comedy",
 	"Disney+")
 	
+	
+wandavision = TVSeries("Wandavision", {
+	1: 9},
+	45,
+	2021,
+	2021,
+	False,
+	"Drama",
+	"Disney+")
+	
+	
+the_falcon_and_the_winter_soldier = TVSeries("The Falcon and the Winter Soldier", {
+	1: 6},
+	60,
+	2021,
+	2021,
+	False,
+	"Drama",
+	"Disney+")
+	
 
 series_list = [
     the_office,
@@ -664,7 +684,9 @@ series_list = [
 	criminal_minds,
 	baskets,
 	sherlock,
-	malcolm_in_the_middle
+	malcolm_in_the_middle,
+	wandavision,
+	the_falcon_and_the_winter_soldier
 ]
    
 def longest_series_title(series_list) :

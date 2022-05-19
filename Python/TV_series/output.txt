@@ -450,24 +450,46 @@ Total minutes:			3624
 Total hours:			60.4
 Where to watch:			Disney+
 
+	Wandavision
+Genre:				Drama
+Run (2021 -> 2021):		1 year
+number seasons:			1
+number episodes:		9
+episodes per season:		9.0
+average length of an episode:	45
+Total minutes:			405
+Total hours:			6.75
+Where to watch:			Disney+
+
+	The Falcon and the Winter Soldier
+Genre:				Drama
+Run (2021 -> 2021):		1 year
+number seasons:			1
+number episodes:		6
+episodes per season:		6.0
+average length of an episode:	60
+Total minutes:			360
+Total hours:			6.0
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Workaholics
+	Parks and Recreation
 Genre:				Comedy
-Run (2011 -> 2017):		6 years
+Run (2009 -> 2015):		6 years
 number seasons:			7
-number episodes:		86
-episodes per season:		12.285714285714286
+number episodes:		125
+episodes per season:		17.857142857142858
 average length of an episode:	22
-Total minutes:			1892
-Total hours:			31.533333333333335
-Where to watch:			Crave
+Total minutes:			2750
+Total hours:			45.833333333333336
+Where to watch:			Prime TV
 
-Season: 7
-Episode: 10
+Season: 4
+Episode: 16
 
 	How would you like to print the stats?
 1	-	By start year
@@ -529,6 +551,8 @@ sorting by start year...
 |Chernobyl                        |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    2019    |Chernobyl                        |
 |The Mandalorian                  |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    2019    |The Mandalorian                  |
 |Solar Opposites                  |    2020    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    2020    |Solar Opposites                  |
+|Wandavision                      |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Wandavision                      |
+|The Falcon and the Winter Soldier|    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |The Falcon and the Winter Soldier|
 ###################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -591,14 +615,16 @@ sorting by start year...
 |Chernobyl                        |    2019    |
 |The Mandalorian                  |    2019    |
 |Solar Opposites                  |    2020    |
+|Wandavision                      |    2021    |
+|The Falcon and the Winter Soldier|    2021    |
 ################################################
 
-Mean:		2008.32
+Mean:		2008.91
 Median:		2009.00
-Pstdev:		  7.25
-Pvariance:	 52.61
-Stdev:		  7.34
-Variance:	 53.92
+Pstdev:		  7.57
+Pvariance:	 57.29
+Stdev:		  7.66
+Variance:	 58.66
 
 	How would you like to print the stats?
 1	-	By start year
@@ -657,6 +683,8 @@ sorting by end year...
 |Letterkenny                      |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |   2021   |Letterkenny                      |
 |The Mandalorian                  |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   2021   |The Mandalorian                  |
 |Solar Opposites                  |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   2021   |Solar Opposites                  |
+|Wandavision                      |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |Wandavision                      |
+|The Falcon and the Winter Soldier|   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |The Falcon and the Winter Soldier|
 |The Simpsons                     |   2022   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |The Simpsons                     |
 |Family Guy                       |   2022   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |Family Guy                       |
 |The Orville                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2022   |The Orville                      |
@@ -719,17 +747,19 @@ sorting by end year...
 |Letterkenny                      |   2021   |
 |The Mandalorian                  |   2021   |
 |Solar Opposites                  |   2021   |
+|Wandavision                      |   2021   |
+|The Falcon and the Winter Soldier|   2021   |
 |The Simpsons                     |   2022   |
 |Family Guy                       |   2022   |
 |The Orville                      |   2022   |
 ##############################################
 
-Mean:		2016.10
-Median:		2018.00
-Pstdev:		  5.22
-Pvariance:	 27.21
-Stdev:		  5.28
-Variance:	 27.89
+Mean:		2016.33
+Median:		2019.00
+Pstdev:		  5.20
+Pvariance:	 27.01
+Stdev:		  5.26
+Variance:	 27.65
 
 	How would you like to print the stats?
 1	-	By start year
@@ -753,6 +783,8 @@ sorting by shortest series length...
 |The Mick                         |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |             1              |The Mick                         |
 |Chernobyl                        |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1              |Chernobyl                        |
 |Solar Opposites                  |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1              |Solar Opposites                  |
+|Wandavision                      |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Wandavision                      |
+|The Falcon and the Winter Soldier|             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |The Falcon and the Winter Soldier|
 |Final Space                      |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2              |Final Space                      |
 |The Mandalorian                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |The Mandalorian                  |
 |Avatar, the Last Airbender       |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender       |
@@ -815,6 +847,8 @@ sorting by shortest series length...
 |The Mick                         |             1              |
 |Chernobyl                        |             1              |
 |Solar Opposites                  |             1              |
+|Wandavision                      |             1              |
+|The Falcon and the Winter Soldier|             1              |
 |Final Space                      |             2              |
 |The Mandalorian                  |             2              |
 |Avatar, the Last Airbender       |             3              |
@@ -855,12 +889,12 @@ sorting by shortest series length...
 |The Simpsons                     |             33             |
 ################################################################
 
-Mean:		  7.80
+Mean:		  7.49
 Median:		  6.00
 Pstdev:		  6.52
-Pvariance:	 42.45
+Pvariance:	 42.53
 Stdev:		  6.60
-Variance:	 43.51
+Variance:	 43.54
 
 	How would you like to print the stats?
 1	-	By start year
@@ -922,6 +956,8 @@ sorting by longest series length...
 |The Mick                         |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |             1             |The Mick                         |
 |Chernobyl                        |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1             |Chernobyl                        |
 |Solar Opposites                  |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1             |Solar Opposites                  |
+|Wandavision                      |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Wandavision                      |
+|The Falcon and the Winter Soldier|             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |The Falcon and the Winter Soldier|
 #################################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -984,14 +1020,16 @@ sorting by longest series length...
 |The Mick                         |             1             |
 |Chernobyl                        |             1             |
 |Solar Opposites                  |             1             |
+|Wandavision                      |             1             |
+|The Falcon and the Winter Soldier|             1             |
 ###############################################################
 
-Mean:		  7.80
+Mean:		  7.49
 Median:		  6.00
 Pstdev:		  6.52
-Pvariance:	 42.45
+Pvariance:	 42.53
 Stdev:		  6.60
-Variance:	 43.51
+Variance:	 43.54
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1013,6 +1051,8 @@ sorting by least number of seasons...
 #######################################################################################################################################################################################################################################################################################################
 ##################################| least number seasons |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| least number seasons |##################################
 |Chernobyl                        |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1           |Chernobyl                        |
+|Wandavision                      |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Wandavision                      |
+|The Falcon and the Winter Soldier|          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |The Falcon and the Winter Soldier|
 |The Proud Family                 |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2           |The Proud Family                 |
 |Final Space                      |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2           |Final Space                      |
 |The Mandalorian                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2           |The Mandalorian                  |
@@ -1075,6 +1115,8 @@ sorting by least number of seasons...
 ##########################################################
 ##################################| least number seasons |
 |Chernobyl                        |          1           |
+|Wandavision                      |          1           |
+|The Falcon and the Winter Soldier|          1           |
 |The Proud Family                 |          2           |
 |Final Space                      |          2           |
 |The Mandalorian                  |          2           |
@@ -1117,12 +1159,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  6.80
+Mean:		  6.53
 Median:		  5.00
 Pstdev:		  5.65
-Pvariance:	 31.96
+Pvariance:	 31.97
 Stdev:		  5.72
-Variance:	 32.76
+Variance:	 32.73
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1184,6 +1226,8 @@ sorting by most number of seasons...
 |The Mick                         |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2          |The Mick                         |
 |Solar Opposites                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          2          |Solar Opposites                  |
 |Chernobyl                        |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1          |Chernobyl                        |
+|Wandavision                      |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Wandavision                      |
+|The Falcon and the Winter Soldier|          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |The Falcon and the Winter Soldier|
 #####################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1246,14 +1290,16 @@ sorting by most number of seasons...
 |The Mick                         |          2          |
 |Solar Opposites                  |          2          |
 |Chernobyl                        |          1          |
+|Wandavision                      |          1          |
+|The Falcon and the Winter Soldier|          1          |
 #########################################################
 
-Mean:		  6.80
+Mean:		  6.53
 Median:		  5.00
 Pstdev:		  5.65
-Pvariance:	 31.96
+Pvariance:	 31.97
 Stdev:		  5.72
-Variance:	 32.76
+Variance:	 32.73
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1275,6 +1321,8 @@ sorting by least number of episodes...
 #########################################################################################################################################################################################################################################################################################################
 ##################################| least number episodes |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| least number episodes |##################################
 |Chernobyl                        |           5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           5           |Chernobyl                        |
+|The Falcon and the Winter Soldier|           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6           |The Falcon and the Winter Soldier|
+|Wandavision                      |           9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9           |Wandavision                      |
 |Sherlock                         |          13           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13           |Sherlock                         |
 |The Mandalorian                  |          16           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16           |The Mandalorian                  |
 |Solar Opposites                  |          17           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          17           |Solar Opposites                  |
@@ -1337,6 +1385,8 @@ sorting by least number of episodes...
 ###########################################################
 ##################################| least number episodes |
 |Chernobyl                        |           5           |
+|The Falcon and the Winter Soldier|           6           |
+|Wandavision                      |           9           |
 |Sherlock                         |          13           |
 |The Mandalorian                  |          16           |
 |Solar Opposites                  |          17           |
@@ -1379,12 +1429,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		106.54
-Median:		 67.00
-Pstdev:		127.13
-Pvariance:	16162.25
-Stdev:		128.71
-Variance:	16566.30
+Mean:		101.93
+Median:		 62.00
+Pstdev:		125.88
+Pvariance:	15845.60
+Stdev:		127.37
+Variance:	16222.88
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1445,6 +1495,8 @@ sorting by most number of episodes...
 |Solar Opposites                  |          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          17          |Solar Opposites                  |
 |The Mandalorian                  |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16          |The Mandalorian                  |
 |Sherlock                         |          13          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13          |Sherlock                         |
+|Wandavision                      |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          9           |Wandavision                      |
+|The Falcon and the Winter Soldier|          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          6           |The Falcon and the Winter Soldier|
 |Chernobyl                        |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          5           |Chernobyl                        |
 #######################################################################################################################################################################################################################################################################################################
 
@@ -1507,15 +1559,17 @@ sorting by most number of episodes...
 |Solar Opposites                  |          17          |
 |The Mandalorian                  |          16          |
 |Sherlock                         |          13          |
+|Wandavision                      |          9           |
+|The Falcon and the Winter Soldier|          6           |
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		106.54
-Median:		 67.00
-Pstdev:		127.13
-Pvariance:	16162.25
-Stdev:		128.71
-Variance:	16566.30
+Mean:		101.93
+Median:		 62.00
+Pstdev:		125.88
+Pvariance:	15845.60
+Stdev:		127.37
+Variance:	16222.88
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1537,6 +1591,8 @@ sorting by shortest time...
 #########################################################################################################################################################################################################################################################################################
 ##################################| shortest time |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| shortest time |##################################
 |Chernobyl                        |      5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |      5.0      |Chernobyl                        |
+|The Falcon and the Winter Soldier|      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      6.0      |The Falcon and the Winter Soldier|
+|Wandavision                      |   6.750000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000    |Wandavision                      |
 |Solar Opposites                  |   6.800000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000    |Solar Opposites                  |
 |Final Space                      |   8.433333    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   8.433333    |Final Space                      |
 |The IT Crowd                     |   9.166667    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   9.166667    |The IT Crowd                     |
@@ -1599,6 +1655,8 @@ sorting by shortest time...
 ###################################################
 ##################################| shortest time |
 |Chernobyl                        |      5.0      |
+|The Falcon and the Winter Soldier|      6.0      |
+|Wandavision                      |   6.750000    |
 |Solar Opposites                  |   6.800000    |
 |Final Space                      |   8.433333    |
 |The IT Crowd                     |   9.166667    |
@@ -1641,12 +1699,12 @@ sorting by shortest time...
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 48.87
-Median:		 31.53
-Pstdev:		 56.14
-Pvariance:	3151.19
-Stdev:		 56.83
-Variance:	3229.97
+Mean:		 46.90
+Median:		 30.80
+Pstdev:		 55.54
+Pvariance:	3084.73
+Stdev:		 56.20
+Variance:	3158.17
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1707,6 +1765,8 @@ sorting by longest time...
 |The IT Crowd                     |   9.166667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   9.166667   |The IT Crowd                     |
 |Final Space                      |   8.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   8.433333   |Final Space                      |
 |Solar Opposites                  |   6.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000   |Solar Opposites                  |
+|Wandavision                      |   6.750000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000   |Wandavision                      |
+|The Falcon and the Winter Soldier|     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     6.0      |The Falcon and the Winter Soldier|
 |Chernobyl                        |     5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |     5.0      |Chernobyl                        |
 #######################################################################################################################################################################################################################################################################################
 
@@ -1769,15 +1829,17 @@ sorting by longest time...
 |The IT Crowd                     |   9.166667   |
 |Final Space                      |   8.433333   |
 |Solar Opposites                  |   6.800000   |
+|Wandavision                      |   6.750000   |
+|The Falcon and the Winter Soldier|     6.0      |
 |Chernobyl                        |     5.0      |
 ##################################################
 
-Mean:		 48.87
-Median:		 31.53
-Pstdev:		 56.14
-Pvariance:	3151.19
-Stdev:		 56.83
-Variance:	3229.97
+Mean:		 46.90
+Median:		 30.80
+Pstdev:		 55.54
+Pvariance:	3084.73
+Stdev:		 56.20
+Variance:	3158.17
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1828,6 +1890,7 @@ sorting by most episodes per season...
 |Better Call Saul                 |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0           |Better Call Saul                 |
 |Baskets                          |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |           10.0           |Baskets                          |
 |Game of Thrones                  |         9.125000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         9.125000         |Game of Thrones                  |
+|Wandavision                      |           9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9.0            |Wandavision                      |
 |Silicon Valley                   |         8.833333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |         8.833333         |Silicon Valley                   |
 |Trailer Park Boys                |         8.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         8.750000         |Trailer Park Boys                |
 |Solar Opposites                  |         8.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |         8.500000         |Solar Opposites                  |
@@ -1836,6 +1899,7 @@ sorting by most episodes per season...
 |The IT Crowd                     |         6.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         6.250000         |The IT Crowd                     |
 |Letterkenny                      |         6.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |         6.222222         |Letterkenny                      |
 |Peaky Blinders                   |           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |           6.0            |Peaky Blinders                   |
+|The Falcon and the Winter Soldier|           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6.0            |The Falcon and the Winter Soldier|
 |Chernobyl                        |           5.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           5.0            |Chernobyl                        |
 |Black Mirror                     |         4.200000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         4.200000         |Black Mirror                     |
 |Sherlock                         |         3.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |         3.250000         |Sherlock                         |
@@ -1890,6 +1954,7 @@ sorting by most episodes per season...
 |Better Call Saul                 |           10.0           |
 |Baskets                          |           10.0           |
 |Game of Thrones                  |         9.125000         |
+|Wandavision                      |           9.0            |
 |Silicon Valley                   |         8.833333         |
 |Trailer Park Boys                |         8.750000         |
 |Solar Opposites                  |         8.500000         |
@@ -1898,17 +1963,18 @@ sorting by most episodes per season...
 |The IT Crowd                     |         6.250000         |
 |Letterkenny                      |         6.222222         |
 |Peaky Blinders                   |           6.0            |
+|The Falcon and the Winter Soldier|           6.0            |
 |Chernobyl                        |           5.0            |
 |Black Mirror                     |         4.200000         |
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.42
-Median:		 12.29
-Pstdev:		  7.93
-Pvariance:	 62.90
-Stdev:		  8.03
-Variance:	 64.47
+Mean:		 14.09
+Median:		 12.00
+Pstdev:		  7.89
+Pvariance:	 62.20
+Stdev:		  7.98
+Variance:	 63.68
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1933,6 +1999,7 @@ sorting by least episodes per season...
 |Black Mirror                     |         4.200000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         4.200000          |Black Mirror                     |
 |Chernobyl                        |            5.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |            5.0            |Chernobyl                        |
 |Peaky Blinders                   |            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |            6.0            |Peaky Blinders                   |
+|The Falcon and the Winter Soldier|            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            6.0            |The Falcon and the Winter Soldier|
 |Letterkenny                      |         6.222222          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |         6.222222          |Letterkenny                      |
 |The IT Crowd                     |         6.250000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         6.250000          |The IT Crowd                     |
 |Misfits                          |         7.400000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         7.400000          |Misfits                          |
@@ -1940,6 +2007,7 @@ sorting by least episodes per season...
 |Solar Opposites                  |         8.500000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |         8.500000          |Solar Opposites                  |
 |Trailer Park Boys                |         8.750000          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         8.750000          |Trailer Park Boys                |
 |Silicon Valley                   |         8.833333          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |         8.833333          |Silicon Valley                   |
+|Wandavision                      |            9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            9.0            |Wandavision                      |
 |Game of Thrones                  |         9.125000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         9.125000          |Game of Thrones                  |
 |Curb your Enthusiasm             |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           10.0            |Curb your Enthusiasm             |
 |Better Call Saul                 |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0            |Better Call Saul                 |
@@ -1995,6 +2063,7 @@ sorting by least episodes per season...
 |Black Mirror                     |         4.200000          |
 |Chernobyl                        |            5.0            |
 |Peaky Blinders                   |            6.0            |
+|The Falcon and the Winter Soldier|            6.0            |
 |Letterkenny                      |         6.222222          |
 |The IT Crowd                     |         6.250000          |
 |Misfits                          |         7.400000          |
@@ -2002,6 +2071,7 @@ sorting by least episodes per season...
 |Solar Opposites                  |         8.500000          |
 |Trailer Park Boys                |         8.750000          |
 |Silicon Valley                   |         8.833333          |
+|Wandavision                      |            9.0            |
 |Game of Thrones                  |         9.125000          |
 |Curb your Enthusiasm             |           10.0            |
 |Better Call Saul                 |           10.0            |
@@ -2034,14 +2104,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.42
-Median:		 12.29
-Pstdev:		  7.93
-Pvariance:	 62.90
-Stdev:		  8.03
-Variance:	 64.47
+Mean:		 14.09
+Median:		 12.00
+Pstdev:		  7.89
+Pvariance:	 62.20
+Stdev:		  7.98
+Variance:	 63.68
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 16 | 14 | 15 | 17 | 17 | 19 | 20 | 21 | 18 | 21 | 20 | 22 | 20 | 19 | 12 | 6  | 3  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 16 | 14 | 15 | 17 | 17 | 19 | 20 | 21 | 18 | 21 | 20 | 22 | 20 | 19 | 12 | 8  | 3  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################
