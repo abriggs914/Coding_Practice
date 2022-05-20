@@ -688,6 +688,7 @@ series_list = [
 	wandavision,
 	the_falcon_and_the_winter_soldier
 ]
+
    
 def longest_series_title(series_list) :
     num = 0
@@ -697,6 +698,7 @@ def longest_series_title(series_list) :
             num = len(name)
     return num
     
+
 metric_possibilities = [
     "start year",
     "end year",
@@ -711,6 +713,7 @@ metric_possibilities = [
 	"most episodes per season",
 	"least episodes per season"
     ]
+
     
 def ask_print_style(series_list) :
     question = "\n\tHow would you like to print the stats?\n"
@@ -769,6 +772,7 @@ def ask_print_style(series_list) :
     
     return metric
         
+
 def print_time_line_horizontal(series_list, start_year, end_year) :
     metric = ask_print_style(series_list)
     metric_val = ""
@@ -825,7 +829,8 @@ def print_time_line_horizontal(series_list, start_year, end_year) :
         res += "|" + "{0:{1}}".format(series.name, longest_title_len - 1) + "|\n"
     res += top_border
     return res
-	
+
+
 def print_series_stats(series_list) :
     metric = ask_print_style(series_list)
     metric_val = ""
@@ -869,7 +874,8 @@ def print_series_stats(series_list) :
       res += "\nStdev:\t\t" + "{0:6.2f}".format(stdev(stats_list))
       res += "\nVariance:\t" + "{0:6.2f}".format(variance(stats_list))
     return res
-       
+      
+
 def print_time_line_horizontal_ongoing(series_list, start_year, end_year) :
     metric = (False, lambda s : s.start_year, metric_possibilities[0])
     metric_val = ""
@@ -901,6 +907,7 @@ def print_time_line_horizontal_ongoing(series_list, start_year, end_year) :
         res += "|" + pad_centre(str(year_count), 4)
     res += "| " + metric_val + " |" + "{0:{1}}".format("Concurrent", longest_title_len - 1) + "|\n" + top_border
     return res
+
 
 if __name__ == "__main__" :
   for series in series_list :
