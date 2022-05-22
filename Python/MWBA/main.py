@@ -1,5 +1,7 @@
-import pandas
+import datetime
 
+from league import *
+from team import Team
 from utility import dict_print
 from itertools import combinations
 from pandas import DataFrame
@@ -253,3 +255,26 @@ if __name__ == '__main__':
     # ar_games = {line[0]: {"A": " ".join(line.split("  ")[0].split(" ")[:-1])} for i, line in enumerate(history_str_1.split("\n")[1::4]) if line}
     print("ar_games")
     print(ar_games)
+
+    team_1 = Team(name="Port City Fog", city="Saint John", province="NB", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    print(team_1)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    print(team_1
+          )
+    print(f"last_10: {team_1.last_10}")
+
+    mwba_league = RoundRobinLeague("MWBA", "Basketball", datetime.datetime(2022, 5, 14), set(), dict(), number_round_robins=2)
+    print(f"MWBA: {mwba_league}")
+    print(f"MWBA total games: {mwba_league.total_games_rr()}")
+
