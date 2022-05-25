@@ -204,9 +204,14 @@ if __name__ == '__main__':
     #     "sum(5)": sum(html_5),
     #     "sum(6)": sum(html_6)
     # }))
-    print(dict_print(read_html_table_values("2022-05-19.html"), "Stats as of 2022-05-19"))
-    print(dict_print(read_html_table_values("2022-05-20.html"), "Stats as of 2022-05-20"))
-    df1 = read_html_table_values("2022-05-20.html", r_type=DataFrame)
+
+    # print(dict_print(read_html_table_values("2022-05-19.html"), "Stats as of 2022-05-19"))
+    # print(dict_print(read_html_table_values("2022-05-20.html"), "Stats as of 2022-05-20"))
+    print(dict_print(read_html_table_values("2022-05-25.html"), "Stats as of 2022-05-25"))
+    # df1 = read_html_table_values("2022-05-19.html", r_type=DataFrame)
+    # df1 = read_html_table_values("2022-05-20.html", r_type=DataFrame)
+    df1 = read_html_table_values("2022-05-25.html", r_type=DataFrame)
+    
     print()
     print(df1.loc[df1["PTS"] >= 3])
     print()
@@ -293,10 +298,30 @@ if __name__ == '__main__':
     mwba_league.add_game(date_3, team_3, team_1, 60, 55)  # Fredericton 60  Port City 55
     mwba_league.add_game(date_3, team_6, team_5, 62, 66)  # Windsor 62  Halifax Thunder 66
 
+    mwba_league.add_game(date_3, team_2, team_1, 66, 81)  # Moncton 66  Port City 81
+
     print(f"MWBA: {mwba_league}")
     print(f"MWBA total games: {mwba_league.total_games_rr()}")
     print(f"MWBA total points: {mwba_league.total_points_scored()}")
 
+    tpf = 0
     for team in mwba_league.teams:
-        print(team.games)
+        o_record = mwba_league.overall_record(team)
+        h_record = mwba_league.home_record(team)
+        a_record = mwba_league.away_record(team)
+        record = o_record
+        record.update(h_record)
+        record.update(a_record)
+        tpf += record["overall"]["pf"]
+        print(dict_print(record, f"Team: {team.name}, Overall record:"))
+    print(f"calculated tpf: {tpf}")
+
+    print(f"home record team_1 vs team_6: {mwba_league.home_record(team_1, team_6)}")
+    print(f"home record team_6 vs team_1: {mwba_league.home_record(team_6, team_1)}")
+    print(f"away record team_1 vs team_6: {mwba_league.away_record(team_1, team_6)}")
+    print(f"away record team_6 vs team_1: {mwba_league.away_record(team_6, team_1)}")
+    print(f"overall record team_1 vs team_6: {mwba_league.overall_record(team_1, team_6)}")
+    print(f"overall record team_6 vs team_1: {mwba_league.overall_record(team_6, team_1)}")
+    print(f"overall record team_1: {mwba_league.overall_record(team_1)}")
+    print(f"home record team_1: {mwba_league.home_record(team_1)}")
 
