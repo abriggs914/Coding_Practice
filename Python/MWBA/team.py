@@ -1,5 +1,8 @@
+import dataclasses
 import datetime
 from dataclasses import dataclass
+
+from typing import Dict
 
 
 @dataclass
@@ -18,7 +21,7 @@ class Team:
 
     _last_10: str
     _record: str
-    games: dict  # date: [(pf, team, teamPts)]
+    games: Dict[datetime.datetime, list] = dataclasses.field(default_factory=dict)  # date: [(pf, team, teamPts)]
 
     def get_gp(self):
         return self._games_played
@@ -31,6 +34,12 @@ class Team:
 
     def get_pa(self):
         return self._points_against
+
+    def get_points_for_per_game(self):
+        return self.get_avg_pf()
+
+    def get_points_against_per_game(self):
+        return self.get_avg_pa()
 
     def get_avg_pf(self):
         return self.points_for / (1 if self._games_played == 0 else self._games_played)

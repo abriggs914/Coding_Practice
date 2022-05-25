@@ -1,4 +1,8 @@
+import dataclasses
 import datetime
+
+from typing import Dict, Set
+
 from team import Team
 from dataclasses import dataclass
 
@@ -8,9 +12,9 @@ class League:
     name: str
     sport: str
     start_date: datetime.datetime
-    teams: set  # {teams}
-    games: dict  # {founded year: [games]}
-    points_for_win: int
+    teams: Set[Team] = dataclasses.field(default_factory=set)  # {teams}
+    games: Dict[datetime.datetime, list] = dataclasses.field(default_factory=list)  # {founded year: [games]}
+    points_for_win: int = 2
 
     @dataclass
     class Game:
@@ -226,15 +230,16 @@ class League:
         gp = w + l if gp is None else gp
         return f"{w}-{l}||{gp}"
 
+
 @dataclass
 class RoundRobinLeague(League):
     name: str
     sport: str
     start_date: datetime.datetime
-    teams: set  # {teams}
-    games: dict  # {date: [games]}
-    points_for_win: int
-    number_round_robins: int
+    teams: Set[Team] = dataclasses.field(default_factory=set)  # {teams}
+    games: Dict[datetime.datetime, list] = dataclasses.field(default_factory=list)  # {founded year: [games]}
+    points_for_win: int = 2
+    number_round_robins: int = 1
 
     def add_game(self, date, team_1, team_2, score_team_1, score_team_2):
         assert isinstance(date, datetime.datetime)
