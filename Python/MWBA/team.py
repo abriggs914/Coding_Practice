@@ -1,8 +1,10 @@
+import datetime
 from dataclasses import dataclass
 
 
 @dataclass
 class Team:
+    id_no: int
     name: str
     city: str
     province: str
@@ -72,8 +74,10 @@ class Team:
                         n_wins += 1
                     else:
                         n_losses += 1
-            res = f"{n_wins}-{n_losses}||{n_wins + n_losses}"
-        return res
+            # res = f"{n_wins}-{n_losses}||{n_wins + n_losses}"
+        # return self.record_fmt(n_wins, n_losses)
+        return n_wins, n_losses
+        # return res
 
     def set_gp(self, value):
         self._games_played = value
@@ -100,6 +104,11 @@ class Team:
         self._record = value
 
     def add_game(self, date, against, points_for, points_against, points_for_win):
+        assert isinstance(date, datetime.datetime)
+        assert isinstance(against, Team)
+        assert isinstance(points_for, int)
+        assert isinstance(points_against, int)
+        assert isinstance(points_for_win, int)
         self.games_played += 1
         self.points += points_for_win if points_for > points_against else 0
         self.points_for += points_for
@@ -136,6 +145,10 @@ class Team:
     def del_record(self):
         del self._record
 
+    def __hash__(self):
+        return self.id_no
+        # return f"({self.name}||{self.city}||{self.province})"
+
     games_played = property(get_gp, set_gp, del_gp)
     points = property(get_pts, set_pts, del_pts)
     points_for = property(get_pf, set_pf, del_pf)
@@ -147,4 +160,3 @@ class Team:
     last_10 = property(get_last10, set_last10, del_last10)
     record = property(get_record, set_record, del_record)
     # games: dict  # date: [(pf, team, teamPts)]
-

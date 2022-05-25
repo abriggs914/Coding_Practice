@@ -216,7 +216,7 @@ if __name__ == '__main__':
     print()
     print(df1.to_html())
     print()
-    print(f"Total games played: {sum(df1['GP'])}")
+    print(f"Total games played: {sum(df1['GP']) // 2}")
     print(f"Total points scored: {sum(df1['PF'])}")
 
     history_str_1 = """
@@ -256,25 +256,47 @@ if __name__ == '__main__':
     print("ar_games")
     print(ar_games)
 
-    team_1 = Team(name="Port City Fog", city="Saint John", province="NB", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
-    print(team_1)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    print(team_1
-          )
-    print(f"last_10: {team_1.last_10}")
+    team_1 = Team(1, name="Port City Fog", city="Saint John", province="NB", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_2 = Team(2, name="Moncton Mystics", city="Moncton", province="NB", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_3 = Team(3, name="Fredericton Freeze", city="Fredericton", province="NB", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_4 = Team(4, name="Halifax Hornets", city="Halifax", province="NS", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_5 = Team(5, name="Halifax Thunder", city="Halifax", province="NS", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_6 = Team(6, name="Windsor Edge", city="Windsor", province="NS", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    # print(team_1)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # print(team_1
+    #       )
+    # print(f"last_10: {team_1.last_10}")
 
-    mwba_league = RoundRobinLeague("MWBA", "Basketball", datetime.datetime(2022, 5, 14), set(), dict(), number_round_robins=2)
+    mwba_league = RoundRobinLeague("MWBA", "Basketball", datetime.datetime(2022, 5, 14), set(), dict(), number_round_robins=2, points_for_win=2)
+    date_1 = datetime.datetime(2022, 5, 14)
+    date_2 = datetime.datetime(2022, 5, 15)
+    date_3 = datetime.datetime(2022, 5, 19)
+    mwba_league.add_game(date_1, team_2, team_5, 63, 83)  # Moncton 63  Halifax Thunder 83
+    mwba_league.add_game(date_1, team_1, team_6, 68, 71)  # Port City 68  Windsor 71
+    mwba_league.add_game(date_1, team_3, team_4, 66, 71)  # Fredericton 66  Halifax Hornets 71
+    mwba_league.add_game(date_2, team_1, team_5, 58, 73)  # Port City 58  Halifax Thunder 73
+    mwba_league.add_game(date_2, team_2, team_4, 66, 86)  # Moncton 66  Halifax Hornets 86
+    mwba_league.add_game(date_2, team_3, team_6, 69, 66)  # Fredericton 69  Windsor 66
+
+    mwba_league.add_game(date_3, team_3, team_1, 60, 55)  # Fredericton 60  Port City 55
+    mwba_league.add_game(date_3, team_6, team_5, 62, 66)  # Windsor 62  Halifax Thunder 66
+
     print(f"MWBA: {mwba_league}")
     print(f"MWBA total games: {mwba_league.total_games_rr()}")
+    print(f"MWBA total points: {mwba_league.total_points_scored()}")
+
+    for team in mwba_league.teams:
+        print(team.games)
 
