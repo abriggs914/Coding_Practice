@@ -207,7 +207,8 @@ if __name__ == '__main__':
 
     # print(dict_print(read_html_table_values("2022-05-19.html"), "Stats as of 2022-05-19"))
     # print(dict_print(read_html_table_values("2022-05-20.html"), "Stats as of 2022-05-20"))
-    print(dict_print(read_html_table_values("2022-05-25.html"), "Stats as of 2022-05-25"))
+    # print(dict_print(read_html_table_values("2022-05-25.html"), "Stats as of 2022-05-25"))
+    print(dict_print(read_html_table_values("2022-05-26.html"), "Stats as of 2022-05-26"))
     # df1 = read_html_table_values("2022-05-19.html", r_type=DataFrame)
     # df1 = read_html_table_values("2022-05-20.html", r_type=DataFrame)
     df1 = read_html_table_values("2022-05-25.html", r_type=DataFrame)
@@ -288,6 +289,8 @@ if __name__ == '__main__':
     date_1 = datetime.datetime(2022, 5, 14)
     date_2 = datetime.datetime(2022, 5, 15)
     date_3 = datetime.datetime(2022, 5, 19)
+    date_4 = datetime.datetime(2022, 5, 24)
+    date_5 = datetime.datetime(2022, 5, 25)
     mwba_league.add_game(date_1, team_2, team_5, 63, 83)  # Moncton 63  Halifax Thunder 83
     mwba_league.add_game(date_1, team_1, team_6, 68, 71)  # Port City 68  Windsor 71
     mwba_league.add_game(date_1, team_3, team_4, 66, 71)  # Fredericton 66  Halifax Hornets 71
@@ -298,7 +301,8 @@ if __name__ == '__main__':
     mwba_league.add_game(date_3, team_3, team_1, 60, 55)  # Fredericton 60  Port City 55
     mwba_league.add_game(date_3, team_6, team_5, 62, 66)  # Windsor 62  Halifax Thunder 66
 
-    mwba_league.add_game(date_3, team_2, team_1, 66, 81)  # Moncton 66  Port City 81
+    mwba_league.add_game(date_4, team_2, team_1, 66, 81)  # Moncton 66  Port City 81
+    mwba_league.add_game(date_5, team_5, team_4, 73, 58)  # Helifax Thunder 73  Halifax Hornets 58
 
     print(f"MWBA: {mwba_league}")
     print(f"MWBA total games: {mwba_league.total_games_rr()}")
