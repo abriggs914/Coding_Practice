@@ -328,4 +328,3 @@ if __name__ == '__main__':
     print(f"overall record team_6 vs team_1: {mwba_league.overall_record(team_6, team_1)}")
     print(f"overall record team_1: {mwba_league.overall_record(team_1)}")
     print(f"home record team_1: {mwba_league.home_record(team_1)}")
-
