@@ -211,8 +211,10 @@ if __name__ == '__main__':
     print(dict_print(read_html_table_values("2022-05-26.html"), "Stats as of 2022-05-26"))
     # df1 = read_html_table_values("2022-05-19.html", r_type=DataFrame)
     # df1 = read_html_table_values("2022-05-20.html", r_type=DataFrame)
-    df1 = read_html_table_values("2022-05-25.html", r_type=DataFrame)
-    
+    # df1 = read_html_table_values("2022-05-25.html", r_type=DataFrame)
+    # df1 = read_html_table_values("2022-05-26.html", r_type=DataFrame)
+    df1 = read_html_table_values("2022-05-29.html", r_type=DataFrame)
+
     print()
     print(df1.loc[df1["PTS"] >= 3])
     print()
