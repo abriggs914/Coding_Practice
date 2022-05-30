@@ -628,7 +628,7 @@ wandavision = TVSeries("Wandavision", {
 	45,
 	2021,
 	2021,
-	False,
+	True,
 	"Drama",
 	"Disney+")
 	
@@ -638,6 +638,27 @@ the_falcon_and_the_winter_soldier = TVSeries("The Falcon and the Winter Soldier"
 	60,
 	2021,
 	2021,
+	True,
+	"Drama",
+	"Disney+")
+	
+	
+loki = TVSeries("Loki", {
+	1: 6},
+	60,
+	2021,
+	2021,
+	True,
+	"Drama",
+	"Disney+")
+	
+	
+gravity_falls = TVSeries("Gravity Falls", {
+	1: 20,
+	2: 20},
+	22,
+	2012,
+	2016,
 	False,
 	"Drama",
 	"Disney+")
@@ -686,7 +707,9 @@ series_list = [
 	sherlock,
 	malcolm_in_the_middle,
 	wandavision,
-	the_falcon_and_the_winter_soldier
+	the_falcon_and_the_winter_soldier,
+	loki,
+	gravity_falls
 ]
 
    

@@ -472,23 +472,45 @@ Total minutes:			360
 Total hours:			6.0
 Where to watch:			Disney+
 
+	Loki
+Genre:				Drama
+Run (2021 -> 2021):		1 year
+number seasons:			1
+number episodes:		6
+episodes per season:		6.0
+average length of an episode:	60
+Total minutes:			360
+Total hours:			6.0
+Where to watch:			Disney+
+
+	Gravity Falls
+Genre:				Drama
+Run (2012 -> 2016):		4 years
+number seasons:			2
+number episodes:		40
+episodes per season:		20.0
+average length of an episode:	22
+Total minutes:			880
+Total hours:			14.666666666666666
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Parks and Recreation
-Genre:				Comedy
-Run (2009 -> 2015):		6 years
-number seasons:			7
-number episodes:		125
-episodes per season:		17.857142857142858
+	Avatar, the Last Airbender
+Genre:				Drama, Adventure
+Run (2005 -> 2008):		3 years
+number seasons:			3
+number episodes:		61
+episodes per season:		20.333333333333332
 average length of an episode:	22
-Total minutes:			2750
-Total hours:			45.833333333333336
-Where to watch:			Prime TV
+Total minutes:			1342
+Total hours:			22.366666666666667
+Where to watch:			Netflix
 
-Season: 4
+Season: 1
 Episode: 16
 
 	How would you like to print the stats?
@@ -537,6 +559,7 @@ sorting by start year...
 |Workaholics                      |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    2011    |Workaholics                      |
 |Black Mirror                     |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    2011    |Black Mirror                     |
 |Brickleberry                     |    2012    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    2012    |Brickleberry                     |
+|Gravity Falls                    |    2012    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    2012    |Gravity Falls                    |
 |Brooklyn Nine-Nine               |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    2013    |Brooklyn Nine-Nine               |
 |Peaky Blinders                   |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    2013    |Peaky Blinders                   |
 |Silicon Valley                   |    2014    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    2014    |Silicon Valley                   |
@@ -553,6 +576,7 @@ sorting by start year...
 |Solar Opposites                  |    2020    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    2020    |Solar Opposites                  |
 |Wandavision                      |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Wandavision                      |
 |The Falcon and the Winter Soldier|    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |The Falcon and the Winter Soldier|
+|Loki                             |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Loki                             |
 ###################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -601,6 +625,7 @@ sorting by start year...
 |Workaholics                      |    2011    |
 |Black Mirror                     |    2011    |
 |Brickleberry                     |    2012    |
+|Gravity Falls                    |    2012    |
 |Brooklyn Nine-Nine               |    2013    |
 |Peaky Blinders                   |    2013    |
 |Silicon Valley                   |    2014    |
@@ -617,14 +642,15 @@ sorting by start year...
 |Solar Opposites                  |    2020    |
 |Wandavision                      |    2021    |
 |The Falcon and the Winter Soldier|    2021    |
+|Loki                             |    2021    |
 ################################################
 
-Mean:		2008.91
-Median:		2009.00
-Pstdev:		  7.57
-Pvariance:	 57.29
-Stdev:		  7.66
-Variance:	 58.66
+Mean:		2009.24
+Median:		2010.00
+Pstdev:		  7.62
+Pvariance:	 58.10
+Stdev:		  7.71
+Variance:	 59.42
 
 	How would you like to print the stats?
 1	-	By start year
@@ -660,6 +686,7 @@ sorting by end year...
 |Community                        |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   2015   |Community                        |
 |Parks and Recreation             |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   2015   |Parks and Recreation             |
 |Brickleberry                     |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |   2015   |Brickleberry                     |
+|Gravity Falls                    |   2016   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |   2016   |Gravity Falls                    |
 |Prison Break                     |   2017   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |   2017   |Prison Break                     |
 |Sherlock                         |   2017   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |   2017   |Sherlock                         |
 |Workaholics                      |   2017   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |   2017   |Workaholics                      |
@@ -685,6 +712,7 @@ sorting by end year...
 |Solar Opposites                  |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   2021   |Solar Opposites                  |
 |Wandavision                      |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |Wandavision                      |
 |The Falcon and the Winter Soldier|   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |The Falcon and the Winter Soldier|
+|Loki                             |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |Loki                             |
 |The Simpsons                     |   2022   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |The Simpsons                     |
 |Family Guy                       |   2022   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |Family Guy                       |
 |The Orville                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2022   |The Orville                      |
@@ -724,6 +752,7 @@ sorting by end year...
 |Community                        |   2015   |
 |Parks and Recreation             |   2015   |
 |Brickleberry                     |   2015   |
+|Gravity Falls                    |   2016   |
 |Prison Break                     |   2017   |
 |Sherlock                         |   2017   |
 |Workaholics                      |   2017   |
@@ -749,17 +778,18 @@ sorting by end year...
 |Solar Opposites                  |   2021   |
 |Wandavision                      |   2021   |
 |The Falcon and the Winter Soldier|   2021   |
+|Loki                             |   2021   |
 |The Simpsons                     |   2022   |
 |Family Guy                       |   2022   |
 |The Orville                      |   2022   |
 ##############################################
 
-Mean:		2016.33
+Mean:		2016.42
 Median:		2019.00
-Pstdev:		  5.20
-Pvariance:	 27.01
-Stdev:		  5.26
-Variance:	 27.65
+Pstdev:		  5.13
+Pvariance:	 26.29
+Stdev:		  5.19
+Variance:	 26.89
 
 	How would you like to print the stats?
 1	-	By start year
@@ -785,6 +815,7 @@ sorting by shortest series length...
 |Solar Opposites                  |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1              |Solar Opposites                  |
 |Wandavision                      |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Wandavision                      |
 |The Falcon and the Winter Soldier|             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |The Falcon and the Winter Soldier|
+|Loki                             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Loki                             |
 |Final Space                      |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2              |Final Space                      |
 |The Mandalorian                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |The Mandalorian                  |
 |Avatar, the Last Airbender       |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender       |
@@ -795,6 +826,7 @@ sorting by shortest series length...
 |The Proud Family                 |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |The Proud Family                 |
 |My Name is Earl                  |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |My Name is Earl                  |
 |Misfits                          |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             4              |Misfits                          |
+|Gravity Falls                    |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |             4              |Gravity Falls                    |
 |Mr. Robot                        |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |             4              |Mr. Robot                        |
 |Breaking Bad                     |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             5              |Breaking Bad                     |
 |Silicon Valley                   |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |             5              |Silicon Valley                   |
@@ -849,6 +881,7 @@ sorting by shortest series length...
 |Solar Opposites                  |             1              |
 |Wandavision                      |             1              |
 |The Falcon and the Winter Soldier|             1              |
+|Loki                             |             1              |
 |Final Space                      |             2              |
 |The Mandalorian                  |             2              |
 |Avatar, the Last Airbender       |             3              |
@@ -859,6 +892,7 @@ sorting by shortest series length...
 |The Proud Family                 |             4              |
 |My Name is Earl                  |             4              |
 |Misfits                          |             4              |
+|Gravity Falls                    |             4              |
 |Mr. Robot                        |             4              |
 |Breaking Bad                     |             5              |
 |Silicon Valley                   |             5              |
@@ -889,12 +923,12 @@ sorting by shortest series length...
 |The Simpsons                     |             33             |
 ################################################################
 
-Mean:		  7.49
-Median:		  6.00
-Pstdev:		  6.52
-Pvariance:	 42.53
-Stdev:		  6.60
-Variance:	 43.54
+Mean:		  7.27
+Median:		  5.00
+Pstdev:		  6.46
+Pvariance:	 41.80
+Stdev:		  6.54
+Variance:	 42.75
 
 	How would you like to print the stats?
 1	-	By start year
@@ -946,6 +980,7 @@ sorting by longest series length...
 |The Proud Family                 |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |The Proud Family                 |
 |My Name is Earl                  |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |My Name is Earl                  |
 |Misfits                          |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             4             |Misfits                          |
+|Gravity Falls                    |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |             4             |Gravity Falls                    |
 |Mr. Robot                        |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |             4             |Mr. Robot                        |
 |Avatar, the Last Airbender       |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3             |Avatar, the Last Airbender       |
 |Brickleberry                     |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |             3             |Brickleberry                     |
@@ -958,6 +993,7 @@ sorting by longest series length...
 |Solar Opposites                  |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1             |Solar Opposites                  |
 |Wandavision                      |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Wandavision                      |
 |The Falcon and the Winter Soldier|             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |The Falcon and the Winter Soldier|
+|Loki                             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Loki                             |
 #################################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1010,6 +1046,7 @@ sorting by longest series length...
 |The Proud Family                 |             4             |
 |My Name is Earl                  |             4             |
 |Misfits                          |             4             |
+|Gravity Falls                    |             4             |
 |Mr. Robot                        |             4             |
 |Avatar, the Last Airbender       |             3             |
 |Brickleberry                     |             3             |
@@ -1022,14 +1059,15 @@ sorting by longest series length...
 |Solar Opposites                  |             1             |
 |Wandavision                      |             1             |
 |The Falcon and the Winter Soldier|             1             |
+|Loki                             |             1             |
 ###############################################################
 
-Mean:		  7.49
-Median:		  6.00
-Pstdev:		  6.52
-Pvariance:	 42.53
-Stdev:		  6.60
-Variance:	 43.54
+Mean:		  7.27
+Median:		  5.00
+Pstdev:		  6.46
+Pvariance:	 41.80
+Stdev:		  6.54
+Variance:	 42.75
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1053,7 +1091,9 @@ sorting by least number of seasons...
 |Chernobyl                        |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1           |Chernobyl                        |
 |Wandavision                      |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Wandavision                      |
 |The Falcon and the Winter Soldier|          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |The Falcon and the Winter Soldier|
+|Loki                             |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Loki                             |
 |The Proud Family                 |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2           |The Proud Family                 |
+|Gravity Falls                    |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          2           |Gravity Falls                    |
 |Final Space                      |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2           |Final Space                      |
 |The Mandalorian                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2           |The Mandalorian                  |
 |The Mick                         |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2           |The Mick                         |
@@ -1117,7 +1157,9 @@ sorting by least number of seasons...
 |Chernobyl                        |          1           |
 |Wandavision                      |          1           |
 |The Falcon and the Winter Soldier|          1           |
+|Loki                             |          1           |
 |The Proud Family                 |          2           |
+|Gravity Falls                    |          2           |
 |Final Space                      |          2           |
 |The Mandalorian                  |          2           |
 |The Mick                         |          2           |
@@ -1159,12 +1201,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  6.53
+Mean:		  6.31
 Median:		  5.00
-Pstdev:		  5.65
-Pvariance:	 31.97
-Stdev:		  5.72
-Variance:	 32.73
+Pstdev:		  5.62
+Pvariance:	 31.64
+Stdev:		  5.69
+Variance:	 32.36
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1221,6 +1263,7 @@ sorting by most number of seasons...
 |Avatar, the Last Airbender       |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3          |Avatar, the Last Airbender       |
 |Brickleberry                     |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          3          |Brickleberry                     |
 |The Proud Family                 |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2          |The Proud Family                 |
+|Gravity Falls                    |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          2          |Gravity Falls                    |
 |Final Space                      |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2          |Final Space                      |
 |The Mandalorian                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2          |The Mandalorian                  |
 |The Mick                         |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2          |The Mick                         |
@@ -1228,6 +1271,7 @@ sorting by most number of seasons...
 |Chernobyl                        |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1          |Chernobyl                        |
 |Wandavision                      |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Wandavision                      |
 |The Falcon and the Winter Soldier|          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |The Falcon and the Winter Soldier|
+|Loki                             |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Loki                             |
 #####################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1285,6 +1329,7 @@ sorting by most number of seasons...
 |Avatar, the Last Airbender       |          3          |
 |Brickleberry                     |          3          |
 |The Proud Family                 |          2          |
+|Gravity Falls                    |          2          |
 |Final Space                      |          2          |
 |The Mandalorian                  |          2          |
 |The Mick                         |          2          |
@@ -1292,14 +1337,15 @@ sorting by most number of seasons...
 |Chernobyl                        |          1          |
 |Wandavision                      |          1          |
 |The Falcon and the Winter Soldier|          1          |
+|Loki                             |          1          |
 #########################################################
 
-Mean:		  6.53
+Mean:		  6.31
 Median:		  5.00
-Pstdev:		  5.65
-Pvariance:	 31.97
-Stdev:		  5.72
-Variance:	 32.73
+Pstdev:		  5.62
+Pvariance:	 31.64
+Stdev:		  5.69
+Variance:	 32.36
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1322,6 +1368,7 @@ sorting by least number of episodes...
 ##################################| least number episodes |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| least number episodes |##################################
 |Chernobyl                        |           5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           5           |Chernobyl                        |
 |The Falcon and the Winter Soldier|           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6           |The Falcon and the Winter Soldier|
+|Loki                             |           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6           |Loki                             |
 |Wandavision                      |           9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9           |Wandavision                      |
 |Sherlock                         |          13           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13           |Sherlock                         |
 |The Mandalorian                  |          16           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16           |The Mandalorian                  |
@@ -1335,6 +1382,7 @@ sorting by least number of episodes...
 |The Orville                      |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          37           |The Orville                      |
 |The Mick                         |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37           |The Mick                         |
 |Baskets                          |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          40           |Baskets                          |
+|Gravity Falls                    |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          40           |Gravity Falls                    |
 |Mr. Robot                        |          45           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          45           |Mr. Robot                        |
 |Better Call Saul                 |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          50           |Better Call Saul                 |
 |The Proud Family                 |          52           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52           |The Proud Family                 |
@@ -1386,6 +1434,7 @@ sorting by least number of episodes...
 ##################################| least number episodes |
 |Chernobyl                        |           5           |
 |The Falcon and the Winter Soldier|           6           |
+|Loki                             |           6           |
 |Wandavision                      |           9           |
 |Sherlock                         |          13           |
 |The Mandalorian                  |          16           |
@@ -1399,6 +1448,7 @@ sorting by least number of episodes...
 |The Orville                      |          37           |
 |The Mick                         |          37           |
 |Baskets                          |          40           |
+|Gravity Falls                    |          40           |
 |Mr. Robot                        |          45           |
 |Better Call Saul                 |          50           |
 |The Proud Family                 |          52           |
@@ -1429,12 +1479,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		101.93
-Median:		 62.00
-Pstdev:		125.88
-Pvariance:	15845.60
-Stdev:		127.37
-Variance:	16222.88
+Mean:		 98.42
+Median:		 61.00
+Pstdev:		124.17
+Pvariance:	15418.78
+Stdev:		125.58
+Variance:	15769.20
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1484,6 +1534,7 @@ sorting by most number of episodes...
 |Better Call Saul                 |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          50          |Better Call Saul                 |
 |Mr. Robot                        |          45          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          45          |Mr. Robot                        |
 |Baskets                          |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          40          |Baskets                          |
+|Gravity Falls                    |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          40          |Gravity Falls                    |
 |Misfits                          |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          37          |Misfits                          |
 |The Orville                      |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          37          |The Orville                      |
 |The Mick                         |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37          |The Mick                         |
@@ -1497,6 +1548,7 @@ sorting by most number of episodes...
 |Sherlock                         |          13          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13          |Sherlock                         |
 |Wandavision                      |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          9           |Wandavision                      |
 |The Falcon and the Winter Soldier|          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          6           |The Falcon and the Winter Soldier|
+|Loki                             |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          6           |Loki                             |
 |Chernobyl                        |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          5           |Chernobyl                        |
 #######################################################################################################################################################################################################################################################################################################
 
@@ -1548,6 +1600,7 @@ sorting by most number of episodes...
 |Better Call Saul                 |          50          |
 |Mr. Robot                        |          45          |
 |Baskets                          |          40          |
+|Gravity Falls                    |          40          |
 |Misfits                          |          37          |
 |The Orville                      |          37          |
 |The Mick                         |          37          |
@@ -1561,15 +1614,16 @@ sorting by most number of episodes...
 |Sherlock                         |          13          |
 |Wandavision                      |          9           |
 |The Falcon and the Winter Soldier|          6           |
+|Loki                             |          6           |
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		101.93
-Median:		 62.00
-Pstdev:		125.88
-Pvariance:	15845.60
-Stdev:		127.37
-Variance:	16222.88
+Mean:		 98.42
+Median:		 61.00
+Pstdev:		124.17
+Pvariance:	15418.78
+Stdev:		125.58
+Variance:	15769.20
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1592,6 +1646,7 @@ sorting by shortest time...
 ##################################| shortest time |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| shortest time |##################################
 |Chernobyl                        |      5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |      5.0      |Chernobyl                        |
 |The Falcon and the Winter Soldier|      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      6.0      |The Falcon and the Winter Soldier|
+|Loki                             |      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      6.0      |Loki                             |
 |Wandavision                      |   6.750000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000    |Wandavision                      |
 |Solar Opposites                  |   6.800000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000    |Solar Opposites                  |
 |Final Space                      |   8.433333    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   8.433333    |Final Space                      |
@@ -1600,6 +1655,7 @@ sorting by shortest time...
 |Brickleberry                     |   13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |   13.200000   |Brickleberry                     |
 |The Mick                         |   13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |   13.566667   |The Mick                         |
 |Baskets                          |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |   14.666667   |Baskets                          |
+|Gravity Falls                    |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |   14.666667   |Gravity Falls                    |
 |Silicon Valley                   |   19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |   19.433333   |Silicon Valley                   |
 |Sherlock                         |   19.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |   19.500000   |Sherlock                         |
 |The Proud Family                 |   19.933333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   19.933333   |The Proud Family                 |
@@ -1656,6 +1712,7 @@ sorting by shortest time...
 ##################################| shortest time |
 |Chernobyl                        |      5.0      |
 |The Falcon and the Winter Soldier|      6.0      |
+|Loki                             |      6.0      |
 |Wandavision                      |   6.750000    |
 |Solar Opposites                  |   6.800000    |
 |Final Space                      |   8.433333    |
@@ -1664,6 +1721,7 @@ sorting by shortest time...
 |Brickleberry                     |   13.200000   |
 |The Mick                         |   13.566667   |
 |Baskets                          |   14.666667   |
+|Gravity Falls                    |   14.666667   |
 |Silicon Valley                   |   19.433333   |
 |Sherlock                         |   19.500000   |
 |The Proud Family                 |   19.933333   |
@@ -1699,12 +1757,12 @@ sorting by shortest time...
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 46.90
-Median:		 30.80
-Pstdev:		 55.54
-Pvariance:	3084.73
-Stdev:		 56.20
-Variance:	3158.17
+Mean:		 45.27
+Median:		 27.13
+Pstdev:		 54.82
+Pvariance:	3005.23
+Stdev:		 55.44
+Variance:	3073.53
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1759,6 +1817,7 @@ sorting by longest time...
 |Sherlock                         |  19.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |  19.500000   |Sherlock                         |
 |Silicon Valley                   |  19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |  19.433333   |Silicon Valley                   |
 |Baskets                          |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |  14.666667   |Baskets                          |
+|Gravity Falls                    |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |  14.666667   |Gravity Falls                    |
 |The Mick                         |  13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |  13.566667   |The Mick                         |
 |Brickleberry                     |  13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |  13.200000   |Brickleberry                     |
 |The Mandalorian                  |  11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |  11.733333   |The Mandalorian                  |
@@ -1767,6 +1826,7 @@ sorting by longest time...
 |Solar Opposites                  |   6.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000   |Solar Opposites                  |
 |Wandavision                      |   6.750000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000   |Wandavision                      |
 |The Falcon and the Winter Soldier|     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     6.0      |The Falcon and the Winter Soldier|
+|Loki                             |     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     6.0      |Loki                             |
 |Chernobyl                        |     5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |     5.0      |Chernobyl                        |
 #######################################################################################################################################################################################################################################################################################
 
@@ -1823,6 +1883,7 @@ sorting by longest time...
 |Sherlock                         |  19.500000   |
 |Silicon Valley                   |  19.433333   |
 |Baskets                          |  14.666667   |
+|Gravity Falls                    |  14.666667   |
 |The Mick                         |  13.566667   |
 |Brickleberry                     |  13.200000   |
 |The Mandalorian                  |  11.733333   |
@@ -1831,15 +1892,16 @@ sorting by longest time...
 |Solar Opposites                  |   6.800000   |
 |Wandavision                      |   6.750000   |
 |The Falcon and the Winter Soldier|     6.0      |
+|Loki                             |     6.0      |
 |Chernobyl                        |     5.0      |
 ##################################################
 
-Mean:		 46.90
-Median:		 30.80
-Pstdev:		 55.54
-Pvariance:	3084.73
-Stdev:		 56.20
-Variance:	3158.17
+Mean:		 45.27
+Median:		 27.13
+Pstdev:		 54.82
+Pvariance:	3005.23
+Stdev:		 55.44
+Variance:	3073.53
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1870,6 +1932,7 @@ sorting by most episodes per season...
 |Brooklyn Nine-Nine               |        20.428571         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |        20.428571         |Brooklyn Nine-Nine               |
 |Avatar, the Last Airbender       |        20.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        20.333333         |Avatar, the Last Airbender       |
 |Scrubs                           |        20.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |        20.222222         |Scrubs                           |
+|Gravity Falls                    |           20.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |           20.0           |Gravity Falls                    |
 |Family Guy                       |        19.450000         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |        19.450000         |Family Guy                       |
 |The Mick                         |        18.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |        18.500000         |The Mick                         |
 |Community                        |        18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |        18.333333         |Community                        |
@@ -1900,6 +1963,7 @@ sorting by most episodes per season...
 |Letterkenny                      |         6.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |         6.222222         |Letterkenny                      |
 |Peaky Blinders                   |           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |           6.0            |Peaky Blinders                   |
 |The Falcon and the Winter Soldier|           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6.0            |The Falcon and the Winter Soldier|
+|Loki                             |           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6.0            |Loki                             |
 |Chernobyl                        |           5.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           5.0            |Chernobyl                        |
 |Black Mirror                     |         4.200000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         4.200000         |Black Mirror                     |
 |Sherlock                         |         3.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |         3.250000         |Sherlock                         |
@@ -1934,6 +1998,7 @@ sorting by most episodes per season...
 |Brooklyn Nine-Nine               |        20.428571         |
 |Avatar, the Last Airbender       |        20.333333         |
 |Scrubs                           |        20.222222         |
+|Gravity Falls                    |           20.0           |
 |Family Guy                       |        19.450000         |
 |The Mick                         |        18.500000         |
 |Community                        |        18.333333         |
@@ -1964,17 +2029,18 @@ sorting by most episodes per season...
 |Letterkenny                      |         6.222222         |
 |Peaky Blinders                   |           6.0            |
 |The Falcon and the Winter Soldier|           6.0            |
+|Loki                             |           6.0            |
 |Chernobyl                        |           5.0            |
 |Black Mirror                     |         4.200000         |
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.09
+Mean:		 14.05
 Median:		 12.00
-Pstdev:		  7.89
-Pvariance:	 62.20
-Stdev:		  7.98
-Variance:	 63.68
+Pstdev:		  7.85
+Pvariance:	 61.67
+Stdev:		  7.94
+Variance:	 63.07
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2000,6 +2066,7 @@ sorting by least episodes per season...
 |Chernobyl                        |            5.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |            5.0            |Chernobyl                        |
 |Peaky Blinders                   |            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |            6.0            |Peaky Blinders                   |
 |The Falcon and the Winter Soldier|            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            6.0            |The Falcon and the Winter Soldier|
+|Loki                             |            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            6.0            |Loki                             |
 |Letterkenny                      |         6.222222          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |         6.222222          |Letterkenny                      |
 |The IT Crowd                     |         6.250000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         6.250000          |The IT Crowd                     |
 |Misfits                          |         7.400000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         7.400000          |Misfits                          |
@@ -2028,6 +2095,7 @@ sorting by least episodes per season...
 |Community                        |         18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         18.333333         |Community                        |
 |The Mick                         |         18.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |         18.500000         |The Mick                         |
 |Family Guy                       |         19.450000         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         19.450000         |Family Guy                       |
+|Gravity Falls                    |           20.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |           20.0            |Gravity Falls                    |
 |Scrubs                           |         20.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         20.222222         |Scrubs                           |
 |Avatar, the Last Airbender       |         20.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         20.333333         |Avatar, the Last Airbender       |
 |Brooklyn Nine-Nine               |         20.428571         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |         20.428571         |Brooklyn Nine-Nine               |
@@ -2064,6 +2132,7 @@ sorting by least episodes per season...
 |Chernobyl                        |            5.0            |
 |Peaky Blinders                   |            6.0            |
 |The Falcon and the Winter Soldier|            6.0            |
+|Loki                             |            6.0            |
 |Letterkenny                      |         6.222222          |
 |The IT Crowd                     |         6.250000          |
 |Misfits                          |         7.400000          |
@@ -2092,6 +2161,7 @@ sorting by least episodes per season...
 |Community                        |         18.333333         |
 |The Mick                         |         18.500000         |
 |Family Guy                       |         19.450000         |
+|Gravity Falls                    |           20.0            |
 |Scrubs                           |         20.222222         |
 |Avatar, the Last Airbender       |         20.333333         |
 |Brooklyn Nine-Nine               |         20.428571         |
@@ -2104,14 +2174,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.09
+Mean:		 14.05
 Median:		 12.00
-Pstdev:		  7.89
-Pvariance:	 62.20
-Stdev:		  7.98
-Variance:	 63.68
+Pstdev:		  7.85
+Pvariance:	 61.67
+Stdev:		  7.94
+Variance:	 63.07
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 16 | 14 | 15 | 17 | 17 | 19 | 20 | 21 | 18 | 21 | 20 | 22 | 20 | 19 | 12 | 8  | 3  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 16 | 14 | 15 | 17 | 17 | 19 | 21 | 22 | 19 | 22 | 21 | 22 | 20 | 19 | 12 | 9  | 3  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################

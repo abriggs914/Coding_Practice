@@ -30,6 +30,9 @@ class League:
         def loser(self):
             return (self.team_2, self.score_team_2) if self.score_team_1 > self.score_team_2 else (self.team_1, self.score_team_1)
 
+        def __repr__(self):
+            return "Game"
+
     @dataclass
     class Record:
         team: Team
@@ -229,6 +232,9 @@ class League:
     def record_fmt(self, w, l, gp=None):
         gp = w + l if gp is None else gp
         return f"{w}-{l}||{gp}"
+
+    def __repr__(self):
+        return "League"
 
 
 @dataclass
