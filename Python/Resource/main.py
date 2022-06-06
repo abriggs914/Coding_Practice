@@ -1357,6 +1357,94 @@ def test_dict_print2():
     print(dict_print2(d2))
 
 
+def test_rainbow_gradient():
+    app = PygameApplication("Testing Rainbow Gradient", 750, 500)
+    game = app.get_game()
+    display = app.display
+    box_colour = GRAY_17
+    min_n = 0
+    max_n = 25
+
+    start_c = FORESTGREEN
+    end_c = AQUAMARINE_2
+    print("start_c:", start_c)
+    print("end_c:", end_c)
+
+    def rainbow_gradient(n_slices):
+        values = [(255, i, 0) for i in range(256)] +\
+                 [(i, 255, 0) for i in range(255, -1, -1)] +\
+                 [(0, 255, i) for i in range(255)] +\
+                 [(0, i, 255) for i in range(255, -1, -1)] +\
+                 [(i, 0, 255) for i in range(256)] +\
+                 [(255, 0, i) for i in range(255, -1, -1)]
+        print(f"len(values): {len(values)}")
+        l = len(values)
+        if isinstance(n_slices, int):
+            p = min(l, n_slices) / (l if l != 0 else 1)
+        elif isinstance(n_slices, float):
+            p = max(0, min(1, n_slices))
+        else:
+            raise TypeError(f"Param 'n_slice' not recognized: <{type(n_slices)}>")
+        values = reduce(values, p, how="distribute")
+        for val in values:
+            yield val
+
+    # def increment_colour():
+    #     n = int(text_box.text)
+    #     n += 1
+    #     n = min(n, max_n)
+    #     box_colour = gradient(n, max_n, start_c, end_c)
+    #     text_box.set_text(str(n))
+    #     box.bgc = box_colour
+    #     print("bc:", box_colour)
+    #
+    # def decrement_colour():
+    #     n = int(text_box.text)
+    #     n -= 1
+    #     n = max(min_n, n)
+    #     box_colour = gradient(n, max_n, start_c, end_c)
+    #     text_box.set_text(str(n))
+    #     box.bgc = box_colour
+    #     print("bc:", box_colour)
+
+    box_colour = start_c
+    # text_box = TextBox(game, display, game.Rect(200, 0, 400, 100), text="0", editable=False, draw_clear_btn=False, fs=35, text_align="center", numeric=True, iaction=increment_colour, daction=decrement_colour, n_limit=range(10))
+    box = Box(game, display, None, game.Rect(0, 100, 750, 200), 1, bgc=box_colour)
+
+    def alert_colour_g(x, n):
+        r1, g1, b1 = GREEN
+        r2, g2, b2 = RED
+        t_diff = (g1 - g2) + (r2 - r1)
+        incs = t_diff / n
+        p = x / n
+        x = p * t_diff
+        gp = 255 - min(255, x)
+        rp = max(0, x - 255)
+        return rp, gp, 0
+
+    rainbow = rainbow_gradient(0.5)
+
+    while app.is_playing:
+        display.fill(BLACK)
+
+        # draw widgets and objects here
+        # text_box.draw()
+        box.draw()
+
+        try:
+            box.bgc = rainbow.__next__()
+        except StopIteration:
+            rainbow = rainbow_gradient(0.5)
+
+        event_queue = app.run()
+        for event in event_queue:
+            # handle events
+            pass
+            # text_box.handle_event(event)
+
+        app.clock.tick(30)
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1398,4 +1486,5 @@ if __name__ == "__main__":
     # test_line_inequality()
     # test_lineSeg()
     # test_font_foreground()
-    test_dict_print2()
+    # test_dict_print2()
+    test_rainbow_gradient()
