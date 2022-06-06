@@ -295,6 +295,9 @@ if __name__ == '__main__':
     date_5 = datetime.datetime(2022, 5, 25)
     date_6 = datetime.datetime(2022, 5, 28)
     date_7 = datetime.datetime(2022, 5, 29)
+    date_8 = datetime.datetime(2022, 6, 2)
+    date_9 = datetime.datetime(2022, 6, 4)
+    date_10 = datetime.datetime(2022, 6, 5)
     mwba_league.add_game(date_1, team_2, team_5, 63, 83)  # Moncton 63  Halifax Thunder 83
     mwba_league.add_game(date_1, team_1, team_6, 68, 71)  # Port City 68  Windsor 71
     mwba_league.add_game(date_1, team_3, team_4, 66, 71)  # Fredericton 66  Halifax Hornets 71
@@ -310,10 +313,15 @@ if __name__ == '__main__':
 
     mwba_league.add_game(date_6, team_4, team_1, 91, 47)  # Halifax Hornets 91  Port City 47
     mwba_league.add_game(date_6, team_5, team_3, 65, 53)  # Halifax Thunder 65  Fredericton 53
+    mwba_league.add_game(date_6, team_6, team_2, 68, 59)  # Windsor 68  Moncton 59
 
     mwba_league.add_game(date_7, team_6, team_1, 81, 52)  # Windsor 81  Port City 52
     mwba_league.add_game(date_7, team_4, team_3, 76, 49)  # Halifax Hornets 76  Fredericton 49
     mwba_league.add_game(date_7, team_5, team_2, 91, 45)  # Halifax Thunder 91  Moncton 45
+
+    mwba_league.add_game(date_8, team_3, team_1, 58, 54)  # Fredericton 58  Port City 54
+    mwba_league.add_game(date_9, team_6, team_4, 68, 73)  # Windsor 68  Halifax Hornets 73
+    mwba_league.add_game(date_10, team_1, team_2, 80, 71)  # Port City 80  Moncton 71
 
     print(f"MWBA: {mwba_league}")
     print(f"MWBA total games: {mwba_league.total_games_rr()}")
