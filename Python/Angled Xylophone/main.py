@@ -4,7 +4,28 @@ import pygame
 from colour_utility import *
 
 from ball import Ball
-from utility import Rect2, rotate_point, Line
+from utility import rotate_point, Line, reduce
+
+
+def rainbow_gradient(n_slices):
+    values = [(255, i, 0) for i in range(256)] + \
+             [(i, 255, 0) for i in range(255, -1, -1)] + \
+             [(0, 255, i) for i in range(255)] + \
+             [(0, i, 255) for i in range(255, -1, -1)] + \
+             [(i, 0, 255) for i in range(256)] + \
+             [(255, 0, i) for i in range(255, -1, -1)]
+    print(f"len(values): {len(values)}")
+    l = len(values)
+    if isinstance(n_slices, int):
+        p = min(l, n_slices) / (l if l != 0 else 1)
+    elif isinstance(n_slices, float):
+        p = max(0, min(1, n_slices))
+    else:
+        raise TypeError(f"Param 'n_slice' not recognized: <{type(n_slices)}>")
+    values = reduce(values, p, how="distribute")
+    for val in values:
+        yield val
+
 
 if __name__ == '__main__':
     print('PyCharm')
@@ -13,7 +34,7 @@ if __name__ == '__main__':
     WIDTH, HEIGHT = 750, 550
     WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
     CLOCK = pygame.time.Clock()
-    FPS = 60
+    FPS = 16
 
     FONT_DEFAULT = pygame.font.Font(None, 36)
 
@@ -21,7 +42,7 @@ if __name__ == '__main__':
 
     # VARS
     cx, cy = WIDTH * 0.5, HEIGHT * 0.95
-    hy = HEIGHT * (2/5)
+    hy = HEIGHT * (2 / 5)
     boundary_width = 5
     ball_radius = 10
     line_width = 2
@@ -55,18 +76,19 @@ if __name__ == '__main__':
     all_x_slices = [x for x in range(x_range.start, x_range.stop + x_step, x_step)]
     print(f"all_x_slices: {all_x_slices}")
     enum_values = list(enumerate(range(y_range.start, y_range.stop, int(ball_radius))))
+    rainbow = rainbow_gradient(len(enum_values))
     for i, y_d in enum_values:
         x1_d = line_1.x_at_y(y_d)
         x2_d = line_2.x_at_y(y_d)
         x_b = x1_d - (ball_radius / 2)
         y_b = y_d - (ball_radius / 2)
+        y_h = (hy - (i * ball_radius))
+        x_c = x2_d - x1_d
         balls.append(
             # Ball(i + 1, pygame.Rect(x_b, y_b, ball_radius, ball_radius),
             #      random_colour(), ball_radius, 5))
             Ball(i + 1, pygame.Rect(x_b, y_b, ball_radius, i + 1),
-                 random_colour(), ball_radius, 5))
-        p_a = (y_b + (hy - (i * ball_radius))) / ((x1_d - cx)**2)
-        print(f"\t a: {p_a}")
+                 rainbow.__next__(), ball_radius, 5))
         # paths.append(lambda x: (p_a*((x - cx)**2)) + hy)
         # x_slices = []
         print(f"x1_d: {x1_d}, x2_d: {x2_d}")
@@ -74,7 +96,15 @@ if __name__ == '__main__':
         x_slices = [x for x in all_x_slices if x1_d <= x <= x2_d]
         # for j, xs in x_slices:
         # balls[i].points = [(j, balls[i].rect.center[1]) for j in range(int(x1_d), math.ceil(x2_d), n_balls - (i + 0))]
-        balls[i].points = [(j, balls[i].rect.center[1]) for j in range(int(x1_d), math.ceil(x2_d), 12)]
+
+        # y = a(x - h)^2 + k
+        # a = (y - k) / (x - h)^2
+
+        p_a = (y_b - y_h) / ((x1_d - x_c) ** 2)
+        # balls[i].points = [(j, balls[i].rect.center[1]) for j in range(int(x1_d), int(x2_d), 12)]
+        pb = lambda x: ((p_a * ((x - x_c) ** 2))) + y_h
+        print(f"\t a: {p_a}: pb = {p_a}(x-{x_c})^2 + {y_h}")
+        balls[i].points = [(j, pb(j)) for j in range(int(x1_d), int(x2_d), 1)]
         balls[i].frame = 0
         paths.append(x_slices)
         if len(balls) >= n_balls:
