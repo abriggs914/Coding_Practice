@@ -1422,7 +1422,7 @@ def test_rainbow_gradient():
         rp = max(0, x - 255)
         return rp, gp, 0
 
-    rainbow = rainbow_gradient(0.5)
+    rainbow = rainbow_gradient(10)
 
     while app.is_playing:
         display.fill(BLACK)
@@ -1434,7 +1434,7 @@ def test_rainbow_gradient():
         try:
             box.bgc = rainbow.__next__()
         except StopIteration:
-            rainbow = rainbow_gradient(0.5)
+            rainbow = rainbow_gradient(10)
 
         event_queue = app.run()
         for event in event_queue:
