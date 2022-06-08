@@ -54,7 +54,7 @@ if __name__ == '__main__':
     WIDTH, HEIGHT = 750, 550
     WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
     CLOCK = pygame.time.Clock()
-    FPS = 24
+    FPS = 60
 
     FONT_DEFAULT = pygame.font.Font(None, 36)
 
@@ -125,9 +125,9 @@ if __name__ == '__main__':
         # balls[i].points = [(j, balls[i].rect.center[1]) for j in range(int(x1_d), int(x2_d), 12)]
         pb = lambda x: ((p_a * ((x - x_c) ** 2))) + y_h
         print(f"\t i: {i}, a: {p_a}: pb = {p_a}(x-{x_c})^2 + {y_h}")
-        # balls[i].points = [(j, pb(j)) for j in range(int(x1_d), int(x2_d), 6)]
+        balls[i].points = [(j, pb(j)) for j in range(int(x1_d), int(x2_d), 5)]
         # balls[i].points = [(j, pb(j)) for j in range(int(x1_d), int(x2_d), n_balls - (i + 0))]
-        balls[i].points = [(j, pb(j)) for j in range(int(x1_d), int(x2_d), int((5 * ((n_balls - (i + 1)) / n_balls)) + 3))]
+        # balls[i].points = [(j, pb(j)) for j in range(int(x1_d), int(x2_d), int((5 * ((n_balls - (i + 1)) / n_balls)) + 3))]
         balls[i].frame = 0
         paths.append(x_slices)
         if len(balls) >= n_balls:
