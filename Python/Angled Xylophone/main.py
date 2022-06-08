@@ -28,6 +28,7 @@ def rainbow_gradient(n_slices, start_colour="red"):
         magenta_red := [(255, 0, i) for i in range(255, -1, -1)]
     ]
     idx = valid_starts.index(start_colour)
+    print(f"idx: {idx}")
     print(f"A({len(values)}): <{values}>")
     values = flatten(colour_lsts[idx:] + colour_lsts[:idx])
     print(f"A({len(values)}): <{values}>")
@@ -95,7 +96,7 @@ if __name__ == '__main__':
     all_x_slices = [x for x in range(x_range.start, x_range.stop + x_step, x_step)]
     print(f"all_x_slices: {all_x_slices}")
     enum_values = list(enumerate(range(y_range.start, y_range.stop, int(ball_radius))))
-    rainbow = rainbow_gradient(len(enum_values), start_colour="green")
+    rainbow = rainbow_gradient(n_balls, start_colour="green")
     for i, y_d in enum_values:
         x1_d = line_1.x_at_y(y_d)
         x2_d = line_2.x_at_y(y_d)
