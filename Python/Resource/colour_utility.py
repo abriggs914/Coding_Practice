@@ -1,9 +1,9 @@
 from random import randint, choice
-from utility import clamp
+from utility import clamp, flatten, reduce
 
 #	General Utility file of RGB colour values
-#	Version...........1.15
-#	Date........2022-05-11
+#	Version...........1.16
+#	Date........2022-06-09
 #	Author....Avery Briggs
 
 WILDERNESS_MINT = (98, 152, 100)
@@ -1919,3 +1919,45 @@ def font_foreground(colour_in, threshold=255*3/2):
         raise IndexError(f"Error cannot convert \'{colour_in}\' to a valid RGB colour scheme.", ie)
     except TypeError as te:
         raise TypeError(f"Error cannot convert \'{colour_in}\' to a valid RGB colour scheme.", te)
+
+
+def rainbow_gradient(n_slices=None, start_colour="red"):
+    # values = [(255, i, 0) for i in range(256)] + \
+    #          [(i, 255, 0) for i in range(255, -1, -1)] + \
+    #          [(0, 255, i) for i in range(255)] + \
+    #          [(0, i, 255) for i in range(255, -1, -1)] + \
+    #          [(i, 0, 255) for i in range(256)] + \
+    #          [(255, 0, i) for i in range(255, -1, -1)]
+    lst = "red", "yellow", "green", "cyan", "blue", "magenta"
+    valid_starts = list(lst)  # set(lst).union(set(map(str.upper, lst))).union(set(map(str.title, lst)))
+    start_colour = start_colour.lower()
+    if start_colour not in valid_starts:
+        start_colour = "red"
+    colour_lsts = [
+        red_yellow := [(255, i, 0) for i in range(256)],
+        yellow_green := [(i, 255, 0) for i in range(255, -1, -1)],
+        green_cyan := [(0, 255, i) for i in range(255)],
+        cyan_blue := [(0, i, 255) for i in range(255, -1, -1)],
+        blue_magenta := [(i, 0, 255) for i in range(256)],
+        magenta_red := [(255, 0, i) for i in range(255, -1, -1)]
+    ]
+    idx = valid_starts.index(start_colour)
+    # print(f"idx: {idx}")
+    # print(f"A({len(values)}): <{values}>")
+    values = flatten(colour_lsts[idx:] + colour_lsts[:idx])
+    # print(f"A({len(values)}): <{values}>")
+    # print(f"len(values): {len(values)}")
+    l = len(values)
+    if isinstance(n_slices, int):
+        p = min(l, n_slices) / (l if l != 0 else 1)
+    elif isinstance(n_slices, float):
+        p = max(0, min(1, n_slices))
+    elif n_slices is None:
+        p = 1
+    else:
+        raise TypeError(f"Param 'n_slice' not recognized: <{type(n_slices)}>")
+    values = reduce(values, p, how="distribute")
+    # print(f"C({len(values)}): <{values}>")
+    # print(f"D({len(lst)}): <{lst[idx:] + lst[:idx]}>")
+    for val in values:
+        yield val
