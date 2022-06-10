@@ -479,6 +479,7 @@ brickleberry = TVSeries("Brickleberry", {
 	"Comedy",
 	"Disney+")
 	
+	
 the_simpsons = TVSeries("The Simpsons", {
 	1: 13,
 	2: 22,
@@ -663,6 +664,16 @@ gravity_falls = TVSeries("Gravity Falls", {
 	"Drama",
 	"Disney+")
 	
+	
+what_if = TVSeries("What If?", {
+	1: 9},
+	44,
+	2021,
+	2021,
+	True,
+	"Drama",
+	"Disney+")
+	
 
 series_list = [
     the_office,
@@ -709,7 +720,8 @@ series_list = [
 	wandavision,
 	the_falcon_and_the_winter_soldier,
 	loki,
-	gravity_falls
+	gravity_falls,
+	what_if
 ]
 
    

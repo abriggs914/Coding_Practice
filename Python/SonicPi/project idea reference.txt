@@ -1,3 +1,5 @@
 https://www.youtube.com/watch?v=vw9vjEB1S2Y
 
 Use https://sonic-pi.net/ to recreate the application in the video above
+
+https://gist.github.com/darinwilson/137764d4b06072de626c

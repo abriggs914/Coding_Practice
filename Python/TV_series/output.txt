@@ -494,24 +494,35 @@ Total minutes:			880
 Total hours:			14.666666666666666
 Where to watch:			Disney+
 
+	What If?
+Genre:				Drama
+Run (2021 -> 2021):		1 year
+number seasons:			1
+number episodes:		9
+episodes per season:		9.0
+average length of an episode:	44
+Total minutes:			396
+Total hours:			6.6
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Avatar, the Last Airbender
-Genre:				Drama, Adventure
-Run (2005 -> 2008):		3 years
-number seasons:			3
-number episodes:		61
-episodes per season:		20.333333333333332
-average length of an episode:	22
-Total minutes:			1342
-Total hours:			22.366666666666667
-Where to watch:			Netflix
+	The Mandalorian
+Genre:				Drama, Action
+Run (2019 -> 2021):		2 years
+number seasons:			2
+number episodes:		16
+episodes per season:		8.0
+average length of an episode:	44
+Total minutes:			704
+Total hours:			11.733333333333333
+Where to watch:			Disney+
 
-Season: 1
-Episode: 16
+Season: 2
+Episode: 8
 
 	How would you like to print the stats?
 1	-	By start year
@@ -577,6 +588,7 @@ sorting by start year...
 |Wandavision                      |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Wandavision                      |
 |The Falcon and the Winter Soldier|    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |The Falcon and the Winter Soldier|
 |Loki                             |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Loki                             |
+|What If?                         |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |What If?                         |
 ###################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -643,14 +655,15 @@ sorting by start year...
 |Wandavision                      |    2021    |
 |The Falcon and the Winter Soldier|    2021    |
 |Loki                             |    2021    |
+|What If?                         |    2021    |
 ################################################
 
-Mean:		2009.24
-Median:		2010.00
-Pstdev:		  7.62
-Pvariance:	 58.10
-Stdev:		  7.71
-Variance:	 59.42
+Mean:		2009.50
+Median:		2010.50
+Pstdev:		  7.73
+Pvariance:	 59.77
+Stdev:		  7.82
+Variance:	 61.10
 
 	How would you like to print the stats?
 1	-	By start year
@@ -713,6 +726,7 @@ sorting by end year...
 |Wandavision                      |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |Wandavision                      |
 |The Falcon and the Winter Soldier|   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |The Falcon and the Winter Soldier|
 |Loki                             |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |Loki                             |
+|What If?                         |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |What If?                         |
 |The Simpsons                     |   2022   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |The Simpsons                     |
 |Family Guy                       |   2022   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |Family Guy                       |
 |The Orville                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2022   |The Orville                      |
@@ -779,17 +793,18 @@ sorting by end year...
 |Wandavision                      |   2021   |
 |The Falcon and the Winter Soldier|   2021   |
 |Loki                             |   2021   |
+|What If?                         |   2021   |
 |The Simpsons                     |   2022   |
 |Family Guy                       |   2022   |
 |The Orville                      |   2022   |
 ##############################################
 
-Mean:		2016.42
+Mean:		2016.52
 Median:		2019.00
-Pstdev:		  5.13
-Pvariance:	 26.29
-Stdev:		  5.19
-Variance:	 26.89
+Pstdev:		  5.11
+Pvariance:	 26.16
+Stdev:		  5.17
+Variance:	 26.74
 
 	How would you like to print the stats?
 1	-	By start year
@@ -816,6 +831,7 @@ sorting by shortest series length...
 |Wandavision                      |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Wandavision                      |
 |The Falcon and the Winter Soldier|             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |The Falcon and the Winter Soldier|
 |Loki                             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Loki                             |
+|What If?                         |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |What If?                         |
 |Final Space                      |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2              |Final Space                      |
 |The Mandalorian                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |The Mandalorian                  |
 |Avatar, the Last Airbender       |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender       |
@@ -882,6 +898,7 @@ sorting by shortest series length...
 |Wandavision                      |             1              |
 |The Falcon and the Winter Soldier|             1              |
 |Loki                             |             1              |
+|What If?                         |             1              |
 |Final Space                      |             2              |
 |The Mandalorian                  |             2              |
 |Avatar, the Last Airbender       |             3              |
@@ -923,12 +940,12 @@ sorting by shortest series length...
 |The Simpsons                     |             33             |
 ################################################################
 
-Mean:		  7.27
+Mean:		  7.13
 Median:		  5.00
 Pstdev:		  6.46
-Pvariance:	 41.80
-Stdev:		  6.54
-Variance:	 42.75
+Pvariance:	 41.72
+Stdev:		  6.53
+Variance:	 42.65
 
 	How would you like to print the stats?
 1	-	By start year
@@ -994,6 +1011,7 @@ sorting by longest series length...
 |Wandavision                      |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Wandavision                      |
 |The Falcon and the Winter Soldier|             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |The Falcon and the Winter Soldier|
 |Loki                             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Loki                             |
+|What If?                         |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |What If?                         |
 #################################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1060,14 +1078,15 @@ sorting by longest series length...
 |Wandavision                      |             1             |
 |The Falcon and the Winter Soldier|             1             |
 |Loki                             |             1             |
+|What If?                         |             1             |
 ###############################################################
 
-Mean:		  7.27
+Mean:		  7.13
 Median:		  5.00
 Pstdev:		  6.46
-Pvariance:	 41.80
-Stdev:		  6.54
-Variance:	 42.75
+Pvariance:	 41.72
+Stdev:		  6.53
+Variance:	 42.65
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1092,6 +1111,7 @@ sorting by least number of seasons...
 |Wandavision                      |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Wandavision                      |
 |The Falcon and the Winter Soldier|          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |The Falcon and the Winter Soldier|
 |Loki                             |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Loki                             |
+|What If?                         |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |What If?                         |
 |The Proud Family                 |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2           |The Proud Family                 |
 |Gravity Falls                    |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          2           |Gravity Falls                    |
 |Final Space                      |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2           |Final Space                      |
@@ -1158,6 +1178,7 @@ sorting by least number of seasons...
 |Wandavision                      |          1           |
 |The Falcon and the Winter Soldier|          1           |
 |Loki                             |          1           |
+|What If?                         |          1           |
 |The Proud Family                 |          2           |
 |Gravity Falls                    |          2           |
 |Final Space                      |          2           |
@@ -1201,12 +1222,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  6.31
+Mean:		  6.20
 Median:		  5.00
 Pstdev:		  5.62
-Pvariance:	 31.64
-Stdev:		  5.69
-Variance:	 32.36
+Pvariance:	 31.55
+Stdev:		  5.68
+Variance:	 32.25
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1272,6 +1293,7 @@ sorting by most number of seasons...
 |Wandavision                      |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Wandavision                      |
 |The Falcon and the Winter Soldier|          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |The Falcon and the Winter Soldier|
 |Loki                             |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Loki                             |
+|What If?                         |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |What If?                         |
 #####################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1338,14 +1360,15 @@ sorting by most number of seasons...
 |Wandavision                      |          1          |
 |The Falcon and the Winter Soldier|          1          |
 |Loki                             |          1          |
+|What If?                         |          1          |
 #########################################################
 
-Mean:		  6.31
+Mean:		  6.20
 Median:		  5.00
 Pstdev:		  5.62
-Pvariance:	 31.64
-Stdev:		  5.69
-Variance:	 32.36
+Pvariance:	 31.55
+Stdev:		  5.68
+Variance:	 32.25
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1370,6 +1393,7 @@ sorting by least number of episodes...
 |The Falcon and the Winter Soldier|           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6           |The Falcon and the Winter Soldier|
 |Loki                             |           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6           |Loki                             |
 |Wandavision                      |           9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9           |Wandavision                      |
+|What If?                         |           9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9           |What If?                         |
 |Sherlock                         |          13           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13           |Sherlock                         |
 |The Mandalorian                  |          16           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16           |The Mandalorian                  |
 |Solar Opposites                  |          17           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          17           |Solar Opposites                  |
@@ -1436,6 +1460,7 @@ sorting by least number of episodes...
 |The Falcon and the Winter Soldier|           6           |
 |Loki                             |           6           |
 |Wandavision                      |           9           |
+|What If?                         |           9           |
 |Sherlock                         |          13           |
 |The Mandalorian                  |          16           |
 |Solar Opposites                  |          17           |
@@ -1479,12 +1504,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		 98.42
-Median:		 61.00
-Pstdev:		124.17
-Pvariance:	15418.78
-Stdev:		125.58
-Variance:	15769.20
+Mean:		 96.48
+Median:		 58.50
+Pstdev:		123.51
+Pvariance:	15253.64
+Stdev:		124.87
+Variance:	15592.61
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1547,6 +1572,7 @@ sorting by most number of episodes...
 |The Mandalorian                  |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16          |The Mandalorian                  |
 |Sherlock                         |          13          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13          |Sherlock                         |
 |Wandavision                      |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          9           |Wandavision                      |
+|What If?                         |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          9           |What If?                         |
 |The Falcon and the Winter Soldier|          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          6           |The Falcon and the Winter Soldier|
 |Loki                             |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          6           |Loki                             |
 |Chernobyl                        |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          5           |Chernobyl                        |
@@ -1613,17 +1639,18 @@ sorting by most number of episodes...
 |The Mandalorian                  |          16          |
 |Sherlock                         |          13          |
 |Wandavision                      |          9           |
+|What If?                         |          9           |
 |The Falcon and the Winter Soldier|          6           |
 |Loki                             |          6           |
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 98.42
-Median:		 61.00
-Pstdev:		124.17
-Pvariance:	15418.78
-Stdev:		125.58
-Variance:	15769.20
+Mean:		 96.48
+Median:		 58.50
+Pstdev:		123.51
+Pvariance:	15253.64
+Stdev:		124.87
+Variance:	15592.61
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1647,6 +1674,7 @@ sorting by shortest time...
 |Chernobyl                        |      5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |      5.0      |Chernobyl                        |
 |The Falcon and the Winter Soldier|      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      6.0      |The Falcon and the Winter Soldier|
 |Loki                             |      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      6.0      |Loki                             |
+|What If?                         |   6.600000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.600000    |What If?                         |
 |Wandavision                      |   6.750000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000    |Wandavision                      |
 |Solar Opposites                  |   6.800000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000    |Solar Opposites                  |
 |Final Space                      |   8.433333    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   8.433333    |Final Space                      |
@@ -1713,6 +1741,7 @@ sorting by shortest time...
 |Chernobyl                        |      5.0      |
 |The Falcon and the Winter Soldier|      6.0      |
 |Loki                             |      6.0      |
+|What If?                         |   6.600000    |
 |Wandavision                      |   6.750000    |
 |Solar Opposites                  |   6.800000    |
 |Final Space                      |   8.433333    |
@@ -1757,12 +1786,12 @@ sorting by shortest time...
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 45.27
+Mean:		 44.43
 Median:		 27.13
-Pstdev:		 54.82
-Pvariance:	3005.23
-Stdev:		 55.44
-Variance:	3073.53
+Pstdev:		 54.51
+Pvariance:	2971.70
+Stdev:		 55.12
+Variance:	3037.74
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1825,6 +1854,7 @@ sorting by longest time...
 |Final Space                      |   8.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   8.433333   |Final Space                      |
 |Solar Opposites                  |   6.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000   |Solar Opposites                  |
 |Wandavision                      |   6.750000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000   |Wandavision                      |
+|What If?                         |   6.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.600000   |What If?                         |
 |The Falcon and the Winter Soldier|     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     6.0      |The Falcon and the Winter Soldier|
 |Loki                             |     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     6.0      |Loki                             |
 |Chernobyl                        |     5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |     5.0      |Chernobyl                        |
@@ -1891,17 +1921,18 @@ sorting by longest time...
 |Final Space                      |   8.433333   |
 |Solar Opposites                  |   6.800000   |
 |Wandavision                      |   6.750000   |
+|What If?                         |   6.600000   |
 |The Falcon and the Winter Soldier|     6.0      |
 |Loki                             |     6.0      |
 |Chernobyl                        |     5.0      |
 ##################################################
 
-Mean:		 45.27
+Mean:		 44.43
 Median:		 27.13
-Pstdev:		 54.82
-Pvariance:	3005.23
-Stdev:		 55.44
-Variance:	3073.53
+Pstdev:		 54.51
+Pvariance:	2971.70
+Stdev:		 55.12
+Variance:	3037.74
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1954,6 +1985,7 @@ sorting by most episodes per season...
 |Baskets                          |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |           10.0           |Baskets                          |
 |Game of Thrones                  |         9.125000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         9.125000         |Game of Thrones                  |
 |Wandavision                      |           9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9.0            |Wandavision                      |
+|What If?                         |           9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9.0            |What If?                         |
 |Silicon Valley                   |         8.833333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |         8.833333         |Silicon Valley                   |
 |Trailer Park Boys                |         8.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         8.750000         |Trailer Park Boys                |
 |Solar Opposites                  |         8.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |         8.500000         |Solar Opposites                  |
@@ -2020,6 +2052,7 @@ sorting by most episodes per season...
 |Baskets                          |           10.0           |
 |Game of Thrones                  |         9.125000         |
 |Wandavision                      |           9.0            |
+|What If?                         |           9.0            |
 |Silicon Valley                   |         8.833333         |
 |Trailer Park Boys                |         8.750000         |
 |Solar Opposites                  |         8.500000         |
@@ -2035,12 +2068,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.05
-Median:		 12.00
-Pstdev:		  7.85
-Pvariance:	 61.67
-Stdev:		  7.94
-Variance:	 63.07
+Mean:		 13.94
+Median:		 11.75
+Pstdev:		  7.80
+Pvariance:	 60.87
+Stdev:		  7.89
+Variance:	 62.22
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2075,6 +2108,7 @@ sorting by least episodes per season...
 |Trailer Park Boys                |         8.750000          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         8.750000          |Trailer Park Boys                |
 |Silicon Valley                   |         8.833333          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |         8.833333          |Silicon Valley                   |
 |Wandavision                      |            9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            9.0            |Wandavision                      |
+|What If?                         |            9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            9.0            |What If?                         |
 |Game of Thrones                  |         9.125000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         9.125000          |Game of Thrones                  |
 |Curb your Enthusiasm             |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           10.0            |Curb your Enthusiasm             |
 |Better Call Saul                 |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0            |Better Call Saul                 |
@@ -2141,6 +2175,7 @@ sorting by least episodes per season...
 |Trailer Park Boys                |         8.750000          |
 |Silicon Valley                   |         8.833333          |
 |Wandavision                      |            9.0            |
+|What If?                         |            9.0            |
 |Game of Thrones                  |         9.125000          |
 |Curb your Enthusiasm             |           10.0            |
 |Better Call Saul                 |           10.0            |
@@ -2174,14 +2209,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.05
-Median:		 12.00
-Pstdev:		  7.85
-Pvariance:	 61.67
-Stdev:		  7.94
-Variance:	 63.07
+Mean:		 13.94
+Median:		 11.75
+Pstdev:		  7.80
+Pvariance:	 60.87
+Stdev:		  7.89
+Variance:	 62.22
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 16 | 14 | 15 | 17 | 17 | 19 | 21 | 22 | 19 | 22 | 21 | 22 | 20 | 19 | 12 | 9  | 3  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 16 | 14 | 15 | 17 | 17 | 19 | 21 | 22 | 19 | 22 | 21 | 22 | 20 | 19 | 12 | 10 | 3  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################
