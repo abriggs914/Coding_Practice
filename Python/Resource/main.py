@@ -1370,24 +1370,24 @@ def test_rainbow_gradient():
     print("start_c:", start_c)
     print("end_c:", end_c)
 
-    def rainbow_gradient(n_slices):
-        values = [(255, i, 0) for i in range(256)] +\
-                 [(i, 255, 0) for i in range(255, -1, -1)] +\
-                 [(0, 255, i) for i in range(255)] +\
-                 [(0, i, 255) for i in range(255, -1, -1)] +\
-                 [(i, 0, 255) for i in range(256)] +\
-                 [(255, 0, i) for i in range(255, -1, -1)]
-        print(f"len(values): {len(values)}")
-        l = len(values)
-        if isinstance(n_slices, int):
-            p = min(l, n_slices) / (l if l != 0 else 1)
-        elif isinstance(n_slices, float):
-            p = max(0, min(1, n_slices))
-        else:
-            raise TypeError(f"Param 'n_slice' not recognized: <{type(n_slices)}>")
-        values = reduce(values, p, how="distribute")
-        for val in values:
-            yield val
+    # def rainbow_gradient(n_slices):
+    #     values = [(255, i, 0) for i in range(256)] +\
+    #              [(i, 255, 0) for i in range(255, -1, -1)] +\
+    #              [(0, 255, i) for i in range(255)] +\
+    #              [(0, i, 255) for i in range(255, -1, -1)] +\
+    #              [(i, 0, 255) for i in range(256)] +\
+    #              [(255, 0, i) for i in range(255, -1, -1)]
+    #     print(f"len(values): {len(values)}")
+    #     l = len(values)
+    #     if isinstance(n_slices, int):
+    #         p = min(l, n_slices) / (l if l != 0 else 1)
+    #     elif isinstance(n_slices, float):
+    #         p = max(0, min(1, n_slices))
+    #     else:
+    #         raise TypeError(f"Param 'n_slice' not recognized: <{type(n_slices)}>")
+    #     values = reduce(values, p, how="distribute")
+    #     for val in values:
+    #         yield val
 
     # def increment_colour():
     #     n = int(text_box.text)
@@ -1422,7 +1422,7 @@ def test_rainbow_gradient():
         rp = max(0, x - 255)
         return rp, gp, 0
 
-    rainbow = rainbow_gradient(10)
+    rainbow = rainbow_gradient(100)
 
     while app.is_playing:
         display.fill(BLACK)
@@ -1434,7 +1434,7 @@ def test_rainbow_gradient():
         try:
             box.bgc = rainbow.__next__()
         except StopIteration:
-            rainbow = rainbow_gradient(10)
+            rainbow = rainbow_gradient(100)
 
         event_queue = app.run()
         for event in event_queue:
