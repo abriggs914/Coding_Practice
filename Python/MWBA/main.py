@@ -107,6 +107,15 @@ def df_exports(df):
 
 
 def add_stats(df, pts_for_win, total_games, n_rr):
+    provinces = {
+        "Halifax Thunder": "NS",
+        "Halifax Hornets": "NS",
+        "Windsor": "NS",
+        "Fredericton": "NB",
+        "Port City": "NB",
+        "Moncton": "NB"
+    }
+    df["DIFF"] = provinces[df["Names"]]
     df["DIFF"] = df["PF"] - df["PA"]
     df["LOSTPTS"] = (df["GP"] - df["W"]) * pts_for_win
     df["MAXPTS"] = (pts_for_win * total_games * n_rr) - ((df["GP"] - df["W"]) * pts_for_win)
@@ -118,6 +127,102 @@ def add_stats(df, pts_for_win, total_games, n_rr):
     print(df)
     print("VVV")
     print(list(df["RECORD"]))
+
+
+def game_objects_demo():
+    team_1 = Team(1, name="Port City Fog", city="Saint John", province="NB", _games_played=0, _points=0,
+                      _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_2 = Team(2, name="Moncton Mystics", city="Moncton", province="NB", _games_played=0, _points=0,
+                      _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_3 = Team(3, name="Fredericton Freeze", city="Fredericton", province="NB", _games_played=0, _points=0,
+                      _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_4 = Team(4, name="Halifax Hornets", city="Halifax", province="NS", _games_played=0, _points=0,
+                      _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_5 = Team(5, name="Halifax Thunder", city="Halifax", province="NS", _games_played=0, _points=0,
+                      _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    team_6 = Team(6, name="Windsor Edge", city="Windsor", province="NS", _games_played=0, _points=0, _points_for=0,
+                      _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
+    # print(team_1)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
+    # print(team_1
+    #       )
+    # print(f"last_10: {team_1.last_10}")
+
+    mwba_league = RoundRobinLeague("MWBA", "Basketball", datetime.datetime(2022, 5, 14), set(), dict(),
+                                       number_round_robins=2, points_for_win=2)
+    date_1 = datetime.datetime(2022, 5, 14)
+    date_2 = datetime.datetime(2022, 5, 15)
+    date_3 = datetime.datetime(2022, 5, 19)
+    date_4 = datetime.datetime(2022, 5, 24)
+    date_5 = datetime.datetime(2022, 5, 25)
+    date_6 = datetime.datetime(2022, 5, 28)
+    date_7 = datetime.datetime(2022, 5, 29)
+    date_8 = datetime.datetime(2022, 6, 2)
+    date_9 = datetime.datetime(2022, 6, 4)
+    date_10 = datetime.datetime(2022, 6, 5)
+    date_11 = datetime.datetime(2022, 6, 8)
+    mwba_league.add_game(date_1, team_2, team_5, 63, 83)  # Moncton 63  Halifax Thunder 83
+    mwba_league.add_game(date_1, team_1, team_6, 68, 71)  # Port City 68  Windsor 71
+    mwba_league.add_game(date_1, team_3, team_4, 66, 71)  # Fredericton 66  Halifax Hornets 71
+    mwba_league.add_game(date_2, team_1, team_5, 58, 73)  # Port City 58  Halifax Thunder 73
+    mwba_league.add_game(date_2, team_2, team_4, 66, 86)  # Moncton 66  Halifax Hornets 86
+    mwba_league.add_game(date_2, team_3, team_6, 69, 66)  # Fredericton 69  Windsor 66
+
+    mwba_league.add_game(date_3, team_3, team_1, 60, 55)  # Fredericton 60  Port City 55
+    mwba_league.add_game(date_3, team_6, team_5, 62, 66)  # Windsor 62  Halifax Thunder 66
+
+    mwba_league.add_game(date_4, team_2, team_1, 66, 81)  # Moncton 66  Port City 81
+    mwba_league.add_game(date_5, team_5, team_4, 73, 58)  # Halifax Thunder 73  Halifax Hornets 58
+
+    mwba_league.add_game(date_6, team_4, team_1, 91, 47)  # Halifax Hornets 91  Port City 47
+    mwba_league.add_game(date_6, team_5, team_3, 65, 53)  # Halifax Thunder 65  Fredericton 53
+    mwba_league.add_game(date_6, team_6, team_2, 68, 59)  # Windsor 68  Moncton 59
+
+    mwba_league.add_game(date_7, team_6, team_1, 81, 52)  # Windsor 81  Port City 52
+    mwba_league.add_game(date_7, team_4, team_3, 76, 49)  # Halifax Hornets 76  Fredericton 49
+    mwba_league.add_game(date_7, team_5, team_2, 91, 45)  # Halifax Thunder 91  Moncton 45
+
+    mwba_league.add_game(date_8, team_3, team_1, 58, 54)  # Fredericton 58  Port City 54
+    mwba_league.add_game(date_9, team_6, team_4, 68, 73)  # Windsor 68  Halifax Hornets 73
+    mwba_league.add_game(date_10, team_1, team_2, 80, 71)  # Port City 80  Moncton 71
+
+    mwba_league.add_game(date_11, team_4, team_5, 44, 72)  # Halifax Hornets 44  Halifax Thunder 72
+
+    print(f"MWBA: {mwba_league}")
+    print(f"MWBA total games: {mwba_league.total_games_rr()}")
+    print(f"MWBA total points: {mwba_league.total_points_scored()}")
+
+    tpf = 0
+    for team in mwba_league.teams:
+        o_record = mwba_league.overall_record(team)
+        h_record = mwba_league.home_record(team)
+        a_record = mwba_league.away_record(team)
+        record = o_record
+        record.update(h_record)
+        record.update(a_record)
+        tpf += record["overall"]["pf"]
+        print(dict_print(record, f"Team: {team.name}, Overall record:"))
+    print(f"calculated tpf: {tpf}")
+
+    print(f"home record team_1 vs team_6: {mwba_league.home_record(team_1, team_6)}")
+    print(f"home record team_6 vs team_1: {mwba_league.home_record(team_6, team_1)}")
+    print(f"away record team_1 vs team_6: {mwba_league.away_record(team_1, team_6)}")
+    print(f"away record team_6 vs team_1: {mwba_league.away_record(team_6, team_1)}")
+    print(f"overall record team_1 vs team_6: {mwba_league.overall_record(team_1, team_6)}")
+    print(f"overall record team_6 vs team_1: {mwba_league.overall_record(team_6, team_1)}")
+    print(f"overall record team_1: {mwba_league.overall_record(team_1)}")
+    print(f"home record team_1: {mwba_league.home_record(team_1)}")
 
 
 if __name__ == '__main__':
@@ -213,7 +318,8 @@ if __name__ == '__main__':
     # df1 = read_html_table_values("2022-05-20.html", r_type=DataFrame)
     # df1 = read_html_table_values("2022-05-25.html", r_type=DataFrame)
     # df1 = read_html_table_values("2022-05-26.html", r_type=DataFrame)
-    df1 = read_html_table_values("2022-06-09.html", r_type=DataFrame)
+    # df1 = read_html_table_values("2022-06-09.html", r_type=DataFrame)
+    df1 = read_html_table_values("2022-06-12.html", r_type=DataFrame)
 
     print()
     print(df1.loc[df1["PTS"] >= 3])
@@ -226,6 +332,7 @@ if __name__ == '__main__':
     print()
     print(f"Total games played: {sum(df1['GP']) // 2}")
     print(f"Total points scored: {sum(df1['PF'])}")
+    print(f"Total points scored: {df1.query('')}")
 
     history_str_1 = """
     Played May 15
@@ -264,89 +371,4 @@ if __name__ == '__main__':
     print("ar_games")
     print(ar_games)
 
-    team_1 = Team(1, name="Port City Fog", city="Saint John", province="NB", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
-    team_2 = Team(2, name="Moncton Mystics", city="Moncton", province="NB", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
-    team_3 = Team(3, name="Fredericton Freeze", city="Fredericton", province="NB", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
-    team_4 = Team(4, name="Halifax Hornets", city="Halifax", province="NS", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
-    team_5 = Team(5, name="Halifax Thunder", city="Halifax", province="NS", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
-    team_6 = Team(6, name="Windsor Edge", city="Windsor", province="NS", _games_played=0, _points=0, _points_for=0, _points_against=0, _avg_pf=0, _avg_pa=0, _last_10=None, _record=None, games={})
-    # print(team_1)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # team_1.add_game(datetime.datetime(2022, 5, 21), "Halifax Thunder", 89, 92, 2)
-    # print(team_1
-    #       )
-    # print(f"last_10: {team_1.last_10}")
-
-    mwba_league = RoundRobinLeague("MWBA", "Basketball", datetime.datetime(2022, 5, 14), set(), dict(), number_round_robins=2, points_for_win=2)
-    date_1 = datetime.datetime(2022, 5, 14)
-    date_2 = datetime.datetime(2022, 5, 15)
-    date_3 = datetime.datetime(2022, 5, 19)
-    date_4 = datetime.datetime(2022, 5, 24)
-    date_5 = datetime.datetime(2022, 5, 25)
-    date_6 = datetime.datetime(2022, 5, 28)
-    date_7 = datetime.datetime(2022, 5, 29)
-    date_8 = datetime.datetime(2022, 6, 2)
-    date_9 = datetime.datetime(2022, 6, 4)
-    date_10 = datetime.datetime(2022, 6, 5)
-    date_11 = datetime.datetime(2022, 6, 8)
-    mwba_league.add_game(date_1, team_2, team_5, 63, 83)  # Moncton 63  Halifax Thunder 83
-    mwba_league.add_game(date_1, team_1, team_6, 68, 71)  # Port City 68  Windsor 71
-    mwba_league.add_game(date_1, team_3, team_4, 66, 71)  # Fredericton 66  Halifax Hornets 71
-    mwba_league.add_game(date_2, team_1, team_5, 58, 73)  # Port City 58  Halifax Thunder 73
-    mwba_league.add_game(date_2, team_2, team_4, 66, 86)  # Moncton 66  Halifax Hornets 86
-    mwba_league.add_game(date_2, team_3, team_6, 69, 66)  # Fredericton 69  Windsor 66
-
-    mwba_league.add_game(date_3, team_3, team_1, 60, 55)  # Fredericton 60  Port City 55
-    mwba_league.add_game(date_3, team_6, team_5, 62, 66)  # Windsor 62  Halifax Thunder 66
-
-    mwba_league.add_game(date_4, team_2, team_1, 66, 81)  # Moncton 66  Port City 81
-    mwba_league.add_game(date_5, team_5, team_4, 73, 58)  # Halifax Thunder 73  Halifax Hornets 58
-
-    mwba_league.add_game(date_6, team_4, team_1, 91, 47)  # Halifax Hornets 91  Port City 47
-    mwba_league.add_game(date_6, team_5, team_3, 65, 53)  # Halifax Thunder 65  Fredericton 53
-    mwba_league.add_game(date_6, team_6, team_2, 68, 59)  # Windsor 68  Moncton 59
-
-    mwba_league.add_game(date_7, team_6, team_1, 81, 52)  # Windsor 81  Port City 52
-    mwba_league.add_game(date_7, team_4, team_3, 76, 49)  # Halifax Hornets 76  Fredericton 49
-    mwba_league.add_game(date_7, team_5, team_2, 91, 45)  # Halifax Thunder 91  Moncton 45
-
-    mwba_league.add_game(date_8, team_3, team_1, 58, 54)  # Fredericton 58  Port City 54
-    mwba_league.add_game(date_9, team_6, team_4, 68, 73)  # Windsor 68  Halifax Hornets 73
-    mwba_league.add_game(date_10, team_1, team_2, 80, 71)  # Port City 80  Moncton 71
-
-    mwba_league.add_game(date_11, team_4, team_5, 44, 72)  # Halifax Hornets 44  Halifax Thunder 72
-
-    print(f"MWBA: {mwba_league}")
-    print(f"MWBA total games: {mwba_league.total_games_rr()}")
-    print(f"MWBA total points: {mwba_league.total_points_scored()}")
-
-    tpf = 0
-    for team in mwba_league.teams:
-        o_record = mwba_league.overall_record(team)
-        h_record = mwba_league.home_record(team)
-        a_record = mwba_league.away_record(team)
-        record = o_record
-        record.update(h_record)
-        record.update(a_record)
-        tpf += record["overall"]["pf"]
-        print(dict_print(record, f"Team: {team.name}, Overall record:"))
-    print(f"calculated tpf: {tpf}")
-
-    print(f"home record team_1 vs team_6: {mwba_league.home_record(team_1, team_6)}")
-    print(f"home record team_6 vs team_1: {mwba_league.home_record(team_6, team_1)}")
-    print(f"away record team_1 vs team_6: {mwba_league.away_record(team_1, team_6)}")
-    print(f"away record team_6 vs team_1: {mwba_league.away_record(team_6, team_1)}")
-    print(f"overall record team_1 vs team_6: {mwba_league.overall_record(team_1, team_6)}")
-    print(f"overall record team_6 vs team_1: {mwba_league.overall_record(team_6, team_1)}")
-    print(f"overall record team_1: {mwba_league.overall_record(team_1)}")
-    print(f"home record team_1: {mwba_league.home_record(team_1)}")
+    # game_objects_demo()
