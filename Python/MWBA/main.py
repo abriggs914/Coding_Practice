@@ -6,6 +6,7 @@ from utility import dict_print
 from itertools import combinations
 from pandas import DataFrame
 
+
 teams = {
     "Port City Fog": {
         "city": "Saint John",
@@ -319,7 +320,8 @@ if __name__ == '__main__':
     # df1 = read_html_table_values("2022-05-25.html", r_type=DataFrame)
     # df1 = read_html_table_values("2022-05-26.html", r_type=DataFrame)
     # df1 = read_html_table_values("2022-06-09.html", r_type=DataFrame)
-    df1 = read_html_table_values("2022-06-12.html", r_type=DataFrame)
+    # df1 = read_html_table_values("2022-06-12.html", r_type=DataFrame)
+    df1 = read_html_table_values("2022-06-14.html", r_type=DataFrame)
 
     print()
     print(df1.loc[df1["PTS"] >= 3])
