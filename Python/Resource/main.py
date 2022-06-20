@@ -110,6 +110,7 @@ def text_rect_and_line():
         if not r2.collide_rect(r1, strictly_inside=False):
             raise ValueError("not r2.collide_rect(r1)")
     # print(dict_print(results, "Results"))
+	
 
     def rotate_matrix(grid, n=None, m=None, filter_none=False):
         """Return a list of all possible cell lines."""
