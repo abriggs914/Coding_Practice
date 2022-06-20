@@ -661,7 +661,7 @@ gravity_falls = TVSeries("Gravity Falls", {
 	2012,
 	2016,
 	False,
-	"Drama",
+	"Comedy / Cartoon",
 	"Disney+")
 	
 	
@@ -672,6 +672,26 @@ what_if = TVSeries("What If?", {
 	2021,
 	True,
 	"Drama",
+	"Disney+")
+	
+	
+hawkeye = TVSeries("Hawkeye", {
+	1: 6},
+	60,
+	2021,
+	2021,
+	True,
+	"Drama",
+	"Disney+")
+	
+	
+gravity_falls_shorts = TVSeries("Gravity Falls Shorts", {
+	1: 17},
+	5,
+	2013,
+	2014,
+	False,
+	"Comedy / Cartoon",
 	"Disney+")
 	
 
@@ -721,7 +741,9 @@ series_list = [
 	the_falcon_and_the_winter_soldier,
 	loki,
 	gravity_falls,
-	what_if
+	what_if,
+	hawkeye,
+	gravity_falls_shorts
 ]
 
    

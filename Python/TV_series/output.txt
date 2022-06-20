@@ -484,7 +484,7 @@ Total hours:			6.0
 Where to watch:			Disney+
 
 	Gravity Falls
-Genre:				Drama
+Genre:				Comedy / Cartoon
 Run (2012 -> 2016):		4 years
 number seasons:			2
 number episodes:		40
@@ -505,24 +505,46 @@ Total minutes:			396
 Total hours:			6.6
 Where to watch:			Disney+
 
+	Hawkeye
+Genre:				Drama
+Run (2021 -> 2021):		1 year
+number seasons:			1
+number episodes:		6
+episodes per season:		6.0
+average length of an episode:	60
+Total minutes:			360
+Total hours:			6.0
+Where to watch:			Disney+
+
+	Gravity Falls Shorts
+Genre:				Comedy / Cartoon
+Run (2013 -> 2014):		1 year
+number seasons:			1
+number episodes:		17
+episodes per season:		17.0
+average length of an episode:	5
+Total minutes:			85
+Total hours:			1.4166666666666667
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	The Mandalorian
-Genre:				Drama, Action
-Run (2019 -> 2021):		2 years
-number seasons:			2
-number episodes:		16
-episodes per season:		8.0
-average length of an episode:	44
-Total minutes:			704
-Total hours:			11.733333333333333
+	Malcolm in the Middle
+Genre:				Comedy
+Run (2000 -> 2006):		6 years
+number seasons:			7
+number episodes:		151
+episodes per season:		21.571428571428573
+average length of an episode:	24
+Total minutes:			3624
+Total hours:			60.4
 Where to watch:			Disney+
 
-Season: 2
-Episode: 8
+Season: 5
+Episode: 10
 
 	How would you like to print the stats?
 1	-	By start year
@@ -573,6 +595,7 @@ sorting by start year...
 |Gravity Falls                    |    2012    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    2012    |Gravity Falls                    |
 |Brooklyn Nine-Nine               |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    2013    |Brooklyn Nine-Nine               |
 |Peaky Blinders                   |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    2013    |Peaky Blinders                   |
+|Gravity Falls Shorts             |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    2013    |Gravity Falls Shorts             |
 |Silicon Valley                   |    2014    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    2014    |Silicon Valley                   |
 |Better Call Saul                 |    2015    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    2015    |Better Call Saul                 |
 |The Last Man on Earth            |    2015    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    2015    |The Last Man on Earth            |
@@ -589,6 +612,7 @@ sorting by start year...
 |The Falcon and the Winter Soldier|    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |The Falcon and the Winter Soldier|
 |Loki                             |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Loki                             |
 |What If?                         |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |What If?                         |
+|Hawkeye                          |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Hawkeye                          |
 ###################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -640,6 +664,7 @@ sorting by start year...
 |Gravity Falls                    |    2012    |
 |Brooklyn Nine-Nine               |    2013    |
 |Peaky Blinders                   |    2013    |
+|Gravity Falls Shorts             |    2013    |
 |Silicon Valley                   |    2014    |
 |Better Call Saul                 |    2015    |
 |The Last Man on Earth            |    2015    |
@@ -656,14 +681,15 @@ sorting by start year...
 |The Falcon and the Winter Soldier|    2021    |
 |Loki                             |    2021    |
 |What If?                         |    2021    |
+|Hawkeye                          |    2021    |
 ################################################
 
-Mean:		2009.50
-Median:		2010.50
-Pstdev:		  7.73
-Pvariance:	 59.77
-Stdev:		  7.82
-Variance:	 61.10
+Mean:		2009.81
+Median:		2011.00
+Pstdev:		  7.76
+Pvariance:	 60.19
+Stdev:		  7.84
+Variance:	 61.47
 
 	How would you like to print the stats?
 1	-	By start year
@@ -696,6 +722,7 @@ sorting by end year...
 |The IT Crowd                     |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2013   |The IT Crowd                     |
 |Breaking Bad                     |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2013   |Breaking Bad                     |
 |Misfits                          |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2013   |Misfits                          |
+|Gravity Falls Shorts             |   2014   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |   2014   |Gravity Falls Shorts             |
 |Community                        |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   2015   |Community                        |
 |Parks and Recreation             |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   2015   |Parks and Recreation             |
 |Brickleberry                     |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |   2015   |Brickleberry                     |
@@ -727,6 +754,7 @@ sorting by end year...
 |The Falcon and the Winter Soldier|   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |The Falcon and the Winter Soldier|
 |Loki                             |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |Loki                             |
 |What If?                         |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |What If?                         |
+|Hawkeye                          |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |Hawkeye                          |
 |The Simpsons                     |   2022   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |The Simpsons                     |
 |Family Guy                       |   2022   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |Family Guy                       |
 |The Orville                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2022   |The Orville                      |
@@ -763,6 +791,7 @@ sorting by end year...
 |The IT Crowd                     |   2013   |
 |Breaking Bad                     |   2013   |
 |Misfits                          |   2013   |
+|Gravity Falls Shorts             |   2014   |
 |Community                        |   2015   |
 |Parks and Recreation             |   2015   |
 |Brickleberry                     |   2015   |
@@ -794,17 +823,18 @@ sorting by end year...
 |The Falcon and the Winter Soldier|   2021   |
 |Loki                             |   2021   |
 |What If?                         |   2021   |
+|Hawkeye                          |   2021   |
 |The Simpsons                     |   2022   |
 |Family Guy                       |   2022   |
 |The Orville                      |   2022   |
 ##############################################
 
-Mean:		2016.52
+Mean:		2016.56
 Median:		2019.00
-Pstdev:		  5.11
-Pvariance:	 26.16
-Stdev:		  5.17
-Variance:	 26.74
+Pstdev:		  5.06
+Pvariance:	 25.62
+Stdev:		  5.12
+Variance:	 26.17
 
 	How would you like to print the stats?
 1	-	By start year
@@ -825,6 +855,7 @@ sorting by shortest series length...
 
 ###################################################################################################################################################################################################################################################################################################################
 ##################################| shortest series run length |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| shortest series run length |##################################
+|Gravity Falls Shorts             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |             1              |Gravity Falls Shorts             |
 |The Mick                         |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |             1              |The Mick                         |
 |Chernobyl                        |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1              |Chernobyl                        |
 |Solar Opposites                  |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1              |Solar Opposites                  |
@@ -832,6 +863,7 @@ sorting by shortest series length...
 |The Falcon and the Winter Soldier|             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |The Falcon and the Winter Soldier|
 |Loki                             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Loki                             |
 |What If?                         |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |What If?                         |
+|Hawkeye                          |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Hawkeye                          |
 |Final Space                      |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2              |Final Space                      |
 |The Mandalorian                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |The Mandalorian                  |
 |Avatar, the Last Airbender       |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender       |
@@ -892,6 +924,7 @@ sorting by shortest series length...
 
 ################################################################
 ##################################| shortest series run length |
+|Gravity Falls Shorts             |             1              |
 |The Mick                         |             1              |
 |Chernobyl                        |             1              |
 |Solar Opposites                  |             1              |
@@ -899,6 +932,7 @@ sorting by shortest series length...
 |The Falcon and the Winter Soldier|             1              |
 |Loki                             |             1              |
 |What If?                         |             1              |
+|Hawkeye                          |             1              |
 |Final Space                      |             2              |
 |The Mandalorian                  |             2              |
 |Avatar, the Last Airbender       |             3              |
@@ -940,12 +974,12 @@ sorting by shortest series length...
 |The Simpsons                     |             33             |
 ################################################################
 
-Mean:		  7.13
+Mean:		  6.88
 Median:		  5.00
-Pstdev:		  6.46
-Pvariance:	 41.72
-Stdev:		  6.53
-Variance:	 42.65
+Pstdev:		  6.44
+Pvariance:	 41.48
+Stdev:		  6.51
+Variance:	 42.37
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1005,6 +1039,7 @@ sorting by longest series length...
 |Baskets                          |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3             |Baskets                          |
 |Final Space                      |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2             |Final Space                      |
 |The Mandalorian                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2             |The Mandalorian                  |
+|Gravity Falls Shorts             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |             1             |Gravity Falls Shorts             |
 |The Mick                         |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |             1             |The Mick                         |
 |Chernobyl                        |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1             |Chernobyl                        |
 |Solar Opposites                  |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1             |Solar Opposites                  |
@@ -1012,6 +1047,7 @@ sorting by longest series length...
 |The Falcon and the Winter Soldier|             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |The Falcon and the Winter Soldier|
 |Loki                             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Loki                             |
 |What If?                         |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |What If?                         |
+|Hawkeye                          |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Hawkeye                          |
 #################################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1072,6 +1108,7 @@ sorting by longest series length...
 |Baskets                          |             3             |
 |Final Space                      |             2             |
 |The Mandalorian                  |             2             |
+|Gravity Falls Shorts             |             1             |
 |The Mick                         |             1             |
 |Chernobyl                        |             1             |
 |Solar Opposites                  |             1             |
@@ -1079,14 +1116,15 @@ sorting by longest series length...
 |The Falcon and the Winter Soldier|             1             |
 |Loki                             |             1             |
 |What If?                         |             1             |
+|Hawkeye                          |             1             |
 ###############################################################
 
-Mean:		  7.13
+Mean:		  6.88
 Median:		  5.00
-Pstdev:		  6.46
-Pvariance:	 41.72
-Stdev:		  6.53
-Variance:	 42.65
+Pstdev:		  6.44
+Pvariance:	 41.48
+Stdev:		  6.51
+Variance:	 42.37
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1107,11 +1145,13 @@ sorting by least number of seasons...
 
 #######################################################################################################################################################################################################################################################################################################
 ##################################| least number seasons |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| least number seasons |##################################
+|Gravity Falls Shorts             |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          1           |Gravity Falls Shorts             |
 |Chernobyl                        |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1           |Chernobyl                        |
 |Wandavision                      |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Wandavision                      |
 |The Falcon and the Winter Soldier|          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |The Falcon and the Winter Soldier|
 |Loki                             |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Loki                             |
 |What If?                         |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |What If?                         |
+|Hawkeye                          |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Hawkeye                          |
 |The Proud Family                 |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2           |The Proud Family                 |
 |Gravity Falls                    |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          2           |Gravity Falls                    |
 |Final Space                      |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2           |Final Space                      |
@@ -1174,11 +1214,13 @@ sorting by least number of seasons...
 
 ##########################################################
 ##################################| least number seasons |
+|Gravity Falls Shorts             |          1           |
 |Chernobyl                        |          1           |
 |Wandavision                      |          1           |
 |The Falcon and the Winter Soldier|          1           |
 |Loki                             |          1           |
 |What If?                         |          1           |
+|Hawkeye                          |          1           |
 |The Proud Family                 |          2           |
 |Gravity Falls                    |          2           |
 |Final Space                      |          2           |
@@ -1222,12 +1264,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  6.20
+Mean:		  5.98
 Median:		  5.00
-Pstdev:		  5.62
-Pvariance:	 31.55
-Stdev:		  5.68
-Variance:	 32.25
+Pstdev:		  5.60
+Pvariance:	 31.31
+Stdev:		  5.65
+Variance:	 31.98
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1289,11 +1331,13 @@ sorting by most number of seasons...
 |The Mandalorian                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2          |The Mandalorian                  |
 |The Mick                         |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2          |The Mick                         |
 |Solar Opposites                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          2          |Solar Opposites                  |
+|Gravity Falls Shorts             |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          1          |Gravity Falls Shorts             |
 |Chernobyl                        |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1          |Chernobyl                        |
 |Wandavision                      |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Wandavision                      |
 |The Falcon and the Winter Soldier|          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |The Falcon and the Winter Soldier|
 |Loki                             |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Loki                             |
 |What If?                         |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |What If?                         |
+|Hawkeye                          |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Hawkeye                          |
 #####################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1356,19 +1400,21 @@ sorting by most number of seasons...
 |The Mandalorian                  |          2          |
 |The Mick                         |          2          |
 |Solar Opposites                  |          2          |
+|Gravity Falls Shorts             |          1          |
 |Chernobyl                        |          1          |
 |Wandavision                      |          1          |
 |The Falcon and the Winter Soldier|          1          |
 |Loki                             |          1          |
 |What If?                         |          1          |
+|Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  6.20
+Mean:		  5.98
 Median:		  5.00
-Pstdev:		  5.62
-Pvariance:	 31.55
-Stdev:		  5.68
-Variance:	 32.25
+Pstdev:		  5.60
+Pvariance:	 31.31
+Stdev:		  5.65
+Variance:	 31.98
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1392,11 +1438,13 @@ sorting by least number of episodes...
 |Chernobyl                        |           5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           5           |Chernobyl                        |
 |The Falcon and the Winter Soldier|           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6           |The Falcon and the Winter Soldier|
 |Loki                             |           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6           |Loki                             |
+|Hawkeye                          |           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6           |Hawkeye                          |
 |Wandavision                      |           9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9           |Wandavision                      |
 |What If?                         |           9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9           |What If?                         |
 |Sherlock                         |          13           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13           |Sherlock                         |
 |The Mandalorian                  |          16           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16           |The Mandalorian                  |
 |Solar Opposites                  |          17           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          17           |Solar Opposites                  |
+|Gravity Falls Shorts             |          17           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          17           |Gravity Falls Shorts             |
 |Black Mirror                     |          21           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          21           |Black Mirror                     |
 |Final Space                      |          23           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          23           |Final Space                      |
 |The IT Crowd                     |          25           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          25           |The IT Crowd                     |
@@ -1459,11 +1507,13 @@ sorting by least number of episodes...
 |Chernobyl                        |           5           |
 |The Falcon and the Winter Soldier|           6           |
 |Loki                             |           6           |
+|Hawkeye                          |           6           |
 |Wandavision                      |           9           |
 |What If?                         |           9           |
 |Sherlock                         |          13           |
 |The Mandalorian                  |          16           |
 |Solar Opposites                  |          17           |
+|Gravity Falls Shorts             |          17           |
 |Black Mirror                     |          21           |
 |Final Space                      |          23           |
 |The IT Crowd                     |          25           |
@@ -1504,12 +1554,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		 96.48
-Median:		 58.50
-Pstdev:		123.51
-Pvariance:	15253.64
-Stdev:		124.87
-Variance:	15592.61
+Mean:		 92.94
+Median:		 54.50
+Pstdev:		122.10
+Pvariance:	14907.68
+Stdev:		123.39
+Variance:	15224.87
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1569,12 +1619,14 @@ sorting by most number of episodes...
 |Final Space                      |          23          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          23          |Final Space                      |
 |Black Mirror                     |          21          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          21          |Black Mirror                     |
 |Solar Opposites                  |          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          17          |Solar Opposites                  |
+|Gravity Falls Shorts             |          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          17          |Gravity Falls Shorts             |
 |The Mandalorian                  |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16          |The Mandalorian                  |
 |Sherlock                         |          13          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13          |Sherlock                         |
 |Wandavision                      |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          9           |Wandavision                      |
 |What If?                         |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          9           |What If?                         |
 |The Falcon and the Winter Soldier|          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          6           |The Falcon and the Winter Soldier|
 |Loki                             |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          6           |Loki                             |
+|Hawkeye                          |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          6           |Hawkeye                          |
 |Chernobyl                        |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          5           |Chernobyl                        |
 #######################################################################################################################################################################################################################################################################################################
 
@@ -1636,21 +1688,23 @@ sorting by most number of episodes...
 |Final Space                      |          23          |
 |Black Mirror                     |          21          |
 |Solar Opposites                  |          17          |
+|Gravity Falls Shorts             |          17          |
 |The Mandalorian                  |          16          |
 |Sherlock                         |          13          |
 |Wandavision                      |          9           |
 |What If?                         |          9           |
 |The Falcon and the Winter Soldier|          6           |
 |Loki                             |          6           |
+|Hawkeye                          |          6           |
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 96.48
-Median:		 58.50
-Pstdev:		123.51
-Pvariance:	15253.64
-Stdev:		124.87
-Variance:	15592.61
+Mean:		 92.94
+Median:		 54.50
+Pstdev:		122.10
+Pvariance:	14907.68
+Stdev:		123.39
+Variance:	15224.87
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1671,9 +1725,11 @@ sorting by shortest time...
 
 #########################################################################################################################################################################################################################################################################################
 ##################################| shortest time |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| shortest time |##################################
+|Gravity Falls Shorts             |   1.416667    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |   1.416667    |Gravity Falls Shorts             |
 |Chernobyl                        |      5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |      5.0      |Chernobyl                        |
 |The Falcon and the Winter Soldier|      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      6.0      |The Falcon and the Winter Soldier|
 |Loki                             |      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      6.0      |Loki                             |
+|Hawkeye                          |      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      6.0      |Hawkeye                          |
 |What If?                         |   6.600000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.600000    |What If?                         |
 |Wandavision                      |   6.750000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000    |Wandavision                      |
 |Solar Opposites                  |   6.800000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000    |Solar Opposites                  |
@@ -1738,9 +1794,11 @@ sorting by shortest time...
 
 ###################################################
 ##################################| shortest time |
+|Gravity Falls Shorts             |   1.416667    |
 |Chernobyl                        |      5.0      |
 |The Falcon and the Winter Soldier|      6.0      |
 |Loki                             |      6.0      |
+|Hawkeye                          |      6.0      |
 |What If?                         |   6.600000    |
 |Wandavision                      |   6.750000    |
 |Solar Opposites                  |   6.800000    |
@@ -1786,12 +1844,12 @@ sorting by shortest time...
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 44.43
-Median:		 27.13
-Pstdev:		 54.51
-Pvariance:	2971.70
-Stdev:		 55.12
-Variance:	3037.74
+Mean:		 42.73
+Median:		 26.60
+Pstdev:		 53.98
+Pvariance:	2914.32
+Stdev:		 54.56
+Variance:	2976.32
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1857,7 +1915,9 @@ sorting by longest time...
 |What If?                         |   6.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.600000   |What If?                         |
 |The Falcon and the Winter Soldier|     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     6.0      |The Falcon and the Winter Soldier|
 |Loki                             |     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     6.0      |Loki                             |
+|Hawkeye                          |     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     6.0      |Hawkeye                          |
 |Chernobyl                        |     5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |     5.0      |Chernobyl                        |
+|Gravity Falls Shorts             |   1.416667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |   1.416667   |Gravity Falls Shorts             |
 #######################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1924,15 +1984,17 @@ sorting by longest time...
 |What If?                         |   6.600000   |
 |The Falcon and the Winter Soldier|     6.0      |
 |Loki                             |     6.0      |
+|Hawkeye                          |     6.0      |
 |Chernobyl                        |     5.0      |
+|Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 44.43
-Median:		 27.13
-Pstdev:		 54.51
-Pvariance:	2971.70
-Stdev:		 55.12
-Variance:	3037.74
+Mean:		 42.73
+Median:		 26.60
+Pstdev:		 53.98
+Pvariance:	2914.32
+Stdev:		 54.56
+Variance:	2976.32
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1969,6 +2031,7 @@ sorting by most episodes per season...
 |Community                        |        18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |        18.333333         |Community                        |
 |Prison Break                     |           18.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |           18.0           |Prison Break                     |
 |Parks and Recreation             |        17.857143         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |        17.857143         |Parks and Recreation             |
+|Gravity Falls Shorts             |           17.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |           17.0           |Gravity Falls Shorts             |
 |Arrested Develpoment             |        16.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |        16.800000         |Arrested Develpoment             |
 |The Last Man on Earth            |        16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |        16.750000         |The Last Man on Earth            |
 |Futurama                         |           14.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |           14.0           |Futurama                         |
@@ -1996,6 +2059,7 @@ sorting by most episodes per season...
 |Peaky Blinders                   |           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |           6.0            |Peaky Blinders                   |
 |The Falcon and the Winter Soldier|           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6.0            |The Falcon and the Winter Soldier|
 |Loki                             |           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6.0            |Loki                             |
+|Hawkeye                          |           6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           6.0            |Hawkeye                          |
 |Chernobyl                        |           5.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           5.0            |Chernobyl                        |
 |Black Mirror                     |         4.200000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         4.200000         |Black Mirror                     |
 |Sherlock                         |         3.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |         3.250000         |Sherlock                         |
@@ -2036,6 +2100,7 @@ sorting by most episodes per season...
 |Community                        |        18.333333         |
 |Prison Break                     |           18.0           |
 |Parks and Recreation             |        17.857143         |
+|Gravity Falls Shorts             |           17.0           |
 |Arrested Develpoment             |        16.800000         |
 |The Last Man on Earth            |        16.750000         |
 |Futurama                         |           14.0           |
@@ -2063,17 +2128,18 @@ sorting by most episodes per season...
 |Peaky Blinders                   |           6.0            |
 |The Falcon and the Winter Soldier|           6.0            |
 |Loki                             |           6.0            |
+|Hawkeye                          |           6.0            |
 |Chernobyl                        |           5.0            |
 |Black Mirror                     |         4.200000         |
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 13.94
+Mean:		 13.83
 Median:		 11.75
-Pstdev:		  7.80
-Pvariance:	 60.87
-Stdev:		  7.89
-Variance:	 62.22
+Pstdev:		  7.73
+Pvariance:	 59.83
+Stdev:		  7.82
+Variance:	 61.10
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2100,6 +2166,7 @@ sorting by least episodes per season...
 |Peaky Blinders                   |            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |            6.0            |Peaky Blinders                   |
 |The Falcon and the Winter Soldier|            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            6.0            |The Falcon and the Winter Soldier|
 |Loki                             |            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            6.0            |Loki                             |
+|Hawkeye                          |            6.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            6.0            |Hawkeye                          |
 |Letterkenny                      |         6.222222          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |         6.222222          |Letterkenny                      |
 |The IT Crowd                     |         6.250000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         6.250000          |The IT Crowd                     |
 |Misfits                          |         7.400000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         7.400000          |Misfits                          |
@@ -2124,6 +2191,7 @@ sorting by least episodes per season...
 |Futurama                         |           14.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |           14.0            |Futurama                         |
 |The Last Man on Earth            |         16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |         16.750000         |The Last Man on Earth            |
 |Arrested Develpoment             |         16.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         16.800000         |Arrested Develpoment             |
+|Gravity Falls Shorts             |           17.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |           17.0            |Gravity Falls Shorts             |
 |Parks and Recreation             |         17.857143         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         17.857143         |Parks and Recreation             |
 |Prison Break                     |           18.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |           18.0            |Prison Break                     |
 |Community                        |         18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         18.333333         |Community                        |
@@ -2167,6 +2235,7 @@ sorting by least episodes per season...
 |Peaky Blinders                   |            6.0            |
 |The Falcon and the Winter Soldier|            6.0            |
 |Loki                             |            6.0            |
+|Hawkeye                          |            6.0            |
 |Letterkenny                      |         6.222222          |
 |The IT Crowd                     |         6.250000          |
 |Misfits                          |         7.400000          |
@@ -2191,6 +2260,7 @@ sorting by least episodes per season...
 |Futurama                         |           14.0            |
 |The Last Man on Earth            |         16.750000         |
 |Arrested Develpoment             |         16.800000         |
+|Gravity Falls Shorts             |           17.0            |
 |Parks and Recreation             |         17.857143         |
 |Prison Break                     |           18.0            |
 |Community                        |         18.333333         |
@@ -2209,14 +2279,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 13.94
+Mean:		 13.83
 Median:		 11.75
-Pstdev:		  7.80
-Pvariance:	 60.87
-Stdev:		  7.89
-Variance:	 62.22
+Pstdev:		  7.73
+Pvariance:	 59.83
+Stdev:		  7.82
+Variance:	 61.10
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 16 | 14 | 15 | 17 | 17 | 19 | 21 | 22 | 19 | 22 | 21 | 22 | 20 | 19 | 12 | 10 | 3  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 16 | 14 | 15 | 17 | 17 | 19 | 21 | 23 | 20 | 22 | 21 | 22 | 20 | 19 | 12 | 11 | 3  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################
