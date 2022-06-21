@@ -768,4 +768,4 @@ ORDER BY
 
 SELECT * FROM [v_GamesInfo];
 SELECT * FROM [v_TeamsInfo];
-SELECT sum([PD]) FROM [v_TeamsInfo];
+SELECT SUM([PD]) AS [SUM(PD)] FROM [v_TeamsInfo];
