@@ -1,8 +1,3 @@
-import phone_number_guess
-# import orbiting_date_picker
-
-
-# gsm_showing_dae_picker = (True, False), 0
 
 
 #	Class outlining a Game-State-Machine (GSM).
@@ -13,7 +8,7 @@ import phone_number_guess
 
 class GSM:
 
-    def __init__(self, options, name=None, idx=None, max_cycles=None):
+    def __init__(self, options, name=None, idx=None, max_cycles=None, allow_recycle=True):
         """Game State Machine. Simulates state switches for an object.
         Required:   options     -   list of states.
         Optional:   name        -   GSM name
@@ -23,7 +18,6 @@ class GSM:
             idx = 0
         if not isinstance(idx, int) or (0 < idx < len(options)):
             raise TypeError("Error param 'idx' needs to be an integer corresponding to a list index.")
-
         if not isinstance(options, list) and not isinstance(options, tuple):
             raise TypeError("Error param 'options' needs to be an ordered iterable object. (supported: list, tuple)")
         if len(options) == 0:
@@ -35,6 +29,7 @@ class GSM:
         self.idx = idx
         self.options = options
         self.cycles = 0
+        self.prev = self.calc_prev()
 
         self.max_cycles = -1
         if max_cycles is not None:
@@ -44,6 +39,9 @@ class GSM:
             elif isinstance(max_cycles, int):
                 self.max_cycles = max_cycles
 
+        self.callbacks = {}
+        self.allow_recycle = allow_recycle
+
     def __iter__(self):
         """Generator of upcoming states. ONLY 1 CYCLE"""
         # return self.options[:self.idx] + self.options[self.idx:]
@@ -52,6 +50,10 @@ class GSM:
 
     def __next__(self):
         """Call this like a generator would. Simulates 'walking' states and checks against max_cycles."""
+        print(f"idx: <{self.idx}>, prev: <{self.prev}>, a={self.idx % len(self)}, b={(self.prev + 1) % len(self)}")
+        if (self.idx + 1) % len(self) != self.prev % len(self):
+            # if this is true, then the state index was altered illegally.
+            raise ValueError("STOP!!")
         self.idx += 1
         if self.idx >= len(self):
             self.cycles += 1
@@ -61,7 +63,11 @@ class GSM:
             # if self.max_cycles >= 0:
             #     if self.cycles >= self.max_cycles:
             #         raise StopIteration(f"Error max cycles have been reached for this GSM object. cycles={self.cycles}")
-        return self.state()
+        new_state = self.state()
+        self.callback(new_state)
+        print(f"new_state: <{new_state}>, idx: <{self.idx}>, prev: <{self.prev}>")
+        self.prev = self.calc_prev() # call last to act as a check.
+        return new_state
 
     def __len__(self):
         """Return length of states list"""
@@ -87,6 +93,22 @@ class GSM:
         """Peek ahead to the nth state. Default next state."""
         return self.state((self.idx + n_ahead) % len(self))
 
+    def set_state(self, idx):
+        if isinstance(idx, int):
+            # TODO this will cause a problem for keys that are also whole numbers. instead of by value this does by position
+            if -1 < idx < len(self):
+                self.idx = idx
+                self.prev = self.calc_prev()
+            else:
+                raise ValueError(f"Error cannot set the state to index={idx}. Index out of range.")
+        else:
+            if idx not in self.options:
+                raise KeyError(f"Error key '{idx}' not a valid state for this machine.")
+            state = idx
+            self.idx = self.options.index(state)
+            self.prev = self.calc_prev(idx)
+
+
     def add_state(self, state, idx=None):
         """Add a state. By default, appended, but can be altered using idx param."""
         if idx is None:
@@ -109,18 +131,52 @@ class GSM:
             temp.remove(state)
             self.options = tuple(temp)
 
+    def bind_callback(self, func, *args, state=None, **kwargs):
+        """Add a callback to a given state """
+        # print(f"func: {func}")
+        # print(f"args: {args}")
+        # print(f"kwargs: {kwargs}")
+        state = state if state is not None else self.state()
+        if state not in self.options:
+            raise KeyError(f"Error unable to bind callback for state '{state}' as it is not a valid state of this GSM.")
+        self.callbacks[state] = (func, args, kwargs)
+
+    def unbind_callback(self, state=None):
+        """Unbind a callback for a given state, defaults to current state."""
+        state = state if state is not None else self.state()
+        if state not in self.options:
+            raise KeyError(f"Error unable to unbind callback for state '{state}' as it is not a valid state of this GSM.")
+        if state not in self.callbacks:
+            print(f"No callbacks have been bound to state '{state}' yet.")
+            return
+        del self.callbacks[state]
+
+    def callback(self, state=None):
+        """Call the function associated with a given state, defaults to current state."""
+        state = state if state is not None else self.state()
+        if state in self.callbacks:
+            func, args, kwargs = self.callbacks[state]
+            func(*args, **kwargs)
+
     def restart(self):
         """Restart from idx=0, same cycle."""
         self.idx = 0
 
     def reset(self):
         """Reset from index=0 and cycle=0."""
+        if not self.allow_recycle:
+            raise StopIteration("Error this GSM is not allowed to recycle based on init param 'allow_recycle'.")
         self.restart()
         self.cycles = 0
 
+    def calc_prev(self, idx=None):
+        """Grab the index immediately before the given index, defaults to current index."""
+        idx = self.idx if idx is None else idx
+        return (idx - 1) % len(self)
+
     def can_recycle(self):
         """Can this GSM cycle again or will it raise a StopIteration."""
-        return self.max_cycles < 0 or self.cycles < self.max_cycles - 1
+        return self.allow_recycle and (self.max_cycles < 0 or self.cycles < self.max_cycles - 1)
 
     def __repr__(self):
         a = f" name={self.name}," if self.name is not None else ""
@@ -148,8 +204,16 @@ class YesNoCancelGSM(GSM):
         super().__init__(options=["Yes", "No", "Cancel"], name=name, idx=idx, max_cycles=max_cycles)
 
 
-
 if __name__ == '__main__':
+
+    def print_hello1():
+        print("Hello World!")
+
+
+    def print_hello2(arg1, arg2, arg3=4):
+        print(f"Hello World! arg1={arg1} arg2={arg2} arg3={arg3}")
+
+
     # phone_number_guess.main()
     # orbiting_date_picker.main()
     gsma = GSM(options=list(range(100)), name="GSM3")
@@ -165,7 +229,24 @@ if __name__ == '__main__':
         gsm4.__next__(),
         gsm4.__next__(),
         gsm4.can_recycle(),
-        gsm4.__next__()
+        gsm2.bind_callback(print_hello1),
+        gsm2.__next__(),
+        gsm2.bind_callback(print_hello2, 1, 4, arg3=5),
+        gsm2.unbind_callback(state=True),
+        gsm2.bind_callback(print_hello2, -1, -4, arg3=-5, state=True),
+        gsm2.__next__(),
+        gsm2.__next__(),
+        gsm2.__next__(),
+        gsm2.__next__(),
+        gsm1,
+        gsm2,
+        gsm3,
+        gsm4,
+        list(gsm1),
+        list(gsm2),
+        list(gsm3),
+        list(gsm4)
+        # gsm4.__next__()
     ]
 
     for i, test in enumerate(to_print):

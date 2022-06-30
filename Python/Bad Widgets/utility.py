@@ -1,26 +1,76 @@
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
-from random import random, choice
+from random import random, choice, randint
+from plyer import notification
 import datetime as dt
+import calendar
 import shutil
 import sys
+import os
 
-"""
+
+VERSION = \
+"""	
 	General Utility Functions
-	Version..............1.20
-	Date...........2021-09-22
+	Version..............1.48
+	Date...........2022-04-29
 	Author.......Avery Briggs
 """
+
+
+def VERSION_NUMBER():
+    return float(VERSION.split("\n")[2].split(".")[-2] + "." + VERSION.split("\n")[2].split(".")[-1])
+
+
+def VERSION_DATE():
+    return VERSION.split("\n")[3].split(".")[-1]
+
+
+def VERSION_AUTHOR():
+    return VERSION.split("\n")[4].split(".")[-1]
+
+
+def func_def():
+    pass
+
+
+class Foo:
+    def __init__(self):
+        pass
+
+    def f1(self):
+        pass
+
+    def f2(self, f):
+        pass
+
+
+FOO_OBJ = Foo()
+
+
+def isfunc(f):
+    return isinstance(f, type(func_def))
+
+
+def isclassmethod(m):
+    return isinstance(m, type(FOO_OBJ.f1))
 
 
 def lenstr(x):
     return len(str(x))
 
 
-def minmax(a, b):
+def minmax(a, *b):
+    
     if a <= b:
         return a, b
     return b, a
+
+
+def maxmin(a, b):
+    if a < b:
+        return b, a
+    return a, b
 
 
 def avg(lst):
@@ -243,11 +293,13 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
     return m
 
 
-def money(v):
+def money(v, int_only=False):
     # return "$ %.2f" % v
     setlocale(LC_ALL, "")
     m = currency(v, grouping=True)
     i = m.index("$") + 1
+    if int_only:
+        return (m[:i] + " " + m[i:]).split(".")[0]
     return m[:i] + " " + m[i:]
 
 
@@ -329,7 +381,7 @@ def show(arr):
 
 
 def add_business_days(d, bd, holidays=None):
-    if holidays == None:
+    if holidays is None:
         holidays = []
     i = 0
     t = dt.datetime(d.year, d.month, d.day)
@@ -344,7 +396,7 @@ def add_business_days(d, bd, holidays=None):
 
 def business_days_between(d1, d2, holidays=None):
     business_days = 0
-    if holidays == None:
+    if holidays is None:
         holidays = []
     date_1 = d1 if type(d1) == dt.datetime else dt.datetime.strptime(d1, "%d-%b-%y")
     date_2 = d2 if type(d2) == dt.datetime else dt.datetime.strptime(d2, "%d-%b-%y")
@@ -393,6 +445,16 @@ def isfloat(value):
         return True
     except ValueError:
         return False
+
+
+def isnumber(value):
+    if isinstance(value, int) or isinstance(value, float):
+        return True
+    if isinstance(value, str):
+        if value.count("-") < 2 and value.count(".") < 2:
+            if value.replace("-", "").replace(".", "").isnumeric():
+                return True
+    return False
 
 
 def same_calendar_day(d1, d2):
@@ -588,33 +650,6 @@ def clamp(s, v, l):
     return max(s, min(v, l))
 
 
-# Darken an RGB color using a proportion p (0-1)
-def darken(c, p):
-    r, g, b = c
-    r = clamp(0, round(r - (255 * p)), 255)
-    g = clamp(0, round(g - (255 * p)), 255)
-    b = clamp(0, round(b - (255 * p)), 255)
-    return r, g, b
-
-
-# Brighten an RGB color using a proportion p (0-1)
-def brighten(c, p):
-    r, g, b = c
-    r = clamp(0, round(r + (255 * p)), 255)
-    g = clamp(0, round(g + (255 * p)), 255)
-    b = clamp(0, round(b + (255 * p)), 255)
-    return r, g, b
-
-
-# return random RGB color
-def random_color():
-    return (
-        random.randint(10, 245),
-        random.randint(10, 245),
-        random.randint(10, 245)
-    )
-
-
 # Rotate a 2D point about the origin, a given amount of degrees. Counterclockwise
 def rotate_on_origin(px, py, theta):
     t = radians(theta)
@@ -744,11 +779,126 @@ class Line:
         else:
             x = (b2 * c1 - b1 * c2) / det
             y = (a1 * c2 - a2 * c1) / det
-            if self.collide_point(x, y) and line.collide_point(x,
-                                                               y) and self.x1 <= x <= self.x2 and self.y1 <= y <= self.y2 and line.x1 <= x <= line.x2 and line.y1 <= y <= line.y2:
-                return x, y
-            else:
-                return None
+            sx1, sy1 = self.p1
+            sx2, sy2 = self.p2
+            sx1, sx2 = minmax(sx1, sx2)
+            sy1, sy2 = minmax(sy1, sy2)
+            lx1, ly1 = line.p1
+            lx2, ly2 = line.p2
+            lx1, lx2 = minmax(lx1, lx2)
+            ly1, ly2 = minmax(ly1, ly2)
+        #         if self.collide_point(x, y) and line.collide_point(x,
+        #                                                            y) and self.x1 <= x <= self.x2 and self.y1 <= y <= self.y2 and line.x1 <= x <= line.x2 and line.y1 <= y <= line.y2:
+
+        if self.collide_point(x, y) and line.collide_point(x,
+                                                           y) and sx1 <= x <= sx2 and sy1 <= y <= sy2 and lx1 <= x <= lx2 and ly1 <= y <= ly2:
+            return x, y
+        else:
+            return None
+
+    def __eq__(self, other):
+        return isinstance(other, Line) and (all([
+            self.x1 == other.x1,
+            self.y1 == other.y1,
+            self.x2 == other.x2,
+            self.y2 == other.y2
+        ]) or all([
+            self.x1 == other.x2,
+            self.y1 == other.y2,
+            self.x2 == other.x1,
+            self.y2 == other.y1
+        ]))
+
+    # comparison object "other" must be a tuple of:
+    #   (x, y, none_result) -> None comparisons return none_result
+    #   (x, y) -> None comparisons throw TypeErrors
+    def __lt__(self, other):
+        if isinstance(other, tuple) or isinstance(other, list):
+            if len(other) == 2:
+                if all([isinstance(x, int) or isinstance(x, float) for x in other]):
+                    ox, oy = other
+                    return oy < self.y_at_x(ox)
+            elif len(other) == 3:
+                if all([isinstance(x, int) or isinstance(x, float) for x in other[:2]]):
+                    if isinstance(other[2], bool) or (isinstance(other[2], int) and other[2] in [0, 1]):
+                        ox, oy, none_result = other
+                        v = self.y_at_x(ox)
+                        # return (oy < v) if v is not None else bool(none_result)
+                        return (oy < v) if v is not None else (ox < self.x_at_y(oy))
+        raise TypeError(
+            "Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
+
+    # comparison object "other" must be a tuple of:
+    #   (x, y, none_result) -> None comparisons return none_result
+    #   (x, y) -> None comparisons throw TypeErrors
+    def __le__(self, other):
+        if isinstance(other, tuple) or isinstance(other, list):
+            if len(other) == 2:
+                if all([isinstance(x, int) or isinstance(x, float) for x in other]):
+                    ox, oy = other
+                    return oy <= self.y_at_x(ox)
+            elif len(other) == 3:
+                if all([isinstance(x, int) or isinstance(x, float) for x in other[:2]]):
+                    if isinstance(other[2], bool) or (isinstance(other[2], int) and other[2] in [0, 1]):
+                        ox, oy, none_result = other
+                        v = self.y_at_x(ox)
+                        # return (oy <= v) if v is not None else bool(none_result)
+                        return (oy <= v) if v is not None else (ox <= self.x_at_y(oy))
+        raise TypeError(
+            "Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
+
+    # comparison object "other" must be a tuple of:
+    #   (x, y, none_result) -> None comparisons return none_result
+    #   (x, y) -> None comparisons throw TypeErrors
+    def __gt__(self, other):
+        if isinstance(other, tuple) or isinstance(other, list):
+            if len(other) == 2:
+                if all([isinstance(x, int) or isinstance(x, float) for x in other]):
+                    ox, oy = other
+                    return oy > self.y_at_x(ox)
+            elif len(other) == 3:
+                if all([isinstance(x, int) or isinstance(x, float) for x in other[:2]]):
+                    if isinstance(other[2], bool) or (isinstance(other[2], int) and other[2] in [0, 1]):
+                        ox, oy, none_result = other
+                        v = self.y_at_x(ox)
+                        # return (oy > v) if v is not None else bool(none_result)
+                        return (oy > v) if v is not None else (ox > self.x_at_y(oy))
+        raise TypeError(
+            "Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
+
+    # comparison object "other" must be a tuple of:
+    #   (x, y, none_result) -> None comparisons return none_result
+    #   (x, y) -> None comparisons throw TypeErrors
+    def __ge__(self, other):
+        if isinstance(other, tuple) or isinstance(other, list):
+            if len(other) == 2:
+                if all([isinstance(x, int) or isinstance(x, float) for x in other]):
+                    ox, oy = other
+                    return oy >= self.y_at_x(ox)
+            elif len(other) == 3:
+                if all([isinstance(x, int) or isinstance(x, float) for x in other[:2]]):
+                    if isinstance(other[2], bool) or (isinstance(other[2], int) and other[2] in [0, 1]):
+                        ox, oy, none_result = other
+                        v = self.y_at_x(ox)
+                        # return (oy >= v) if v is not None else bool(none_result)
+                        return (oy >= v) if v is not None else (ox >= self.x_at_y(oy))
+        raise TypeError(
+            "Cannot compare \"{}\" of type with Line.\nRequires tuple / list: (x, y)".format(other, type(other)))
+
+    def y_at_x(self, x):
+        if self.m == "undefined":
+            # return None
+            return None
+        if self.m == 0:
+            return self.y1
+        return (self.m * x) + self.b
+
+    def x_at_y(self, y):
+        if self.m == "undefined":
+            return self.x1
+        if self.m == 0:
+            return None
+        return (y - self.b) / self.m
 
     def translate(self, x, y):
         self.x1 += x
@@ -775,25 +925,188 @@ class Line:
         return "y = {}x + {}".format("%.2f" % self.m, self.b)
 
 
-class Rect:
-    def __init__(self, x, y=None, w=None, h=None):
-        self.x = x
-        self.y = y
-        self.width = w
-        self.height = h
-        if any([y is None, w is None, h is None]):
-            if is_imported("pygame"):
-                if isinstance(x, pygame.Rect):
-                    x = x.left
-                    y = x.y
-                    w = x.width
-                    y = x.height
-                else:
-                    raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
-            else:
-                ValueError("Cannot create a rect object with <{}>.\npygame module is not imported.".format(x))
-        self.is_init = False
+class LineSeg(Line):
+
+    def __init__(self, x1, y1, x2, y2):
+        super().__init__(x1, y1, x2, y2)
+        self.length = distance(self.p1, self.p2)
+
+    def collide_point(self, x, y):
+        return super().collide_point(x, y)
+
+
+# class Rect:
+#     def __init__(self, x, y=None, w=None, h=None):
+#         self.x = x
+#         self.y = y
+#         self.width = w
+#         self.height = h
+#         if any([y is None, w is None, h is None]):
+#             if is_imported("pygame"):
+#                 if isinstance(x, pygame.Rect):
+#                     x = x.left
+#                     y = x.y
+#                     w = x.width
+#                     y = x.height
+#                 else:
+#                     raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
+#             else:
+#                 ValueError("Cannot create a rect object with <{}>.\npygame module is not imported.".format(x))
+#         self.is_init = False
+#         self.tupl = None
+#         self.top = None
+#         self.left = None
+#         self.bottom = None
+#         self.right = None
+#         self.center = None
+#         self.top_left = None
+#         self.top_right = None
+#         self.bottom_left = None
+#         self.bottom_right = None
+#         self.top_line = None
+#         self.left_line = None
+#         self.right_line = None
+#         self.bottom_line = None
+#         self.center_top = None
+#         self.center_left = None
+#         self.center_right = None
+#         self.center_bottom = None
+#         self.area = None
+#         self.perimetre = None
+#         self.init(x, y, w, h)
+#
+#     def init(self, x, y, w, h):
+#         self.x = x
+#         self.y = y
+#         self.width = w
+#         self.height = h
+#         self.tupl = (x, y, w, h)
+#         self.top = y
+#         self.left = x
+#         self.bottom = y + h
+#         self.right = x + w
+#         self.center = x + (w / 2), y + (h / 2)
+#         self.top_left = x, y
+#         self.top_right = x + w, y
+#         self.bottom_left = x, y + h
+#         self.bottom_right = x + w, y + h
+#         self.center_top = self.center[0], y
+#         self.center_left = x, self.center[1]
+#         self.center_right = x + w, self.center[1]
+#         self.center_bottom = self.center[0], y + h
+#         self.area = w * h
+#         self.perimetre = 2 * (w + h)
+#         self.top_line = Line(*self.top_left, *self.top_right)
+#         self.left_line = Line(*self.top_left, *self.bottom_left)
+#         self.right_line = Line(*self.top_right, *self.bottom_right)
+#         self.bottom_line = Line(*self.bottom_left, *self.bottom_right)
+#         self.is_init = True
+#
+#     def __iter__(self):
+#         lst = [self.x, self. y, self.width, self.height]
+#         for val in lst:
+#             yield val
+#
+#     def collide_rect(self, rect, strictly_inside=True):
+#         if strictly_inside:
+#             return all([
+#                 self.left < rect.left,
+#                 self.right > rect.right,
+#                 self.top < rect.top,
+#                 self.bottom > rect.bottom
+#             ])
+#         else:
+#             return any([
+#                 self.collide_point(*rect.top_left),
+#                 self.collide_point(*rect.top_right),
+#                 self.collide_point(*rect.bottom_left),
+#                 self.collide_point(*rect.bottom_right)
+#             ])
+#
+#     def collide_line(self, line):
+#         assert isinstance(line, Line)
+#         if self.collide_point(*line.p1) or self.collide_point(*line.p1):
+#             return True
+#         else:
+#             top = Line(self.left, self.top, self.right, self.top)
+#             bottom = Line(self.left, self.bottom, self.right, self.bottom)
+#             left = Line(self.left, self.top, self.left, self.bottom)
+#             right = Line(self.right, self.top, self.right, self.bottom)
+#             return any([
+#                 line.collide_line(top),
+#                 line.collide_line(bottom),
+#                 line.collide_line(left),
+#                 line.collide_line(right)
+#             ])
+#
+#     def collide_point(self, x, y):
+#         return all([
+#             self.x <= x <= self.right,
+#             self.y <= y <= self.bottom
+#         ])
+#
+#     def translate(self, x, y):
+#         if not self.is_init:
+#             self.init(self.x, self.y, self.width, self.height)
+#         self.x += x
+#         self.y += y
+#         self.init(self.x, self.y, self.width, self.height)
+#
+#     def translated(self, x, y):
+#         r = Rect(self.x, self.y, self.width, self.height)
+#         r.translate(x, y)
+#         return r
+#
+#     def scale(self, w_factor, h_factor):
+#         self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
+#
+#     def scaled(self, w_factor, h_factor):
+#         r = Rect(self.x, self.y, self.width, self.height)
+#         r.scale(w_factor, h_factor)
+#         return r
+#
+#     def move(self, rect):
+#         self.init(rect.x, rect.y, rect.width, rect.height)
+#
+#     def resize(self, rect):
+#         self.init(rect.x, rect.y, rect.width, rect.height)
+#
+#     def __repr__(self):
+#         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width, self.height]))) + ")>"
+
+
+#            x2,y2              x1,y1 ---- x2,y2
+#  x1,y1  /    |                  |          |
+#    |       x3,y3              x4,y4 ---- x3,y3
+#  x4,y4  /
+
+class Rect2:
+    def __init__(self, x, y=None, w=None, h=None, a=0):
+        self.x = None
+        self.y = None
+        self.w = None
+        self.h = None
+        self.width = None
+        self.height = None
+        self.angle = None
+
+        self.x1, self.y1 = None, None
+        self.x2, self.y2 = None, None
+        self.x3, self.y3 = None, None
+        self.x4, self.y4 = None, None
+        self.p1 = None
+        self.p2 = None
+        self.p3 = None
+        self.p4 = None
+        self.l1 = None
+        self.l2 = None
+        self.l3 = None
+        self.l4 = None
+        self.a = a % 360
+        self.angle = a % 360
         self.tupl = None
+        self.max_encapsulating_rect = None
+        self.min_encapsulating_rect = None
         self.top = None
         self.left = None
         self.bottom = None
@@ -803,116 +1116,510 @@ class Rect:
         self.top_right = None
         self.bottom_left = None
         self.bottom_right = None
-        self.top_line = None
-        self.left_line = None
-        self.right_line = None
-        self.bottom_line = None
         self.center_top = None
         self.center_left = None
         self.center_right = None
         self.center_bottom = None
         self.area = None
-        self.perimetre = None
-        self.init(x, y, w, h)
+        self.perimeter = None
+        self.top_line = None
+        self.right_line = None
+        self.bottom_line = None
+        self.left_line = None
 
-    def init(self, x, y, w, h):
+        self.diagonal_p1_p3 = None
+        self.diagonal_p3_p1 = None
+        self.diagonal_p2_p4 = None
+        self.diagonal_p4_p2 = None
+
+        self.init(x, y, w, h, a)
+
+    def init(self, x, y, w, h, a):
+        if w < 0:
+            raise ValueError("width value: \"{}\" must not be less than 0.".format(w))
+        if h < 0:
+            raise ValueError("height value: \"{}\" must not be less than 0.".format(h))
         self.x = x
         self.y = y
+        self.w = w
+        self.h = h
+        self.a = a
         self.width = w
         self.height = h
-        self.tupl = (x, y, w, h)
-        self.top = y
-        self.left = x
-        self.bottom = y + h
-        self.right = x + w
-        self.center = x + (w / 2), y + (h / 2)
-        self.top_left = x, y
-        self.top_right = x + w, y
-        self.bottom_left = x, y + h
-        self.bottom_right = x + w, y + h
-        self.center_top = self.center[0], y
-        self.center_left = x, self.center[1]
-        self.center_right = x + w, self.center[1]
-        self.center_bottom = self.center[0], y + h
+        self.angle = a
+
+        self.x1, self.y1 = x, y
+        self.x2, self.y2 = rotate_point(x, y, x + w, y, a)
+        self.x3, self.y3 = rotate_point(x, y, x + w, y + h, a)
+        self.x4, self.y4 = rotate_point(x, y, x, y + h, a)
+        self.p1 = self.x1, self.y1
+        self.p2 = self.x2, self.y2
+        self.p3 = self.x3, self.y3
+        self.p4 = self.x4, self.y4
+        self.l1 = Line(self.x1, self.y1, self.x2, self.y2)
+        self.l2 = Line(self.x2, self.y2, self.x3, self.y3)
+        self.l3 = Line(self.x3, self.y3, self.x4, self.y4)
+        self.l4 = Line(self.x4, self.y4, self.x1, self.y1)
+        self.top_line = self.l1
+        self.right_line = self.l2
+        self.bottom_line = self.l3
+        self.left_line = self.l4
+
+        # self.tupl = (self.p1, self.p2, self.p3, self.p4)
+        self.tupl = (self.x, self.y, self.w, self.h)
+        if a == 0:
+            self.max_encapsulating_rect = self
+            self.min_encapsulating_rect = self
+        else:
+            xs = [self.x1, self.x2, self.x3, self.x4]
+            ys = [self.y1, self.y2, self.y3, self.y4]
+            xs.sort()
+            ys.sort()
+            self.max_encapsulating_rect = Rect2(xs[0], ys[0], xs[3] - xs[0], ys[3] - ys[0], 0)
+            self.min_encapsulating_rect = Rect2(xs[1], ys[1], xs[2] - xs[1], ys[2] - ys[1], 0)
+
+        # Using max_encapsulating_rect for calculations
+        self.top = self.max_encapsulating_rect.y
+        self.left = self.max_encapsulating_rect.x
+        self.bottom = self.max_encapsulating_rect.y + self.max_encapsulating_rect.height
+        self.right = self.max_encapsulating_rect.x + self.max_encapsulating_rect.width
+        self.center = self.left + (self.max_encapsulating_rect.width / 2), self.top + (
+                self.max_encapsulating_rect.height / 2)
+        self.top_left = self.left, self.top
+        self.top_right = self.right, self.top
+        self.bottom_left = self.left, self.bottom
+        self.bottom_right = self.bottom, self.right
+        self.center_top = self.center[0], self.top
+        self.center_left = self.left, self.center[1]
+        self.center_right = self.right, self.center[1]
+        self.center_bottom = self.center[0], self.bottom
+
+        self.diagonal_p1_p3 = Line(*self.p1, *self.p3)
+        self.diagonal_p3_p1 = Line(*self.p3, *self.p2)
+        self.diagonal_p2_p4 = Line(*self.p2, *self.p4)
+        self.diagonal_p4_p2 = Line(*self.p4, *self.p2)
+
+        # Calculations done on the main rect object
         self.area = w * h
-        self.perimetre = 2 * (w + h)
-        self.top_line = Line(*self.top_left, *self.top_right)
-        self.left_line = Line(*self.top_left, *self.bottom_left)
-        self.right_line = Line(*self.top_right, *self.bottom_right)
-        self.bottom_line = Line(*self.bottom_left, *self.bottom_right)
-        self.is_init = True
+        self.perimeter = 2 * (w + h)
 
     def __iter__(self):
-        lst = [self.x, self. y, self.width, self.height]
+        lst = [self.x, self.y, self.width, self.height, self.angle]
         for val in lst:
             yield val
 
-    def collide_rect(self, rect, strictly_inside=True):
+    def collide_point(self, x, y, strictly_inside=False):
+        if not all([
+            any([
+                isinstance(x, int),
+                isinstance(x, float)
+            ]),
+            any([
+                isinstance(y, int),
+                isinstance(y, float)
+            ])
+        ]):
+            raise TypeError(
+                "Cannot determine if x=\"{}\" of type: \"{}\" y=\"{}\" of type: \"{}\" collides with Rect object. Requires int and / or float objects.".format(
+                    x, type(x), y, type(y)))
         if strictly_inside:
             return all([
-                self.left < rect.left,
-                self.right > rect.right,
-                self.top < rect.top,
-                self.bottom > rect.bottom
+                (x, y, 1) < self.l1,
+                (x, y, 1) > self.l2,
+                (x, y, 1) > self.l3,
+                (x, y, 1) < self.l4
+            ])
+        else:
+            return all([
+                (x, y, 1) <= self.l1,
+                (x, y, 1) >= self.l2,
+                (x, y, 1) >= self.l3,
+                (x, y, 1) <= self.l4
+            ])
+
+    def collide_line(self, line, strictly_inside=False):
+        if not isinstance(line, Line):
+            raise TypeError(
+                "Cannot determine if line=\"{}\" of type: \"{}\" collides with Rect object. Requires Line object.".format(
+                    line, type(line)))
+        if strictly_inside:
+            return all([
+                self.collide_point(*line.p1),
+                self.collide_point(*line.p2)
             ])
         else:
             return any([
-                self.collide_point(*rect.top_left),
-                self.collide_point(*rect.top_right),
-                self.collide_point(*rect.bottom_left),
-                self.collide_point(*rect.bottom_right)
+                self.collide_point(*line.p1),
+                self.collide_point(*line.p2)
             ])
 
-    def collide_line(self, line):
-        assert isinstance(line, Line)
-        if self.collide_point(*line.p1) or self.collide_point(*line.p1):
-            return True
+    def collide_rect(self, rect, strictly_inside=False):
+        if not isinstance(rect, Rect2):
+            raise TypeError(
+                "Cannot determine if rect=\"{}\" of type: \"{}\" collides with Rect object. Requires Rect object.".format(
+                    rect, type(rect)))
+        if strictly_inside:
+            return all([
+                self.collide_point(*rect.p1),
+                self.collide_point(*rect.p2),
+                self.collide_point(*rect.p3),
+                self.collide_point(*rect.p4)
+            ])
         else:
-            top = Line(self.left, self.top, self.right, self.top)
-            bottom = Line(self.left, self.bottom, self.right, self.bottom)
-            left = Line(self.left, self.top, self.left, self.bottom)
-            right = Line(self.right, self.top, self.right, self.bottom)
             return any([
-                line.collide_line(top),
-                line.collide_line(bottom),
-                line.collide_line(left),
-                line.collide_line(right)
+                self.collide_point(*rect.p1),
+                self.collide_point(*rect.p2),
+                self.collide_point(*rect.p3),
+                self.collide_point(*rect.p4)
             ])
-
-    def collide_point(self, x, y):
-        return all([
-            self.x <= x <= self.right,
-            self.y <= y <= self.bottom
-        ])
 
     def translate(self, x, y):
-        if not self.is_init:
-            self.init(self.x, self.y, self.width, self.height)
-        self.x += x
-        self.y += y
-        self.init(self.x, self.y, self.width, self.height)
+        self.init(self.x + x, self.y + y, self.width, self.height, self.angle)
+        return self
 
     def translated(self, x, y):
-        r = Rect(self.x, self.y, self.width, self.height)
-        r.translate(x, y)
+        return Rect2(self.x + x, self.y + y, self.width, self.height, self.angle)
+
+    def scale(self, w, h):
+        w = abs(w)
+        h = abs(h)
+        self.init(self.x, self.y, self.width * w, self.height * h, self.angle)
+        return self
+
+    def scaled(self, x, y):
+        r = Rect2(*self)
+        r.scale(x, y)
         return r
 
-    def scale(self, w_factor, h_factor):
-        self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
+    def rotate(self, a):
+        self.init(self.x, self.y, self.width, self.height, self.angle + a)
+        return self
 
-    def scaled(self, w_factor, h_factor):
-        r = Rect(self.x, self.y, self.width, self.height)
-        r.scale(w_factor, h_factor)
+    def rotated(self, a):
+        r = Rect2(*self)
+        r.rotate(a)
         return r
 
-    def move(self, rect):
-        self.init(rect.x, rect.y, rect.width, rect.height)
+    #     if any([y is None, w is None, h is None]):
+    #         if is_imported("pygame"):
+    #             if isinstance(x, pygame.Rect):
+    #                 x = x.left
+    #                 y = x.y
+    #                 w = x.width
+    #                 y = x.height
+    #             else:
+    #                 raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
+    #         else:
+    #             ValueError("Cannot create a rect object with <{}>.\npygame module is not imported.".format(x))
+    #     self.is_init = False
+    #     self.tupl = None
+    #     self.top = None
+    #     self.left = None
+    #     self.bottom = None
+    #     self.right = None
+    #     self.center = None
+    #     self.top_left = None
+    #     self.top_right = None
+    #     self.bottom_left = None
+    #     self.bottom_right = None
+    #     self.top_line = None
+    #     self.left_line = None
+    #     self.right_line = None
+    #     self.bottom_line = None
+    #     self.center_top = None
+    #     self.center_left = None
+    #     self.center_right = None
+    #     self.center_bottom = None
+    #     self.area = None
+    #     self.perimetre = None
+    #     self.init(x, y, w, h)
+    #
+    # def init(self, x, y, w, h):
+    #     self.x = x
+    #     self.y = y
+    #     self.width = w
+    #     self.height = h
+    #     self.tupl = (x, y, w, h)
+    #     self.top = y
+    #     self.left = x
+    #     self.bottom = y + h
+    #     self.right = x + w
+    #     self.center = x + (w / 2), y + (h / 2)
+    #     self.top_left = x, y
+    #     self.top_right = x + w, y
+    #     self.bottom_left = x, y + h
+    #     self.bottom_right = x + w, y + h
+    #     self.center_top = self.center[0], y
+    #     self.center_left = x, self.center[1]
+    #     self.center_right = x + w, self.center[1]
+    #     self.center_bottom = self.center[0], y + h
+    #     self.area = w * h
+    #     self.perimetre = 2 * (w + h)
+    #     self.top_line = Line(*self.top_left, *self.top_right)
+    #     self.left_line = Line(*self.top_left, *self.bottom_left)
+    #     self.right_line = Line(*self.top_right, *self.bottom_right)
+    #     self.bottom_line = Line(*self.bottom_left, *self.bottom_right)
+    #     self.is_init = True
+    #
+    # def __iter__(self):
+    #     lst = [self.x, self. y, self.width, self.height]
+    #     for val in lst:
+    #         yield val
+    #
+    # def collide_rect(self, rect, strictly_inside=True):
+    #     if strictly_inside:
+    #         return all([
+    #             self.left < rect.left,
+    #             self.right > rect.right,
+    #             self.top < rect.top,
+    #             self.bottom > rect.bottom
+    #         ])
+    #     else:
+    #         return any([
+    #             self.collide_point(*rect.top_left),
+    #             self.collide_point(*rect.top_right),
+    #             self.collide_point(*rect.bottom_left),
+    #             self.collide_point(*rect.bottom_right)
+    #         ])
+    #
+    # def collide_line(self, line):
+    #     assert isinstance(line, Line)
+    #     if self.collide_point(*line.p1) or self.collide_point(*line.p1):
+    #         return True
+    #     else:
+    #         top = Line(self.left, self.top, self.right, self.top)
+    #         bottom = Line(self.left, self.bottom, self.right, self.bottom)
+    #         left = Line(self.left, self.top, self.left, self.bottom)
+    #         right = Line(self.right, self.top, self.right, self.bottom)
+    #         return any([
+    #             line.collide_line(top),
+    #             line.collide_line(bottom),
+    #             line.collide_line(left),
+    #             line.collide_line(right)
+    #         ])
+    #
+    # def collide_point(self, x, y):
+    #     return all([
+    #         self.x <= x <= self.right,
+    #         self.y <= y <= self.bottom
+    #     ])
+    #
+    # def translate(self, x, y):
+    #     if not self.is_init:
+    #         self.init(self.x, self.y, self.width, self.height)
+    #     self.x += x
+    #     self.y += y
+    #     self.init(self.x, self.y, self.width, self.height)
+    #
+    # def translated(self, x, y):
+    #     r = Rect(self.x, self.y, self.width, self.height)
+    #     r.translate(x, y)
+    #     return r
+    #
+    # def scale(self, w_factor, h_factor):
+    #     self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
+    #
+    # def scaled(self, w_factor, h_factor):
+    #     r = Rect(self.x, self.y, self.width, self.height)
+    #     r.scale(w_factor, h_factor)
+    #     return r
+    #
+    # def move(self, rect):
+    #     self.init(rect.x, rect.y, rect.width, rect.height)
+    #
+    # def resize(self, rect):
+    #     self.init(rect.x, rect.y, rect.width, rect.height)
 
-    def resize(self, rect):
-        self.init(rect.x, rect.y, rect.width, rect.height)
+    def sq_rect(self):
+        return self.x, self.y, self.w, self.h
+
+    def tkinter_rect(self):
+        return Rect2(*self.top_left, *self.bottom_right)
 
     def __repr__(self):
-        return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width, self.height]))) + ")>"
+        # return "<rect(p1:({}), p2:({}), p3:({}), p4:({}))>".format(self.p1, self.p2, self.p3, self.p4)
+        x, y, w, h, a = self
+        return f"<rect: {x=}, {y=}, {w=}, {h=}, {a=}>"
+
+
+def date_suffix(day):
+    s_day = str(day)
+    if s_day[-1] == "1":
+        res = "st"
+        if len(s_day) > 1:
+            if s_day[-2] == "1":
+                res = "th"
+    elif s_day[-1] == "2":
+        res = "nd"
+        if len(s_day) > 1:
+            if s_day[-2] == "1":
+                res = "th"
+    elif s_day[-1] == "3":
+        res = "rd"
+        if len(s_day) > 1:
+            if s_day[-2] == "1":
+                res = "th"
+    else:
+        res = "th"
+    return res
+
+
+# Takes "2021-08-03" -> August 3rd, 2021
+def date_str_format(date_str):
+    date_obj = dt.datetime.fromisoformat(date_str)
+    suffix = date_suffix(date_obj.day)
+    res = dt.datetime.strftime(date_obj, "%B %d###, %Y").replace("###", suffix)
+    s_res = res.split(" ")
+    x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
+    res = " ".join([s_res[0], x, s_res[2]])
+    return res
+
+
+# Appends a counter '(1)' to a given file path to avoid overwriting.
+def next_available_file_name(path):
+    counter = 0
+    path.replace("\\", "/")
+    og_path = path
+    while os.path.exists(path):
+        counter += 1
+        spl = og_path.split(".")
+        path = ".".join(spl[:-1]) + " ({}).".format(counter) + spl[-1]
+    path.replace("/", "\\")
+    return path
+
+
+# leap year calculation: https://www.timeanddate.com/date/leapyear.html
+def random_date(start_year=1, end_year=10000, start_m=None, start_d=None):
+    start_year, end_year = minmax(start_year, end_year)
+    start_year = clamp(1, start_year, end_year)
+    end_year = clamp(start_year + 1, end_year + 1, 10000)
+
+    r_y = list(range(start_year, end_year))
+    r_m = list(range(1, 13))
+    r_d = list(range(1, 32))
+    r_dsm = list(range(1, 31))
+    r_df = list(range(1, 29))
+    r_dfl = list(range(1, 30))
+    r_sm = [2, 4, 6, 9, 11]
+    y = choice(r_y)
+    m = choice(r_m)
+    if start_m in r_m:
+        m = start_m
+    if m in r_sm:
+        d = choice(r_dsm)
+        if start_d in r_dsm:
+            d = start_d
+    else:
+        d = choice(r_d)
+        if start_d in r_d:
+            d = start_d
+
+    if m == 2:
+        d = choice(r_df)
+        if start_d in r_df:
+            d = start_d
+        if y % 4 == 0 and (y % 100 != 0 or y % 400 == 0):
+            d = choice(r_dfl)
+            if start_d in r_dfl:
+                d = start_d
+
+    return "{}-{}-{}".format(("0000" + str(y))[-4:], ("00" + str(m))[-2:], ("00" + str(d))[-2:])
+
+
+def is_date(date_in, fmt="%Y-%m-%d"):
+    if isinstance(date_in, dt.datetime) or isinstance(date_in, dt.date):
+        return True
+    try:
+        d = dt.datetime.strptime(date_in, fmt)
+        return True
+    except TypeError:
+        print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
+    except ValueError:
+        print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
+    return False
+
+
+def first_of_day(date_in):
+    assert isinstance(date_in, dt.datetime)
+    return dt.datetime(date_in.year, date_in.month, date_in.day)
+
+
+def first_of_week(date_in):
+    assert isinstance(date_in, dt.datetime)
+    print("date_in:", date_in)
+    # return dt.datetime.fromisoformat("2022-02-02")
+    wd = 0 if date_in.isocalendar()[2] == 7 else date_in.isocalendar()[2]
+    return date_in + dt.timedelta(days=-wd)
+    # return dt.datetime.fromisocalendar(date_in.isocalendar()[0], date_in.isocalendar()[1], 1) + dt.timedelta(hours=date_in.hour, minutes=date_in.minute, seconds=date_in.second)
+    # return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
+
+
+def first_of_month(date_in):
+    assert isinstance(date_in, dt.datetime)
+    return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
+
+
+def end_of_month(date_in):
+    assert isinstance(date_in, dt.datetime), "Parameter date_in needs to be a datetime.datetime object."
+    y, m = date_in.year, date_in.month
+    num_days = calendar.monthrange(y, m)[-1]
+    return dt.datetime(y, m, num_days)
+
+
+def alert_colour(x, n):
+    assert isnumber(x), "Parameter \"x\": ({}) needs to be a number".format(x)
+    assert isnumber(n), "Parameter \"n\": ({}) needs to be a number".format(n)
+    assert x <= n, "Parameter \"x\": ({}) needs to be less than or equal to parameter \"n\": ({})".format(x, n)
+    assert 0 < n, "Parameter \"n\": ({}) must be non-zero and positive".format(n)
+    t_diff = 255
+    x = abs(x / n) * t_diff
+    return x, 255 - x, 0
+
+
+def notify(message, title="", app_icon=None, timeout=5):
+    if app_icon is not None:
+        notification.notify(
+            title=title,
+            message=message,
+            app_icon=(app_icon),
+            timeout=timeout  # seconds
+        )
+    else:
+        notification.notify(
+            title=title,
+            message=message,
+            timeout=timeout  # seconds
+        )
+
+
+def print_by_line(value, do_print=True):
+    lines = "[" + "\n".join(list(map(str, list(value)))) + "]"
+    if not do_print:
+        return lines
+    print(lines)
+
+
+def hours_diff(d1, d2):
+    assert isinstance(d1, dt.datetime), f"Parameter d1: \"{d1}\" needs to be a datetime.datetime instance."
+    assert isinstance(d2, dt.datetime), f"Parameter d2: \"{d2}\" needs to be a datetime.datetime instance."
+    return ((d2 - d1).days * 24) + ((d2 - d1).seconds / (60 * 60))
+
+
+def rect2_to_tkinter(rect):
+    """Rect2 (left, top, w, h) -> (left, top, right, bottom)"""
+    if (isinstance(rect, tuple) or isinstance(rect, list)) and len(rect) in (4, 5):
+        rect = Rect2(*rect)
+    assert isinstance(rect, Rect2), f"Error value is not a valid Rect2 object. got: <{type(rect)}, v: <{rect}>>"
+    assert rect.a == 0, "This Rect2 object is at a non-zero angle."
+    return [rect.x, rect.y, rect.w + rect.x, rect.h + rect.y]
+
+
+def tkinter_to_rect2(rect):
+    """Tlinter (left, top, right, bottom) -> Rect2 (left, top, w, h)"""
+    assert isinstance(rect, list) or isinstance(rect, tuple), f"Error value is not a valid list or tuple representing a tkinter rect., got <{type(rect)}>, v=<{rect}>"
+    assert len(rect) == 4, "This list is too long"
+    x1, y1, x2, y2 = rect
+    return Rect2(x1, y1, x2 - x1, y2 - y1)
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
