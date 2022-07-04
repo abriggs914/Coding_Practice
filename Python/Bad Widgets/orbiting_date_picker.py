@@ -7,8 +7,9 @@ import tkcalendar
 
 
 def toggle_show_date():
-    if gsm_showing_dae_picker[0][1]
-    datepicker.grid_forget()
+    # if gsm_showing_dae_picker[0][1]
+    # datepicker.grid_forget()
+    print("hey")
 
 
 WIDTH, HEIGHT = 900, 600

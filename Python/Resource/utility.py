@@ -12,8 +12,8 @@ import os
 VERSION = \
 """	
 	General Utility Functions
-	Version..............1.48
-	Date...........2022-04-29
+	Version..............1.49
+	Date...........2022-07-04
 	Author.......Avery Briggs
 """
 
@@ -1620,6 +1620,10 @@ def tkinter_to_rect2(rect):
     assert len(rect) == 4, "This list is too long"
     x1, y1, x2, y2 = rect
     return Rect2(x1, y1, x2 - x1, y2 - y1)
+	
+
+def kb_as_percent(kb, gb=2):
+	return("%.3f" % (((kb / (1024**2)) / gb))) + " %"
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
