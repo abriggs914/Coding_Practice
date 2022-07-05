@@ -1,3 +1,4 @@
+import datetime
 import math
 import tkinter
 from tkinter import Frame
@@ -24,23 +25,41 @@ def get_angle(p0, p1=np.array([0, 0]), p2=None):
         angle = abs(angle)
     else:
         angle = 360 - angle
-    return angle
+    return 360 - angle
 
 
 class OrbitingDatePicker(Frame):
 
-    def __init__(self, master, width=300, height=300, sun_width=50, earth_width=25, **kwargs):
+    def __init__(self, master, width=300, height=300, sun_width=50, earth_width=25, start_date=None, start_year=None, start_month=None, start_day=None, **kwargs):
         super().__init__(master, kwargs)
 
+        self.today = datetime.datetime.now()
+        if start_date is None:
+            if all([x is None for x in [start_year, start_month, start_day]]):
+                start_date = datetime.datetime.now()
+            else:
+                if start_year is None:
+                    start_year = self.today.year
+                if start_month is None:
+                    start_month = self.today.month
+                if start_day is None:
+                    start_day = self.today.day
+                start_date = datetime.datetime.strptime(f"{start_year}-{start_month}-{start_day}", "%Y-%m-%d")
+        elif not isinstance(start_date, datetime.datetime):
+            raise TypeError("Error param 'start_date' must either be None or a datetime.datetime object.")
+
+        self.start_date = start_date
+        self._date = start_date
+
         self.tv_entry_date_result = tkinter.StringVar()
-        self.entry_date_result = tkinter.Entry(self, textvariable=self.tv_entry_date_result)
-        self.entry_date_result.grid(row=1, column=1)
+        self.entry_date_result = tkinter.Entry(self, textvariable=self.tv_entry_date_result, width=100)
+        self.entry_date_result.grid(row=1, column=1, rowspan=2, columnspan=3)
 
         self.w_canvas_background = width
         self.h_canvas_background = height
 
-        self.canvas_background = tkinter.Canvas(self.master, background=rgb_to_hex(BLACK), width=self.w_canvas_background, height=self.h_canvas_background)
-        self.canvas_background.grid(row=1, column=2)#, rowspan=3, columnspan=3)
+        self.canvas_background = tkinter.Canvas(self, background=rgb_to_hex(BLACK), width=self.w_canvas_background, height=self.h_canvas_background)
+        self.canvas_background.grid(row=3, column=1, rowspan=3, columnspan=3)
 
         self.sun_width = sun_width
         self.earth_width = earth_width
@@ -54,6 +73,12 @@ class OrbitingDatePicker(Frame):
         self.centre = [
             self.background_rect[0] + (self.background_rect[2] / 2),
             self.background_rect[1] + (self.background_rect[3] / 2)
+        ]
+        self.sun_rect = [
+            self.centre[0] - (self.sun_width / 2),
+            self.centre[1] - (self.sun_width / 2),
+            self.centre[0] + (self.sun_width / 2),
+            self.centre[1] + (self.sun_width / 2)
         ]
         self.orbit_rect = [
             oww,
@@ -74,10 +99,7 @@ class OrbitingDatePicker(Frame):
             width=3
         )
         self.oval_sun = self.canvas_background.create_oval(
-            self.background_rect[0] + ((self.background_rect[2] - self.sun_width) / 2),
-            self.background_rect[1] + ((self.background_rect[3] - self.sun_width) / 2),
-            self.background_rect[0] + ((self.background_rect[2] + self.sun_width) / 2),
-            self.background_rect[1] + ((self.background_rect[3] + self.sun_width) / 2),
+            *self.sun_rect,
             fill=rgb_to_hex(YELLOW_2)
         )
         self.oval_earth = self.canvas_background.create_oval(
@@ -87,68 +109,157 @@ class OrbitingDatePicker(Frame):
         print(f"earth: {self.oval_earth}")
 
         self.canvas_background.bind("<B1-Motion>", self.mouse_motion)
+        self.set_earth_pos(0)
 
-    def update_date(self):
-        pos = self.centre_of_earth()
-        xs = self.orbit_rect
-        new_date = f"{pos=}"
-        self.tv_entry_date_result.set(new_date)
+    def calc_date(self, angle=None):
+        angle = angle if angle is not None else self.get_angle_to_earth()
+
+    def update_date(self, *data):
+        new_date = self.today
+        self.date = new_date, data
 
     def centre_of_earth(self):
         rect = self.earth_rect
         return rect[0] + ((rect[2] - rect[0]) / 2), rect[1] + ((rect[3] - rect[1]) / 2)
 
-    def mouse_motion(self, event):
-        # print(f"Mouse Motion: {event}\n{dir(event)}")
-        mouse_x, mouse_y = event.x, event.y
-        self.earth_rect = [
-            mouse_x - (self.earth_width / 2),
-            mouse_y - (self.earth_width / 2),
-            mouse_x + (self.earth_width / 2),
-            mouse_y + (self.earth_width / 2)
-        ]
-        angle = get_angle((mouse_x, mouse_y), np.array(self.centre))
-        a = (self.background_rect[3] - self.background_rect[1]) / 3
-        b = (self.background_rect[2] - self.background_rect[0]) / 3
+    def get_angle_to_earth(self, mouse=None):
+        pos = self.centre_of_earth() if mouse is None else mouse
+        return get_angle(pos, np.array(self.centre))
 
-        #############
-        # oval_x, oval_y = (
-        #     ((a ** 2 * b ** 2 * self.centre[0] ** 2) / ((b ** 2 * self.centre[0] ** 2) + (a ** 2 * self.centre[1] ** 2))),
-        #     ((a ** 2 * b ** 2 * self.centre[1] ** 2) / ((b ** 2 * self.centre[0] ** 2) + (a ** 2 * self.centre[1] ** 2)))
-        # )
+    def calc_a_b(self):
+        return (
+            (self.orbit_rect[3] - self.orbit_rect[1]) / 2,
+            (self.orbit_rect[2] - self.orbit_rect[0]) / 2
+        )
 
-        ############
-        # if 0 <= angle < 90 or 270 < angle <= 360:
-        #     oval_x, oval_y = (
-        #         ((a*b) / (math.sqrt(b**2 + (a**2 * math.tan(angle)**2)))),
-        #         ((a*b * math.tan(angle)) / (math.sqrt(b**2 + (a**2 * math.tan(angle)**2))))
-        #     )
-        # else:
-        #     oval_x, oval_y = (
-        #         -((a*b) / (math.sqrt(b**2 + (a**2 * math.tan(angle)**2)))),
-        #         -((a*b * math.tan(angle)) / (math.sqrt(b**2 + (a**2 * math.tan(angle)**2))))
-        #     )
-        # oval_x += self.centre[0]
-        # oval_y += self.centre[1]
-
-        # https://math.stackexchange.com/questions/22064/calculating-a-point-that-lies-on-an-ellipse-given-an-angle
-        ############
-        oval_x, oval_y = (
+    def calc_oval_x_y(self, a=None, b=None, angle=None):
+        a, b = self.calc_a_b() if any([x is None for x in [a, b]]) else (a, b)
+        angle = self.get_angle_to_earth() if angle is None else angle
+        return (
             self.centre[0] + ((a * b * math.sin(angle)) / math.sqrt(((b * math.cos(angle))**2) + ((a * math.sin(angle))**2))),
             self.centre[1] + ((a * b * math.cos(angle)) / math.sqrt(((b * math.cos(angle))**2) + ((a * math.sin(angle))**2)))
         )
 
+    # def mouse_motion(self, event):
+    #     # print(f"Mouse Motion: {event}\n{dir(event)}")
+    #     mouse_x, mouse_y = event.x, event.y
+    #     self.earth_rect = [
+    #         mouse_x - (self.earth_width / 2),
+    #         mouse_y - (self.earth_width / 2),
+    #         mouse_x + (self.earth_width / 2),
+    #         mouse_y + (self.earth_width / 2)
+    #     ]
+    #     angle = get_angle((mouse_x, mouse_y), np.array(self.centre))
+    #     a = (self.background_rect[3] - self.background_rect[1]) / 3
+    #     b = (self.background_rect[2] - self.background_rect[0]) / 3
+    #
+    #     #############
+    #     # oval_x, oval_y = (
+    #     #     ((a ** 2 * b ** 2 * self.centre[0] ** 2) / ((b ** 2 * self.centre[0] ** 2) + (a ** 2 * self.centre[1] ** 2))),
+    #     #     ((a ** 2 * b ** 2 * self.centre[1] ** 2) / ((b ** 2 * self.centre[0] ** 2) + (a ** 2 * self.centre[1] ** 2)))
+    #     # )
+    #
+    #     ############
+    #     # if 0 <= angle < 90 or 270 < angle <= 360:
+    #     #     oval_x, oval_y = (
+    #     #         ((a*b) / (math.sqrt(b**2 + (a**2 * math.tan(angle)**2)))),
+    #     #         ((a*b * math.tan(angle)) / (math.sqrt(b**2 + (a**2 * math.tan(angle)**2))))
+    #     #     )
+    #     # else:
+    #     #     oval_x, oval_y = (
+    #     #         -((a*b) / (math.sqrt(b**2 + (a**2 * math.tan(angle)**2)))),
+    #     #         -((a*b * math.tan(angle)) / (math.sqrt(b**2 + (a**2 * math.tan(angle)**2))))
+    #     #     )
+    #     # oval_x += self.centre[0]
+    #     # oval_y += self.centre[1]
+    #
+    #     # https://math.stackexchange.com/questions/22064/calculating-a-point-that-lies-on-an-ellipse-given-an-angle
+    #     ############
+    #     oval_x, oval_y = (
+    #         self.centre[0] + ((a * b * math.sin(angle)) / math.sqrt(((b * math.cos(angle))**2) + ((a * math.sin(angle))**2))),
+    #         self.centre[1] + ((a * b * math.cos(angle)) / math.sqrt(((b * math.cos(angle))**2) + ((a * math.sin(angle))**2)))
+    #     )
+    #
+    #
+    #     self.earth_rect = [
+    #         oval_x - (self.earth_width / 2),
+    #         oval_y - (self.earth_width / 2),
+    #         oval_x + (self.earth_width / 2),
+    #         oval_y + (self.earth_width / 2)
+    #     ]
+    #     print(f"Oval: x={oval_x:.2f}, y={oval_y:.2f}")
+    #     self.canvas_background.coords(self.oval_earth, *self.earth_rect)
+    #
+    #     self.update_date()
 
+    def set_earth_pos(self, pos, *data):
+        if not isinstance(pos, tuple) and not isinstance(pos, list) and (isinstance(pos, int) or isinstance(pos, float)):
+            pos = self.calc_oval_x_y(angle=pos)
+        pos_x, pos_y = pos
         self.earth_rect = [
-            oval_x - (self.earth_width / 2),
-            oval_y - (self.earth_width / 2),
-            oval_x + (self.earth_width / 2),
-            oval_y + (self.earth_width / 2)
+            pos_x - (self.earth_width / 2),
+            pos_y - (self.earth_width / 2),
+            pos_x + (self.earth_width / 2),
+            pos_y + (self.earth_width / 2)
         ]
-        print(f"Oval: x={oval_x:.2f}, y={oval_y:.2f}")
+        print(f"Pos: x={pos_x:.2f}, y={pos_y:.2f}")
         self.canvas_background.coords(self.oval_earth, *self.earth_rect)
+        self.update_date(pos, data)
 
-        self.update_date()
+    def mouse_motion(self, event):
+        # print(f"Mouse Motion: {event}\n{dir(event)}")
+        mouse_x, mouse_y = event.x, event.y
+        mouse = mouse_x, mouse_y
+        # self.earth_rect = [
+        #     mouse_x - (self.earth_width / 2),
+        #     mouse_y - (self.earth_width / 2),
+        #     mouse_x + (self.earth_width / 2),
+        #     mouse_y + (self.earth_width / 2)
+        # ]
+        angle = self.get_angle_to_earth(mouse)
+        a = (self.background_rect[3] - self.background_rect[1]) / 3
+        b = (self.background_rect[2] - self.background_rect[0]) / 3
+
+        # a, b = self.calc_a_b()
+        oval_x, oval_y = self.calc_oval_x_y(angle=angle)
+        self.set_earth_pos((oval_x, oval_y), f"{mouse=}, {angle=}")
+        # self.earth_rect = [
+        #     oval_x - (self.earth_width / 2),
+        #     oval_y - (self.earth_width / 2),
+        #     oval_x + (self.earth_width / 2),
+        #     oval_y + (self.earth_width / 2)
+        # ]
+        # print(f"Oval: x={oval_x:.2f}, y={oval_y:.2f}")
+        # self.canvas_background.coords(self.oval_earth, *self.earth_rect)
+        #
+        # self.update_date()
+
+    def animate(self):
+        for i in range(100):
+            self.after(i * 10, self.add_day)
+
+    def add_day(self, days=1):
+        self.start_date += datetime.timedelta(days=days)
+
+    def get_date(self):
+        return self._date
+
+    def set_date(self, date_in):
+        rest = None
+        if isinstance(date_in, tuple) or isinstance(date_in, list):
+            date_in, *rest = date_in
+        self._date = date_in
+        angle = self.get_angle_to_earth()
+        pos = self.centre_of_earth()
+        xs = self.orbit_rect
+        pos_s = ["%.2f" % p for p in pos]
+        new_date = f"{angle=:.3f}, {pos_s=}\nrest=<{rest}>"
+        self.tv_entry_date_result.set(self.date.strftime("%Y-%m-%d") + " - " + new_date)
+
+    def del_date(self):
+        del self._date
+
+    date = property(get_date, set_date, del_date)
 
 
 if __name__ == "__main__":
@@ -204,10 +315,11 @@ if __name__ == "__main__":
         print(f"pt: {pts}{angle=}\t{answer=:.2f}")
 
 
-    WIDTH, HEIGHT = 400, 400
+    WIDTH, HEIGHT = 600, 400
     WINDOW = tkinter.Tk()
     WINDOW.geometry(f"{WIDTH}x{HEIGHT}")
     ss = OrbitingDatePicker(WINDOW)
     ss.grid()
+    btn = tkinter.Button(WINDOW, text="animate", command=ss.animate())
     WINDOW.mainloop()
 
