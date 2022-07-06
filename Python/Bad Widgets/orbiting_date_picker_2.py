@@ -51,8 +51,11 @@ class OrbitingDatePicker(Frame):
         self.start_date = start_date
         self._date = start_date
 
-        self.tv_entry_date_result = tkinter.StringVar()
-        self.entry_date_result = tkinter.Entry(self, textvariable=self.tv_entry_date_result, width=100)
+        self.tv_entry_date_result_top = tkinter.StringVar()
+        self.tv_entry_date_result_bottom = tkinter.StringVar()
+        self.entry_date_result = tkinter.Entry(self, textvariable=self.tv_entry_date_result_top, width=100)
+        self.entry_date_result.grid(row=1, column=1, rowspan=2, columnspan=3)
+        self.entry_date_result = tkinter.Entry(self, textvariable=self.tv_entry_date_result_top, width=100)
         self.entry_date_result.grid(row=1, column=1, rowspan=2, columnspan=3)
 
         self.w_canvas_background = width
@@ -254,7 +257,7 @@ class OrbitingDatePicker(Frame):
         xs = self.orbit_rect
         pos_s = ["%.2f" % p for p in pos]
         new_date = f"{angle=:.3f}, {pos_s=}\nrest=<{rest}>"
-        self.tv_entry_date_result.set(self.date.strftime("%Y-%m-%d") + " - " + new_date)
+        self.tv_entry_date_result_top.set(self.date.strftime("%Y-%m-%d") + " - " + new_date)
 
     def del_date(self):
         del self._date
