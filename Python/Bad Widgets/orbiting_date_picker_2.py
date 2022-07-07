@@ -9,6 +9,26 @@ from utility import distance
 import numpy as np
 
 
+DEFAULT_SEASONS = {
+    "Spring": {
+        "test": lambda date: datetime.datetime(date.year, 3, 20) <= date < datetime.datetime(date.year, 6, 21),
+        "colour": WILDERNESS_MINT
+    },
+    "Summer": {
+        "test": lambda date: datetime.datetime(date.year, 6, 21) <= date < datetime.datetime(date.year, 9, 22),
+        "colour": GOLD_1__GOLD_
+    },
+    "Fall": {
+        "test": lambda date: datetime.datetime(date.year, 9, 22) <= date < datetime.datetime(date.year, 12, 21),
+        "colour": DARKORANGE_2
+    },
+    "Winter": {
+        "test": lambda date: datetime.datetime(date.year, 12, 21) <= date <= datetime.datetime(date.year, 12, 31) or datetime.datetime(date.year, 1, 1) <= date < datetime.datetime(date.year, 3, 20),
+        "colour": LIGHTSKYBLUE
+    }
+}
+
+
 def get_angle(p0, p1=np.array([0, 0]), p2=None):
     ''' compute angle (in degrees) for p0p1p2 corner
         Inputs:
@@ -30,7 +50,7 @@ def get_angle(p0, p1=np.array([0, 0]), p2=None):
 
 class OrbitingDatePicker(Frame):
 
-    def __init__(self, master, width=300, height=300, sun_width=50, earth_width=25, start_date=None, start_year=None, start_month=None, start_day=None, **kwargs):
+    def __init__(self, master, width=300, height=300, sun_width=50, earth_width=25, start_date=None, start_year=None, start_month=None, start_day=None, seasons=None, **kwargs):
         super().__init__(master, kwargs)
 
         self.today = datetime.datetime.now()
@@ -50,13 +70,16 @@ class OrbitingDatePicker(Frame):
 
         self.start_date = start_date
         self._date = start_date
+        self.degrees_per_day = self.calc_deg_per_day()
+
+        self.seasons = seasons if seasons is not None else DEFAULT_SEASONS
 
         self.tv_entry_date_result_top = tkinter.StringVar()
         self.tv_entry_date_result_bottom = tkinter.StringVar()
         self.entry_date_result = tkinter.Entry(self, textvariable=self.tv_entry_date_result_top, width=100)
-        self.entry_date_result.grid(row=1, column=1, rowspan=2, columnspan=3)
-        self.entry_date_result = tkinter.Entry(self, textvariable=self.tv_entry_date_result_top, width=100)
-        self.entry_date_result.grid(row=1, column=1, rowspan=2, columnspan=3)
+        self.entry_date_result.grid(row=1, column=1, columnspan=3)
+        self.entry_date_result_data = tkinter.Entry(self, textvariable=self.tv_entry_date_result_bottom, width=100)
+        self.entry_date_result_data.grid(row=2, column=1, columnspan=3)
 
         self.w_canvas_background = width
         self.h_canvas_background = height
@@ -109,6 +132,8 @@ class OrbitingDatePicker(Frame):
             *self.earth_rect,
             fill=rgb_to_hex(DODGERBLUE_3)
         )
+        self.text_year_label = self.canvas_background.create_text(*self.centre, text=f"{self.date.year}")
+        self.text_month_label = self.canvas_background.create_text(*self.centre_of_earth(), text=f"{self.date.strftime('%b')}", fill=rgb_to_hex(WHITE))
         print(f"earth: {self.oval_earth}")
 
         self.canvas_background.bind("<B1-Motion>", self.mouse_motion)
@@ -117,8 +142,33 @@ class OrbitingDatePicker(Frame):
     def calc_date(self, angle=None):
         angle = angle if angle is not None else self.get_angle_to_earth()
 
+
+    def calc_days_per_year(self, year_in=None):
+        year_in = year_in if year_in is not None else self.date.year
+        return (datetime.datetime(year_in, 12, 31) - datetime.datetime(year_in, 1, 1)).days
+
+    def calc_deg_per_day(self, year_in=None):
+        return 360 / self.calc_days_per_year(year_in)
+
+    def angle_to_date(self, angle=None, year_in=None):
+        deg_per_day = year_in if year_in is not None else self.calc_deg_per_day()
+        angle = angle if angle is not None else self.get_angle_to_earth()
+        days = round(angle / deg_per_day)
+        return datetime.datetime(self.date.year, 1, 1) + datetime.timedelta(days=days)
+
+    def get_season(self, date_in=None):
+        date_in = date_in if date_in is not None else self.date
+        for season, data in self.seasons.items():
+            test = data["test"]
+            # colour = data["colour"]
+            if test(date_in):
+                return season
+        raise KeyError(f"Error, param date_in '{date_in}' does not have a suitable season associated with it.")
+
     def update_date(self, *data):
         new_date = self.today
+        new_date = self.calc_date()
+        new_date = self.angle_to_date()
         self.date = new_date, data
 
     def centre_of_earth(self):
@@ -138,9 +188,10 @@ class OrbitingDatePicker(Frame):
     def calc_oval_x_y(self, a=None, b=None, angle=None):
         a, b = self.calc_a_b() if any([x is None for x in [a, b]]) else (a, b)
         angle = self.get_angle_to_earth() if angle is None else angle
+        denom = math.sqrt(((b * math.cos(angle))**2) + ((a * math.sin(angle))**2))
         return (
-            self.centre[0] + ((a * b * math.sin(angle)) / math.sqrt(((b * math.cos(angle))**2) + ((a * math.sin(angle))**2))),
-            self.centre[1] + ((a * b * math.cos(angle)) / math.sqrt(((b * math.cos(angle))**2) + ((a * math.sin(angle))**2)))
+            self.centre[0] + ((a * b * math.sin(angle)) / denom),
+            self.centre[1] + ((a * b * math.cos(angle)) / denom)
         )
 
     # def mouse_motion(self, event):
@@ -205,8 +256,12 @@ class OrbitingDatePicker(Frame):
             pos_x + (self.earth_width / 2),
             pos_y + (self.earth_width / 2)
         ]
-        print(f"Pos: x={pos_x:.2f}, y={pos_y:.2f}")
+        season = self.get_season()
+        print(f"Pos: x={pos_x:.2f}, y={pos_y:.2f}, {season=}")
         self.canvas_background.coords(self.oval_earth, *self.earth_rect)
+        self.canvas_background.itemconfig(self.oval_earth, fill=rgb_to_hex(self.seasons[season]["colour"]))
+        self.canvas_background.itemconfig(self.text_month_label, text=self.date.strftime('%b'))
+        self.canvas_background.moveto(self.text_month_label, *self.earth_rect[:2])
         self.update_date(pos, data)
 
     def mouse_motion(self, event):
@@ -220,6 +275,7 @@ class OrbitingDatePicker(Frame):
         #     mouse_y + (self.earth_width / 2)
         # ]
         angle = self.get_angle_to_earth(mouse)
+
         a = (self.background_rect[3] - self.background_rect[1]) / 3
         b = (self.background_rect[2] - self.background_rect[0]) / 3
 
@@ -242,7 +298,7 @@ class OrbitingDatePicker(Frame):
             self.after(i * 10, self.add_day)
 
     def add_day(self, days=1):
-        self.start_date += datetime.timedelta(days=days)
+        self.date += datetime.timedelta(days=days)
 
     def get_date(self):
         return self._date
@@ -256,8 +312,9 @@ class OrbitingDatePicker(Frame):
         pos = self.centre_of_earth()
         xs = self.orbit_rect
         pos_s = ["%.2f" % p for p in pos]
-        new_date = f"{angle=:.3f}, {pos_s=}\nrest=<{rest}>"
-        self.tv_entry_date_result_top.set(self.date.strftime("%Y-%m-%d") + " - " + new_date)
+        new_date = f"=<{rest=}>"
+        self.tv_entry_date_result_top.set(self.date.strftime("%Y-%m-%d") + f" - {angle=:.3f}, {pos_s=}" + f"calc_date={self.angle_to_date()}")
+        self.tv_entry_date_result_bottom.set(new_date)
 
     def del_date(self):
         del self._date
