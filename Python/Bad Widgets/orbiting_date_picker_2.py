@@ -12,19 +12,23 @@ import numpy as np
 DEFAULT_SEASONS = {
     "Spring": {
         "test": lambda date: datetime.datetime(date.year, 3, 20) <= date < datetime.datetime(date.year, 6, 21),
-        "colour": WILDERNESS_MINT
+        "colour": WILDERNESS_MINT,
+        "font_colour": WHITE
     },
     "Summer": {
         "test": lambda date: datetime.datetime(date.year, 6, 21) <= date < datetime.datetime(date.year, 9, 22),
-        "colour": GOLD_1__GOLD_
+        "colour": GOLD_1__GOLD_,
+        "font_colour": BLACK
     },
     "Fall": {
         "test": lambda date: datetime.datetime(date.year, 9, 22) <= date < datetime.datetime(date.year, 12, 21),
-        "colour": DARKORANGE_2
+        "colour": DARKORANGE_2,
+        "font_colour": WHITE
     },
     "Winter": {
         "test": lambda date: datetime.datetime(date.year, 12, 21) <= date <= datetime.datetime(date.year, 12, 31) or datetime.datetime(date.year, 1, 1) <= date < datetime.datetime(date.year, 3, 20),
-        "colour": LIGHTSKYBLUE
+        "colour": LIGHTSKYBLUE,
+        "font_colour": BLACK
     }
 }
 
@@ -132,12 +136,14 @@ class OrbitingDatePicker(Frame):
             *self.earth_rect,
             fill=rgb_to_hex(DODGERBLUE_3)
         )
-        self.text_year_label = self.canvas_background.create_text(*self.centre, text=f"{self.date.year}")
+        # self.SQUARE = self.canvas_background.create_rectangle(*self.earth_rect, fill=rgb_to_hex(OLIVEDRAB_2))
+        self.text_year_label = self.canvas_background.create_text(*self.centre, text=f"{self.date.year}", font=("Arial", 12, "bold"))
         self.text_month_label = self.canvas_background.create_text(*self.centre_of_earth(), text=f"{self.date.strftime('%b')}", fill=rgb_to_hex(WHITE))
         print(f"earth: {self.oval_earth}")
 
         self.canvas_background.bind("<B1-Motion>", self.mouse_motion)
-        self.set_earth_pos(0)
+        self.set_earth_pos(0, "STARTING AT 0")
+
 
     def calc_date(self, angle=None):
         angle = angle if angle is not None else self.get_angle_to_earth()
@@ -148,13 +154,23 @@ class OrbitingDatePicker(Frame):
         return (datetime.datetime(year_in, 12, 31) - datetime.datetime(year_in, 1, 1)).days
 
     def calc_deg_per_day(self, year_in=None):
-        return 360 / self.calc_days_per_year(year_in)
+        return 359 / self.calc_days_per_year(year_in)
 
     def angle_to_date(self, angle=None, year_in=None):
         deg_per_day = year_in if year_in is not None else self.calc_deg_per_day()
         angle = angle if angle is not None else self.get_angle_to_earth()
         days = round(angle / deg_per_day)
         return datetime.datetime(self.date.year, 1, 1) + datetime.timedelta(days=days)
+
+    def date_to_angle(self, date_in=None):
+        # deg_per_day = year_in if year_in is not None else self.calc_deg_per_day()
+        # angle = angle if angle is not None else self.get_angle_to_earth()
+        date_in = date_in if date_in is not None else self.date
+        deg_per_day = self.calc_deg_per_day(year_in=date_in.year)
+        # days = self.calc_days_per_year(year_in=date_in.year)
+        p = (date_in - datetime.datetime(date_in.year, 1, 1)).days
+        return p * deg_per_day
+
 
     def get_season(self, date_in=None):
         date_in = date_in if date_in is not None else self.date
@@ -166,8 +182,8 @@ class OrbitingDatePicker(Frame):
         raise KeyError(f"Error, param date_in '{date_in}' does not have a suitable season associated with it.")
 
     def update_date(self, *data):
-        new_date = self.today
-        new_date = self.calc_date()
+        # new_date = self.today
+        # new_date = self.calc_date()
         new_date = self.angle_to_date()
         self.date = new_date, data
 
@@ -187,7 +203,7 @@ class OrbitingDatePicker(Frame):
 
     def calc_oval_x_y(self, a=None, b=None, angle=None):
         a, b = self.calc_a_b() if any([x is None for x in [a, b]]) else (a, b)
-        angle = self.get_angle_to_earth() if angle is None else angle
+        angle = math.radians(90 + (self.get_angle_to_earth() if angle is None else angle))
         denom = math.sqrt(((b * math.cos(angle))**2) + ((a * math.sin(angle))**2))
         return (
             self.centre[0] + ((a * b * math.sin(angle)) / denom),
@@ -249,7 +265,17 @@ class OrbitingDatePicker(Frame):
     def set_earth_pos(self, pos, *data):
         if not isinstance(pos, tuple) and not isinstance(pos, list) and (isinstance(pos, int) or isinstance(pos, float)):
             pos = self.calc_oval_x_y(angle=pos)
+        if isinstance(pos, datetime.datetime):
+            pos = self.calc_oval_x_y(angle=self.date_to_angle(date_in=pos))
+
+
+        # elif isinstance(pos, datetime.datetime):
+        #     pos = self.calc_oval_x_y(angle=self.date_to_angle(date_in=pos))
+        # elif ((isinstance(pos, tuple) or isinstance(pos, list)) and len(pos) == 2) and isinstance(pos[0], datetime.datetime):
+        #     pos = self.calc_oval_x_y(angle=self.date_to_angle(date_in=pos[0])), pos[1]
+
         pos_x, pos_y = pos
+        self.update_date(pos, data)
         self.earth_rect = [
             pos_x - (self.earth_width / 2),
             pos_y - (self.earth_width / 2),
@@ -257,41 +283,61 @@ class OrbitingDatePicker(Frame):
             pos_y + (self.earth_width / 2)
         ]
         season = self.get_season()
-        print(f"Pos: x={pos_x:.2f}, y={pos_y:.2f}, {season=}")
+        # self.canvas_background.coords(self.SQUARE, *self.earth_rect)
+        print(f"Pos: {self.date=:%Y-%m-%d} x={pos_x:.2f}, y={pos_y:.2f}, {season=}")
         self.canvas_background.coords(self.oval_earth, *self.earth_rect)
         self.canvas_background.itemconfig(self.oval_earth, fill=rgb_to_hex(self.seasons[season]["colour"]))
-        self.canvas_background.itemconfig(self.text_month_label, text=self.date.strftime('%b'))
-        self.canvas_background.moveto(self.text_month_label, *self.earth_rect[:2])
-        self.update_date(pos, data)
+        self.canvas_background.itemconfig(self.text_month_label, text=self.date.strftime('%b'), font=("Arial", 10, "bold"), fill=rgb_to_hex(self.seasons[season]["font_colour"]))
+        self.canvas_background.itemconfig(self.text_year_label, text=self.date.strftime('%Y'))
+        text_x, text_y = self.earth_rect[:2]
+        # text_x += self.earth_width / 4
+        text_y += self.earth_width / 4
+        self.canvas_background.moveto(self.text_month_label, text_x, text_y)
 
     def mouse_motion(self, event):
         # print(f"Mouse Motion: {event}\n{dir(event)}")
         mouse_x, mouse_y = event.x, event.y
         mouse = mouse_x, mouse_y
-        # self.earth_rect = [
-        #     mouse_x - (self.earth_width / 2),
-        #     mouse_y - (self.earth_width / 2),
-        #     mouse_x + (self.earth_width / 2),
-        #     mouse_y + (self.earth_width / 2)
-        # ]
+        old_angle = self.get_angle_to_earth()
         angle = self.get_angle_to_earth(mouse)
+        if (0 <= angle < 60) and (300 < old_angle <= 360):
+            # winter -> spring - inc year
+            self.date = datetime.datetime(self.date.year + 1, self.date.month, self.date.day)
+            # print("\t\tINC YEAR")
+        elif (0 <= old_angle < 60) and (300 < angle <= 360):
+            # spring -> winter - dec year
+            self.date = datetime.datetime(self.date.year - 1, self.date.month, self.date.day)
+            # print("\t\tDEC YEAR")
+        self.set_earth_pos(angle, f"{mouse=}, TE:{angle=}")
 
-        a = (self.background_rect[3] - self.background_rect[1]) / 3
-        b = (self.background_rect[2] - self.background_rect[0]) / 3
 
-        # a, b = self.calc_a_b()
-        oval_x, oval_y = self.calc_oval_x_y(angle=angle)
-        self.set_earth_pos((oval_x, oval_y), f"{mouse=}, {angle=}")
-        # self.earth_rect = [
-        #     oval_x - (self.earth_width / 2),
-        #     oval_y - (self.earth_width / 2),
-        #     oval_x + (self.earth_width / 2),
-        #     oval_y + (self.earth_width / 2)
-        # ]
-        # print(f"Oval: x={oval_x:.2f}, y={oval_y:.2f}")
-        # self.canvas_background.coords(self.oval_earth, *self.earth_rect)
+        # # print(f"Mouse Motion: {event}\n{dir(event)}")
+        # mouse_x, mouse_y = event.x, event.y
+        # mouse = mouse_x, mouse_y
+        # # self.earth_rect = [
+        # #     mouse_x - (self.earth_width / 2),
+        # #     mouse_y - (self.earth_width / 2),
+        # #     mouse_x + (self.earth_width / 2),
+        # #     mouse_y + (self.earth_width / 2)
+        # # ]
+        # angle = self.get_angle_to_earth(mouse)
         #
-        # self.update_date()
+        # a = (self.background_rect[3] - self.background_rect[1]) / 3
+        # b = (self.background_rect[2] - self.background_rect[0]) / 3
+        #
+        # # a, b = self.calc_a_b()
+        # oval_x, oval_y = self.calc_oval_x_y(angle=angle)
+        # self.set_earth_pos((oval_x, oval_y), f"{mouse=}, {angle=}")
+        # # self.earth_rect = [
+        # #     oval_x - (self.earth_width / 2),
+        # #     oval_y - (self.earth_width / 2),
+        # #     oval_x + (self.earth_width / 2),
+        # #     oval_y + (self.earth_width / 2)
+        # # ]
+        # # print(f"Oval: x={oval_x:.2f}, y={oval_y:.2f}")
+        # # self.canvas_background.coords(self.oval_earth, *self.earth_rect)
+        # #
+        # # self.update_date()
 
     def animate(self):
         for i in range(100):
@@ -305,6 +351,7 @@ class OrbitingDatePicker(Frame):
 
     def set_date(self, date_in):
         rest = None
+        print(f"\t\t\tDATE_IN: {date_in}")
         if isinstance(date_in, tuple) or isinstance(date_in, list):
             date_in, *rest = date_in
         self._date = date_in
