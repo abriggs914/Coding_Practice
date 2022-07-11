@@ -3,7 +3,7 @@ import math
 import tkinter
 from tkinter import Frame
 from colour_utility import *
-from utility import distance
+from utility import distance, Rect2
 
 
 import numpy as np
@@ -54,6 +54,73 @@ def get_angle(p0, p1=np.array([0, 0]), p2=None):
 
 class OrbitingDatePicker(Frame):
 
+    class TEvent:
+
+        def __init__(self, orbit_rect):
+            self.x1, self.y1, self.x2, self.y2 = orbit_rect
+            self.rect = Rect2(self.x1, self.y1, self.x2 - self.x1, self.y2 - self.y1)
+            self._event_x, self._event_y = self.rect.center
+            self.x, self.y = None, None
+
+        def top_left(self):
+            self.event_x, self.event_y = self.rect.top_left
+            return self
+
+        def center_top(self):
+            self.event_x, self.event_y = self.rect.center_top
+            return self
+
+        def top_right(self):
+            self.event_x, self.event_y = self.rect.top_right
+            return self
+
+        def center_left(self):
+            self.event_x, self.event_y = self.rect.center_left
+            return self
+
+        def center(self):
+            self.event_x, self.event_y = self.rect.center
+            return self
+
+        def center_right(self):
+            self.event_x, self.event_y = self.rect.center_right
+            return self
+
+        def bottom_left(self):
+            self.event_x, self.event_y = self.rect.bottom_left
+            return self
+
+        def center_bottom(self):
+            self.event_x, self.event_y = self.rect.center_bottom
+            return self
+
+        def bottom_right(self):
+            self.event_x, self.event_y = self.rect.bottom_right
+            return self
+
+        def set_event_x(self, event_x_in):
+            self._event_x = event_x_in
+            self.x = self.event_x
+
+        def set_event_y(self, event_y_in):
+            self._event_y = event_y_in
+            self.y = self.event_y
+
+        def get_event_x(self):
+            return self._event_x
+
+        def get_event_y(self):
+            return self._event_y
+
+        def del_event_x(self):
+            del self._event_x
+
+        def del_event_y(self):
+            del self._event_y
+
+        event_x = property(get_event_x, set_event_x, del_event_x)
+        event_y = property(get_event_y, set_event_y, del_event_y)
+
     def __init__(self, master, width=300, height=300, sun_width=50, earth_width=25, start_date=None, start_year=None, start_month=None, start_day=None, seasons=None, **kwargs):
         super().__init__(master, kwargs)
 
@@ -71,10 +138,6 @@ class OrbitingDatePicker(Frame):
                 start_date = datetime.datetime.strptime(f"{start_year}-{start_month}-{start_day}", "%Y-%m-%d")
         elif not isinstance(start_date, datetime.datetime):
             raise TypeError("Error param 'start_date' must either be None or a datetime.datetime object.")
-
-        self.start_date = start_date
-        self._date = start_date
-        self.degrees_per_day = self.calc_deg_per_day()
 
         self.seasons = seasons if seasons is not None else DEFAULT_SEASONS
 
@@ -136,13 +199,21 @@ class OrbitingDatePicker(Frame):
             *self.earth_rect,
             fill=rgb_to_hex(DODGERBLUE_3)
         )
+
+        self.start_date = start_date
+        self.date = start_date
+        self.degrees_per_day = self.calc_deg_per_day()
+
         # self.SQUARE = self.canvas_background.create_rectangle(*self.earth_rect, fill=rgb_to_hex(OLIVEDRAB_2))
         self.text_year_label = self.canvas_background.create_text(*self.centre, text=f"{self.date.year}", font=("Arial", 12, "bold"))
         self.text_month_label = self.canvas_background.create_text(*self.centre_of_earth(), text=f"{self.date.strftime('%b')}", fill=rgb_to_hex(WHITE))
-        print(f"earth: {self.oval_earth}")
+        print(f"earth: {self.oval_earth}, {self.date=:%Y-%m-%d}")
+        print(f"earth: {self.oval_earth}, {self.date=:%Y-%m-%d}")
 
         self.canvas_background.bind("<B1-Motion>", self.mouse_motion)
-        self.set_earth_pos(0, "STARTING AT 0")
+        # self.set_earth_pos(0, "STARTING AT 0")
+        self.t_event = OrbitingDatePicker.TEvent(self.orbit_rect).center_right()
+        self.mouse_motion(self.t_event)
 
 
     def calc_date(self, angle=None):
@@ -265,6 +336,7 @@ class OrbitingDatePicker(Frame):
     def set_earth_pos(self, pos, *data):
         if not isinstance(pos, tuple) and not isinstance(pos, list) and (isinstance(pos, int) or isinstance(pos, float)):
             pos = self.calc_oval_x_y(angle=pos)
+            # print(f"{pos=}")
         if isinstance(pos, datetime.datetime):
             pos = self.calc_oval_x_y(angle=self.date_to_angle(date_in=pos))
 
@@ -275,16 +347,18 @@ class OrbitingDatePicker(Frame):
         #     pos = self.calc_oval_x_y(angle=self.date_to_angle(date_in=pos[0])), pos[1]
 
         pos_x, pos_y = pos
-        self.update_date(pos, data)
         self.earth_rect = [
             pos_x - (self.earth_width / 2),
             pos_y - (self.earth_width / 2),
             pos_x + (self.earth_width / 2),
             pos_y + (self.earth_width / 2)
         ]
+        # print(f"-> {pos=}, {data=}, {self.date=:%Y-%m-%d}")
+        self.update_date(pos, data)
+        # print(f"<- {pos=}, {data=}, {self.date=:%Y-%m-%d}")
         season = self.get_season()
         # self.canvas_background.coords(self.SQUARE, *self.earth_rect)
-        print(f"Pos: {self.date=:%Y-%m-%d} x={pos_x:.2f}, y={pos_y:.2f}, {season=}")
+        # print(f"Pos: {self.date=:%Y-%m-%d} x={pos_x:.2f}, y={pos_y:.2f}, {season=}")
         self.canvas_background.coords(self.oval_earth, *self.earth_rect)
         self.canvas_background.itemconfig(self.oval_earth, fill=rgb_to_hex(self.seasons[season]["colour"]))
         self.canvas_background.itemconfig(self.text_month_label, text=self.date.strftime('%b'), font=("Arial", 10, "bold"), fill=rgb_to_hex(self.seasons[season]["font_colour"]))
@@ -351,7 +425,7 @@ class OrbitingDatePicker(Frame):
 
     def set_date(self, date_in):
         rest = None
-        print(f"\t\t\tDATE_IN: {date_in}")
+        # print(f"\t\t\tDATE_IN: {date_in}")
         if isinstance(date_in, tuple) or isinstance(date_in, list):
             date_in, *rest = date_in
         self._date = date_in
@@ -427,6 +501,7 @@ if __name__ == "__main__":
     WINDOW.geometry(f"{WIDTH}x{HEIGHT}")
     ss = OrbitingDatePicker(WINDOW)
     ss.grid()
-    btn = tkinter.Button(WINDOW, text="animate", command=ss.animate())
+    btn = tkinter.Button(WINDOW, text="animate", command=ss.animate)
+    btn.grid()
     WINDOW.mainloop()
 
