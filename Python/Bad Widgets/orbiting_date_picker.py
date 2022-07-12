@@ -435,7 +435,8 @@ if __name__ == "__main__":
     WINDOW = tkinter.Tk()
     WINDOW.geometry(f"{WIDTH}x{HEIGHT}")
     # ss = OrbitingDatePicker(WINDOW)
-    ss = OrbitingDatePicker(WINDOW, start_date=datetime.datetime(2022, 6, 6), show_animation_console=True)
+    # ss = OrbitingDatePicker(WINDOW, start_date=datetime.datetime(2022, 6, 6), show_animation_console=True)
+    ss = OrbitingDatePicker(WINDOW, start_date=datetime.datetime(2022, 6, 6))
     ss.pack()
     WINDOW.mainloop()
 
