@@ -707,7 +707,7 @@ def reduce(lst, p, how="left"):
     if not isinstance(how, str):
         how = str(how)
     how = how.lower()
-    if how not in ["left", "center", "right", "distributed"]:
+    if how not in ["left", "center_rotary", "right", "distributed"]:
         how = "distributed"
 
     l = len(lst)
@@ -717,7 +717,7 @@ def reduce(lst, p, how="left"):
 
     if how == "left":
         return lst[:n_items]
-    elif how == "center":
+    elif how == "center_rotary":
         a = (l - n_items) // 2
         b = (l + n_items) // 2
         if l % 2 == 1:
@@ -958,7 +958,7 @@ class LineSeg(Line):
 #         self.left = None
 #         self.bottom = None
 #         self.right = None
-#         self.center = None
+#         self.center_rotary = None
 #         self.top_left = None
 #         self.top_right = None
 #         self.bottom_left = None
@@ -985,15 +985,15 @@ class LineSeg(Line):
 #         self.left = x
 #         self.bottom = y + h
 #         self.right = x + w
-#         self.center = x + (w / 2), y + (h / 2)
+#         self.center_rotary = x + (w / 2), y + (h / 2)
 #         self.top_left = x, y
 #         self.top_right = x + w, y
 #         self.bottom_left = x, y + h
 #         self.bottom_right = x + w, y + h
-#         self.center_top = self.center[0], y
-#         self.center_left = x, self.center[1]
-#         self.center_right = x + w, self.center[1]
-#         self.center_bottom = self.center[0], y + h
+#         self.center_top = self.center_rotary[0], y
+#         self.center_left = x, self.center_rotary[1]
+#         self.center_right = x + w, self.center_rotary[1]
+#         self.center_bottom = self.center_rotary[0], y + h
 #         self.area = w * h
 #         self.perimetre = 2 * (w + h)
 #         self.top_line = Line(*self.top_left, *self.top_right)
@@ -1317,7 +1317,7 @@ class Rect2:
     #     self.left = None
     #     self.bottom = None
     #     self.right = None
-    #     self.center = None
+    #     self.center_rotary = None
     #     self.top_left = None
     #     self.top_right = None
     #     self.bottom_left = None
@@ -1344,15 +1344,15 @@ class Rect2:
     #     self.left = x
     #     self.bottom = y + h
     #     self.right = x + w
-    #     self.center = x + (w / 2), y + (h / 2)
+    #     self.center_rotary = x + (w / 2), y + (h / 2)
     #     self.top_left = x, y
     #     self.top_right = x + w, y
     #     self.bottom_left = x, y + h
     #     self.bottom_right = x + w, y + h
-    #     self.center_top = self.center[0], y
-    #     self.center_left = x, self.center[1]
-    #     self.center_right = x + w, self.center[1]
-    #     self.center_bottom = self.center[0], y + h
+    #     self.center_top = self.center_rotary[0], y
+    #     self.center_left = x, self.center_rotary[1]
+    #     self.center_right = x + w, self.center_rotary[1]
+    #     self.center_bottom = self.center_rotary[0], y + h
     #     self.area = w * h
     #     self.perimetre = 2 * (w + h)
     #     self.top_line = Line(*self.top_left, *self.top_right)

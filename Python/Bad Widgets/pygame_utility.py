@@ -151,7 +151,7 @@ def write_text(game, display, r, msg, font, bg_c=None, tx_c=BLACK, wrap=True):
     for i, line in enumerate(lines):
         text_surf, text_rect = text_objects(line, font, tx_c)
         width, height = font.size(line)
-        text_rect.center = ((x + (w / 2)), (((i * height) + y) + (h / length)))
+        text_rect.center_rotary = ((x + (w / 2)), (((i * height) + y) + (h / length)))
         to_blit.append((text_surf, text_rect))
 
     if bg_c is not None:
@@ -292,7 +292,7 @@ class Label(Widget):
 
 
 # TODO allow TextBox to overwrite the inc and dec functions. ex inc on a phone number should produce phone#n => phone#n + 1.
-# TODO allow TextBox to center text
+# TODO allow TextBox to center_rotary text
 class TextBox(Widget):
 
     def __init__(self, game, display, rect, ic=GRAY_69, ac=WHITE, f=None, fc=BLACK, text='', min_width=20,
@@ -338,7 +338,7 @@ class TextBox(Widget):
         self.iargs = iargs
         self.dargs = dargs
 
-        if str(text_align).lower() not in ["None", "left", "center", "right"]:
+        if str(text_align).lower() not in ["None", "left", "center_rotary", "right"]:
             text_align = None
         if text_align is not None:
             text_align = text_align.lower()
@@ -440,7 +440,7 @@ class TextBox(Widget):
         trect = game.Rect(rect.x + bs, rect.y + bs, rect.width - (bs * 2), rect.height - (bs * 2))
         txt = str(self.text)
         #TODO fix this
-        # if self.text_align == "center":
+        # if self.text_align == "center_rotary":
         #     txt = pad_centre(txt, )
         # elif self.text_align == "right":
         self.txt_surface = self.f.render(txt, True, self.colour)
@@ -864,7 +864,7 @@ class Button(Widget):
         # draw button label
         self.font.set_bold(True)
         text_surf, text_rect = text_objects(self.msg, self.font, self.text_colour)
-        text_rect.center = ((self.rect.x + (self.rect.width / 2)), (self.rect.y + (self.rect.height / 2)))
+        text_rect.center_rotary = ((self.rect.x + (self.rect.width / 2)), (self.rect.y + (self.rect.height / 2)))
         self.display.blit(text_surf, text_rect)
 
 
@@ -989,13 +989,13 @@ class ScrollBar(Widget):
         # p1 - tip
         # p2 - first wing
         # p3 - second wing
-        p1x = r.center[0]
-        p1y = r.center[1] + (r.height * p)
-        p2x = r.center[0] - (r.width * p)
-        p2y = r.center[1] - (r.height * p)
-        p3x = r.center[0] + (r.width * p)
-        p3y = r.center[1] - (r.height * p)
-        points = [rotate_point(*r.center, *pt, o * 45) for pt in [(p2x, p2y), (p1x, p1y), (p3x, p3y)]]
+        p1x = r.center_rotary[0]
+        p1y = r.center_rotary[1] + (r.height * p)
+        p2x = r.center_rotary[0] - (r.width * p)
+        p2y = r.center_rotary[1] - (r.height * p)
+        p3x = r.center_rotary[0] + (r.width * p)
+        p3y = r.center_rotary[1] - (r.height * p)
+        points = [rotate_point(*r.center_rotary, *pt, o * 45) for pt in [(p2x, p2y), (p1x, p1y), (p3x, p3y)]]
 
         self.game.draw.lines(self.display, c, False, points, w)
         return points
@@ -1151,8 +1151,8 @@ class ScrollBar(Widget):
     #                                 (bottom_button_rect.top + (bottom_button_rect.height * 0.2))
     #                             ),
     #                             (
-    #                                 bottom_button_rect.center[0],
-    #                                 (bottom_button_rect.center[1] + (bottom_button_rect.height * 0.2))
+    #                                 bottom_button_rect.center_rotary[0],
+    #                                 (bottom_button_rect.center_rotary[1] + (bottom_button_rect.height * 0.2))
     #                             ),
     #                             3)
     #         # down arrow - right side
@@ -1162,8 +1162,8 @@ class ScrollBar(Widget):
     #                                 (bottom_button_rect.top + (bottom_button_rect.height * 0.2))
     #                             ),
     #                             (
-    #                                 bottom_button_rect.center[0],
-    #                                 (bottom_button_rect.center[1] + (bottom_button_rect.height * 0.2))
+    #                                 bottom_button_rect.center_rotary[0],
+    #                                 (bottom_button_rect.center_rotary[1] + (bottom_button_rect.height * 0.2))
     #                             ),
     #                             3)
     #         # up arrow - left side
@@ -1173,8 +1173,8 @@ class ScrollBar(Widget):
     #                                 (top_button_rect.bottom - (top_button_rect.height * 0.2))
     #                             ),
     #                             (
-    #                                 top_button_rect.center[0],
-    #                                 (top_button_rect.center[1] - (top_button_rect.height * 0.2))
+    #                                 top_button_rect.center_rotary[0],
+    #                                 (top_button_rect.center_rotary[1] - (top_button_rect.height * 0.2))
     #                             ),
     #                             3)
     #         # up arrow - right side
@@ -1184,8 +1184,8 @@ class ScrollBar(Widget):
     #                                 (top_button_rect.bottom - (top_button_rect.height * 0.2))
     #                             ),
     #                             (
-    #                                 top_button_rect.center[0],
-    #                                 (top_button_rect.center[1] - (top_button_rect.height * 0.2))
+    #                                 top_button_rect.center_rotary[0],
+    #                                 (top_button_rect.center_rotary[1] - (top_button_rect.height * 0.2))
     #                             ),
     #                             3)
     #         bar_rect = self.game.Rect(*self.decode_bar_pos())
@@ -1217,15 +1217,15 @@ class ScrollBar(Widget):
     #                                 (right_button_rect.top + (right_button_rect.height * 0.2))
     #                             ),
     #                             (
-    #                                 (right_button_rect.center[0] + (right_button_rect.width * 0.2)),
-    #                                 right_button_rect.center[1]
+    #                                 (right_button_rect.center_rotary[0] + (right_button_rect.width * 0.2)),
+    #                                 right_button_rect.center_rotary[1]
     #                             ),
     #                             3)
     #         # right arrow - bottom side
     #         self.game.draw.line(self.display, BLACK,
     #                             (
-    #                                 (right_button_rect.center[0] + (right_button_rect.width * 0.2)),
-    #                                 right_button_rect.center[1]
+    #                                 (right_button_rect.center_rotary[0] + (right_button_rect.width * 0.2)),
+    #                                 right_button_rect.center_rotary[1]
     #                             ),
     #                             (
     #                                 (right_button_rect.left + (right_button_rect.width * 0.2)),
@@ -1239,8 +1239,8 @@ class ScrollBar(Widget):
     #                                 (left_button_rect.top + (left_button_rect.height * 0.2))
     #                             ),
     #                             (
-    #                                 (left_button_rect.center[0] - (left_button_rect.width * 0.2)),
-    #                                 left_button_rect.center[1]
+    #                                 (left_button_rect.center_rotary[0] - (left_button_rect.width * 0.2)),
+    #                                 left_button_rect.center_rotary[1]
     #                             ),
     #                             3)
     #         # left arrow - bottom side
@@ -1250,8 +1250,8 @@ class ScrollBar(Widget):
     #                                 (left_button_rect.bottom - (left_button_rect.height * 0.2))
     #                             ),
     #                             (
-    #                                 (left_button_rect.center[0] - (left_button_rect.width * 0.2)),
-    #                                 left_button_rect.center[1]
+    #                                 (left_button_rect.center_rotary[0] - (left_button_rect.width * 0.2)),
+    #                                 left_button_rect.center_rotary[1]
     #                             ),
     #                             3)
     #         bar_rect = self.game.Rect(*self.decode_bar_pos())
@@ -1330,8 +1330,8 @@ class TableRow(Widget):
                 cell_bounds = self.game.Rect(xi, bounds.y, divider_space, bounds.h)
                 # cell_surface, cell_rect = text_objects(self.contents[i], self.font)
                 write_text(self.game, self.display, cell_bounds, self.contents[i], self.font, self.c, self.tx_c)
-                # center text within cell TODO : add option for gravity and orientation
-                # cell_rect.center = (
+                # center_rotary text within cell TODO : add option for gravity and orientation
+                # cell_rect.center_rotary = (
                 #     (cell_bounds.x + (cell_bounds.width / 2)), (cell_bounds.y + (cell_bounds.height / 2))
                 # )
                 # self.game.draw.rect(self.display, self.c, cell_bounds)
@@ -1500,7 +1500,7 @@ class Table(Widget):
 
         # draw title
         title_surface, title_rect = text_objects(self.title, self.font, self.title_color)
-        title_rect.center = ((self.rect.x + (self.rect.width / 2)), (self.rect.y + (self.rect.height * 0.05)))
+        title_rect.center_rotary = ((self.rect.x + (self.rect.width / 2)), (self.rect.y + (self.rect.height * 0.05)))
         self.display.blit(title_surface, title_rect)
 
         # draw each row
