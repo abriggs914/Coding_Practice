@@ -2,7 +2,6 @@ import math
 import tkinter
 from colour_utility import *
 from utility import distance, dict_print
-from game_state_machine import GSM, BooleanGSM
 import numpy as np
 
 
@@ -31,8 +30,6 @@ class RotarySpinner(tkinter.Frame):
     def __init__(self, master, width=300, height=300, radius=60, stop_angle=345, number_radius=15, **kwargs):
         super().__init__(master, kwargs)
 
-        self.gsm_drag_number = GSM(name="drag_number", options=list(range(10)))
-        self.gsm_is_dragging = BooleanGSM(name="gsm_is_dragging", t_first=False)
         self.background_canvas_width = width
         self.background_canvas_height = height
         self.number = tkinter.IntVar(value=0)
@@ -86,64 +83,38 @@ class RotarySpinner(tkinter.Frame):
         # print(f"A")
         rainbow = rainbow_gradient(10)
         for i in range(10):
-            colour = rainbow.__next__()
-            self.ovals[i].update({
-                "oval": self.canvas_background.create_oval(*self.ovals[i]["rect"], fill=rgb_to_hex(colour)),
-                "text": self.canvas_background.create_text(*self.ovals[i]["center"], fill=rgb_to_hex(font_foreground(colour)), text=str(i))
-            })
+            self.ovals[i].update({"oval": self.canvas_background.create_oval(*self.ovals[i]["rect"], fill=rgb_to_hex(rainbow.__next__()))})
 
         # print(f"B")
         self.canvas_background.create_line(*self.angle_on_circle(self.stop_angle, radius=self.rotary_radius*0.8), *self.angle_on_circle(self.stop_angle, radius=self.rotary_radius*1.2), fill=rgb_to_hex(BURLYWOOD_4), width=5)
         self.canvas_background.bind("<B1-Motion>", self.mouse_motion)
-        self.canvas_background.bind("<ButtonRelease-1>", self.mouse_button_release)
         # print(f"C")
         # print(dict_print(self.ovals, "Ovals A"))
 
-    def calc_ovals(self, start_angle=None, do_stop=False):
+    def calc_ovals(self, start_angle=None):
         # start_angle = start_angle if start_angle is not None else self.stop_angle
-        if do_stop:
-            # stop_angle = None if start_angle is None else ((((start_angle + 180) % 360) + 135) % 360)
-            stop_angle = start_angle
-            positions = self.calc_start_positions(stop_angle=stop_angle)
-            positions.reverse()
-            # print(dict_print(self.ovals, "PRE OVALS"))
-            if not self.ovals:
-                self.ovals.update({i: {"center": positions[i]} for i in range(10)})
-            # print(dict_print(self.ovals, "POST OVALS"))
-            print(f"{positions}")
-            for i in range(10):
-                self.ovals[i].update({"rect": [
-                    self.ovals[i]["center"][0] - self.number_radius,
-                    self.ovals[i]["center"][1] - self.number_radius,
-                    self.ovals[i]["center"][0] + self.number_radius,
-                    self.ovals[i]["center"][1] + self.number_radius
-                    ],
-                    "center": positions[i]
-                })
-        else:
-            stop_angle = None if start_angle is None else ((((start_angle + 180) % 360) + 135) % 360)
-            positions = self.calc_start_positions(stop_angle=stop_angle)
-            positions.reverse()
-            # print(dict_print(self.ovals, "PRE OVALS"))
-            if not self.ovals:
-                self.ovals.update({i: {"center": positions[i]} for i in range(10)})
-            # print(dict_print(self.ovals, "POST OVALS"))
-            print(f"{positions}")
-            for i in range(10):
-                self.ovals[i].update({"rect": [
-                    self.ovals[i]["center"][0] - self.number_radius,
-                    self.ovals[i]["center"][1] - self.number_radius,
-                    self.ovals[i]["center"][0] + self.number_radius,
-                    self.ovals[i]["center"][1] + self.number_radius
-                    ],
-                    "center": positions[i]
-                })
+        stop_angle = None if start_angle is None else ((((start_angle + 180) % 360) + 135) % 360)
+        positions = self.calc_start_positions(stop_angle=stop_angle)
+        positions.reverse()
+        # print(dict_print(self.ovals, "PRE OVALS"))
+        if not self.ovals:
+            self.ovals.update({i: {"center": positions[i]} for i in range(10)})
+        # print(dict_print(self.ovals, "POST OVALS"))
+        print(f"{positions}")
+        for i in range(10):
+            self.ovals[i].update({"rect": [
+                self.ovals[i]["center"][0] - self.number_radius,
+                self.ovals[i]["center"][1] - self.number_radius,
+                self.ovals[i]["center"][0] + self.number_radius,
+                self.ovals[i]["center"][1] + self.number_radius
+                ],
+                "center": positions[i]
+            })
 
     def update_ovals(self):
         for i in range(10):
-            # print(f"{i=}, {self.ovals[i]=}")
-            self.canvas_background.moveto(self.ovals[i]["oval"], *self.ovals[i]["rect"][:2])
-            self.canvas_background.moveto(self.ovals[i]["text"], *self.ovals[i]["center"])
+            print(f"{i=}, {self.ovals[i]=}")
+            self.canvas_background.moveto(self.ovals[i]["oval"], *self.ovals[i]["center"])
 
     def calc_start_positions(self, stop_angle=None, number_radius=None):
         stop_angle = stop_angle if stop_angle is not None else self.stop_angle
@@ -174,32 +145,16 @@ class RotarySpinner(tkinter.Frame):
         # self.canvas_background.moveto(self.oval_rotary, *self.rotary_rect[:2])
         m_x, m_y = event.x, event.y
         for i in range(10):
-
             center = self.ovals[i]["center"]
             d = distance(center, (m_x, m_y))
             r = self.number_radius
-            if self.gsm_is_dragging.state() and self.gsm_drag_number.state() == i:
-                if d <= r:
-                    print(f"DRAGGED #{i}")
-                    self.spin_dial(m_x, m_y)
-                    print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
-            elif not self.gsm_is_dragging.state():
-                if d <= r:
-                    print(f"NEW DRAG #{i}")
-                    self.spin_dial(m_x, m_y)
-                    self.gsm_is_dragging.__next__()
-                    self.gsm_drag_number.set_state(i)
-                    print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
-        # print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
-
-    def mouse_button_release(self, event):
-        self.gsm_is_dragging.set_state(False)
-
+            if d <= r:
+                print(f"DRAGGED #{i}")
+                self.spin_dial(m_x, m_y)
 
     def spin_dial(self, m_x, m_y):
         angle = get_angle((m_x, m_y), np.array(list(map(lambda x: int(x - (self.rotary_radius / 2)), self.center_rotary))))
-        # self.calc_ovals(start_angle=angle)
-        self.calc_ovals(start_angle=angle, do_stop=True)
+        self.calc_ovals(start_angle=angle)
         # print(dict_print(self.ovals, "Ovals B"))
         self.update_ovals()
 
