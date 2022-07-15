@@ -695,6 +695,16 @@ gravity_falls_shorts = TVSeries("Gravity Falls Shorts", {
 	"Disney+")
 	
 
+the_replacements = TVSeries("The Replacements", {
+	1: 21},
+	24,
+	2006,
+	2007,
+	False,
+	"Comedy / Cartoon",
+	"Disney+")
+	
+
 series_list = [
     the_office,
     community,
@@ -743,7 +753,8 @@ series_list = [
 	gravity_falls,
 	what_if,
 	hawkeye,
-	gravity_falls_shorts
+	gravity_falls_shorts,
+	the_replacements
 ]
 
    
