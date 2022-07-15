@@ -99,7 +99,7 @@ class RotarySpinner(tkinter.Frame):
         # print(f"C")
         # print(dict_print(self.ovals, "Ovals A"))
 
-    def calc_ovals(self, start_angle=None, do_stop=False):
+    def calc_ovals_1(self, start_angle=None, do_stop=False):
         # start_angle = start_angle if start_angle is not None else self.stop_angle
         if do_stop:
             # stop_angle = None if start_angle is None else ((((start_angle + 180) % 360) + 135) % 360)
@@ -110,7 +110,7 @@ class RotarySpinner(tkinter.Frame):
             if not self.ovals:
                 self.ovals.update({i: {"center": positions[i]} for i in range(10)})
             # print(dict_print(self.ovals, "POST OVALS"))
-            print(f"{positions}")
+            print(f"{positions=}")
             for i in range(10):
                 self.ovals[i].update({"rect": [
                     self.ovals[i]["center"][0] - self.number_radius,
