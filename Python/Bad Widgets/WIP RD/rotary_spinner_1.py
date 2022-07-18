@@ -94,7 +94,7 @@ class RotarySpinner(tkinter.Frame):
 
         # print(f"B")
         self.canvas_background.create_line(*self.angle_on_circle(self.stop_angle, radius=self.rotary_radius*0.8), *self.angle_on_circle(self.stop_angle, radius=self.rotary_radius*1.2), fill=rgb_to_hex(BURLYWOOD_4), width=5)
-        # self.canvas_background.bind("<B1-Motion>", self.mouse_motion)
+        self.canvas_background.bind("<B1-Motion>", self.mouse_motion)
         self.canvas_background.bind("<ButtonRelease-1>", self.mouse_button_release)
         # print(f"C")
         # print(dict_print(self.ovals, "Ovals A"))
@@ -138,25 +138,6 @@ class RotarySpinner(tkinter.Frame):
                     ],
                     "center": positions[i]
                 })
-
-    def calc_ovals(self, start_angle=None, do_stop=False):
-        stop_angle = None if start_angle is None else ((((start_angle + 180) % 360) + 135) % 360)
-        positions = self.calc_start_positions(stop_angle=stop_angle)
-        positions.reverse()
-        # print(dict_print(self.ovals, "PRE OVALS"))
-        if not self.ovals:
-            self.ovals.update({i: {"center": positions[i]} for i in range(10)})
-        # print(dict_print(self.ovals, "POST OVALS"))
-        print(f"{positions}")
-        for i in range(10):
-            self.ovals[i].update({"rect": [
-                self.ovals[i]["center"][0] - self.number_radius,
-                self.ovals[i]["center"][1] - self.number_radius,
-                self.ovals[i]["center"][0] + self.number_radius,
-                self.ovals[i]["center"][1] + self.number_radius
-                ],
-                "center": positions[i]
-            })
 
     def update_ovals(self):
         for i in range(10):
