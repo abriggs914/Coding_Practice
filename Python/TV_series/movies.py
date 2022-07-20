@@ -105,7 +105,18 @@ list_of_movies = [
 			"AVP Requiem"
 		]
 	},
-	"Prometheus"
+	"Prometheus",
+	{
+		"Shanghai Noon" {
+			"Shanghai Noon",
+			"Shanghai Knights"
+		}
+	},
+	{
+		"Hot Shots" {
+			"Hot Shots"
+		}
+	}
 ]
 
 
