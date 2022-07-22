@@ -1,7 +1,7 @@
 import math
 import tkinter
 from colour_utility import *
-from utility import distance, dict_print
+from utility import distance, dict_print, calc_bounds
 from game_state_machine import GSM, BooleanGSM
 import numpy as np
 
@@ -93,7 +93,8 @@ class RotarySpinner(tkinter.Frame):
             })
 
         # print(f"B")
-        self.canvas_background.create_line(*self.angle_on_circle(self.stop_angle, radius=self.rotary_radius*0.8), *self.angle_on_circle(self.stop_angle, radius=self.rotary_radius*1.2), fill=rgb_to_hex(BURLYWOOD_4), width=5)
+        self.rotary_stopper_line = self.canvas_background.create_line(*self.angle_on_circle(self.stop_angle, radius=self.rotary_radius*0.8), *self.angle_on_circle(self.stop_angle, radius=self.rotary_radius*1.2), fill=rgb_to_hex(BURLYWOOD_4), width=5)
+        self.mouse_dot = self.canvas_background.create_oval(calc_bounds(self.center_rotary, 14), fill=rgb_to_hex(LIMEGREEN))
         self.canvas_background.bind("<B1-Motion>", self.mouse_motion)
         self.canvas_background.bind("<ButtonRelease-1>", self.mouse_button_release)
         # print(f"C")
@@ -194,6 +195,14 @@ class RotarySpinner(tkinter.Frame):
         # ]
         # self.canvas_background.moveto(self.oval_rotary, *self.rotary_rect[:2])
         m_x, m_y = event.x, event.y
+
+        angle = get_angle((m_x, m_y), np.array(self.center_rotary))
+        self.number.set(angle)
+        o_x, o_y = self.angle_on_circle(angle, 100)
+        o_x -= 14/2
+        o_y -= 14/2
+        self.canvas_background.moveto(self.mouse_dot, o_x, o_y)
+
         for i in range(10):
 
             center = self.ovals[i]["center"]
@@ -202,15 +211,15 @@ class RotarySpinner(tkinter.Frame):
             if self.gsm_is_dragging.state() and self.gsm_drag_number.state() == i:
                 if d <= r:
                     print(f"DRAGGED #{i}")
-                    self.spin_dial(m_x, m_y)
-                    print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
+                    # self.spin_dial(m_x, m_y)
+                    # print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
             elif not self.gsm_is_dragging.state():
                 if d <= r:
                     print(f"NEW DRAG #{i}")
-                    self.spin_dial(m_x, m_y)
+                    # self.spin_dial(m_x, m_y)
                     self.gsm_is_dragging.__next__()
                     self.gsm_drag_number.set_state(i)
-                    print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
+                    # print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
         # print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
 
     def mouse_button_release(self, event):

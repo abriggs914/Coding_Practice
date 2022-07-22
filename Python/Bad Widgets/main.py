@@ -1,5 +1,6 @@
 import phone_number_guess
 # import orbiting_date_picker
+from utility import *
 
 
 # gsm_showing_dae_picker = (True, False), 0
@@ -9,6 +10,7 @@ import phone_number_guess
 #	Version............1.1
 #	Date........2022-06-30
 #	Author....Avery Briggs
+from test_suite import TestSuite
 
 
 class GSM:
@@ -152,21 +154,45 @@ class YesNoCancelGSM(GSM):
 if __name__ == '__main__':
     # phone_number_guess.main()
     # orbiting_date_picker.main()
-    gsma = GSM(options=list(range(100)), name="GSM3")
-    gsm1 = GSM(options=list(range(100)))
-    gsm2 = BooleanGSM()
-    gsm3 = YesNoCancelGSM()
-    gsm4 = YesNoCancelGSM(max_cycles=True)
+    # gsma = GSM(options=list(range(100)), name="GSM3")
+    # gsm1 = GSM(options=list(range(100)))
+    # gsm2 = BooleanGSM()
+    # gsm3 = YesNoCancelGSM()
+    # gsm4 = YesNoCancelGSM(max_cycles=True)
+    #
+    # to_print = [
+    #     gsm3.opposite(round_up=True),
+    #     gsm2.add_state("There"),
+    #     gsm2.__next__(),
+    #     gsm4.__next__(),
+    #     gsm4.__next__(),
+    #     gsm4.can_recycle(),
+    #     gsm4.__next__()
+    # ]
+    #
+    # for i, test in enumerate(to_print):
+    #     print(f"i: {i}, test=<{test}>")
 
-    to_print = [
-        gsm3.opposite(round_up=True),
-        gsm2.add_state("There"),
-        gsm2.__next__(),
-        gsm4.__next__(),
-        gsm4.__next__(),
-        gsm4.can_recycle(),
-        gsm4.__next__()
-    ]
+    def calc_bounds(center, width, height=None):
+        assert (isinstance(center, list) or isinstance(center, tuple)) and len(center) == 2 and all([isnumber(x) for x in center]), f"Error param 'center' must be a tuple or list representing center coordinates (x, y). Got: {center}"
+        assert isnumber(width), f"Error param 'width' must be a number. Got: {width}"
+        if height is not None:
+            assert isnumber(height), f"Error param 'height' if not omitted, must be a number. Got: {height}"
+        w = width / 2
+        h = w if height is None else (height / 2)
+        return (
+            center[0] - w,
+            center[1] - h,
+            center[0] + w,
+            center[1] + h
+        )
 
-    for i, test in enumerate(to_print):
-        print(f"i: {i}, test=<{test}>")
+    print(f"res: {calc_bounds((0, 0), 10)}")
+    print(f"res: {calc_bounds((0, 0), 10, 20)}")
+
+    ts = TestSuite(test_func=calc_bounds)
+    # ts.set_func(calc_bounds)
+    ts.add_test("test1", [[(0, 0), 10], (-5, -5, 5, 5)])
+    ts.add_test("test2", [[(0, 0), 10, 20], (-5, -10, 5, 10)])
+    ts.add_test("test3", [[(None, 0), 10, 20], AssertionError])
+    ts.execute()

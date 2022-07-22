@@ -12,8 +12,8 @@ import os
 VERSION = \
 """	
 	General Utility Functions
-	Version..............1.49
-	Date...........2022-07-04
+	Version..............1.50
+	Date...........2022-07-21
 	Author.......Avery Briggs
 """
 
@@ -60,7 +60,7 @@ def lenstr(x):
     return len(str(x))
 
 
-def minmax(a, *b):
+def minmax(a, b):
     
     if a <= b:
         return a, b
@@ -1620,10 +1620,26 @@ def tkinter_to_rect2(rect):
     assert len(rect) == 4, "This list is too long"
     x1, y1, x2, y2 = rect
     return Rect2(x1, y1, x2 - x1, y2 - y1)
-	
+
 
 def kb_as_percent(kb, gb=2):
-	return("%.3f" % (((kb / (1024**2)) / gb))) + " %"
+    return ("%.3f" % (((kb / (1024**2)) / gb))) + " %"
+
+
+def calc_bounds(center, width, height=None):
+    assert (isinstance(center, list) or isinstance(center, tuple)) and len(center) == 2 and all([isnumber(x) for x in
+                                                                                                 center]), f"Error param 'center' must be a tuple or list representing center coordinates (x, y). Got: {center}"
+    assert isnumber(width), f"Error param 'width' must be a number. Got: {width}"
+    if height is not None:
+        assert isnumber(height), f"Error param 'height' if not omitted, must be a number. Got: {height}"
+    w = width / 2
+    h = w if height is None else (height / 2)
+    return (
+        center[0] - w,
+        center[1] - h,
+        center[0] + w,
+        center[1] + h
+    )
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

@@ -36,9 +36,9 @@ def main():
     game = app.get_game()
     display = app.display
 
-    r1 = Rect(45, 10, 400, 300)
-    r_lbl = Rect(r1.left + 2, r1.top + 2, r1.width - 4, r1.height - 4)
-    r_txt = Rect(r_lbl.left + 6, r_lbl.bottom + 5, r1.width - 4, r1.height - 4)
+    r1 = Rect2(45, 10, 400, 300)
+    r_lbl = Rect2(r1.left + 2, r1.top + 2, r1.width - 4, r1.height - 4)
+    r_txt = Rect2(r_lbl.left + 6, r_lbl.bottom + 5, r1.width - 4, r1.height - 4)
     frame_main = VBox(game, display, None, r1, 1, HOTPINK)
     label = Label(game, display, r_lbl, "Is this your Phone Number?", fs=40)
     textbox = TextBox(game, display, r_txt, ic=BROWN_3, ac=INDIGO, fc=GREEN, editable=False, draw_clear_btn=False, font_size=35, text_align="center_rotary", numeric=True, iaction=increment_phone_number, daction=decrement_phone_number)

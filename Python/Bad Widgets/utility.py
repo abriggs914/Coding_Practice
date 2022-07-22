@@ -12,8 +12,8 @@ import os
 VERSION = \
 """	
 	General Utility Functions
-	Version..............1.48
-	Date...........2022-04-29
+	Version..............1.50
+	Date...........2022-07-21
 	Author.......Avery Briggs
 """
 
@@ -60,7 +60,7 @@ def lenstr(x):
     return len(str(x))
 
 
-def minmax(a, *b):
+def minmax(a, b):
     
     if a <= b:
         return a, b
@@ -707,7 +707,7 @@ def reduce(lst, p, how="left"):
     if not isinstance(how, str):
         how = str(how)
     how = how.lower()
-    if how not in ["left", "center_rotary", "right", "distributed"]:
+    if how not in ["left", "center", "right", "distributed"]:
         how = "distributed"
 
     l = len(lst)
@@ -717,7 +717,7 @@ def reduce(lst, p, how="left"):
 
     if how == "left":
         return lst[:n_items]
-    elif how == "center_rotary":
+    elif how == "center":
         a = (l - n_items) // 2
         b = (l + n_items) // 2
         if l % 2 == 1:
@@ -958,7 +958,7 @@ class LineSeg(Line):
 #         self.left = None
 #         self.bottom = None
 #         self.right = None
-#         self.center_rotary = None
+#         self.center = None
 #         self.top_left = None
 #         self.top_right = None
 #         self.bottom_left = None
@@ -985,15 +985,15 @@ class LineSeg(Line):
 #         self.left = x
 #         self.bottom = y + h
 #         self.right = x + w
-#         self.center_rotary = x + (w / 2), y + (h / 2)
+#         self.center = x + (w / 2), y + (h / 2)
 #         self.top_left = x, y
 #         self.top_right = x + w, y
 #         self.bottom_left = x, y + h
 #         self.bottom_right = x + w, y + h
-#         self.center_top = self.center_rotary[0], y
-#         self.center_left = x, self.center_rotary[1]
-#         self.center_right = x + w, self.center_rotary[1]
-#         self.center_bottom = self.center_rotary[0], y + h
+#         self.center_top = self.center[0], y
+#         self.center_left = x, self.center[1]
+#         self.center_right = x + w, self.center[1]
+#         self.center_bottom = self.center[0], y + h
 #         self.area = w * h
 #         self.perimetre = 2 * (w + h)
 #         self.top_line = Line(*self.top_left, *self.top_right)
@@ -1317,7 +1317,7 @@ class Rect2:
     #     self.left = None
     #     self.bottom = None
     #     self.right = None
-    #     self.center_rotary = None
+    #     self.center = None
     #     self.top_left = None
     #     self.top_right = None
     #     self.bottom_left = None
@@ -1344,15 +1344,15 @@ class Rect2:
     #     self.left = x
     #     self.bottom = y + h
     #     self.right = x + w
-    #     self.center_rotary = x + (w / 2), y + (h / 2)
+    #     self.center = x + (w / 2), y + (h / 2)
     #     self.top_left = x, y
     #     self.top_right = x + w, y
     #     self.bottom_left = x, y + h
     #     self.bottom_right = x + w, y + h
-    #     self.center_top = self.center_rotary[0], y
-    #     self.center_left = x, self.center_rotary[1]
-    #     self.center_right = x + w, self.center_rotary[1]
-    #     self.center_bottom = self.center_rotary[0], y + h
+    #     self.center_top = self.center[0], y
+    #     self.center_left = x, self.center[1]
+    #     self.center_right = x + w, self.center[1]
+    #     self.center_bottom = self.center[0], y + h
     #     self.area = w * h
     #     self.perimetre = 2 * (w + h)
     #     self.top_line = Line(*self.top_left, *self.top_right)
@@ -1620,6 +1620,26 @@ def tkinter_to_rect2(rect):
     assert len(rect) == 4, "This list is too long"
     x1, y1, x2, y2 = rect
     return Rect2(x1, y1, x2 - x1, y2 - y1)
+
+
+def kb_as_percent(kb, gb=2):
+    return ("%.3f" % (((kb / (1024**2)) / gb))) + " %"
+
+
+def calc_bounds(center, width, height=None):
+    assert (isinstance(center, list) or isinstance(center, tuple)) and len(center) == 2 and all([isnumber(x) for x in
+                                                                                                 center]), f"Error param 'center' must be a tuple or list representing center coordinates (x, y). Got: {center}"
+    assert isnumber(width), f"Error param 'width' must be a number. Got: {width}"
+    if height is not None:
+        assert isnumber(height), f"Error param 'height' if not omitted, must be a number. Got: {height}"
+    w = width / 2
+    h = w if height is None else (height / 2)
+    return (
+        center[0] - w,
+        center[1] - h,
+        center[0] + w,
+        center[1] + h
+    )
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

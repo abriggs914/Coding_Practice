@@ -3,10 +3,50 @@ from utility import *
 
 """
 	General Test Suite Driver
-	Version...............1.4
-	Date...........2021-10-07
+	Version...............1.5
+	Date...........2022-07-21
 	Author.......Avery Briggs
 """
+
+
+errors_list = [
+    AssertionError,
+    AttributeError,
+    EOFError,
+    FloatingPointError,
+    GeneratorExit,
+    ImportError,
+    IndexError,
+    KeyError,
+    KeyboardInterrupt,
+    MemoryError,
+    NameError,
+    NotImplementedError,
+    OSError,
+    OverflowError,
+    ReferenceError,
+    RuntimeError,
+    StopIteration,
+    SyntaxError,
+    IndentationError,
+    TabError,
+    SystemError,
+    SystemExit,
+    TypeError,
+    UnboundLocalError,
+    UnicodeError,
+    UnicodeEncodeError,
+    UnicodeDecodeError,
+    UnicodeTranslateError,
+    ValueError,
+    ZeroDivisionError
+]
+
+
+class TestSuiteUnhandledError(Exception):
+
+    def __init__(self, *args):
+        print(args)
 
 
 def run_tests(func, test_set):
@@ -27,11 +67,25 @@ def run_tests(func, test_set):
 
         args = test_args[0]
         desired_answer = test_args[1]
+        print(f"{desired_answer=}")
+
+        do_try = False
+        if desired_answer in errors_list:
+            do_try = True
+
         work_below = "-v- WORK -v-"
         work_above = "-^- WORK -^-"
         div = "".join(["-" for i in range(w // 2 - len(work_above) // 2)])
         print(div + work_below + div)
-        result = func(*args)
+        if not do_try:
+            result = func(*args)
+        else:
+            try:
+                result = func(*args)
+            except desired_answer:
+                result = desired_answer
+            else:
+                raise TestSuiteUnhandledError()
 
         stk = inspect.stack()
         # print("XX inspect.stack()  ", stk)
@@ -134,6 +188,13 @@ def run_multiple_tests(tests_to_run):
 class TestSuite:
     """Class used to run a batch of tests on functions"""
 
+    # _ASSERTIONERROR = AssertionError
+    # _TYPEERROR = TypeError
+    # _VALUEERROR = "ValueError"
+    # _KEYERROR = "KeyError"
+    # _INDEXERROR = "IndexError"
+    # _ZERODIVISIONERROR = "ZeroDivisionError"
+
     def __init__(
             self,
             test_func=None,
@@ -206,6 +267,7 @@ class TestSuite:
 
         start = start if start is not None else 0
         end = end if end is not None else len(self.tests)
+        print(f"{start=}, {end=}")
         start, end = minmax(start, end)
         start = max(0, start)
         end = max(0, end)

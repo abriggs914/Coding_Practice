@@ -3,10 +3,50 @@ from utility import *
 
 """
 	General Test Suite Driver
-	Version............1.2
-	Date........2021-08-23
-	Author....Avery Briggs
+	Version...............1.5
+	Date...........2022-07-21
+	Author.......Avery Briggs
 """
+
+
+errors_list = [
+    AssertionError,
+    AttributeError,
+    EOFError,
+    FloatingPointError,
+    GeneratorExit,
+    ImportError,
+    IndexError,
+    KeyError,
+    KeyboardInterrupt,
+    MemoryError,
+    NameError,
+    NotImplementedError,
+    OSError,
+    OverflowError,
+    ReferenceError,
+    RuntimeError,
+    StopIteration,
+    SyntaxError,
+    IndentationError,
+    TabError,
+    SystemError,
+    SystemExit,
+    TypeError,
+    UnboundLocalError,
+    UnicodeError,
+    UnicodeEncodeError,
+    UnicodeDecodeError,
+    UnicodeTranslateError,
+    ValueError,
+    ZeroDivisionError
+]
+
+
+class TestSuiteUnhandledError(Exception):
+
+    def __init__(self, *args):
+        print(args)
 
 
 def run_tests(func, test_set):
@@ -27,11 +67,41 @@ def run_tests(func, test_set):
 
         args = test_args[0]
         desired_answer = test_args[1]
+        print(f"{desired_answer=}")
+
+        do_try = False
+        if desired_answer in errors_list:
+            do_try = True
+
         work_below = "-v- WORK -v-"
         work_above = "-^- WORK -^-"
         div = "".join(["-" for i in range(w // 2 - len(work_above) // 2)])
         print(div + work_below + div)
-        result = func(*args)
+        if not do_try:
+            result = func(*args)
+        else:
+            try:
+                result = func(*args)
+            except desired_answer:
+                result = desired_answer
+            else:
+                raise TestSuiteUnhandledError()
+
+        stk = inspect.stack()
+        # print("XX inspect.stack()  ", stk)
+        # print("XX A utility.py in :", str(stk)[:str(stk).index("\\utility.py")])
+        # print("XX B utility.py in :", ("utility.py" in str(stk)))
+        # print("XX C utility.py in :", ("\\utility.py" in str(stk)))
+        # print("XX D utility.py in :", str(stk).index("\\utility.py"))
+        # print("XX E utility.py in :", str(stk)[str(stk).index("\\utility.py"):])
+        # print("XX inspect.stack()[1]", stk[1])
+        # print("XX inspect.stack()[1][0]", stk[1][0])
+        # print("XX inspect.getmodule(inspect.stack()[1][0])", inspect.getmodule(stk[1][0]))
+        # print("XX inspect.getmodule(inspect.stack()[1][0]).__file__", inspect.getmodule(stk[1][0]).__file__)
+        # name = func.__name__ + inspect.getmodule(stk[1][0]).__file__ + " - line " + str(
+        #     int(str(inspect.findsource(func)).split()[-1][
+        #         :-1]) + 1)  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
+
         print(div + work_above + div)
         is_desired_result = (result == desired_answer)
 
@@ -70,6 +140,19 @@ def run_multiple_tests(tests_to_run):
         func, test_set = test
         num_tests += len(test_set)
         test_results_passed, test_results_failed = run_tests(func, test_set)
+        stk = inspect.stack()
+        # print("inspect.stack()  ", stk)
+        # print("A utility.py in :", str(stk)[:str(stk).index("\\utility.py")])
+        # print("B utility.py in :", ("utility.py" in str(stk)))
+        # print("C utility.py in :", ("\\utility.py" in str(stk)))
+        # print("D utility.py in :", str(stk).index("\\utility.py"))
+        # print("E utility.py in :", str(stk)[str(stk).index("\\utility.py"):])
+        # print("inspect.stack()[1]", stk[1])
+        # print("inspect.stack()[1][0]", stk[1][0])
+        # print("inspect.getmodule(inspect.stack()[1][0])", inspect.getmodule(stk[1][0]))
+        # print("inspect.getmodule(inspect.stack()[1][0]).__file__", inspect.getmodule(stk[1][0]).__file__)
+        # name = func.__name__ + inspect.getmodule(stk[1][0]).__file__ + " - line " + str(int(str(inspect.findsource(func)).split()[-1][
+        #                                             :-1]) + 1)  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
         name = func.__name__ + " - line " + str(int(str(inspect.findsource(func)).split()[-1][
                                                     :-1]) + 1)  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
         if name not in failed_tests:
@@ -99,27 +182,18 @@ def run_multiple_tests(tests_to_run):
         print("\t\t-\t" + func + "\n\t\t\t>\t" + "\n\t\t\t>\t".join(
             test_name for test_name in failed_test_results) + "\n")
     print(border)
-
-
-def func_def():
-    pass
-
-
-class Foo:
-    def __init__(self):
-        pass
-
-    def f1(self):
-        pass
-
-    def f2(self, f):
-        pass
-
-FOO_OBJ = Foo()
+    return passed_tests, failed_tests
 
 
 class TestSuite:
     """Class used to run a batch of tests on functions"""
+
+    # _ASSERTIONERROR = AssertionError
+    # _TYPEERROR = TypeError
+    # _VALUEERROR = "ValueError"
+    # _KEYERROR = "KeyError"
+    # _INDEXERROR = "IndexError"
+    # _ZERODIVISIONERROR = "ZeroDivisionError"
 
     def __init__(
             self,
@@ -129,16 +203,18 @@ class TestSuite:
     ):
         self.tests = {}
         self.test_order = []
+        self.passed = None
+        self.failed = None
         if not isinstance(test_func, type(func_def)) and not isinstance(test_func, type(FOO_OBJ.f1)):
             print("Invalid \"test_func\" passed as an initializer to TestSuite.\n\tRequired type: {}\n\tOr: {}\n\tType found: {}".format(type(func_def), type(FOO_OBJ.f2), type(test_func)))
             test_func = None
         # list of un-labeled tests or dict of labeled tests.
         if not isinstance(tests, list) and not isinstance(tests, tuple) and not isinstance(tests, dict):
             tests = {}
-        # print("tests:", tests)
+        print("Tests:", tests)
         if isinstance(tests, list) or isinstance(tests, tuple):
             for tst in tests:
-                # print("tst:", tst)
+                print("tst:", tst)
                 if (not isinstance(tst, list) and not isinstance(tst, tuple)) or len(tst) != 2:
                     if isinstance(tst, dict):
                         raise TypeError(
@@ -191,6 +267,7 @@ class TestSuite:
 
         start = start if start is not None else 0
         end = end if end is not None else len(self.tests)
+        print(f"{start=}, {end=}")
         start, end = minmax(start, end)
         start = max(0, start)
         end = max(0, end)
@@ -201,8 +278,29 @@ class TestSuite:
         for k in keys:
             tests_to_run.append((self.test_func, {k: self.tests[k]}))
         # print("==Tests:\n\n","\n".join(list(map(str, tests_to_run))), "\n\n", tests_to_run)
-        run_multiple_tests(tests_to_run)
+        passed, failed = run_multiple_tests(tests_to_run)
 
+        if isinstance(self.passed, dict):
+            self.passed.clear()
+        elif self.passed is None:
+            self.passed = {}
+        if isinstance(self.failed, dict):
+            self.failed.clear()
+        elif self.failed is None:
+            self.failed = {}
+        self.passed.update(passed)
+        self.failed.update(failed)
+
+    def execute_log(self, exec=False):
+        if exec or (self.passed is None or self.failed is None):
+            self.execute()
+
+        lpass = sum([len(tst_lst) for key, tst_lst in self.passed.items()])
+        lfail = sum([len(tst_lst) for key, tst_lst in self.failed.items()])
+        pass_ratio = "{} / {}".format(lpass, len(self.tests))
+        fail_ratio = "{} / {}".format(lfail, len(self.tests))
+        print(dict_print(self.passed, "Passed Test Results ({})".format(pass_ratio)))
+        print(dict_print(self.failed, "Failed Test Results ({})".format(fail_ratio)))
 
     def __repr__(self):
         keys = ["test_func", "tests", "name"]
