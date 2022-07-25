@@ -167,13 +167,19 @@ class RotarySpinner(tkinter.Frame):
             self.canvas_background.moveto(self.ovals[i]["oval"], *self.ovals[i]["rect"][:2])
             self.canvas_background.moveto(self.ovals[i]["text"], *self.ovals[i]["center"])
 
-    def calc_start_positions(self, stop_angle=None, number_radius=None):
-        stop_angle = stop_angle if stop_angle is not None else self.stop_angle
-        number_radius = number_radius if number_radius is not None else self.number_radius
-        start_angle = int((((stop_angle + 180) % 360) - 135) % 360)
+    # def calc_start_positions(self, stop_angle=None, number_radius=None):
+    def calc_start_positions(self, stop_angle=None, drag_oval=0):
+        # number_radius = number_radius if number_radius is not None else self.number_radius
+        if stop_angle is None:
+            stop_angle = self.stop_angle
+            start_angle = int((((stop_angle + 180) % 360) - 135) % 360)
+        else:
+            start_angle = stop_angle
+            print(f"{start_angle=}")
+        start_angle = int(round(start_angle))
         slice = 25
         positions = []
-        for i in range(start_angle, start_angle + (10 * slice), slice):
+        for i in range(start_angle, start_angle + ((10 - drag_oval) * slice), slice):
             positions.append(self.angle_on_circle(i, radius=round(self.rotary_radius * 0.75)))
         return positions
 
@@ -211,12 +217,12 @@ class RotarySpinner(tkinter.Frame):
             if self.gsm_is_dragging.state() and self.gsm_drag_number.state() == i:
                 if d <= r:
                     print(f"DRAGGED #{i}")
-                    # self.spin_dial(m_x, m_y)
+                    self.spin_dial(m_x, m_y)
                     # print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
             elif not self.gsm_is_dragging.state():
                 if d <= r:
                     print(f"NEW DRAG #{i}")
-                    # self.spin_dial(m_x, m_y)
+                    self.spin_dial(m_x, m_y)
                     self.gsm_is_dragging.__next__()
                     self.gsm_drag_number.set_state(i)
                     # print(f"{m_x=}, {m_y=}, isDragging: {self.gsm_is_dragging}, dragging: {self.gsm_drag_number}")
@@ -228,21 +234,42 @@ class RotarySpinner(tkinter.Frame):
 
     def spin_dial(self, m_x, m_y):
         angle = get_angle((m_x, m_y), np.array(list(map(lambda x: int(x - (self.rotary_radius / 2)), self.center_rotary))))
-        # self.calc_ovals(start_angle=angle)
-        # self.calc_ovals(start_angle=angle, do_stop=True)
-        # print(dict_print(self.ovals, "Ovals B"))
-        # stop_angle = None if start_angle is None else ((((start_angle + 180) % 360) + 135) % 360)
-        # positions = self.calc_start_positions(stop_angle=stop_angle)
-        #########################################
+        # # self.calc_ovals(start_angle=angle)
+        # # self.calc_ovals(start_angle=angle, do_stop=True)
+        # # print(dict_print(self.ovals, "Ovals B"))
+        # # stop_angle = None if start_angle is None else ((((start_angle + 180) % 360) + 135) % 360)
+        # # positions = self.calc_start_positions(stop_angle=stop_angle)
+        # #########################################
+        #
+        # positions = self.calc_start_positions()
+        # positions.reverse()
+        # # print(dict_print(self.ovals, "PRE OVALS"))
+        # if not self.ovals:
+        #     self.ovals.update({i: {"center": positions[i]} for i in range(10)})
+        # # print(dict_print(self.ovals, "POST OVALS"))
+        # print(f"{positions}")
+        # for i in range(10):
+        #     self.ovals[i].update({"rect": [
+        #         self.ovals[i]["center"][0] - self.number_radius,
+        #         self.ovals[i]["center"][1] - self.number_radius,
+        #         self.ovals[i]["center"][0] + self.number_radius,
+        #         self.ovals[i]["center"][1] + self.number_radius
+        #     ],
+        #         "center": positions[i]
+        #     })
+        #
+        #
+        # #########################################
 
-        positions = self.calc_start_positions()
+        drag_oval = self.gsm_drag_number.state()
+        positions = self.calc_start_positions(stop_angle=angle, drag_oval=drag_oval)
         positions.reverse()
         # print(dict_print(self.ovals, "PRE OVALS"))
         if not self.ovals:
             self.ovals.update({i: {"center": positions[i]} for i in range(10)})
         # print(dict_print(self.ovals, "POST OVALS"))
         print(f"{positions}")
-        for i in range(10):
+        for i in range(drag_oval, 10):
             self.ovals[i].update({"rect": [
                 self.ovals[i]["center"][0] - self.number_radius,
                 self.ovals[i]["center"][1] - self.number_radius,
@@ -252,8 +279,6 @@ class RotarySpinner(tkinter.Frame):
                 "center": positions[i]
             })
 
-
-        #########################################
         self.update_ovals()
 
 

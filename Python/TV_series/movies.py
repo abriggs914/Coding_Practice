@@ -106,6 +106,9 @@ list_of_movies = [
 		]
 	},
 	"Prometheus",
+	"Stuber",
+	"Chip & Dale Rescue Rangers",
+	"Ford vs. Ferrari",
 	{
 		"Shanghai Noon" {
 			"Shanghai Noon",

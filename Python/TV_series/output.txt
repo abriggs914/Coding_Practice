@@ -527,24 +527,46 @@ Total minutes:			85
 Total hours:			1.4166666666666667
 Where to watch:			Disney+
 
+	The Replacements
+Genre:				Comedy / Cartoon
+Run (2006 -> 2007):		1 year
+number seasons:			1
+number episodes:		21
+episodes per season:		21.0
+average length of an episode:	24
+Total minutes:			504
+Total hours:			8.4
+Where to watch:			Disney+
+
+	Star Wars the Clone Wars
+Genre:				Drama / Cartoon
+Run (2008 -> 2020):		12 years
+number seasons:			7
+number episodes:		133
+episodes per season:		19.0
+average length of an episode:	25
+Total minutes:			3325
+Total hours:			55.416666666666664
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Malcolm in the Middle
+	Trailer Park Boys
 Genre:				Comedy
-Run (2000 -> 2006):		6 years
-number seasons:			7
-number episodes:		151
-episodes per season:		21.571428571428573
-average length of an episode:	24
-Total minutes:			3624
-Total hours:			60.4
-Where to watch:			Disney+
+Run (2001 -> 2018):		17 years
+number seasons:			12
+number episodes:		105
+episodes per season:		8.75
+average length of an episode:	22
+Total minutes:			2310
+Total hours:			38.5
+Where to watch:			Netflix
 
 Season: 5
-Episode: 10
+Episode: 1
 
 	How would you like to print the stats?
 1	-	By start year
@@ -583,7 +605,9 @@ sorting by start year...
 |It's Always Sunny in Philadelphia|    2005    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    2005    |It's Always Sunny in Philadelphia|
 |Criminal Minds                   |    2005    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    2005    |Criminal Minds                   |
 |The IT Crowd                     |    2006    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    2006    |The IT Crowd                     |
+|The Replacements                 |    2006    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2006    |The Replacements                 |
 |Breaking Bad                     |    2008    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    2008    |Breaking Bad                     |
+|Star Wars the Clone Wars         |    2008    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    2008    |Star Wars the Clone Wars         |
 |Community                        |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2009    |Community                        |
 |Parks and Recreation             |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2009    |Parks and Recreation             |
 |Misfits                          |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    2009    |Misfits                          |
@@ -652,7 +676,9 @@ sorting by start year...
 |It's Always Sunny in Philadelphia|    2005    |
 |Criminal Minds                   |    2005    |
 |The IT Crowd                     |    2006    |
+|The Replacements                 |    2006    |
 |Breaking Bad                     |    2008    |
+|Star Wars the Clone Wars         |    2008    |
 |Community                        |    2009    |
 |Parks and Recreation             |    2009    |
 |Misfits                          |    2009    |
@@ -684,12 +710,12 @@ sorting by start year...
 |Hawkeye                          |    2021    |
 ################################################
 
-Mean:		2009.81
-Median:		2011.00
-Pstdev:		  7.76
-Pvariance:	 60.19
-Stdev:		  7.84
-Variance:	 61.47
+Mean:		2009.70
+Median:		2010.50
+Pstdev:		  7.62
+Pvariance:	 58.13
+Stdev:		  7.70
+Variance:	 59.32
 
 	How would you like to print the stats?
 1	-	By start year
@@ -714,6 +740,7 @@ sorting by end year...
 |The Proud Family                 |   2005   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2005   |The Proud Family                 |
 |Yu-Gi-Oh!                        |   2006   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2006   |Yu-Gi-Oh!                        |
 |Malcolm in the Middle            |   2006   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2006   |Malcolm in the Middle            |
+|The Replacements                 |   2007   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2007   |The Replacements                 |
 |Avatar, the Last Airbender       |   2008   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2008   |Avatar, the Last Airbender       |
 |My Name is Earl                  |   2009   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2009   |My Name is Earl                  |
 |Scrubs                           |   2010   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   2010   |Scrubs                           |
@@ -743,6 +770,7 @@ sorting by end year...
 |Chernobyl                        |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |   2019   |Chernobyl                        |
 |Curb your Enthusiasm             |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   2020   |Curb your Enthusiasm             |
 |Criminal Minds                   |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   2020   |Criminal Minds                   |
+|Star Wars the Clone Wars         |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   2020   |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |   2020   |Brooklyn Nine-Nine               |
 |Peaky Blinders                   |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |   2020   |Peaky Blinders                   |
 |Better Call Saul                 |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |   2020   |Better Call Saul                 |
@@ -783,6 +811,7 @@ sorting by end year...
 |The Proud Family                 |   2005   |
 |Yu-Gi-Oh!                        |   2006   |
 |Malcolm in the Middle            |   2006   |
+|The Replacements                 |   2007   |
 |Avatar, the Last Airbender       |   2008   |
 |My Name is Earl                  |   2009   |
 |Scrubs                           |   2010   |
@@ -812,6 +841,7 @@ sorting by end year...
 |Chernobyl                        |   2019   |
 |Curb your Enthusiasm             |   2020   |
 |Criminal Minds                   |   2020   |
+|Star Wars the Clone Wars         |   2020   |
 |Brooklyn Nine-Nine               |   2020   |
 |Peaky Blinders                   |   2020   |
 |Better Call Saul                 |   2020   |
@@ -829,12 +859,12 @@ sorting by end year...
 |The Orville                      |   2022   |
 ##############################################
 
-Mean:		2016.56
+Mean:		2016.44
 Median:		2019.00
-Pstdev:		  5.06
-Pvariance:	 25.62
-Stdev:		  5.12
-Variance:	 26.17
+Pstdev:		  5.16
+Pvariance:	 26.65
+Stdev:		  5.21
+Variance:	 27.19
 
 	How would you like to print the stats?
 1	-	By start year
@@ -855,6 +885,7 @@ sorting by shortest series length...
 
 ###################################################################################################################################################################################################################################################################################################################
 ##################################| shortest series run length |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| shortest series run length |##################################
+|The Replacements                 |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1              |The Replacements                 |
 |Gravity Falls Shorts             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |             1              |Gravity Falls Shorts             |
 |The Mick                         |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |             1              |The Mick                         |
 |Chernobyl                        |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1              |Chernobyl                        |
@@ -895,6 +926,7 @@ sorting by shortest series length...
 |Black Mirror                     |             8              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |             8              |Black Mirror                     |
 |Scrubs                           |             9              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             9              |Scrubs                           |
 |Prison Break                     |             12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |             12             |Prison Break                     |
+|Star Wars the Clone Wars         |             12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |             12             |Star Wars the Clone Wars         |
 |Futurama                         |             14             |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             14             |Futurama                         |
 |It's Always Sunny in Philadelphia|             14             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |             14             |It's Always Sunny in Philadelphia|
 |Criminal Minds                   |             15             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |             15             |Criminal Minds                   |
@@ -924,6 +956,7 @@ sorting by shortest series length...
 
 ################################################################
 ##################################| shortest series run length |
+|The Replacements                 |             1              |
 |Gravity Falls Shorts             |             1              |
 |The Mick                         |             1              |
 |Chernobyl                        |             1              |
@@ -964,6 +997,7 @@ sorting by shortest series length...
 |Black Mirror                     |             8              |
 |Scrubs                           |             9              |
 |Prison Break                     |             12             |
+|Star Wars the Clone Wars         |             12             |
 |Futurama                         |             14             |
 |It's Always Sunny in Philadelphia|             14             |
 |Criminal Minds                   |             15             |
@@ -974,12 +1008,12 @@ sorting by shortest series length...
 |The Simpsons                     |             33             |
 ################################################################
 
-Mean:		  6.88
+Mean:		  6.86
 Median:		  5.00
-Pstdev:		  6.44
-Pvariance:	 41.48
-Stdev:		  6.51
-Variance:	 42.37
+Pstdev:		  6.41
+Pvariance:	 41.04
+Stdev:		  6.47
+Variance:	 41.88
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1009,6 +1043,7 @@ sorting by longest series length...
 |Futurama                         |            14             |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |            14             |Futurama                         |
 |It's Always Sunny in Philadelphia|            14             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |            14             |It's Always Sunny in Philadelphia|
 |Prison Break                     |            12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |            12             |Prison Break                     |
+|Star Wars the Clone Wars         |            12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |            12             |Star Wars the Clone Wars         |
 |Scrubs                           |             9             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             9             |Scrubs                           |
 |Yu-Gi-Oh!                        |             8             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             8             |Yu-Gi-Oh!                        |
 |Game of Thrones                  |             8             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |             8             |Game of Thrones                  |
@@ -1039,6 +1074,7 @@ sorting by longest series length...
 |Baskets                          |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3             |Baskets                          |
 |Final Space                      |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2             |Final Space                      |
 |The Mandalorian                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2             |The Mandalorian                  |
+|The Replacements                 |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1             |The Replacements                 |
 |Gravity Falls Shorts             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |             1             |Gravity Falls Shorts             |
 |The Mick                         |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |             1             |The Mick                         |
 |Chernobyl                        |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1             |Chernobyl                        |
@@ -1078,6 +1114,7 @@ sorting by longest series length...
 |Futurama                         |            14             |
 |It's Always Sunny in Philadelphia|            14             |
 |Prison Break                     |            12             |
+|Star Wars the Clone Wars         |            12             |
 |Scrubs                           |             9             |
 |Yu-Gi-Oh!                        |             8             |
 |Game of Thrones                  |             8             |
@@ -1108,6 +1145,7 @@ sorting by longest series length...
 |Baskets                          |             3             |
 |Final Space                      |             2             |
 |The Mandalorian                  |             2             |
+|The Replacements                 |             1             |
 |Gravity Falls Shorts             |             1             |
 |The Mick                         |             1             |
 |Chernobyl                        |             1             |
@@ -1119,12 +1157,12 @@ sorting by longest series length...
 |Hawkeye                          |             1             |
 ###############################################################
 
-Mean:		  6.88
+Mean:		  6.86
 Median:		  5.00
-Pstdev:		  6.44
-Pvariance:	 41.48
-Stdev:		  6.51
-Variance:	 42.37
+Pstdev:		  6.41
+Pvariance:	 41.04
+Stdev:		  6.47
+Variance:	 41.88
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1145,6 +1183,7 @@ sorting by least number of seasons...
 
 #######################################################################################################################################################################################################################################################################################################
 ##################################| least number seasons |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| least number seasons |##################################
+|The Replacements                 |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1           |The Replacements                 |
 |Gravity Falls Shorts             |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          1           |Gravity Falls Shorts             |
 |Chernobyl                        |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1           |Chernobyl                        |
 |Wandavision                      |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Wandavision                      |
@@ -1178,6 +1217,7 @@ sorting by least number of seasons...
 |Community                        |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          6           |Community                        |
 |Silicon Valley                   |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |          6           |Silicon Valley                   |
 |Recess                           |          6           |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          6           |Recess                           |
+|Star Wars the Clone Wars         |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          7           |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          7           |Brooklyn Nine-Nine               |
 |Malcolm in the Middle            |          7           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          7           |Malcolm in the Middle            |
 |Parks and Recreation             |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          7           |Parks and Recreation             |
@@ -1214,6 +1254,7 @@ sorting by least number of seasons...
 
 ##########################################################
 ##################################| least number seasons |
+|The Replacements                 |          1           |
 |Gravity Falls Shorts             |          1           |
 |Chernobyl                        |          1           |
 |Wandavision                      |          1           |
@@ -1247,6 +1288,7 @@ sorting by least number of seasons...
 |Community                        |          6           |
 |Silicon Valley                   |          6           |
 |Recess                           |          6           |
+|Star Wars the Clone Wars         |          7           |
 |Brooklyn Nine-Nine               |          7           |
 |Malcolm in the Middle            |          7           |
 |Parks and Recreation             |          7           |
@@ -1264,12 +1306,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  5.98
+Mean:		  5.90
 Median:		  5.00
-Pstdev:		  5.60
-Pvariance:	 31.31
-Stdev:		  5.65
-Variance:	 31.98
+Pstdev:		  5.53
+Pvariance:	 30.57
+Stdev:		  5.59
+Variance:	 31.19
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1301,6 +1343,7 @@ sorting by most number of seasons...
 |The Office                       |          9          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          9          |The Office                       |
 |Letterkenny                      |          9          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |          9          |Letterkenny                      |
 |Game of Thrones                  |          8          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          8          |Game of Thrones                  |
+|Star Wars the Clone Wars         |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          7          |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          7          |Brooklyn Nine-Nine               |
 |Malcolm in the Middle            |          7          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          7          |Malcolm in the Middle            |
 |Parks and Recreation             |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          7          |Parks and Recreation             |
@@ -1331,6 +1374,7 @@ sorting by most number of seasons...
 |The Mandalorian                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2          |The Mandalorian                  |
 |The Mick                         |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2          |The Mick                         |
 |Solar Opposites                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          2          |Solar Opposites                  |
+|The Replacements                 |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1          |The Replacements                 |
 |Gravity Falls Shorts             |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          1          |Gravity Falls Shorts             |
 |Chernobyl                        |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1          |Chernobyl                        |
 |Wandavision                      |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1          |Wandavision                      |
@@ -1370,6 +1414,7 @@ sorting by most number of seasons...
 |The Office                       |          9          |
 |Letterkenny                      |          9          |
 |Game of Thrones                  |          8          |
+|Star Wars the Clone Wars         |          7          |
 |Brooklyn Nine-Nine               |          7          |
 |Malcolm in the Middle            |          7          |
 |Parks and Recreation             |          7          |
@@ -1400,6 +1445,7 @@ sorting by most number of seasons...
 |The Mandalorian                  |          2          |
 |The Mick                         |          2          |
 |Solar Opposites                  |          2          |
+|The Replacements                 |          1          |
 |Gravity Falls Shorts             |          1          |
 |Chernobyl                        |          1          |
 |Wandavision                      |          1          |
@@ -1409,12 +1455,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  5.98
+Mean:		  5.90
 Median:		  5.00
-Pstdev:		  5.60
-Pvariance:	 31.31
-Stdev:		  5.65
-Variance:	 31.98
+Pstdev:		  5.53
+Pvariance:	 30.57
+Stdev:		  5.59
+Variance:	 31.19
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1446,6 +1492,7 @@ sorting by least number of episodes...
 |Solar Opposites                  |          17           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          17           |Solar Opposites                  |
 |Gravity Falls Shorts             |          17           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          17           |Gravity Falls Shorts             |
 |Black Mirror                     |          21           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          21           |Black Mirror                     |
+|The Replacements                 |          21           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          21           |The Replacements                 |
 |Final Space                      |          23           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          23           |Final Space                      |
 |The IT Crowd                     |          25           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          25           |The IT Crowd                     |
 |Peaky Blinders                   |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          30           |Peaky Blinders                   |
@@ -1473,6 +1520,7 @@ sorting by least number of episodes...
 |Trailer Park Boys                |          105          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          105          |Trailer Park Boys                |
 |Community                        |          110          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          110          |Community                        |
 |Parks and Recreation             |          125          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          125          |Parks and Recreation             |
+|Star Wars the Clone Wars         |          133          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          133          |Star Wars the Clone Wars         |
 |Futurama                         |          140          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          140          |Futurama                         |
 |Brooklyn Nine-Nine               |          143          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          143          |Brooklyn Nine-Nine               |
 |Malcolm in the Middle            |          151          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          151          |Malcolm in the Middle            |
@@ -1515,6 +1563,7 @@ sorting by least number of episodes...
 |Solar Opposites                  |          17           |
 |Gravity Falls Shorts             |          17           |
 |Black Mirror                     |          21           |
+|The Replacements                 |          21           |
 |Final Space                      |          23           |
 |The IT Crowd                     |          25           |
 |Peaky Blinders                   |          30           |
@@ -1542,6 +1591,7 @@ sorting by least number of episodes...
 |Trailer Park Boys                |          105          |
 |Community                        |          110          |
 |Parks and Recreation             |          125          |
+|Star Wars the Clone Wars         |          133          |
 |Futurama                         |          140          |
 |Brooklyn Nine-Nine               |          143          |
 |Malcolm in the Middle            |          151          |
@@ -1554,12 +1604,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		 92.94
+Mean:		 92.30
 Median:		 54.50
-Pstdev:		122.10
-Pvariance:	14907.68
-Stdev:		123.39
-Variance:	15224.87
+Pstdev:		120.19
+Pvariance:	14446.57
+Stdev:		121.41
+Variance:	14741.40
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1590,6 +1640,7 @@ sorting by most number of episodes...
 |Malcolm in the Middle            |         151          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         151          |Malcolm in the Middle            |
 |Brooklyn Nine-Nine               |         143          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |         143          |Brooklyn Nine-Nine               |
 |Futurama                         |         140          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         140          |Futurama                         |
+|Star Wars the Clone Wars         |         133          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         133          |Star Wars the Clone Wars         |
 |Parks and Recreation             |         125          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         125          |Parks and Recreation             |
 |Community                        |         110          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         110          |Community                        |
 |Trailer Park Boys                |         105          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         105          |Trailer Park Boys                |
@@ -1618,6 +1669,7 @@ sorting by most number of episodes...
 |The IT Crowd                     |          25          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          25          |The IT Crowd                     |
 |Final Space                      |          23          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          23          |Final Space                      |
 |Black Mirror                     |          21          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          21          |Black Mirror                     |
+|The Replacements                 |          21          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          21          |The Replacements                 |
 |Solar Opposites                  |          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          17          |Solar Opposites                  |
 |Gravity Falls Shorts             |          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          17          |Gravity Falls Shorts             |
 |The Mandalorian                  |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16          |The Mandalorian                  |
@@ -1659,6 +1711,7 @@ sorting by most number of episodes...
 |Malcolm in the Middle            |         151          |
 |Brooklyn Nine-Nine               |         143          |
 |Futurama                         |         140          |
+|Star Wars the Clone Wars         |         133          |
 |Parks and Recreation             |         125          |
 |Community                        |         110          |
 |Trailer Park Boys                |         105          |
@@ -1687,6 +1740,7 @@ sorting by most number of episodes...
 |The IT Crowd                     |          25          |
 |Final Space                      |          23          |
 |Black Mirror                     |          21          |
+|The Replacements                 |          21          |
 |Solar Opposites                  |          17          |
 |Gravity Falls Shorts             |          17          |
 |The Mandalorian                  |          16          |
@@ -1699,12 +1753,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 92.94
+Mean:		 92.30
 Median:		 54.50
-Pstdev:		122.10
-Pvariance:	14907.68
-Stdev:		123.39
-Variance:	15224.87
+Pstdev:		120.19
+Pvariance:	14446.57
+Stdev:		121.41
+Variance:	14741.40
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1733,6 +1787,7 @@ sorting by shortest time...
 |What If?                         |   6.600000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.600000    |What If?                         |
 |Wandavision                      |   6.750000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000    |Wandavision                      |
 |Solar Opposites                  |   6.800000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000    |Solar Opposites                  |
+|The Replacements                 |   8.400000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   8.400000    |The Replacements                 |
 |Final Space                      |   8.433333    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   8.433333    |Final Space                      |
 |The IT Crowd                     |   9.166667    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   9.166667    |The IT Crowd                     |
 |The Mandalorian                  |   11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   11.733333   |The Mandalorian                  |
@@ -1763,6 +1818,7 @@ sorting by shortest time...
 |Futurama                         |   51.333333   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   51.333333   |Futurama                         |
 |Breaking Bad                     |   51.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   51.666667   |Breaking Bad                     |
 |Brooklyn Nine-Nine               |   52.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |   52.433333   |Brooklyn Nine-Nine               |
+|Star Wars the Clone Wars         |   55.416667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   55.416667   |Star Wars the Clone Wars         |
 |It's Always Sunny in Philadelphia|   56.466667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |   56.466667   |It's Always Sunny in Philadelphia|
 |Malcolm in the Middle            |   60.400000   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   60.400000   |Malcolm in the Middle            |
 |Game of Thrones                  |   60.833333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |   60.833333   |Game of Thrones                  |
@@ -1802,6 +1858,7 @@ sorting by shortest time...
 |What If?                         |   6.600000    |
 |Wandavision                      |   6.750000    |
 |Solar Opposites                  |   6.800000    |
+|The Replacements                 |   8.400000    |
 |Final Space                      |   8.433333    |
 |The IT Crowd                     |   9.166667    |
 |The Mandalorian                  |   11.733333   |
@@ -1832,6 +1889,7 @@ sorting by shortest time...
 |Futurama                         |   51.333333   |
 |Breaking Bad                     |   51.666667   |
 |Brooklyn Nine-Nine               |   52.433333   |
+|Star Wars the Clone Wars         |   55.416667   |
 |It's Always Sunny in Philadelphia|   56.466667   |
 |Malcolm in the Middle            |   60.400000   |
 |Game of Thrones                  |   60.833333   |
@@ -1844,12 +1902,12 @@ sorting by shortest time...
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 42.73
+Mean:		 42.30
 Median:		 26.60
-Pstdev:		 53.98
-Pvariance:	2914.32
-Stdev:		 54.56
-Variance:	2976.32
+Pstdev:		 53.14
+Pvariance:	2824.35
+Stdev:		 53.68
+Variance:	2881.99
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1880,6 +1938,7 @@ sorting by longest time...
 |Game of Thrones                  |  60.833333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |  60.833333   |Game of Thrones                  |
 |Malcolm in the Middle            |  60.400000   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  60.400000   |Malcolm in the Middle            |
 |It's Always Sunny in Philadelphia|  56.466667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |  56.466667   |It's Always Sunny in Philadelphia|
+|Star Wars the Clone Wars         |  55.416667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  55.416667   |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |  52.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |  52.433333   |Brooklyn Nine-Nine               |
 |Breaking Bad                     |  51.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |  51.666667   |Breaking Bad                     |
 |Futurama                         |  51.333333   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |  51.333333   |Futurama                         |
@@ -1910,6 +1969,7 @@ sorting by longest time...
 |The Mandalorian                  |  11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |  11.733333   |The Mandalorian                  |
 |The IT Crowd                     |   9.166667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   9.166667   |The IT Crowd                     |
 |Final Space                      |   8.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   8.433333   |Final Space                      |
+|The Replacements                 |   8.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   8.400000   |The Replacements                 |
 |Solar Opposites                  |   6.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000   |Solar Opposites                  |
 |Wandavision                      |   6.750000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000   |Wandavision                      |
 |What If?                         |   6.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.600000   |What If?                         |
@@ -1949,6 +2009,7 @@ sorting by longest time...
 |Game of Thrones                  |  60.833333   |
 |Malcolm in the Middle            |  60.400000   |
 |It's Always Sunny in Philadelphia|  56.466667   |
+|Star Wars the Clone Wars         |  55.416667   |
 |Brooklyn Nine-Nine               |  52.433333   |
 |Breaking Bad                     |  51.666667   |
 |Futurama                         |  51.333333   |
@@ -1979,6 +2040,7 @@ sorting by longest time...
 |The Mandalorian                  |  11.733333   |
 |The IT Crowd                     |   9.166667   |
 |Final Space                      |   8.433333   |
+|The Replacements                 |   8.400000   |
 |Solar Opposites                  |   6.800000   |
 |Wandavision                      |   6.750000   |
 |What If?                         |   6.600000   |
@@ -1989,12 +2051,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 42.73
+Mean:		 42.30
 Median:		 26.60
-Pstdev:		 53.98
-Pvariance:	2914.32
-Stdev:		 54.56
-Variance:	2976.32
+Pstdev:		 53.14
+Pvariance:	2824.35
+Stdev:		 53.68
+Variance:	2881.99
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2022,11 +2084,13 @@ sorting by most episodes per season...
 |The Simpsons                     |        22.060606         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |        22.060606         |The Simpsons                     |
 |Criminal Minds                   |        21.600000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |        21.600000         |Criminal Minds                   |
 |Malcolm in the Middle            |        21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        21.571429         |Malcolm in the Middle            |
+|The Replacements                 |           21.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0           |The Replacements                 |
 |Brooklyn Nine-Nine               |        20.428571         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |        20.428571         |Brooklyn Nine-Nine               |
 |Avatar, the Last Airbender       |        20.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        20.333333         |Avatar, the Last Airbender       |
 |Scrubs                           |        20.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |        20.222222         |Scrubs                           |
 |Gravity Falls                    |           20.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |           20.0           |Gravity Falls                    |
 |Family Guy                       |        19.450000         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |        19.450000         |Family Guy                       |
+|Star Wars the Clone Wars         |           19.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           19.0           |Star Wars the Clone Wars         |
 |The Mick                         |        18.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |        18.500000         |The Mick                         |
 |Community                        |        18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |        18.333333         |Community                        |
 |Prison Break                     |           18.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |           18.0           |Prison Break                     |
@@ -2091,11 +2155,13 @@ sorting by most episodes per season...
 |The Simpsons                     |        22.060606         |
 |Criminal Minds                   |        21.600000         |
 |Malcolm in the Middle            |        21.571429         |
+|The Replacements                 |           21.0           |
 |Brooklyn Nine-Nine               |        20.428571         |
 |Avatar, the Last Airbender       |        20.333333         |
 |Scrubs                           |        20.222222         |
 |Gravity Falls                    |           20.0           |
 |Family Guy                       |        19.450000         |
+|Star Wars the Clone Wars         |           19.0           |
 |The Mick                         |        18.500000         |
 |Community                        |        18.333333         |
 |Prison Break                     |           18.0           |
@@ -2134,12 +2200,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 13.83
-Median:		 11.75
-Pstdev:		  7.73
-Pvariance:	 59.83
-Stdev:		  7.82
-Variance:	 61.10
+Mean:		 14.08
+Median:		 12.14
+Pstdev:		  7.68
+Pvariance:	 58.94
+Stdev:		  7.75
+Variance:	 60.14
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2196,11 +2262,13 @@ sorting by least episodes per season...
 |Prison Break                     |           18.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |           18.0            |Prison Break                     |
 |Community                        |         18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         18.333333         |Community                        |
 |The Mick                         |         18.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |         18.500000         |The Mick                         |
+|Star Wars the Clone Wars         |           19.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           19.0            |Star Wars the Clone Wars         |
 |Family Guy                       |         19.450000         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         19.450000         |Family Guy                       |
 |Gravity Falls                    |           20.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |           20.0            |Gravity Falls                    |
 |Scrubs                           |         20.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         20.222222         |Scrubs                           |
 |Avatar, the Last Airbender       |         20.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         20.333333         |Avatar, the Last Airbender       |
 |Brooklyn Nine-Nine               |         20.428571         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |         20.428571         |Brooklyn Nine-Nine               |
+|The Replacements                 |           21.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0            |The Replacements                 |
 |Malcolm in the Middle            |         21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         21.571429         |Malcolm in the Middle            |
 |Criminal Minds                   |         21.600000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         21.600000         |Criminal Minds                   |
 |The Simpsons                     |         22.060606         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         22.060606         |The Simpsons                     |
@@ -2265,11 +2333,13 @@ sorting by least episodes per season...
 |Prison Break                     |           18.0            |
 |Community                        |         18.333333         |
 |The Mick                         |         18.500000         |
+|Star Wars the Clone Wars         |           19.0            |
 |Family Guy                       |         19.450000         |
 |Gravity Falls                    |           20.0            |
 |Scrubs                           |         20.222222         |
 |Avatar, the Last Airbender       |         20.333333         |
 |Brooklyn Nine-Nine               |         20.428571         |
+|The Replacements                 |           21.0            |
 |Malcolm in the Middle            |         21.571429         |
 |Criminal Minds                   |         21.600000         |
 |The Simpsons                     |         22.060606         |
@@ -2279,14 +2349,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 13.83
-Median:		 11.75
-Pstdev:		  7.73
-Pvariance:	 59.83
-Stdev:		  7.82
-Variance:	 61.10
+Mean:		 14.08
+Median:		 12.14
+Pstdev:		  7.68
+Pvariance:	 58.94
+Stdev:		  7.75
+Variance:	 60.14
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 16 | 14 | 15 | 17 | 17 | 19 | 21 | 23 | 20 | 22 | 21 | 22 | 20 | 19 | 12 | 11 | 3  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 17 | 15 | 16 | 18 | 18 | 20 | 22 | 24 | 21 | 23 | 22 | 23 | 21 | 20 | 13 | 11 | 3  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################

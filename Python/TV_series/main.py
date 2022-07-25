@@ -704,6 +704,22 @@ the_replacements = TVSeries("The Replacements", {
 	"Comedy / Cartoon",
 	"Disney+")
 	
+	
+star_wars_the_clone_wars = TVSeries("Star Wars the Clone Wars", {
+	1: 22,
+	2: 22,
+	3: 22,
+	4: 22,
+	5: 20,
+	6:13,
+	7: 12},
+	25,
+	2008,
+	2020,
+	False,
+	"Drama / Cartoon",
+	"Disney+")
+
 
 series_list = [
     the_office,
@@ -754,7 +770,8 @@ series_list = [
 	what_if,
 	hawkeye,
 	gravity_falls_shorts,
-	the_replacements
+	the_replacements,
+	star_wars_the_clone_wars
 ]
 
    
