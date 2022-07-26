@@ -181,6 +181,8 @@ class RotarySpinner(tkinter.Frame):
         positions = []
         for i in range(start_angle, start_angle + ((10 - drag_oval) * slice), slice):
             positions.append(self.angle_on_circle(i, radius=round(self.rotary_radius * 0.75)))
+        positions += [(0, 0) for i in range(10)]
+        positions = positions[:10]
         return positions
 
 
