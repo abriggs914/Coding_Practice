@@ -1,8 +1,8 @@
 
 
 #	Class outlining a Game-State-Machine (GSM).
-#	Version............1.3
-#	Date........2022-07-02
+#	Version............1.4
+#	Date........2022-08-03
 #	Author....Avery Briggs
 
 
@@ -157,7 +157,7 @@ class GSM:
             self.options = tuple(temp)
         self.prev = self.calc_prev()
 
-    def bind_callback(self, func, *args, state=None, **kwargs):
+    def bind_callback(self, func, *args, state=None, all_states=False, **kwargs):
         """Add a callback to a given state """
         # print(f"func: {func}")
         # print(f"args: {args}")
@@ -166,6 +166,10 @@ class GSM:
         if state not in self.options:
             raise KeyError(f"Error unable to bind callback for state '{state}' as it is not a valid state of this GSM.")
         self.callbacks[state] = (func, args, kwargs)
+        if all_states:
+            for state_ in self.options:
+                if state_ != state:
+                    self.callbacks[state_] = (func, args, kwargs)
 
     def unbind_callback(self, state=None):
         """Unbind a callback for a given state, defaults to current state."""
