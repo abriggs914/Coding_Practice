@@ -12,8 +12,8 @@ import os
 VERSION = \
 """	
 	General Utility Functions
-	Version..............1.50
-	Date...........2022-07-21
+	Version..............1.51
+	Date...........2022-08-17
 	Author.......Avery Briggs
 """
 
@@ -1623,7 +1623,7 @@ def tkinter_to_rect2(rect):
 
 
 def kb_as_percent(kb, gb=2):
-    return ("%.3f" % (((kb / (1024**2)) / gb))) + " %"
+    return ("%.3f" % (((100 * kb / (1024**2)) / gb))) + " %"
 
 
 def calc_bounds(center, width, height=None):
