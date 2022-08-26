@@ -12,8 +12,8 @@ import os
 VERSION = \
 """	
 	General Utility Functions
-	Version..............1.51
-	Date...........2022-08-17
+	Version..............1.52
+	Date...........2022-08-26
 	Author.......Avery Briggs
 """
 
@@ -1640,6 +1640,12 @@ def calc_bounds(center, width, height=None):
         center[0] + w,
         center[1] + h
     )
+
+
+def left_join (a_, b_):
+    assert isinstance(a_, set), "Error, param 'a_' must be a set."
+    assert isinstance(b_, set), "Error, param 'a_' must be a set."
+    return a_.symmetric_difference(b_).union(a_).symmetric_difference(b_).union(a_)
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

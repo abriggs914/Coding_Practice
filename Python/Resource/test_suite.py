@@ -1,13 +1,15 @@
 import inspect
+
+import pandas
+
 from utility import *
 
 """
 	General Test Suite Driver
-	Version...............1.5
-	Date...........2022-07-21
+	Version...............1.6
+	Date...........2022-08-25
 	Author.......Avery Briggs
 """
-
 
 errors_list = [
     AssertionError,
@@ -103,7 +105,16 @@ def run_tests(func, test_set):
         #         :-1]) + 1)  # str(inspect.getframeinfo(inspect.stack()[1][0]).lineno)
 
         print(div + work_above + div)
-        is_desired_result = (result == desired_answer)
+        if isinstance(result, pandas.DataFrame):
+            is_desired_result = result.equals(desired_answer)
+        elif isinstance(desired_answer, pandas.DataFrame):
+            is_desired_result = desired_answer.equals(result)
+        else:
+            is_desired_result = (result == desired_answer)
+
+        # if result is a dataframe, do not print it to console.
+        if isinstance(result, pandas.DataFrame):
+            result = "<pandas.DataFrane Object>"
 
         args_str = pad_centre("args:\t\t" + str(args).rjust(longest_test, " "), w) + "\n"
         desired_str = pad_centre("desired:\t" + str(desired_answer).rjust(longest_test, " "), w) + "\n"
@@ -206,7 +217,9 @@ class TestSuite:
         self.passed = None
         self.failed = None
         if not isinstance(test_func, type(func_def)) and not isinstance(test_func, type(FOO_OBJ.f1)):
-            print("Invalid \"test_func\" passed as an initializer to TestSuite.\n\tRequired type: {}\n\tOr: {}\n\tType found: {}".format(type(func_def), type(FOO_OBJ.f2), type(test_func)))
+            print(
+                "Invalid \"test_func\" passed as an initializer to TestSuite.\n\tRequired type: {}\n\tOr: {}\n\tType found: {}".format(
+                    type(func_def), type(FOO_OBJ.f2), type(test_func)))
             test_func = None
         # list of un-labeled tests or dict of labeled tests.
         if not isinstance(tests, list) and not isinstance(tests, tuple) and not isinstance(tests, dict):
