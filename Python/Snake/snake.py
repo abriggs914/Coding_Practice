@@ -144,11 +144,35 @@ class Snake:
 
     head: tuple[int, int] = dataclasses.field(default_factory=tuple)
     segments: list[int] = dataclasses.field(default_factory=list)
-    x_dir: int = 0
-    y_dir: int = 0
+    _x_dir: int = 0
+    _y_dir: int = 0
+    _has_init: bool = False
+
+    def init(self, grid, position="random"):
+        assert isinstance(grid, Grid), f"Error, param 'grid' must be a Grid object. Got {grid=}"
+        max_n = grid.rows * grid.cols
+        if position == "random":
+            a, b = (random.randint(0, grid.rows), random.randint(0, grid.cols))
+        else:
+            if isinstance(position, tuple):
+                if len(position) == 2:
+                    a, b = position
+                    if isinstance(a, int) and isinstance(b, int):
+                        a = clamp(0, a, grid.rows)
+                        b = clamp(0, b, grid.cols)
+                    else:
+                        raise ValueError("Error, param 'position' must be a tuple of integers.")
+                else:
+                    raise ValueError("Error, param 'position' must be a tuple of exactly length 2.")
+            else:
+                raise ValueError("Error, param 'position' must be 'random' or be a tuple.")
+        self.head = a, b
+        self.has_init = True
+        return self
 
     def move(self, grid):
         assert isinstance(grid, Grid)
+        assert self.has_init, "Error, this snake object has not been initialized"
         print(f"\t\t{grid=}")
         print(f"\t\t{grid.grid_space}")
 
@@ -160,15 +184,56 @@ class Snake:
                 return (clamp(0, point[0] + xd, grid.rows), clamp(0, point[1] + yd, grid.cols))
 
         # return grid.direction_between(0, 55, normal=True)
-        x_dir, y_dir = self.x_dir, self.y_dir
+        x_dir, y_dir = self._x_dir, self._y_dir
+        print(f"OLD: {self.head}")
+        print(f"{x_dir=}, {y_dir=}")
         self.head = apply_move(self.head, (x_dir, y_dir))
+        print(f"NEW: {self.head}")
 
-        for i, segment in enumerate(self.segments):
-            if i < len(self.segments) - 1:
-                next_segment = self.segments[i + 1]
-                distance_between = grid.direction_between(segment, next_segment)
-                move = apply_move(grid.i2rc(segment), distance_between)
-                self.segments[i] = grid.rc2i(move)
-            else:
+        # for i, segment in enumerate(self.segments):
+        #     if i < len(self.segments) - 1:
+        #         next_segment = self.segments[i + 1]
+        #         distance_between = grid.direction_between(segment, next_segment)
+        #         move = apply_move(grid.i2rc(segment), distance_between)
+        #         self.segments[i] = grid.rc2i(move)
+        #     else:
 
+    def set_direction(self, xd, yd=None):
+        if yd is None:
+            if not (isinstance(xd, tuple) and len(xd) == 2 and isinstance(xd[0], int) and isinstance(xd[1], int)):
+                raise ValueError("Error if param 'yd' is omitted then param 'xd' must be a tuple of length 2.")
+        self.set_x_dir(xd)
+        self.set_y_dir(yd)
+        return self
+
+    def get_has_init(self):
+        return self._has_init
+
+    def set_has_init(self, is_init):
+        self._has_init = is_init
+
+    def del_has_init(self):
+        del self._has_init
+
+    def get_x_dir(self):
+        return self._x_dir
+
+    def set_x_dir(self, x_dir_in):
+        self._x_dir = x_dir_in
+
+    def del_x_dir(self):
+        del self._x_dir
+
+    def get_y_dir(self):
+        return self._y_dir
+
+    def set_y_dir(self, y_dir_in):
+        self._y_dir = y_dir_in
+
+    def del_y_dir(self):
+        del self._y_dir
+
+    has_init = property(get_has_init, set_has_init, del_has_init)
+    x_dir = property(get_x_dir, set_x_dir, del_x_dir)
+    y_dir = property(get_y_dir, set_y_dir, del_y_dir)
 

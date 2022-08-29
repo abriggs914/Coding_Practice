@@ -57,11 +57,12 @@ class SnakeGameDriver(tkinter.Tk):
                     a = clamp(-1, a, 1)
                     b = clamp(-1, b, 1)
 
-        self.game_snake = Snake(head=snake_pos, x_dir=a, y_dir=b)
+        self.game_snake = Snake(head=snake_pos, _x_dir=a, _y_dir=b).init(self.game_grid)
 
 
 
     def play_game(self):
+        print(f"{self.game_snake=}")
         move = self.game_snake.move(self.game_grid)
         print(f"new {move=}")
 
