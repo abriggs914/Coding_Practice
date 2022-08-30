@@ -115,7 +115,6 @@ class Grid:
         #
         # return r, c
 
-
     def get_grid_space(self):
         if not self.has_initialized:
             raise Grid.NotInitializedError()
