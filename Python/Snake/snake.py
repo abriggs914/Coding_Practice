@@ -180,7 +180,7 @@ class Snake:
             if grid.allow_wrap:
                 return ((point[0] + xd) % grid.rows, (point[1] + yd) % grid.cols)
             else:
-                return (clamp(0, point[0] + xd, grid.rows), clamp(0, point[1] + yd, grid.cols))
+                return (clamp(0, point[0] + xd, grid.rows - 1), clamp(0, point[1] + yd, grid.cols - 1))
 
         # return grid.direction_between(0, 55, normal=True)
         x_dir, y_dir = self._x_dir, self._y_dir
@@ -188,6 +188,8 @@ class Snake:
         print(f"{x_dir=}, {y_dir=}")
         self.head = apply_move(self.head, (x_dir, y_dir))
         print(f"NEW: {self.head}")
+
+        return {"exit": self.segments[-sum(list(map(abs, [x_dir, y_dir])))] if self.segments else []}
 
         # for i, segment in enumerate(self.segments):
         #     if i < len(self.segments) - 1:
