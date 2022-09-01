@@ -187,9 +187,11 @@ class Snake:
         print(f"OLD: {self.head}")
         print(f"{x_dir=}, {y_dir=}")
         self.head = apply_move(self.head, (x_dir, y_dir))
-        print(f"NEW: {self.head}")
-
-        return {"exit": self.segments[-sum(list(map(abs, [x_dir, y_dir])))] if self.segments else []}
+        print(f"NEW: {self.head}, XXX: {sum(list(map(abs, [x_dir, y_dir])))}")
+        if not self.segments:
+            return {"exiting": [grid.rc2i(self.head)]}
+        else:
+            return {"exiting": self.segments[-sum(list(map(abs, [x_dir, y_dir]))):] if self.segments else []}
 
         # for i, segment in enumerate(self.segments):
         #     if i < len(self.segments) - 1:

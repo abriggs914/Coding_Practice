@@ -87,7 +87,7 @@ class SnakeGameDriver(tkinter.Tk):
             ] for r in range(n_rows)
         ]
 
-
+    # add head to grid_tiles
 
     def play_game(self):
         print(f"{self.game_snake=}")
@@ -137,7 +137,12 @@ class SnakeGameDriver(tkinter.Tk):
         if self.grid_tiles:
             self.draw_grid()
         if self.game_snake:
-            self.game_snake.move(self.game_grid)
+            move_results = self.game_snake.move(self.game_grid)
+            print(f"{move_results=}")
+            exiting = move_results["exiting"]
+            for tile in exiting:
+                print(f"EXITING TILE: {tile}")
+                self.canvas_grid_space.itemconfigure(self.grid_tiles[tile], fill="brown")
         super().update()
         self.after(100, self.update)
 
