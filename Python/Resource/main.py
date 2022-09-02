@@ -1451,6 +1451,18 @@ def test_pyodbc_connection():
     ts.execute_log()
 
 
+def test_NATO_phonetic_alphabet():
+    ts = TestSuite(name="pyodbcConnection Tests", test_func=translate_NATO_phonetic_alphabet)
+    ts.add_test("Test1", [["Avery"], "Alpha Victor Echo Romeo Yankee"])
+    ts.add_test("Test2", [["Avery is #1", True, False], "Alpha Victor Echo Romeo Yankee India Sierra # 1"])
+    ts.add_test("Test3", [["Avery is #1"], "Alpha Victor Echo Romeo Yankee   India Sierra   # 1"])
+    ts.add_test("Test4", [["Alpha Victor Echo Romeo Yankee", False], "avery"])
+    ts.add_test("Test5", [["Avery!"], "Alpha Victor Echo Romeo Yankee!"])
+    ts.add_test("Test6", [["Alpha Victor Echo Romeo Yankee!", False], "avery!"])
+    ts.add_test("Test7", [["Alpha Victor Echo Romeo Yankee   India Sierra   # 1", False, False], "avery is #1"])
+    ts.execute_log()
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1494,4 +1506,5 @@ if __name__ == "__main__":
     # test_font_foreground()
     # test_dict_print2()
     # test_rainbow_gradient()
-    test_pyodbc_connection()
+    # test_pyodbc_connection()
+    test_NATO_phonetic_alphabet()
