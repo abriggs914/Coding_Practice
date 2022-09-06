@@ -1457,9 +1457,10 @@ def test_NATO_phonetic_alphabet():
     ts.add_test("Test2", [["Avery is #1", True, False], "Alpha Victor Echo Romeo Yankee India Sierra # 1"])
     ts.add_test("Test3", [["Avery is #1"], "Alpha Victor Echo Romeo Yankee   India Sierra   # 1"])
     ts.add_test("Test4", [["Alpha Victor Echo Romeo Yankee", False], "avery"])
-    ts.add_test("Test5", [["Avery!"], "Alpha Victor Echo Romeo Yankee!"])
+    ts.add_test("Test5", [["Avery!"], "Alpha Victor Echo Romeo Yankee !"])
     ts.add_test("Test6", [["Alpha Victor Echo Romeo Yankee!", False], "avery!"])
     ts.add_test("Test7", [["Alpha Victor Echo Romeo Yankee   India Sierra   # 1", False, False], "avery is #1"])
+    ts.add_test("Test8", [["GRV-051"], "Golf Romeo Victor - 0 5 1"])
     ts.execute_log()
 
 

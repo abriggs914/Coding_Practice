@@ -1679,16 +1679,16 @@ NATO_phonetic_alphabet = {
 
 
 def translate_NATO_phonetic_alphabet(phrase, from_english=True, preserve_spaces=True):
-    print(f"{from_english=}, {preserve_spaces=}")
+    # print(f"{from_english=}, {preserve_spaces=}")
     result = ""
     if phrase:
         if from_english:
-            for letter in phrase:
+            for i, letter in enumerate(phrase):
                 if letter.lower() in NATO_phonetic_alphabet:
                     result += NATO_phonetic_alphabet[letter.lower()]
                 elif letter != " ":
-                    if result[-2:] != "  ":
-                        result = result[:len(result) - 1]
+                    # if result[-2:] != "  ":
+                    #     result = result[:len(result) - 1]
                     result += letter
                 elif preserve_spaces:
                     result += letter
@@ -1702,14 +1702,12 @@ def translate_NATO_phonetic_alphabet(phrase, from_english=True, preserve_spaces=
             for k, v in reverse.items():
                 result = result.replace(k, v)
 
-            print(f"{result=}")
+            # print(f"{result=}")
             result = result.replace("   ", "&$&").replace(" ", "").replace("&$&", "   ")
             if not preserve_spaces:
                 result = result.replace("   ", " ")
 
     return result.strip()
-    # "".join([(letter + (" " if letter != " " else "")) if letter.lower() not in NATO_phonetic_alphabet else (
-    #             NATO_phonetic_alphabet[letter.lower()] + " ") for letter in phrase])
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
