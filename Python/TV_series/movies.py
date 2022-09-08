@@ -110,16 +110,23 @@ list_of_movies = [
 	"Chip & Dale Rescue Rangers",
 	"Ford vs. Ferrari",
 	{
-		"Shanghai Noon" {
+		"Shanghai Noon": {
 			"Shanghai Noon",
 			"Shanghai Knights"
 		}
 	},
 	{
-		"Hot Shots" {
+		"Hot Shots": {
 			"Hot Shots"
+			"Hot Shots Part Deux"
 		}
-	}
+	},
+	{
+		"Inspector Gadget": {
+			"Inspector Gadget"
+		}
+	},
+	"The Waterboy"
 ]
 
 
