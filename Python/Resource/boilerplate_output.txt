@@ -1,0 +1,37 @@
+
+# id_num
+def get_id_num(self):
+	return self._id_num
+def set_id_num(self, id_num_in):
+	self._id_num = id_num_in
+def del_id_num(self):
+	del self._id_num
+
+# name
+def get_name(self):
+	return self._name
+def set_name(self, name_in):
+	self._name = name_in
+def del_name(self):
+	del self._name
+
+# age
+def get_age(self):
+	return self._age
+def set_age(self, age_in):
+	self._age = age_in
+def del_age(self):
+	del self._age
+
+# height
+def get_height(self):
+	return self._height
+def set_height(self, height_in):
+	self._height = height_in
+def del_height(self):
+	del self._height
+
+id_num = property(get_id_num, set_id_num, del_id_num)
+name = property(get_name, set_name, del_name)
+age = property(get_age, set_age, del_age)
+height = property(get_height, set_height, del_height)
