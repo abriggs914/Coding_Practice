@@ -5,8 +5,8 @@
 VERSION = \
     """    
         Functions to write property boilerplate.
-        Version.............................1.01
-        Date..........................2022-09-09
+        Version.............................1.03
+        Date..........................2022-09-12
         Author......................Avery Briggs
     """
 
@@ -53,6 +53,7 @@ def proter(x):
 
 def property_boilerplate(class_in, output_file="./boilerplate_output.txt", do_export=True):
     lst = list(class_in.__dict__.keys())
+    lst.sort()
 
     lines = ""
     for name in lst:

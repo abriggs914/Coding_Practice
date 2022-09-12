@@ -16,10 +16,10 @@ from test_suite import TestSuite
 class GSM:
 
     def __init__(self, options, name=None, idx=None, max_cycles=None):
-        """Game State Machine. Simulates state switches for an object.
+        """Game State Machine. Simulates app_state switches for an object.
         Required:   options     -   list of states.
         Optional:   name        -   GSM name
-                    idx         -   starting index for a state
+                    idx         -   starting index for a app_state
                     max_cycles  -   maximum number of cycles allowed. (Think generators)"""
         if idx is None:
             idx = 0
@@ -77,20 +77,20 @@ class GSM:
         return rest
 
     def opposite(self, round_up=False):
-        """Viewing options cyclically, return the state opposite to the current. Use round_up to handle odd length state lists"""
+        """Viewing options cyclically, return the app_state opposite to the current. Use round_up to handle odd length app_state lists"""
         off = 0 if not round_up else len(self) % 2
         return self.options[(self.idx + ((len(self) // 2) + off)) % len(self)]
 
     def state(self, idx=None):
-        """Return the state at a given index. If none given, defaults to own index."""
+        """Return the app_state at a given index. If none given, defaults to own index."""
         return self.options[self.idx] if idx is None else self.options[idx]
 
     def peek(self, n_ahead=1):
-        """Peek ahead to the nth state. Default next state."""
+        """Peek ahead to the nth app_state. Default next app_state."""
         return self.state((self.idx + n_ahead) % len(self))
 
     def add_state(self, state, idx=None):
-        """Add a state. By default, appended, but can be altered using idx param."""
+        """Add a app_state. By default, appended, but can be altered using idx param."""
         if idx is None:
             if isinstance(self.options, list):
                 self.options.append(state)
@@ -103,7 +103,7 @@ class GSM:
                 self.options = (*self.options[:idx], state, self.options[idx:])
 
     def remove_state(self, state):
-        """Remove a state. Beware ValueError"""
+        """Remove a app_state. Beware ValueError"""
         if isinstance(self.options, list):
             self.options.remove(state)
         else:
@@ -131,7 +131,7 @@ class GSM:
         f = (self.max_cycles * len(self)) if len(self) != 0 and self.max_cycles != 0 else 1
         p = ("%.2f" % ((100 * r) / f)) + " %"
         c = f", #state_idx/ttl_states={r} / {f} = {p}" if b else ""
-        return f"<GSM{a} state={self.state()}, options={self.queue()}{b}{c}>"
+        return f"<GSM{a} app_state={self.state()}, options={self.queue()}{b}{c}>"
 
 
 class BooleanGSM(GSM):
@@ -144,7 +144,7 @@ class BooleanGSM(GSM):
 
 class YesNoCancelGSM(GSM):
 
-    # Triple state switch
+    # Triple app_state switch
 
     def __init__(self, name=None, idx=None, max_cycles=None):
         super().__init__(options=["Yes", "No", "Cancel"], name=name, idx=idx, max_cycles=max_cycles)

@@ -9,10 +9,10 @@
 class GSM:
 
     def __init__(self, options, name=None, idx=None, max_cycles=None, allow_recycle=True):
-        """Game State Machine. Simulates state switches for an object.
+        """Game State Machine. Simulates app_state switches for an object.
         Required:   options         -   list of states.
         Optional:   name            -   GSM name
-                    idx             -   starting index for a state
+                    idx             -   starting index for a app_state
                     max_cycles      -   maximum number of cycles allowed
                     allow_recycle   -   use this to allow for only a single cycle(Think generators)"""
         if idx is None:
@@ -61,8 +61,8 @@ class GSM:
         b = (self.prev + 0) % len(self)
         # print(f"name={self.name}, idx: <{self.idx}>, prev: <{self.prev}>, a={a}, b={b}")
         if a != b:
-            # if this is true, then the state index was altered illegally.
-            raise ValueError("STOP!!" + "\n" + str(self) + "\n" + "The state index was altered illegally.")
+            # if this is true, then the app_state index was altered illegally.
+            raise ValueError("STOP!!" + "\n" + str(self) + "\n" + "The app_state index was altered illegally.")
         self.idx += 1
         if self.idx >= len(self):
             self.cycles += 1
@@ -90,16 +90,16 @@ class GSM:
         return rest
 
     def opposite(self, round_up=False):
-        """Viewing options cyclically, return the state opposite to the current. Use round_up to handle odd length state lists"""
+        """Viewing options cyclically, return the app_state opposite to the current. Use round_up to handle odd length app_state lists"""
         off = 0 if not round_up else len(self) % 2
         return self.options[(self.idx + ((len(self) // 2) + off)) % len(self)]
 
     def state(self, idx=None):
-        """Return the state at a given index. If none given, defaults to own index."""
+        """Return the app_state at a given index. If none given, defaults to own index."""
         return self.options[self.idx] if idx is None else self.options[idx]
 
     def peek(self, n_ahead=1):
-        """Peek ahead to the nth state. Default next state."""
+        """Peek ahead to the nth app_state. Default next app_state."""
         return self.state((self.idx + n_ahead) % len(self))
 
     def set_state(self, idx):
@@ -116,24 +116,24 @@ class GSM:
                     self.idx = idx
                     self.prev = self.calc_prev()
                     return
-        raise ValueError(f"Error param idx is not recognized as a state or an index. idx={idx}, type={type(idx)}")
+        raise ValueError(f"Error param idx is not recognized as a app_state or an index. idx={idx}, type={type(idx)}")
         # if isinstance(idx, int):
         #     # TODO this will cause a problem for keys that are also whole numbers. instead of by value this does by position
         #     if -1 < idx < len(self):
         #         self.idx = idx
         #         self.prev = self.calc_prev()
         #     else:
-        #         raise ValueError(f"Error cannot set the state to index={idx}. Index out of range.")
+        #         raise ValueError(f"Error cannot set the app_state to index={idx}. Index out of range.")
         # else:
         #     if idx not in self.options:
-        #         raise KeyError(f"Error key '{idx}' not a valid state for this machine.")
-        #     state = idx
-        #     self.idx = self.options.index(state)
+        #         raise KeyError(f"Error key '{idx}' not a valid app_state for this machine.")
+        #     app_state = idx
+        #     self.idx = self.options.index(app_state)
         #     print(f"idx: {idx}, s.idx: {self.idx}")
         #     self.prev = self.calc_prev(self.idx)
 
     def add_state(self, state, idx=None):
-        """Add a state. By default, appended, but can be altered using idx param."""
+        """Add a app_state. By default, appended, but can be altered using idx param."""
         if idx is None:
             if isinstance(self.options, list):
                 self.options.append(state)
@@ -147,7 +147,7 @@ class GSM:
         self.prev = self.calc_prev()
 
     def remove_state(self, state):
-        """Remove a state. Beware ValueError"""
+        """Remove a app_state. Beware ValueError"""
         self.unbind_callback(state)
         if isinstance(self.options, list):
             self.options.remove(state)
@@ -158,13 +158,13 @@ class GSM:
         self.prev = self.calc_prev()
 
     def bind_callback(self, func, *args, state=None, all_states=False, **kwargs):
-        """Add a callback to a given state """
+        """Add a callback to a given app_state """
         # print(f"func: {func}")
         # print(f"args: {args}")
         # print(f"kwargs: {kwargs}")
         state = state if state is not None else self.state()
         if state not in self.options:
-            raise KeyError(f"Error unable to bind callback for state '{state}' as it is not a valid state of this GSM.")
+            raise KeyError(f"Error unable to bind callback for app_state '{state}' as it is not a valid app_state of this GSM.")
         self.callbacks[state] = (func, args, kwargs)
         if all_states:
             for state_ in self.options:
@@ -172,17 +172,17 @@ class GSM:
                     self.callbacks[state_] = (func, args, kwargs)
 
     def unbind_callback(self, state=None):
-        """Unbind a callback for a given state, defaults to current state."""
+        """Unbind a callback for a given app_state, defaults to current app_state."""
         state = state if state is not None else self.state()
         if state not in self.options:
-            raise KeyError(f"Error unable to unbind callback for state '{state}' as it is not a valid state of this GSM.")
+            raise KeyError(f"Error unable to unbind callback for app_state '{state}' as it is not a valid app_state of this GSM.")
         if state not in self.callbacks:
-            print(f"No callbacks have been bound to state '{state}' yet.")
+            print(f"No callbacks have been bound to app_state '{state}' yet.")
             return
         del self.callbacks[state]
 
     def callback(self, state=None):
-        """Call the function associated with a given state, defaults to current state."""
+        """Call the function associated with a given app_state, defaults to current app_state."""
         state = state if state is not None else self.state()
         if state in self.callbacks:
             func, args, kwargs = self.callbacks[state]
@@ -210,7 +210,7 @@ class GSM:
         f = (self.max_cycles * len(self)) if len(self) != 0 and self.max_cycles != 0 else 1
         p = ("%.2f" % ((100 * r) / f)) + " %"
         c = f", #state_idx/ttl_states={r} / {f} = {p}" if b else ""
-        return f"<GSM{a} state={self.state()}, options={self.queue()}{b}{c}>"
+        return f"<GSM{a} app_state={self.state()}, options={self.queue()}{b}{c}>"
 
 
 class BooleanGSM(GSM):
@@ -223,7 +223,7 @@ class BooleanGSM(GSM):
 
 class YesNoCancelGSM(GSM):
 
-    # Triple state switch
+    # Triple app_state switch
 
     def __init__(self, name=None, idx=None, max_cycles=None):
         super().__init__(options=["Yes", "No", "Cancel"], name=name, idx=idx, max_cycles=max_cycles)
@@ -258,8 +258,8 @@ if __name__ == '__main__':
         # # gsm2.bind_callback(print_hello1),
         # gsm2.__next__(),
         # # gsm2.bind_callback(print_hello2, 1, 4, arg3=5),
-        # # gsm2.unbind_callback(state=True),
-        # gsm2.bind_callback(print_hello2, -1, -4, arg3=-5, state=True),
+        # # gsm2.unbind_callback(app_state=True),
+        # gsm2.bind_callback(print_hello2, -1, -4, arg3=-5, app_state=True),
         # gsm2.__next__(),
         # gsm2.__next__(),
         # gsm2.__next__(),
@@ -267,7 +267,7 @@ if __name__ == '__main__':
         # gsm2.__next__(),
         # gsm2.__next__(),
         # gsm2.__next__(),
-        # gsm2.remove_state(state=True),
+        # gsm2.remove_state(app_state=True),
         # gsm2.__next__(),
         # gsm2.__next__(),
         # gsm2.__next__(),

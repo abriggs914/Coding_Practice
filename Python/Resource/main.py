@@ -1,4 +1,5 @@
 import datetime
+import tkinter
 
 import pandas
 
@@ -1464,6 +1465,194 @@ def test_NATO_phonetic_alphabet():
     ts.execute_log()
 
 
+def test_grid_cells():
+    # finite space width height (w x h), want (n x m) rows by columns, allowing for x, and y padding, r_type list or dict
+
+    TS = TestSuite(test_func=grid_cells, name="'grid_cells' TestSuite")
+    call_args = [
+        ((500, 500, 10, 10, 1, 1), []),
+        ((500, 10), []),
+        ((500, "50"), []),
+        (("500", "50"), []),
+        ((500, 500, "10", 10, -1, 18), AssertionError),
+        ((-500, 500, "10", 10, 1, -18), AssertionError),
+        ((500, -500, "-10", 10, 1, 18), AssertionError),
+        (("100", "2"), [
+                        [
+                            [0.5, 0.5, 49.5, 49.5],
+                            [50.5, 0.5, 99.5, 49.5]
+                        ],
+                        [
+                            [0.5, 50.5, 49.5, 99.5],
+                            [50.5, 50.5, 99.5, 99.5]
+                        ]
+        ]),
+        (("100", "4"), [
+                        [
+                            [0.5, 0.5, 24.5, 24.5],
+                            [25.5, 0.5, 49.5, 24.5],
+                            [50.5, 0.5, 74.5, 24.5],
+                            [75.5, 0.5, 99.5, 24.5]
+                        ],
+                        [
+                            [0.5, 25.5, 24.5, 49.5],
+                            [25.5, 25.5, 49.5, 49.5],
+                            [50.5, 25.5, 74.5, 49.5],
+                            [75.5, 25.5, 99.5, 49.5]
+                        ],
+                        [
+                            [0.5, 50.5, 24.5, 74.5],
+                            [25.5, 50.5, 49.5, 74.5],
+                            [50.5, 50.5, 74.5, 74.5],
+                            [75.5, 50.5, 99.5, 74.5]
+                        ],
+                        [
+                            [0.5, 75.5, 24.5, 99.5],
+                            [25.5, 75.5, 49.5, 99.5],
+                            [50.5, 75.5, 74.5, 99.5],
+                            [75.5, 75.5, 99.5, 99.5]
+                        ],
+        ]),
+        (("100", 2, "100", 2, 1, 1, 0, 0, dict), {
+            0: {
+                0: {"x_1": 0.5, "y_1": 0.5, "x_2": 49.5, "y_2": 49.5, "w": 49.0, "h": 49.0},
+                1: {"x_1": 50.5, "y_1": 0.5, "x_2": 99.5, "y_2": 49.5, "w": 49.0, "h": 49.0}
+            },
+            1: {
+                0: {"x_1": 0.5, "y_1": 50.5, "x_2": 49.5, "y_2": 99.5, "w": 49.0, "h": 49.0},
+                1: {"x_1": 50.5, "y_1": 50.5, "x_2": 99.5, "y_2": 99.5, "w": 49.0, "h": 49.0}
+            }
+         }),
+    ]
+    for i, call_arg in enumerate(call_args):
+        args, ans = call_arg
+        test_args = [[*args], ans]
+        print(f"{call_arg=}, {args=}, {ans=}, {test_args=}")
+        TS.add_test(f"Test_{i+1}", test_args)
+        # grid_cells(*call_arg)
+
+    TS.execute_log()
+
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    canvas = tkinter.Canvas(WIN, width=100, height=100, background=rgb_to_hex(FIREBRICK_3))
+    canvas_2 = tkinter.Canvas(WIN, width=100, height=100, background=rgb_to_hex(OLDLACE))
+    cell_dims = grid_cells("100", 1, x_pad=25, y_pad=25)
+
+    dims_2 = [
+                        [
+                            [0.5, 0.5, 24.5, 24.5],
+                            [25.5, 0.5, 49.5, 24.5],
+                            [50.5, 0.5, 74.5, 24.5],
+                            [75.5, 0.5, 99.5, 24.5]
+                        ],
+                        [
+                            [0.5, 25.5, 24.5, 49.5],
+                            [25.5, 25.5, 49.5, 49.5],
+                            [50.5, 25.5, 74.5, 49.5],
+                            [75.5, 25.5, 99.5, 49.5]
+                        ],
+                        [
+                            [0.5, 50.5, 24.5, 74.5],
+                            [25.5, 50.5, 49.5, 74.5],
+                            [50.5, 50.5, 74.5, 74.5],
+                            [75.5, 50.5, 99.5, 74.5]
+                        ],
+                        [
+                            [0.5, 74.5, 24.5, 99.5],
+                            [25.5, 74.5, 49.5, 99.5],
+                            [50.5, 74.5, 74.5, 99.5],
+                            [75.5, 74.5, 99.5, 99.5]
+                        ],
+        ]
+
+    for row in cell_dims:
+        for dim in row:
+            canvas.create_rectangle(*dim, fill=rgb_to_hex(random_colour()))
+
+    for row in dims_2:
+        for dim in row:
+            canvas_2.create_rectangle(*dim, fill=rgb_to_hex(random_colour()))
+
+    canvas.grid(row=1, column=1)
+    canvas_2.grid(row=2, column=2)
+    WIN.mainloop()
+
+
+def test_rect_bounds():
+
+    TS = TestSuite(test_func=clamp_rect, name="'clamp_rect' TestSuite")
+    call_args = [
+        ([[20, 20, 50, 50], [0, 0, 100, 100]], [20, 20, 50, 50]),
+        ([[20, 20, 50, 50], [25, 25, 100, 100], True], [25, 25, 55, 55]),
+        ([[20, 20, 50, 50], [25, 25, 100, 100], False], [25, 25, 55, 55]),
+        ([Rect2(20, 20, 30, 30), Rect2(0, 0, 100, 100)], [20, 20, 50, 50]),
+        ([Rect2(20, 20, 30, 30), Rect2(25, 25, 75, 75), True], [25, 25, 55, 55]),
+        ([Rect2(20, 20, 30, 30), Rect2(25, 25, 75, 75), False], [25, 25, 55, 55]),
+        ([[20, 20, 500, 500], [25, 25, 100, 100], False], [25, 25, 100, 100]),
+        ([[20, 20, 500, 500], Rect2(25, 25, 100, 100), False], [25, 25, 125, 125]),
+        ([[20, 20, 50, 50], [0, 0, 40, 40], False], [20, 20, 40, 40]),
+
+        ([[20, 20, 500, 500], [25, 25, 100, 100], True], [25, 25, 100, 100]),
+        ([Rect2(20, 20, 500, 500), [25, 25, 100, 100], True], [25, 25, 100, 100]),
+        ([[20, 20, 50, 50], [0, 0, 40, 40], True], [10, 10, 40, 40]),
+        ([[0, 0, 5, 5], [10, 10, 40, 40]], [10, 10, 15, 15])
+    ]
+    for i, call_arg in enumerate(call_args):
+        args, ans = call_arg
+        test_args = [[*args], ans]
+        print(f"{call_arg=}, {args=}, {ans=}, {test_args=}")
+        TS.add_test(f"Test_{i + 1}", test_args)
+        # grid_cells(*call_arg)
+
+    TS.execute_log()
+
+    class App(tkinter.Tk):
+
+        def __init__(self):
+            super(App, self).__init__()
+            self.WIDTH, self.HEIGHT = 500, 500
+            self.geometry("500x500")
+            self.title("App")
+
+            self.app_state = "idle"
+            self.c_width, self.c_height = 400, 400
+            self.canvas = tkinter.Canvas(self, width=self.c_width, height=self.c_height, background=rgb_to_hex(KHAKI_4))
+            self.r_width, self.r_height = 100, 100
+            self.rect_bounds = [((self.c_width - self.r_width) / 2), ((self.c_height - self.r_height) / 2), ((self.c_width + self.r_width) / 2), ((self.c_height + self.r_height) / 2)]
+            self.tag_rect = self.canvas.create_rectangle(*self.rect_bounds, fill=random_colour(rgb=False))
+
+            self.canvas.tag_bind(self.tag_rect, "<Button-1>", self.click_canvas)
+            self.canvas.tag_bind(self.tag_rect, "<Motion>", self.motion_canvas)
+            self.canvas.tag_bind(self.tag_rect, "<ButtonRelease-1>", self.release_canvas)
+            self.canvas.grid()
+
+        def click_canvas(self, event):
+            self.app_state = "dragging"
+
+        def motion_canvas(self, event):
+            if self.app_state == "dragging":
+                # xy = self.winfo_pointerxy()
+                cx, cy = event.x, event.y
+                # cx, cy = xy
+                # cx, cy = self.canvas.canvasx(cx), self.canvas.canvasy(cy)
+                # print(f"{cx=}, {cy=}")
+                new_rect = [cx - (self.r_width / 2), cy - (self.r_height / 2), cx + (self.r_width / 2), cy + (self.r_height / 2)]
+                new_rect = clamp_rect(
+                    new_rect, [0, 0, self.c_width, self.c_height], maintain_inner_dims=True
+                )
+                nx1, ny1, nx2, ny2 = new_rect
+                self.canvas.moveto(self.tag_rect, nx1, ny1)
+                # self.canvas.moveto(self.tag_rect, cx, cy)
+                # self.canvas.itemconfigure(self.tag_rect, x0=nx1, y0=ny1, x1=nx2, y1=ny2)
+
+        def release_canvas(self, event):
+            self.app_state = "idle"
+
+    App().mainloop()
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1508,4 +1697,6 @@ if __name__ == "__main__":
     # test_dict_print2()
     # test_rainbow_gradient()
     # test_pyodbc_connection()
-    test_NATO_phonetic_alphabet()
+    # test_NATO_phonetic_alphabet()
+    test_grid_cells()
+    test_rect_bounds()

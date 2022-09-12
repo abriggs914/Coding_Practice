@@ -669,7 +669,7 @@ class RadioButton(Widget):
 
     # Create a RadioButton, used to act as a selection switch between multiple options.
     # Must be accompanied by a RadioGroup in order to interact with the widget, otherwise
-    # only shows the set selection state of the button.
+    # only shows the set selection app_state of the button.
     def __init__(self, game, display, rect, msg, font=None, c=None, sc=None, txc=None, bgc=None):
         super().__init__(game, display, rect)
         self.bounds = self.rect
@@ -1836,7 +1836,7 @@ class MenuBar(Widget):
 
         self.button_data = self.validate_button_data(button_data)
         print(dict_print(self.button_data, "Parsed Button Data"))
-        # self.state = list(self.button_data)
+        # self.app_state = list(self.button_data)
         self.state = list()
 
     def validate_button_data(self, button_data):
@@ -1905,8 +1905,8 @@ class MenuBar(Widget):
     #     # rect_bg = rect
     #     handle = False
     #     if self.is_clicked or click[0]:
-    #         # if rect not in self.state:
-    #         #     self.state.append(rect)
+    #         # if rect not in self.app_state:
+    #         #     self.app_state.append(rect)
     #         if rect.collidepoint(mouse):
     #             # print("mouse[0]: {}\nrect.x: {}\n(mouse[0] - rect.x): {}\nint((mouse[0] - rect.x) // w_drop_down): {}".format(mouse[0], rect.x, (mouse[0] - rect.x), int((mouse[0] - rect.x) // w_drop_down)))
     #             top_btn = int((mouse[0] - rect.x) // w_drop_down)
@@ -1915,32 +1915,32 @@ class MenuBar(Widget):
     #             rect_bg = game.Rect(rect.x + (top_btn * w_drop_down), rect.y + rect.h, rect.w, rect.h * len(sub_data))
     #             game.draw.rect(display, self.background_colour, rect_bg)
     #             if self.is_clicked:
-    #                 self.state.clear()
-    #             if (rect_bg, list(btns)[top_btn], btns) not in self.state:
-    #                 self.state.append((rect_bg, list(btns)[top_btn], btns))
+    #                 self.app_state.clear()
+    #             if (rect_bg, list(btns)[top_btn], btns) not in self.app_state:
+    #                 self.app_state.append((rect_bg, list(btns)[top_btn], btns))
     #             handle = True
     #
     #             rec_menu(rect_bg, list(btns)[top_btn], btns)
     #             # for dat in sub_data:
     #         # else:
     #         #     self.is_clicked = False
-    #         if any(list(map(lambda x: x.collidepoint(mouse), [state[0] for state in self.state]))):
-    #             print("rect_bg", self.state)
+    #         if any(list(map(lambda x: x.collidepoint(mouse), [app_state[0] for app_state in self.app_state]))):
+    #             print("rect_bg", self.app_state)
     #             # game.draw.rect(display, self.background_colour, rect_bg)
-    #             for tpl in self.state:
+    #             for tpl in self.app_state:
     #                 r, k, v = tpl
     #                 game.draw.rect(display, self.background_colour, r)
     #                 rec_menu(*tpl)
     #             handle = True
     #
     #         # t = []
-    #         # for r in self.state:
+    #         # for r in self.app_state:
     #         #     if r.collidepoint(mouse):
     #         #         t.append(r)
-    #         # self.state = t
+    #         # self.app_state = t
     #
     #         if not handle:
-    #             self.state.clear()
+    #             self.app_state.clear()
     #
     #     if not handle:
     #         self.is_clicked = False
@@ -1964,7 +1964,7 @@ class MenuBar(Widget):
         mouse = self.game.mouse.get_pos()
         click = self.game.mouse.get_pressed()
 
-        # instead of drawing the top and the the sides, draw each iteratively using the state path.
+        # instead of drawing the top and the the sides, draw each iteratively using the app_state path.
 
         for i, key in enumerate(btns):
             dat = btns[key]

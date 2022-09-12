@@ -1,15 +1,18 @@
 from random import randint, choice
 from utility import clamp, flatten, reduce
 
-
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
 
-#	General Utility file of RGB colour values
-#	Version...........1.17
-#	Date........2022-09-09
-#	Author....Avery Briggs
+
+VERSION = \
+    """	
+        General Utility file of RGB colour values
+        Version...........1.18
+        Date........2022-09-12
+        Author....Avery Briggs
+    """
 
 
 def VERSION_NUMBER():
@@ -22,6 +25,7 @@ def VERSION_DATE():
 
 def VERSION_AUTHOR():
     return VERSION.split("\n")[4].split(".")[-1]
+
 
 #######################################################################################################################
 #######################################################################################################################
@@ -1160,7 +1164,7 @@ colour_values_list = [
     YELLOW_2,
     YELLOW_3,
     YELLOW_4
-    ]
+]
 
 colour_names_list = [
     "WILDERNESS_MINT",
@@ -1736,7 +1740,6 @@ COLOURS = dict(zip(colour_names_list, [{"R": r, "G": g, "B": b} for r, g, b in c
 
 
 def get_all_colours(rtype=list, return_hex=False):
-
     if return_hex:
         lst = [rgb_to_hex(c) for c in colour_values_list]
     else:
@@ -1752,9 +1755,12 @@ def get_all_colours(rtype=list, return_hex=False):
         return lst
 
 
-def random_colour(name=False):
+def random_colour(name=False, rgb=True):
     if not name:
-        return choice(get_all_colours())
+        if rgb:
+            return choice(get_all_colours())
+        else:
+            return rgb_to_hex(choice(get_all_colours()))
     else:
         return choice(list(get_all_colours(rtype=dict).keys()))
 
@@ -1922,7 +1928,7 @@ def random_color():
     )
 
 
-def font_foreground(colour_in, threshold=255*3/2):
+def font_foreground(colour_in, threshold=255 * 3 / 2):
     """Given a background colour and a minimum threshold, return BLACK or WHITE to ensure a font of this colour will be visible on the background."""
     assert iscolour(colour_in), "Error cannot infer the correct font fore-colour from a non colour object."
     try:

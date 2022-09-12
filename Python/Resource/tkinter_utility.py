@@ -7,12 +7,12 @@ import tkinter
 #######################################################################################################################
 
 VERSION = \
-"""	
-	General Utility Functions
-	Version..............1.02
-	Date...........2022-09-09
-	Author.......Avery Briggs
-"""
+    """	
+    General Utility Functions
+    Version..............1.03
+    Date...........2022-09-12
+    Author.......Avery Briggs
+    """
 
 
 def VERSION_NUMBER():

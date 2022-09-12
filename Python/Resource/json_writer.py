@@ -128,7 +128,7 @@ class JSONWriter:
         # if not self.started[0]:
         # safe_leave = False
         # if self.safe:
-        #     if not self.state.started:
+        #     if not self.app_state.started:
         #         print("WARNING wrinting has begun in safe mode without calling \'start()\' on this file.")
         #         typ = type(value)
         #         obj = False
@@ -181,15 +181,15 @@ class JSONWriter:
         # self.started = True, obj, False
         self.state.start()
         if obj:
-            # self.state.start_obj()
+            # self.app_state.start_obj()
             self.ooj(use_tab=False)
         else:
-            # self.state.start_arr()
+            # self.app_state.start_arr()
             self.oar(use_tab=False)
         return self
 
     def stop(self):
-        # if self.state.started:
+        # if self.app_state.started:
         #     raise self.StateException("Cannot stop, writing has not started yet")
         while self.state.writing_arr or self.state.writing_obj:
             if self.state.writing_obj:
@@ -255,10 +255,10 @@ class JSONWriter:
 
     def coj(self, next=False):
         # # if not self.started[0]:
-        # if not self.state.started:
+        # if not self.app_state.started:
         #     raise self.StateException("Cannot close object in file that has not been started first.")
         # # if not self.started[1]:
-        # if not self.state.writing_obj:
+        # if not self.app_state.writing_obj:
         #     raise self("Cannot close object that has not been opened first.")
         self.tab_depth -= 1
         # s = "\n" + max(0, self.tab_depth) * "\t" + "}" + ("," if next else "")
@@ -270,7 +270,7 @@ class JSONWriter:
     def oar(self, use_tab=True):
         self.state.start_arr()
         self.tab_depth += 1
-        # if self.state.writing_arr or self.state.writing_obj:
+        # if self.app_state.writing_arr or self.app_state.writing_obj:
         #     self.string += ",\n"
         # if self.tab_depth not in self.items:
         #     self.items.update({self.tab_depth: {}})
@@ -564,8 +564,8 @@ def test_6():
 
 def test_7():
     jw = JSONWriter()
-    # jw.state.start()
-    # jw.state.start()
+    # jw.app_state.start()
+    # jw.app_state.start()
     jw.start().war([1, 2, "three", """four""", 5.5]).save("demo")
     print(f"STR: <{jw.string}>")
     print(dict_print(jw.items, "Items"))

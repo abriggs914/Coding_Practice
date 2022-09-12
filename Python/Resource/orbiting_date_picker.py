@@ -8,11 +8,33 @@ from utility import Rect2
 import numpy as np
 
 
-#	Class to add an Orbiting Date Picker Widget in place of a traditional date picker.
-#   Works with tkcalendar.DateEntry and datetime.datetime objects.
-#	Version............1.1
-#	Date........2022-07-10
-#	Author....Avery Briggs
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+
+VERSION = \
+    """	
+        Class to add an Orbiting Date Picker Widget in place of a traditional date picker. Works with tkcalendar.DateEntry and datetime.datetime objects.
+        Version..............1.02
+        Date...........2022-09-12
+        Author.......Avery Briggs
+    """
+
+
+def VERSION_NUMBER():
+    return float(VERSION.split("\n")[2].split(".")[-2] + "." + VERSION.split("\n")[2].split(".")[-1])
+
+
+def VERSION_DATE():
+    return VERSION.split("\n")[3].split(".")[-1]
+
+
+def VERSION_AUTHOR():
+    return VERSION.split("\n")[4].split(".")[-1]
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
 
 
 DEFAULT_SEASONS = {
