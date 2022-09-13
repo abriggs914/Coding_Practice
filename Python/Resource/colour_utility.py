@@ -1,3 +1,5 @@
+import dataclasses
+from dataclasses import dataclass
 from random import randint, choice
 from utility import clamp, flatten, reduce
 
@@ -9,8 +11,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
         General Utility file of RGB colour values
-        Version...........1.18
-        Date........2022-09-12
+        Version...........1.19
+        Date........2022-09-13
         Author....Avery Briggs
     """
 
@@ -1735,38 +1737,6 @@ colour_names_list = [
     "YELLOW_4"
 ]
 
-# COLOURS = dict(zip(colour_names_list, colour_values_list))
-COLOURS = dict(zip(colour_names_list, [{"R": r, "G": g, "B": b} for r, g, b in colour_values_list]))
-
-
-def get_all_colours(rtype=list, return_hex=False):
-    if return_hex:
-        lst = [rgb_to_hex(c) for c in colour_values_list]
-    else:
-        lst = colour_values_list
-
-    if rtype == dict:
-        return dict(zip(colour_names_list, lst))
-    elif isinstance(rtype, str) and rtype.lower() == "both":
-        return colour_names_list, lst
-    elif isinstance(rtype, str) and rtype.lower() == "names":
-        return colour_names_list
-    else:
-        return lst
-
-
-def random_colour(name=False, rgb=True):
-    if not name:
-        if rgb:
-            return choice(get_all_colours())
-        else:
-            return rgb_to_hex(choice(get_all_colours()))
-    else:
-        return choice(list(get_all_colours(rtype=dict).keys()))
-
-
-# def rgb_to_hex(colour):
-#    return "#" + "".join([hex(x).split("x")[-1] for x in colour]).upper()
 
 def rgb_to_hex(colour):
     if is_hex_colour(colour):
@@ -1820,6 +1790,54 @@ def is_hex_colour(c):
     return False
 
 
+# COLOURS = dict(zip(colour_names_list, colour_values_list))
+COLOURS = dict(zip(colour_names_list, [{"R": r, "G": g, "B": b} for r, g, b in colour_values_list]))
+COLOURS_INVERSE = dict(zip([rgb_to_hex(rgb) for rgb in colour_values_list], colour_names_list))
+
+
+def get_all_colours(rtype=list, return_hex=False):
+    if return_hex:
+        lst = [rgb_to_hex(c) for c in colour_values_list]
+    else:
+        lst = colour_values_list
+
+    if rtype == dict:
+        return dict(zip(colour_names_list, lst))
+    elif isinstance(rtype, str) and rtype.lower() == "both":
+        return colour_names_list, lst
+    elif isinstance(rtype, str) and rtype.lower() == "names":
+        return colour_names_list
+    else:
+        return lst
+
+
+def random_colour(name=False, rgb=True):
+    """Choose a random colour from the list of known colours."""
+    if not name:
+        if rgb:
+            return choice(get_all_colours())
+        else:
+            return rgb_to_hex(choice(get_all_colours()))
+    else:
+        return choice(list(get_all_colours(rtype=dict).keys()))
+
+
+def random_rgb(l_bound=10, h_bound=245):
+    """Return random RGB color using bounds."""
+    l_bound = clamp(0, l_bound, 255)
+    h_bound = clamp(l_bound, h_bound, 255)
+    return (
+        randint(l_bound, h_bound),
+        randint(l_bound, h_bound),
+        randint(l_bound, h_bound)
+    )
+
+
+
+# def rgb_to_hex(colour):
+#    return "#" + "".join([hex(x).split("x")[-1] for x in colour]).upper()
+
+
 # def iscolour(c, g=None, b=None):
 #     print("c: <{}>, t: <{}>".format(c, type(c)))
 #     print("c: <{}>, t: <{}>".format(g, type(g)))
@@ -1852,6 +1870,57 @@ def is_hex_colour(c):
 #     return False
 
 
+class Colour:
+
+    def __init__(self, c, g=None, b=None, hex_code=None, rgb_code=None, colour_name=None):
+        self.hex_code = hex_code
+        self.rgb_code = rgb_code
+        self.colour_name = colour_name
+        # print(f"{c=}, {g=}, {b=}, {self.hex_code=}, {self.rgb_code=}")
+        if not iscolour(c, g, b):
+            raise TypeError(f"Error params {c=}, {g=}, {b=} do not represent a valid colour.")
+        else:
+            if is_rgb_colour(c, g, b):
+                if g is None and b is None:
+                    r, g, b = c
+                else:
+                    r, g, b = c, g, b
+            elif is_hex_colour(c):
+                r, g, b = hex_to_rgb(c)
+            elif isinstance(c, str) and c.upper() in COLOURS:
+                r, g, b = COLOURS[c.upper()]["R"], COLOURS[c.upper()]["G"], COLOURS[c.upper()]["B"]
+            else:
+                r, g, b = None, None, None
+                # print(f"{c=}, {type(c)=}")
+
+            self.rgb_code = r, g, b
+            # print(f"{self.hex_code=}, {self.rgb_code=}")
+            self.hex_code = rgb_to_hex(self.rgb_code)
+
+            if self.colour_name is None:
+                if self.hex_code in COLOURS_INVERSE:
+                    self.colour_name = COLOURS_INVERSE[self.hex_code]
+
+            # print(f"{self.hex_code=}, {self.rgb_code=}")
+            self.hex_code = rgb_to_hex(self.rgb_code)
+
+    def __iter__(self):
+        rgb = self.rgb_code
+        for code in rgb:
+            yield code
+
+    def __hash__(self):
+        return self.hex_code
+
+    def __eq__(self, other):
+        return isinstance(other, Colour) and self.hex_code == other.hex_code
+
+    def __repr__(self):
+        r, g, b = self.rgb_code
+        name = self.colour_name if self.colour_name else "UNNAMED"
+        return "<Colour RGB=({r}, {g}, {b}), hex = '{h}', name = '{n}'>".format(r=r, g=g, b=b, h=self.hex_code, n=name)
+
+
 def iscolour(c, g=None, b=None):
     # print("c: <{}>, t: <{}>".format(c, type(c)))
     # print("c: <{}>, t: <{}>".format(g, type(g)))
@@ -1861,7 +1930,7 @@ def iscolour(c, g=None, b=None):
     elif is_hex_colour(c):
         return True
     elif isinstance(c, str) and g is None and b is None:
-        if c in COLOURS:
+        if c.upper() in COLOURS:
             return True
     return False
 
@@ -1919,28 +1988,19 @@ def brighten(c, p):
     return r, g, b
 
 
-# return random RGB color
-def random_color():
-    return (
-        randint(10, 245),
-        randint(10, 245),
-        randint(10, 245)
-    )
-
-
-def font_foreground(colour_in, threshold=255 * 3 / 2):
+def font_foreground(colour_in, threshold=255 * 3 / 2, rgb=True):
     """Given a background colour and a minimum threshold, return BLACK or WHITE to ensure a font of this colour will be visible on the background."""
-    assert iscolour(colour_in), "Error cannot infer the correct font fore-colour from a non colour object."
+    assert iscolour(colour_in), f"Error cannot infer the correct font fore-colour from a non colour object. Got '{colour_in}', type={type(colour_in)}"
     try:
         if isinstance(colour_in, str):
             colour_in = hex_to_rgb(colour_in)
         s = sum(colour_in)
         if s < threshold:
             # return WHITE on BLACK
-            return WHITE
+            return WHITE if rgb else rgb_to_hex(WHITE)
         else:
             # return BLACK on WHITE
-            return BLACK
+            return BLACK if rgb else rgb_to_hex(BLACK)
     except ValueError as ve:
         raise ValueError(f"Error cannot convert \'{colour_in}\' to a valid RGB colour scheme.", ve)
     except IndexError as ie:

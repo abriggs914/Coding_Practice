@@ -1653,6 +1653,36 @@ def test_rect_bounds():
     App().mainloop()
 
 
+def test_colourify():
+
+    colours = [
+        c1 := Colour(10, 20, 30),
+        c2 := Colour((10, 20, 30)),
+        c3 := Colour("red"),
+        c4 := Colour("RED_1__RED_"),
+        # c5 := Colour("red2"),
+        c6 := Colour("#ff0000", colour_name="red2"),
+        c7 := Colour("#145172", colour_name="new_blue_colour")
+    ]
+    for colour in colours:
+        print(f"{colour=}")
+
+    print(f"{c4=}, {c6=}, {c4 == c6=}")
+    print(f"{c1=}, {c2=}, {c1 == c2=}")
+
+    # TS = TestZSuite(test_func=Colour, name="'colourify' TestSuite")
+    # call_args = [
+    #     ((10, 20, 30), True)
+    # ]
+    # for i, call_arg in enumerate(call_args):
+    #     args, ans = call_arg
+    #     test_args = [[*args], ans]
+    #     print(f"{call_arg=}, {args=}, {ans=}, {test_args=}")
+    #     TS.add_test(f"Test_{i + 1}", test_args)
+    #
+    # TS.execute_log()
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1698,5 +1728,6 @@ if __name__ == "__main__":
     # test_rainbow_gradient()
     # test_pyodbc_connection()
     # test_NATO_phonetic_alphabet()
-    test_grid_cells()
-    test_rect_bounds()
+    # test_grid_cells()
+    # test_rect_bounds()
+    test_colourify()

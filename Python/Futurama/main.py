@@ -69,10 +69,10 @@ class Graph:
                 else:
                     print(f"NOT EQUAL: {person=}, {p_obj=}, {from_person=}, {to_person=}, {next=}")
                 self.switch_board[person].append(next)
-        ml = max([len(str(name)) for name in self.switch_board])
+        ml = max([len(str(name)) for name in self.switch_board]) + 2
         sb = "\n\nbody |" + "|".join([f"{name.center(ml, ' ')}" for name in self.switch_board]) + "|"
         for i in range(len(self.switches)):
-            sb += f"\n" + f"{i}".rjust(5) + "|"
+            sb += f"\n" + f"{i + 1}".rjust(5) + "|"
             for person, dat in self.switch_board.items():
                 sb += f"{dat[i+1]}".rjust(ml) + "|"
         print(f"SWITCH\n\n[\nself.switch_board:{sb}\n]")
@@ -178,6 +178,7 @@ def bfs(graph, start_vertex, target_value):
                 else:
                     bfs_queue.append([neighbor, path + [neighbor]])
 
+
 if __name__ == "__main__":
     print(f"hey")
     names = [
@@ -198,32 +199,53 @@ if __name__ == "__main__":
     graph.switch(amy, prof)
     graph.switch(bender, amy)
     graph.switch(leela, prof)
+    graph.switch(bucket, amy)
+    graph.switch(fry, zoid)
+    graph.switch(king, bucket)
+    graph.switch(hermes, leela)
 
-    graph2 = Graph(names).init()
-    graph2.switch(amy, prof)
-    graph2.switch(bender, amy)
-    graph2.switch(leela, prof)
+    # solution
+    graph.switch(fry, must)
+    graph.switch(zoid, afro)
+    graph.switch(must, zoid)
+    graph.switch(afro, fry)
+    graph.switch(prof, must)
+    graph.switch(bucket, afro)
+    graph.switch(must, leela)
+    graph.switch(afro, king)
+    graph.switch(hermes, must)
+    graph.switch(bender, afro)
+    graph.switch(must, amy)
+    graph.switch(afro, prof)
+    graph.switch(must, bucket)
 
-    graph3 = Graph(names).init()
-    graph3.switch(amy, prof)
-    graph3.switch(bender, amy)
-    # graph3.switch(leela, prof)
-
-    graph4 = graph.__copy__()
-
-    graph.show_switches()
-    print(f"{graph=}")
-    print(f"{graph2=}")
-    print(f"{graph3=}")
-    print(f"{graph4=}")
     print(f"{graph.needs_to_swap_back()=}")
-    print(f"{graph.gen_solution_tree()=}")
-    print(f"{hash(graph)=}")
-    print(f"{hash(graph2)=}")
-    print(f"{hash(graph3)=}")
-    print(f"{hash(graph4)=}")
-    print(f"{hash(graph) == hash(graph2)=}")
-    print(f"{hash(graph) == hash(graph3)=}")
-    print(f"{hash(graph2) == hash(graph3)=}")
-    print(f"{graph == graph3=}")
-    print(f"{graph == graph4=}")
+
+    # graph2 = Graph(names).init()
+    # graph2.switch(amy, prof)
+    # graph2.switch(bender, amy)
+    # graph2.switch(leela, prof)
+    #
+    # graph3 = Graph(names).init()
+    # graph3.switch(amy, prof)
+    # graph3.switch(bender, amy)
+    # # graph3.switch(leela, prof)
+    #
+    # graph4 = graph.__copy__()
+    #
+    # graph.show_switches()
+    # print(f"{graph=}")
+    # print(f"{graph2=}")
+    # print(f"{graph3=}")
+    # print(f"{graph4=}")
+    # print(f"{graph.needs_to_swap_back()=}")
+    # print(f"{graph.gen_solution_tree()=}")
+    # print(f"{hash(graph)=}")
+    # print(f"{hash(graph2)=}")
+    # print(f"{hash(graph3)=}")
+    # print(f"{hash(graph4)=}")
+    # print(f"{hash(graph) == hash(graph2)=}")
+    # print(f"{hash(graph) == hash(graph3)=}")
+    # print(f"{hash(graph2) == hash(graph3)=}")
+    # print(f"{graph == graph3=}")
+    # print(f"{graph == graph4=}")
