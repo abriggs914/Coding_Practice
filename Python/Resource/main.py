@@ -3,6 +3,8 @@ import tkinter
 
 import pandas
 
+import tkinter_utility
+from tkinter_utility import entry_factory
 from utility import *
 from test_suite import *
 from pygame_utility import *
@@ -1172,65 +1174,44 @@ def test_font_foreground():
         }
     }))
 
-    class Slider(tkinter.Frame):
-
-        def __init__(self, master):
-            super(Slider, self).__init__(master)
-            self.c_width, self.c_height = 400, 50
-            self.canvas = tkinter.Canvas(self, width=self.c_width, height=self.c_height, background=rgb_to_hex(KHAKI_4))
-
-            # bbox = self.canvas.bbox("all")
-            # x1, y1, x2, y2 = bbox
-            bbox = 0, 0, 400, 50
-            x1, y1, x2, y2 = bbox
-            w = x2 - x1
-            h = y2 - y1
-            dims = grid_cells(w, 1, h, 1, w * 0.85, h * 0.1)[0][0]
-            print(f"{dims=}")
-            self.app_state = "idle"
-            self.r_width = dims[2] - dims[0]
-            self.r_height = dims[3] - dims[1]
-            # dims = clamp_rect(dims, bbox, True)
-            self.slider = self.canvas.create_rectangle(*dims, fill=rgb_to_hex(RED))
-            #
-            #
-            # self.r_width, self.r_height = 100, 100
-            # self.rect_bounds = [((self.c_width - self.r_width) / 2), ((self.c_height - self.r_height) / 2),
-            #                     ((self.c_width + self.r_width) / 2), ((self.c_height + self.r_height) / 2)]
-            # self.tag_rect = self.canvas.create_rectangle(*self.rect_bounds, fill=random_colour(rgb=False))
-
-            self.canvas.tag_bind(self.slider, "<Button-1>", self.click_canvas)
-            self.canvas.tag_bind(self.slider, "<Motion>", self.motion_canvas)
-            self.canvas.tag_bind(self.slider, "<ButtonRelease-1>", self.release_canvas)
-            self.canvas.grid()
-
-        def click_canvas(self, event):
-            self.app_state = "dragging"
-
-        def motion_canvas(self, event):
-            if self.app_state == "dragging":
-                # xy = self.winfo_pointerxy()
-                cx, cy = event.x, event.y
-                # cx, cy = xy
-                # cx, cy = self.canvas.canvasx(cx), self.canvas.canvasy(cy)
-                # print(f"{cx=}, {cy=}")
-                new_rect = [cx - (self.r_width / 2), cy - (self.r_height / 2), cx + (self.r_width / 2),
-                            cy + (self.r_height / 2)]
-                new_rect = clamp_rect(
-                    new_rect, [0, (self.c_height - self.r_height) / 2, self.c_width, self.c_height - self.r_height], maintain_inner_dims=True
-                )
-                nx1, ny1, nx2, ny2 = new_rect
-                self.canvas.moveto(self.slider, nx1, ny1)
-                # self.canvas.moveto(self.tag_rect, cx, cy)
-                # self.canvas.itemconfigure(self.tag_rect, x0=nx1, y0=ny1, x1=nx2, y1=ny2)
-
-        def release_canvas(self, event):
-            self.app_state = "idle"
 
     WIN = tkinter.Tk()
     WIN.geometry(f"500x500")
-    slider_1 = Slider(WIN)
-    slider_1.pack()
+    slider_red = tkinter_utility.Slider(WIN, minimum=0, maximum=255)
+    slider_green = tkinter_utility.Slider(WIN, minimum=0, maximum=255)
+    slider_blue = tkinter_utility.Slider(WIN, minimum=0, maximum=255)
+    tv_red = slider_red.value
+    tv_green = slider_green.value
+    tv_blue = slider_blue.value
+    tv_label_red, label_red, tv_entry_red, entry_red = entry_factory(WIN, tv_label="Red:", tv_entry=tv_red)
+    tv_label_green, label_green, tv_entry_green, entry_green = entry_factory(WIN, tv_label="Green:", tv_entry=tv_green)
+    tv_label_blue, label_blue, tv_entry_blue, entry_blue = entry_factory(WIN, tv_label="Blue:", tv_entry=tv_blue)
+    tv_label_res, label_res, tv_entry_res, entry_res = entry_factory(WIN, tv_label="Result:", tv_entry="Sample Text #123.")
+
+    def update_colour(var_name, index, mode):
+        r = tv_red.get()
+        g = tv_green.get()
+        b = tv_blue.get()
+        c = Colour(r, g, b)
+        h = c.hex_code
+        entry_res.config(background=h, foreground=font_foreground(h, rgb=False))
+
+    tv_red.trace_variable("w", update_colour)
+    tv_green.trace_variable("w", update_colour)
+    tv_blue.trace_variable("w", update_colour)
+
+    label_red.grid(row=1, column=1)
+    entry_red.grid(row=1, column=2)
+    slider_red.grid(row=1, column=3)
+    label_green.grid(row=2, column=1)
+    entry_green.grid(row=2, column=2)
+    slider_green.grid(row=2, column=3)
+    label_blue.grid(row=3, column=1)
+    entry_blue.grid(row=3, column=2)
+    slider_blue.grid(row=3, column=3)
+    label_res.grid(row=4, column=1)
+    entry_res.grid(row=4, column=2)
+    update_colour(None, None, None)
     WIN.mainloop()
 
 

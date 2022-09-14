@@ -229,6 +229,7 @@ class YesNoCancelGSM(GSM):
         super().__init__(options=["Yes", "No", "Cancel"], name=name, idx=idx, max_cycles=max_cycles)
 
 
+
 if __name__ == '__main__':
 
     def print_hello1():
