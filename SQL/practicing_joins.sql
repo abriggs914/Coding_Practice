@@ -68,3 +68,15 @@ INNER JOIN
 	@table_2
 ON
 	[@table_1].[Num] = [@table_2].[Num]
+
+-- 5
+SELECT @table_id = @table_id + 1;
+SELECT
+	@table_id AS [Table#],
+	[Num]
+FROM 
+	@table_1
+LEFT OUTER JOIN
+	@table_2
+ON
+	[@table_1].[Num] = [@table_2].[Num]
