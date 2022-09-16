@@ -12,8 +12,8 @@ from colour_utility import rgb_to_hex, font_foreground, Colour
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.05
-    Date...........2022-09-14
+    Version..............1.06
+    Date...........2022-09-15
     Author.......Avery Briggs
     """
 
@@ -290,6 +290,50 @@ class Slider(tkinter.Frame):
 
     def release_canvas(self, event):
         self.app_state = "idle"
+
+
+class RGBSlider(tkinter.Frame):
+
+    def __init__(self, master):
+        super().__init__(master)
+
+        self.colour = None
+
+        self.slider_red = Slider(self, minimum=0, maximum=255)
+        self.slider_green = Slider(self, minimum=0, maximum=255)
+        self.slider_blue = Slider(self, minimum=0, maximum=255)
+
+        self.tv_label_red, self.label_red, self.tv_entry_red, self.entry_red = entry_factory(self, tv_label="Red:", tv_entry=self.slider_red.value)
+        self.tv_label_green, self.label_green, self.tv_entry_green, self.entry_green = entry_factory(self, tv_label="Green:", tv_entry=self.slider_green.value)
+        self.tv_label_blue, self.label_blue, self.tv_entry_blue, self.entry_blue = entry_factory(self, tv_label="Blue:", tv_entry=self.slider_blue.value)
+        self.tv_label_res, self.label_res, self.tv_entry_res, self.entry_res = entry_factory(self, tv_label="Result:",
+                                                                 tv_entry="Sample Text #123.")
+
+        self.slider_red.value.trace_variable("w", self.update_colour)
+        self.slider_green.value.trace_variable("w", self.update_colour)
+        self.slider_blue.value.trace_variable("w", self.update_colour)
+
+        self.label_red.grid(row=1, column=1)
+        self.entry_red.grid(row=1, column=2)
+        self.slider_red.grid(row=1, column=3)
+        self.label_green.grid(row=2, column=1)
+        self.entry_green.grid(row=2, column=2)
+        self.slider_green.grid(row=2, column=3)
+        self.label_blue.grid(row=3, column=1)
+        self.entry_blue.grid(row=3, column=2)
+        self.slider_blue.grid(row=3, column=3)
+        self.label_res.grid(row=4, column=1)
+        self.entry_res.grid(row=4, column=2)
+        self.update_colour(None, None, None)
+
+    def update_colour(self, var_name, index, mode):
+        r = self.slider_red.value.get()
+        g = self.slider_green.value.get()
+        b = self.slider_blue.value.get()
+        self.colour = Colour(r, g, b)
+        h = self.colour.hex_code
+        self.entry_res.config(background=h, foreground=font_foreground(h, rgb=False))
+
 
 
 if __name__ == '__main__':

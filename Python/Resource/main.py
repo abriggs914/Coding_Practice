@@ -4,7 +4,7 @@ import tkinter
 import pandas
 
 import tkinter_utility
-from tkinter_utility import entry_factory
+from tkinter_utility import *
 from utility import *
 from test_suite import *
 from pygame_utility import *
@@ -1725,6 +1725,55 @@ def test_colourify():
     # TS.execute_log()
 
 
+def test_rgb_slider():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    rgb_slider = RGBSlider(WIN)
+    rgb_slider.pack()
+    WIN.mainloop()
+
+
+def test_theme_publisher():
+
+    class ThemePublisher(tkinter.Tk):
+
+        def __init__(self):
+            super().__init__()
+            self.geometry(f"1000x600")
+
+            self.customizable = {
+                "Form",
+                "TextBox",
+                "Label",
+                "ListBox",
+                "ComboBox",
+                "OptionButton",
+                "Frame",
+                "Button": {
+                    ""
+                           ""}
+            }
+            btn = tkinter.Button(self)
+            btn.configure(activebackground=, activeforeground=, background=, borderwidth=, cursor=, disabledforeground=, font=,foreground=,highlightbackground=, highlightcolor=, justify=)
+            self.tv_label_combo_choice, self.label_combo_choice, self.tv_combo_choice, self.combo_choice = combo_factory(self, tv_label="Customize:", kwargs_combo={"values": self.customizable})
+
+            self.tv_dc_frame_fill = tkinter.StringVar(self, value="")
+            self.tv_dc_textbox_fill = tkinter.StringVar(self, value="")
+            self.tv_dc_textbox_background = tkinter.StringVar(self, value="")
+
+            self.demo_form_frame = tkinter.Frame(self)
+
+
+            self.label_combo_choice.grid(row=1, column=1)
+            self.combo_choice.grid(row=1, column=2)
+            self.rgb_slider = RGBSlider(self)
+            self.rgb_slider.grid(row=2, column=1, columnspan=2)
+
+
+    ThemePublisher().mainloop()
+
+
 if __name__ == "__main__":
     # test_block_letters()
     # test_TextBox()
@@ -1765,7 +1814,7 @@ if __name__ == "__main__":
     # test_intersection()
     # test_line_inequality()
     # test_lineSeg()
-    test_font_foreground()
+    # test_font_foreground()
     # test_dict_print2()
     # test_rainbow_gradient()
     # test_pyodbc_connection()
@@ -1773,3 +1822,5 @@ if __name__ == "__main__":
     # test_grid_cells()
     # test_rect_bounds()
     # test_colourify()
+    # test_rgb_slider()
+    test_theme_publisher()
