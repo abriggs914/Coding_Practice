@@ -12,8 +12,8 @@ from colour_utility import rgb_to_hex, font_foreground, Colour
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.06
-    Date...........2022-09-15
+    Version..............1.07
+    Date...........2022-09-16
     Author.......Avery Briggs
     """
 
@@ -74,9 +74,13 @@ def entry_factory(master, tv_label=None, tv_entry=None, kwargs_label=None, kwarg
 
 def button_factory(master, tv_btn=None, kwargs_btn=None):
     """Return tkinter StringVar, Button objects"""
-    res_tv_btn = tkinter.StringVar(master)
-    if tv_btn is not None:
-        res_tv_btn = tkinter.StringVar(master, value=tv_btn)
+    if is_tk_var(tv_btn):
+        res_tv_btn = tv_btn
+    else:
+        if tv_btn is not None:
+            res_tv_btn = tkinter.StringVar(master, value=tv_btn)
+        else:
+            res_tv_btn = tkinter.StringVar(master)
     res_btn = tkinter.Button(master, textvariable=res_tv_btn)
     if kwargs_btn is not None:
         res_btn = tkinter.Button(master, textvariable=res_tv_btn, **kwargs_btn)
@@ -111,6 +115,66 @@ def combo_factory(master, tv_label=None, kwargs_label=None, tv_combo=None, kwarg
         res_label = tkinter.Label(master, textvariable=res_tv_label)
         res_combo = ttk.Combobox(master, textvariable=res_tv_combo)
     return res_tv_label, res_label, res_tv_combo, res_combo
+
+
+def label_factory(master, tv_label=None, kwargs_label=None):
+    """Return tkinter StringVar, label objects"""
+    if is_tk_var(tv_label):
+        res_tv_lbl = tv_label
+    else:
+        if tv_label is not None:
+            res_tv_lbl = tkinter.StringVar(master, value=tv_label)
+        else:
+            res_tv_lbl = tkinter.StringVar(master)
+    res_lbl = tkinter.Label(master, textvariable=res_tv_lbl)
+    if kwargs_label is not None:
+        res_lbl = tkinter.Label(master, textvariable=res_tv_lbl, **kwargs_label)
+    return res_tv_lbl, res_lbl
+
+
+def list_factory(master, tv_label=None, kwargs_label=None, tv_list=None, kwargs_list=None):
+    """Return tkinter StringVar, Label, StringVar, Entry objects"""
+    if not (isinstance(tv_list, list) or isinstance(tv_list, tuple) or isinstance(tv_list, dict) or isinstance(tv_list, set)):
+        if tv_list:
+            res_tv_list = list(tv_list)
+        else:
+            res_tv_list = []
+    else:
+        res_tv_list = tv_list
+
+    res_tv_list = tkinter.Variable(master, res_tv_list)
+
+    print(f"{tv_list=}, {res_tv_list=}")
+
+    if tv_label is not None:
+        res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
+    else:
+        res_tv_label = tkinter.StringVar(master)
+
+        # res_tv_list = tv_list if is_tk_var(tv_list) else tkinter.StringVar(master, value=tv_list)
+    # elif tv_label is not None:
+    #     res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
+        # res_tv_list = tkinter.StringVar(master)
+    # elif tv_list is not None:
+    #     res_tv_label = tkinter.StringVar(master)
+    #     res_tv_list = tv_list if is_tk_var(tv_list) else tkinter.StringVar(master, value=tv_list)
+    # else:
+    #     res_tv_label = tkinter.StringVar(master)
+    #     res_tv_list = tkinter.StringVar(master)
+
+    if kwargs_label is not None and kwargs_list is not None:
+        res_label = tkinter.Label(master, textvariable=res_tv_label, **kwargs_label)
+        res_list = tkinter.Listbox(master, listvariable=res_tv_list, **kwargs_list)
+    elif kwargs_label is not None:
+        res_label = tkinter.Label(master, textvariable=res_tv_label, **kwargs_label)
+        res_list = tkinter.Listbox(master, listvariable=res_tv_list)
+    elif kwargs_list is not None:
+        res_label = tkinter.Label(master, textvariable=res_tv_label)
+        res_list = tkinter.Listbox(master, listvariable=res_tv_list, **kwargs_list)
+    else:
+        res_label = tkinter.Label(master, textvariable=res_tv_label)
+        res_list = tkinter.Listbox(master, listvariable=res_tv_list)
+    return res_tv_label, res_label, res_tv_list, res_list
 
 
 def test_entry_factory():
@@ -206,6 +270,24 @@ def test_combo_factory():
     lbl_2.grid(row=2, column=1)
     cb_1.grid(row=1, column=2)
     cb_2.grid(row=2, column=2)
+    WIN.mainloop()
+
+
+def test_list_factory():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+    a, b, c, d = list_factory(WIN, tv_label="This is a demo List:", tv_list=["hi", "there"])
+    b.grid(row=1, column=1)
+    d.grid(row=2, column=1)
+
+    def update_f(*args):
+        print(f"{args=}")
+        selected_indices = d.curselection()
+        print(f"{selected_indices=}")
+        for i in selected_indices:
+            print(f"\t{d.get(i)=}")
+
+    d.bind('<<ListboxSelect>>', update_f)
     WIN.mainloop()
 
 
@@ -341,5 +423,6 @@ if __name__ == '__main__':
 
     # test_entry_factory()
     # test_combo_1()
-    test_combo_factory()
+    # test_combo_factory()
+    test_list_factory()
 

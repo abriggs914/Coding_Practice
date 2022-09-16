@@ -5,6 +5,7 @@ import pandas
 
 import tkinter_utility
 from tkinter_utility import *
+from tkinter import messagebox
 from utility import *
 from test_suite import *
 from pygame_utility import *
@@ -1742,33 +1743,114 @@ def test_theme_publisher():
             super().__init__()
             self.geometry(f"1000x600")
 
+            # object type: {access_property: tkinter_property}
+
             self.customizable = {
-                "Form",
-                "TextBox",
-                "Label",
-                "ListBox",
-                "ComboBox",
-                "OptionButton",
-                "Frame",
+                "Form": {},
+                "TextBox": {},
+                "Label": {},
+                "ListBox": {},
+                "ComboBox": {},
+                "OptionButton": {},
+                "Frame": {},
                 "Button": {
-                    ""
-                           ""}
+                    "object": {
+                        "Back Color": "background",
+                        "Border Color": "outline",
+                        "Hover Color": "activebackground"
+                    },
+                    "text": {
+                        "Fore Color": "foreground",
+                        "Hover Fore Color": "activeforeground",
+                        # "Font Size": "font"
+                    }
+                }
             }
             btn = tkinter.Button(self)
-            btn.configure(activebackground=, activeforeground=, background=, borderwidth=, cursor=, disabledforeground=, font=,foreground=,highlightbackground=, highlightcolor=, justify=)
-            self.tv_label_combo_choice, self.label_combo_choice, self.tv_combo_choice, self.combo_choice = combo_factory(self, tv_label="Customize:", kwargs_combo={"values": self.customizable})
+            # btn.configure(activebackground=, activeforeground=, background=, borderwidth=, cursor=, disabledforeground=, font=,foreground=,highlightbackground=, highlightcolor=, justify=)
+            self.tv_label_combo_choice_1, self.label_combo_choice_1, self.tv_combo_choice_1, self.combo_choice_1 = combo_factory(self, tv_label="Customize:", tv_combo=tkinter.StringVar(name="tv_combo_1", value=""), kwargs_combo={"values": list(self.customizable)})
+            self.tv_label_combo_choice_2, self.label_combo_choice_2, self.tv_combo_choice_2, self.combo_choice_2 = combo_factory(self, tv_label="Option:", tv_combo=tkinter.StringVar(name="tv_combo_2", value=""), kwargs_combo={"state": "disabled"})
+
+            self.tv_combo_choice_1.trace_variable("w", self.combo_update)
+            self.tv_combo_choice_2.trace_variable("w", self.combo_update)
+
+            print(f"{self.tv_combo_choice_1.__dict__['_name']=}")
 
             self.tv_dc_frame_fill = tkinter.StringVar(self, value="")
             self.tv_dc_textbox_fill = tkinter.StringVar(self, value="")
             self.tv_dc_textbox_background = tkinter.StringVar(self, value="")
 
+            self.demo_dat_names_list = [
+                "Darth Vader",
+                "Luke Skywalker",
+                "Obi-wan Kenobi",
+                "Leia Skywalker"
+            ]
+            self.demo_dat_label_title = "This is a Demo Form"
+            self.demo_dat_entry_text = "This is some demo text. Type something here to see how it looks"
+            self.demo_dat_label_entry_text = "Demo textBox:"
+            self.demo_dat_btn_label = "Click Me!"
+            self.demo_dat_combo_label = "Demo ComboBox:"
+            self.demo_dat_label_list = "This is a demo List:"
+            self.demo_dat_list_list = [
+                ("Alderaan", "2 Billion"),
+                ("Tatooine", "200 Thousand"),
+                ("Mustafar", "20 Thousand")
+            ]
+
             self.demo_form_frame = tkinter.Frame(self)
+            self.demo_form_sub_frame = tkinter.Frame(self.demo_form_frame)
+            # self.demo_tv_label_title = tkinter.StringVar(self, value=self.demo_dat_label_title)
+            # self.demo_label_title = tkinter.Label(self.demo_form_sub_frame, textvariable=self.demo_tv_label_title)
+            self.demo_tv_label_title, self.demo_label_title = label_factory(self.demo_form_sub_frame, tv_label=self.demo_dat_label_title)
+            self.demo_label_entry, self.demo_label_entry, self.demo_tv_entry, self.demo_entry = entry_factory(self.demo_form_sub_frame, tv_label=self.demo_dat_label_entry_text, tv_entry=self.demo_dat_entry_text)
+            self.demo_tv_button, self.demo_button = button_factory(self.demo_form_sub_frame, tv_btn=self.demo_dat_btn_label, kwargs_btn={"command": self.click_demo_btn})
+            self.demo_tv_label_combo, self.demo_label_combo, self.demo_tv_combo, self.demo_combo = combo_factory(self.demo_form_sub_frame, tv_label=self.demo_dat_combo_label, kwargs_combo={"values": self.demo_dat_names_list})
+            self.demo_tv_label_list, self.demo_label_list, self.demo_tv_list, self.demo_list = list_factory(self.demo_form_sub_frame, tv_label=self.demo_dat_label_list, tv_list=self.demo_dat_list_list)
 
-
-            self.label_combo_choice.grid(row=1, column=1)
-            self.combo_choice.grid(row=1, column=2)
+            self.label_combo_choice_1.grid(row=1, column=1)
+            self.combo_choice_1.grid(row=1, column=2)
+            self.label_combo_choice_2.grid(row=2, column=1)
+            self.combo_choice_2.grid(row=2, column=2)
             self.rgb_slider = RGBSlider(self)
-            self.rgb_slider.grid(row=2, column=1, columnspan=2)
+            self.rgb_slider.grid(row=3, column=1, columnspan=2)
+
+            self.demo_form_frame.grid(row=4, column=1)
+            self.demo_form_sub_frame.grid(row=1, column=1)
+            self.demo_label_title.grid(row=1, column=1)
+            self.demo_label_entry.grid(row=2, column=1)
+            self.demo_entry.grid(row=2, column=2)
+            self.demo_button.grid(row=3, column=1)
+            self.demo_label_list.grid(row=4, column=1)
+            self.demo_list.grid(row=4, column=2)
+
+        def combo_choice_data(self):
+            return {
+                "object": self.tv_combo_choice_1.get(),
+                "option": self.tv_combo_choice_2.get()
+            }
+
+        def combo_update(self, var_name, index, mode, *rest):
+            print(f"{var_name=}, {index=}, {mode=}, {rest=}")
+            if var_name == "tv_combo_1":
+                self.tv_combo_choice_2.set("")
+
+            combo_data = self.combo_choice_data()
+            print(f"{len(combo_data)=}, {combo_data=}")
+            widget_type = combo_data["object"]
+            print(f"{widget_type=}")
+            if widget_type:
+                options = list(self.customizable[widget_type])
+                if options:
+                    self.combo_choice_2.configure(state="active", values=options)
+                else:
+                    self.combo_choice_2.configure(state="disabled")
+            else:
+                self.combo_choice_2.configure(state="disabled")
+            print(f"{combo_data=}")
+
+        def click_demo_btn(self):
+            tkinter.messagebox.showinfo(title="Thanks", message="Thank You!")
 
 
     ThemePublisher().mainloop()
