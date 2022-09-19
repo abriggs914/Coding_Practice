@@ -1746,13 +1746,62 @@ def test_theme_publisher():
             # object type: {access_property: tkinter_property}
 
             self.customizable = {
-                "Form": {},
-                "TextBox": {},
-                "Label": {},
-                "ListBox": {},
-                "ComboBox": {},
-                "OptionButton": {},
-                "Frame": {},
+                # "Form": {
+                #     "object": {
+                #         "Back Color": "fill"
+                #     }
+                # },
+                "TextBox": {
+                    "object": {
+                        "Back Color": "fill",
+                        "Border Color": "outline"
+                    },
+                    "text": {
+                        "Font Name": "font",
+                        "Fore Color": "foreground"
+                    }
+                },
+                "Label": {
+                    "object": {
+                        "Back Color": "fill",
+                        "Border Color": "outline",
+                    },
+                    "text": {
+                        "Font Name": "font",
+                        "Fore Color": "foreground"
+                    }
+                },
+                "ListBox": {
+                    "object": {
+                        "Back Color": "fill",
+                        "Border Color": "outline"
+                    },
+                    "text": {
+                        "Font Name": "font",
+                        "Fore Color": "foreground"
+                    }
+                },
+                "ComboBox": {
+                    "object": {
+                        "Back Color": "fill",
+                        "Border Color": "outline"
+                    },
+                    "text": {
+                        "Font Name": "font",
+                        "Fore Color": "foreground"
+                    }
+                },
+                "OptionButton": {
+                    "object": {
+                        "Border Color": "outline"
+                    }
+                },
+                "Box": {
+                    "object": {
+                        "Back Color": "fill",
+                        "Border Color": "outline"
+                    }
+                },
                 "Button": {
                     "object": {
                         "Back Color": "background",
@@ -1770,9 +1819,11 @@ def test_theme_publisher():
             # btn.configure(activebackground=, activeforeground=, background=, borderwidth=, cursor=, disabledforeground=, font=,foreground=,highlightbackground=, highlightcolor=, justify=)
             self.tv_label_combo_choice_1, self.label_combo_choice_1, self.tv_combo_choice_1, self.combo_choice_1 = combo_factory(self, tv_label="Customize:", tv_combo=tkinter.StringVar(name="tv_combo_1", value=""), kwargs_combo={"values": list(self.customizable)})
             self.tv_label_combo_choice_2, self.label_combo_choice_2, self.tv_combo_choice_2, self.combo_choice_2 = combo_factory(self, tv_label="Option:", tv_combo=tkinter.StringVar(name="tv_combo_2", value=""), kwargs_combo={"state": "disabled"})
+            self.tv_label_combo_choice_3, self.label_combo_choice_3, self.tv_combo_choice_3, self.combo_choice_3 = combo_factory(self, tv_label="Attribute:", tv_combo=tkinter.StringVar(name="tv_combo_3", value=""), kwargs_combo={"state": "disabled"})
 
             self.tv_combo_choice_1.trace_variable("w", self.combo_update)
             self.tv_combo_choice_2.trace_variable("w", self.combo_update)
+            self.tv_combo_choice_3.trace_variable("w", self.combo_update)
 
             print(f"{self.tv_combo_choice_1.__dict__['_name']=}")
 
@@ -1807,15 +1858,22 @@ def test_theme_publisher():
             self.demo_tv_button, self.demo_button = button_factory(self.demo_form_sub_frame, tv_btn=self.demo_dat_btn_label, kwargs_btn={"command": self.click_demo_btn})
             self.demo_tv_label_combo, self.demo_label_combo, self.demo_tv_combo, self.demo_combo = combo_factory(self.demo_form_sub_frame, tv_label=self.demo_dat_combo_label, kwargs_combo={"values": self.demo_dat_names_list})
             self.demo_tv_label_list, self.demo_label_list, self.demo_tv_list, self.demo_list = list_factory(self.demo_form_sub_frame, tv_label=self.demo_dat_label_list, tv_list=self.demo_dat_list_list)
+            self.demo_radio_frame = tkinter.Frame(self.demo_form_sub_frame)
+            self.tv_demo_radio = tkinter.IntVar(self)
+            self.demo_radio_1 = tkinter.Radiobutton(self.demo_radio_frame, text="Popcorn", variable=self.tv_demo_radio, value=1, command=self.demo_radio_update)
+            self.demo_radio_2 = tkinter.Radiobutton(self.demo_radio_frame, text="Hot Dog", variable=self.tv_demo_radio, value=2, command=self.demo_radio_update)
+            self.demo_radio_3 = tkinter.Radiobutton(self.demo_radio_frame, text="Cotton Candy", variable=self.tv_demo_radio, value=3, command=self.demo_radio_update)
 
             self.label_combo_choice_1.grid(row=1, column=1)
             self.combo_choice_1.grid(row=1, column=2)
             self.label_combo_choice_2.grid(row=2, column=1)
             self.combo_choice_2.grid(row=2, column=2)
+            self.label_combo_choice_3.grid(row=3, column=1)
+            self.combo_choice_3.grid(row=3, column=2)
             self.rgb_slider = RGBSlider(self)
-            self.rgb_slider.grid(row=3, column=1, columnspan=2)
+            self.rgb_slider.grid(row=4, column=1, columnspan=2)
 
-            self.demo_form_frame.grid(row=4, column=1)
+            self.demo_form_frame.grid(row=5, column=1)
             self.demo_form_sub_frame.grid(row=1, column=1)
             self.demo_label_title.grid(row=1, column=1)
             self.demo_label_entry.grid(row=2, column=1)
@@ -1823,37 +1881,91 @@ def test_theme_publisher():
             self.demo_button.grid(row=3, column=1)
             self.demo_label_list.grid(row=4, column=1)
             self.demo_list.grid(row=4, column=2)
+            self.demo_radio_frame.grid(row=5, column=1)
+            self.demo_radio_1.grid(row=1, column=1)
+            self.demo_radio_2.grid(row=2, column=1)
+            self.demo_radio_3.grid(row=3, column=1)
 
         def combo_choice_data(self):
             return {
                 "object": self.tv_combo_choice_1.get(),
-                "option": self.tv_combo_choice_2.get()
+                "option": self.tv_combo_choice_2.get(),
+                "attribute": self.tv_combo_choice_3.get()
             }
 
         def combo_update(self, var_name, index, mode, *rest):
-            print(f"{var_name=}, {index=}, {mode=}, {rest=}")
+            message = ""
+            # print(f"{var_name=}, {index=}, {mode=}, {rest=}")
             if var_name == "tv_combo_1":
                 self.tv_combo_choice_2.set("")
+                self.tv_combo_choice_3.set("")
+
+            if var_name == "tv_combo_2":
+                self.tv_combo_choice_3.set("")
 
             combo_data = self.combo_choice_data()
-            print(f"{len(combo_data)=}, {combo_data=}")
-            widget_type = combo_data["object"]
-            print(f"{widget_type=}")
-            if widget_type:
-                options = list(self.customizable[widget_type])
-                if options:
-                    self.combo_choice_2.configure(state="active", values=options)
+            # print(f"{len(combo_data)=}, {combo_data=}")
+            obj = combo_data["object"]
+            option = combo_data["option"]
+            attribute = combo_data["attribute"]
+            if obj:
+                message += "A"
+                options = list(self.customizable[obj])
+                if option:
+                    message += "B"
+                    attributes = list(self.customizable[obj][option])
+                    if attribute:
+                        message += "C"
+                        if attributes:
+                            message += "D"
+                            # print(f"{options=}, {attribute=}")
+                            # print(f"{attributes=}, {attribute=}")
+                        else:
+                            message += "E"
+                            self.combo_choice_2.configure(state="disabled")
+                    else:
+                        message += "F"
+                        self.combo_choice_3.configure(state="active", values=attributes)
+
                 else:
-                    self.combo_choice_2.configure(state="disabled")
+                    message += "G"
+                    self.combo_choice_2.configure(state="active", values=options)
+                    self.combo_choice_3.configure(state="disabled")
+                    self.tv_combo_choice_3.set("")
             else:
+                message += "H"
                 self.combo_choice_2.configure(state="disabled")
-            print(f"{combo_data=}")
+                self.combo_choice_3.configure(state="disabled")
+                self.tv_combo_choice_2.set("")
+                self.tv_combo_choice_3.set("")
+            # print(f"{combo_data=}")
+            # print(f"{message=}")
 
         def click_demo_btn(self):
             tkinter.messagebox.showinfo(title="Thanks", message="Thank You!")
 
+        def demo_radio_update(self):
+            print(f"got {self.tv_demo_radio.get()}")
+
 
     ThemePublisher().mainloop()
+
+
+def test_tk_slider():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    slider_1 = tkinter_utility.Slider(WIN, label_text="Slider 1")
+    slider_1.pack()
+
+    slider_2 = tkinter_utility.Slider(WIN, label_text="Slider 2", minimum=-500, maximum=-250)
+    slider_2.pack()
+
+    slider_3 = tkinter_utility.Slider(WIN, label_text="Slider 3", minimum=3000, maximum=10000)
+    slider_3.pack()
+
+    WIN.mainloop()
+
 
 
 if __name__ == "__main__":
@@ -1904,5 +2016,6 @@ if __name__ == "__main__":
     # test_grid_cells()
     # test_rect_bounds()
     # test_colourify()
+    test_tk_slider()
     # test_rgb_slider()
-    test_theme_publisher()
+    # test_theme_publisher()

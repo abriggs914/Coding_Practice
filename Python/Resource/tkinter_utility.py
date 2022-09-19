@@ -1,7 +1,7 @@
 
 import tkinter
 from tkinter import ttk
-from utility import grid_cells, clamp_rect, clamp
+from utility import grid_cells, clamp_rect, clamp, isnumber
 from colour_utility import rgb_to_hex, font_foreground, Colour
 
 
@@ -293,7 +293,7 @@ def test_list_factory():
 
 class Slider(tkinter.Frame):
 
-    def __init__(self, master, minimum=0, maximum=100, steps=None, background="#252525", foreground="#e31234"):
+    def __init__(self, master, minimum=0, maximum=100, steps=None, label_text=None, show_entry=True, background="#252525", foreground="#e31234"):
         super(Slider, self).__init__(master)
         # TODO incorporate param 'steps' to have the slider jump between divisions of the sliding line.
         #  Could use this functionality to make a sliding combobox where values are discrete and could not be numbers.
@@ -303,6 +303,7 @@ class Slider(tkinter.Frame):
         self.value = tkinter.DoubleVar(self, value=self.half_point())
         self.background_colour = Colour(background)
         self.foreground_colour = Colour(foreground)
+        self.label_text = label_text if label_text is not None else "UNNAMED"
         self.canvas = tkinter.Canvas(self, width=self.c_width, height=self.c_height, background=self.background_colour.hex_code)
 
         # bbox = self.canvas.bbox("all")
@@ -321,14 +322,20 @@ class Slider(tkinter.Frame):
         self.s_width = self.sliding_dims[2] - self.sliding_dims[0]
         self.s_height = self.sliding_dims[3] - self.sliding_dims[1]
         self.slider = self.canvas.create_rectangle(*dims, fill=self.foreground_colour.hex_code)
+        self.tv_label, self.label, self.tv_entry, self.entry = entry_factory(self, tv_label=self.label_text, tv_entry=self.value)
 
         self.canvas.tag_bind(self.slider, "<Button-1>", self.click_canvas)
         self.canvas.tag_bind(self.slider, "<Motion>", self.motion_canvas)
         self.canvas.tag_bind(self.slider, "<ButtonRelease-1>", self.release_canvas)
-        self.canvas.grid()
+
+        self.entry.bind("<Return>", self.enter_submit)
+        # self.tv_entry.trace_variable("w", self.update_entry)
+        self.label.grid(row=1, column=1)
+        self.entry.grid(row=1, column=2)
+        self.canvas.grid(row=2, column=1, columnspan=2)
 
     def half_point(self):
-        return (self.maximum - self.minimum) / 2
+        return ((self.maximum - self.minimum) / 2) + self.minimum
 
     def center_y(self):
         return self.c_height / 2
@@ -337,12 +344,32 @@ class Slider(tkinter.Frame):
         return (self.maximum - self.minimum) / self.c_width
 
     def x_per_point(self):
-        return self.c_width / (self.maximum - self.minimum)
+        return self.s_width / (self.maximum - self.minimum)
 
     def point_to_xy(self, point):
+
+        def p(v, a, b):
+            maab = max(a, b)
+            miab = min(a, b)
+            maaab = max(abs(a), abs(b))
+            miaab = min(abs(a), abs(b))
+            v_right = abs(abs(v) - abs(maab))
+            denom_a = abs(maab - miab)
+            denom_f = 1 if denom_a == 0 else denom_a
+            inb1 = (1 - (v_right / denom_f))
+            final = inb1
+            # final = 100 * inb1
+            print(f"{maab=}\n{miab=}\n{maaab=}\n{miaab=}\n{v_right=}\n{denom_a=}\n{denom_f=}\n{inb1=}\n{final=}\n")
+            return final
+
+        print(f"A {point=}")
         point = clamp(self.minimum, point, self.maximum)
-        xpp = self.x_per_point()
-        return xpp * point, self.center_y()
+        print(f"B {point=}")
+        # point = 100 * point / abs(self.maximum - self.minimum)
+        # xpp = self.x_per_point()
+        # print(f"{point=}, {xpp=}, {point * xpp =}")
+        # return xpp * point, self.center_y()
+        return self.s_width * p(point, self.minimum, self.maximum), self.center_y()
 
     def xy_to_point(self, xy):
         # print(f"{xy=}")
@@ -358,20 +385,38 @@ class Slider(tkinter.Frame):
     def click_canvas(self, event):
         self.app_state = "dragging"
 
+    def set_slider_pos(self, x, y):
+        new_rect = [x - (self.r_width / 2), y - (self.r_height / 2), x + (self.r_width / 2),
+                    y + (self.r_height / 2)]
+        new_rect = clamp_rect(
+            new_rect, self.sliding_dims, maintain_inner_dims=True
+        )
+        nx1, ny1, nx2, ny2 = new_rect
+        self.slider_dims = new_rect
+        self.canvas.moveto(self.slider, nx1, ny1)
+        self.value.set(self.xy_to_point((nx1, nx2)))
+
     def motion_canvas(self, event):
         if self.app_state == "dragging":
             cx, cy = event.x, event.y
-            new_rect = [cx - (self.r_width / 2), cy - (self.r_height / 2), cx + (self.r_width / 2),
-                        cy + (self.r_height / 2)]
-            new_rect = clamp_rect(
-                new_rect, self.sliding_dims, maintain_inner_dims=True
-            )
-            nx1, ny1, nx2, ny2 = new_rect
-            self.canvas.moveto(self.slider, nx1, ny1)
-            self.value.set(self.xy_to_point((nx1, nx2)))
+            self.set_slider_pos(cx, cy)
 
     def release_canvas(self, event):
         self.app_state = "idle"
+
+    def enter_submit(self, *args):
+        print(f"{self.minimum=}, {self.maximum=}, range= {self.maximum - self.minimum}")
+        print(f"{args=}")
+        point = float(self.tv_entry.get())
+        x, y = self.point_to_xy(point)
+        self.set_slider_pos(x, y)
+
+    #
+    # def set(self, value_in):
+    #     x, y = self.point_to_xy(value_in)
+    #     self.set_slider_pos(x, y)
+    #
+    # def (update_entry
 
 
 class RGBSlider(tkinter.Frame):
@@ -395,6 +440,10 @@ class RGBSlider(tkinter.Frame):
         self.slider_green.value.trace_variable("w", self.update_colour)
         self.slider_blue.value.trace_variable("w", self.update_colour)
 
+        self.tv_entry_red.trace_variable("w", self.update_colour_entry)
+        self.tv_entry_green.trace_variable("w", self.update_colour_entry)
+        self.tv_entry_blue.trace_variable("w", self.update_colour_entry)
+
         self.label_red.grid(row=1, column=1)
         self.entry_red.grid(row=1, column=2)
         self.slider_red.grid(row=1, column=3)
@@ -408,11 +457,66 @@ class RGBSlider(tkinter.Frame):
         self.entry_res.grid(row=4, column=2)
         self.update_colour(None, None, None)
 
+    def update_colour_entry(self, *args):
+        print(f"update_colour_entry {args=}")
+        # self.
+
+
     def update_colour(self, var_name, index, mode):
-        r = self.slider_red.value.get()
-        g = self.slider_green.value.get()
-        b = self.slider_blue.value.get()
-        self.colour = Colour(r, g, b)
+        print(f"update_colour")
+        try:
+            r = self.slider_red.value.get()
+            r_flag = False
+        except tkinter.TclError as te:
+            # if self.slider_red.value != "":
+            #     self.slider_red.value.set(0)
+            # r = self.slider_red.value.get()
+            r = 0
+            r_flag = True
+            print(f"{te=}")
+
+        try:
+            g = self.slider_green.value.get()
+            g_flag = False
+        except tkinter.TclError as te:
+            # if self.slider_green.value != "":
+            #     self.slider_green.value.set(0)
+            # g = self.slider_green.value.get()
+            g = 0
+            g_flag = True
+            print(f"{te=}")
+
+        try:
+            b = self.slider_blue.value.get()
+            b_flag = False
+        except tkinter.TclError as te:
+            # if self.slider_blue.value != "":
+            #     self.slider_blue.value.set(0)
+            # b = self.slider_blue.value.get()
+            b = 0
+            b_flag = True
+            print(f"{te=}")
+
+        print(f"{r=} {g=}, {b=}")
+        if not isnumber(r) or r < 0 or r > 255 or r_flag:
+            self.entry_red.configure(foreground="red")
+        else:
+            self.entry_red.configure(foreground="black")
+        if not isnumber(g) or g < 0 or g > 255 or g_flag:
+            self.entry_green.configure(foreground="red")
+        else:
+            self.entry_green.configure(foreground="black")
+        if not isnumber(b) or b < 0 or b > 255 or b_flag:
+            self.entry_blue.configure(foreground="red")
+        else:
+            self.entry_blue.configure(foreground="black")
+
+        try:
+            self.colour = Colour(r, g, b)
+        except TypeError as te:
+            self.colour = Colour(125, 125, 125)
+            print(f"{te=}")
+
         h = self.colour.hex_code
         self.entry_res.config(background=h, foreground=font_foreground(h, rgb=False))
 
