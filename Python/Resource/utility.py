@@ -1,3 +1,4 @@
+import datetime
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice, randint
@@ -16,8 +17,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.55
-        Date...........2022-09-12
+        Version..............1.56
+        Date...........2022-09-19
         Author.......Avery Briggs
     """
 
@@ -1573,6 +1574,13 @@ def end_of_month(date_in):
     y, m = date_in.year, date_in.month
     num_days = calendar.monthrange(y, m)[-1]
     return dt.datetime(y, m, num_days)
+
+
+def datetime_is_tz_aware(datetime_in):
+    """Return weather or not a datetime object is aware of timezones or not.
+    https://stackoverflow.com/questions/5802108/how-to-check-if-a-datetime-object-is-localized-with-pytz#:~:text=From%20datetime%20docs%3A%201%20a%20datetime%20object%20d,d.tzinfo%20is%20None%20or%20d.tzinfo.utcoffset%20%28d%29%20is%20None"""
+    assert isinstance(datetime_in, datetime.datetime), "Error param 'datetime_in' must be an instance of a datetime."
+    return datetime_in.tzinfo is not None and datetime_in.tzinfo.utcoffset(datetime_in) is not None
 
 
 def alert_colour(x, n):
