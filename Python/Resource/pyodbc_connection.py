@@ -6,8 +6,8 @@ import pyodbc
 
 # General Pyodbc connection handler.
 # Geared towards BWS connections.
-# Version........................1.2
-# Date....................2022-08-25
+# Version........................1.3
+# Date....................2022-09-20
 # Author................Avery Briggs
 
 
@@ -19,11 +19,11 @@ def connect(sql, driver="{SQL Server}",
         raise ValueError("Error you must pass both a username and a password. Got only a password.")
     if uid and pwd is None:
         raise ValueError("Error you must pass both a username and a password. Got only a username.")
-    print(f"before {template=}")
+    # print(f"before {template=}")
     cstr = template.format(dri=driver, svr=server, db=database, uid=uid, pwd=pwd)
-    print(f"after {template=}")
+    # print(f"after {template=}")
     df = None
-    print(f"\tRES\t{cstr=}, {template=}")
+    # print(f"\tRES\t{cstr=}, {template=}")
     try:
         # sql_opt = "SELECT [IT Requests].*, [dept].[Dept] AS [DeptName], [IT Personnel].[Name] AS [ITPersonnelAssignedName] FROM [IT Requests] LEFT JOIN [Dept] ON [IT Requests].[Department] = [Dept].[DeptID] LEFT JOIN [IT Personnel] ON [IT Requests].[ITPersonAssignedID] = [IT Personnel].[ITPersonID#]"
         if do_print:
