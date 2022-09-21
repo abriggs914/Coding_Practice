@@ -17,8 +17,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.56
-        Date...........2022-09-19
+        Version..............1.57
+        Date...........2022-09-21
         Author.......Avery Briggs
     """
 
@@ -1550,11 +1550,19 @@ def is_date(date_in, fmt="%Y-%m-%d"):
 
 
 def first_of_day(date_in):
+    """Return the given date at 00:00 that morning."""
     assert isinstance(date_in, dt.datetime)
     return dt.datetime(date_in.year, date_in.month, date_in.day)
 
 
+def end_of_day(date_in):
+    """Return the given date at 23:59 that night."""
+    assert isinstance(date_in, dt.datetime)
+    return dt.datetime(date_in.year, date_in.month, date_in.day, 23, 59, 59, 9)
+
+
 def first_of_week(date_in):
+    """Return the date corresponding to the beginning of the week (Sunday) for a given date's calendar week."""
     assert isinstance(date_in, dt.datetime)
     print("date_in:", date_in)
     # return dt.datetime.fromisoformat("2022-02-02")
@@ -1564,12 +1572,25 @@ def first_of_week(date_in):
     # return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
 
 
+def end_of_week(date_in):
+    """Return the date corresponding to the ending of the week (Saturday) for a given date's calendar week."""
+    assert isinstance(date_in, dt.datetime)
+    print("date_in:", date_in)
+    # return dt.datetime.fromisoformat("2022-02-02")
+    wd = 6 - (0 if date_in.isocalendar()[2] == 7 else date_in.isocalendar()[2])
+    return date_in + dt.timedelta(days=wd)
+    # return dt.datetime.fromisocalendar(date_in.isocalendar()[0], date_in.isocalendar()[1], 1) + dt.timedelta(hours=date_in.hour, minutes=date_in.minute, seconds=date_in.second)
+    # return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
+
+
 def first_of_month(date_in):
+    """Return the date corresponding to the beginning of the month for a given date."""
     assert isinstance(date_in, dt.datetime)
     return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
 
 
 def end_of_month(date_in):
+    """Return the date corresponding to the ending of the month for a given date."""
     assert isinstance(date_in, dt.datetime), "Parameter date_in needs to be a datetime.datetime object."
     y, m = date_in.year, date_in.month
     num_days = calendar.monthrange(y, m)[-1]
@@ -1581,6 +1602,12 @@ def datetime_is_tz_aware(datetime_in):
     https://stackoverflow.com/questions/5802108/how-to-check-if-a-datetime-object-is-localized-with-pytz#:~:text=From%20datetime%20docs%3A%201%20a%20datetime%20object%20d,d.tzinfo%20is%20None%20or%20d.tzinfo.utcoffset%20%28d%29%20is%20None"""
     assert isinstance(datetime_in, datetime.datetime), "Error param 'datetime_in' must be an instance of a datetime."
     return datetime_in.tzinfo is not None and datetime_in.tzinfo.utcoffset(datetime_in) is not None
+
+
+def hours_diff(d1, d2):
+    assert isinstance(d1, dt.datetime), f"Parameter d1: \"{d1}\" needs to be a datetime.datetime instance."
+    assert isinstance(d2, dt.datetime), f"Parameter d2: \"{d2}\" needs to be a datetime.datetime instance."
+    return ((d2 - d1).days * 24) + ((d2 - d1).seconds / (60 * 60))
 
 
 def alert_colour(x, n):
@@ -1616,12 +1643,6 @@ def print_by_line(value, do_print=True):
     print(lines)
 
 
-def hours_diff(d1, d2):
-    assert isinstance(d1, dt.datetime), f"Parameter d1: \"{d1}\" needs to be a datetime.datetime instance."
-    assert isinstance(d2, dt.datetime), f"Parameter d2: \"{d2}\" needs to be a datetime.datetime instance."
-    return ((d2 - d1).days * 24) + ((d2 - d1).seconds / (60 * 60))
-
-
 def rect2_to_tkinter(rect):
     """Rect2 (left, top, w, h) -> (left, top, right, bottom)"""
     if (isinstance(rect, tuple) or isinstance(rect, list)) and len(rect) in (4, 5):
@@ -1644,6 +1665,7 @@ def kb_as_percent(kb, gb=2):
 
 
 def calc_bounds(center, width, height=None):
+    """Given a center (x, y) and width and heights, calculate the counding box that keeps these dimensions centered."""
     assert (isinstance(center, list) or isinstance(center, tuple)) and len(center) == 2 and all([isnumber(x) for x in
                                                                                                  center]), f"Error param 'center' must be a tuple or list representing center coordinates (x, y). Got: {center}"
     assert isnumber(width), f"Error param 'width' must be a number. Got: {width}"
