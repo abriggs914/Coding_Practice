@@ -2016,6 +2016,6 @@ if __name__ == "__main__":
     # test_grid_cells()
     # test_rect_bounds()
     # test_colourify()
-    test_tk_slider()
+    # test_tk_slider()
     # test_rgb_slider()
-    # test_theme_publisher()
+    test_theme_publisher()

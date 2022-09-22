@@ -17,8 +17,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.57
-        Date...........2022-09-21
+        Version..............1.58
+        Date...........2022-09-22
         Author.......Avery Briggs
     """
 
@@ -1894,6 +1894,22 @@ def clamp_rect(rect_bounds, out_bounds, maintain_inner_dims=False):
         nx2,
         ny2
     ]
+
+
+# NOTE - Copy this into the desired script you want to restart.
+def restart_program():
+    """Restarts the current program.
+    Note: this function does not return. Any cleanup action (like
+    saving data) must be done before calling this function.
+    https://stackoverflow.com/questions/41655618/restart-program-tkinter
+    https://www.daniweb.com/programming/software-development/code/260268/restart-your-python-program
+
+    If you are using this in Idle, it won't work because the python process running in the shell is different from Idle gui's process.
+    This will only restart the process running in the shell, not Idle itself.
+
+    """
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

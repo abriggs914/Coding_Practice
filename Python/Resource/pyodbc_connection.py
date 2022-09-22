@@ -21,6 +21,9 @@ def connect(sql, driver="{SQL Server}",
         raise ValueError("Error you must pass both a username and a password. Got only a username.")
     # print(f"before {template=}")
     cstr = template.format(dri=driver, svr=server, db=database, uid=uid, pwd=pwd)
+
+    has_insert = all([(stmt in sql.upper()) for stmt in ["INSERT INTO ", "VALUES "]])
+
     # print(f"after {template=}")
     df = None
     # print(f"\tRES\t{cstr=}, {template=}")
@@ -29,18 +32,25 @@ def connect(sql, driver="{SQL Server}",
         if do_print:
             print("connecting...")
         conn = pyodbc.connect(cstr)
+        crsr = conn.cursor()
         if do_print:
             print("querying...")
         if do_show:
             print(sql)
-        df = pd.DataFrame(pd.read_sql_query(sql, conn))
+
+        if has_insert:
+            crsr.execute(sql)
+            conn.commit()
+        else:
+            df = pd.DataFrame(pd.read_sql_query(sql, conn))
+
         if do_print:
             print("closing...")
         conn.close()
     except pyodbc.DatabaseError as de:
         print(f"DatabaseError\n{de}")
-    except TypeError as te:
-        print(f"TypeError\n{te}")
+    # except TypeError as te:
+    #     print(f"TypeError\n{te}")
     finally:
         if not isinstance(df, pd.DataFrame):
             df = pd.DataFrame()
