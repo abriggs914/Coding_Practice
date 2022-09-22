@@ -6,8 +6,8 @@ import pyodbc
 
 # General Pyodbc connection handler.
 # Geared towards BWS connections.
-# Version........................1.3
-# Date....................2022-09-20
+# Version........................1.4
+# Date....................2022-09-22
 # Author................Avery Briggs
 
 
@@ -39,6 +39,8 @@ def connect(sql, driver="{SQL Server}",
         conn.close()
     except pyodbc.DatabaseError as de:
         print(f"DatabaseError\n{de}")
+    except TypeError as te:
+        print(f"TypeError\n{te}")
     finally:
         if not isinstance(df, pd.DataFrame):
             df = pd.DataFrame()
