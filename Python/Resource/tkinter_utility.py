@@ -1,9 +1,7 @@
-
 import tkinter
 from tkinter import ttk
 from utility import grid_cells, clamp_rect, clamp, isnumber
 from colour_utility import rgb_to_hex, font_foreground, Colour
-
 
 #######################################################################################################################
 #######################################################################################################################
@@ -12,8 +10,8 @@ from colour_utility import rgb_to_hex, font_foreground, Colour
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.07
-    Date...........2022-09-16
+    Version..............1.08
+    Date...........2022-09-26
     Author.......Avery Briggs
     """
 
@@ -28,6 +26,7 @@ def VERSION_DATE():
 
 def VERSION_AUTHOR():
     return VERSION.split("\n")[4].split(".")[-1]
+
 
 #######################################################################################################################
 #######################################################################################################################
@@ -134,7 +133,8 @@ def label_factory(master, tv_label=None, kwargs_label=None):
 
 def list_factory(master, tv_label=None, kwargs_label=None, tv_list=None, kwargs_list=None):
     """Return tkinter StringVar, Label, StringVar, Entry objects"""
-    if not (isinstance(tv_list, list) or isinstance(tv_list, tuple) or isinstance(tv_list, dict) or isinstance(tv_list, set)):
+    if not (isinstance(tv_list, list) or isinstance(tv_list, tuple) or isinstance(tv_list, dict) or isinstance(tv_list,
+                                                                                                               set)):
         if tv_list:
             res_tv_list = list(tv_list)
         else:
@@ -154,7 +154,7 @@ def list_factory(master, tv_label=None, kwargs_label=None, tv_list=None, kwargs_
         # res_tv_list = tv_list if is_tk_var(tv_list) else tkinter.StringVar(master, value=tv_list)
     # elif tv_label is not None:
     #     res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
-        # res_tv_list = tkinter.StringVar(master)
+    # res_tv_list = tkinter.StringVar(master)
     # elif tv_list is not None:
     #     res_tv_label = tkinter.StringVar(master)
     #     res_tv_list = tv_list if is_tk_var(tv_list) else tkinter.StringVar(master, value=tv_list)
@@ -181,7 +181,8 @@ def test_entry_factory():
     WIN = tkinter.Tk()
     WIDTH, HEIGHT = 500, 500
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
-    tv_1, lbl_1, tv_2, entry_1 = entry_factory(WIN, tv_label="This is a Label", tv_entry="This is an Entry", kwargs_entry={"background": "yellow"})
+    tv_1, lbl_1, tv_2, entry_1 = entry_factory(WIN, tv_label="This is a Label", tv_entry="This is an Entry",
+                                               kwargs_entry={"background": "yellow"})
     lbl_1.pack()
     entry_1.pack()
     WIN.mainloop()
@@ -293,7 +294,8 @@ def test_list_factory():
 
 class Slider(tkinter.Frame):
 
-    def __init__(self, master, minimum=0, maximum=100, steps=None, label_text=None, show_entry=True, background="#252525", foreground="#e31234"):
+    def __init__(self, master, minimum=0, maximum=100, steps=None, label_text=None, show_entry=True,
+                 background="#252525", foreground="#e31234"):
         super(Slider, self).__init__(master)
         # TODO incorporate param 'steps' to have the slider jump between divisions of the sliding line.
         #  Could use this functionality to make a sliding combobox where values are discrete and could not be numbers.
@@ -304,7 +306,8 @@ class Slider(tkinter.Frame):
         self.background_colour = Colour(background)
         self.foreground_colour = Colour(foreground)
         self.label_text = label_text if label_text is not None else "UNNAMED"
-        self.canvas = tkinter.Canvas(self, width=self.c_width, height=self.c_height, background=self.background_colour.hex_code)
+        self.canvas = tkinter.Canvas(self, width=self.c_width, height=self.c_height,
+                                     background=self.background_colour.hex_code)
 
         # bbox = self.canvas.bbox("all")
         # x1, y1, x2, y2 = bbox
@@ -322,7 +325,8 @@ class Slider(tkinter.Frame):
         self.s_width = self.sliding_dims[2] - self.sliding_dims[0]
         self.s_height = self.sliding_dims[3] - self.sliding_dims[1]
         self.slider = self.canvas.create_rectangle(*dims, fill=self.foreground_colour.hex_code)
-        self.tv_label, self.label, self.tv_entry, self.entry = entry_factory(self, tv_label=self.label_text, tv_entry=self.value)
+        self.tv_label, self.label, self.tv_entry, self.entry = entry_factory(self, tv_label=self.label_text,
+                                                                             tv_entry=self.value)
 
         self.canvas.tag_bind(self.slider, "<Button-1>", self.click_canvas)
         self.canvas.tag_bind(self.slider, "<Motion>", self.motion_canvas)
@@ -347,7 +351,6 @@ class Slider(tkinter.Frame):
         return self.s_width / (self.maximum - self.minimum)
 
     def point_to_xy(self, point):
-
         def p(v, a, b):
             maab = max(a, b)
             miab = min(a, b)
@@ -430,11 +433,15 @@ class RGBSlider(tkinter.Frame):
         self.slider_green = Slider(self, minimum=0, maximum=255)
         self.slider_blue = Slider(self, minimum=0, maximum=255)
 
-        self.tv_label_red, self.label_red, self.tv_entry_red, self.entry_red = entry_factory(self, tv_label="Red:", tv_entry=self.slider_red.value)
-        self.tv_label_green, self.label_green, self.tv_entry_green, self.entry_green = entry_factory(self, tv_label="Green:", tv_entry=self.slider_green.value)
-        self.tv_label_blue, self.label_blue, self.tv_entry_blue, self.entry_blue = entry_factory(self, tv_label="Blue:", tv_entry=self.slider_blue.value)
+        self.tv_label_red, self.label_red, self.tv_entry_red, self.entry_red = entry_factory(self, tv_label="Red:",
+                                                                                             tv_entry=self.slider_red.value)
+        self.tv_label_green, self.label_green, self.tv_entry_green, self.entry_green = entry_factory(self,
+                                                                                                     tv_label="Green:",
+                                                                                                     tv_entry=self.slider_green.value)
+        self.tv_label_blue, self.label_blue, self.tv_entry_blue, self.entry_blue = entry_factory(self, tv_label="Blue:",
+                                                                                                 tv_entry=self.slider_blue.value)
         self.tv_label_res, self.label_res, self.tv_entry_res, self.entry_res = entry_factory(self, tv_label="Result:",
-                                                                 tv_entry="Sample Text #123.")
+                                                                                             tv_entry="Sample Text #123.")
 
         self.slider_red.value.trace_variable("w", self.update_colour)
         self.slider_green.value.trace_variable("w", self.update_colour)
@@ -460,7 +467,6 @@ class RGBSlider(tkinter.Frame):
     def update_colour_entry(self, *args):
         print(f"update_colour_entry {args=}")
         # self.
-
 
     def update_colour(self, var_name, index, mode):
         print(f"update_colour")
@@ -521,6 +527,35 @@ class RGBSlider(tkinter.Frame):
         self.entry_res.config(background=h, foreground=font_foreground(h, rgb=False))
 
 
+# https://stackoverflow.com/questions/70147814/hint-entry-widget-tkinter
+class EntryWithPlaceholder(tkinter.Entry):
+    def __init__(self, master=None, font=None, placeholder="PLACEHOLDER", color='grey', textvariable=None):
+        super().__init__()
+
+        self.placeholder = placeholder
+        self.placeholder_color = color
+        self.default_fg_color = self['fg']
+        self['textvariable'] = textvariable
+        self.bind("<FocusIn>", self.foc_in)
+        self.bind("<FocusOut>", self.foc_out)
+
+        self.put_placeholder()
+
+    def put_placeholder(self):
+        self.insert(0, self.placeholder)
+        self['fg'] = self.placeholder_color
+
+    def foc_in(self, *args):
+        if self['fg'] == self.placeholder_color:
+            self['show'] = '*'
+            self.delete('0', 'end')
+            self['fg'] = self.default_fg_color
+
+    def foc_out(self, *args):
+        if not self.get():
+            self.put_placeholder()
+            self['show'] = ''
+
 
 if __name__ == '__main__':
     print('PyCharm')
@@ -529,4 +564,3 @@ if __name__ == '__main__':
     # test_combo_1()
     # test_combo_factory()
     test_list_factory()
-

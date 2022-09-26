@@ -2009,7 +2009,7 @@ def test_grid_manager():
             {
                 "widget":
                     tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-                "columnspan":3,
+                "columnspan": 3,
                 "sticky": "ew"
             }
         ],
