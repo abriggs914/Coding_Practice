@@ -17,8 +17,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.58
-        Date...........2022-09-22
+        Version..............1.59
+        Date...........2022-09-26
         Author.......Avery Briggs
     """
 
@@ -127,6 +127,7 @@ def mode(lst):
 
 
 def pad_centre(text, l, pad_str=" "):
+    """Just use str.center"""
     if l > 0:
         h = (l - len(text)) // 2
         odd = (((2 * h) + len(text)) == l)
@@ -1910,6 +1911,53 @@ def restart_program():
     """
     python = sys.executable
     os.execl(python, python, * sys.argv)
+
+
+def alpha_ize(number_in=0, capitalize=False):
+    assert isinstance(number_in, int) and 0 <= number_in <= 25, "Error, param 'number_in' must be an integer between 0 and 25."
+    c = chr(number_in + 97)
+    c = c if not capitalize else c.upper()
+    return c
+
+
+def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=False, shift_pad_0_on_number=True, capital_alpha=True, pad_char="0"):
+    assert isinstance(prefix, str), f"Error, param 'prefix' must be an in stance of a string. Got '{prefix}'"
+    assert isinstance(suffix, str), f"Error, param 'suffix' must be an in stance of a string. Got '{suffix}'"
+    assert isinstance(n_digits, int) and n_digits > 0, f"Error, param 'n_digits' must be a number and be greater than 0, Got '{n_digits}'"
+    assert all([isinstance(param, bool) for param in [numbers_instead, pad_0, shift_pad_0_on_number, capital_alpha]]), f"Error, 'params numbers_instead', 'pad_0', 'shift_pad_0_on_number', 'capital_alpha' must be boolean values.\nGot: {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}"
+    # print(f"A {n_digits=}, {prefix=}, {suffix=}, {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}")
+    pad_0 = pad_0 or ((not pad_0) and numbers_instead and shift_pad_0_on_number)
+    pad_char = "0" if pad_0 and not pad_char else pad_char
+    if pad_0 and ((not pad_char) or len(pad_char) > 1):
+        raise ValueError(f"Error, pad_char must only be 1 character long. Got '{pad_char}'")
+    # print(f"B {n_digits=}, {prefix=}, {suffix=}, {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}")
+    for i in range(1000):
+        if numbers_instead:
+            val = i
+        else:
+            c, i = divmod(i, 26)
+            # print(f"\t{i=}, {divmod(i, 26)=}, {divmod(c, 26)=}")
+            v, r = divmod(c, 26)
+
+            if v > n_digits:
+                raise StopIteration(f"Error, too many digits calculated '{v}'. Allowed digits={n_digits}")
+
+            val = ""
+            if c:
+                val += alpha_ize(v + (c - 1))
+            # for j in range(c, 0, -1):
+            #     val += alphaize(j - 1)
+            val += alpha_ize(i)
+            if capital_alpha:
+                val = val.upper()
+        val = str(val)
+        if len(val) > n_digits:
+            raise StopIteration(f"Error, value '{val}' is too long. Allowed digits={n_digits}")
+        elif len(val) < n_digits and pad_0:
+            val = val.rjust(n_digits, pad_char)
+        # else:
+            # print(f"VAL='{val}'")
+        yield f"{prefix}{val}{suffix}"
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

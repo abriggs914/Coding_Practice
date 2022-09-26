@@ -10,6 +10,7 @@ from utility import *
 from test_suite import *
 from pygame_utility import *
 from pyodbc_connection import connect
+from grid_manager import GridManager
 
 # test area and scratch pad
 """
@@ -1967,6 +1968,250 @@ def test_tk_slider():
     WIN.mainloop()
 
 
+def test_alpha_seq():
+
+    result = set()
+    # namer = alpha_seq(n_digits=3, prefix="frame_")
+    namer = alpha_seq(n_digits=3, prefix="frame_", pad_0=True, pad_char="_")
+    # namer = alpha_seq(n_digits=2, prefix="frame_", numbers_instead=True)
+    # for i in range(11):
+    # for i in range(27):
+    for i in range(100):
+        res = next(namer)
+        print(f"{str(i).ljust(3)=} | {res}")
+        if res in result:
+           raise ValueError(f"Error. {i=}, '{res}' already calculated.")
+        result.add(res)
+
+
+    # TS = TestSuite(name="AlpaSeq", test_func=alpha_seq)
+    # TS.add_test("t1", [[], ])
+    # TS.execute_log()
+
+
+def test_grid_manager():
+
+    WIN = tkinter.Tk()
+    WIN.title("test_grid_manager")
+    WIDTH, HEIGHT = 900, 600
+    WIN.geometry(f"{WIDTH}x{HEIGHT}")
+
+    namer = alpha_seq(100, prefix="frame_", capital_alpha=False)
+
+    widgets_1 = [
+        [
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+        ],
+        [
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+            {
+                "widget":
+                    tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+                "columnspan":3,
+                "sticky": "ew"
+            }
+        ],
+        [
+            {
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+                "columnspan": 2,
+                "rowspan": 2,
+                "sticky": "ew"
+                # "padx": 45,
+                # "pady": 45
+            },
+            {
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+                "columnspan":2,
+                "sticky": "ew"
+            }
+        ],
+        [
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+        ],
+        [None, None, None, tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)],
+        [None, {"widget":tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50), "ipadx":20,"ipady":20}]
+
+    ]
+
+    widgets_2 = [
+        [
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+        ],
+        [
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+        ],
+        [
+            {
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+                "columnspan": 2
+            },
+            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+        ]
+    ]
+
+    WIN.grid()
+    gm = GridManager()
+    gm.grid_widgets(widgets_1)
+    gm.grid_widgets(widgets_2)
+
+    # grid_manage_1(widgets_1)
+    # grid_manage_1(widgets_2)
+    WIN.update()
+
+    WIN.after(5000, gm.ungrid_widget(0, 0))
+
+    WIN.mainloop()
+
+    # def grid_manage_1(widgets):
+    #     valid_keys = {"widget", "columnspan", "rowspan", "padx", "pady",  "ipadx", "ipady", "sticky"}
+    #     r_len = len(widgets)
+    #     row_count = 0
+    #     for r, row in enumerate(widgets):
+    #         ri = r + 0 + row_count
+    #         c_len = len(row)
+    #         col_count = 0
+    #         ci = 0
+    #         r_inner = 0
+    #         for c, widget in enumerate(row):
+    #             if isinstance(widget, dict):
+    #                 assert "widget" in widget, "Error, key 'widget' not passed."
+    #                 widget_keys = set(widget.keys())
+    #                 diff = widget_keys.difference(valid_keys)
+    #                 assert "row" not in diff, f"Error, key 'row' is illegal. Use position in a 2D list to indicate row."
+    #                 assert "column" not in diff, f"Error, key 'column' is illegal. Use position in a 2D list to indicate column."
+    #                 assert not diff, f"Error, key(s): '{diff}' are illegal."
+    #                 cs = widget.get("columnspan", 1)
+    #                 rs = widget.get("rowspan", 1)
+    #                 xp = widget.get("padx", None)
+    #                 yp = widget.get("pady", None)
+    #                 ixp = widget.get("ipadx", None)
+    #                 iyp = widget.get("ipady", None)
+    #                 st = widget.get("sticky", None)
+    #                 args = {}
+    #                 if cs:
+    #                     args["columnspan"] = cs
+    #                 if rs:
+    #                     args["rowspan"] = rs
+    #                 if xp:
+    #                     args["padx"] = xp
+    #                 if yp:
+    #                     args["pady"] = yp
+    #                 if ixp:
+    #                     args["ipadx"] = ixp
+    #                 if iyp:
+    #                     args["ipady"] = iyp
+    #                 if st:
+    #                     args["sticky"] = st
+    #                 print(f"gridding widget={widget['widget']}, {r=}, {c=}, {ri=}, {ci=}, {args=}")
+    #                 widget["widget"].grid(row=ri, column=ci, **args)
+    #                 col_count += cs
+    #                 r_inner = max(r_inner, (rs - 1))
+    #                 ci += (col_count - 1)
+    #
+    #                 x, y = 25, 25
+    #                 widget["widget"].create_text(x, y, text=str(widget))
+    #                 widget["widget"].create_text(x, y+10, text=str(ri))
+    #                 widget["widget"].create_text(x, y+20, text=str(ci))
+    #             else:
+    #                 print(f"gridding widget={widget}, {r=}, {c=}, {ri=}, {ci=}")
+    #                 widget.grid(row=ri, column=ci)
+    #
+    #                 x, y = 25, 25
+    #                 widget.create_text(x, y, text=str(widget))
+    #                 widget.create_text(x, y + 10, text=str(ri))
+    #                 widget.create_text(x, y + 20, text=str(ci))
+    #             ci += 1
+    #         print(f"{r_inner=}")
+    #         row_count += r_inner
+    #
+    # WIN = tkinter.Tk()
+    # WIN.title("test_grid_manager")
+    # WIDTH, HEIGHT = 900, 600
+    # WIN.geometry(f"{WIDTH}x{HEIGHT}")
+    #
+    # namer = alpha_seq(100, prefix="frame_", capital_alpha=False)
+    #
+    # widgets_1 = [
+    #     [
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #     ],
+    #     [
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #     ],
+    #     [
+    #         {
+    #             "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #             "columnspan": 2,
+    #             "rowspan": 2,
+    #             "sticky": "ew",
+    #             # "padx": 45,
+    #             # "pady": 45
+    #         },
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #     ],
+    #     [
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #     ]
+    #
+    # ]
+    #
+    # widgets_2 = [
+    #     [
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #     ],
+    #     [
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #     ],
+    #     [
+    #         {
+    #             "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #             "columnspan": 2
+    #         },
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #     ]
+    # ]
+    #
+    # WIN.grid()
+    # grid_manage_1(widgets_1)
+    # # grid_manage_1(widgets_2)
+    # WIN.update()
+    #
+    # # for r, row in enumerate(widgets_1):
+    # #     for c, widget in enumerate(row):
+    # #         if isinstance(widget, dict):
+    # #             widget = widget["widget"]
+    # #         bbox = WIN.bbox(widget)
+    # #         # bbox = widget.winfo_x(), widget.winfo_y(), widget.winfo_width(), widget.winfo_height()
+    # #         # print(f"{bbox=}")
+    # #         x, y = bbox[0] + (bbox[2] / 2), bbox[1] + (bbox[3] / 2)
+    # #         print(f"\t{widget=}, {x=}, {y=}, {widget.winfo_x()=}, {widget.winfo_y()=}, {widget.winfo_width()=}, {widget.winfo_height()=}")
+    # #         # widget.create_text(bbox[0] + (bbox[2] / 2), bbox[1] + (bbox[3] / 2), text=str(widget))
+    # #         x, y = 25, 25
+    # #         widget.create_text(x, y, text=str(widget))
+    # #         widget.create_text(x, y+10, text=str(r))
+    # #         widget.create_text(x, y+20, text=str(c))
+    #
+    # WIN.update()
+    #
+    # WIN.mainloop()
+
+
 
 if __name__ == "__main__":
     # test_block_letters()
@@ -2018,4 +2263,6 @@ if __name__ == "__main__":
     # test_colourify()
     # test_tk_slider()
     # test_rgb_slider()
-    test_theme_publisher()
+    # test_theme_publisher()
+    # test_alpha_seq()
+    test_grid_manager()
