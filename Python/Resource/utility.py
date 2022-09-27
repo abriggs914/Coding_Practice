@@ -17,8 +17,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.59
-        Date...........2022-09-26
+        Version..............1.60
+        Date...........2022-09-27
         Author.......Avery Briggs
     """
 
@@ -1777,7 +1777,7 @@ def grid_cells(
     assert n_cols > 0, f"Error, this grid must have at least 1 column. Got {n_cols=}"
     assert x_pad > -1, f"Error, x padding cannot be negative. Got {x_pad=}"
     t_height = float(t_width if t_height is None else t_height)
-    n_rows = int(n_cols if n_rows is None else n_cols)
+    n_rows = int(n_cols if n_rows is None else n_rows)
     y_pad = float(x_pad if y_pad is None else y_pad)
     assert t_height > 0, f"Error, this grid must have at least 1 pixel of space. Got {t_height=}"
     assert n_rows > 0, f"Error, this grid must have at least 1 row. Got {n_rows=}"

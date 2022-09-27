@@ -2,6 +2,7 @@ import tkinter
 from tkinter import ttk
 from utility import grid_cells, clamp_rect, clamp, isnumber
 from colour_utility import rgb_to_hex, font_foreground, Colour
+from tkinter import ttk, messagebox
 
 #######################################################################################################################
 #######################################################################################################################
@@ -10,8 +11,8 @@ from colour_utility import rgb_to_hex, font_foreground, Colour
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.08
-    Date...........2022-09-26
+    Version..............1.09
+    Date...........2022-09-27
     Author.......Avery Briggs
     """
 
@@ -530,7 +531,7 @@ class RGBSlider(tkinter.Frame):
 # https://stackoverflow.com/questions/70147814/hint-entry-widget-tkinter
 class EntryWithPlaceholder(tkinter.Entry):
     def __init__(self, master=None, font=None, placeholder="PLACEHOLDER", color='grey', textvariable=None):
-        super().__init__()
+        super(EntryWithPlaceholder, self).__init__(master)
 
         self.placeholder = placeholder
         self.placeholder_color = color
@@ -547,7 +548,7 @@ class EntryWithPlaceholder(tkinter.Entry):
 
     def foc_in(self, *args):
         if self['fg'] == self.placeholder_color:
-            self['show'] = '*'
+            # self['show'] = '*'
             self.delete('0', 'end')
             self['fg'] = self.default_fg_color
 
@@ -555,6 +556,167 @@ class EntryWithPlaceholder(tkinter.Entry):
         if not self.get():
             self.put_placeholder()
             self['show'] = ''
+
+
+class CustomMessageBox:
+    # https://stackoverflow.com/questions/29619418/how-to-create-a-custom-messagebox-using-tkinter-in-python-with-changing-message
+    # root = Tk()
+    #
+    # def func():
+    #     a = MessageBox(msg='Hello I m your multiline message',
+    #                    title='Hello World',
+    #                    b1='Button 1',
+    #                    b2='Button 2',
+    #                    )
+    #     print(a.choice)
+    #
+    # Button(root, text='Click Me', command=func).pack()
+    #
+    # root.mainloop()
+
+    def __init__(self, title='Mess', msg='', x=None, y=None, b1='OK', b2='', b3='', b4=''):
+
+        # Required Data of Init Function
+        self.title = title  # Is title of titlebar
+        self.msg = msg  # Is message to display
+        self.w = 500
+        self.h = 120
+        self.x = x if x is not None else 150
+        self.y = y if y is not None else 150
+        self.b1 = b1  # Button 1 (outputs '1')
+        self.b2 = b2  # Button 2 (outputs '2')
+        self.b3 = b3  # Button 3 (outputs '3')
+        self.b4 = b4  # Button 4 (outputs '4')
+        self.choice = ''  # it will be the return of messagebox according to button press
+
+        # Just the colors for my messagebox
+
+        self.tabcolor = 'red'  # Button color for Active State
+        self.bgcolor = 'blue'  # Button color for Non-Active State
+        self.bgcolor2 = 'yellow'  # Background color of Dialogue
+        self.textcolor = 'Green'  # Text color for Dialogue
+
+        # Creating Dialogue for messagebox
+        self.root = tkinter.Toplevel()
+
+        # Removing titlebar from the Dialogue
+        self.root.overrideredirect(True)
+
+        # Setting Geometry
+        self.root.geometry(f"{self.w}x{self.h}+{self.x}+{self.y}")
+
+        # Setting Background color of Dialogue
+        self.root.config(bg=self.bgcolor2)
+
+        # Creating Label For message
+        self.msg = tkinter.Label(self.root, text=msg,
+                         font=("Helvetica", 9),
+                         bg=self.bgcolor2,
+                         fg=self.textcolor,
+                         # anchor='nw'
+                         )
+        self.msg.place(x=self.w * 0.15, y=self.h * 0.15, height=self.h * 0.7, width=self.w * 0.7)
+
+        # Creating TitleBar
+        self.titlebar = tkinter.Label(self.root, text=self.title,
+                              bg=self.bgcolor2,
+                              fg=self.textcolor,
+                              bd=0,
+                              font=("Helvetica", 10, 'bold')
+                              )
+        self.titlebar.place(x=self.w * 0.35, y=5)
+
+        # Creating Close Button
+        self.CloseBtn = tkinter.Button(self.root,
+                               text='x',
+                               font=("Helvetica", 12),
+                               command=lambda: self.closed(),
+                               bd=0,
+                               activebackground='red',
+                               activeforeground='white',
+                               background=self.bgcolor2,
+                               foreground=self.textcolor)
+        self.CloseBtn.place(x=self.w - 50, y=5, width=40)
+
+        # Changing Close Button Color on Mouseover
+        self.CloseBtn.bind("<Enter>", lambda e,: self.CloseBtn.config(bg='red', fg='white'))
+        self.CloseBtn.bind("<Leave>", lambda e,: self.CloseBtn.config(bg=self.bgcolor2, fg=self.textcolor))
+
+        ts = 5
+        dims = grid_cells(self.w, 4, 25, 1, ts, ts, y_0=90)
+        print(f"{dims=}")
+        r1c1, r1c2, r1c3, r1c4 = dims[0]
+        # Creating B1
+        self.B1 = tkinter.Button(self.root, text=self.b1, command=self.click1,
+                         bd=0,
+                         font=("Helvetica", 10),
+                         bg=self.bgcolor,
+                         fg='white',
+                         activebackground=self.tabcolor,
+                         activeforeground=self.textcolor)
+        self.B1.place(x=r1c1[0], y=r1c1[1], height=r1c1[3] - r1c1[1], width=r1c1[2] - r1c1[0])
+
+        # Getting place_info of B1
+        self.B1.info = self.B1.place_info()
+
+        # Creating B2
+        if not b2 == "":
+            self.B2 = tkinter.Button(self.root, text=self.b2, command=self.click2,
+                             bd=0,
+                             font=("Helvetica", 10),
+                             bg=self.bgcolor,
+                             fg='white',
+                             activebackground=self.tabcolor,
+                             activeforeground=self.textcolor)
+            self.B2.place(x=r1c2[0], y=r1c2[1], height=r1c2[3] - r1c2[1], width=r1c2[2] - r1c2[0])
+        # Creating B3
+        if not b3 == '':
+            self.B3 = tkinter.Button(self.root, text=self.b3, command=self.click3,
+                             bd=0,
+                             font=("Helvetica", 10),
+                             bg=self.bgcolor,
+                             fg='white',
+                             activebackground=self.tabcolor,
+                             activeforeground=self.textcolor)
+            self.B3.place(x=r1c3[0], y=r1c3[1], height=r1c3[3] - r1c3[1], width=r1c3[2] - r1c3[0])
+        # Creating B4
+        if not b4 == '':
+            self.B4 = tkinter.Button(self.root, text=self.b4, command=self.click4,
+                             bd=0,
+                             font=("Helvetica", 10),
+                             bg=self.bgcolor,
+                             fg='white',
+                             activebackground=self.tabcolor,
+                             activeforeground=self.textcolor)
+            self.B4.place(x=r1c4[0], y=r1c4[1], height=r1c4[3] - r1c4[1], width=r1c4[2] - r1c4[0])
+
+        # Making MessageBox Visible
+        self.root.wait_window()
+
+    # Function on Closeing MessageBox
+    def closed(self):
+        self.root.destroy()  # Destroying Dialogue
+        self.choice = 'closed'  # Assigning Value
+
+    # Function on pressing B1
+    def click1(self):
+        self.root.destroy()  # Destroying Dialogue
+        self.choice = '1'  # Assigning Value
+
+    # Function on pressing B2
+    def click2(self):
+        self.root.destroy()  # Destroying Dialogue
+        self.choice = '2'  # Assigning Value
+
+    # Function on pressing B3
+    def click3(self):
+        self.root.destroy()  # Destroying Dialogue
+        self.choice = '3'  # Assigning Value
+
+    # Function on pressing B4
+    def click4(self):
+        self.root.destroy()  # Destroying Dialogue
+        self.choice = '4'  # Assigning Value
 
 
 if __name__ == '__main__':
