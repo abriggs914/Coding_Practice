@@ -563,7 +563,7 @@ class CustomMessageBox:
     # root = Tk()
     #
     # def func():
-    #     a = MessageBox(msg='Hello I m your multiline message',
+    #     a = CustomMessageBox(msg='Hello I m your multiline message',
     #                    title='Hello World',
     #                    b1='Button 1',
     #                    b2='Button 2',
@@ -574,13 +574,40 @@ class CustomMessageBox:
     #
     # root.mainloop()
 
-    def __init__(self, title='Mess', msg='', x=None, y=None, b1='OK', b2='', b3='', b4=''):
+    def __init__(
+            self,
+            title='Mess',
+            msg='',
+            x=None,
+            y=None,
+            b1='OK',
+            b2='',
+            b3='',
+            b4='',
+            tab_colour="red",
+            bg_colour="blue",
+            bg_colour2="yellow",
+            text_colour="Green",
+            btn_font_colour="white",
+            close_btn_active_colour="red",
+            close_btn_active_font_colour="white",
+            w=500,
+            h=120,
+            font_message=("Helvetica", 9),
+            font_title=("Helvetica", 10, 'bold'),
+            font_x_btn=("Helvetica", 12),
+            font_btn=("Helvetica", 10)
+    ):
 
         # Required Data of Init Function
         self.title = title  # Is title of titlebar
         self.msg = msg  # Is message to display
-        self.w = 500
-        self.h = 120
+        self.font_message = font_message
+        self.font_title = font_title
+        self.font_x_btn = font_x_btn
+        self.font_btn = font_btn
+        self.w = w
+        self.h = h
         self.x = x if x is not None else 150
         self.y = y if y is not None else 150
         self.b1 = b1  # Button 1 (outputs '1')
@@ -591,10 +618,13 @@ class CustomMessageBox:
 
         # Just the colors for my messagebox
 
-        self.tabcolor = 'red'  # Button color for Active State
-        self.bgcolor = 'blue'  # Button color for Non-Active State
-        self.bgcolor2 = 'yellow'  # Background color of Dialogue
-        self.textcolor = 'Green'  # Text color for Dialogue
+        self.tab_colour = tab_colour  # Button color for Active State
+        self.bg_colour = bg_colour  # Button color for Non-Active State
+        self.bg_color2 = bg_colour2  # Background color of Dialogue
+        self.text_colour = text_colour  # Text color for Dialogue
+        self.btn_font_colour = btn_font_colour
+        self.close_btn_active_colour = close_btn_active_colour
+        self.close_btn_active_font_colour = close_btn_active_font_colour
 
         # Creating Dialogue for messagebox
         self.root = tkinter.Toplevel()
@@ -606,54 +636,53 @@ class CustomMessageBox:
         self.root.geometry(f"{self.w}x{self.h}+{self.x}+{self.y}")
 
         # Setting Background color of Dialogue
-        self.root.config(bg=self.bgcolor2)
+        self.root.config(bg=self.bg_color2)
 
         # Creating Label For message
         self.msg = tkinter.Label(self.root, text=msg,
-                         font=("Helvetica", 9),
-                         bg=self.bgcolor2,
-                         fg=self.textcolor,
-                         # anchor='nw'
-                         )
+                                 font=self.font_message,
+                                 bg=self.bg_color2,
+                                 fg=self.text_colour,
+                                 # anchor='nw'
+                                 )
         self.msg.place(x=self.w * 0.15, y=self.h * 0.15, height=self.h * 0.7, width=self.w * 0.7)
 
         # Creating TitleBar
         self.titlebar = tkinter.Label(self.root, text=self.title,
-                              bg=self.bgcolor2,
-                              fg=self.textcolor,
-                              bd=0,
-                              font=("Helvetica", 10, 'bold')
-                              )
+                                      bg=self.bg_color2,
+                                      fg=self.text_colour,
+                                      bd=0,
+                                      font=self.font_title
+                                      )
         self.titlebar.place(x=self.w * 0.35, y=5)
 
         # Creating Close Button
         self.CloseBtn = tkinter.Button(self.root,
-                               text='x',
-                               font=("Helvetica", 12),
-                               command=lambda: self.closed(),
-                               bd=0,
-                               activebackground='red',
-                               activeforeground='white',
-                               background=self.bgcolor2,
-                               foreground=self.textcolor)
+                                       text='x',
+                                       font=self.font_x_btn,
+                                       command=lambda: self.closed(),
+                                       bd=0,
+                                       activebackground=self.close_btn_active_colour,
+                                       activeforeground=self.close_btn_active_font_colour,
+                                       background=self.bg_color2,
+                                       foreground=self.text_colour)
         self.CloseBtn.place(x=self.w - 50, y=5, width=40)
 
         # Changing Close Button Color on Mouseover
-        self.CloseBtn.bind("<Enter>", lambda e,: self.CloseBtn.config(bg='red', fg='white'))
-        self.CloseBtn.bind("<Leave>", lambda e,: self.CloseBtn.config(bg=self.bgcolor2, fg=self.textcolor))
+        self.CloseBtn.bind("<Enter>", lambda e,: self.CloseBtn.config(bg=self.close_btn_active_colour, fg=self.close_btn_active_font_colour))
+        self.CloseBtn.bind("<Leave>", lambda e,: self.CloseBtn.config(bg=self.bg_color2, fg=self.text_colour))
 
         ts = 5
         dims = grid_cells(self.w, 4, 25, 1, ts, ts, y_0=90)
-        print(f"{dims=}")
         r1c1, r1c2, r1c3, r1c4 = dims[0]
         # Creating B1
         self.B1 = tkinter.Button(self.root, text=self.b1, command=self.click1,
-                         bd=0,
-                         font=("Helvetica", 10),
-                         bg=self.bgcolor,
-                         fg='white',
-                         activebackground=self.tabcolor,
-                         activeforeground=self.textcolor)
+                                 bd=0,
+                                 font=self.font_btn,
+                                 bg=self.bg_colour,
+                                 fg=self.btn_font_colour,
+                                 activebackground=self.tab_colour,
+                                 activeforeground=self.text_colour)
         self.B1.place(x=r1c1[0], y=r1c1[1], height=r1c1[3] - r1c1[1], width=r1c1[2] - r1c1[0])
 
         # Getting place_info of B1
@@ -662,32 +691,32 @@ class CustomMessageBox:
         # Creating B2
         if not b2 == "":
             self.B2 = tkinter.Button(self.root, text=self.b2, command=self.click2,
-                             bd=0,
-                             font=("Helvetica", 10),
-                             bg=self.bgcolor,
-                             fg='white',
-                             activebackground=self.tabcolor,
-                             activeforeground=self.textcolor)
+                                     bd=0,
+                                     font=self.font_btn,
+                                     bg=self.bg_colour,
+                                     fg=self.btn_font_colour,
+                                     activebackground=self.tab_colour,
+                                     activeforeground=self.text_colour)
             self.B2.place(x=r1c2[0], y=r1c2[1], height=r1c2[3] - r1c2[1], width=r1c2[2] - r1c2[0])
         # Creating B3
         if not b3 == '':
             self.B3 = tkinter.Button(self.root, text=self.b3, command=self.click3,
-                             bd=0,
-                             font=("Helvetica", 10),
-                             bg=self.bgcolor,
-                             fg='white',
-                             activebackground=self.tabcolor,
-                             activeforeground=self.textcolor)
+                                     bd=0,
+                                     font=self.font_btn,
+                                     bg=self.bg_colour,
+                                     fg=self.btn_font_colour,
+                                     activebackground=self.tab_colour,
+                                     activeforeground=self.text_colour)
             self.B3.place(x=r1c3[0], y=r1c3[1], height=r1c3[3] - r1c3[1], width=r1c3[2] - r1c3[0])
         # Creating B4
         if not b4 == '':
             self.B4 = tkinter.Button(self.root, text=self.b4, command=self.click4,
-                             bd=0,
-                             font=("Helvetica", 10),
-                             bg=self.bgcolor,
-                             fg='white',
-                             activebackground=self.tabcolor,
-                             activeforeground=self.textcolor)
+                                     bd=0,
+                                     font=self.font_btn,
+                                     bg=self.bg_colour,
+                                     fg=self.btn_font_colour,
+                                     activebackground=self.tab_colour,
+                                     activeforeground=self.text_colour)
             self.B4.place(x=r1c4[0], y=r1c4[1], height=r1c4[3] - r1c4[1], width=r1c4[2] - r1c4[0])
 
         # Making MessageBox Visible
@@ -719,10 +748,27 @@ class CustomMessageBox:
         self.choice = '4'  # Assigning Value
 
 
+def test_messagebox():
+    root = tkinter.Tk()
+
+    def func():
+        a = CustomMessageBox(msg='Hello I m your multiline message',
+                       title='Hello World',
+                       b1='Button 1',
+                       b2='Button 2',
+                       )
+        print(a.choice)
+
+    tkinter.Button(root, text='Click Me', command=func).pack()
+
+    root.mainloop()
+
+
 if __name__ == '__main__':
     print('PyCharm')
 
     # test_entry_factory()
     # test_combo_1()
     # test_combo_factory()
-    test_list_factory()
+    # test_list_factory()
+    test_messagebox()
