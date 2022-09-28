@@ -11,8 +11,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.09
-    Date...........2022-09-27
+    Version..............1.10
+    Date...........2022-09-29
     Author.......Avery Briggs
     """
 
@@ -645,7 +645,7 @@ class CustomMessageBox:
                                  fg=self.text_colour,
                                  # anchor='nw'
                                  )
-        self.msg.place(x=self.w * 0.15, y=self.h * 0.15, height=self.h * 0.7, width=self.w * 0.7)
+        self.msg.place(x=self.w * 0.04, y=self.h * 0.15, height=self.h * 0.7, width=self.w * 0.92)
 
         # Creating TitleBar
         self.titlebar = tkinter.Label(self.root, text=self.title,
@@ -719,8 +719,24 @@ class CustomMessageBox:
                                      activeforeground=self.text_colour)
             self.B4.place(x=r1c4[0], y=r1c4[1], height=r1c4[3] - r1c4[1], width=r1c4[2] - r1c4[0])
 
+        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+        # self.root.bind("<Configure>", self.update_configure)
+        # x = self.root.winfo_x()
+        # y = self.root.winfo_y()
+        # self.root.geometry('+{}+{}'.format(x+10, y+30))
+
         # Making MessageBox Visible
         self.root.wait_window()
+
+    def on_closing(self, *args):
+        self.closed()
+
+    # def update_configure(self, *args):
+    #     print(f"{args=}")
+    #     x = self.root.winfo_x()
+    #     y = self.root.winfo_y()
+    #     self.root.geometry('+{}+{}'.format(x, y))
+
 
     # Function on Closeing MessageBox
     def closed(self):
