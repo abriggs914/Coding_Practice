@@ -524,10 +524,11 @@ the_simpsons = TVSeries("The Simpsons", {
 
 solar_opposites = TVSeries("Solar Opposites", {
 	1 : 8,
-	2 : 9},
+	2 : 9,
+	3: 11},
 	24,
 	2020,
-	2021,
+	2022,
 	True,
 	"Comedy",
 	"Disney+")
@@ -719,6 +720,22 @@ star_wars_the_clone_wars = TVSeries("Star Wars the Clone Wars", {
 	False,
 	"Drama / Cartoon",
 	"Disney+")
+	
+	
+sons_of_anarchy = TVSeries("Sons of Anarchy", {
+	1: 13,
+	2: 13,
+	3: 13,
+	4: 14,
+	5: 13,
+	6: 13,
+	7: 13},
+	60,
+	2008,
+	2014,
+	False,
+	"Drama / Action",
+	"Disney+")
 
 
 series_list = [
@@ -771,7 +788,8 @@ series_list = [
 	hawkeye,
 	gravity_falls_shorts,
 	the_replacements,
-	star_wars_the_clone_wars
+	star_wars_the_clone_wars,
+	sons_of_anarchy
 ]
 
    

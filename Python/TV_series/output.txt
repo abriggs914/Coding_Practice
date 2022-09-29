@@ -375,13 +375,13 @@ Where to watch:			Disney+
 
 	Solar Opposites
 Genre:				Comedy
-Run (2020 -> 2021):		1 year
-number seasons:			2
-number episodes:		17
-episodes per season:		8.5
+Run (2020 -> 2022):		2 years
+number seasons:			3
+number episodes:		28
+episodes per season:		9.333333333333334
 average length of an episode:	24
-Total minutes:			408
-Total hours:			6.8
+Total minutes:			672
+Total hours:			11.2
 Where to watch:			Disney+
 
 	The Orville
@@ -549,24 +549,35 @@ Total minutes:			3325
 Total hours:			55.416666666666664
 Where to watch:			Disney+
 
+	Sons of Anarchy
+Genre:				Drama / Action
+Run (2008 -> 2014):		6 years
+number seasons:			7
+number episodes:		92
+episodes per season:		13.142857142857142
+average length of an episode:	60
+Total minutes:			5520
+Total hours:			92.0
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Trailer Park Boys
+	Arrested Develpoment
 Genre:				Comedy
-Run (2001 -> 2018):		17 years
-number seasons:			12
-number episodes:		105
-episodes per season:		8.75
+Run (2003 -> 2019):		16 years
+number seasons:			5
+number episodes:		84
+episodes per season:		16.8
 average length of an episode:	22
-Total minutes:			2310
-Total hours:			38.5
+Total minutes:			1848
+Total hours:			30.8
 Where to watch:			Netflix
 
-Season: 5
-Episode: 1
+Season: 1
+Episode: 6
 
 	How would you like to print the stats?
 1	-	By start year
@@ -608,6 +619,7 @@ sorting by start year...
 |The Replacements                 |    2006    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2006    |The Replacements                 |
 |Breaking Bad                     |    2008    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    2008    |Breaking Bad                     |
 |Star Wars the Clone Wars         |    2008    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    2008    |Star Wars the Clone Wars         |
+|Sons of Anarchy                  |    2008    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    2008    |Sons of Anarchy                  |
 |Community                        |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2009    |Community                        |
 |Parks and Recreation             |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2009    |Parks and Recreation             |
 |Misfits                          |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    2009    |Misfits                          |
@@ -631,7 +643,7 @@ sorting by start year...
 |Final Space                      |    2018    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |    2018    |Final Space                      |
 |Chernobyl                        |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    2019    |Chernobyl                        |
 |The Mandalorian                  |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    2019    |The Mandalorian                  |
-|Solar Opposites                  |    2020    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    2020    |Solar Opposites                  |
+|Solar Opposites                  |    2020    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    2020    |Solar Opposites                  |
 |Wandavision                      |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Wandavision                      |
 |The Falcon and the Winter Soldier|    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |The Falcon and the Winter Soldier|
 |Loki                             |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Loki                             |
@@ -679,6 +691,7 @@ sorting by start year...
 |The Replacements                 |    2006    |
 |Breaking Bad                     |    2008    |
 |Star Wars the Clone Wars         |    2008    |
+|Sons of Anarchy                  |    2008    |
 |Community                        |    2009    |
 |Parks and Recreation             |    2009    |
 |Misfits                          |    2009    |
@@ -710,12 +723,12 @@ sorting by start year...
 |Hawkeye                          |    2021    |
 ################################################
 
-Mean:		2009.70
-Median:		2010.50
-Pstdev:		  7.62
-Pvariance:	 58.13
-Stdev:		  7.70
-Variance:	 59.32
+Mean:		2009.67
+Median:		2010.00
+Pstdev:		  7.55
+Pvariance:	 57.05
+Stdev:		  7.63
+Variance:	 58.19
 
 	How would you like to print the stats?
 1	-	By start year
@@ -749,6 +762,7 @@ sorting by end year...
 |The IT Crowd                     |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2013   |The IT Crowd                     |
 |Breaking Bad                     |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2013   |Breaking Bad                     |
 |Misfits                          |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2013   |Misfits                          |
+|Sons of Anarchy                  |   2014   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |   2014   |Sons of Anarchy                  |
 |Gravity Falls Shorts             |   2014   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |   2014   |Gravity Falls Shorts             |
 |Community                        |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   2015   |Community                        |
 |Parks and Recreation             |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   2015   |Parks and Recreation             |
@@ -777,7 +791,6 @@ sorting by end year...
 |Final Space                      |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   2020   |Final Space                      |
 |Letterkenny                      |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |   2021   |Letterkenny                      |
 |The Mandalorian                  |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   2021   |The Mandalorian                  |
-|Solar Opposites                  |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   2021   |Solar Opposites                  |
 |Wandavision                      |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |Wandavision                      |
 |The Falcon and the Winter Soldier|   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |The Falcon and the Winter Soldier|
 |Loki                             |   2021   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   2021   |Loki                             |
@@ -786,6 +799,7 @@ sorting by end year...
 |The Simpsons                     |   2022   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |The Simpsons                     |
 |Family Guy                       |   2022   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |Family Guy                       |
 |The Orville                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2022   |The Orville                      |
+|Solar Opposites                  |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   2022   |Solar Opposites                  |
 ###############################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -820,6 +834,7 @@ sorting by end year...
 |The IT Crowd                     |   2013   |
 |Breaking Bad                     |   2013   |
 |Misfits                          |   2013   |
+|Sons of Anarchy                  |   2014   |
 |Gravity Falls Shorts             |   2014   |
 |Community                        |   2015   |
 |Parks and Recreation             |   2015   |
@@ -848,7 +863,6 @@ sorting by end year...
 |Final Space                      |   2020   |
 |Letterkenny                      |   2021   |
 |The Mandalorian                  |   2021   |
-|Solar Opposites                  |   2021   |
 |Wandavision                      |   2021   |
 |The Falcon and the Winter Soldier|   2021   |
 |Loki                             |   2021   |
@@ -857,14 +871,15 @@ sorting by end year...
 |The Simpsons                     |   2022   |
 |Family Guy                       |   2022   |
 |The Orville                      |   2022   |
+|Solar Opposites                  |   2022   |
 ##############################################
 
-Mean:		2016.44
+Mean:		2016.41
 Median:		2019.00
-Pstdev:		  5.16
-Pvariance:	 26.65
-Stdev:		  5.21
-Variance:	 27.19
+Pstdev:		  5.14
+Pvariance:	 26.44
+Stdev:		  5.19
+Variance:	 26.97
 
 	How would you like to print the stats?
 1	-	By start year
@@ -889,7 +904,6 @@ sorting by shortest series length...
 |Gravity Falls Shorts             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |             1              |Gravity Falls Shorts             |
 |The Mick                         |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |             1              |The Mick                         |
 |Chernobyl                        |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1              |Chernobyl                        |
-|Solar Opposites                  |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1              |Solar Opposites                  |
 |Wandavision                      |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Wandavision                      |
 |The Falcon and the Winter Soldier|             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |The Falcon and the Winter Soldier|
 |Loki                             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Loki                             |
@@ -897,6 +911,7 @@ sorting by shortest series length...
 |Hawkeye                          |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Hawkeye                          |
 |Final Space                      |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2              |Final Space                      |
 |The Mandalorian                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |The Mandalorian                  |
+|Solar Opposites                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2              |Solar Opposites                  |
 |Avatar, the Last Airbender       |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender       |
 |Brickleberry                     |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |             3              |Brickleberry                     |
 |The Last Man on Earth            |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |             3              |The Last Man on Earth            |
@@ -913,6 +928,7 @@ sorting by shortest series length...
 |Letterkenny                      |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5              |Letterkenny                      |
 |The Orville                      |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |             5              |The Orville                      |
 |Malcolm in the Middle            |             6              |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             6              |Malcolm in the Middle            |
+|Sons of Anarchy                  |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             6              |Sons of Anarchy                  |
 |Community                        |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             6              |Community                        |
 |Parks and Recreation             |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             6              |Parks and Recreation             |
 |Workaholics                      |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |             6              |Workaholics                      |
@@ -960,7 +976,6 @@ sorting by shortest series length...
 |Gravity Falls Shorts             |             1              |
 |The Mick                         |             1              |
 |Chernobyl                        |             1              |
-|Solar Opposites                  |             1              |
 |Wandavision                      |             1              |
 |The Falcon and the Winter Soldier|             1              |
 |Loki                             |             1              |
@@ -968,6 +983,7 @@ sorting by shortest series length...
 |Hawkeye                          |             1              |
 |Final Space                      |             2              |
 |The Mandalorian                  |             2              |
+|Solar Opposites                  |             2              |
 |Avatar, the Last Airbender       |             3              |
 |Brickleberry                     |             3              |
 |The Last Man on Earth            |             3              |
@@ -984,6 +1000,7 @@ sorting by shortest series length...
 |Letterkenny                      |             5              |
 |The Orville                      |             5              |
 |Malcolm in the Middle            |             6              |
+|Sons of Anarchy                  |             6              |
 |Community                        |             6              |
 |Parks and Recreation             |             6              |
 |Workaholics                      |             6              |
@@ -1010,10 +1027,10 @@ sorting by shortest series length...
 
 Mean:		  6.86
 Median:		  5.00
-Pstdev:		  6.41
-Pvariance:	 41.04
-Stdev:		  6.47
-Variance:	 41.88
+Pstdev:		  6.33
+Pvariance:	 40.04
+Stdev:		  6.39
+Variance:	 40.84
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1054,6 +1071,7 @@ sorting by longest series length...
 |Brooklyn Nine-Nine               |             7             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |             7             |Brooklyn Nine-Nine               |
 |Peaky Blinders                   |             7             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |             7             |Peaky Blinders                   |
 |Malcolm in the Middle            |             6             |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             6             |Malcolm in the Middle            |
+|Sons of Anarchy                  |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             6             |Sons of Anarchy                  |
 |Community                        |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             6             |Community                        |
 |Parks and Recreation             |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             6             |Parks and Recreation             |
 |Workaholics                      |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |             6             |Workaholics                      |
@@ -1074,11 +1092,11 @@ sorting by longest series length...
 |Baskets                          |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3             |Baskets                          |
 |Final Space                      |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2             |Final Space                      |
 |The Mandalorian                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2             |The Mandalorian                  |
+|Solar Opposites                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2             |Solar Opposites                  |
 |The Replacements                 |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1             |The Replacements                 |
 |Gravity Falls Shorts             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |             1             |Gravity Falls Shorts             |
 |The Mick                         |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |             1             |The Mick                         |
 |Chernobyl                        |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1             |Chernobyl                        |
-|Solar Opposites                  |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1             |Solar Opposites                  |
 |Wandavision                      |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Wandavision                      |
 |The Falcon and the Winter Soldier|             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |The Falcon and the Winter Soldier|
 |Loki                             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Loki                             |
@@ -1125,6 +1143,7 @@ sorting by longest series length...
 |Brooklyn Nine-Nine               |             7             |
 |Peaky Blinders                   |             7             |
 |Malcolm in the Middle            |             6             |
+|Sons of Anarchy                  |             6             |
 |Community                        |             6             |
 |Parks and Recreation             |             6             |
 |Workaholics                      |             6             |
@@ -1145,11 +1164,11 @@ sorting by longest series length...
 |Baskets                          |             3             |
 |Final Space                      |             2             |
 |The Mandalorian                  |             2             |
+|Solar Opposites                  |             2             |
 |The Replacements                 |             1             |
 |Gravity Falls Shorts             |             1             |
 |The Mick                         |             1             |
 |Chernobyl                        |             1             |
-|Solar Opposites                  |             1             |
 |Wandavision                      |             1             |
 |The Falcon and the Winter Soldier|             1             |
 |Loki                             |             1             |
@@ -1159,10 +1178,10 @@ sorting by longest series length...
 
 Mean:		  6.86
 Median:		  5.00
-Pstdev:		  6.41
-Pvariance:	 41.04
-Stdev:		  6.47
-Variance:	 41.88
+Pstdev:		  6.33
+Pvariance:	 40.04
+Stdev:		  6.39
+Variance:	 40.84
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1196,10 +1215,10 @@ sorting by least number of seasons...
 |Final Space                      |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2           |Final Space                      |
 |The Mandalorian                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2           |The Mandalorian                  |
 |The Mick                         |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2           |The Mick                         |
-|Solar Opposites                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          2           |Solar Opposites                  |
 |The Orville                      |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          3           |The Orville                      |
 |Avatar, the Last Airbender       |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3           |Avatar, the Last Airbender       |
 |Brickleberry                     |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          3           |Brickleberry                     |
+|Solar Opposites                  |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          3           |Solar Opposites                  |
 |The IT Crowd                     |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          4           |The IT Crowd                     |
 |Sherlock                         |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          4           |Sherlock                         |
 |My Name is Earl                  |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          4           |My Name is Earl                  |
@@ -1220,6 +1239,7 @@ sorting by least number of seasons...
 |Star Wars the Clone Wars         |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          7           |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          7           |Brooklyn Nine-Nine               |
 |Malcolm in the Middle            |          7           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          7           |Malcolm in the Middle            |
+|Sons of Anarchy                  |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          7           |Sons of Anarchy                  |
 |Parks and Recreation             |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          7           |Parks and Recreation             |
 |Workaholics                      |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          7           |Workaholics                      |
 |Game of Thrones                  |          8           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          8           |Game of Thrones                  |
@@ -1267,10 +1287,10 @@ sorting by least number of seasons...
 |Final Space                      |          2           |
 |The Mandalorian                  |          2           |
 |The Mick                         |          2           |
-|Solar Opposites                  |          2           |
 |The Orville                      |          3           |
 |Avatar, the Last Airbender       |          3           |
 |Brickleberry                     |          3           |
+|Solar Opposites                  |          3           |
 |The IT Crowd                     |          4           |
 |Sherlock                         |          4           |
 |My Name is Earl                  |          4           |
@@ -1291,6 +1311,7 @@ sorting by least number of seasons...
 |Star Wars the Clone Wars         |          7           |
 |Brooklyn Nine-Nine               |          7           |
 |Malcolm in the Middle            |          7           |
+|Sons of Anarchy                  |          7           |
 |Parks and Recreation             |          7           |
 |Workaholics                      |          7           |
 |Game of Thrones                  |          8           |
@@ -1306,12 +1327,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  5.90
+Mean:		  5.94
 Median:		  5.00
-Pstdev:		  5.53
-Pvariance:	 30.57
-Stdev:		  5.59
-Variance:	 31.19
+Pstdev:		  5.46
+Pvariance:	 29.86
+Stdev:		  5.52
+Variance:	 30.46
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1346,6 +1367,7 @@ sorting by most number of seasons...
 |Star Wars the Clone Wars         |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          7          |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          7          |Brooklyn Nine-Nine               |
 |Malcolm in the Middle            |          7          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          7          |Malcolm in the Middle            |
+|Sons of Anarchy                  |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          7          |Sons of Anarchy                  |
 |Parks and Recreation             |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          7          |Parks and Recreation             |
 |Workaholics                      |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          7          |Workaholics                      |
 |Community                        |          6          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          6          |Community                        |
@@ -1368,12 +1390,12 @@ sorting by most number of seasons...
 |The Orville                      |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          3          |The Orville                      |
 |Avatar, the Last Airbender       |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3          |Avatar, the Last Airbender       |
 |Brickleberry                     |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          3          |Brickleberry                     |
+|Solar Opposites                  |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          3          |Solar Opposites                  |
 |The Proud Family                 |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2          |The Proud Family                 |
 |Gravity Falls                    |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          2          |Gravity Falls                    |
 |Final Space                      |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2          |Final Space                      |
 |The Mandalorian                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2          |The Mandalorian                  |
 |The Mick                         |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2          |The Mick                         |
-|Solar Opposites                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          2          |Solar Opposites                  |
 |The Replacements                 |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1          |The Replacements                 |
 |Gravity Falls Shorts             |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          1          |Gravity Falls Shorts             |
 |Chernobyl                        |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1          |Chernobyl                        |
@@ -1417,6 +1439,7 @@ sorting by most number of seasons...
 |Star Wars the Clone Wars         |          7          |
 |Brooklyn Nine-Nine               |          7          |
 |Malcolm in the Middle            |          7          |
+|Sons of Anarchy                  |          7          |
 |Parks and Recreation             |          7          |
 |Workaholics                      |          7          |
 |Community                        |          6          |
@@ -1439,12 +1462,12 @@ sorting by most number of seasons...
 |The Orville                      |          3          |
 |Avatar, the Last Airbender       |          3          |
 |Brickleberry                     |          3          |
+|Solar Opposites                  |          3          |
 |The Proud Family                 |          2          |
 |Gravity Falls                    |          2          |
 |Final Space                      |          2          |
 |The Mandalorian                  |          2          |
 |The Mick                         |          2          |
-|Solar Opposites                  |          2          |
 |The Replacements                 |          1          |
 |Gravity Falls Shorts             |          1          |
 |Chernobyl                        |          1          |
@@ -1455,12 +1478,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  5.90
+Mean:		  5.94
 Median:		  5.00
-Pstdev:		  5.53
-Pvariance:	 30.57
-Stdev:		  5.59
-Variance:	 31.19
+Pstdev:		  5.46
+Pvariance:	 29.86
+Stdev:		  5.52
+Variance:	 30.46
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1489,12 +1512,12 @@ sorting by least number of episodes...
 |What If?                         |           9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9           |What If?                         |
 |Sherlock                         |          13           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13           |Sherlock                         |
 |The Mandalorian                  |          16           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16           |The Mandalorian                  |
-|Solar Opposites                  |          17           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          17           |Solar Opposites                  |
 |Gravity Falls Shorts             |          17           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          17           |Gravity Falls Shorts             |
 |Black Mirror                     |          21           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          21           |Black Mirror                     |
 |The Replacements                 |          21           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          21           |The Replacements                 |
 |Final Space                      |          23           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          23           |Final Space                      |
 |The IT Crowd                     |          25           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          25           |The IT Crowd                     |
+|Solar Opposites                  |          28           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          28           |Solar Opposites                  |
 |Peaky Blinders                   |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          30           |Peaky Blinders                   |
 |Brickleberry                     |          36           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          36           |Brickleberry                     |
 |Misfits                          |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          37           |Misfits                          |
@@ -1515,6 +1538,7 @@ sorting by least number of episodes...
 |Arrested Develpoment             |          84           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          84           |Arrested Develpoment             |
 |Workaholics                      |          86           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          86           |Workaholics                      |
 |Prison Break                     |          90           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |          90           |Prison Break                     |
+|Sons of Anarchy                  |          92           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          92           |Sons of Anarchy                  |
 |My Name is Earl                  |          96           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          96           |My Name is Earl                  |
 |Curb your Enthusiasm             |          100          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          100          |Curb your Enthusiasm             |
 |Trailer Park Boys                |          105          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          105          |Trailer Park Boys                |
@@ -1560,12 +1584,12 @@ sorting by least number of episodes...
 |What If?                         |           9           |
 |Sherlock                         |          13           |
 |The Mandalorian                  |          16           |
-|Solar Opposites                  |          17           |
 |Gravity Falls Shorts             |          17           |
 |Black Mirror                     |          21           |
 |The Replacements                 |          21           |
 |Final Space                      |          23           |
 |The IT Crowd                     |          25           |
+|Solar Opposites                  |          28           |
 |Peaky Blinders                   |          30           |
 |Brickleberry                     |          36           |
 |Misfits                          |          37           |
@@ -1586,6 +1610,7 @@ sorting by least number of episodes...
 |Arrested Develpoment             |          84           |
 |Workaholics                      |          86           |
 |Prison Break                     |          90           |
+|Sons of Anarchy                  |          92           |
 |My Name is Earl                  |          96           |
 |Curb your Enthusiasm             |          100          |
 |Trailer Park Boys                |          105          |
@@ -1604,12 +1629,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		 92.30
-Median:		 54.50
-Pstdev:		120.19
-Pvariance:	14446.57
-Stdev:		121.41
-Variance:	14741.40
+Mean:		 92.51
+Median:		 56.00
+Pstdev:		118.88
+Pvariance:	14133.15
+Stdev:		120.07
+Variance:	14415.81
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1646,6 +1671,7 @@ sorting by most number of episodes...
 |Trailer Park Boys                |         105          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         105          |Trailer Park Boys                |
 |Curb your Enthusiasm             |         100          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         100          |Curb your Enthusiasm             |
 |My Name is Earl                  |          96          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          96          |My Name is Earl                  |
+|Sons of Anarchy                  |          92          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          92          |Sons of Anarchy                  |
 |Prison Break                     |          90          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |          90          |Prison Break                     |
 |Workaholics                      |          86          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |          86          |Workaholics                      |
 |Arrested Develpoment             |          84          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          84          |Arrested Develpoment             |
@@ -1666,11 +1692,11 @@ sorting by most number of episodes...
 |The Mick                         |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37          |The Mick                         |
 |Brickleberry                     |          36          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          36          |Brickleberry                     |
 |Peaky Blinders                   |          30          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          30          |Peaky Blinders                   |
+|Solar Opposites                  |          28          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          28          |Solar Opposites                  |
 |The IT Crowd                     |          25          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          25          |The IT Crowd                     |
 |Final Space                      |          23          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          23          |Final Space                      |
 |Black Mirror                     |          21          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          21          |Black Mirror                     |
 |The Replacements                 |          21          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          21          |The Replacements                 |
-|Solar Opposites                  |          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          17          |Solar Opposites                  |
 |Gravity Falls Shorts             |          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          17          |Gravity Falls Shorts             |
 |The Mandalorian                  |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          16          |The Mandalorian                  |
 |Sherlock                         |          13          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          13          |Sherlock                         |
@@ -1717,6 +1743,7 @@ sorting by most number of episodes...
 |Trailer Park Boys                |         105          |
 |Curb your Enthusiasm             |         100          |
 |My Name is Earl                  |          96          |
+|Sons of Anarchy                  |          92          |
 |Prison Break                     |          90          |
 |Workaholics                      |          86          |
 |Arrested Develpoment             |          84          |
@@ -1737,11 +1764,11 @@ sorting by most number of episodes...
 |The Mick                         |          37          |
 |Brickleberry                     |          36          |
 |Peaky Blinders                   |          30          |
+|Solar Opposites                  |          28          |
 |The IT Crowd                     |          25          |
 |Final Space                      |          23          |
 |Black Mirror                     |          21          |
 |The Replacements                 |          21          |
-|Solar Opposites                  |          17          |
 |Gravity Falls Shorts             |          17          |
 |The Mandalorian                  |          16          |
 |Sherlock                         |          13          |
@@ -1753,12 +1780,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 92.30
-Median:		 54.50
-Pstdev:		120.19
-Pvariance:	14446.57
-Stdev:		121.41
-Variance:	14741.40
+Mean:		 92.51
+Median:		 56.00
+Pstdev:		118.88
+Pvariance:	14133.15
+Stdev:		120.07
+Variance:	14415.81
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1786,10 +1813,10 @@ sorting by shortest time...
 |Hawkeye                          |      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |      6.0      |Hawkeye                          |
 |What If?                         |   6.600000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.600000    |What If?                         |
 |Wandavision                      |   6.750000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000    |Wandavision                      |
-|Solar Opposites                  |   6.800000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000    |Solar Opposites                  |
 |The Replacements                 |   8.400000    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   8.400000    |The Replacements                 |
 |Final Space                      |   8.433333    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   8.433333    |Final Space                      |
 |The IT Crowd                     |   9.166667    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   9.166667    |The IT Crowd                     |
+|Solar Opposites                  |   11.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   11.200000   |Solar Opposites                  |
 |The Mandalorian                  |   11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   11.733333   |The Mandalorian                  |
 |Brickleberry                     |   13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |   13.200000   |Brickleberry                     |
 |The Mick                         |   13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |   13.566667   |The Mick                         |
@@ -1826,6 +1853,7 @@ sorting by shortest time...
 |Scrubs                           |   66.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   66.733333   |Scrubs                           |
 |The Office                       |   73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |   73.700000   |The Office                       |
 |Yu-Gi-Oh!                        |   86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   86.533333   |Yu-Gi-Oh!                        |
+|Sons of Anarchy                  |     92.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |     92.0      |Sons of Anarchy                  |
 |Family Guy                       |  155.600000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  155.600000   |Family Guy                       |
 |Criminal Minds                   |  237.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  237.600000   |Criminal Minds                   |
 |The Simpsons                     |  291.200000   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  291.200000   |The Simpsons                     |
@@ -1857,10 +1885,10 @@ sorting by shortest time...
 |Hawkeye                          |      6.0      |
 |What If?                         |   6.600000    |
 |Wandavision                      |   6.750000    |
-|Solar Opposites                  |   6.800000    |
 |The Replacements                 |   8.400000    |
 |Final Space                      |   8.433333    |
 |The IT Crowd                     |   9.166667    |
+|Solar Opposites                  |   11.200000   |
 |The Mandalorian                  |   11.733333   |
 |Brickleberry                     |   13.200000   |
 |The Mick                         |   13.566667   |
@@ -1897,17 +1925,18 @@ sorting by shortest time...
 |Scrubs                           |   66.733333   |
 |The Office                       |   73.700000   |
 |Yu-Gi-Oh!                        |   86.533333   |
+|Sons of Anarchy                  |     92.0      |
 |Family Guy                       |  155.600000   |
 |Criminal Minds                   |  237.600000   |
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 42.30
-Median:		 26.60
-Pstdev:		 53.14
-Pvariance:	2824.35
-Stdev:		 53.68
-Variance:	2881.99
+Mean:		 43.36
+Median:		 27.13
+Pstdev:		 53.01
+Pvariance:	2810.53
+Stdev:		 53.54
+Variance:	2866.74
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1931,6 +1960,7 @@ sorting by longest time...
 |The Simpsons                     |  291.200000  |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  291.200000  |The Simpsons                     |
 |Criminal Minds                   |  237.600000  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  237.600000  |Criminal Minds                   |
 |Family Guy                       |  155.600000  |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  155.600000  |Family Guy                       |
+|Sons of Anarchy                  |     92.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |     92.0     |Sons of Anarchy                  |
 |Yu-Gi-Oh!                        |  86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  86.533333   |Yu-Gi-Oh!                        |
 |The Office                       |  73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |  73.700000   |The Office                       |
 |Scrubs                           |  66.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |  66.733333   |Scrubs                           |
@@ -1967,10 +1997,10 @@ sorting by longest time...
 |The Mick                         |  13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |  13.566667   |The Mick                         |
 |Brickleberry                     |  13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |  13.200000   |Brickleberry                     |
 |The Mandalorian                  |  11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |  11.733333   |The Mandalorian                  |
+|Solar Opposites                  |  11.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |  11.200000   |Solar Opposites                  |
 |The IT Crowd                     |   9.166667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   9.166667   |The IT Crowd                     |
 |Final Space                      |   8.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |   8.433333   |Final Space                      |
 |The Replacements                 |   8.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   8.400000   |The Replacements                 |
-|Solar Opposites                  |   6.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   6.800000   |Solar Opposites                  |
 |Wandavision                      |   6.750000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.750000   |Wandavision                      |
 |What If?                         |   6.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |   6.600000   |What If?                         |
 |The Falcon and the Winter Soldier|     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |     6.0      |The Falcon and the Winter Soldier|
@@ -2002,6 +2032,7 @@ sorting by longest time...
 |The Simpsons                     |  291.200000  |
 |Criminal Minds                   |  237.600000  |
 |Family Guy                       |  155.600000  |
+|Sons of Anarchy                  |     92.0     |
 |Yu-Gi-Oh!                        |  86.533333   |
 |The Office                       |  73.700000   |
 |Scrubs                           |  66.733333   |
@@ -2038,10 +2069,10 @@ sorting by longest time...
 |The Mick                         |  13.566667   |
 |Brickleberry                     |  13.200000   |
 |The Mandalorian                  |  11.733333   |
+|Solar Opposites                  |  11.200000   |
 |The IT Crowd                     |   9.166667   |
 |Final Space                      |   8.433333   |
 |The Replacements                 |   8.400000   |
-|Solar Opposites                  |   6.800000   |
 |Wandavision                      |   6.750000   |
 |What If?                         |   6.600000   |
 |The Falcon and the Winter Soldier|     6.0      |
@@ -2051,12 +2082,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 42.30
-Median:		 26.60
-Pstdev:		 53.14
-Pvariance:	2824.35
-Stdev:		 53.68
-Variance:	2881.99
+Mean:		 43.36
+Median:		 27.13
+Pstdev:		 53.01
+Pvariance:	2810.53
+Stdev:		 53.54
+Variance:	2866.74
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2099,6 +2130,7 @@ sorting by most episodes per season...
 |Arrested Develpoment             |        16.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |        16.800000         |Arrested Develpoment             |
 |The Last Man on Earth            |        16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |        16.750000         |The Last Man on Earth            |
 |Futurama                         |           14.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |           14.0           |Futurama                         |
+|Sons of Anarchy                  |        13.142857         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |        13.142857         |Sons of Anarchy                  |
 |Breaking Bad                     |        12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |        12.400000         |Breaking Bad                     |
 |The Orville                      |        12.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |        12.333333         |The Orville                      |
 |Workaholics                      |        12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |        12.285714         |Workaholics                      |
@@ -2110,12 +2142,12 @@ sorting by most episodes per season...
 |Curb your Enthusiasm             |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           10.0           |Curb your Enthusiasm             |
 |Better Call Saul                 |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0           |Better Call Saul                 |
 |Baskets                          |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |           10.0           |Baskets                          |
+|Solar Opposites                  |         9.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |         9.333333         |Solar Opposites                  |
 |Game of Thrones                  |         9.125000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         9.125000         |Game of Thrones                  |
 |Wandavision                      |           9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9.0            |Wandavision                      |
 |What If?                         |           9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |           9.0            |What If?                         |
 |Silicon Valley                   |         8.833333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |         8.833333         |Silicon Valley                   |
 |Trailer Park Boys                |         8.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         8.750000         |Trailer Park Boys                |
-|Solar Opposites                  |         8.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |         8.500000         |Solar Opposites                  |
 |The Mandalorian                  |           8.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |           8.0            |The Mandalorian                  |
 |Misfits                          |         7.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         7.400000         |Misfits                          |
 |The IT Crowd                     |         6.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         6.250000         |The IT Crowd                     |
@@ -2170,6 +2202,7 @@ sorting by most episodes per season...
 |Arrested Develpoment             |        16.800000         |
 |The Last Man on Earth            |        16.750000         |
 |Futurama                         |           14.0           |
+|Sons of Anarchy                  |        13.142857         |
 |Breaking Bad                     |        12.400000         |
 |The Orville                      |        12.333333         |
 |Workaholics                      |        12.285714         |
@@ -2181,12 +2214,12 @@ sorting by most episodes per season...
 |Curb your Enthusiasm             |           10.0           |
 |Better Call Saul                 |           10.0           |
 |Baskets                          |           10.0           |
+|Solar Opposites                  |         9.333333         |
 |Game of Thrones                  |         9.125000         |
 |Wandavision                      |           9.0            |
 |What If?                         |           9.0            |
 |Silicon Valley                   |         8.833333         |
 |Trailer Park Boys                |         8.750000         |
-|Solar Opposites                  |         8.500000         |
 |The Mandalorian                  |           8.0            |
 |Misfits                          |         7.400000         |
 |The IT Crowd                     |         6.250000         |
@@ -2201,11 +2234,11 @@ sorting by most episodes per season...
 ##############################################################
 
 Mean:		 14.08
-Median:		 12.14
-Pstdev:		  7.68
-Pvariance:	 58.94
-Stdev:		  7.75
-Variance:	 60.14
+Median:		 12.29
+Pstdev:		  7.59
+Pvariance:	 57.63
+Stdev:		  7.67
+Variance:	 58.78
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2237,12 +2270,12 @@ sorting by least episodes per season...
 |The IT Crowd                     |         6.250000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         6.250000          |The IT Crowd                     |
 |Misfits                          |         7.400000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         7.400000          |Misfits                          |
 |The Mandalorian                  |            8.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |            8.0            |The Mandalorian                  |
-|Solar Opposites                  |         8.500000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |         8.500000          |Solar Opposites                  |
 |Trailer Park Boys                |         8.750000          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         8.750000          |Trailer Park Boys                |
 |Silicon Valley                   |         8.833333          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |         8.833333          |Silicon Valley                   |
 |Wandavision                      |            9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            9.0            |Wandavision                      |
 |What If?                         |            9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |            9.0            |What If?                         |
 |Game of Thrones                  |         9.125000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         9.125000          |Game of Thrones                  |
+|Solar Opposites                  |         9.333333          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |         9.333333          |Solar Opposites                  |
 |Curb your Enthusiasm             |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           10.0            |Curb your Enthusiasm             |
 |Better Call Saul                 |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0            |Better Call Saul                 |
 |Baskets                          |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |           10.0            |Baskets                          |
@@ -2254,6 +2287,7 @@ sorting by least episodes per season...
 |Workaholics                      |         12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |         12.285714         |Workaholics                      |
 |The Orville                      |         12.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |         12.333333         |The Orville                      |
 |Breaking Bad                     |         12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         12.400000         |Breaking Bad                     |
+|Sons of Anarchy                  |         13.142857         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         13.142857         |Sons of Anarchy                  |
 |Futurama                         |           14.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |           14.0            |Futurama                         |
 |The Last Man on Earth            |         16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |         16.750000         |The Last Man on Earth            |
 |Arrested Develpoment             |         16.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         16.800000         |Arrested Develpoment             |
@@ -2308,12 +2342,12 @@ sorting by least episodes per season...
 |The IT Crowd                     |         6.250000          |
 |Misfits                          |         7.400000          |
 |The Mandalorian                  |            8.0            |
-|Solar Opposites                  |         8.500000          |
 |Trailer Park Boys                |         8.750000          |
 |Silicon Valley                   |         8.833333          |
 |Wandavision                      |            9.0            |
 |What If?                         |            9.0            |
 |Game of Thrones                  |         9.125000          |
+|Solar Opposites                  |         9.333333          |
 |Curb your Enthusiasm             |           10.0            |
 |Better Call Saul                 |           10.0            |
 |Baskets                          |           10.0            |
@@ -2325,6 +2359,7 @@ sorting by least episodes per season...
 |Workaholics                      |         12.285714         |
 |The Orville                      |         12.333333         |
 |Breaking Bad                     |         12.400000         |
+|Sons of Anarchy                  |         13.142857         |
 |Futurama                         |           14.0            |
 |The Last Man on Earth            |         16.750000         |
 |Arrested Develpoment             |         16.800000         |
@@ -2350,13 +2385,13 @@ sorting by least episodes per season...
 ###############################################################
 
 Mean:		 14.08
-Median:		 12.14
-Pstdev:		  7.68
-Pvariance:	 58.94
-Stdev:		  7.75
-Variance:	 60.14
+Median:		 12.29
+Pstdev:		  7.59
+Pvariance:	 57.63
+Stdev:		  7.67
+Variance:	 58.78
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 17 | 15 | 16 | 18 | 18 | 20 | 22 | 24 | 21 | 23 | 22 | 23 | 21 | 20 | 13 | 11 | 3  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 17 | 15 | 17 | 19 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 20 | 13 | 11 | 4  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################
