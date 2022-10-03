@@ -1,11 +1,13 @@
 import datetime
+import json
+import os
 import tkinter
 
 import pandas
 
 import tkinter_utility
 from tkinter_utility import *
-from tkinter import messagebox
+from tkinter import messagebox, font
 from utility import *
 from test_suite import *
 from pygame_utility import *
@@ -1773,9 +1775,9 @@ def test_theme_publisher():
             self.tv_font_weight = tkinter.StringVar(self)
             self.spin_font_weight = tkinter.Spinbox(self, values=self.font_weights_list, textvariable=self.tv_font_weight)
 
-            self.tv_combo_font_name.trace_variable("W", self.update_name)
-            self.tv_font_size.trace_variable("W", self.update_size)
-            self.tv_font_weight.trace_variable("W", self.update_weight)
+            self.tv_combo_font_name.trace_variable("w", self.update_name)
+            self.tv_font_size.trace_variable("w", self.update_size)
+            self.tv_font_weight.trace_variable("w", self.update_weight)
 
             self.label_font_name.grid(row=0, column=0)
             self.combo_font_name.grid(row=0, column=1)
@@ -1784,29 +1786,115 @@ def test_theme_publisher():
             self.label_font_weight.grid(row=2, column=0)
             self.spin_font_weight.grid(row=2, column=1)
 
-    def update_name(self, *args):
-        self.update_status()
+        def update_name(self, *args):
+            self.update_status()
 
-    def update_size(self, *args):
-        self.update_status()
+        def update_size(self, *args):
+            self.update_status()
 
-    def update_weight(self, *args):
-        self.update_status()
+        def update_weight(self, *args):
+            self.update_status()
 
-    def update_status(self):
-        status = {
-            "name": self.tv_combo_font_name.get(),
-            "weight": self.tv_font_weight.get(),
-            "size": self.tv_font_size.get()
-        }
-        self.status.set(status)
+        def update_status(self):
+            status = {
+                "name": self.tv_combo_font_name.get(),
+                "weight": self.tv_font_weight.get(),
+                "size": self.tv_font_size.get()
+            }
+            self.status.set(status)
+
+    class Theme:
+
+        def __init__(self):
+            self.name = tkinter.StringVar()
+            self.tv_text_box_object_back_colour = tkinter.StringVar()
+            self.tv_text_box_object_border_colour = tkinter.StringVar()
+            self.tv_text_box_text_font_name = tkinter.StringVar()
+            self.tv_text_box_text_fore_colour = tkinter.StringVar()
+
+            self.tv_label_object_back_colour = tkinter.StringVar()
+            self.tv_label_object_border_colour = tkinter.StringVar()
+            self.tv_label_text_font_name = tkinter.StringVar()
+            self.tv_label_text_fore_colour = tkinter.StringVar()
+
+            self.tv_list_box_object_back_colour = tkinter.StringVar()
+            self.tv_list_box_object_border_colour = tkinter.StringVar()
+            self.tv_list_box_text_font_name = tkinter.StringVar()
+            self.tv_list_box_text_fore_colour = tkinter.StringVar()
+
+            self.tv_combo_box_object_back_colour = tkinter.StringVar()
+            self.tv_combo_box_object_border_colour = tkinter.StringVar()
+            self.tv_combo_box_text_font_name = tkinter.StringVar()
+            self.tv_combo_box_text_fore_colour = tkinter.StringVar()
+
+            # self.tv_option_button_object_back_colour = tkinter.StringVar()
+            self.tv_option_button_object_border_colour = tkinter.StringVar()
+            # self.tv_option_button_text_font_name = tkinter.StringVar()
+            # self.tv_option_button_text_fore_colour = tkinter.StringVar()
+
+            self.tv_box_object_back_colour = tkinter.StringVar()
+            self.tv_box_object_border_colour = tkinter.StringVar()
+
+            self.tv_button_object_back_colour = tkinter.StringVar()
+            self.tv_button_object_border_colour = tkinter.StringVar()
+            self.tv_button_object_hover_colour = tkinter.StringVar()
+            self.tv_button_text_fore_colour = tkinter.StringVar()
+            self.tv_button_text_hover_colour = tkinter.StringVar()
+            self.tv_button_text_font_name = tkinter.StringVar()
+
+        def parse(self, data):
+            theme = Theme()
+            theme.name.set(data.get("Name", ""))
+            theme.tv_text_box_object_back_colour.set(data.get("TextBox", {}).get("object", {}).get("Back Colour", {}))
+            # theme.tv_text_box_object_border_colour = tkinter.StringVar()
+            # theme.tv_text_box_text_font_name = tkinter.StringVar()
+            # theme.tv_text_box_text_fore_colour = tkinter.StringVar()
+            #
+            # theme.tv_label_object_back_colour = tkinter.StringVar()
+            # theme.tv_label_object_border_colour = tkinter.StringVar()
+            # theme.tv_label_text_font_name = tkinter.StringVar()
+            # theme.tv_label_text_fore_colour = tkinter.StringVar()
+            #
+            # theme.tv_list_box_object_back_colour = tkinter.StringVar()
+            # theme.tv_list_box_object_border_colour = tkinter.StringVar()
+            # theme.tv_list_box_text_font_name = tkinter.StringVar()
+            # theme.tv_list_box_text_fore_colour = tkinter.StringVar()
+            #
+            # theme.tv_combo_box_object_back_colour = tkinter.StringVar()
+            # theme.tv_combo_box_object_border_colour = tkinter.StringVar()
+            # theme.tv_combo_box_text_font_name = tkinter.StringVar()
+            # theme.tv_combo_box_text_fore_colour = tkinter.StringVar()
+            #
+            # # self.tv_option_button_object_back_colour = tkinter.StringVar()
+            # theme.tv_option_button_object_border_colour = tkinter.StringVar()
+            # # self.tv_option_button_text_font_name = tkinter.StringVar()
+            # # self.tv_option_button_text_fore_colour = tkinter.StringVar()
+            #
+            # theme.tv_box_object_back_colour = tkinter.StringVar()
+            # theme.tv_box_object_border_colour = tkinter.StringVar()
+            #
+            # theme.tv_button_object_back_colour = tkinter.StringVar()
+            # theme.tv_button_object_border_colour = tkinter.StringVar()
+            # theme.tv_button_object_hover_colour = tkinter.StringVar()
+            # theme.tv_button_text_fore_colour = tkinter.StringVar()
+            # theme.tv_button_text_hover_colour = tkinter.StringVar()
+            # theme.tv_button_text_font_name = tkinter.StringVar()
+
+            return theme
 
     class ThemePublisher(tkinter.Tk):
 
-        def __init__(self):
+        def __init__(
+                self,
+                theme_dir="./Themes/Version1"
+        ):
             super().__init__()
             self.geometry(f"1000x600")
 
+            self.theme_dir = theme_dir
+            self.loaded_themes = []
+            self.theme = Theme()
+            self.theme_idx = tkinter.IntVar(self, value=0)
 
             # object type: {access_property: tkinter_property}
 
@@ -1872,7 +1960,7 @@ def test_theme_publisher():
                 "Button": {
                     "object": {
                         "Back Color": "background",
-                        "Border Color": "outline",
+                        # "Border Color": "border",
                         "Hover Color": "activebackground"
                     },
                     "text": {
@@ -1883,10 +1971,33 @@ def test_theme_publisher():
                 }
             }
 
+            self.load_themes()
+            self.dirty_themes = tkinter.Variable(self, value=[False for i in range(len(self.loaded_themes) + 1)])
+
             # tkinter.Frame(b)
 
             # btn = tkinter.Button(self)
             # btn.configure(activebackground=, activeforeground=, background=, borderwidth=, cursor=, disabledforeground=, font=,foreground=,highlightbackground=, highlightcolor=, justify=)
+
+            self.tv_btn_prev_theme,\
+            self.btn_prev_theme\
+                = button_factory(
+                    self,
+                    tv_btn="<<",
+                    kwargs_btn={
+                        "command": self.click_prev_theme
+                    }
+            )
+
+            self.tv_btn_next_theme,\
+            self.btn_next_theme\
+                = button_factory(
+                    self,
+                    tv_btn=">>",
+                    kwargs_btn={
+                        "command": self.click_next_theme
+                    }
+            )
 
             self.tv_label_theme_name,\
             self.label_theme_name,\
@@ -1979,21 +2090,31 @@ def test_theme_publisher():
             self.demo_radio_2 = tkinter.Radiobutton(self.demo_radio_frame, text="Hot Dog", variable=self.tv_demo_radio, value=2, command=self.demo_radio_update)
             self.demo_radio_3 = tkinter.Radiobutton(self.demo_radio_frame, text="Cotton Candy", variable=self.tv_demo_radio, value=3, command=self.demo_radio_update)
 
-            self.tv_btn_publish_theme, self.btn_publixh_theme = button_factory(self, tv_btn="publish", kwargs_btn={"command": self.click_publish_theme})
+            self.tv_btn_publish_theme, self.btn_publish_theme = button_factory(self, tv_btn="publish", kwargs_btn={"command": self.click_publish_theme})
 
-            self.label_theme_name.grid(row=0, column=0)
-            self.entry_theme_name.grid(row=0, column=1)
-            self.label_combo_choice_1.grid(row=1, column=0)
-            self.combo_choice_1.grid(row=1, column=1)
-            self.label_combo_choice_2.grid(row=2, column=0)
-            self.combo_choice_2.grid(row=2, column=1)
-            self.label_combo_choice_3.grid(row=3, column=0)
-            self.combo_choice_3.grid(row=3, column=1)
+            self.btn_prev_theme.grid(row=0, column=0)
+            self.btn_next_theme.grid(row=0, column=1)
+            self.label_theme_name.grid(row=1, column=0)
+            self.entry_theme_name.grid(row=1, column=1)
+            self.label_combo_choice_1.grid(row=2, column=0)
+            self.combo_choice_1.grid(row=2, column=1)
+            self.label_combo_choice_2.grid(row=3, column=0)
+            self.combo_choice_2.grid(row=3, column=1)
+            self.label_combo_choice_3.grid(row=4, column=0)
+            self.combo_choice_3.grid(row=4, column=1)
+
             self.rgb_slider = RGBSlider(self, show_result=True)
             self.rgb_slider.colour.trace_variable("w", self.rgb_update)
-            self.rgb_slider.grid(row=4, column=0, columnspan=2)
-            self.btn_publixh_theme.grid(row=5, column=0)
-            self.demo_form_frame.grid(row=6, column=0)
+            self.rgb_slider.grid(row=5, column=0, columnspan=2)
+
+            self.font_chooser = FontChooser(self)
+            self.font_chooser.grid(row=5, column=0, columnspan=2)
+
+            self.number_chooser = ttk.Scale(self, from_=0, to=100, orient=tkinter.HORIZONTAL)
+            self.number_chooser.grid(row=5, column=0, columnspan=2)
+
+            self.btn_publish_theme.grid(row=6, column=0)
+            self.demo_form_frame.grid(row=7, column=0)
 
             self.demo_form_sub_frame.grid(row=0, column=0)
             self.demo_label_title.grid(row=0, column=0)
@@ -2007,6 +2128,8 @@ def test_theme_publisher():
             self.demo_radio_2.grid(row=1, column=0)
             self.demo_radio_3.grid(row=2, column=0)
 
+            self.combo_update(None,None, None)
+
         def combo_choice_data(self):
             return {
                 "object": self.tv_combo_choice_1.get(),
@@ -2015,6 +2138,7 @@ def test_theme_publisher():
             }
 
         def combo_update(self, var_name, index, mode, *rest):
+            print(f"combo_update")
             message = ""
             # print(f"{var_name=}, {index=}, {mode=}, {rest=}")
             if var_name == "tv_combo_1":
@@ -2029,6 +2153,7 @@ def test_theme_publisher():
             obj = combo_data["object"]
             option = combo_data["option"]
             attribute = combo_data["attribute"]
+            showing = (True, False, False)
             if obj:
                 message += "A"
                 options = list(self.customizable[obj])
@@ -2039,6 +2164,22 @@ def test_theme_publisher():
                         message += "C"
                         if attributes:
                             message += "D"
+                            match attribute:
+                                case "Border" | "bd":
+                                    # self.number_chooser.configure(state="normal")
+                                    showing = (False, True, False)
+                                    self.number_chooser.grid(row=5, column=0, columnspan=2)
+                                    self.rgb_slider.grid_forget()
+                                case "Font Name":
+                                    # self.font_chooser.configure(state="normal")
+                                    showing = (False, False, True)
+                                    self.font_chooser.grid(row=5, column=0, columnspan=2)
+                                    self.rgb_slider.grid_forget()
+                                case _:  # colour
+                                    # self.font_chooser.configure(state="disabled")
+                                    # self.number_chooser.configure(state="disabled")
+                                    showing = (True, False, False)
+
                             # print(f"{options=}, {attribute=}")
                             # print(f"{attributes=}, {attribute=}")
                         else:
@@ -2061,6 +2202,34 @@ def test_theme_publisher():
                 self.tv_combo_choice_3.set("")
             # print(f"{combo_data=}")
             # print(f"{message=}")
+
+            widget = None
+            if showing[0]:
+                self.number_chooser.grid_forget()
+                self.font_chooser.grid_forget()
+            if showing[1]:
+                self.rgb_slider.grid_forget()
+                self.font_chooser.grid_forget()
+            if showing[2]:
+                self.rgb_slider.grid_forget()
+                self.number_chooser.grid_forget()
+            print(f"{widget=}, {showing=}")
+            if widget:
+                widget.grid(row=5, column=0, columnspan=2)
+
+        def load_themes(self):
+            if not os.path.isdir(self.theme_dir):
+                os.mkdir(self.theme_dir)
+                return
+            loaded_themes = []
+            for file in os.listdir(self.theme_dir):
+                if file.endswith(".json") and file.startswith("TKTheme_"):
+                    with open(f"{self.theme_dir}/{file}", "r") as f:
+                        # loaded_themes.append(json.load(f))
+                        theme = self.parse(json.load(f))
+                        self.loaded_themes.append(theme)
+
+            print(f"Loaded {len(self.loaded_themes)} themes on start.")
 
         def click_demo_btn(self):
             tkinter.messagebox.showinfo(title="Thanks", message="Thank You!")
@@ -2108,6 +2277,8 @@ def test_theme_publisher():
                     print(f"ABOUT TO UPDATE WIDGETS\n{widgets=}\n{data=}\n{attr_name=}")
                     for widget in widgets:
                         widget.configure(**attr_name)
+
+                self.dirty_current_theme()
                 # for k1, v1 in self.customizable:
                 #     if k1 == d1:
                 #         for k2, v2 in v1.items():
@@ -2116,10 +2287,55 @@ def test_theme_publisher():
                 #                     if k3 == d3:
                 #                         attr_name = v3
 
+        def click_prev_theme(self):
+            v = self.theme_idx.get()
+            print(f"click_prev_theme {v} -> {v - 1}")
+            if v > 0:
+                self.theme_idx.set(v - 1)
+            else:
+                messagebox.showinfo(title="Theme Publisher", message="Cannot go back any further.")
 
+        def click_next_theme(self):
+            v = self.theme_idx.get()
+            print(f"click_next_theme {v} -> {v + 1}")
+            if v < len(self.loaded_themes):
+                self.theme_idx.set(v + 1)
+            else:
+                messagebox.showinfo(title="Theme Publisher", message="Cannot go any farther forward.")
+
+        def dirty_current_theme(self):
+            dirty = list(self.dirty_themes.get())
+            dirty[self.theme_idx.get()] = True
+            self.dirty_themes.set(dirty)
 
         def click_publish_theme(self):
             print(f"publish")
+
+        def parse(self, f_in):
+            # theme = None
+
+            parsed_theme = {}
+            theme_keys_1 = set(self.customizable.keys())
+            print(f"{theme_keys_1=}")
+            theme_keys_2 = set(flatten([list(v.keys()) for v in self.customizable.values()]))
+            print(f"{theme_keys_2=}")
+            theme_keys_3 = set(flatten([[list(v2.keys()) for v2 in v1.values()] for v1 in self.customizable.values()]))
+            print(f"{theme_keys_3=}")
+            for k1, v1 in f_in.items():
+                if k1 in theme_keys_1:
+                    for k2, v2 in v1.items():
+                        if k2 in theme_keys_2:
+                            for k3, v3 in v2.items():
+                                if k2 in theme_keys_2:
+                                    # parsed_theme.get(k1, {}).get(k2, {}).get(k3, {})
+                                    parsed_theme.setdefault(k1, {}).setdefault(k2, {}).setdefault(k3, {})
+                                    parsed_theme[k1][k2][k3] = v3
+                                    # \
+                                        # = v3
+            theme = Theme()
+            theme = theme.parse(parsed_theme)
+            print(f"theme={theme}")
+
 
 
     ThemePublisher().mainloop()
