@@ -1738,13 +1738,79 @@ def test_rgb_slider():
 
 def test_theme_publisher():
 
+    class FontChooser(tkinter.Frame):
+
+        def __init__(self, master):
+            super().__init__(master)
+
+            self.status = tkinter.Variable(self)
+
+            self.fonts_list = tkinter.font.families()
+            self.font_sizes_list = [6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32]
+            self.font_weights_list = ["normal", "bold"]
+            # combo for font choice
+            # spinner for font size
+            # spinner for font weight
+            self.tv_label_font_name,\
+            self.label_font_name,\
+            self.tv_combo_font_name,\
+            self.combo_font_name,\
+                = combo_factory(
+                    self,
+                    tv_label="Font Name:",
+                    kwargs_combo={
+                        "values": self.fonts_list
+                    }
+            )
+
+            self.tv_label_font_size = tkinter.StringVar(self, value="Font Size:")
+            self.label_font_size = tkinter.Label(self, textvariable=self.tv_label_font_size)
+            self.tv_font_size = tkinter.IntVar(self, value=12)
+            self.spin_font_size = tkinter.Spinbox(self, values=self.font_sizes_list, textvariable=self.tv_font_size)
+
+            self.tv_label_font_weight = tkinter.StringVar(self, value="Font Weight:")
+            self.label_font_weight = tkinter.Label(self, textvariable=self.tv_label_font_weight)
+            self.tv_font_weight = tkinter.StringVar(self)
+            self.spin_font_weight = tkinter.Spinbox(self, values=self.font_weights_list, textvariable=self.tv_font_weight)
+
+            self.tv_combo_font_name.trace_variable("W", self.update_name)
+            self.tv_font_size.trace_variable("W", self.update_size)
+            self.tv_font_weight.trace_variable("W", self.update_weight)
+
+            self.label_font_name.grid(row=0, column=0)
+            self.combo_font_name.grid(row=0, column=1)
+            self.label_font_size.grid(row=1, column=0)
+            self.spin_font_size.grid(row=1, column=1)
+            self.label_font_weight.grid(row=2, column=0)
+            self.spin_font_weight.grid(row=2, column=1)
+
+    def update_name(self, *args):
+        self.update_status()
+
+    def update_size(self, *args):
+        self.update_status()
+
+    def update_weight(self, *args):
+        self.update_status()
+
+    def update_status(self):
+        status = {
+            "name": self.tv_combo_font_name.get(),
+            "weight": self.tv_font_weight.get(),
+            "size": self.tv_font_size.get()
+        }
+        self.status.set(status)
+
     class ThemePublisher(tkinter.Tk):
 
         def __init__(self):
             super().__init__()
             self.geometry(f"1000x600")
 
+
             # object type: {access_property: tkinter_property}
+
+            # ttk.Combobox(b)
 
             self.customizable = {
                 # "Form": {
@@ -1754,8 +1820,8 @@ def test_theme_publisher():
                 # },
                 "TextBox": {
                     "object": {
-                        "Back Color": "fill",
-                        "Border Color": "outline"
+                        "Back Color": "background",
+                        # "Border Color": "border"
                     },
                     "text": {
                         "Font Name": "font",
@@ -1764,8 +1830,8 @@ def test_theme_publisher():
                 },
                 "Label": {
                     "object": {
-                        "Back Color": "fill",
-                        "Border Color": "outline",
+                        "Back Color": "background",
+                        # "Border Color": "border",
                     },
                     "text": {
                         "Font Name": "font",
@@ -1774,8 +1840,8 @@ def test_theme_publisher():
                 },
                 "ListBox": {
                     "object": {
-                        "Back Color": "fill",
-                        "Border Color": "outline"
+                        "Back Color": "background",
+                        "Border Color": "border"
                     },
                     "text": {
                         "Font Name": "font",
@@ -1784,8 +1850,8 @@ def test_theme_publisher():
                 },
                 "ComboBox": {
                     "object": {
-                        "Back Color": "fill",
-                        "Border Color": "outline"
+                        "Back Color": "background",
+                        # "Border Color": "outline"
                     },
                     "text": {
                         "Font Name": "font",
@@ -1799,8 +1865,8 @@ def test_theme_publisher():
                 },
                 "Box": {
                     "object": {
-                        "Back Color": "fill",
-                        "Border Color": "outline"
+                        "Back Color": "background",
+                        # "Border Color": "bd"
                     }
                 },
                 "Button": {
@@ -1816,11 +1882,59 @@ def test_theme_publisher():
                     }
                 }
             }
-            btn = tkinter.Button(self)
+
+            # tkinter.Frame(b)
+
+            # btn = tkinter.Button(self)
             # btn.configure(activebackground=, activeforeground=, background=, borderwidth=, cursor=, disabledforeground=, font=,foreground=,highlightbackground=, highlightcolor=, justify=)
-            self.tv_label_combo_choice_1, self.label_combo_choice_1, self.tv_combo_choice_1, self.combo_choice_1 = combo_factory(self, tv_label="Customize:", tv_combo=tkinter.StringVar(name="tv_combo_1", value=""), kwargs_combo={"values": list(self.customizable)})
-            self.tv_label_combo_choice_2, self.label_combo_choice_2, self.tv_combo_choice_2, self.combo_choice_2 = combo_factory(self, tv_label="Option:", tv_combo=tkinter.StringVar(name="tv_combo_2", value=""), kwargs_combo={"state": "disabled"})
-            self.tv_label_combo_choice_3, self.label_combo_choice_3, self.tv_combo_choice_3, self.combo_choice_3 = combo_factory(self, tv_label="Attribute:", tv_combo=tkinter.StringVar(name="tv_combo_3", value=""), kwargs_combo={"state": "disabled"})
+
+            self.tv_label_theme_name,\
+            self.label_theme_name,\
+            self.tv_entry_theme_name,\
+            self.entry_theme_name,\
+                = entry_factory(
+                    self,
+                    tv_label="Theme Name:"
+            )
+
+            self.tv_label_combo_choice_1,\
+            self.label_combo_choice_1,\
+            self.tv_combo_choice_1,\
+            self.combo_choice_1 \
+                = combo_factory(
+                    self,
+                    tv_label="Customize:",
+                    tv_combo=tkinter.StringVar(name="tv_combo_1", value=""),
+                    kwargs_combo={
+                        "values": list(self.customizable)
+                    }
+            )
+
+            self.tv_label_combo_choice_2,\
+            self.label_combo_choice_2,\
+            self.tv_combo_choice_2,\
+            self.combo_choice_2\
+                = combo_factory(
+                    self,
+                    tv_label="Option:",
+                    tv_combo=tkinter.StringVar(name="tv_combo_2", value=""),
+                    kwargs_combo={
+                        "state": "disabled"
+                    }
+            )
+
+            self.tv_label_combo_choice_3,\
+            self.label_combo_choice_3,\
+            self.tv_combo_choice_3,\
+            self.combo_choice_3\
+                = combo_factory(
+                    self,
+                    tv_label="Attribute:",
+                    tv_combo=tkinter.StringVar(name="tv_combo_3", value=""),
+                    kwargs_combo={
+                        "state": "disabled"
+                    }
+            )
 
             self.tv_combo_choice_1.trace_variable("w", self.combo_update)
             self.tv_combo_choice_2.trace_variable("w", self.combo_update)
@@ -1851,7 +1965,7 @@ def test_theme_publisher():
             ]
 
             self.demo_form_frame = tkinter.Frame(self)
-            self.demo_form_sub_frame = tkinter.Frame(self.demo_form_frame)
+            self.demo_form_sub_frame = tkinter.Frame(self.demo_form_frame, background=random_colour(rgb=False))
             # self.demo_tv_label_title = tkinter.StringVar(self, value=self.demo_dat_label_title)
             # self.demo_label_title = tkinter.Label(self.demo_form_sub_frame, textvariable=self.demo_tv_label_title)
             self.demo_tv_label_title, self.demo_label_title = label_factory(self.demo_form_sub_frame, tv_label=self.demo_dat_label_title)
@@ -1865,27 +1979,33 @@ def test_theme_publisher():
             self.demo_radio_2 = tkinter.Radiobutton(self.demo_radio_frame, text="Hot Dog", variable=self.tv_demo_radio, value=2, command=self.demo_radio_update)
             self.demo_radio_3 = tkinter.Radiobutton(self.demo_radio_frame, text="Cotton Candy", variable=self.tv_demo_radio, value=3, command=self.demo_radio_update)
 
-            self.label_combo_choice_1.grid(row=1, column=1)
-            self.combo_choice_1.grid(row=1, column=2)
-            self.label_combo_choice_2.grid(row=2, column=1)
-            self.combo_choice_2.grid(row=2, column=2)
-            self.label_combo_choice_3.grid(row=3, column=1)
-            self.combo_choice_3.grid(row=3, column=2)
-            self.rgb_slider = RGBSlider(self)
-            self.rgb_slider.grid(row=4, column=1, columnspan=2)
+            self.tv_btn_publish_theme, self.btn_publixh_theme = button_factory(self, tv_btn="publish", kwargs_btn={"command": self.click_publish_theme})
 
-            self.demo_form_frame.grid(row=5, column=1)
-            self.demo_form_sub_frame.grid(row=1, column=1)
-            self.demo_label_title.grid(row=1, column=1)
-            self.demo_label_entry.grid(row=2, column=1)
-            self.demo_entry.grid(row=2, column=2)
-            self.demo_button.grid(row=3, column=1)
-            self.demo_label_list.grid(row=4, column=1)
-            self.demo_list.grid(row=4, column=2)
-            self.demo_radio_frame.grid(row=5, column=1)
-            self.demo_radio_1.grid(row=1, column=1)
-            self.demo_radio_2.grid(row=2, column=1)
-            self.demo_radio_3.grid(row=3, column=1)
+            self.label_theme_name.grid(row=0, column=0)
+            self.entry_theme_name.grid(row=0, column=1)
+            self.label_combo_choice_1.grid(row=1, column=0)
+            self.combo_choice_1.grid(row=1, column=1)
+            self.label_combo_choice_2.grid(row=2, column=0)
+            self.combo_choice_2.grid(row=2, column=1)
+            self.label_combo_choice_3.grid(row=3, column=0)
+            self.combo_choice_3.grid(row=3, column=1)
+            self.rgb_slider = RGBSlider(self, show_result=True)
+            self.rgb_slider.colour.trace_variable("w", self.rgb_update)
+            self.rgb_slider.grid(row=4, column=0, columnspan=2)
+            self.btn_publixh_theme.grid(row=5, column=0)
+            self.demo_form_frame.grid(row=6, column=0)
+
+            self.demo_form_sub_frame.grid(row=0, column=0)
+            self.demo_label_title.grid(row=0, column=0)
+            self.demo_label_entry.grid(row=1, column=0)
+            self.demo_entry.grid(row=1, column=1)
+            self.demo_button.grid(row=2, column=0)
+            self.demo_label_list.grid(row=3, column=0)
+            self.demo_list.grid(row=3, column=1)
+            self.demo_radio_frame.grid(row=4, column=0)
+            self.demo_radio_1.grid(row=0, column=0)
+            self.demo_radio_2.grid(row=1, column=0)
+            self.demo_radio_3.grid(row=2, column=0)
 
         def combo_choice_data(self):
             return {
@@ -1947,6 +2067,59 @@ def test_theme_publisher():
 
         def demo_radio_update(self):
             print(f"got {self.tv_demo_radio.get()}")
+
+        def rgb_update(self, *args):
+            data = self.combo_choice_data()
+            c = self.rgb_slider.colour.get()
+            if all(data.values()):
+                print(f"updating demo\n\t{data=}\n\tcolour{self.rgb_slider.colour.get()}")
+                d1 = data["object"]
+                d2 = data["option"]
+                d3 = data["attribute"]
+                attr_name = {self.customizable[d1][d2][d3]: c}
+                match d1:
+                    case "TextBox":
+                        widgets = [self.demo_entry]
+                    case "Label":
+                        widgets = [
+                            self.demo_label_title,
+                            self.demo_label_entry,
+                            self.demo_label_list,
+                            self.demo_label_combo
+                        ]
+                    case "ComboBox":
+                        widgets = [self.demo_combo]
+                    case "ListBox":
+                        widgets = [self.demo_list]
+                    case "Box":
+                        widgets = [self.demo_form_sub_frame]
+                    case "Button":
+                        widgets = [self.demo_button]
+                    case "OptionButton":
+                        widgets = [
+                            self.demo_radio_1,
+                            self.demo_radio_2,
+                            self.demo_radio_3
+                        ]
+                    case _:
+                        widgets = None
+
+                if widgets is not None:
+                    print(f"ABOUT TO UPDATE WIDGETS\n{widgets=}\n{data=}\n{attr_name=}")
+                    for widget in widgets:
+                        widget.configure(**attr_name)
+                # for k1, v1 in self.customizable:
+                #     if k1 == d1:
+                #         for k2, v2 in v1.items():
+                #             if k2 == d2:
+                #                 for k3, v3 in v2.items():
+                #                     if k3 == d3:
+                #                         attr_name = v3
+
+
+
+        def click_publish_theme(self):
+            print(f"publish")
 
 
     ThemePublisher().mainloop()
@@ -2263,6 +2436,6 @@ if __name__ == "__main__":
     # test_colourify()
     # test_tk_slider()
     # test_rgb_slider()
-    # test_theme_publisher()
+    test_theme_publisher()
     # test_alpha_seq()
-    test_grid_manager()
+    # test_grid_manager()

@@ -560,24 +560,35 @@ Total minutes:			5520
 Total hours:			92.0
 Where to watch:			Disney+
 
+	The Great North
+Genre:				Comedy / Cartoon
+Run (2021 -> 2022):		1 year
+number seasons:			2
+number episodes:		33
+episodes per season:		16.5
+average length of an episode:	23
+Total minutes:			759
+Total hours:			12.65
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Arrested Develpoment
-Genre:				Comedy
-Run (2003 -> 2019):		16 years
-number seasons:			5
-number episodes:		84
-episodes per season:		16.8
+	Gravity Falls
+Genre:				Comedy / Cartoon
+Run (2012 -> 2016):		4 years
+number seasons:			2
+number episodes:		40
+episodes per season:		20.0
 average length of an episode:	22
-Total minutes:			1848
-Total hours:			30.8
-Where to watch:			Netflix
+Total minutes:			880
+Total hours:			14.666666666666666
+Where to watch:			Disney+
 
-Season: 1
-Episode: 6
+Season: 2
+Episode: 20
 
 	How would you like to print the stats?
 1	-	By start year
@@ -649,6 +660,7 @@ sorting by start year...
 |Loki                             |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Loki                             |
 |What If?                         |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |What If?                         |
 |Hawkeye                          |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Hawkeye                          |
+|The Great North                  |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    2021    |The Great North                  |
 ###################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -721,14 +733,15 @@ sorting by start year...
 |Loki                             |    2021    |
 |What If?                         |    2021    |
 |Hawkeye                          |    2021    |
+|The Great North                  |    2021    |
 ################################################
 
-Mean:		2009.67
-Median:		2010.00
-Pstdev:		  7.55
-Pvariance:	 57.05
-Stdev:		  7.63
-Variance:	 58.19
+Mean:		2009.88
+Median:		2010.50
+Pstdev:		  7.64
+Pvariance:	 58.37
+Stdev:		  7.71
+Variance:	 59.52
 
 	How would you like to print the stats?
 1	-	By start year
@@ -800,6 +813,7 @@ sorting by end year...
 |Family Guy                       |   2022   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |Family Guy                       |
 |The Orville                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2022   |The Orville                      |
 |Solar Opposites                  |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   2022   |Solar Opposites                  |
+|The Great North                  |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |   2022   |The Great North                  |
 ###############################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -872,14 +886,15 @@ sorting by end year...
 |Family Guy                       |   2022   |
 |The Orville                      |   2022   |
 |Solar Opposites                  |   2022   |
+|The Great North                  |   2022   |
 ##############################################
 
-Mean:		2016.41
+Mean:		2016.52
 Median:		2019.00
-Pstdev:		  5.14
-Pvariance:	 26.44
-Stdev:		  5.19
-Variance:	 26.97
+Pstdev:		  5.15
+Pvariance:	 26.52
+Stdev:		  5.20
+Variance:	 27.04
 
 	How would you like to print the stats?
 1	-	By start year
@@ -909,6 +924,7 @@ sorting by shortest series length...
 |Loki                             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Loki                             |
 |What If?                         |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |What If?                         |
 |Hawkeye                          |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1              |Hawkeye                          |
+|The Great North                  |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |             1              |The Great North                  |
 |Final Space                      |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2              |Final Space                      |
 |The Mandalorian                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |The Mandalorian                  |
 |Solar Opposites                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2              |Solar Opposites                  |
@@ -981,6 +997,7 @@ sorting by shortest series length...
 |Loki                             |             1              |
 |What If?                         |             1              |
 |Hawkeye                          |             1              |
+|The Great North                  |             1              |
 |Final Space                      |             2              |
 |The Mandalorian                  |             2              |
 |Solar Opposites                  |             2              |
@@ -1025,12 +1042,12 @@ sorting by shortest series length...
 |The Simpsons                     |             33             |
 ################################################################
 
-Mean:		  6.86
+Mean:		  6.75
 Median:		  5.00
-Pstdev:		  6.33
-Pvariance:	 40.04
-Stdev:		  6.39
-Variance:	 40.84
+Pstdev:		  6.32
+Pvariance:	 39.92
+Stdev:		  6.38
+Variance:	 40.70
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1102,6 +1119,7 @@ sorting by longest series length...
 |Loki                             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Loki                             |
 |What If?                         |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |What If?                         |
 |Hawkeye                          |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |             1             |Hawkeye                          |
+|The Great North                  |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |             1             |The Great North                  |
 #################################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1174,14 +1192,15 @@ sorting by longest series length...
 |Loki                             |             1             |
 |What If?                         |             1             |
 |Hawkeye                          |             1             |
+|The Great North                  |             1             |
 ###############################################################
 
-Mean:		  6.86
+Mean:		  6.75
 Median:		  5.00
-Pstdev:		  6.33
-Pvariance:	 40.04
-Stdev:		  6.39
-Variance:	 40.84
+Pstdev:		  6.32
+Pvariance:	 39.92
+Stdev:		  6.38
+Variance:	 40.70
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1215,6 +1234,7 @@ sorting by least number of seasons...
 |Final Space                      |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2           |Final Space                      |
 |The Mandalorian                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2           |The Mandalorian                  |
 |The Mick                         |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2           |The Mick                         |
+|The Great North                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |          2           |The Great North                  |
 |The Orville                      |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          3           |The Orville                      |
 |Avatar, the Last Airbender       |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3           |Avatar, the Last Airbender       |
 |Brickleberry                     |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          3           |Brickleberry                     |
@@ -1287,6 +1307,7 @@ sorting by least number of seasons...
 |Final Space                      |          2           |
 |The Mandalorian                  |          2           |
 |The Mick                         |          2           |
+|The Great North                  |          2           |
 |The Orville                      |          3           |
 |Avatar, the Last Airbender       |          3           |
 |Brickleberry                     |          3           |
@@ -1327,12 +1348,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  5.94
+Mean:		  5.87
 Median:		  5.00
-Pstdev:		  5.46
-Pvariance:	 29.86
-Stdev:		  5.52
-Variance:	 30.46
+Pstdev:		  5.44
+Pvariance:	 29.58
+Stdev:		  5.49
+Variance:	 30.16
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1396,6 +1417,7 @@ sorting by most number of seasons...
 |Final Space                      |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2          |Final Space                      |
 |The Mandalorian                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2          |The Mandalorian                  |
 |The Mick                         |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2          |The Mick                         |
+|The Great North                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |          2          |The Great North                  |
 |The Replacements                 |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1          |The Replacements                 |
 |Gravity Falls Shorts             |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |          1          |Gravity Falls Shorts             |
 |Chernobyl                        |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1          |Chernobyl                        |
@@ -1468,6 +1490,7 @@ sorting by most number of seasons...
 |Final Space                      |          2          |
 |The Mandalorian                  |          2          |
 |The Mick                         |          2          |
+|The Great North                  |          2          |
 |The Replacements                 |          1          |
 |Gravity Falls Shorts             |          1          |
 |Chernobyl                        |          1          |
@@ -1478,12 +1501,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  5.94
+Mean:		  5.87
 Median:		  5.00
-Pstdev:		  5.46
-Pvariance:	 29.86
-Stdev:		  5.52
-Variance:	 30.46
+Pstdev:		  5.44
+Pvariance:	 29.58
+Stdev:		  5.49
+Variance:	 30.16
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1519,6 +1542,7 @@ sorting by least number of episodes...
 |The IT Crowd                     |          25           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          25           |The IT Crowd                     |
 |Solar Opposites                  |          28           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          28           |Solar Opposites                  |
 |Peaky Blinders                   |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          30           |Peaky Blinders                   |
+|The Great North                  |          33           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |          33           |The Great North                  |
 |Brickleberry                     |          36           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          36           |Brickleberry                     |
 |Misfits                          |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          37           |Misfits                          |
 |The Orville                      |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          37           |The Orville                      |
@@ -1591,6 +1615,7 @@ sorting by least number of episodes...
 |The IT Crowd                     |          25           |
 |Solar Opposites                  |          28           |
 |Peaky Blinders                   |          30           |
+|The Great North                  |          33           |
 |Brickleberry                     |          36           |
 |Misfits                          |          37           |
 |The Orville                      |          37           |
@@ -1629,12 +1654,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		 92.51
-Median:		 56.00
-Pstdev:		118.88
-Pvariance:	14133.15
-Stdev:		120.07
-Variance:	14415.81
+Mean:		 91.37
+Median:		 54.50
+Pstdev:		118.02
+Pvariance:	13928.15
+Stdev:		119.17
+Variance:	14201.26
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1691,6 +1716,7 @@ sorting by most number of episodes...
 |The Orville                      |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          37          |The Orville                      |
 |The Mick                         |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37          |The Mick                         |
 |Brickleberry                     |          36          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          36          |Brickleberry                     |
+|The Great North                  |          33          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |          33          |The Great North                  |
 |Peaky Blinders                   |          30          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          30          |Peaky Blinders                   |
 |Solar Opposites                  |          28          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          28          |Solar Opposites                  |
 |The IT Crowd                     |          25          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          25          |The IT Crowd                     |
@@ -1763,6 +1789,7 @@ sorting by most number of episodes...
 |The Orville                      |          37          |
 |The Mick                         |          37          |
 |Brickleberry                     |          36          |
+|The Great North                  |          33          |
 |Peaky Blinders                   |          30          |
 |Solar Opposites                  |          28          |
 |The IT Crowd                     |          25          |
@@ -1780,12 +1807,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 92.51
-Median:		 56.00
-Pstdev:		118.88
-Pvariance:	14133.15
-Stdev:		120.07
-Variance:	14415.81
+Mean:		 91.37
+Median:		 54.50
+Pstdev:		118.02
+Pvariance:	13928.15
+Stdev:		119.17
+Variance:	14201.26
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1818,6 +1845,7 @@ sorting by shortest time...
 |The IT Crowd                     |   9.166667    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   9.166667    |The IT Crowd                     |
 |Solar Opposites                  |   11.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   11.200000   |Solar Opposites                  |
 |The Mandalorian                  |   11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   11.733333   |The Mandalorian                  |
+|The Great North                  |   12.650000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |   12.650000   |The Great North                  |
 |Brickleberry                     |   13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |   13.200000   |Brickleberry                     |
 |The Mick                         |   13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |   13.566667   |The Mick                         |
 |Baskets                          |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |   14.666667   |Baskets                          |
@@ -1890,6 +1918,7 @@ sorting by shortest time...
 |The IT Crowd                     |   9.166667    |
 |Solar Opposites                  |   11.200000   |
 |The Mandalorian                  |   11.733333   |
+|The Great North                  |   12.650000   |
 |Brickleberry                     |   13.200000   |
 |The Mick                         |   13.566667   |
 |Baskets                          |   14.666667   |
@@ -1931,12 +1960,12 @@ sorting by shortest time...
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 43.36
-Median:		 27.13
-Pstdev:		 53.01
-Pvariance:	2810.53
-Stdev:		 53.54
-Variance:	2866.74
+Mean:		 42.77
+Median:		 26.60
+Pstdev:		 52.67
+Pvariance:	2774.27
+Stdev:		 53.19
+Variance:	2828.67
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1996,6 +2025,7 @@ sorting by longest time...
 |Gravity Falls                    |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |  14.666667   |Gravity Falls                    |
 |The Mick                         |  13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |  13.566667   |The Mick                         |
 |Brickleberry                     |  13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |  13.200000   |Brickleberry                     |
+|The Great North                  |  12.650000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |  12.650000   |The Great North                  |
 |The Mandalorian                  |  11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |  11.733333   |The Mandalorian                  |
 |Solar Opposites                  |  11.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |  11.200000   |Solar Opposites                  |
 |The IT Crowd                     |   9.166667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   9.166667   |The IT Crowd                     |
@@ -2068,6 +2098,7 @@ sorting by longest time...
 |Gravity Falls                    |  14.666667   |
 |The Mick                         |  13.566667   |
 |Brickleberry                     |  13.200000   |
+|The Great North                  |  12.650000   |
 |The Mandalorian                  |  11.733333   |
 |Solar Opposites                  |  11.200000   |
 |The IT Crowd                     |   9.166667   |
@@ -2082,12 +2113,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 43.36
-Median:		 27.13
-Pstdev:		 53.01
-Pvariance:	2810.53
-Stdev:		 53.54
-Variance:	2866.74
+Mean:		 42.77
+Median:		 26.60
+Pstdev:		 52.67
+Pvariance:	2774.27
+Stdev:		 53.19
+Variance:	2828.67
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2129,6 +2160,7 @@ sorting by most episodes per season...
 |Gravity Falls Shorts             |           17.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |           17.0           |Gravity Falls Shorts             |
 |Arrested Develpoment             |        16.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |        16.800000         |Arrested Develpoment             |
 |The Last Man on Earth            |        16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |        16.750000         |The Last Man on Earth            |
+|The Great North                  |        16.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |        16.500000         |The Great North                  |
 |Futurama                         |           14.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |           14.0           |Futurama                         |
 |Sons of Anarchy                  |        13.142857         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |        13.142857         |Sons of Anarchy                  |
 |Breaking Bad                     |        12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |        12.400000         |Breaking Bad                     |
@@ -2201,6 +2233,7 @@ sorting by most episodes per season...
 |Gravity Falls Shorts             |           17.0           |
 |Arrested Develpoment             |        16.800000         |
 |The Last Man on Earth            |        16.750000         |
+|The Great North                  |        16.500000         |
 |Futurama                         |           14.0           |
 |Sons of Anarchy                  |        13.142857         |
 |Breaking Bad                     |        12.400000         |
@@ -2233,12 +2266,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.08
-Median:		 12.29
-Pstdev:		  7.59
-Pvariance:	 57.63
-Stdev:		  7.67
-Variance:	 58.78
+Mean:		 14.13
+Median:		 12.31
+Pstdev:		  7.53
+Pvariance:	 56.63
+Stdev:		  7.60
+Variance:	 57.74
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2289,6 +2322,7 @@ sorting by least episodes per season...
 |Breaking Bad                     |         12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         12.400000         |Breaking Bad                     |
 |Sons of Anarchy                  |         13.142857         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         13.142857         |Sons of Anarchy                  |
 |Futurama                         |           14.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |           14.0            |Futurama                         |
+|The Great North                  |         16.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |         16.500000         |The Great North                  |
 |The Last Man on Earth            |         16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |         16.750000         |The Last Man on Earth            |
 |Arrested Develpoment             |         16.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         16.800000         |Arrested Develpoment             |
 |Gravity Falls Shorts             |           17.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |           17.0            |Gravity Falls Shorts             |
@@ -2361,6 +2395,7 @@ sorting by least episodes per season...
 |Breaking Bad                     |         12.400000         |
 |Sons of Anarchy                  |         13.142857         |
 |Futurama                         |           14.0            |
+|The Great North                  |         16.500000         |
 |The Last Man on Earth            |         16.750000         |
 |Arrested Develpoment             |         16.800000         |
 |Gravity Falls Shorts             |           17.0            |
@@ -2384,14 +2419,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.08
-Median:		 12.29
-Pstdev:		  7.59
-Pvariance:	 57.63
-Stdev:		  7.67
-Variance:	 58.78
+Mean:		 14.13
+Median:		 12.31
+Pstdev:		  7.53
+Pvariance:	 56.63
+Stdev:		  7.60
+Variance:	 57.74
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 17 | 15 | 17 | 19 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 20 | 13 | 11 | 4  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 2  | 3  | 5  | 7  | 10 | 9  | 10 | 10 | 16 | 17 | 15 | 17 | 19 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 20 | 13 | 12 | 5  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################

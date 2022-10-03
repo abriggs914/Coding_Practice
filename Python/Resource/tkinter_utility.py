@@ -1,5 +1,4 @@
 import tkinter
-from tkinter import ttk
 from utility import grid_cells, clamp_rect, clamp, isnumber
 from colour_utility import rgb_to_hex, font_foreground, Colour
 from tkinter import ttk, messagebox
@@ -11,8 +10,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.10
-    Date...........2022-09-29
+    Version..............1.11
+    Date...........2022-10-03
     Author.......Avery Briggs
     """
 
@@ -423,34 +422,196 @@ class Slider(tkinter.Frame):
     # def (update_entry
 
 
+# class RGBSlider(tkinter.Frame):
+#
+#     def __init__(self, master):
+#         super().__init__(master)
+#
+#         self.colour = None
+#
+#         self.slider_red = Slider(self, minimum=0, maximum=255)
+#         self.slider_green = Slider(self, minimum=0, maximum=255)
+#         self.slider_blue = Slider(self, minimum=0, maximum=255)
+#
+#         self.tv_label_red, self.label_red, self.tv_entry_red, self.entry_red = entry_factory(self, tv_label="Red:",
+#                                                                                              tv_entry=self.slider_red.value)
+#         self.tv_label_green, self.label_green, self.tv_entry_green, self.entry_green = entry_factory(self,
+#                                                                                                      tv_label="Green:",
+#                                                                                                      tv_entry=self.slider_green.value)
+#         self.tv_label_blue, self.label_blue, self.tv_entry_blue, self.entry_blue = entry_factory(self, tv_label="Blue:",
+#                                                                                                  tv_entry=self.slider_blue.value)
+#         self.tv_label_res, self.label_res, self.tv_entry_res, self.entry_res = entry_factory(self, tv_label="Result:",
+#                                                                                              tv_entry="Sample Text #123.")
+#
+#         self.slider_red.value.trace_variable("w", self.update_colour)
+#         self.slider_green.value.trace_variable("w", self.update_colour)
+#         self.slider_blue.value.trace_variable("w", self.update_colour)
+#
+#         self.tv_entry_red.trace_variable("w", self.update_colour_entry)
+#         self.tv_entry_green.trace_variable("w", self.update_colour_entry)
+#         self.tv_entry_blue.trace_variable("w", self.update_colour_entry)
+#
+#         self.label_red.grid(row=1, column=1)
+#         self.entry_red.grid(row=1, column=2)
+#         self.slider_red.grid(row=1, column=3)
+#         self.label_green.grid(row=2, column=1)
+#         self.entry_green.grid(row=2, column=2)
+#         self.slider_green.grid(row=2, column=3)
+#         self.label_blue.grid(row=3, column=1)
+#         self.entry_blue.grid(row=3, column=2)
+#         self.slider_blue.grid(row=3, column=3)
+#         self.label_res.grid(row=4, column=1)
+#         self.entry_res.grid(row=4, column=2)
+#         self.update_colour(None, None, None)
+#
+#     def update_colour_entry(self, *args):
+#         print(f"update_colour_entry {args=}")
+#         # self.
+#
+#     def update_colour(self, var_name, index, mode):
+#         print(f"update_colour")
+#         try:
+#             r = self.slider_red.value.get()
+#             r_flag = False
+#         except tkinter.TclError as te:
+#             # if self.slider_red.value != "":
+#             #     self.slider_red.value.set(0)
+#             # r = self.slider_red.value.get()
+#             r = 0
+#             r_flag = True
+#             print(f"{te=}")
+#
+#         try:
+#             g = self.slider_green.value.get()
+#             g_flag = False
+#         except tkinter.TclError as te:
+#             # if self.slider_green.value != "":
+#             #     self.slider_green.value.set(0)
+#             # g = self.slider_green.value.get()
+#             g = 0
+#             g_flag = True
+#             print(f"{te=}")
+#
+#         try:
+#             b = self.slider_blue.value.get()
+#             b_flag = False
+#         except tkinter.TclError as te:
+#             # if self.slider_blue.value != "":
+#             #     self.slider_blue.value.set(0)
+#             # b = self.slider_blue.value.get()
+#             b = 0
+#             b_flag = True
+#             print(f"{te=}")
+#
+#         print(f"{r=} {g=}, {b=}")
+#         if not isnumber(r) or r < 0 or r > 255 or r_flag:
+#             self.entry_red.configure(foreground="red")
+#         else:
+#             self.entry_red.configure(foreground="black")
+#         if not isnumber(g) or g < 0 or g > 255 or g_flag:
+#             self.entry_green.configure(foreground="red")
+#         else:
+#             self.entry_green.configure(foreground="black")
+#         if not isnumber(b) or b < 0 or b > 255 or b_flag:
+#             self.entry_blue.configure(foreground="red")
+#         else:
+#             self.entry_blue.configure(foreground="black")
+#
+#         try:
+#             self.colour = Colour(r, g, b)
+#         except TypeError as te:
+#             self.colour = Colour(125, 125, 125)
+#             print(f"{te=}")
+#
+#         h = self.colour.hex_code
+#         self.entry_res.config(background=h, foreground=font_foreground(h, rgb=False))
+
 class RGBSlider(tkinter.Frame):
 
-    def __init__(self, master):
+    def __init__(self, master, show_result=True):
         super().__init__(master)
 
-        self.colour = None
+        self.colour = tkinter.Variable(self, value=None)
 
-        self.slider_red = Slider(self, minimum=0, maximum=255)
-        self.slider_green = Slider(self, minimum=0, maximum=255)
-        self.slider_blue = Slider(self, minimum=0, maximum=255)
+        self.show_result = show_result
 
-        self.tv_label_red, self.label_red, self.tv_entry_red, self.entry_red = entry_factory(self, tv_label="Red:",
-                                                                                             tv_entry=self.slider_red.value)
-        self.tv_label_green, self.label_green, self.tv_entry_green, self.entry_green = entry_factory(self,
-                                                                                                     tv_label="Green:",
-                                                                                                     tv_entry=self.slider_green.value)
-        self.tv_label_blue, self.label_blue, self.tv_entry_blue, self.entry_blue = entry_factory(self, tv_label="Blue:",
-                                                                                                 tv_entry=self.slider_blue.value)
-        self.tv_label_res, self.label_res, self.tv_entry_res, self.entry_res = entry_factory(self, tv_label="Result:",
-                                                                                             tv_entry="Sample Text #123.")
+        self.tv_value_red = tkinter.IntVar(self, value=0)
+        self.tv_value_green = tkinter.IntVar(self, value=0)
+        self.tv_value_blue = tkinter.IntVar(self, value=0)
 
-        self.slider_red.value.trace_variable("w", self.update_colour)
-        self.slider_green.value.trace_variable("w", self.update_colour)
-        self.slider_blue.value.trace_variable("w", self.update_colour)
+        self.slider_red = ttk.Scale(
+            self,
+            from_=0,
+            to=255,
+            orient=tkinter.HORIZONTAL,
+            variable=self.tv_value_red,
+            command=self.update_colour
+        )
+        self.slider_green = ttk.Scale(
+            self,
+            from_=0,
+            to=255,
+            orient=tkinter.HORIZONTAL,
+            variable=self.tv_value_green,
+            command=self.update_colour
+        )
+        self.slider_blue = ttk.Scale(
+            self,
+            from_=0,
+            to=255,
+            orient=tkinter.HORIZONTAL,
+            variable=self.tv_value_blue,
+            command=self.update_colour
+        )
 
-        self.tv_entry_red.trace_variable("w", self.update_colour_entry)
-        self.tv_entry_green.trace_variable("w", self.update_colour_entry)
-        self.tv_entry_blue.trace_variable("w", self.update_colour_entry)
+        self.tv_label_red,\
+        self.label_red,\
+        self.tv_entry_red,\
+        self.entry_red\
+            = entry_factory(
+                self,
+                tv_label="Red:",
+                tv_entry=self.tv_value_red
+        )
+
+        self.tv_label_green,\
+        self.label_green,\
+        self.tv_entry_green,\
+        self.entry_green\
+            = entry_factory(
+                self,
+                tv_label="Green:",
+                tv_entry=self.tv_value_green
+        )
+
+        self.tv_label_blue,\
+        self.label_blue,\
+        self.tv_entry_blue,\
+        self.entry_blue\
+            = entry_factory(
+                self,
+                tv_label="Blue:",
+                tv_entry=self.tv_value_blue
+        )
+
+        if self.show_result:
+            self.tv_label_res,\
+            self.label_res,\
+            self.tv_entry_res,\
+            self.entry_res\
+                = entry_factory(
+                    self,
+                    tv_label="Result:",
+                    tv_entry="Sample Text #123."
+            )
+
+        # self.slider_red.value.trace_variable("w", self.update_colour)
+        # self.slider_green.value.trace_variable("w", self.update_colour)
+        # self.slider_blue.value.trace_variable("w", self.update_colour)
+
+        self.tv_entry_red.trace_variable("w", self.update_colour)
+        self.tv_entry_green.trace_variable("w", self.update_colour)
+        self.tv_entry_blue.trace_variable("w", self.update_colour)
 
         self.label_red.grid(row=1, column=1)
         self.entry_red.grid(row=1, column=2)
@@ -469,10 +630,11 @@ class RGBSlider(tkinter.Frame):
         print(f"update_colour_entry {args=}")
         # self.
 
-    def update_colour(self, var_name, index, mode):
+    def update_colour(self, *args):
         print(f"update_colour")
         try:
-            r = self.slider_red.value.get()
+            # r = self.slider_red.get()
+            r = self.tv_entry_red.get()
             r_flag = False
         except tkinter.TclError as te:
             # if self.slider_red.value != "":
@@ -483,7 +645,8 @@ class RGBSlider(tkinter.Frame):
             print(f"{te=}")
 
         try:
-            g = self.slider_green.value.get()
+            # g = self.slider_green.get()
+            g = self.tv_entry_green.get()
             g_flag = False
         except tkinter.TclError as te:
             # if self.slider_green.value != "":
@@ -494,7 +657,8 @@ class RGBSlider(tkinter.Frame):
             print(f"{te=}")
 
         try:
-            b = self.slider_blue.value.get()
+            # b = self.slider_blue.get()
+            b = self.tv_entry_blue.get()
             b_flag = False
         except tkinter.TclError as te:
             # if self.slider_blue.value != "":
@@ -519,14 +683,14 @@ class RGBSlider(tkinter.Frame):
             self.entry_blue.configure(foreground="black")
 
         try:
-            self.colour = Colour(r, g, b)
+            self.colour.set(Colour(r, g, b).hex_code)
         except TypeError as te:
-            self.colour = Colour(125, 125, 125)
+            self.colour.set(Colour(125, 125, 125).hex_code)
             print(f"{te=}")
 
-        h = self.colour.hex_code
-        self.entry_res.config(background=h, foreground=font_foreground(h, rgb=False))
-
+        if self.show_result:
+            h = Colour(self.colour.get()).hex_code
+            self.entry_res.config(background=h, foreground=font_foreground(h, rgb=False))
 
 # https://stackoverflow.com/questions/70147814/hint-entry-widget-tkinter
 class EntryWithPlaceholder(tkinter.Entry):

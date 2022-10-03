@@ -736,6 +736,17 @@ sons_of_anarchy = TVSeries("Sons of Anarchy", {
 	False,
 	"Drama / Action",
 	"Disney+")
+	
+	
+the_great_north = TVSeries("The Great North", {
+	1: 11,
+	2: 22},
+	23,
+	2021,
+	2022,
+	True,
+	"Comedy / Cartoon",
+	"Disney+")
 
 
 series_list = [
@@ -789,7 +800,8 @@ series_list = [
 	gravity_falls_shorts,
 	the_replacements,
 	star_wars_the_clone_wars,
-	sons_of_anarchy
+	sons_of_anarchy,
+	the_great_north
 ]
 
    
