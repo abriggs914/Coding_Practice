@@ -1747,9 +1747,10 @@ def test_theme_publisher():
 
             self.status = tkinter.Variable(self)
 
-            self.fonts_list = tkinter.font.families()
-            self.font_sizes_list = [6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32]
-            self.font_weights_list = ["normal", "bold"]
+            self.fonts_list = list(tkinter.font.families())
+            self.fonts_list.sort()
+            self.font_sizes_list = list(map(str, [6, 8, 10, 12, 14, 16, 18, 20]))
+            self.font_weights_list = ["normal", "bold", "italic", "roman"]
             # combo for font choice
             # spinner for font size
             # spinner for font weight
@@ -1882,6 +1883,43 @@ def test_theme_publisher():
 
             return theme
 
+        def __repr__(self):
+            return "\n".join([
+                f"\t< THEME >",
+                f"{self.name.get()=}",
+                f"{self.tv_text_box_object_back_colour.get()=}",
+                f"{self.tv_text_box_object_border_colour.get()=}",
+                f"{self.tv_text_box_text_font_name.get()=}",
+                f"{self.tv_text_box_text_fore_colour.get()=}",
+
+                f"{self.tv_label_object_back_colour.get()=}",
+                f"{self.tv_label_object_border_colour.get()=}",
+                f"{self.tv_label_text_font_name.get()=}",
+                f"{self.tv_label_text_fore_colour.get()=}",
+
+                f"{self.tv_list_box_object_back_colour.get()=}",
+                f"{self.tv_list_box_object_border_colour.get()=}",
+                f"{self.tv_list_box_text_font_name.get()=}",
+                f"{self.tv_list_box_text_fore_colour.get()=}",
+
+                f"{self.tv_combo_box_object_back_colour.get()=}",
+                f"{self.tv_combo_box_object_border_colour.get()=}",
+                f"{self.tv_combo_box_text_font_name.get()=}",
+                f"{self.tv_combo_box_text_fore_colour.get()=}",
+
+                f"{self.tv_option_button_object_border_colour.get()=}",
+
+                f"{self.tv_box_object_back_colour.get()=}",
+                f"{self.tv_box_object_border_colour.get()=}",
+
+                f"{self.tv_button_object_back_colour.get()=}",
+                f"{self.tv_button_object_border_colour.get()=}",
+                f"{self.tv_button_object_hover_colour.get()=}",
+                f"{self.tv_button_text_fore_colour.get()=}",
+                f"{self.tv_button_text_hover_colour.get()=}",
+                f"{self.tv_button_text_font_name.get()=}"
+            ])
+
     class ThemePublisher(tkinter.Tk):
 
         def __init__(
@@ -1894,6 +1932,7 @@ def test_theme_publisher():
             self.theme_dir = theme_dir
             self.loaded_themes = []
             self.theme = Theme()
+            self.working_theme = Theme()
             self.theme_idx = tkinter.IntVar(self, value=0)
 
             # object type: {access_property: tkinter_property}
@@ -2108,6 +2147,7 @@ def test_theme_publisher():
             self.rgb_slider.grid(row=5, column=0, columnspan=2)
 
             self.font_chooser = FontChooser(self)
+            self.font_chooser.status.trace_variable("w", self.font_update)
             self.font_chooser.grid(row=5, column=0, columnspan=2)
 
             self.number_chooser = ttk.Scale(self, from_=0, to=100, orient=tkinter.HORIZONTAL)
@@ -2228,6 +2268,7 @@ def test_theme_publisher():
                         # loaded_themes.append(json.load(f))
                         theme = self.parse(json.load(f))
                         self.loaded_themes.append(theme)
+                        print(f"LOADED THEME\n\n{theme}")
 
             print(f"Loaded {len(self.loaded_themes)} themes on start.")
 
@@ -2287,11 +2328,61 @@ def test_theme_publisher():
                 #                     if k3 == d3:
                 #                         attr_name = v3
 
+        def font_update(self, *args):
+
+            data = self.combo_choice_data()
+            f = eval(self.font_chooser.status.get())
+            f_name = f["name"]
+            f_weight = f["weight"]
+            f_size = f["size"]
+            f = (f_name, f_size, f_weight)
+
+            if all(data.values()):
+                print(f"updating demo\n\t{data=}\n\tcolour{self.rgb_slider.colour.get()}")
+                d1 = data["object"]
+                d2 = data["option"]
+                d3 = data["attribute"]
+                attr_name = {self.customizable[d1][d2][d3]: f}
+                match d1:
+                    case "TextBox":
+                        widgets = [self.demo_entry]
+                    case "Label":
+                        widgets = [
+                            self.demo_label_title,
+                            self.demo_label_entry,
+                            self.demo_label_list,
+                            self.demo_label_combo
+                        ]
+                    case "ComboBox":
+                        widgets = [self.demo_combo]
+                    case "ListBox":
+                        widgets = [self.demo_list]
+                    case "Box":
+                        widgets = [self.demo_form_sub_frame]
+                    case "Button":
+                        widgets = [self.demo_button]
+                    case "OptionButton":
+                        widgets = [
+                            self.demo_radio_1,
+                            self.demo_radio_2,
+                            self.demo_radio_3
+                        ]
+                    case _:
+                        widgets = None
+
+                if widgets is not None:
+                    print(f"ABOUT TO UPDATE WIDGETS\n{widgets=}\n{data=}\n{attr_name=}")
+                    for widget in widgets:
+                        widget.configure(**attr_name)
+
+            self.dirty_current_theme()
+
         def click_prev_theme(self):
             v = self.theme_idx.get()
             print(f"click_prev_theme {v} -> {v - 1}")
             if v > 0:
                 self.theme_idx.set(v - 1)
+                self.demo_current_theme()
             else:
                 messagebox.showinfo(title="Theme Publisher", message="Cannot go back any further.")
 
@@ -2300,8 +2391,35 @@ def test_theme_publisher():
             print(f"click_next_theme {v} -> {v + 1}")
             if v < len(self.loaded_themes):
                 self.theme_idx.set(v + 1)
+                self.demo_current_theme()
             else:
                 messagebox.showinfo(title="Theme Publisher", message="Cannot go any farther forward.")
+
+        def demo_current_theme(self):
+            idx = self.theme_idx.get()
+
+            if idx < len(self.loaded_themes):
+                theme = self.loaded_themes[idx]
+            else:
+                theme = self.working_theme
+
+            print(f"{theme=}")
+
+            v_01 = theme.tv_box_object_back_colour.get()
+            v_02 = theme.tv_box_object_border_colour.get()
+            if v_01 is not None:
+                print(f"{v_01=}")
+                self.demo_form_sub_frame.configure(background=v_01)
+            else:
+                print(f"theme.tv_box_object_back_colour is None")
+
+            if v_02 is not None:
+                print(f"{v_02=}")
+                self.demo_form_sub_frame.configure(background=v_02)
+            else:
+                print(f"theme.tv_box_object_border_colour is None")
+
+            self.theme = theme
 
         def dirty_current_theme(self):
             dirty = list(self.dirty_themes.get())
@@ -2335,6 +2453,7 @@ def test_theme_publisher():
             theme = Theme()
             theme = theme.parse(parsed_theme)
             print(f"theme={theme}")
+            return theme
 
 
 
