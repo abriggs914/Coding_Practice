@@ -11,8 +11,8 @@ from tkinter_utility import *
 VERSION = \
     """	
         GUI for gui theme design
-        Version.............1.60
-        Date..........2022-09-27
+        Version.............1.01
+        Date..........2022-10-05
         Author......Avery Briggs
     """
 
