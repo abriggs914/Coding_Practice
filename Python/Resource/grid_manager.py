@@ -1,3 +1,6 @@
+from colour_utility import *
+
+
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
@@ -553,26 +556,32 @@ if __name__ == '__main__':
     WIDTH, HEIGHT = 900, 600
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
 
-    namer = alpha_seq(100, prefix="frame_", capital_alpha=False)
+    n_widgets = 19
+    namer = alpha_seq(n_widgets, prefix="frame_", capital_alpha=False)
+    grad = rainbow_gradient(n_widgets, rgb=False)
 
     widgets_1 = [
         [
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+            # A, B, C
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50)
         ],
         [
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+            # D
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
             {
+                # E
                 "widget":
-                    tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+                    tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
                 "columnspan": 3,
                 "sticky": "ew"
             }
         ],
         [
             {
-                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50,
+                # F
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50,
                                          height=50),
                 "columnspan": 2,
                 "rowspan": 2,
@@ -581,42 +590,50 @@ if __name__ == '__main__':
                 # "pady": 45
             },
             {
-                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50,
+                # G
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50,
                                          height=50),
                 "columnspan": 2,
                 "sticky": "ew"
             }
         ],
         [
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+            # H, I, J
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50)
         ],
         [None, None, None,
-         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)],
+         # K
+         tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50)],
         [None,
-         {"widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+         # L
+         {"widget": tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
           "ipadx": 20, "ipady": 20}]
 
     ]
 
     widgets_2 = [
         [
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+            # M, N, O
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50)
         ],
         [
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+            # P, Q
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50),
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50)
         ],
         [
             {
-                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50,
+                # R
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50,
                                          height=50),
                 "columnspan": 2
             },
-            tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+            # S
+            tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=50, height=50)
         ]
     ]
 

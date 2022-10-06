@@ -11,8 +11,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
         General Utility file of RGB colour values
-        Version...........1.19
-        Date........2022-09-13
+        Version...........1.20
+        Date........2022-10-05
         Author....Avery Briggs
     """
 
@@ -2009,7 +2009,7 @@ def font_foreground(colour_in, threshold=255 * 3 / 2, rgb=True):
         raise TypeError(f"Error cannot convert \'{colour_in}\' to a valid RGB colour scheme.", te)
 
 
-def rainbow_gradient(n_slices=None, start_colour="red"):
+def rainbow_gradient(n_slices=None, start_colour="red", rgb=True):
     # values = [(255, i, 0) for i in range(256)] + \
     #          [(i, 255, 0) for i in range(255, -1, -1)] + \
     #          [(0, 255, i) for i in range(255)] + \
@@ -2048,4 +2048,7 @@ def rainbow_gradient(n_slices=None, start_colour="red"):
     # print(f"C({len(values)}): <{values}>")
     # print(f"D({len(lst)}): <{lst[idx:] + lst[:idx]}>")
     for val in values:
-        yield val
+        if rgb:
+            yield val
+        else:
+            yield rgb_to_hex(val)
