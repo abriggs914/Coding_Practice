@@ -180,9 +180,6 @@ def text_rect_and_line():
 # print(rotate_matrix())
 
 
-def print_hi():
-    print("Hi from print_hi")
-
 
 def test_TextBox():
     app = PygameApplication("Test TextBox", 600, 600)
@@ -2030,7 +2027,7 @@ if __name__ == "__main__":
     # text_rect_and_line()
     # test_money_str_format
     # test_find_north_side()
-    # test_new_rect()  # This one looks cool
+    test_new_rect()  # This one looks cool
 
     # test_rect_collision()
     # test_menubar()
@@ -2055,6 +2052,6 @@ if __name__ == "__main__":
     # test_colourify()
     # test_tk_slider()
     # test_rgb_slider()
-    test_theme_publisher()
+    # test_theme_publisher()
     # test_alpha_seq()
     # test_grid_manager()
