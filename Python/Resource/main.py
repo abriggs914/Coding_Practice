@@ -2027,7 +2027,7 @@ if __name__ == "__main__":
     # text_rect_and_line()
     # test_money_str_format
     # test_find_north_side()
-    test_new_rect()  # This one looks cool
+    # test_new_rect()  # This one looks cool
 
     # test_rect_collision()
     # test_menubar()
@@ -2054,4 +2054,4 @@ if __name__ == "__main__":
     # test_rgb_slider()
     # test_theme_publisher()
     # test_alpha_seq()
-    # test_grid_manager()
+    test_grid_manager()
