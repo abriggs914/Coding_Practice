@@ -644,7 +644,7 @@ if __name__ == '__main__':
     # gm.grid_widgets(widgets_1)
     # gm.grid_widgets(widgets_2)
     gm.grid_widgets()
-    gm.grid_widgets(widgets_2)
+    # gm.grid_widgets(widgets_2)
 
     # grid_manage_1(widgets_1)
     # grid_manage_1(widgets_2)

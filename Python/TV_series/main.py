@@ -747,6 +747,29 @@ the_great_north = TVSeries("The Great North", {
 	True,
 	"Comedy / Cartoon",
 	"Disney+")
+	
+	
+king_of_the_hill = TVSeries("King of the Hill", {
+	1: 12,
+	2: 23,
+	3: 25,
+	4: 24,
+	5: 20,
+	6: 22,
+	7: 23,
+	8: 22,
+	9: 15,
+	10: 15,
+	11: 12,
+	12: 22,
+	13: 24,
+	},
+	23,
+	1997,
+	2009,
+	True,
+	"Comedy / Cartoon",
+	"Disney+")
 
 
 series_list = [
@@ -801,7 +824,8 @@ series_list = [
 	the_replacements,
 	star_wars_the_clone_wars,
 	sons_of_anarchy,
-	the_great_north
+	the_great_north,
+	king_of_the_hill
 ]
 
    
