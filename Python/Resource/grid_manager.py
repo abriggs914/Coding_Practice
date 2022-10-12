@@ -218,7 +218,7 @@ def VERSION_AUTHOR():
 
 class GridManager:
 
-    def __init__(self, root):
+    def __init__(self, root, mode: str = ):
 
         self.root = root
 
@@ -605,13 +605,18 @@ if __name__ == '__main__':
             tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=can_w, height=can_h),
             tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=can_w, height=can_h)
         ],
-        [None, None, None,
-         # K
-         tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=can_w, height=can_h)],
-        [None,
-         # L
-         {"widget": tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=can_w, height=can_h),
-          "ipadx": 20, "ipady": 20}]
+        [
+                None, None, None,
+                # K
+                tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=can_w, height=can_h)
+        ],
+        [
+            None,
+            # L
+            {
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=next(grad), width=can_w, height=can_h), "ipadx": 20, "ipady": 20
+            }
+        ]
 
     ]
 
