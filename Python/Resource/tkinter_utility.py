@@ -10,8 +10,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.11
-    Date...........2022-10-03
+    Version..............1.12
+    Date...........2022-10-16
     Author.......Avery Briggs
     """
 
@@ -177,6 +177,44 @@ def list_factory(master, tv_label=None, kwargs_label=None, tv_list=None, kwargs_
     return res_tv_label, res_label, res_tv_list, res_list
 
 
+def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
+    if isinstance(buttons, list) or isinstance(buttons, tuple) and buttons:
+        if default_value is not None:
+            if is_tk_var(default_value):
+                var = default_value
+            else:
+                var = tkinter.StringVar(default_value)
+        else:
+            var = tkinter.StringVar(master, buttons[0])
+
+        print(f"CREATED {var.get()=}")
+
+        r_buttons = []
+        tv_vars = []
+        for btn in buttons:
+            if is_tk_var(btn):
+                tv_var = btn
+            else:
+                tv_var = tkinter.StringVar(master, value=btn)
+            tv_vars.append(tv_var)
+            if kwargs_buttons is not None:
+                print(f"WARNING kwargs param is applied to each radio button")
+                r_buttons.append(tkinter.Radiobutton(master, variable=var, textvariable=tv_var, **kwargs_buttons, value=btn))
+            else:
+                r_buttons.append(tkinter.Radiobutton(master, variable=var, textvariable=tv_var, value=btn,))
+
+        return var, tv_vars, r_buttons
+    else:
+        raise Exception("Error, must pass a list of buttons.")
+
+        # tv_sort_direction = StringVar(WIN, value="descending")
+        # tv_sort_dir_a = StringVar(WIN, value="ascending")
+        # tv_sort_dir_d = StringVar(WIN, value="descending")
+        # rb_sda = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="ascending", textvariable=tv_sort_dir_a)
+        # rb_sdd = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="descending", textvariable=tv_sort_dir_d)
+
+
+
 def test_entry_factory():
     WIN = tkinter.Tk()
     WIDTH, HEIGHT = 500, 500
@@ -289,6 +327,29 @@ def test_list_factory():
             print(f"\t{d.get(i)=}")
 
     d.bind('<<ListboxSelect>>', update_f)
+    WIN.mainloop()
+
+
+def test_radio_factory():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    def update_radio_choice(*args):
+        print(f"{a.get()=}")
+
+    buttons_list = [
+        "a",
+        "b",
+        "c",
+        "quit"
+    ]
+    a, b, c = radio_factory(WIN, buttons_list)
+
+    for btn in c:
+        btn.pack()
+
+    a.trace_variable("w", update_radio_choice)
+
     WIN.mainloop()
 
 
@@ -951,4 +1012,5 @@ if __name__ == '__main__':
     # test_combo_1()
     # test_combo_factory()
     # test_list_factory()
-    test_messagebox()
+    # test_messagebox()
+    test_radio_factory()

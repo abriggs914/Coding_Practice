@@ -2,6 +2,7 @@ import datetime
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice, randint
+from operator import itemgetter
 from plyer import notification
 import datetime as dt
 import calendar
@@ -17,8 +18,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.60
-        Date...........2022-09-27
+        Version..............1.61
+        Date...........2022-10-15
         Author.......Avery Briggs
     """
 
@@ -1958,6 +1959,11 @@ def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=Fal
         # else:
             # print(f"VAL='{val}'")
         yield f"{prefix}{val}{suffix}"
+
+
+def sort_2_lists(list_1, list_2):
+    # https://stackoverflow.com/questions/13668393/python-sorting-two-lists
+    return [list(x) for x in zip(*sorted(zip(list_1, list_2), key=itemgetter(0)))]
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

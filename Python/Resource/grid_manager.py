@@ -1,3 +1,5 @@
+from typing import Literal
+
 from colour_utility import *
 
 
@@ -218,7 +220,7 @@ def VERSION_AUTHOR():
 
 class GridManager:
 
-    def __init__(self, root, mode: str = ):
+    def __init__(self, root, mode: Literal["superimpose", "wrap"]):
 
         self.root = root
 
@@ -645,7 +647,7 @@ if __name__ == '__main__':
     ]
 
     WIN.grid()
-    gm = GridManager(WIN)
+    gm = GridManager(WIN, "superimpose")
     # gm.grid_widgets(widgets_1)
     # gm.grid_widgets(widgets_2)
     gm.grid_widgets()
