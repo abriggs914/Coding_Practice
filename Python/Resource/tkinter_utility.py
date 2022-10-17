@@ -10,8 +10,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.12
-    Date...........2022-10-16
+    Version..............1.13
+    Date...........2022-10-17
     Author.......Avery Briggs
     """
 
@@ -187,7 +187,7 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
         else:
             var = tkinter.StringVar(master, buttons[0])
 
-        print(f"CREATED {var.get()=}")
+        # print(f"CREATED {var.get()=}")
 
         r_buttons = []
         tv_vars = []
