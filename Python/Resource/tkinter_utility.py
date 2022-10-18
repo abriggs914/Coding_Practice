@@ -1011,6 +1011,6 @@ if __name__ == '__main__':
     # test_entry_factory()
     # test_combo_1()
     # test_combo_factory()
-    # test_list_factory()
+    test_list_factory()
     # test_messagebox()
-    test_radio_factory()
+    # test_radio_factory()

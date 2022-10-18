@@ -10,8 +10,8 @@ from colour_utility import *
 VERSION = \
     """	
         Class to simplify tkinter grid geometry.
-        Version..............1.01
-        Date...........2022-09-26
+        Version..............1.02
+        Date...........2022-10-18
         Author.......Avery Briggs
     """
 
@@ -1297,7 +1297,7 @@ class GridManager:
 
 def test_gm1():
     WIN = tkinter.Tk()
-    WIN.title("test_grid_manager")
+    WIN.title("test_grid_manager test_gm1")
     WIDTH, HEIGHT = 900, 600
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -1399,7 +1399,7 @@ def test_gm1():
 
     # grid_manage_1(widgets_1)
     # grid_manage_1(widgets_2)
-    WIN.update()
+    # WIN.update()
 
     # WIN.after(5000, gm.ungrid_widget(0, 0))
 
@@ -1411,7 +1411,7 @@ def test_gm2():
     # plots each canvas in a vertical line.
 
     WIN = tkinter.Tk()
-    WIN.title("test_grid_manager")
+    WIN.title("test_grid_manager test_gm2")
     WIDTH, HEIGHT = 900, 600
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -1500,7 +1500,7 @@ def test_gm3():
     # plot using superimpose rules.
 
     WIN = tkinter.Tk()
-    WIN.title("test_grid_manager")
+    WIN.title("test_grid_manager test_gm3")
     WIDTH, HEIGHT = 900, 600
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -1589,7 +1589,7 @@ def test_gm4():
     # plot using wrap vertical rules.
 
     WIN = tkinter.Tk()
-    WIN.title("test_grid_manager")
+    WIN.title("test_grid_manager test_gm4")
     WIDTH, HEIGHT = 900, 600
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -1678,7 +1678,7 @@ def test_gm5():
     # plot using wrap horizontal rules.
 
     WIN = tkinter.Tk()
-    WIN.title("test_grid_manager")
+    WIN.title("test_grid_manager test_gm5")
     WIDTH, HEIGHT = 900, 600
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -1767,7 +1767,7 @@ def test_gm6():
     # plot using superimpose rules.
 
     WIN = tkinter.Tk()
-    WIN.title("test_grid_manager")
+    WIN.title("test_grid_manager test_gm6")
     WIDTH, HEIGHT = 900, 600
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -1873,6 +1873,17 @@ def test_gm6():
 
     # WIN.after(5000, gm.ungrid_widget(0, 0))
 
+    f1 = tkinter.Frame(WIN)
+    tv1, lb1, tv2, en1 = entry_factory(f1, tv_label="Mode:", kwargs_entry={"state": "disabled"})
+    # tv3, lb2, tv4, en2 = entry_factory(f1, tv_label="Wrap Mode:", kwargs_entry={"state": "disabled"})
+    lb1.grid(row=0, column=0)
+    en1.grid(row=0, column=1)
+    # lb2.grid(row=0, column=2)
+    # en2.grid(row=0, column=3)
+    f1.grid(row=1000, column=1000)
+    tv2.set("superimpose")
+    # tv4.set("")
+
     WIN.mainloop()
 
 
@@ -1881,7 +1892,7 @@ def test_gm7():
     # plot using wrap vertical rules.
 
     WIN = tkinter.Tk()
-    WIN.title("test_grid_manager")
+    WIN.title("test_grid_manager test_gm7")
     WIDTH, HEIGHT = 900, 600
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -1974,7 +1985,7 @@ def test_gm7():
         ]
     ]
 
-    WIN.grid()
+    # WIN.pack()
     gm = GridManager(WIN, "wrap")
     # gm.grid_widgets(widgets_1)
     # gm.grid_widgets(widgets_2)
@@ -1987,6 +1998,17 @@ def test_gm7():
 
     # WIN.after(5000, gm.ungrid_widget(0, 0))
 
+    f1 = tkinter.Frame(WIN)
+    tv1, lb1, tv2, en1 = entry_factory(f1, tv_label="Mode:", kwargs_entry={"state": "disabled"})
+    tv3, lb2, tv4, en2 = entry_factory(f1, tv_label="Wrap Mode:", kwargs_entry={"state": "disabled"})
+    lb1.grid(row=0, column=0)
+    en1.grid(row=0, column=1)
+    lb2.grid(row=0, column=2)
+    en2.grid(row=0, column=3)
+    f1.grid(row=1000, column=1000)
+    tv2.set("wrap")
+    tv4.set("vertical")
+
     WIN.mainloop()
 
 
@@ -1995,7 +2017,7 @@ def test_gm8():
     # plot using wrap horizontal rules.
 
     WIN = tkinter.Tk()
-    WIN.title("test_grid_manager")
+    WIN.title("test_grid_manager test_gm8")
     WIDTH, HEIGHT = 900, 600
     WIN.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -2101,21 +2123,32 @@ def test_gm8():
 
     # WIN.after(5000, gm.ungrid_widget(0, 0))
 
+    f1 = tkinter.Frame(WIN)
+    tv1, lb1, tv2, en1 = entry_factory(f1, tv_label="Mode:", kwargs_entry={"state": "disabled"})
+    tv3, lb2, tv4, en2 = entry_factory(f1, tv_label="Wrap Mode:", kwargs_entry={"state": "disabled"})
+    lb1.grid(row=0, column=0)
+    en1.grid(row=0, column=1)
+    lb2.grid(row=0, column=2)
+    en2.grid(row=0, column=3)
+    f1.grid(row=1000, column=1000)
+    tv2.set("wrap")
+    tv4.set("horizontal")
+
     WIN.mainloop()
 
 
 if __name__ == '__main__':
 
-    import tkinter
     from utility import alpha_seq
+    from tkinter_utility import *
     from colour_utility import random_colour
 
     # # test_gm1()
-    test_gm2()
-    test_gm3()
-    test_gm4()
-    test_gm5()
+    # test_gm2()
+    # test_gm3()
+    # test_gm4()
+    # test_gm5()
 
-    test_gm6()
+    # test_gm6()
     test_gm7()
-    test_gm8()
+    # test_gm8()
