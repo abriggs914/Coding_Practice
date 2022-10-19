@@ -861,7 +861,7 @@ class GridManager:
                             none_count -= (cs - 1)
                             none_count = max(none_count, 0)
                             col_count += cs
-                            ci += (col_count - 1)
+                            # ci += (col_count - 1)
 
                         # if self.mode == "superimpose":
                         #
@@ -873,6 +873,9 @@ class GridManager:
                         print(f"{ci=}, {none_count=}")
                         mc = max(mc, ci)
                         self.place(widget, ri, ci, **args)
+                        if col_count > 1:
+                            ci += (col_count - 1)
+                            col_count = 0
                         row_count += r_inner
                         ci += 1
                         if c == 0:
@@ -985,6 +988,7 @@ class GridManager:
                     self.place(widget, self.row_idx, 0)
 
                 self.row_idx += 1
+
 
     def grid_widgets1(self, *widgets):
         if widgets:
@@ -2148,7 +2152,7 @@ if __name__ == '__main__':
     # test_gm3()
     # test_gm4()
     # test_gm5()
-
+    #
     # test_gm6()
     test_gm7()
     # test_gm8()
