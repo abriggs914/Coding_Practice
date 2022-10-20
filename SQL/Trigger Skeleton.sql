@@ -21,9 +21,14 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE TRIGGER ##### [dbo].[tr_ITDUpdateDates]
-   ON  [ITD InvMaster]
-   AFTER INSERT, DELETE, UPDATE #####
+CREATE TRIGGER  [dbo].[tr_ __TRIGGER_NAME_HERE__]
+   ON [__TABLE_NAME_HERE__]
+   --BEFORE
+   --AFTER
+   --INSTEAD OF
+   --INSERT
+   --, DELETE
+   --, UPDATE
 AS 
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
