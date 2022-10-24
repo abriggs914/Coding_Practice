@@ -1,4 +1,8 @@
+import datetime
 import tkinter
+
+import pandas
+
 from utility import grid_cells, clamp_rect, clamp, isnumber
 from colour_utility import rgb_to_hex, font_foreground, Colour
 from tkinter import ttk, messagebox
@@ -10,8 +14,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.13
-    Date...........2022-10-17
+    Version..............1.14
+    Date...........2022-10-24
     Author.......Avery Briggs
     """
 
@@ -214,6 +218,91 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
         # rb_sdd = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="descending", textvariable=tv_sort_dir_d)
 
 
+def treeview_factory(
+        master,
+        dataframe,
+        viewable_column_names=None,
+        viewable_column_widths=None,
+        tv_label=None,
+        kwargs_label=None,
+        kwargs_treeview=None,
+        default_col_width=100,
+        include_scroll_x=True,
+        include_scroll_y=True
+):
+    assert isinstance(dataframe, pandas.DataFrame), f"Error, param 'dataframe' must be an instance of a pandas Dataframe, got: '{type(dataframe)}'."
+
+    def treeview_sort_column(tv, col, reverse):
+        l = [(tv.set(k, col), k) for k in tv.get_children('')]
+        l.sort(reverse=reverse)
+
+        # rearrange items in sorted positions
+        for index, (val, k) in enumerate(l):
+            tv.move(k, '', index)
+
+        # reverse sort next time
+        tv.heading(col, command=lambda: \
+            treeview_sort_column(tv, col, not reverse))
+
+    if viewable_column_names is None:
+        viewable_column_names = list(dataframe.columns)
+
+    if not is_tk_var(tv_label):
+        tv_label = tkinter.StringVar(master, value="")
+
+    if kwargs_label is None:
+        kwargs_label = {}
+
+    if kwargs_treeview is None:
+        kwargs_treeview = {}
+
+    if viewable_column_widths is None:
+        viewable_column_widths = [default_col_width for _ in range(len(viewable_column_names))]
+    elif len(viewable_column_widths) < len(viewable_column_names):
+        viewable_column_widths = viewable_column_widths + [default_col_width for _ in range(len(viewable_column_names) - len(viewable_column_widths))]
+
+    # print(f"About to look at column_names: {viewable_column_names=}, with {viewable_column_widths=}")
+
+    label = tkinter.Label(master, textvariable=tv_label, **kwargs_label)
+    treeview = ttk.Treeview(
+        master,
+        columns=viewable_column_names
+        , displaycolumns=viewable_column_names
+        , **kwargs_treeview
+    )
+    treeview.column("#0", width=0, stretch=tkinter.NO)
+    treeview.heading("#0", text="", anchor=tkinter.CENTER)
+
+    for i, col in enumerate(viewable_column_names):
+        c_width = viewable_column_widths[i]
+        # print(f"{c_width=}, {type(c_width)=}")
+        treeview.column(col, width=c_width, anchor=tkinter.CENTER)
+        treeview.heading(col, text=col, anchor=tkinter.CENTER, command=lambda _col=col: \
+                     treeview_sort_column(treeview, _col, False))
+
+    for i, row in enumerate(dataframe.iterrows()):
+        idx, row = row
+        # print(f"{row=}, {type(row)=}")
+        dat = [row[c_name] for c_name in viewable_column_names]
+        treeview.insert("", tkinter.END, text=f"B_{i}", iid=f"C_{i}", values=dat)
+
+    # treeview.bind("<<TreeviewSelect>>", CALLBACK_HERE)
+    scrollbar_x, scrollbar_y = None, None
+    if include_scroll_y:
+        scrollbar_y = ttk.Scrollbar(master, orient=tkinter.VERTICAL,
+                                                     command=treeview.yview)
+    if include_scroll_x:
+        scrollbar_x = ttk.Scrollbar(master, orient=tkinter.HORIZONTAL,
+                                                     command=treeview.xview)
+    if scrollbar_x is not None and scrollbar_y is not None:
+        treeview.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
+    elif scrollbar_x is not None:
+        treeview.configure(xscrollcommand=scrollbar_x.set)
+    elif scrollbar_y is not None:
+        treeview.configure(yscrollcommand=scrollbar_y.set)
+
+    return tv_label, label, treeview, scrollbar_x, scrollbar_y
+
 
 def test_entry_factory():
     WIN = tkinter.Tk()
@@ -349,6 +438,54 @@ def test_radio_factory():
         btn.pack()
 
     a.trace_variable("w", update_radio_choice)
+
+    WIN.mainloop()
+
+
+def test_treeview_factory_1():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    df = pandas.DataFrame({
+        "species": ["Cat", "Dog", "Fish", "Parrot"]
+        ,"name": ["Tim", "Tam", "Tom", "Tum"]
+        ,"dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7), datetime.datetime(2005, 8, 31)]
+    })
+
+    print(f"df:\n\n{df}")
+
+    tv_label, label, treeview, scrollbar_x, scrollbar_y = treeview_factory(WIN, df)
+    tv_label.set("I forgot to pass a title! - no worries.")
+    label.pack()
+    treeview.pack()
+
+    WIN.mainloop()
+
+
+def test_treeview_factory_2():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    df = pandas.DataFrame({
+        "species": ["Cat", "Dog", "Fish", "Parrot"]
+        ,"name": ["Tim", "Tam", "Tom", "Tum"]
+        ,"invisible_col": [True, True, True, False]
+        ,"dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7), datetime.datetime(2005, 8, 31)]
+    })
+
+    print(f"df:\n\n{df}")
+
+    tv_label, label, treeview, scrollbar_x, scrollbar_y = treeview_factory(
+        WIN,
+        df,
+        viewable_column_names=["species", "name", "dob"],
+        viewable_column_widths=[300, 125, 200]
+    )
+    tv_label.set("I forgot to pass a title! - no worries.")
+    label.pack(side=tkinter.TOP)
+    scrollbar_y.pack(side=tkinter.RIGHT, anchor="e", fill="y")
+    treeview.pack(side=tkinter.TOP)
+    scrollbar_x.pack(side=tkinter.BOTTOM)
 
     WIN.mainloop()
 
@@ -1011,6 +1148,8 @@ if __name__ == '__main__':
     # test_entry_factory()
     # test_combo_1()
     # test_combo_factory()
-    test_list_factory()
+    # test_list_factory()
     # test_messagebox()
     # test_radio_factory()
+    # test_treeview_factory_1()
+    test_treeview_factory_2()
