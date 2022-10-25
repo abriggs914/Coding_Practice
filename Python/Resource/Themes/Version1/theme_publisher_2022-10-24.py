@@ -424,22 +424,14 @@ class ThemePublisher(tkinter.Tk):
             kwargs_combo={"values": self.demo_dat_names_list})
         self.demo_tv_label_list, self.demo_label_list, self.demo_tv_list, self.demo_list = list_factory(
             self.demo_form_sub_frame, tv_label=self.demo_dat_label_list, tv_list=self.demo_dat_list_list)
-
         self.demo_radio_frame = tkinter.Frame(self.demo_form_sub_frame)
-        self.tv_demo_radio,\
-        self.tv_radio_buttons,\
-        self.radio_buttons\
-            = radio_factory(
-                self.demo_radio_frame,
-                buttons=[
-                    "Popcorn",
-                    "Hot Dog",
-                    "Cotton Candy"
-                ],
-                kwargs_buttons={
-                    "command": self.demo_radio_update
-                }
-        )
+        self.tv_demo_radio = tkinter.IntVar(self)
+        self.demo_radio_1 = tkinter.Radiobutton(self.demo_radio_frame, text="Popcorn", variable=self.tv_demo_radio,
+                                                value=1, command=self.demo_radio_update)
+        self.demo_radio_2 = tkinter.Radiobutton(self.demo_radio_frame, text="Hot Dog", variable=self.tv_demo_radio,
+                                                value=2, command=self.demo_radio_update)
+        self.demo_radio_3 = tkinter.Radiobutton(self.demo_radio_frame, text="Cotton Candy", variable=self.tv_demo_radio,
+                                                value=3, command=self.demo_radio_update)
 
         self.tv_btn_publish_theme, self.btn_publish_theme = button_factory(self, tv_btn="publish", kwargs_btn={
             "command": self.click_publish_theme})
@@ -455,11 +447,8 @@ class ThemePublisher(tkinter.Tk):
         self.label_combo_choice_3.grid(row=4, column=0)
         self.combo_choice_3.grid(row=4, column=1)
 
-        self.dragging_colour = tkinter.StringVar(self, value="")
-        self.dragging_colour.trace_variable("w", self.update_dragging_colour)
         self.rgb_slider = RGBSlider(self, show_result=True)
         self.rgb_slider.colour.trace_variable("w", self.rgb_update)
-        self.bind_rgb_slider()
         self.rgb_slider.grid(row=5, column=0, columnspan=2)
 
         self.font_chooser = FontChooser(self)
@@ -480,8 +469,9 @@ class ThemePublisher(tkinter.Tk):
         self.demo_label_list.grid(row=3, column=0)
         self.demo_list.grid(row=3, column=1)
         self.demo_radio_frame.grid(row=4, column=0)
-        for i, btn in enumerate(self.radio_buttons):
-            btn.grid(row=i, column=0)
+        self.demo_radio_1.grid(row=0, column=0)
+        self.demo_radio_2.grid(row=1, column=0)
+        self.demo_radio_3.grid(row=2, column=0)
 
         self.combo_update(None, None, None)
 
@@ -966,39 +956,3 @@ class ThemePublisher(tkinter.Tk):
         theme = theme.parse(parsed_theme)
         print(f"theme={theme}")
         return theme
-
-    def drag_rgb_entry(self, *args):
-        print(f"drag_rgb_entry")
-        self.config(cursor="spraycan")
-        self.dragging_colour.set(self.rgb_slider.colour)
-
-    def bind_rgb_slider(self, *args):
-        self.rgb_slider.bind("<B1-Motion>", self.drag_rgb_entry)
-        self.rgb_slider.entry_res.bind("<B1-Motion>", self.drag_rgb_entry)
-        self.rgb_slider.entry_red.bind("<B1-Motion>", self.drag_rgb_entry)
-        self.rgb_slider.entry_green.bind("<B1-Motion>", self.drag_rgb_entry)
-        self.rgb_slider.entry_blue.bind("<B1-Motion>", self.drag_rgb_entry)
-        self.rgb_slider.label_res.bind("<B1-Motion>", self.drag_rgb_entry)
-        self.rgb_slider.label_red.bind("<B1-Motion>", self.drag_rgb_entry)
-        self.rgb_slider.label_green.bind("<B1-Motion>", self.drag_rgb_entry)
-        self.rgb_slider.label_blue.bind("<B1-Motion>", self.drag_rgb_entry)
-
-        self.bind("<ButtonRelease-1>", self.unclick_dragging_colour)
-
-    def unclick_dragging_colour(self, *args):
-        self.dragging_colour.set("")
-
-    def update_dragging_colour(self, *args):
-        if self.dragging_colour.get() != "":
-            cursor = "spraycan"
-        else:
-            cursor = "arrow"
-        self.rgb_slider.config(cursor=cursor)
-        self.rgb_slider.entry_res.config(cursor=cursor)
-        self.rgb_slider.entry_red.config(cursor=cursor)
-        self.rgb_slider.entry_green.config(cursor=cursor)
-        self.rgb_slider.entry_blue.config(cursor=cursor)
-        self.rgb_slider.label_res.config(cursor=cursor)
-        self.rgb_slider.label_red.config(cursor=cursor)
-        self.rgb_slider.label_green.config(cursor=cursor)
-        self.rgb_slider.label_blue.config(cursor=cursor)

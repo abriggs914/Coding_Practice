@@ -205,7 +205,7 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
                 print(f"WARNING kwargs param is applied to each radio button")
                 r_buttons.append(tkinter.Radiobutton(master, variable=var, textvariable=tv_var, **kwargs_buttons, value=btn))
             else:
-                r_buttons.append(tkinter.Radiobutton(master, variable=var, textvariable=tv_var, value=btn,))
+                r_buttons.append(tkinter.Radiobutton(master, variable=var, textvariable=tv_var, value=btn))
 
         return var, tv_vars, r_buttons
     else:
