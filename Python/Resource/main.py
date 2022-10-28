@@ -2053,5 +2053,5 @@ if __name__ == "__main__":
     # test_tk_slider()
     # test_rgb_slider()
     test_theme_publisher()
-    # test_alpha_seq()
+    test_alpha_seq()
     # test_grid_manager()
