@@ -1,0 +1,707 @@
+Option Compare Database
+
+
+'---------------------------------------------------------------------------------------
+' Function : Max
+' Author    : Avery Briggs
+' Purpose   : Return the maximum of a list of items, or pass a single array object and determine it's max.
+'
+' Usage:
+' ~~~~~~
+' dim a as double
+' dim b as double
+' a = max(3, 2, 1) =>  ' 3
+' b = max(array(3, 2, 1)) =>  ' 3
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2022-11-05                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Max(ParamArray var() As Variant) As Variant
+    
+    'On Error GoTo max_error
+    
+    Dim working() As Variant
+    Dim setWorking As Boolean
+    setWorking = False
+    
+    Dim i As Integer
+    Dim LB As Integer
+    Dim UB As Integer
+    Dim tmp As Variant
+    Dim val As Variant
+    Dim isNumerical As Boolean
+    Dim vIsNumerical As Boolean
+    Dim vt As Integer
+    LB = LBound(var)
+    UB = UBound(var)
+    
+    'printf "A vartype(var): '" & VarType(var) & "'"
+    'printf "A lbound(var): " & LB & ", ubound(var): " & UB
+
+    If UB = 0 Then
+        val = var(UB)
+        vt = VarType(val)
+        If vt = vbArray Or vt = (vbArray + vbVariant) Or vt = (vbArray + vbString) Or vt = (vbArray + vbDouble) Or vt = (vbArray + vbInteger) Or vt = (vbArray + vbLong) Or vt = (vbArray + vbSingle) Or vt = (vbArray + vbDate) Or vt = (vbArray + vbCurrency) Then
+            'printf "val: '" & val & "', vartype(val): '" & VarType(val) & "'"
+            If VarType(val) = vbEmpty Then
+                Err.Raise vbObjectError + 513, , "This array is empty."
+            End If
+            
+            LB = LBound(val)
+            UB = UBound(val)
+            
+            'printf "ABOUT TO SET A"
+            ReDim working(UB)
+            For i = LB To UB
+                'printf vbTab & "setting <" & i & "> working(i) = <" & working(i) & ">"
+                working(i) = val(i)
+            Next i
+            setWorking = True
+            
+        End If
+    ElseIf UB = -1 Then
+        Err.Raise vbObjectError + 513, , "Must pass at least one argument to this function."
+    End If
+
+    If Not setWorking Then
+        'printf "ABOUT TO SET B"
+        ReDim working(UB)
+        For i = LB To UB
+            working(i) = var(i)
+            'printf vbTab & "setting <" & i & "> vartype(working(i)) = <" & VarType(working(i)) & ">"
+        Next i
+    End If
+    
+    'printf "B vartype(working): '" & VarType(working) & "'"
+    'printf "B lbound(working): " & LB & ", ubound(working): " & UB
+
+    Dim bba As Boolean
+    Dim bbb As Boolean
+    Dim bbc As Boolean
+    For i = LB To UB
+        val = working(i)
+        vIsNumerical = IIf(IsNumeric(val), True, False)
+        If i = LBound(var) Then
+            isNumerical = vIsNumerical
+        End If
+        
+        If isNumerical And Not vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare string value '" & val & "' in an array with numerical values"
+        ElseIf Not isNumerical And vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare numerical value '" & val & "' in an array with string values"""
+        Else
+        
+            bba = IsNull(tmp)
+            bbb = IsEmpty(tmp)
+            bbc = IIf(VarType(tmp) = vbEmpty, True, False)
+            
+            'printf "HERE tmp=<" & VarType(tmp) & ">, val=<" & VarType(val) & ">"
+            'printf "a=<" & bba & ">"
+            'printf "b=<" & bbb & ">"
+            'printf "c=<" & bbc & ">"
+            If bba Or bbb Or bbc Then
+                tmp = val
+            Else
+                If val > tmp Then
+                    tmp = val
+                End If
+            End If
+        End If
+    Next
+    
+    Max = tmp
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Sum
+' Author    : Avery Briggs
+' Purpose   : Return the sum of a list of arguments, or a single array.
+'
+' Usage:
+' ~~~~~~
+' dim a as double
+' dim b as String
+' a = sum(3, 2, 1) =>  ' 6
+' b = sum(array("3", "2", "1")) =>  ' "321"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2022-11-05                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Sum(ParamArray var() As Variant) As Variant
+    
+    
+    'On Error GoTo max_error
+    
+    Dim working() As Variant
+    Dim setWorking As Boolean
+    setWorking = False
+    
+    Dim i As Integer
+    Dim LB As Integer
+    Dim UB As Integer
+    Dim tmp As Variant
+    Dim val As Variant
+    Dim isNumerical As Boolean
+    Dim vIsNumerical As Boolean
+    Dim vt As Integer
+    LB = LBound(var)
+    UB = UBound(var)
+    
+    'printf "A vartype(var): '" & VarType(var) & "'"
+    'printf "A lbound(var): " & LB & ", ubound(var): " & UB
+
+    If UB = 0 Then
+        val = var(UB)
+        vt = VarType(val)
+        If vt = vbArray Or vt = (vbArray + vbVariant) Or vt = (vbArray + vbString) Or vt = (vbArray + vbDouble) Or vt = (vbArray + vbInteger) Or vt = (vbArray + vbLong) Or vt = (vbArray + vbSingle) Or vt = (vbArray + vbDate) Or vt = (vbArray + vbCurrency) Then
+            'printf "val: '" & val & "', vartype(val): '" & VarType(val) & "'"
+            If VarType(val) = vbEmpty Then
+                Err.Raise vbObjectError + 513, , "This array is empty."
+            End If
+            
+            LB = LBound(val)
+            UB = UBound(val)
+            
+            'printf "ABOUT TO SET A"
+            ReDim working(UB)
+            For i = LB To UB
+                'printf vbTab & "setting <" & i & "> working(i) = <" & working(i) & ">"
+                working(i) = val(i)
+            Next i
+            setWorking = True
+            
+        End If
+    ElseIf UB = -1 Then
+        Err.Raise vbObjectError + 513, , "Must pass at least one argument to this function."
+    End If
+
+    If Not setWorking Then
+        'printf "ABOUT TO SET B"
+        ReDim working(UB)
+        For i = LB To UB
+            working(i) = var(i)
+            'printf vbTab & "setting <" & i & "> vartype(working(i)) = <" & VarType(working(i)) & ">"
+        Next i
+    End If
+    
+    'printf "B vartype(working): '" & VarType(working) & "'"
+    'printf "B lbound(working): " & LB & ", ubound(working): " & UB
+
+    Dim bba As Boolean
+    Dim bbb As Boolean
+    Dim bbc As Boolean
+    For i = LB To UB
+        val = working(i)
+        vIsNumerical = IIf(IsNumeric(val), True, False)
+        If VarType(val) = vbString Then
+            vIsNumerical = False
+        End If
+        
+        If i = LBound(var) Then
+            isNumerical = vIsNumerical
+        End If
+        
+        If isNumerical And Not vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare string value '" & val & "' in an array with numerical values"
+        ElseIf Not isNumerical And vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare numerical value '" & val & "' in an array with string values"""
+        Else
+        
+            bba = IsNull(tmp)
+            bbb = IsEmpty(tmp)
+            bbc = IIf(VarType(tmp) = vbEmpty, True, False)
+            
+            'printf "HERE tmp=<" & VarType(tmp) & ">, val=<" & VarType(val) & ">"
+            'printf "a=<" & bba & ">"
+            'printf "b=<" & bbb & ">"
+            'printf "c=<" & bbc & ">"
+            If bba Or bbb Or bbc Then
+                tmp = val
+            Else
+                'If val > tmp Then
+                tmp = tmp + val
+                'End If
+            End If
+        End If
+    Next
+    
+    Sum = tmp
+    
+    'Dim i As Integer
+    'Dim tmp As Double
+    'For i = LBound(var) To UBound(var)
+    '    If IsNumeric(var(i)) Then tmp = tmp + var(i)
+    'Next
+    'sum = tmp
+
+End Function
+
+
+
+
+'---------------------------------------------------------------------------------------
+' Function : Min
+' Author    : Avery Briggs
+' Purpose   : Return the minimum of a list of items, or pass a single array object and determine it's min.
+'
+' Usage:
+' ~~~~~~
+' dim a as double
+' dim b as double
+' a = min(3, 2, 1)  ' => 1
+' b = min(array(1, 2, 3))  ' => 1
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2022-11-05                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Min(ParamArray var() As Variant) As Variant
+    
+    'On Error GoTo max_error
+    
+    Dim working() As Variant
+    Dim setWorking As Boolean
+    setWorking = False
+    
+    Dim i As Integer
+    Dim LB As Integer
+    Dim UB As Integer
+    Dim tmp As Variant
+    Dim val As Variant
+    Dim isNumerical As Boolean
+    Dim vIsNumerical As Boolean
+    Dim vt As Integer
+    LB = LBound(var)
+    UB = UBound(var)
+    
+    'printf "A vartype(var): '" & VarType(var) & "'"
+    'printf "A lbound(var): " & LB & ", ubound(var): " & UB
+
+    If UB = 0 Then
+        val = var(UB)
+        vt = VarType(val)
+        If vt = vbArray Or vt = (vbArray + vbVariant) Or vt = (vbArray + vbString) Or vt = (vbArray + vbDouble) Or vt = (vbArray + vbInteger) Or vt = (vbArray + vbLong) Or vt = (vbArray + vbSingle) Or vt = (vbArray + vbDate) Or vt = (vbArray + vbCurrency) Then
+            'printf "val: '" & val & "', vartype(val): '" & VarType(val) & "'"
+            If VarType(val) = vbEmpty Then
+                Err.Raise vbObjectError + 513, , "This array is empty."
+            End If
+            
+            LB = LBound(val)
+            UB = UBound(val)
+            
+            'printf "ABOUT TO SET A"
+            ReDim working(UB)
+            For i = LB To UB
+                'printf vbTab & "setting <" & i & "> working(i) = <" & working(i) & ">"
+                working(i) = val(i)
+            Next i
+            setWorking = True
+            
+        End If
+    ElseIf UB = -1 Then
+        Err.Raise vbObjectError + 513, , "Must pass at least one argument to this function."
+    End If
+
+    If Not setWorking Then
+        'printf "ABOUT TO SET B"
+        ReDim working(UB)
+        For i = LB To UB
+            working(i) = var(i)
+            'printf vbTab & "setting <" & i & "> vartype(working(i)) = <" & VarType(working(i)) & ">"
+        Next i
+    End If
+    
+    'printf "B vartype(working): '" & VarType(working) & "'"
+    'printf "B lbound(working): " & LB & ", ubound(working): " & UB
+
+    Dim bba As Boolean
+    Dim bbb As Boolean
+    Dim bbc As Boolean
+    For i = LB To UB
+        val = working(i)
+        vIsNumerical = IIf(IsNumeric(val), True, False)
+        If i = LBound(var) Then
+            isNumerical = vIsNumerical
+        End If
+        
+        If isNumerical And Not vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare string value '" & val & "' in an array with numerical values"
+        ElseIf Not isNumerical And vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare numerical value '" & val & "' in an array with string values"""
+        Else
+        
+            bba = IsNull(tmp)
+            bbb = IsEmpty(tmp)
+            bbc = IIf(VarType(tmp) = vbEmpty, True, False)
+            
+            'printf "HERE tmp=<" & VarType(tmp) & ">, val=<" & VarType(val) & ">"
+            'printf "a=<" & bba & ">"
+            'printf "b=<" & bbb & ">"
+            'printf "c=<" & bbc & ">"
+            If bba Or bbb Or bbc Then
+                tmp = val
+            Else
+                If val < tmp Then
+                    tmp = val
+                End If
+            End If
+        End If
+    Next
+    
+    Min = tmp
+
+End Function
+
+
+Public Sub execSQL(sql As String, Optional ByVal doPrint As Boolean = True, Optional ByVal doExec As Boolean = True)
+
+    If doPrint Then
+        Debug.Print "SQL <" & sql & ">"
+    End If
+    If doExec Then
+        DoCmd.RunSQL sql
+    End If
+    
+    If Not doPrint And Not doExec Then
+        MsgBox "You must print, execute, or both." & vbNewLine & """" & sql & """"
+    End If
+    
+End Sub
+
+
+Public Sub execShell(shellCmd As String, Optional ByVal doPrint As Boolean = True, Optional ByVal doExec As Boolean = True)
+    
+    If doPrint Then
+        Call printf("execShell <" & shellCmd & ">")
+    End If
+    If doExec Then
+        Shell shellCmd
+    End If
+    
+    If Not doPrint And Not doExec Then
+        MsgBox "You must print, execute, or both." & vbNewLine & """" & shellCmd & """"
+    End If
+    
+End Sub
+
+
+Public Sub openWordDoc(filePath As String)
+    ' https://stackoverflow.com/questions/17973041/opening-word-document-using-vba-in-access-2013
+    Call printf("Trying to open word doc: '" & filePath & "'")
+    If IsNull(filePath) Or Len(CStr(filePath)) = 0 Then
+        MsgBox "Error, please select a valid word document to open."
+        Exit Sub
+    End If
+    'Dim wrdApp As Word.Application
+    'Dim wrdDoc As Word.Document
+
+
+    'Set wrdApp = CreateObject("Word.Application")
+    'wrdApp.Visible = True
+
+    'Set wrdDoc = wrdApp.Documents.Open(filePath)
+    Dim shellCmd As String
+    shellCmd = "winword """ & filePath & """"
+    Call execShell(shellCmd)
+End Sub
+
+
+Public Function printf(text As String)
+    
+    Debug.Print text
+
+End Function
+
+Function LogError(ByVal lngErrNumber As Long, ByVal strErrDescription As String, _
+    strCallingProc As String, Optional vParameters, Optional bShowUser As Boolean = True) As Boolean
+'On Error GoTo Err_LogError
+    ' Purpose: Generic error handler.
+    ' Logs errors to table "tLogErrors".
+    ' Arguments: lngErrNumber - value of Err.Number
+    ' strErrDescription - value of Err.Description
+    ' strCallingProc - name of sub|function that generated the error.
+    ' vParameters - optional string: List of parameters to record.
+    ' bShowUser - optional boolean: If False, suppresses display.
+    ' Author: Allen Browne, allen@allenbrowne.com
+
+    Dim strMsg As String      ' String for display in MsgBox
+    Dim rst As DAO.Recordset  ' The tLogErrors table
+
+    Select Case lngErrNumber
+    Case 0
+        Debug.Print strCallingProc & " called error 0."
+    Case 2501                ' Cancelled
+        'Do nothing.
+    Case 3314, 2101, 2115    ' Can't save.
+        If bShowUser Then
+            strMsg = "Record cannot be saved at this time." & vbCrLf & _
+                "Complete the entry, or press <Esc> to undo."
+            MsgBox strMsg, vbExclamation, strCallingProc
+        End If
+    Case Else
+        If bShowUser Then
+            strMsg = "Error " & lngErrNumber & ": " & strErrDescription
+            MsgBox strMsg, vbExclamation, strCallingProc
+        End If
+        Set rst = CurrentDb.OpenRecordset("tLogError", , dbAppendOnly)
+        rst.AddNew
+            rst![ErrNumber] = lngErrNumber
+            rst![ErrDescription] = Left$(strErrDescription, 255)
+            rst![ErrDate] = Now()
+            rst![CallingProc] = strCallingProc
+            rst![userName] = CurrentUser()
+            rst![ShowUser] = bShowUser
+            If Not IsMissing(vParameters) Then
+                rst![Parameters] = Left(vParameters, 255)
+            End If
+        rst.Update
+        rst.Close
+        LogError = True
+    End Select
+
+Exit_LogError:
+    Set rst = Nothing
+    Exit Function
+
+Err_LogError:
+    strMsg = "An unexpected situation arose in your program." & vbCrLf & _
+        "Please write down the following details:" & vbCrLf & vbCrLf & _
+        "Calling Proc: " & strCallingProc & vbCrLf & _
+        "Error Number " & lngErrNumber & vbCrLf & strErrDescription & vbCrLf & vbCrLf & _
+        "Unable to record because Error " & Err.Number & vbCrLf & Err.Description
+    MsgBox strMsg, vbCritical, "LogError()"
+    Resume Exit_LogError
+End Function
+
+
+Public Function nullPad(word As String) As String
+
+    If IsNull(word) Then
+        nullPad = "NULL"
+        Exit Function
+    End If
+    
+    If word = "NULL" Then
+        nullPad = "NULL"
+    Else
+        nullPad = "'" & word & "'"
+    End If
+    
+End Function
+
+
+Public Function am_pm(ByVal dateIn As Date) As String
+
+    am_pm = IIf(DatePart("h", dateIn) >= 12, "PM", "AM")
+
+End Function
+
+
+Public Function divmod(ByVal x As Integer, ByVal y As Integer) As Integer()
+
+    If y = 0 Then
+        Err.Raise "y cannot be 0"
+    End If
+
+    Dim res(0 To 1) As Integer
+    res(0) = CInt(x / y)
+    res(1) = x Mod y
+    If res(1) >= (0.5 * y) Then
+        res(0) = res(0) - 1
+    End If
+    divmod = res
+
+End Function
+
+Public Function round2Nearest5Minutes(ByVal dateIn As Date) As Date
+
+    Dim m As Integer
+    Dim h As Integer
+    Dim p As Integer
+    Dim q As Integer
+    Dim x() As Integer
+    h = DatePart("h", dateIn)
+    m = DatePart("n", dateIn)
+    x = divmod(m, 5)
+    p = x(0) * 5
+    q = IIf(x(1) > 2, 5, 0)
+    p = p + q
+    round2Nearest5Minutes = Format(CStr(h) & ":" & Right("00" & CStr(p), 2), "Medium Time")
+    
+End Function
+
+
+Public Function randomInRange(ByVal A As Integer, ByVal b As Integer, Optional ByVal rtype As String = "dbl")
+
+    Dim C As Integer
+    C = A
+    A = Min(A, b)
+    b = Max(C, b)
+
+    If LCase(rtype) = "int" Or LCase(rtype) = "integer" Then
+        randomInRange = CInt((A + ((Rnd() * (b - A)))))
+    ElseIf LCase(rtype) = "double" Or LCase(rtype) = "dbl" Then
+        randomInRange = (A + ((Rnd() * (b - A))))
+    Else
+        Err.Number = 1
+    End If
+    
+End Function
+
+
+Public Function printArr(ByVal arr As Variant) As String
+
+    'Dim arr() As String
+    'arr = Split(IIf(IsNull(Me.Text4), "", Me.Text4.Value), ";")
+    
+    Dim LB As Integer
+    Dim RB As Integer
+    Dim i As Integer
+    
+    LB = LBound(arr)
+    UB = UBound(arr)
+    
+    printf "Arr:" & vbNewLine & "{"
+    For i = LB To UB
+        printf i & vbTab & " = " & vbTab & arr(i) & vbTab & ", vartype=(" & VarType(arr(i)) & ")"
+    Next i
+    printf "}"
+
+End Function
+
+
+' https://stackoverflow.com/questions/46013120/whats-a-very-simple-way-to-enter-key-value-pairs-in-vba
+Public Function Dictionary(ParamArray args()) As Object
+  Dim i As Long, arr()
+  Set Dictionary = CreateObject("Scripting.Dictionary")
+
+  If UBound(args) >= 0 Then   ' if has arguments '
+    If VBA.IsObject(args(0)) Then   ' if object then load a Range '
+      arr = args(0).Resize(args(0).End(xlDown).Row - args(0).Row + 1, 2).Value
+
+      For i = 1 To UBound(arr)
+        Dictionary.Add arr(i, 1), arr(i, 2)
+      Next
+    Else                               ' else load an Array '
+      For i = 0 To UBound(args) Step 2
+        Dictionary.Add args(i), args(i + 1)
+      Next
+    End If
+  End If
+End Function
+
+
+Public Function Choice(ByVal arr As Variant) As Variant
+    
+    Dim LB As Integer
+    Dim RB As Integer
+    Dim i As Integer
+    Dim vt As Integer
+    
+    vt = VarType(arr)
+    If IsArray(arr) Then
+    
+        LB = LBound(arr)
+        UB = UBound(arr)
+        If UB < LB Then
+            Choice = vbEmpty
+            Exit Function
+        End If
+        i = randomInRange(LB, UB)
+        Choice = arr(i)
+        Exit Function
+        
+    Else
+        Err.Raise vbObjectError + 513, , "Parameter to choice function must be an array. Got '" & vt & "'"
+    End If
+    
+End Function
+
+
+
+Public Function hourify(ByVal timeIn As Date) As Integer
+
+    Dim x As Double
+    x = DatePart("h", timeIn)
+    If x > 12 Then
+        x = x Mod 12
+    End If
+    If x = 0 Then
+        x = 12
+    End If
+    
+    hourify = x
+
+End Function
+
+
+Public Function isinstance(ByVal var As Variant, ByVal vbType As Integer) As Boolean
+
+    isinstance = IIf(VarType(var) = vbType, True, False)
+
+End Function
+
+
+Public Function Ljust(ByVal word As String, ByVal Width As Integer, Optional ByVal fillChar As String = " ")
+
+    If Width < 0 Then
+        Err.Raise vbObjectError + 513, , "Width parameter must be greater then 0."
+    End If
+    If Len(fillChar) <> 1 Then
+        Err.Raise vbObjectError + 513, , "Length of parameter 'fillChar' must equal to 1."
+    End If
+
+    Dim result As String
+    Dim i As Integer
+    Dim C As Integer
+    For i = 0 To Width - 1
+        If i > ((Width - 1) - Len(word)) Then
+            C = (Len(word) + 1) - (i - (Width - Len(word))) - 1
+            'printf "i: <" & i & ">, c: <" & c & ">"
+            'printf vbTab & "width - Len(word): <" & (width - Len(word)) & ">"
+            result = Mid(word, C, 1) + result
+        Else
+            result = fillChar + result
+        End If
+    Next i
+    
+    'Ljust = "<" & result & ">"
+    Ljust = result
+
+End Function
+
+
+Public Function Rjust(ByVal word As String, ByVal Width As Integer, Optional ByVal fillChar As String = " ")
+
+    If Width < 0 Then
+        Err.Raise vbObjectError + 513, , "Width parameter must be greater then 0."
+    End If
+    If Len(fillChar) <> 1 Then
+        Err.Raise vbObjectError + 513, , "Length of parameter 'fillChar' must equal to 1."
+    End If
+
+    Dim result As String
+    Dim i As Integer
+    Dim C As Integer
+    For i = 0 To Width - 1
+        If i > ((Width - 1) - Len(word)) Then
+            C = (i - (Width - Len(word))) + 1
+            'printf "i: <" & i & ">, c: <" & c & ">"
+            'printf vbTab & "width - Len(word): <" & (width - Len(word)) & ">"
+            result = result + Mid(word, C, 1)
+        Else
+            result = result + fillChar
+        End If
+    Next i
+    
+    'Ljust = "<" & result & ">"
+    Rjust = result
+
+End Function
