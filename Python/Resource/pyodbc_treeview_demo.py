@@ -1,7 +1,6 @@
 
 if __name__ == '__main__':
 
-
     from pyodbc_connection import *
     from tkinter_utility import *
 
