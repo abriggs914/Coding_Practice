@@ -3,8 +3,9 @@ import tkinter
 
 import pandas
 
-from utility import grid_cells, clamp_rect, clamp, isnumber
-from colour_utility import rgb_to_hex, font_foreground, Colour
+from typing import Literal
+from utility import grid_cells, clamp_rect, clamp, isnumber, alpha_seq
+from colour_utility import rgb_to_hex, font_foreground, Colour, random_colour
 from tkinter import ttk, messagebox
 
 #######################################################################################################################
@@ -14,8 +15,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.15
-    Date...........2022-11-09
+    Version..............1.16
+    Date...........2022-11-10
     Author.......Avery Briggs
     """
 
@@ -1214,6 +1215,56 @@ class ScannableEntry(tkinter.Entry):
         self.update_has_focus_out("")
 
 
+def apply_state(root, state_in, direction: Literal["up", "down"] = "up", exclude_self=False):
+
+    og_root = root
+
+    if direction not in ("up", "down"):
+        raise Exception(f"Error, param 'direction' must be one of 'up' or 'down', got '{direction}'")
+
+    def apply_state_inner(root, state_in, direction, depth, from_processing=False, visited=None):
+
+        # print(f"{root=}")
+
+        if visited is None:
+            visited = set()
+
+        # base case
+        if isinstance(root, tkinter.Tk) and direction == "up":
+            return
+
+        # apply state to current widget
+        if str(root) not in visited:
+            try:
+                if (not exclude_self) or (root != og_root):
+                    root.configure(state=state_in)
+                    # print(f"SUCCESS!\t\t{depth=}\t{direction=}\t{root=}")
+            except tkinter.TclError as te:
+                # print(f"\t{depth=}\t{root=}\t{direction=}\t{te=}")
+
+                if depth < 0 and direction == "up" and (not from_processing):
+                    for child in root.children:
+                        # if (from_processing and (depth + 1 < 0)) or not from_processing:
+                        if child not in visited:
+                            visited.add(child)
+                            wid = root.nametowidget(child)
+                            apply_state_inner(wid, state_in, "down", depth + 1, from_processing=True, visited=visited)
+
+        # recursive calls
+        if direction == "up":
+            apply_state_inner(root.master, state_in, direction, depth - 1, visited)
+
+        else:
+            for child in root.children:
+                if (from_processing and ((depth + 1) < 0)) or not from_processing:
+                    if child not in visited:
+                        visited.add(child)
+                        wid = root.nametowidget(child)
+                        apply_state_inner(wid, state_in, direction, depth + 1, from_processing, visited)
+
+    apply_state_inner(root, state_in, direction, depth=0, visited=set())
+
+
 def test_messagebox():
     root = tkinter.Tk()
 
@@ -1230,6 +1281,177 @@ def test_messagebox():
     root.mainloop()
 
 
+def test_apply_state_1():
+    root = tkinter.Tk()
+    root.geometry("500x500")
+    a = tkinter.Frame(root, width=450, background=random_colour(rgb=False))
+    b = tkinter.Frame(a, width=400, background=random_colour(rgb=False))
+    c = tkinter.Frame(b, width=350, background=random_colour(rgb=False))
+    d = tkinter.Frame(c, width=300, background=random_colour(rgb=False))
+    e = tkinter.Frame(d, width=250, background=random_colour(rgb=False))
+
+    f = tkinter.StringVar(root, value="a")
+    g = tkinter.StringVar(root, value="b")
+    h = tkinter.StringVar(root, value="c")
+    i = tkinter.StringVar(root, value="d")
+    j = tkinter.StringVar(root, value="e")
+
+    k = tkinter.Entry(a, textvariable=f)
+    l = tkinter.Entry(b, textvariable=g)
+    m = tkinter.Entry(c, textvariable=h)
+    n = tkinter.Entry(d, textvariable=i)
+    o = tkinter.Entry(e, textvariable=j)
+
+    a.pack()
+    k.pack()
+    b.pack()
+    l.pack()
+    c.pack()
+    m.pack()
+    d.pack()
+    n.pack()
+    e.pack()
+    o.pack()
+
+    apply_state(c, "disabled")
+    # apply_state(c, "disabled", "down")
+    root.mainloop()
+
+
+def test_apply_state_2():
+    root = tkinter.Tk()
+    root.geometry("500x500")
+
+    namer_1 = alpha_seq(1000, prefix="a_")
+    namer_2 = alpha_seq(1000, prefix="b_")
+
+    a_s = tkinter.StringVar(root, value="g", name=next(namer_1))
+    a_t = tkinter.StringVar(root, value="h", name=next(namer_1))
+    a_u = tkinter.StringVar(root, value="i", name=next(namer_1))
+    a_v = tkinter.StringVar(root, value="j", name=next(namer_1))
+    a_w = tkinter.StringVar(root, value="n", name=next(namer_1))
+    a_x = tkinter.StringVar(root, value="o", name=next(namer_1))
+    a_y = tkinter.StringVar(root, value="p", name=next(namer_1))
+    a_z = tkinter.StringVar(root, value="q", name=next(namer_1))
+
+    a_a = tkinter.Frame(root, width=480, background=random_colour(rgb=False), name=next(namer_2))
+    a_b = tkinter.Frame(a_a, width=470, background=random_colour(rgb=False), name=next(namer_2))
+    a_c = tkinter.Frame(a_a, width=460, background=random_colour(rgb=False), name=next(namer_2))
+    a_d = tkinter.Frame(a_b, width=450, background=random_colour(rgb=False), name=next(namer_2))
+    a_e = tkinter.Frame(a_b, width=440, background=random_colour(rgb=False), name=next(namer_2))
+    a_f = tkinter.Frame(a_c, width=430, background=random_colour(rgb=False), name=next(namer_2))
+    a_g = tkinter.Entry(a_d, textvariable=a_s, width=100, name=next(namer_2))
+    a_h = tkinter.Entry(a_d, textvariable=a_t, width=90, name=next(namer_2))
+    a_i = tkinter.Entry(a_e, textvariable=a_u, width=80, name=next(namer_2))
+    a_j = tkinter.Entry(a_f, textvariable=a_v, width=70, name=next(namer_2))
+    a_k = tkinter.Frame(a_f, width=420, background=random_colour(rgb=False), name=next(namer_2))
+    a_l = tkinter.Frame(a_k, width=410, background=random_colour(rgb=False), name=next(namer_2))
+    a_m = tkinter.Frame(a_l, width=400, background=random_colour(rgb=False), name=next(namer_2))
+    a_n = tkinter.Entry(a_l, textvariable=a_w, width=60, name=next(namer_2))
+    a_o = tkinter.Entry(a_l, textvariable=a_x, width=50, name=next(namer_2))
+    a_p = tkinter.Entry(a_m, textvariable=a_y, width=50, name=next(namer_2))
+    a_q = tkinter.Entry(a_m, textvariable=a_z, width=40, name=next(namer_2))
+
+    a_a.pack()
+    a_b.pack()
+    a_c.pack()
+    a_d.pack()
+    a_e.pack()
+    a_f.pack()
+    a_g.pack()
+    a_h.pack()
+    a_i.pack()
+    a_j.pack()
+    a_k.pack()
+    a_l.pack()
+    a_m.pack()
+    a_n.pack()
+    a_o.pack()
+    a_p.pack()
+    a_q.pack()
+
+    # apply_state(a_j, "disabled")
+    # apply_state(a_j, "disabled", "down")
+
+    # apply_state(a_k, "disabled")
+    apply_state(a_k, "disabled", "down")
+    root.mainloop()
+
+
+def test_apply_state_3():
+    root = tkinter.Tk()
+    root.geometry("500x500")
+
+    namer_1 = alpha_seq(1000, prefix="a_")
+    namer_2 = alpha_seq(1000, prefix="b_")
+
+    a_v = tkinter.StringVar(root, value="g", name=next(namer_1))
+    a_w = tkinter.StringVar(root, value="h", name=next(namer_1))
+    a_x = tkinter.StringVar(root, value="i", name=next(namer_1))
+    a_y = tkinter.StringVar(root, value="j", name=next(namer_1))
+    a_z = tkinter.StringVar(root, value="n", name=next(namer_1))
+    b_a = tkinter.StringVar(root, value="o", name=next(namer_1))
+    b_b = tkinter.StringVar(root, value="p", name=next(namer_1))
+    b_c = tkinter.StringVar(root, value="q", name=next(namer_1))
+    b_d = tkinter.StringVar(root, value="r", name=next(namer_1))
+    b_e = tkinter.StringVar(root, value="s", name=next(namer_1))
+    b_f = tkinter.StringVar(root, value="t", name=next(namer_1))
+    b_g = tkinter.StringVar(root, value="u", name=next(namer_1))
+
+    a_a = tkinter.Frame(root, width=480, background=random_colour(rgb=False), name=next(namer_2))
+    a_b = tkinter.Frame(a_a, width=470, background=random_colour(rgb=False), name=next(namer_2))
+    a_c = tkinter.Frame(a_a, width=460, background=random_colour(rgb=False), name=next(namer_2))
+    a_d = tkinter.Frame(a_b, width=450, background=random_colour(rgb=False), name=next(namer_2))
+    a_e = tkinter.Frame(a_b, width=440, background=random_colour(rgb=False), name=next(namer_2))
+    a_f = tkinter.Frame(a_c, width=430, background=random_colour(rgb=False), name=next(namer_2))
+    a_g = tkinter.Entry(a_d, textvariable=a_v, width=100, name=next(namer_2))
+    a_h = tkinter.Entry(a_d, textvariable=a_w, width=90, name=next(namer_2))
+    a_i = tkinter.Entry(a_e, textvariable=a_x, width=80, name=next(namer_2))
+    a_j = tkinter.Entry(a_f, textvariable=a_y, width=70, name=next(namer_2))
+    a_k = tkinter.Frame(a_f, width=420, background=random_colour(rgb=False), name=next(namer_2))
+    a_l = tkinter.Frame(a_k, width=410, background=random_colour(rgb=False), name=next(namer_2))
+    a_m = tkinter.Frame(a_l, width=400, background=random_colour(rgb=False), name=next(namer_2))
+    a_n = tkinter.Entry(a_l, textvariable=a_z, width=60, name=next(namer_2))
+    a_o = tkinter.Entry(a_l, textvariable=b_a, width=50, name=next(namer_2))
+    a_p = tkinter.Entry(a_m, textvariable=b_b, width=50, name=next(namer_2))
+    a_q = tkinter.Entry(a_m, textvariable=b_c, width=40, name=next(namer_2))
+
+    a_r = tkinter.Entry(a_a, textvariable=b_d, width=35, name=next(namer_2))
+    a_s = tkinter.Entry(a_b, textvariable=b_e, width=35, name=next(namer_2))
+    a_t = tkinter.Entry(a_c, textvariable=b_f, width=35, name=next(namer_2))
+    a_u = tkinter.Entry(a_k, textvariable=b_g, width=35, name=next(namer_2))
+
+    a_a.pack()
+    a_b.pack()
+    a_r.pack()
+    a_c.pack()
+    a_d.pack()
+    a_e.pack()
+    a_f.pack()
+    a_g.pack()
+    a_h.pack()
+    a_i.pack()
+    a_s.pack()
+    a_j.pack()
+    a_k.pack()
+    a_l.pack()
+    a_m.pack()
+    a_n.pack()
+    a_o.pack()
+    a_p.pack()
+    a_q.pack()
+    a_u.pack()
+    a_t.pack()
+
+    # apply_state(a_j, "disabled", exclude_self=True)
+    apply_state(a_j, "disabled", exclude_self=False)
+    # apply_state(a_j, "disabled", "down")
+
+    # apply_state(a_k, "disabled", "up")
+    # apply_state(a_k, "disabled", "down")
+    root.mainloop()
+
+
 if __name__ == '__main__':
     print('PyCharm')
 
@@ -1240,4 +1462,6 @@ if __name__ == '__main__':
     # test_messagebox()
     # test_radio_factory()
     # test_treeview_factory_1()
-    test_treeview_factory_2()
+    # test_treeview_factory_2()
+    # test_apply_state_1()
+    test_apply_state_3()
