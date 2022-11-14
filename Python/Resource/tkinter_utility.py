@@ -15,8 +15,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.16
-    Date...........2022-11-10
+    Version..............1.17
+    Date...........2022-11-14
     Author.......Avery Briggs
     """
 
@@ -47,7 +47,7 @@ def is_tk_var(var_in, str_var=True, int_var=True, dbl_var=True, bol_var=True, va
 
 
 def top_most_tk(obj):
-    assert isinstance(obj, tkinter.Tk) or isinstance(obj, tkinter.Widget), "Error, function requires an instance of tkinter Tk or tkinter Widget"
+    assert isinstance(obj, tkinter.Tk) or isinstance(obj, tkinter.Widget) or isinstance(obj, tkinter.Toplevel), f"Error, function requires an instance of tkinter Tk or tkinter Widget Got '{type(obj)=}'"
     if isinstance(obj, tkinter.Tk):
         return obj
     else:
@@ -1146,6 +1146,8 @@ class ScannableEntry(tkinter.Entry):
                                                 value="")  # use this variable to ensure that the text has already been validated
         self.text = tkinter.StringVar(self, value="")
         self.passing_through = tkinter.BooleanVar(self, value=False)
+        self.has_passed_through = tkinter.BooleanVar(self, value=False)
+        self.top_level_keypress = tkinter.StringVar(self, value="")
 
         self.valid_submission = tkinter.BooleanVar(self, value=False)  # use this to prevent early submissions.
         self.accepting_counter_reset = 2000
@@ -1209,10 +1211,20 @@ class ScannableEntry(tkinter.Entry):
 
     def set_scan_pass_through(self):
         print(
-            f"WARNING, this forces all keyboard and return key events through this widget.\nDo not use on a single form with multiple text / entry input widgets.")
+            f"WARNING, this forces all generic keyPress and Return key events through this widget.\nDo not use on a single form with multiple text / entry input widgets.")
         self.passing_through.set(True)
+        self.has_passed_through.set(True)
+        self.top_level_keypress.set(self.top_most.bind("<KeyPress>"))
         self.top_most.unbind("<KeyPress>")
         self.update_has_focus_out("")
+
+    def stop_scan_pass_through(self):
+        if self.has_passed_through.get():
+            if self.top_level_keypress.get():
+                self.top_most.bind("<KeyPress>", self.top_level_keypress.get())
+        self.passing_through.set(False)
+        self.top_level_keypress.set("")
+
 
 
 def apply_state(root, state_in, direction: Literal["up", "down"] = "up", exclude_self=False):
