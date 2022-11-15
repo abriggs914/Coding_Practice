@@ -18,8 +18,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.61
-        Date...........2022-10-15
+        Version..............1.62
+        Date...........2022-11-15
         Author.......Avery Briggs
     """
 
@@ -1964,6 +1964,39 @@ def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=Fal
 def sort_2_lists(list_1, list_2):
     # https://stackoverflow.com/questions/13668393/python-sorting-two-lists
     return [list(x) for x in zip(*sorted(zip(list_1, list_2), key=itemgetter(0)))]
+
+
+def replace_timestamp_datetime(str_in, col_in_question=None):
+    """Take a dict.__repr__ before calling eval, and replace all instances of Timestamp("YYYY-MM-DD HH:MM:SS")
+     with calls to datetime.datetime.strptime with appropriate parsing sequence.
+
+     Usage:
+        s = "{'DateCreated': Timestamp('2022-11-15 16:30:00'), 'Name': 'NAME HERE'}"
+        s = replace_timestamp_datetime(s, col_in_question='DateCreated')  # =>
+     """
+    result = ""
+    split_val = ", '"
+    spl = str_in.split(split_val)
+    r_in = "datetime.datetime.strptime"
+    r_out = "Timestamp"
+    if col_in_question is None:
+        col_in_question = []
+    if not isinstance(col_in_question, list) and not isinstance(col_in_question, tuple):
+        col_in_question = [col_in_question]
+    # print(f"{col_in_question=}")
+    for s in spl:
+        # print_by_line([(s.replace("{'", "").startswith(col), col, s) for col in col_in_question])
+        if not col_in_question or any([s.replace("{'", "").startswith(col) for col in col_in_question]):
+            end = s[-22:-1] + ", '%Y-%m-%d %H:%M:%S')"
+            ss = s.replace(r_out, r_in)
+            ss = ss[:-22] + end
+            result += ss
+        else:
+            result += s
+        result += split_val
+    result = result[:len(result) - len(split_val)]
+    # print(f"result: '{result}'")
+    return result
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
