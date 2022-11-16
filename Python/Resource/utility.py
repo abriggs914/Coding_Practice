@@ -1972,7 +1972,7 @@ def replace_timestamp_datetime(str_in, col_in_question=None):
 
      Usage:
         s = "{'DateCreated': Timestamp('2022-11-15 16:30:00'), 'Name': 'NAME HERE'}"
-        s = replace_timestamp_datetime(s, col_in_question='DateCreated')  # =>
+        s = eval(replace_timestamp_datetime(s, col_in_question='DateCreated'))  # =>
      """
     result = ""
     split_val = ", '"

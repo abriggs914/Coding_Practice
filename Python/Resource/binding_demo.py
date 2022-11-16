@@ -12,7 +12,8 @@ def foo_a(event):
 
 binding_in_q = "<Control-Shift-KeyPress-Q>"
 
-b.bind(binding_in_q, foo_a)
+b_1 = b.bind(binding_in_q, foo_a)
+print(f"{b_1=}")
 
 bindings = b.bind()
 print(f"{bindings=}, {type(bindings)=}")
@@ -27,7 +28,8 @@ c.set("stop testing")
 d.pack()
 
 # using the return value of this binding, I can set another binding to the same callback
-d.bind("<Control-Shift-KeyPress-P>", b.bind(binding_in_q))
+b_2 = d.bind("<Control-Shift-KeyPress-P>", b.bind(binding_in_q))
+print(f"{b_2=}")
 
 print(f"{d.bind('<Keypress-A>')=}")
 
