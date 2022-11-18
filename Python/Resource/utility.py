@@ -18,8 +18,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.62
-        Date...........2022-11-15
+        Version..............1.63
+        Date...........2022-11-18
         Author.......Avery Briggs
     """
 
@@ -1997,6 +1997,23 @@ def replace_timestamp_datetime(str_in, col_in_question=None):
     result = result[:len(result) - len(split_val)]
     # print(f"result: '{result}'")
     return result
+
+
+def margins(t_width, n_btns, btn_width):
+    """Calculate margins given a total width, button_width and number of buttons.
+    Usage:
+
+        # Want to place 3 buttons of width 100, in a total width of 600
+        m = margins(600, 3, 100)
+    """
+    assert (isinstance(t_width, int) or isinstance(t_width, float)) and t_width > 0, "Error, param t_width must be a number greater than 0."
+    assert (isinstance(n_btns, int) or isinstance(n_btns, float)) and n_btns > 0, "Error, param n_btns must be a number greater than 0."
+    assert (isinstance(btn_width, int) or isinstance(btn_width, float)) and (btn_width * n_btns) <= t_width, "Error, param btn_width must be a number greater than 0."
+    mw = (t_width - (n_btns * btn_width)) / (n_btns + 1)
+    return flatten([[
+        i * (mw + btn_width),
+        (i * btn_width) + ((i + 1) * mw)
+    ] for i in range(n_btns + 1)])
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

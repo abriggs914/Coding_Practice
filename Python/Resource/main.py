@@ -2001,6 +2001,30 @@ def test_grid_manager():
     # WIN.mainloop()
 
 
+def test_margins():
+
+    def margins1(t_width, n_btns, btn_width):
+        mw = (t_width - (n_btns * btn_width)) / (n_btns + 1)
+
+        for i in range(n_btns + 1):
+            a, b = i * btn_width, (i + 1) * mw
+            print(f"{a=}, {b=}")
+
+        # return flatten([0] + [[(i + 1) * mw, i * btn_width] for i in range(n_btns)] + [t_width])
+        # return flatten([[
+        #     ((i if i <= 1 else (i)) * (mw)) + (i * btn_width),
+        #     ((i if i <= 1 else (i)) * (btn_width)) + ((i + 1) * mw)
+        # ] for i in range(n_btns + 1)])
+        return flatten([[
+            i * (mw + btn_width),
+            (i * btn_width) + ((i + 1) * mw)
+        ] for i in range(n_btns + 1)])
+
+    # m1 = margins()
+    print(margins(600, 3, 100))
+    print(margins(600, 1, 200))
+
+
 
 if __name__ == "__main__":
     # test_block_letters()
@@ -2052,6 +2076,7 @@ if __name__ == "__main__":
     # test_colourify()
     # test_tk_slider()
     # test_rgb_slider()
-    test_theme_publisher()
+    # test_theme_publisher()
     # test_alpha_seq()
     # test_grid_manager()
+    test_margins()
