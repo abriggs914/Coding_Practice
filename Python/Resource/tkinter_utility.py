@@ -15,8 +15,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.17
-    Date...........2022-11-14
+    Version..............1.18
+    Date...........2022-11-28
     Author.......Avery Briggs
     """
 
@@ -1160,13 +1160,29 @@ class ScannableEntry(tkinter.Entry):
         self.entry.pack()
 
         # bind and trace widgets and variables
+        self.set_bindings()
+        self.set_listeners()
+
+    def set_listeners(self):
         self.accepting_counter.trace_variable("w", self.update_accepting_counter)
         self.valid_submission.trace_variable("w", self.update_valid_submission)
         self.text.trace_variable("w", self.update_text)
+
+    def set_bindings(self):
         self.entry.bind("<Return>", self.return_text)
         self.entry.bind("<FocusIn>",
                         self.update_has_focus_in)  # prevents duplicate event firing when typing directly into the entry widget
         self.entry.bind("<FocusOut>", self.update_has_focus_out)
+
+    def stop_listeners(self):
+        self.accepting_counter.trace_remove(*self.accepting_counter.trace_info()[0])
+        self.valid_submission.trace_remove(*self.valid_submission.trace_info()[0])
+        self.text.trace_remove(*self.text.trace_info()[0])
+
+    def stop_bindings(self):
+        self.entry.unbind("<Return>")
+        self.entry.unbind("<FocusIn>")  # prevents duplicate event firing when typing directly into the entry widget
+        self.entry.unbind("<FocusOut>")
 
     def update_text(self, *args):
         if len(args) == 1:

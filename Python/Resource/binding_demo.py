@@ -25,6 +25,9 @@ c = tkinter.StringVar(WIN, value="")
 d = tkinter.Entry(WIN, textvariable=c)
 c.set("stop testing")
 
+c.trace_variable("w", foo_a)
+print(f"{c.trace_info()=}")
+
 d.pack()
 
 # using the return value of this binding, I can set another binding to the same callback
