@@ -1,10 +1,11 @@
 import datetime
+import random
 import tkinter
 
 import pandas
 
 from typing import Literal
-from utility import grid_cells, clamp_rect, clamp, isnumber, alpha_seq
+from utility import grid_cells, clamp_rect, clamp, isnumber, alpha_seq, random_date
 from colour_utility import rgb_to_hex, font_foreground, Colour, random_colour
 from tkinter import ttk, messagebox
 
@@ -237,7 +238,9 @@ def treeview_factory(
         kwargs_treeview=None,
         default_col_width=100,
         include_scroll_x=True,
-        include_scroll_y=True
+        include_scroll_y=True,
+        text_prefix="B_",
+        iid_prefix="C_"
 ):
     assert isinstance(dataframe, pandas.DataFrame), f"Error, param 'dataframe' must be an instance of a pandas Dataframe, got: '{type(dataframe)}'."
 
@@ -272,12 +275,26 @@ def treeview_factory(
 
     # print(f"About to look at column_names: {viewable_column_names=}, with {viewable_column_widths=}")
 
+    kwargs = {
+        "viewable_column_names": viewable_column_names,
+        "viewable_column_widths": viewable_column_widths,
+        "tv_label": tv_label,
+        "kwargs_label": kwargs_label,
+        "kwargs_treeview": kwargs_treeview,
+        "default_col_width": default_col_width,
+        "include_scroll_x": include_scroll_x,
+        "include_scroll_y": include_scroll_y,
+        "text_prefix": text_prefix,
+        "iid_prefix": iid_prefix
+    }
+
     label = tkinter.Label(master, textvariable=tv_label, **kwargs_label)
     treeview = ttk.Treeview(
         master,
         columns=viewable_column_names
         , displaycolumns=viewable_column_names
         , **kwargs_treeview
+        , **kwargs
     )
     treeview.column("#0", width=0, stretch=tkinter.NO)
     treeview.heading("#0", text="", anchor=tkinter.CENTER)
@@ -293,7 +310,7 @@ def treeview_factory(
         idx, row = row
         # print(f"{row=}, {type(row)=}")
         dat = [row[c_name] for c_name in viewable_column_names]
-        treeview.insert("", tkinter.END, text=f"B_{i}", iid=f"C_{i}", values=dat)
+        treeview.insert("", tkinter.END, text=f"{text_prefix}{i}", iid=f"{iid_prefix}{i}", values=dat)
 
     # treeview.bind("<<TreeviewSelect>>", CALLBACK_HERE)
     scrollbar_x, scrollbar_y = None, None
@@ -481,6 +498,42 @@ def test_treeview_factory_2():
         ,"invisible_col": [True, True, True, False]
         ,"dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7), datetime.datetime(2005, 8, 31)]
     })
+
+    print(f"df:\n\n{df}")
+
+    tv_label, label, treeview, scrollbar_x, scrollbar_y = treeview_factory(
+        WIN,
+        df,
+        viewable_column_names=["species", "name", "dob"],
+        viewable_column_widths=[300, 125, 200]
+    )
+    tv_label.set("I forgot to pass a title! - no worries.")
+    label.pack(side=tkinter.TOP)
+    scrollbar_y.pack(side=tkinter.RIGHT, anchor="e", fill="y")
+    treeview.pack(side=tkinter.TOP)
+    scrollbar_x.pack(side=tkinter.BOTTOM)
+
+    WIN.mainloop()
+
+
+def test_treeview_factory_3():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    df = pandas.DataFrame({
+        "species": ["Cat", "Dog", "Fish", "Parrot"]
+        ,"name": ["Tim", "Tam", "Tom", "Tum"]
+        ,"invisible_col": [True, True, True, False]
+        ,"dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7), datetime.datetime(2005, 8, 31)]
+    })
+
+    def gen_random_entry():
+        return str(random.randint(0, 25)), str(random.randint(0, 25)), random.choice([True, False]), random_date(start_year=2020, end_year=2024)
+
+    def insert_new_entry(index=tkinter.END):
+        data = gen_random_entry()
+        iid = f""
+        treeview.insert("", index, iid=, text=, values=)
 
     print(f"df:\n\n{df}")
 
@@ -1142,17 +1195,17 @@ class ScannableEntry(tkinter.Entry):
 
         self.top_most = top_most_tk(master)
 
-        self.validated_text = tkinter.StringVar(self,
+        self.validated_text = tkinter.StringVar(self.top_most,
                                                 value="")  # use this variable to ensure that the text has already been validated
-        self.text = tkinter.StringVar(self, value="")
-        self.passing_through = tkinter.BooleanVar(self, value=False)
-        self.has_passed_through = tkinter.BooleanVar(self, value=False)
-        self.top_level_keypress = tkinter.StringVar(self, value="")
-        self.top_level_return = tkinter.StringVar(self, value="")
+        self.text = tkinter.StringVar(self.top_most, value="")
+        self.passing_through = tkinter.BooleanVar(self.top_most, value=False)
+        self.has_passed_through = tkinter.BooleanVar(self.top_most, value=False)
+        self.top_level_keypress = tkinter.StringVar(self.top_most, value="")
+        self.top_level_return = tkinter.StringVar(self.top_most, value="")
 
-        self.valid_submission = tkinter.BooleanVar(self, value=False)  # use this to prevent early submissions.
+        self.valid_submission = tkinter.BooleanVar(self.top_most, value=False)  # use this to prevent early submissions.
         self.accepting_counter_reset = 2000
-        self.accepting_counter = tkinter.IntVar(self,
+        self.accepting_counter = tkinter.IntVar(self.top_most,
                                                 value=self.accepting_counter_reset)  # use this to prevent submission while editing.
 
         self.entry = tkinter.Entry(self, textvariable=self.text, font=("Arial", 16), justify=tkinter.CENTER)
@@ -1165,23 +1218,28 @@ class ScannableEntry(tkinter.Entry):
         self.set_listeners()
 
     def set_listeners(self):
+        self.stop_listeners()
         self.accepting_counter.trace_variable("w", self.update_accepting_counter)
         self.valid_submission.trace_variable("w", self.update_valid_submission)
         self.text.trace_variable("w", self.update_text)
 
     def set_bindings(self):
+        self.stop_bindings()
         self.entry.bind("<Return>", self.return_text)
         self.entry.bind("<FocusIn>",
                         self.update_has_focus_in)  # prevents duplicate event firing when typing directly into the entry widget
         self.entry.bind("<FocusOut>", self.update_has_focus_out)
 
     def stop_listeners(self):
-        self.accepting_counter.trace_remove(*self.accepting_counter.trace_info()[0])
-        self.valid_submission.trace_remove(*self.valid_submission.trace_info()[0])
-        self.text.trace_remove(*self.text.trace_info()[0])
+        if self.accepting_counter.trace_info():
+            self.accepting_counter.trace_remove(*self.accepting_counter.trace_info()[0])
+        if self.valid_submission.trace_info():
+            self.valid_submission.trace_remove(*self.valid_submission.trace_info()[0])
+        if self.text.trace_info():
+            self.text.trace_remove(*self.text.trace_info()[0])
 
     def stop_bindings(self):
-        self.entry.unbind("<Return>")
+        # self.entry.unbind("<Return>")
         self.entry.unbind("<FocusIn>")
         self.entry.unbind("<FocusOut>")
 
@@ -1189,10 +1247,12 @@ class ScannableEntry(tkinter.Entry):
         # does not reset pass through status
         self.set_bindings()
         self.set_listeners()
+        self.accepting_counter.set(self.accepting_counter_reset)
+        self.valid_submission.set(False)
         self.text.set("")
 
     def update_text(self, *args):
-        print(f"tk_utility {args=}")
+        print(f"==\ttk_utility {args=}, {self.text.get()=}, {self.validated_text.get()=}")
         if len(args) == 1:
             # print("\t\t\tFROM TOP MOST")
             event, *rest = args
@@ -1207,33 +1267,46 @@ class ScannableEntry(tkinter.Entry):
         self.count_stop_editing()
 
     def return_text(self, event):
+        # print(f"==\tself.return_text")
+        # print(f"{self.accepting_counter.trace_info()[0]=}, {self.accepting_counter.get()=}")
+        # self.update_accepting_counter(None)
+        # print(f"{self.valid_submission.trace_info()[0]=}")
+        # print(f"{self.text.trace_info()[0]=}")
+        # print(f"{self.accepting_counter.trace_info()=}")
+        # print(f"{self.accepting_counter.trace_vinfo()=}")
+        # print(f"AA\tpre set v={self.accepting_counter.get()}, t={self.text.get()}")
         self.accepting_counter.set(0)
+        # print(f"AA\tpost set v={self.accepting_counter.get()}, t={self.text.get()}")
 
     def count_stop_editing(self):
+        # print(f"==\tself.count_stop_editing {self.accepting_counter.get()=}")
         x = self.accepting_counter.get()
         if x > 1:
             self.accepting_counter.set(x - 1)
             self.after(1, self.count_stop_editing)
 
     def update_accepting_counter(self, *args):
+        # print(f"==\tupdate_accepting_counter, {self.accepting_counter.get()=}")
         if self.accepting_counter.get() <= 0:
             self.valid_submission.set(True)
+        # else:
+        #     print(f"{self.accepting_counter.get()=}")
 
     def update_valid_submission(self, *args):
         # this is called when the entry is ready to be read.
         if self.valid_submission.get() and self.text.get():
             print(f"DONE!! '{self.text.get()}'")
             self.validated_text.set(self.text.get())
-        else:
-            print(f"\t{self.valid_submission.get()=}, {self.text.get()=}, {(self.valid_submission.get() and self.text.get())=}")
+        # else:
+        #     print(f"\t{self.valid_submission.get()=}, {self.text.get()=}, {(self.valid_submission.get() and self.text.get())=}")
 
     def update_has_focus_in(self, *event):
-        print(f"update_has_focus_in")
+        # print(f"==\tupdate_has_focus_in")
         self.top_most.unbind("<Return>")
         self.top_most.unbind("<KeyPress>")
 
     def update_has_focus_out(self, *event):
-        print(f"update_has_focus_out")
+        # print(f"==\tupdate_has_focus_out")
         self.top_most.bind("<Return>", self.return_text)
         self.top_most.bind("<KeyPress>", self.update_text)
 
@@ -1244,16 +1317,16 @@ class ScannableEntry(tkinter.Entry):
         self.has_passed_through.set(True)
         self.top_level_keypress.set(self.top_most.bind("<KeyPress>"))
         self.top_level_return.set(self.top_most.bind("<Return>"))
-        self.top_most.unbind("<KeyPress>")
-        self.top_most.unbind("<Return>")
+        # self.top_most.bind("<Return>", self.return_text)
+        # self.top_most.bind("<KeyPress>", self.update_text)
         self.update_has_focus_out("")
 
     def stop_scan_pass_through(self):
         if self.has_passed_through.get():
             if self.top_level_keypress.get():
                 self.top_most.bind("<KeyPress>", self.top_level_keypress.get())
-            if self.top_level_return.get():
-                self.top_most.bind("<Return>", self.top_level_return.get())
+            # if self.top_level_return.get():
+            #     self.top_most.bind("<Return>", self.top_level_return.get())
         self.passing_through.set(False)
         self.top_level_keypress.set("")
         self.top_level_return.set("")
@@ -1508,5 +1581,6 @@ if __name__ == '__main__':
     # test_radio_factory()
     # test_treeview_factory_1()
     # test_treeview_factory_2()
+    test_treeview_factory_3()
     # test_apply_state_1()
-    test_apply_state_3()
+    # test_apply_state_3()
