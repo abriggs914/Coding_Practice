@@ -18,8 +18,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.20
-    Date...........2022-12-01
+    Version..............1.21
+    Date...........2022-12-02
     Author.......Avery Briggs
     """
 
@@ -345,8 +345,9 @@ class TreeviewController(tkinter.Frame):
             self.treeview.heading(col, text=col, anchor=tkinter.CENTER, command=lambda _col=col: \
                 self.treeview.treeview_sort_column(_col, False))
 
-        self.treeview.column("#0", width=10, stretch=False)
-        self.treeview.heading("#0", text="", anchor=tkinter.CENTER)
+        self.idx_width = 50
+        self.treeview.column("#0", width=self.idx_width, stretch=False)
+        self.treeview.heading("#0", text="#", anchor=tkinter.CENTER)
 
         for i, row in enumerate(df.iterrows()):
             next(self.iid_namer)
@@ -387,7 +388,7 @@ class TreeviewController(tkinter.Frame):
         to_add = {}
         checked = set()
         for i, k in enumerate(self.aggregate_data):
-            print(f"\t\t{i=}")
+            # print(f"\t\t{i=}")
             if k.startswith("#") and k[1:].isalnum():
                 num = int(k[1:])
                 if -1 < num < len(order):
@@ -402,7 +403,7 @@ class TreeviewController(tkinter.Frame):
                 key = k
             idx = order.index(key)
             checked.add(key)
-            print(f"HERE {k=}, {key=}, {idx=}, {order_a=}")
+            # print(f"HERE {k=}, {key=}, {idx=}, {order_a=}")
             order_a.insert(idx, (key, k))
 
         self.aggregate_data.update(to_add)
@@ -414,6 +415,7 @@ class TreeviewController(tkinter.Frame):
         for kk in order_s.difference(checked):
             idx = self.viewable_column_names.index(kk)
             order_a.insert(idx, (kk, kk))
+        # order_a.insert(0, ("#0", "#0"))
         print(f'B {order_a=}')
 
         for key in order_a:
@@ -473,6 +475,7 @@ class TreeviewController(tkinter.Frame):
             print(f"{self.treeview.heading(key)=}, {type(self.treeview.heading(key))=}")
 
         self.treeview.bind("<B1-Motion>", self.check_column_width_update)
+        self.treeview.bind("<Button-1>", self.stop_row_idx_resize)
 
     def column_x(self, column_name):
         x1, x2 = 0, 0
@@ -497,12 +500,12 @@ class TreeviewController(tkinter.Frame):
         for i, child in enumerate(self.treeview.get_children()):
             item_data = self.treeview.item(child)
             vals = item_data.get("values", [])
-            print(f"{i=}, {idx=}, {child=}, {values=}, {vals=}")
+            # print(f"{i=}, {idx=}, {child=}, {values=}, {vals=}")
             val = vals[idx]
             values.append(val)
             val_s = str(val)
             # assert isinstance(val, str), f"got {val=}, {type(val)=}"
-            print(f"{i=}, {child=}, {values=}, {val=}")
+            # print(f"{i=}, {child=}, {values=}, {val=}")
             if scan_unk:
                 scan_unk = False
                 if val_s.isnumeric() and ((dot_count:=val_s.count(".")) < 2):
@@ -527,7 +530,10 @@ class TreeviewController(tkinter.Frame):
         else:
             values = list(map(str, values))
 
-        result = func(values)
+        try:
+            result = func(values)
+        except:
+            return "!VALUE"
         if scan_num:
             if scan_int:
                 result = int(result)
@@ -537,26 +543,58 @@ class TreeviewController(tkinter.Frame):
         return result
 
     def update_aggregate_row(self):
-        for i, col in enumerate([None, *self.viewable_column_names]):
+        for i, col in enumerate(self.viewable_column_names):
             print(f"{i=}, {col=}")
             print(f"\t{self.aggregate_objects[i]=}")
             if i > 0:
                 # first is always the frame
-                tv, *rest = self.aggregate_objects[i]
+                # add 1 to skip the row index column
+                tv, *rest = self.aggregate_objects[i + 1]
                 tv.set(self.calc_aggregate_value(col))
+
+    def stop_row_idx_resize(self, event):
+        """break the event loop before trying to resize the index column"""
+        # print(f"{event=}")
+        region1 = self.treeview.identify("region", event.x, event.y)
+        column = self.treeview.identify_column(event.x)
+        # print(f"{region1=}")
+        # print(f"{column=}")
+        if region1 == "separator" and (column == "#0" or column == f"#{len(self.viewable_column_widths)}"):
+            # column_data = self.treeview.column(column)
+            return "break"
+
 
     def check_column_width_update(self, event):
         print(f"{event=}, {type(event)=}")
         region1 = self.treeview.identify("region", event.x, event.y)
         column = self.treeview.identify_column(event.x)
-        print(f"{region1=}")
-        print(f"{column=}")
-        if region1 == "separator":
-            column_data = self.treeview.column(column)
-            stretch = column_data.get("stretch", None)
-            print(f"\n\n\t{column_data=}, {stretch=}")
-            if stretch:
-                self.update_aggregate_row()
+        column_data = self.treeview.column(column)
+        width1 = column_data.get("width", 0)
+        name = column_data.get("id", None)
+        print(f"{name=}")
+        # col_idx1 = 0 if column == "#0" else (self.viewable_column_names.index(name) + 1)
+        # col_idx2 = (col_idx1 + 1) if col_idx1 < (len(self.viewable_column_names) - 1) else (col_idx1 - 1)
+        col_idx1 = 0 if column == "#0" else (self.viewable_column_names.index(name) - 1)
+        col_idx2 = (col_idx1 + 1) if col_idx1 < (len(self.viewable_column_names) - 1) else (col_idx1 - 1)
+        width2 = self.treeview.column(f"#{col_idx2}").get("width", 0)
+        if region1 == "separator" and column != "#0":
+            diff_width = self.viewable_column_widths[col_idx1 - 1] - width1
+            print(f"\n\n\t{column_data=}, {width1=}, {width2=}, {diff_width=}")
+            print(f"{region1=}, {column=}")
+            print(f"{col_idx1=}, {col_idx2=}")
+            print(f"{self.viewable_column_widths=}")
+            print(f"{self.viewable_column_widths[col_idx1]=}, {self.viewable_column_widths[col_idx2]=}")
+
+            self.viewable_column_widths[col_idx1 - 1] -= diff_width
+            self.viewable_column_widths[col_idx2 - 1] += diff_width
+
+            # stretch = column_data.get("stretch", None)
+            # print(f"\n\n\t{column_data=}, {stretch=}")
+            # if stretch:
+
+
+
+            # self.update_aggregate_row()
 
     def get_objects(self):
         return \
