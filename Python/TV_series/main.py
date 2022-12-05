@@ -762,11 +762,21 @@ king_of_the_hill = TVSeries("King of the Hill", {
 	10: 15,
 	11: 12,
 	12: 22,
-	13: 24,
-	},
+	13: 24},
 	23,
 	1997,
 	2009,
+	True,
+	"Comedy / Cartoon",
+	"Disney+")
+	
+	
+bless_the_harts = TVSeries("Bless the Harts", {
+	1: 10,
+	2: 24},
+	23,
+	2019,
+	2022,
 	True,
 	"Comedy / Cartoon",
 	"Disney+")
@@ -825,7 +835,8 @@ series_list = [
 	star_wars_the_clone_wars,
 	sons_of_anarchy,
 	the_great_north,
-	king_of_the_hill
+	king_of_the_hill,
+	bless_the_harts
 ]
 
    

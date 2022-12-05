@@ -415,7 +415,7 @@ class TreeviewController(tkinter.Frame):
         for kk in order_s.difference(checked):
             idx = self.viewable_column_names.index(kk)
             order_a.insert(idx, (kk, kk))
-        # order_a.insert(0, ("#0", "#0"))
+        order_a.insert(0, ("#0", "#0"))
         print(f'B {order_a=}')
 
         for key in order_a:
@@ -543,7 +543,7 @@ class TreeviewController(tkinter.Frame):
         return result
 
     def update_aggregate_row(self):
-        for i, col in enumerate(self.viewable_column_names):
+        for i, col in enumerate(["#0", *self.viewable_column_names]):
             print(f"{i=}, {col=}")
             print(f"\t{self.aggregate_objects[i]=}")
             if i > 0:
@@ -554,7 +554,7 @@ class TreeviewController(tkinter.Frame):
 
     def stop_row_idx_resize(self, event):
         """break the event loop before trying to resize the index column"""
-        # print(f"{event=}")
+        print(f"{event=}")
         region1 = self.treeview.identify("region", event.x, event.y)
         column = self.treeview.identify_column(event.x)
         # print(f"{region1=}")
@@ -562,7 +562,6 @@ class TreeviewController(tkinter.Frame):
         if region1 == "separator" and (column == "#0" or column == f"#{len(self.viewable_column_widths)}"):
             # column_data = self.treeview.column(column)
             return "break"
-
 
     def check_column_width_update(self, event):
         print(f"{event=}, {type(event)=}")

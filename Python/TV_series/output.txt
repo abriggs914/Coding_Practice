@@ -582,23 +582,34 @@ Total minutes:			5957
 Total hours:			99.28333333333333
 Where to watch:			Disney+
 
+	Bless the Harts
+Genre:				Comedy / Cartoon
+Run (2019 -> 2022):		3 years
+number seasons:			2
+number episodes:		34
+episodes per season:		17.0
+average length of an episode:	23
+Total minutes:			782
+Total hours:			13.033333333333333
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Sherlock
-Genre:				Mystery / Crime / Drama
-Run (2010 -> 2017):		7 years
-number seasons:			4
-number episodes:		13
-episodes per season:		3.25
-average length of an episode:	90
-Total minutes:			1170
-Total hours:			19.5
-Where to watch:			Prime TV
+	Futurama
+Genre:				Comedy
+Run (1999 -> 2013):		14 years
+number seasons:			10
+number episodes:		140
+episodes per season:		14.0
+average length of an episode:	22
+Total minutes:			3080
+Total hours:			51.333333333333336
+Where to watch:			Disney+
 
-Season: 1
+Season: 6
 Episode: 2
 
 	How would you like to print the stats?
@@ -666,6 +677,7 @@ sorting by start year...
 |Final Space                      |    2018    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |    2018    |Final Space                      |
 |Chernobyl                        |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    2019    |Chernobyl                        |
 |The Mandalorian                  |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    2019    |The Mandalorian                  |
+|Bless the Harts                  |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    2019    |Bless the Harts                  |
 |Solar Opposites                  |    2020    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    2020    |Solar Opposites                  |
 |Wandavision                      |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Wandavision                      |
 |The Falcon and the Winter Soldier|    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |The Falcon and the Winter Soldier|
@@ -740,6 +752,7 @@ sorting by start year...
 |Final Space                      |    2018    |
 |Chernobyl                        |    2019    |
 |The Mandalorian                  |    2019    |
+|Bless the Harts                  |    2019    |
 |Solar Opposites                  |    2020    |
 |Wandavision                      |    2021    |
 |The Falcon and the Winter Soldier|    2021    |
@@ -749,12 +762,12 @@ sorting by start year...
 |The Great North                  |    2021    |
 ################################################
 
-Mean:		2009.64
-Median:		2010.00
-Pstdev:		  7.77
-Pvariance:	 60.34
-Stdev:		  7.84
-Variance:	 61.50
+Mean:		2009.81
+Median:		2010.50
+Pstdev:		  7.80
+Pvariance:	 60.82
+Stdev:		  7.87
+Variance:	 61.97
 
 	How would you like to print the stats?
 1	-	By start year
@@ -826,6 +839,7 @@ sorting by end year...
 |The Simpsons                     |   2022   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |The Simpsons                     |
 |Family Guy                       |   2022   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |   2022   |Family Guy                       |
 |The Orville                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2022   |The Orville                      |
+|Bless the Harts                  |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |   2022   |Bless the Harts                  |
 |Solar Opposites                  |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   2022   |Solar Opposites                  |
 |The Great North                  |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |   2022   |The Great North                  |
 ###############################################################################################################################################################################################################################################################################
@@ -900,16 +914,17 @@ sorting by end year...
 |The Simpsons                     |   2022   |
 |Family Guy                       |   2022   |
 |The Orville                      |   2022   |
+|Bless the Harts                  |   2022   |
 |Solar Opposites                  |   2022   |
 |The Great North                  |   2022   |
 ##############################################
 
-Mean:		2016.38
+Mean:		2016.48
 Median:		2019.00
-Pstdev:		  5.20
-Pvariance:	 27.07
-Stdev:		  5.25
-Variance:	 27.59
+Pstdev:		  5.21
+Pvariance:	 27.14
+Stdev:		  5.26
+Variance:	 27.65
 
 	How would you like to print the stats?
 1	-	By start year
@@ -947,6 +962,7 @@ sorting by shortest series length...
 |Brickleberry                     |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |             3              |Brickleberry                     |
 |The Last Man on Earth            |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |             3              |The Last Man on Earth            |
 |Baskets                          |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3              |Baskets                          |
+|Bless the Harts                  |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |             3              |Bless the Harts                  |
 |Recess                           |             4              |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |Recess                           |
 |The Proud Family                 |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |The Proud Family                 |
 |My Name is Earl                  |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |My Name is Earl                  |
@@ -1021,6 +1037,7 @@ sorting by shortest series length...
 |Brickleberry                     |             3              |
 |The Last Man on Earth            |             3              |
 |Baskets                          |             3              |
+|Bless the Harts                  |             3              |
 |Recess                           |             4              |
 |The Proud Family                 |             4              |
 |My Name is Earl                  |             4              |
@@ -1059,12 +1076,12 @@ sorting by shortest series length...
 |The Simpsons                     |             33             |
 ################################################################
 
-Mean:		  6.85
+Mean:		  6.78
 Median:		  5.00
-Pstdev:		  6.30
-Pvariance:	 39.68
-Stdev:		  6.36
-Variance:	 40.44
+Pstdev:		  6.26
+Pvariance:	 39.21
+Stdev:		  6.32
+Variance:	 39.95
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1125,6 +1142,7 @@ sorting by longest series length...
 |Brickleberry                     |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |             3             |Brickleberry                     |
 |The Last Man on Earth            |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |             3             |The Last Man on Earth            |
 |Baskets                          |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3             |Baskets                          |
+|Bless the Harts                  |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |             3             |Bless the Harts                  |
 |Final Space                      |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2             |Final Space                      |
 |The Mandalorian                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2             |The Mandalorian                  |
 |Solar Opposites                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2             |Solar Opposites                  |
@@ -1199,6 +1217,7 @@ sorting by longest series length...
 |Brickleberry                     |             3             |
 |The Last Man on Earth            |             3             |
 |Baskets                          |             3             |
+|Bless the Harts                  |             3             |
 |Final Space                      |             2             |
 |The Mandalorian                  |             2             |
 |Solar Opposites                  |             2             |
@@ -1214,12 +1233,12 @@ sorting by longest series length...
 |The Great North                  |             1             |
 ###############################################################
 
-Mean:		  6.85
+Mean:		  6.78
 Median:		  5.00
-Pstdev:		  6.30
-Pvariance:	 39.68
-Stdev:		  6.36
-Variance:	 40.44
+Pstdev:		  6.26
+Pvariance:	 39.21
+Stdev:		  6.32
+Variance:	 39.95
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1250,6 +1269,7 @@ sorting by least number of seasons...
 |Hawkeye                          |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |          1           |Hawkeye                          |
 |The Proud Family                 |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2           |The Proud Family                 |
 |Gravity Falls                    |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          2           |Gravity Falls                    |
+|Bless the Harts                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          2           |Bless the Harts                  |
 |Final Space                      |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2           |Final Space                      |
 |The Mandalorian                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2           |The Mandalorian                  |
 |The Mick                         |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2           |The Mick                         |
@@ -1324,6 +1344,7 @@ sorting by least number of seasons...
 |Hawkeye                          |          1           |
 |The Proud Family                 |          2           |
 |Gravity Falls                    |          2           |
+|Bless the Harts                  |          2           |
 |Final Space                      |          2           |
 |The Mandalorian                  |          2           |
 |The Mick                         |          2           |
@@ -1369,12 +1390,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  6.00
+Mean:		  5.93
 Median:		  5.00
-Pstdev:		  5.47
-Pvariance:	 29.96
-Stdev:		  5.53
-Variance:	 30.54
+Pstdev:		  5.45
+Pvariance:	 29.70
+Stdev:		  5.50
+Variance:	 30.26
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1436,6 +1457,7 @@ sorting by most number of seasons...
 |Solar Opposites                  |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          3          |Solar Opposites                  |
 |The Proud Family                 |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2          |The Proud Family                 |
 |Gravity Falls                    |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          2          |Gravity Falls                    |
+|Bless the Harts                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          2          |Bless the Harts                  |
 |Final Space                      |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |          2          |Final Space                      |
 |The Mandalorian                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          2          |The Mandalorian                  |
 |The Mick                         |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          2          |The Mick                         |
@@ -1510,6 +1532,7 @@ sorting by most number of seasons...
 |Solar Opposites                  |          3          |
 |The Proud Family                 |          2          |
 |Gravity Falls                    |          2          |
+|Bless the Harts                  |          2          |
 |Final Space                      |          2          |
 |The Mandalorian                  |          2          |
 |The Mick                         |          2          |
@@ -1524,12 +1547,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  6.00
+Mean:		  5.93
 Median:		  5.00
-Pstdev:		  5.47
-Pvariance:	 29.96
-Stdev:		  5.53
-Variance:	 30.54
+Pstdev:		  5.45
+Pvariance:	 29.70
+Stdev:		  5.50
+Variance:	 30.26
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1566,6 +1589,7 @@ sorting by least number of episodes...
 |Solar Opposites                  |          28           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          28           |Solar Opposites                  |
 |Peaky Blinders                   |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          30           |Peaky Blinders                   |
 |The Great North                  |          33           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |          33           |The Great North                  |
+|Bless the Harts                  |          34           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          34           |Bless the Harts                  |
 |Brickleberry                     |          36           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          36           |Brickleberry                     |
 |Misfits                          |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          37           |Misfits                          |
 |The Orville                      |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          37           |The Orville                      |
@@ -1640,6 +1664,7 @@ sorting by least number of episodes...
 |Solar Opposites                  |          28           |
 |Peaky Blinders                   |          30           |
 |The Great North                  |          33           |
+|Bless the Harts                  |          34           |
 |Brickleberry                     |          36           |
 |Misfits                          |          37           |
 |The Orville                      |          37           |
@@ -1679,12 +1704,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		 94.53
-Median:		 56.00
-Pstdev:		119.10
-Pvariance:	14185.57
-Stdev:		120.24
-Variance:	14458.37
+Mean:		 93.41
+Median:		 54.50
+Pstdev:		118.28
+Pvariance:	13989.46
+Stdev:		119.39
+Variance:	14253.42
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1742,6 +1767,7 @@ sorting by most number of episodes...
 |The Orville                      |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          37          |The Orville                      |
 |The Mick                         |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37          |The Mick                         |
 |Brickleberry                     |          36          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          36          |Brickleberry                     |
+|Bless the Harts                  |          34          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          34          |Bless the Harts                  |
 |The Great North                  |          33          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |          33          |The Great North                  |
 |Peaky Blinders                   |          30          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          30          |Peaky Blinders                   |
 |Solar Opposites                  |          28          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          28          |Solar Opposites                  |
@@ -1816,6 +1842,7 @@ sorting by most number of episodes...
 |The Orville                      |          37          |
 |The Mick                         |          37          |
 |Brickleberry                     |          36          |
+|Bless the Harts                  |          34          |
 |The Great North                  |          33          |
 |Peaky Blinders                   |          30          |
 |Solar Opposites                  |          28          |
@@ -1834,12 +1861,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 94.53
-Median:		 56.00
-Pstdev:		119.10
-Pvariance:	14185.57
-Stdev:		120.24
-Variance:	14458.37
+Mean:		 93.41
+Median:		 54.50
+Pstdev:		118.28
+Pvariance:	13989.46
+Stdev:		119.39
+Variance:	14253.42
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1873,6 +1900,7 @@ sorting by shortest time...
 |Solar Opposites                  |   11.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   11.200000   |Solar Opposites                  |
 |The Mandalorian                  |   11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   11.733333   |The Mandalorian                  |
 |The Great North                  |   12.650000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |   12.650000   |The Great North                  |
+|Bless the Harts                  |   13.033333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |   13.033333   |Bless the Harts                  |
 |Brickleberry                     |   13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |   13.200000   |Brickleberry                     |
 |The Mick                         |   13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |   13.566667   |The Mick                         |
 |Baskets                          |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |   14.666667   |Baskets                          |
@@ -1947,6 +1975,7 @@ sorting by shortest time...
 |Solar Opposites                  |   11.200000   |
 |The Mandalorian                  |   11.733333   |
 |The Great North                  |   12.650000   |
+|Bless the Harts                  |   13.033333   |
 |Brickleberry                     |   13.200000   |
 |The Mick                         |   13.566667   |
 |Baskets                          |   14.666667   |
@@ -1989,12 +2018,12 @@ sorting by shortest time...
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 43.84
-Median:		 27.13
-Pstdev:		 52.74
-Pvariance:	2781.05
-Stdev:		 53.24
-Variance:	2834.53
+Mean:		 43.27
+Median:		 26.60
+Pstdev:		 52.41
+Pvariance:	2746.79
+Stdev:		 52.90
+Variance:	2798.62
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2055,6 +2084,7 @@ sorting by longest time...
 |Gravity Falls                    |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |  14.666667   |Gravity Falls                    |
 |The Mick                         |  13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |  13.566667   |The Mick                         |
 |Brickleberry                     |  13.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |  13.200000   |Brickleberry                     |
+|Bless the Harts                  |  13.033333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |  13.033333   |Bless the Harts                  |
 |The Great North                  |  12.650000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |  12.650000   |The Great North                  |
 |The Mandalorian                  |  11.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |  11.733333   |The Mandalorian                  |
 |Solar Opposites                  |  11.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |  11.200000   |Solar Opposites                  |
@@ -2129,6 +2159,7 @@ sorting by longest time...
 |Gravity Falls                    |  14.666667   |
 |The Mick                         |  13.566667   |
 |Brickleberry                     |  13.200000   |
+|Bless the Harts                  |  13.033333   |
 |The Great North                  |  12.650000   |
 |The Mandalorian                  |  11.733333   |
 |Solar Opposites                  |  11.200000   |
@@ -2144,12 +2175,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 43.84
-Median:		 27.13
-Pstdev:		 52.74
-Pvariance:	2781.05
-Stdev:		 53.24
-Variance:	2834.53
+Mean:		 43.27
+Median:		 26.60
+Pstdev:		 52.41
+Pvariance:	2746.79
+Stdev:		 52.90
+Variance:	2798.62
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2189,6 +2220,7 @@ sorting by most episodes per season...
 |Community                        |        18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |        18.333333         |Community                        |
 |Prison Break                     |           18.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |           18.0           |Prison Break                     |
 |Parks and Recreation             |        17.857143         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |        17.857143         |Parks and Recreation             |
+|Bless the Harts                  |           17.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |           17.0           |Bless the Harts                  |
 |Gravity Falls Shorts             |           17.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |           17.0           |Gravity Falls Shorts             |
 |Arrested Develpoment             |        16.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |        16.800000         |Arrested Develpoment             |
 |The Last Man on Earth            |        16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |        16.750000         |The Last Man on Earth            |
@@ -2263,6 +2295,7 @@ sorting by most episodes per season...
 |Community                        |        18.333333         |
 |Prison Break                     |           18.0           |
 |Parks and Recreation             |        17.857143         |
+|Bless the Harts                  |           17.0           |
 |Gravity Falls Shorts             |           17.0           |
 |Arrested Develpoment             |        16.800000         |
 |The Last Man on Earth            |        16.750000         |
@@ -2299,12 +2332,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.24
-Median:		 12.33
-Pstdev:		  7.50
-Pvariance:	 56.18
-Stdev:		  7.57
-Variance:	 57.26
+Mean:		 14.29
+Median:		 12.37
+Pstdev:		  7.44
+Pvariance:	 55.28
+Stdev:		  7.51
+Variance:	 56.33
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2358,6 +2391,7 @@ sorting by least episodes per season...
 |The Great North                  |         16.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |         16.500000         |The Great North                  |
 |The Last Man on Earth            |         16.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |         16.750000         |The Last Man on Earth            |
 |Arrested Develpoment             |         16.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         16.800000         |Arrested Develpoment             |
+|Bless the Harts                  |           17.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |           17.0            |Bless the Harts                  |
 |Gravity Falls Shorts             |           17.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |           17.0            |Gravity Falls Shorts             |
 |Parks and Recreation             |         17.857143         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         17.857143         |Parks and Recreation             |
 |Prison Break                     |           18.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |           18.0            |Prison Break                     |
@@ -2432,6 +2466,7 @@ sorting by least episodes per season...
 |The Great North                  |         16.500000         |
 |The Last Man on Earth            |         16.750000         |
 |Arrested Develpoment             |         16.800000         |
+|Bless the Harts                  |           17.0            |
 |Gravity Falls Shorts             |           17.0            |
 |Parks and Recreation             |         17.857143         |
 |Prison Break                     |           18.0            |
@@ -2454,14 +2489,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.24
-Median:		 12.33
-Pstdev:		  7.50
-Pvariance:	 56.18
-Stdev:		  7.57
-Variance:	 57.26
+Mean:		 14.29
+Median:		 12.37
+Pstdev:		  7.44
+Pvariance:	 55.28
+Stdev:		  7.51
+Variance:	 56.33
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 3  | 4  | 6  | 8  | 11 | 10 | 11 | 11 | 17 | 18 | 16 | 18 | 20 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 20 | 13 | 12 | 5  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 3  | 4  | 6  | 8  | 11 | 10 | 11 | 11 | 17 | 18 | 16 | 18 | 20 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 21 | 14 | 13 | 6  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################
