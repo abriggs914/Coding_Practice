@@ -18,8 +18,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.21
-    Date...........2022-12-02
+    Version..............1.22
+    Date...........2022-12-05
     Author.......Avery Briggs
     """
 
@@ -307,6 +307,7 @@ class TreeviewController(tkinter.Frame):
         self.include_scroll_x = include_scroll_x
         self.include_scroll_y = include_scroll_y
         self.text_prefix = text_prefix
+        self.p_width = 0.16
         self.aggregate_data = aggregate_data if isinstance(aggregate_data, dict) else dict()
 
         self.iid_namer = (i for i in range(1000000))
@@ -408,39 +409,22 @@ class TreeviewController(tkinter.Frame):
 
         self.aggregate_data.update(to_add)
 
-        print(utility.dict_print(self.aggregate_data, "Aggregate data"))
-        print(f'A {order_a=}')
-        print(f'{order_s=}')
-        print(f'{checked=}')
+        # print(utility.dict_print(self.aggregate_data, "Aggregate data"))
+        # print(f'A {order_a=}')
+        # print(f'{order_s=}')
+        # print(f'{checked=}')
         for kk in order_s.difference(checked):
             idx = self.viewable_column_names.index(kk)
             order_a.insert(idx, (kk, kk))
         order_a.insert(0, ("#0", "#0"))
-        print(f'B {order_a=}')
+        # print(f'B {order_a=}')
 
         for key in order_a:
-            print(f"Analyzing COLUMN '{key}'")
-        #     if k not in self.aggregate_data:
-        # # for k, v in self.aggregate_data.items():
-        # #     if k not in self.viewable_column_names:
-        #         try:
-        #             if k.startswith("#"):
-        #                 if 0 > (num:=int(k[1:])) > len(self.viewable_column_names):
-        #                     raise Exception(f"Error aggregate data key '{k}' is out of range.")
-        #                 else:
-        #                     key = self.viewable_column_names[num]
-        #             else:
-        #                 continue
-        #                 # raise Exception(f"Error aggregate data key '{k}' not found in the list of visible column names.")
-        #         except ValueError as ve:
-        #             raise ValueError(f"Error aggregate data key '{k}' not found in the list of visible column names.")
-        #     else:
-        #         key = k
+            # print(f"Analyzing COLUMN '{key}'")
             key, k = key
             col_data = self.treeview.column(key)
-            p_width = 0.16
             width = col_data.get("width")
-            width = int(width * p_width) if width is not None else 10
+            width = int(width * self.p_width) if width is not None else 10
             x1, x2 = self.column_x(key)
             if k in self.aggregate_data:
                 v = self.aggregate_data[k]
@@ -469,10 +453,10 @@ class TreeviewController(tkinter.Frame):
                 (tv, entry, (x1, x2))
             )
 
-            print(f"{key=}, {key=}, {v=}")
-            # print(f"{self.treeview.bbox(column=key)=}, {type(self.treeview.bbox(key))=}")
-            print(f"{self.treeview.column(key)=}, {type(self.treeview.column(key))=}")
-            print(f"{self.treeview.heading(key)=}, {type(self.treeview.heading(key))=}")
+            # print(f"{key=}, {key=}, {v=}")
+            # # print(f"{self.treeview.bbox(column=key)=}, {type(self.treeview.bbox(key))=}")
+            # print(f"{self.treeview.column(key)=}, {type(self.treeview.column(key))=}")
+            # print(f"{self.treeview.heading(key)=}, {type(self.treeview.heading(key))=}")
 
         self.treeview.bind("<B1-Motion>", self.check_column_width_update)
         self.treeview.bind("<Button-1>", self.stop_row_idx_resize)
@@ -544,8 +528,8 @@ class TreeviewController(tkinter.Frame):
 
     def update_aggregate_row(self):
         for i, col in enumerate(["#0", *self.viewable_column_names]):
-            print(f"{i=}, {col=}")
-            print(f"\t{self.aggregate_objects[i]=}")
+            # print(f"{i=}, {col=}")
+            # print(f"\t{self.aggregate_objects[i]=}")
             if i > 0:
                 # first is always the frame
                 # add 1 to skip the row index column
@@ -554,7 +538,7 @@ class TreeviewController(tkinter.Frame):
 
     def stop_row_idx_resize(self, event):
         """break the event loop before trying to resize the index column"""
-        print(f"{event=}")
+        # print(f"{event=}")
         region1 = self.treeview.identify("region", event.x, event.y)
         column = self.treeview.identify_column(event.x)
         # print(f"{region1=}")
@@ -564,36 +548,33 @@ class TreeviewController(tkinter.Frame):
             return "break"
 
     def check_column_width_update(self, event):
-        print(f"{event=}, {type(event)=}")
+        # print(f"{event=}, {type(event)=}")
         region1 = self.treeview.identify("region", event.x, event.y)
         column = self.treeview.identify_column(event.x)
         column_data = self.treeview.column(column)
         width1 = column_data.get("width", 0)
         name = column_data.get("id", None)
-        print(f"{name=}")
-        # col_idx1 = 0 if column == "#0" else (self.viewable_column_names.index(name) + 1)
-        # col_idx2 = (col_idx1 + 1) if col_idx1 < (len(self.viewable_column_names) - 1) else (col_idx1 - 1)
-        col_idx1 = 0 if column == "#0" else (self.viewable_column_names.index(name) - 1)
-        col_idx2 = (col_idx1 + 1) if col_idx1 < (len(self.viewable_column_names) - 1) else (col_idx1 - 1)
+        # print(f"{name=}\n{self.viewable_column_names=}\n{self.viewable_column_widths=}")
+        col_idx1 = self.viewable_column_names.index(name)
+        col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (len(self.viewable_column_names) - 1)
         width2 = self.treeview.column(f"#{col_idx2}").get("width", 0)
         if region1 == "separator" and column != "#0":
             diff_width = self.viewable_column_widths[col_idx1 - 1] - width1
-            print(f"\n\n\t{column_data=}, {width1=}, {width2=}, {diff_width=}")
-            print(f"{region1=}, {column=}")
-            print(f"{col_idx1=}, {col_idx2=}")
-            print(f"{self.viewable_column_widths=}")
-            print(f"{self.viewable_column_widths[col_idx1]=}, {self.viewable_column_widths[col_idx2]=}")
+            # print(f"\n\n\t{column_data=}, {width1=}, {width2=}, {diff_width=}")
+            # print(f"{region1=}, {column=}")
+            # print(f"{col_idx1=}, {col_idx2=}")
+            # print(f"{self.viewable_column_widths=}")
+            # print(f"{self.viewable_column_widths[col_idx1]=}, {self.viewable_column_widths[col_idx2]=}")
 
             self.viewable_column_widths[col_idx1 - 1] -= diff_width
             self.viewable_column_widths[col_idx2 - 1] += diff_width
 
-            # stretch = column_data.get("stretch", None)
-            # print(f"\n\n\t{column_data=}, {stretch=}")
-            # if stretch:
+            # print(f"{self.aggregate_objects=}")
+            # print(f"{self.aggregate_objects[col_idx1 + 2]=}")
+            # print(f"{self.aggregate_objects[col_idx1 + 2][1]=}")
+            self.aggregate_objects[col_idx1 + 2][1].configure(width=int(self.viewable_column_widths[col_idx1 - 1] * self.p_width))
+            self.aggregate_objects[col_idx2 + 2][1].configure(width=int(self.viewable_column_widths[col_idx2 - 1] * self.p_width))
 
-
-
-            # self.update_aggregate_row()
 
     def get_objects(self):
         return \
@@ -623,12 +604,12 @@ class TreeviewController(tkinter.Frame):
 
     def delete_entry(self):
         selection = self.treeview.selection()
-        print(f"{selection=}")
+        # print(f"{selection=}")
         if selection:
             # delete the selected entries
             # row_id = treeview.focus()  # return only 1
             for row_id in selection:
-                print(f"{row_id=}")
+                # print(f"{row_id=}")
                 self.treeview.delete(row_id)
 
         self.update_aggregate_row()
@@ -1039,7 +1020,7 @@ def test_treeview_factory_4():
     print(f"df:\n\n{df}")
 
     def avg(*lst):
-        print(f"average of {lst=}, {type(lst)=}")
+        # print(f"average of {lst=}, {type(lst)=}")
         return utility.avg(*lst)
 
     def show_column_info():
@@ -1091,29 +1072,29 @@ def test_treeview_factory_4():
     aggregate_objects\
         = treeview_controller.get_objects()
     tv_label.set("I forgot to pass a title! - no worries.")
-    label.pack(side=tkinter.TOP)
-    scrollbar_y.pack(side=tkinter.RIGHT, anchor="e", fill="y")
-    treeview.pack(side=tkinter.TOP)
-    scrollbar_x.pack(side=tkinter.BOTTOM)
+    label.grid()
+    scrollbar_y.grid(sticky="ns")
+    treeview.grid()
+    scrollbar_x.grid(sticky="ew")
 
     tv_button_insert_item, button_insert_item = insert_btn_data
     tv_button_delete_item, button_delete_item = delete_btn_data
 
-    frame.pack()
+    frame.grid()
     for i, aggregate_data in enumerate(aggregate_objects):
-        print(f"\t{i=}, {aggregate_data=}")
+        # print(f"\t{i=}, {aggregate_data=}")
         if i == 0:
             # first is always the frame
-            aggregate_data.pack()
+            aggregate_data.grid()
         else:
             tv, entry, x1x2 = aggregate_data
             entry.pack(side=tkinter.LEFT)
             x1, x2 = x1x2
-            print(f"{x1=}")
+            # print(f"{x1=}")
             # entry.place(x=x1, y=500)
 
-    button_insert_item.pack()
-    button_delete_item.pack()
+    button_insert_item.grid()
+    button_delete_item.grid()
 
     tv_button_column_info, button_column_info = button_factory(
         WIN,
@@ -1122,7 +1103,7 @@ def test_treeview_factory_4():
             "command": show_column_info
         }
     )
-    button_column_info.pack()
+    button_column_info.grid()
 
     WIN.mainloop()
 
