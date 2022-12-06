@@ -409,18 +409,21 @@ class TreeviewController(tkinter.Frame):
 
         self.aggregate_data.update(to_add)
 
+        order_d = order_s.difference(checked)
         # print(utility.dict_print(self.aggregate_data, "Aggregate data"))
-        # print(f'A {order_a=}')
+        print(f'A {order_a=}')
         # print(f'{order_s=}')
         # print(f'{checked=}')
-        for kk in order_s.difference(checked):
-            idx = self.viewable_column_names.index(kk)
-            order_a.insert(idx, (kk, kk))
+        # for kk in order_s.difference(checked):
+        for idx, kk in enumerate(self.viewable_column_names):
+            if kk in order_d:
+                # idx = self.viewable_column_names.index(kk)
+                order_a.insert(idx, (kk, kk))
         order_a.insert(0, ("#0", "#0"))
-        # print(f'B {order_a=}')
+        print(f'B {order_a=}')
 
         for key in order_a:
-            # print(f"Analyzing COLUMN '{key}'")
+            print(f"Analyzing COLUMN '{key}'")
             key, k = key
             col_data = self.treeview.column(key)
             width = col_data.get("width")

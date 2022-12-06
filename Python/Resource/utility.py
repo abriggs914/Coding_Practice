@@ -1,4 +1,5 @@
 import datetime
+import math
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice, randint
@@ -18,8 +19,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.63
-        Date...........2022-11-18
+        Version..............1.64
+        Date...........2022-12-05
         Author.......Avery Briggs
     """
 
@@ -87,7 +88,21 @@ def avg(lst):
     try:
         return sum(lst) / max(1, len(lst))
     except TypeError:
-        return 0
+        # print(f"TypeError1")
+        res = 0
+        c = 0
+        i, el, vel = None, None, None
+        try:
+            for i, el in enumerate(lst):
+                vel = float(el)
+                if math.isnan(vel) or math.isinf(vel):
+                    continue
+                c += 1
+                res += float(vel)
+            return res / (1 if c == 0 else c)
+        except TypeError as te:
+            print(f"TypeError2\n{te=}\n{res=}\n{c=}\n{i=}\n{el=}\n{vel=}")
+            return None
 
 
 def median(lst):
