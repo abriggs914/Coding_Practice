@@ -18,8 +18,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.22
-    Date...........2022-12-05
+    Version..............1.23
+    Date...........2022-12-06
     Author.......Avery Briggs
     """
 
@@ -266,8 +266,6 @@ class TreeviewController(tkinter.Frame):
             default_col_width=100,
             include_scroll_x=True,
             include_scroll_y=True,
-            text_prefix="B_",
-            iid_prefix="C_",
             aggregate_data=None,
             *args,
             **kwargs
@@ -306,7 +304,6 @@ class TreeviewController(tkinter.Frame):
         self.default_col_width = default_col_width
         self.include_scroll_x = include_scroll_x
         self.include_scroll_y = include_scroll_y
-        self.text_prefix = text_prefix
         self.p_width = 0.16
         self.aggregate_data = aggregate_data if isinstance(aggregate_data, dict) else dict()
 
@@ -388,6 +385,21 @@ class TreeviewController(tkinter.Frame):
         order_a = []
         to_add = {}
         checked = set()
+
+        self.aggregate_data.update(to_add)
+
+        order_d = order_s.difference(checked)
+        # print(utility.dict_print(self.aggregate_data, "Aggregate data"))
+        # print(f'A {order_a=}')
+        # print(f'{order_s=}')
+        # print(f'{checked=}')
+        # for kk in order_s.difference(checked):
+        for idx, kk in enumerate(self.viewable_column_names):
+            if kk in order_d:
+                # idx = self.viewable_column_names.index(kk)
+                order_a.insert(idx, (kk, kk))
+        order_a.insert(0, ("#0", "#0"))
+
         for i, k in enumerate(self.aggregate_data):
             # print(f"\t\t{i=}")
             if k.startswith("#") and k[1:].isalnum():
@@ -405,32 +417,20 @@ class TreeviewController(tkinter.Frame):
             idx = order.index(key)
             checked.add(key)
             # print(f"HERE {k=}, {key=}, {idx=}, {order_a=}")
-            order_a.insert(idx, (key, k))
+            # order_a.insert(idx, (key, k))
+            order_a[idx + 1] = (key, k)
 
-        self.aggregate_data.update(to_add)
-
-        order_d = order_s.difference(checked)
-        # print(utility.dict_print(self.aggregate_data, "Aggregate data"))
-        print(f'A {order_a=}')
-        # print(f'{order_s=}')
-        # print(f'{checked=}')
-        # for kk in order_s.difference(checked):
-        for idx, kk in enumerate(self.viewable_column_names):
-            if kk in order_d:
-                # idx = self.viewable_column_names.index(kk)
-                order_a.insert(idx, (kk, kk))
-        order_a.insert(0, ("#0", "#0"))
-        print(f'B {order_a=}')
+        # print(f'B {order_a=}')
 
         for key in order_a:
-            print(f"Analyzing COLUMN '{key}'")
+            # print(f"Analyzing COLUMN '{key}'")
             key, k = key
             col_data = self.treeview.column(key)
             width = col_data.get("width")
             width = int(width * self.p_width) if width is not None else 10
             x1, x2 = self.column_x(key)
             if k in self.aggregate_data:
-                v = self.aggregate_data[k]
+                # v = self.aggregate_data[k]
                 # tv = tkinter.StringVar(self, value=f"{key=}, {v=}")
                 tv = tkinter.StringVar(self, value=self.calc_aggregate_value(key))
                 entry = tkinter.Entry(
@@ -441,7 +441,6 @@ class TreeviewController(tkinter.Frame):
                     justify=tkinter.CENTER
                 )
             else:
-                v = "NO AGG FOR COL"
                 # tv = tkinter.StringVar(self, value=f"{key=}, {v=}")
                 tv = tkinter.StringVar(self, value="")
                 entry = tkinter.Entry(
@@ -479,7 +478,8 @@ class TreeviewController(tkinter.Frame):
         if column not in self.viewable_column_names:
             return "!ERROR"
         idx = self.viewable_column_names.index(column)
-        func = self.aggregate_data[column]
+        s_agg_d = self.aggregate_data[column]
+        func, *formatting = s_agg_d if (isinstance(s_agg_d, list) or isinstance(s_agg_d, tuple)) else (s_agg_d,)
         values = []
         scan_unk = True
         scan_num = False
@@ -517,10 +517,25 @@ class TreeviewController(tkinter.Frame):
         else:
             values = list(map(str, values))
 
+        fail_safe = "!VALUE"
         try:
             result = func(values)
+            if formatting:
+                formatting = formatting[0]
+                if not isinstance(formatting, str):
+                    # print(f"ELSE {formatting=}, {type(formatting)=}")
+                    if callable(formatting):
+                        # print(f"A CALLABLE {result=}, {type(result)=}")
+                        result = formatting(result)
+                        # print(f"B CALLABLE {result=}, {type(result)=}")
+                    else:
+                        fail_safe = "!FORMAT"
+                        raise Exception(f"Error invalid formatting")
+                else:
+                    # using string interpolation here.
+                    result = formatting % result
         except:
-            return "!VALUE"
+            return fail_safe
         if scan_num:
             if scan_int:
                 result = int(result)
@@ -644,8 +659,6 @@ def treeview_factory(
             default_col_width,
             include_scroll_x,
             include_scroll_y,
-            text_prefix,
-            iid_prefix,
             aggregate_data
         )
 
