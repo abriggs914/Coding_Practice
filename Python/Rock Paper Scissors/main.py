@@ -89,14 +89,15 @@ class RPSSim(tkinter.Tk):
             team = self.gen_random_team_member()
             colour = self.get_team_colour(team)
             x1, y1, x2, y2 = self.generate_random_start_pos(radius=self.radius)
+            xd, yd = self.random_non_stationary_speed()
             key = self.canvas_board.create_oval(x1, y1, x2, y2, fill=colour)
             # print(f"NEW KEY {key=}")
             self.entities[key] = {
                 "x1_y1_x2_y2": (x1, y1, x2, y2),
                 "x": x1 + ((x2 - x1) / 2),
                 "y": y1 + ((y2 - y1) / 2),
-                "xd": random.randint(-1, 1),
-                "yd": random.randint(-1, 1),
+                "xd": xd,
+                "yd": yd,
                 "team": team
             }
             if team == "rock":
@@ -260,6 +261,13 @@ class RPSSim(tkinter.Tk):
 
     def get_team_colour(self, team_in):
         return self.team_data[team_in]["colour"]
+
+    def random_non_stationary_speed(self):
+        xd, yd = random.randint(-1, 1), random.randint(-1, 1)
+        if xd == 0 and yd == 0:
+            return self.random_non_stationary_speed()
+        else:
+            return xd, yd
 
     def generate_random_start_pos(self, radius=None):
         if radius is None:
