@@ -4,7 +4,7 @@ import math
 import random
 import tkinter
 
-from utility import distance, dict_print
+from utility import distance
 from colour_utility import *
 from tkinter_utility import *
 
@@ -30,7 +30,7 @@ class RPSSim(tkinter.Tk):
         self.height_canvas = int(self.HEIGHT * 0.875)
         self.team_data = {
             "rock": {
-                "colour": rgb_to_hex(BROWN),
+                "colour": rgb_to_hex(BROWN_2),
                 "prey": "scissors",
                 "predator": "paper"
             },
@@ -88,27 +88,6 @@ class RPSSim(tkinter.Tk):
 
         # animation specific
 
-        ############################
-
-        self.avg_radius_rock = 25
-        self.avg_colour_rock = darken(BROWN, 0.25, False)
-        cw = self.width_canvas / 2
-        ch = self.height_canvas / 2
-        x1, y1, x2, y2 = cw - self.avg_radius_rock, ch - self.avg_radius_rock, cw + self.avg_radius_rock, ch + self.avg_radius_rock
-        self.tag_avg_rock = self.canvas_board.create_oval(x1, y1, x2, y2, fill=self.avg_colour_rock)
-
-        self.avg_radius_paper = 25
-        self.avg_colour_paper = darken(BLUE, 0.25, False)
-        x1, y1, x2, y2 = cw - self.avg_radius_paper, ch - self.avg_radius_paper, cw + self.avg_radius_paper, ch + self.avg_radius_paper
-        self.tag_avg_paper = self.canvas_board.create_oval(x1, y1, x2, y2, fill=self.avg_colour_paper)
-
-        self.avg_radius_scissors = 25
-        self.avg_colour_scissors = darken(GREEN_3, 0.25, False)
-        x1, y1, x2, y2 = cw - self.avg_radius_scissors, ch - self.avg_radius_scissors, cw + self.avg_radius_scissors, ch + self.avg_radius_scissors
-        self.tag_avg_scissors = self.canvas_board.create_oval(x1, y1, x2, y2, fill=self.avg_colour_scissors)
-
-        ############################
-
         self.n_rows, self.n_cols = rows_cols(self.n_people)
         for i in range(self.n_people):
             # r_i = i // self.n_rows
@@ -128,9 +107,7 @@ class RPSSim(tkinter.Tk):
                 "x1_y1_x2_y2": (x1, y1, x2, y2),
                 "x": x1 + ((x2 - x1) / 2),
                 "y": y1 + ((y2 - y1) / 2),
-                "team": team,
-                "xd": 0,
-                "yd": 0
+                "team": team
             }
             xd, yd = self.greedy_non_stationary_speed(key)
             self.entities[key].update({
@@ -200,21 +177,20 @@ class RPSSim(tkinter.Tk):
             x = clamp(min_x, x + xd, max_x)
             y = clamp(min_y, y + yd, max_y)
             if x == min_x:
-                # print(f"{key=} bounce off left wall")
+                print(f"{key=} bounce off left wall")
                 self.entities[key]["xd"] = -1 * val["xd"]
             if y == min_y:
-                # print(f"{key=} bounce off top wall")
+                print(f"{key=} bounce off top wall")
                 self.entities[key]["yd"] = -1 * val["yd"]
             if x == max_x:
-                # print(f"{key=} bounce off right wall")
+                print(f"{key=} bounce off right wall")
                 self.entities[key]["xd"] = -1 * val["xd"]
             if y == max_y:
-                # print(f"{key=} bounce off bottom wall")
+                print(f"{key=} bounce off bottom wall")
                 self.entities[key]["yd"] = -1 * val["yd"]
             self.entities[key]["x"] += xd
             self.entities[key]["y"] += yd
             self.canvas_board.moveto(key, self.entities[key]["x"] - hr, self.entities[key]["y"] - hr)
-            self.check_collisions(key)
 
         self.reset_speeds()
         self.after(1, self.tick)
@@ -242,14 +218,6 @@ class RPSSim(tkinter.Tk):
             self.entities[key]["yd"] = d_y
 
         self.tv_random_reset_random_move_counter.set(self.reset_value_reset_random_move_counter)
-
-    def check_collisions(self, key_in):
-        team = self.entities[key_in]["team"]
-        prey = self.get_team_prey(team)
-        predator = self.get_team_predator(team)
-        for key, val in self.entities.items():
-            if key != key_in:
-
 
     def click_canvas_board(self, event, neighbours_in=None):
         # print(f"click_canvas_board")
@@ -350,8 +318,6 @@ class RPSSim(tkinter.Tk):
             return xd, yd
 
     def greedy_non_stationary_speed(self, key_in):
-        ppp = 0.25
-        ppp = 1
         team = self.entities[key_in]["team"]
         prey = self.get_team_prey(team)
         predator = self.get_team_predator(team)
@@ -376,14 +342,11 @@ class RPSSim(tkinter.Tk):
         for key, val in self.entities.items():
             if key != key_in:
                 v_team = val["team"]
-                if v_team == prey:
-                    v_x, v_y = val["x"], val["y"]
-                    d = distance((m_x, m_y), (v_x, v_y))
-                    dat[v_team]["keys"].append(key)
-                    dat[v_team]["xs"].append(v_x)
-                    dat[v_team]["ys"].append(v_y)
-
-        # print(dict_print(dat, "DAT"))
+                v_x, v_y = val["x"], val["y"]
+                d = distance((m_x, m_y), (v_x, v_y))
+                dat[v_team]["keys"].append(key)
+                dat[v_team]["xs"].append(v_x)
+                dat[v_team]["ys"].append(v_y)
 
         ldpxs = len(dat[prey]["xs"])
         ldpys = len(dat[prey]["xs"])
@@ -394,49 +357,28 @@ class RPSSim(tkinter.Tk):
         x_avg_predator = sum(dat[predator]["xs"]) / (ldrxs if ldrxs != 0 else 1)
         y_avg_predator = sum(dat[predator]["ys"]) / (ldrys if ldrys != 0 else 1)
 
-        if prey == "rock":
-            self.canvas_board.moveto(self.tag_avg_rock, x_avg_prey, y_avg_prey)
-        elif prey == "paper":
-            self.canvas_board.moveto(self.tag_avg_paper, x_avg_prey, y_avg_prey)
-        else:
-            self.canvas_board.moveto(self.tag_avg_scissors, x_avg_prey, y_avg_prey)
-
         d_x = x_avg_prey - m_x
         d_y = y_avg_prey - m_y
 
         s_x = 1 if d_x >= 0 else -1
         s_y = 1 if d_y >= 0 else -1
-        s_x = 1 if self.entities[key_in]["xd"] >= 0 else -1
-        s_y = 1 if self.entities[key_in]["yd"] >= 0 else -1
 
         p_x = d_x / (d_y if d_y != 0 else 1)
         p_y = d_y / (d_x if d_x != 0 else 1)
 
-        # Ensure that 1 vector component has magnitude ppp
-        if abs(p_x - ppp) >= abs(p_y - ppp):
-            pp_x = ppp / p_x
+        # Ensure that 1 vector component has magnitude 1
+        if abs(p_x - 1) >= abs(p_y - 1):
+            pp_x = 1 / p_x
         else:
-            pp_x = ppp / p_y
-        p_x *= pp_x
-        p_y *= pp_x
-
-        # reset signs
-        if s_x == 1:
-            p_x = abs(p_x)
-        else:
-            if p_x > 0:
-                p_x *= s_x
-        if s_y == 1:
-            p_y = abs(p_y)
-        else:
-            if p_y > 0:
-                p_y *= s_y
+            pp_x = 1 / p_y
+        p_x *= pp_x * s_x
+        p_y *= pp_x * s_y
 
         # print(f"{ldpxs=}, {x_avg_prey=}")
         # print(f"{ldpys=}, {y_avg_prey=}")
         # print(f"{ldrxs=}, {x_avg_predator=}")
         # print(f"{ldrys=}, {y_avg_predator=}")
-        # print(f"{d_x=}, {d_y=}, {s_x=}, {s_y=}, {p_x=}, {p_y=}, {pp_x=}")
+        # print(f"{d_x=}, {d_y=}, {p_x=}, {p_y=}, {pp_x=}")
 
         return p_x, p_y
 
@@ -450,7 +392,6 @@ class RPSSim(tkinter.Tk):
             y -= hr
             return tuple(map(int, (x, y, x + radius, y + radius)))
 
-
 if __name__ == '__main__':
 
-    RPSSim(50).mainloop()
+    RPSSim(12).mainloop()
