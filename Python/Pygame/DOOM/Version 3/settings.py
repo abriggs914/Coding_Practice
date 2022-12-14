@@ -13,6 +13,7 @@ RES = WIDTH, HEIGHT = 1600, 900  # screen resolution
 HALF_WIDTH = WIDTH // 2
 HALF_HEIGHT = HEIGHT // 2
 FPS = 60  # frames per second
+CONTROL_WITH_MOUSE = True
 
 
 # mouse settings
@@ -29,7 +30,6 @@ PLAYER_ANGLE = 0  # angle of direction
 PLAYER_SPEED = 0.004  # speed of movement
 PLAYER_ROT_SPEED = 0.002  # speed of rotation
 PLAYER_SIZE_SCALE = 60
-PLAYER_MAX_HEALTH = 100
 
 
 # ray-casting
@@ -53,12 +53,10 @@ HALF_TEXTURE_SIZE = TEXTURE_SIZE // 2
 
 # drawing settings
 
-DRAW_TWO_D_GAME = True
 DRAW_PLAYER_LINE_OF_SIGHT = False
+DRAW_TWO_D_GAME = False
 DRAW_TREE_D_GAME = not DRAW_TWO_D_GAME
 DRAW_TEXTURED_WALLS = True
-CONTROL_WITH_MOUSE = DRAW_TREE_D_GAME
-NPC_USES_BFS = True
 
 
 # colours
@@ -69,4 +67,3 @@ COLOUR_MAP_WALLS = "darkgray"
 COLOUR_PLAYER_LINE_OF_SIGHT = "orange"
 COLOUR_PLAYER_CIRCLE = "green"
 COLOUR_PSEUDO_THREE_D_WALLS = "white"
-COLOUR_NPC_NEXT_MOVE = "blue"
