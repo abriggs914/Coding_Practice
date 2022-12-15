@@ -35,7 +35,7 @@ class OnOffToggle(tkinter.Frame):
         self.off = PhotoImage(file="resources/tkinter/off.png")
 
         # Create A Button
-        self.button = Button(self, image=self.on, bd=0,
+        self.button = Button(self, image=self.on if self.is_on.get() else self.off, bd=0,
                              command=self.switch)
         self.button.pack(pady=50)
 
@@ -49,7 +49,6 @@ class OnOffToggle(tkinter.Frame):
             self.my_label.config(fg=self.button_foreground_off)
             self.is_on.set(False)
         else:
-
             self.button.config(image=self.on)
             self.tv_label.set(self.label_on_text)
             self.my_label.config(fg=self.button_foreground_on)
