@@ -4,7 +4,7 @@ from tkinter_utility import *
 
 
 fmt = "%Y-%m-%d %H:%M:%S"
-game_time = datetime.datetime(2022, 12, 19, 18, 30) + datetime.timedelta(hours=-3.25)
+game_time = datetime.datetime(2022, 12, 19, 18, 30) + datetime.timedelta(hours=-3.75)
 # game_time = datetime.datetime(2022, 12, 16, 10)
 
 

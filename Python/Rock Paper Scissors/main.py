@@ -267,12 +267,12 @@ class RPSSim(tkinter.Tk):
                             self.entities[key]["prey"] = prey
                             self.entities[key]["predator"] = predator
                             self.canvas_board.itemconfig(key, fill=self.get_team_colour(team))
-                            old_clan = list(eval(f"self.clan_{team}").get())
-                            clan = list(eval(f"self.clan_{team_v}").get())
-                            print(f"{self.clan_rock.get()=}, {self.clan_paper.get()=}, {self.clan_scissors.get()=}")
-                            print(f"self.clan_{team}, self.clan_{team_v}\n{key=}, {old_clan=}, {clan=}")
-                            old_clan.remove(key)
-                            clan.append(key)
+                            # old_clan = list(eval(f"self.clan_{team}").get())
+                            # clan = list(eval(f"self.clan_{team_v}").get())
+                            # print(f"{self.clan_rock.get()=}, {self.clan_paper.get()=}, {self.clan_scissors.get()=}")
+                            # print(f"self.clan_{team}, self.clan_{team_v}\n{key=}, {old_clan=}, {clan=}")
+                            # old_clan.remove(key)
+                            # clan.append(key)
 
                         if team_v == predator:
                             # print(f"B {key=} {team} -> {team_v=}")
@@ -280,13 +280,13 @@ class RPSSim(tkinter.Tk):
                             self.entities[key]["prey"] = self.get_team_prey(predator)
                             self.entities[key]["predator"] = self.get_team_predator(predator)
                             self.canvas_board.itemconfig(key, fill=self.get_team_colour(team_v))
-                            # break
-                            old_clan = list(eval(f"self.clan_{team_v}").get())
-                            clan = list(eval(f"self.clan_{team}").get())
-                            print(f"{self.clan_rock.get()=}, {self.clan_paper.get()=}, {self.clan_scissors.get()=}")
-                            print(f"self.clan_{team}, self.clan_{team_v}\n{key=}, {old_clan=}, {clan=}")
-                            old_clan.remove(key)
-                            clan.append(key)
+                            # # break
+                            # old_clan = list(eval(f"self.clan_{team_v}").get())
+                            # clan = list(eval(f"self.clan_{team}").get())
+                            # print(f"{self.clan_rock.get()=}, {self.clan_paper.get()=}, {self.clan_scissors.get()=}")
+                            # print(f"self.clan_{team}, self.clan_{team_v}\n{key=}, {old_clan=}, {clan=}")
+                            # old_clan.remove(key)
+                            # clan.append(key)
 
 
 
