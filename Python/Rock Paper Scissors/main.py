@@ -213,6 +213,12 @@ class RPSSim(tkinter.Tk):
                 self.entities[key]["yd"] = -1 * val["yd"]
             self.entities[key]["x"] += xd
             self.entities[key]["y"] += yd
+            ox1, oy1, ox2, oy2 = self.entities[key]["x1_y1_x2_y2"]
+            ox1 += xd
+            ox2 += xd
+            oy1 += yd
+            oy2 += yd
+            self.entities[key]["x1_y1_x2_y2"] = (ox1, oy1, ox2, oy2)
             self.canvas_board.moveto(key, self.entities[key]["x"] - hr, self.entities[key]["y"] - hr)
             self.check_collisions(key)
 
@@ -247,8 +253,41 @@ class RPSSim(tkinter.Tk):
         team = self.entities[key_in]["team"]
         prey = self.get_team_prey(team)
         predator = self.get_team_predator(team)
+        x1, y1, x2, y2 = self.entities[key_in]["x1_y1_x2_y2"]
         for key, val in self.entities.items():
             if key != key_in:
+                vx1, vy1, vx2, vy2 = val["x1_y1_x2_y2"]
+                if (x1 <= vx1 <= x2 and y1 <= vy1 <= y2) or (x1 <= vx2 <= x2 and y1 <= vy2 <= y2):
+                    team_v = val["team"]
+                    # print(f"{key=}, {val=}, {team=}, {team_v=}")
+                    if team != team_v:
+                        if team_v == prey:
+                            print(f"A {key=} {team_v} -> {team}")
+                            self.entities[key]["team"] = team
+                            self.entities[key]["prey"] = prey
+                            self.entities[key]["predator"] = predator
+                            self.canvas_board.itemconfig(key, fill=self.get_team_colour(team))
+                            old_clan = list(eval(f"self.clan_{team}").get())
+                            clan = list(eval(f"self.clan_{team_v}").get())
+                            print(f"{self.clan_rock.get()=}, {self.clan_paper.get()=}, {self.clan_scissors.get()=}")
+                            print(f"self.clan_{team}, self.clan_{team_v}\n{key=}, {old_clan=}, {clan=}")
+                            old_clan.remove(key)
+                            clan.append(key)
+
+                        if team_v == predator:
+                            # print(f"B {key=} {team} -> {team_v=}")
+                            self.entities[key]["team"] = team_v
+                            self.entities[key]["prey"] = self.get_team_prey(predator)
+                            self.entities[key]["predator"] = self.get_team_predator(predator)
+                            self.canvas_board.itemconfig(key, fill=self.get_team_colour(team_v))
+                            # break
+                            old_clan = list(eval(f"self.clan_{team_v}").get())
+                            clan = list(eval(f"self.clan_{team}").get())
+                            print(f"{self.clan_rock.get()=}, {self.clan_paper.get()=}, {self.clan_scissors.get()=}")
+                            print(f"self.clan_{team}, self.clan_{team_v}\n{key=}, {old_clan=}, {clan=}")
+                            old_clan.remove(key)
+                            clan.append(key)
+
 
 
     def click_canvas_board(self, event, neighbours_in=None):
@@ -453,4 +492,4 @@ class RPSSim(tkinter.Tk):
 
 if __name__ == '__main__':
 
-    RPSSim(50).mainloop()
+    RPSSim(5).mainloop()
