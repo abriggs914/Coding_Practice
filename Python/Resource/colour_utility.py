@@ -11,8 +11,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
         General Utility file of RGB colour values
-        Version...........1.21
-        Date........2022-10-25
+        Version...........1.22
+        Date........2022-12-20
         Author....Avery Briggs
     """
 
@@ -1738,9 +1738,25 @@ colour_names_list = [
 ]
 
 
+def iscolour(c, g=None, b=None):
+    # print("c: <{}>, t: <{}>".format(c, type(c)))
+    # print("c: <{}>, t: <{}>".format(g, type(g)))
+    # print("c: <{}>, t: <{}>".format(b, type(b)))
+    if is_rgb_colour(c, g, b):
+        return True
+    elif is_hex_colour(c):
+        return True
+    elif isinstance(c, str) and g is None and b is None:
+        if c.upper() in COLOURS:
+            return True
+    return False
+
 def rgb_to_hex(colour):
     if is_hex_colour(colour):
         return colour
+    elif iscolour(colour) and isinstance(colour, str):
+        # print(f"{colour}")
+        return rgb_to_hex(eval(colour))
     r, g, b = None, None, None
     try:
         r, g, b = colour
@@ -1754,6 +1770,9 @@ def rgb_to_hex(colour):
 def hex_to_rgb(colour):
     if is_rgb_colour(colour):
         return colour
+    elif iscolour(colour) and isinstance(colour, str):
+        # print(f"{colour}")
+        return eval(colour)
     try:
         return (int(colour[1:3], 16), int(colour[3:5], 16), int(colour[5:], 16))
     except ValueError:
@@ -1919,20 +1938,6 @@ class Colour:
         r, g, b = self.rgb_code
         name = self.colour_name if self.colour_name else "UNNAMED"
         return "<Colour RGB=({r}, {g}, {b}), hex = '{h}', name = '{n}'>".format(r=r, g=g, b=b, h=self.hex_code, n=name)
-
-
-def iscolour(c, g=None, b=None):
-    # print("c: <{}>, t: <{}>".format(c, type(c)))
-    # print("c: <{}>, t: <{}>".format(g, type(g)))
-    # print("c: <{}>, t: <{}>".format(b, type(b)))
-    if is_rgb_colour(c, g, b):
-        return True
-    elif is_hex_colour(c):
-        return True
-    elif isinstance(c, str) and g is None and b is None:
-        if c.upper() in COLOURS:
-            return True
-    return False
 
 
 def gradient(x, n, c1, c2):
