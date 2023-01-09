@@ -162,7 +162,7 @@ chernobyl = TVSeries("Chernobyl", {
     "Drama, Documentary",
     "Crave -> HBO")
 
-breaking_bad = TVSeries("Breaking Bad",{
+breaking_bad = TVSeries("Breaking Bad", {
     1 : 7,
     2 : 13,
     3 : 13,
@@ -537,7 +537,7 @@ solar_opposites = TVSeries("Solar Opposites", {
 the_orville = TVSeries("The Orville", {
 	1 : 12,
 	2 : 14,
-	3 : 11},
+	3 : 10},
 	44,
 	2017,
 	2022,
