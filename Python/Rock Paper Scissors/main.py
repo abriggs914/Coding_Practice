@@ -492,4 +492,4 @@ class RPSSim(tkinter.Tk):
 
 if __name__ == '__main__':
 
-    RPSSim(5).mainloop()
+    RPSSim(50).mainloop()

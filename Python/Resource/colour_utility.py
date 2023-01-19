@@ -11,8 +11,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
         General Utility file of RGB colour values
-        Version...........1.22
-        Date........2022-12-20
+        Version...........1.23
+        Date........2023-01-18
         Author....Avery Briggs
     """
 
@@ -1770,8 +1770,8 @@ def rgb_to_hex(colour):
 def hex_to_rgb(colour):
     if is_rgb_colour(colour):
         return colour
-    elif iscolour(colour) and isinstance(colour, str):
-        # print(f"{colour}")
+    elif iscolour(colour) and isinstance(colour, str) and not ("#" in colour and (len(colour) == 7)):
+        print(f"{colour}")
         return eval(colour)
     try:
         return (int(colour[1:3], 16), int(colour[3:5], 16), int(colour[5:], 16))
