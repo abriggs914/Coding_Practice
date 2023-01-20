@@ -18,8 +18,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.25
-    Date...........2023-01-17
+    Version..............1.26
+    Date...........2023-01-20
     Author.......Avery Briggs
     """
 
@@ -58,7 +58,7 @@ def top_most_tk(obj):
         return top_most_tk(obj.master)
 
 
-#https://stackoverflow.com/questions/12892180/how-to-get-the-name-of-the-master-frame-in-tkinter
+# https://stackoverflow.com/questions/12892180/how-to-get-the-name-of-the-master-frame-in-tkinter
 def patriarch(widget, window_b=False):
     while widget and widget.master:
         widget = widget.master
@@ -242,8 +242,8 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
 
 
 class TreeviewExt(ttk.Treeview):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, master, *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
 
     def treeview_sort_column(self, col, reverse):
         l = [(self.set(k, col), k) for k in self.get_children('')]
@@ -299,7 +299,7 @@ class TreeviewController(tkinter.Frame):
             self.button_delete_item     -   tkinter.Button for new items
         )
         """
-        super().__init__(*args, **kwargs)
+        super().__init__(master, *args, **kwargs)
 
         assert isinstance(df,
                           pandas.DataFrame), f"Error, param 'dataframe' must be an instance of a pandas Dataframe, got: '{type(df)}'."
@@ -361,7 +361,7 @@ class TreeviewController(tkinter.Frame):
             idx, row = row
             # print(f"{row=}, {type(row)=}")
             dat = [row[c_name] for c_name in self.viewable_column_names]
-            self.treeview.insert("", tkinter.END, text=f"{i+1}", iid=i, values=dat)
+            self.treeview.insert("", tkinter.END, text=f"{i + 1}", iid=i, values=dat)
 
         # treeview.bind("<<TreeviewSelect>>", CALLBACK_HERE)
         self.scrollbar_x, self.scrollbar_y = None, None
@@ -504,11 +504,11 @@ class TreeviewController(tkinter.Frame):
             # print(f"{i=}, {child=}, {values=}, {val=}")
             if scan_unk:
                 scan_unk = False
-                if val_s.isnumeric() and ((dot_count:=val_s.count(".")) < 2):
+                if val_s.isnumeric() and ((dot_count := val_s.count(".")) < 2):
                     scan_num = True
                     scan_int = (dot_count == 0)
             else:
-                if val_s.isnumeric() and ((dot_count:=val_s.count(".")) < 2):
+                if val_s.isnumeric() and ((dot_count := val_s.count(".")) < 2):
                     if scan_num:
                         # values = list(map(str, values))
                         scan_int = (scan_int and (dot_count == 0))
@@ -583,7 +583,8 @@ class TreeviewController(tkinter.Frame):
         name = column_data.get("id", None)
         # print(f"{name=}\n{self.viewable_column_names=}\n{self.viewable_column_widths=}")
         col_idx1 = self.viewable_column_names.index(name)
-        col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (len(self.viewable_column_names) - 1)
+        col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (
+                    len(self.viewable_column_names) - 1)
         width2 = self.treeview.column(f"#{col_idx2}").get("width", 0)
         if region1 == "separator" and column != "#0":
             diff_width = self.viewable_column_widths[col_idx1 - 1] - width1
@@ -599,9 +600,10 @@ class TreeviewController(tkinter.Frame):
             # print(f"{self.aggregate_objects=}")
             # print(f"{self.aggregate_objects[col_idx1 + 2]=}")
             # print(f"{self.aggregate_objects[col_idx1 + 2][1]=}")
-            self.aggregate_objects[col_idx1 + 2][1].configure(width=int(self.viewable_column_widths[col_idx1 - 1] * self.p_width))
-            self.aggregate_objects[col_idx2 + 2][1].configure(width=int(self.viewable_column_widths[col_idx2 - 1] * self.p_width))
-
+            self.aggregate_objects[col_idx1 + 2][1].configure(
+                width=int(self.viewable_column_widths[col_idx1 - 1] * self.p_width))
+            self.aggregate_objects[col_idx2 + 2][1].configure(
+                width=int(self.viewable_column_widths[col_idx2 - 1] * self.p_width))
 
     def get_objects(self):
         """TreeViewController(tkinter.Frame) || StringVar || Label || TreeViewExt(ttk.TreeView) || ttk.Srollbar || ttk.ScrollBar || Tuple(StringVar, Button) || Tuple(StringVar, Button) || ListOf(Frame, Tuple(TextVariablev, Entry, (x1, x2))) ... Tuple(TextVariablev, Entry, (x1, x2)))"""
@@ -613,7 +615,7 @@ class TreeviewController(tkinter.Frame):
             self.scrollbar_x, \
             self.scrollbar_y, \
             (self.tv_button_new_item, self.button_new_item), \
-            (self.tv_button_delete_item, self.button_delete_item),\
+            (self.tv_button_delete_item, self.button_delete_item), \
             self.aggregate_objects
 
     def next_iid(self):
@@ -1609,19 +1611,25 @@ def apply_state(root, state_in, direction: Literal["up", "down"] = "up", exclude
 
 class MultiComboBox(tkinter.Frame):
 
-    def __init__(self, master, data, viewable_column_names=None, indexable_column=0, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None, auto_grid=True, limit_to_list=True, new_entry_defaults=None):
+    def __init__(self, master, data, viewable_column_names=None, height_in_rows=10, indexable_column=0, tv_label=None,
+                 kwargs_label=None, tv_combo=None, kwargs_combo=None, auto_grid=True, limit_to_list=True,
+                 new_entry_defaults=None, lock_result_col=None):
         super().__init__(master)
 
         assert isinstance(data,
                           pandas.DataFrame), f"Error param 'data' must be an instance of a pandas.DataFrame, got '{type(data)}'."
         assert False if (kwargs_combo and (
-                    "values" in kwargs_combo)) else True, f"Cannot pass values as a keyword argument here. Pass all data in the data param as a pandas.DataFrame."
+                "values" in kwargs_combo)) else True, f"Cannot pass values as a keyword argument here. Pass all data in the data param as a pandas.DataFrame."
         # assert auto_pack + auto_grid <= 1, f"Error parameters 'auto_pack'={auto_pack} and 'auto_grid'={auto_grid} must be in a configuration where both params are not True.\nCannot grid and pack child widgets. (1 or None)"
+
+        assert (lock_result_col in viewable_column_names) if viewable_column_names else ((
+                                                                                                     lock_result_col in data.columns) if lock_result_col else True), f"Error column '{lock_result_col}' cannot be set as the locked result column. It is not in the list of viewable column names or in the list of columns in the passed dataframe."
 
         self.master = master
         self.top_most = patriarch(master)
         self.data = data
         self.limit_to_list = limit_to_list
+        self.lock_result_col = lock_result_col
 
         if tv_label is not None and tv_combo is not None:
             self.res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(self, value=tv_label)
@@ -1649,8 +1657,14 @@ class MultiComboBox(tkinter.Frame):
             self.res_label = tkinter.Label(self, textvariable=self.res_tv_label)
             # res_combo = ttk.Combobox(master, textvariable=res_tv_combo)
 
-        self.tree_controller = treeview_factory(self, data, kwargs_treeview={"selectmode": "browse"}, viewable_column_names=viewable_column_names)
-        self.tree_fact, \
+        # self.frame_top_most = tkinter.Frame(self, width=t_width, background="yellow")
+        self.frame_top_most = tkinter.Frame(self, name="ftm")
+        self.frame_tree = tkinter.Frame(self, name="ft")
+
+        self.tree_controller = treeview_factory(self.frame_tree, data, kwargs_treeview={"selectmode": "browse",
+                                                                                        "height": height_in_rows},
+                                                viewable_column_names=viewable_column_names)
+        self.tree_controller, \
         self.tree_tv_label, \
         self.tree_label, \
         self.tree_treeview, \
@@ -1662,7 +1676,9 @@ class MultiComboBox(tkinter.Frame):
 
         cn = self.tree_controller.viewable_column_names
         assert "All" not in cn, "Error, cannot use column name 'All'. This is reserved as a column filtering label."
-        self.indexable_column = indexable_column if (isinstance(indexable_column, int) and indexable_column < self.data.shape[1]) else (0 if not isinstance(indexable_column, str) or indexable_column not in cn else cn.index(indexable_column))
+        self.indexable_column = indexable_column if (
+                isinstance(indexable_column, int) and indexable_column < self.data.shape[1]) else (
+            0 if not isinstance(indexable_column, str) or indexable_column not in cn else cn.index(indexable_column))
 
         self.new_entry_defaults = {}
         if isinstance(new_entry_defaults, list) or isinstance(new_entry_defaults, tuple):
@@ -1675,19 +1691,19 @@ class MultiComboBox(tkinter.Frame):
             # self.new_entry_defaults = dict(zip(cn, [None for _ in cn]))
             self.new_entry_defaults = dict()
 
-
         n_rows, n_cols = data.shape
-        t_width = self.tree_fact.idx_width + (n_cols * sum(self.tree_fact.viewable_column_widths))
-        self.config(width=t_width)
+        # t_width = self.tree_controller.idx_width + (n_cols * sum(self.tree_controller.viewable_column_widths))
+        # self.configure(width=t_width)
+        # self.frame_top_most.configure(width=t_width)
 
         self.tv_tree_is_hidden = tkinter.BooleanVar(self, value=True)
 
-        self.frame_top_most = tkinter.Frame(self, width=t_width, background="yellow")
         self.frame_top_most.grid_columnconfigure(0, weight=9)
         self.frame_top_most.grid_columnconfigure(1, weight=1)
-        self.frame_middle = tkinter.Frame(self)
+        self.frame_middle = tkinter.Frame(self, name="fm")
         self.rg_var, self.rg_tv_var, self.rg_btns = radio_factory(self.frame_middle,
-                                                                  buttons=["All", *self.tree_controller.viewable_column_names])
+                                                                  buttons=["All",
+                                                                           *self.tree_controller.viewable_column_names])
         self.rg_var.trace_variable("w", self.update_radio_group)
         self.res_tv_entry.trace_variable("w", self.update_entry)
         self.typed_in = tkinter.BooleanVar(self, value=False)
@@ -1704,7 +1720,7 @@ class MultiComboBox(tkinter.Frame):
         self.returned_value = tkinter.StringVar(self, value="")
 
         if auto_grid:
-            self.grid()
+            self.grid(ipadx=12, ipady=12)
             # self.grid_columnconfigure(, weight=10)
             self.res_label.grid(row=0, column=0)
 
@@ -1724,6 +1740,28 @@ class MultiComboBox(tkinter.Frame):
             #     else:
             #         data.grid(row=2)
 
+        # self.configure(background="Red")
+        # self.frame_top_most.configure(background="yellow")
+        # self.frame_tree.configure(background="lime")
+        # self.tree_controller.configure(background="indigo")
+        # print(f"{self.children=}")
+        # print(f"{self.frame_top_most.children=}")
+        #
+        # print(f"\n{self.tree_controller.children=}")
+        # print(f"{self.tree_controller.master=}")
+        # print(f"{self.tree_controller.master.master=}")
+        # print(f"{self.tree_controller.master.master.master=}")
+        #
+        # print(f"\n{self.frame_tree.children=}")
+        # print(f"{self.frame_tree.master=}")
+        # print(f"{self.frame_tree.master.master=}")
+        #
+        # print(f"\n{self.tree_treeview.children=}")
+        # print(f"{self.tree_treeview.master=}")
+        # print(f"{self.tree_treeview.master.master=}")
+        # print(f"{self.tree_treeview.master.master.master=}")
+        # print(f"{self.tree_treeview.master.master.master.master=}")
+
     def treeview_selection_update(self, event):
         # print(f"treeview_selection_update")
         row_id = self.tree_treeview.selection()
@@ -1739,6 +1777,8 @@ class MultiComboBox(tkinter.Frame):
             # self.res_tv_entry.set(str(1 + int(x if x else 0)))
 
             col = self.tree_controller.viewable_column_names[self.indexable_column]
+            if lrc := self.lock_result_col:
+                col = lrc
             value = self.data[col].tolist()[int(row_id[0])]
             # print(f"{col=}")
             # print(f"{value=}")
@@ -1772,11 +1812,48 @@ class MultiComboBox(tkinter.Frame):
         self.filter_treeview()
         self.indexable_column = 0 if col == "All" else self.tree_controller.viewable_column_names.index(col)
 
+    def delete_item(self, iid=None, value="|/|/||NONE||/|/|", mode="first" | Literal["first", "all", "ask"]):
+        delete_code = "|/|/||NONE||/|/|"
+        if iid is None and value == delete_code:
+            self.tree_treeview.delete(*self.tree_treeview.get_children())
+        else:
+            if iid is not None:
+                if isinstance(iid, int):
+                    self.data.drop([iid], inplace=True)
+                else:
+                    raise ValueError(f"Cannot delete row '{iid}' from this dataframe.")
+            else:
+                # find value, then delete
+                if mode == "ask":
+                    delete_multi = ((ans := tkinter.YES) == tkinter.messagebox.askyesnocancel(title="Delete",
+                                                                                              message="Delete only the first occurence, or all rows that contain this value?"))
+                    print(f"{ans=}")
+                    if ans == "cancel":
+                        return
+                else:
+                    delete_multi = mode == "all"
+                to_delete = []
+                for i, row in self.data.iterrows():
+                    for j, x in enumerate(row.values):
+                        if value == x:
+                            to_delete.append(i)
+                            break
+                    if to_delete and not delete_multi:
+                        break
+
+                if to_delete:
+                    self.data.drop(to_delete, inplace=True)
+                else:
+                    raise ValueError(
+                        f"Cannot delete row(s) containing value '{value}' from this dataframe. The value was not found was not Found.")
+        self.update_treeview()
+
     def add_new_item(self, val, col):
         cn = self.tree_controller.viewable_column_names
         col = cn[0] if col == "All" else col
         idx = cn.index(col)
-        ans = tkinter.messagebox.askyesnocancel("Create New Item", message=f"Create a new combo box entry with '{val}' in column '{col}' position?")
+        ans = tkinter.messagebox.askyesnocancel("Create New Item",
+                                                message=f"Create a new combo box entry with '{val}' in column '{col}' position?")
         row = []
         if ans == tkinter.YES:
             i = self.data.shape[0]
@@ -1800,7 +1877,7 @@ class MultiComboBox(tkinter.Frame):
             # print(f"{pandas.DataFrame({k: [v] for k, v in zip(cn, row)})}")
             self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
             # print(f"\nB\t{self.data=}")
-            self.tree_treeview.insert("", "end", iid=i, text=str(i+1), values=list(row))
+            self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row))
             self.res_entry.config(foreground="black")
         else:
             self.res_entry.config(foreground="red")
@@ -1831,19 +1908,22 @@ class MultiComboBox(tkinter.Frame):
 
         return self.returned_value.get()
 
+    def update_treeview(self):
+        self.tree_treeview.delete(*self.tree_treeview.get_children())
+        for i, row in self.data.iterrows():
+            # print(f"{i=}, {row=}")
+            self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row))
+
     def filter_treeview(self):
         # print(f"filter_treeview: {self.typed_in.get()}\n\n\tDATA\n{self.data}")
         if self.typed_in.get():
-            val = self.res_tv_entry.get()
+            val = self.res_tv_entry.get().lower()
             col = self.rg_var.get()
-            self.tree_treeview.delete(*self.tree_treeview.get_children())
             some = False
             if not val:
                 # print(f"Not val")
-                for i, row in self.data.iterrows():
-                    # print(f"{i=}, {row=}")
-                    self.tree_treeview.insert("", "end", iid=i, text=str(i+1), values=list(row))
-                    some = True
+                self.update_treeview()
+                some = True
 
                 if some:
                     self.res_entry.config(foreground="black")
@@ -1857,15 +1937,17 @@ class MultiComboBox(tkinter.Frame):
 
             if col != "All":
                 # print(f"col != All")
+                self.tree_treeview.delete(*self.tree_treeview.get_children())
                 for i, value in enumerate(self.data[col].tolist()):
                     # print(f"\t\t{i=}, {value=}")
-                    if val in str(value):
+                    if val in str(value).lower():
                         some = True
                         row = self.data.iloc[[i]].values
                         # print(f"\t\t{row=}")
-                        self.tree_treeview.insert("", "end", iid=i, text=str(i+1), values=list(*row))
+                        self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(*row))
             else:
                 # print(f"\n\nFilter Else")
+                self.tree_treeview.delete(*self.tree_treeview.get_children())
                 c = 0
                 for i, row in self.data.iterrows():
                     found = False
@@ -1874,7 +1956,7 @@ class MultiComboBox(tkinter.Frame):
                             found = True
                             break
                     if found:
-                        self.tree_treeview.insert("", "end", iid=i, text=i+1, values=list(row))
+                        self.tree_treeview.insert("", "end", iid=i, text=i + 1, values=list(row))
                         c += 1
                         some = True
                     # print(f"{i=}\n{row=}\n{found=}")
@@ -1891,11 +1973,13 @@ class MultiComboBox(tkinter.Frame):
         if is_hidden:
             # now show
 
+            self.frame_middle.grid(row=2, column=0)
+            self.frame_tree.grid(row=3, column=0)
+
             for i, btn in enumerate(self.rg_btns):
                 btn.grid(row=0, column=i)
-            self.frame_middle.grid()
 
-            self.tree_controller.grid(row=2, column=0)
+            self.tree_controller.grid(row=1, column=0)
             self.tree_treeview.grid(row=0, column=0)
             self.tree_scrollbar_x.grid(row=3, sticky="ew")
             self.tree_scrollbar_y.grid(row=0, column=1, sticky="ns")
@@ -1908,13 +1992,14 @@ class MultiComboBox(tkinter.Frame):
                     data.grid(row=2)
         else:
             # now hide
+            self.frame_middle.grid_forget()
+            self.frame_tree.grid_forget()
             self.tree_treeview.grid_forget()
             self.tree_controller.grid_forget()
             self.tree_scrollbar_x.grid_forget()
             self.tree_scrollbar_y.grid_forget()
             for btn in self.rg_btns:
                 btn.grid_forget()
-            self.frame_middle.grid_forget()
             for i, data in enumerate(self.tree_aggregate_objects):
                 if i > 0:
                     tv, entry, x1x2 = data
@@ -1926,6 +2011,7 @@ class MultiComboBox(tkinter.Frame):
 
     def is_valid(self):
         return self.res_tv_entry.get() and self.tree_treeview.get_children()
+
 
 # def multi_combo_factory(master, data, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None):
 #     assert isinstance(data, pandas.DataFrame), f"Error param 'data' must be an instance of a pandas.DataFrame, got '{type(data)}'."
@@ -1969,8 +2055,6 @@ class MultiComboBox(tkinter.Frame):
 #     res_canvas.bind("<Button-1>", click_canvas_dropdown_button)
 #
 #     return (res_tv_label, res_label), (res_tv_entry, res_entry), res_canvas, tv1
-
-
 
 
 #######################################################################################################################
@@ -2255,8 +2339,9 @@ def test_treeview_factory_4():
             if k not in treeview_controller.viewable_column_names:
                 try:
                     if not k.startswith("#"):
-                        raise Exception(f"Error aggregate data key '{k}' not found in the list of visible column names.")
-                    elif 0 > (num:=int(k[1:])) > len(treeview_controller.viewable_column_names):
+                        raise Exception(
+                            f"Error aggregate data key '{k}' not found in the list of visible column names.")
+                    elif 0 > (num := int(k[1:])) > len(treeview_controller.viewable_column_names):
                         raise Exception(f"Error aggregate data key '{k}' is out of range.")
                     else:
                         key = treeview_controller.viewable_column_names[num]
@@ -2288,15 +2373,15 @@ def test_treeview_factory_4():
         #     "# lives": avg
         # }
     )
-    frame,\
-    tv_label,\
-    label,\
-    treeview,\
-    scrollbar_x,\
-    scrollbar_y,\
-    insert_btn_data,\
-    delete_btn_data,\
-    aggregate_objects\
+    frame, \
+    tv_label, \
+    label, \
+    treeview, \
+    scrollbar_x, \
+    scrollbar_y, \
+    insert_btn_data, \
+    delete_btn_data, \
+    aggregate_objects \
         = treeview_controller.get_objects()
     tv_label.set("I forgot to pass a title! - no worries.")
     label.grid()
@@ -2333,6 +2418,7 @@ def test_treeview_factory_4():
     button_column_info.grid()
 
     WIN.mainloop()
+
 
 def test_messagebox():
     root = tkinter.Tk()
@@ -2523,7 +2609,7 @@ def test_apply_state_3():
 
 def test_multi_combo_factory():
     WIN = tkinter.Tk()
-    WIN.geometry(f"500x500")
+    WIN.geometry(f"800x800")
     WIN.title("Select Start Date")
 
     data = pandas.DataFrame({
@@ -2565,7 +2651,6 @@ def test_multi_combo_factory():
     #     else:
     #         data.grid(row=2)
 
-
     # dealers = ["A", "B", "C"]
     # colours = ["red", "blue", "green", "custom", "none"]
     # sv_lbl_1, lbl_1, sv_cb_1, cb_1 = combo_factory(WIN, tv_label="Dealer", kwargs_combo={"values": dealers})
@@ -2602,6 +2687,78 @@ def test_multi_combo_factory():
     WIN.mainloop()
 
 
+class ArrowButton(tkinter.Canvas):
+    def __init__(self, master, mode: Literal[
+        "up", "down", "left", "right",
+        "top-left", "top-right", "bottom-left", "bottom-right",
+        "n", "s", "e", "w", "ne", "nw", "se", "sw",
+        "N", "S", "E", "W", "NE", "NW", "SE", "SW"] = "down", width=20, height=20, *args, **kwargs):
+        super().__init__(master, width=width, height=height, *args, **kwargs)
+
+        valid = [
+            "up", "down", "left", "right",
+            "top-left", "top-right", "bottom-left", "bottom-right",
+            "n", "s", "e", "w", "ne", "nw", "se", "sw",
+            "N", "S", "E", "W", "NE", "NW", "SE", "SW"
+        ]
+        if mode not in valid:
+            mode = "s"
+
+        self.mode = mode
+        self.width = width
+        self.height = height
+
+        self.configure(width=20, height=20, background=rgb_to_hex("GRAY_62"))
+
+        x1, y1, x2, y2 = 11, 6, 11, 19  # down
+
+        if self.mode in ["down", "s", "S"]:
+            pass
+        elif self.mode in ["up", "n", "N"]:
+            y1, y2 = y2, y1
+        elif self.mode in ["left", "w", "W"]:
+            x1, y1, x2, y2 = y2, x1, y1, x2
+        elif self.mode in ["bottom-left", "sw", "SW"]:
+            x1, y1, x2, y2 = x1, x2, y1, y2
+        elif self.mode in ["top-right", "ne", "NE"]:
+            x1, y1, x2, y2 = x1, x2, y2, y1
+        elif self.mode in ["top-left", "nw", "NE"]:
+            x1, y1, x2, y2 = x1, x2, y1, y1
+        elif self.mode in ["bottom-right", "se", "SE"]:
+            x1, y1, x2, y2 = x1, x2, y2, y2
+        elif self.mode in ["right", "e", "E"]:
+            x1, y1, x2, y2 = y1, x1, y2, x2
+        else:
+            print(f"\tFAILURE\t\t{self.mode=}")
+            pass
+
+        # print(f"=={mode=} :: ({x1}, {y1}), ({x2}, {y2})")
+        self.create_line(x1, y1, x2, y2, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
+        self.bind("<Button-1>", self.click_canvas_button)
+
+    def click_canvas_button(self, event):
+        # Add functionality here, or use the same binding to your code.
+        print(f"click_canvas_button\n{self}")
+
+
+def test_arrow_button():
+    win = tkinter.Tk()
+    win.geometry(f"600x600")
+    win.title("test_arrow_button")
+
+    modes = ["nw", "n", "ne", "w", None, "e", "sw", "s", "se"]
+    canvases = []
+    w, h = 20, 20
+    for i, mode in enumerate(modes):
+        if mode:
+            canvases.append(ab := ArrowButton(win, mode=mode, name=f"{i=}, {mode=}"))
+            ab.grid(row=i // 3, column=i % 3)
+        else:
+            canvases.append(c := tkinter.Canvas(win, width=w, height=h))
+            c.grid(row=i // 3, column=i % 3)
+
+    win.mainloop()
+
 
 if __name__ == '__main__':
     print('PyCharm')
@@ -2618,4 +2775,5 @@ if __name__ == '__main__':
     # test_treeview_factory_4()
     # test_apply_state_1()
     # test_apply_state_3()
-    test_multi_combo_factory()
+    # test_multi_combo_factory()
+    test_arrow_button()
