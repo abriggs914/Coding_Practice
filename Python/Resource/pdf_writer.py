@@ -16,8 +16,8 @@ import webbrowser
 VERSION = \
     """
         General PDF Creation Class
-        Version................1.5
-        Date............2022-09-12
+        Version................1.6
+        Date............2023-01-23
         Author........Avery Briggs
     """
 
@@ -44,8 +44,8 @@ def VERSION_AUTHOR():
 
 class PDF(FPDF):
 
-    def __init__(self, file_name, **kwrgs):
-        super().__init__(**kwrgs)
+    def __init__(self, file_name, cur_orientation="P", **kwargs):
+        super().__init__(**kwargs)
         self.file_name = file_name
 
         self.MARGIN_LINES_WIDTH = 3
@@ -59,12 +59,14 @@ class PDF(FPDF):
 
         self.time_stamp_rect = (self.w - 100, -15, 0, 10)
 
-        # if self.cur_orientation == "L":
-        #     self.w = 750
-        #     self.h = 600
-        # else:
-        #     self.w = 600
-        #     self.h = 750
+        self.cur_orientation = cur_orientation
+
+        if self.cur_orientation == "L":
+            self.w = 750
+            self.h = 600
+        else:
+            self.w = 600
+            self.h = 750
         self.page_heights = [0]
 
     def titles(self, title, x, y, w, h, colour, align="C", border=0, font=('Arial', 'B', 16)):
@@ -592,7 +594,7 @@ class PDF(FPDF):
             contents,
             desc_txt="",
             header_colours=(BLACK, WHITE),
-            colours=(WHITE, BLACK),
+            colours=((WHITE, BLACK), (BLACK, WHITE)),
             header_height=10,
             cell_height=5,
             title_v_margin=5,
@@ -647,7 +649,7 @@ class PDF(FPDF):
 
         otx = x + left_margin
         oty = y + top_margin
-        ocx = otx
+        ocx = otx + (left_margin / 2)
         ocy = oty + line_width + title_v_margin
 
         for i, itms in enumerate(contents):
@@ -746,10 +748,16 @@ class PDF(FPDF):
 
         # Begin Writing to page
 
-        self.line(otx - left_margin, oty + (title_v_margin / 2) + top_margin - 2, otx - left_margin + w,
+        # self.line(otx - left_margin, oty + (title_v_margin / 2) + top_margin - 2, otx - left_margin + w,
+        #           oty + (title_v_margin / 2) + top_margin - 2)
+        # self.titles(title, otx - left_margin, oty + (title_v_margin / 2) + top_margin, w,
+        #             title_height, title_colour)
+
+        self.line(otx + (left_margin / 2), oty + (title_v_margin / 2) + top_margin - 2, otx + w - left_margin,
                   oty + (title_v_margin / 2) + top_margin - 2)
-        self.titles(title, otx - left_margin, oty + (title_v_margin / 2) + top_margin, w,
+        self.titles(title, otx + (left_margin / 2), oty + (title_v_margin / 2) + top_margin - 10, w,
                     title_height, title_colour)
+        self.set_y(oty + (title_v_margin / 2) + top_margin - 10 + title_height)
 
         x_txt = y_txt = 0
         if desc_txt:
@@ -772,8 +780,12 @@ class PDF(FPDF):
                 ch = header_height
             else:
                 self.set_font(*cell_font)
+                print(f"{colours=}")
+                # fill_colour = colours[0][(i - 1) % len(colours[0])]
+                # font_colour = colours[1][(i - 1) % len(colours[1])]
                 fill_colour = colours[0][(i - 1) % len(colours[0])]
                 font_colour = colours[1][(i - 1) % len(colours[1])]
+                print(f"{fill_colour=}, {font_colour=}")
                 self.set_fill_color(*fill_colour)
                 self.set_text_color(*font_colour)
                 ch = cell_height

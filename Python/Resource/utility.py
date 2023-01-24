@@ -11,7 +11,6 @@ import shutil
 import sys
 import os
 
-
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
@@ -19,8 +18,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.64
-        Date...........2022-12-05
+        Version..............1.65
+        Date...........2023-01-23
         Author.......Avery Briggs
     """
 
@@ -35,6 +34,7 @@ def VERSION_DATE():
 
 def VERSION_AUTHOR():
     return VERSION.split("\n")[4].split(".")[-1]
+
 
 #######################################################################################################################
 #######################################################################################################################
@@ -71,14 +71,45 @@ def lenstr(x):
     return len(str(x))
 
 
-def minmax(a, b):
-    
+def minmax(a, b=None):
+    if b is None:
+        if isinstance(a, list) or isinstance(a, tuple):
+            p, q = None, None
+            for i, val in enumerate(a):
+                if p is None or q is None:
+                    p = val
+                    q = val
+                else:
+                    if val < p:
+                        p = val
+                    if val > q:
+                        q = val
+            return p, q
+        else:
+            raise ValueError(f"Parameter 'a' must be a list or tuple when parameter 'b' is None. Got '{a}'")
+
     if a <= b:
         return a, b
     return b, a
 
 
-def maxmin(a, b):
+def maxmin(a, b=None):
+    if b is None:
+        if isinstance(a, list) or isinstance(a, tuple):
+            p, q = None, None
+            for i, val in enumerate(a):
+                if p is None or q is None:
+                    p = val
+                    q = val
+                else:
+                    if val < p:
+                        p = val
+                    if val > q:
+                        q = val
+            return q, p
+        else:
+            raise ValueError(f"Parameter 'a' must be a list or tuple when parameter 'b' is None. Got '{a}'")
+
     if a < b:
         return b, a
     return a, b
@@ -1671,14 +1702,15 @@ def rect2_to_tkinter(rect):
 
 def tkinter_to_rect2(rect):
     """Tlinter (left, top, right, bottom) -> Rect2 (left, top, w, h)"""
-    assert isinstance(rect, list) or isinstance(rect, tuple), f"Error value is not a valid list or tuple representing a tkinter rect., got <{type(rect)}>, v=<{rect}>"
+    assert isinstance(rect, list) or isinstance(rect,
+                                                tuple), f"Error value is not a valid list or tuple representing a tkinter rect., got <{type(rect)}>, v=<{rect}>"
     assert len(rect) == 4, "This list is too long"
     x1, y1, x2, y2 = rect
     return Rect2(x1, y1, x2 - x1, y2 - y1)
 
 
 def kb_as_percent(kb, gb=2):
-    return ("%.3f" % (((100 * kb / (1024**2)) / gb))) + " %"
+    return ("%.3f" % (((100 * kb / (1024 ** 2)) / gb))) + " %"
 
 
 def calc_bounds(center, width, height=None):
@@ -1698,7 +1730,7 @@ def calc_bounds(center, width, height=None):
     )
 
 
-def left_join (a_, b_):
+def left_join(a_, b_):
     assert isinstance(a_, set), "Error, param 'a_' must be a set."
     assert isinstance(b_, set), "Error, param 'a_' must be a set."
     return a_.symmetric_difference(b_).union(a_).symmetric_difference(b_).union(a_)
@@ -1851,8 +1883,10 @@ def grid_cells(
 
 def clamp_rect(rect_bounds, out_bounds, maintain_inner_dims=False):
     """Calculate the 'clamped' rectangle within the outer bounds."""
-    assert isinstance(rect_bounds, tuple) or isinstance(rect_bounds, list) or isinstance(rect_bounds, Rect2), f"Error, param 'rect_bounds; needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got{rect_bounds}"
-    assert isinstance(out_bounds, tuple) or isinstance(out_bounds, list) or isinstance(out_bounds, Rect2), f"Error, param 'out_bounds' needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got {out_bounds}"
+    assert isinstance(rect_bounds, tuple) or isinstance(rect_bounds, list) or isinstance(rect_bounds,
+                                                                                         Rect2), f"Error, param 'rect_bounds; needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got{rect_bounds}"
+    assert isinstance(out_bounds, tuple) or isinstance(out_bounds, list) or isinstance(out_bounds,
+                                                                                       Rect2), f"Error, param 'out_bounds' needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got {out_bounds}"
 
     if isinstance(rect_bounds, tuple) or isinstance(rect_bounds, list):
         assert len(rect_bounds) == 4, f"Error, list or tuple needs to be length 4. Got {rect_bounds}"
@@ -1926,21 +1960,25 @@ def restart_program():
 
     """
     python = sys.executable
-    os.execl(python, python, * sys.argv)
+    os.execl(python, python, *sys.argv)
 
 
 def alpha_ize(number_in=0, capitalize=False):
-    assert isinstance(number_in, int) and 0 <= number_in <= 25, "Error, param 'number_in' must be an integer between 0 and 25."
+    assert isinstance(number_in,
+                      int) and 0 <= number_in <= 25, "Error, param 'number_in' must be an integer between 0 and 25."
     c = chr(number_in + 97)
     c = c if not capitalize else c.upper()
     return c
 
 
-def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=False, shift_pad_0_on_number=True, capital_alpha=True, pad_char="0"):
+def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=False, shift_pad_0_on_number=True,
+              capital_alpha=True, pad_char="0"):
     assert isinstance(prefix, str), f"Error, param 'prefix' must be an in stance of a string. Got '{prefix}'"
     assert isinstance(suffix, str), f"Error, param 'suffix' must be an in stance of a string. Got '{suffix}'"
-    assert isinstance(n_digits, int) and n_digits > 0, f"Error, param 'n_digits' must be a number and be greater than 0, Got '{n_digits}'"
-    assert all([isinstance(param, bool) for param in [numbers_instead, pad_0, shift_pad_0_on_number, capital_alpha]]), f"Error, 'params numbers_instead', 'pad_0', 'shift_pad_0_on_number', 'capital_alpha' must be boolean values.\nGot: {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}"
+    assert isinstance(n_digits,
+                      int) and n_digits > 0, f"Error, param 'n_digits' must be a number and be greater than 0, Got '{n_digits}'"
+    assert all([isinstance(param, bool) for param in [numbers_instead, pad_0, shift_pad_0_on_number,
+                                                      capital_alpha]]), f"Error, 'params numbers_instead', 'pad_0', 'shift_pad_0_on_number', 'capital_alpha' must be boolean values.\nGot: {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}"
     # print(f"A {n_digits=}, {prefix=}, {suffix=}, {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}")
     pad_0 = pad_0 or ((not pad_0) and numbers_instead and shift_pad_0_on_number)
     pad_char = "0" if pad_0 and not pad_char else pad_char
@@ -1972,7 +2010,7 @@ def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=Fal
         elif len(val) < n_digits and pad_0:
             val = val.rjust(n_digits, pad_char)
         # else:
-            # print(f"VAL='{val}'")
+        # print(f"VAL='{val}'")
         yield f"{prefix}{val}{suffix}"
 
 
@@ -2021,9 +2059,12 @@ def margins(t_width, n_btns, btn_width):
         # Want to place 3 buttons of width 100, in a total width of 600
         m = margins(600, 3, 100)
     """
-    assert (isinstance(t_width, int) or isinstance(t_width, float)) and t_width > 0, "Error, param t_width must be a number greater than 0."
-    assert (isinstance(n_btns, int) or isinstance(n_btns, float)) and n_btns > 0, "Error, param n_btns must be a number greater than 0."
-    assert (isinstance(btn_width, int) or isinstance(btn_width, float)) and (btn_width * n_btns) <= t_width, "Error, param btn_width must be a number greater than 0."
+    assert (isinstance(t_width, int) or isinstance(t_width,
+                                                   float)) and t_width > 0, "Error, param t_width must be a number greater than 0."
+    assert (isinstance(n_btns, int) or isinstance(n_btns,
+                                                  float)) and n_btns > 0, "Error, param n_btns must be a number greater than 0."
+    assert (isinstance(btn_width, int) or isinstance(btn_width, float)) and (
+                btn_width * n_btns) <= t_width, "Error, param btn_width must be a number greater than 0."
     mw = (t_width - (n_btns * btn_width)) / (n_btns + 1)
     return flatten([[
         i * (mw + btn_width),

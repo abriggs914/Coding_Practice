@@ -18,8 +18,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.26
-    Date...........2023-01-20
+    Version..............1.27
+    Date...........2023-01-23
     Author.......Avery Briggs
     """
 
@@ -584,7 +584,7 @@ class TreeviewController(tkinter.Frame):
         # print(f"{name=}\n{self.viewable_column_names=}\n{self.viewable_column_widths=}")
         col_idx1 = self.viewable_column_names.index(name)
         col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (
-                    len(self.viewable_column_names) - 1)
+                len(self.viewable_column_names) - 1)
         width2 = self.treeview.column(f"#{col_idx2}").get("width", 0)
         if region1 == "separator" and column != "#0":
             diff_width = self.viewable_column_widths[col_idx1 - 1] - width1
@@ -1623,7 +1623,7 @@ class MultiComboBox(tkinter.Frame):
         # assert auto_pack + auto_grid <= 1, f"Error parameters 'auto_pack'={auto_pack} and 'auto_grid'={auto_grid} must be in a configuration where both params are not True.\nCannot grid and pack child widgets. (1 or None)"
 
         assert (lock_result_col in viewable_column_names) if viewable_column_names else ((
-                                                                                                     lock_result_col in data.columns) if lock_result_col else True), f"Error column '{lock_result_col}' cannot be set as the locked result column. It is not in the list of viewable column names or in the list of columns in the passed dataframe."
+                                                                                                 lock_result_col in data.columns) if lock_result_col else True), f"Error column '{lock_result_col}' cannot be set as the locked result column. It is not in the list of viewable column names or in the list of columns in the passed dataframe."
 
         self.master = master
         self.top_most = patriarch(master)
@@ -1709,8 +1709,11 @@ class MultiComboBox(tkinter.Frame):
         self.typed_in = tkinter.BooleanVar(self, value=False)
 
         self.res_entry = tkinter.Entry(self.frame_top_most, textvariable=self.res_tv_entry, justify="center")
-        self.res_canvas = tkinter.Canvas(self.frame_top_most, width=20, height=20, background=rgb_to_hex("GRAY_62"))
-        self.res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
+        # self.res_canvas = tkinter.Canvas(self.frame_top_most, width=20, height=20, background=rgb_to_hex("GRAY_62"))
+        # self.res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
+
+        self.res_canvas = ArrowButton(self.frame_top_most, background=rgb_to_hex("GRAY_62"))
+
         self.res_canvas.bind("<Button-1>", self.click_canvas_dropdown_button)
         self.tree_treeview.bind("<<TreeviewSelect>>", self.treeview_selection_update)
         self.res_entry.bind("<Key>", self.update_typed_in)
@@ -1973,6 +1976,7 @@ class MultiComboBox(tkinter.Frame):
         if is_hidden:
             # now show
 
+            self.res_canvas.change_direction("n")
             self.frame_middle.grid(row=2, column=0)
             self.frame_tree.grid(row=3, column=0)
 
@@ -1992,6 +1996,7 @@ class MultiComboBox(tkinter.Frame):
                     data.grid(row=2)
         else:
             # now hide
+            self.res_canvas.change_direction("s")
             self.frame_middle.grid_forget()
             self.frame_tree.grid_forget()
             self.tree_treeview.grid_forget()
@@ -2011,6 +2016,77 @@ class MultiComboBox(tkinter.Frame):
 
     def is_valid(self):
         return self.res_tv_entry.get() and self.tree_treeview.get_children()
+
+
+class ArrowButton(tkinter.Canvas):
+    def __init__(self, master, mode: Literal[
+        "up", "down", "left", "right",
+        "top-left", "top-right", "bottom-left", "bottom-right",
+        "n", "s", "e", "w", "ne", "nw", "se", "sw",
+        "N", "S", "E", "W", "NE", "NW", "SE", "SW"] = "down", width=20, height=20, *args, **kwargs):
+        super().__init__(master, width=width, height=height, *args, **kwargs)
+
+        self.valid = {
+            "up", "down", "left", "right",
+            "top-left", "top-right", "bottom-left", "bottom-right",
+            "n", "s", "e", "w", "ne", "nw", "se", "sw",
+            "N", "S", "E", "W", "NE", "NW", "SE", "SW"
+        }
+        mode = self.validate_mode(mode)
+
+        self.mode = mode
+        self.width = width
+        self.height = height
+
+        self.configure(width=20, height=20, background=rgb_to_hex("GRAY_62"))
+
+        self.draw_arrow()
+        # print(f"=={mode=} :: ({x1}, {y1}), ({x2}, {y2})")
+        self.bind("<Button-1>", self.click_canvas_button)
+
+    def validate_mode(self, mode):
+        if mode not in self.valid:
+            mode = "s"
+        return mode
+
+    def calc_arrow(self):
+        x1, y1, x2, y2 = 11, 6, 11, 19  # down
+
+        if self.mode in {"down", "s", "S"}:
+            pass
+        elif self.mode in {"up", "n", "N"}:
+            y1, y2 = y2, y1
+        elif self.mode in {"left", "w", "W"}:
+            x1, y1, x2, y2 = y2, x1, y1, x2
+        elif self.mode in {"bottom-left", "sw", "SW"}:
+            x1, y1, x2, y2 = x1, x2, y1, y2
+        elif self.mode in {"top-right", "ne", "NE"}:
+            x1, y1, x2, y2 = x1, x2, y2, y1
+        elif self.mode in {"top-left", "nw", "NE"}:
+            x1, y1, x2, y2 = x1, x2, y1, y1
+        elif self.mode in {"bottom-right", "se", "SE"}:
+            x1, y1, x2, y2 = x1, x2, y2, y2
+        elif self.mode in {"right", "e", "E"}:
+            x1, y1, x2, y2 = y1, x1, y2, x2
+        else:
+            print(f"\tFAILURE\t\t{self.mode=}")
+            pass
+
+        return x1, y1, x2, y2
+
+    def draw_arrow(self, clear_first=True):
+        if clear_first:
+            self.delete("all")
+        x1, y1, x2, y2 = self.calc_arrow()
+        self.create_line(x1, y1, x2, y2, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
+
+    def click_canvas_button(self, event):
+        # Add functionality here, or use the same binding in your code.
+        print(f"click_canvas_button\n{self}")
+
+    def change_direction(self, mode):
+        self.mode = self.validate_mode(mode)
+        self.draw_arrow()
 
 
 # def multi_combo_factory(master, data, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None):
@@ -2685,60 +2761,6 @@ def test_multi_combo_factory():
     # cb_1.grid(row=1, column=2)
     # cb_2.grid(row=2, column=2)
     WIN.mainloop()
-
-
-class ArrowButton(tkinter.Canvas):
-    def __init__(self, master, mode: Literal[
-        "up", "down", "left", "right",
-        "top-left", "top-right", "bottom-left", "bottom-right",
-        "n", "s", "e", "w", "ne", "nw", "se", "sw",
-        "N", "S", "E", "W", "NE", "NW", "SE", "SW"] = "down", width=20, height=20, *args, **kwargs):
-        super().__init__(master, width=width, height=height, *args, **kwargs)
-
-        valid = [
-            "up", "down", "left", "right",
-            "top-left", "top-right", "bottom-left", "bottom-right",
-            "n", "s", "e", "w", "ne", "nw", "se", "sw",
-            "N", "S", "E", "W", "NE", "NW", "SE", "SW"
-        ]
-        if mode not in valid:
-            mode = "s"
-
-        self.mode = mode
-        self.width = width
-        self.height = height
-
-        self.configure(width=20, height=20, background=rgb_to_hex("GRAY_62"))
-
-        x1, y1, x2, y2 = 11, 6, 11, 19  # down
-
-        if self.mode in ["down", "s", "S"]:
-            pass
-        elif self.mode in ["up", "n", "N"]:
-            y1, y2 = y2, y1
-        elif self.mode in ["left", "w", "W"]:
-            x1, y1, x2, y2 = y2, x1, y1, x2
-        elif self.mode in ["bottom-left", "sw", "SW"]:
-            x1, y1, x2, y2 = x1, x2, y1, y2
-        elif self.mode in ["top-right", "ne", "NE"]:
-            x1, y1, x2, y2 = x1, x2, y2, y1
-        elif self.mode in ["top-left", "nw", "NE"]:
-            x1, y1, x2, y2 = x1, x2, y1, y1
-        elif self.mode in ["bottom-right", "se", "SE"]:
-            x1, y1, x2, y2 = x1, x2, y2, y2
-        elif self.mode in ["right", "e", "E"]:
-            x1, y1, x2, y2 = y1, x1, y2, x2
-        else:
-            print(f"\tFAILURE\t\t{self.mode=}")
-            pass
-
-        # print(f"=={mode=} :: ({x1}, {y1}), ({x2}, {y2})")
-        self.create_line(x1, y1, x2, y2, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
-        self.bind("<Button-1>", self.click_canvas_button)
-
-    def click_canvas_button(self, event):
-        # Add functionality here, or use the same binding to your code.
-        print(f"click_canvas_button\n{self}")
 
 
 def test_arrow_button():
