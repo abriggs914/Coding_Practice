@@ -44,8 +44,8 @@ def VERSION_AUTHOR():
 
 class PDF(FPDF):
 
-    def __init__(self, file_name, cur_orientation="P", **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, file_name, cur_orientation="P", *args, **kwargs):
+        super().__init__(cur_orientation, **kwargs)
         self.file_name = file_name
 
         self.MARGIN_LINES_WIDTH = 3
