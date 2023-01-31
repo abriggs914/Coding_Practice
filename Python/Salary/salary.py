@@ -23,7 +23,8 @@ WORK_DAYS_PER_WEEK = 5
 WORK_DAY_START_TIME = 800
 WORK_DAY_END_TIME = 1700
 WORK_lUNCH_TIME = 0 #50
-INCOME_TAX_RATE = 21.701
+# INCOME_TAX_RATE = 21.701
+INCOME_TAX_RATE = 24.675
 
 def work_day_hours(start, end, lunch):
 	return end - start - lunch
@@ -422,6 +423,7 @@ if __name__ == "__main__":
 	salary = Salary(40000)
 	salary = Salary(42000)
 	salary = Salary(44100)
+	salary = Salary(46305)
 	# salary = Salary(45000)
 	# salary = Salary(100000)
 	print(salary)
