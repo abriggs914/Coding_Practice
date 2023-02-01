@@ -18,8 +18,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.65
-        Date...........2023-01-23
+        Version..............1.66
+        Date...........2023-02-01
         Author.......Avery Briggs
     """
 
@@ -1524,7 +1524,10 @@ def date_suffix(day):
 
 # Takes "2021-08-03" -> August 3rd, 2021
 def date_str_format(date_str):
-    date_obj = dt.datetime.fromisoformat(date_str)
+    if isinstance(date_str, datetime.datetime):
+        date_obj = date_str
+    else:
+        date_obj = dt.datetime.fromisoformat(date_str)
     suffix = date_suffix(date_obj.day)
     res = dt.datetime.strftime(date_obj, "%B %d###, %Y").replace("###", suffix)
     s_res = res.split(" ")
