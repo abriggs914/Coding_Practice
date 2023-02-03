@@ -140,54 +140,82 @@ class TransactionSplit:
                 del owed[ent]
 
         # transactions = "\n".join(str(t) for t in open_transactions)
-        print(f"\n{equal_share=}\n{owed=}\n{owes=}\n{outstanding=}")
+        owes = {k: abs(v) for k, v in owes.items()}
+        owed = {k: abs(v) for k, v in owed.items()}
+        # print(f"\n\n\tBefore\n{equal_share=}\n{owed=}\n{owes=}\n{outstanding=}")
+
+        block = "#" * 120
+
+        for p1, amount_owed in owed.items():
+            for p2, amount_owes in owes.items():
+                # print(f"{block}\n{p1=}, {p2=}, {amount_owed=}, {amount_owes=}")
+                if amount_owes != 0 and amount_owed != 0:
+                    if amount_owes <= amount_owed:
+                        # print(f"\tT {p2} pays {p1} {amount_owes}")
+                        # results.append((p2, p1, amount_owes))
+                        # print(f"\tT {p2} pays {p1} {amount_owes}")
+                        results.append((p2, p1, amount_owes))
+                        owed[p1] -= amount_owes
+                        owes[p2] = 0
+                    else:
+                        # print(f"\tB {p2} pays {p1} {amount_owed}")
+                        results.append((p2, p1, amount_owed))
+                        owes[p2] -= amount_owed
+                        owed[p1] = 0
+
+                # print(f"\n\tIN\n{owed=}\n{owes=}\n")
+                if owed[p1] == 0:
+                    break
+
         # print(transactions)
         # print(f"\n\n\n\n\n")
 
-        iig = 0
-        while (len(owed) + len(owes)) > 0:
+        # iig = 0
+        # while (len(owed) + len(owes)) > 0:
+        #
+        #     print(f"\n\tA {iig}\n{equal_share=}\n{owed=}\n{owes=}")
+        #     owed_to_remove = []
+        #     for p_ent, p_amount in owed.items():
+        #         # diff = -1 * (equal_share + p_amount)
+        #         diff = None
+        #         owes_to_remove = []
+        #         for r_ent, r_amount in owes.items():
+        #
+        #             # print(f"\n\tC\n{equal_share=}\n{owed=}\n{owes=}")
+        #             # print(f"{r_amount=}, {p_amount=}, {diff=}")
+        #             if (p_amount * -1) == r_amount:
+        #                 # print(f"XXA")
+        #                 results.append((r_ent, p_ent, p_amount))
+        #                 owed[p_ent] = 0
+        #                 owes[r_ent] = 0
+        #             elif r_amount >= p_amount:
+        #                 # print(f"XXB")
+        #                 x = min(r_amount, (0 - p_amount))
+        #                 p_amount = p_amount + x
+        #                 results.append((r_ent, p_ent, abs(x)))
+        #                 owed[p_ent] = p_amount
+        #                 owes[r_ent] -= x
+        #
+        #             if (0 - TOL) <= owes[r_ent] <= (0 + TOL):
+        #                 owes_to_remove.append(r_ent)
+        #             # print(f"\n\tD\n{equal_share=}\n{owed=}\n{owes=}")
+        #
+        #         if (0 - TOL) <= owed[p_ent] <= (0 + TOL):
+        #             owed_to_remove.append(p_ent)
+        #
+        #         for ent in owes_to_remove:
+        #             del owes[ent]
+        #
+        #     for ent in owed_to_remove:
+        #         del owed[ent]
+        #
+        #     print(f"\n\tB {iig}\n{equal_share=}\n{owed=}\n{owes=}")
+        #
+        #     iig += 1
+        #     if iig == 5:
+        #         quit()
 
-            print(f"\n\tA {iig}\n{equal_share=}\n{owed=}\n{owes=}")
-            owed_to_remove = []
-            for p_ent, p_amount in owed.items():
-                # diff = -1 * (equal_share + p_amount)
-                diff = None
-                owes_to_remove = []
-                for r_ent, r_amount in owes.items():
-
-                    # print(f"\n\tC\n{equal_share=}\n{owed=}\n{owes=}")
-                    # print(f"{r_amount=}, {p_amount=}, {diff=}")
-                    if (p_amount * -1) == r_amount:
-                        # print(f"XXA")
-                        results.append((r_ent, p_ent, p_amount))
-                        owed[p_ent] = 0
-                        owes[r_ent] = 0
-                    elif r_amount >= p_amount:
-                        # print(f"XXB")
-                        x = min(r_amount, (0 - p_amount))
-                        p_amount = p_amount + x
-                        results.append((r_ent, p_ent, abs(x)))
-                        owed[p_ent] = p_amount
-                        owes[r_ent] -= x
-
-                    if (0 - TOL) <= owes[r_ent] <= (0 + TOL):
-                        owes_to_remove.append(r_ent)
-                    # print(f"\n\tD\n{equal_share=}\n{owed=}\n{owes=}")
-
-                if (0 - TOL) <= owed[p_ent] <= (0 + TOL):
-                    owed_to_remove.append(p_ent)
-
-                for ent in owes_to_remove:
-                    del owes[ent]
-
-            for ent in owed_to_remove:
-                del owed[ent]
-
-            print(f"\n\tB {iig}\n{equal_share=}\n{owed=}\n{owes=}")
-
-            iig += 1
-            if iig == 5:
-                quit()
+        # print(f"\n\n\tAfter\n{equal_share=}\n{owed=}\n{owes=}\n{outstanding=}")
 
         print(f"\n\nPAYMENTS")
         for p_ent, r_ent, amount in results:
@@ -217,15 +245,85 @@ TOL = 1e-7
 
 if __name__ == '__main__':
     ts = TransactionSplit()
-    ts.add_transaction(30, "Avery", description="TEST")
-    ts.add_transaction(30, ["Avery", "Kristen"], description="TEST")
-    ts.add_transaction(30, ["Avery"], description="TEST")
-    ts.add_transaction(31, ["Emily"], description="TEST")
-    ts.add_transaction(10, ["Emily"], e_to="Avery", description="TEST")
-    ts.add_transaction(20, ["Kristen"], e_to="Avery", description="TEST")
-    # ts.add_transaction(20, ["Avery"], description="TEST")
-    # ts.add_transaction(200, ["Avery"], description="TEST")
-    # ts.add_transaction(1, [POT], e_to=["Avery"], description="TEST")
+
+    def test_1():
+        ts.add_transaction(30, "Avery", description="TEST")
+        ts.add_transaction(30, ["Avery", "Kristen"], description="TEST")
+        ts.add_transaction(30, ["Avery"], description="TEST")
+        ts.add_transaction(31, ["Emily"], description="TEST")
+        ts.add_transaction(10, ["Emily"], e_to="Avery", description="TEST")
+        ts.add_transaction(20, ["Kristen"], e_to="Avery", description="TEST")
+
+    def test_2():
+        ts.add_transaction(20, "Avery", description="TEST")
+        ts.add_transaction(20, "Kristen", description="TEST")
+        ts.add_transaction(20, ["Emily"], description="TEST")
+        ts.add_transaction(40, ["Hayley"], description="TEST")
+
+    def test_4():
+        ts.add_transaction(75, "Avery", description="TEST")
+        ts.add_transaction(25, "Kristen", description="TEST")
+        ts.add_transaction(40, ["Emily"], description="TEST")
+        ts.add_transaction(40, ["Hayley"], description="TEST")
+
+    def test_5():
+        ts.add_transaction(100, "Avery", description="TEST")
+        ts.add_transaction(0, "Kristen", description="TEST")
+        ts.add_transaction(15, ["Emily"], description="TEST")
+        ts.add_transaction(85, ["Hayley"], description="TEST")
+
+    def test_6():
+        ts.add_transaction(50, "Avery", description="TEST")
+        ts.add_transaction(25, "Kristen", description="TEST")
+        ts.add_transaction(25, ["Emily"], description="TEST")
+        ts.add_transaction(21, ["Hayley"], e_to="Avery", description="TEST")
+
+    def test_3():
+        ts.add_transaction(20, ["Avery"], description="TEST")
+        ts.add_transaction(200, ["Avery"], description="TEST")
+        ts.add_transaction(1, [POT], e_to=["Avery"], description="TEST")
+
+    def historic():
+        ts.add_transaction(100, "Avery", description="Mother's Day Supper (Wingo's)")
+        ts.add_transaction(17.58, "Kristen", description="Mother's Day Supper (Wingo's)")
+        ts.add_transaction(115.74, "Emily", description="Mother's Day Present")
+        ts.add_transaction(55, "Hayley", e_to="Emily", description="Mother's Day Present")
+        ts.add_transaction(170.7, "Kristen", description="Father's Day Present")
+        ts.add_transaction(40, "Avery", e_to="Emily", description="Father's Day Boating")
+        ts.add_transaction(50, "Emily", description="Father's Day Boating")
+        ts.add_transaction(40, "Hayley", description="Father's Day Boating")
+        ts.add_transaction(10, "Emily", e_to="Avery", description="Father's Day Boating")
+        ts.add_transaction(180, "Kristen", description="Spotify 2021")
+        ts.add_transaction(180, "Kristen", description="Spotify 2022")
+        ts.add_transaction(180, "Kristen", description="Spotify 2023")
+        ts.add_transaction(120, "Avery", description="Spotify 2021")
+        ts.add_transaction(120, "Avery", description="Spotify 2022")
+        ts.add_transaction(120, "Avery", description="Spotify 2023")
+
+
+    # payments = [
+    #     Payment("Mother's Day Supper (Wingo's)", "A", "P", 100, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    #     Payment("Mother's Day Supper (Wingo's)", "K", "P", 17.58, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    #     Payment("Mother's Day Present ()", "E", "P", 115.74, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    #     Payment("Hayley paid Emily", "H", "E", 55, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    #     Payment("Father's Day Present (Air Fryer)", "K", "P", 170.7,
+    #             datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    #     Payment("Father's Day Boating", "A", "E", 40, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    #     Payment("Father's Day Boating", "E", "P", 50, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    #     Payment("Father's Day Boating", "H", "P", 40, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    #     Payment("Father's Day Boating", "E", "A", 10, datetime.datetime.strptime("2021-05-24", "%Y-%m-%d")),
+    #     Payment("Spotify", "K", "P", 180, datetime.datetime.strptime("2021-08-04", "%Y-%m-%d")),
+    #     Payment("Disney+", "A", "P", 89.99, datetime.datetime.strptime("2021-08-04", "%Y-%m-%d"))
+    # ]
+
+
+
+    # test_3()
+    # test_4()
+    # test_5()
+    # test_6()
+    historic()
+
 
     print(f"Entities")
     for ent in ts.entities:
