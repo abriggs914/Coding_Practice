@@ -1,0 +1,29 @@
+filament
+	type
+	brand
+	colour
+	date purchased
+	date used up
+	
+projects
+	name
+	desc
+	notes
+	url
+	
+models
+	projectID
+	name
+	desc
+	notes
+	url
+
+prints
+	date
+	model
+	success/fail
+	filamentID
+	time
+	amount (g)
+	
+	
