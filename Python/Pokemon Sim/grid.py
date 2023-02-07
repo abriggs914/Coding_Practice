@@ -72,15 +72,26 @@ GRID_LEGEND = {
 class Grid:
 
     def __init__(self, viewable_w_h=(25, 25), max_w_h=(1000, 1000), grid_in=None):
-        self.grid = grid_in if grid_in else self.new_blank_grid(max_w_h)
-        self.viewable_w_h = viewable_w_h
         self.max_w_h = max_w_h
+        self.grid = {}
+        self.viewable_w_h = viewable_w_h
         self._visible_start = 0, 0
 
+        self.grid = grid_in if grid_in else self.new_blank_grid(max_w_h)
         self.center_viewing_window()
 
     def new_blank_grid(self, max_w_h):
-        return {}
+        w, h = self.max_w_h
+        for i in range(w):
+            for j in range(h):
+                self.grid[self.keyify(i, j)] = GRID_LEGEND[" "]
+
+        for i in range(w):
+            self.grid[self.keyify(i, 0)] = GRID_LEGEND["#"]
+            for j in range(h):
+                self.grid[self.keyify(i, 0)] = GRID_LEGEND["#"]
+
+        return self.grid
 
 
     def center_viewing_window(self, inplace=True):
