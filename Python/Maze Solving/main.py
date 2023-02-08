@@ -183,8 +183,7 @@ class Grid(tkinter.Canvas):
             raise ValueError("Error, nowhere to go!")
 
         # circle.sort(key=lambda tup: self.traversed_values[tup[0]][tup[1]])
-        circle.sort(key=lambda tup: (self.traversed_values[tup[0][0]][tup[0][1]], tup[1]))
-        # circle.sort(key=lambda tup: (-tup[0], self.traversed_values[tup[0]][tup[1]]))
+        circle.sort(key=lambda tup: (self.traversed_values[tup[0][0]][tup[0][1]], tup[1]))        # circle.sort(key=lambda tup: (-tup[0], self.traversed_values[tup[0]][tup[1]]))
         # circle.sort(key=lambda tup: (-tup[0]))
         print(f"\tSorted: {ci=}, {cj=}\n{self.traverse_direction.get()=}\n{circle=}\n{[self.traversed_values[tup[0][0]][tup[0][1]] for tup in circle]}")
         next_move, rank = circle.pop(0)
