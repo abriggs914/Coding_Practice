@@ -43,19 +43,19 @@ class Grid(tkinter.Canvas):
         self.start_pos = None
         self.goal_pos = None
 
-        self.w, self.h = len(self.grid_lines), len(self.grid_lines[0].strip())
+        self.h, self.w = len(self.grid_lines), len(self.grid_lines[0].strip())
         self.cells = []
         self.og_cell_colours = []
         self.traversed_values = []
-        gc = grid_cells(self.width, self.h, self.height, self.w)
+        gc = grid_cells(self.width, self.w, self.height, self.h)
         # print(f"{len(self.grid_lines)=}, {len(self.grid_lines[0].strip())=}")
         # print(f"{self.w=}, {self.h=}")
         # print(f"{len(gc)=}, {len(gc[0])=}, {len(gc[0][0])=}")
 
-        for i in range(self.w):
+        for i in range(self.h):
             row_cells = []
             row_colours = []
-            for j in range(self.h):
+            for j in range(self.w):
                 char = self.grid_lines[i][j]
                 # print(f"{char=}")
                 if char == self.code_start:
@@ -101,8 +101,8 @@ class Grid(tkinter.Canvas):
     def reset_maze(self):
         for i in range(self.h):
             for j in range(self.w):
-                colour = self.og_cell_colours[j][i]
-                self.itemconfigure(self.cells[j][i], fill=colour)
+                colour = self.og_cell_colours[i][j]
+                self.itemconfigure(self.cells[i][j], fill=colour)
 
     def surrounding(self, ci, cj, direction=None):
 
@@ -111,39 +111,58 @@ class Grid(tkinter.Canvas):
         mi_j = clamp(0, cj - 1, self.w)
         ma_j = clamp(0, cj + 1, self.w)
 
+        n = (mi_i, cj)
+        e = (ci, ma_j)
+        s = (ma_i, cj)
+        w = (ci, mi_j)
+
         circle = [
-            ((ci, mi_j), self.grid_lines[ci][mi_j], 0),
-            ((ma_i, cj), self.grid_lines[ma_i][cj], 1),
-            ((ci, ma_j), self.grid_lines[ci][ma_j], 2),
-            ((mi_i, cj), self.grid_lines[mi_i][cj], 3)
+            ((i, j), self.grid_lines[i][j])
+            for i, j in [w, s, e, n]
         ]
 
-        if direction == "n":
-            circle = [
-                ((ci, ma_j), self.grid_lines[ci][ma_j], 0),
-                ((mi_i, cj), self.grid_lines[mi_i][cj], 1),
-                ((ci, mi_j), self.grid_lines[ci][mi_j], 2),
-                ((ma_i, cj), self.grid_lines[ma_i][cj], 3)
-            ]
+        if direction == "e":
+            circle = circle[1:] + circle[:1]
         elif direction == "e":
-            circle = [
-                ((ma_i, cj), self.grid_lines[ma_i][cj], 0),
-                ((ci, ma_j), self.grid_lines[ci][ma_j], 1),
-                ((mi_i, cj), self.grid_lines[mi_i][cj], 2),
-                ((ci, mi_j), self.grid_lines[ci][mi_j], 3)
-            ]
-        elif direction == "w":
-            circle = [
-                ((mi_i, cj), self.grid_lines[mi_i][cj], 0),
-                ((ci, mi_j), self.grid_lines[ci][mi_j], 1),
-                ((ma_i, cj), self.grid_lines[ma_i][cj], 2),
-                ((ci, ma_j), self.grid_lines[ci][ma_j], 3)
-            ]
+            circle = circle[2:] + circle[:2]
+        elif direction == "e":
+            circle = circle[3:] + circle[:3]
+
+        circle = [(*circ, idx) for idx, circ in enumerate(circle)]
+
+        # circle = [
+        #     ((ci, mi_j), self.grid_lines[ci][mi_j], 0),
+        #     ((ma_i, cj), self.grid_lines[ma_i][cj], 1),
+        #     ((ci, ma_j), self.grid_lines[ci][ma_j], 2),
+        #     ((mi_i, cj), self.grid_lines[mi_i][cj], 3)
+        # ]
+        #
+        # if direction == "n":
+        #     circle = [
+        #         ((ci, ma_j), self.grid_lines[ci][ma_j], 0),
+        #         ((mi_i, cj), self.grid_lines[mi_i][cj], 1),
+        #         ((ci, mi_j), self.grid_lines[ci][mi_j], 2),
+        #         ((ma_i, cj), self.grid_lines[ma_i][cj], 3)
+        #     ]
+        # elif direction == "e":
+        #     circle = [
+        #         ((ma_i, cj), self.grid_lines[ma_i][cj], 0),
+        #         ((ci, ma_j), self.grid_lines[ci][ma_j], 1),
+        #         ((mi_i, cj), self.grid_lines[mi_i][cj], 2),
+        #         ((ci, mi_j), self.grid_lines[ci][mi_j], 3)
+        #     ]
+        # elif direction == "w":
+        #     circle = [
+        #         ((mi_i, cj), self.grid_lines[mi_i][cj], 0),
+        #         ((ci, mi_j), self.grid_lines[ci][mi_j], 1),
+        #         ((ma_i, cj), self.grid_lines[ma_i][cj], 2),
+        #         ((ci, ma_j), self.grid_lines[ci][ma_j], 3)
+        #     ]
 
 
         # circle = [k for k, v in circle.items() if k != (ci, cj) and v != self.code_wall]
         circle = [(k, p) for k, v, p in circle if k != (ci, cj) and v != self.code_wall]
-        print(f"{circle=}")
+        # print(f"{circle=}")
 
         return circle
 
@@ -167,11 +186,13 @@ class Grid(tkinter.Canvas):
         circle.sort(key=lambda tup: (self.traversed_values[tup[0][0]][tup[0][1]], tup[1]))
         # circle.sort(key=lambda tup: (-tup[0], self.traversed_values[tup[0]][tup[1]]))
         # circle.sort(key=lambda tup: (-tup[0]))
-        print(f"\tSorted: {ci=}, {cj=}\n{circle=}\n{[self.traversed_values[tup[0][0]][tup[0][1]] for tup in circle]}")
+        print(f"\tSorted: {ci=}, {cj=}\n{self.traverse_direction.get()=}\n{circle=}\n{[self.traversed_values[tup[0][0]][tup[0][1]] for tup in circle]}")
         next_move, rank = circle.pop(0)
 
         if next_move == (ci, cj) and len(circle) > 0:
+            print(f"\tdouble pop")
             next_move, rank = circle.pop(0)
+        print(f"{next_move=}")
 
         nmi, nmj = next_move
         if nmi < ci:
