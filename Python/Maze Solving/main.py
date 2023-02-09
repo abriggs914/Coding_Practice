@@ -19,6 +19,7 @@ class Grid(tkinter.Canvas):
             code_wall="1",
             code_start="0",
             code_goal="9",
+            draw_legend=True,
             *args,
             **kwargs
     ):
@@ -32,6 +33,7 @@ class Grid(tkinter.Canvas):
         self.code_wall = code_wall
         self.code_start = code_start
         self.code_goal = code_goal
+        self.draw_legend = draw_legend
 
         self.colour_scheme = self.validate_colour_scheme(colour_scheme)
         with open(grid_path) as f:
