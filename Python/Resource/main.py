@@ -259,21 +259,21 @@ def test_buttonbar():
         box.resize(new_rect)
         event_queue = app.run()
     # print("A", box.rect_obj, new_rect, xp, yp)
-    # if 1 > new_rect.width:
+    # if 1 > new_rect.width_canvas:
     #     xp = 1.02
-    #     new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height))
+    #     new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height_canvas))
     #     # new_rect = box.rect_obj.scaled(xp, yp)
     #     print("\tA\t", new_rect, xp, yp)
-    # if new_rect.width >= 600:
+    # if new_rect.width_canvas >= 600:
     #     xp = 0.99
     #     new_rect = box.rect_obj.scaled(xp, yp)
     #     print("\tB\t", new_rect, xp, yp)
-    # if 1 > new_rect.height:
+    # if 1 > new_rect.height_canvas:
     #     yp = 1.02
-    #     new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width, 1))
+    #     new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width_canvas, 1))
     #     # new_rect = box.rect_obj.scaled(xp, yp)
     #     print("\tC\t", new_rect, xp, yp)
-    # if new_rect.height >= 600:
+    # if new_rect.height_canvas >= 600:
     #     yp = 0.99
     #     new_rect = box.rect_obj.scaled(xp, yp)
     #     print("\tD\t", new_rect, xp, yp)
@@ -288,21 +288,21 @@ def test_buttonbar():
 #     box.draw()
 #     new_rect = box.rect_obj.scaled(xp, yp)
 #     print("A", box.rect_obj, new_rect, xp, yp)
-#     if 1 > new_rect.width:
+#     if 1 > new_rect.width_canvas:
 #         xp = 1.02
-#         new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height))
+#         new_rect.resize(Rect(new_rect.x, new_rect.y, 1, new_rect.height_canvas))
 #         # new_rect = box.rect_obj.scaled(xp, yp)
 #         print("\tA\t", new_rect, xp, yp)
-#     if new_rect.width >= 600:
+#     if new_rect.width_canvas >= 600:
 #         xp = 0.99
 #         new_rect = box.rect_obj.scaled(xp, yp)
 #         print("\tB\t", new_rect, xp, yp)
-#     if 1 > new_rect.height:
+#     if 1 > new_rect.height_canvas:
 #         yp = 1.02
-#         new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width, 1))
+#         new_rect.resize(Rect(new_rect.x, new_rect.y, new_rect.width_canvas, 1))
 #         # new_rect = box.rect_obj.scaled(xp, yp)
 #         print("\tC\t", new_rect, xp, yp)
-#     if new_rect.height >= 600:
+#     if new_rect.height_canvas >= 600:
 #         yp = 0.99
 #         new_rect = box.rect_obj.scaled(xp, yp)
 #         print("\tD\t", new_rect, xp, yp)
@@ -1510,7 +1510,7 @@ def test_NATO_phonetic_alphabet():
 
 
 def test_grid_cells():
-    # finite space width height (w x h), want (n x m) rows by columns, allowing for x, and y padding, r_type list or dict
+    # finite space width_canvas height_canvas (w x h), want (n x m) rows by columns, allowing for x, and y padding, r_type list or dict
 
     TS = TestSuite(test_func=grid_cells, name="'grid_cells' TestSuite")
     call_args = [
@@ -1930,49 +1930,49 @@ def test_grid_manager():
     #
     # widgets_1 = [
     #     [
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50)
     #     ],
     #     [
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50)
     #     ],
     #     [
     #         {
-    #             "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #             "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
     #             "columnspan": 2,
     #             "rowspan": 2,
     #             "sticky": "ew",
     #             # "padx": 45,
     #             # "pady": 45
     #         },
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50)
     #     ],
     #     [
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50)
     #     ]
     #
     # ]
     #
     # widgets_2 = [
     #     [
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50)
     #     ],
     #     [
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50)
     #     ],
     #     [
     #         {
-    #             "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+    #             "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50),
     #             "columnspan": 2
     #         },
-    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
+    #         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width_canvas=50, height_canvas=50)
     #     ]
     # ]
     #

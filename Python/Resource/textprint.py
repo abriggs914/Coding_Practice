@@ -54,7 +54,7 @@ class TextPrint(object):
 		self.y += self.line_height
 		
 if __name__ == "__main__":
-	# Set the width and height of the screen (width, height).
+	# Set the width_canvas and height_canvas of the screen (width_canvas, height_canvas).
 	screen = pygame.display.set_mode((500, 700))
 	
 	pygame.display.set_caption("My Game")

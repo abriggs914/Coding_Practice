@@ -302,8 +302,8 @@ class PDF(FPDF):
     #     for row in content_lst:
     #         row += [None for i in range(max(0, n_cols - len(row)))]
     #
-    #     width = w - (2 * left_margin)
-    #     cell_width = width / n_cols
+    #     width_canvas = w - (2 * left_margin)
+    #     cell_width = width_canvas / n_cols
     #
     #     # self.set_fill_color(*BWS_GREY)
     #     # cch = cell_height + (line_width / 2)
@@ -311,7 +311,7 @@ class PDF(FPDF):
     #     i_off = 0
     #     space_used = 0
     #     page_space_used = 0
-    #     # print("ocy:", ocy, "height:", height, "self.h:", self.h)
+    #     # print("ocy:", ocy, "height_canvas:", height_canvas, "self.h:", self.h)
     #
     #     dth = 0 if desc_txt is None else 40
     #     print("\t\tTITLE", title)
@@ -488,7 +488,7 @@ class PDF(FPDF):
     #                 cell_value = str(content_lst[i][j]).strip() if content_lst[i][j] is not None else null_entry
     #             cw = cell_width + (line_width / 2)
     #             cx = ocx + (j * cw)
-    #             # cy = ocy + (((i - i_off) * ch) + max(0, ((1 if i else 0) * cch) - 5)) - (pages * height)
+    #             # cy = ocy + (((i - i_off) * ch) + max(0, ((1 if i else 0) * cch) - 5)) - (pages * height_canvas)
     #             # cy = self.get_y()#ocy + (((i + rh - pages) * cell_height) + (((1 if (start_with_header and np) else 1) + off) * header_height) + max(0, ((1 if i else 0) * header_height) - 5)) - (
     #             #   1 * page_space_used) + FOOTER_MARGIN + top_margin + title_v_margin
     #             # if rh:
@@ -554,20 +554,20 @@ class PDF(FPDF):
     #         # if wo_10015162:
     #         #     raise ValueError("Hey ")
     #
-    #     # self.rect(x, y, w, height, 'FD')
+    #     # self.rect(x, y, w, height_canvas, 'FD')
     #
     #     y_link = self.get_y() + title_v_margin
     #     if include_top_chart_link:
     #         self.set_fill_color(*top_link_colours[0])
     #         self.set_text_color(*top_link_colours[1])
-    #         self.set_xy(ocx + width - 30, y_link)
+    #         self.set_xy(ocx + width_canvas - 30, y_link)
     #         self.cell(30, 5, "Top of Chart", 1, 1, 'C', fill=1,
     #                   link=("{}/{}#page={}".format(os.getcwd(), self.file_name, title_page)))
     #
     #     if include_top_doc_link:
     #         self.set_fill_color(*top_link_colours[0])
     #         self.set_text_color(*top_link_colours[1])
-    #         self.set_xy(ocx + width - 65, y_link)
+    #         self.set_xy(ocx + width_canvas - 65, y_link)
     #         self.cell(30, 5, "Top of Document", 1, 1, 'C', fill=1,
     #                   link=("{}/{}#page={}".format(os.getcwd(), self.file_name, 1)))
     #
@@ -576,11 +576,11 @@ class PDF(FPDF):
     #
     #     # self.line(otx - left_margin, self.get_y() + title_v_margin + 2, otx - left_margin + w, self.get_y() + title_v_margin + 2)
     #     # self.link(ocx, self.get_y() + title_v_margin, 30, 30, FILE_NAME + "#page={}".format(title_page))
-    #     print("self.w:", self.w, "width:", width)
+    #     print("self.w:", self.w, "width_canvas:", width_canvas)
     #     print("header:", header)
     #     # print("\n##\n" + "\n".join(list(map(str, content_lst))) + "\n##\n")
     #     print("(N x M): ({} x {})".format(n_rows, n_cols))
-    #     # print("(H x W): ({} x {})".format(height, width))
+    #     # print("(H x W): ({} x {})".format(height_canvas, width_canvas))
     #     print("(CH x CW): ({} x {})".format(cell_height, cell_width))
     #
     #     return cx, cy
@@ -721,7 +721,7 @@ class PDF(FPDF):
         i_off = 0
         space_used = 0
         page_space_used = 0
-        # print("ocy:", ocy, "height:", height, "self.h:", self.h)
+        # print("ocy:", ocy, "height_canvas:", height_canvas, "self.h:", self.h)
 
         dth = 0 if desc_txt is None else 40
         print("\t\tTITLE", title)
@@ -864,7 +864,7 @@ class PDF(FPDF):
                     cell_value = str(content_lst[i][j]).strip() if content_lst[i][j] is not None else null_entry
                 cw = cell_width + (line_width / 2)
                 cx = ocx + (j * cw)
-                # cy = ocy + (((i - i_off) * ch) + max(0, ((1 if i else 0) * cch) - 5)) - (pages * height)
+                # cy = ocy + (((i - i_off) * ch) + max(0, ((1 if i else 0) * cch) - 5)) - (pages * height_canvas)
                 # cy = self.get_y()#ocy + (((i + rh - pages) * cell_height) + (((1 if (start_with_header and np) else 1) + off) * header_height) + max(0, ((1 if i else 0) * header_height) - 5)) - (
                 #   1 * page_space_used) + FOOTER_MARGIN + top_margin + title_v_margin
                 # if rh:
@@ -930,7 +930,7 @@ class PDF(FPDF):
             # if wo_10015162:
             #     raise ValueError("Hey ")
 
-        # self.rect(x, y, w, height, 'FD')
+        # self.rect(x, y, w, height_canvas, 'FD')
 
         y_link = self.get_y() + title_v_margin
         if include_top_chart_link:
@@ -938,7 +938,7 @@ class PDF(FPDF):
             self.set_text_color(*top_link_colours[1])
             self.set_xy(ocx + width - 60, y_link)
             rect_ts = Rect2(*self.time_stamp_rect)
-            # rect_ts initially has width 0
+            # rect_ts initially has width_canvas 0
             rect_ts.init(rect_ts.x, self.h + rect_ts.y, 30, rect_ts.h, rect_ts.a)
             rect_tl = Rect2(self.get_x(), self.get_y(), 30, 10)
             print("rect_ts", rect_ts)
@@ -963,11 +963,11 @@ class PDF(FPDF):
 
         # self.line(otx - left_margin, self.get_y() + title_v_margin + 2, otx - left_margin + w, self.get_y() + title_v_margin + 2)
         # self.link(ocx, self.get_y() + title_v_margin, 30, 30, FILE_NAME + "#page={}".format(title_page))
-        print("self.w:", self.w, "width:", width)
+        print("self.w:", self.w, "width_canvas:", width)
         print("header:", header)
         # print("\n##\n" + "\n".join(list(map(str, content_lst))) + "\n##\n")
         print("(N x M): ({} x {})".format(n_rows, n_cols))
-        # print("(H x W): ({} x {})".format(height, width))
+        # print("(H x W): ({} x {})".format(height_canvas, width_canvas))
         print("(CH x CW): ({} x {})".format(cell_height, cell_width))
 
         return cx, cy

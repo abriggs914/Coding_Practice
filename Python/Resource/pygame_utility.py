@@ -125,7 +125,7 @@ def text_objects(text, font, color=BLACK):
 
 
 # Ensure that a text will fit into a given pygame.Rect object.
-# Adjusts the message using new line characters to fit width-wise.
+# Adjusts the message using new line characters to fit width_canvas-wise.
 def wrap_text(msg, r, font):
     txt = ""
     for c in msg:
@@ -317,7 +317,7 @@ class TextBox(Widget):
         self.numeric = numeric
         self.char_limit = None
         self.reset_char_limit()
-        # max_chars = char_limit = rect.width / self.f.size(" ")[0]
+        # max_chars = char_limit = rect.width_canvas / self.f.size(" ")[0]
         # if not char_limit:
         #     char_limit = max_chars
         # char_limit = min(max_chars, char_limit)
@@ -501,7 +501,7 @@ class TextBox(Widget):
 
             xrect = xrect.translated(irect.width + 5, 0)
         if self.draw_clear_btn:
-            # xrect = Rect(rect.x + 5, rect.y + (rect.height * 0.075), rect.width, rect.height).translated(rect.width, 0).scaled(0.15, 0.85)
+            # xrect = Rect(rect.x + 5, rect.y + (rect.height_canvas * 0.075), rect.width_canvas, rect.height_canvas).translated(rect.width_canvas, 0).scaled(0.15, 0.85)
             action = None if self.locked else self.clear
             button = Button(game, display, "X", xrect, WHITE, WHITE, None, action=action, font_size=self.font_size)
             button.enable_toggle()
@@ -554,7 +554,7 @@ class TextBox(Widget):
 #         game = self.game
 #         rect = self.rect
 #         bs = self.border_size
-#         trect = game.Rect(rect.x + bs, rect.y + bs, rect.width - (bs * 2), rect.height - (bs * 2))
+#         trect = game.Rect(rect.x + bs, rect.y + bs, rect.width_canvas - (bs * 2), rect.height_canvas - (bs * 2))
 #         button = Button(game, display, "", *rect, WHITE, WHITE, None, action=self.click_selection)
 #         button.enable_toggle()
 #         button.draw()
@@ -634,8 +634,8 @@ class RadioGroup(Widget):
             w = r.width / nb if is_horizontal else r.width
             h = r.height / nb if not is_horizontal else r.height
             for i, button in enumerate(self.radio_buttons):
-                # new_r = self.game.Rect(button.bounds.x, button.bounds.y, diff_bounds[0] + button.bounds.width,
-                #                        diff_bounds[1] + button.bounds.height)
+                # new_r = self.game.Rect(button.bounds.x, button.bounds.y, diff_bounds[0] + button.bounds.width_canvas,
+                #                        diff_bounds[1] + button.bounds.height_canvas)
                 new_r = self.game.Rect(button.bounds.x, button.bounds.y, w, h)
                 if i < len(self.radio_buttons) - 1:
                     next_bounds = self.radio_buttons[i + 1].bounds
@@ -899,8 +899,8 @@ class ButtonBar(Widget):
     # display       -   display created by pygame
     # x			    -	bar x
     # y			    -	bar y
-    # w			    -	bar width
-    # h			    -	bar height
+    # w			    -	bar width_canvas
+    # h			    -	bar height_canvas
     # font          -   button font style
     # bg            -   bar background color
     # proportion    -   proportion of the total bar to consume
@@ -936,20 +936,20 @@ class ButtonBar(Widget):
 
     def draw(self):
         nb = len(self.buttons)  # number buttons
-        wp = (self.rect.width * self.proportion)  # width proportional
-        hp = (self.rect.height * self.proportion)  # height proportional
-        xd = self.rect.width - wp  # difference between total width and proportional width
-        yd = self.rect.height - hp  # difference between total height and proportional height
+        wp = (self.rect.width * self.proportion)  # width_canvas proportional
+        hp = (self.rect.height * self.proportion)  # height_canvas proportional
+        xd = self.rect.width - wp  # difference between total width_canvas and proportional width_canvas
+        yd = self.rect.height - hp  # difference between total height_canvas and proportional height_canvas
         xi = self.rect.x + (xd / 2)  # starting x
         yi = self.rect.y + (yd / 2)  # starting y
         if self.is_horizontal:
-            wi = wp / max(1, nb)  # single button width
+            wi = wp / max(1, nb)  # single button width_canvas
             hi = hp
         else:
             wi = wp
-            hi = hp / max(1, nb)  # single button height
-        # wi = wp / max(1, (nb if self.is_horizontal else wp))  # single button width
-        # hi = hp / max(1, (nb if self.is_horizontal else hp))  # single button height
+            hi = hp / max(1, nb)  # single button height_canvas
+        # wi = wp / max(1, (nb if self.is_horizontal else wp))  # single button width_canvas
+        # hi = hp / max(1, (nb if self.is_horizontal else hp))  # single button height_canvas
 
         # draw background
         self.game.draw.rect(self.display, self.bg, (self.rect.x, self.rect.y, self.rect.width, self.rect.height))
@@ -1009,7 +1009,7 @@ class ScrollBar(Widget):
     # p     -   float between 0 and 1 for border size around the arrow within the square (0 - 1)
     # o     -   orientation of the arrow using one of the orientations above (0 - 8)
     # c     -   line color of the arrow
-    # w     -   line width of the arrow (w >= 1)
+    # w     -   line width_canvas of the arrow (w >= 1)
     def draw_arrow(self, r, p, o, c, w):
         # p1 - tip
         # p2 - first wing
@@ -1045,7 +1045,7 @@ class ScrollBar(Widget):
 
     # Using the bar_val attribute, determine where the scroll bar should be positioned on the background.
     def decode_bar_pos(self):
-        # TODO: width and height attributes are hardcoded, need to represent the height and width of the contents
+        # TODO: width_canvas and height_canvas attributes are hardcoded, need to represent the height_canvas and width_canvas of the contents
         bounds = self.bar_bounds
         if self.is_vertical:
             width = bounds.width * 0.8
@@ -1058,7 +1058,7 @@ class ScrollBar(Widget):
             y = bounds.y + (bounds.height * 0.1)
             x = bounds.x + (bounds.width * 0.1) + ((self.bar_val / 100) * ((bounds.width * 0.8) - width))
 
-        # print("bar_pos:", self.game.Rect(x, y, width, height))
+        # print("bar_pos:", self.game.Rect(x, y, width_canvas, height_canvas))
         return x, y, width, height
 
     # Using either x or y mouse coordinates, return the position of the top of the scroll bar.
@@ -1177,15 +1177,15 @@ class ScrollBar(Widget):
     # def draw(self):
     #     background = self.game.Rect(self.x, self.y, self.w, self.h)
     #     if self.is_vertical:
-    #         space = background.height * 0.1
+    #         space = background.height_canvas * 0.1
     #         bar_background = self.game.Rect(self.x, (self.y + space), self.w, (self.h - (2 * space)))
     #         scroll_button = buttonr(self.game, self.display, "", bar_background, self.bar_background_c,
     #                                 self.bar_background_c, font=None, action=self.move_bar)
     #         scroll_percent = round((self.h - (2 * space)) * 0.02)
     #         scroll_button.enable_scrollable(self.decrement_bar_pos, [scroll_percent], self.increment_bar_pos, [scroll_percent])
     #         scroll_button.draw()
-    #         top_button_rect = self.game.Rect(background.left, background.top, background.width, space)
-    #         bottom_button_rect = self.game.Rect(background.left, background.bottom - space, background.width, space)
+    #         top_button_rect = self.game.Rect(background.left, background.top, background.width_canvas, space)
+    #         bottom_button_rect = self.game.Rect(background.left, background.bottom - space, background.width_canvas, space)
     #         top_button = Button(self.game, self.display, "", *top_button_rect, self.button_c, self.button_c, font=None,
     #                             action=self.decrement_bar_pos)
     #         bottom_button = Button(self.game, self.display, "", *bottom_button_rect, self.button_c, self.button_c,
@@ -1197,58 +1197,58 @@ class ScrollBar(Widget):
     #         # down arrow - left side
     #         self.game.draw.line(self.display, BLACK,
     #                             (
-    #                                 (bottom_button_rect.left + (bottom_button_rect.width * 0.2)),
-    #                                 (bottom_button_rect.top + (bottom_button_rect.height * 0.2))
+    #                                 (bottom_button_rect.left + (bottom_button_rect.width_canvas * 0.2)),
+    #                                 (bottom_button_rect.top + (bottom_button_rect.height_canvas * 0.2))
     #                             ),
     #                             (
     #                                 bottom_button_rect.center[0],
-    #                                 (bottom_button_rect.center[1] + (bottom_button_rect.height * 0.2))
+    #                                 (bottom_button_rect.center[1] + (bottom_button_rect.height_canvas * 0.2))
     #                             ),
     #                             3)
     #         # down arrow - right side
     #         self.game.draw.line(self.display, BLACK,
     #                             (
-    #                                 (bottom_button_rect.right - (bottom_button_rect.width * 0.2)),
-    #                                 (bottom_button_rect.top + (bottom_button_rect.height * 0.2))
+    #                                 (bottom_button_rect.right - (bottom_button_rect.width_canvas * 0.2)),
+    #                                 (bottom_button_rect.top + (bottom_button_rect.height_canvas * 0.2))
     #                             ),
     #                             (
     #                                 bottom_button_rect.center[0],
-    #                                 (bottom_button_rect.center[1] + (bottom_button_rect.height * 0.2))
+    #                                 (bottom_button_rect.center[1] + (bottom_button_rect.height_canvas * 0.2))
     #                             ),
     #                             3)
     #         # up arrow - left side
     #         self.game.draw.line(self.display, BLACK,
     #                             (
-    #                                 (top_button_rect.left + (top_button_rect.width * 0.2)),
-    #                                 (top_button_rect.bottom - (top_button_rect.height * 0.2))
+    #                                 (top_button_rect.left + (top_button_rect.width_canvas * 0.2)),
+    #                                 (top_button_rect.bottom - (top_button_rect.height_canvas * 0.2))
     #                             ),
     #                             (
     #                                 top_button_rect.center[0],
-    #                                 (top_button_rect.center[1] - (top_button_rect.height * 0.2))
+    #                                 (top_button_rect.center[1] - (top_button_rect.height_canvas * 0.2))
     #                             ),
     #                             3)
     #         # up arrow - right side
     #         self.game.draw.line(self.display, BLACK,
     #                             (
-    #                                 (top_button_rect.right - (top_button_rect.width * 0.2)),
-    #                                 (top_button_rect.bottom - (top_button_rect.height * 0.2))
+    #                                 (top_button_rect.right - (top_button_rect.width_canvas * 0.2)),
+    #                                 (top_button_rect.bottom - (top_button_rect.height_canvas * 0.2))
     #                             ),
     #                             (
     #                                 top_button_rect.center[0],
-    #                                 (top_button_rect.center[1] - (top_button_rect.height * 0.2))
+    #                                 (top_button_rect.center[1] - (top_button_rect.height_canvas * 0.2))
     #                             ),
     #                             3)
     #         bar_rect = self.game.Rect(*self.decode_bar_pos())
     #     else:
-    #         space = background.width * 0.1
+    #         space = background.width_canvas * 0.1
     #         bar_background = self.game.Rect(self.x + space, self.y, (self.w - (2 * space)), self.h)
     #         scroll_button = buttonr(self.game, self.display, "", bar_background, self.bar_background_c,
     #                                 self.bar_background_c, font=None, action=self.move_bar)
     #         scroll_percent = round((self.w - (2 * space)) * 0.02)
     #         scroll_button.enable_scrollable(self.decrement_bar_pos, [scroll_percent], self.increment_bar_pos, [scroll_percent])
     #         scroll_button.draw()
-    #         left_button_rect = self.game.Rect(background.left, background.top, space, background.height)
-    #         right_button_rect = self.game.Rect(background.right - space, background.top, space, background.height)
+    #         left_button_rect = self.game.Rect(background.left, background.top, space, background.height_canvas)
+    #         right_button_rect = self.game.Rect(background.right - space, background.top, space, background.height_canvas)
     #         left_button = Button(self.game, self.display, "", *left_button_rect, self.button_c, self.button_c,
     #                              font=None,
     #                              action=self.decrement_bar_pos)
@@ -1263,44 +1263,44 @@ class ScrollBar(Widget):
     #         # right arrow - top side
     #         self.game.draw.line(self.display, BLACK,
     #                             (
-    #                                 (right_button_rect.left + (right_button_rect.width * 0.2)),
-    #                                 (right_button_rect.top + (right_button_rect.height * 0.2))
+    #                                 (right_button_rect.left + (right_button_rect.width_canvas * 0.2)),
+    #                                 (right_button_rect.top + (right_button_rect.height_canvas * 0.2))
     #                             ),
     #                             (
-    #                                 (right_button_rect.center[0] + (right_button_rect.width * 0.2)),
+    #                                 (right_button_rect.center[0] + (right_button_rect.width_canvas * 0.2)),
     #                                 right_button_rect.center[1]
     #                             ),
     #                             3)
     #         # right arrow - bottom side
     #         self.game.draw.line(self.display, BLACK,
     #                             (
-    #                                 (right_button_rect.center[0] + (right_button_rect.width * 0.2)),
+    #                                 (right_button_rect.center[0] + (right_button_rect.width_canvas * 0.2)),
     #                                 right_button_rect.center[1]
     #                             ),
     #                             (
-    #                                 (right_button_rect.left + (right_button_rect.width * 0.2)),
-    #                                 (right_button_rect.bottom - (right_button_rect.height * 0.2))
+    #                                 (right_button_rect.left + (right_button_rect.width_canvas * 0.2)),
+    #                                 (right_button_rect.bottom - (right_button_rect.height_canvas * 0.2))
     #                             ),
     #                             3)
     #         # left arrow - top side
     #         self.game.draw.line(self.display, BLACK,
     #                             (
-    #                                 (left_button_rect.right - (left_button_rect.width * 0.2)),
-    #                                 (left_button_rect.top + (left_button_rect.height * 0.2))
+    #                                 (left_button_rect.right - (left_button_rect.width_canvas * 0.2)),
+    #                                 (left_button_rect.top + (left_button_rect.height_canvas * 0.2))
     #                             ),
     #                             (
-    #                                 (left_button_rect.center[0] - (left_button_rect.width * 0.2)),
+    #                                 (left_button_rect.center[0] - (left_button_rect.width_canvas * 0.2)),
     #                                 left_button_rect.center[1]
     #                             ),
     #                             3)
     #         # left arrow - bottom side
     #         self.game.draw.line(self.display, BLACK,
     #                             (
-    #                                 (left_button_rect.right - (left_button_rect.width * 0.2)),
-    #                                 (left_button_rect.bottom - (left_button_rect.height * 0.2))
+    #                                 (left_button_rect.right - (left_button_rect.width_canvas * 0.2)),
+    #                                 (left_button_rect.bottom - (left_button_rect.height_canvas * 0.2))
     #                             ),
     #                             (
-    #                                 (left_button_rect.center[0] - (left_button_rect.width * 0.2)),
+    #                                 (left_button_rect.center[0] - (left_button_rect.width_canvas * 0.2)),
     #                                 left_button_rect.center[1]
     #                             ),
     #                             3)
@@ -1382,7 +1382,7 @@ class TableRow(Widget):
                 write_text(self.game, self.display, cell_bounds, self.contents[i], self.font, self.c, self.tx_c)
                 # center text within cell TODO : add option for gravity and orientation
                 # cell_rect.center = (
-                #     (cell_bounds.x + (cell_bounds.width / 2)), (cell_bounds.y + (cell_bounds.height / 2))
+                #     (cell_bounds.x + (cell_bounds.width_canvas / 2)), (cell_bounds.y + (cell_bounds.height_canvas / 2))
                 # )
                 # self.game.draw.rect(self.display, self.c, cell_bounds)
                 # self.display.blit(cell_surface, cell_rect)
@@ -1470,16 +1470,16 @@ class Table(Widget):
 
     def resize(self, r):
         # def resize(self, r):
-        #     self.width = r.width
-        #     self.height = r.height
-        #     self.bounds = self.game.Rect(self.x, self.y, self.width, self.height)
+        #     self.width_canvas = r.width_canvas
+        #     self.height_canvas = r.height_canvas
+        #     self.bounds = self.game.Rect(self.x, self.y, self.width_canvas, self.height_canvas)
         #     self.update_row_sizes()
-        #     th = r.height
+        #     th = r.height_canvas
         #     nr = len(self.table_rows)
         #     rh = round((th / nr) + self.div_w)
         #     y = 0
         #     for row in self.table_rows:
-        #         row_r = self.game.Rect(self.x, y, self.width, rh)
+        #         row_r = self.game.Rect(self.x, y, self.width_canvas, rh)
         #         row.resize(row_r)
         #         y += rh
         super().resize(r)
@@ -1585,14 +1585,14 @@ class Box(Widget):
 
     def draw(self):
         nw = len(self.contents)  # number widgets
-        wp = (self.rect.width * self.proportion)  # width proportional
-        hp = (self.rect.height * self.proportion)  # height proportional
-        xd = self.rect.width - wp  # difference between total width and proportional width
-        yd = self.rect.height - hp  # difference between total height and proportional height
+        wp = (self.rect.width * self.proportion)  # width_canvas proportional
+        hp = (self.rect.height * self.proportion)  # height_canvas proportional
+        xd = self.rect.width - wp  # difference between total width_canvas and proportional width_canvas
+        yd = self.rect.height - hp  # difference between total height_canvas and proportional height_canvas
         xi = self.rect.x + (xd / 2)  # starting x
         yi = self.rect.y + (yd / 2)  # starting y
-        wi = wp / max(1, nw) if self.is_horizontal else wp  # single widget width
-        hi = hp / max(1, nw) if not self.is_horizontal else hp  # single widget height
+        wi = wp / max(1, nw) if self.is_horizontal else wp  # single widget width_canvas
+        hi = hp / max(1, nw) if not self.is_horizontal else hp  # single widget height_canvas
 
         # draw background
         if self.bgc is not None:
@@ -1697,7 +1697,7 @@ class Slider(Widget):
                     slider_rect = self.get_slider_rect()
                     x, y = event.pos
                     if slider_rect.collide_point(x, y):
-                        # val = ((x / (self.max_val - self.min_val)) * slider_rect.width) + slider_rect.x
+                        # val = ((x / (self.max_val - self.min_val)) * slider_rect.width_canvas) + slider_rect.x
                         x -= (slider_rect.x - self.rect.x)
                         val = ((x / slider_rect.width) * (self.max_val - self.min_val)) + self.min_val - 1
                         print("a:", val)
@@ -1730,7 +1730,7 @@ class Slider(Widget):
                         x, y = event.pos
                         x -= (slider_rect.x - self.rect.x)
                         # if slider_rect.collide_point(x, y):
-                        #     val = ((x / slider_rect.width) * (self.max_val - self.min_val)) + self.min_val - 1
+                        #     val = ((x / slider_rect.width_canvas) * (self.max_val - self.min_val)) + self.min_val - 1
                         # else:
                         val = ((x / slider_rect.width) * (self.max_val - self.min_val)) + self.min_val - 1
                         if self.stick_to_ticks:

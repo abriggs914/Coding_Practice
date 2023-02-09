@@ -2,6 +2,7 @@ import tkinter
 from typing import Literal
 
 from colour_utility import *
+from tkinter_utility import button_factory
 from utility import *
 
 
@@ -77,6 +78,7 @@ class Grid(tkinter.Canvas):
             self.traversed_values.append([0 for _ in row_cells])
 
         self.traverse_direction = tkinter.StringVar(self, value=None)
+        self.solving = tkinter.BooleanVar(self, value=False)
         self.solved = tkinter.BooleanVar(self, value=False)
         self.current = tkinter.Variable(self, value=(None, None))
 
@@ -98,11 +100,15 @@ class Grid(tkinter.Canvas):
             colour_scheme_in.update({self.code_goal: rgb_to_hex(RED)})
         return colour_scheme_in
 
-    def reset_maze(self):
+    def reset_maze(self, force=False):
+        if self.solving.get() and not force:
+            raise ValueError("Error cannot reset this grid while solving")
         for i in range(self.h):
             for j in range(self.w):
                 colour = self.og_cell_colours[i][j]
                 self.itemconfigure(self.cells[i][j], fill=colour)
+                self.traversed_values[i][j] = 0
+        self.current.set(self.start_pos)
 
     def surrounding(self, ci, cj, direction=None):
 
@@ -123,9 +129,9 @@ class Grid(tkinter.Canvas):
 
         if direction == "e":
             circle = circle[1:] + circle[:1]
-        elif direction == "e":
+        elif direction == "n":
             circle = circle[2:] + circle[:2]
-        elif direction == "e":
+        elif direction == "w":
             circle = circle[3:] + circle[:3]
 
         circle = [(*circ, idx) for idx, circ in enumerate(circle)]
@@ -230,8 +236,23 @@ class Grid(tkinter.Canvas):
 
     def solve(self, algorithm: Literal["Right-Hand"]="Right-Hand"):
         self.reset_maze()
+        self.solving.set(True)
         if algorithm == "Right-Hand":
             self.solve_right_hand()
+        self.solved.set(True)
+        self.solving.set(False)
+
+
+def reset_maze():
+    try:
+        g1.reset_maze()
+    except ValueError:
+        print(f"Failed to reset this maze.")
+
+
+def solve_maze():
+    if not g1.solving.get():
+        g1.solve()
 
 
 if __name__ == '__main__':
@@ -240,8 +261,14 @@ if __name__ == '__main__':
     win.geometry(f"800x800")
     # g1 = Grid(win, r"maze_1.txt")
     g1 = Grid(win, r"maze_2.txt")
-    g1.pack()
 
-    win.after(3000, g1.solve)
+    tv_btn_reset, btn_reset = button_factory(win, tv_btn="reset", kwargs_btn={"command": reset_maze})
+    tv_btn_solve, btn_solve = button_factory(win, tv_btn="solve", kwargs_btn={"command": solve_maze})
+
+    g1.pack()
+    btn_reset.pack()
+    btn_solve.pack()
+
+    # win.after(3000, g1.solve)
 
     win.mainloop()

@@ -21,8 +21,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.29
-    Date...........2023-01-31
+    Version..............1.30
+    Date...........2023-02-09
     Author.......Avery Briggs
     """
 
@@ -446,7 +446,7 @@ class TreeviewController(tkinter.Frame):
             # print(f"Analyzing COLUMN '{key}'")
             key, k = key
             col_data = self.treeview.column(key)
-            width = col_data.get("width")
+            width = col_data.get("width_canvas")
             width = int(width * self.p_width) if width is not None else 10
             x1, x2 = self.column_x(key)
             if k in self.aggregate_data:
@@ -487,9 +487,9 @@ class TreeviewController(tkinter.Frame):
         x1, x2 = 0, 0
         for i, name in enumerate(self.viewable_column_names):
             col_data = self.treeview.column(name)
-            x2 += col_data.get("width", 0)
+            x2 += col_data.get("width_canvas", 0)
             if name != column_name:
-                x1 += col_data.get("width", 0)
+                x1 += col_data.get("width_canvas", 0)
             else:
                 break
         return x1, x2
@@ -590,13 +590,13 @@ class TreeviewController(tkinter.Frame):
         region1 = self.treeview.identify("region", event.x, event.y)
         column = self.treeview.identify_column(event.x)
         column_data = self.treeview.column(column)
-        width1 = column_data.get("width", 0)
+        width1 = column_data.get("width_canvas", 0)
         name = column_data.get("id", None)
         # print(f"{name=}\n{self.viewable_column_names=}\n{self.viewable_column_widths=}")
         col_idx1 = self.viewable_column_names.index(name)
         col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (
                 len(self.viewable_column_names) - 1)
-        width2 = self.treeview.column(f"#{col_idx2}").get("width", 0)
+        width2 = self.treeview.column(f"#{col_idx2}").get("width_canvas", 0)
         if region1 == "separator" and column != "#0":
             diff_width = self.viewable_column_widths[col_idx1 - 1] - width1
             # print(f"\n\n\t{column_data=}, {width1=}, {width2=}, {diff_width=}")
@@ -756,13 +756,13 @@ def treeview_factory(
 #         , **kwargs_treeview
 #         # , **kwargs
 #     )
-#     treeview.column("#0", width=0, stretch=tkinter.NO)
+#     treeview.column("#0", width_canvas=0, stretch=tkinter.NO)
 #     treeview.heading("#0", text="", anchor=tkinter.CENTER)
 #
 #     for i, col in enumerate(viewable_column_names):
 #         c_width = viewable_column_widths[i]
 #         # print(f"{c_width=}, {type(c_width)=}")
-#         treeview.column(col, width=c_width, anchor=tkinter.CENTER)
+#         treeview.column(col, width_canvas=c_width, anchor=tkinter.CENTER)
 #         treeview.heading(col, text=col, anchor=tkinter.CENTER, command=lambda _col=col: \
 #                      treeview_sort_column(treeview, _col, False))
 #
@@ -1670,7 +1670,7 @@ class MultiComboBox(tkinter.Frame):
             self.res_label = tkinter.Label(self, textvariable=self.res_tv_label)
             # res_combo = ttk.Combobox(master, textvariable=res_tv_combo)
 
-        # self.frame_top_most = tkinter.Frame(self, width=t_width, background="yellow")
+        # self.frame_top_most = tkinter.Frame(self, width_canvas=t_width, background="yellow")
         self.frame_top_most = tkinter.Frame(self, name="ftm")
         self.frame_tree = tkinter.Frame(self, name="ft")
 
@@ -1681,7 +1681,7 @@ class MultiComboBox(tkinter.Frame):
             data,
             kwargs_treeview={
                 "selectmode": "browse",
-                "height": height_in_rows
+                "height_canvas": height_in_rows
             },
             viewable_column_names=viewable_column_names,
             viewable_column_widths=viewable_column_widths
@@ -1715,8 +1715,8 @@ class MultiComboBox(tkinter.Frame):
 
         n_rows, n_cols = data.shape
         # t_width = self.tree_controller.idx_width + (n_cols * sum(self.tree_controller.viewable_column_widths))
-        # self.configure(width=t_width)
-        # self.frame_top_most.configure(width=t_width)
+        # self.configure(width_canvas=t_width)
+        # self.frame_top_most.configure(width_canvas=t_width)
 
         self.tv_tree_is_hidden = tkinter.BooleanVar(self, value=True)
 
@@ -1731,7 +1731,7 @@ class MultiComboBox(tkinter.Frame):
         self.typed_in = tkinter.BooleanVar(self, value=False)
 
         self.res_entry = tkinter.Entry(self.frame_top_most, textvariable=self.res_tv_entry, justify="center")
-        # self.res_canvas = tkinter.Canvas(self.frame_top_most, width=20, height=20, background=rgb_to_hex("GRAY_62"))
+        # self.res_canvas = tkinter.Canvas(self.frame_top_most, width_canvas=20, height_canvas=20, background=rgb_to_hex("GRAY_62"))
         # self.res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
 
         self.res_canvas = ArrowButton(self.frame_top_most, background=rgb_to_hex("GRAY_62"))
@@ -2177,6 +2177,82 @@ class ArrowButton(tkinter.Canvas):
         self.draw_arrow()
 
 
+# https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners
+# see below (round_rect) as well
+# Usage:
+# from tkinter import *
+# root = Tk()
+# canvas = Canvas(root, width = 1000, height = 1000)
+# canvas.pack()
+# my_rectangle = roundPolygon([50, 350, 350, 50], [50, 50, 350, 350], 10 , width=5, outline="#82B366", fill="#D5E8D4")
+# my_triangle = roundPolygon([50, 650, 50], [400, 700, 1000], 8 , width=5, outline="#82B366", fill="#D5E8D4")
+#
+# root.mainloop()
+def round_polygon(canvas, x, y, sharpness, **kwargs):
+
+    # The sharpness here is just how close the sub-points
+    # are going to be to the vertex. The more the sharpness,
+    # the more the sub-points will be closer to the vertex.
+    # (This is not normalized)
+    if sharpness < 2:
+        sharpness = 2
+
+    ratioMultiplier = sharpness - 1
+    ratioDividend = sharpness
+
+    # Array to store the points
+    points = []
+
+    # Iterate over the x points
+    for i in range(len(x)):
+        # Set vertex
+        points.append(x[i])
+        points.append(y[i])
+
+        # If it's not the last point
+        if i != (len(x) - 1):
+            # Insert submultiples points. The more the sharpness, the more these points will be
+            # closer to the vertex.
+            points.append((ratioMultiplier*x[i] + x[i + 1])/ratioDividend)
+            points.append((ratioMultiplier*y[i] + y[i + 1])/ratioDividend)
+            points.append((ratioMultiplier*x[i + 1] + x[i])/ratioDividend)
+            points.append((ratioMultiplier*y[i + 1] + y[i])/ratioDividend)
+        else:
+            # Insert submultiples points.
+            points.append((ratioMultiplier*x[i] + x[0])/ratioDividend)
+            points.append((ratioMultiplier*y[i] + y[0])/ratioDividend)
+            points.append((ratioMultiplier*x[0] + x[i])/ratioDividend)
+            points.append((ratioMultiplier*y[0] + y[i])/ratioDividend)
+            # Close the polygon
+            points.append(x[0])
+            points.append(y[0])
+
+    return canvas.create_polygon(points, **kwargs, smooth=tkinter.TRUE)
+
+
+# https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners
+# see above (round_polygon) as well
+# Usage:
+# import tkinter
+# root = tkinter.Tk()
+# canvas = tkinter.Canvas(root)
+# canvas.pack()
+# rounded_rect(canvas, 20, 20, 60, 40, 10)
+# root.mainloop()
+def rounded_rect(canvas, x, y, w, h, c):
+    return [
+        canvas.create_arc(x,   y,   x+2*c,   y+2*c,   start= 90, extent=90, style="arc"),
+        canvas.create_arc(x+w-2*c, y+h-2*c, x+w, y+h, start=270, extent=90, style="arc"),
+        canvas.create_arc(x+w-2*c, y,   x+w, y+2*c,   start=  0, extent=90, style="arc"),
+        canvas.create_arc(x,   y+h-2*c, x+2*c,   y+h, start=180, extent=90, style="arc"),
+        canvas.create_line(x+c, y,   x+w-c, y    ),
+        canvas.create_line(x+c, y+h, x+w-c, y+h  ),
+        canvas.create_line(x,   y+c, x,     y+h-c),
+        canvas.create_line(x+w, y+c, x+w,   y+h-c)
+    ]
+
+
+
 # def multi_combo_factory(master, data, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None):
 #     assert isinstance(data, pandas.DataFrame), f"Error param 'data' must be an instance of a pandas.DataFrame, got '{type(data)}'."
 #     assert False if (kwargs_combo and ("values" in kwargs_combo)) else True, f"Cannot pass values as a keyword argument here. Pass all data in the data param as a pandas.DataFrame."
@@ -2214,7 +2290,7 @@ class ArrowButton(tkinter.Canvas):
 #         tv1
 #
 #     res_entry = tkinter.Entry(master, textvariable=res_tv_entry)
-#     res_canvas = tkinter.Canvas(master, width=20, height=20, background=rgb_to_hex("GRAY_62"))
+#     res_canvas = tkinter.Canvas(master, width_canvas=20, height_canvas=20, background=rgb_to_hex("GRAY_62"))
 #     res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
 #     res_canvas.bind("<Button-1>", click_canvas_dropdown_button)
 #

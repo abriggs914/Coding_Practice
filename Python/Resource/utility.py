@@ -997,15 +997,15 @@ class LineSeg(Line):
 #     def __init__(self, x, y=None, w=None, h=None):
 #         self.x = x
 #         self.y = y
-#         self.width = w
-#         self.height = h
+#         self.width_canvas = w
+#         self.height_canvas = h
 #         if any([y is None, w is None, h is None]):
 #             if is_imported("pygame"):
 #                 if isinstance(x, pygame.Rect):
 #                     x = x.left
 #                     y = x.y
-#                     w = x.width
-#                     y = x.height
+#                     w = x.width_canvas
+#                     y = x.height_canvas
 #                 else:
 #                     raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
 #             else:
@@ -1036,8 +1036,8 @@ class LineSeg(Line):
 #     def init(self, x, y, w, h):
 #         self.x = x
 #         self.y = y
-#         self.width = w
-#         self.height = h
+#         self.width_canvas = w
+#         self.height_canvas = h
 #         self.tupl = (x, y, w, h)
 #         self.top = y
 #         self.left = x
@@ -1061,7 +1061,7 @@ class LineSeg(Line):
 #         self.is_init = True
 #
 #     def __iter__(self):
-#         lst = [self.x, self. y, self.width, self.height]
+#         lst = [self.x, self. y, self.width_canvas, self.height_canvas]
 #         for val in lst:
 #             yield val
 #
@@ -1105,32 +1105,32 @@ class LineSeg(Line):
 #
 #     def translate(self, x, y):
 #         if not self.is_init:
-#             self.init(self.x, self.y, self.width, self.height)
+#             self.init(self.x, self.y, self.width_canvas, self.height_canvas)
 #         self.x += x
 #         self.y += y
-#         self.init(self.x, self.y, self.width, self.height)
+#         self.init(self.x, self.y, self.width_canvas, self.height_canvas)
 #
 #     def translated(self, x, y):
-#         r = Rect(self.x, self.y, self.width, self.height)
+#         r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
 #         r.translate(x, y)
 #         return r
 #
 #     def scale(self, w_factor, h_factor):
-#         self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
+#         self.init(self.x, self.y, self.width_canvas * w_factor, self.height_canvas * h_factor)
 #
 #     def scaled(self, w_factor, h_factor):
-#         r = Rect(self.x, self.y, self.width, self.height)
+#         r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
 #         r.scale(w_factor, h_factor)
 #         return r
 #
 #     def move(self, rect):
-#         self.init(rect.x, rect.y, rect.width, rect.height)
+#         self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
 #
 #     def resize(self, rect):
-#         self.init(rect.x, rect.y, rect.width, rect.height)
+#         self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
 #
 #     def __repr__(self):
-#         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width, self.height]))) + ")>"
+#         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width_canvas, self.height_canvas]))) + ")>"
 
 
 #            x2,y2              x1,y1 ---- x2,y2
@@ -1194,9 +1194,9 @@ class Rect2:
 
     def init(self, x, y, w, h, a):
         if w < 0:
-            raise ValueError("width value: \"{}\" must not be less than 0.".format(w))
+            raise ValueError("width_canvas value: \"{}\" must not be less than 0.".format(w))
         if h < 0:
-            raise ValueError("height value: \"{}\" must not be less than 0.".format(h))
+            raise ValueError("height_canvas value: \"{}\" must not be less than 0.".format(h))
         self.x = x
         self.y = y
         self.w = w
@@ -1363,8 +1363,8 @@ class Rect2:
     #             if isinstance(x, pygame.Rect):
     #                 x = x.left
     #                 y = x.y
-    #                 w = x.width
-    #                 y = x.height
+    #                 w = x.width_canvas
+    #                 y = x.height_canvas
     #             else:
     #                 raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
     #         else:
@@ -1395,8 +1395,8 @@ class Rect2:
     # def init(self, x, y, w, h):
     #     self.x = x
     #     self.y = y
-    #     self.width = w
-    #     self.height = h
+    #     self.width_canvas = w
+    #     self.height_canvas = h
     #     self.tupl = (x, y, w, h)
     #     self.top = y
     #     self.left = x
@@ -1420,7 +1420,7 @@ class Rect2:
     #     self.is_init = True
     #
     # def __iter__(self):
-    #     lst = [self.x, self. y, self.width, self.height]
+    #     lst = [self.x, self. y, self.width_canvas, self.height_canvas]
     #     for val in lst:
     #         yield val
     #
@@ -1464,29 +1464,29 @@ class Rect2:
     #
     # def translate(self, x, y):
     #     if not self.is_init:
-    #         self.init(self.x, self.y, self.width, self.height)
+    #         self.init(self.x, self.y, self.width_canvas, self.height_canvas)
     #     self.x += x
     #     self.y += y
-    #     self.init(self.x, self.y, self.width, self.height)
+    #     self.init(self.x, self.y, self.width_canvas, self.height_canvas)
     #
     # def translated(self, x, y):
-    #     r = Rect(self.x, self.y, self.width, self.height)
+    #     r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
     #     r.translate(x, y)
     #     return r
     #
     # def scale(self, w_factor, h_factor):
-    #     self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
+    #     self.init(self.x, self.y, self.width_canvas * w_factor, self.height_canvas * h_factor)
     #
     # def scaled(self, w_factor, h_factor):
-    #     r = Rect(self.x, self.y, self.width, self.height)
+    #     r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
     #     r.scale(w_factor, h_factor)
     #     return r
     #
     # def move(self, rect):
-    #     self.init(rect.x, rect.y, rect.width, rect.height)
+    #     self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
     #
     # def resize(self, rect):
-    #     self.init(rect.x, rect.y, rect.width, rect.height)
+    #     self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
 
     def sq_rect(self):
         return self.x, self.y, self.w, self.h
@@ -1717,12 +1717,12 @@ def kb_as_percent(kb, gb=2):
 
 
 def calc_bounds(center, width, height=None):
-    """Given a center (x, y) and width and heights, calculate the counding box that keeps these dimensions centered."""
+    """Given a center (x, y) and width_canvas and heights, calculate the counding box that keeps these dimensions centered."""
     assert (isinstance(center, list) or isinstance(center, tuple)) and len(center) == 2 and all([isnumber(x) for x in
                                                                                                  center]), f"Error param 'center' must be a tuple or list representing center coordinates (x, y). Got: {center}"
-    assert isnumber(width), f"Error param 'width' must be a number. Got: {width}"
+    assert isnumber(width), f"Error param 'width_canvas' must be a number. Got: {width}"
     if height is not None:
-        assert isnumber(height), f"Error param 'height' if not omitted, must be a number. Got: {height}"
+        assert isnumber(height), f"Error param 'height_canvas' if not omitted, must be a number. Got: {height}"
     w = width / 2
     h = w if height is None else (height / 2)
     return (
@@ -1835,8 +1835,8 @@ def grid_cells(
     assert y_pad > -1, f"Error, y padding cannot be negative. Got {y_pad=}"
     print(f"{t_width=}, {t_height=}, {n_rows=}, {n_cols=}, {x_pad=}, {y_pad=}, {r_type=}")
 
-    tw = (t_width - ((n_cols + 0) * x_pad)) / (n_cols + 0)  # tile width
-    th = (t_height - ((n_rows + 0) * y_pad)) / (n_rows + 0)  # tile height
+    tw = (t_width - ((n_cols + 0) * x_pad)) / (n_cols + 0)  # tile width_canvas
+    th = (t_height - ((n_rows + 0) * y_pad)) / (n_rows + 0)  # tile height_canvas
 
     tiles = []
     if r_type == dict:
@@ -2056,10 +2056,10 @@ def replace_timestamp_datetime(str_in, col_in_question=None):
 
 
 def margins(t_width, n_btns, btn_width):
-    """Calculate margins given a total width, button_width and number of buttons.
+    """Calculate margins given a total width_canvas, button_width and number of buttons.
     Usage:
 
-        # Want to place 3 buttons of width 100, in a total width of 600
+        # Want to place 3 buttons of width_canvas 100, in a total width_canvas of 600
         m = margins(600, 3, 100)
     """
     assert (isinstance(t_width, int) or isinstance(t_width,

@@ -279,7 +279,7 @@ class InventoryApp(tkinter.Tk):
 
             # row and columns
             # self.treeview_items.heading(i, text=f"col={col}, {i}")
-            # self.treeview_items.column(i, width=10)
+            # self.treeview_items.column(i, width_canvas=10)
 
             # column names
             # print(f"B {i=}, {col=}, {coln=}")
