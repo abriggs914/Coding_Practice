@@ -11,8 +11,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
         General Utility file of RGB colour values
-        Version...........1.23
-        Date........2023-01-18
+        Version...........1.24
+        Date........2023-02-09
         Author....Avery Briggs
     """
 
@@ -1940,7 +1940,7 @@ class Colour:
         return "<Colour RGB=({r}, {g}, {b}), hex = '{h}', name = '{n}'>".format(r=r, g=g, b=b, h=self.hex_code, n=name)
 
 
-def gradient(x, n, c1, c2):
+def gradient(x, n, c1, c2, rgb=True):
     """Using increments, calculate a colour between two colours.
     ex. gradient(5, 10, BLACK, WHITE) -> A colour 5/10 te way between c1 & c2.
                                       -> .
@@ -1952,8 +1952,8 @@ def gradient(x, n, c1, c2):
     assert iscolour(c2), "Parameter \"c2\": ({}) needs to be a colour.".format(c2)
     assert x <= n, "Parameter \"x\": ({}) needs to be less than or equal to parameter \"n\": ({}).".format(x, n)
     assert 0 < n, "Parameter \"n\": ({}) must be non-zero and positive.".format(n)
-    r1, g1, b1 = c1
-    r2, g2, b2 = c2
+    r1, g1, b1 = Colour(c1).rgb_code
+    r2, g2, b2 = Colour(c2).rgb_code
     p = abs(x / n)
     r_diff = p * abs(r1 - r2)
     g_diff = p * abs(g1 - g2)
@@ -1964,7 +1964,11 @@ def gradient(x, n, c1, c2):
         g_diff *= -1
     if b1 >= b2:
         b_diff *= -1
-    return r1 + r_diff, g1 + g_diff, b1 + b_diff
+
+    new_colour = r1 + r_diff, g1 + g_diff, b1 + b_diff
+    if rgb:
+        return new_colour
+    return rgb_to_hex(new_colour)
 
 
 # Darken an RGB color using a proportion p (0-1)

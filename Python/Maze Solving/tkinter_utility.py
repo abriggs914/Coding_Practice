@@ -11,7 +11,7 @@ import pandas as pd
 
 import utility
 from utility import grid_cells, clamp_rect, clamp, isnumber, alpha_seq, random_date
-from colour_utility import rgb_to_hex, font_foreground, Colour, random_colour
+from colour_utility import rgb_to_hex, font_foreground, Colour, random_colour, brighten, darken, gradient, iscolour
 from tkinter import ttk, messagebox
 
 #######################################################################################################################
@@ -21,8 +21,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.29
-    Date...........2023-01-31
+    Version..............1.31
+    Date...........2023-02-13
     Author.......Avery Briggs
     """
 
@@ -446,7 +446,7 @@ class TreeviewController(tkinter.Frame):
             # print(f"Analyzing COLUMN '{key}'")
             key, k = key
             col_data = self.treeview.column(key)
-            width = col_data.get("width")
+            width = col_data.get("width_canvas")
             width = int(width * self.p_width) if width is not None else 10
             x1, x2 = self.column_x(key)
             if k in self.aggregate_data:
@@ -487,9 +487,9 @@ class TreeviewController(tkinter.Frame):
         x1, x2 = 0, 0
         for i, name in enumerate(self.viewable_column_names):
             col_data = self.treeview.column(name)
-            x2 += col_data.get("width", 0)
+            x2 += col_data.get("width_canvas", 0)
             if name != column_name:
-                x1 += col_data.get("width", 0)
+                x1 += col_data.get("width_canvas", 0)
             else:
                 break
         return x1, x2
@@ -590,13 +590,13 @@ class TreeviewController(tkinter.Frame):
         region1 = self.treeview.identify("region", event.x, event.y)
         column = self.treeview.identify_column(event.x)
         column_data = self.treeview.column(column)
-        width1 = column_data.get("width", 0)
+        width1 = column_data.get("width_canvas", 0)
         name = column_data.get("id", None)
         # print(f"{name=}\n{self.viewable_column_names=}\n{self.viewable_column_widths=}")
         col_idx1 = self.viewable_column_names.index(name)
         col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (
                 len(self.viewable_column_names) - 1)
-        width2 = self.treeview.column(f"#{col_idx2}").get("width", 0)
+        width2 = self.treeview.column(f"#{col_idx2}").get("width_canvas", 0)
         if region1 == "separator" and column != "#0":
             diff_width = self.viewable_column_widths[col_idx1 - 1] - width1
             # print(f"\n\n\t{column_data=}, {width1=}, {width2=}, {diff_width=}")
@@ -756,13 +756,13 @@ def treeview_factory(
 #         , **kwargs_treeview
 #         # , **kwargs
 #     )
-#     treeview.column("#0", width=0, stretch=tkinter.NO)
+#     treeview.column("#0", width_canvas=0, stretch=tkinter.NO)
 #     treeview.heading("#0", text="", anchor=tkinter.CENTER)
 #
 #     for i, col in enumerate(viewable_column_names):
 #         c_width = viewable_column_widths[i]
 #         # print(f"{c_width=}, {type(c_width)=}")
-#         treeview.column(col, width=c_width, anchor=tkinter.CENTER)
+#         treeview.column(col, width_canvas=c_width, anchor=tkinter.CENTER)
 #         treeview.heading(col, text=col, anchor=tkinter.CENTER, command=lambda _col=col: \
 #                      treeview_sort_column(treeview, _col, False))
 #
@@ -1670,7 +1670,7 @@ class MultiComboBox(tkinter.Frame):
             self.res_label = tkinter.Label(self, textvariable=self.res_tv_label)
             # res_combo = ttk.Combobox(master, textvariable=res_tv_combo)
 
-        # self.frame_top_most = tkinter.Frame(self, width=t_width, background="yellow")
+        # self.frame_top_most = tkinter.Frame(self, width_canvas=t_width, background="yellow")
         self.frame_top_most = tkinter.Frame(self, name="ftm")
         self.frame_tree = tkinter.Frame(self, name="ft")
 
@@ -1681,7 +1681,7 @@ class MultiComboBox(tkinter.Frame):
             data,
             kwargs_treeview={
                 "selectmode": "browse",
-                "height": height_in_rows
+                "height_canvas": height_in_rows
             },
             viewable_column_names=viewable_column_names,
             viewable_column_widths=viewable_column_widths
@@ -1715,8 +1715,8 @@ class MultiComboBox(tkinter.Frame):
 
         n_rows, n_cols = data.shape
         # t_width = self.tree_controller.idx_width + (n_cols * sum(self.tree_controller.viewable_column_widths))
-        # self.configure(width=t_width)
-        # self.frame_top_most.configure(width=t_width)
+        # self.configure(width_canvas=t_width)
+        # self.frame_top_most.configure(width_canvas=t_width)
 
         self.tv_tree_is_hidden = tkinter.BooleanVar(self, value=True)
 
@@ -1731,7 +1731,7 @@ class MultiComboBox(tkinter.Frame):
         self.typed_in = tkinter.BooleanVar(self, value=False)
 
         self.res_entry = tkinter.Entry(self.frame_top_most, textvariable=self.res_tv_entry, justify="center")
-        # self.res_canvas = tkinter.Canvas(self.frame_top_most, width=20, height=20, background=rgb_to_hex("GRAY_62"))
+        # self.res_canvas = tkinter.Canvas(self.frame_top_most, width_canvas=20, height_canvas=20, background=rgb_to_hex("GRAY_62"))
         # self.res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
 
         self.res_canvas = ArrowButton(self.frame_top_most, background=rgb_to_hex("GRAY_62"))
@@ -2177,6 +2177,288 @@ class ArrowButton(tkinter.Canvas):
         self.draw_arrow()
 
 
+# https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners
+# see below (round_rect) as well
+# Usage:
+# from tkinter import *
+# root = Tk()
+# canvas = Canvas(root, width = 1000, height = 1000)
+# canvas.pack()
+# my_rectangle = roundPolygon([50, 350, 350, 50], [50, 50, 350, 350], 10 , width=5, outline="#82B366", fill="#D5E8D4")
+# my_triangle = roundPolygon([50, 650, 50], [400, 700, 1000], 8 , width=5, outline="#82B366", fill="#D5E8D4")
+#
+# root.mainloop()
+def round_polygon(canvas, x, y, sharpness, **kwargs):
+
+    # The sharpness here is just how close the sub-points
+    # are going to be to the vertex. The more the sharpness,
+    # the more the sub-points will be closer to the vertex.
+    # (This is not normalized)
+    if sharpness < 2:
+        sharpness = 2
+
+    ratioMultiplier = sharpness - 1
+    ratioDividend = sharpness
+
+    # Array to store the points
+    points = []
+
+    # Iterate over the x points
+    for i in range(len(x)):
+        # Set vertex
+        points.append(x[i])
+        points.append(y[i])
+
+        # If it's not the last point
+        if i != (len(x) - 1):
+            # Insert submultiples points. The more the sharpness, the more these points will be
+            # closer to the vertex.
+            points.append((ratioMultiplier*x[i] + x[i + 1])/ratioDividend)
+            points.append((ratioMultiplier*y[i] + y[i + 1])/ratioDividend)
+            points.append((ratioMultiplier*x[i + 1] + x[i])/ratioDividend)
+            points.append((ratioMultiplier*y[i + 1] + y[i])/ratioDividend)
+        else:
+            # Insert submultiples points.
+            points.append((ratioMultiplier*x[i] + x[0])/ratioDividend)
+            points.append((ratioMultiplier*y[i] + y[0])/ratioDividend)
+            points.append((ratioMultiplier*x[0] + x[i])/ratioDividend)
+            points.append((ratioMultiplier*y[0] + y[i])/ratioDividend)
+            # Close the polygon
+            points.append(x[0])
+            points.append(y[0])
+
+    return canvas.create_polygon(points, **kwargs, smooth=tkinter.TRUE)
+
+
+# https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners
+# see above (round_polygon) as well
+# Usage:
+# import tkinter
+# root = tkinter.Tk()
+# canvas = tkinter.Canvas(root)
+# canvas.pack()
+# rounded_rect(canvas, 20, 20, 60, 40, 10)
+# root.mainloop()
+def rounded_rect(canvas, x, y, w, h, c):
+    assert isinstance(canvas, tkinter.Canvas), f"Error param 'canvas' must be a tkinter.Canvas object. Got '{canvas}', {type(canvas)=}"
+    return [
+        canvas.create_arc(x,   y,   x+2*c,   y+2*c,   start= 90, extent=90, style="arc"),
+        canvas.create_arc(x+w-2*c, y+h-2*c, x+w, y+h, start=270, extent=90, style="arc"),
+        canvas.create_arc(x+w-2*c, y,   x+w, y+2*c,   start=  0, extent=90, style="arc"),
+        canvas.create_arc(x,   y+h-2*c, x+2*c,   y+h, start=180, extent=90, style="arc"),
+        canvas.create_line(x+c, y,   x+w-c, y    ),
+        canvas.create_line(x+c, y+h, x+w-c, y+h  ),
+        canvas.create_line(x,   y+c, x,     y+h-c),
+        canvas.create_line(x+w, y+c, x+w,   y+h-c)
+    ]
+
+
+class ToggleButton(tkinter.Frame):
+
+    def __init__(
+            self,
+            master,
+            label_text="Toggle",
+            state: bool = False,
+            labels=("On", "Off"),
+            width_label=25,
+            height_label=1,
+            width_canvas=100,
+            height_canvas=50,
+            t_animation_time=500,
+            n_slices=10,
+            colour_fg_true="#003000",
+            colour_bg_true="#29c164",
+            colour_fg_false="#300000",
+            colour_bg_false="#c12929",
+            *args, **kwargs):
+        super().__init__(master, width=width_canvas, height=height_canvas, *args, **kwargs)
+
+        assert iscolour(colour_bg_false), f"Error param 'colour_bg_false' must be a colour. Got '{colour_bg_false}', {type(colour_bg_false)=}."
+        assert iscolour(colour_bg_true), f"Error param 'colour_bg_true' must be a colour. Got '{colour_bg_true}', {type(colour_bg_true)=}."
+        assert iscolour(colour_fg_false), f"Error param 'colour_fg_false' must be a colour. Got '{colour_fg_false}', {type(colour_fg_false)=}."
+        assert iscolour(colour_fg_true), f"Error param 'colour_fg_true' must be a colour. Got '{colour_fg_true}', {type(colour_fg_true)=}."
+        assert labels is None or (isinstance(labels, tuple) and len(labels) == 2 and all([isinstance(labels[i], str) for i in range(2)])), f"Error param 'labels' must be a tuple of 2 strings OR None. Got '{labels}', {type(labels)=}"
+        assert isinstance(t_animation_time, int) and (0 < t_animation_time <= 2500), f"Error param 't_animation_time' must be a integer between 1 and 2500 ms. Got '{t_animation_time}', {type(t_animation_time)=}."
+
+        self.tv_label = tkinter.StringVar(self, value=label_text)
+        self.label = tkinter.Label(self, textvariable=self.tv_label, width=width_label, height=height_label)
+        self.frame_canvas = tkinter.Frame(self, width=width_label + width_canvas)
+        self.canvas = tkinter.Canvas(self.frame_canvas, width=width_canvas, height=height_canvas)
+
+        self.switch_mode = tkinter.BooleanVar(self, name="switch_mode")
+        if labels is None:
+            self.switch_mode.set(True)
+        else:
+            self.switch_mode.set(False)
+
+        self.colour_bg_true = colour_bg_true
+        self.colour_bg_false = colour_bg_false
+        self.colour_fg_true = colour_fg_true
+        self.colour_fg_false = colour_fg_false
+        self.width = width_canvas
+        self.height = height_canvas
+
+        self.t_animation_time = t_animation_time
+        self.n_slices = clamp(3, n_slices, self.t_animation_time // 50)
+        self.after_time = self.t_animation_time // self.n_slices
+        # print(f"\tInit\n{self.t_animation_time=}\n{self.n_slices=}\n{self.after_time=}\n{self.n_slices*self.after_time=}")
+        self.state = tkinter.BooleanVar(self, value=state)
+        self.state.trace_variable("w", self.state_update)
+
+        self.sliding = tkinter.BooleanVar(self, value=False)
+
+        self.bind("<Button-1>", self.click)
+        self.label.bind("<Button-1>", self.click)
+        self.frame_canvas.bind("<Button-1>", self.click)
+        self.canvas.bind("<Button-1>", self.click)
+
+        o_x1, o_y1, o_x2, o_y2 = self.width, self.height, self.width, self.height
+        x1, y1, x2, y2 = o_x1 * 0.15, o_y1 * 0.15, o_x2 * 0.85, o_y2 * 0.85
+        pts = [
+            (x1, y1),
+            (x2, y1),
+            (x2, y2),
+            (x1, y2)
+        ]
+        xs, ys = [[pt[i] for pt in pts] for i in range(2)]
+        self.round_rect = round_polygon(
+            self.canvas,
+            xs,
+            ys,
+            width=2,
+            sharpness=25,
+            outline=self.colour_fg_false,
+            fill=brighten(self.colour_bg_false, 0.25, rgb=False)
+        )
+
+        if not self.switch_mode.get():
+            # print(f"init NOT switch mode")
+            self.labels = labels  # (True part, False part)
+            lbl_on, lbl_off = self.labels
+            self.text_off = self.canvas.create_text(self.width * 0.25, self.height / 2, text=lbl_off,
+                                                    fill=self.colour_fg_false)
+            self.text_on = self.canvas.create_text(self.width * 0.75, self.height / 2, text=lbl_on, fill=self.colour_fg_true)
+        else:
+            # print(f"init switch mode")
+            x1, y1, x2, y2 =\
+                o_x1 * 0.5,\
+                o_y1 * 0.35,\
+                o_x2 * 0.6,\
+                o_y2 * 0.65
+            sw = x2 - x1
+            sh = y2 - y1
+            pts = [
+                (x1, y1),
+                (x2, y1),
+                (x2, y2),
+                (x1, y2)
+            ]
+            xs, ys = [[pt[i] for pt in pts] for i in range(2)]
+            self.switch_btn = round_polygon(
+                self.canvas,
+                xs,
+                ys,
+                sharpness=10,
+                outline=self.colour_fg_false,
+                fill=darken(self.colour_bg_false, 0.25, rgb=False)
+            )
+
+            x1, x2 = o_x1 * 0.2, o_x2 * 0.7
+            wd = x2 - x1
+            ws = wd / self.n_slices
+            self.switch_positions = [(x1 + (i * ws), y1 * 0.9) for i in range(self.n_slices)]
+            self.switch_positions.reverse()
+
+        # idx 0 == state (0 / 1)
+        # idx 1 == state (bg_gradient, fg_gradient)
+        self.gradients = [
+            [
+                [gradient(i, self.n_slices-1, colour_bg_true, colour_bg_false, rgb=False) for i in range(self.n_slices)],
+                [gradient(i, self.n_slices-1, self.colour_fg_true, self.colour_fg_false, rgb=False) for i in range(self.n_slices)]
+            ],
+            [
+                [gradient(i, self.n_slices - 1, self.colour_bg_false, self.colour_bg_true, rgb=False) for i in range(self.n_slices)],
+                [gradient(i, self.n_slices - 1, self.colour_fg_false, self.colour_fg_true, rgb=False) for i in range(self.n_slices)]
+            ]
+        ]
+
+
+        self.state_update()
+
+    def state_update(self, *args):
+        slices = self.n_slices
+        state = self.state.get()
+        # bg_start = self.colour_bg_true if not state else self.colour_bg_false
+        # bg_end = self.colour_bg_false if not state else self.colour_bg_true
+        # # bg_gradient_colours = [gradient(i, slices, bg_start, bg_end) for i in range(slices)]
+        # fg_start = self.colour_fg_true if not state else self.colour_fg_false
+        # fg_end = self.colour_fg_false if not state else self.colour_fg_true
+        # bg_gradient_colours = [gradient(i, slices-1, bg_start, bg_end, rgb=False) for i in range(slices)]
+        # fg_gradient_colours = [gradient(i, slices-1, fg_start, fg_end, rgb=False) for i in range(slices)]
+
+        # print(f"Status Update: {state=}")
+
+        if not self.switch_mode.get():
+            if state:
+                self.canvas.itemconfigure(self.text_on, state="normal")
+                self.canvas.itemconfigure(self.text_off, state="hidden")
+            else:
+                self.canvas.itemconfigure(self.text_on, state="hidden")
+                self.canvas.itemconfigure(self.text_off, state="normal")
+
+        def iter_update(i):
+            # print(f"\titer_{i=}")
+            if i == slices:
+                self.sliding.set(False)
+                return
+
+            bg_colour, fg_colour = self.gradients[int(state)]
+            bg_colour = bg_colour[i]
+            fg_colour = fg_colour[i]
+            fill_colour = brighten(bg_colour, 0.25, rgb=False) if not state else darken(bg_colour, 0.25, rgb=False)
+            switch_colour = darken(bg_colour, 0.25, rgb=False) if not state else brighten(bg_colour, 0.25, rgb=False)
+
+            # https://stackoverflow.com/questions/22838255/tkinter-canvas-resizing-automatically
+            self.configure(background=bg_colour, highlightthickness=0)
+            self.canvas.itemconfigure(
+                self.round_rect,
+                outline=fg_colour,
+                fill=fill_colour
+            )
+
+            if not self.switch_mode.get():
+                # print(f"update NOT switch mode")
+                self.canvas.itemconfigure(self.text_on, fill=fg_colour)
+                self.canvas.itemconfigure(self.text_off, fill=fg_colour)
+            else:
+                # print(f"update switch mode")
+                x, y = self.switch_positions[i]
+                self.canvas.moveto(self.switch_btn, x=x, y=y)
+                self.canvas.itemconfigure(self.switch_btn, outline=fg_colour, fill=switch_colour)
+
+            self.canvas.configure(background=bg_colour, highlightthickness=0)
+            self.label.configure(background=bg_colour, foreground=fg_colour, highlightthickness=0)
+
+            self.after(self.after_time, iter_update, i + 1)
+
+        iter_update(0)
+
+    def click(self, *args):
+        if not self.sliding.get():
+            self.switch_positions.reverse()
+            self.sliding.set(True)
+            self.state.set(not self.state.get())
+
+    def get_objects(self):
+        return (
+            self,
+            (self.tv_label, self.label),
+            self.frame_canvas,
+            (self.state, self.canvas)
+        )
+
+
 # def multi_combo_factory(master, data, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None):
 #     assert isinstance(data, pandas.DataFrame), f"Error param 'data' must be an instance of a pandas.DataFrame, got '{type(data)}'."
 #     assert False if (kwargs_combo and ("values" in kwargs_combo)) else True, f"Cannot pass values as a keyword argument here. Pass all data in the data param as a pandas.DataFrame."
@@ -2214,7 +2496,7 @@ class ArrowButton(tkinter.Canvas):
 #         tv1
 #
 #     res_entry = tkinter.Entry(master, textvariable=res_tv_entry)
-#     res_canvas = tkinter.Canvas(master, width=20, height=20, background=rgb_to_hex("GRAY_62"))
+#     res_canvas = tkinter.Canvas(master, width_canvas=20, height_canvas=20, background=rgb_to_hex("GRAY_62"))
 #     res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
 #     res_canvas.bind("<Button-1>", click_canvas_dropdown_button)
 #

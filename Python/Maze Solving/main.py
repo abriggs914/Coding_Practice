@@ -19,11 +19,16 @@ class Grid(tkinter.Canvas):
             code_wall="1",
             code_start="0",
             code_goal="9",
+            code_path="2",
+            code_visited="3",
+            code_visited_plus="4",
             draw_legend=True,
             *args,
             **kwargs
     ):
         super().__init__(master, *args, **kwargs)
+
+        assert len({code_empty, code_wall, code_start, code_goal, code_path, code_visited}) == 6, f"Error, not all codes are unique.\n\t{code_empty=}\n\t{code_wall=}\n\t{code_start=}\n\t{code_goal=}\n\t{code_path=}\n\t{code_visited=}"
 
         self.grid_path = grid_path
         self.grid_lines = ""
@@ -33,6 +38,9 @@ class Grid(tkinter.Canvas):
         self.code_wall = code_wall
         self.code_start = code_start
         self.code_goal = code_goal
+        self.code_path = code_path
+        self.code_visited = code_visited
+        self.code_visited_plus = code_visited_plus
         self.draw_legend = draw_legend
 
         self.colour_scheme = self.validate_colour_scheme(colour_scheme)
@@ -62,11 +70,15 @@ class Grid(tkinter.Canvas):
                 char = self.grid_lines[i][j]
                 # print(f"{char=}")
                 if char == self.code_start:
+                    if self.start_pos is not None:
+                        raise ValueError("Cannot have a maze with more than one start position.")
                     self.start_pos = (i, j)
                     colour = self.colour_scheme[self.code_start]
                 elif char == self.code_wall:
                     colour = self.colour_scheme[self.code_wall]
                 elif char == self.code_goal:
+                    if self.goal_pos is not None:
+                        raise ValueError("Cannot have a maze with more than one goal position.")
                     self.goal_pos = (i, j)
                     colour = self.colour_scheme[self.code_goal]
                 else:
@@ -100,6 +112,12 @@ class Grid(tkinter.Canvas):
             colour_scheme_in.update({self.code_start: rgb_to_hex(LIMEGREEN)})
         if self.code_goal not in colour_scheme_in:
             colour_scheme_in.update({self.code_goal: rgb_to_hex(RED)})
+        if self.code_path not in colour_scheme_in:
+            colour_scheme_in.update({self.code_path: rgb_to_hex(ORANGE)})
+        if self.code_visited not in colour_scheme_in:
+            colour_scheme_in.update({self.code_visited: rgb_to_hex(FORESTGREEN)})
+        if self.code_visited_plus not in colour_scheme_in:
+            colour_scheme_in.update({self.code_visited_plus: rgb_to_hex((222, 117, 222))})
         return colour_scheme_in
 
     def reset_maze(self, force=False):
@@ -185,6 +203,7 @@ class Grid(tkinter.Canvas):
 
     def iter_right_hand(self):
         print(f"{'#' * 120}")
+        max_times = 3
         ci, cj = self.current.get()
         circle = self.surrounding(ci, cj, direction=self.traverse_direction.get())
         if not circle:
@@ -212,8 +231,15 @@ class Grid(tkinter.Canvas):
             else:
                 self.traverse_direction.set("s")
 
-        old_colour = self.itemcget(self.cells[ci][cj], "fill")
-        self.itemconfigure(self.cells[ci][cj], fill=darken(old_colour, 0.25, rgb=False))
+        visited = self.traversed_values[ci][cj]
+        if visited == 0:
+            colour = self.colour_scheme[self.code_visited]
+        else:
+            colour = gradient(min(visited, max_times), max_times, self.colour_scheme[self.code_visited], self.colour_scheme[self.code_visited_plus], rgb=False)
+        self.itemconfigure(self.cells[ci][cj], fill=colour)
+
+        # old_colour = self.itemcget(self.cells[ci][cj], "fill")
+        # self.itemconfigure(self.cells[ci][cj], fill=darken(old_colour, 0.25, rgb=False))
 
         self.traversed_values[ci][cj] += 1
         ci, cj = next_move
@@ -262,7 +288,7 @@ if __name__ == '__main__':
     win = tkinter.Tk()
     win.geometry(f"800x800")
     # g1 = Grid(win, r"maze_1.txt")
-    g1 = Grid(win, r"maze_2.txt")
+    g1 = Grid(win, r"maze_3.txt")
 
     tv_btn_reset, btn_reset = button_factory(win, tv_btn="reset", kwargs_btn={"command": reset_maze})
     tv_btn_solve, btn_solve = button_factory(win, tv_btn="solve", kwargs_btn={"command": solve_maze})

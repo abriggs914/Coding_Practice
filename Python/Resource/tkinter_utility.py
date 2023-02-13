@@ -11,7 +11,7 @@ import pandas as pd
 
 import utility
 from utility import grid_cells, clamp_rect, clamp, isnumber, alpha_seq, random_date
-from colour_utility import rgb_to_hex, font_foreground, Colour, random_colour
+from colour_utility import rgb_to_hex, font_foreground, Colour, random_colour, brighten, darken, gradient, iscolour
 from tkinter import ttk, messagebox
 
 #######################################################################################################################
@@ -21,8 +21,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.30
-    Date...........2023-02-09
+    Version..............1.31
+    Date...........2023-02-13
     Author.......Avery Briggs
     """
 
@@ -2240,6 +2240,7 @@ def round_polygon(canvas, x, y, sharpness, **kwargs):
 # rounded_rect(canvas, 20, 20, 60, 40, 10)
 # root.mainloop()
 def rounded_rect(canvas, x, y, w, h, c):
+    assert isinstance(canvas, tkinter.Canvas), f"Error param 'canvas' must be a tkinter.Canvas object. Got '{canvas}', {type(canvas)=}"
     return [
         canvas.create_arc(x,   y,   x+2*c,   y+2*c,   start= 90, extent=90, style="arc"),
         canvas.create_arc(x+w-2*c, y+h-2*c, x+w, y+h, start=270, extent=90, style="arc"),
@@ -2251,6 +2252,211 @@ def rounded_rect(canvas, x, y, w, h, c):
         canvas.create_line(x+w, y+c, x+w,   y+h-c)
     ]
 
+
+class ToggleButton(tkinter.Frame):
+
+    def __init__(
+            self,
+            master,
+            label_text="Toggle",
+            state: bool = False,
+            labels=("On", "Off"),
+            width_label=25,
+            height_label=1,
+            width_canvas=100,
+            height_canvas=50,
+            t_animation_time=500,
+            n_slices=10,
+            colour_fg_true="#003000",
+            colour_bg_true="#29c164",
+            colour_fg_false="#300000",
+            colour_bg_false="#c12929",
+            *args, **kwargs):
+        super().__init__(master, width=width_canvas, height=height_canvas, *args, **kwargs)
+
+        assert iscolour(colour_bg_false), f"Error param 'colour_bg_false' must be a colour. Got '{colour_bg_false}', {type(colour_bg_false)=}."
+        assert iscolour(colour_bg_true), f"Error param 'colour_bg_true' must be a colour. Got '{colour_bg_true}', {type(colour_bg_true)=}."
+        assert iscolour(colour_fg_false), f"Error param 'colour_fg_false' must be a colour. Got '{colour_fg_false}', {type(colour_fg_false)=}."
+        assert iscolour(colour_fg_true), f"Error param 'colour_fg_true' must be a colour. Got '{colour_fg_true}', {type(colour_fg_true)=}."
+        assert labels is None or (isinstance(labels, tuple) and len(labels) == 2 and all([isinstance(labels[i], str) for i in range(2)])), f"Error param 'labels' must be a tuple of 2 strings OR None. Got '{labels}', {type(labels)=}"
+        assert isinstance(t_animation_time, int) and (0 < t_animation_time <= 2500), f"Error param 't_animation_time' must be a integer between 1 and 2500 ms. Got '{t_animation_time}', {type(t_animation_time)=}."
+
+        self.tv_label = tkinter.StringVar(self, value=label_text)
+        self.label = tkinter.Label(self, textvariable=self.tv_label, width=width_label, height=height_label)
+        self.frame_canvas = tkinter.Frame(self, width=width_label + width_canvas)
+        self.canvas = tkinter.Canvas(self.frame_canvas, width=width_canvas, height=height_canvas)
+
+        self.switch_mode = tkinter.BooleanVar(self, name="switch_mode")
+        if labels is None:
+            self.switch_mode.set(True)
+        else:
+            self.switch_mode.set(False)
+
+        self.colour_bg_true = colour_bg_true
+        self.colour_bg_false = colour_bg_false
+        self.colour_fg_true = colour_fg_true
+        self.colour_fg_false = colour_fg_false
+        self.width = width_canvas
+        self.height = height_canvas
+
+        self.t_animation_time = t_animation_time
+        self.n_slices = clamp(3, n_slices, self.t_animation_time // 50)
+        self.after_time = self.t_animation_time // self.n_slices
+        # print(f"\tInit\n{self.t_animation_time=}\n{self.n_slices=}\n{self.after_time=}\n{self.n_slices*self.after_time=}")
+        self.state = tkinter.BooleanVar(self, value=state)
+        self.state.trace_variable("w", self.state_update)
+
+        self.sliding = tkinter.BooleanVar(self, value=False)
+
+        self.bind("<Button-1>", self.click)
+        self.label.bind("<Button-1>", self.click)
+        self.frame_canvas.bind("<Button-1>", self.click)
+        self.canvas.bind("<Button-1>", self.click)
+
+        o_x1, o_y1, o_x2, o_y2 = self.width, self.height, self.width, self.height
+        x1, y1, x2, y2 = o_x1 * 0.15, o_y1 * 0.15, o_x2 * 0.85, o_y2 * 0.85
+        pts = [
+            (x1, y1),
+            (x2, y1),
+            (x2, y2),
+            (x1, y2)
+        ]
+        xs, ys = [[pt[i] for pt in pts] for i in range(2)]
+        self.round_rect = round_polygon(
+            self.canvas,
+            xs,
+            ys,
+            width=2,
+            sharpness=25,
+            outline=self.colour_fg_false,
+            fill=brighten(self.colour_bg_false, 0.25, rgb=False)
+        )
+
+        if not self.switch_mode.get():
+            # print(f"init NOT switch mode")
+            self.labels = labels  # (True part, False part)
+            lbl_on, lbl_off = self.labels
+            self.text_off = self.canvas.create_text(self.width * 0.25, self.height / 2, text=lbl_off,
+                                                    fill=self.colour_fg_false)
+            self.text_on = self.canvas.create_text(self.width * 0.75, self.height / 2, text=lbl_on, fill=self.colour_fg_true)
+        else:
+            # print(f"init switch mode")
+            x1, y1, x2, y2 =\
+                o_x1 * 0.5,\
+                o_y1 * 0.35,\
+                o_x2 * 0.6,\
+                o_y2 * 0.65
+            sw = x2 - x1
+            sh = y2 - y1
+            pts = [
+                (x1, y1),
+                (x2, y1),
+                (x2, y2),
+                (x1, y2)
+            ]
+            xs, ys = [[pt[i] for pt in pts] for i in range(2)]
+            self.switch_btn = round_polygon(
+                self.canvas,
+                xs,
+                ys,
+                sharpness=10,
+                outline=self.colour_fg_false,
+                fill=darken(self.colour_bg_false, 0.25, rgb=False)
+            )
+
+            x1, x2 = o_x1 * 0.2, o_x2 * 0.7
+            wd = x2 - x1
+            ws = wd / self.n_slices
+            self.switch_positions = [(x1 + (i * ws), y1 * 0.9) for i in range(self.n_slices)]
+            self.switch_positions.reverse()
+
+        # idx 0 == state (0 / 1)
+        # idx 1 == state (bg_gradient, fg_gradient)
+        self.gradients = [
+            [
+                [gradient(i, self.n_slices-1, colour_bg_true, colour_bg_false, rgb=False) for i in range(self.n_slices)],
+                [gradient(i, self.n_slices-1, self.colour_fg_true, self.colour_fg_false, rgb=False) for i in range(self.n_slices)]
+            ],
+            [
+                [gradient(i, self.n_slices - 1, self.colour_bg_false, self.colour_bg_true, rgb=False) for i in range(self.n_slices)],
+                [gradient(i, self.n_slices - 1, self.colour_fg_false, self.colour_fg_true, rgb=False) for i in range(self.n_slices)]
+            ]
+        ]
+
+
+        self.state_update()
+
+    def state_update(self, *args):
+        slices = self.n_slices
+        state = self.state.get()
+        # bg_start = self.colour_bg_true if not state else self.colour_bg_false
+        # bg_end = self.colour_bg_false if not state else self.colour_bg_true
+        # # bg_gradient_colours = [gradient(i, slices, bg_start, bg_end) for i in range(slices)]
+        # fg_start = self.colour_fg_true if not state else self.colour_fg_false
+        # fg_end = self.colour_fg_false if not state else self.colour_fg_true
+        # bg_gradient_colours = [gradient(i, slices-1, bg_start, bg_end, rgb=False) for i in range(slices)]
+        # fg_gradient_colours = [gradient(i, slices-1, fg_start, fg_end, rgb=False) for i in range(slices)]
+
+        # print(f"Status Update: {state=}")
+
+        if not self.switch_mode.get():
+            if state:
+                self.canvas.itemconfigure(self.text_on, state="normal")
+                self.canvas.itemconfigure(self.text_off, state="hidden")
+            else:
+                self.canvas.itemconfigure(self.text_on, state="hidden")
+                self.canvas.itemconfigure(self.text_off, state="normal")
+
+        def iter_update(i):
+            # print(f"\titer_{i=}")
+            if i == slices:
+                self.sliding.set(False)
+                return
+
+            bg_colour, fg_colour = self.gradients[int(state)]
+            bg_colour = bg_colour[i]
+            fg_colour = fg_colour[i]
+            fill_colour = brighten(bg_colour, 0.25, rgb=False) if not state else darken(bg_colour, 0.25, rgb=False)
+            switch_colour = darken(bg_colour, 0.25, rgb=False) if not state else brighten(bg_colour, 0.25, rgb=False)
+
+            # https://stackoverflow.com/questions/22838255/tkinter-canvas-resizing-automatically
+            self.configure(background=bg_colour, highlightthickness=0)
+            self.canvas.itemconfigure(
+                self.round_rect,
+                outline=fg_colour,
+                fill=fill_colour
+            )
+
+            if not self.switch_mode.get():
+                # print(f"update NOT switch mode")
+                self.canvas.itemconfigure(self.text_on, fill=fg_colour)
+                self.canvas.itemconfigure(self.text_off, fill=fg_colour)
+            else:
+                # print(f"update switch mode")
+                x, y = self.switch_positions[i]
+                self.canvas.moveto(self.switch_btn, x=x, y=y)
+                self.canvas.itemconfigure(self.switch_btn, outline=fg_colour, fill=switch_colour)
+
+            self.canvas.configure(background=bg_colour, highlightthickness=0)
+            self.label.configure(background=bg_colour, foreground=fg_colour, highlightthickness=0)
+
+            self.after(self.after_time, iter_update, i + 1)
+
+        iter_update(0)
+
+    def click(self, *args):
+        if not self.sliding.get():
+            self.switch_positions.reverse()
+            self.sliding.set(True)
+            self.state.set(not self.state.get())
+
+    def get_objects(self):
+        return (
+            self,
+            (self.tv_label, self.label),
+            self.frame_canvas,
+            (self.state, self.canvas)
+        )
 
 
 # def multi_combo_factory(master, data, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None):
