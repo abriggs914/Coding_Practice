@@ -21,7 +21,7 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.31
+    Version..............1.32
     Date...........2023-02-13
     Author.......Avery Briggs
     """
@@ -2286,7 +2286,10 @@ class ToggleButton(tkinter.Frame):
         self.frame_canvas = tkinter.Frame(self, width=width_label + width_canvas)
         self.canvas = tkinter.Canvas(self.frame_canvas, width=width_canvas, height=height_canvas)
 
-        self.switch_mode = tkinter.BooleanVar(self, name="switch_mode")
+        self.switch_mode = tkinter.BooleanVar(self)
+
+        # print(f"{labels=}")
+
         if labels is None:
             self.switch_mode.set(True)
         else:
@@ -2368,7 +2371,8 @@ class ToggleButton(tkinter.Frame):
             wd = x2 - x1
             ws = wd / self.n_slices
             self.switch_positions = [(x1 + (i * ws), y1 * 0.9) for i in range(self.n_slices)]
-            self.switch_positions.reverse()
+            if not self.state.get():
+                self.switch_positions.reverse()
 
         # idx 0 == state (0 / 1)
         # idx 1 == state (bg_gradient, fg_gradient)
@@ -2383,21 +2387,12 @@ class ToggleButton(tkinter.Frame):
             ]
         ]
 
-
         self.state_update()
 
     def state_update(self, *args):
+        # print(f"\tstate update\n\t{self.tv_label.get()=}\n\t{self.state.get()=}\n\t{self.switch_mode.get()=}")
         slices = self.n_slices
         state = self.state.get()
-        # bg_start = self.colour_bg_true if not state else self.colour_bg_false
-        # bg_end = self.colour_bg_false if not state else self.colour_bg_true
-        # # bg_gradient_colours = [gradient(i, slices, bg_start, bg_end) for i in range(slices)]
-        # fg_start = self.colour_fg_true if not state else self.colour_fg_false
-        # fg_end = self.colour_fg_false if not state else self.colour_fg_true
-        # bg_gradient_colours = [gradient(i, slices-1, bg_start, bg_end, rgb=False) for i in range(slices)]
-        # fg_gradient_colours = [gradient(i, slices-1, fg_start, fg_end, rgb=False) for i in range(slices)]
-
-        # print(f"Status Update: {state=}")
 
         if not self.switch_mode.get():
             if state:
@@ -2445,12 +2440,15 @@ class ToggleButton(tkinter.Frame):
         iter_update(0)
 
     def click(self, *args):
+        # print(f"\nclick '{self.tv_label.get()=}'")
         if not self.sliding.get():
-            self.switch_positions.reverse()
+            if self.switch_mode.get():
+                self.switch_positions.reverse()
             self.sliding.set(True)
             self.state.set(not self.state.get())
 
     def get_objects(self):
+        # Button, (Label_var, Label), canvas_frame, (State, canvas)
         return (
             self,
             (self.tv_label, self.label),
