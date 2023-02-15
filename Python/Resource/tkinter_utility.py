@@ -21,8 +21,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.32
-    Date...........2023-02-13
+    Version..............1.34
+    Date...........2023-02-15
     Author.......Avery Briggs
     """
 
@@ -1624,7 +1624,7 @@ class MultiComboBox(tkinter.Frame):
 
     def __init__(self, master, data, viewable_column_names=None, height_in_rows=10, indexable_column=0, tv_label=None,
                  kwargs_label=None, tv_combo=None, kwargs_combo=None, auto_grid=True, limit_to_list=True,
-                 new_entry_defaults=None, lock_result_col=None, allow_insert_ask=True, viewable_column_widths=None):
+                 new_entry_defaults=None, lock_result_col=None, allow_insert_ask=True):
         super().__init__(master)
 
         assert isinstance(data,
@@ -1635,14 +1635,21 @@ class MultiComboBox(tkinter.Frame):
 
         assert (lock_result_col in viewable_column_names) if viewable_column_names else ((
                                                                                                  lock_result_col in data.columns) if lock_result_col else True), f"Error column '{lock_result_col}' cannot be set as the locked result column. It is not in the list of viewable column names or in the list of columns in the passed dataframe."
+        if len(viewable_column_names) == 1:
+            new_entry_defaults = []
+        assert (new_entry_defaults is not None or allow_insert_ask) if not limit_to_list else 1, "Error, if allow new inserts to this combobox, then you must also either pass rest_values as 'new_entry_defaults' or set 'allow_insert_ask' to True.\nOtherwise there is no way to assign the rest of the column values."
 
         self.master = master
         self.namer = alpha_seq(10000000)
         self.top_most = patriarch(master)
         self.data = data
         self.limit_to_list = limit_to_list
-        self.allow_insert_ask = False if not limit_to_list else allow_insert_ask
+        self.allow_insert_ask = False if limit_to_list else allow_insert_ask
         self.lock_result_col = lock_result_col
+
+        self.ask_cancelled = f"#!#!# CANCELLED #!#!#"
+        self.insert_none = "|/|/||NONE||/|/|"
+        self.invalid_inp_codes = {self.ask_cancelled, self.insert_none}
 
         if tv_label is not None and tv_combo is not None:
             self.res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(self, value=tv_label)
@@ -1659,33 +1666,21 @@ class MultiComboBox(tkinter.Frame):
 
         if kwargs_label is not None and kwargs_combo is not None:
             self.res_label = tkinter.Label(self, textvariable=self.res_tv_label, **kwargs_label)
-            # res_combo = ttk.Combobox(master, textvariable=res_tv_combo, **kwargs_combo)
         elif kwargs_label is not None:
             self.res_label = tkinter.Label(self, textvariable=self.res_tv_label, **kwargs_label)
-            # res_combo = ttk.Combobox(master, textvariable=res_tv_combo)
         elif kwargs_combo is not None:
             self.res_label = tkinter.Label(self, textvariable=self.res_tv_label)
-            # res_combo = ttk.Combobox(master, textvariable=res_tv_combo, **kwargs_combo)
         else:
             self.res_label = tkinter.Label(self, textvariable=self.res_tv_label)
-            # res_combo = ttk.Combobox(master, textvariable=res_tv_combo)
 
-        # self.frame_top_most = tkinter.Frame(self, width_canvas=t_width, background="yellow")
         self.frame_top_most = tkinter.Frame(self, name="ftm")
         self.frame_tree = tkinter.Frame(self, name="ft")
 
-        print(f"{data.shape=}")
-        print(f"{data=}")
-        self.tree_controller = treeview_factory(
-            self.frame_tree,
-            data,
-            kwargs_treeview={
-                "selectmode": "browse",
-                "height_canvas": height_in_rows
-            },
-            viewable_column_names=viewable_column_names,
-            viewable_column_widths=viewable_column_widths
-        )
+        # print(f"{data.shape=}")
+        # print(f"{data=}")
+        self.tree_controller = treeview_factory(self.frame_tree, data, kwargs_treeview={"selectmode": "browse",
+                                                                                        "height": height_in_rows},
+                                                viewable_column_names=viewable_column_names)
         self.tree_controller, \
         self.tree_tv_label, \
         self.tree_label, \
@@ -1702,10 +1697,11 @@ class MultiComboBox(tkinter.Frame):
                 isinstance(indexable_column, int) and indexable_column < self.data.shape[1]) else (
             0 if not isinstance(indexable_column, str) or indexable_column not in cn else cn.index(indexable_column))
 
-        self.new_entry_defaults = {}
         if isinstance(new_entry_defaults, list) or isinstance(new_entry_defaults, tuple):
             for i, col_default in enumerate(zip(cn, new_entry_defaults)):
                 col, default = col_default
+                if default in self.invalid_inp_codes:
+                    self.throw_fit(default)
                 self.new_entry_defaults[col] = default
         elif isinstance(new_entry_defaults, dict):
             self.new_entry_defaults = new_entry_defaults
@@ -1715,8 +1711,8 @@ class MultiComboBox(tkinter.Frame):
 
         n_rows, n_cols = data.shape
         # t_width = self.tree_controller.idx_width + (n_cols * sum(self.tree_controller.viewable_column_widths))
-        # self.configure(width_canvas=t_width)
-        # self.frame_top_most.configure(width_canvas=t_width)
+        # self.configure(width=t_width)
+        # self.frame_top_most.configure(width=t_width)
 
         self.tv_tree_is_hidden = tkinter.BooleanVar(self, value=True)
 
@@ -1731,7 +1727,7 @@ class MultiComboBox(tkinter.Frame):
         self.typed_in = tkinter.BooleanVar(self, value=False)
 
         self.res_entry = tkinter.Entry(self.frame_top_most, textvariable=self.res_tv_entry, justify="center")
-        # self.res_canvas = tkinter.Canvas(self.frame_top_most, width_canvas=20, height_canvas=20, background=rgb_to_hex("GRAY_62"))
+        # self.res_canvas = tkinter.Canvas(self.frame_top_most, width=20, height=20, background=rgb_to_hex("GRAY_62"))
         # self.res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
 
         self.res_canvas = ArrowButton(self.frame_top_most, background=rgb_to_hex("GRAY_62"))
@@ -1741,7 +1737,6 @@ class MultiComboBox(tkinter.Frame):
         self.res_entry.bind("<Key>", self.update_typed_in)
         self.res_entry.bind("<Return>", self.submit_typed_in)
 
-        self.ask_cancelled = f"#!#!# CANCELLED #!#!#"
         self.returned_value = tkinter.StringVar(self, value="")
 
         if auto_grid:
@@ -1753,41 +1748,7 @@ class MultiComboBox(tkinter.Frame):
             self.res_entry.grid(row=0, column=0, sticky="ew")
             self.res_canvas.grid(row=0, column=1)
 
-            # self.tree_controller.grid(row=2, column=0)
-            # self.tree_treeview.grid(row=0, column=0)
-            # self.tree_scrollbar_x.grid(row=3, sticky="ew")
-            # self.tree_scrollbar_y.grid(row=0, column=1, sticky="ns")
-            # for i, data in enumerate(self.tree_aggregate_objects):
-            #     if i > 0:
-            #         tv, entry, x1x2 = data
-            #         # print(f"{i=}, {tv.get()=}")
-            #         entry.grid(row=0, column=i)
-            #     else:
-            #         data.grid(row=2)
-
-        # self.configure(background="Red")
-        # self.frame_top_most.configure(background="yellow")
-        # self.frame_tree.configure(background="lime")
-        # self.tree_controller.configure(background="indigo")
-        # print(f"{self.children=}")
-        # print(f"{self.frame_top_most.children=}")
-        #
-        # print(f"\n{self.tree_controller.children=}")
-        # print(f"{self.tree_controller.master=}")
-        # print(f"{self.tree_controller.master.master=}")
-        # print(f"{self.tree_controller.master.master.master=}")
-        #
-        # print(f"\n{self.frame_tree.children=}")
-        # print(f"{self.frame_tree.master=}")
-        # print(f"{self.frame_tree.master.master=}")
-        #
-        # print(f"\n{self.tree_treeview.children=}")
-        # print(f"{self.tree_treeview.master=}")
-        # print(f"{self.tree_treeview.master.master=}")
-        # print(f"{self.tree_treeview.master.master.master=}")
-        # print(f"{self.tree_treeview.master.master.master.master=}")
-
-        print(f"Multicombobox created with dimensions (r x c)=({self.data.shape[0]} x {self.data.shape[1]})")
+        # print(f"Multicombobox created with dimensions (r x c)=({self.data.shape[0]} x {self.data.shape[1]})")
 
     def treeview_selection_update(self, event):
         # print(f"treeview_selection_update")
@@ -1795,8 +1756,8 @@ class MultiComboBox(tkinter.Frame):
         if row_ids:
 
             row_id = int(self.tree_treeview.selection()[0])
-            print(f"{row_id=}")
-            print(f"{self.data.shape=}")
+            # print(f"{row_id=}")
+            # print(f"{self.data.shape=}")
             # print(f"{self.tree_treeview.get_children()=}")
 
             # print(f"{row_id[0]=}")
@@ -1811,8 +1772,8 @@ class MultiComboBox(tkinter.Frame):
             if lrc := self.lock_result_col:
                 col = lrc
             value = self.data[col].tolist()[row_id]
-            print(f"{col=}")
-            print(f"{value=}")
+            # print(f"{col=}")
+            # print(f"{value=}")
             self.res_tv_entry.set(str(value))
 
     def value_exists(self, value_in):
@@ -1851,7 +1812,7 @@ class MultiComboBox(tkinter.Frame):
             val = self.res_tv_entry.get()
             col = self.rg_var.get()
             if val:
-                self.add_new_item(val, col)
+                self.add_new_item(val, col, self.new_entry_defaults)
 
     def update_typed_in(self, event):
         # print(f"update_typed_in")
@@ -1863,13 +1824,8 @@ class MultiComboBox(tkinter.Frame):
         # print(f"update_radio_group, {args=}")
         col = self.rg_var.get()
         # print(f"{col=}")
-        self.typed_in.set(True)
-        self.after(250, lambda: self.typed_in.set(False))
-        self.update_treeview()
         self.filter_treeview()
         self.indexable_column = 0 if col == "All" else self.tree_controller.viewable_column_names.index(col)
-        # if self.res_tv_entry.get():
-        #     print(f"QQQ")
 
     def delete_item(self, iid=None, value="|/|/||NONE||/|/|", mode="first" | Literal["first", "all", "ask"]):
         delete_code = "|/|/||NONE||/|/|"
@@ -1878,8 +1834,8 @@ class MultiComboBox(tkinter.Frame):
         else:
             if iid is not None:
                 if isinstance(iid, int):
-                    # print(f"DROPPING IID {iid}")
-                    self.data = self.data.drop([iid]).reset_index(drop=True)
+                    # print(f"DROPPING {iid}")
+                    self.data.drop([iid], inplace=True)
                 else:
                     raise ValueError(f"Cannot delete row '{iid}' from this dataframe.")
             else:
@@ -1902,74 +1858,73 @@ class MultiComboBox(tkinter.Frame):
                         break
 
                 if to_delete:
-                    # print(f"DROPPING VAL {to_delete=}")
-                    # print(f"\tDROP BEFORE\n{self.data=}")
-                    self.data = self.data.drop(to_delete).reset_index(drop=True)
-                    # print(f"\tDROP AFTER\n{self.data=}")
+                    # print(f"DROPPING {to_delete=}")
+                    self.data.drop(to_delete, inplace=True)
                 else:
                     raise ValueError(
                         f"Cannot delete row(s) containing value '{value}' from this dataframe. The value was not found was not Found.")
         self.update_treeview()
 
     def add_new_item(self, val, col, rest_values=None):
+        if val in self.invalid_inp_codes:
+            self.throw_fit(val)
         cn = self.tree_controller.viewable_column_names
         col = cn[0] if col == "All" else col
         idx = cn.index(col)
         i = self.data.shape[0]
-        if rest_values and (isinstance(rest_values, list) or isinstance(rest_values, list) or isinstance(rest_values, dict)):
-            if isinstance(rest_values, list) or isinstance(rest_values, tuple):
-                row = list(rest_values)
-                row.insert(idx, val)
-                # print(f"\tADD A BEFORE\n{self.data=}\n")
-                self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
-                # print(f"\tADD A AFTER\n{self.data=}\n")
-                # print(f"\nB\t{self.data=}")
-                self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row)
-                # self.res_entry.config(foreground="black")
-            else:
-                rest_values.update({col: val})
-                row = {cn: [rest_values[cn]] for cn in cn}
-                # print(f"\n{row=}")
-                # print(f"\n{type(row)=}\n")
-                # print(f"\n{pd.DataFrame(row)=}\n")
-                print(f"\tADD B BEFORE\n{self.data=}\n")
-                # self.data = self.data.append(pandas.DataFrame(row), ignore_index=True)
-                self.data = self.data.append(pandas.DataFrame(row), ignore_index=True)
-                print(f"\tADD B AFTER\n{self.data=}\n")
-                dat = [rest_values[c] for c in cn]
-                self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=dat)
+        # print(f"{type(rest_values)=}\n{rest_values=}")
+        if not self.limit_to_list:
+            if rest_values and (isinstance(rest_values, list) or isinstance(rest_values, list) or isinstance(rest_values, dict)):
+                if isinstance(rest_values, list) or isinstance(rest_values, tuple):
+                    row = list(rest_values)
+                    row.insert(idx, val)
+                    self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
+                    # print(f"\nB\t{self.data=}")
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row)
+                    # self.res_entry.config(foreground="black")
+                else:
+                    row = rest_values.update({col: val})
+                    self.data = self.data.append(pandas.DataFrame(row), ignore_index=True)
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list({k: [v] for k, v in zip(cn, row)}.values()))
 
-        elif self.allow_insert_ask:
-            ans = tkinter.messagebox.askyesnocancel("Create New Item",
-                                                    message=f"Create a new combo box entry with '{val}' in column '{col}' position?")
-            row = []
-            if ans == tkinter.YES:
-                # print(f"SELECTING {i=}")
-                column_names = self.tree_controller.viewable_column_names
-                for column in column_names:
-                    if col != column:
-                        if column in self.new_entry_defaults:
-                            row.append(self.new_entry_defaults[column])
-                        else:
-                            ask_value = self.ask_value(column)
-                            if ask_value == self.ask_cancelled:
-                                return
+            elif self.allow_insert_ask:
+                ans = tkinter.messagebox.askyesnocancel("Create New Item",
+                                                        message=f"Create a new combo box entry with '{val}' in column '{col}' position?")
+                row = []
+                if ans == tkinter.YES:
+                    # print(f"SELECTING {i=}")
+                    column_names = self.tree_controller.viewable_column_names
+                    for column in column_names:
+                        if col != column:
+                            if column in self.new_entry_defaults:
+                                row.append(self.new_entry_defaults[column])
                             else:
-                                row.append(ask_value)
-                    else:
-                        row.append(val)
+                                ask_value = self.ask_value(column)
+                                if ask_value in self.invalid_inp_codes:
+                                    self.throw_fit(ask_value)
+                                else:
+                                    row.append(ask_value)
+                        else:
+                            row.append(val)
 
-                # row = [(self.new_entry_defaults[col] if col in self.new_entry_defaults else self.ask_value(col)) for col in column_names]
-                # print(f"\nA\t{self.data=}")
-                # print(f"{pandas.DataFrame({k: [v] for k, v in zip(cn, row)})}")
-                self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
-                # print(f"\nB\t{self.data=}")
-                self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row))
-                self.res_entry.config(foreground="black")
+                    # row = [(self.new_entry_defaults[col] if col in self.new_entry_defaults else self.ask_value(col)) for col in column_names]
+                    # print(f"\nA\t{self.data=}")
+                    # print(f"{pandas.DataFrame({k: [v] for k, v in zip(cn, row)})}")
+                    self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
+                    # print(f"\nB\t{self.data=}")
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row))
+                    self.res_entry.config(foreground="black")
+                else:
+                    self.res_entry.config(foreground="red")
+            elif len(self.tree_controller.viewable_column_names) == 1:
+                return
             else:
-                self.res_entry.config(foreground="red")
+                raise ValueError("Cannot insert into this combobox")
         else:
             raise ValueError("Cannot insert into this combobox")
+
+    def throw_fit(self, code):
+        raise ValueError(f"You cannot use code='{code}'. It is a keyword.")
 
     def ask_value(self, col):
         tl = tkinter.Toplevel(self)
@@ -1998,10 +1953,9 @@ class MultiComboBox(tkinter.Frame):
         return self.returned_value.get()
 
     def update_treeview(self):
-        # print(f"Update Treeview")
         self.tree_treeview.delete(*self.tree_treeview.get_children())
         for i, row in self.data.iterrows():
-            # print(f"\n\t{i=}\n{row=}\n\n")
+            # print(f"{i=}, {row=}")
             self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row))
 
     def filter_treeview(self):
@@ -2103,7 +2057,7 @@ class MultiComboBox(tkinter.Frame):
         self.tv_tree_is_hidden.set(not is_hidden)
 
     def is_valid(self):
-        return self.res_tv_entry.get() and self.tree_treeview.get_children() and self.tree_treeview.selection()
+        return self.res_tv_entry.get() and self.tree_treeview.get_children()
 
 
 class ArrowButton(tkinter.Canvas):
@@ -2189,7 +2143,6 @@ class ArrowButton(tkinter.Canvas):
 #
 # root.mainloop()
 def round_polygon(canvas, x, y, sharpness, **kwargs):
-
     # The sharpness here is just how close the sub-points
     # are going to be to the vertex. The more the sharpness,
     # the more the sub-points will be closer to the vertex.
@@ -2213,16 +2166,16 @@ def round_polygon(canvas, x, y, sharpness, **kwargs):
         if i != (len(x) - 1):
             # Insert submultiples points. The more the sharpness, the more these points will be
             # closer to the vertex.
-            points.append((ratioMultiplier*x[i] + x[i + 1])/ratioDividend)
-            points.append((ratioMultiplier*y[i] + y[i + 1])/ratioDividend)
-            points.append((ratioMultiplier*x[i + 1] + x[i])/ratioDividend)
-            points.append((ratioMultiplier*y[i + 1] + y[i])/ratioDividend)
+            points.append((ratioMultiplier * x[i] + x[i + 1]) / ratioDividend)
+            points.append((ratioMultiplier * y[i] + y[i + 1]) / ratioDividend)
+            points.append((ratioMultiplier * x[i + 1] + x[i]) / ratioDividend)
+            points.append((ratioMultiplier * y[i + 1] + y[i]) / ratioDividend)
         else:
             # Insert submultiples points.
-            points.append((ratioMultiplier*x[i] + x[0])/ratioDividend)
-            points.append((ratioMultiplier*y[i] + y[0])/ratioDividend)
-            points.append((ratioMultiplier*x[0] + x[i])/ratioDividend)
-            points.append((ratioMultiplier*y[0] + y[i])/ratioDividend)
+            points.append((ratioMultiplier * x[i] + x[0]) / ratioDividend)
+            points.append((ratioMultiplier * y[i] + y[0]) / ratioDividend)
+            points.append((ratioMultiplier * x[0] + x[i]) / ratioDividend)
+            points.append((ratioMultiplier * y[0] + y[i]) / ratioDividend)
             # Close the polygon
             points.append(x[0])
             points.append(y[0])
@@ -2240,16 +2193,17 @@ def round_polygon(canvas, x, y, sharpness, **kwargs):
 # rounded_rect(canvas, 20, 20, 60, 40, 10)
 # root.mainloop()
 def rounded_rect(canvas, x, y, w, h, c):
-    assert isinstance(canvas, tkinter.Canvas), f"Error param 'canvas' must be a tkinter.Canvas object. Got '{canvas}', {type(canvas)=}"
+    assert isinstance(canvas,
+                      tkinter.Canvas), f"Error param 'canvas' must be a tkinter.Canvas object. Got '{canvas}', {type(canvas)=}"
     return [
-        canvas.create_arc(x,   y,   x+2*c,   y+2*c,   start= 90, extent=90, style="arc"),
-        canvas.create_arc(x+w-2*c, y+h-2*c, x+w, y+h, start=270, extent=90, style="arc"),
-        canvas.create_arc(x+w-2*c, y,   x+w, y+2*c,   start=  0, extent=90, style="arc"),
-        canvas.create_arc(x,   y+h-2*c, x+2*c,   y+h, start=180, extent=90, style="arc"),
-        canvas.create_line(x+c, y,   x+w-c, y    ),
-        canvas.create_line(x+c, y+h, x+w-c, y+h  ),
-        canvas.create_line(x,   y+c, x,     y+h-c),
-        canvas.create_line(x+w, y+c, x+w,   y+h-c)
+        canvas.create_arc(x, y, x + 2 * c, y + 2 * c, start=90, extent=90, style="arc"),
+        canvas.create_arc(x + w - 2 * c, y + h - 2 * c, x + w, y + h, start=270, extent=90, style="arc"),
+        canvas.create_arc(x + w - 2 * c, y, x + w, y + 2 * c, start=0, extent=90, style="arc"),
+        canvas.create_arc(x, y + h - 2 * c, x + 2 * c, y + h, start=180, extent=90, style="arc"),
+        canvas.create_line(x + c, y, x + w - c, y),
+        canvas.create_line(x + c, y + h, x + w - c, y + h),
+        canvas.create_line(x, y + c, x, y + h - c),
+        canvas.create_line(x + w, y + c, x + w, y + h - c)
     ]
 
 
@@ -2267,22 +2221,36 @@ class ToggleButton(tkinter.Frame):
             height_canvas=50,
             t_animation_time=500,
             n_slices=10,
+            label_font=("Arial", 12),
+            labels_font=("Arial", 12),
             colour_fg_true="#003000",
             colour_bg_true="#29c164",
             colour_fg_false="#300000",
             colour_bg_false="#c12929",
+            auto_grid=True,
             *args, **kwargs):
         super().__init__(master, width=width_canvas, height=height_canvas, *args, **kwargs)
 
-        assert iscolour(colour_bg_false), f"Error param 'colour_bg_false' must be a colour. Got '{colour_bg_false}', {type(colour_bg_false)=}."
-        assert iscolour(colour_bg_true), f"Error param 'colour_bg_true' must be a colour. Got '{colour_bg_true}', {type(colour_bg_true)=}."
-        assert iscolour(colour_fg_false), f"Error param 'colour_fg_false' must be a colour. Got '{colour_fg_false}', {type(colour_fg_false)=}."
-        assert iscolour(colour_fg_true), f"Error param 'colour_fg_true' must be a colour. Got '{colour_fg_true}', {type(colour_fg_true)=}."
-        assert labels is None or (isinstance(labels, tuple) and len(labels) == 2 and all([isinstance(labels[i], str) for i in range(2)])), f"Error param 'labels' must be a tuple of 2 strings OR None. Got '{labels}', {type(labels)=}"
-        assert isinstance(t_animation_time, int) and (0 < t_animation_time <= 2500), f"Error param 't_animation_time' must be a integer between 1 and 2500 ms. Got '{t_animation_time}', {type(t_animation_time)=}."
+        assert iscolour(
+            colour_bg_false), f"Error param 'colour_bg_false' must be a colour. Got '{colour_bg_false}', {type(colour_bg_false)=}."
+        assert iscolour(
+            colour_bg_true), f"Error param 'colour_bg_true' must be a colour. Got '{colour_bg_true}', {type(colour_bg_true)=}."
+        assert iscolour(
+            colour_fg_false), f"Error param 'colour_fg_false' must be a colour. Got '{colour_fg_false}', {type(colour_fg_false)=}."
+        assert iscolour(
+            colour_fg_true), f"Error param 'colour_fg_true' must be a colour. Got '{colour_fg_true}', {type(colour_fg_true)=}."
+        assert labels is None or (isinstance(labels, tuple) and len(labels) == 2 and all(
+            [isinstance(labels[i], str) for i in
+             range(2)])), f"Error param 'labels' must be a tuple of 2 strings OR None. Got '{labels}', {type(labels)=}"
+        assert isinstance(t_animation_time, int) and (
+                    0 < t_animation_time <= 2500), f"Error param 't_animation_time' must be a integer between 1 and 2500 ms. Got '{t_animation_time}', {type(t_animation_time)=}."
 
+        self.label_font = label_font  # for the main label
+        self.labels_font = labels_font  # for the button labels, if needed
+        self.height_label = height_label
         self.tv_label = tkinter.StringVar(self, value=label_text)
-        self.label = tkinter.Label(self, textvariable=self.tv_label, width=width_label, height=height_label)
+        self.label = tkinter.Label(self, textvariable=self.tv_label, width=width_label, height=height_label,
+                                   font=self.label_font)
         self.frame_canvas = tkinter.Frame(self, width=width_label + width_canvas)
         self.canvas = tkinter.Canvas(self.frame_canvas, width=width_canvas, height=height_canvas)
 
@@ -2301,6 +2269,7 @@ class ToggleButton(tkinter.Frame):
         self.colour_fg_false = colour_fg_false
         self.width = width_canvas
         self.height = height_canvas
+        self.auto_grid = auto_grid
 
         self.t_animation_time = t_animation_time
         self.n_slices = clamp(3, n_slices, self.t_animation_time // 50)
@@ -2340,14 +2309,15 @@ class ToggleButton(tkinter.Frame):
             self.labels = labels  # (True part, False part)
             lbl_on, lbl_off = self.labels
             self.text_off = self.canvas.create_text(self.width * 0.25, self.height / 2, text=lbl_off,
-                                                    fill=self.colour_fg_false)
-            self.text_on = self.canvas.create_text(self.width * 0.75, self.height / 2, text=lbl_on, fill=self.colour_fg_true)
+                                                    fill=self.colour_fg_false, font=self.labels_font)
+            self.text_on = self.canvas.create_text(self.width * 0.75, self.height / 2, text=lbl_on,
+                                                   fill=self.colour_fg_true, font=self.labels_font)
         else:
             # print(f"init switch mode")
-            x1, y1, x2, y2 =\
-                o_x1 * 0.5,\
-                o_y1 * 0.35,\
-                o_x2 * 0.6,\
+            x1, y1, x2, y2 = \
+                o_x1 * 0.5, \
+                o_y1 * 0.35, \
+                o_x2 * 0.6, \
                 o_y2 * 0.65
             sw = x2 - x1
             sh = y2 - y1
@@ -2378,12 +2348,16 @@ class ToggleButton(tkinter.Frame):
         # idx 1 == state (bg_gradient, fg_gradient)
         self.gradients = [
             [
-                [gradient(i, self.n_slices-1, colour_bg_true, colour_bg_false, rgb=False) for i in range(self.n_slices)],
-                [gradient(i, self.n_slices-1, self.colour_fg_true, self.colour_fg_false, rgb=False) for i in range(self.n_slices)]
+                [gradient(i, self.n_slices - 1, colour_bg_true, colour_bg_false, rgb=False) for i in
+                 range(self.n_slices)],
+                [gradient(i, self.n_slices - 1, self.colour_fg_true, self.colour_fg_false, rgb=False) for i in
+                 range(self.n_slices)]
             ],
             [
-                [gradient(i, self.n_slices - 1, self.colour_bg_false, self.colour_bg_true, rgb=False) for i in range(self.n_slices)],
-                [gradient(i, self.n_slices - 1, self.colour_fg_false, self.colour_fg_true, rgb=False) for i in range(self.n_slices)]
+                [gradient(i, self.n_slices - 1, self.colour_bg_false, self.colour_bg_true, rgb=False) for i in
+                 range(self.n_slices)],
+                [gradient(i, self.n_slices - 1, self.colour_fg_false, self.colour_fg_true, rgb=False) for i in
+                 range(self.n_slices)]
             ]
         ]
 
@@ -3076,7 +3050,7 @@ def test_multi_combo_factory():
         mc.delete_item(value=14)
 
     mc.add_new_item(val=1000, col="ColA", rest_values=[-1, False, "0"])
-    mc.add_new_item(val=1000, col="ColA", rest_values={"ColB":-1, "ColC":False, "ColD":"0"})
+    mc.add_new_item(val=1000, col="ColA", rest_values={"ColB": -1, "ColC": False, "ColD": "0"})
     WIN.after(5000, dd)
     # mc.delete_item(value=14)
     # mc.delete_item(iid=0)

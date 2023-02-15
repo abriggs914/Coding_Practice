@@ -11,8 +11,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
         General Utility file of RGB colour values
-        Version...........1.24
-        Date........2023-02-09
+        Version...........1.25
+        Date........2023-02-14
         Author....Avery Briggs
     """
 
@@ -120,6 +120,7 @@ CORNSILK_3 = (205, 200, 177)
 CORNSILK_4 = (139, 136, 120)
 CRIMSON = (220, 20, 60)
 CYAN__AQUA = (0, 255, 255)
+CYAN = (0, 255, 255)
 CYAN_2 = (0, 238, 238)
 CYAN_3 = (0, 205, 205)
 CYAN_4__DARKCYAN_ = (0, 139, 139)
@@ -377,6 +378,7 @@ LIGHTYELLOW_3 = (205, 205, 180)
 LIGHTYELLOW_4 = (139, 139, 122)
 LIMEGREEN = (50, 205, 50)
 LINEN = (250, 240, 230)
+MAGENTA = (255, 0, 255)
 MAGENTA_2 = (238, 0, 238)
 MAGENTA_3 = (205, 0, 205)
 MAGENTA_4__DARKMAGENTA_ = (139, 0, 139)
@@ -683,6 +685,7 @@ colour_values_list = [
     CORNSILK_3,
     CORNSILK_4,
     CRIMSON,
+    CYAN,
     CYAN_2,
     CYAN_3,
     CYAN_4__DARKCYAN_,
@@ -943,6 +946,7 @@ colour_values_list = [
     LIGHTYELLOW_4,
     LIMEGREEN,
     LINEN,
+    MAGENTA,
     MAGENTA_2,
     MAGENTA_3,
     MAGENTA_4__DARKMAGENTA_,
@@ -1252,6 +1256,7 @@ colour_names_list = [
     "CORNSILK_3",
     "CORNSILK_4",
     "CRIMSON",
+    "CYAN",
     "CYAN_2",
     "CYAN_3",
     "CYAN_4__DARKCYAN_",
@@ -1512,6 +1517,7 @@ colour_names_list = [
     "LIGHTYELLOW_4",
     "LIMEGREEN",
     "LINEN",
+    "MAGENTA",
     "MAGENTA_2",
     "MAGENTA_3",
     "MAGENTA_4__DARKMAGENTA_",

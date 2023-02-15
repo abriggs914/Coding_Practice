@@ -1,10 +1,12 @@
+import os
 import tkinter
 
 from colour_utility import *
 from ctkinter import *
 from orbiting_date_picker import OrbitingDatePicker
 from tkinter_utility import *
-from utility import Rect2
+from pyodbc_connection import connect
+from location_utiility import company_from_location
 
 
 # class ToggleButton(tkinter.Frame):
@@ -144,6 +146,7 @@ class ToggleButtonQuantity(ToggleButton):
             init_val=0,
             stop_val=100,
             scale_kwargs=None,
+            label_scale_kwargs=None,
             *args,
             **kwargs
     ):
@@ -151,9 +154,19 @@ class ToggleButtonQuantity(ToggleButton):
 
         print(f"Start state: {self.state.get()=}\n{self.switch_mode.get()=}")
 
-        valid_scale_kwargs = {
+        valid_label_scale_kwargs = {
             "row": 0,
             "column": 2,
+            "rowspan": 1,
+            "columnspan": 1,
+            "ipadx": 0,
+            "ipady": 0,
+            "padx": 0,
+            "pady": 0
+        }
+        valid_scale_kwargs = {
+            "row": 0,
+            "column": 3,
             "rowspan": 1,
             "columnspan": 1,
             "ipadx": 0,
@@ -169,30 +182,72 @@ class ToggleButtonQuantity(ToggleButton):
                 if k not in self.scale_kwargs:
                     self.scale_kwargs.update({k: v})
 
-        self.start_val = start_val
-        self.init_val = init_val
-        self.stop_val = stop_val
+        if label_scale_kwargs is None:
+            self.label_scale_kwargs = valid_label_scale_kwargs
+        else:
+            self.label_scale_kwargs = scale_kwargs
+            for k, v in valid_label_scale_kwargs.items():
+                if k not in self.label_scale_kwargs:
+                    self.label_scale_kwargs.update({k: v})
+
+        self.start_val = start_val if start_val is not None else 0
+        self.stop_val = stop_val if stop_val is not None else 0
+        self.init_val = clamp(self.start_val, init_val, self.stop_val)
         self.tv_scale = tkinter.IntVar(self, value=self.init_val)
+        self.tv_scale.trace_variable("w", self.update_scale)
+        self.tv_label_scale = tkinter.StringVar(self, value=f"x {self.tv_scale.get()}")
         self.scale = tkinter.Scale(
             self,
             variable=self.tv_scale,
             from_=self.start_val,
             to=self.stop_val,
-            orient=tkinter.HORIZONTAL
+            orient=tkinter.HORIZONTAL,
+            width=self.height * 0.3,
+            length=self.width,
+            showvalue=0
+        )
+        self.label_scale = tkinter.Label(
+            self,
+            textvariable=self.tv_label_scale,
+            background=self.colour_bg_true,
+            foreground=self.colour_fg_true,
+            font=self.label_font
         )
 
-        # self.rowconfigure("all", weight=1, uniform='row')
-        # self.columnconfigure("all", weight=1, uniform='column')
-        # self.columnconfigure(0, weight=1, uniform='column')
+        self.rowconfigure("all", weight=1, uniform='row')
+        self.columnconfigure([0, 1, 2, 3], minsize=100)
+        self.columnconfigure([0, 1], weight=1, uniform='column')
         # self.columnconfigure(1, weight=1, uniform='column')
         # self.columnconfigure(2, weight=1, uniform='column')
 
     def show_question(self, *args):
         print(f"show_quantity {self.state.get()=}")
         if self.state.get():
+            self.label_scale.grid(**self.label_scale_kwargs)
             self.scale.grid(**self.scale_kwargs)
+            self.animate_number()
         else:
+            self.label_scale.grid_forget()
             self.scale.grid_forget()
+
+    def animate_number(self):
+        s = self.n_slices
+        t = self.after_time
+        g = self.gradients[1]
+        b, f = g
+
+        def iter_update(i):
+            if i == s:
+                return
+            cf = f[i]
+            cb = b[i]
+            self.label_scale.configure(background=cb, foreground=cf)
+            self.after(t, iter_update, (i + 1))
+
+        iter_update(0)
+
+    def update_scale(self, *args):
+        self.tv_label_scale.set(f"x {self.tv_scale.get()}")
 
     # def state_change(self, *args):
     #     state = self.state.get()
@@ -200,7 +255,7 @@ class ToggleButtonQuantity(ToggleButton):
     #         self.scale.grid()
 
     def get_objects(self):
-        return (*super().get_objects(), (self.tv_scale, self.scale))
+        return (*super().get_objects(), (self.tv_scale, self.label_scale, self.scale))
 
 
 class ToggleButtonWiredLess(ToggleButton):
@@ -223,11 +278,12 @@ class ToggleButtonWiredLess(ToggleButton):
             "row": 0,
             "column": 2,
             "rowspan": 1,
-            "columnspan": 1,
+            "columnspan": 2,
             "ipadx": 0,
             "ipady": 0,
             "padx": 0,
-            "pady": 0
+            "pady": 0,
+            "sticky": "nsew"
         }
         valid_label_kwargs = {
             "row": 0,
@@ -299,7 +355,12 @@ class ToggleButtonWiredLess(ToggleButton):
             = ToggleButton(
             self,
             label_text="Wireless?",
-            labels=("Yes", "No")
+            labels=("Yes", "No"),
+            height_canvas=self.height,
+            height_label=self.height_label,
+            label_font=self.label_font,
+            width_canvas=100,
+            width_label=10
         ).get_objects()
         self.tb__tv_label, self.tb__label = self.tb__label_data
         self.tb__state, self.tb__canvas = self.tb__canvas_data
@@ -311,6 +372,10 @@ class ToggleButtonWiredLess(ToggleButton):
             print(f"##self.switch_positions NOT FOUND")
 
         print(f"Start state: {self.tb__.state.get()=}\n{self.tb__.switch_mode.get()=}")
+
+        self.rowconfigure("all", weight=1, uniform='row')
+        self.columnconfigure([0, 1, 2, 3], minsize=100)
+        self.columnconfigure([0, 1], weight=1, uniform='column')
 
         # self.rowconfigure("all", weight=1, uniform='row')
         # self.columnconfigure("all", weight=1, uniform='column')
@@ -372,21 +437,46 @@ class HardwareFormApp(tkinter.Tk):
 
     def __init__(self):
         super().__init__()
-        self.geometry(f"800x600")
+        # self.geometry(f"800x600")
+        self.state("zoomed")
 
         q = "quantity"
         w = "wired(less)"
+        d = "databaseSelection"
+
+        self.flags = {
+            "-odbc": self.flag_odbc,
+            "-outlook": self.flag_outlook,
+        }
 
         self.frame_top_controls = tkinter.Frame(self, name="top_controls")
-        self.frame_software = tkinter.Frame(self, name="fame_software", background="#141441")
-        self.frame_hardware = tkinter.Frame(self, name="fame_hardware", background="#411414")
+        self.frame_top_controls_a = tkinter.Frame(self.frame_top_controls, name="top_controls_a")
+        self.frame_top_controls_a_a = tkinter.Frame(self.frame_top_controls_a, name="top_controls_a_a")
+        self.frame_top_controls_b = tkinter.Frame(self.frame_top_controls, name="top_controls_b")
+        self.frame_software = tkinter.Frame(self, name="fame_software", background="#141441", width=200)
+        self.frame_hardware = tkinter.Frame(self, name="fame_hardware", background="#411414", width=200)
         self.frame_comp_choice = tkinter.Frame(self.frame_hardware, name="fame_comp_choice")
-        self.frame_toggle_buttons = tkinter.Frame(self.frame_hardware, background=random_colour(rgb=False))
+        self.frame_hardware_toggle_buttons = tkinter.Frame(self.frame_hardware, background=random_colour(rgb=False))
+        self.frame_software_toggle_buttons = tkinter.Frame(self.frame_software, background=random_colour(rgb=False))
+        self.frame_auto_reports = tkinter.Frame(self, name="frame_auto_reports", background="#54CE98")
+
+        self.tv_label_auto_desc_text, \
+        self.label_auto_desc_text, \
+        self.tv_auto_desc_text, \
+        self.auto_desc_text, \
+            = entry_factory(
+            self.frame_auto_reports,
+            tv_label="Auto-Generated Objective:",
+            tv_entry="Please select an objective from above.",
+            kwargs_entry={
+                "width": 100
+            }
+        )
 
         self.tv_label_comp_choice = tkinter.StringVar(self, value="Select Hardware:", name="tv_label_comp_choice")
         self.tv_comp_choice = tkinter.StringVar(self, name="tv_comp_choice")
         self.tv_label_company_choice = tkinter.StringVar(self, value="Select Company:", name="tv_label_company_choice")
-        self.tv_company_choice = tkinter.StringVar(self, name="tv_company_choice")
+        self.tv_company_choice = tkinter.StringVar(self, name="tv_company_choice", value=company_from_location())
         self.tv_label_objective_choice = tkinter.StringVar(self, value="What would you like help with?",
                                                            name="tv_label_objective_choice")
         self.tv_objective_choice = tkinter.StringVar(self, name="tv_objective_choice")
@@ -395,18 +485,37 @@ class HardwareFormApp(tkinter.Tk):
         self.tb_allow_hardware = ToggleButton(self.frame_hardware, label_text="Hardware:", labels=None, state=False)
         self.tb_allow_software = ToggleButton(self.frame_software, label_text="Software:", labels=None, state=False)
 
-        self.tv_label_odp, self.label_odp = label_factory(self.frame_top_controls, tv_label="Due Date:")
-        self.odp = OrbitingDatePicker(self.frame_top_controls)
-
-        self.list_of_objectives = [
-            "New Employee Hire",
-            "New Position for Existing Employee",
-            "Employee Departure",
-            "Installations",
-            "Removals",
-            "Travelling / Sick Day Lending",
-            "License Renewals"
-        ]
+        self.list_of_objectives = {
+            "New Employee Hire": {
+                "obj": """
+                    New employee {new_emp_name}, will be starting {new_start_date} at {new_company}.
+                    They will be reporting to {new_boss}.
+                    They will require the following Hardware and Software prepared and installed.
+                    {new_hardware}
+                    {new_software}
+                    
+                    Please notify {new_follow_up} once this has been completed
+                    
+                    Comments:
+                    {new_comments}
+                    """,
+                "flags": {
+                    "auto": {
+                        True: [
+                            "-odbc",
+                            "-outlook"
+                        ]
+                    },
+                    "other": []
+                }
+            },
+            "New Position for Existing Employee": {},
+            "Employee Departure": {},
+            "Installations": {},
+            "Removals": {},
+            "Travelling / Sick Day Lending": {},
+            "License Renewals": {}
+        }
         self.list_of_computers = [
             "Laptop",
             "Desktop",
@@ -422,18 +531,36 @@ class HardwareFormApp(tkinter.Tk):
             "Hugo"
         ]
 
+        # Begin factories #
+
         self.tv_label_objective_choice, \
         self.label_objective_choice, \
         self.tv_objective_choice, \
         self.combo_objective_choice = \
             combo_factory(
-                self.frame_top_controls,
+                self.frame_top_controls_b,
                 tv_label=self.tv_label_objective_choice,
                 tv_combo=self.tv_objective_choice,
                 kwargs_combo={
                     "justify": tkinter.CENTER,
-                    "values": self.list_of_objectives,
+                    "values": list(self.list_of_objectives.keys()),
                     "width": 50
+                }
+            )
+
+        self.tv_label_entry_user_name, \
+        self.label_entry_user_name, \
+        self.tv_entry_user_name, \
+        self.entry_user_name = \
+            entry_factory(
+                self.frame_top_controls_b,
+                tv_label="Username:",
+                tv_entry=os.getlogin(),
+                # tv_entry=os.environ.get('USERNAME'),
+                kwargs_entry={
+                    "justify": tkinter.CENTER,
+                    "state": "disabled",
+                    "width": 30
                 }
             )
 
@@ -456,7 +583,7 @@ class HardwareFormApp(tkinter.Tk):
         self.tv_company_choice, \
         self.combo_company_choice = \
             combo_factory(
-                self.frame_top_controls,
+                self.frame_top_controls_b,
                 tv_label=self.tv_label_company_choice,
                 tv_combo=self.tv_company_choice,
                 kwargs_combo={
@@ -465,15 +592,146 @@ class HardwareFormApp(tkinter.Tk):
                 }
             )
 
+        self.tv_label_odp, self.label_odp = label_factory(self.frame_top_controls_b, tv_label="Due Date:")
+
+        # End factories #
+
+        # Begin Other Control Widgets #
+
+        self.odp = OrbitingDatePicker(self.frame_top_controls_b)
+
+        sql = """
+            SELECT
+                [ITR Customers].[Name]
+                , [ITR Customers].[Company]
+                , [Dept].[Dept] AS [Department]
+            FROM
+                [ITR Customers]
+            INNER JOIN
+                [Dept]
+            ON
+                [ITR Customers].[Department] = [Dept].[DeptID]
+            WHERE
+                [Active] = 1
+            ORDER BY
+                [Name]
+        """
+        self.df_itr_customers = connect(sql=sql, server="server3", database="BWSdb", uid="user5", pwd="M@gic456")
+        self.df_itr_departments = self.df_itr_customers["Department"].unique()
+        self.df_itr_companies = self.df_itr_customers["Company"].unique()
+        self.df_itr_employees = self.df_itr_customers["Name"].unique()
+        self.tv_label_mc_emp_selection, self.label_mc_emp_selection = label_factory(
+            self.frame_top_controls_a_a,
+            tv_label="Who is this for?"
+        )
+        self.tb_same_user_as_for = ToggleButton(
+            self.frame_top_controls_a,
+            label_text="Me",
+            state=True,
+            labels=None
+        )
+        self.mc_emp_selection = MultiComboBox(
+            self.frame_top_controls_a,
+            data=self.df_itr_customers,
+            viewable_column_names=[
+                "Name",
+                "Company",
+                "Department"
+            ],
+            indexable_column="Name",
+            # tv_label="Who is this for?",
+            limit_to_list=False,
+            lock_result_col="Name"
+        )
+
+        # End Other Control Widgets #
+
+        # Begin Software #
+
         self.questions_software = [
-            ("Email Outlook", None, tkinter.StringVar(self, name="outlook")),
-            ("Access", None, tkinter.StringVar(self, name="access")),
+            ("Outlook Email", None, tkinter.StringVar(self, name="outlook")),
+            ("Access", d, tkinter.StringVar(self, name="access")),
             ("Syspro8", None, tkinter.StringVar(self, name="syspro8")),
             ("ShopClock", None, tkinter.StringVar(self, name="shopclock")),
             ("SolidWorks", None, tkinter.StringVar(self, name="solidworks")),
             ("Inventor", None, tkinter.StringVar(self, name="inventor")),
-            ("SGVault", None, tkinter.StringVar(self, name="sgvault")),
+            ("SGVault", None, tkinter.StringVar(self, name="sgvault"))
         ]
+        self.questions_software = {
+            k.lower().replace("(", "").replace(")", ""): dict(zip(["text", "follow_up", "var"], [k, f, v])) for
+            k, f, v in self.questions_software}
+
+        for q_title, q_data in self.questions_software.items():
+            q_text, q_follow_up, q_var = list(q_data.values())
+            follow_up_style = None if q_follow_up is None else (
+                q_follow_up if not isinstance(q_follow_up, tuple) else q_follow_up[0])
+            if follow_up_style == q:
+                style, data = q_follow_up
+            # elif follow_up_style == w:
+            #     style, data = q_follow_up if q_follow_up
+            else:
+                style, data = (w, (None, None))
+
+            print(f"\n{follow_up_style=}, {style=}, {data=}")
+
+            if follow_up_style == w:
+                print(f"WIREDLESS  {q_text=}")
+                tb, label_data, \
+                frame_canvas, \
+                btn_data = \
+                    ToggleButtonWiredLess(
+                        self.frame_software_toggle_buttons,
+                        label_text=q_text,
+                        labels=None,
+                        width_label=20,
+                        width_canvas=50,
+                        height_canvas=30
+                    ).get_objects()
+                quantity_data = None, None, None
+            else:
+                print(f"QUANTITY  {q_text=}")
+                tb, label_data, \
+                frame_canvas, btn_data, \
+                quantity_data = \
+                    ToggleButtonQuantity(
+                        self.frame_software_toggle_buttons,
+                        label_text=q_text,
+                        labels=None,
+                        start_val=data[0],
+                        stop_val=data[1],
+                        width_label=20,
+                        width_canvas=50,
+                        height_canvas=30
+                    ).get_objects()
+
+            tv_label, label = label_data
+            var, canvas = btn_data
+            q_var, label_scale, scale = quantity_data
+            self.questions_software[q_title].update({
+                "button": tb,
+                "tv_label": tv_label,
+                "label": label,
+                "var": var,
+                "frame_canvas": frame_canvas,
+                "canvas": canvas,
+                "q_var": q_var,
+                "scale": scale
+            })
+
+            if q_follow_up is not None:
+                if style == q:
+                    var.trace_variable("w", tb.show_question)
+                if style == w:
+                    var.trace_variable("w", tb.show_question)
+
+            label.grid(row=0, column=0, columnspan=1, rowspan=1)
+            canvas.grid(row=0, column=1, columnspan=1, rowspan=1)
+            frame_canvas.grid(row=0, column=1, columnspan=1, rowspan=1)
+            tb.grid()
+
+        # End Software #
+
+        # Begin Hardware #
 
         self.questions_hardware = [
             ("Extra Charger(s)", None, tkinter.StringVar(self, name="extra_chargers")),
@@ -509,27 +767,33 @@ class HardwareFormApp(tkinter.Tk):
                 frame_canvas, \
                 btn_data = \
                     ToggleButtonWiredLess(
-                        self.frame_toggle_buttons,
+                        self.frame_hardware_toggle_buttons,
                         label_text=q_text,
-                        labels=None
+                        labels=None,
+                        width_label=20,
+                        width_canvas=50,
+                        height_canvas=30
                     ).get_objects()
-                quantity_data = None, None
+                quantity_data = None, None, None
             else:
                 print(f"QUANTITY  {q_text=}")
                 tb, label_data, \
                 frame_canvas, btn_data, \
                 quantity_data = \
                     ToggleButtonQuantity(
-                        self.frame_toggle_buttons,
+                        self.frame_hardware_toggle_buttons,
                         label_text=q_text,
                         labels=None,
                         start_val=data[0],
-                        stop_val=data[1]
+                        stop_val=data[1],
+                        width_label=20,
+                        width_canvas=50,
+                        height_canvas=30
                     ).get_objects()
 
             tv_label, label = label_data
             var, canvas = btn_data
-            q_var, scale = quantity_data
+            q_var, label_scale, scale = quantity_data
             self.questions_hardware[q_title].update({
                 "button": tb,
                 "tv_label": tv_label,
@@ -553,35 +817,77 @@ class HardwareFormApp(tkinter.Tk):
             tb.grid()
 
         self.tv_comp_choice.trace_variable("w", self.update_comp_choice)
+        self.tv_objective_choice.trace_variable("w", self.update_objective)
 
         # ================================================================
-        # ================================================================
+        # ===================        Griding       =======================
         # ================================================================
 
+        ipad_x_1, ipad_y_1 = 0, 0
+        r, c, rs, cs, ix, iy, x, y, s = "row", "column", "rowspan", "columnspan", "ipadx", "ipady", "padx", "pady", "sticky"
         self.grid_args = {
-            "frame_toggle_buttons": {"row": 2, "column": 0, "ipadx": 12, "ipady": 12},
-            "frame_comp_choice": {"row": 1, "column": 0, "ipadx": 12, "ipady": 12},
-            "frame_software": {"row": 1, "column": 1, "ipadx": 12, "ipady": 12},
-            "frame_hardware": {"row": 1, "column": 0, "ipadx": 12, "ipady": 12},
-            "frame_top_controls": {"row": 0, "column": 0, "ipadx": 12, "ipady": 12},
-            "label_objective_choice": {"row": 0, "column": 0, "ipadx": 12, "ipady": 12},
-            "combo_objective_choice": {"row": 0, "column": 1, "ipadx": 12, "ipady": 12},
-            "label_company_choice": {"row": 1, "column": 0, "ipadx": 12, "ipady": 12},
-            "combo_company_choice": {"row": 1, "column": 1, "ipadx": 12, "ipady": 12},
-            "label_comp_choice": {"row": 2, "column": 0, "ipadx": 12, "ipady": 12},
-            "combo_comp_choice": {"row": 2, "column": 1, "ipadx": 12, "ipady": 12},
-            "label_odp": {"row":3, "column":0, "ipadx":12, "ipady":12},
-            "odp": {"row":3, "column":1, "ipadx":12, "ipady":12}
+
+            # self
+            "frame_top_controls": {r: 0, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+            "frame_hardware": {r: 1, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+            "frame_software": {r: 1, c: 1, ix: ipad_x_1, iy: ipad_y_1},
+            "frame_auto_reports": {r: 2, c: 0, rs: 1, cs: 3, ix: ipad_x_1, iy: ipad_y_1, s: "nswe"},
+
+            # frame_top_controls
+            "frame_top_controls_a": {r: 0, c: 0, rs: 1, cs: 1, ix: ipad_x_1, iy: ipad_y_1},
+            "frame_top_controls_b": {r: 0, c: 1, rs: 1, cs: 1, ix: ipad_x_1, iy: ipad_y_1},
+
+            # frame_top_controls_a
+            "frame_top_controls_a_a": {r: 0, c: 0},
+            "mc_emp_selection": {r: 1, c: 0, rs: 1, cs: 1},
+
+            # frame_top_controls_a_a
+            "label_mc_emp_selection": {r: 0, c: 0, rs: 1, cs: 1},
+
+            # frame_top_controls_b
+            "label_entry_user_name": {r: 0, c: 0, rs: 1, cs: 1, ix: ipad_x_1, iy: ipad_y_1},
+            "entry_user_name": {r: 0, c: 1, rs: 1, cs: 1, ix: ipad_x_1, iy: ipad_y_1},
+            "label_objective_choice": {r: 1, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+            "combo_objective_choice": {r: 1, c: 1, ix: ipad_x_1, iy: ipad_y_1},
+            "label_company_choice": {r: 2, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+            "combo_company_choice": {r: 2, c: 1, ix: ipad_x_1, iy: ipad_y_1},
+            "label_odp": {r: 3, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+            "odp": {r: 3, c: 1, ix: ipad_x_1, iy: ipad_y_1},
+
+            # frame_hardware
+            "frame_comp_choice": {r: 1, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+            "frame_hardware_toggle_buttons": {r: 2, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+
+            # frame_software
+            "frame_software_toggle_buttons": {r: 2, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+
+            # frame_comp_choice
+            "label_comp_choice": {r: 2, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+            "combo_comp_choice": {r: 2, c: 1, ix: ipad_x_1, iy: ipad_y_1},
+
+            # frame_auto_reports
+            "label_auto_desc_text": {r: 0, c: 0, rs: 1, cs: 3, ix: ipad_x_1, iy: ipad_y_1},
+            "auto_desc_text": {r: 1, c: 0, rs: 1, cs: 3, ix: ipad_x_1, iy: ipad_y_1, s: "nswe"}
         }
 
-        self.label_objective_choice.grid(**self.grid_args["label_objective_choice"])
-        self.combo_objective_choice.grid(**self.grid_args["combo_objective_choice"])
-        self.label_company_choice.grid(**self.grid_args["label_company_choice"])
-        self.combo_company_choice.grid(**self.grid_args["combo_company_choice"])
-        self.label_comp_choice.grid(**self.grid_args["label_company_choice"])
-        self.combo_comp_choice.grid(**self.grid_args["combo_company_choice"])
-        self.label_odp.grid(**self.grid_args["label_odp"])
-        self.odp.grid(**self.grid_args["odp"])
+        for k, v in self.grid_args.items():
+            eval(f"self.{k}.grid(**{v})")
+
+        # self.mc_emp_selection.grid(**self.grid_args["mc_emp_selection"])
+        #
+        # self.label_entry_user_name.grid(**self.grid_args["label_entry_user_name"])
+        # self.entry_user_name.grid(**self.grid_args["entry_user_name"])
+        # self.label_objective_choice.grid(**self.grid_args["label_objective_choice"])
+        # self.combo_objective_choice.grid(**self.grid_args["combo_objective_choice"])
+        # self.label_company_choice.grid(**self.grid_args["label_company_choice"])
+        # self.combo_company_choice.grid(**self.grid_args["combo_company_choice"])
+        # self.label_comp_choice.grid(**self.grid_args["label_company_choice"])
+        # self.combo_comp_choice.grid(**self.grid_args["combo_company_choice"])
+        # self.label_odp.grid(**self.grid_args["label_odp"])
+        # self.odp.grid(**self.grid_args["odp"])
+        # self.frame_auto_reports.grid(**self.grid_args["frame_auto_reports"])
+        # self.label_auto_desc_text.grid(**self.grid_args["label_auto_desc_text"])
+        # self.auto_desc_text.grid(**self.grid_args["auto_desc_text"])
 
         tb, label_data, canvas_frame, canvas_data = self.tb_allow_hardware.get_objects()
         tb.grid(row=0, column=0)
@@ -589,29 +895,72 @@ class HardwareFormApp(tkinter.Tk):
         canvas_frame.grid(row=0, column=1)
         canvas_data[1].grid(row=0, column=0)
         tb, label_data, canvas_frame, canvas_data = self.tb_allow_software.get_objects()
-        tb.grid(row=2, column=2)
+        tb.grid(row=0, column=0)
+        label_data[1].grid(row=0, column=0)
+        canvas_frame.grid(row=0, column=1)
+        canvas_data[1].grid(row=0, column=0)
+        tb, label_data, canvas_frame, canvas_data = self.tb_same_user_as_for.get_objects()
+        tb.grid(row=0, column=0)
         label_data[1].grid(row=0, column=0)
         canvas_frame.grid(row=0, column=1)
         canvas_data[1].grid(row=0, column=0)
 
-        self.frame_top_controls.grid(**self.grid_args["frame_top_controls"])
+        # self.label_mc_emp_selection.grid(**self.grid_args["label_mc_emp_selection"])
+        #
+        # self.frame_top_controls.grid(**self.grid_args["frame_top_controls"])
+        # self.frame_top_controls_a.grid(**self.grid_args["frame_top_controls_a"])
+        # self.frame_top_controls_a_a.grid(**self.grid_args["frame_top_controls_a_a"])
+        # self.frame_top_controls_b.grid(**self.grid_args["frame_top_controls_b"])
+
+        # self.frame_hardware.grid(**self.grid_args["frame_hardware"])
+        # self.frame_software.grid(**self.grid_args["frame_software"])
+        # self.frame_comp_choice.grid(**self.grid_args["frame_comp_choice"])
+        # self.frame_hardware_toggle_buttons.grid(**self.grid_args["frame_hardware_toggle_buttons"])
+
+        # End Griding #
+
+        # Begin Configurations #
 
         self.tb_allow_hardware.state.trace_variable("w", self.update_allow_hardware)
-        self.tb_allow_hardware.state.trace_variable("w", self.update_allow_software)
+        self.tb_allow_software.state.trace_variable("w", self.update_allow_software)
+        self.frame_top_controls.columnconfigure([0, 1], minsize=450)
 
-        self.frame_hardware.grid(**self.grid_args["frame_hardware"])
-        self.frame_software.grid(**self.grid_args["frame_software"])
-        # self.frame_comp_choice.grid(**self.grid_args["frame_comp_choice"])
-        # self.frame_toggle_buttons.grid(**self.grid_args["frame_toggle_buttons"])
+        # End Configurations #
+
+    def update_objective(self, *args):
+        val = self.tv_objective_choice.get()
+        if val in self.list_of_objectives:
+            print(f"{val=}\n{self.list_of_objectives[val]=}")
+            full_obj = self.list_of_objectives[val]
+            obj = full_obj["obj"]
+            flags = full_obj["flags"]
+            flags_auto = flags["auto"]
+            flags_other = flags["other"]
+
+            new_user_name = self.tv_entry_user_name.get()
+            # new_emp_name
+            # new_start_date
+            new_company = self.tv_company_choice.get()
+            # new_boss
+            # new_hardware
+            # new_software
+            # new_follow_up
+            # new_comments
+
+        else:
+            # New objective
+            pass
+        print(f"objective='{val}'")
 
     def update_comp_choice(self, *args):
         val = self.tv_comp_choice.get()
-        if val not in self.list_of_computers[:3]:
-            self.frame_toggle_buttons.grid_forget()
+        if val not in self.list_of_computers[:2]:
+            self.frame_hardware_toggle_buttons.grid_forget()
         else:
-            self.frame_toggle_buttons.grid(**self.grid_args["frame_toggle_buttons"])
+            self.frame_hardware_toggle_buttons.grid(**self.grid_args["frame_hardware_toggle_buttons"])
 
     def update_allow_hardware(self, *args):
+        """When hardware switch is clicked, update showing section"""
         allow = self.tb_allow_hardware.state.get()
         if allow:
             self.show_hardware_section()
@@ -619,7 +968,8 @@ class HardwareFormApp(tkinter.Tk):
             self.hide_hardware_section()
 
     def update_allow_software(self, *args):
-        allow = self.tb_allow_hardware.state.get()
+        """When software switch is clicked, update showing section"""
+        allow = self.tb_allow_software.state.get()
         if allow:
             self.show_software_section()
         else:
@@ -627,17 +977,26 @@ class HardwareFormApp(tkinter.Tk):
 
     def show_hardware_section(self):
         self.frame_comp_choice.grid(**self.grid_args["frame_comp_choice"])
-        self.frame_toggle_buttons.grid(**self.grid_args["frame_toggle_buttons"])
+        self.frame_hardware_toggle_buttons.grid(**self.grid_args["frame_hardware_toggle_buttons"])
 
     def hide_hardware_section(self):
         self.frame_comp_choice.grid_forget()
-        self.frame_toggle_buttons.grid_forget()
+        self.frame_hardware_toggle_buttons.grid_forget()
 
     def show_software_section(self):
-        pass
+        self.frame_software_toggle_buttons.grid(**self.grid_args["frame_software_toggle_buttons"])
 
     def hide_software_section(self):
+        self.frame_software_toggle_buttons.grid_forget()
+
+    def flag_odbc(self, level=True):
+        # set odbc flag
         pass
+
+    def flag_outlook(self, level=True):
+        # set outlook flag
+        pass
+
 
 def test_form():
     app = HardwareFormApp()
@@ -682,14 +1041,14 @@ def test_form():
     # questions_hardware = {k.lower().replace("(", "").replace(")", ""): dict(zip(["text", "follow_up", "var"], [k, f, v])) for
     #              k, f, v in questions_hardware}
     #
-    # frame_toggle_buttons = tkinter.Frame(win, background=random_colour(rgb=False))
+    # frame_hardware_toggle_buttons = tkinter.Frame(win, background=random_colour(rgb=False))
     # for q_title, q_data in questions_hardware.items():
     #     q_text, q_follow_up, q_var = list(q_data.values())
     #     tb, label_data, \
     #     frame_canvas, btn_data,\
     #     quantity_data = \
     #         ToggleButtonQuantity(
-    #             frame_toggle_buttons,
+    #             frame_hardware_toggle_buttons,
     #             label_text=q_text,
     #             labels=None
     #             # ,
@@ -722,7 +1081,7 @@ def test_form():
     # label_comp_choice.grid(row=0, column=0, ipadx=12, ipady=12)
     # combo_comp_choice.grid(row=0, column=1, ipadx=12, ipady=12)
     # frame_comp_choice.grid()
-    # frame_toggle_buttons.grid()
+    # frame_hardware_toggle_buttons.grid()
     #
     # # tbq = ToggleButtonQuantity(win)
 
