@@ -72,7 +72,7 @@ def coords_to_address(lat, lng):
 def company_from_location(location_in=None):
     """Based on device's GPS location, return the company for that province.
     Pass a geoPy.Location object to bypass async call."""
-    if location_in is not None:
+    if location_in is None:
         location = coords_to_location(*get_device_gps_coords())
         province = location.raw["address"]["state"]
     else:

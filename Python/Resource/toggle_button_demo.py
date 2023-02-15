@@ -6,7 +6,7 @@ from ctkinter import *
 from orbiting_date_picker import OrbitingDatePicker
 from tkinter_utility import *
 from pyodbc_connection import connect
-from location_utiility import company_from_location
+from location_utility import company_from_location
 
 
 # class ToggleButton(tkinter.Frame):
