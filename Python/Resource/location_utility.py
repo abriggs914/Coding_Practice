@@ -47,7 +47,9 @@ def get_device_gps_coords():
     try:
         return asyncio.run(async_device_gps())
     except PermissionError:
-        raise PermissionError("ERROR: You need to allow applications to access you location in Windows settings")
+        msg = "ERROR: You need to allow applications to access you location in Windows settings"
+        print(msg)
+        return msg, ""
 
 
 
