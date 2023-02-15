@@ -1,4 +1,5 @@
 import geocoder
+import geopy
 from geopy.geocoders import Nominatim
 import asyncio
 import winsdk.windows.devices.geolocation as wdg
@@ -12,8 +13,8 @@ import winsdk.windows.devices.geolocation as wdg
 VERSION = \
     """	
         General Utility functions for location.
-        Version...........1.01
-        Date........2023-02-14
+        Version...........1.02
+        Date........2023-02-15
         Author....Avery Briggs
     """
 
@@ -68,10 +69,15 @@ def coords_to_address(lat, lng):
     return Nominatim(user_agent="GetLoc").reverse(f"{lat}, {lng}").address
 
 
-def company_from_location():
-    """Based on device's GPS location, return the company fro that province."""
-    location = coords_to_location(*get_device_gps_coords())
-    province = location.raw["address"]["state"]
+def company_from_location(location_in=None):
+    """Based on device's GPS location, return the company for that province.
+    Pass a geoPy.Location object to bypass async call."""
+    if location_in is not None:
+        location = coords_to_location(*get_device_gps_coords())
+        province = location.raw["address"]["state"]
+    else:
+        assert isinstance(location_in, geopy.Location), f"Error, param 'location_in' must be a geoPy.Location object. Got '{location_in}', {type(location_in)=}"
+        province = location_in.raw["address"]["state"]
     match province:
         case 'New Brunswick / Nouveau-Brunswick':
             return "BWS"
