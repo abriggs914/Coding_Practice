@@ -21,8 +21,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.34
-    Date...........2023-02-15
+    Version..............1.35
+    Date...........2023-02-16
     Author.......Avery Briggs
     """
 
@@ -1740,15 +1740,19 @@ class MultiComboBox(tkinter.Frame):
         self.returned_value = tkinter.StringVar(self, value="")
 
         if auto_grid:
-            self.grid(ipadx=12, ipady=12)
-            # self.grid_columnconfigure(, weight=10)
-            self.res_label.grid(row=0, column=0)
-
-            self.frame_top_most.grid(row=1, column=0, sticky="ew")
-            self.res_entry.grid(row=0, column=0, sticky="ew")
-            self.res_canvas.grid(row=0, column=1)
+            self.grid_widget()
 
         # print(f"Multicombobox created with dimensions (r x c)=({self.data.shape[0]} x {self.data.shape[1]})")
+
+    def grid_widget(self):
+        """Use this to appropriately place self and all sub widgets."""
+        self.grid(ipadx=12, ipady=12)
+        # self.grid_columnconfigure(, weight=10)
+        self.res_label.grid(row=0, column=0)
+
+        self.frame_top_most.grid(row=1, column=0, sticky="ew")
+        self.res_entry.grid(row=0, column=0, sticky="ew")
+        self.res_canvas.grid(row=0, column=1)
 
     def treeview_selection_update(self, event):
         # print(f"treeview_selection_update")
@@ -2362,6 +2366,25 @@ class ToggleButton(tkinter.Frame):
         ]
 
         self.state_update()
+
+        if self.auto_grid:
+            self.grid_widgets()
+
+    def grid_widgets(self):
+        """Use this to grid self and all sub-widgets."""
+        # self.grid(row=0, column=0)
+        self.grid()
+        self.label.grid(row=0, column=0)
+        self.frame_canvas.grid(row=0, column=1)
+        self.canvas.grid(row=0, column=0)
+
+    def grid_forget_widgets(self):
+        """Use this to grid self and all sub-widgets."""
+        # self.grid(row=0, column=0)
+        self.grid_forget()
+        self.label.grid_forget()
+        self.frame_canvas.grid_forget()
+        self.canvas.grid_forget()
 
     def state_update(self, *args):
         # print(f"\tstate update\n\t{self.tv_label.get()=}\n\t{self.state.get()=}\n\t{self.switch_mode.get()=}")

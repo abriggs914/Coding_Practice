@@ -1,7 +1,9 @@
 import geocoder
 import geopy
 from geopy.geocoders import Nominatim
+import os
 import asyncio
+import subprocess
 import winsdk.windows.devices.geolocation as wdg
 
 
@@ -13,7 +15,7 @@ import winsdk.windows.devices.geolocation as wdg
 VERSION = \
     """	
         General Utility functions for location.
-        Version...........1.02
+        Version...........1.03
         Date........2023-02-15
         Author....Avery Briggs
     """
@@ -48,8 +50,14 @@ def get_device_gps_coords():
         return asyncio.run(async_device_gps())
     except PermissionError:
         msg = "ERROR: You need to allow applications to access you location in Windows settings"
-        print(msg)
-        return msg, ""
+        # print(msg)
+        # return PermissionError, msg
+        # subprocess.Popen([r"C:\Windows\System32\DpiScaling.exe"])
+        # subprocess.Popen([r"ms-settings:location"])
+        # subprocess.Popen([r"C:\Windows\System32\LocationNotificationWindows.exe"])
+        # subprocess.Popen([r"C:\Windows\System32\control.exe"])
+        os.system("start ms-settings:privacy-location")
+        raise PermissionError(msg)
 
 
 
@@ -76,7 +84,8 @@ def company_from_location(location_in=None):
     """Based on device's GPS location, return the company for that province.
     Pass a geoPy.Location object to bypass async call."""
     if location_in is None:
-        location = coords_to_location(*get_device_gps_coords())
+        lat, lng = get_device_gps_coords()
+        location = coords_to_location(lat, lng)
         province = location.raw["address"]["state"]
     else:
         assert isinstance(location_in, geopy.Location), f"Error, param 'location_in' must be a geoPy.Location object. Got '{location_in}', {type(location_in)=}"
@@ -88,6 +97,8 @@ def company_from_location(location_in=None):
             return "Stargate"
         case 'Quebec':
             return "Lewis"
+        case _:
+            raise ValueError("Move first")
     # print(f"{province=}, {location=}, {type(location)=}")
     return "UNKNOWN"
 

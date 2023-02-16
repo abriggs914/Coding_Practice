@@ -15,8 +15,8 @@ import numpy as np
 VERSION = \
     """	
         Class to add an Orbiting Date Picker Widget in place of a traditional date picker. Works with tkcalendar.DateEntry and datetime.datetime objects.
-        Version..............1.02
-        Date...........2022-09-12
+        Version..............1.03
+        Date...........2023-02-16
         Author.......Avery Briggs
     """
 
@@ -232,7 +232,7 @@ class OrbitingDatePicker(Frame):
         )
 
         self.start_date = start_date
-        self.date = start_date
+        self._date = start_date
         self.degrees_per_day = self.calc_deg_per_day()
 
         self.dateentry_entry = DateEntry(self, year=self.date.year, month=self.date.month, day=self.date.day, font=("Arial", 12), cursor="hand1")
@@ -261,12 +261,12 @@ class OrbitingDatePicker(Frame):
             print("SHOWING")
             self.canvas_background.grid(row=1, column=1, rowspan=3, columnspan=3)
             # self.tv_showing_orbiter.set("Hide Orbiter")
-            self.checkbox_showing_orbiter.config(text="Hide Orbiter")
+            # self.checkbox_showing_orbiter.config(text="Hide Orbiter")
         else:
             print("HIDING")
             self.canvas_background.grid_forget()
             # self.tv_showing_orbiter.set("Show Orbiter")
-            self.checkbox_showing_orbiter.config(text="Show Orbiter")
+            # self.checkbox_showing_orbiter.config(text="Show Orbiter")
 
     def dateentry_change(self, *event):
         self.set_earth_pos(self.dateentry_entry.get_date(), from_date_entry=True)
