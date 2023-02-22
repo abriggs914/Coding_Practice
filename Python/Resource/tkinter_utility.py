@@ -1635,6 +1635,10 @@ class MultiComboBox(tkinter.Frame):
 
         assert (lock_result_col in viewable_column_names) if viewable_column_names else ((
                                                                                                  lock_result_col in data.columns) if lock_result_col else True), f"Error column '{lock_result_col}' cannot be set as the locked result column. It is not in the list of viewable column names or in the list of columns in the passed dataframe."
+
+        if viewable_column_names is None:
+            viewable_column_names = list(data.columns)
+
         if len(viewable_column_names) == 1:
             new_entry_defaults = []
         assert (new_entry_defaults is not None or allow_insert_ask) if not limit_to_list else 1, "Error, if allow new inserts to this combobox, then you must also either pass rest_values as 'new_entry_defaults' or set 'allow_insert_ask' to True.\nOtherwise there is no way to assign the rest of the column values."
@@ -2454,6 +2458,89 @@ class ToggleButton(tkinter.Frame):
         )
 
 
+class TextWithVar(tkinter.Text):
+    '''A text widget that accepts a 'textvariable' option'''
+    def __init__(self, parent, textvariable, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        try:
+            self._textvariable = kwargs.pop("textvariable")
+        except KeyError:
+            self._textvariable = None
+
+        # if the variable has data in it, use it to initialize
+        # the widget
+        if self._textvariable is not None:
+            self.insert("1.0", self._textvariable.get())
+
+        # this defines an internal proxy which generates a
+        # virtual event whenever text is inserted or deleted
+        self.tk.eval('''
+            proc widget_proxy {widget widget_command args} {
+
+                # call the real tk widget command with the real args
+                set result [uplevel [linsert $args 0 $widget_command]]
+
+                # if the contents changed, generate an event we can bind to
+                if {([lindex $args 0] in {insert replace delete})} {
+                    event generate $widget <<Change>> -when tail
+                }
+                # return the result from the real widget command
+                return $result
+            }
+            ''')
+
+        # this replaces the underlying widget with the proxy
+        self.tk.eval('''
+            rename {widget} _{widget}
+            interp alias {{}} ::{widget} {{}} widget_proxy {widget} _{widget}
+        '''.format(widget=str(self)))
+
+        # set up a binding to update the variable whenever
+        # the widget changes
+        self.bind("<<Change>>", self._on_widget_change)
+
+        # set up a trace to update the text widget when the
+        # variable changes
+        if self._textvariable is not None:
+            self._textvariable.trace("wu", self._on_var_change)
+
+    def _on_var_change(self, *args):
+        '''Change the text widget when the associated textvariable changes'''
+
+        # only change the widget if something actually
+        # changed, otherwise we'll get into an endless
+        # loop
+        text_current = self.get("1.0", "end-1c")
+        var_current = self._textvariable.get()
+        if text_current != var_current:
+            self.delete("1.0", "end")
+            self.insert("1.0", var_current)
+
+    def _on_widget_change(self, event=None):
+        '''Change the variable when the widget changes'''
+        if self._textvariable is not None:
+            self._textvariable.set(self.get("1.0", "end-1c"))
+
+
+class Example(tkinter.Frame):
+    def __init__(self, parent):
+        tkinter.Frame.__init__(self, parent)
+
+        self.textvar = tkinter.StringVar()
+        self.textvar.set("Hello, world!")
+
+        # create an entry widget and a text widget that
+        # share a textvariable; typing in one should update
+        # the other
+        self.entry = tkinter.Entry(self, textvariable=self.textvar)
+        self.text = TextWithVar(self,textvariable=self.textvar,
+                                borderwidth=1, relief="sunken",
+                                background="bisque")
+
+        self.entry.pack(side="top", fill="x", expand=True)
+        self.text.pack(side="top", fill="both", expand=True)
+
+
 # def multi_combo_factory(master, data, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None):
 #     assert isinstance(data, pandas.DataFrame), f"Error param 'data' must be an instance of a pandas.DataFrame, got '{type(data)}'."
 #     assert False if (kwargs_combo and ("values" in kwargs_combo)) else True, f"Cannot pass values as a keyword argument here. Pass all data in the data param as a pandas.DataFrame."
@@ -3159,6 +3246,15 @@ def test_arrow_button():
     win.mainloop()
 
 
+def test_test_factory():
+    win = tkinter.Tk()
+    win.geometry("600x600")
+
+    t = tkinter.Text(win,)
+
+    win.mainloop()
+
+
 if __name__ == '__main__':
     print('PyCharm')
 
@@ -3176,3 +3272,8 @@ if __name__ == '__main__':
     # test_apply_state_3()
     test_multi_combo_factory()
     # test_arrow_button()
+
+
+    # root = tkinter.Tk()
+    # Example(root).pack(fill="both", expand=True)
+    # root.mainloop()

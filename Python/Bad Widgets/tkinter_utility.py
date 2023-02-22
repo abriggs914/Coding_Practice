@@ -1,14 +1,17 @@
 import datetime
 import random
 import tkinter
+from collections import OrderedDict
 
 import pandas
 
 from typing import Literal
 
+import pandas as pd
+
 import utility
 from utility import grid_cells, clamp_rect, clamp, isnumber, alpha_seq, random_date
-from colour_utility import rgb_to_hex, font_foreground, Colour, random_colour
+from colour_utility import rgb_to_hex, font_foreground, Colour, random_colour, brighten, darken, gradient, iscolour
 from tkinter import ttk, messagebox
 
 #######################################################################################################################
@@ -18,8 +21,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.23
-    Date...........2022-12-06
+    Version..............1.35
+    Date...........2023-02-16
     Author.......Avery Briggs
     """
 
@@ -56,6 +59,15 @@ def top_most_tk(obj):
         return obj
     else:
         return top_most_tk(obj.master)
+
+
+# https://stackoverflow.com/questions/12892180/how-to-get-the-name-of-the-master-frame-in-tkinter
+def patriarch(widget, window_b=False):
+    while widget and widget.master:
+        widget = widget.master
+        if window_b and isinstance(widget, tkinter.Toplevel):
+            break
+    return widget
 
 
 def entry_factory(master, tv_label=None, tv_entry=None, kwargs_label=None, kwargs_entry=None):
@@ -200,7 +212,7 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
             if is_tk_var(default_value):
                 var = default_value
             else:
-                var = tkinter.StringVar(default_value)
+                var = tkinter.StringVar(master, value=default_value)
         else:
             var = tkinter.StringVar(master, buttons[0])
 
@@ -233,8 +245,8 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
 
 
 class TreeviewExt(ttk.Treeview):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, master, *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
 
     def treeview_sort_column(self, col, reverse):
         l = [(self.set(k, col), k) for k in self.get_children('')]
@@ -290,12 +302,13 @@ class TreeviewController(tkinter.Frame):
             self.button_delete_item     -   tkinter.Button for new items
         )
         """
-        super().__init__(*args, **kwargs)
+        super().__init__(master, *args, **kwargs)
 
         assert isinstance(df,
                           pandas.DataFrame), f"Error, param 'dataframe' must be an instance of a pandas Dataframe, got: '{type(df)}'."
 
         self.master = master
+        self.df = df.reset_index(drop=True)
         self.viewable_column_names = viewable_column_names
         self.viewable_column_widths = viewable_column_widths
         self.tv_label = tv_label
@@ -307,7 +320,7 @@ class TreeviewController(tkinter.Frame):
         self.p_width = 0.16
         self.aggregate_data = aggregate_data if isinstance(aggregate_data, dict) else dict()
 
-        self.iid_namer = (i for i in range(1000000))
+        # self.iid_namer = (i for i in range(1000000))
 
         if self.viewable_column_names is None:
             self.viewable_column_names = list(df.columns)
@@ -347,12 +360,19 @@ class TreeviewController(tkinter.Frame):
         self.treeview.column("#0", width=self.idx_width, stretch=False)
         self.treeview.heading("#0", text="#", anchor=tkinter.CENTER)
 
-        for i, row in enumerate(df.iterrows()):
-            next(self.iid_namer)
-            idx, row = row
-            # print(f"{row=}, {type(row)=}")
+        print(f"A {df.shape=}")
+        print(f"{list(df.itertuples())=}\n{len(list(df.itertuples()))}")
+        # for i, row in df.itertuples():
+        f = list(range(1015))
+        for i, row in df.iterrows():
+            # next(self.iid_namer)
+            print(f"{i=}, {row=}, {type(row)=}")
             dat = [row[c_name] for c_name in self.viewable_column_names]
-            self.treeview.insert("", tkinter.END, text=f"{i+1}", iid=i, values=dat)
+            self.treeview.insert("", tkinter.END, text=f"{i + 1}", iid=i, values=dat)
+            f.remove(i)
+        print(f"{f=}")
+        print(f"B {df.shape=}")
+        print(f"{len(list(df.iterrows()))=}")
 
         # treeview.bind("<<TreeviewSelect>>", CALLBACK_HERE)
         self.scrollbar_x, self.scrollbar_y = None, None
@@ -426,7 +446,7 @@ class TreeviewController(tkinter.Frame):
             # print(f"Analyzing COLUMN '{key}'")
             key, k = key
             col_data = self.treeview.column(key)
-            width = col_data.get("width")
+            width = col_data.get("width_canvas")
             width = int(width * self.p_width) if width is not None else 10
             x1, x2 = self.column_x(key)
             if k in self.aggregate_data:
@@ -467,9 +487,9 @@ class TreeviewController(tkinter.Frame):
         x1, x2 = 0, 0
         for i, name in enumerate(self.viewable_column_names):
             col_data = self.treeview.column(name)
-            x2 += col_data.get("width", 0)
+            x2 += col_data.get("width_canvas", 0)
             if name != column_name:
-                x1 += col_data.get("width", 0)
+                x1 += col_data.get("width_canvas", 0)
             else:
                 break
         return x1, x2
@@ -495,11 +515,11 @@ class TreeviewController(tkinter.Frame):
             # print(f"{i=}, {child=}, {values=}, {val=}")
             if scan_unk:
                 scan_unk = False
-                if val_s.isnumeric() and ((dot_count:=val_s.count(".")) < 2):
+                if val_s.isnumeric() and ((dot_count := val_s.count(".")) < 2):
                     scan_num = True
                     scan_int = (dot_count == 0)
             else:
-                if val_s.isnumeric() and ((dot_count:=val_s.count(".")) < 2):
+                if val_s.isnumeric() and ((dot_count := val_s.count(".")) < 2):
                     if scan_num:
                         # values = list(map(str, values))
                         scan_int = (scan_int and (dot_count == 0))
@@ -570,12 +590,13 @@ class TreeviewController(tkinter.Frame):
         region1 = self.treeview.identify("region", event.x, event.y)
         column = self.treeview.identify_column(event.x)
         column_data = self.treeview.column(column)
-        width1 = column_data.get("width", 0)
+        width1 = column_data.get("width_canvas", 0)
         name = column_data.get("id", None)
         # print(f"{name=}\n{self.viewable_column_names=}\n{self.viewable_column_widths=}")
         col_idx1 = self.viewable_column_names.index(name)
-        col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (len(self.viewable_column_names) - 1)
-        width2 = self.treeview.column(f"#{col_idx2}").get("width", 0)
+        col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (
+                len(self.viewable_column_names) - 1)
+        width2 = self.treeview.column(f"#{col_idx2}").get("width_canvas", 0)
         if region1 == "separator" and column != "#0":
             diff_width = self.viewable_column_widths[col_idx1 - 1] - width1
             # print(f"\n\n\t{column_data=}, {width1=}, {width2=}, {diff_width=}")
@@ -590,11 +611,13 @@ class TreeviewController(tkinter.Frame):
             # print(f"{self.aggregate_objects=}")
             # print(f"{self.aggregate_objects[col_idx1 + 2]=}")
             # print(f"{self.aggregate_objects[col_idx1 + 2][1]=}")
-            self.aggregate_objects[col_idx1 + 2][1].configure(width=int(self.viewable_column_widths[col_idx1 - 1] * self.p_width))
-            self.aggregate_objects[col_idx2 + 2][1].configure(width=int(self.viewable_column_widths[col_idx2 - 1] * self.p_width))
-
+            self.aggregate_objects[col_idx1 + 2][1].configure(
+                width=int(self.viewable_column_widths[col_idx1 - 1] * self.p_width))
+            self.aggregate_objects[col_idx2 + 2][1].configure(
+                width=int(self.viewable_column_widths[col_idx2 - 1] * self.p_width))
 
     def get_objects(self):
+        """TreeViewController(tkinter.Frame) || StringVar || Label || TreeViewExt(ttk.TreeView) || ttk.Srollbar || ttk.ScrollBar || Tuple(StringVar, Button) || Tuple(StringVar, Button) || ListOf(Frame, Tuple(TextVariablev, Entry, (x1, x2))) ... Tuple(TextVariablev, Entry, (x1, x2)))"""
         return \
             self, \
             self.tv_label, \
@@ -603,7 +626,7 @@ class TreeviewController(tkinter.Frame):
             self.scrollbar_x, \
             self.scrollbar_y, \
             (self.tv_button_new_item, self.button_new_item), \
-            (self.tv_button_delete_item, self.button_delete_item),\
+            (self.tv_button_delete_item, self.button_delete_item), \
             self.aggregate_objects
 
     def next_iid(self):
@@ -733,13 +756,13 @@ def treeview_factory(
 #         , **kwargs_treeview
 #         # , **kwargs
 #     )
-#     treeview.column("#0", width=0, stretch=tkinter.NO)
+#     treeview.column("#0", width_canvas=0, stretch=tkinter.NO)
 #     treeview.heading("#0", text="", anchor=tkinter.CENTER)
 #
 #     for i, col in enumerate(viewable_column_names):
 #         c_width = viewable_column_widths[i]
 #         # print(f"{c_width=}, {type(c_width)=}")
-#         treeview.column(col, width=c_width, anchor=tkinter.CENTER)
+#         treeview.column(col, width_canvas=c_width, anchor=tkinter.CENTER)
 #         treeview.heading(col, text=col, anchor=tkinter.CENTER, command=lambda _col=col: \
 #                      treeview_sort_column(treeview, _col, False))
 #
@@ -765,363 +788,6 @@ def treeview_factory(
 #         treeview.configure(yscrollcommand=scrollbar_y.set)
 #
 #     return tv_label, label, treeview, scrollbar_x, scrollbar_y
-
-
-def test_entry_factory():
-    WIN = tkinter.Tk()
-    WIDTH, HEIGHT = 500, 500
-    WIN.geometry(f"{WIDTH}x{HEIGHT}")
-    tv_1, lbl_1, tv_2, entry_1 = entry_factory(WIN, tv_label="This is a Label", tv_entry="This is an Entry",
-                                               kwargs_entry={"background": "yellow"})
-    lbl_1.pack()
-    entry_1.pack()
-    WIN.mainloop()
-
-
-def test_combo_1():
-    WIN = tkinter.Tk()
-    WIN.geometry(f"500x500")
-    WIN.title("Select Start Date")
-
-    f1 = tkinter.Frame(WIN)
-    f2 = tkinter.Frame(f1)
-    dealers = ["A", "B", "C"]
-    colours = ["red", "blue", "green", "custom", "none"]
-    tv1 = tkinter.StringVar(f2, value="")
-    cb1 = ttk.Combobox(f2, values=dealers, textvariable=tv1, state="readonly")
-    tv2 = tkinter.StringVar(f2, value="")
-    cb2 = ttk.Combobox(f2, values=colours, textvariable=tv2, state="readonly")
-
-    def new_dealer(var_name, index, mode):
-        d = tv1.get()
-        c = tv2.get()
-        if c and d:
-            if c not in ["custom", "none"]:
-                print(f"Setting {d=} to {c=}")
-            elif c == "custom":
-                print(f"custom colour from dealer {d=}")
-            else:
-                print(f"removing colour from dealer {d=}")
-
-    def new_colour(var_name, index, mode):
-        d = tv1.get()
-        c = tv2.get()
-        if c and d:
-            if c not in ["custom", "none"]:
-                print(f"Setting {d=} to {c=}")
-            elif c == "custom":
-                print(f"custom colour from dealer {d=}")
-            else:
-                print(f"removing colour from dealer {d=}")
-
-    tv1.trace_variable("w", new_dealer)
-    tv2.trace_variable("w", new_colour)
-
-    cb1.grid()
-    cb2.grid()
-    f1.grid()
-    f2.grid()
-    WIN.mainloop()
-
-
-def test_combo_factory():
-    WIN = tkinter.Tk()
-    WIN.geometry(f"500x500")
-    WIN.title("Select Start Date")
-    dealers = ["A", "B", "C"]
-    colours = ["red", "blue", "green", "custom", "none"]
-    sv_lbl_1, lbl_1, sv_cb_1, cb_1 = combo_factory(WIN, tv_label="Dealer", kwargs_combo={"values": dealers})
-    sv_lbl_2, lbl_2, sv_cb_2, cb_2 = combo_factory(WIN, tv_label="Colour", kwargs_combo={"values": colours})
-
-    def new_dealer(var_name, index, mode):
-        d = sv_cb_1.get()
-        c = sv_cb_2.get()
-        if c and d:
-            if c not in ["custom", "none"]:
-                print(f"Setting {d=} to {c=}")
-            elif c == "custom":
-                print(f"custom colour from dealer {d=}")
-            else:
-                print(f"removing colour from dealer {d=}")
-
-    def new_colour(var_name, index, mode):
-        d = sv_cb_1.get()
-        c = sv_cb_2.get()
-        if c and d:
-            if c not in ["custom", "none"]:
-                print(f"Setting {d=} to {c=}")
-            elif c == "custom":
-                print(f"custom colour from dealer {d=}")
-            else:
-                print(f"removing colour from dealer {d=}")
-
-    sv_cb_1.trace_variable("w", new_dealer)
-    sv_cb_2.trace_variable("w", new_colour)
-    lbl_1.grid(row=1, column=1)
-    lbl_2.grid(row=2, column=1)
-    cb_1.grid(row=1, column=2)
-    cb_2.grid(row=2, column=2)
-    WIN.mainloop()
-
-
-def test_list_factory():
-    WIN = tkinter.Tk()
-    WIN.geometry(f"500x500")
-    a, b, c, d = list_factory(WIN, tv_label="This is a demo List:", tv_list=["hi", "there"])
-    b.grid(row=1, column=1)
-    d.grid(row=2, column=1)
-
-    def update_f(*args):
-        print(f"{args=}")
-        selected_indices = d.curselection()
-        print(f"{selected_indices=}")
-        for i in selected_indices:
-            print(f"\t{d.get(i)=}")
-
-    d.bind('<<ListboxSelect>>', update_f)
-    WIN.mainloop()
-
-
-def test_radio_factory():
-    WIN = tkinter.Tk()
-    WIN.geometry(f"500x500")
-
-    def update_radio_choice(*args):
-        print(f"{a.get()=}")
-
-    buttons_list = [
-        "a",
-        "b",
-        "c",
-        "quit"
-    ]
-    a, b, c = radio_factory(WIN, buttons_list)
-
-    for btn in c:
-        btn.pack()
-
-    a.trace_variable("w", update_radio_choice)
-
-    WIN.mainloop()
-
-
-def test_treeview_factory_1():
-    WIN = tkinter.Tk()
-    WIN.geometry(f"500x500")
-
-    df = pandas.DataFrame({
-        "species": ["Cat", "Dog", "Fish", "Parrot"]
-        , "name": ["Tim", "Tam", "Tom", "Tum"]
-        , "dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7),
-                  datetime.datetime(2005, 8, 31)]
-    })
-
-    print(f"df:\n\n{df}")
-
-    tv_label, label, treeview, scrollbar_x, scrollbar_y = treeview_factory(WIN, df)
-    tv_label.set("I forgot to pass a title! - no worries.")
-    label.pack()
-    treeview.pack()
-
-    WIN.mainloop()
-
-
-def test_treeview_factory_2():
-    WIN = tkinter.Tk()
-    WIN.geometry(f"500x500")
-
-    df = pandas.DataFrame({
-        "species": ["Cat", "Dog", "Fish", "Parrot"]
-        , "name": ["Tim", "Tam", "Tom", "Tum"]
-        , "invisible_col": [True, True, True, False]
-        , "dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7),
-                  datetime.datetime(2005, 8, 31)]
-    })
-
-    print(f"df:\n\n{df}")
-
-    tv_label, label, treeview, scrollbar_x, scrollbar_y = treeview_factory(
-        WIN,
-        df,
-        viewable_column_names=["species", "name", "dob"],
-        viewable_column_widths=[300, 125, 200]
-    )
-    tv_label.set("I forgot to pass a title! - no worries.")
-    label.pack(side=tkinter.TOP)
-    scrollbar_y.pack(side=tkinter.RIGHT, anchor="e", fill="y")
-    treeview.pack(side=tkinter.TOP)
-    scrollbar_x.pack(side=tkinter.BOTTOM)
-
-    WIN.mainloop()
-
-
-def test_treeview_factory_3():
-    WIN = tkinter.Tk()
-    WIN.geometry(f"500x500")
-
-    df = pandas.DataFrame({
-        "species": ["Cat", "Dog", "Fish", "Parrot"]
-        , "name": ["Tim", "Tam", "Tom", "Tum"]
-        , "invisible_col": [True, True, True, False]
-        , "dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7),
-                  datetime.datetime(2005, 8, 31)]
-    })
-
-    namer = alpha_seq(4, numbers_instead=True)
-
-    for i in range(df.shape[0]):
-        next(namer)
-
-    def gen_random_entry():
-        return [
-            str(random.randint(0, 25)),
-            str(random.randint(0, 25)),
-            # random.choice([True, False]),
-            random_date(start_year=2020, end_year=2024)
-        ]
-
-    def insert_new_entry(index=tkinter.END):
-        data = gen_random_entry()
-        iid = int(next(namer))
-        text = f"NEW TEXT"
-        treeview.insert("", index, iid=iid, text=text, values=data)
-
-    def delete_entry():
-        selection = treeview.selection()
-        print(f"{selection=}")
-        if selection:
-            # delete the selected entries
-            # row_id = treeview.focus()  # return only 1
-            for row_id in selection:
-                print(f"{row_id=}")
-                treeview.delete(row_id)
-
-    print(f"df:\n\n{df}")
-
-    tv_label, label, treeview, scrollbar_x, scrollbar_y = treeview_factory(
-        WIN,
-        df,
-        viewable_column_names=["species", "name", "dob"],
-        viewable_column_widths=[300, 125, 200]
-    )
-    tv_label.set("I forgot to pass a title! - no worries.")
-    label.pack(side=tkinter.TOP)
-    scrollbar_y.pack(side=tkinter.RIGHT, anchor="e", fill="y")
-    treeview.pack(side=tkinter.TOP)
-    scrollbar_x.pack(side=tkinter.BOTTOM)
-
-    tv_btn1, btn1 = button_factory(WIN, tv_btn="new entry", kwargs_btn={"command": insert_new_entry})
-    tv_btn2, btn2 = button_factory(WIN, tv_btn="del entry", kwargs_btn={"command": delete_entry})
-    btn1.pack()
-    btn2.pack()
-
-    WIN.mainloop()
-
-
-def test_treeview_factory_4():
-    WIN = tkinter.Tk()
-    WIN.geometry(f"500x500")
-
-    df = pandas.DataFrame({
-        "species": ["Cat", "Dog", "Fish", "Parrot"]
-        , "name": ["Tim", "Tam", "Tom", "Tum"]
-        , "invisible_col": [True, True, True, False]
-        , "dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7),
-                  datetime.datetime(2005, 8, 31)]
-        , "# lives": [9, 1, 1, 1]
-    })
-
-    df["age(D)"] = (datetime.datetime.now() - df["dob"]).tolist()[0].days
-
-    print(f"df:\n\n{df}")
-
-    def avg(*lst):
-        # print(f"average of {lst=}, {type(lst)=}")
-        return utility.avg(*lst)
-
-    def show_column_info():
-        for k, v in treeview_controller.aggregate_data.items():
-            if k not in treeview_controller.viewable_column_names:
-                try:
-                    if not k.startswith("#"):
-                        raise Exception(f"Error aggregate data key '{k}' not found in the list of visible column names.")
-                    elif 0 > (num:=int(k[1:])) > len(treeview_controller.viewable_column_names):
-                        raise Exception(f"Error aggregate data key '{k}' is out of range.")
-                    else:
-                        key = treeview_controller.viewable_column_names[num]
-                except ValueError as ve:
-                    raise ValueError(f"Error aggregate data key '{k}' not found in the list of visible column names.")
-            else:
-                key = k
-
-            print(f"{v=}")
-            print(f"{treeview_controller.treeview.column(key)=}, {type(treeview_controller.treeview.column(key))=}")
-            print(f"{treeview_controller.treeview.heading(key)=}, {type(treeview_controller.treeview.heading(key))=}")
-
-    treeview_controller = treeview_factory(
-        WIN,
-        df,
-        viewable_column_names=["species", "name", "age(D)", "# lives", "dob"],
-        viewable_column_widths=[300, 125, 75, 75, 200],
-        aggregate_data={
-            "#1": min,
-            "species": max,
-            "age(D)": avg,
-            "# lives": avg,
-            "dob": min
-        }
-        # aggregate_data={
-        #     "#1": min,
-        #     "species": max,
-        #     "age(D)": avg,
-        #     "# lives": avg
-        # }
-    )
-    frame,\
-    tv_label,\
-    label,\
-    treeview,\
-    scrollbar_x,\
-    scrollbar_y,\
-    insert_btn_data,\
-    delete_btn_data,\
-    aggregate_objects\
-        = treeview_controller.get_objects()
-    tv_label.set("I forgot to pass a title! - no worries.")
-    label.grid()
-    scrollbar_y.grid(sticky="ns")
-    treeview.grid()
-    scrollbar_x.grid(sticky="ew")
-
-    tv_button_insert_item, button_insert_item = insert_btn_data
-    tv_button_delete_item, button_delete_item = delete_btn_data
-
-    frame.grid()
-    for i, aggregate_data in enumerate(aggregate_objects):
-        # print(f"\t{i=}, {aggregate_data=}")
-        if i == 0:
-            # first is always the frame
-            aggregate_data.grid()
-        else:
-            tv, entry, x1x2 = aggregate_data
-            entry.pack(side=tkinter.LEFT)
-            x1, x2 = x1x2
-            # print(f"{x1=}")
-            # entry.place(x=x1, y=500)
-
-    button_insert_item.grid()
-    button_delete_item.grid()
-
-    tv_button_column_info, button_column_info = button_factory(
-        WIN,
-        tv_btn="column info",
-        kwargs_btn={
-            "command": show_column_info
-        }
-    )
-    button_column_info.grid()
-
-    WIN.mainloop()
 
 
 class Slider(tkinter.Frame):
@@ -1954,6 +1620,1247 @@ def apply_state(root, state_in, direction: Literal["up", "down"] = "up", exclude
     apply_state_inner(root, state_in, direction, depth=0, visited=set())
 
 
+class MultiComboBox(tkinter.Frame):
+
+    def __init__(self, master, data, viewable_column_names=None, height_in_rows=10, indexable_column=0, tv_label=None,
+                 kwargs_label=None, tv_combo=None, kwargs_combo=None, auto_grid=True, limit_to_list=True,
+                 new_entry_defaults=None, lock_result_col=None, allow_insert_ask=True):
+        super().__init__(master)
+
+        assert isinstance(data,
+                          pandas.DataFrame), f"Error param 'data' must be an instance of a pandas.DataFrame, got '{type(data)}'."
+        assert False if (kwargs_combo and (
+                "values" in kwargs_combo)) else True, f"Cannot pass values as a keyword argument here. Pass all data in the data param as a pandas.DataFrame."
+        # assert auto_pack + auto_grid <= 1, f"Error parameters 'auto_pack'={auto_pack} and 'auto_grid'={auto_grid} must be in a configuration where both params are not True.\nCannot grid and pack child widgets. (1 or None)"
+
+        assert (lock_result_col in viewable_column_names) if viewable_column_names else ((
+                                                                                                 lock_result_col in data.columns) if lock_result_col else True), f"Error column '{lock_result_col}' cannot be set as the locked result column. It is not in the list of viewable column names or in the list of columns in the passed dataframe."
+        if len(viewable_column_names) == 1:
+            new_entry_defaults = []
+        assert (new_entry_defaults is not None or allow_insert_ask) if not limit_to_list else 1, "Error, if allow new inserts to this combobox, then you must also either pass rest_values as 'new_entry_defaults' or set 'allow_insert_ask' to True.\nOtherwise there is no way to assign the rest of the column values."
+
+        self.master = master
+        self.namer = alpha_seq(10000000)
+        self.top_most = patriarch(master)
+        self.data = data
+        self.limit_to_list = limit_to_list
+        self.allow_insert_ask = False if limit_to_list else allow_insert_ask
+        self.lock_result_col = lock_result_col
+
+        self.ask_cancelled = f"#!#!# CANCELLED #!#!#"
+        self.insert_none = "|/|/||NONE||/|/|"
+        self.invalid_inp_codes = {self.ask_cancelled, self.insert_none}
+
+        if tv_label is not None and tv_combo is not None:
+            self.res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(self, value=tv_label)
+            self.res_tv_entry = tv_combo if is_tk_var(tv_combo) else tkinter.StringVar(self, value=tv_combo)
+        elif tv_label is not None:
+            self.res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(self, value=tv_label)
+            self.res_tv_entry = tkinter.StringVar(self)
+        elif tv_combo is not None:
+            self.res_tv_label = tkinter.StringVar(self)
+            self.res_tv_entry = tv_combo if is_tk_var(tv_combo) else tkinter.StringVar(self, value=tv_combo)
+        else:
+            self.res_tv_label = tkinter.StringVar(self)
+            self.res_tv_entry = tkinter.StringVar(self)
+
+        if kwargs_label is not None and kwargs_combo is not None:
+            self.res_label = tkinter.Label(self, textvariable=self.res_tv_label, **kwargs_label)
+        elif kwargs_label is not None:
+            self.res_label = tkinter.Label(self, textvariable=self.res_tv_label, **kwargs_label)
+        elif kwargs_combo is not None:
+            self.res_label = tkinter.Label(self, textvariable=self.res_tv_label)
+        else:
+            self.res_label = tkinter.Label(self, textvariable=self.res_tv_label)
+
+        self.frame_top_most = tkinter.Frame(self, name="ftm")
+        self.frame_tree = tkinter.Frame(self, name="ft")
+
+        # print(f"{data.shape=}")
+        # print(f"{data=}")
+        self.tree_controller = treeview_factory(self.frame_tree, data, kwargs_treeview={"selectmode": "browse",
+                                                                                        "height": height_in_rows},
+                                                viewable_column_names=viewable_column_names)
+        self.tree_controller, \
+        self.tree_tv_label, \
+        self.tree_label, \
+        self.tree_treeview, \
+        self.tree_scrollbar_x, \
+        self.tree_scrollbar_y, \
+        (self.tree_tv_button_new_item, self.tree_button_new_item), \
+        (self.tree_tv_button_delete_item, self.tree_button_delete_item), \
+        self.tree_aggregate_objects = self.tree_controller.get_objects()
+
+        cn = self.tree_controller.viewable_column_names
+        assert "All" not in cn, "Error, cannot use column name 'All'. This is reserved as a column filtering label."
+        self.indexable_column = indexable_column if (
+                isinstance(indexable_column, int) and indexable_column < self.data.shape[1]) else (
+            0 if not isinstance(indexable_column, str) or indexable_column not in cn else cn.index(indexable_column))
+
+        if isinstance(new_entry_defaults, list) or isinstance(new_entry_defaults, tuple):
+            for i, col_default in enumerate(zip(cn, new_entry_defaults)):
+                col, default = col_default
+                if default in self.invalid_inp_codes:
+                    self.throw_fit(default)
+                self.new_entry_defaults[col] = default
+        elif isinstance(new_entry_defaults, dict):
+            self.new_entry_defaults = new_entry_defaults
+        else:
+            # self.new_entry_defaults = dict(zip(cn, [None for _ in cn]))
+            self.new_entry_defaults = dict()
+
+        n_rows, n_cols = data.shape
+        # t_width = self.tree_controller.idx_width + (n_cols * sum(self.tree_controller.viewable_column_widths))
+        # self.configure(width=t_width)
+        # self.frame_top_most.configure(width=t_width)
+
+        self.tv_tree_is_hidden = tkinter.BooleanVar(self, value=True)
+
+        self.frame_top_most.grid_columnconfigure(0, weight=9)
+        self.frame_top_most.grid_columnconfigure(1, weight=1)
+        self.frame_middle = tkinter.Frame(self, name="fm")
+        self.rg_var, self.rg_tv_var, self.rg_btns = radio_factory(self.frame_middle,
+                                                                  buttons=["All",
+                                                                           *self.tree_controller.viewable_column_names])
+        self.rg_var.trace_variable("w", self.update_radio_group)
+        self.res_tv_entry.trace_variable("w", self.update_entry)
+        self.typed_in = tkinter.BooleanVar(self, value=False)
+
+        self.res_entry = tkinter.Entry(self.frame_top_most, textvariable=self.res_tv_entry, justify="center")
+        # self.res_canvas = tkinter.Canvas(self.frame_top_most, width=20, height=20, background=rgb_to_hex("GRAY_62"))
+        # self.res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
+
+        self.res_canvas = ArrowButton(self.frame_top_most, background=rgb_to_hex("GRAY_62"))
+
+        self.res_canvas.bind("<Button-1>", self.click_canvas_dropdown_button)
+        self.tree_treeview.bind("<<TreeviewSelect>>", self.treeview_selection_update)
+        self.res_entry.bind("<Key>", self.update_typed_in)
+        self.res_entry.bind("<Return>", self.submit_typed_in)
+
+        self.returned_value = tkinter.StringVar(self, value="")
+
+        if auto_grid:
+            self.grid_widget()
+
+        # print(f"Multicombobox created with dimensions (r x c)=({self.data.shape[0]} x {self.data.shape[1]})")
+
+    def grid_widget(self):
+        """Use this to appropriately place self and all sub widgets."""
+        self.grid(ipadx=12, ipady=12)
+        # self.grid_columnconfigure(, weight=10)
+        self.res_label.grid(row=0, column=0)
+
+        self.frame_top_most.grid(row=1, column=0, sticky="ew")
+        self.res_entry.grid(row=0, column=0, sticky="ew")
+        self.res_canvas.grid(row=0, column=1)
+
+    def treeview_selection_update(self, event):
+        # print(f"treeview_selection_update")
+        row_ids = self.tree_treeview.selection()
+        if row_ids:
+
+            row_id = int(self.tree_treeview.selection()[0])
+            # print(f"{row_id=}")
+            # print(f"{self.data.shape=}")
+            # print(f"{self.tree_treeview.get_children()=}")
+
+            # print(f"{row_id[0]=}")
+            # print(f"{self.data=}")
+            # data = self.data.iloc[[row_id[0]]]
+            # print(f"{data=}")
+
+            # x = self.res_tv_entry.get()
+            # self.res_tv_entry.set(str(1 + int(x if x else 0)))
+
+            col = self.tree_controller.viewable_column_names[self.indexable_column]
+            if lrc := self.lock_result_col:
+                col = lrc
+            value = self.data[col].tolist()[row_id]
+            # print(f"{col=}")
+            # print(f"{value=}")
+            self.res_tv_entry.set(str(value))
+
+    def value_exists(self, value_in):
+        for i, row in self.data.iterrows():
+            for j, x in enumerate(row.values):
+                if value_in == x:
+                    return True
+        return False
+
+    def value_iid(self, value_in):
+        for i, row in self.data.iterrows():
+            for j, x in enumerate(row.values):
+                if value_in == x:
+                    return i
+        return None
+
+    def select(self, iid):
+        if isinstance(iid, int):
+            if 0 <= iid < self.data.shape[0]:
+                self.tree_treeview.selection_add(iid)
+        else:
+            iid = self.value_iid(iid)
+            if iid is not None:
+                self.tree_treeview.selection_add(iid)
+
+    def update_entry(self, *args):
+        # print(f"update_entity")
+        self.filter_treeview()
+
+    def submit_typed_in(self, event):
+        # print(f"submit_typed_in")
+        children = self.tree_treeview.get_children()
+        if children:
+            self.tree_treeview.selection_set(children[0])
+        else:
+            val = self.res_tv_entry.get()
+            col = self.rg_var.get()
+            if val:
+                self.add_new_item(val, col, self.new_entry_defaults)
+
+    def update_typed_in(self, event):
+        # print(f"update_typed_in")
+        self.typed_in.set(True)
+        self.update_entry()
+        self.after(250, lambda: self.typed_in.set(False))
+
+    def update_radio_group(self, *args):
+        # print(f"update_radio_group, {args=}")
+        col = self.rg_var.get()
+        # print(f"{col=}")
+        self.filter_treeview()
+        self.indexable_column = 0 if col == "All" else self.tree_controller.viewable_column_names.index(col)
+
+    def delete_item(self, iid=None, value="|/|/||NONE||/|/|", mode="first" | Literal["first", "all", "ask"]):
+        delete_code = "|/|/||NONE||/|/|"
+        if iid is None and value == delete_code:
+            self.tree_treeview.delete(*self.tree_treeview.get_children())
+        else:
+            if iid is not None:
+                if isinstance(iid, int):
+                    # print(f"DROPPING {iid}")
+                    self.data.drop([iid], inplace=True)
+                else:
+                    raise ValueError(f"Cannot delete row '{iid}' from this dataframe.")
+            else:
+                # find value, then delete
+                if mode == "ask":
+                    delete_multi = ((ans := tkinter.YES) == tkinter.messagebox.askyesnocancel(title="Delete",
+                                                                                              message="Delete only the first occurence, or all rows that contain this value?"))
+                    # print(f"{ans=}")
+                    if ans == "cancel":
+                        return
+                else:
+                    delete_multi = mode == "all"
+                to_delete = []
+                for i, row in self.data.iterrows():
+                    for j, x in enumerate(row.values):
+                        if value == x:
+                            to_delete.append(i)
+                            break
+                    if to_delete and not delete_multi:
+                        break
+
+                if to_delete:
+                    # print(f"DROPPING {to_delete=}")
+                    self.data.drop(to_delete, inplace=True)
+                else:
+                    raise ValueError(
+                        f"Cannot delete row(s) containing value '{value}' from this dataframe. The value was not found was not Found.")
+        self.update_treeview()
+
+    def add_new_item(self, val, col, rest_values=None):
+        if val in self.invalid_inp_codes:
+            self.throw_fit(val)
+        cn = self.tree_controller.viewable_column_names
+        col = cn[0] if col == "All" else col
+        idx = cn.index(col)
+        i = self.data.shape[0]
+        # print(f"{type(rest_values)=}\n{rest_values=}")
+        if not self.limit_to_list:
+            if rest_values and (isinstance(rest_values, list) or isinstance(rest_values, list) or isinstance(rest_values, dict)):
+                if isinstance(rest_values, list) or isinstance(rest_values, tuple):
+                    row = list(rest_values)
+                    row.insert(idx, val)
+                    self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
+                    # print(f"\nB\t{self.data=}")
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row)
+                    # self.res_entry.config(foreground="black")
+                else:
+                    row = rest_values.update({col: val})
+                    self.data = self.data.append(pandas.DataFrame(row), ignore_index=True)
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list({k: [v] for k, v in zip(cn, row)}.values()))
+
+            elif self.allow_insert_ask:
+                ans = tkinter.messagebox.askyesnocancel("Create New Item",
+                                                        message=f"Create a new combo box entry with '{val}' in column '{col}' position?")
+                row = []
+                if ans == tkinter.YES:
+                    # print(f"SELECTING {i=}")
+                    column_names = self.tree_controller.viewable_column_names
+                    for column in column_names:
+                        if col != column:
+                            if column in self.new_entry_defaults:
+                                row.append(self.new_entry_defaults[column])
+                            else:
+                                ask_value = self.ask_value(column)
+                                if ask_value in self.invalid_inp_codes:
+                                    self.throw_fit(ask_value)
+                                else:
+                                    row.append(ask_value)
+                        else:
+                            row.append(val)
+
+                    # row = [(self.new_entry_defaults[col] if col in self.new_entry_defaults else self.ask_value(col)) for col in column_names]
+                    # print(f"\nA\t{self.data=}")
+                    # print(f"{pandas.DataFrame({k: [v] for k, v in zip(cn, row)})}")
+                    self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
+                    # print(f"\nB\t{self.data=}")
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row))
+                    self.res_entry.config(foreground="black")
+                else:
+                    self.res_entry.config(foreground="red")
+            elif len(self.tree_controller.viewable_column_names) == 1:
+                return
+            else:
+                raise ValueError("Cannot insert into this combobox")
+        else:
+            raise ValueError("Cannot insert into this combobox")
+
+    def throw_fit(self, code):
+        raise ValueError(f"You cannot use code='{code}'. It is a keyword.")
+
+    def ask_value(self, col):
+        tl = tkinter.Toplevel(self)
+        tv_lbl, lbl, tv_entry, entry = entry_factory(tl, tv_label=f"Please enter a value for column '{col}':")
+        frame = tkinter.Frame(tl)
+
+        def click_submit(*event):
+            self.returned_value.set(tv_entry.get())
+            tl.destroy()
+
+        def click_cancel(*event):
+            self.returned_value.set(self.ask_cancelled)
+            tl.destroy()
+
+        entry.bind("<Return>", click_submit)
+        tv_btn_cancel, btn_cancel = button_factory(frame, tv_btn="cancel", kwargs_btn={"command": click_cancel})
+        tv_btn_ok, btn_ok = button_factory(frame, tv_btn="ok", kwargs_btn={"command": click_submit})
+        lbl.pack()
+        entry.pack()
+        frame.pack()
+        btn_cancel.pack(side=tkinter.LEFT)
+        btn_ok.pack(side=tkinter.LEFT)
+        entry.focus()
+        self.top_most.wait_window(tl)
+
+        return self.returned_value.get()
+
+    def update_treeview(self):
+        self.tree_treeview.delete(*self.tree_treeview.get_children())
+        for i, row in self.data.iterrows():
+            # print(f"{i=}, {row=}")
+            self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row))
+
+    def filter_treeview(self):
+        # print(f"filter_treeview: {self.typed_in.get()}\n\n\tDATA\n{self.data}")
+        if self.typed_in.get():
+            val = self.res_tv_entry.get().lower()
+            col = self.rg_var.get()
+            some = False
+            if not val:
+                # print(f"Not val")
+                self.update_treeview()
+                some = True
+
+                if some:
+                    self.res_entry.config(foreground="black")
+                else:
+                    self.res_entry.config(foreground="red")
+
+                # if not self.limit_to_list:
+                #     self.add_new_item(val, col)
+
+                return
+
+            if col != "All":
+                # print(f"col != All")
+                self.tree_treeview.delete(*self.tree_treeview.get_children())
+                for i, value in enumerate(self.data[col].tolist()):
+                    # print(f"\t\t{i=}, {value=}")
+                    if val in str(value).lower():
+                        some = True
+                        row = self.data.iloc[[i]].values
+                        # print(f"\t\t{i=}, {value=}, {row=}")
+                        self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(*row))
+            else:
+                # print(f"\n\nFilter Else")
+                self.tree_treeview.delete(*self.tree_treeview.get_children())
+                c = 0
+                for i, row in self.data.iterrows():
+                    found = False
+                    for j, x in enumerate(row.values):
+                        if val in str(x):
+                            found = True
+                            break
+                    if found:
+                        # print(f"BACK IN {i=}\t{row=}")
+                        self.tree_treeview.insert("", "end", iid=i, text=i + 1, values=list(row))
+                        c += 1
+                        some = True
+                    # print(f"{i=}\n{row=}\n{found=}")
+
+            if some:
+                self.res_entry.config(foreground="black")
+            else:
+                self.res_entry.config(foreground="red")
+            # if not self.limit_to_list:
+            #     self.add_new_item(val, col)
+
+    def click_canvas_dropdown_button(self, event):
+        is_hidden = self.tv_tree_is_hidden.get()
+        if is_hidden:
+            # now show
+
+            self.res_canvas.change_direction("n")
+            self.frame_middle.grid(row=2, column=0)
+            self.frame_tree.grid(row=3, column=0)
+
+            for i, btn in enumerate(self.rg_btns):
+                btn.grid(row=0, column=i)
+
+            self.tree_controller.grid(row=1, column=0)
+            self.tree_treeview.grid(row=0, column=0)
+            self.tree_scrollbar_x.grid(row=3, sticky="ew")
+            self.tree_scrollbar_y.grid(row=0, column=1, sticky="ns")
+            for i, data in enumerate(self.tree_aggregate_objects):
+                if i > 0:
+                    tv, entry, x1x2 = data
+                    # print(f"{i=}, {tv.get()=}")
+                    entry.grid(row=0, column=i)
+                else:
+                    data.grid(row=2)
+        else:
+            # now hide
+            self.res_canvas.change_direction("s")
+            self.frame_middle.grid_forget()
+            self.frame_tree.grid_forget()
+            self.tree_treeview.grid_forget()
+            self.tree_controller.grid_forget()
+            self.tree_scrollbar_x.grid_forget()
+            self.tree_scrollbar_y.grid_forget()
+            for btn in self.rg_btns:
+                btn.grid_forget()
+            for i, data in enumerate(self.tree_aggregate_objects):
+                if i > 0:
+                    tv, entry, x1x2 = data
+                    # print(f"{i=}, {tv.get()=}")
+                    entry.grid_forget()
+                else:
+                    data.grid_forget()
+        self.tv_tree_is_hidden.set(not is_hidden)
+
+    def is_valid(self):
+        return self.res_tv_entry.get() and self.tree_treeview.get_children()
+
+
+class ArrowButton(tkinter.Canvas):
+    def __init__(self, master, mode: Literal[
+        "up", "down", "left", "right",
+        "top-left", "top-right", "bottom-left", "bottom-right",
+        "n", "s", "e", "w", "ne", "nw", "se", "sw",
+        "N", "S", "E", "W", "NE", "NW", "SE", "SW"] = "down", width=20, height=20, *args, **kwargs):
+        super().__init__(master, width=width, height=height, *args, **kwargs)
+
+        self.valid = {
+            "up", "down", "left", "right",
+            "top-left", "top-right", "bottom-left", "bottom-right",
+            "n", "s", "e", "w", "ne", "nw", "se", "sw",
+            "N", "S", "E", "W", "NE", "NW", "SE", "SW"
+        }
+        mode = self.validate_mode(mode)
+
+        self.mode = mode
+        self.width = width
+        self.height = height
+
+        self.configure(width=20, height=20, background=rgb_to_hex("GRAY_62"))
+
+        self.draw_arrow()
+        # print(f"=={mode=} :: ({x1}, {y1}), ({x2}, {y2})")
+        self.bind("<Button-1>", self.click_canvas_button)
+
+    def validate_mode(self, mode):
+        if mode not in self.valid:
+            mode = "s"
+        return mode
+
+    def calc_arrow(self):
+        x1, y1, x2, y2 = 11, 6, 11, 19  # down
+
+        if self.mode in {"down", "s", "S"}:
+            pass
+        elif self.mode in {"up", "n", "N"}:
+            y1, y2 = y2, y1
+        elif self.mode in {"left", "w", "W"}:
+            x1, y1, x2, y2 = y2, x1, y1, x2
+        elif self.mode in {"bottom-left", "sw", "SW"}:
+            x1, y1, x2, y2 = x1, x2, y1, y2
+        elif self.mode in {"top-right", "ne", "NE"}:
+            x1, y1, x2, y2 = x1, x2, y2, y1
+        elif self.mode in {"top-left", "nw", "NE"}:
+            x1, y1, x2, y2 = x1, x2, y1, y1
+        elif self.mode in {"bottom-right", "se", "SE"}:
+            x1, y1, x2, y2 = x1, x2, y2, y2
+        elif self.mode in {"right", "e", "E"}:
+            x1, y1, x2, y2 = y1, x1, y2, x2
+        else:
+            print(f"\tFAILURE\t\t{self.mode=}")
+            pass
+
+        return x1, y1, x2, y2
+
+    def draw_arrow(self, clear_first=True):
+        if clear_first:
+            self.delete("all")
+        x1, y1, x2, y2 = self.calc_arrow()
+        self.create_line(x1, y1, x2, y2, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
+
+    def click_canvas_button(self, event):
+        # Add functionality here, or use the same binding in your code.
+        print(f"click_canvas_button\n{self}")
+
+    def change_direction(self, mode):
+        self.mode = self.validate_mode(mode)
+        self.draw_arrow()
+
+
+# https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners
+# see below (round_rect) as well
+# Usage:
+# from tkinter import *
+# root = Tk()
+# canvas = Canvas(root, width = 1000, height = 1000)
+# canvas.pack()
+# my_rectangle = roundPolygon([50, 350, 350, 50], [50, 50, 350, 350], 10 , width=5, outline="#82B366", fill="#D5E8D4")
+# my_triangle = roundPolygon([50, 650, 50], [400, 700, 1000], 8 , width=5, outline="#82B366", fill="#D5E8D4")
+#
+# root.mainloop()
+def round_polygon(canvas, x, y, sharpness, **kwargs):
+    # The sharpness here is just how close the sub-points
+    # are going to be to the vertex. The more the sharpness,
+    # the more the sub-points will be closer to the vertex.
+    # (This is not normalized)
+    if sharpness < 2:
+        sharpness = 2
+
+    ratioMultiplier = sharpness - 1
+    ratioDividend = sharpness
+
+    # Array to store the points
+    points = []
+
+    # Iterate over the x points
+    for i in range(len(x)):
+        # Set vertex
+        points.append(x[i])
+        points.append(y[i])
+
+        # If it's not the last point
+        if i != (len(x) - 1):
+            # Insert submultiples points. The more the sharpness, the more these points will be
+            # closer to the vertex.
+            points.append((ratioMultiplier * x[i] + x[i + 1]) / ratioDividend)
+            points.append((ratioMultiplier * y[i] + y[i + 1]) / ratioDividend)
+            points.append((ratioMultiplier * x[i + 1] + x[i]) / ratioDividend)
+            points.append((ratioMultiplier * y[i + 1] + y[i]) / ratioDividend)
+        else:
+            # Insert submultiples points.
+            points.append((ratioMultiplier * x[i] + x[0]) / ratioDividend)
+            points.append((ratioMultiplier * y[i] + y[0]) / ratioDividend)
+            points.append((ratioMultiplier * x[0] + x[i]) / ratioDividend)
+            points.append((ratioMultiplier * y[0] + y[i]) / ratioDividend)
+            # Close the polygon
+            points.append(x[0])
+            points.append(y[0])
+
+    return canvas.create_polygon(points, **kwargs, smooth=tkinter.TRUE)
+
+
+# https://stackoverflow.com/questions/44099594/how-to-make-a-tkinter-canvas-rectangle-with-rounded-corners
+# see above (round_polygon) as well
+# Usage:
+# import tkinter
+# root = tkinter.Tk()
+# canvas = tkinter.Canvas(root)
+# canvas.pack()
+# rounded_rect(canvas, 20, 20, 60, 40, 10)
+# root.mainloop()
+def rounded_rect(canvas, x, y, w, h, c):
+    assert isinstance(canvas,
+                      tkinter.Canvas), f"Error param 'canvas' must be a tkinter.Canvas object. Got '{canvas}', {type(canvas)=}"
+    return [
+        canvas.create_arc(x, y, x + 2 * c, y + 2 * c, start=90, extent=90, style="arc"),
+        canvas.create_arc(x + w - 2 * c, y + h - 2 * c, x + w, y + h, start=270, extent=90, style="arc"),
+        canvas.create_arc(x + w - 2 * c, y, x + w, y + 2 * c, start=0, extent=90, style="arc"),
+        canvas.create_arc(x, y + h - 2 * c, x + 2 * c, y + h, start=180, extent=90, style="arc"),
+        canvas.create_line(x + c, y, x + w - c, y),
+        canvas.create_line(x + c, y + h, x + w - c, y + h),
+        canvas.create_line(x, y + c, x, y + h - c),
+        canvas.create_line(x + w, y + c, x + w, y + h - c)
+    ]
+
+
+class ToggleButton(tkinter.Frame):
+
+    def __init__(
+            self,
+            master,
+            label_text="Toggle",
+            state: bool = False,
+            labels=("On", "Off"),
+            width_label=25,
+            height_label=1,
+            width_canvas=100,
+            height_canvas=50,
+            t_animation_time=500,
+            n_slices=10,
+            label_font=("Arial", 12),
+            labels_font=("Arial", 12),
+            colour_fg_true="#003000",
+            colour_bg_true="#29c164",
+            colour_fg_false="#300000",
+            colour_bg_false="#c12929",
+            auto_grid=True,
+            *args, **kwargs):
+        super().__init__(master, width=width_canvas, height=height_canvas, *args, **kwargs)
+
+        assert iscolour(
+            colour_bg_false), f"Error param 'colour_bg_false' must be a colour. Got '{colour_bg_false}', {type(colour_bg_false)=}."
+        assert iscolour(
+            colour_bg_true), f"Error param 'colour_bg_true' must be a colour. Got '{colour_bg_true}', {type(colour_bg_true)=}."
+        assert iscolour(
+            colour_fg_false), f"Error param 'colour_fg_false' must be a colour. Got '{colour_fg_false}', {type(colour_fg_false)=}."
+        assert iscolour(
+            colour_fg_true), f"Error param 'colour_fg_true' must be a colour. Got '{colour_fg_true}', {type(colour_fg_true)=}."
+        assert labels is None or (isinstance(labels, tuple) and len(labels) == 2 and all(
+            [isinstance(labels[i], str) for i in
+             range(2)])), f"Error param 'labels' must be a tuple of 2 strings OR None. Got '{labels}', {type(labels)=}"
+        assert isinstance(t_animation_time, int) and (
+                    0 < t_animation_time <= 2500), f"Error param 't_animation_time' must be a integer between 1 and 2500 ms. Got '{t_animation_time}', {type(t_animation_time)=}."
+
+        self.label_font = label_font  # for the main label
+        self.labels_font = labels_font  # for the button labels, if needed
+        self.height_label = height_label
+        self.tv_label = tkinter.StringVar(self, value=label_text)
+        self.label = tkinter.Label(self, textvariable=self.tv_label, width=width_label, height=height_label,
+                                   font=self.label_font)
+        self.frame_canvas = tkinter.Frame(self, width=width_label + width_canvas)
+        self.canvas = tkinter.Canvas(self.frame_canvas, width=width_canvas, height=height_canvas)
+
+        self.switch_mode = tkinter.BooleanVar(self)
+
+        # print(f"{labels=}")
+
+        if labels is None:
+            self.switch_mode.set(True)
+        else:
+            self.switch_mode.set(False)
+
+        self.colour_bg_true = colour_bg_true
+        self.colour_bg_false = colour_bg_false
+        self.colour_fg_true = colour_fg_true
+        self.colour_fg_false = colour_fg_false
+        self.width = width_canvas
+        self.height = height_canvas
+        self.auto_grid = auto_grid
+
+        self.t_animation_time = t_animation_time
+        self.n_slices = clamp(3, n_slices, self.t_animation_time // 50)
+        self.after_time = self.t_animation_time // self.n_slices
+        # print(f"\tInit\n{self.t_animation_time=}\n{self.n_slices=}\n{self.after_time=}\n{self.n_slices*self.after_time=}")
+        self.state = tkinter.BooleanVar(self, value=state)
+        self.state.trace_variable("w", self.state_update)
+
+        self.sliding = tkinter.BooleanVar(self, value=False)
+
+        self.bind("<Button-1>", self.click)
+        self.label.bind("<Button-1>", self.click)
+        self.frame_canvas.bind("<Button-1>", self.click)
+        self.canvas.bind("<Button-1>", self.click)
+
+        o_x1, o_y1, o_x2, o_y2 = self.width, self.height, self.width, self.height
+        x1, y1, x2, y2 = o_x1 * 0.15, o_y1 * 0.15, o_x2 * 0.85, o_y2 * 0.85
+        pts = [
+            (x1, y1),
+            (x2, y1),
+            (x2, y2),
+            (x1, y2)
+        ]
+        xs, ys = [[pt[i] for pt in pts] for i in range(2)]
+        self.round_rect = round_polygon(
+            self.canvas,
+            xs,
+            ys,
+            width=2,
+            sharpness=25,
+            outline=self.colour_fg_false,
+            fill=brighten(self.colour_bg_false, 0.25, rgb=False)
+        )
+
+        if not self.switch_mode.get():
+            # print(f"init NOT switch mode")
+            self.labels = labels  # (True part, False part)
+            lbl_on, lbl_off = self.labels
+            self.text_off = self.canvas.create_text(self.width * 0.25, self.height / 2, text=lbl_off,
+                                                    fill=self.colour_fg_false, font=self.labels_font)
+            self.text_on = self.canvas.create_text(self.width * 0.75, self.height / 2, text=lbl_on,
+                                                   fill=self.colour_fg_true, font=self.labels_font)
+        else:
+            # print(f"init switch mode")
+            x1, y1, x2, y2 = \
+                o_x1 * 0.5, \
+                o_y1 * 0.35, \
+                o_x2 * 0.6, \
+                o_y2 * 0.65
+            sw = x2 - x1
+            sh = y2 - y1
+            pts = [
+                (x1, y1),
+                (x2, y1),
+                (x2, y2),
+                (x1, y2)
+            ]
+            xs, ys = [[pt[i] for pt in pts] for i in range(2)]
+            self.switch_btn = round_polygon(
+                self.canvas,
+                xs,
+                ys,
+                sharpness=10,
+                outline=self.colour_fg_false,
+                fill=darken(self.colour_bg_false, 0.25, rgb=False)
+            )
+
+            x1, x2 = o_x1 * 0.2, o_x2 * 0.7
+            wd = x2 - x1
+            ws = wd / self.n_slices
+            self.switch_positions = [(x1 + (i * ws), y1 * 0.9) for i in range(self.n_slices)]
+            if not self.state.get():
+                self.switch_positions.reverse()
+
+        # idx 0 == state (0 / 1)
+        # idx 1 == state (bg_gradient, fg_gradient)
+        self.gradients = [
+            [
+                [gradient(i, self.n_slices - 1, colour_bg_true, colour_bg_false, rgb=False) for i in
+                 range(self.n_slices)],
+                [gradient(i, self.n_slices - 1, self.colour_fg_true, self.colour_fg_false, rgb=False) for i in
+                 range(self.n_slices)]
+            ],
+            [
+                [gradient(i, self.n_slices - 1, self.colour_bg_false, self.colour_bg_true, rgb=False) for i in
+                 range(self.n_slices)],
+                [gradient(i, self.n_slices - 1, self.colour_fg_false, self.colour_fg_true, rgb=False) for i in
+                 range(self.n_slices)]
+            ]
+        ]
+
+        self.state_update()
+
+        if self.auto_grid:
+            self.grid_widgets()
+
+    def grid_widgets(self):
+        """Use this to grid self and all sub-widgets."""
+        # self.grid(row=0, column=0)
+        self.grid()
+        self.label.grid(row=0, column=0)
+        self.frame_canvas.grid(row=0, column=1)
+        self.canvas.grid(row=0, column=0)
+
+    def grid_forget_widgets(self):
+        """Use this to grid self and all sub-widgets."""
+        # self.grid(row=0, column=0)
+        self.grid_forget()
+        self.label.grid_forget()
+        self.frame_canvas.grid_forget()
+        self.canvas.grid_forget()
+
+    def state_update(self, *args):
+        # print(f"\tstate update\n\t{self.tv_label.get()=}\n\t{self.state.get()=}\n\t{self.switch_mode.get()=}")
+        slices = self.n_slices
+        state = self.state.get()
+
+        if not self.switch_mode.get():
+            if state:
+                self.canvas.itemconfigure(self.text_on, state="normal")
+                self.canvas.itemconfigure(self.text_off, state="hidden")
+            else:
+                self.canvas.itemconfigure(self.text_on, state="hidden")
+                self.canvas.itemconfigure(self.text_off, state="normal")
+
+        def iter_update(i):
+            # print(f"\titer_{i=}")
+            if i == slices:
+                self.sliding.set(False)
+                return
+
+            bg_colour, fg_colour = self.gradients[int(state)]
+            bg_colour = bg_colour[i]
+            fg_colour = fg_colour[i]
+            fill_colour = brighten(bg_colour, 0.25, rgb=False) if not state else darken(bg_colour, 0.25, rgb=False)
+            switch_colour = darken(bg_colour, 0.25, rgb=False) if not state else brighten(bg_colour, 0.25, rgb=False)
+
+            # https://stackoverflow.com/questions/22838255/tkinter-canvas-resizing-automatically
+            self.configure(background=bg_colour, highlightthickness=0)
+            self.canvas.itemconfigure(
+                self.round_rect,
+                outline=fg_colour,
+                fill=fill_colour
+            )
+
+            if not self.switch_mode.get():
+                # print(f"update NOT switch mode")
+                self.canvas.itemconfigure(self.text_on, fill=fg_colour)
+                self.canvas.itemconfigure(self.text_off, fill=fg_colour)
+            else:
+                # print(f"update switch mode")
+                x, y = self.switch_positions[i]
+                self.canvas.moveto(self.switch_btn, x=x, y=y)
+                self.canvas.itemconfigure(self.switch_btn, outline=fg_colour, fill=switch_colour)
+
+            self.canvas.configure(background=bg_colour, highlightthickness=0)
+            self.label.configure(background=bg_colour, foreground=fg_colour, highlightthickness=0)
+
+            self.after(self.after_time, iter_update, i + 1)
+
+        iter_update(0)
+
+    def click(self, *args):
+        # print(f"\nclick '{self.tv_label.get()=}'")
+        if not self.sliding.get():
+            if self.switch_mode.get():
+                self.switch_positions.reverse()
+            self.sliding.set(True)
+            self.state.set(not self.state.get())
+
+    def get_objects(self):
+        # Button, (Label_var, Label), canvas_frame, (State, canvas)
+        return (
+            self,
+            (self.tv_label, self.label),
+            self.frame_canvas,
+            (self.state, self.canvas)
+        )
+
+
+# def multi_combo_factory(master, data, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None):
+#     assert isinstance(data, pandas.DataFrame), f"Error param 'data' must be an instance of a pandas.DataFrame, got '{type(data)}'."
+#     assert False if (kwargs_combo and ("values" in kwargs_combo)) else True, f"Cannot pass values as a keyword argument here. Pass all data in the data param as a pandas.DataFrame."
+#
+#     """Return tkinter StringVar, Label, StringVar, Entry objects"""
+#     if tv_label is not None and tv_combo is not None:
+#         res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
+#         res_tv_entry = tv_combo if is_tk_var(tv_combo) else tkinter.StringVar(master, value=tv_combo)
+#     elif tv_label is not None:
+#         res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
+#         res_tv_entry = tkinter.StringVar(master)
+#     elif tv_combo is not None:
+#         res_tv_label = tkinter.StringVar(master)
+#         res_tv_entry = tv_combo if is_tk_var(tv_combo) else tkinter.StringVar(master, value=tv_combo)
+#     else:
+#         res_tv_label = tkinter.StringVar(master)
+#         res_tv_entry = tkinter.StringVar(master)
+#
+#     if kwargs_label is not None and kwargs_combo is not None:
+#         res_label = tkinter.Label(master, textvariable=res_tv_label, **kwargs_label)
+#         # res_combo = ttk.Combobox(master, textvariable=res_tv_combo, **kwargs_combo)
+#     elif kwargs_label is not None:
+#         res_label = tkinter.Label(master, textvariable=res_tv_label, **kwargs_label)
+#         # res_combo = ttk.Combobox(master, textvariable=res_tv_combo)
+#     elif kwargs_combo is not None:
+#         res_label = tkinter.Label(master, textvariable=res_tv_label)
+#         # res_combo = ttk.Combobox(master, textvariable=res_tv_combo, **kwargs_combo)
+#     else:
+#         res_label = tkinter.Label(master, textvariable=res_tv_label)
+#         # res_combo = ttk.Combobox(master, textvariable=res_tv_combo)
+#
+#     tv1 = treeview_factory(master, data)
+#
+#     def click_canvas_dropdown_button(event):
+#         tv1
+#
+#     res_entry = tkinter.Entry(master, textvariable=res_tv_entry)
+#     res_canvas = tkinter.Canvas(master, width_canvas=20, height_canvas=20, background=rgb_to_hex("GRAY_62"))
+#     res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
+#     res_canvas.bind("<Button-1>", click_canvas_dropdown_button)
+#
+#     return (res_tv_label, res_label), (res_tv_entry, res_entry), res_canvas, tv1
+
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+
+
+def test_entry_factory():
+    WIN = tkinter.Tk()
+    WIDTH, HEIGHT = 500, 500
+    WIN.geometry(f"{WIDTH}x{HEIGHT}")
+    tv_1, lbl_1, tv_2, entry_1 = entry_factory(WIN, tv_label="This is a Label", tv_entry="This is an Entry",
+                                               kwargs_entry={"background": "yellow"})
+    lbl_1.pack()
+    entry_1.pack()
+    WIN.mainloop()
+
+
+def test_combo_1():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+    WIN.title("Select Start Date")
+
+    f1 = tkinter.Frame(WIN)
+    f2 = tkinter.Frame(f1)
+    dealers = ["A", "B", "C"]
+    colours = ["red", "blue", "green", "custom", "none"]
+    tv1 = tkinter.StringVar(f2, value="")
+    cb1 = ttk.Combobox(f2, values=dealers, textvariable=tv1, state="readonly")
+    tv2 = tkinter.StringVar(f2, value="")
+    cb2 = ttk.Combobox(f2, values=colours, textvariable=tv2, state="readonly")
+
+    def new_dealer(var_name, index, mode):
+        d = tv1.get()
+        c = tv2.get()
+        if c and d:
+            if c not in ["custom", "none"]:
+                print(f"Setting {d=} to {c=}")
+            elif c == "custom":
+                print(f"custom colour from dealer {d=}")
+            else:
+                print(f"removing colour from dealer {d=}")
+
+    def new_colour(var_name, index, mode):
+        d = tv1.get()
+        c = tv2.get()
+        if c and d:
+            if c not in ["custom", "none"]:
+                print(f"Setting {d=} to {c=}")
+            elif c == "custom":
+                print(f"custom colour from dealer {d=}")
+            else:
+                print(f"removing colour from dealer {d=}")
+
+    tv1.trace_variable("w", new_dealer)
+    tv2.trace_variable("w", new_colour)
+
+    cb1.grid()
+    cb2.grid()
+    f1.grid()
+    f2.grid()
+    WIN.mainloop()
+
+
+def test_combo_factory():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+    WIN.title("Select Start Date")
+    dealers = ["A", "B", "C"]
+    colours = ["red", "blue", "green", "custom", "none"]
+    sv_lbl_1, lbl_1, sv_cb_1, cb_1 = combo_factory(WIN, tv_label="Dealer", kwargs_combo={"values": dealers})
+    sv_lbl_2, lbl_2, sv_cb_2, cb_2 = combo_factory(WIN, tv_label="Colour", kwargs_combo={"values": colours})
+
+    def new_dealer(var_name, index, mode):
+        d = sv_cb_1.get()
+        c = sv_cb_2.get()
+        if c and d:
+            if c not in ["custom", "none"]:
+                print(f"Setting {d=} to {c=}")
+            elif c == "custom":
+                print(f"custom colour from dealer {d=}")
+            else:
+                print(f"removing colour from dealer {d=}")
+
+    def new_colour(var_name, index, mode):
+        d = sv_cb_1.get()
+        c = sv_cb_2.get()
+        if c and d:
+            if c not in ["custom", "none"]:
+                print(f"Setting {d=} to {c=}")
+            elif c == "custom":
+                print(f"custom colour from dealer {d=}")
+            else:
+                print(f"removing colour from dealer {d=}")
+
+    sv_cb_1.trace_variable("w", new_dealer)
+    sv_cb_2.trace_variable("w", new_colour)
+    lbl_1.grid(row=1, column=1)
+    lbl_2.grid(row=2, column=1)
+    cb_1.grid(row=1, column=2)
+    cb_2.grid(row=2, column=2)
+    WIN.mainloop()
+
+
+def test_list_factory():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+    a, b, c, d = list_factory(WIN, tv_label="This is a demo List:", tv_list=["hi", "there"])
+    b.grid(row=1, column=1)
+    d.grid(row=2, column=1)
+
+    def update_f(*args):
+        print(f"{args=}")
+        selected_indices = d.curselection()
+        print(f"{selected_indices=}")
+        for i in selected_indices:
+            print(f"\t{d.get(i)=}")
+
+    d.bind('<<ListboxSelect>>', update_f)
+    WIN.mainloop()
+
+
+def test_radio_factory():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    def update_radio_choice(*args):
+        print(f"{a.get()=}")
+
+    buttons_list = [
+        "a",
+        "b",
+        "c",
+        "quit"
+    ]
+    a, b, c = radio_factory(WIN, buttons_list)
+
+    for btn in c:
+        btn.pack()
+
+    a.trace_variable("w", update_radio_choice)
+
+    WIN.mainloop()
+
+
+def test_treeview_factory_1():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    df = pandas.DataFrame({
+        "species": ["Cat", "Dog", "Fish", "Parrot"]
+        , "name": ["Tim", "Tam", "Tom", "Tum"]
+        , "dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7),
+                  datetime.datetime(2005, 8, 31)]
+    })
+
+    print(f"df:\n\n{df}")
+
+    tv_label, label, treeview, scrollbar_x, scrollbar_y = treeview_factory(WIN, df)
+    tv_label.set("I forgot to pass a title! - no worries.")
+    label.pack()
+    treeview.pack()
+
+    WIN.mainloop()
+
+
+def test_treeview_factory_2():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    df = pandas.DataFrame({
+        "species": ["Cat", "Dog", "Fish", "Parrot"]
+        , "name": ["Tim", "Tam", "Tom", "Tum"]
+        , "invisible_col": [True, True, True, False]
+        , "dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7),
+                  datetime.datetime(2005, 8, 31)]
+    })
+
+    print(f"df:\n\n{df}")
+
+    tv_label, label, treeview, scrollbar_x, scrollbar_y = treeview_factory(
+        WIN,
+        df,
+        viewable_column_names=["species", "name", "dob"],
+        viewable_column_widths=[300, 125, 200]
+    )
+    tv_label.set("I forgot to pass a title! - no worries.")
+    label.pack(side=tkinter.TOP)
+    scrollbar_y.pack(side=tkinter.RIGHT, anchor="e", fill="y")
+    treeview.pack(side=tkinter.TOP)
+    scrollbar_x.pack(side=tkinter.BOTTOM)
+
+    WIN.mainloop()
+
+
+def test_treeview_factory_3():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    df = pandas.DataFrame({
+        "species": ["Cat", "Dog", "Fish", "Parrot"]
+        , "name": ["Tim", "Tam", "Tom", "Tum"]
+        , "invisible_col": [True, True, True, False]
+        , "dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7),
+                  datetime.datetime(2005, 8, 31)]
+    })
+
+    namer = alpha_seq(4, numbers_instead=True)
+
+    for i in range(df.shape[0]):
+        next(namer)
+
+    def gen_random_entry():
+        return [
+            str(random.randint(0, 25)),
+            str(random.randint(0, 25)),
+            # random.choice([True, False]),
+            random_date(start_year=2020, end_year=2024)
+        ]
+
+    def insert_new_entry(index=tkinter.END):
+        data = gen_random_entry()
+        iid = int(next(namer))
+        text = f"NEW TEXT"
+        treeview.insert("", index, iid=iid, text=text, values=data)
+
+    def delete_entry():
+        selection = treeview.selection()
+        print(f"{selection=}")
+        if selection:
+            # delete the selected entries
+            # row_id = treeview.focus()  # return only 1
+            for row_id in selection:
+                print(f"{row_id=}")
+                treeview.delete(row_id)
+
+    print(f"df:\n\n{df}")
+
+    tv_label, label, treeview, scrollbar_x, scrollbar_y = treeview_factory(
+        WIN,
+        df,
+        viewable_column_names=["species", "name", "dob"],
+        viewable_column_widths=[300, 125, 200]
+    )
+    tv_label.set("I forgot to pass a title! - no worries.")
+    label.pack(side=tkinter.TOP)
+    scrollbar_y.pack(side=tkinter.RIGHT, anchor="e", fill="y")
+    treeview.pack(side=tkinter.TOP)
+    scrollbar_x.pack(side=tkinter.BOTTOM)
+
+    tv_btn1, btn1 = button_factory(WIN, tv_btn="new entry", kwargs_btn={"command": insert_new_entry})
+    tv_btn2, btn2 = button_factory(WIN, tv_btn="del entry", kwargs_btn={"command": delete_entry})
+    btn1.pack()
+    btn2.pack()
+
+    WIN.mainloop()
+
+
+def test_treeview_factory_4():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"500x500")
+
+    df = pandas.DataFrame({
+        "species": ["Cat", "Dog", "Fish", "Parrot"]
+        , "name": ["Tim", "Tam", "Tom", "Tum"]
+        , "invisible_col": [True, True, True, False]
+        , "dob": [datetime.datetime(2000, 2, 13), datetime.datetime(2016, 4, 9), datetime.datetime(2010, 6, 7),
+                  datetime.datetime(2005, 8, 31)]
+        , "# lives": [9, 1, 1, 1]
+    })
+
+    df["age(D)"] = (datetime.datetime.now() - df["dob"]).tolist()[0].days
+
+    print(f"df:\n\n{df}")
+
+    def avg(*lst):
+        # print(f"average of {lst=}, {type(lst)=}")
+        return utility.avg(*lst)
+
+    def show_column_info():
+        for k, v in treeview_controller.aggregate_data.items():
+            if k not in treeview_controller.viewable_column_names:
+                try:
+                    if not k.startswith("#"):
+                        raise Exception(
+                            f"Error aggregate data key '{k}' not found in the list of visible column names.")
+                    elif 0 > (num := int(k[1:])) > len(treeview_controller.viewable_column_names):
+                        raise Exception(f"Error aggregate data key '{k}' is out of range.")
+                    else:
+                        key = treeview_controller.viewable_column_names[num]
+                except ValueError as ve:
+                    raise ValueError(f"Error aggregate data key '{k}' not found in the list of visible column names.")
+            else:
+                key = k
+
+            print(f"{v=}")
+            print(f"{treeview_controller.treeview.column(key)=}, {type(treeview_controller.treeview.column(key))=}")
+            print(f"{treeview_controller.treeview.heading(key)=}, {type(treeview_controller.treeview.heading(key))=}")
+
+    treeview_controller = treeview_factory(
+        WIN,
+        df,
+        viewable_column_names=["species", "name", "age(D)", "# lives", "dob"],
+        viewable_column_widths=[300, 125, 75, 75, 200],
+        aggregate_data={
+            "#1": min,
+            "species": max,
+            "age(D)": avg,
+            "# lives": avg,
+            "dob": min
+        }
+        # aggregate_data={
+        #     "#1": min,
+        #     "species": max,
+        #     "age(D)": avg,
+        #     "# lives": avg
+        # }
+    )
+    frame, \
+    tv_label, \
+    label, \
+    treeview, \
+    scrollbar_x, \
+    scrollbar_y, \
+    insert_btn_data, \
+    delete_btn_data, \
+    aggregate_objects \
+        = treeview_controller.get_objects()
+    tv_label.set("I forgot to pass a title! - no worries.")
+    label.grid()
+    scrollbar_y.grid(sticky="ns")
+    treeview.grid()
+    scrollbar_x.grid(sticky="ew")
+
+    tv_button_insert_item, button_insert_item = insert_btn_data
+    tv_button_delete_item, button_delete_item = delete_btn_data
+
+    frame.grid()
+    for i, aggregate_data in enumerate(aggregate_objects):
+        # print(f"\t{i=}, {aggregate_data=}")
+        if i == 0:
+            # first is always the frame
+            aggregate_data.grid()
+        else:
+            tv, entry, x1x2 = aggregate_data
+            entry.pack(side=tkinter.LEFT)
+            x1, x2 = x1x2
+            # print(f"{x1=}")
+            # entry.place(x=x1, y=500)
+
+    button_insert_item.grid()
+    button_delete_item.grid()
+
+    tv_button_column_info, button_column_info = button_factory(
+        WIN,
+        tv_btn="column info",
+        kwargs_btn={
+            "command": show_column_info
+        }
+    )
+    button_column_info.grid()
+
+    WIN.mainloop()
+
+
 def test_messagebox():
     root = tkinter.Tk()
 
@@ -2141,6 +3048,117 @@ def test_apply_state_3():
     root.mainloop()
 
 
+def test_multi_combo_factory():
+    WIN = tkinter.Tk()
+    WIN.geometry(f"800x800")
+    WIN.title("Select Start Date")
+
+    data = pandas.DataFrame({
+        "ColA": list(range(5)),
+        "ColB": list(range(6, 11)),
+        "ColC": list(range(11, 16)),
+        "ColD": list(range(16, 21))
+    })
+
+    print(f"{data.to_html()=}")
+
+    mc = MultiComboBox(
+        WIN,
+        data,
+        limit_to_list=False
+    )
+
+    def dd():
+        print(f"\n\nAbout to delete:\n")
+        mc.delete_item(value=14)
+
+    mc.add_new_item(val=1000, col="ColA", rest_values=[-1, False, "0"])
+    mc.add_new_item(val=1000, col="ColA", rest_values={"ColB": -1, "ColC": False, "ColD": "0"})
+    WIN.after(5000, dd)
+    # mc.delete_item(value=14)
+    # mc.delete_item(iid=0)
+
+    # a, c, d, b = multi_combo_factory(WIN, data, tv_label="Multi-ComboBox Demo")
+    #
+    # a1, a2 = a
+    # c1, c2 = c
+    #
+    # tv1_fact, tv1_tv_label, tv1_label, tv1_treeview, tv1_scrollbar_x, tv1_scrollbar_y, \
+    # (tv1_tv_button_new_item, tv1_button_new_item), (tv1_tv_button_delete_item, tv1_button_delete_item), \
+    # tv1_aggregate_objects = b.get_objects()
+    #
+    # a2.grid()
+    # c2.grid(row=1, column=0)
+    # d.grid(row=1, column=1)
+    #
+    # tv1_fact.grid()
+    # tv1_label.grid(row=0)
+    # tv1_scrollbar_x.grid(row=3, sticky="ew")
+    # tv1_treeview.grid(row=1, column=0)
+    # tv1_scrollbar_y.grid(row=1, column=1, sticky="ns")
+    # for i, data in enumerate(tv1_aggregate_objects):
+    #     if i > 0:
+    #         tv, entry, x1x2 = data
+    #         # print(f"{i=}, {tv.get()=}")
+    #         entry.grid(row=0, column=i)
+    #     else:
+    #         data.grid(row=2)
+
+    # dealers = ["A", "B", "C"]
+    # colours = ["red", "blue", "green", "custom", "none"]
+    # sv_lbl_1, lbl_1, sv_cb_1, cb_1 = combo_factory(WIN, tv_label="Dealer", kwargs_combo={"values": dealers})
+    # sv_lbl_2, lbl_2, sv_cb_2, cb_2 = combo_factory(WIN, tv_label="Colour", kwargs_combo={"values": colours})
+    #
+    # def new_dealer(var_name, index, mode):
+    #     d = sv_cb_1.get()
+    #     c = sv_cb_2.get()
+    #     if c and d:
+    #         if c not in ["custom", "none"]:
+    #             print(f"Setting {d=} to {c=}")
+    #         elif c == "custom":
+    #             print(f"custom colour from dealer {d=}")
+    #         else:
+    #             print(f"removing colour from dealer {d=}")
+    #
+    # def new_colour(var_name, index, mode):
+    #     d = sv_cb_1.get()
+    #     c = sv_cb_2.get()
+    #     if c and d:
+    #         if c not in ["custom", "none"]:
+    #             print(f"Setting {d=} to {c=}")
+    #         elif c == "custom":
+    #             print(f"custom colour from dealer {d=}")
+    #         else:
+    #             print(f"removing colour from dealer {d=}")
+    #
+    # sv_cb_1.trace_variable("w", new_dealer)
+    # sv_cb_2.trace_variable("w", new_colour)
+    # lbl_1.grid(row=1, column=1)
+    # lbl_2.grid(row=2, column=1)
+    # cb_1.grid(row=1, column=2)
+    # cb_2.grid(row=2, column=2)
+    WIN.mainloop()
+
+
+def test_arrow_button():
+    win = tkinter.Tk()
+    win.geometry(f"600x600")
+    win.title("test_arrow_button")
+
+    modes = ["nw", "n", "ne", "w", None, "e", "sw", "s", "se"]
+    canvases = []
+    w, h = 20, 20
+    for i, mode in enumerate(modes):
+        if mode:
+            canvases.append(ab := ArrowButton(win, mode=mode, name=f"{i=}, {mode=}"))
+            ab.grid(row=i // 3, column=i % 3)
+        else:
+            canvases.append(c := tkinter.Canvas(win, width=w, height=h))
+            c.grid(row=i // 3, column=i % 3)
+
+    win.mainloop()
+
+
 if __name__ == '__main__':
     print('PyCharm')
 
@@ -2153,6 +3171,8 @@ if __name__ == '__main__':
     # test_treeview_factory_1()
     # test_treeview_factory_2()
     # test_treeview_factory_3()
-    test_treeview_factory_4()
+    # test_treeview_factory_4()
     # test_apply_state_1()
     # test_apply_state_3()
+    test_multi_combo_factory()
+    # test_arrow_button()

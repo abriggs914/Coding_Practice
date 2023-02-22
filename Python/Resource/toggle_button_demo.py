@@ -489,7 +489,8 @@ class HardwareFormApp(tkinter.Tk):
             tv_label="Auto-Generated Objective:",
             tv_entry="Please select an objective from above.",
             kwargs_entry={
-                "width": 100
+                "width": 100,
+                "height": 2
             }
         )
 
@@ -719,8 +720,11 @@ class HardwareFormApp(tkinter.Tk):
 
         self.questions_software = [
             ("Outlook Email", None, tkinter.StringVar(self, name="outlook")),
+            ("Outlook Archive", None, tkinter.StringVar(self, name="outlook")),
             ("Access", d, tkinter.StringVar(self, name="access")),
             ("ODBC", None, tkinter.StringVar(self, name="odbc")),
+            ("G-Drive (Public)", None, tkinter.StringVar(self, name="g_drive")),
+            ("U-Drive (Private)", None, tkinter.StringVar(self, name="u_drive")),
             ("Syspro8", None, tkinter.StringVar(self, name="syspro8")),
             ("ShopClock", None, tkinter.StringVar(self, name="shopclock")),
             ("SolidWorks", None, tkinter.StringVar(self, name="solidworks")),
@@ -781,7 +785,7 @@ class HardwareFormApp(tkinter.Tk):
             var, canvas = btn_data
             q_var, label_scale, scale = quantity_data
             self.questions_software[q_title].update({
-                "button": tb,
+                "tb": tb,
                 "tv_label": tv_label,
                 "label": label,
                 "var": var,
@@ -924,7 +928,7 @@ class HardwareFormApp(tkinter.Tk):
         self.grid_args = {
 
             # self
-            "frame_top_controls": {r: 0, c: 0, ix: ipad_x_1, iy: ipad_y_1},
+            "frame_top_controls": {r: 0, c: 0, cs: 3, ix: ipad_x_1, iy: ipad_y_1},
             "frame_hardware": {r: 1, c: 0, ix: ipad_x_1, iy: ipad_y_1},
             "frame_software": {r: 1, c: 1, ix: ipad_x_1, iy: ipad_y_1},
             "frame_auto_reports": {r: 2, c: 0, rs: 1, cs: 3, ix: ipad_x_1, iy: ipad_y_1, s: "nswe"},
@@ -1069,7 +1073,7 @@ class HardwareFormApp(tkinter.Tk):
         self.tb_allow_hardware.state.trace_variable("w", self.update_allow_hardware)
         self.tb_allow_software.state.trace_variable("w", self.update_allow_software)
         self.frame_top_controls.columnconfigure([0, 1, 2], minsize=450)
-        self.frame_top_controls.rowconfigure([0, 1, 2], minsize=150)
+        self.frame_top_controls.rowconfigure([0], minsize=150)
 
         # End Configurations #
 
@@ -1083,16 +1087,20 @@ class HardwareFormApp(tkinter.Tk):
             flags_auto = flags["auto"]
             flags_other = flags["other"]
 
-            # new_boss
+            for k, flags_list in flags_auto.items():
+                if k:
+                    for flag in flags_list:
+                        self.flags[flag]()
 
             new_user_name = self.tv_entry_user_name.get()
             new_emp_name = self.mc_emp_selection.res_tv_entry.get()
             new_due_date = self.odp.date
             new_company = self.tv_company_choice.get()
-            new_hardware = None
-            new_software = None
+            new_hardware = self.get_frame_hardware_toggles()
+            new_software = self.get_frame_software_toggles()
             new_follow_up = self.mc_follow_up_selection.res_tv_entry.get()
             new_comments = None
+            new_boss = None
 
             data = {
                 "flags": flags,
@@ -1105,18 +1113,50 @@ class HardwareFormApp(tkinter.Tk):
                 "new_hardware": new_hardware,
                 "new_software": new_software,
                 "new_comments": new_comments,
-                "new_company": new_company
+                "new_company": new_company,
+                "new_boss": new_boss
             }
-
-            for flag in flags_auto:
-                self.flags[flag]()
-
             print(f"{dict_print(data, 'Data')}")
+
+            kwargs = {
+                "new_emp_name": data["new_emp_name"],
+                "new_start_date": data["new_due_date"],
+                "new_company": data["new_company"],
+                "new_boss": data["new_boss"],
+                "new_hardware": data["new_hardware"],
+                "new_software": data["new_software"],
+                "new_user_name": data["new_user_name"],
+                "new_follow_up": data["new_follow_up"],
+                "new_comments": data["new_comments"]
+            }
+            self.tv_auto_desc_text.set(obj.format(**kwargs))
 
         else:
             # New objective
             pass
         print(f"objective='{val}'")
+
+    def get_frame_hardware_toggles(self):
+        result = []
+        print(f"BEGIN get_frame_hardware_toggles: {result}")
+        for q in self.questions_hardware:
+            tb = self.questions_hardware[q]["tb"]
+            print(f"{q=}, {tb=}, {tb.state.get()=}")
+            if tb.state.get():
+                result.append(q)
+        print(f"END get_frame_hardware_toggles: {result}")
+        return result
+
+    def get_frame_software_toggles(self):
+        result = []
+        print(f"BEGIN get_frame_software_toggles: {result}")
+        for q in self.questions_software:
+            tb = self.questions_software[q]["tb"]
+            print(f"{q=}, {tb=}, {tb.state.get()=}")
+            if tb.state.get():
+                result.append(q)
+        print(f"END get_frame_software_toggles: {result}")
+        return result
 
     def update_follow_up_me(self, *args):
         val = self.tb_same_user_as_follow_up.state.get()
@@ -1207,27 +1247,50 @@ class HardwareFormApp(tkinter.Tk):
         """Call this whenever an internal software switch needs to be shown.
         Ensures that toggle_buttons_frame is visible"""
         if not self.tb_allow_software.state.get():
-            self.tb_allow_software.state.set(True)
+            self.tb_allow_software.click()
 
-    def flag_odbc(self):
+    def flag_open_hardware(self):
+        """Call this whenever an internal hardware switch needs to be shown.
+        Ensures that toggle_buttons_frame is visible"""
+        if not self.tb_allow_hardware.state.get():
+            self.tb_allow_hardware.click()
+
+    def flag_odbc(self, state=None):
         # set odbc flag
-        self.flag_open_software()
-        self.questions_software["odbc"]["var"].set(True)
+        self.flag_helper("software", "odbc", state)
 
-    def flag_outlook(self):
+    def flag_outlook(self, state=None):
         # set outlook flag
-        self.flag_open_software()
-        self.questions_software["outlook"]["var"].set(True)
+        self.flag_helper("software", "outlook email", state)
 
-    def flag_outlook_archive(self):
-        self.flag_open_software()
-        self.questions_software["outlook_archive"]["var"].set(True)
-    def flag_g_drive(self):
-        self.flag_open_software()
-        self.questions_software["G Drive (Public)"]["var"].set(True)
-    def flag_u_drive(self):
-        self.flag_open_software()
-        self.questions_software["U Drive (Private)"]["var"].set(True)
+    def flag_outlook_archive(self, state=None):
+        self.flag_helper("software", "outlook archive", state)
+
+    def flag_g_drive(self, state=None):
+        self.flag_helper("software", "g-drive public", state)
+
+    def flag_u_drive(self, state=None):
+        self.flag_helper("software", "u-drive private", state)
+
+    def flag_helper(self, sh, k, state):
+        if sh == "software":
+            tb = self.questions_software[k]["tb"]
+        else:
+            tb = self.questions_hardware[k]["tb"]
+        if state is None:
+            tb.click()
+            state = tb.state.get()
+        else:
+            s = tb.state.get()
+            if state and not s:
+                tb.click()
+            elif not state and s:
+                tb.click()
+        if state:
+            if sh == "software":
+                self.flag_open_software()
+            else:
+                self.flag_open_hardware()
 
 
 def test_form():

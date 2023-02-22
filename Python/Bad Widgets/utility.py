@@ -11,7 +11,6 @@ import shutil
 import sys
 import os
 
-
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
@@ -19,8 +18,8 @@ import os
 VERSION = \
     """	
         General Utility Functions
-        Version..............1.64
-        Date...........2022-12-05
+        Version..............1.66
+        Date...........2023-02-01
         Author.......Avery Briggs
     """
 
@@ -35,6 +34,7 @@ def VERSION_DATE():
 
 def VERSION_AUTHOR():
     return VERSION.split("\n")[4].split(".")[-1]
+
 
 #######################################################################################################################
 #######################################################################################################################
@@ -71,14 +71,45 @@ def lenstr(x):
     return len(str(x))
 
 
-def minmax(a, b):
-    
+def minmax(a, b=None):
+    if b is None:
+        if isinstance(a, list) or isinstance(a, tuple):
+            p, q = None, None
+            for i, val in enumerate(a):
+                if p is None or q is None:
+                    p = val
+                    q = val
+                else:
+                    if val < p:
+                        p = val
+                    if val > q:
+                        q = val
+            return p, q
+        else:
+            raise ValueError(f"Parameter 'a' must be a list or tuple when parameter 'b' is None. Got '{a}'")
+
     if a <= b:
         return a, b
     return b, a
 
 
-def maxmin(a, b):
+def maxmin(a, b=None):
+    if b is None:
+        if isinstance(a, list) or isinstance(a, tuple):
+            p, q = None, None
+            for i, val in enumerate(a):
+                if p is None or q is None:
+                    p = val
+                    q = val
+                else:
+                    if val < p:
+                        p = val
+                    if val > q:
+                        q = val
+            return q, p
+        else:
+            raise ValueError(f"Parameter 'a' must be a list or tuple when parameter 'b' is None. Got '{a}'")
+
     if a < b:
         return b, a
     return a, b
@@ -966,15 +997,15 @@ class LineSeg(Line):
 #     def __init__(self, x, y=None, w=None, h=None):
 #         self.x = x
 #         self.y = y
-#         self.width = w
-#         self.height = h
+#         self.width_canvas = w
+#         self.height_canvas = h
 #         if any([y is None, w is None, h is None]):
 #             if is_imported("pygame"):
 #                 if isinstance(x, pygame.Rect):
 #                     x = x.left
 #                     y = x.y
-#                     w = x.width
-#                     y = x.height
+#                     w = x.width_canvas
+#                     y = x.height_canvas
 #                 else:
 #                     raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
 #             else:
@@ -1005,8 +1036,8 @@ class LineSeg(Line):
 #     def init(self, x, y, w, h):
 #         self.x = x
 #         self.y = y
-#         self.width = w
-#         self.height = h
+#         self.width_canvas = w
+#         self.height_canvas = h
 #         self.tupl = (x, y, w, h)
 #         self.top = y
 #         self.left = x
@@ -1030,7 +1061,7 @@ class LineSeg(Line):
 #         self.is_init = True
 #
 #     def __iter__(self):
-#         lst = [self.x, self. y, self.width, self.height]
+#         lst = [self.x, self. y, self.width_canvas, self.height_canvas]
 #         for val in lst:
 #             yield val
 #
@@ -1074,32 +1105,32 @@ class LineSeg(Line):
 #
 #     def translate(self, x, y):
 #         if not self.is_init:
-#             self.init(self.x, self.y, self.width, self.height)
+#             self.init(self.x, self.y, self.width_canvas, self.height_canvas)
 #         self.x += x
 #         self.y += y
-#         self.init(self.x, self.y, self.width, self.height)
+#         self.init(self.x, self.y, self.width_canvas, self.height_canvas)
 #
 #     def translated(self, x, y):
-#         r = Rect(self.x, self.y, self.width, self.height)
+#         r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
 #         r.translate(x, y)
 #         return r
 #
 #     def scale(self, w_factor, h_factor):
-#         self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
+#         self.init(self.x, self.y, self.width_canvas * w_factor, self.height_canvas * h_factor)
 #
 #     def scaled(self, w_factor, h_factor):
-#         r = Rect(self.x, self.y, self.width, self.height)
+#         r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
 #         r.scale(w_factor, h_factor)
 #         return r
 #
 #     def move(self, rect):
-#         self.init(rect.x, rect.y, rect.width, rect.height)
+#         self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
 #
 #     def resize(self, rect):
-#         self.init(rect.x, rect.y, rect.width, rect.height)
+#         self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
 #
 #     def __repr__(self):
-#         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width, self.height]))) + ")>"
+#         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width_canvas, self.height_canvas]))) + ")>"
 
 
 #            x2,y2              x1,y1 ---- x2,y2
@@ -1163,9 +1194,9 @@ class Rect2:
 
     def init(self, x, y, w, h, a):
         if w < 0:
-            raise ValueError("width value: \"{}\" must not be less than 0.".format(w))
+            raise ValueError("width_canvas value: \"{}\" must not be less than 0.".format(w))
         if h < 0:
-            raise ValueError("height value: \"{}\" must not be less than 0.".format(h))
+            raise ValueError("height_canvas value: \"{}\" must not be less than 0.".format(h))
         self.x = x
         self.y = y
         self.w = w
@@ -1332,8 +1363,8 @@ class Rect2:
     #             if isinstance(x, pygame.Rect):
     #                 x = x.left
     #                 y = x.y
-    #                 w = x.width
-    #                 y = x.height
+    #                 w = x.width_canvas
+    #                 y = x.height_canvas
     #             else:
     #                 raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
     #         else:
@@ -1364,8 +1395,8 @@ class Rect2:
     # def init(self, x, y, w, h):
     #     self.x = x
     #     self.y = y
-    #     self.width = w
-    #     self.height = h
+    #     self.width_canvas = w
+    #     self.height_canvas = h
     #     self.tupl = (x, y, w, h)
     #     self.top = y
     #     self.left = x
@@ -1389,7 +1420,7 @@ class Rect2:
     #     self.is_init = True
     #
     # def __iter__(self):
-    #     lst = [self.x, self. y, self.width, self.height]
+    #     lst = [self.x, self. y, self.width_canvas, self.height_canvas]
     #     for val in lst:
     #         yield val
     #
@@ -1433,29 +1464,29 @@ class Rect2:
     #
     # def translate(self, x, y):
     #     if not self.is_init:
-    #         self.init(self.x, self.y, self.width, self.height)
+    #         self.init(self.x, self.y, self.width_canvas, self.height_canvas)
     #     self.x += x
     #     self.y += y
-    #     self.init(self.x, self.y, self.width, self.height)
+    #     self.init(self.x, self.y, self.width_canvas, self.height_canvas)
     #
     # def translated(self, x, y):
-    #     r = Rect(self.x, self.y, self.width, self.height)
+    #     r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
     #     r.translate(x, y)
     #     return r
     #
     # def scale(self, w_factor, h_factor):
-    #     self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
+    #     self.init(self.x, self.y, self.width_canvas * w_factor, self.height_canvas * h_factor)
     #
     # def scaled(self, w_factor, h_factor):
-    #     r = Rect(self.x, self.y, self.width, self.height)
+    #     r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
     #     r.scale(w_factor, h_factor)
     #     return r
     #
     # def move(self, rect):
-    #     self.init(rect.x, rect.y, rect.width, rect.height)
+    #     self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
     #
     # def resize(self, rect):
-    #     self.init(rect.x, rect.y, rect.width, rect.height)
+    #     self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
 
     def sq_rect(self):
         return self.x, self.y, self.w, self.h
@@ -1493,7 +1524,10 @@ def date_suffix(day):
 
 # Takes "2021-08-03" -> August 3rd, 2021
 def date_str_format(date_str):
-    date_obj = dt.datetime.fromisoformat(date_str)
+    if isinstance(date_str, datetime.datetime):
+        date_obj = date_str
+    else:
+        date_obj = dt.datetime.fromisoformat(date_str)
     suffix = date_suffix(date_obj.day)
     res = dt.datetime.strftime(date_obj, "%B %d###, %Y").replace("###", suffix)
     s_res = res.split(" ")
@@ -1671,23 +1705,24 @@ def rect2_to_tkinter(rect):
 
 def tkinter_to_rect2(rect):
     """Tlinter (left, top, right, bottom) -> Rect2 (left, top, w, h)"""
-    assert isinstance(rect, list) or isinstance(rect, tuple), f"Error value is not a valid list or tuple representing a tkinter rect., got <{type(rect)}>, v=<{rect}>"
+    assert isinstance(rect, list) or isinstance(rect,
+                                                tuple), f"Error value is not a valid list or tuple representing a tkinter rect., got <{type(rect)}>, v=<{rect}>"
     assert len(rect) == 4, "This list is too long"
     x1, y1, x2, y2 = rect
     return Rect2(x1, y1, x2 - x1, y2 - y1)
 
 
 def kb_as_percent(kb, gb=2):
-    return ("%.3f" % (((100 * kb / (1024**2)) / gb))) + " %"
+    return ("%.3f" % (((100 * kb / (1024 ** 2)) / gb))) + " %"
 
 
 def calc_bounds(center, width, height=None):
-    """Given a center (x, y) and width and heights, calculate the counding box that keeps these dimensions centered."""
+    """Given a center (x, y) and width_canvas and heights, calculate the counding box that keeps these dimensions centered."""
     assert (isinstance(center, list) or isinstance(center, tuple)) and len(center) == 2 and all([isnumber(x) for x in
                                                                                                  center]), f"Error param 'center' must be a tuple or list representing center coordinates (x, y). Got: {center}"
-    assert isnumber(width), f"Error param 'width' must be a number. Got: {width}"
+    assert isnumber(width), f"Error param 'width_canvas' must be a number. Got: {width}"
     if height is not None:
-        assert isnumber(height), f"Error param 'height' if not omitted, must be a number. Got: {height}"
+        assert isnumber(height), f"Error param 'height_canvas' if not omitted, must be a number. Got: {height}"
     w = width / 2
     h = w if height is None else (height / 2)
     return (
@@ -1698,7 +1733,7 @@ def calc_bounds(center, width, height=None):
     )
 
 
-def left_join (a_, b_):
+def left_join(a_, b_):
     assert isinstance(a_, set), "Error, param 'a_' must be a set."
     assert isinstance(b_, set), "Error, param 'a_' must be a set."
     return a_.symmetric_difference(b_).union(a_).symmetric_difference(b_).union(a_)
@@ -1800,8 +1835,8 @@ def grid_cells(
     assert y_pad > -1, f"Error, y padding cannot be negative. Got {y_pad=}"
     print(f"{t_width=}, {t_height=}, {n_rows=}, {n_cols=}, {x_pad=}, {y_pad=}, {r_type=}")
 
-    tw = (t_width - ((n_cols + 0) * x_pad)) / (n_cols + 0)  # tile width
-    th = (t_height - ((n_rows + 0) * y_pad)) / (n_rows + 0)  # tile height
+    tw = (t_width - ((n_cols + 0) * x_pad)) / (n_cols + 0)  # tile width_canvas
+    th = (t_height - ((n_rows + 0) * y_pad)) / (n_rows + 0)  # tile height_canvas
 
     tiles = []
     if r_type == dict:
@@ -1851,8 +1886,10 @@ def grid_cells(
 
 def clamp_rect(rect_bounds, out_bounds, maintain_inner_dims=False):
     """Calculate the 'clamped' rectangle within the outer bounds."""
-    assert isinstance(rect_bounds, tuple) or isinstance(rect_bounds, list) or isinstance(rect_bounds, Rect2), f"Error, param 'rect_bounds; needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got{rect_bounds}"
-    assert isinstance(out_bounds, tuple) or isinstance(out_bounds, list) or isinstance(out_bounds, Rect2), f"Error, param 'out_bounds' needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got {out_bounds}"
+    assert isinstance(rect_bounds, tuple) or isinstance(rect_bounds, list) or isinstance(rect_bounds,
+                                                                                         Rect2), f"Error, param 'rect_bounds; needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got{rect_bounds}"
+    assert isinstance(out_bounds, tuple) or isinstance(out_bounds, list) or isinstance(out_bounds,
+                                                                                       Rect2), f"Error, param 'out_bounds' needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got {out_bounds}"
 
     if isinstance(rect_bounds, tuple) or isinstance(rect_bounds, list):
         assert len(rect_bounds) == 4, f"Error, list or tuple needs to be length 4. Got {rect_bounds}"
@@ -1926,21 +1963,25 @@ def restart_program():
 
     """
     python = sys.executable
-    os.execl(python, python, * sys.argv)
+    os.execl(python, python, *sys.argv)
 
 
 def alpha_ize(number_in=0, capitalize=False):
-    assert isinstance(number_in, int) and 0 <= number_in <= 25, "Error, param 'number_in' must be an integer between 0 and 25."
+    assert isinstance(number_in,
+                      int) and 0 <= number_in <= 25, "Error, param 'number_in' must be an integer between 0 and 25."
     c = chr(number_in + 97)
     c = c if not capitalize else c.upper()
     return c
 
 
-def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=False, shift_pad_0_on_number=True, capital_alpha=True, pad_char="0"):
+def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=False, shift_pad_0_on_number=True,
+              capital_alpha=True, pad_char="0"):
     assert isinstance(prefix, str), f"Error, param 'prefix' must be an in stance of a string. Got '{prefix}'"
     assert isinstance(suffix, str), f"Error, param 'suffix' must be an in stance of a string. Got '{suffix}'"
-    assert isinstance(n_digits, int) and n_digits > 0, f"Error, param 'n_digits' must be a number and be greater than 0, Got '{n_digits}'"
-    assert all([isinstance(param, bool) for param in [numbers_instead, pad_0, shift_pad_0_on_number, capital_alpha]]), f"Error, 'params numbers_instead', 'pad_0', 'shift_pad_0_on_number', 'capital_alpha' must be boolean values.\nGot: {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}"
+    assert isinstance(n_digits,
+                      int) and n_digits > 0, f"Error, param 'n_digits' must be a number and be greater than 0, Got '{n_digits}'"
+    assert all([isinstance(param, bool) for param in [numbers_instead, pad_0, shift_pad_0_on_number,
+                                                      capital_alpha]]), f"Error, 'params numbers_instead', 'pad_0', 'shift_pad_0_on_number', 'capital_alpha' must be boolean values.\nGot: {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}"
     # print(f"A {n_digits=}, {prefix=}, {suffix=}, {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}")
     pad_0 = pad_0 or ((not pad_0) and numbers_instead and shift_pad_0_on_number)
     pad_char = "0" if pad_0 and not pad_char else pad_char
@@ -1972,7 +2013,7 @@ def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=Fal
         elif len(val) < n_digits and pad_0:
             val = val.rjust(n_digits, pad_char)
         # else:
-            # print(f"VAL='{val}'")
+        # print(f"VAL='{val}'")
         yield f"{prefix}{val}{suffix}"
 
 
@@ -2015,15 +2056,18 @@ def replace_timestamp_datetime(str_in, col_in_question=None):
 
 
 def margins(t_width, n_btns, btn_width):
-    """Calculate margins given a total width, button_width and number of buttons.
+    """Calculate margins given a total width_canvas, button_width and number of buttons.
     Usage:
 
-        # Want to place 3 buttons of width 100, in a total width of 600
+        # Want to place 3 buttons of width_canvas 100, in a total width_canvas of 600
         m = margins(600, 3, 100)
     """
-    assert (isinstance(t_width, int) or isinstance(t_width, float)) and t_width > 0, "Error, param t_width must be a number greater than 0."
-    assert (isinstance(n_btns, int) or isinstance(n_btns, float)) and n_btns > 0, "Error, param n_btns must be a number greater than 0."
-    assert (isinstance(btn_width, int) or isinstance(btn_width, float)) and (btn_width * n_btns) <= t_width, "Error, param btn_width must be a number greater than 0."
+    assert (isinstance(t_width, int) or isinstance(t_width,
+                                                   float)) and t_width > 0, "Error, param t_width must be a number greater than 0."
+    assert (isinstance(n_btns, int) or isinstance(n_btns,
+                                                  float)) and n_btns > 0, "Error, param n_btns must be a number greater than 0."
+    assert (isinstance(btn_width, int) or isinstance(btn_width, float)) and (
+                btn_width * n_btns) <= t_width, "Error, param btn_width must be a number greater than 0."
     mw = (t_width - (n_btns * btn_width)) / (n_btns + 1)
     return flatten([[
         i * (mw + btn_width),

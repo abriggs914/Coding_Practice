@@ -11,8 +11,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
         General Utility file of RGB colour values
-        Version...........1.21
-        Date........2022-10-25
+        Version...........1.25
+        Date........2023-02-14
         Author....Avery Briggs
     """
 
@@ -120,6 +120,7 @@ CORNSILK_3 = (205, 200, 177)
 CORNSILK_4 = (139, 136, 120)
 CRIMSON = (220, 20, 60)
 CYAN__AQUA = (0, 255, 255)
+CYAN = (0, 255, 255)
 CYAN_2 = (0, 238, 238)
 CYAN_3 = (0, 205, 205)
 CYAN_4__DARKCYAN_ = (0, 139, 139)
@@ -377,6 +378,7 @@ LIGHTYELLOW_3 = (205, 205, 180)
 LIGHTYELLOW_4 = (139, 139, 122)
 LIMEGREEN = (50, 205, 50)
 LINEN = (250, 240, 230)
+MAGENTA = (255, 0, 255)
 MAGENTA_2 = (238, 0, 238)
 MAGENTA_3 = (205, 0, 205)
 MAGENTA_4__DARKMAGENTA_ = (139, 0, 139)
@@ -683,6 +685,7 @@ colour_values_list = [
     CORNSILK_3,
     CORNSILK_4,
     CRIMSON,
+    CYAN,
     CYAN_2,
     CYAN_3,
     CYAN_4__DARKCYAN_,
@@ -943,6 +946,7 @@ colour_values_list = [
     LIGHTYELLOW_4,
     LIMEGREEN,
     LINEN,
+    MAGENTA,
     MAGENTA_2,
     MAGENTA_3,
     MAGENTA_4__DARKMAGENTA_,
@@ -1252,6 +1256,7 @@ colour_names_list = [
     "CORNSILK_3",
     "CORNSILK_4",
     "CRIMSON",
+    "CYAN",
     "CYAN_2",
     "CYAN_3",
     "CYAN_4__DARKCYAN_",
@@ -1512,6 +1517,7 @@ colour_names_list = [
     "LIGHTYELLOW_4",
     "LIMEGREEN",
     "LINEN",
+    "MAGENTA",
     "MAGENTA_2",
     "MAGENTA_3",
     "MAGENTA_4__DARKMAGENTA_",
@@ -1738,9 +1744,25 @@ colour_names_list = [
 ]
 
 
+def iscolour(c, g=None, b=None):
+    # print("c: <{}>, t: <{}>".format(c, type(c)))
+    # print("c: <{}>, t: <{}>".format(g, type(g)))
+    # print("c: <{}>, t: <{}>".format(b, type(b)))
+    if is_rgb_colour(c, g, b):
+        return True
+    elif is_hex_colour(c):
+        return True
+    elif isinstance(c, str) and g is None and b is None:
+        if c.upper() in COLOURS:
+            return True
+    return False
+
 def rgb_to_hex(colour):
     if is_hex_colour(colour):
         return colour
+    elif iscolour(colour) and isinstance(colour, str):
+        # print(f"{colour}")
+        return rgb_to_hex(eval(colour))
     r, g, b = None, None, None
     try:
         r, g, b = colour
@@ -1754,6 +1776,9 @@ def rgb_to_hex(colour):
 def hex_to_rgb(colour):
     if is_rgb_colour(colour):
         return colour
+    elif iscolour(colour) and isinstance(colour, str) and not ("#" in colour and (len(colour) == 7)):
+        print(f"{colour}")
+        return eval(colour)
     try:
         return (int(colour[1:3], 16), int(colour[3:5], 16), int(colour[5:], 16))
     except ValueError:
@@ -1921,21 +1946,7 @@ class Colour:
         return "<Colour RGB=({r}, {g}, {b}), hex = '{h}', name = '{n}'>".format(r=r, g=g, b=b, h=self.hex_code, n=name)
 
 
-def iscolour(c, g=None, b=None):
-    # print("c: <{}>, t: <{}>".format(c, type(c)))
-    # print("c: <{}>, t: <{}>".format(g, type(g)))
-    # print("c: <{}>, t: <{}>".format(b, type(b)))
-    if is_rgb_colour(c, g, b):
-        return True
-    elif is_hex_colour(c):
-        return True
-    elif isinstance(c, str) and g is None and b is None:
-        if c.upper() in COLOURS:
-            return True
-    return False
-
-
-def gradient(x, n, c1, c2):
+def gradient(x, n, c1, c2, rgb=True):
     """Using increments, calculate a colour between two colours.
     ex. gradient(5, 10, BLACK, WHITE) -> A colour 5/10 te way between c1 & c2.
                                       -> .
@@ -1947,8 +1958,8 @@ def gradient(x, n, c1, c2):
     assert iscolour(c2), "Parameter \"c2\": ({}) needs to be a colour.".format(c2)
     assert x <= n, "Parameter \"x\": ({}) needs to be less than or equal to parameter \"n\": ({}).".format(x, n)
     assert 0 < n, "Parameter \"n\": ({}) must be non-zero and positive.".format(n)
-    r1, g1, b1 = c1
-    r2, g2, b2 = c2
+    r1, g1, b1 = Colour(c1).rgb_code
+    r2, g2, b2 = Colour(c2).rgb_code
     p = abs(x / n)
     r_diff = p * abs(r1 - r2)
     g_diff = p * abs(g1 - g2)
@@ -1959,7 +1970,11 @@ def gradient(x, n, c1, c2):
         g_diff *= -1
     if b1 >= b2:
         b_diff *= -1
-    return r1 + r_diff, g1 + g_diff, b1 + b_diff
+
+    new_colour = r1 + r_diff, g1 + g_diff, b1 + b_diff
+    if rgb:
+        return new_colour
+    return rgb_to_hex(new_colour)
 
 
 # Darken an RGB color using a proportion p (0-1)

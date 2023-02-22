@@ -2,19 +2,39 @@ import datetime
 import math
 import tkinter
 from tkinter import Frame
-
-from dateutil.relativedelta import relativedelta
 from tkcalendar import DateEntry
 from colour_utility import *
 from utility import Rect2
 import numpy as np
-from tkinter import ttk
 
-#	Class to add an Orbiting Date Picker Widget in place of a traditional date picker.
-#   Works with tkcalendar.DateEntry and datetime.datetime objects.
-#	Version............1.2
-#	Date........2022-07-11
-#	Author....Avery Briggs
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+
+VERSION = \
+    """	
+        Class to add an Orbiting Date Picker Widget in place of a traditional date picker. Works with tkcalendar.DateEntry and datetime.datetime objects.
+        Version..............1.03
+        Date...........2023-02-16
+        Author.......Avery Briggs
+    """
+
+
+def VERSION_NUMBER():
+    return float(VERSION.split("\n")[2].split(".")[-2] + "." + VERSION.split("\n")[2].split(".")[-1])
+
+
+def VERSION_DATE():
+    return VERSION.split("\n")[3].split(".")[-1]
+
+
+def VERSION_AUTHOR():
+    return VERSION.split("\n")[4].split(".")[-1]
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
 
 
 DEFAULT_SEASONS = {
@@ -63,8 +83,6 @@ def get_angle(p0, p1=np.array([0, 0]), p2=None):
 class OrbitingDatePicker(Frame):
 
     class TEvent:
-        """This class mimics the functionality of a tkinter mouse event.
-        Use to pass as 'fake' event to a handler for custom testing."""
 
         def __init__(self, orbit_rect):
             self.x1, self.y1, self.x2, self.y2 = orbit_rect
@@ -131,7 +149,7 @@ class OrbitingDatePicker(Frame):
         event_x = property(get_event_x, set_event_x, del_event_x)
         event_y = property(get_event_y, set_event_y, del_event_y)
 
-    def __init__(self, master, width=300, height=300, sun_width=50, earth_width=25, start_date=None, start_year=None, start_month=None, start_day=None, seasons=None, show_animation_console=False, **kwargs):
+    def __init__(self, master, width=300, height=300, sun_width=50, earth_width=25, start_date=None, start_year=None, start_month=None, start_day=None, seasons=None, **kwargs):
         super().__init__(master, kwargs)
 
         self.today = datetime.datetime.now()
@@ -214,7 +232,7 @@ class OrbitingDatePicker(Frame):
         )
 
         self.start_date = start_date
-        self.date = start_date
+        self._date = start_date
         self.degrees_per_day = self.calc_deg_per_day()
 
         self.dateentry_entry = DateEntry(self, year=self.date.year, month=self.date.month, day=self.date.day, font=("Arial", 12), cursor="hand1")
@@ -237,60 +255,18 @@ class OrbitingDatePicker(Frame):
         # self.mouse_motion(self.t_event)
         if must_place:
             self.set_earth_pos(self.date)
-        self.show_animation_console = show_animation_console
-        self.iv_animation_fps = tkinter.IntVar()
-        self.tv_animation_unit = tkinter.StringVar()
-        self.tv_animation_direction = tkinter.StringVar(value="backward")
-        self.iv_animation_days = tkinter.IntVar()
-        if self.show_animation_console:
-            self.frame_animation = tkinter.Frame(self, background=rgb_to_hex(GRAY_56))
-            self.frame_animation.grid(row=5, column=1, columnspan=3)
-
-            self.combobox_animation_days = ttk.Combobox(self.frame_animation, textvariable=self.iv_animation_days)
-            self.combobox_animation_days["values"] = list(range(1, 366))
-            self.lbl_animation_days = tkinter.Label(self.frame_animation, text="N Days:")
-            self.combobox_animation_days.grid(row=1, column=2)
-            self.lbl_animation_days.grid(row=1, column=1)
-
-            self.combobox_animation_fps = ttk.Combobox(self.frame_animation, textvariable=self.iv_animation_fps)
-            self.combobox_animation_fps["values"] = [1, 2, 5, 10, 25, 50, 100]
-            self.lbl_animation_fps = tkinter.Label(self.frame_animation, text="FPS:")
-            self.combobox_animation_fps.grid(row=2, column=2)
-            self.lbl_animation_fps.grid(row=2, column=1)
-
-            self.combobox_animation_unit = ttk.Combobox(self.frame_animation, textvariable=self.tv_animation_unit)
-            self.combobox_animation_unit["values"] = ["Day", "Month", "Year"]
-            self.lbl_animation_unit = tkinter.Label(self.frame_animation, text="Unit:")
-            self.combobox_animation_unit.grid(row=3, column=2)
-            self.lbl_animation_unit.grid(row=3, column=1)
-
-            self.btn_animation_direction = tkinter.Button(self.frame_animation, textvariable=self.tv_animation_direction, command=self.switch_animation_direction)
-            self.btn_animation_direction.grid(row=1, column=3)
-
-            self.btn_animate = tkinter.Button(self.frame_animation, text="animate", command=self.animate)
-            self.btn_animate.grid(row=2, column=3, columnspan=2, rowspan=2)
-
-            self.iv_animation_days.set(365)
-            self.iv_animation_fps.set(10)
-            self.tv_animation_unit.set("Day")
-
-            # self.frame_animation_buttons
-
-    def switch_animation_direction(self):
-        if self.tv_animation_direction.get() == "backward":
-            self.tv_animation_direction.set("forward")
-        else:
-            self.tv_animation_direction.set("backward")
 
     def switch_showing_orbiter(self):
         if self.iv_showing_orbiter.get() == 1:
-            # print("SHOWING")
+            print("SHOWING")
             self.canvas_background.grid(row=1, column=1, rowspan=3, columnspan=3)
-            self.checkbox_showing_orbiter.config(text="Hide Orbiter")
+            # self.tv_showing_orbiter.set("Hide Orbiter")
+            # self.checkbox_showing_orbiter.config(text="Hide Orbiter")
         else:
-            # print("HIDING")
+            print("HIDING")
             self.canvas_background.grid_forget()
-            self.checkbox_showing_orbiter.config(text="Show Orbiter")
+            # self.tv_showing_orbiter.set("Show Orbiter")
+            # self.checkbox_showing_orbiter.config(text="Show Orbiter")
 
     def dateentry_change(self, *event):
         self.set_earth_pos(self.dateentry_entry.get_date(), from_date_entry=True)
@@ -400,16 +376,9 @@ class OrbitingDatePicker(Frame):
             self.date = datetime.datetime(self.date.year + 1, self.date.month, self.date.day)
         self.set_earth_pos(angle, f"{mouse=}, TE:{angle=}")
 
-    def animate(self, n_days=None, fps=None):
-        n_days = n_days if n_days is not None else (100 if not self.show_animation_console else self.iv_animation_days.get())
-        fps = fps if fps is not None else (10 if not self.show_animation_console else self.iv_animation_fps.get())
-        for i in range(n_days + 1):
-            if self.tv_animation_unit.get() == "Year":
-                self.after(i * fps, self.set_earth_pos, datetime.datetime(self.date.year, self.date.month, self.date.day) + relativedelta(years=(1 if self.tv_animation_direction.get() == "forward" else -1) * i))
-            elif self.tv_animation_unit.get() == "Month":
-                self.after(i * fps, self.set_earth_pos, datetime.datetime(self.date.year, self.date.month, self.date.day) + relativedelta(months=(1 if self.tv_animation_direction.get() == "forward" else -1) * i))
-            else:
-                self.after(i * fps, self.set_earth_pos, datetime.datetime(self.date.year, self.date.month, self.date.day) + datetime.timedelta(days=(1 if self.tv_animation_direction.get() == "forward" else -1) * i))
+    def animate(self, n_days=100, fps=10):
+        for i in range(n_days):
+            self.after(i * fps, self.set_earth_pos, self.get_angle_to_earth() + i)
 
     def add_day(self, days=1):
         self.date += datetime.timedelta(days=days)
@@ -431,11 +400,10 @@ class OrbitingDatePicker(Frame):
 
 if __name__ == "__main__":
 
-    WIDTH, HEIGHT = 600, 500
+    WIDTH, HEIGHT = 600, 400
     WINDOW = tkinter.Tk()
     WINDOW.geometry(f"{WIDTH}x{HEIGHT}")
     # ss = OrbitingDatePicker(WINDOW)
-    # ss = OrbitingDatePicker(WINDOW, start_date=datetime.datetime(2022, 6, 6), show_animation_console=True)
     ss = OrbitingDatePicker(WINDOW, start_date=datetime.datetime(2022, 6, 6))
     ss.pack()
     WINDOW.mainloop()

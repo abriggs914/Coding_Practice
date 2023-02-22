@@ -596,6 +596,130 @@ def test_volume():
     # volume.SetMasterVolumeLevel(currentVolumeDb - 6.0, None)
 
 
+class HexCircles(tkinter.Canvas):
+    def __init__(
+            self,
+            master,
+            radius_in,
+            width=600,
+            height=600,
+            pitch=None,
+            colour_circles="#000031",
+            *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
+
+        self.radius = radius_in
+
+        self.width = self.height = max(width, height)
+        self.configure(width=self.width, height=self.height)
+        self.pitch = pitch
+        if pitch is not None:
+            width = height = (2 * pitch) + ((2 * radius_in) + 1)
+            print(f"Width adjusted to {self.width} -> {width}.\nHeight adjusted to {self.height} -> {height}.\nBecause Pitch was passed {pitch}.")
+        else:
+            # self.pitch = (self.width - ((2 * self.radius) + 1)) / 2
+            # self.pitch = ((2 * self.width) - self.radius) / 3
+            # self.pitch = (self.width - self.radius) / (self.radius + 1)
+            self.pitch = self.width / ((2 * self.radius) + 1)
+            print(f"Pitch calculated to be {self.pitch}.")
+
+        self.colour_circles = colour_circles
+
+        self.cw = 2
+        self.gw = 2
+        self.mt = 100
+        self.ct = 0
+
+        print(f"{self.width=}\n{self.height=}\n{self.pitch=}")
+        self.circles = self.init_circles()
+        self.animate()
+
+    def animate(self):
+        # print(f"animate # {self.ct}")
+        if self.ct == self.mt:
+            self.gw *= -1
+            self.ct = 0
+            # print(f"flip!")
+        for k, v in self.circles.items():
+            tag = v["tag"]
+            dims = v["dims"]
+            # iw = self.itemcget(v, "width")
+            # ih = self.itemcget(v, "height")
+            # x = self.itemcget(v, "x1")
+            # y = self.itemcget(v, "y1")
+            # self.itemconfigure(v, width=iw + 2, height=ih + 2)
+            # self.moveto(v, x - 1, y - 1)
+            x1, y1, x2, y2 = dims
+            x1 -= self.gw
+            y1 -= self.gw
+            x2 += self.gw
+            y2 += self.gw
+            self.coords(tag, x1, y1, x2, y2)
+            self.circles[k]["dims"] = (x1, y1, x2, y2)
+        self.ct += 1
+        self.after(60, self.animate)
+
+    def init_circles(self):
+        p = self.pitch
+        w = self.width
+        r = self.radius
+
+        h = self.cw
+        d = (2 * r) + 1
+        o = (d - (r + 1)) / 2
+
+        circles = {}
+
+        for i in range(d):
+            # ro =
+            for j in range(d):
+                x1, y1, x2, y2 = \
+                    (p / 2) + (i * p) - h,\
+                    (p / 2) + (j * p) - h,\
+                    (p / 2) + (i * p) + h,\
+                    (p / 2) + (j * p) + h
+                print(f"\t{x1=}, {y1=}, {x2=}, {y2=}")
+                mii, mai, mij, maj = o - 1, d - o, o - 1, d - o
+                if any([
+                    (mii < i < mai),
+                    (mij < j < maj)
+                ]):
+                    circles[(i, j)] = {
+                        "tag": self.create_oval(
+                        x1, y1, x2, y2,
+                        fill="",
+                        outline=self.colour_circles,
+                        width=2
+                        ),
+                        "dims": (x1, y1, x2, y2)
+                    }
+                # else:
+                #     circles[(i, j)] = self.create_oval(
+                #         x1, y1, x2, y2,
+                #         fill="",
+                #         outline="#0000ff",
+                #         width=2
+                #     )
+        return circles
+
+
+def test_hexagon_circles():
+    win = tkinter.Tk()
+    w, h = 700, 700
+    win.geometry(f"{w}x{h}")
+
+    colour_background = "#de9d5b"
+    radius = 6
+
+    frame = tkinter.Frame(win)
+    hc = HexCircles(frame, radius_in=radius, background=colour_background)
+
+    hc.pack(anchor=tkinter.CENTER, expand=True)
+    frame.pack(anchor=tkinter.CENTER, expand=True)
+
+    win.mainloop()
+
+
 if __name__ == '__main__':
     # phone_number_guess.main()
     # orbiting_date_picker.main()
@@ -628,5 +752,7 @@ if __name__ == '__main__':
     # ts.add_test("test3", [[(None, 0), 10, 20], AssertionError])
     # ts.execute()
 
-    test_volume()
-    test_decreasing_volume()
+    # test_volume()
+    # test_decreasing_volume()
+
+    test_hexagon_circles()
