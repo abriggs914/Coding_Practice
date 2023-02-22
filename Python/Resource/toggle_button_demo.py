@@ -489,8 +489,7 @@ class HardwareFormApp(tkinter.Tk):
             tv_label="Auto-Generated Objective:",
             tv_entry="Please select an objective from above.",
             kwargs_entry={
-                "width": 100,
-                "height": 2
+                "width": 100
             }
         )
 
