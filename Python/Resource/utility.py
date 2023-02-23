@@ -17,23 +17,27 @@ import os
 
 VERSION = \
     """	
-        General Utility Functions
-        Version..............1.67
-        Date...........2023-02-22
-        Author.......Avery Briggs
+    General Utility Functions
+    Version..............1.68
+    Date...........2023-02-23
+    Author(s)....Avery Briggs
     """
 
 
+def VERSION_DETAILS():
+    return VERSION.lower().split("version")[0].strip()
+
+
 def VERSION_NUMBER():
-    return float(VERSION.split("\n")[2].split(".")[-2] + "." + VERSION.split("\n")[2].split(".")[-1])
+    return float(".".join(VERSION.lower().split("version")[-1].split("date")[0].split(".")[-2:]).strip())
 
 
 def VERSION_DATE():
-    return VERSION.split("\n")[3].split(".")[-1]
+    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(), "%Y-%m-%d")
 
 
-def VERSION_AUTHOR():
-    return VERSION.split("\n")[4].split(".")[-1]
+def VERSION_AUTHORS():
+    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if w.strip()]
 
 
 #######################################################################################################################

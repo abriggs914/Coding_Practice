@@ -4,12 +4,39 @@ import pandas
 
 from utility import *
 
-"""
+VERSION = \
+    """
 	General Test Suite Driver
-	Version...............1.6
-	Date...........2022-08-25
-	Author.......Avery Briggs
-"""
+	Version...............1.7
+	Date...........2023-02-23
+    Author(s)....Avery Briggs
+    """
+
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+
+def VERSION_DETAILS():
+    return VERSION.lower().split("version")[0].strip()
+
+
+def VERSION_NUMBER():
+    return float(".".join(VERSION.lower().split("version")[-1].split("date")[0].split(".")[-2:]).strip())
+
+
+def VERSION_DATE():
+    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(), "%Y-%m-%d")
+
+
+def VERSION_AUTHORS():
+    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if w.strip()]
+
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+
 
 errors_list = [
     AssertionError,

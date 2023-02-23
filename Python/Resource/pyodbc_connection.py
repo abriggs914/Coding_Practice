@@ -4,11 +4,40 @@ import pandas as pd
 import pyodbc
 
 
-# General Pyodbc connection handler.
-# Geared towards BWS connections.
-# Version........................1.4
-# Date....................2022-09-22
-# Author................Avery Briggs
+VERSION = \
+    """
+    General Pyodbc connection handler.
+    Geared towards BWS connections.
+    Version...............1.5
+    Date...........2023-02-23
+    Author(s)....Avery Briggs
+    """
+
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+
+
+def VERSION_DETAILS():
+    return VERSION.lower().split("version")[0].strip()
+
+
+def VERSION_NUMBER():
+    return float(".".join(VERSION.lower().split("version")[-1].split("date")[0].split(".")[-2:]).strip())
+
+
+def VERSION_DATE():
+    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(), "%Y-%m-%d")
+
+
+def VERSION_AUTHORS():
+    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if w.strip()]
+
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
 
 
 def connect(sql, driver="{SQL Server}",
