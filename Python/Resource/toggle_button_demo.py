@@ -1,4 +1,5 @@
 import os
+import re
 import tkinter
 
 from colour_utility import *
@@ -484,13 +485,13 @@ class HardwareFormApp(tkinter.Tk):
         self.label_auto_desc_text, \
         self.tv_auto_desc_text, \
         self.auto_desc_text, \
-            = entry_factory(
-            self.frame_auto_reports,
-            tv_label="Auto-Generated Objective:",
-            tv_entry="Please select an objective from above.",
-            kwargs_entry={
-                "width": 100
-            }
+            = text_factory(
+                self.frame_auto_reports,
+                tv_label="Auto-Generated Objective:",
+                tv_text="Please select an objective from above.",
+                kwargs_text={
+                    "width": 100
+                }
         )
 
         self.tv_label_comp_choice = tkinter.StringVar(self, value="Select Hardware:", name="tv_label_comp_choice")
@@ -506,16 +507,16 @@ class HardwareFormApp(tkinter.Tk):
         self.list_of_objectives = {
             "New Employee Hire": {
                 "obj": """
-                    New employee {new_emp_name}, will be starting {new_start_date} at {new_company}.
-                    They will be reporting to {new_boss}.
-                    They will require the following Hardware and Software prepared and installed.
-                    {new_hardware}
-                    {new_software}
-                    
-                    Please notify {new_follow_up} once this has been completed
-                    
-                    Comments:
-                    {new_comments}
+New employee {new_emp_name}, will be starting {new_start_date} at {new_company}.
+They will be reporting to {new_boss}.
+They will require the following Hardware and Software prepared and installed.
+{new_hardware}
+{new_software}
+
+Please notify {new_follow_up} once this has been completed
+
+Comments:
+{new_comments}
                     """,
                 "flags": {
                     "auto": {
@@ -577,7 +578,7 @@ class HardwareFormApp(tkinter.Tk):
                 self.frame_top_controls_b,
                 tv_label="Username:",
                 tv_entry=os.getlogin(),
-                # tv_entry=os.environ.get('USERNAME'),
+                # tv_text=os.environ.get('USERNAME'),
                 kwargs_entry={
                     "justify": tkinter.CENTER,
                     "state": "disabled",
@@ -711,9 +712,34 @@ class HardwareFormApp(tkinter.Tk):
         )
         self.mc_follow_up_selection.res_tv_entry.set(self.tv_entry_user_name.get())
 
+        self.tv_btn_open_tl_comments, \
+        self.btn_open_tl_comments \
+            = button_factory(
+            self.frame_top_controls_b,
+            tv_btn="Edit Comments",
+            kwargs_btn={
+                "command": self.click_open_comments
+            }
+        )
+        self.tl_comments_input = None
+        self.tl_frame_comments_btns = None
+        self.tl_tv_label_text_comments = None
+        self.tl_label_text_comments = None
+        self.tl_tv_text_comments = tkinter.StringVar(self, value="", name="tv_comments")
+        self.test_id = id(self.tl_tv_text_comments)
+        self.tl_text_comments = None
+        self.tl_tv_btn_submit_comment = None
+        self.tl_btn_submit_comment = None
+        self.tl_tv_btn_cancel_comment = None
+        self.tl_btn_cancel_comment = None
+        self.tl_tv_btn_clear_comment = None
+        self.tl_btn_clear_comment = None
+        self.tl_tv_btn_undo_comment = None
+        self.tl_btn_undo_comment = None
+
         # End Other Control Widgets #
 
-        r, c, rs, cs, ix, iy, x, y, s = "row", "column", "rowspan", "columnspan", "ipadx", "ipady", "padx", "pady", "sticky"
+        r, c, rs, cs, ix, iy, x, y, s = self.grid_keys()
 
         # Begin Software #
 
@@ -952,7 +978,8 @@ class HardwareFormApp(tkinter.Tk):
             "label_company_choice": {r: 2, c: 0, ix: ipad_x_1, iy: ipad_y_1},
             "combo_company_choice": {r: 2, c: 1, ix: ipad_x_1, iy: ipad_y_1},
             "label_odp": {r: 3, c: 0, ix: ipad_x_1, iy: ipad_y_1},
-            "odp": {r: 3, c: 1, ix: ipad_x_1, iy: ipad_y_1},
+            "odp": {r: 3, c:1, ix: ipad_x_1, iy: ipad_y_1},
+            "btn_open_tl_comments": {r: 4, c: 1, ix: ipad_x_1, iy: ipad_y_1},
 
             # frame_top_controls_c
             # "frame_top_controls_a_a": {r: 0, c: 0},
@@ -996,6 +1023,7 @@ class HardwareFormApp(tkinter.Tk):
             "combo_company_choice",
             "label_odp",
             "odp",
+            "btn_open_tl_comments",
             "label_comp_choice",
             "combo_comp_choice"
         }
@@ -1076,6 +1104,11 @@ class HardwareFormApp(tkinter.Tk):
 
         # End Configurations #
 
+    def na_if_none(self, val):
+        if (val is None) or (not val and (isinstance(val, str) or isinstance(val, list) or isinstance(val, tuple) or isinstance(val, dict))):
+            return "N/A"
+        return val
+
     def update_objective(self, *args):
         val = self.tv_objective_choice.get()
         if val in self.list_of_objectives:
@@ -1091,15 +1124,19 @@ class HardwareFormApp(tkinter.Tk):
                     for flag in flags_list:
                         self.flags[flag]()
 
-            new_user_name = self.tv_entry_user_name.get()
-            new_emp_name = self.mc_emp_selection.res_tv_entry.get()
-            new_due_date = self.odp.date
-            new_company = self.tv_company_choice.get()
-            new_hardware = self.get_frame_hardware_toggles()
-            new_software = self.get_frame_software_toggles()
-            new_follow_up = self.mc_follow_up_selection.res_tv_entry.get()
-            new_comments = None
-            new_boss = None
+            new_user_name = self.na_if_none(self.tv_entry_user_name.get())
+            new_emp_name = self.na_if_none(self.mc_emp_selection.res_tv_entry.get())
+            new_due_date = self.na_if_none(self.odp.date)
+            new_company = self.na_if_none(self.tv_company_choice.get())
+            new_hardware = self.na_if_none(self.get_frame_hardware_toggles())
+            new_software = self.na_if_none(self.get_frame_software_toggles())
+            new_follow_up = self.na_if_none(self.mc_follow_up_selection.res_tv_entry.get())
+            new_boss = self.na_if_none(None)
+
+            if self.tl_text_comments is not None:
+                new_comments = self.na_if_none(self.tl_text_comments.text.get())
+            else:
+                new_comments = self.na_if_none(None)
 
             data = {
                 "flags": flags,
@@ -1128,7 +1165,12 @@ class HardwareFormApp(tkinter.Tk):
                 "new_follow_up": data["new_follow_up"],
                 "new_comments": data["new_comments"]
             }
-            self.tv_auto_desc_text.set(obj.format(**kwargs))
+
+            # msg = re.sub("\s+", ' ', obj.format(**kwargs))
+            msg = obj.format(**kwargs)
+            print(f"\n\tResult\n{msg}\n")
+
+            self.tv_auto_desc_text.set(msg)
 
         else:
             # New objective
@@ -1242,6 +1284,98 @@ class HardwareFormApp(tkinter.Tk):
     def hide_software_section(self):
         self.frame_software_toggle_buttons.grid_forget()
 
+    def click_open_comments(self, *event):
+        print(f"click_open_comments")
+        r, c, rs, cs, ix, iy, x, y, s = self.grid_keys()
+        if self.tl_comments_input is None:
+            self.tl_comments_input = tkinter.Toplevel(self)
+            self.tl_comments_input.title("Edit Comments")
+            self.tl_frame_comments_btns = tkinter.Frame(self.tl_comments_input)
+            self.tl_tv_label_text_comments, \
+            self.tl_label_text_comments, \
+            self.tl_tv_text_comments, \
+            self.tl_text_comments \
+                = text_factory(
+                self.tl_comments_input,
+                tv_label="Enter Comments:",
+                tv_text=self.tl_tv_text_comments
+            )
+            self.tl_tv_btn_submit_comment, \
+            self.tl_btn_submit_comment \
+                = button_factory(
+                self.tl_frame_comments_btns,
+                tv_btn="submit",
+                kwargs_btn={
+                    "command": self.tl_click_submit_comments
+                }
+            )
+            self.tl_tv_btn_cancel_comment, \
+            self.tl_btn_cancel_comment \
+                = button_factory(
+                self.tl_frame_comments_btns,
+                tv_btn="cancel",
+                kwargs_btn={
+                    "command": self.tl_click_cancel_comments
+                }
+            )
+            self.tl_tv_btn_clear_comment, \
+            self.tl_btn_clear_comment \
+                = button_factory(
+                self.tl_frame_comments_btns,
+                tv_btn="clear",
+                kwargs_btn={
+                    "command": self.tl_click_clear_comments
+                }
+            )
+            self.tl_tv_btn_undo_comment, \
+            self.tl_btn_undo_comment \
+                = button_factory(
+                self.tl_frame_comments_btns,
+                tv_btn="undo",
+                kwargs_btn={
+                    "command": self.tl_click_undo_comments
+                }
+            )
+
+            print(f"TEST '{self.test_id == id(self.tl_text_comments.text)}'")
+
+            # self.tl_label_text_comments.grid(**{r: 0, c: 0, cs: 4})
+            self.tl_text_comments.grid(**{r: 1, c: 2, cs: 4})
+            self.tl_frame_comments_btns.grid(**{r: 2, c: 0, cs: 4})
+            self.tl_btn_submit_comment.grid(**{r: 0, c: 0})
+            self.tl_btn_undo_comment.grid(**{r: 0, c: 1})
+            self.tl_btn_clear_comment.grid(**{r: 0, c: 2})
+            self.tl_btn_cancel_comment.grid(**{r: 0, c: 3})
+
+            self.tl_comments_input.protocol("WM_DELETE_WINDOW", self.tl_close_comments)
+            # self.wait_window(self.tl_comments_input)
+            # self.tl_comments_input.wait_window()
+            self.tl_comments_input.grab_set()
+        else:
+            print(f"Cant open another top level before closing the previous.")
+
+    def tl_close_comments(self, *event):
+        print(f"close_tl_comments")
+        self.tl_comments_input.destroy()
+        self.tl_comments_input = None
+
+    def tl_click_submit_comments(self, *event):
+        print(f"click_submit_comments")
+
+    def tl_click_cancel_comments(self, *event):
+        print(f"click_cancel_comments")
+        ans = messagebox.askokcancel("Quit?", "Aru you sure you want to exit without saving?")
+        if ans:
+            self.tl_close_comments(event)
+
+    def tl_click_clear_comments(self, *event):
+        print(f"click_clear_comments")
+        self.tl_tv_text_comments.set("")
+
+    def tl_click_undo_comments(self, *event):
+        print(f"click_undo_comments")
+        self.tl_text_comments.undo()
+
     def flag_open_software(self):
         """Call this whenever an internal software switch needs to be shown.
         Ensures that toggle_buttons_frame is visible"""
@@ -1290,6 +1424,9 @@ class HardwareFormApp(tkinter.Tk):
                 self.flag_open_software()
             else:
                 self.flag_open_hardware()
+
+    def grid_keys(self):
+        return "row", "column", "rowspan", "columnspan", "ipadx", "ipady", "padx", "pady", "sticky"
 
 
 def test_form():

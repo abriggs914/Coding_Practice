@@ -1939,7 +1939,7 @@ class Colour:
                     self.colour_name = COLOURS_INVERSE[self.hex_code]
 
             # print(f"{self.hex_code=}, {self.rgb_code=}")
-            self.hex_code = rgb_to_hex(self.rgb_code)
+            # self.hex_code = rgb_to_hex(self.rgb_code)
 
     def __iter__(self):
         rgb = self.rgb_code

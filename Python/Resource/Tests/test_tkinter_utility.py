@@ -1,3 +1,5 @@
+import random
+
 from tkinter_utility import *
 
 
@@ -7,8 +9,18 @@ class DemoWindow(tkinter.Tk):
         self.title("Demo Window")
         self.geometry("300x300")
 
-        custom_text = TextWithVar(self)
-        custom_text.pack(fill=tkinter.BOTH, expand=True)
+        self.custom_text = TextWithVar(self)
+        # self.custom_text.pack(fill=tkinter.BOTH, expand=True)
+        self.custom_text.pack()
+
+        self.tv_btn, self.btn = button_factory(self, tv_btn="click me", kwargs_btn={"command": self.click})
+
+        self.btn.pack()
+
+    def click(self, *args):
+        word = "".join([chr(random.randint(ord('a'), ord('z'))) for i in range(10)])
+        print(f"click!, {word=}")
+        self.custom_text.text.set(f"WORD='{word}'")
 
         # text_label = tk.Label(self, textvariable=custom_text.text)
         # text_label.pack()
@@ -771,8 +783,8 @@ if __name__ == '__main__':
     # test_arrow_button()
 
 
-    root = tkinter.Tk()
-    Example(root).pack(fill="both", expand=True)
-    root.mainloop()
+    # root = tkinter.Tk()
+    # Example(root).pack(fill="both", expand=True)
+    # root.mainloop()
 
     test_demo_window()

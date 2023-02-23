@@ -1,7 +1,7 @@
 import datetime
 import random
 import tkinter
-from collections import OrderedDict
+from collections import OrderedDict, deque
 
 import pandas
 
@@ -103,6 +103,39 @@ def entry_factory(master, tv_label=None, tv_entry=None, kwargs_label=None, kwarg
         res_label = tkinter.Label(master, textvariable=res_tv_label)
         res_entry = tkinter.Entry(master, textvariable=res_tv_entry)
     return res_tv_label, res_label, res_tv_entry, res_entry
+
+
+def text_factory(master, tv_label=None, tv_text=None, kwargs_label=None, kwargs_text=None):
+    """Return tkinter StringVar, Label, StringVar, and TextWithVar objects"""
+    if tv_label is not None and tv_text is not None:
+        res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
+        res_tv_text = tv_text if is_tk_var(tv_text) else tkinter.StringVar(master, value=tv_text)
+    elif tv_label is not None:
+        res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
+        res_tv_text = tkinter.StringVar(master)
+    elif tv_text is not None:
+        res_tv_label = tkinter.StringVar(master)
+        res_tv_text = tv_text if is_tk_var(tv_text) else tkinter.StringVar(master, value=tv_text)
+    else:
+        res_tv_label = tkinter.StringVar(master)
+        res_tv_text = tkinter.StringVar(master)
+
+    print(f"{tv_label=}\n{tv_text=}\n{kwargs_label=}\n{kwargs_text=}")
+    print(f"{res_tv_label=}\n{res_tv_text=}")
+
+    if kwargs_label is not None and kwargs_text is not None:
+        res_label = tkinter.Label(master, textvariable=res_tv_label, **kwargs_label)
+        res_text = TextWithVar(master, textvariable=res_tv_text, **kwargs_text)
+    elif kwargs_label is not None:
+        res_label = tkinter.Label(master, textvariable=res_tv_label, **kwargs_label)
+        res_text = TextWithVar(master, textvariable=res_tv_text)
+    elif kwargs_text is not None:
+        res_label = tkinter.Label(master, textvariable=res_tv_label)
+        res_text = TextWithVar(master, textvariable=res_tv_text, **kwargs_text)
+    else:
+        res_label = tkinter.Label(master, textvariable=res_tv_label)
+        res_text = TextWithVar(master, textvariable=res_tv_text)
+    return res_tv_label, res_label, res_text.text, res_text
 
 
 def button_factory(master, tv_btn=None, kwargs_btn=None):
@@ -836,7 +869,7 @@ class Slider(tkinter.Frame):
         self.canvas.tag_bind(self.slider, "<ButtonRelease-1>", self.release_canvas)
 
         self.entry.bind("<Return>", self.enter_submit)
-        # self.tv_entry.trace_variable("w", self.update_entry)
+        # self.tv_text.trace_variable("w", self.update_entry)
         self.label.grid(row=1, column=1)
         self.entry.grid(row=1, column=2)
         self.canvas.grid(row=2, column=1, columnspan=2)
@@ -937,14 +970,14 @@ class Slider(tkinter.Frame):
 #         self.slider_blue = Slider(self, minimum=0, maximum=255)
 #
 #         self.tv_label_red, self.label_red, self.tv_entry_red, self.entry_red = entry_factory(self, tv_label="Red:",
-#                                                                                              tv_entry=self.slider_red.value)
+#                                                                                              tv_text=self.slider_red.value)
 #         self.tv_label_green, self.label_green, self.tv_entry_green, self.entry_green = entry_factory(self,
 #                                                                                                      tv_label="Green:",
-#                                                                                                      tv_entry=self.slider_green.value)
+#                                                                                                      tv_text=self.slider_green.value)
 #         self.tv_label_blue, self.label_blue, self.tv_entry_blue, self.entry_blue = entry_factory(self, tv_label="Blue:",
-#                                                                                                  tv_entry=self.slider_blue.value)
+#                                                                                                  tv_text=self.slider_blue.value)
 #         self.tv_label_res, self.label_res, self.tv_entry_res, self.entry_res = entry_factory(self, tv_label="Result:",
-#                                                                                              tv_entry="Sample Text #123.")
+#                                                                                              tv_text="Sample Text #123.")
 #
 #         self.slider_red.value.trace_variable("w", self.update_colour)
 #         self.slider_green.value.trace_variable("w", self.update_colour)
@@ -2464,28 +2497,80 @@ class ToggleButton(tkinter.Frame):
 
 
 class TextWithVar(tkinter.Text):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.text = tkinter.StringVar(value=self.get("1.0", tkinter.END))
+    def __init__(self, master, textvariable=None, max_undos=100, *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
+        if textvariable is None:
+            textvariable = tkinter.StringVar(value=self.get("1.0", tkinter.END))
+        else:
+            if isinstance(textvariable, tkinter.StringVar):
+                textvariable = textvariable
+            elif isinstance(textvariable, tkinter.Variable):
+                textvariable = tkinter.StringVar(self, value=str(textvariable.get()))
+            else:
+                textvariable = tkinter.StringVar(self, value=textvariable)
+
+        print(f"HELLO TEXT: '{textvariable.get()}'")
+
+        self.max_undos = clamp(0, max_undos, 1000)
+        self.history = deque(maxlen=self.max_undos)
+        self.text = textvariable
+        self.text.trace_variable("w", self.update_set_text)
         self.bind("<<CustomTextChanged>>", self._on_text_changed)
         self.bind("<Control-Return>", self.submit)
+        self.bind("<KeyRelease>", self.key_release)
+        self.history.append(self.text.get())
+
+        # Initialize the text widget if a initial value is passed with the StringVar.
+        if txt := self.text.get():
+            self.insert("1.0", txt, pass_thru=False)
+            # self.text.set(txt)
 
     def submit(self, event):
         print(f"submit")
+        print(f"{self.history=}")
 
-    def _on_text_changed(self, event):
-        self.delete("1.0", tkinter.END)
-        self.insert("1.0", self.text.get())
+    def key_release(self, *event):
+        self.text.set(self.get("1.0", "end-1c"))
+        # self._update_text_variable()
+        # print(f"key_release TEXT='{self.text.get()}', T2='{}' {event=}")
 
-    def insert(self, index, text):
+    def undo(self):
+        if len(self.history) > 1:
+            hist = self.history.pop()
+            hist = self.history.pop()
+            # print(f"hist='{hist}'")
+            self.text.set(hist)
+            return True
+        elif len(self.history):
+            hist = self.history.pop()
+            self.text.set(hist)
+            return True
+        else:
+            print("Nothing to undo.")
+            self.history.append('')
+            return False
+
+    def update_set_text(self, *args):
+        # print(f"update_set_text, {self.text.get()=}")
+        self._on_text_changed(None, pass_thru=False)
+
+    def _on_text_changed(self, event, pass_thru=True):
+        self.history.append(self.text.get())
+        self.delete("1.0", tkinter.END, pass_thru=pass_thru)
+        self.insert("1.0", self.text.get(), pass_thru=pass_thru)
+
+    def insert(self, index, text, pass_thru=True):
         super().insert(index, text)
-        self._update_text_variable()
+        if pass_thru:
+            self._update_text_variable()
 
-    def delete(self, index1, index2=None):
+    def delete(self, index1, index2=None, pass_thru=True):
         super().delete(index1, index2)
-        self._update_text_variable()
+        if pass_thru:
+            self._update_text_variable()
 
     def _update_text_variable(self):
+        print(f"{self.text.get()=}")
         self.text.set(self.get("1.0", tkinter.END))
         self.event_generate("<<CustomTextChanged>>")
 

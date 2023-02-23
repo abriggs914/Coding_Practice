@@ -1879,7 +1879,7 @@ def test_gm6():
 
     f1 = tkinter.Frame(WIN)
     tv1, lb1, tv2, en1 = entry_factory(f1, tv_label="Mode:", kwargs_entry={"state": "disabled"})
-    # tv3, lb2, tv4, en2 = entry_factory(f1, tv_label="Wrap Mode:", kwargs_entry={"state": "disabled"})
+    # tv3, lb2, tv4, en2 = entry_factory(f1, tv_label="Wrap Mode:", kwargs_text={"state": "disabled"})
     lb1.grid(row=0, column=0)
     en1.grid(row=0, column=1)
     # lb2.grid(row=0, column=2)
