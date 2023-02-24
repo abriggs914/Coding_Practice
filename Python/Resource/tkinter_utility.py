@@ -2500,13 +2500,17 @@ class TextWithVar(tkinter.Text):
     def __init__(self, master, textvariable=None, max_undos=100, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         if textvariable is None:
+            print(f"TextWithVar A")
             textvariable = tkinter.StringVar(value=self.get("1.0", tkinter.END))
         else:
             if isinstance(textvariable, tkinter.StringVar):
+                print(f"TextWithVar B")
                 textvariable = textvariable
             elif isinstance(textvariable, tkinter.Variable):
+                print(f"TextWithVar C")
                 textvariable = tkinter.StringVar(self, value=str(textvariable.get()))
             else:
+                print(f"TextWithVar D")
                 textvariable = tkinter.StringVar(self, value=textvariable)
 
         print(f"HELLO TEXT: '{textvariable.get()}'")
@@ -2550,14 +2554,30 @@ class TextWithVar(tkinter.Text):
             self.history.append('')
             return False
 
-    def update_set_text(self, *args):
-        # print(f"update_set_text, {self.text.get()=}")
-        self._on_text_changed(None, pass_thru=False)
+    # def update_set_text(self, *args):
+    #     # print(f"update_set_text, {self.text.get()=}")
+    #     self._on_text_changed(None, pass_thru=False)
+
+    def update_set_text(self, *args, pass_thru=True):
+        try:
+            if self.focus_get() == self:
+                self.text.set(self.get("1.0", tkinter.END).rstrip())
+                if not pass_thru:
+                    self.event_generate("<<CustomTextChanged>>")
+            else:
+                print(f"does not have focus")
+        except KeyError as ke:
+            self._on_text_changed(None, pass_thru=False)
 
     def _on_text_changed(self, event, pass_thru=True):
+        self.trim_history()
         self.history.append(self.text.get())
         self.delete("1.0", tkinter.END, pass_thru=pass_thru)
         self.insert("1.0", self.text.get(), pass_thru=pass_thru)
+
+    def trim_history(self):
+        if len(self.history) >= self.max_undos:
+            self.history.popleft()
 
     def insert(self, index, text, pass_thru=True):
         super().insert(index, text)
@@ -2565,6 +2585,7 @@ class TextWithVar(tkinter.Text):
             self._update_text_variable()
 
     def delete(self, index1, index2=None, pass_thru=True):
+        print(f"Delete: {index1=}, {index2=}, {pass_thru=}")
         super().delete(index1, index2)
         if pass_thru:
             self._update_text_variable()

@@ -9,6 +9,7 @@ from tkinter_utility import *
 from pyodbc_connection import connect
 from location_utility import company_from_location
 from utility import dict_print
+from datetime_utility import *
 
 
 # class ToggleButton(tkinter.Frame):
@@ -461,6 +462,12 @@ class HardwareFormApp(tkinter.Tk):
         w = "wired(less)"
         d = "databaseSelection"
 
+        self.default_data = {
+            "start_of_day_hour": 8,
+            "start_of_day_minute": 0,
+            "start_of_day_format": "%A %a %d %Y"
+        }
+
         self.flags = {
             "-odbc": self.flag_odbc,
             "-outlook": self.flag_outlook,
@@ -474,6 +481,7 @@ class HardwareFormApp(tkinter.Tk):
         # self.frame_top_controls_a_a = tkinter.Frame(self.frame_top_controls_a, name="top_controls_a_a")
         self.frame_top_controls_b = tkinter.Frame(self.frame_top_controls, name="top_controls_b")
         self.frame_top_controls_c = tkinter.Frame(self.frame_top_controls, name="top_controls_c", background="#171717")
+        self.frame_top_controls_d = tkinter.Frame(self.frame_top_controls, name="top_controls_d", background="#171717")
         self.frame_software = tkinter.Frame(self, name="fame_software", background="#141441", width=200)
         self.frame_hardware = tkinter.Frame(self, name="fame_hardware", background="#411414", width=200)
         self.frame_comp_choice = tkinter.Frame(self.frame_hardware, name="fame_comp_choice")
@@ -618,6 +626,16 @@ Comments:
             label_factory(
                 self.frame_top_controls_b,
                 tv_label="Due Date:"
+        )
+
+        self.tv_button_submit_form,\
+        self.tv_button_submit_form\
+            = button_factory(
+                self.frame_top_controls_d,
+                tv_btn="Submit Form",
+                kwargs_btn={
+                    "command": self.click_submit_form
+                }
         )
 
         # End factories #
@@ -962,6 +980,7 @@ Comments:
             "frame_top_controls_a": {r: 0, c: 0, rs: 1, cs: 1, ix: ipad_x_1, iy: ipad_y_1},
             "frame_top_controls_b": {r: 0, c: 1, rs: 1, cs: 1, ix: ipad_x_1, iy: ipad_y_1},
             "frame_top_controls_c": {r: 0, c: 2, rs: 1, cs: 1, ix: ipad_x_1, iy: ipad_y_1},
+            "frame_top_controls_d": {r: 0, c: 3, rs: 1, cs: 1, ix: ipad_x_1, iy: ipad_y_1},
 
             # frame_top_controls_a
             # "frame_top_controls_a_a": {r: 0, c: 0},
@@ -984,6 +1003,9 @@ Comments:
             # frame_top_controls_c
             # "frame_top_controls_a_a": {r: 0, c: 0},
             "mc_follow_up_selection": {r: 1, c: 0, rs: 1, cs: 1},
+
+            # frame_top_controls_d
+            "tv_button_submit_form": {r: 0, c: 0, ix: ipad_x_1, iy: ipad_y_1, cs: 1, rs: 1},
 
             # frame_hardware
             "frame_comp_choice": {r: 1, c: 0, ix: ipad_x_1, iy: ipad_y_1},
@@ -1113,46 +1135,8 @@ Comments:
         val = self.tv_objective_choice.get()
         if val in self.list_of_objectives:
             print(f"{val=}\n{self.list_of_objectives[val]=}")
-            full_obj = self.list_of_objectives[val]
-            obj = full_obj["obj"]
-            flags = full_obj["flags"]
-            flags_auto = flags["auto"]
-            flags_other = flags["other"]
-
-            for k, flags_list in flags_auto.items():
-                if k:
-                    for flag in flags_list:
-                        self.flags[flag]()
-
-            new_user_name = self.na_if_none(self.tv_entry_user_name.get())
-            new_emp_name = self.na_if_none(self.mc_emp_selection.res_tv_entry.get())
-            new_due_date = self.na_if_none(self.odp.date)
-            new_company = self.na_if_none(self.tv_company_choice.get())
-            new_hardware = self.na_if_none(self.get_frame_hardware_toggles())
-            new_software = self.na_if_none(self.get_frame_software_toggles())
-            new_follow_up = self.na_if_none(self.mc_follow_up_selection.res_tv_entry.get())
-            new_boss = self.na_if_none(None)
-
-            if self.tl_text_comments is not None:
-                new_comments = self.na_if_none(self.tl_text_comments.text.get())
-            else:
-                new_comments = self.na_if_none(None)
-
-            data = {
-                "flags": flags,
-                "flags_auto": flags_auto,
-                "flags_other": flags_other,
-                "new_user_name": new_user_name,
-                "new_emp_name": new_emp_name,
-                "new_due_date": new_due_date,
-                "new_follow_up": new_follow_up,
-                "new_hardware": new_hardware,
-                "new_software": new_software,
-                "new_comments": new_comments,
-                "new_company": new_company,
-                "new_boss": new_boss
-            }
-            print(f"{dict_print(data, 'Data')}")
+            obj = self.list_of_objectives[val]["obj"]
+            data = self.form_data(val)
 
             kwargs = {
                 "new_emp_name": data["new_emp_name"],
@@ -1343,7 +1327,7 @@ Comments:
             self.tl_text_comments.grid(**{r: 1, c: 2, cs: 4})
             self.tl_frame_comments_btns.grid(**{r: 2, c: 0, cs: 4})
             self.tl_btn_submit_comment.grid(**{r: 0, c: 0})
-            self.tl_btn_undo_comment.grid(**{r: 0, c: 1})
+            # self.tl_btn_undo_comment.grid(**{r: 0, c: 1})  # TODO fix the undo function.
             self.tl_btn_clear_comment.grid(**{r: 0, c: 2})
             self.tl_btn_cancel_comment.grid(**{r: 0, c: 3})
 
@@ -1361,6 +1345,7 @@ Comments:
 
     def tl_click_submit_comments(self, *event):
         print(f"click_submit_comments")
+        self.tl_close_comments(event)
 
     def tl_click_cancel_comments(self, *event):
         print(f"click_cancel_comments")
@@ -1424,6 +1409,74 @@ Comments:
                 self.flag_open_software()
             else:
                 self.flag_open_hardware()
+
+    def click_submit_form(self, *event):
+        print(f"click_submit_form")
+        if data := self.ready_to_submit():
+            print(f"{data=}")
+
+    def form_data(self, key=None):
+        if key is not None:
+            if key not in self.list_of_objectives:
+                raise KeyError(f"Error, key '{key}' is not in the list of objectives.")
+
+            full_obj = self.list_of_objectives[key]
+            obj = full_obj["obj"]
+            flags = full_obj["flags"]
+            flags_auto = flags["auto"]
+            flags_other = flags["other"]
+
+            for k, flags_list in flags_auto.items():
+                if k:
+                    for flag in flags_list:
+                        self.flags[flag]()
+
+            new_user_name = self.na_if_none(self.tv_entry_user_name.get())
+            new_emp_name = self.na_if_none(self.mc_emp_selection.res_tv_entry.get())
+            date = self.odp.date
+            start_hour, \
+            start_minute = \
+                self.default_data["start_of_day_hour"], \
+                self.default_data["start_of_day_minute"]
+            date = datetime.datetime(date.year, date.month, date.day, start_hour, start_minute)
+            date_s = date_str_format(date, include_time=True)
+            new_due_date = self.na_if_none(date_s)
+            new_company = self.na_if_none(self.tv_company_choice.get())
+            new_hardware = self.na_if_none(self.get_frame_hardware_toggles())
+            new_software = self.na_if_none(self.get_frame_software_toggles())
+            new_follow_up = self.na_if_none(self.mc_follow_up_selection.res_tv_entry.get())
+            new_boss = self.na_if_none(None)
+
+            if self.tl_text_comments is not None:
+                new_comments = self.na_if_none(self.tl_text_comments.text.get())
+            else:
+                new_comments = self.na_if_none(None)
+
+            data = {
+                "flags": flags,
+                "flags_auto": flags_auto,
+                "flags_other": flags_other,
+                "new_user_name": new_user_name,
+                "new_emp_name": new_emp_name,
+                "new_due_date": new_due_date,
+                "new_follow_up": new_follow_up,
+                "new_hardware": new_hardware,
+                "new_software": new_software,
+                "new_comments": new_comments,
+                "new_company": new_company,
+                "new_boss": new_boss
+            }
+            print(f"{dict_print(data, 'Data')}")
+
+            return data
+        return {}
+
+    def ready_to_submit(self):
+        val = self.tv_objective_choice.get()
+        data = self.form_data(val)
+        if all([val, *list(data.items())]):
+            return data
+        return {}
 
     def grid_keys(self):
         return "row", "column", "rowspan", "columnspan", "ipadx", "ipady", "padx", "pady", "sticky"

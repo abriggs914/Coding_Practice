@@ -1,32 +1,33 @@
+import calendar
 import datetime
 from dateutil.relativedelta import relativedelta
-
+from utility import minmax, clamp, choice
 
 """
 	General datetime Utility Functions
-	Version...............1.2
-	Date...........2023-02-22
+	Version...............1.3
+	Date...........2023-02-24
 	Author.......Avery Briggs
 """
 
 
 class datetime2(datetime.datetime):
 
-	def __init__(self, *args, **kwargs):
-		super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__()
 
-	def add_month(self, n_months=1):
-		return self + relativedelta(months=n_months)
+    def add_month(self, n_months=1):
+        return self + relativedelta(months=n_months)
 
 
 def add_business_days(d, bd, holidays=None):
     if holidays is None:
         holidays = []
     i = 0
-    t = dt.datetime(d.year, d.month, d.day)
+    t = datetime.datetime(d.year, d.month, d.day)
     # print("holidays: " + str(holidays))
     while i < bd:
-        t = t + dt.timedelta(days=1)
+        t = t + datetime.timedelta(days=1)
         # print("t: " + str(t) + ", (t not in holidays): " + str(t not in holidays))
         if t.weekday() < 5 and t not in holidays:
             i += 1
@@ -93,8 +94,12 @@ def date_suffix(day):
     return res
 
 
-# Takes "2021-08-03" -> August 3rd, 2021
-def date_str_format(date_str):
+# Takes "2021-08-03"                     -> August 3rd, 2021
+# d = datetime.datetime(2023,1,1, 8, 30)
+# date_str_format(d)                     -> January 1st, 2023
+# date_str_format(d, include_time=True)  -> January 1st, 2023 at 8:30 AM
+def date_str_format(date_str, include_time=False, delim=" at "):
+    """Return a date as a nicely formatted date or date and time string."""
     if isinstance(date_str, datetime.datetime):
         date_obj = date_str
     else:
@@ -104,10 +109,15 @@ def date_str_format(date_str):
     s_res = res.split(" ")
     x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
     res = " ".join([s_res[0], x, s_res[2]])
+    if include_time:
+        h = str(date_obj.hour)
+        if h == "0":
+            h = "12"
+        h = h.removeprefix("0")
+        m = ("00" + str(date_obj.minute))[-2:]
+        p = date_obj.strftime("%p")
+        res = f"{res}{delim}{h}:{m} {p}"
     return res
-	
-
-
 
 
 # leap year calculation: https://www.timeanddate.com/date/leapyear.html
@@ -256,7 +266,7 @@ def replace_timestamp_datetime(str_in, col_in_question=None):
 
 
 if __name__ == '__main__':
-	d2 = datetime.datetime(2022, 10, 10)
-	d1 = datetime2(2022, 10, 10, 23, 48, 12)
-	print("d1:", d1)
-	print("d1 + M:", d1.add_month(3))
+    d2 = datetime.datetime(2022, 10, 10)
+    d1 = datetime2(2022, 10, 10, 23, 48, 12)
+    print("d1:", d1)
+    print("d1 + M:", d1.add_month(3))
