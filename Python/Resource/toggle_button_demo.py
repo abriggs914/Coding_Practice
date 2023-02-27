@@ -1,14 +1,16 @@
 import os
 import re
 import tkinter
+import webbrowser
 
 from colour_utility import *
 from ctkinter import *
+from html_utility import list_to_html
 from orbiting_date_picker import OrbitingDatePicker
 from tkinter_utility import *
 from pyodbc_connection import connect
 from location_utility import company_from_location
-from utility import dict_print
+from utility import dict_print, next_available_file_name
 from datetime_utility import *
 
 
@@ -476,7 +478,7 @@ class HardwareFormApp(tkinter.Tk):
             "-u_drive": self.flag_u_drive
         }
 
-        self.frame_top_controls = tkinter.Frame(self, name="top_controls")
+        self.frame_top_controls = tkinter.Frame(self, name="top_controls", background="#10aee3")
         self.frame_top_controls_a = tkinter.Frame(self.frame_top_controls, name="top_controls_a", background="#171717")
         # self.frame_top_controls_a_a = tkinter.Frame(self.frame_top_controls_a, name="top_controls_a_a")
         self.frame_top_controls_b = tkinter.Frame(self.frame_top_controls, name="top_controls_b")
@@ -526,6 +528,62 @@ Please notify {new_follow_up} once this has been completed
 Comments:
 {new_comments}
                     """,
+                "html": """
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Page Title</title>\
+    <style>
+        div.lists {{
+            display: flex;
+			justify-content: space-between;
+            width: 40%;
+        }}
+        div.lst_h {{
+            display: inline-block;
+            width: 45%;
+        }}
+        div.lst_s {{
+            display: inline-block;
+            width: 45%;
+        }}
+        {rem_styles}        
+    </style>
+</head>
+
+<body>
+
+    <h1>
+        New Hire Request for Hardware
+    </h1>
+    <p>
+        New employee
+        <mark class="emp_name">{new_emp_name}</mark>, will be starting
+        <mark class="due_date">{new_start_date}</mark> at
+        <mark class="company">{new_company}</mark>.
+    </p>
+    <p>
+        They will be reporting to <mark class="boss_name">{new_boss}</mark>.
+    </p>
+    <p>
+        They will require the following Hardware and Software prepared and installed:
+    </p>
+
+    <div class="lists">
+        {new_hardware_list}
+        {new_software_list}
+    </div>
+
+    <h4>Comments</h4>
+    <p>
+        {new_comments}.
+    </p>
+
+</body>
+
+</html>
+                """,
                 "flags": {
                     "auto": {
                         True: [
@@ -629,7 +687,7 @@ Comments:
         )
 
         self.tv_button_submit_form,\
-        self.tv_button_submit_form\
+        self.button_submit_form\
             = button_factory(
                 self.frame_top_controls_d,
                 tv_btn="Submit Form",
@@ -1005,7 +1063,7 @@ Comments:
             "mc_follow_up_selection": {r: 1, c: 0, rs: 1, cs: 1},
 
             # frame_top_controls_d
-            "tv_button_submit_form": {r: 0, c: 0, ix: ipad_x_1, iy: ipad_y_1, cs: 1, rs: 1},
+            "button_submit_form": {r: 0, c: 0, ix: ipad_x_1, iy: ipad_y_1, cs: 1, rs: 1},
 
             # frame_hardware
             "frame_comp_choice": {r: 1, c: 0, ix: ipad_x_1, iy: ipad_y_1},
@@ -1031,6 +1089,7 @@ Comments:
             "frame_top_controls_a",
             "frame_top_controls_b",
             "frame_top_controls_c",
+            "frame_top_controls_d",
             # "frame_top_controls_a_a",
             "label_auto_desc_text",
             "auto_desc_text",
@@ -1047,7 +1106,8 @@ Comments:
             "odp",
             "btn_open_tl_comments",
             "label_comp_choice",
-            "combo_comp_choice"
+            "combo_comp_choice",
+            "button_submit_form"
         }
 
         for k in self.init_grid:
@@ -1138,23 +1198,26 @@ Comments:
             obj = self.list_of_objectives[val]["obj"]
             data = self.form_data(val)
 
-            kwargs = {
-                "new_emp_name": data["new_emp_name"],
-                "new_start_date": data["new_due_date"],
-                "new_company": data["new_company"],
-                "new_boss": data["new_boss"],
-                "new_hardware": data["new_hardware"],
-                "new_software": data["new_software"],
-                "new_user_name": data["new_user_name"],
-                "new_follow_up": data["new_follow_up"],
-                "new_comments": data["new_comments"]
-            }
+            if val == "New Employee Hire":
+                kwargs = {
+                    "new_emp_name": data["new_emp_name"],
+                    "new_start_date": data["new_due_date"],
+                    "new_company": data["new_company"],
+                    "new_boss": data["new_boss"],
+                    "new_hardware": data["new_hardware"],
+                    "new_software": data["new_software"],
+                    "new_user_name": data["new_user_name"],
+                    "new_follow_up": data["new_follow_up"],
+                    "new_comments": data["new_comments"]
+                }
 
-            # msg = re.sub("\s+", ' ', obj.format(**kwargs))
-            msg = obj.format(**kwargs)
-            print(f"\n\tResult\n{msg}\n")
+                # msg = re.sub("\s+", ' ', obj.format(**kwargs))
+                msg = obj.format(**kwargs)
+                print(f"\n\tResult\n{msg}\n")
 
-            self.tv_auto_desc_text.set(msg)
+                self.tv_auto_desc_text.set(msg)
+            else:
+                raise ValueError(f"Error, right now this objective is not supported: obj='{val}'.")
 
         else:
             # New objective
@@ -1413,7 +1476,68 @@ Comments:
     def click_submit_form(self, *event):
         print(f"click_submit_form")
         if data := self.ready_to_submit():
+            val = self.tv_objective_choice.get()
+            obj = self.list_of_objectives[val]["obj"]
+            html_ = self.list_of_objectives[val]["html"]
+
             print(f"{data=}")
+            print(f"{obj}")
+            print(f"{html_}")
+
+            if val == "New Employee Hire":
+
+                hardware_list = data["new_hardware"]
+                software_list = data["new_software"]
+                if not (isinstance(hardware_list, list) or isinstance(hardware_list, tuple) or isinstance(hardware_list, dict)):
+                    hardware_list = [hardware_list]
+                if not (isinstance(software_list, list) or isinstance(software_list, tuple) or isinstance(software_list, dict)):
+                    software_list = [software_list]
+                style_tag_h, list_tag_h = list_to_html(
+                    hardware_list,
+                    class_name="lst_h",
+                    is_ordered=False,
+                    wrap_style=False,
+                    title="Hardware",
+                    background="#6d6d6d"
+                )
+                style_tag_s, list_tag_s = list_to_html(
+                    software_list,
+                    class_name="lst_s",
+                    is_ordered=False,
+                    wrap_style=False,
+                    title="Software",
+                    background="#6d6d6d"
+                )
+
+                # tag_lists = f"<div class=\"lists\">{list_tag_h}{list_tag_s}</div>"
+                rem_styles = f"{style_tag_h} {style_tag_s}"
+
+                kwargs = {
+                    "new_emp_name": data["new_emp_name"],
+                    "new_start_date": data["new_due_date"],
+                    "new_company": data["new_company"],
+                    "new_boss": data["new_boss"],
+                    "new_hardware_list": list_tag_h,
+                    "new_software_list": list_tag_s,
+                    "new_user_name": data["new_user_name"],
+                    "new_follow_up": data["new_follow_up"],
+                    "new_comments": data["new_comments"],
+                    "rem_styles": rem_styles
+                }
+
+                html_ = html_.format(**kwargs)
+                print(f"\n\thtml_:\n{html_}")
+
+                fn = next_available_file_name(f"request_output.html")
+                with open(fn, "w") as f:
+                    f.write(html_)
+
+                webbrowser.open(fn)
+
+            else:
+                raise ValueError(f"Error, objective '{val}' is not supported yet.")
+
+
 
     def form_data(self, key=None):
         if key is not None:
@@ -1422,6 +1546,7 @@ Comments:
 
             full_obj = self.list_of_objectives[key]
             obj = full_obj["obj"]
+            html_ = full_obj["html"]
             flags = full_obj["flags"]
             flags_auto = flags["auto"]
             flags_other = flags["other"]
