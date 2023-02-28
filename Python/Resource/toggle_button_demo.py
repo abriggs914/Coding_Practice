@@ -4,7 +4,6 @@ import tkinter
 import webbrowser
 
 from colour_utility import *
-from ctkinter import *
 from html_utility import list_to_html
 from orbiting_date_picker import OrbitingDatePicker
 from tkinter_utility import *
@@ -514,6 +513,12 @@ class HardwareFormApp(tkinter.Tk):
 
         # self.frame_hardware_software_toggles = tkinter.Frame(self)
 
+        self.colour_schemes = {
+            "background_text_block": "#888888",
+            "background_bws": Colour(BWS_GREY).hex_code,
+            "foreground_bws": Colour(BWS_RED).hex_code
+        }
+
         self.list_of_objectives = {
             "New Employee Hire": {
                 "obj": """
@@ -548,6 +553,29 @@ Comments:
             display: inline-block;
             width: 45%;
         }}
+        div.text_block {{
+            background:#888888;
+            width: 50%;
+        }}
+        p.text_block {{
+            background:{background_text_block};
+        }}
+        mark.company {{
+            background:{background_company};
+            color:{foreground_company};
+        }}
+        mark.due_date {{
+            background:{background_company};
+            color:{foreground_due_date};
+        }}
+        mark.emp_name {{
+            background:{background_company};
+            color:{foreground_emp_name};
+        }}
+        mark.boss_name {{
+            background:{background_company};
+            color:{foreground_boss_name};
+        }}
         {rem_styles}        
     </style>
 </head>
@@ -557,28 +585,33 @@ Comments:
     <h1>
         New Hire Request for Hardware
     </h1>
-    <p>
-        New employee
-        <mark class="emp_name">{new_emp_name}</mark>, will be starting
-        <mark class="due_date">{new_start_date}</mark> at
-        <mark class="company">{new_company}</mark>.
-    </p>
-    <p>
-        They will be reporting to <mark class="boss_name">{new_boss}</mark>.
-    </p>
-    <p>
-        They will require the following Hardware and Software prepared and installed:
-    </p>
+    
+    <div class="text_block">
+        <p class="text_block">
+            New employee
+            <mark class="emp_name">{new_emp_name}</mark>, will be starting
+            <mark class="due_date">{new_start_date}</mark> at
+            <mark class="company">{new_company}</mark>.
+        </p>
+        <p class="text_block">
+            They will be reporting to <mark class="boss_name">{new_boss}</mark>.
+        </p>
+        <p class="text_block">
+            They will require the following Hardware and Software prepared and installed:
+        </p>
+    </div>
 
     <div class="lists">
         {new_hardware_list}
         {new_software_list}
     </div>
 
-    <h4>Comments</h4>
-    <p>
-        {new_comments}.
-    </p>
+    <div class="text_block">
+        <h4>Comments</h4>
+        <p class="text_block">
+            {new_comments}.
+        </p>
+    </div>
 
 </body>
 
@@ -1005,10 +1038,12 @@ Comments:
                 }
             })
 
-            tb.grid(**self.questions_hardware[q_title]["grid_args"]["tb"])
-            canvas.grid(**self.questions_hardware[q_title]["grid_args"]["canvas"])
-            frame_canvas.grid(**self.questions_hardware[q_title]["grid_args"]["frame_canvas"])
-            label.grid(**self.questions_hardware[q_title]["grid_args"]["label"])
+            # do not automatically grid the hardware toggles.
+            # rely on the update_comp_choice function to add or remove them.
+            # tb.grid(**self.questions_hardware[q_title]["grid_args"]["tb"])
+            # canvas.grid(**self.questions_hardware[q_title]["grid_args"]["canvas"])
+            # frame_canvas.grid(**self.questions_hardware[q_title]["grid_args"]["frame_canvas"])
+            # label.grid(**self.questions_hardware[q_title]["grid_args"]["label"])
 
             if q_follow_up is not None:
                 if style == q:
@@ -1270,12 +1305,17 @@ Comments:
             for k in self.questions_hardware:
                 # self.questions_hardware[k]["showing"] = False
                 self.questions_hardware[k]["tb"].grid_forget()
+                self.questions_hardware[k]["label"].grid_forget()
+                self.questions_hardware[k]["canvas"].grid_forget()
+                self.questions_hardware[k]["frame_canvas"].grid_forget()
         else:
 
             for k in self.questions_hardware:
                 # if self.questions_hardware[k]["showing"]:
-                grid_args = self.questions_hardware[k]["grid_args"]["tb"]
-                self.questions_hardware[k]["tb"].grid(**grid_args)
+                self.questions_hardware[k]["tb"].grid(**self.questions_hardware[k]["grid_args"]["tb"])
+                self.questions_hardware[k]["label"].grid(**self.questions_hardware[k]["grid_args"]["label"])
+                self.questions_hardware[k]["canvas"].grid(**self.questions_hardware[k]["grid_args"]["canvas"])
+                self.questions_hardware[k]["frame_canvas"].grid(**self.questions_hardware[k]["grid_args"]["frame_canvas"])
 
             show_chargers = True
             showing_chargers = self.questions_hardware["extra chargers"]["showing"]
@@ -1477,8 +1517,10 @@ Comments:
         print(f"click_submit_form")
         if data := self.ready_to_submit():
             val = self.tv_objective_choice.get()
-            obj = self.list_of_objectives[val]["obj"]
-            html_ = self.list_of_objectives[val]["html"]
+            # obj = self.list_of_objectives[val]["obj"]
+            # html_ = self.list_of_objectives[val]["html"]
+            obj = data["obj"]
+            html_ = data["html"]
 
             print(f"{data=}")
             print(f"{obj}")
@@ -1488,6 +1530,7 @@ Comments:
 
                 hardware_list = data["new_hardware"]
                 software_list = data["new_software"]
+                print(f"{hardware_list=}\n{software_list=}")
                 if not (isinstance(hardware_list, list) or isinstance(hardware_list, tuple) or isinstance(hardware_list, dict)):
                     hardware_list = [hardware_list]
                 if not (isinstance(software_list, list) or isinstance(software_list, tuple) or isinstance(software_list, dict)):
@@ -1498,7 +1541,8 @@ Comments:
                     is_ordered=False,
                     wrap_style=False,
                     title="Hardware",
-                    background="#6d6d6d"
+                    background="#6d6d6d",
+                    level_in=1
                 )
                 style_tag_s, list_tag_s = list_to_html(
                     software_list,
@@ -1506,11 +1550,19 @@ Comments:
                     is_ordered=False,
                     wrap_style=False,
                     title="Software",
-                    background="#6d6d6d"
+                    background="#6d6d6d",
+                    level_in=1
                 )
+
+                print(f"{list_tag_s=}\n{list_tag_h=}")
 
                 # tag_lists = f"<div class=\"lists\">{list_tag_h}{list_tag_s}</div>"
                 rem_styles = f"{style_tag_h} {style_tag_s}"
+
+                background_company, foreground_company = self.company_colours(data["new_company"])
+                foreground_due_date = foreground_company
+                foreground_emp_name = foreground_company
+                foreground_boss_name = foreground_company
 
                 kwargs = {
                     "new_emp_name": data["new_emp_name"],
@@ -1522,7 +1574,13 @@ Comments:
                     "new_user_name": data["new_user_name"],
                     "new_follow_up": data["new_follow_up"],
                     "new_comments": data["new_comments"],
-                    "rem_styles": rem_styles
+                    "rem_styles": rem_styles,
+                    "background_text_block": self.colour_schemes["background_text_block"],
+                    "background_company": background_company,
+                    "foreground_company": foreground_company,
+                    "foreground_due_date": foreground_due_date,
+                    "foreground_emp_name": foreground_emp_name,
+                    "foreground_boss_name": foreground_boss_name
                 }
 
                 html_ = html_.format(**kwargs)
@@ -1537,9 +1595,7 @@ Comments:
             else:
                 raise ValueError(f"Error, objective '{val}' is not supported yet.")
 
-
-
-    def form_data(self, key=None):
+    def form_data(self, key=None, do_flags=True):
         if key is not None:
             if key not in self.list_of_objectives:
                 raise KeyError(f"Error, key '{key}' is not in the list of objectives.")
@@ -1551,10 +1607,11 @@ Comments:
             flags_auto = flags["auto"]
             flags_other = flags["other"]
 
-            for k, flags_list in flags_auto.items():
-                if k:
-                    for flag in flags_list:
-                        self.flags[flag]()
+            if do_flags:
+                for k, flags_list in flags_auto.items():
+                    if k:
+                        for flag in flags_list:
+                            self.flags[flag]()
 
             new_user_name = self.na_if_none(self.tv_entry_user_name.get())
             new_emp_name = self.na_if_none(self.mc_emp_selection.res_tv_entry.get())
@@ -1589,7 +1646,9 @@ Comments:
                 "new_software": new_software,
                 "new_comments": new_comments,
                 "new_company": new_company,
-                "new_boss": new_boss
+                "new_boss": new_boss,
+                "obj": obj,
+                "html": html_
             }
             print(f"{dict_print(data, 'Data')}")
 
@@ -1598,10 +1657,21 @@ Comments:
 
     def ready_to_submit(self):
         val = self.tv_objective_choice.get()
-        data = self.form_data(val)
+        data = self.form_data(val, do_flags=False)
         if all([val, *list(data.items())]):
             return data
         return {}
+
+    def company_colours(self, company_in):
+        match company_in:
+            case "BWS":
+                return self.colour_schemes["background_bws"], self.colour_schemes["foreground_bws"]
+            case "Stargate":
+                return self.colour_schemes["background_bws"], self.colour_schemes["foreground_bws"]
+            case "Lewis":
+                return self.colour_schemes["background_bws"], self.colour_schemes["foreground_bws"]
+            case _:
+                raise ValueError("Error")
 
     def grid_keys(self):
         return "row", "column", "rowspan", "columnspan", "ipadx", "ipady", "padx", "pady", "sticky"

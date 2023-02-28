@@ -11,8 +11,8 @@ from colour_utility import iscolour, Colour
 VERSION = \
     """	
     General Utility Functions for HTML Projects
-    Version..............1.01
-    Date...........2023-02-27
+    Version..............1.02
+    Date...........2023-02-28
     Author(s)....Avery Briggs
     """
 
@@ -75,7 +75,9 @@ def list_to_html(
         background_alternating_row=None,
         foreground_alternating_row=None,
         is_ordered=True,
-        wrap_style=True
+        wrap_style=True,
+        level_in=0,
+        is_raw=False
 ):
     # Warning, passing large lists to this function will result in very large style tags.
 
@@ -93,15 +95,16 @@ def list_to_html(
     l_tag = "ol" if is_ordered else "ul"
 
     css_selectors = {}
+    level = level_in
+    tbs = "|__TABS__|"
     ck_key = lambda key: css_selectors.update({key: []}) if key not in css_selectors else None
     ck_val = lambda key, val: css_selectors[key].append(val)
-    replace_t = lambda key: ("\t" * key.count(tbs), key.replace(tbs, ""))
+    replace_t = lambda key: ("\t" * level, key.replace(tbs, ""))
+    replace_j = lambda key: "".join(replace_t(key))
 
     # open style tag
-    style = "<style>\n" if wrap_style else ""
-    level = 1
-    # tabs = level * "\t"
-    tbs = "|__TABS__|"
+    style = replace_j(f"{tbs}<style>\n" if wrap_style else f"{tbs}")
+    level += 1
 
     # handle root font
     if font is not None:
@@ -131,7 +134,7 @@ def list_to_html(
         # assert known parameter type.
         assert _ltds_y(background), "Error, invalid type for param 'background'."
         if isinstance(background, tuple) or isinstance(background, list):
-            level = 1
+            # level = 1
             colours = []
             for i, col in enumerate(background):
                 assert iscolour(col), f"Error, colour '{col}' not recognized."
@@ -166,7 +169,7 @@ def list_to_html(
         # assert known parameter type.
         assert _ltds_y(foreground), "Error, invalid type for param 'foreground'."
         if isinstance(foreground, tuple) or isinstance(foreground, list):
-            level = 1
+            # level = 1
             colours = []
             for i, col in enumerate(foreground):
                 assert iscolour(col), f"Error, colour '{col}' not recognized."
@@ -285,9 +288,6 @@ def list_to_html(
             ck_key(key)
             ck_val(key, f"{tbs}color:{c.hex_code}")
 
-
-
-
         # Add to selectors
         key = f"{tbs}li.{cn}"
         ck_key(key)
@@ -319,8 +319,7 @@ def list_to_html(
 
     # close style tag
     level -= 1
-    tabs = level * "\t"
-    style += f"{tabs}</style>" if wrap_style else ""
+    style += replace_j(f"{tbs}</style>" if wrap_style else "")
 
     list_tag = f"<{l_tag} class=\"{cn}\">"
     for i in range(len(lst)):
@@ -329,13 +328,18 @@ def list_to_html(
 
     # Generate the title html
     title_html = f"<{t_tag} class=\"{cn}\">{title}</{t_tag}>" if title else ""
+    body_html = f"<div class=\"{cn}\">\n\t{title_html}\n\t{list_tag}\n</div>"
 
-    return style, f"<div class\"{cn}\">\n\t{title_html}\n\t{list_tag}\n</div>"
+    if is_raw:
+        style = style.replace("\n", "").replace("\t", "")
+        body_html = body_html.replace("\n", "").replace("\t", "")
+
+    return style, body_html
 
 
 def test_list_to_html_2():
-    # lst = ["Cat", "dog", "Bicycle", "Umbrella", "Potato", "Goose"]
-    lst = list(range(-500, 60))
+    lst = ["Cat", "dog", "Bicycle", "Umbrella", "Potato", "Goose"]
+    # lst = list(range(-500, 60))
     result_style, result_html = list_to_html(
         lst=lst,
         title='Sample List',
@@ -348,7 +352,8 @@ def test_list_to_html_2():
         foreground=("#0d0d0d", "#1212CC"),
         # font_title=("Comic Sans", 12),
         background_title="background: limegreen;",
-        foreground_title="#101010;"
+        foreground_title="#101010;",
+        is_raw=False
     )
 
     print(f"my_attempt:\n{result_style}\n{result_html}")
@@ -356,3 +361,4 @@ def test_list_to_html_2():
 
 if __name__ == '__main__':
     version_data()
+    # test_list_to_html_2()
