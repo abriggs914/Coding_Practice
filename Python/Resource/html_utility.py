@@ -11,8 +11,8 @@ from colour_utility import iscolour, Colour
 VERSION = \
     """	
     General Utility Functions for HTML Projects
-    Version..............1.02
-    Date...........2023-02-28
+    Version..............1.03
+    Date...........2023-03-01
     Author(s)....Avery Briggs
     """
 
@@ -288,11 +288,11 @@ def list_to_html(
             ck_key(key)
             ck_val(key, f"{tbs}color:{c.hex_code}")
 
-        # Add to selectors
-        key = f"{tbs}li.{cn}"
-        ck_key(key)
-        ck_val(key, f"{tbs}font-family:\"{font_family}\"")
-        ck_val(key, f"{tbs}font-size:{font_size}px")
+        # # Add to selectors
+        # key = f"{tbs}li.{cn}"
+        # ck_key(key)
+        # ck_val(key, f"{tbs}font-family:\"{font_family}\"")
+        # ck_val(key, f"{tbs}font-size:{font_size}px")
 
     # add all styles together
     for key, style_list in css_selectors.items():
