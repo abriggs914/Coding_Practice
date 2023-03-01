@@ -15,8 +15,8 @@ import numpy as np
 VERSION = \
     """	
     Class to add an Orbiting Date Picker Widget in place of a traditional date picker. Works with tkcalendar.DateEntry and datetime.datetime objects.
-    Version..............1.04
-    Date...........2023-02-23
+    Version..............1.05
+    Date...........2023-03-01
     Author(s)....Avery Briggs
     """
 
@@ -238,6 +238,7 @@ class OrbitingDatePicker(Frame):
 
         self.start_date = start_date
         self._date = start_date
+        self.date_var = tkinter.Variable(self, value=self.date)
         self.degrees_per_day = self.calc_deg_per_day()
 
         self.dateentry_entry = DateEntry(self, year=self.date.year, month=self.date.month, day=self.date.day, font=("Arial", 12), cursor="hand1")
@@ -396,6 +397,7 @@ class OrbitingDatePicker(Frame):
         if isinstance(date_in, tuple) or isinstance(date_in, list):
             date_in, *rest = date_in
         self._date = date_in
+        self.date_var.set(self.date)
 
     def del_date(self):
         del self._date

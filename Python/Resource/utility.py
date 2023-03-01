@@ -1,5 +1,6 @@
 import datetime
 import math
+import ctypes
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice, randint
@@ -18,8 +19,8 @@ import os
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.68
-    Date...........2023-02-23
+    Version..............1.69
+    Date...........2023-03-01
     Author(s)....Avery Briggs
     """
 
@@ -33,11 +34,13 @@ def VERSION_NUMBER():
 
 
 def VERSION_DATE():
-    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(), "%Y-%m-%d")
+    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(),
+                                      "%Y-%m-%d")
 
 
 def VERSION_AUTHORS():
-    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if w.strip()]
+    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if
+            w.strip()]
 
 
 #######################################################################################################################
@@ -1463,7 +1466,7 @@ def next_available_file_name(path):
         path = ".".join(spl[:-1]) + " ({}).".format(counter) + spl[-1]
     path.replace("/", "\\")
     return path
-	
+
 
 def alert_colour(x, n):
     assert isnumber(x), "Parameter \"x\": ({}) needs to be a number".format(x)
@@ -1838,12 +1841,41 @@ def margins(t_width, n_btns, btn_width):
     assert (isinstance(n_btns, int) or isinstance(n_btns,
                                                   float)) and n_btns > 0, "Error, param n_btns must be a number greater than 0."
     assert (isinstance(btn_width, int) or isinstance(btn_width, float)) and (
-                btn_width * n_btns) <= t_width, "Error, param btn_width must be a number greater than 0."
+            btn_width * n_btns) <= t_width, "Error, param btn_width must be a number greater than 0."
     mw = (t_width - (n_btns * btn_width)) / (n_btns + 1)
     return flatten([[
         i * (mw + btn_width),
         (i * btn_width) + ((i + 1) * mw)
     ] for i in range(n_btns + 1)])
+
+
+def get_windows_user(EXTENDED_NAME_FORMAT: int = 3):
+    """Get detailed information about the windows user.
+
+    print("NameUnknown            : ", get_data(0))  -> ''
+    print("NameFullyQualifiedDN   : ", get_data(1))  -> CN=Avery Briggs,OU=SBSUsers,OU=Users,OU=MyBusiness,DC=BWSDOMAIN,DC=local
+    print("NameSamCompatible      : ", get_data(2))  -> BWSDOMAIN\abriggs
+    print("NameDisplay            : ", get_data(3))  -> Avery Briggs
+    print("NameUniqueId           : ", get_data(6))  -> {c74b0433-85cd-462d-903e-90f3a811f528}
+    print("NameCanonical          : ", get_data(7))  -> BWSDOMAIN.local/MyBusiness/Users/SBSUsers/Avery Briggs
+    print("NameUserPrincipal      : ", get_data(8))  -> ABriggs@BWSDOMAIN.local
+    print("NameCanonicalEx        : ", get_data(9))  -> BWSDOMAIN.local/MyBusiness/Users/SBSUsers
+                                                        Avery Briggs
+    print("NameServicePrincipal   : ", get_data(10)) -> ''
+    print("NameDnsDomain          : ", get_data(12)) -> BWSDOMAIN.LOCAL\abriggs
+
+    https://stackoverflow.com/questions/21766954/how-to-get-windows-users-full-name-in-python
+    """
+
+    GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
+    data = EXTENDED_NAME_FORMAT
+
+    size = ctypes.pointer(ctypes.c_ulong(0))
+    GetUserNameEx(data, None, size)
+
+    nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
+    GetUserNameEx(data, nameBuffer, size)
+    return nameBuffer.value
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

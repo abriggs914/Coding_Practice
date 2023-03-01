@@ -388,11 +388,11 @@ Where to watch:			Disney+
 Genre:				Comedy
 Run (2017 -> 2022):		5 years
 number seasons:			3
-number episodes:		37
-episodes per season:		12.333333333333334
+number episodes:		36
+episodes per season:		12.0
 average length of an episode:	44
-Total minutes:			1628
-Total hours:			27.133333333333333
+Total minutes:			1584
+Total hours:			26.4
 Where to watch:			Disney+
 
 	Mr. Robot
@@ -593,24 +593,35 @@ Total minutes:			782
 Total hours:			13.033333333333333
 Where to watch:			Disney+
 
+	Buffy The Vampire Slayer
+Genre:				Drama / Action
+Run (1997 -> 2003):		6 years
+number seasons:			7
+number episodes:		144
+episodes per season:		20.571428571428573
+average length of an episode:	45
+Total minutes:			6480
+Total hours:			108.0
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Futurama
+	Curb your Enthusiasm
 Genre:				Comedy
-Run (1999 -> 2013):		14 years
+Run (2000 -> 2020):		20 years
 number seasons:			10
-number episodes:		140
-episodes per season:		14.0
-average length of an episode:	22
-Total minutes:			3080
-Total hours:			51.333333333333336
-Where to watch:			Disney+
+number episodes:		100
+episodes per season:		10.0
+average length of an episode:	30
+Total minutes:			3000
+Total hours:			50.0
+Where to watch:			Crave -> HBO
 
 Season: 6
-Episode: 2
+Episode: 4
 
 	How would you like to print the stats?
 1	-	By start year
@@ -634,6 +645,7 @@ sorting by start year...
 |The Simpsons                     |    1989    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    1989    |The Simpsons                     |
 |Recess                           |    1997    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1997    |Recess                           |
 |King of the Hill                 |    1997    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1997    |King of the Hill                 |
+|Buffy The Vampire Slayer         |    1997    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1997    |Buffy The Vampire Slayer         |
 |Yu-Gi-Oh!                        |    1998    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1998    |Yu-Gi-Oh!                        |
 |Futurama                         |    1999    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    1999    |Futurama                         |
 |Family Guy                       |    1999    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    1999    |Family Guy                       |
@@ -709,6 +721,7 @@ sorting by start year...
 |The Simpsons                     |    1989    |
 |Recess                           |    1997    |
 |King of the Hill                 |    1997    |
+|Buffy The Vampire Slayer         |    1997    |
 |Yu-Gi-Oh!                        |    1998    |
 |Futurama                         |    1999    |
 |Family Guy                       |    1999    |
@@ -762,12 +775,12 @@ sorting by start year...
 |The Great North                  |    2021    |
 ################################################
 
-Mean:		2009.81
-Median:		2010.50
-Pstdev:		  7.80
-Pvariance:	 60.82
-Stdev:		  7.87
-Variance:	 61.97
+Mean:		2009.58
+Median:		2010.00
+Pstdev:		  7.91
+Pvariance:	 62.64
+Stdev:		  7.99
+Variance:	 63.80
 
 	How would you like to print the stats?
 1	-	By start year
@@ -789,6 +802,7 @@ sorting by end year...
 ###############################################################################################################################################################################################################################################################################
 ##################################| end year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| end year |##################################
 |Recess                           |   2001   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2001   |Recess                           |
+|Buffy The Vampire Slayer         |   2003   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2003   |Buffy The Vampire Slayer         |
 |The Proud Family                 |   2005   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2005   |The Proud Family                 |
 |Yu-Gi-Oh!                        |   2006   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2006   |Yu-Gi-Oh!                        |
 |Malcolm in the Middle            |   2006   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2006   |Malcolm in the Middle            |
@@ -864,6 +878,7 @@ sorting by end year...
 ##############################################
 ##################################| end year |
 |Recess                           |   2001   |
+|Buffy The Vampire Slayer         |   2003   |
 |The Proud Family                 |   2005   |
 |Yu-Gi-Oh!                        |   2006   |
 |Malcolm in the Middle            |   2006   |
@@ -919,12 +934,12 @@ sorting by end year...
 |The Great North                  |   2022   |
 ##############################################
 
-Mean:		2016.48
+Mean:		2016.24
 Median:		2019.00
-Pstdev:		  5.21
-Pvariance:	 27.14
-Stdev:		  5.26
-Variance:	 27.65
+Pstdev:		  5.47
+Pvariance:	 29.89
+Stdev:		  5.52
+Variance:	 30.44
 
 	How would you like to print the stats?
 1	-	By start year
@@ -974,6 +989,7 @@ sorting by shortest series length...
 |Better Call Saul                 |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |             5              |Better Call Saul                 |
 |Letterkenny                      |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |             5              |Letterkenny                      |
 |The Orville                      |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |             5              |The Orville                      |
+|Buffy The Vampire Slayer         |             6              |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             6              |Buffy The Vampire Slayer         |
 |Malcolm in the Middle            |             6              |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             6              |Malcolm in the Middle            |
 |Sons of Anarchy                  |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             6              |Sons of Anarchy                  |
 |Community                        |             6              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             6              |Community                        |
@@ -1049,6 +1065,7 @@ sorting by shortest series length...
 |Better Call Saul                 |             5              |
 |Letterkenny                      |             5              |
 |The Orville                      |             5              |
+|Buffy The Vampire Slayer         |             6              |
 |Malcolm in the Middle            |             6              |
 |Sons of Anarchy                  |             6              |
 |Community                        |             6              |
@@ -1076,12 +1093,12 @@ sorting by shortest series length...
 |The Simpsons                     |             33             |
 ################################################################
 
-Mean:		  6.78
+Mean:		  6.76
 Median:		  5.00
-Pstdev:		  6.26
-Pvariance:	 39.21
-Stdev:		  6.32
-Variance:	 39.95
+Pstdev:		  6.21
+Pvariance:	 38.51
+Stdev:		  6.26
+Variance:	 39.22
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1122,6 +1139,7 @@ sorting by longest series length...
 |Sherlock                         |             7             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |             7             |Sherlock                         |
 |Brooklyn Nine-Nine               |             7             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |             7             |Brooklyn Nine-Nine               |
 |Peaky Blinders                   |             7             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |             7             |Peaky Blinders                   |
+|Buffy The Vampire Slayer         |             6             |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             6             |Buffy The Vampire Slayer         |
 |Malcolm in the Middle            |             6             |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             6             |Malcolm in the Middle            |
 |Sons of Anarchy                  |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |             6             |Sons of Anarchy                  |
 |Community                        |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             6             |Community                        |
@@ -1197,6 +1215,7 @@ sorting by longest series length...
 |Sherlock                         |             7             |
 |Brooklyn Nine-Nine               |             7             |
 |Peaky Blinders                   |             7             |
+|Buffy The Vampire Slayer         |             6             |
 |Malcolm in the Middle            |             6             |
 |Sons of Anarchy                  |             6             |
 |Community                        |             6             |
@@ -1233,12 +1252,12 @@ sorting by longest series length...
 |The Great North                  |             1             |
 ###############################################################
 
-Mean:		  6.78
+Mean:		  6.76
 Median:		  5.00
-Pstdev:		  6.26
-Pvariance:	 39.21
-Stdev:		  6.32
-Variance:	 39.95
+Pstdev:		  6.21
+Pvariance:	 38.51
+Stdev:		  6.26
+Variance:	 39.22
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1297,6 +1316,7 @@ sorting by least number of seasons...
 |Recess                           |          6           |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          6           |Recess                           |
 |Star Wars the Clone Wars         |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          7           |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          7           |Brooklyn Nine-Nine               |
+|Buffy The Vampire Slayer         |          7           |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          7           |Buffy The Vampire Slayer         |
 |Malcolm in the Middle            |          7           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          7           |Malcolm in the Middle            |
 |Sons of Anarchy                  |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          7           |Sons of Anarchy                  |
 |Parks and Recreation             |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          7           |Parks and Recreation             |
@@ -1372,6 +1392,7 @@ sorting by least number of seasons...
 |Recess                           |          6           |
 |Star Wars the Clone Wars         |          7           |
 |Brooklyn Nine-Nine               |          7           |
+|Buffy The Vampire Slayer         |          7           |
 |Malcolm in the Middle            |          7           |
 |Sons of Anarchy                  |          7           |
 |Parks and Recreation             |          7           |
@@ -1390,12 +1411,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  5.93
+Mean:		  5.95
 Median:		  5.00
-Pstdev:		  5.45
-Pvariance:	 29.70
-Stdev:		  5.50
-Variance:	 30.26
+Pstdev:		  5.40
+Pvariance:	 29.18
+Stdev:		  5.45
+Variance:	 29.72
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1430,6 +1451,7 @@ sorting by most number of seasons...
 |Game of Thrones                  |          8          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          8          |Game of Thrones                  |
 |Star Wars the Clone Wars         |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          7          |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          7          |Brooklyn Nine-Nine               |
+|Buffy The Vampire Slayer         |          7          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          7          |Buffy The Vampire Slayer         |
 |Malcolm in the Middle            |          7          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          7          |Malcolm in the Middle            |
 |Sons of Anarchy                  |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |          7          |Sons of Anarchy                  |
 |Parks and Recreation             |          7          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          7          |Parks and Recreation             |
@@ -1505,6 +1527,7 @@ sorting by most number of seasons...
 |Game of Thrones                  |          8          |
 |Star Wars the Clone Wars         |          7          |
 |Brooklyn Nine-Nine               |          7          |
+|Buffy The Vampire Slayer         |          7          |
 |Malcolm in the Middle            |          7          |
 |Sons of Anarchy                  |          7          |
 |Parks and Recreation             |          7          |
@@ -1547,12 +1570,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  5.93
+Mean:		  5.95
 Median:		  5.00
-Pstdev:		  5.45
-Pvariance:	 29.70
-Stdev:		  5.50
-Variance:	 30.26
+Pstdev:		  5.40
+Pvariance:	 29.18
+Stdev:		  5.45
+Variance:	 29.72
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1590,9 +1613,9 @@ sorting by least number of episodes...
 |Peaky Blinders                   |          30           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          30           |Peaky Blinders                   |
 |The Great North                  |          33           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |          33           |The Great North                  |
 |Bless the Harts                  |          34           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          34           |Bless the Harts                  |
+|The Orville                      |          36           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          36           |The Orville                      |
 |Brickleberry                     |          36           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          36           |Brickleberry                     |
 |Misfits                          |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          37           |Misfits                          |
-|The Orville                      |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          37           |The Orville                      |
 |The Mick                         |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37           |The Mick                         |
 |Baskets                          |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          40           |Baskets                          |
 |Gravity Falls                    |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          40           |Gravity Falls                    |
@@ -1618,6 +1641,7 @@ sorting by least number of episodes...
 |Star Wars the Clone Wars         |          133          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          133          |Star Wars the Clone Wars         |
 |Futurama                         |          140          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          140          |Futurama                         |
 |Brooklyn Nine-Nine               |          143          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          143          |Brooklyn Nine-Nine               |
+|Buffy The Vampire Slayer         |          144          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          144          |Buffy The Vampire Slayer         |
 |Malcolm in the Middle            |          151          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          151          |Malcolm in the Middle            |
 |It's Always Sunny in Philadelphia|          154          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          154          |It's Always Sunny in Philadelphia|
 |Scrubs                           |          182          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          182          |Scrubs                           |
@@ -1665,9 +1689,9 @@ sorting by least number of episodes...
 |Peaky Blinders                   |          30           |
 |The Great North                  |          33           |
 |Bless the Harts                  |          34           |
+|The Orville                      |          36           |
 |Brickleberry                     |          36           |
 |Misfits                          |          37           |
-|The Orville                      |          37           |
 |The Mick                         |          37           |
 |Baskets                          |          40           |
 |Gravity Falls                    |          40           |
@@ -1693,6 +1717,7 @@ sorting by least number of episodes...
 |Star Wars the Clone Wars         |          133          |
 |Futurama                         |          140          |
 |Brooklyn Nine-Nine               |          143          |
+|Buffy The Vampire Slayer         |          144          |
 |Malcolm in the Middle            |          151          |
 |It's Always Sunny in Philadelphia|          154          |
 |Scrubs                           |          182          |
@@ -1704,12 +1729,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		 93.41
-Median:		 54.50
-Pstdev:		118.28
-Pvariance:	13989.46
-Stdev:		119.39
-Variance:	14253.42
+Mean:		 94.31
+Median:		 56.00
+Pstdev:		117.40
+Pvariance:	13782.90
+Stdev:		118.48
+Variance:	14038.14
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1739,6 +1764,7 @@ sorting by most number of episodes...
 |Scrubs                           |         182          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         182          |Scrubs                           |
 |It's Always Sunny in Philadelphia|         154          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         154          |It's Always Sunny in Philadelphia|
 |Malcolm in the Middle            |         151          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         151          |Malcolm in the Middle            |
+|Buffy The Vampire Slayer         |         144          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         144          |Buffy The Vampire Slayer         |
 |Brooklyn Nine-Nine               |         143          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |         143          |Brooklyn Nine-Nine               |
 |Futurama                         |         140          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         140          |Futurama                         |
 |Star Wars the Clone Wars         |         133          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         133          |Star Wars the Clone Wars         |
@@ -1764,8 +1790,8 @@ sorting by most number of episodes...
 |Baskets                          |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          40          |Baskets                          |
 |Gravity Falls                    |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          40          |Gravity Falls                    |
 |Misfits                          |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          37          |Misfits                          |
-|The Orville                      |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          37          |The Orville                      |
 |The Mick                         |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37          |The Mick                         |
+|The Orville                      |          36          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          36          |The Orville                      |
 |Brickleberry                     |          36          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |          36          |Brickleberry                     |
 |Bless the Harts                  |          34          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          34          |Bless the Harts                  |
 |The Great North                  |          33          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |          33          |The Great North                  |
@@ -1814,6 +1840,7 @@ sorting by most number of episodes...
 |Scrubs                           |         182          |
 |It's Always Sunny in Philadelphia|         154          |
 |Malcolm in the Middle            |         151          |
+|Buffy The Vampire Slayer         |         144          |
 |Brooklyn Nine-Nine               |         143          |
 |Futurama                         |         140          |
 |Star Wars the Clone Wars         |         133          |
@@ -1839,8 +1866,8 @@ sorting by most number of episodes...
 |Baskets                          |          40          |
 |Gravity Falls                    |          40          |
 |Misfits                          |          37          |
-|The Orville                      |          37          |
 |The Mick                         |          37          |
+|The Orville                      |          36          |
 |Brickleberry                     |          36          |
 |Bless the Harts                  |          34          |
 |The Great North                  |          33          |
@@ -1861,12 +1888,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 93.41
-Median:		 54.50
-Pstdev:		118.28
-Pvariance:	13989.46
-Stdev:		119.39
-Variance:	14253.42
+Mean:		 94.31
+Median:		 56.00
+Pstdev:		117.40
+Pvariance:	13782.90
+Stdev:		118.48
+Variance:	14038.14
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1914,8 +1941,8 @@ sorting by shortest time...
 |The Last Man on Earth            |   24.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |   24.566667   |The Last Man on Earth            |
 |Peaky Blinders                   |     25.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |     25.0      |Peaky Blinders                   |
 |Recess                           |   26.066667   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   26.066667   |Recess                           |
+|The Orville                      |   26.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   26.400000   |The Orville                      |
 |Misfits                          |   27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   27.133333   |Misfits                          |
-|The Orville                      |   27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   27.133333   |The Orville                      |
 |Arrested Develpoment             |   30.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |   30.800000   |Arrested Develpoment             |
 |Workaholics                      |   31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |   31.533333   |Workaholics                      |
 |My Name is Earl                  |   33.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   33.600000   |My Name is Earl                  |
@@ -1938,6 +1965,7 @@ sorting by shortest time...
 |Yu-Gi-Oh!                        |   86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   86.533333   |Yu-Gi-Oh!                        |
 |Sons of Anarchy                  |     92.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |     92.0      |Sons of Anarchy                  |
 |King of the Hill                 |   99.283333   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   99.283333   |King of the Hill                 |
+|Buffy The Vampire Slayer         |     108.0     |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |     108.0     |Buffy The Vampire Slayer         |
 |Family Guy                       |  155.600000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  155.600000   |Family Guy                       |
 |Criminal Minds                   |  237.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  237.600000   |Criminal Minds                   |
 |The Simpsons                     |  291.200000   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  291.200000   |The Simpsons                     |
@@ -1989,8 +2017,8 @@ sorting by shortest time...
 |The Last Man on Earth            |   24.566667   |
 |Peaky Blinders                   |     25.0      |
 |Recess                           |   26.066667   |
+|The Orville                      |   26.400000   |
 |Misfits                          |   27.133333   |
-|The Orville                      |   27.133333   |
 |Arrested Develpoment             |   30.800000   |
 |Workaholics                      |   31.533333   |
 |My Name is Earl                  |   33.600000   |
@@ -2013,17 +2041,18 @@ sorting by shortest time...
 |Yu-Gi-Oh!                        |   86.533333   |
 |Sons of Anarchy                  |     92.0      |
 |King of the Hill                 |   99.283333   |
+|Buffy The Vampire Slayer         |     108.0     |
 |Family Guy                       |  155.600000   |
 |Criminal Minds                   |  237.600000   |
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 43.27
-Median:		 26.60
-Pstdev:		 52.41
-Pvariance:	2746.79
-Stdev:		 52.90
-Variance:	2798.62
+Mean:		 44.43
+Median:		 26.40
+Pstdev:		 52.65
+Pvariance:	2772.13
+Stdev:		 53.14
+Variance:	2823.46
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2047,6 +2076,7 @@ sorting by longest time...
 |The Simpsons                     |  291.200000  |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  291.200000  |The Simpsons                     |
 |Criminal Minds                   |  237.600000  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  237.600000  |Criminal Minds                   |
 |Family Guy                       |  155.600000  |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  155.600000  |Family Guy                       |
+|Buffy The Vampire Slayer         |    108.0     |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    108.0     |Buffy The Vampire Slayer         |
 |King of the Hill                 |  99.283333   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |  99.283333   |King of the Hill                 |
 |Sons of Anarchy                  |     92.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |     92.0     |Sons of Anarchy                  |
 |Yu-Gi-Oh!                        |  86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  86.533333   |Yu-Gi-Oh!                        |
@@ -2070,7 +2100,7 @@ sorting by longest time...
 |Workaholics                      |  31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |  31.533333   |Workaholics                      |
 |Arrested Develpoment             |  30.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |  30.800000   |Arrested Develpoment             |
 |Misfits                          |  27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |  27.133333   |Misfits                          |
-|The Orville                      |  27.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |  27.133333   |The Orville                      |
+|The Orville                      |  26.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |  26.400000   |The Orville                      |
 |Recess                           |  26.066667   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  26.066667   |Recess                           |
 |Peaky Blinders                   |     25.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |     25.0     |Peaky Blinders                   |
 |The Last Man on Earth            |  24.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |  24.566667   |The Last Man on Earth            |
@@ -2122,6 +2152,7 @@ sorting by longest time...
 |The Simpsons                     |  291.200000  |
 |Criminal Minds                   |  237.600000  |
 |Family Guy                       |  155.600000  |
+|Buffy The Vampire Slayer         |    108.0     |
 |King of the Hill                 |  99.283333   |
 |Sons of Anarchy                  |     92.0     |
 |Yu-Gi-Oh!                        |  86.533333   |
@@ -2145,7 +2176,7 @@ sorting by longest time...
 |Workaholics                      |  31.533333   |
 |Arrested Develpoment             |  30.800000   |
 |Misfits                          |  27.133333   |
-|The Orville                      |  27.133333   |
+|The Orville                      |  26.400000   |
 |Recess                           |  26.066667   |
 |Peaky Blinders                   |     25.0     |
 |The Last Man on Earth            |  24.566667   |
@@ -2175,12 +2206,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 43.27
-Median:		 26.60
-Pstdev:		 52.41
-Pvariance:	2746.79
-Stdev:		 52.90
-Variance:	2798.62
+Mean:		 44.43
+Median:		 26.40
+Pstdev:		 52.65
+Pvariance:	2772.13
+Stdev:		 53.14
+Variance:	2823.46
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2209,6 +2240,7 @@ sorting by most episodes per season...
 |Criminal Minds                   |        21.600000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |        21.600000         |Criminal Minds                   |
 |Malcolm in the Middle            |        21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        21.571429         |Malcolm in the Middle            |
 |The Replacements                 |           21.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0           |The Replacements                 |
+|Buffy The Vampire Slayer         |        20.571429         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        20.571429         |Buffy The Vampire Slayer         |
 |Brooklyn Nine-Nine               |        20.428571         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |        20.428571         |Brooklyn Nine-Nine               |
 |Avatar, the Last Airbender       |        20.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        20.333333         |Avatar, the Last Airbender       |
 |Scrubs                           |        20.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |        20.222222         |Scrubs                           |
@@ -2228,8 +2260,8 @@ sorting by most episodes per season...
 |Futurama                         |           14.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |           14.0           |Futurama                         |
 |Sons of Anarchy                  |        13.142857         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |        13.142857         |Sons of Anarchy                  |
 |Breaking Bad                     |        12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |        12.400000         |Breaking Bad                     |
-|The Orville                      |        12.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |        12.333333         |The Orville                      |
 |Workaholics                      |        12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |        12.285714         |Workaholics                      |
+|The Orville                      |           12.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |           12.0           |The Orville                      |
 |Brickleberry                     |           12.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |           12.0           |Brickleberry                     |
 |Final Space                      |        11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |        11.500000         |Final Space                      |
 |Recess                           |        11.333333         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        11.333333         |Recess                           |
@@ -2284,6 +2316,7 @@ sorting by most episodes per season...
 |Criminal Minds                   |        21.600000         |
 |Malcolm in the Middle            |        21.571429         |
 |The Replacements                 |           21.0           |
+|Buffy The Vampire Slayer         |        20.571429         |
 |Brooklyn Nine-Nine               |        20.428571         |
 |Avatar, the Last Airbender       |        20.333333         |
 |Scrubs                           |        20.222222         |
@@ -2303,8 +2336,8 @@ sorting by most episodes per season...
 |Futurama                         |           14.0           |
 |Sons of Anarchy                  |        13.142857         |
 |Breaking Bad                     |        12.400000         |
-|The Orville                      |        12.333333         |
 |Workaholics                      |        12.285714         |
+|The Orville                      |           12.0           |
 |Brickleberry                     |           12.0           |
 |Final Space                      |        11.500000         |
 |Recess                           |        11.333333         |
@@ -2332,12 +2365,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.29
-Median:		 12.37
-Pstdev:		  7.44
-Pvariance:	 55.28
-Stdev:		  7.51
-Variance:	 56.33
+Mean:		 14.39
+Median:		 12.40
+Pstdev:		  7.42
+Pvariance:	 55.01
+Stdev:		  7.49
+Variance:	 56.03
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2382,9 +2415,9 @@ sorting by least episodes per season...
 |Mr. Robot                        |         11.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |         11.250000         |Mr. Robot                        |
 |Recess                           |         11.333333         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         11.333333         |Recess                           |
 |Final Space                      |         11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |         11.500000         |Final Space                      |
+|The Orville                      |           12.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |           12.0            |The Orville                      |
 |Brickleberry                     |           12.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |           12.0            |Brickleberry                     |
 |Workaholics                      |         12.285714         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |         12.285714         |Workaholics                      |
-|The Orville                      |         12.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |         12.333333         |The Orville                      |
 |Breaking Bad                     |         12.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         12.400000         |Breaking Bad                     |
 |Sons of Anarchy                  |         13.142857         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |         13.142857         |Sons of Anarchy                  |
 |Futurama                         |           14.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |           14.0            |Futurama                         |
@@ -2404,6 +2437,7 @@ sorting by least episodes per season...
 |Scrubs                           |         20.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         20.222222         |Scrubs                           |
 |Avatar, the Last Airbender       |         20.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         20.333333         |Avatar, the Last Airbender       |
 |Brooklyn Nine-Nine               |         20.428571         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |         20.428571         |Brooklyn Nine-Nine               |
+|Buffy The Vampire Slayer         |         20.571429         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         20.571429         |Buffy The Vampire Slayer         |
 |The Replacements                 |           21.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0            |The Replacements                 |
 |Malcolm in the Middle            |         21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         21.571429         |Malcolm in the Middle            |
 |Criminal Minds                   |         21.600000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         21.600000         |Criminal Minds                   |
@@ -2457,9 +2491,9 @@ sorting by least episodes per season...
 |Mr. Robot                        |         11.250000         |
 |Recess                           |         11.333333         |
 |Final Space                      |         11.500000         |
+|The Orville                      |           12.0            |
 |Brickleberry                     |           12.0            |
 |Workaholics                      |         12.285714         |
-|The Orville                      |         12.333333         |
 |Breaking Bad                     |         12.400000         |
 |Sons of Anarchy                  |         13.142857         |
 |Futurama                         |           14.0            |
@@ -2479,6 +2513,7 @@ sorting by least episodes per season...
 |Scrubs                           |         20.222222         |
 |Avatar, the Last Airbender       |         20.333333         |
 |Brooklyn Nine-Nine               |         20.428571         |
+|Buffy The Vampire Slayer         |         20.571429         |
 |The Replacements                 |           21.0            |
 |Malcolm in the Middle            |         21.571429         |
 |Criminal Minds                   |         21.600000         |
@@ -2489,14 +2524,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.29
-Median:		 12.37
-Pstdev:		  7.44
-Pvariance:	 55.28
-Stdev:		  7.51
-Variance:	 56.33
+Mean:		 14.39
+Median:		 12.40
+Pstdev:		  7.42
+Pvariance:	 55.01
+Stdev:		  7.49
+Variance:	 56.03
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 3  | 4  | 6  | 8  | 11 | 10 | 11 | 11 | 17 | 18 | 16 | 18 | 20 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 21 | 14 | 13 | 6  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 4  | 5  | 7  | 9  | 12 | 11 | 12 | 11 | 17 | 18 | 16 | 18 | 20 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 21 | 14 | 13 | 6  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################

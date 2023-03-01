@@ -780,6 +780,22 @@ bless_the_harts = TVSeries("Bless the Harts", {
 	True,
 	"Comedy / Cartoon",
 	"Disney+")
+	
+	
+buffy_the_vampire_slayer = TVSeries("Buffy The Vampire Slayer", {
+	1: 12,
+	2: 22,
+	3: 22,
+	4: 22,
+	5: 22,
+	6: 22,
+	7: 22},
+	45,
+	1997,
+	2003,
+	True,
+	"Drama / Action",
+	"Disney+")
 
 
 series_list = [
@@ -836,7 +852,8 @@ series_list = [
 	sons_of_anarchy,
 	the_great_north,
 	king_of_the_hill,
-	bless_the_harts
+	bless_the_harts,
+	buffy_the_vampire_slayer
 ]
 
    
