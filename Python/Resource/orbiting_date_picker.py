@@ -1,6 +1,6 @@
 import math
 import tkinter
-from tkinter import Frame
+from tkinter import Frame, ttk
 from tkcalendar import DateEntry
 from colour_utility import *
 from utility import Rect2
@@ -15,8 +15,8 @@ import numpy as np
 VERSION = \
     """	
     Class to add an Orbiting Date Picker Widget in place of a traditional date picker. Works with tkcalendar.DateEntry and datetime.datetime objects.
-    Version..............1.05
-    Date...........2023-03-01
+    Version..............1.06
+    Date...........2023-03-02
     Author(s)....Avery Briggs
     """
 
@@ -154,7 +154,7 @@ class OrbitingDatePicker(Frame):
         event_x = property(get_event_x, set_event_x, del_event_x)
         event_y = property(get_event_y, set_event_y, del_event_y)
 
-    def __init__(self, master, width=300, height=300, sun_width=50, earth_width=25, start_date=None, start_year=None, start_month=None, start_day=None, seasons=None, **kwargs):
+    def __init__(self, master, width=300, height=300, sun_width=50, earth_width=25, start_date=None, start_year=None, start_month=None, start_day=None, seasons=None, date_format='MM-dd-yyyy', **kwargs):
         super().__init__(master, kwargs)
 
         self.today = datetime.datetime.now()
@@ -236,12 +236,13 @@ class OrbitingDatePicker(Frame):
             fill=rgb_to_hex(DODGERBLUE_3)
         )
 
+        self.date_format = date_format
         self.start_date = start_date
         self._date = start_date
         self.date_var = tkinter.Variable(self, value=self.date)
         self.degrees_per_day = self.calc_deg_per_day()
 
-        self.dateentry_entry = DateEntry(self, year=self.date.year, month=self.date.month, day=self.date.day, font=("Arial", 12), cursor="hand1")
+        self.dateentry_entry = DateEntry(self, year=self.date.year, month=self.date.month, day=self.date.day, font=("Arial", 12), cursor="hand1", justify="center", date_pattern=self.date_format)
         self.dateentry_entry.grid(row=4, column=1, columnspan=2)
         self.dateentry_entry.bind("<<DateEntrySelected>>", self.dateentry_change)
 

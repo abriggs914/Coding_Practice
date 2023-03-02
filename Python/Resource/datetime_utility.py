@@ -5,8 +5,8 @@ from utility import minmax, clamp, choice
 
 """
 	General datetime Utility Functions
-	Version...............1.3
-	Date...........2023-02-24
+	Version...............1.4
+	Date...........2023-03-02
 	Author.......Avery Briggs
 """
 
@@ -94,11 +94,12 @@ def date_suffix(day):
     return res
 
 
-# Takes "2021-08-03"                     -> August 3rd, 2021
+# Takes "2021-08-03"                                            -> August 3rd, 2021
 # d = datetime.datetime(2023,1,1, 8, 30)
-# date_str_format(d)                     -> January 1st, 2023
-# date_str_format(d, include_time=True)  -> January 1st, 2023 at 8:30 AM
-def date_str_format(date_str, include_time=False, delim=" at "):
+# date_str_format(d)                                            -> January 1st, 2023
+# date_str_format(d, include_time=True)                         -> January 1st, 2023 at 8:30 AM
+# date_str_format(d, include_time=True, include_weekday=True)   -> Sunday January 1st, 2023 at 8:30 AM
+def date_str_format(date_str, include_time=False, include_weekday=False, delim=" at "):
     """Return a date as a nicely formatted date or date and time string."""
     if isinstance(date_str, datetime.datetime):
         date_obj = date_str
@@ -117,6 +118,9 @@ def date_str_format(date_str, include_time=False, delim=" at "):
         m = ("00" + str(date_obj.minute))[-2:]
         p = date_obj.strftime("%p")
         res = f"{res}{delim}{h}:{m} {p}"
+
+    if include_weekday:
+        res = f"{date_obj:%A}, {res}"
     return res
 
 
