@@ -5,8 +5,8 @@ from utility import minmax, clamp, choice
 
 """
 	General datetime Utility Functions
-	Version...............1.4
-	Date...........2023-03-02
+	Version...............1.5
+	Date...........2023-03-03
 	Author.......Avery Briggs
 """
 
@@ -99,14 +99,14 @@ def date_suffix(day):
 # date_str_format(d)                                            -> January 1st, 2023
 # date_str_format(d, include_time=True)                         -> January 1st, 2023 at 8:30 AM
 # date_str_format(d, include_time=True, include_weekday=True)   -> Sunday January 1st, 2023 at 8:30 AM
-def date_str_format(date_str, include_time=False, include_weekday=False, delim=" at "):
+def date_str_format(date_str, include_time=False, include_weekday=False, short_month=False, short_weekday=False, delim=" at "):
     """Return a date as a nicely formatted date or date and time string."""
     if isinstance(date_str, datetime.datetime):
         date_obj = date_str
     else:
         date_obj = datetime.datetime.fromisoformat(date_str)
     suffix = date_suffix(date_obj.day)
-    res = datetime.datetime.strftime(date_obj, "%B %d###, %Y").replace("###", suffix)
+    res = datetime.datetime.strftime(date_obj, f"%{'b' if short_month else 'B'} %d###, %Y").replace("###", suffix)
     s_res = res.split(" ")
     x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
     res = " ".join([s_res[0], x, s_res[2]])
@@ -120,7 +120,7 @@ def date_str_format(date_str, include_time=False, include_weekday=False, delim="
         res = f"{res}{delim}{h}:{m} {p}"
 
     if include_weekday:
-        res = f"{date_obj:%A}, {res}"
+        res = f"{date_obj:%{'a' if short_weekday else 'A'}}, {res}"
     return res
 
 
