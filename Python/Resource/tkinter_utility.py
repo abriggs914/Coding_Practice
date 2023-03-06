@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.36
-    Date...........2023-02-23
+    Version..............1.37
+    Date...........2023-03-06
     Author(s)....Avery Briggs
     """
 
@@ -37,11 +37,13 @@ def VERSION_NUMBER():
 
 
 def VERSION_DATE():
-    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(), "%Y-%m-%d")
+    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(),
+                                      "%Y-%m-%d")
 
 
 def VERSION_AUTHORS():
-    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if w.strip()]
+    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if
+            w.strip()]
 
 
 #######################################################################################################################
@@ -658,14 +660,14 @@ class TreeviewController(tkinter.Frame):
         """TreeViewController(tkinter.Frame) || StringVar || Label || TreeViewExt(ttk.TreeView) || ttk.Srollbar || ttk.ScrollBar || Tuple(StringVar, Button) || Tuple(StringVar, Button) || ListOf(Frame, Tuple(TextVariablev, Entry, (x1, x2))) ... Tuple(TextVariablev, Entry, (x1, x2)))"""
         return \
             self, \
-            self.tv_label, \
-            self.label, \
-            self.treeview, \
-            self.scrollbar_x, \
-            self.scrollbar_y, \
-            (self.tv_button_new_item, self.button_new_item), \
-            (self.tv_button_delete_item, self.button_delete_item), \
-            self.aggregate_objects
+                self.tv_label, \
+                self.label, \
+                self.treeview, \
+                self.scrollbar_x, \
+                self.scrollbar_y, \
+                (self.tv_button_new_item, self.button_new_item), \
+                (self.tv_button_delete_item, self.button_delete_item), \
+                self.aggregate_objects
 
     def next_iid(self):
         return next(self.iid_namer) + 1
@@ -1101,9 +1103,9 @@ class RGBSlider(tkinter.Frame):
         )
 
         self.tv_label_red, \
-        self.label_red, \
-        self.tv_entry_red, \
-        self.entry_red \
+            self.label_red, \
+            self.tv_entry_red, \
+            self.entry_red \
             = entry_factory(
             self,
             tv_label="Red:",
@@ -1111,9 +1113,9 @@ class RGBSlider(tkinter.Frame):
         )
 
         self.tv_label_green, \
-        self.label_green, \
-        self.tv_entry_green, \
-        self.entry_green \
+            self.label_green, \
+            self.tv_entry_green, \
+            self.entry_green \
             = entry_factory(
             self,
             tv_label="Green:",
@@ -1121,9 +1123,9 @@ class RGBSlider(tkinter.Frame):
         )
 
         self.tv_label_blue, \
-        self.label_blue, \
-        self.tv_entry_blue, \
-        self.entry_blue \
+            self.label_blue, \
+            self.tv_entry_blue, \
+            self.entry_blue \
             = entry_factory(
             self,
             tv_label="Blue:",
@@ -1132,9 +1134,9 @@ class RGBSlider(tkinter.Frame):
 
         if self.show_result:
             self.tv_label_res, \
-            self.label_res, \
-            self.tv_entry_res, \
-            self.entry_res \
+                self.label_res, \
+                self.tv_entry_res, \
+                self.entry_res \
                 = entry_factory(
                 self,
                 tv_label="Result:",
@@ -1679,7 +1681,8 @@ class MultiComboBox(tkinter.Frame):
 
         if len(viewable_column_names) == 1:
             new_entry_defaults = []
-        assert (new_entry_defaults is not None or allow_insert_ask) if not limit_to_list else 1, "Error, if allow new inserts to this combobox, then you must also either pass rest_values as 'new_entry_defaults' or set 'allow_insert_ask' to True.\nOtherwise there is no way to assign the rest of the column values."
+        assert (
+                new_entry_defaults is not None or allow_insert_ask) if not limit_to_list else 1, "Error, if allow new inserts to this combobox, then you must also either pass rest_values as 'new_entry_defaults' or set 'allow_insert_ask' to True.\nOtherwise there is no way to assign the rest of the column values."
 
         self.master = master
         self.namer = alpha_seq(10000000)
@@ -1724,14 +1727,14 @@ class MultiComboBox(tkinter.Frame):
                                                                                         "height": height_in_rows},
                                                 viewable_column_names=viewable_column_names)
         self.tree_controller, \
-        self.tree_tv_label, \
-        self.tree_label, \
-        self.tree_treeview, \
-        self.tree_scrollbar_x, \
-        self.tree_scrollbar_y, \
-        (self.tree_tv_button_new_item, self.tree_button_new_item), \
-        (self.tree_tv_button_delete_item, self.tree_button_delete_item), \
-        self.tree_aggregate_objects = self.tree_controller.get_objects()
+            self.tree_tv_label, \
+            self.tree_label, \
+            self.tree_treeview, \
+            self.tree_scrollbar_x, \
+            self.tree_scrollbar_y, \
+            (self.tree_tv_button_new_item, self.tree_button_new_item), \
+            (self.tree_tv_button_delete_item, self.tree_button_delete_item), \
+            self.tree_aggregate_objects = self.tree_controller.get_objects()
 
         cn = self.tree_controller.viewable_column_names
         assert "All" not in cn, "Error, cannot use column name 'All'. This is reserved as a column filtering label."
@@ -1780,6 +1783,24 @@ class MultiComboBox(tkinter.Frame):
         self.res_entry.bind("<Return>", self.submit_typed_in)
 
         self.returned_value = tkinter.StringVar(self, value="")
+
+        x, y = 0, 0
+        if isinstance(auto_grid, list) or isinstance(auto_grid, tuple):
+            if len(auto_grid) == 2:
+                x, y = auto_grid
+            else:
+                raise ValueError(f"Error, auto_grid param is not the right dimensions.")
+        elif isinstance(auto_grid, int):
+            x, y = 0, auto_grid
+        if x < 0 or y < 0:
+            raise ValueError(f"Error, auto_grid param is invalid.")
+        self.grid_args = {
+            "self": {"ipadx": 12, "ipady": 12},
+            "self.res_label": {"row": 0, "column": 0},
+            "self.frame_top_most": {"row": 1, "column": 0, "sticky": "ew"},
+            "self.res_entry": {"row": 0, "column": 0, "sticky": "ew"},
+            "self.res_canvas": {"row": 0, "column": 1}
+        }
 
         if auto_grid:
             self.grid_widget()
@@ -1920,7 +1941,8 @@ class MultiComboBox(tkinter.Frame):
         i = self.data.shape[0]
         # print(f"{type(rest_values)=}\n{rest_values=}")
         if not self.limit_to_list:
-            if rest_values and (isinstance(rest_values, list) or isinstance(rest_values, list) or isinstance(rest_values, dict)):
+            if rest_values and (
+                    isinstance(rest_values, list) or isinstance(rest_values, list) or isinstance(rest_values, dict)):
                 if isinstance(rest_values, list) or isinstance(rest_values, tuple):
                     row = list(rest_values)
                     row.insert(idx, val)
@@ -1931,7 +1953,8 @@ class MultiComboBox(tkinter.Frame):
                 else:
                     row = rest_values.update({col: val})
                     self.data = self.data.append(pandas.DataFrame(row), ignore_index=True)
-                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list({k: [v] for k, v in zip(cn, row)}.values()))
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1),
+                                              values=list({k: [v] for k, v in zip(cn, row)}.values()))
 
             elif self.allow_insert_ask:
                 ans = tkinter.messagebox.askyesnocancel("Create New Item",
@@ -2289,7 +2312,7 @@ class ToggleButton(tkinter.Frame):
             [isinstance(labels[i], str) for i in
              range(2)])), f"Error param 'labels' must be a tuple of 2 strings OR None. Got '{labels}', {type(labels)=}"
         assert isinstance(t_animation_time, int) and (
-                    0 < t_animation_time <= 2500), f"Error param 't_animation_time' must be a integer between 1 and 2500 ms. Got '{t_animation_time}', {type(t_animation_time)=}."
+                0 < t_animation_time <= 2500), f"Error param 't_animation_time' must be a integer between 1 and 2500 ms. Got '{t_animation_time}', {type(t_animation_time)=}."
 
         self.label_font = label_font  # for the main label
         self.labels_font = labels_font  # for the button labels, if needed
@@ -2409,16 +2432,45 @@ class ToggleButton(tkinter.Frame):
 
         self.state_update()
 
-        if self.auto_grid:
+        x, y = 0, 0
+        if isinstance(auto_grid, list) or isinstance(auto_grid, tuple):
+            if len(auto_grid) == 2:
+                x, y = auto_grid
+            else:
+                raise ValueError(f"Error, auto_grid param is not the right dimensions.")
+        elif isinstance(auto_grid, int):
+            x, y = 0, auto_grid
+        if x < 0 or y < 0:
+            raise ValueError(f"Error, auto_grid param is invalid.")
+        self.grid_args = {
+            "self": {},
+            "self.tv_label": {},
+            "self.label": {"row": 0 + y, "column": 0 + x},
+            "self.frame_canvas": {"row": 0 + y, "column": 1 + x},
+            "self.state": {},
+            "self.canvas": {"row": 0 + y, "column": 0 + x}
+        }
+
+        if self.auto_grid is not None:
             self.grid_widgets()
 
     def grid_widgets(self):
         """Use this to grid self and all sub-widgets."""
-        # self.grid(row=0, column=0)
-        self.grid()
-        self.label.grid(row=0, column=0)
-        self.frame_canvas.grid(row=0, column=1)
-        self.canvas.grid(row=0, column=0)
+        # # self.grid(row=0, column=0)
+        # self.grid()
+        # self.label.grid(row=0, column=0)
+        # self.frame_canvas.grid(row=0, column=1)
+        # self.canvas.grid(row=0, column=0)
+        # d = self.__dict__
+        # print(f"{d=}")
+        for k, v in self.grid_args.items():
+            if k != "self.state" and k != "self.tv_label":
+                # print(f"{k=}")
+                eval(f"{k}.grid(**{v})")
+            # if isinstance(d.get(k, None), tkinter.Widget):
+            #     eval(f"{k}.grid(**{v})")
+            # else:
+            #     print(f"not a widget")
 
     def grid_forget_widgets(self):
         """Use this to grid self and all sub-widgets."""
@@ -2598,6 +2650,7 @@ class TextWithVar(tkinter.Text):
 
 class TextWithVar_DON(tkinter.Text):
     '''A text widget that accepts a 'textvariable' option'''
+
     def __init__(self, parent, textvariable, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         try:
