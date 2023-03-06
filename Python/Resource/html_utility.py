@@ -1,18 +1,23 @@
+import os
+import webbrowser
+
 import pandas as pd
 import html
 import datetime
 
+import pdfkit
 
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
 from colour_utility import iscolour, Colour
+from utility import next_available_file_name
 
 VERSION = \
     """	
     General Utility Functions for HTML Projects
-    Version..............1.03
-    Date...........2023-03-01
+    Version..............1.04
+    Date...........2023-03-05
     Author(s)....Avery Briggs
     """
 
@@ -81,6 +86,12 @@ def list_to_html(
 ):
     # Warning, passing large lists to this function will result in very large style tags.
 
+    assert isinstance(lst, list) or isinstance(lst, tuple), f"Error, wrong type for lst param, got '{type(lst)}'."
+    tbs = "|__TABS__|"
+    for el in lst:
+        if tbs in str(el):
+            raise ValueError(f"Error, keyword not allowed in list contents.")
+
     # validation lambdas, assert parameter matches an expected type or types.
     _list = lambda thing: isinstance(thing, list)
     _tuple = lambda thing: isinstance(thing, tuple)
@@ -96,7 +107,6 @@ def list_to_html(
 
     css_selectors = {}
     level = level_in
-    tbs = "|__TABS__|"
     ck_key = lambda key: css_selectors.update({key: []}) if key not in css_selectors else None
     ck_val = lambda key, val: css_selectors[key].append(val)
     replace_t = lambda key: ("\t" * level, key.replace(tbs, ""))
@@ -322,8 +332,8 @@ def list_to_html(
     style += replace_j(f"{tbs}</style>" if wrap_style else "")
 
     list_tag = f"<{l_tag} class=\"{cn}\">"
-    for i in range(len(lst)):
-        list_tag += f"<li class=\"{cn}\">{lst[i]}</li>"
+    for el in lst:
+        list_tag += f"<li class=\"{cn}\">{el}</li>"
     list_tag += f"</{l_tag}>"
 
     # Generate the title html
@@ -335,6 +345,74 @@ def list_to_html(
         body_html = body_html.replace("\n", "").replace("\t", "")
 
     return style, body_html
+
+
+def html_to_pdf(
+        html_file,
+        pdf_file_out=None,
+        do_open=True,
+        do_quit=False,
+        options=None,
+        avoid_overwrite=True,
+        wkhtmltopdf_path=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+):
+
+    # No wkhtmltopdf, no go.
+    assert isinstance(wkhtmltopdf_path, str) and wkhtmltopdf_path.endswith(
+        ".exe"), f"Error, invalid exe file path given: '{wkhtmltopdf_path}'."
+    if not os.path.exists(wkhtmltopdf_path):
+        msg = f"Error, please install wkhtmltopdf before continuing."
+        loc = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+        lnk = r"https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.msvc2015-win64.exe"
+        brd = f"=" * 120
+        msg = f"\n\n{brd}\n\n{msg}\nPreferred location:\n\t{loc}\nWindows 64-bit link (~100 Mb):\n\t{lnk}\n\nThis package must be installed to use this function.\n\n{brd}\n\n"
+        if not do_quit:
+            raise FileNotFoundError(msg)
+        else:
+            print(msg)
+            quit()
+
+    assert isinstance(html_file, str) and html_file.endswith(
+        ".html"), f"Error, invalid html file path given: '{html_file}'."
+    if options is None:
+        options = {
+            "page-size": "letter",
+            "orientation": "portrait",
+            'margin-top': '0.5in',
+            'margin-right': '0.5in',
+            'margin-bottom': '0.5in',
+            'margin-left': '0.5in',
+            'encoding': "UTF-8"
+        }
+    if pdf_file_out is None:
+        pdf_file_out = html_file.removesuffix(".html") + ".pdf"
+    else:
+        assert isinstance(pdf_file_out, str) and pdf_file_out.endswith(".pdf"), f"Error, invalid pdf file path given: '{pdf_file_out}'."
+
+    if avoid_overwrite:
+        pdf_file_out = next_available_file_name(pdf_file_out)
+
+    # print(f"HTML file: {html_file}")
+    # print(f"PDF file : {pdf_file_out}")
+
+    # else:
+    #     try:
+    #         config = pdfkit.configuration()
+    #     except OSError:
+    #         # not present in path
+    #         print(f"Error, wkhtmltopdf not found in path either. Please install before continuing")
+    #         quit()
+
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+    pdfkit.from_file(html_file, pdf_file_out, configuration=config, options=options)
+
+    # from weasyprint import HTML
+    # HTML(file_out).write_pdf(pdf_file_out)
+
+    if do_open:
+        webbrowser.open(pdf_file_out)
+
+    return pdf_file_out
 
 
 def test_list_to_html_2():
