@@ -2,6 +2,7 @@ import datetime
 import geocoder
 import geopy
 from geopy.geocoders import Nominatim
+import geopy.exc
 import os
 import asyncio
 import subprocess
@@ -16,8 +17,8 @@ import winsdk.windows.devices.geolocation as wdg
 VERSION = \
     """	
     General Utility functions for location.
-    Version..............1.04
-    Date...........2023-02-23
+    Version..............1.05
+    Date...........2023-03-08
     Author(s)....Avery Briggs
     """
 
@@ -85,26 +86,35 @@ def coords_to_address(lat, lng):
     return Nominatim(user_agent="GetLoc").reverse(f"{lat}, {lng}").address
 
 
-def company_from_location(location_in=None):
+def company_from_location(location_in=None, quit_on_fail=True):
     """Based on device's GPS location, return the company for that province.
-    Pass a geoPy.Location object to bypass async call."""
-    if location_in is None:
-        lat, lng = get_device_gps_coords()
-        location = coords_to_location(lat, lng)
-        province = location.raw["address"]["state"]
-    else:
-        assert isinstance(location_in, geopy.Location), f"Error, param 'location_in' must be a geoPy.Location object. Got '{location_in}', {type(location_in)=}"
-        province = location_in.raw["address"]["state"]
-    match province:
-        case 'New Brunswick / Nouveau-Brunswick':
-            return "BWS"
-        case 'Ontario':
-            return "Stargate"
-        case 'Quebec':
-            return "Lewis"
-        case _:
-            raise ValueError("Move first")
-    # print(f"{province=}, {location=}, {type(location)=}")
+    Pass a geoPy.Location object to bypass async call.
+    Pass quit_on_fail param as a string representing a default address."""
+    try:
+        if location_in is None:
+            lat, lng = get_device_gps_coords()
+            location = coords_to_location(lat, lng)
+            province = location.raw["address"]["state"]
+        else:
+            assert isinstance(location_in, geopy.Location), f"Error, param 'location_in' must be a geoPy.Location object. Got '{location_in}', {type(location_in)=}"
+            province = location_in.raw["address"]["state"]
+        match province:
+            case 'New Brunswick / Nouveau-Brunswick':
+                return "BWS"
+            case 'Ontario':
+                return "Stargate"
+            case 'Quebec':
+                return "Lewis"
+            case _:
+                raise ValueError("Move first")
+        # print(f"{province=}, {location=}, {type(location)=}")
+    except geopy.exc.GeocoderUnavailable as gu:
+        if not isinstance(quit_on_fail, str) or not quit_on_fail:
+            if quit_on_fail:
+                raise geopy.exc.GeocoderUnavailable(f"{gu}")
+        else:
+            return quit_on_fail
+
     return "UNKNOWN"
 
 

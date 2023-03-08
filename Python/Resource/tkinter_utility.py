@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.37
-    Date...........2023-03-06
+    Version..............1.38
+    Date...........2023-03-08
     Author(s)....Avery Briggs
     """
 
@@ -2433,22 +2433,28 @@ class ToggleButton(tkinter.Frame):
         self.state_update()
 
         x, y = 0, 0
-        if isinstance(auto_grid, list) or isinstance(auto_grid, tuple):
-            if len(auto_grid) == 2:
-                x, y = auto_grid
-            else:
-                raise ValueError(f"Error, auto_grid param is not the right dimensions.")
-        elif isinstance(auto_grid, int):
-            x, y = 0, auto_grid
-        if x < 0 or y < 0:
-            raise ValueError(f"Error, auto_grid param is invalid.")
+        if not isinstance(auto_grid, bool):
+            print(f"A")
+            if isinstance(auto_grid, list) or isinstance(auto_grid, tuple):
+                print(f"B")
+                if len(auto_grid) == 2:
+                    print(f"C")
+                    x, y = auto_grid
+                else:
+                    raise ValueError(f"Error, auto_grid param is not the right dimensions.")
+            elif isinstance(auto_grid, int):
+                print(f"D")
+                x, y = 0, auto_grid
+            if x < 0 or y < 0:
+                raise ValueError(f"Error, auto_grid param is invalid.")
+        print(f"AAA {x=}, {y=}")
         self.grid_args = {
-            "self": {},
+            "self": {"row": 0 + y, "column": 0 + x},
             "self.tv_label": {},
-            "self.label": {"row": 0 + y, "column": 0 + x},
-            "self.frame_canvas": {"row": 0 + y, "column": 1 + x},
+            "self.label": {"row": 0, "column": 0},
+            "self.frame_canvas": {"row": 0, "column": 1},
             "self.state": {},
-            "self.canvas": {"row": 0 + y, "column": 0 + x}
+            "self.canvas": {"row": 0, "column": 0}
         }
 
         if self.auto_grid is not None:
