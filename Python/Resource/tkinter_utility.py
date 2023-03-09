@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.38
-    Date...........2023-03-08
+    Version..............1.39
+    Date...........2023-03-09
     Author(s)....Avery Briggs
     """
 
@@ -247,7 +247,9 @@ def list_factory(master, tv_label=None, kwargs_label=None, tv_list=None, kwargs_
 
 
 def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
-    if isinstance(buttons, list) or isinstance(buttons, tuple) and buttons:
+    if hasattr(buttons, '__iter__') and buttons:
+        if not (isinstance(buttons, list) and isinstance(buttons, tuple)):
+            buttons = list(buttons)
         if default_value is not None:
             if is_tk_var(default_value):
                 var = default_value
@@ -2457,11 +2459,12 @@ class ToggleButton(tkinter.Frame):
             "self.canvas": {"row": 0, "column": 0}
         }
 
-        if self.auto_grid is not None:
+        if self.auto_grid is not None and self.auto_grid:
             self.grid_widgets()
 
     def grid_widgets(self):
         """Use this to grid self and all sub-widgets."""
+        print(f"Auto_grid '{self.tv_label.get()}'")
         # # self.grid(row=0, column=0)
         # self.grid()
         # self.label.grid(row=0, column=0)
