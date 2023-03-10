@@ -764,6 +764,21 @@ def test_test_factory():
     win.mainloop()
 
 
+def test_checkbox_factory():
+    win = tkinter.Tk()
+    win.geometry("600x600")
+
+    a, b = checkbox_factory(
+        win,
+        ["a", "b", "c"]
+    )
+
+    for _ in b:
+        _.pack()
+
+    win.mainloop()
+
+
 if __name__ == '__main__':
     print('PyCharm')
 
@@ -787,4 +802,6 @@ if __name__ == '__main__':
     # Example(root).pack(fill="both", expand=True)
     # root.mainloop()
 
-    test_demo_window()
+    # test_demo_window()
+
+    test_checkbox_factory()

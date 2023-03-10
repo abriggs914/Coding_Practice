@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.39
-    Date...........2023-03-09
+    Version..............1.40
+    Date...........2023-03-10
     Author(s)....Avery Briggs
     """
 
@@ -284,6 +284,32 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
         # tv_sort_dir_d = StringVar(WIN, value="descending")
         # rb_sda = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="ascending", textvariable=tv_sort_dir_a)
         # rb_sdd = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="descending", textvariable=tv_sort_dir_d)
+
+
+def checkbox_factory(master, buttons, default_values=None, kwargs_buttons=None):
+    if hasattr(buttons, '__iter__') and buttons:
+        if not (isinstance(buttons, list) and isinstance(buttons, tuple)):
+            buttons = list(buttons)
+        if default_values is not None:
+            if isinstance(default_values, list):
+                tv_vars = [tkinter.BooleanVar(master, value=value) for value in default_values]
+            else:
+                raise Exception("Error, default_values must be a list of boolean values.")
+        else:
+            tv_vars = [tkinter.BooleanVar(master, False) for _ in buttons]
+
+        c_buttons = []
+        for i, btn in enumerate(buttons):
+            if kwargs_buttons is not None:
+                print(f"WARNING kwargs param is applied to each checkbox button")
+                c_buttons.append(
+                    tkinter.Checkbutton(master, variable=tv_vars[i], text=btn, **kwargs_buttons))
+            else:
+                c_buttons.append(tkinter.Checkbutton(master, variable=tv_vars[i], text=btn))
+
+        return tv_vars, c_buttons
+    else:
+        raise Exception("Error, must pass a list of buttons.")
 
 
 class TreeviewExt(ttk.Treeview):
