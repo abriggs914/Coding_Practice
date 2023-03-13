@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.40
-    Date...........2023-03-10
+    Version..............1.41
+    Date...........2023-03-13
     Author(s)....Avery Briggs
     """
 
@@ -140,8 +140,20 @@ def text_factory(master, tv_label=None, tv_text=None, kwargs_label=None, kwargs_
     return res_tv_label, res_label, res_text.text, res_text
 
 
-def button_factory(master, tv_btn=None, kwargs_btn=None):
+def button_factory(master, tv_btn=None, kwargs_btn=None, command=None):
     """Return tkinter StringVar, Button objects"""
+
+    if kwargs_btn is not None:
+        assert isinstance(kwargs_btn, dict), f"Error param 'kwargs_btn' must be a dict if not None. Got: '{kwargs_btn}'."
+        if "command" in kwargs_btn and command is not None:
+            raise KeyError(f"Error, command key has already been passed in param 'kwargs_btn'. Please pass only one command.")
+        elif command is not None:
+            assert callable(command), "Error, param 'command' is not callable."
+            kwargs_btn.update({"command": command})
+    elif command is not None:
+        assert callable(command), "Error, param 'command' is not callable."
+        kwargs_btn = {"command": command}
+
     if is_tk_var(tv_btn):
         res_tv_btn = tv_btn
     else:
@@ -431,14 +443,14 @@ class TreeviewController(tkinter.Frame):
         print(f"A {df.shape=}")
         print(f"{list(df.itertuples())=}\n{len(list(df.itertuples()))}")
         # for i, row in df.itertuples():
-        f = list(range(1015))
+        # f = list(range(1015))
         for i, row in df.iterrows():
             # next(self.iid_namer)
             print(f"{i=}, {row=}, {type(row)=}")
             dat = [row[c_name] for c_name in self.viewable_column_names]
             self.treeview.insert("", tkinter.END, text=f"{i + 1}", iid=i, values=dat)
-            f.remove(i)
-        print(f"{f=}")
+            # f.remove(i)
+        # print(f"{f=}")
         print(f"B {df.shape=}")
         print(f"{len(list(df.iterrows()))=}")
 
