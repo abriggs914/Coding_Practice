@@ -609,19 +609,19 @@ Where to watch:			Disney+
 
 Series:
 
-	Curb your Enthusiasm
+	Arrested Develpoment
 Genre:				Comedy
-Run (2000 -> 2020):		20 years
-number seasons:			10
-number episodes:		100
-episodes per season:		10.0
-average length of an episode:	30
-Total minutes:			3000
-Total hours:			50.0
-Where to watch:			Crave -> HBO
+Run (2003 -> 2019):		16 years
+number seasons:			5
+number episodes:		84
+episodes per season:		16.8
+average length of an episode:	22
+Total minutes:			1848
+Total hours:			30.8
+Where to watch:			Netflix
 
-Season: 6
-Episode: 4
+Season: 1
+Episode: 10
 
 	How would you like to print the stats?
 1	-	By start year
