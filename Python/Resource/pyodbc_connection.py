@@ -8,8 +8,8 @@ VERSION = \
     """
     General Pyodbc connection handler.
     Geared towards BWS connections.
-    Version...............1.5
-    Date...........2023-02-23
+    Version...............1.6
+    Date...........2023-03-15
     Author(s)....Avery Briggs
     """
 
@@ -60,6 +60,8 @@ def connect(sql, driver="{SQL Server}",
         # sql_opt = "SELECT [IT Requests].*, [dept].[Dept] AS [DeptName], [IT Personnel].[Name] AS [ITPersonnelAssignedName] FROM [IT Requests] LEFT JOIN [Dept] ON [IT Requests].[Department] = [Dept].[DeptID] LEFT JOIN [IT Personnel] ON [IT Requests].[ITPersonAssignedID] = [IT Personnel].[ITPersonID#]"
         if do_print:
             print("connecting...")
+        if do_show:
+            print(f"cstr: '{cstr}'")
         conn = pyodbc.connect(cstr)
         crsr = conn.cursor()
         if do_print:
