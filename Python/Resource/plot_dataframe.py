@@ -430,7 +430,7 @@ class PlotFrame(tkinter.Frame):
         var, x, mode = args
         text = self.cb_lookup[f"text_{var}"]
         l = self.max_chart_elements - len(self.selected_queue)
-        print(f"\n{var=}, {type(var)=}\n{x=}, {type(x)=}\n{mode=}, {type(mode)=}\n{l=}")
+        print(f"\n{var=}, {text=}, {type(var)=}\n{x=}, {type(x)=}\n{mode=}, {type(mode)=}\n{l=}")
 
         val = self.getvar(var)
 
@@ -454,7 +454,7 @@ class PlotFrame(tkinter.Frame):
                     # print(f"{de_var=}")
                     val = de_var.get()
                     cb = self.cb_lookup[f"callback_{text}"]
-                    de_var.trace_vdelete("w", cb)
+                    de_var.trace_remove("write", cb)
                     de_var.set(not val)
                     cb = de_var.trace_variable("w", self.update_check_boxes)
                     self.cb_lookup.update({f"callback_{text}": cb})
@@ -466,6 +466,7 @@ class PlotFrame(tkinter.Frame):
             else:
                 self.selected_queue.remove(text)
         else:
+            # print(f"remove {text}")
             self.selected_queue.remove(text)
 
             print(f"QUEUE: {self.selected_queue}")
