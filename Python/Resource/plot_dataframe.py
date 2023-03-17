@@ -371,15 +371,27 @@ class PlotFrame(tkinter.Frame):
                 kwargs_buttons={"width": 12}
         )
 
-        for i, tv_cb in enumerate(self.tv_check_boxes):
+        for i, cb in enumerate(self.check_boxes):
+            tv = self.tv_check_boxes[i]
             text = self.viewable_column_names[i]
-            cb = tv_cb.trace_variable("w", self.update_check_boxes)
+            cb.configure(command=(lambda text=text, cb=cb, tv=tv: self.click_radio(text, cb, tv)))
             self.cb_lookup.update({
-                f"var_{tv_cb}": tv_cb,
-                f"var_{text}": tv_cb,
-                f"text_{tv_cb}": text,
-                f"callback_{text}": cb
+                # f"var_{tv_cb}": tv_cb,
+                f"var_{text}": tv
+                # ,
+                # f"text_{tv_cb}": text,
+                # f"callback_{text}": cb
             })
+
+        # for i, tv_cb in enumerate(self.tv_check_boxes):
+            # text = self.viewable_column_names[i]
+            # cb = tv_cb.trace_variable("w", self.update_check_boxes)
+            # self.cb_lookup.update({
+            #     f"var_{tv_cb}": tv_cb,
+            #     f"var_{text}": tv_cb,
+            #     f"text_{tv_cb}": text,
+            #     f"callback_{text}": cb
+            # })
 
         # ss1 = str(self.tv_check_boxes[0])
         # print(f"{ss1=}")
@@ -421,58 +433,130 @@ class PlotFrame(tkinter.Frame):
         self.rb_sdd = Radiobutton(self.frame_rb_group_3, variable=self.tv_sort_direction, value="descending",
                              textvariable=self.tv_sort_dir_d)
 
+        self.plot_frame = tkinter.Frame(self)
+        self.plot_fig = None
+        self.plot_toolbar = None
+        self.plot_canvas = None
+
         self.tv_orientation.trace_variable("w", update_orientation_choice)
 
         if self.auto_grid is not None:
             self.grid_widgets()
 
-    def update_check_boxes(self, *args):
-        var, x, mode = args
-        text = self.cb_lookup[f"text_{var}"]
+    def click_radio(self, text, button, var):
         l = self.max_chart_elements - len(self.selected_queue)
-        print(f"\n{var=}, {text=}, {type(var)=}\n{x=}, {type(x)=}\n{mode=}, {type(mode)=}\n{l=}")
-
-        val = self.getvar(var)
-
-        if val:
-            if text not in self.selected_queue:
-
-                if l == 0:
-                    # de_var = self.cb_lookup[self.selected_queue.popleft()]
-                    # de_var = self.getvar(self.cb_lookup[self.selected_queue.popleft()])
-
-                    key = self.selected_queue.popleft()
-                    print(f"{key=}")
-                    f_key = f"var_{key}"
-                    print(f"{f_key=}")
-                    de_var = self.cb_lookup[f_key]
-                    # print(f"{l_key=}")
-                    # v_key = self.getvar(l_key)
-                    # print(f"{v_key=}")
-
-                    # de_var = v_key
-                    # print(f"{de_var=}")
-                    val = de_var.get()
-                    cb = self.cb_lookup[f"callback_{text}"]
-                    de_var.trace_remove("write", cb)
-                    de_var.set(not val)
-                    cb = de_var.trace_variable("w", self.update_check_boxes)
-                    self.cb_lookup.update({f"callback_{text}": cb})
-
-                self.selected_queue.append(text)
-
-                # print(dict_print(self.cb_lookup, "CB_LOOKUP"))
-                # print(f"update_check_boxes, '{args}'\n\t{text=}\t{val=}")
-            else:
-                self.selected_queue.remove(text)
-        else:
-            # print(f"remove {text}")
+        val = var.get()
+        if not val:
             self.selected_queue.remove(text)
+        else:
+            if l > 0:
+                # space for selection
+                pass
+            else:
+                # pop the queue then add
+                pop_txt = self.selected_queue.popleft()
+                pop_var = self.cb_lookup[f"var_{pop_txt}"]
+                pop_var.set(False)
+            self.selected_queue.append(text)
 
-            print(f"QUEUE: {self.selected_queue}")
+
+    # def update_check_boxes(self, *args):
+    #     var, x, mode = args
+    #     text = self.cb_lookup[f"text_{var}"]
+    #     l = self.max_chart_elements - len(self.selected_queue)
+    #     print(f"\n{var=}, {text=}, {type(var)=}\n{x=}, {type(x)=}\n{mode=}, {type(mode)=}\n{l=}")
+    #
+    #     val = self.getvar(var)
+    #
+    #     if val:
+    #         if text not in self.selected_queue:
+    #
+    #             if l == 0:
+    #                 # de_var = self.cb_lookup[self.selected_queue.popleft()]
+    #                 # de_var = self.getvar(self.cb_lookup[self.selected_queue.popleft()])
+    #
+    #                 key = self.selected_queue.popleft()
+    #                 print(f"{key=}")
+    #                 f_key = f"var_{key}"
+    #                 print(f"{f_key=}")
+    #                 de_var = self.cb_lookup[f_key]
+    #                 # print(f"{l_key=}")
+    #                 # v_key = self.getvar(l_key)
+    #                 # print(f"{v_key=}")
+    #
+    #                 # de_var = v_key
+    #                 # print(f"{de_var=}")
+    #                 val = de_var.get()
+    #                 cb = self.cb_lookup[f"callback_{text}"]
+    #                 de_var.trace_remove("write", cb)
+    #                 de_var.set(not val)
+    #                 cb = de_var.trace_variable("w", self.update_check_boxes)
+    #                 self.cb_lookup.update({f"callback_{text}": cb})
+    #
+    #             self.selected_queue.append(text)
+    #
+    #             # print(dict_print(self.cb_lookup, "CB_LOOKUP"))
+    #             # print(f"update_check_boxes, '{args}'\n\t{text=}\t{val=}")
+    #         else:
+    #             self.selected_queue.remove(text)
+    #     else:
+    #         # print(f"remove {text}")
+    #         self.selected_queue.remove(text)
+    #
+    #         print(f"QUEUE: {self.selected_queue}")
 
     def plot(self):
         print(f"PLOT")
+
+        if self.plot_canvas is not None:
+            self.plot_canvas.get_tk_widget().pack_forget()
+            self.plot_toolbar.pack_forget()
+
+        self.plot_canvas = FigureCanvasTkAgg(self.plot_fig,
+                                   master=self.plot_frame)
+        self.plot_canvas.draw()
+
+        # placing the canvas on the Tkinter window
+        self.plot_canvas.get_tk_widget().pack()
+
+        # creating the Matplotlib toolbar
+        self.plot_toolbar = NavigationToolbar2Tk(self.plot_canvas,
+                                       self.plot_frame)
+        self.plot_toolbar.update()
+
+        # placing the toolbar on the Tkinter window
+        self.plot_canvas.get_tk_widget().pack()
+
+        # data_points, show_names = data_in
+        #
+        # plt.rcdefaults()
+        # fig, ax = plt.subplots()
+        #
+        # # alpha
+        # if mode == "alpha":
+        #     show_names, data_points = [list(x) for x in
+        #                                zip(*sorted(zip(show_names, data_points), key=itemgetter(0), reverse=reverse))]
+        # elif mode == "value":
+        #     data_points, show_names = [list(x) for x in
+        #                                zip(*sorted(zip(data_points, show_names), key=itemgetter(0), reverse=reverse))]
+        # # data_points, show_names = [list(x) for x in zip(*sorted(zip(data_points, show_names), key=itemgetter(0)))]
+        #
+        # y_pos = np.arange(len(show_names))
+        # if orientation == "horizontal":
+        #     ax.barh(y_pos, data_points, align="center")
+        #     ax.set_yticks(y_pos, labels=show_names)
+        #     ax.invert_yaxis()
+        #     ax.set_xlabel(xlabel)
+        #     ax.set_title(title)
+        # else:
+        #     ax.bar(y_pos, data_points, align="center")
+        #     ax.set_xticks(y_pos, labels=show_names)
+        #     ax.tick_params(axis="x", rotation=90)
+        #     ax.invert_xaxis()
+        #     ax.set_ylabel(xlabel)
+        #     ax.set_title(title)
+        #
+        # plot(fig)
 
     def grid_widgets(self):
         print(f"grid_widgets")
