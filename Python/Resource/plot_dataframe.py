@@ -9,6 +9,7 @@ import numpy as np
 # from main import series_list
 
 from tkinter import *
+from dataframe_utility import *
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
 NavigationToolbar2Tk)
@@ -300,6 +301,7 @@ class PlotFrame(tkinter.Frame):
             btns_per_row=5,
             btns_horizontal=True,
             max_chart_elements=2,
+            max_plottable_categories=12,
             *args,
             **kwargs
     ):
@@ -308,9 +310,6 @@ class PlotFrame(tkinter.Frame):
         assert isinstance(df, pd.DataFrame), f"Error param 'df' must be aa pandas.DataFrame object. Got {type(df)}"
 
         self.df = df
-
-        print(f"{self.df.dtypes}")
-
         self.viewable_column_names = viewable_column_names
         self.auto_grid = auto_grid
         self.btns_per_row = btns_per_row
@@ -331,6 +330,22 @@ class PlotFrame(tkinter.Frame):
             (self.tv_button_delete_item_treeview_controller, self.button_delete_item_treeview_controller), \
             self.aggregate_objects_treeview_controller \
             = self.treeview_controller.get_objects()
+
+        self.max_plottable_categories = max_plottable_categories
+        self.col_data = {}
+        col_data_keys = ["plottable", "count_unique", "max_len"]
+        col_data_lambdas = [
+            lambda k: (self.df[k].nunique() < self.max_plottable_categories) or is_date_dtype(self.df, k) or is_numeric_dtype(self.df, k),
+            lambda k: self.df[k].nunique(),
+            lambda k: self.df[k].astype(str).str.len().max()
+        ]
+        for k in self.viewable_column_names:
+            print(f"{k=}, dtype: {self.df.dtypes[k]}")
+            # self.col_data[k] = dict(zip(col_data_keys, map(lambda f, x: col_data_keys, col_data_lambdas)))
+            self.col_data[k] = dict(zip(col_data_keys, map(lambda f, x: f(k), col_data_lambdas, col_data_keys)))
+
+        print(f"{self.col_data}")
+        print(f"{dict_print(self.col_data, 'Col_data')}")
 
         x, y = 0, 0
         if isinstance(auto_grid, list) or isinstance(auto_grid, tuple):
