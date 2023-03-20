@@ -604,24 +604,35 @@ Total minutes:			6480
 Total hours:			108.0
 Where to watch:			Disney+
 
+	Angel
+Genre:				Drama / Action
+Run (1999 -> 2004):		5 years
+number seasons:			5
+number episodes:		110
+episodes per season:		22.0
+average length of an episode:	45
+Total minutes:			4950
+Total hours:			82.5
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Arrested Develpoment
+	Letterkenny
 Genre:				Comedy
-Run (2003 -> 2019):		16 years
-number seasons:			5
-number episodes:		84
-episodes per season:		16.8
+Run (2016 -> 2021):		5 years
+number seasons:			9
+number episodes:		56
+episodes per season:		6.222222222222222
 average length of an episode:	22
-Total minutes:			1848
-Total hours:			30.8
-Where to watch:			Netflix
+Total minutes:			1232
+Total hours:			20.533333333333335
+Where to watch:			Crave
 
-Season: 1
-Episode: 10
+Season: 6
+Episode: 1
 
 	How would you like to print the stats?
 1	-	By start year
@@ -649,6 +660,7 @@ sorting by start year...
 |Yu-Gi-Oh!                        |    1998    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1998    |Yu-Gi-Oh!                        |
 |Futurama                         |    1999    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    1999    |Futurama                         |
 |Family Guy                       |    1999    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    1999    |Family Guy                       |
+|Angel                            |    1999    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1999    |Angel                            |
 |Curb your Enthusiasm             |    2000    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    2000    |Curb your Enthusiasm             |
 |Malcolm in the Middle            |    2000    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2000    |Malcolm in the Middle            |
 |Trailer Park Boys                |    2001    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    2001    |Trailer Park Boys                |
@@ -725,6 +737,7 @@ sorting by start year...
 |Yu-Gi-Oh!                        |    1998    |
 |Futurama                         |    1999    |
 |Family Guy                       |    1999    |
+|Angel                            |    1999    |
 |Curb your Enthusiasm             |    2000    |
 |Malcolm in the Middle            |    2000    |
 |Trailer Park Boys                |    2001    |
@@ -775,12 +788,12 @@ sorting by start year...
 |The Great North                  |    2021    |
 ################################################
 
-Mean:		2009.58
-Median:		2010.00
-Pstdev:		  7.91
-Pvariance:	 62.64
-Stdev:		  7.99
-Variance:	 63.80
+Mean:		2009.39
+Median:		2009.50
+Pstdev:		  7.97
+Pvariance:	 63.49
+Stdev:		  8.04
+Variance:	 64.64
 
 	How would you like to print the stats?
 1	-	By start year
@@ -803,6 +816,7 @@ sorting by end year...
 ##################################| end year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| end year |##################################
 |Recess                           |   2001   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2001   |Recess                           |
 |Buffy The Vampire Slayer         |   2003   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2003   |Buffy The Vampire Slayer         |
+|Angel                            |   2004   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2004   |Angel                            |
 |The Proud Family                 |   2005   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2005   |The Proud Family                 |
 |Yu-Gi-Oh!                        |   2006   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2006   |Yu-Gi-Oh!                        |
 |Malcolm in the Middle            |   2006   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2006   |Malcolm in the Middle            |
@@ -879,6 +893,7 @@ sorting by end year...
 ##################################| end year |
 |Recess                           |   2001   |
 |Buffy The Vampire Slayer         |   2003   |
+|Angel                            |   2004   |
 |The Proud Family                 |   2005   |
 |Yu-Gi-Oh!                        |   2006   |
 |Malcolm in the Middle            |   2006   |
@@ -934,12 +949,12 @@ sorting by end year...
 |The Great North                  |   2022   |
 ##############################################
 
-Mean:		2016.24
-Median:		2019.00
-Pstdev:		  5.47
-Pvariance:	 29.89
-Stdev:		  5.52
-Variance:	 30.44
+Mean:		2016.02
+Median:		2018.50
+Pstdev:		  5.66
+Pvariance:	 31.98
+Stdev:		  5.71
+Variance:	 32.56
 
 	How would you like to print the stats?
 1	-	By start year
@@ -984,6 +999,7 @@ sorting by shortest series length...
 |Misfits                          |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             4              |Misfits                          |
 |Gravity Falls                    |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |             4              |Gravity Falls                    |
 |Mr. Robot                        |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |             4              |Mr. Robot                        |
+|Angel                            |             5              |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             5              |Angel                            |
 |Breaking Bad                     |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             5              |Breaking Bad                     |
 |Silicon Valley                   |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |             5              |Silicon Valley                   |
 |Better Call Saul                 |             5              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |             5              |Better Call Saul                 |
@@ -1060,6 +1076,7 @@ sorting by shortest series length...
 |Misfits                          |             4              |
 |Gravity Falls                    |             4              |
 |Mr. Robot                        |             4              |
+|Angel                            |             5              |
 |Breaking Bad                     |             5              |
 |Silicon Valley                   |             5              |
 |Better Call Saul                 |             5              |
@@ -1093,12 +1110,12 @@ sorting by shortest series length...
 |The Simpsons                     |             33             |
 ################################################################
 
-Mean:		  6.76
+Mean:		  6.73
 Median:		  5.00
-Pstdev:		  6.21
-Pvariance:	 38.51
-Stdev:		  6.26
-Variance:	 39.22
+Pstdev:		  6.15
+Pvariance:	 37.87
+Stdev:		  6.21
+Variance:	 38.56
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1145,6 +1162,7 @@ sorting by longest series length...
 |Community                        |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             6             |Community                        |
 |Parks and Recreation             |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             6             |Parks and Recreation             |
 |Workaholics                      |             6             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |             6             |Workaholics                      |
+|Angel                            |             5             |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             5             |Angel                            |
 |Breaking Bad                     |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             5             |Breaking Bad                     |
 |Silicon Valley                   |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |             5             |Silicon Valley                   |
 |Better Call Saul                 |             5             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |             5             |Better Call Saul                 |
@@ -1221,6 +1239,7 @@ sorting by longest series length...
 |Community                        |             6             |
 |Parks and Recreation             |             6             |
 |Workaholics                      |             6             |
+|Angel                            |             5             |
 |Breaking Bad                     |             5             |
 |Silicon Valley                   |             5             |
 |Better Call Saul                 |             5             |
@@ -1252,12 +1271,12 @@ sorting by longest series length...
 |The Great North                  |             1             |
 ###############################################################
 
-Mean:		  6.76
+Mean:		  6.73
 Median:		  5.00
-Pstdev:		  6.21
-Pvariance:	 38.51
-Stdev:		  6.26
-Variance:	 39.22
+Pstdev:		  6.15
+Pvariance:	 37.87
+Stdev:		  6.21
+Variance:	 38.56
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1308,6 +1327,7 @@ sorting by least number of seasons...
 |Yu-Gi-Oh!                        |          5           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5           |Yu-Gi-Oh!                        |
 |Black Mirror                     |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          5           |Black Mirror                     |
 |Peaky Blinders                   |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          5           |Peaky Blinders                   |
+|Angel                            |          5           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5           |Angel                            |
 |Breaking Bad                     |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          5           |Breaking Bad                     |
 |Better Call Saul                 |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          5           |Better Call Saul                 |
 |Misfits                          |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          5           |Misfits                          |
@@ -1384,6 +1404,7 @@ sorting by least number of seasons...
 |Yu-Gi-Oh!                        |          5           |
 |Black Mirror                     |          5           |
 |Peaky Blinders                   |          5           |
+|Angel                            |          5           |
 |Breaking Bad                     |          5           |
 |Better Call Saul                 |          5           |
 |Misfits                          |          5           |
@@ -1411,12 +1432,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          33          |
 ##########################################################
 
-Mean:		  5.95
+Mean:		  5.93
 Median:		  5.00
-Pstdev:		  5.40
-Pvariance:	 29.18
-Stdev:		  5.45
-Variance:	 29.72
+Pstdev:		  5.35
+Pvariance:	 28.67
+Stdev:		  5.40
+Variance:	 29.19
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1464,6 +1485,7 @@ sorting by most number of seasons...
 |Yu-Gi-Oh!                        |          5          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5          |Yu-Gi-Oh!                        |
 |Black Mirror                     |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          5          |Black Mirror                     |
 |Peaky Blinders                   |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |          5          |Peaky Blinders                   |
+|Angel                            |          5          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5          |Angel                            |
 |Breaking Bad                     |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          5          |Breaking Bad                     |
 |Better Call Saul                 |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          5          |Better Call Saul                 |
 |Misfits                          |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          5          |Misfits                          |
@@ -1540,6 +1562,7 @@ sorting by most number of seasons...
 |Yu-Gi-Oh!                        |          5          |
 |Black Mirror                     |          5          |
 |Peaky Blinders                   |          5          |
+|Angel                            |          5          |
 |Breaking Bad                     |          5          |
 |Better Call Saul                 |          5          |
 |Misfits                          |          5          |
@@ -1570,12 +1593,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  5.95
+Mean:		  5.93
 Median:		  5.00
-Pstdev:		  5.40
-Pvariance:	 29.18
-Stdev:		  5.45
-Variance:	 29.72
+Pstdev:		  5.35
+Pvariance:	 28.67
+Stdev:		  5.40
+Variance:	 29.19
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1637,6 +1660,7 @@ sorting by least number of episodes...
 |Curb your Enthusiasm             |          100          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          100          |Curb your Enthusiasm             |
 |Trailer Park Boys                |          105          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          105          |Trailer Park Boys                |
 |Community                        |          110          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          110          |Community                        |
+|Angel                            |          110          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          110          |Angel                            |
 |Parks and Recreation             |          125          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          125          |Parks and Recreation             |
 |Star Wars the Clone Wars         |          133          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |          133          |Star Wars the Clone Wars         |
 |Futurama                         |          140          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          140          |Futurama                         |
@@ -1713,6 +1737,7 @@ sorting by least number of episodes...
 |Curb your Enthusiasm             |          100          |
 |Trailer Park Boys                |          105          |
 |Community                        |          110          |
+|Angel                            |          110          |
 |Parks and Recreation             |          125          |
 |Star Wars the Clone Wars         |          133          |
 |Futurama                         |          140          |
@@ -1729,12 +1754,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          728          |
 ###########################################################
 
-Mean:		 94.31
-Median:		 56.00
-Pstdev:		117.40
-Pvariance:	13782.90
-Stdev:		118.48
-Variance:	14038.14
+Mean:		 94.59
+Median:		 58.50
+Pstdev:		116.37
+Pvariance:	13541.10
+Stdev:		117.42
+Variance:	13787.30
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1770,6 +1795,7 @@ sorting by most number of episodes...
 |Star Wars the Clone Wars         |         133          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         133          |Star Wars the Clone Wars         |
 |Parks and Recreation             |         125          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         125          |Parks and Recreation             |
 |Community                        |         110          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         110          |Community                        |
+|Angel                            |         110          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         110          |Angel                            |
 |Trailer Park Boys                |         105          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         105          |Trailer Park Boys                |
 |Curb your Enthusiasm             |         100          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         100          |Curb your Enthusiasm             |
 |My Name is Earl                  |          96          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          96          |My Name is Earl                  |
@@ -1846,6 +1872,7 @@ sorting by most number of episodes...
 |Star Wars the Clone Wars         |         133          |
 |Parks and Recreation             |         125          |
 |Community                        |         110          |
+|Angel                            |         110          |
 |Trailer Park Boys                |         105          |
 |Curb your Enthusiasm             |         100          |
 |My Name is Earl                  |          96          |
@@ -1888,12 +1915,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 94.31
-Median:		 56.00
-Pstdev:		117.40
-Pvariance:	13782.90
-Stdev:		118.48
-Variance:	14038.14
+Mean:		 94.59
+Median:		 58.50
+Pstdev:		116.37
+Pvariance:	13541.10
+Stdev:		117.42
+Variance:	13787.30
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1962,6 +1989,7 @@ sorting by shortest time...
 |Prison Break                     |     63.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |     63.0      |Prison Break                     |
 |Scrubs                           |   66.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   66.733333   |Scrubs                           |
 |The Office                       |   73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |   73.700000   |The Office                       |
+|Angel                            |   82.500000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   82.500000   |Angel                            |
 |Yu-Gi-Oh!                        |   86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   86.533333   |Yu-Gi-Oh!                        |
 |Sons of Anarchy                  |     92.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |     92.0      |Sons of Anarchy                  |
 |King of the Hill                 |   99.283333   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   99.283333   |King of the Hill                 |
@@ -2038,6 +2066,7 @@ sorting by shortest time...
 |Prison Break                     |     63.0      |
 |Scrubs                           |   66.733333   |
 |The Office                       |   73.700000   |
+|Angel                            |   82.500000   |
 |Yu-Gi-Oh!                        |   86.533333   |
 |Sons of Anarchy                  |     92.0      |
 |King of the Hill                 |   99.283333   |
@@ -2047,12 +2076,12 @@ sorting by shortest time...
 |The Simpsons                     |  291.200000   |
 ###################################################
 
-Mean:		 44.43
-Median:		 26.40
-Pstdev:		 52.65
-Pvariance:	2772.13
-Stdev:		 53.14
-Variance:	2823.46
+Mean:		 45.11
+Median:		 26.77
+Pstdev:		 52.42
+Pvariance:	2748.05
+Stdev:		 52.90
+Variance:	2798.01
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2080,6 +2109,7 @@ sorting by longest time...
 |King of the Hill                 |  99.283333   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |  99.283333   |King of the Hill                 |
 |Sons of Anarchy                  |     92.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |     92.0     |Sons of Anarchy                  |
 |Yu-Gi-Oh!                        |  86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  86.533333   |Yu-Gi-Oh!                        |
+|Angel                            |  82.500000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  82.500000   |Angel                            |
 |The Office                       |  73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |  73.700000   |The Office                       |
 |Scrubs                           |  66.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |  66.733333   |Scrubs                           |
 |Prison Break                     |     63.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |     63.0     |Prison Break                     |
@@ -2156,6 +2186,7 @@ sorting by longest time...
 |King of the Hill                 |  99.283333   |
 |Sons of Anarchy                  |     92.0     |
 |Yu-Gi-Oh!                        |  86.533333   |
+|Angel                            |  82.500000   |
 |The Office                       |  73.700000   |
 |Scrubs                           |  66.733333   |
 |Prison Break                     |     63.0     |
@@ -2206,12 +2237,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 44.43
-Median:		 26.40
-Pstdev:		 52.65
-Pvariance:	2772.13
-Stdev:		 53.14
-Variance:	2823.46
+Mean:		 45.11
+Median:		 26.77
+Pstdev:		 52.42
+Pvariance:	2748.05
+Stdev:		 52.90
+Variance:	2798.01
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2237,6 +2268,7 @@ sorting by most episodes per season...
 |My Name is Earl                  |           24.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0           |My Name is Earl                  |
 |The Office                       |        22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |        22.333333         |The Office                       |
 |The Simpsons                     |        22.060606         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |        22.060606         |The Simpsons                     |
+|Angel                            |           22.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0           |Angel                            |
 |Criminal Minds                   |        21.600000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |        21.600000         |Criminal Minds                   |
 |Malcolm in the Middle            |        21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        21.571429         |Malcolm in the Middle            |
 |The Replacements                 |           21.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0           |The Replacements                 |
@@ -2313,6 +2345,7 @@ sorting by most episodes per season...
 |My Name is Earl                  |           24.0           |
 |The Office                       |        22.333333         |
 |The Simpsons                     |        22.060606         |
+|Angel                            |           22.0           |
 |Criminal Minds                   |        21.600000         |
 |Malcolm in the Middle            |        21.571429         |
 |The Replacements                 |           21.0           |
@@ -2365,12 +2398,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.39
-Median:		 12.40
+Mean:		 14.53
+Median:		 12.77
 Pstdev:		  7.42
-Pvariance:	 55.01
+Pvariance:	 55.04
 Stdev:		  7.49
-Variance:	 56.03
+Variance:	 56.04
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2441,6 +2474,7 @@ sorting by least episodes per season...
 |The Replacements                 |           21.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0            |The Replacements                 |
 |Malcolm in the Middle            |         21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         21.571429         |Malcolm in the Middle            |
 |Criminal Minds                   |         21.600000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |         21.600000         |Criminal Minds                   |
+|Angel                            |           22.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0            |Angel                            |
 |The Simpsons                     |         22.060606         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         22.060606         |The Simpsons                     |
 |The Office                       |         22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |         22.333333         |The Office                       |
 |My Name is Earl                  |           24.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0            |My Name is Earl                  |
@@ -2517,6 +2551,7 @@ sorting by least episodes per season...
 |The Replacements                 |           21.0            |
 |Malcolm in the Middle            |         21.571429         |
 |Criminal Minds                   |         21.600000         |
+|Angel                            |           22.0            |
 |The Simpsons                     |         22.060606         |
 |The Office                       |         22.333333         |
 |My Name is Earl                  |           24.0            |
@@ -2524,14 +2559,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.39
-Median:		 12.40
+Mean:		 14.53
+Median:		 12.77
 Pstdev:		  7.42
-Pvariance:	 55.01
+Pvariance:	 55.04
 Stdev:		  7.49
-Variance:	 56.03
+Variance:	 56.04
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 4  | 5  | 7  | 9  | 12 | 11 | 12 | 11 | 17 | 18 | 16 | 18 | 20 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 21 | 14 | 13 | 6  | 0  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 4  | 5  | 8  | 10 | 13 | 12 | 13 | 12 | 17 | 18 | 16 | 18 | 20 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 21 | 14 | 13 | 6  | 0  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################

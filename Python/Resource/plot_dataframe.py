@@ -304,7 +304,13 @@ class PlotFrame(tkinter.Frame):
             **kwargs
     ):
         super().__init__(master, *args, **kwargs)
+
+        assert isinstance(df, pd.DataFrame), f"Error param 'df' must be aa pandas.DataFrame object. Got {type(df)}"
+
         self.df = df
+
+        print(f"{self.df.dtypes}")
+
         self.viewable_column_names = viewable_column_names
         self.auto_grid = auto_grid
         self.btns_per_row = btns_per_row
@@ -356,7 +362,32 @@ class PlotFrame(tkinter.Frame):
             "rb_sv": {r: 1, c: 0},
             "rb_sda": {r: 0, c: 0},
             "rb_sdd": {r: 1, c: 0},
-            "plot_button": {}
+            "plot_button": {},
+            "plot_frame": {},
+            "plot_toolbar": {},
+            "plot_canvas.get_tk_widget()": {}
+        }
+
+        self.init_grid_args = {
+            ".",
+            "frame_treeview_controller",
+            "label_treeview_controller",
+            "scrollbar_x_treeview_controller",
+            "treeview_treeview_controller",
+            "scrollbar_y_treeview_controller",
+            "frame_btns",
+            "frame_radio_groups",
+            "frame_rb_group_1",
+            "frame_rb_group_2",
+            "frame_rb_group_3",
+            "rb_h",
+            "rb_v",
+            "rb_sa",
+            "rb_sv",
+            "rb_sda",
+            "rb_sdd",
+            "plot_button",
+            "plot_frame"
         }
 
         self.frame_btns = tkinter.Frame(self, background="#4f4f4f")
@@ -433,15 +464,19 @@ class PlotFrame(tkinter.Frame):
         self.rb_sdd = Radiobutton(self.frame_rb_group_3, variable=self.tv_sort_direction, value="descending",
                              textvariable=self.tv_sort_dir_d)
 
+        plt.rcdefaults()
         self.plot_frame = tkinter.Frame(self)
-        self.plot_fig = None
-        self.plot_toolbar = None
-        self.plot_canvas = None
+        self.plot_fig, self.plot_ax = plt.subplots()
+        self.plot_canvas = self.plot_canvas = FigureCanvasTkAgg(self.plot_fig,
+                                   master=self.plot_frame)
+        self.plot_toolbar = NavigationToolbar2Tk(self.plot_canvas, self.plot_frame, pack_toolbar=False)
 
         self.tv_orientation.trace_variable("w", update_orientation_choice)
 
         if self.auto_grid is not None:
             self.grid_widgets()
+
+        self.grid_args.update({"plot_canvas": self.grid_args["plot_canvas.get_tk_widget()"]})
 
     def click_radio(self, text, button, var):
         l = self.max_chart_elements - len(self.selected_queue)
@@ -508,24 +543,53 @@ class PlotFrame(tkinter.Frame):
     def plot(self):
         print(f"PLOT")
 
+        if len(self.selected_queue) != (el := self.max_chart_elements):
+            messagebox.showinfo(title="PlotFrame", message=f"Please choose {el} columns first.")
+            return
+
+        plt.rcdefaults()
+        self.plot_fig, self.plot_ax = plt.subplots()
+
         if self.plot_canvas is not None:
-            self.plot_canvas.get_tk_widget().pack_forget()
-            self.plot_toolbar.pack_forget()
+            self.plot_canvas.get_tk_widget().grid_forget()
+            self.plot_toolbar.grid_forget()
 
         self.plot_canvas = FigureCanvasTkAgg(self.plot_fig,
                                    master=self.plot_frame)
         self.plot_canvas.draw()
 
-        # placing the canvas on the Tkinter window
-        self.plot_canvas.get_tk_widget().pack()
-
         # creating the Matplotlib toolbar
         self.plot_toolbar = NavigationToolbar2Tk(self.plot_canvas,
-                                       self.plot_frame)
+                                       self.plot_frame, pack_toolbar=False)
         self.plot_toolbar.update()
 
         # placing the toolbar on the Tkinter window
-        self.plot_canvas.get_tk_widget().pack()
+        # self.plot_canvas.get_tk_widget().grid(**self.grid_args["plot_canvas"])
+        self.plot_toolbar.grid(**self.grid_args["plot_toolbar"])
+
+        # placing the canvas on the Tkinter window
+        # self.plot_canvas.get_tk_widget().pack()
+        self.plot_canvas.get_tk_widget().grid(**self.grid_args["plot_canvas"])
+
+        x_col, y_col = self.selected_queue[0], self.selected_queue[1]
+        if self.tv_orientation.get() == self.tv_orientation_h.get():
+            x_col, y_col = y_col, x_col
+
+        # if self.tv_sort_style.get() == self.tv_sort_style_v.get():
+        if self.tv_sort_direction.get() == self.tv_sort_dir_a.get():
+            self.df.sort_values(by=y_col, ascending=True, inplace=True)
+        else:
+            self.df.sort_values(by=x_col, ascending=False, inplace=True)
+
+        dtypes = self.df.dtypes
+        x_type = dtypes[x_col]
+        y_type = dtypes[y_col]
+
+        print(f"graphing a {x_type=} vs. {y_type=}\ncolumns: {x_col}, {y_col}")
+
+        assert isinstance(self.df, pd.DataFrame)
+        self.df.plot(kind="scatter", x=x_col, y=y_col, color="#ce5656", ax=self.plot_ax)
+
 
         # data_points, show_names = data_in
         #
@@ -563,7 +627,8 @@ class PlotFrame(tkinter.Frame):
 
         r, c, rs, cs, ix, iy, x, y, s = grid_keys()
 
-        for k, v in self.grid_args.items():
+        for k in self.init_grid_args:
+            v = self.grid_args[k]
             ke = "" if k == "." else f".{k}"
             eval(f"self{ke}.grid(**{v})")
 
@@ -622,116 +687,116 @@ if __name__ == '__main__':
         auto_grid=True,
         btns_horizontal=False
     )
-
-
-    canvas = None
-    toolbar = None
-
-    # columns = list(df_IT_requests.columns)
-    # frame_btns = tkinter.Frame(WIN)
     #
-    # check_boxes,\
-    # tv_check_boxes\
-    #     = checkbox_factory(
-    #         frame_btns,
-    #         columns
+    #
+    # canvas = None
+    # toolbar = None
+    #
+    # # columns = list(df_IT_requests.columns)
+    # # frame_btns = tkinter.Frame(WIN)
+    # #
+    # # check_boxes,\
+    # # tv_check_boxes\
+    # #     = checkbox_factory(
+    # #         frame_btns,
+    # #         columns
+    # # )
+    # #
+    # # frame_btns.grid()
+    # # for cb in check_boxes:
+    # #     cb.grid()
+    #
+    # print(series_list)
+    # print(sum([s.how_long_is_series()[0] for s in series_list]))
+    #
+    # # data_series_by_episodes = gen_data("count_episodes")
+    # # print(data_series_by_episodes)
+    # # show_graph(
+    # #     data_series_by_episodes,
+    # #     mode="value",
+    # #     reverse=True,
+    # #     title="Shows by number of episodes",
+    # #     xlabel="# episodes",
+    # #     orientation="vertical"
+    # # )
+    # #
+    # #
+    # # data_series_by_seasons = gen_data("number_seasons")
+    # # print(data_series_by_seasons)
+    # # show_graph(
+    # #     data_series_by_seasons,
+    # #     mode="value",
+    # #     reverse=True,
+    # #     title="Shows by number of seasons",
+    # #     xlabel="# seasons",
+    # #     orientation="vertical"
+    # # )
+    #
+    # tv_label_graph_chooser,\
+    # label_graph_chooser,\
+    # tv_combo_graph_chooser,\
+    # combo_graph_chooser \
+    #     = combo_factory(
+    #         WIN,
+    #         tv_label="Choose a graph",
+    #         kwargs_combo={
+    #             "values": [
+    #                 "Total Time in Minutes",
+    #                 "Total Time in Hours",
+    #                 "Number of Episodes",
+    #                 "Number of Seasons",
+    #                 "End Year",
+    #                 "Start Year",
+    #                 "Average Episode Length in Minutes"
+    #             ]
+    #         }
     # )
     #
-    # frame_btns.grid()
-    # for cb in check_boxes:
-    #     cb.grid()
-
-    print(series_list)
-    print(sum([s.how_long_is_series()[0] for s in series_list]))
-
-    # data_series_by_episodes = gen_data("count_episodes")
-    # print(data_series_by_episodes)
-    # show_graph(
-    #     data_series_by_episodes,
-    #     mode="value",
-    #     reverse=True,
-    #     title="Shows by number of episodes",
-    #     xlabel="# episodes",
-    #     orientation="vertical"
-    # )
+    # tv_combo_graph_chooser.trace_variable("w", update_graph_choice)
     #
+    # plot_button = Button(master=WIN,
+    #                      command=plot_g_1,
+    #                      height=2,
+    #                      width=10,
+    #                      text="Plot")
     #
-    # data_series_by_seasons = gen_data("number_seasons")
-    # print(data_series_by_seasons)
-    # show_graph(
-    #     data_series_by_seasons,
-    #     mode="value",
-    #     reverse=True,
-    #     title="Shows by number of seasons",
-    #     xlabel="# seasons",
-    #     orientation="vertical"
-    # )
-
-    tv_label_graph_chooser,\
-    label_graph_chooser,\
-    tv_combo_graph_chooser,\
-    combo_graph_chooser \
-        = combo_factory(
-            WIN,
-            tv_label="Choose a graph",
-            kwargs_combo={
-                "values": [
-                    "Total Time in Minutes",
-                    "Total Time in Hours",
-                    "Number of Episodes",
-                    "Number of Seasons",
-                    "End Year",
-                    "Start Year",
-                    "Average Episode Length in Minutes"
-                ]
-            }
-    )
-
-    tv_combo_graph_chooser.trace_variable("w", update_graph_choice)
-
-    plot_button = Button(master=WIN,
-                         command=plot_g_1,
-                         height=2,
-                         width=10,
-                         text="Plot")
-
-    frame_radio_groups = Frame(WIN)
-    frame_rb_group_1 = Frame(frame_radio_groups)
-    frame_rb_group_2 = Frame(frame_radio_groups)
-    frame_rb_group_3 = Frame(frame_radio_groups)
-
-    tv_orientation = StringVar(WIN, value="vertical")
-    tv_orientation_h = StringVar(WIN, value="horizontal")
-    tv_orientation_v = StringVar(WIN, value="vertical")
-    rb_h = Radiobutton(frame_rb_group_1, variable=tv_orientation, value="horizontal", textvariable=tv_orientation_h)
-    rb_v = Radiobutton(frame_rb_group_1, variable=tv_orientation, value="vertical", textvariable=tv_orientation_v)
-
-    tv_sort_style = StringVar(WIN, value="by value")
-    tv_sort_style_a = StringVar(WIN, value="alphabetical")
-    tv_sort_style_v = StringVar(WIN, value="by value")
-    rb_sa = Radiobutton(frame_rb_group_2, variable=tv_sort_style, value="alphabetical", textvariable=tv_sort_style_a)
-    rb_sv = Radiobutton(frame_rb_group_2, variable=tv_sort_style, value="by value", textvariable=tv_sort_style_v)
-
-    tv_sort_direction = StringVar(WIN, value="descending")
-    tv_sort_dir_a = StringVar(WIN, value="ascending")
-    tv_sort_dir_d = StringVar(WIN, value="descending")
-    rb_sda = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="ascending", textvariable=tv_sort_dir_a)
-    rb_sdd = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="descending", textvariable=tv_sort_dir_d)
-
-    tv_orientation.trace_variable("w", update_orientation_choice)
-
-    # label_graph_chooser.grid()
-    # combo_graph_chooser.grid()
-    # rb_h.grid()
-    # rb_v.grid()
-    # rb_sa.grid()
-    # rb_sv.grid()
-    # rb_sda.grid()
-    # rb_sdd.grid()
-    # frame_radio_groups.grid()
-    # frame_rb_group_1.grid()
-    # frame_rb_group_2.grid()
-    # frame_rb_group_3.grid()
-    # plot_button.grid()
+    # frame_radio_groups = Frame(WIN)
+    # frame_rb_group_1 = Frame(frame_radio_groups)
+    # frame_rb_group_2 = Frame(frame_radio_groups)
+    # frame_rb_group_3 = Frame(frame_radio_groups)
+    #
+    # tv_orientation = StringVar(WIN, value="vertical")
+    # tv_orientation_h = StringVar(WIN, value="horizontal")
+    # tv_orientation_v = StringVar(WIN, value="vertical")
+    # rb_h = Radiobutton(frame_rb_group_1, variable=tv_orientation, value="horizontal", textvariable=tv_orientation_h)
+    # rb_v = Radiobutton(frame_rb_group_1, variable=tv_orientation, value="vertical", textvariable=tv_orientation_v)
+    #
+    # tv_sort_style = StringVar(WIN, value="by value")
+    # tv_sort_style_a = StringVar(WIN, value="alphabetical")
+    # tv_sort_style_v = StringVar(WIN, value="by value")
+    # rb_sa = Radiobutton(frame_rb_group_2, variable=tv_sort_style, value="alphabetical", textvariable=tv_sort_style_a)
+    # rb_sv = Radiobutton(frame_rb_group_2, variable=tv_sort_style, value="by value", textvariable=tv_sort_style_v)
+    #
+    # tv_sort_direction = StringVar(WIN, value="descending")
+    # tv_sort_dir_a = StringVar(WIN, value="ascending")
+    # tv_sort_dir_d = StringVar(WIN, value="descending")
+    # rb_sda = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="ascending", textvariable=tv_sort_dir_a)
+    # rb_sdd = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="descending", textvariable=tv_sort_dir_d)
+    #
+    # tv_orientation.trace_variable("w", update_orientation_choice)
+    #
+    # # label_graph_chooser.grid()
+    # # combo_graph_chooser.grid()
+    # # rb_h.grid()
+    # # rb_v.grid()
+    # # rb_sa.grid()
+    # # rb_sv.grid()
+    # # rb_sda.grid()
+    # # rb_sdd.grid()
+    # # frame_radio_groups.grid()
+    # # frame_rb_group_1.grid()
+    # # frame_rb_group_2.grid()
+    # # frame_rb_group_3.grid()
+    # # plot_button.grid()
 
     WIN.mainloop()

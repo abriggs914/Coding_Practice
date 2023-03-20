@@ -440,19 +440,19 @@ class TreeviewController(tkinter.Frame):
         self.treeview.column("#0", width=self.idx_width, stretch=False)
         self.treeview.heading("#0", text="#", anchor=tkinter.CENTER)
 
-        print(f"A {df.shape=}")
-        print(f"{list(df.itertuples())=}\n{len(list(df.itertuples()))}")
+        # print(f"A {df.shape=}")
+        # print(f"{list(df.itertuples())=}\n{len(list(df.itertuples()))}")
         # for i, row in df.itertuples():
         # f = list(range(1015))
         for i, row in df.iterrows():
             # next(self.iid_namer)
-            print(f"{i=}, {row=}, {type(row)=}")
+            # print(f"{i=}, {row=}, {type(row)=}")
             dat = [row[c_name] for c_name in self.viewable_column_names]
             self.treeview.insert("", tkinter.END, text=f"{i + 1}", iid=i, values=dat)
             # f.remove(i)
         # print(f"{f=}")
-        print(f"B {df.shape=}")
-        print(f"{len(list(df.iterrows()))=}")
+        # print(f"B {df.shape=}")
+        # print(f"{len(list(df.iterrows()))=}")
 
         # treeview.bind("<<TreeviewSelect>>", CALLBACK_HERE)
         self.scrollbar_x, self.scrollbar_y = None, None

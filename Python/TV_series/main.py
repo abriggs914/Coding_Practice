@@ -797,6 +797,20 @@ buffy_the_vampire_slayer = TVSeries("Buffy The Vampire Slayer", {
 	True,
 	"Drama / Action",
 	"Disney+")
+	
+
+angel = TVSeries("Angel", {
+	1: 22,
+	2: 22,
+	3: 22,
+	4: 22,
+	5: 22},
+	45,
+	1999,
+	2004,
+	True,
+	"Drama / Action",
+	"Disney+")
 
 
 series_list = [
@@ -854,7 +868,8 @@ series_list = [
 	the_great_north,
 	king_of_the_hill,
 	bless_the_harts,
-	buffy_the_vampire_slayer
+	buffy_the_vampire_slayer,
+	angel
 ]
 
    
