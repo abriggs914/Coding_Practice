@@ -1,5 +1,7 @@
 import tkinter
 
+import pandas as pd
+
 from pyodbc_connection import *
 from tkinter_utility import *
 from utility import *
@@ -191,22 +193,22 @@ class PlotFrame(tkinter.Frame):
         print(f"{self.col_data}")
         print(f"{dict_print(self.col_data, 'Col_data')}")
 
-        x, y = 0, 0
+        ag_x, ag_y = 0, 0
         if isinstance(auto_grid, list) or isinstance(auto_grid, tuple):
             if len(auto_grid) == 2:
-                x, y = auto_grid
+                ag_x, ag_y = auto_grid
             else:
                 raise ValueError(f"Error, auto_grid param is not the right dimensions.")
         elif isinstance(auto_grid, int):
-            x, y = 0, auto_grid
-        if x < 0 or y < 0:
+            ag_x, ag_y = 0, auto_grid
+        if ag_x < 0 or ag_y < 0:
             raise ValueError(f"Error, auto_grid param is invalid.")
 
         r, c, rs, cs, ix, iy, x, y, s = grid_keys()
         self.grid_args = {
 
             # self
-            ".": {},
+            ".": {r: ag_y, c: ag_x},
             "label_treeview_controller": {r: 0},
             "frame_treeview_controller": {r: 1, c: 0},
             "frame_btns": {r: 2, ix: 5, iy: 5},
@@ -337,6 +339,22 @@ class PlotFrame(tkinter.Frame):
         self.rb_sdd = Radiobutton(self.frame_rb_group_3, variable=self.tv_sort_direction, value="descending",
                              textvariable=self.tv_sort_dir_d)
 
+        self.available_plot_types = pd.DataFrame({
+            'line': {'description': 'Line plot (default)'},
+            'bar': {'description': 'Vertical bar plot'},
+            'barh': {'description': 'Horizontal bar plot'},
+            'hist': {'description': 'Histogram'},
+            'box': {'description': 'Box plot'},
+            'kde': {'description': 'Kernel Density Estimation plot'},
+            'density': {'description': 'Same as "kde"'},
+            'area': {'description': 'Area plot'},
+            'scatter': {'description': 'Scatter plot'},
+            'hexbin': {'description': 'Hexbin plot'},
+            'pie': {'description': 'Pie chart'}
+        })
+
+        # MultiComboBox(self.available_plot_types, viewable_column_names=)
+
         plt.rcdefaults()
         self.plot_frame = tkinter.Frame(self)
         self.plot_fig, self.plot_ax = plt.subplots()
@@ -379,7 +397,6 @@ class PlotFrame(tkinter.Frame):
             else:
                 print(f"plotting columns '{x_col}', and '{y_col}'.")
                 self.can_plot.set(True)
-
 
     # def update_check_boxes(self, *args):
     #     var, x, mode = args
@@ -426,21 +443,55 @@ class PlotFrame(tkinter.Frame):
     #
     #         print(f"QUEUE: {self.selected_queue}")
 
-    def get_xs_ys(self):
+    def get_xs_ys(self, place_holders=2):
 
+        place_holders = clamp(0, place_holders, self.max_chart_elements)
+
+        # if len(self.selected_queue) != (el := self.max_chart_elements):
+        if len(self.selected_queue) < 2:
+            messagebox.showinfo(title="PlotFrame", message=f"Please choose at least 2 columns first.")
+            return [None for _ in range(place_holders)]
+
+        cols = list(self.selected_queue)
+        time_cols = []
+        num_cols = []
+        catg_cols = []
+        for col in cols:
+            if self.col_data[col]["is_numeric"]:
+                num_cols.append(col)
+            elif self.col_data[col]["is_date"]:
+                time_cols.append(col)
+            elif self.col_data[col]["plottable"]:
+                catg_cols.append(col)
+
+        print(f"num_cols: {num_cols}")
+        print(f"time_cols: {time_cols}")
+        print(f"catg_cols: {catg_cols}")
+
+        if len(time_cols) == 1:
+            result = time_cols, catg_cols + num_cols
+        elif len(num_cols) == 1:
+            result = num_cols, catg_cols + time_cols
+        elif len(catg_cols) == 1:
+            result = catg_cols, time_cols + num_cols
+        else:
+            result = time_cols, catg_cols + num_cols
+
+        return result
 
     def plot(self):
         print(f"PLOT")
 
-        if len(self.selected_queue) != (el := self.max_chart_elements):
-            messagebox.showinfo(title="PlotFrame", message=f"Please choose {el} columns first.")
+        # if len(self.selected_queue) != (el := self.max_chart_elements):
+        if len(self.selected_queue) < 2:
+            messagebox.showinfo(title="PlotFrame", message=f"Please choose at least 2 columns first.")
             return
 
-        # x_cols, y_cols = self.selected_queue[0], self.selected_queue[1]
-        x_cols, y_cols = self.get_xs_ys()
+        x_cols, y_cols = self.selected_queue[0], self.selected_queue[1]
+        # x_col, y_cols = self.get_xs_ys()
 
         if not self.can_plot.get():
-            messagebox.showinfo(title="PlotFrame", message=f"error columns '{x_cols}', and '{y_cols}' are not plottable.")
+            messagebox.showinfo(title="PlotFrame", message=f"error columns '{x_col}', and '{y_cols}' are not plottable.")
             return
 
         plt.rcdefaults()
@@ -468,22 +519,26 @@ class PlotFrame(tkinter.Frame):
         self.plot_canvas.get_tk_widget().grid(**self.grid_args["plot_canvas"])
 
         if self.tv_orientation.get() == self.tv_orientation_h.get():
-            x_cols, y_cols = y_cols, x_cols
+            x_col, y_cols = y_cols, x_col
 
         # if self.tv_sort_style.get() == self.tv_sort_style_v.get():
         if self.tv_sort_direction.get() == self.tv_sort_dir_a.get():
             self.df.sort_values(by=y_cols, ascending=True, inplace=True)
         else:
-            self.df.sort_values(by=x_cols, ascending=False, inplace=True)
+            self.df.sort_values(by=x_col, ascending=False, inplace=True)
 
         dtypes = self.df.dtypes
-        x_type = dtypes[x_cols]
+        x_type = dtypes[x_col]
         y_type = dtypes[y_cols]
 
-        print(f"graphing a {x_type=} vs. {y_type=}\ncolumns: {x_cols}, {y_cols}")
+        print(f"graphing a {x_type=} vs. {y_type=}\ncolumns: {x_col}, {y_cols}")
 
-        assert isinstance(self.df, pd.DataFrame)
-        self.df.plot(kind="scatter", x=x_cols, y=y_cols, color="#ce5656", ax=self.plot_ax)
+        self.df.set_index(x_col)
+
+        # assert isinstance(self.df, pd.DataFrame)
+        self.df.plot(kind="scatter", y=y_cols, color="#ce5656", ax=self.plot_ax)
+        colours = rainbow_gradient(len(y_cols), rgb=False)
+        # self.df.plot(y=y_cols, color=list(colours), ax=self.plot_ax)
 
 
         # data_points, show_names = data_in
@@ -569,7 +624,7 @@ if __name__ == '__main__':
         ],
         auto_grid=True,
         btns_horizontal=False,
-        max_chart_elements=3
+        max_chart_elements=2
     )
 
     WIN.mainloop()
