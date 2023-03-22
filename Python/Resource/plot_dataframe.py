@@ -211,7 +211,7 @@ class PlotFrame(tkinter.Frame):
             ".": {r: ag_y, c: ag_x},
             "label_treeview_controller": {r: 0},
             "frame_treeview_controller": {r: 1, c: 0},
-            "frame_btns": {r: 2, ix: 5, iy: 5},
+            "frame_plot_control": {r: 2, ix: 5, iy: 5},
             "frame_radio_groups": {r: 3, c: 0},
             "plot_button": {r: 4, c: 0},
             "plot_frame": {r: 0, c: 1, rs: 4},
@@ -220,6 +220,10 @@ class PlotFrame(tkinter.Frame):
             "scrollbar_x_treeview_controller": {r: 3, s: "ew"},
             "treeview_treeview_controller": {r: 1, c: 0},
             "scrollbar_y_treeview_controller": {r: 1, c: 1, s: "ns"},
+
+            # frame_plot_control
+            "frame_btns": {r: 0, ix: 5, iy: 5},
+            "mc_plot_type": {r: 0, c: 1},
 
             # frame_radio_groups
             "frame_rb_group_1": {r: 0, c: 0},
@@ -250,6 +254,7 @@ class PlotFrame(tkinter.Frame):
             "scrollbar_x_treeview_controller",
             "treeview_treeview_controller",
             "scrollbar_y_treeview_controller",
+            "frame_plot_control",
             "frame_btns",
             "frame_radio_groups",
             "frame_rb_group_1",
@@ -262,10 +267,12 @@ class PlotFrame(tkinter.Frame):
             "rb_sda",
             "rb_sdd",
             "plot_button",
-            "plot_frame"
+            "plot_frame",
+            "mc_plot_type"
         }
 
-        self.frame_btns = tkinter.Frame(self, background="#4f4f4f")
+        self.frame_plot_control = tkinter.Frame(self, background="#6f4f4f")
+        self.frame_btns = tkinter.Frame(self.frame_plot_control, background="#4f4f4f")
         self.cb_lookup = {}
         self.selected_queue = deque(maxlen=self.max_chart_elements)
 
@@ -339,21 +346,39 @@ class PlotFrame(tkinter.Frame):
         self.rb_sdd = Radiobutton(self.frame_rb_group_3, variable=self.tv_sort_direction, value="descending",
                              textvariable=self.tv_sort_dir_d)
 
-        self.available_plot_types = pd.DataFrame({
-            'line': {'description': 'Line plot (default)'},
-            'bar': {'description': 'Vertical bar plot'},
-            'barh': {'description': 'Horizontal bar plot'},
-            'hist': {'description': 'Histogram'},
-            'box': {'description': 'Box plot'},
-            'kde': {'description': 'Kernel Density Estimation plot'},
-            'density': {'description': 'Same as "kde"'},
-            'area': {'description': 'Area plot'},
-            'scatter': {'description': 'Scatter plot'},
-            'hexbin': {'description': 'Hexbin plot'},
-            'pie': {'description': 'Pie chart'}
-        })
+        types = [
+            'line',
+            'bar',
+            'barh',
+            'hist',
+            'box',
+            'kde',
+            'density',
+            'area',
+            'scatter',
+            'hexbin',
+            'pie'
+        ]
+        self.available_plot_types = pd.DataFrame([
+            {'Plot': 'line', 'Description': 'Line plot (default)', "how": "together"},
+            {'Plot': 'bar', 'Description': 'Vertical bar plot', "how": "together"},
+            {'Plot': 'barh', 'Description': 'Horizontal bar plot', "how": "together"},
+            {'Plot': 'hist', 'Description': 'Histogram', "how": "together"},
+            {'Plot': 'box', 'Description': 'Box plot', "how": "together"},
+            {'Plot': 'kde', 'Description': 'Kernel Density Estimation plot', "how": "together"},
+            {'Plot': 'density', 'Description': 'Same as "kde"', "how": "together"},
+            {'Plot': 'area', 'Description': 'Area plot', "how": "together"},
+            {'Plot': 'scatter', 'Description': 'Scatter plot', "how": "individual"},
+            {'Plot': 'hexbin', 'Description': 'Hexbin plot', "how": "together"},
+            {'Plot': 'pie', 'Description': 'Pie chart', "how": "together"}
+        ])
 
-        # MultiComboBox(self.available_plot_types, viewable_column_names=)
+        self.mc_plot_type = MultiComboBox(
+            self.frame_plot_control,
+            self.available_plot_types,
+            viewable_column_names=["Plot", "Description"],
+            lock_result_col="Plot"
+        )
 
         plt.rcdefaults()
         self.plot_frame = tkinter.Frame(self)
@@ -487,8 +512,8 @@ class PlotFrame(tkinter.Frame):
             messagebox.showinfo(title="PlotFrame", message=f"Please choose at least 2 columns first.")
             return
 
-        x_cols, y_cols = self.selected_queue[0], self.selected_queue[1]
-        # x_col, y_cols = self.get_xs_ys()
+        # x_cols, y_cols = self.selected_queue[0], self.selected_queue[1]
+        x_col, y_cols = self.get_xs_ys()
 
         if not self.can_plot.get():
             messagebox.showinfo(title="PlotFrame", message=f"error columns '{x_col}', and '{y_cols}' are not plottable.")
@@ -533,12 +558,21 @@ class PlotFrame(tkinter.Frame):
 
         print(f"graphing a {x_type=} vs. {y_type=}\ncolumns: {x_col}, {y_cols}")
 
-        self.df.set_index(x_col)
-
         # assert isinstance(self.df, pd.DataFrame)
-        self.df.plot(kind="scatter", y=y_cols, color="#ce5656", ax=self.plot_ax)
-        colours = rainbow_gradient(len(y_cols), rgb=False)
-        # self.df.plot(y=y_cols, color=list(colours), ax=self.plot_ax)
+        plot_type = self.mc_plot_type.res_entry.get()
+        how = self.available_plot_types[self.available_plot_types["Plot"] == plot_type]["how"].values[0]
+        print(f"Plot type: {plot_type}, how = {how}")
+        # self.df.plot(kind="scatter", y=y_cols, color="#ce5656", ax=self.plot_ax)
+        colours = list(rainbow_gradient(len(y_cols), rgb=False))
+
+        match how:
+            case "individual":
+                for i, col in enumerate(y_cols):
+                    colour = colours[i]
+                    self.df.plot(kind=plot_type, x=x_col, y=col, color=colour, ax=self.plot_ax)
+            case _:
+                self.df.set_index(x_col)
+                self.df.plot(kind=plot_type, y=y_cols, color=colours, ax=self.plot_ax)
 
 
         # data_points, show_names = data_in
@@ -624,7 +658,7 @@ if __name__ == '__main__':
         ],
         auto_grid=True,
         btns_horizontal=False,
-        max_chart_elements=2
+        max_chart_elements=3
     )
 
     WIN.mainloop()

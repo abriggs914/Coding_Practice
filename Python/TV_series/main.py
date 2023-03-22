@@ -4,6 +4,14 @@ from tv_series import TVSeries
 from utility import pad_centre
 
 
+# could also add:
+#	Bitten
+#	The Flash
+#	Bones
+#	The Big Bang Theory
+#	Digimon
+
+
 the_office = TVSeries("The Office", {
     1 : 6,
     2 : 22,
@@ -97,11 +105,12 @@ brooklyn_9_9 = TVSeries("Brooklyn Nine-Nine", {
     4 : 22,
     5 : 22,
     6 : 18,
-    7 : 13},
+    7 : 13,
+    8 : 10},
     22,
     2013,
-    2020,
-    True,
+    2021,
+    False,
     "Comedy",
     "Netflix")
 
@@ -247,10 +256,11 @@ curb_your_enthusiasm = TVSeries("Curb your Enthusiasm", {
     7 : 10,
     8 : 10,
     9 : 10,
-    10 : 10},
+    10 : 10,
+    11 : 10},
     30,
     2000,
-    2020,
+    2021,
     True,
     "Comedy",
     "Crave -> HBO")
@@ -264,10 +274,12 @@ letterkenny = TVSeries("Letterkenny", {
     6 : 6,
     7 : 6,
     8 : 7,
-	9 : 7},
+	9 : 7,
+	10 : 6,
+	11 : 6},
     22,
     2016,
-    2021,
+    2022,
     True,
     "Comedy",
     "Crave")
@@ -276,7 +288,7 @@ prison_break = TVSeries("Prison Break", {
     1 : 22,
 	2 : 22,
 	3 : 13,
-	4 : 24,
+	4 : 22,
 	5 : 9},
 	42,
 	2005,
@@ -330,10 +342,11 @@ misfits = TVSeries("Misfits", {
 
 the_mandalorian = TVSeries("The Mandalorian", {
     1 : 8,
-    2 : 8},
+    2 : 8,
+    3 : 8},
     44,
     2019,
-    2021,
+    2023,
     True,
     "Drama, Action",
     "Disney+")
@@ -412,10 +425,11 @@ family_guy = TVSeries("Family Guy", {
 	17 : 20,
 	18 : 20,
 	19 : 20,
-	20 : 20},
+	20 : 20,
+	21 : 16},
 	24,
 	1999,
-	2022,
+	2023,
 	True,
 	"Comedy",
 	"Disney+")
@@ -435,11 +449,12 @@ its_always_sunny_in_philadelphia = TVSeries("It's Always Sunny in Philadelphia",
 	11 : 10,
 	12 : 10,
 	13 : 10,
-	14 : 10},
+	14 : 10,
+	15 : 8},
 	22,
 	2005,
-	2019,
-	False,
+	2023,
+	True,
 	"Comedy",
 	"Disney+")
 	
@@ -513,10 +528,11 @@ the_simpsons = TVSeries("The Simpsons", {
 	30: 23,
 	31: 22,
 	32: 22,
-	33: 22},
+	33: 22,
+	34: 22},
 	24,
 	1989,
-	2022,
+	2023,
 	True,
 	"Comedy",
 	"Disney+")
@@ -574,11 +590,12 @@ criminal_minds = TVSeries("Criminal Minds", {
 	12: 22,
 	13: 22,
 	14: 15,
-	15: 10},
+	15: 10,
+	16: 10},
 	44,
 	2005,
-	2020,
-	False,
+	2023,
+	True,
 	"Thriller / Drama",
 	"Disney+")
 	
@@ -740,10 +757,11 @@ sons_of_anarchy = TVSeries("Sons of Anarchy", {
 	
 the_great_north = TVSeries("The Great North", {
 	1: 11,
-	2: 22},
+	2: 22,
+	3: 22},
 	23,
 	2021,
-	2022,
+	2023,
 	True,
 	"Comedy / Cartoon",
 	"Disney+")
@@ -777,7 +795,7 @@ bless_the_harts = TVSeries("Bless the Harts", {
 	23,
 	2019,
 	2022,
-	True,
+	False,
 	"Comedy / Cartoon",
 	"Disney+")
 	
