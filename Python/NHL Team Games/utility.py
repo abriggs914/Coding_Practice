@@ -1,16 +1,16 @@
 import datetime
 import math
+import ctypes
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
 from random import random, choice, randint
 from operator import itemgetter
 from plyer import notification
-import datetime as dt
+import datetime
 import calendar
 import shutil
 import sys
 import os
-
 
 #######################################################################################################################
 #######################################################################################################################
@@ -18,23 +18,30 @@ import os
 
 VERSION = \
     """	
-        General Utility Functions
-        Version..............1.64
-        Date...........2022-12-05
-        Author.......Avery Briggs
+    General Utility Functions
+    Version..............1.69
+    Date...........2023-03-01
+    Author(s)....Avery Briggs
     """
 
 
+def VERSION_DETAILS():
+    return VERSION.lower().split("version")[0].strip()
+
+
 def VERSION_NUMBER():
-    return float(VERSION.split("\n")[2].split(".")[-2] + "." + VERSION.split("\n")[2].split(".")[-1])
+    return float(".".join(VERSION.lower().split("version")[-1].split("date")[0].split(".")[-2:]).strip())
 
 
 def VERSION_DATE():
-    return VERSION.split("\n")[3].split(".")[-1]
+    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(),
+                                      "%Y-%m-%d")
 
 
-def VERSION_AUTHOR():
-    return VERSION.split("\n")[4].split(".")[-1]
+def VERSION_AUTHORS():
+    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if
+            w.strip()]
+
 
 #######################################################################################################################
 #######################################################################################################################
@@ -71,14 +78,45 @@ def lenstr(x):
     return len(str(x))
 
 
-def minmax(a, b):
-    
+def minmax(a, b=None):
+    if b is None:
+        if isinstance(a, list) or isinstance(a, tuple):
+            p, q = None, None
+            for i, val in enumerate(a):
+                if p is None or q is None:
+                    p = val
+                    q = val
+                else:
+                    if val < p:
+                        p = val
+                    if val > q:
+                        q = val
+            return p, q
+        else:
+            raise ValueError(f"Parameter 'a' must be a list or tuple when parameter 'b' is None. Got '{a}'")
+
     if a <= b:
         return a, b
     return b, a
 
 
-def maxmin(a, b):
+def maxmin(a, b=None):
+    if b is None:
+        if isinstance(a, list) or isinstance(a, tuple):
+            p, q = None, None
+            for i, val in enumerate(a):
+                if p is None or q is None:
+                    p = val
+                    q = val
+                else:
+                    if val < p:
+                        p = val
+                    if val > q:
+                        q = val
+            return q, p
+        else:
+            raise ValueError(f"Parameter 'a' must be a list or tuple when parameter 'b' is None. Got '{a}'")
+
     if a < b:
         return b, a
     return a, b
@@ -406,46 +444,6 @@ def show(arr):
     print(res)
 
 
-def add_business_days(d, bd, holidays=None):
-    if holidays is None:
-        holidays = []
-    i = 0
-    t = dt.datetime(d.year, d.month, d.day)
-    # print("holidays: " + str(holidays))
-    while i < bd:
-        t = t + dt.timedelta(days=1)
-        # print("t: " + str(t) + ", (t not in holidays): " + str(t not in holidays))
-        if t.weekday() < 5 and t not in holidays:
-            i += 1
-    return t
-
-
-def business_days_between(d1, d2, holidays=None):
-    business_days = 0
-    if holidays is None:
-        holidays = []
-    date_1 = d1 if type(d1) == dt.datetime else dt.datetime.strptime(d1, "%d-%b-%y")
-    date_2 = d2 if type(d2) == dt.datetime else dt.datetime.strptime(d2, "%d-%b-%y")
-
-    date_1, date_2 = minmax(date_1, date_2)
-
-    diff = (date_2 - date_1).days
-    temp = date_1
-    for i in range(diff):
-        temp = date_1 + dt.timedelta(days=i + 1)
-        if temp.weekday() < 5 and temp not in holidays:  # Monday == 0, Sunday == 6
-            business_days += 1
-    i = 0
-    while temp.weekday() >= 5 or temp in holidays:
-        temp = temp + dt.timedelta(days=1)
-        if temp not in holidays:
-            business_days += 1
-            break
-    # print("temp: {temp}\ndate_2: {date_2}\ntemp < date_2: {td2}".format(temp=temp, date_2=date_2, td2=(temp < date_2)))
-    # print("business_days: " + str(business_days))
-    return business_days
-
-
 def intersection(a, b):
     res = []
     l = a if len(a) >= len(b) else b
@@ -481,18 +479,6 @@ def isnumber(value):
             if value.replace("-", "").replace(".", "").isnumeric():
                 return True
     return False
-
-
-def same_calendar_day(d1, d2):
-    if type(d1) != type(d2) and type(d1) != dt.datetime:
-        raise ValueError(
-            "Check types of d1: <{d1}> and d2: <{d2}>.\nBoth values must be datetime.datetime objects.".format(d1=d1,
-                                                                                                               d2=d2))
-    return all([
-        d1.year == d2.year,
-        d1.month == d2.month,
-        d1.day == d2.day
-    ])
 
 
 def pyth(a=None, b=None, c=None):
@@ -966,15 +952,15 @@ class LineSeg(Line):
 #     def __init__(self, x, y=None, w=None, h=None):
 #         self.x = x
 #         self.y = y
-#         self.width = w
-#         self.height = h
+#         self.width_canvas = w
+#         self.height_canvas = h
 #         if any([y is None, w is None, h is None]):
 #             if is_imported("pygame"):
 #                 if isinstance(x, pygame.Rect):
 #                     x = x.left
 #                     y = x.y
-#                     w = x.width
-#                     y = x.height
+#                     w = x.width_canvas
+#                     y = x.height_canvas
 #                 else:
 #                     raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
 #             else:
@@ -1005,8 +991,8 @@ class LineSeg(Line):
 #     def init(self, x, y, w, h):
 #         self.x = x
 #         self.y = y
-#         self.width = w
-#         self.height = h
+#         self.width_canvas = w
+#         self.height_canvas = h
 #         self.tupl = (x, y, w, h)
 #         self.top = y
 #         self.left = x
@@ -1030,7 +1016,7 @@ class LineSeg(Line):
 #         self.is_init = True
 #
 #     def __iter__(self):
-#         lst = [self.x, self. y, self.width, self.height]
+#         lst = [self.x, self. y, self.width_canvas, self.height_canvas]
 #         for val in lst:
 #             yield val
 #
@@ -1074,32 +1060,32 @@ class LineSeg(Line):
 #
 #     def translate(self, x, y):
 #         if not self.is_init:
-#             self.init(self.x, self.y, self.width, self.height)
+#             self.init(self.x, self.y, self.width_canvas, self.height_canvas)
 #         self.x += x
 #         self.y += y
-#         self.init(self.x, self.y, self.width, self.height)
+#         self.init(self.x, self.y, self.width_canvas, self.height_canvas)
 #
 #     def translated(self, x, y):
-#         r = Rect(self.x, self.y, self.width, self.height)
+#         r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
 #         r.translate(x, y)
 #         return r
 #
 #     def scale(self, w_factor, h_factor):
-#         self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
+#         self.init(self.x, self.y, self.width_canvas * w_factor, self.height_canvas * h_factor)
 #
 #     def scaled(self, w_factor, h_factor):
-#         r = Rect(self.x, self.y, self.width, self.height)
+#         r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
 #         r.scale(w_factor, h_factor)
 #         return r
 #
 #     def move(self, rect):
-#         self.init(rect.x, rect.y, rect.width, rect.height)
+#         self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
 #
 #     def resize(self, rect):
-#         self.init(rect.x, rect.y, rect.width, rect.height)
+#         self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
 #
 #     def __repr__(self):
-#         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width, self.height]))) + ")>"
+#         return "<rect(" + ", ".join(list(map(str, [self.x, self.y, self.width_canvas, self.height_canvas]))) + ")>"
 
 
 #            x2,y2              x1,y1 ---- x2,y2
@@ -1163,9 +1149,9 @@ class Rect2:
 
     def init(self, x, y, w, h, a):
         if w < 0:
-            raise ValueError("width value: \"{}\" must not be less than 0.".format(w))
+            raise ValueError("width_canvas value: \"{}\" must not be less than 0.".format(w))
         if h < 0:
-            raise ValueError("height value: \"{}\" must not be less than 0.".format(h))
+            raise ValueError("height_canvas value: \"{}\" must not be less than 0.".format(h))
         self.x = x
         self.y = y
         self.w = w
@@ -1332,8 +1318,8 @@ class Rect2:
     #             if isinstance(x, pygame.Rect):
     #                 x = x.left
     #                 y = x.y
-    #                 w = x.width
-    #                 y = x.height
+    #                 w = x.width_canvas
+    #                 y = x.height_canvas
     #             else:
     #                 raise ValueError("Cannot create a Rect object with <{}>.\nExpected a pygame.Rect object.".format(x))
     #         else:
@@ -1364,8 +1350,8 @@ class Rect2:
     # def init(self, x, y, w, h):
     #     self.x = x
     #     self.y = y
-    #     self.width = w
-    #     self.height = h
+    #     self.width_canvas = w
+    #     self.height_canvas = h
     #     self.tupl = (x, y, w, h)
     #     self.top = y
     #     self.left = x
@@ -1389,7 +1375,7 @@ class Rect2:
     #     self.is_init = True
     #
     # def __iter__(self):
-    #     lst = [self.x, self. y, self.width, self.height]
+    #     lst = [self.x, self. y, self.width_canvas, self.height_canvas]
     #     for val in lst:
     #         yield val
     #
@@ -1433,29 +1419,29 @@ class Rect2:
     #
     # def translate(self, x, y):
     #     if not self.is_init:
-    #         self.init(self.x, self.y, self.width, self.height)
+    #         self.init(self.x, self.y, self.width_canvas, self.height_canvas)
     #     self.x += x
     #     self.y += y
-    #     self.init(self.x, self.y, self.width, self.height)
+    #     self.init(self.x, self.y, self.width_canvas, self.height_canvas)
     #
     # def translated(self, x, y):
-    #     r = Rect(self.x, self.y, self.width, self.height)
+    #     r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
     #     r.translate(x, y)
     #     return r
     #
     # def scale(self, w_factor, h_factor):
-    #     self.init(self.x, self.y, self.width * w_factor, self.height * h_factor)
+    #     self.init(self.x, self.y, self.width_canvas * w_factor, self.height_canvas * h_factor)
     #
     # def scaled(self, w_factor, h_factor):
-    #     r = Rect(self.x, self.y, self.width, self.height)
+    #     r = Rect(self.x, self.y, self.width_canvas, self.height_canvas)
     #     r.scale(w_factor, h_factor)
     #     return r
     #
     # def move(self, rect):
-    #     self.init(rect.x, rect.y, rect.width, rect.height)
+    #     self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
     #
     # def resize(self, rect):
-    #     self.init(rect.x, rect.y, rect.width, rect.height)
+    #     self.init(rect.x, rect.y, rect.width_canvas, rect.height_canvas)
 
     def sq_rect(self):
         return self.x, self.y, self.w, self.h
@@ -1469,39 +1455,6 @@ class Rect2:
         return f"<rect: {x=}, {y=}, {w=}, {h=}, {a=}>"
 
 
-def date_suffix(day):
-    s_day = str(day)
-    if s_day[-1] == "1":
-        res = "st"
-        if len(s_day) > 1:
-            if s_day[-2] == "1":
-                res = "th"
-    elif s_day[-1] == "2":
-        res = "nd"
-        if len(s_day) > 1:
-            if s_day[-2] == "1":
-                res = "th"
-    elif s_day[-1] == "3":
-        res = "rd"
-        if len(s_day) > 1:
-            if s_day[-2] == "1":
-                res = "th"
-    else:
-        res = "th"
-    return res
-
-
-# Takes "2021-08-03" -> August 3rd, 2021
-def date_str_format(date_str):
-    date_obj = dt.datetime.fromisoformat(date_str)
-    suffix = date_suffix(date_obj.day)
-    res = dt.datetime.strftime(date_obj, "%B %d###, %Y").replace("###", suffix)
-    s_res = res.split(" ")
-    x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
-    res = " ".join([s_res[0], x, s_res[2]])
-    return res
-
-
 # Appends a counter '(1)' to a given file path to avoid overwriting.
 def next_available_file_name(path):
     counter = 0
@@ -1513,118 +1466,6 @@ def next_available_file_name(path):
         path = ".".join(spl[:-1]) + " ({}).".format(counter) + spl[-1]
     path.replace("/", "\\")
     return path
-
-
-# leap year calculation: https://www.timeanddate.com/date/leapyear.html
-def random_date(start_year=1, end_year=10000, start_m=None, start_d=None):
-    start_year, end_year = minmax(start_year, end_year)
-    start_year = clamp(1, start_year, end_year)
-    end_year = clamp(start_year + 1, end_year + 1, 10000)
-
-    r_y = list(range(start_year, end_year))
-    r_m = list(range(1, 13))
-    r_d = list(range(1, 32))
-    r_dsm = list(range(1, 31))
-    r_df = list(range(1, 29))
-    r_dfl = list(range(1, 30))
-    r_sm = [2, 4, 6, 9, 11]
-    y = choice(r_y)
-    m = choice(r_m)
-    if start_m in r_m:
-        m = start_m
-    if m in r_sm:
-        d = choice(r_dsm)
-        if start_d in r_dsm:
-            d = start_d
-    else:
-        d = choice(r_d)
-        if start_d in r_d:
-            d = start_d
-
-    if m == 2:
-        d = choice(r_df)
-        if start_d in r_df:
-            d = start_d
-        if y % 4 == 0 and (y % 100 != 0 or y % 400 == 0):
-            d = choice(r_dfl)
-            if start_d in r_dfl:
-                d = start_d
-
-    return "{}-{}-{}".format(("0000" + str(y))[-4:], ("00" + str(m))[-2:], ("00" + str(d))[-2:])
-
-
-def is_date(date_in, fmt="%Y-%m-%d"):
-    if isinstance(date_in, dt.datetime) or isinstance(date_in, dt.date):
-        return True
-    try:
-        d = dt.datetime.strptime(date_in, fmt)
-        return True
-    except TypeError:
-        print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
-    except ValueError:
-        print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
-    return False
-
-
-def first_of_day(date_in):
-    """Return the given date at 00:00 that morning."""
-    assert isinstance(date_in, dt.datetime)
-    return dt.datetime(date_in.year, date_in.month, date_in.day)
-
-
-def end_of_day(date_in):
-    """Return the given date at 23:59 that night."""
-    assert isinstance(date_in, dt.datetime)
-    return dt.datetime(date_in.year, date_in.month, date_in.day, 23, 59, 59, 9)
-
-
-def first_of_week(date_in):
-    """Return the date corresponding to the beginning of the week (Sunday) for a given date's calendar week."""
-    assert isinstance(date_in, dt.datetime)
-    print("date_in:", date_in)
-    # return dt.datetime.fromisoformat("2022-02-02")
-    wd = 0 if date_in.isocalendar()[2] == 7 else date_in.isocalendar()[2]
-    return date_in + dt.timedelta(days=-wd)
-    # return dt.datetime.fromisocalendar(date_in.isocalendar()[0], date_in.isocalendar()[1], 1) + dt.timedelta(hours=date_in.hour, minutes=date_in.minute, seconds=date_in.second)
-    # return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
-
-
-def end_of_week(date_in):
-    """Return the date corresponding to the ending of the week (Saturday) for a given date's calendar week."""
-    assert isinstance(date_in, dt.datetime)
-    print("date_in:", date_in)
-    # return dt.datetime.fromisoformat("2022-02-02")
-    wd = 6 - (0 if date_in.isocalendar()[2] == 7 else date_in.isocalendar()[2])
-    return date_in + dt.timedelta(days=wd)
-    # return dt.datetime.fromisocalendar(date_in.isocalendar()[0], date_in.isocalendar()[1], 1) + dt.timedelta(hours=date_in.hour, minutes=date_in.minute, seconds=date_in.second)
-    # return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
-
-
-def first_of_month(date_in):
-    """Return the date corresponding to the beginning of the month for a given date."""
-    assert isinstance(date_in, dt.datetime)
-    return dt.datetime(date_in.year, date_in.month, 1, date_in.hour, date_in.minute, date_in.second)
-
-
-def end_of_month(date_in):
-    """Return the date corresponding to the ending of the month for a given date."""
-    assert isinstance(date_in, dt.datetime), "Parameter date_in needs to be a datetime.datetime object."
-    y, m = date_in.year, date_in.month
-    num_days = calendar.monthrange(y, m)[-1]
-    return dt.datetime(y, m, num_days)
-
-
-def datetime_is_tz_aware(datetime_in):
-    """Return weather or not a datetime object is aware of timezones or not.
-    https://stackoverflow.com/questions/5802108/how-to-check-if-a-datetime-object-is-localized-with-pytz#:~:text=From%20datetime%20docs%3A%201%20a%20datetime%20object%20d,d.tzinfo%20is%20None%20or%20d.tzinfo.utcoffset%20%28d%29%20is%20None"""
-    assert isinstance(datetime_in, datetime.datetime), "Error param 'datetime_in' must be an instance of a datetime."
-    return datetime_in.tzinfo is not None and datetime_in.tzinfo.utcoffset(datetime_in) is not None
-
-
-def hours_diff(d1, d2):
-    assert isinstance(d1, dt.datetime), f"Parameter d1: \"{d1}\" needs to be a datetime.datetime instance."
-    assert isinstance(d2, dt.datetime), f"Parameter d2: \"{d2}\" needs to be a datetime.datetime instance."
-    return ((d2 - d1).days * 24) + ((d2 - d1).seconds / (60 * 60))
 
 
 def alert_colour(x, n):
@@ -1671,23 +1512,24 @@ def rect2_to_tkinter(rect):
 
 def tkinter_to_rect2(rect):
     """Tlinter (left, top, right, bottom) -> Rect2 (left, top, w, h)"""
-    assert isinstance(rect, list) or isinstance(rect, tuple), f"Error value is not a valid list or tuple representing a tkinter rect., got <{type(rect)}>, v=<{rect}>"
+    assert isinstance(rect, list) or isinstance(rect,
+                                                tuple), f"Error value is not a valid list or tuple representing a tkinter rect., got <{type(rect)}>, v=<{rect}>"
     assert len(rect) == 4, "This list is too long"
     x1, y1, x2, y2 = rect
     return Rect2(x1, y1, x2 - x1, y2 - y1)
 
 
 def kb_as_percent(kb, gb=2):
-    return ("%.3f" % (((100 * kb / (1024**2)) / gb))) + " %"
+    return ("%.3f" % (((100 * kb / (1024 ** 2)) / gb))) + " %"
 
 
 def calc_bounds(center, width, height=None):
-    """Given a center (x, y) and width and heights, calculate the counding box that keeps these dimensions centered."""
+    """Given a center (x, y) and width_canvas and heights, calculate the counding box that keeps these dimensions centered."""
     assert (isinstance(center, list) or isinstance(center, tuple)) and len(center) == 2 and all([isnumber(x) for x in
                                                                                                  center]), f"Error param 'center' must be a tuple or list representing center coordinates (x, y). Got: {center}"
-    assert isnumber(width), f"Error param 'width' must be a number. Got: {width}"
+    assert isnumber(width), f"Error param 'width_canvas' must be a number. Got: {width}"
     if height is not None:
-        assert isnumber(height), f"Error param 'height' if not omitted, must be a number. Got: {height}"
+        assert isnumber(height), f"Error param 'height_canvas' if not omitted, must be a number. Got: {height}"
     w = width / 2
     h = w if height is None else (height / 2)
     return (
@@ -1698,7 +1540,7 @@ def calc_bounds(center, width, height=None):
     )
 
 
-def left_join (a_, b_):
+def left_join(a_, b_):
     assert isinstance(a_, set), "Error, param 'a_' must be a set."
     assert isinstance(b_, set), "Error, param 'a_' must be a set."
     return a_.symmetric_difference(b_).union(a_).symmetric_difference(b_).union(a_)
@@ -1800,8 +1642,8 @@ def grid_cells(
     assert y_pad > -1, f"Error, y padding cannot be negative. Got {y_pad=}"
     print(f"{t_width=}, {t_height=}, {n_rows=}, {n_cols=}, {x_pad=}, {y_pad=}, {r_type=}")
 
-    tw = (t_width - ((n_cols + 0) * x_pad)) / (n_cols + 0)  # tile width
-    th = (t_height - ((n_rows + 0) * y_pad)) / (n_rows + 0)  # tile height
+    tw = (t_width - ((n_cols + 0) * x_pad)) / (n_cols + 0)  # tile width_canvas
+    th = (t_height - ((n_rows + 0) * y_pad)) / (n_rows + 0)  # tile height_canvas
 
     tiles = []
     if r_type == dict:
@@ -1851,8 +1693,10 @@ def grid_cells(
 
 def clamp_rect(rect_bounds, out_bounds, maintain_inner_dims=False):
     """Calculate the 'clamped' rectangle within the outer bounds."""
-    assert isinstance(rect_bounds, tuple) or isinstance(rect_bounds, list) or isinstance(rect_bounds, Rect2), f"Error, param 'rect_bounds; needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got{rect_bounds}"
-    assert isinstance(out_bounds, tuple) or isinstance(out_bounds, list) or isinstance(out_bounds, Rect2), f"Error, param 'out_bounds' needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got {out_bounds}"
+    assert isinstance(rect_bounds, tuple) or isinstance(rect_bounds, list) or isinstance(rect_bounds,
+                                                                                         Rect2), f"Error, param 'rect_bounds; needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got{rect_bounds}"
+    assert isinstance(out_bounds, tuple) or isinstance(out_bounds, list) or isinstance(out_bounds,
+                                                                                       Rect2), f"Error, param 'out_bounds' needs to be a list or tuple of length 10, or an instance of a Rect2 object. Got {out_bounds}"
 
     if isinstance(rect_bounds, tuple) or isinstance(rect_bounds, list):
         assert len(rect_bounds) == 4, f"Error, list or tuple needs to be length 4. Got {rect_bounds}"
@@ -1926,21 +1770,25 @@ def restart_program():
 
     """
     python = sys.executable
-    os.execl(python, python, * sys.argv)
+    os.execl(python, python, *sys.argv)
 
 
 def alpha_ize(number_in=0, capitalize=False):
-    assert isinstance(number_in, int) and 0 <= number_in <= 25, "Error, param 'number_in' must be an integer between 0 and 25."
+    assert isinstance(number_in,
+                      int) and 0 <= number_in <= 25, "Error, param 'number_in' must be an integer between 0 and 25."
     c = chr(number_in + 97)
     c = c if not capitalize else c.upper()
     return c
 
 
-def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=False, shift_pad_0_on_number=True, capital_alpha=True, pad_char="0"):
+def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=False, shift_pad_0_on_number=True,
+              capital_alpha=True, pad_char="0"):
     assert isinstance(prefix, str), f"Error, param 'prefix' must be an in stance of a string. Got '{prefix}'"
     assert isinstance(suffix, str), f"Error, param 'suffix' must be an in stance of a string. Got '{suffix}'"
-    assert isinstance(n_digits, int) and n_digits > 0, f"Error, param 'n_digits' must be a number and be greater than 0, Got '{n_digits}'"
-    assert all([isinstance(param, bool) for param in [numbers_instead, pad_0, shift_pad_0_on_number, capital_alpha]]), f"Error, 'params numbers_instead', 'pad_0', 'shift_pad_0_on_number', 'capital_alpha' must be boolean values.\nGot: {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}"
+    assert isinstance(n_digits,
+                      int) and n_digits > 0, f"Error, param 'n_digits' must be a number and be greater than 0, Got '{n_digits}'"
+    assert all([isinstance(param, bool) for param in [numbers_instead, pad_0, shift_pad_0_on_number,
+                                                      capital_alpha]]), f"Error, 'params numbers_instead', 'pad_0', 'shift_pad_0_on_number', 'capital_alpha' must be boolean values.\nGot: {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}"
     # print(f"A {n_digits=}, {prefix=}, {suffix=}, {numbers_instead=}, {pad_0=}, {shift_pad_0_on_number=}, {capital_alpha=}")
     pad_0 = pad_0 or ((not pad_0) and numbers_instead and shift_pad_0_on_number)
     pad_char = "0" if pad_0 and not pad_char else pad_char
@@ -1972,7 +1820,7 @@ def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=Fal
         elif len(val) < n_digits and pad_0:
             val = val.rjust(n_digits, pad_char)
         # else:
-            # print(f"VAL='{val}'")
+        # print(f"VAL='{val}'")
         yield f"{prefix}{val}{suffix}"
 
 
@@ -1981,54 +1829,53 @@ def sort_2_lists(list_1, list_2):
     return [list(x) for x in zip(*sorted(zip(list_1, list_2), key=itemgetter(0)))]
 
 
-def replace_timestamp_datetime(str_in, col_in_question=None):
-    """Take a dict.__repr__ before calling eval, and replace all instances of Timestamp("YYYY-MM-DD HH:MM:SS")
-     with calls to datetime.datetime.strptime with appropriate parsing sequence.
-
-     Usage:
-        s = "{'DateCreated': Timestamp('2022-11-15 16:30:00'), 'Name': 'NAME HERE'}"
-        s = eval(replace_timestamp_datetime(s, col_in_question='DateCreated'))  # =>
-     """
-    result = ""
-    split_val = ", '"
-    spl = str_in.split(split_val)
-    r_in = "datetime.datetime.strptime"
-    r_out = "Timestamp"
-    if col_in_question is None:
-        col_in_question = []
-    if not isinstance(col_in_question, list) and not isinstance(col_in_question, tuple):
-        col_in_question = [col_in_question]
-    # print(f"{col_in_question=}")
-    for s in spl:
-        # print_by_line([(s.replace("{'", "").startswith(col), col, s) for col in col_in_question])
-        if not col_in_question or any([s.replace("{'", "").startswith(col) for col in col_in_question]):
-            end = s[-22:-1] + ", '%Y-%m-%d %H:%M:%S')"
-            ss = s.replace(r_out, r_in)
-            ss = ss[:-22] + end
-            result += ss
-        else:
-            result += s
-        result += split_val
-    result = result[:len(result) - len(split_val)]
-    # print(f"result: '{result}'")
-    return result
-
-
 def margins(t_width, n_btns, btn_width):
-    """Calculate margins given a total width, button_width and number of buttons.
+    """Calculate margins given a total width_canvas, button_width and number of buttons.
     Usage:
 
-        # Want to place 3 buttons of width 100, in a total width of 600
+        # Want to place 3 buttons of width_canvas 100, in a total width_canvas of 600
         m = margins(600, 3, 100)
     """
-    assert (isinstance(t_width, int) or isinstance(t_width, float)) and t_width > 0, "Error, param t_width must be a number greater than 0."
-    assert (isinstance(n_btns, int) or isinstance(n_btns, float)) and n_btns > 0, "Error, param n_btns must be a number greater than 0."
-    assert (isinstance(btn_width, int) or isinstance(btn_width, float)) and (btn_width * n_btns) <= t_width, "Error, param btn_width must be a number greater than 0."
+    assert (isinstance(t_width, int) or isinstance(t_width,
+                                                   float)) and t_width > 0, "Error, param t_width must be a number greater than 0."
+    assert (isinstance(n_btns, int) or isinstance(n_btns,
+                                                  float)) and n_btns > 0, "Error, param n_btns must be a number greater than 0."
+    assert (isinstance(btn_width, int) or isinstance(btn_width, float)) and (
+            btn_width * n_btns) <= t_width, "Error, param btn_width must be a number greater than 0."
     mw = (t_width - (n_btns * btn_width)) / (n_btns + 1)
     return flatten([[
         i * (mw + btn_width),
         (i * btn_width) + ((i + 1) * mw)
     ] for i in range(n_btns + 1)])
+
+
+def get_windows_user(EXTENDED_NAME_FORMAT: int = 3):
+    """Get detailed information about the windows user.
+
+    print("NameUnknown            : ", get_data(0))  -> ''
+    print("NameFullyQualifiedDN   : ", get_data(1))  -> CN=Avery Briggs,OU=SBSUsers,OU=Users,OU=MyBusiness,DC=BWSDOMAIN,DC=local
+    print("NameSamCompatible      : ", get_data(2))  -> BWSDOMAIN\abriggs
+    print("NameDisplay            : ", get_data(3))  -> Avery Briggs
+    print("NameUniqueId           : ", get_data(6))  -> {c74b0433-85cd-462d-903e-90f3a811f528}
+    print("NameCanonical          : ", get_data(7))  -> BWSDOMAIN.local/MyBusiness/Users/SBSUsers/Avery Briggs
+    print("NameUserPrincipal      : ", get_data(8))  -> ABriggs@BWSDOMAIN.local
+    print("NameCanonicalEx        : ", get_data(9))  -> BWSDOMAIN.local/MyBusiness/Users/SBSUsers
+                                                        Avery Briggs
+    print("NameServicePrincipal   : ", get_data(10)) -> ''
+    print("NameDnsDomain          : ", get_data(12)) -> BWSDOMAIN.LOCAL\abriggs
+
+    https://stackoverflow.com/questions/21766954/how-to-get-windows-users-full-name-in-python
+    """
+
+    GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
+    data = EXTENDED_NAME_FORMAT
+
+    size = ctypes.pointer(ctypes.c_ulong(0))
+    GetUserNameEx(data, None, size)
+
+    nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
+    GetUserNameEx(data, nameBuffer, size)
+    return nameBuffer.value
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

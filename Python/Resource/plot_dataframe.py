@@ -374,7 +374,7 @@ class PlotFrame(tkinter.Frame):
         self.cb_date_groups\
             = radio_factory(
                 self.frame_date_options,
-                buttons=["Annually", "Monthly", "Weekly", "Daily"],
+                buttons=["None", "Annually", "Monthly", "Weekly", "Daily"],
                 kwargs_buttons={"width": 12}
         )
 
@@ -620,7 +620,8 @@ class PlotFrame(tkinter.Frame):
         colours = list(rainbow_gradient(len(y_cols), rgb=False))
 
         is_date = self.col_data[x_col]["is_date"]
-        # annually, monthly, weekly, daily
+        date_group = self.tv_date_groups.get()
+        # None, annually, monthly, weekly, daily
 
         match how:
             case "individual":
