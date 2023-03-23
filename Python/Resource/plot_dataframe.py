@@ -1,3 +1,4 @@
+import datetime
 import tkinter
 
 import pandas as pd
@@ -190,6 +191,25 @@ class PlotFrame(tkinter.Frame):
                 "plottable": (self.col_data[k]["count_unique"] < self.max_plottable_categories) or self.col_data[k]["is_numeric"] or self.col_data[k]["is_date"]
             })
 
+        for k in self.col_data:
+            if self.col_data[k]["is_date"]:
+                first_day = self.df[k].min()
+                last_day = self.df[k].max()
+                td = last_day - first_day
+                complete_year = td >= datetime.timedelta(days=365)
+                complete_month = td >= datetime.timedelta(days=28)
+                complete_week = td >= datetime.timedelta(days=7)
+                complete_day = td >= datetime.timedelta(days=1)
+                print(f"{k=}, {complete_year}, {complete_month}, {complete_week}, {complete_day}")
+                self.col_data[k].update({
+                    "first_d": first_day,
+                    "last_d": last_day,
+                    "comp_y": complete_year,
+                    "comp_m": complete_month,
+                    "comp_w": complete_week,
+                    "comp_d": complete_day
+                })
+
         print(f"{self.col_data}")
         print(f"{dict_print(self.col_data, 'Col_data')}")
 
@@ -212,8 +232,9 @@ class PlotFrame(tkinter.Frame):
             "label_treeview_controller": {r: 0},
             "frame_treeview_controller": {r: 1, c: 0},
             "frame_plot_control": {r: 2, ix: 5, iy: 5},
-            "frame_radio_groups": {r: 3, c: 0},
-            "plot_button": {r: 4, c: 0},
+            "frame_radio_groups": {r: 3, c: 0, ix: 5, iy: 5},
+            "frame_date_options": {r: 4, c: 0},
+            "plot_button": {r: 5, c: 0},
             "plot_frame": {r: 0, c: 1, rs: 4},
 
             # frame_treeview_controller
@@ -268,7 +289,8 @@ class PlotFrame(tkinter.Frame):
             "rb_sdd",
             "plot_button",
             "plot_frame",
-            "mc_plot_type"
+            "mc_plot_type",
+            "frame_date_options"
         }
 
         self.frame_plot_control = tkinter.Frame(self, background="#6f4f4f")
@@ -346,6 +368,31 @@ class PlotFrame(tkinter.Frame):
         self.rb_sdd = Radiobutton(self.frame_rb_group_3, variable=self.tv_sort_direction, value="descending",
                              textvariable=self.tv_sort_dir_d)
 
+        self.frame_date_options = tkinter.Frame(self, background="#4f4f6f")
+        self.tv_date_groups,\
+        self.tv_cb_date_groups, \
+        self.cb_date_groups\
+            = radio_factory(
+                self.frame_date_options,
+                buttons=["Annually", "Monthly", "Weekly", "Daily"],
+                kwargs_buttons={"width": 12}
+        )
+
+        print(f"\n==\n{self.tv_date_groups.get()=}\n{[tv.get() for tv in self.tv_cb_date_groups]=}\n{self.cb_date_groups=}\n==\n")
+
+        for i, cb in enumerate(self.cb_date_groups):
+            tv = self.tv_cb_date_groups[i]
+            # text = self.viewable_column_names[i]
+            text = cb["text"]
+            cb.configure(command=(lambda text=text, cb=cb, tv=tv: self.click_update_date_group(text, cb, tv)))
+            # self.cb_lookup.update({
+            #     # f"var_{tv_cb}": tv_cb,
+            #     f"var_{text}": tv
+            #     # ,
+            #     # f"text_{tv_cb}": text,
+            #     # f"callback_{text}": cb
+            # })
+
         types = [
             'line',
             'bar',
@@ -364,7 +411,7 @@ class PlotFrame(tkinter.Frame):
             {'Plot': 'bar', 'Description': 'Vertical bar plot', "how": "together"},
             {'Plot': 'barh', 'Description': 'Horizontal bar plot', "how": "together"},
             {'Plot': 'hist', 'Description': 'Histogram', "how": "together"},
-            {'Plot': 'box', 'Description': 'Box plot', "how": "together"},
+            {'Plot': 'box', 'Description': 'Box plot', "how": "one-colour"},
             {'Plot': 'kde', 'Description': 'Kernel Density Estimation plot', "how": "together"},
             {'Plot': 'density', 'Description': 'Same as "kde"', "how": "together"},
             {'Plot': 'area', 'Description': 'Area plot', "how": "together"},
@@ -410,7 +457,7 @@ class PlotFrame(tkinter.Frame):
                 pop_var.set(False)
             self.selected_queue.append(text)
 
-        if len(self.selected_queue) != self.max_chart_elements:
+        if len(self.selected_queue) < 2:
             self.can_plot.set(False)
         else:
             x_col, y_col = self.selected_queue[0], self.selected_queue[1]
@@ -468,6 +515,10 @@ class PlotFrame(tkinter.Frame):
     #
     #         print(f"QUEUE: {self.selected_queue}")
 
+    def click_update_date_group(self, text, cb, tv):
+        print(f"click_update_date_group")
+        print(f"{text=}, {cb=}, {tv=}, {self.tv_date_groups.get()=}")
+
     def get_xs_ys(self, place_holders=2):
 
         place_holders = clamp(0, place_holders, self.max_chart_elements)
@@ -518,6 +569,8 @@ class PlotFrame(tkinter.Frame):
         if not self.can_plot.get():
             messagebox.showinfo(title="PlotFrame", message=f"error columns '{x_col}', and '{y_cols}' are not plottable.")
             return
+        
+        x_col = x_col[0]
 
         plt.rcdefaults()
         self.plot_fig, self.plot_ax = plt.subplots()
@@ -556,20 +609,27 @@ class PlotFrame(tkinter.Frame):
         x_type = dtypes[x_col]
         y_type = dtypes[y_cols]
 
-        print(f"graphing a {x_type=} vs. {y_type=}\ncolumns: {x_col}, {y_cols}")
+        print(f"\n\t===\ngraphing a {x_type=} vs. {y_type=}\ncolumns: {x_col}, {y_cols}")
 
         # assert isinstance(self.df, pd.DataFrame)
         plot_type = self.mc_plot_type.res_entry.get()
+        print(f"Plot type: {plot_type}")
         how = self.available_plot_types[self.available_plot_types["Plot"] == plot_type]["how"].values[0]
-        print(f"Plot type: {plot_type}, how = {how}")
+        print(f"how = {how}")
         # self.df.plot(kind="scatter", y=y_cols, color="#ce5656", ax=self.plot_ax)
         colours = list(rainbow_gradient(len(y_cols), rgb=False))
+
+        is_date = self.col_data[x_col]["is_date"]
+        # annually, monthly, weekly, daily
 
         match how:
             case "individual":
                 for i, col in enumerate(y_cols):
                     colour = colours[i]
                     self.df.plot(kind=plot_type, x=x_col, y=col, color=colour, ax=self.plot_ax)
+            case "one-colour":
+                self.df.set_index(x_col)
+                self.df.plot(kind=plot_type, y=y_cols, color=colours[0], ax=self.plot_ax)
             case _:
                 self.df.set_index(x_col)
                 self.df.plot(kind=plot_type, y=y_cols, color=colours, ax=self.plot_ax)
@@ -628,6 +688,8 @@ class PlotFrame(tkinter.Frame):
         # self.frame_btns.grid()
         bpr = self.btns_per_row
         cols = len(self.viewable_column_names) // bpr
+
+        # possible plotting columns
         for i, cb in enumerate(self.check_boxes):
             ri = i // bpr
             ci = i % bpr
@@ -635,6 +697,16 @@ class PlotFrame(tkinter.Frame):
                 ri, ci = ci, ri
 
             cb.grid(**{r: ri, c: ci})
+
+        # possible date group options
+        for i, cb in enumerate(self.cb_date_groups):
+            ri = i // bpr
+            ci = i % bpr
+            if not self.btns_horizontal:
+                ri, ci = ci, ri
+
+            cb.grid(**{r: ri, c: ci})
+            cb.update()
 
 
 if __name__ == '__main__':
