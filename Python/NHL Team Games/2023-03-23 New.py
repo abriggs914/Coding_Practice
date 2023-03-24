@@ -1,6 +1,77 @@
 from itertools import combinations
 from utility import *
 
+metropolitan = [
+    "Carolina",
+    "New Jersey",
+    "NY Rangers",
+    "Washington",
+    "NY Islanders",
+    "Pittsburgh",
+    "Philadelphia",
+    "Columbus"
+]
+
+atlantic = [
+    "Boston",
+    "Toronto",
+    "Tampa Bay",
+    "Buffalo",
+    "Florida",
+    "Detroit",
+    "Ottawa",
+    "Montreal"
+]
+
+central = [
+    "Winnipeg",
+    "Dallas",
+    "Minnesota",
+    "Colorado",
+    "St. Louis",
+    "Nashville",
+    "Arizona",
+    "Chicago"
+]
+
+pacific = [
+    "Vegas",
+    "Seattle",
+    "Los Angeles",
+    "Edmonton",
+    "Calgary",
+    "Vancouver",
+    "San Jose",
+    "Anaheim"
+]
+
+league = {
+    "eastern": {
+        "metropolitan": metropolitan,
+        "atlantic": atlantic
+    },
+    "western": {
+        "central": central,
+        "pacific": pacific
+    }
+}
+
+team_lookup = {}
+for conf, division_data in league.items():
+    for div, team_list in division_data.items():
+        for team in team_list:
+            team_lookup[team] = {"conf": conf, "div": div}
+
+conferences = {k: v for k, v in league.items()}
+divisions = flatten([[div for div in league[conf]] for conf in conferences])
+
+rest_conf = lambda conf_in: [conf for conf in conferences if conf != conf_in]
+rest_divs = lambda div_in: [div for div in divisions if div != div_in]
+rest_teams = lambda team_in: [team for team in team_lookup if team_in != team]
+rest_teams_conf = lambda team_in: [team for team in team_lookup if
+                                   team_in != team and team_lookup[team]["conf"] == team_lookup[team_in]["conf"]]
+rest_teams_div = lambda team_in: [team for team in team_lookup if
+                                  team_in != team and team_lookup[team]["div"] == team_lookup[team_in]["div"]]
 
 teams = [
     "A",
@@ -45,14 +116,60 @@ pts_reg_w = 2
 pts_ot_w = 2
 pts_reg_l = 0
 pts_ot_l = 1
+n_game_per_division_rivals = 4
+n_game_per_res_of_league = 2
+n_games_per_rest_divs = 2
 
-n_games = len(teams) - 1
+# n_games = len(teams) - 1
+n_games = 82
 max_points_per_game = max(
     pts_reg_w,
     pts_ot_w,
     pts_reg_l,
     pts_ot_l
 )
+
+
+def gen_schedule(league_breakdown):
+    # team_lookup = {team: {"conf": conf, "div": league_breakdown[conf]} for conf in conferences for team in teams}
+
+    print(f"{conferences=}")
+    print(f"{divisions=}")
+    schedule = {}
+    schedule_p = set()
+    for i, team in enumerate(team_lookup):
+        conf = team_lookup[team]["conf"]
+        div = team_lookup[team]["div"]
+
+        rest_div_teams = rest_teams_div(team)
+        rest_league_teams = rest_teams(team)
+        rest_league_divs = rest_divs(team)
+        # schedule[team] =
+        for j in range(n_game_per_division_rivals):
+            for div_rival in rest_div_teams:
+                # if (div_rival, team) not in schedule_p:
+                schedule_p.add((team, f"{div_rival}||A||{j + 1}"))
+
+        for j in range(n_game_per_res_of_league):
+            for div_rival in rest_league_teams:
+                # if (div_rival, team) not in schedule_p:
+                schedule_p.add((team, f"{div_rival}||B||{j + 1}"))
+
+        for j in range(n_games_per_rest_divs):
+            for league_rival in rest_league_divs:
+                rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == league_rival])
+                # if (div_rival, team) not in schedule_p:
+                schedule_p.add((team, f"{rnd_team}||A||{j + 1}"))
+
+        # print(f"{team=}, {conf=}, {div=}")
+        # print(f"{rest_conf(conf)=}")
+        # print(f"{rest_teams_conf(team)=}")
+        # print(f"{rest_divs(div)=}")
+        # print(f"{rest_teams_div(team)=}")
+    return schedule_p
+
+teams = list(team_lookup)
+all_games_schedule = gen_schedule(league)
 
 season_standings = {
     team: {t: "" if t != team else "-" for t in ["#", *teams]}
@@ -75,14 +192,17 @@ for i, team in enumerate(teams):
 
 for i, match_up in enumerate(all_games_schedule):
     team_a, team_b = match_up
+    team_b = team_b.split("||")[0]
     a_wins = randint(0, 1)
     in_ot = int(randint(0, 3) == 0)
     # season_standings[team_b][team_a] = 0 if a_wins else 1
     # season_standings[team_b]["GP"] += 1
 
     # print(f"Aold: {season_standings[team_a]['PTS']}, Bold: {season_standings[team_b]['PTS']}")
-    a_pts = season_standings[team_a]["PTS"] + (pts_reg_w if a_wins and not in_ot else (pts_ot_w if a_wins and in_ot else (pts_reg_l if not a_wins and not in_ot else pts_ot_l)))
-    b_pts = season_standings[team_b]["PTS"] + (pts_reg_l if a_wins and not in_ot else (pts_ot_l if a_wins and in_ot else (pts_reg_w if not a_wins and not in_ot else pts_ot_w)))
+    a_pts = season_standings[team_a]["PTS"] + (pts_reg_w if a_wins and not in_ot else (
+        pts_ot_w if a_wins and in_ot else (pts_reg_l if not a_wins and not in_ot else pts_ot_l)))
+    b_pts = season_standings[team_b]["PTS"] + (pts_reg_l if a_wins and not in_ot else (
+        pts_ot_l if a_wins and in_ot else (pts_reg_w if not a_wins and not in_ot else pts_ot_w)))
     # print(f"awins: {a_wins}, in_ot: {in_ot}")
     # print(f"Anew: {a_pts}, Bnew: {b_pts}")
 
