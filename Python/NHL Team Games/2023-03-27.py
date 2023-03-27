@@ -55,7 +55,6 @@ def team_acr(team):
         return atlantic[team]["acr"]
     if team in pacific:
         return pacific[team]["acr"]
-    print(f"else team: {team}")
 
 
 league = {
@@ -82,19 +81,6 @@ for conf, division_data in league.items():
 conferences = {k: v for k, v in league.items()}
 divisions = flatten([[div for div in league[conf]] for conf in conferences])
 
-rest_conf = lambda conf_in: [conf for conf in conferences if conf != conf_in]
-rest_divs = lambda div_in: [div for div in divisions if div != div_in]
-rest_teams = lambda team_in: [team for team in team_lookup if team_in != team]
-rest_teams_conf = lambda team_in: [team for team in team_lookup if
-                                   team_in != team and team_lookup[team]["conf"] == team_lookup[team_in]["conf"]]
-rest_teams_div = lambda team_in: [team for team in team_lookup if
-                                  team_in != team and team_lookup[team]["div"] == team_lookup[team_in]["div"]]
-rest_teams_out_div = lambda team_in: [team for team in team_lookup if
-                                  team_in != team and team_lookup[team]["div"] != team_lookup[team_in]["div"]]
-teams_in_div = lambda div_in: [team for team in team_lookup if
-                                  team_lookup[team]["div"] == div_in]
-teams_in_conf = lambda conf_in: [team for team in team_lookup if
-                                  team_lookup[team]["conf"] == conf_in]
 
 teams = [
     "A",
@@ -152,6 +138,61 @@ max_points_per_game = max(
     pts_ot_l
 )
 
+#
+# def gen_schedule_old(league_breakdown):
+#     # team_lookup = {team: {"conf": conf, "div": league_breakdown[conf]} for conf in conferences for team in teams}
+#
+#     print(f"{conferences=}")
+#     print(f"{divisions=}")
+#     schedule = {}
+#     schedule_c = {t: 0 for t in team_lookup}
+#     schedule_p = list()
+#     for i, team in enumerate(team_lookup):
+#         conf = team_lookup[team]["conf"]
+#         div = team_lookup[team]["div"]
+#
+#         rest_div_teams = rest_teams_div(team)
+#         # rest_league_teams = rest_teams(team)
+#         rest_league_teams = rest_teams_out_div(team)
+#         rest_league_divs = rest_divs(div)
+#         print(f"{team=}")
+#         print(f"{rest_league_divs=}")
+#         # schedule[team] =
+#         for j in range(n_game_per_division_rivals):
+#             for div_rival in rest_div_teams:
+#                 # if (div_rival, team) not in schedule_p:
+#                 schedule_c[team] += 1
+#                 schedule_c[div_rival] += 1
+#                 schedule_p.append((team, f"{div_rival}||A||{j + 1}"))
+#
+#         for j in range(n_game_per_res_of_league):
+#             for div_rival in rest_league_teams:
+#                 # if (div_rival, team) not in schedule_p:
+#                 schedule_c[team] += 1
+#                 schedule_c[div_rival] += 1
+#                 schedule_p.append((team, f"{div_rival}||B||{j + 1}"))
+#
+#         for j in range(n_games_per_rest_divs):
+#             for div_rival in rest_league_divs:
+#                 rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == div_rival])
+#                 while schedule_c[rnd_team] >= (2 * 82):
+#                     rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == div_rival])
+#                 # if (div_rival, team) not in schedule_p:
+#                 schedule_c[team] += 1
+#                 schedule_c[rnd_team] += 1
+#                 schedule_p.append((team, f"{rnd_team}||C||{j + 1}"))
+#
+#         # print(f"{team=}, {conf=}, {div=}")
+#         # print(f"{rest_conf(conf)=}")
+#         # print(f"{rest_teams_conf(team)=}")
+#         # print(f"{rest_divs(div)=}")
+#         # print(f"{rest_teams_div(team)=}")
+#     schedule_p.sort()
+#     # schedule_p.sort(key=lambda tup: tup)
+#     print_by_line(schedule_p)
+#     print(f"total length: {len(schedule_p)}")
+#     return schedule_p
+#
 
 def gen_schedule(league_breakdown):
     # team_lookup = {team: {"conf": conf, "div": league_breakdown[conf]} for conf in conferences for team in teams}
@@ -161,77 +202,28 @@ def gen_schedule(league_breakdown):
     schedule = {}
     schedule_c = {t: 0 for t in team_lookup}
     schedule_p = list()
-    metro = [(team_acr(t[0]), team_acr(t[1])) for t in combinations(metropolitan.keys(), 2)] * 4
-    atlan = [(team_acr(t[0]), team_acr(t[1])) for t in combinations(atlantic.keys(), 2)] * 4
-    pacif = [(team_acr(t[0]), team_acr(t[1])) for t in combinations(pacific.keys(), 2)] * 4
-    centr = [(team_acr(t[0]), team_acr(t[1])) for t in combinations(central.keys(), 2)] * 4
-    # leagu = [c for c in combinations(team_lookup.keys(), 2)] * 2
-    leagu = [c for c in combinations([rest_teams_out_div(t) for t in team_lookup], 2)]
-
-    for lst in [metro, atlan, pacif, centr, leagu]:
-        print(f"len = {len(lst)}, {lst=}")
-
-    print(f"{len(list(combinations(metropolitan, 2)))=}")
-    # print_by_line(combinations(metropolitan, 2))
-    res = [*atlan, *pacif, *metro, *centr, *leagu]
-    print(f"{len(res)=}")
-    # for i, team in enumerate(team_lookup):
-    #     conf = team_lookup[team]["conf"]
-    #     div = team_lookup[team]["div"]
-    #
-    #     rest_div_teams = rest_teams_div(team)
-    #     # rest_league_teams = rest_teams(team)
-    #     rest_league_teams = rest_teams_out_div(team)
-    #     rest_league_divs = rest_divs(div)
-    #     print(f"{team=}")
-    #     print(f"{rest_league_divs=}")
-    #     # schedule[team] =
-    #     for j in range(n_game_per_division_rivals):
-    #         for div_rival in rest_div_teams:
-    #             # if (div_rival, team) not in schedule_p:
-    #             schedule_c[team] += 1
-    #             schedule_c[div_rival] += 1
-    #             schedule_p.append((team, f"{div_rival}||A||{j + 1}"))
-    #
-    #     for j in range(n_game_per_res_of_league):
-    #         for div_rival in rest_league_teams:
-    #             # if (div_rival, team) not in schedule_p:
-    #             schedule_c[team] += 1
-    #             schedule_c[div_rival] += 1
-    #             schedule_p.append((team, f"{div_rival}||B||{j + 1}"))
-    #
-    #     for j in range(n_games_per_rest_divs):
-    #         for div_rival in rest_league_divs:
-    #             rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == div_rival])
-    #             while schedule_c[rnd_team] >= (2 * 82):
-    #                 rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == div_rival])
-    #             # if (div_rival, team) not in schedule_p:
-    #             schedule_c[team] += 1
-    #             schedule_c[rnd_team] += 1
-    #             schedule_p.append((team, f"{rnd_team}||C||{j + 1}"))
-    #
-    #     # print(f"{team=}, {conf=}, {div=}")
-    #     # print(f"{rest_conf(conf)=}")
-    #     # print(f"{rest_teams_conf(team)=}")
-    #     # print(f"{rest_divs(div)=}")
-    #     # print(f"{rest_teams_div(team)=}")
-    # schedule_p.sort()
-    # # schedule_p.sort(key=lambda tup: tup)
-    # print_by_line(schedule_p)
-    # print(f"total length: {len(schedule_p)}")
-    # return schedule_p
-
-def gen_schedule_old(league_breakdown):
-    # team_lookup = {team: {"conf": conf, "div": league_breakdown[conf]} for conf in conferences for team in teams}
-
-    print(f"{conferences=}")
-    print(f"{divisions=}")
-    schedule = {}
-    schedule_c = {t: 0 for t in team_lookup}
-    schedule_p = list()
-    for i, team in enumerate(team_lookup):
+    i = 0
+    tl = list(team_lookup)
+    while team_lookup:
+        team = tl[i]
         conf = team_lookup[team]["conf"]
         div = team_lookup[team]["div"]
+
+        rest_conf = lambda conf_in: [conf for conf in conferences if conf != conf_in]
+        rest_divs = lambda div_in: [div for div in divisions if div != div_in]
+        rest_teams = lambda team_in: [team for team in team_lookup if team_in != team]
+        rest_teams_conf = lambda team_in: [team for team in team_lookup if
+                                           team_in != team and team_lookup[team]["conf"] == team_lookup[team_in][
+                                               "conf"]]
+        rest_teams_div = lambda team_in: [team for team in team_lookup if
+                                          team_in != team and team_lookup[team]["div"] == team_lookup[team_in]["div"]]
+        rest_teams_out_div = lambda team_in: [team for team in team_lookup if
+                                              team_in != team and team_lookup[team]["div"] != team_lookup[team_in][
+                                                  "div"]]
+        teams_in_div = lambda div_in: [team for team in team_lookup if
+                                       team_lookup[team]["div"] == div_in]
+        teams_in_conf = lambda conf_in: [team for team in team_lookup if
+                                         team_lookup[team]["conf"] == conf_in]
 
         rest_div_teams = rest_teams_div(team)
         # rest_league_teams = rest_teams(team)
@@ -256,74 +248,28 @@ def gen_schedule_old(league_breakdown):
 
         for j in range(n_games_per_rest_divs):
             for div_rival in rest_league_divs:
-                rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == div_rival])
-                while schedule_c[rnd_team] >= (2 * 82):
-                    rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == div_rival])
-                # if (div_rival, team) not in schedule_p:
-                schedule_c[team] += 1
-                schedule_c[rnd_team] += 1
-                schedule_p.append((team, f"{rnd_team}||C||{j + 1}"))
+                print(f"{team_lookup=}")
+                r_list = [t for t in team_lookup if team_lookup[t]['div'] == div_rival]
+                print(f"{r_list=}")
+                if r_list:
+                    rnd_team = choice(r_list)
+                    while schedule_c[rnd_team] >= (2 * 82):
+                        rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == div_rival])
+                    # if (div_rival, team) not in schedule_p:
+                    schedule_c[team] += 1
+                    schedule_c[rnd_team] += 1
+                    schedule_p.append((team, f"{rnd_team}||C||{j + 1}"))
 
         # print(f"{team=}, {conf=}, {div=}")
         # print(f"{rest_conf(conf)=}")
         # print(f"{rest_teams_conf(team)=}")
         # print(f"{rest_divs(div)=}")
         # print(f"{rest_teams_div(team)=}")
-    schedule_p.sort()
-    # schedule_p.sort(key=lambda tup: tup)
-    print_by_line(schedule_p)
-    print(f"total length: {len(schedule_p)}")
-    return schedule_p
+        i += 1
+        del team_lookup[team]
+        if not team_lookup:
+            break
 
-
-def gen_schedule_bad(league_breakdown):
-    # team_lookup = {team: {"conf": conf, "div": league_breakdown[conf]} for conf in conferences for team in teams}
-
-    print(f"{conferences=}")
-    print(f"{divisions=}")
-    schedule = {}
-    schedule_c = {t: 0 for t in team_lookup}
-    schedule_p = list()
-    for i, team in enumerate(team_lookup):
-        conf = team_lookup[team]["conf"]
-        div = team_lookup[team]["div"]
-
-        rest_div_teams = rest_teams_div(team)
-        # rest_league_teams = rest_teams(team)
-        rest_league_teams = rest_teams_out_div(team)
-        rest_league_divs = rest_divs(div)
-        print(f"{team=}")
-        print(f"{rest_league_divs=}")
-        # schedule[team] =
-        for j in range(n_game_per_division_rivals):
-            for div_rival in rest_div_teams:
-                # if (div_rival, team) not in schedule_p:
-                schedule_c[team] += 1
-                schedule_c[div_rival] += 1
-                schedule_p.append((team, f"{div_rival}||A||{j + 1}"))
-
-        for j in range(n_game_per_res_of_league):
-            for div_rival in rest_league_teams:
-                # if (div_rival, team) not in schedule_p:
-                schedule_c[team] += 1
-                schedule_c[div_rival] += 1
-                schedule_p.append((team, f"{div_rival}||B||{j + 1}"))
-
-        for j in range(n_games_per_rest_divs):
-            for div_rival in rest_league_divs:
-                rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == div_rival])
-                while schedule_c[rnd_team] >= (2 * 82):
-                    rnd_team = choice([t for t in team_lookup if team_lookup[t]["div"] == div_rival])
-                # if (div_rival, team) not in schedule_p:
-                schedule_c[team] += 1
-                schedule_c[rnd_team] += 1
-                schedule_p.append((team, f"{rnd_team}||C||{j + 1}"))
-
-        # print(f"{team=}, {conf=}, {div=}")
-        # print(f"{rest_conf(conf)=}")
-        # print(f"{rest_teams_conf(team)=}")
-        # print(f"{rest_divs(div)=}")
-        # print(f"{rest_teams_div(team)=}")
     schedule_p.sort()
 
     schedule_p = schedule_p[:len(schedule_p) // 2]
