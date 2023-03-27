@@ -144,7 +144,12 @@ class PlotFrame(tkinter.Frame):
 
         assert isinstance(df, pd.DataFrame), f"Error param 'df' must be aa pandas.DataFrame object. Got {type(df)}"
 
+        print(f"{df.dtypes=}")
+        date_cols = df.select_dtypes(include=['datetime', "datetime64[ns]"]).columns
+        df[date_cols] = df[date_cols].apply(pd.to_datetime)
+
         self.df = df
+        self.df_og = pd.DataFrame(self.df)
         self.viewable_column_names = viewable_column_names
         self.can_plot = tkinter.BooleanVar(self, value=False)
         self.auto_grid = auto_grid
@@ -233,7 +238,7 @@ class PlotFrame(tkinter.Frame):
             "frame_treeview_controller": {r: 1, c: 0},
             "frame_plot_control": {r: 2, ix: 5, iy: 5},
             "frame_radio_groups": {r: 3, c: 0, ix: 5, iy: 5},
-            "frame_date_options": {r: 4, c: 0},
+            "frame_date_radios": {r: 4, c: 0},
             "plot_button": {r: 5, c: 0},
             "plot_frame": {r: 0, c: 1, rs: 4},
 
@@ -250,6 +255,10 @@ class PlotFrame(tkinter.Frame):
             "frame_rb_group_1": {r: 0, c: 0},
             "frame_rb_group_2": {r: 0, c: 1},
             "frame_rb_group_3": {r: 0, c: 2},
+
+            # frame_date_radios
+            "frame_date_options": {r: 0, c: 0},
+            "frame_date_options_appl": {r: 0, c: 1},
 
             # frame_rb_group_1
             "rb_h": {r: 0, c: 0},
@@ -290,7 +299,9 @@ class PlotFrame(tkinter.Frame):
             "plot_button",
             "plot_frame",
             "mc_plot_type",
-            "frame_date_options"
+            "frame_date_radios",
+            "frame_date_options",
+            "frame_date_options_appl"
         }
 
         self.frame_plot_control = tkinter.Frame(self, background="#6f4f4f")
@@ -368,17 +379,19 @@ class PlotFrame(tkinter.Frame):
         self.rb_sdd = Radiobutton(self.frame_rb_group_3, variable=self.tv_sort_direction, value="descending",
                              textvariable=self.tv_sort_dir_d)
 
-        self.frame_date_options = tkinter.Frame(self, background="#4f4f6f")
-        self.tv_date_groups,\
-        self.tv_cb_date_groups, \
-        self.cb_date_groups\
+        self.frame_date_radios = tkinter.Frame(self, background="#4f4f6f")
+        self.frame_date_options = tkinter.Frame(self.frame_date_radios, background="#4f4f6f")
+        self.tv_date_groups, \
+            self.tv_cb_date_groups, \
+            self.cb_date_groups \
             = radio_factory(
-                self.frame_date_options,
-                buttons=["None", "Annually", "Monthly", "Weekly", "Daily"],
-                kwargs_buttons={"width": 12}
+            self.frame_date_options,
+            buttons=["None", "Annually", "Monthly", "Weekly", "Daily"],
+            kwargs_buttons={"width": 12}
         )
 
-        print(f"\n==\n{self.tv_date_groups.get()=}\n{[tv.get() for tv in self.tv_cb_date_groups]=}\n{self.cb_date_groups=}\n==\n")
+        print(
+            f"\n==\n{self.tv_date_groups.get()=}\n{[tv.get() for tv in self.tv_cb_date_groups]=}\n{self.cb_date_groups=}\n==\n")
 
         for i, cb in enumerate(self.cb_date_groups):
             tv = self.tv_cb_date_groups[i]
@@ -392,6 +405,30 @@ class PlotFrame(tkinter.Frame):
             #     # f"text_{tv_cb}": text,
             #     # f"callback_{text}": cb
             # })
+
+        self.frame_date_options_appl = tkinter.Frame(self.frame_date_radios, background="#4f4f6f")
+        self.tv_date_groups_appl,\
+        self.tv_cb_date_groups_appl, \
+        self.cb_date_groups_appl\
+            = radio_factory(
+                self.frame_date_options_appl,
+                buttons=["None", "Running Total", "Date Value Group"],
+                kwargs_buttons={"width": 12}
+        )
+
+        for i, cb in enumerate(self.cb_date_groups_appl):
+            tv = self.tv_cb_date_groups_appl[i]
+            # text = self.viewable_column_names[i]
+            text = cb["text"]
+            cb.configure(command=(lambda text=text, cb=cb, tv=tv: self.click_update_date_group_appl(text, cb, tv)))
+            # self.cb_lookup.update({
+            #     # f"var_{tv_cb}": tv_cb,
+            #     f"var_{text}": tv
+            #     # ,
+            #     # f"text_{tv_cb}": text,
+            #     # f"callback_{text}": cb
+            # })
+
 
         types = [
             'line',
@@ -426,6 +463,7 @@ class PlotFrame(tkinter.Frame):
             viewable_column_names=["Plot", "Description"],
             lock_result_col="Plot"
         )
+        self.mc_plot_type.res_tv_entry.set(self.available_plot_types.iloc[0][0])
 
         plt.rcdefaults()
         self.plot_frame = tkinter.Frame(self)
@@ -515,6 +553,10 @@ class PlotFrame(tkinter.Frame):
     #
     #         print(f"QUEUE: {self.selected_queue}")
 
+    def click_update_date_group_appl(self, text, cb, tv):
+        print(f"click_update_date_group_appl")
+        print(f"{text=}, {cb=}, {tv=}, {self.tv_date_groups_appl.get()=}")
+
     def click_update_date_group(self, text, cb, tv):
         print(f"click_update_date_group")
         print(f"{text=}, {cb=}, {tv=}, {self.tv_date_groups.get()=}")
@@ -569,6 +611,10 @@ class PlotFrame(tkinter.Frame):
         if not self.can_plot.get():
             messagebox.showinfo(title="PlotFrame", message=f"error columns '{x_col}', and '{y_cols}' are not plottable.")
             return
+
+        # reset dataframe from working version.
+        self.df = pd.DataFrame(self.df_og)
+        print(self.df)
         
         x_col = x_col[0]
 
@@ -620,20 +666,116 @@ class PlotFrame(tkinter.Frame):
         colours = list(rainbow_gradient(len(y_cols), rgb=False))
 
         is_date = self.col_data[x_col]["is_date"]
+        date_group_appl = self.tv_date_groups_appl.get()
         date_group = self.tv_date_groups.get()
         # None, annually, monthly, weekly, daily
+        print(f"{is_date=}, {date_group=}, {date_group_appl=}")
+
+        g_text = "G"
+
+        # default x-ticks
+        x_ticks = list(range(self.df.shape[0]))
+        x_tick_labels = list(map(str, x_ticks))
+
+        if is_date:
+            # overlapping groups.
+            # i.e. grouping by daily, will plot every 1st, 2nd2, 3rd, ... etc. for 31 dys of the month.
+            # TODO need to offer a running group option to allow totals on the same calendar day / week / month / year...
+            match date_group:
+                case "Annually":
+                    g_text += "_A"
+                    # print(f"{self.df[x_col]}")
+                    # print(f"{self.df.columns=}")
+                    # print(f"{self.df[self.df[x_col]]}")
+                    self.df = self.df.groupby(by=self.df[x_col].dt.year)[y_cols].sum().reset_index()
+                    self.df.columns = [x_col, *y_cols]
+                    x_ticks = list(range(self.df.shape[0]))
+                    x_tick_labels = list(map(str, x_ticks))
+                    # self.df = self.df.groupby(by=self.df[x_col])[y_cols].sum()
+                case "Monthly":
+                    g_text += "_B"
+                    other = []
+                    match date_group_appl:
+                        case "Running Total":
+                            g_text += "__a"
+
+                            self.df['Year'] = self.df.groupby(by=[self.df['RequestDate'].dt.year, self.df['RequestDate'].dt.month])[
+                                'RequestDate'].transform(lambda x: x.dt.year)
+                            self.df['Month'] = self.df.groupby(by=[self.df['RequestDate'].dt.year, self.df['RequestDate'].dt.month])[
+                                'RequestDate'].transform(lambda x: x.dt.month)
+                            new_col_names = ['Year', 'Month']
+                            self.df = self.df.groupby(by=new_col_names).agg(
+                                {'LabourActual': 'sum', 'LabourEstimate': 'sum'}).reset_index()
+                            x_col = new_col_names
+                            print(f"1: {self.df}")
+
+                            # # grouped = self.df.groupby(by=[self.df[x_col].dt.year, self.df[x_col].dt.month]).agg({k: 'sum' for k in y_cols})
+                            # grouped = self.df.groupby(by=[self.df[x_col].dt.year, self.df[x_col].dt.month])[y_cols].sum()
+                            # print(f"1: {grouped}")
+                            # # grouped = grouped.reset_index(level=["Year", "Month"])
+                            # grouped = grouped.reset_index()
+                            # print(f"2: {grouped}")
+                            # grouped.columns = [f"{x_col} (Y)", f"{x_col} (M)", *y_cols]
+                            # print(f"3: {grouped}")
+                            # self.df = grouped
+                            # # self.df = grouped.reset_index().rename(columns={'level_0': 'Year', 'level_1': 'Month'})
+                            # # self.df = self.df.groupby(by=[self.df[x_col].dt.year, self.df[x_col].dt.month])[y_cols].sum()
+                            # # print(f"1: {self.df}")
+                            # # self.df = self.df.reset_index()
+                            # # print(f"2: {self.df}")
+                            # # self.df.columns = [f"{x_col} (Y)", f"{x_col} (M)", *y_cols]
+                            # # print(f"3: {self.df}")
+
+                            # self.df["Date"] = pd.to_datetime(self.df[x_col[0]].astype(str) + "-" + self.df[x_col[1]].astype(str), format="%Y-%m").dt.strftime("%b %Y")
+                            self.df["Date"] = pd.to_datetime(self.df[x_col[0]].astype(str) + "-" + self.df[x_col[1]].astype(str), format="%Y-%m")
+                            x_ticks = self.df["Date"].values.tolist()
+                            x_tick_labels = [datetime.datetime(microsecond=d) .strftime("%b %Y") for d in x_ticks]
+                            print(f"{x_ticks=}")
+                            other = ["Date"]
+                            self.df.columns = [*x_col, *y_cols, *other]
+                            x_col = ["Date"]
+                        case _:
+                            g_text += "__b"
+                            self.df = self.df.groupby(by=self.df[x_col].dt.month)[y_cols].sum().reset_index()
+                            x_col = [x_col]
+                            self.df.columns = [*x_col, *y_cols, *other]
+                    print(f"{self.df}")
+                case "Weekly":
+                    g_text += "_C"
+                    self.df = self.df.groupby(by=self.df[x_col].dt.week)[y_cols].sum().reset_index()
+                    self.df.columns = [x_col, *y_cols]
+                    x_ticks = list(range(self.df.shape[0]))
+                    x_tick_labels = list(map(str, x_ticks))
+                case "Daily":
+                    g_text += "_D"
+                    self.df = self.df.groupby(by=self.df[x_col].dt.day)[y_cols].sum().reset_index()
+                    self.df.columns = [x_col, *y_cols]
+                    x_ticks = list(range(self.df.shape[0]))
+                    x_tick_labels = list(map(str, x_ticks))
+                case _:
+                    g_text += "_E"
+                    x_ticks = list(range(self.df.shape[0]))
+                    x_tick_labels = list(map(str, x_ticks))
+                    # pass
+        print("GTEXT: ", g_text)
+        print(f"\n\n\tGROUPED\n\ncolumns={self.df.columns}\n\n{self.df}")
 
         match how:
             case "individual":
+                print(f"PL_A")
                 for i, col in enumerate(y_cols):
                     colour = colours[i]
-                    self.df.plot(kind=plot_type, x=x_col, y=col, color=colour, ax=self.plot_ax)
+                    self.plot_ax = self.df.plot(kind=plot_type, x=x_col, y=col, color=colour, ax=self.plot_ax)
             case "one-colour":
+                print(f"PL_B")
                 self.df.set_index(x_col)
-                self.df.plot(kind=plot_type, y=y_cols, color=colours[0], ax=self.plot_ax)
+                self.plot_ax = self.df.plot(kind=plot_type, y=y_cols, color=colours[0], ax=self.plot_ax)
             case _:
+                print(f"PL_C")
                 self.df.set_index(x_col)
-                self.df.plot(kind=plot_type, y=y_cols, color=colours, ax=self.plot_ax)
+                self.plot_ax = self.df.plot(kind=plot_type, y=y_cols, color=colours, ax=self.plot_ax)
+                self.plot_ax.set_xticks(x_ticks)
+                self.plot_ax.set_xticklabels(x_tick_labels)
 
 
         # data_points, show_names = data_in
@@ -701,6 +843,15 @@ class PlotFrame(tkinter.Frame):
 
         # possible date group options
         for i, cb in enumerate(self.cb_date_groups):
+            ri = i // bpr
+            ci = i % bpr
+            if not self.btns_horizontal:
+                ri, ci = ci, ri
+
+            cb.grid(**{r: ri, c: ci})
+
+        # possible date group options
+        for i, cb in enumerate(self.cb_date_groups_appl):
             ri = i // bpr
             ci = i % bpr
             if not self.btns_horizontal:
