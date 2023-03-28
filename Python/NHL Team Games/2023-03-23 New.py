@@ -166,7 +166,11 @@ def gen_schedule(league_breakdown):
     pacif = [(team_acr(t[0]), team_acr(t[1])) for t in combinations(pacific.keys(), 2)] * 4
     centr = [(team_acr(t[0]), team_acr(t[1])) for t in combinations(central.keys(), 2)] * 4
     # leagu = [c for c in combinations(team_lookup.keys(), 2)] * 2
-    leagu = [c for c in combinations([rest_teams_out_div(t) for t in team_lookup], 2)]
+    print(f"{type([rest_teams_out_div(t) for t in team_lookup])=}")
+    print(f"{type([rest_teams_out_div(t) for t in team_lookup][0])=}")
+    print_by_line([rest_teams_out_div(t) for t in team_lookup])
+    # leagu = [c for c in combinations([rest_teams_out_div(t) for t in team_lookup], 2)]
+    leagu = flatten([list(combinations(rest_teams_out_div(t), 2)) for t in team_lookup])
 
     for lst in [metro, atlan, pacif, centr, leagu]:
         print(f"len = {len(lst)}, {lst=}")
