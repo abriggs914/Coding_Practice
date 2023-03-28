@@ -1,6 +1,8 @@
 import random
 from itertools import combinations
 
+from utility import clamp
+
 # Define the teams by division
 metropolitan_teams = ["Carolina", "New Jersey", "NY Rangers", "Washington", "NY Islanders", "Pittsburgh",
                       "Philadelphia", "Columbus"]
@@ -71,10 +73,16 @@ for team in all_teams:
     # Add the schedule to the dictionary
     schedule[team] = opponents
 
-tt = [t for t in all_teams] * 3
+
+# Print the schedule
+for team, opponents in schedule.items():
+    print(f"{team.ljust(14)}: l={str(len(opponents)).ljust(4)} | {opponents}")
+
+
+tt = [t for t in all_teams]
 print(f"{tt=}")
 while tt:
-    team = random.sample(tt, 1)[0 ]
+    team = random.sample(tt, 1)[0]
 
     if team in metropolitan_teams:
         division_teams = metropolitan_teams
@@ -85,20 +93,46 @@ while tt:
     else:
         division_teams = pacific_teams
 
-    non_division_teams = set(tt) - set(division_teams) - {team,}
-    opponents = random.sample(non_division_teams, 6)
-    print(f"{team=}, {opponents=}")
-    schedule[team] = opponents
+    non_division_teams = list(set(tt) - set(division_teams) - {team,})
+    k = clamp(0, 82 - len(schedule[team]), 6)
+    print(f"{team.ljust(12)}, l={len(non_division_teams)}, {k=}, {non_division_teams=}")
+    opponents = random.sample(non_division_teams, k=k)
+    print(f"\t{team.ljust(12)}, l={len(opponents)}, {opponents=}")
+    schedule[team] = schedule[team] + opponents
     for t in opponents:
-        tt.remove(t)
+        schedule[t] = schedule[t] + [team]
+        if len(schedule[t]) >= 82:
+            print(f"{t.rjust(12)} l={len(schedule[t])} FINISHED B")
+            tt.remove(t)
+    tt.remove(team)
+    print(f"{team.rjust(12)} l={len(schedule[team])} FINISHED A")
 
 
 # for i in range(0, len(all_teams), 2):
 
-
+all_games = []
 # Print the schedule
 for team, opponents in schedule.items():
     print(f"{team.ljust(14)}: l={str(len(opponents)).ljust(4)} | {opponents}")
+    for opp in opponents:
+        all_games.append((team, opp))
+
+print(f"length: {len(all_games)}")
+
+
+u_games = []
+v_teams = set()
+for team, opponents in schedule.items():
+    print(f"{team.ljust(14)}: l={str(len(opponents)).ljust(4)} | {opponents}")
+    for opp in opponents:
+        if opp not in v_teams:
+            u_games.append((team, opp))
+    v_teams.add(team)
+
+print(f"length: l={len(u_games)}\n{u_games}")
+with open("2023-03-28 Season Output.txt", "w") as f:
+    for team_a, team_b in u_games:
+        f.write(f"'{team_a}', '{team_b}'\n")
 
 
 # import random
