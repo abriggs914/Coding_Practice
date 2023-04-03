@@ -1,0 +1,44 @@
+
+
+1 1OAL A1  TOR \
+                = TOR
+2 8OAL WC2 MTL /      \
+                       = TOR
+2      A2  TBL \      /      \
+                = FLA         \
+3      A3  FLA /               \
+                                = TOR vs.
+1      M2  WSH \               /
+                = WSH         /
+2      M3  PHI /      \      /
+                       = CAR
+1      WC1 OTT \      /
+                = CAR
+1 2OAL M1  CAR /
+
+=======================================================================================================================
+=======================================================================================================================
+=======================================================================================================================
+
+1 {CO} {D} {T} \
+                = TOR
+8 8OAL WC2 MTL /      \
+                       = TOR
+#      A2  TBL \      /      \
+                = FLA         \
+#      A3  FLA /               \               /
+                                = TOR vs. VGK =
+#      M2  WSH \               /
+                = WSH         /
+#      M3  PHI /      \      /
+                       = CAR
+7      WC1 OTT \      /
+                = CAR
+2 2OAL M1  CAR /
+
+first team gets top spot. this sets the division for that the next 3 teams
+	- i.e TOR is 1st OAL, therefore they will get the worst of the wild card teams,
+	then comes 2 and 3 from TOR's division (Atlantic).
+	
+params
+half=None (one of "east", "west", None)
