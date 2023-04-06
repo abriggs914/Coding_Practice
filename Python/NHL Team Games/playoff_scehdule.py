@@ -1,7 +1,9 @@
+import datetime
+import random
 from collections import OrderedDict
 from enum import Enum
 
-from utility import dict_print, flatten
+from utility import dict_print, flatten, clamp
 
 schedule_template = [
     ["1 {conf_oal} {div_oal} {team_00} \\", 45, "/ {team_00} {div_oal} {conf_oal} 1",
@@ -339,6 +341,11 @@ class Division(Enum):
     CENTRAL: tuple[Conference, str] = (Conference.WESTERN, "central")
     PACIFIC: tuple[Conference, str] = (Conference.WESTERN, "pacific")
 
+    def __eq__(self, other):
+        if not isinstance(other, Division):
+            return False
+        return other.value == self.value
+
 
 class Team:
     def __init__(self, team_name, acronym, city, mascot, division, wikipedia_link):
@@ -347,7 +354,8 @@ class Team:
         self.city_full = city
         self.city, self.province_state, self.country = self.city_full.split(",")
         self.mascot = mascot
-        self.division_full = division.value
+        self.division_obj = division
+        self.division_full = self.division_obj.value
         self.conference, self.division = self.division_full
         self.conference = self.conference.value
         self.wikipedia_link = wikipedia_link
@@ -357,11 +365,124 @@ class Team:
 
 
 class Season:
-    def __init__(self, league, year):
+    def __init__(self, league, start_date, end_date):
+
         self.league = league
-        self.year = year
+
+        self.start_date = start_date
+        self.end_date = end_date
+        self.year = self.start_date.year
 
         self.teams_list = self.league.history[self.year]["teams"]
+        print(f"tl={self.teams_list}")
+        print(f"tl={[t.division_full for t in self.teams_list]}")
+        self.metropolitan_teams_list = [t for t in self.teams_list if t.division_obj == Division.METROPOLITAN]
+        self.atlantic_teams_list = [t for t in self.teams_list if t.division_obj == Division.ATLANTIC]
+        self.central_teams_list = [t for t in self.teams_list if t.division_obj == Division.CENTRAL]
+        self.pacific_teams_list = [t for t in self.teams_list if t.division_obj == Division.PACIFIC]
+        self.schedule = self.gen_schedule()
+
+    def gen_schedule(self):
+
+        # Define the teams by division
+        # metropolitan_teams = ["Carolina", "New Jersey", "NY Rangers", "Washington", "NY Islanders", "Pittsburgh",
+        #                       "Philadelphia", "Columbus"]
+        # atlantic_teams = ["Boston", "Toronto", "Tampa Bay", "Buffalo", "Florida", "Detroit", "Ottawa", "Montreal"]
+        # central_teams = ["Winnipeg", "Dallas", "Minnesota", "Colorado", "St. Louis", "Nashville", "Arizona", "Chicago"]
+        # pacific_teams = ["Vegas", "Seattle", "Los Angeles", "Edmonton", "Calgary", "Vancouver", "San Jose", "Anaheim"]
+
+        metropolitan_teams = self.metropolitan_teams_list
+        atlantic_teams = self.atlantic_teams_list
+        central_teams = self.central_teams_list
+        pacific_teams = self.pacific_teams_list
+
+        # Create a list of all teams
+        all_teams = metropolitan_teams + atlantic_teams + central_teams + pacific_teams
+
+        # Define the number of games to play against each team
+        num_division_games = 4
+        num_non_division_games = 2
+        num_left_over_games = 6
+        num_rival_games = 1
+        num_teams = len(all_teams) - 1
+
+        # Generate the schedule
+        schedule = {}
+        for team in all_teams:
+            # Initialize the list of opponents for the current team
+            opponents = []
+
+            # Add the division opponents
+            # division = team.split()[0]
+            # print(f"{division=}, {team=}")
+            if team in metropolitan_teams:
+                division_teams = metropolitan_teams
+            elif team in atlantic_teams:
+                division_teams = atlantic_teams
+            elif team in central_teams:
+                division_teams = central_teams
+            else:
+                division_teams = pacific_teams
+
+            for division_team in division_teams:
+                if division_team != team:
+                    for i in range(num_division_games):
+                        opponents.append(division_team)
+
+            # Add the non-division opponents
+            non_division_teams = set(all_teams) - set(division_teams) - {team, }
+            for non_division_team in non_division_teams:
+                for i in range(num_non_division_games):
+                    opponents.append(non_division_team)
+
+            # opponents.sort()
+
+            # Add the schedule to the dictionary
+            schedule[team] = opponents
+
+        tt = [t for t in all_teams]
+        print(f"{tt=}")
+        while tt:
+            team = random.sample(tt, 1)[0]
+
+            if team in metropolitan_teams:
+                division_teams = metropolitan_teams
+            elif team in atlantic_teams:
+                division_teams = atlantic_teams
+            elif team in central_teams:
+                division_teams = central_teams
+            else:
+                division_teams = pacific_teams
+
+            non_division_teams = list(set(tt) - set(division_teams) - {team, })
+            k = clamp(0, 82 - len(schedule[team]), 6)
+            print(f"{str(team).ljust(12)}, l={len(non_division_teams)}, {k=}, {non_division_teams=}")
+            opponents = random.sample(non_division_teams, k=k)
+            print(f"\t{str(team).ljust(12)}, l={len(opponents)}, {opponents=}")
+            schedule[team] = schedule[team] + opponents
+            for t in opponents:
+                schedule[t] = schedule[t] + [team]
+                if len(schedule[t]) >= 82:
+                    print(f"{str(t).rjust(12)} l={len(schedule[t])} FINISHED B")
+                    tt.remove(t)
+            tt.remove(team)
+            print(f"{str(team).rjust(12)} l={len(schedule[team])} FINISHED A")
+
+        u_games = []
+        v_teams = set()
+        for team, opponents in schedule.items():
+            print(f"{str(team).ljust(14)}: l={str(len(opponents)).ljust(4)} | {opponents}")
+            for opp in opponents:
+                if opp not in v_teams:
+                    u_games.append((team, opp))
+            v_teams.add(team)
+
+        print(f"length: l={len(u_games)}\n{u_games}")
+        # with open("2023-04-04 Season Output.txt", "w") as f:
+        for team_a, team_b in u_games:
+            print(f"'{team_a}', '{team_b}'")
+
+        return u_games
 
 
 class League:
@@ -383,7 +504,8 @@ class League:
             raise ValueError(f"Error, the season {year_title} is already complete, cannot re-start.")
         if len(self.history[year]["teams"]) < 2:
             raise ValueError(f"Error, cannot begin {year_title} season without at least 2 teams.")
-        season = Season(self, year)
+
+        season = Season(self, datetime.datetime(year, 10, 6), datetime.datetime(year + 1, 4, 10))
 
 
 NHL_TEAMS_LIST_2023 = [Team(*vals) for vals in [
@@ -431,20 +553,24 @@ nhl = League("NHL")
 
 
 if __name__ == '__main__':
-    # print(draw_shedule(data, half="eastern"))
-    data_1.sort(key=lambda tup: (tup[2], tup[-1]))
-    lines = template_1.split("\n")
-    result = lines[0] + "\n"
-    for i in range(1, len(lines)):
-        co_ = str(data_1[i][4]).center(5)
-        do_ = str(data_1[i][-1]).center(5)
-        dt_ = str(data_1[i][3]).center(5)
-        pt_ = str(data_1[i][5]).center(5)
-        tn_ = str(data_1[i][0]).center(5)
-        n_ = str(data_1[i][6] + 1).center(5)
-        result += lines[i].format(CO=co_, DO=do_, DT=dt_, PT=pt_, T=tn_, N=n_) + "\n"
-    print(template_1)
-    print(result)
+    # # print(draw_shedule(data, half="eastern"))
+    # data_1.sort(key=lambda tup: (tup[2], tup[-1]))
+    # lines = template_1.split("\n")
+    # result = lines[0] + "\n"
+    # for i in range(1, len(lines)):
+    #     co_ = str(data_1[i][4]).center(5)
+    #     do_ = str(data_1[i][-1]).center(5)
+    #     dt_ = str(data_1[i][3]).center(5)
+    #     pt_ = str(data_1[i][5]).center(5)
+    #     tn_ = str(data_1[i][0]).center(5)
+    #     n_ = str(data_1[i][6] + 1).center(5)
+    #     result += lines[i].format(CO=co_, DO=do_, DT=dt_, PT=pt_, T=tn_, N=n_) + "\n"
+    # print(template_1)
+    # print(result)
 
     print("\n\n\tSCHED\n\n\n")
     print(sched())
+    for t in NHL_TEAMS_LIST_2023:
+        nhl.add_team(2022, t)
+
+    nhl.start_season(2022)

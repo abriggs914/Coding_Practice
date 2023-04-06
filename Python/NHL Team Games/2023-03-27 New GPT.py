@@ -130,7 +130,7 @@ for team, opponents in schedule.items():
     v_teams.add(team)
 
 print(f"length: l={len(u_games)}\n{u_games}")
-with open("2023-03-28 Season Output.txt", "w") as f:
+with open("2023-04-04 Season Output.txt", "w") as f:
     for team_a, team_b in u_games:
         f.write(f"'{team_a}', '{team_b}'\n")
 
