@@ -3,7 +3,7 @@ import random
 from collections import OrderedDict
 from enum import Enum
 
-from utility import dict_print, flatten, clamp
+from utility import dict_print, flatten, clamp, print_by_line
 
 schedule_template = [
     ["1 {conf_oal} {div_oal} {team_00} \\", 45, "/ {team_00} {div_oal} {conf_oal} 1",
@@ -365,9 +365,11 @@ class Team:
 
 
 class Season:
-    def __init__(self, league, start_date, end_date):
+    def __init__(self, league, start_date, end_date, n_games=82, max_points_per_game=2):
 
         self.league = league
+        self.n_games = n_games
+        self.max_points_per_game = max_points_per_game
 
         self.start_date = start_date
         self.end_date = end_date
@@ -376,11 +378,63 @@ class Season:
         self.teams_list = self.league.history[self.year]["teams"]
         print(f"tl={self.teams_list}")
         print(f"tl={[t.division_full for t in self.teams_list]}")
+
+        self.u_confs = {t.conference: "" for t in self.teams_list}
+        self.u_divs = {t.division: "" for t in self.teams_list}
+
+        self.divisions_list = list(self.u_divs.keys())
+        self.conferences_list = list(self.u_confs.keys())
+
+        # hardcoded this:
         self.metropolitan_teams_list = [t for t in self.teams_list if t.division_obj == Division.METROPOLITAN]
         self.atlantic_teams_list = [t for t in self.teams_list if t.division_obj == Division.ATLANTIC]
         self.central_teams_list = [t for t in self.teams_list if t.division_obj == Division.CENTRAL]
         self.pacific_teams_list = [t for t in self.teams_list if t.division_obj == Division.PACIFIC]
         self.schedule = self.gen_schedule()
+
+        # self.league_data = {
+        #     "eastern": {
+        #         "metropolitan": [t.acronym for t in self.metropolitan_teams_list],
+        #         "atlantic": [atlantic[t]["acr"] for t in atlantic]
+        #     },
+        #     "western": {
+        #         "central": [central[t]["acr"] for t in central],
+        #         "pacific": [pacific[t]["acr"] for t in pacific]
+        #     }
+        # }
+        #
+        # def team_conf(team):
+        #     for conf, conf_data in league.items():
+        #         for div, div_data in conf_data.items():
+        #             for t in div_data:
+        #                 if team == t or team in t:
+        #                     return conf
+        #
+        # def team_div(team):
+        #     for conf, conf_data in league.items():
+        #         for div, div_data in conf_data.items():
+        #             for t in div_data:
+        #                 if team == t or team in t:
+        #                     return div
+
+        self.season_standings = {
+            team: {t: "" if t != team else "-" for t in ["#", *self.teams_list]}
+            for team in self.teams_list
+        }
+
+        for i, team in enumerate(self.teams_list):
+            self.season_standings[team].update({
+                "#": i,
+                " ": " ",
+                "GP": 0,
+                "PTS": 0,
+                "W": 0,
+                "L": 0,
+                "OTW": 0,
+                "OTL": 0,
+                "GL": self.n_games,
+                "MP": self.n_games * self.max_points_per_game
+            })
 
     def gen_schedule(self):
 
@@ -484,6 +538,78 @@ class Season:
 
         return u_games
 
+    def print_play_off_standings(self):
+        sorted_standings_list = sorted(self.season_standings.keys(), key=lambda x: self.season_standings[x]['PTS'], reverse=True)
+        sorted_standings = {team: self.season_standings[team] for team in sorted_standings_list}
+        # if i == len(self.schedule) - 1:
+        # print(dict_print(sorted_standings, f"season standings GP = {len(self.schedule)}\n\t\t\tMatchup: '{team_a}' VS '{team_b}'"))
+
+        in_playoffs = set()
+        standings = {}
+        standings_t = []
+        for div in self.divisions_list:
+            print(f"\nTop 3 {div}:")
+            print(f"{sorted_standings=}")
+
+            # raise ValueError("STOPPP!")
+            # for i, t in enumerate([t for t in sorted_standings if team_div(t) == div][:3]):
+            for i, t in enumerate([t for t in sorted_standings if t.division == div][:3]):
+                print(f"\t{t}")
+                in_playoffs.add(t)
+                conf = t.conference
+                data = {
+                    "div": div,
+                    "conf": conf,
+                    "seed": f"{div[0].upper()}__{conf[0].upper()}_{i}",
+                    "place": i,
+                    "pts": self.season_standings[t]["PTS"]
+                }
+                standings[t] = data
+                standings_t.append([t, *list(data.values())])
+
+        for conf in ["eastern", "western"]:
+            print(f"\nWild card {conf[:4].title()}:")
+            for i, t in enumerate([t for t in sorted_standings if t not in in_playoffs and t.conference == conf][:2]):
+                print(f"\t{t}")
+                in_playoffs.add(t)
+                data = {
+                    "div": t.division,
+                    "conf": conf,
+                    "seed": f"WC_{conf[0].upper()}_{i}",
+                    "place": 6 + i,
+                    "pts": self.season_standings[t]["PTS"]
+                }
+                standings[t] = data
+                standings_t.append([t, *list(data.values())])
+
+        # standings by conference, seed
+        # standings_t.sort(key=lambda tup: (tup[2], tup[3], tup[4]))
+        # standings_t.sort(key=lambda tup: (tup[2], -tup[5]))
+        standings_t.sort(key=lambda tup: (tup[2], tup[4], -tup[5]))
+        print(dict_print(standings, "Standings"))
+
+        # print(f"\nWild card East:")
+        # print("\t" + "\n\t".join([t for t in sorted_standings if t not in in_playoffs and team_conf(t) == "eastern"][:2]))
+        # print(f"\nWild card West:")
+        # print("\t" + "\n\t".join([t for t in sorted_standings if t not in in_playoffs and team_conf(t) == "western"][:2]))
+
+        print_by_line(standings_t)
+
+        playoff_schedule = [
+            (standings_t[0], standings_t[7]),
+            (standings_t[1], standings_t[6]),
+            (standings_t[2], standings_t[4]),
+            (standings_t[3], standings_t[5]),
+
+            (standings_t[8], standings_t[15]),
+            (standings_t[9], standings_t[14]),
+            (standings_t[10], standings_t[12]),
+            (standings_t[11], standings_t[13])
+        ]
+
+        print(f"Playoff Schedule")
+        print_by_line(playoff_schedule)
+
 
 class League:
     def __init__(self, league_name):
@@ -496,7 +622,7 @@ class League:
         if team not in self.history[year]["teams"]:
             self.history[year]["teams"].append(team)
 
-    def start_season(self, year: int):
+    def init_season(self, year: int):
         year_title = f"{str(year)[-2:]} - {str(year + 1)[-2:]}"
         if year not in self.history:
             raise AttributeError(f"Error, year={year} has not been initialized in this league yet. Please add some teams first.")
@@ -505,7 +631,21 @@ class League:
         if len(self.history[year]["teams"]) < 2:
             raise ValueError(f"Error, cannot begin {year_title} season without at least 2 teams.")
 
+        print(f"Starting the {year}-{year+1} regular season!")
         season = Season(self, datetime.datetime(year, 10, 6), datetime.datetime(year + 1, 4, 10))
+        self.history[year].update({"season": season})
+        print(f"{self.history=}")
+        return season
+
+    def play_regular_season_game(self, year):
+        if (year not in self.history) or (self.history[year].get("season", None) is None):
+            raise KeyError("Error, this season has not been initialized yet.")
+
+
+    def standings(self, year):
+        if (year not in self.history) or (self.history[year].get("season", None) is None):
+            raise KeyError("Error, this season has not been initialized yet.")
+        self.history[year]["season"].print_play_off_standings()
 
 
 NHL_TEAMS_LIST_2023 = [Team(*vals) for vals in [
@@ -573,4 +713,5 @@ if __name__ == '__main__':
     for t in NHL_TEAMS_LIST_2023:
         nhl.add_team(2022, t)
 
-    nhl.start_season(2022)
+    nhl.init_season(2022)
+    nhl.standings(2022)
