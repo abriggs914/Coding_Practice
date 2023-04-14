@@ -3,7 +3,9 @@ import random
 from collections import OrderedDict
 from enum import Enum
 
-from utility import dict_print, flatten, clamp, print_by_line
+import pandas as pd
+
+from utility import dict_print, flatten, clamp, print_by_line, minmax, maxmin
 
 schedule_template = [
     ["1 {conf_oal} {div_oal} {team_00} \\", 45, "/ {team_00} {div_oal} {conf_oal} 1",
@@ -390,7 +392,21 @@ class Season:
         self.atlantic_teams_list = [t for t in self.teams_list if t.division_obj == Division.ATLANTIC]
         self.central_teams_list = [t for t in self.teams_list if t.division_obj == Division.CENTRAL]
         self.pacific_teams_list = [t for t in self.teams_list if t.division_obj == Division.PACIFIC]
-        self.schedule = self.gen_schedule()
+
+        self.dates_range_list = [d.to_pydatetime() for d in pd.date_range(self.start_date, self.end_date)]
+        keep_trying = True
+        while keep_trying:
+            try:
+                self.schedule = self.gen_schedule()
+            except ValueError as ve:
+                # print(f"{ve=}")
+                # raise ve
+                pass
+            else:
+                keep_trying = False
+
+        self.n_games_played = 0
+
 
         # self.league_data = {
         #     "eastern": {
@@ -533,12 +549,59 @@ class Season:
 
         print(f"length: l={len(u_games)}\n{u_games}")
         # with open("2023-04-04 Season Output.txt", "w") as f:
-        for team_a, team_b in u_games:
-            print(f"'{team_a}', '{team_b}'")
+        # for team_a, team_b in u_games:
+        #     print(f"'{team_a}', '{team_b}'")
 
-        return u_games
+        random.shuffle(u_games)
+        games_per_day = len(u_games) / len(self.dates_range_list)
+        gpd = int(games_per_day - 1), int(games_per_day)
+        games_used = 0
+        days_skipped = 0
+        shuffled_schedule = {}
+        min_day, max_day = (float("inf"), None), (0, None)
+        ccgpd = lambda i: len(u_games) // (len(self.dates_range_list) - i)
+        cgpd = lambda i: (ccgpd(i), (ccgpd(i) + 1))
+        for i, d in enumerate(self.dates_range_list):
+            # if i % 7 == 0:
+            #     chance no games today
+            high, low = maxmin(*cgpd(i))
+            if random.choices([True, False], weights=[1, 3], k=1)[0]:
+                # 6 % chance of no game today
+                days_skipped += 1
+                print(f"{low=}, {high=}, games_today=0 SKIPP")
+                continue
+
+            games_today = random.randint(low, high)
+            while not games_today:
+                games_today = random.randint(low, high)
+            print(f"{low=}, {high=}, {games_today=}")
+            if i == len(self.dates_range_list) - 1:
+                if (games_used + games_today) < len(u_games):
+                    games_left = len(u_games) - games_used
+                    games_today += games_left
+
+            games_used += games_today
+            for j in range(games_today):
+                if j == 0:
+                    shuffled_schedule[d] = []
+                shuffled_schedule[d] += random.sample(u_games, k=1)
+                u_games.remove(shuffled_schedule[d][-1])
+
+            if (nl := len(shuffled_schedule[d])) < min_day[0]:
+                min_day = (nl, d)
+            if (nl := len(shuffled_schedule[d])) > max_day[0]:
+                max_day = (nl, d)
+
+        print(dict_print(shuffled_schedule, "Schedule"))
+        print(f"# games scheduled:\n\tDays Scheduled: {len(shuffled_schedule)}\n\tGames scheduled: {games_used=}\n\tMin day: #:{min_day[0]} d: {min_day[1]:%Y-%m-%d}\n\tMax day: #:{max_day[0]} d: {max_day[1]:%Y-%m-%d}")
+        return shuffled_schedule
 
     def print_play_off_standings(self):
+
+        if self.n_games_played == 0:
+            print(f"No games have been played yet this season.\nPlease start this season first.")
+            return
+
         sorted_standings_list = sorted(self.season_standings.keys(), key=lambda x: self.season_standings[x]['PTS'], reverse=True)
         sorted_standings = {team: self.season_standings[team] for team in sorted_standings_list}
         # if i == len(self.schedule) - 1:
