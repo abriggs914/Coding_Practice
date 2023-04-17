@@ -559,14 +559,16 @@ class Season:
         days_skipped = 0
         shuffled_schedule = {}
         min_day, max_day = (float("inf"), None), (0, None)
+        play_counts = {}
         ccgpd = lambda i: len(u_games) // (len(self.dates_range_list) - i)
-        cgpd = lambda i: (ccgpd(i), (ccgpd(i) + 1))
+        cgpd = lambda i: (clamp(0, ccgpd(i), len(self.teams_list) // 2), clamp(0, ccgpd(i) + 5, len(self.teams_list) // 2))
         for i, d in enumerate(self.dates_range_list):
+            last_day = i == len(self.dates_range_list) - 1
             # if i % 7 == 0:
             #     chance no games today
             high, low = maxmin(*cgpd(i))
-            if random.choices([True, False], weights=[1, 3], k=1)[0]:
-                # 6 % chance of no game today
+            if not last_day and random.choices([True, False], weights=[1, 3], k=1)[0]:
+                # 25 % chance of no game today
                 days_skipped += 1
                 print(f"{low=}, {high=}, games_today=0 SKIPP")
                 continue
@@ -574,17 +576,45 @@ class Season:
             games_today = random.randint(low, high)
             while not games_today:
                 games_today = random.randint(low, high)
-            print(f"{low=}, {high=}, {games_today=}")
-            if i == len(self.dates_range_list) - 1:
-                if (games_used + games_today) < len(u_games):
-                    games_left = len(u_games) - games_used
+                if low == high == 0:
+                    raise ValueError("Error low and high cannot both be 0.")
+            print(f"{low=}, {high=}, {games_today=}, {last_day=}")
+            if last_day:
+                if (len(u_games) - games_today) > 0:
+                    games_left = len(u_games)
                     games_today += games_left
 
             games_used += games_today
+            played_today = set()
             for j in range(games_today):
                 if j == 0:
                     shuffled_schedule[d] = []
-                shuffled_schedule[d] += random.sample(u_games, k=1)
+
+                game = random.sample(u_games, k=1)
+                team_1, team_2 = game[0]
+                if team_1 not in play_counts:
+                    play_counts[team_1] = 0
+                if team_2 not in play_counts:
+                    play_counts[team_2] = 0
+                while (team_1 in played_today or team_2 in played_today) or ((not last_day and len(u_games) > len(self.teams_list) / 2) and ((play_counts[team_1] + 1 == self.n_games) or (play_counts[team_2] + 1 == self.n_games))):
+                    game = random.sample(u_games, k=1)
+                    team_1, team_2 = game[0]
+                    if len(play_counts) < len(self.teams_list):
+                        if team_1 not in play_counts:
+                            play_counts[team_1] = 0
+                        if team_2 not in play_counts:
+                            play_counts[team_2] = 0
+                    else:
+                        pc = {k: v for k, v in play_counts.items() if v + 1 < self.n_games}
+                        print(f"{pc}\n{u_games}")
+
+                played_today.add(team_1)
+                played_today.add(team_2)
+
+                play_counts[team_1] += 1
+                play_counts[team_2] += 1
+
+                shuffled_schedule[d] += game
                 u_games.remove(shuffled_schedule[d][-1])
 
             if (nl := len(shuffled_schedule[d])) < min_day[0]:
@@ -593,7 +623,8 @@ class Season:
                 max_day = (nl, d)
 
         print(dict_print(shuffled_schedule, "Schedule"))
-        print(f"# games scheduled:\n\tDays Scheduled: {len(shuffled_schedule)}\n\tGames scheduled: {games_used=}\n\tMin day: #:{min_day[0]} d: {min_day[1]:%Y-%m-%d}\n\tMax day: #:{max_day[0]} d: {max_day[1]:%Y-%m-%d}")
+        print(f"# games scheduled:\n\tDays Scheduled: {len(shuffled_schedule)}\n\tGames scheduled: {games_used=}\n\tlen(u_games): {len(u_games)}\n\tMin day: #:{min_day[0]} d: {min_day[1]:%Y-%m-%d}\n\tMax day: #:{max_day[0]} d: {max_day[1]:%Y-%m-%d}")
+        print(f"0 == len(u_games): {0 == len(u_games)}")
         return shuffled_schedule
 
     def print_play_off_standings(self):
