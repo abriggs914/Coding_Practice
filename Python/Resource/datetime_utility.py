@@ -1,13 +1,14 @@
 import calendar
 import datetime
 import numpy as np
+from dateutil import parser
 from dateutil.relativedelta import relativedelta
 from utility import minmax, clamp, choice
 
 """
 	General datetime Utility Functions
-	Version...............1.6
-	Date...........2023-03-20
+	Version...............1.7
+	Date...........2023-04-17
 	Author.......Avery Briggs
 """
 
@@ -163,7 +164,7 @@ def random_date(start_year=1, end_year=10000, start_m=None, start_d=None):
     return "{}-{}-{}".format(("0000" + str(y))[-4:], ("00" + str(m))[-2:], ("00" + str(d))[-2:])
 
 
-def is_date(date_in, fmt="%Y-%m-%d"):
+def is_date_w_fmt(date_in, fmt="%Y-%m-%d"):
     if isinstance(date_in, datetime.datetime) or isinstance(date_in, datetime.date):
         return True
     try:
@@ -173,7 +174,18 @@ def is_date(date_in, fmt="%Y-%m-%d"):
         print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
     except ValueError:
         print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
+	
     return False
+	
+
+def is_date(date_string):
+    if not date_string:  # Check if the input string is empty
+        return False
+    try:
+        # Attempt to parse the input string as a date
+        return parser.parse(date_string)
+    except (ValueError, TypeError):
+        return None
 
 
 def first_of_day(date_in):
