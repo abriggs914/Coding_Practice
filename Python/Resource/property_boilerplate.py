@@ -8,8 +8,8 @@ import datetime
 VERSION = \
     """    
     Functions to write property boilerplate.
-    Version.............................1.03
-    Date...........2023-02-23
+    Version.............................1.04
+    Date...........2023-04-18
     Author(s)....Avery Briggs
     """
 
@@ -34,26 +34,34 @@ def VERSION_AUTHORS():
 #######################################################################################################################
 #######################################################################################################################
 
-def getter(x):
+def getter(x, assert_lower=True):
     name = x.replace("self.", "")
+    if assert_lower:
+        name = name.lower()
     name = name[1:] if name.startswith("_") else name
     return f"""def get_{name}(self):\n\treturn self._{name}"""
 
 
-def setter(x):
+def setter(x, assert_lower=True):
     name = x.replace("self.", "")
+    if assert_lower:
+        name = name.lower()
     name = name[1:] if name.startswith("_") else name
     return f"""def set_{name}(self, {name}_in):\n\tself._{name} = {name}_in"""
 
 
-def delter(x):
+def delter(x, assert_lower=True):
     name = x.replace("self.", "")
+    if assert_lower:
+        name = name.lower()
     name = name[1:] if name.startswith("_") else name
     return f"""def del_{name}(self):\n\tdel self._{name}"""
 
 
-def proter(x):
+def proter(x, assert_lower=True):
     name = x.replace("self.", "")
+    if assert_lower:
+        name = name.lower()
     name = name[1:] if name.startswith("_") else name
     return f"""{name} = property(get_{name}, set_{name}, del_{name})"""
 

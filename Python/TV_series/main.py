@@ -829,6 +829,19 @@ angel = TVSeries("Angel", {
 	True,
 	"Drama / Action",
 	"Disney+")
+	
+
+what_we_do_in_the_shadows = TVSeries("What We Do In The Shadows", {
+	1: 10,
+	2: 10,
+	3: 10,
+	4: 10},
+	23,
+	2019,
+	2022,
+	True,
+	"Comedy",
+	"Disney+")
 
 
 series_list = [
@@ -887,7 +900,8 @@ series_list = [
 	king_of_the_hill,
 	bless_the_harts,
 	buffy_the_vampire_slayer,
-	angel
+	angel,
+	what_we_do_in_the_shadows
 ]
 
    

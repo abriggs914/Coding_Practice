@@ -615,24 +615,35 @@ Total minutes:			4950
 Total hours:			82.5
 Where to watch:			Disney+
 
+	What We Do In The Shadows
+Genre:				Comedy
+Run (2019 -> 2022):		3 years
+number seasons:			4
+number episodes:		40
+episodes per season:		10.0
+average length of an episode:	23
+Total minutes:			920
+Total hours:			15.333333333333334
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Avatar, the Last Airbender
-Genre:				Drama, Adventure
-Run (2005 -> 2008):		3 years
+	The Mandalorian
+Genre:				Drama, Action
+Run (2019 -> 2023):		4 years
 number seasons:			3
-number episodes:		61
-episodes per season:		20.333333333333332
-average length of an episode:	22
-Total minutes:			1342
-Total hours:			22.366666666666667
-Where to watch:			Netflix
+number episodes:		24
+episodes per season:		8.0
+average length of an episode:	44
+Total minutes:			1056
+Total hours:			17.6
+Where to watch:			Disney+
 
-Season: 3
-Episode: 5
+Season: 1
+Episode: 6
 
 	How would you like to print the stats?
 1	-	By start year
@@ -702,6 +713,7 @@ sorting by start year...
 |Chernobyl                        |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    2019    |Chernobyl                        |
 |The Mandalorian                  |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    2019    |The Mandalorian                  |
 |Bless the Harts                  |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    2019    |Bless the Harts                  |
+|What We Do In The Shadows        |    2019    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    2019    |What We Do In The Shadows        |
 |Solar Opposites                  |    2020    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    2020    |Solar Opposites                  |
 |Wandavision                      |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |Wandavision                      |
 |The Falcon and the Winter Soldier|    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    2021    |The Falcon and the Winter Soldier|
@@ -779,6 +791,7 @@ sorting by start year...
 |Chernobyl                        |    2019    |
 |The Mandalorian                  |    2019    |
 |Bless the Harts                  |    2019    |
+|What We Do In The Shadows        |    2019    |
 |Solar Opposites                  |    2020    |
 |Wandavision                      |    2021    |
 |The Falcon and the Winter Soldier|    2021    |
@@ -788,12 +801,12 @@ sorting by start year...
 |The Great North                  |    2021    |
 ################################################
 
-Mean:		2009.39
-Median:		2009.50
-Pstdev:		  7.97
-Pvariance:	 63.49
-Stdev:		  8.04
-Variance:	 64.64
+Mean:		2009.56
+Median:		2010.00
+Pstdev:		  8.00
+Pvariance:	 63.97
+Stdev:		  8.07
+Variance:	 65.11
 
 	How would you like to print the stats?
 1	-	By start year
@@ -863,6 +876,7 @@ sorting by end year...
 |Letterkenny                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |   2022   |Letterkenny                      |
 |The Orville                      |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |   2022   |The Orville                      |
 |Bless the Harts                  |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |   2022   |Bless the Harts                  |
+|What We Do In The Shadows        |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |   2022   |What We Do In The Shadows        |
 |Solar Opposites                  |   2022   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   2022   |Solar Opposites                  |
 |The Simpsons                     |   2023   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   2023   |The Simpsons                     |
 |Family Guy                       |   2023   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   2023   |Family Guy                       |
@@ -940,6 +954,7 @@ sorting by end year...
 |Letterkenny                      |   2022   |
 |The Orville                      |   2022   |
 |Bless the Harts                  |   2022   |
+|What We Do In The Shadows        |   2022   |
 |Solar Opposites                  |   2022   |
 |The Simpsons                     |   2023   |
 |Family Guy                       |   2023   |
@@ -949,12 +964,12 @@ sorting by end year...
 |The Great North                  |   2023   |
 ##############################################
 
-Mean:		2016.29
-Median:		2018.50
+Mean:		2016.39
+Median:		2019.00
 Pstdev:		  5.90
-Pvariance:	 34.85
-Stdev:		  5.96
-Variance:	 35.48
+Pvariance:	 34.80
+Stdev:		  5.95
+Variance:	 35.42
 
 	How would you like to print the stats?
 1	-	By start year
@@ -992,6 +1007,7 @@ sorting by shortest series length...
 |The Last Man on Earth            |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |             3              |The Last Man on Earth            |
 |Baskets                          |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3              |Baskets                          |
 |Bless the Harts                  |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |             3              |Bless the Harts                  |
+|What We Do In The Shadows        |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |             3              |What We Do In The Shadows        |
 |Recess                           |             4              |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |Recess                           |
 |The Proud Family                 |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |The Proud Family                 |
 |My Name is Earl                  |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |My Name is Earl                  |
@@ -1069,6 +1085,7 @@ sorting by shortest series length...
 |The Last Man on Earth            |             3              |
 |Baskets                          |             3              |
 |Bless the Harts                  |             3              |
+|What We Do In The Shadows        |             3              |
 |Recess                           |             4              |
 |The Proud Family                 |             4              |
 |My Name is Earl                  |             4              |
@@ -1110,12 +1127,12 @@ sorting by shortest series length...
 |The Simpsons                     |             34             |
 ################################################################
 
-Mean:		  7.00
+Mean:		  6.93
 Median:		  5.00
-Pstdev:		  6.46
-Pvariance:	 41.75
-Stdev:		  6.52
-Variance:	 42.51
+Pstdev:		  6.43
+Pvariance:	 41.29
+Stdev:		  6.48
+Variance:	 42.03
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1180,6 +1197,7 @@ sorting by longest series length...
 |The Last Man on Earth            |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |             3             |The Last Man on Earth            |
 |Baskets                          |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |             3             |Baskets                          |
 |Bless the Harts                  |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |             3             |Bless the Harts                  |
+|What We Do In The Shadows        |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |             3             |What We Do In The Shadows        |
 |Final Space                      |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |             2             |Final Space                      |
 |Solar Opposites                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |             2             |Solar Opposites                  |
 |The Great North                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|             2             |The Great North                  |
@@ -1257,6 +1275,7 @@ sorting by longest series length...
 |The Last Man on Earth            |             3             |
 |Baskets                          |             3             |
 |Bless the Harts                  |             3             |
+|What We Do In The Shadows        |             3             |
 |Final Space                      |             2             |
 |Solar Opposites                  |             2             |
 |The Great North                  |             2             |
@@ -1271,12 +1290,12 @@ sorting by longest series length...
 |Hawkeye                          |             1             |
 ###############################################################
 
-Mean:		  7.00
+Mean:		  6.93
 Median:		  5.00
-Pstdev:		  6.46
-Pvariance:	 41.75
-Stdev:		  6.52
-Variance:	 42.51
+Pstdev:		  6.43
+Pvariance:	 41.29
+Stdev:		  6.48
+Variance:	 42.03
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1322,6 +1341,7 @@ sorting by least number of seasons...
 |Mr. Robot                        |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          4           |Mr. Robot                        |
 |The Last Man on Earth            |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |          4           |The Last Man on Earth            |
 |Baskets                          |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          4           |Baskets                          |
+|What We Do In The Shadows        |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          4           |What We Do In The Shadows        |
 |Arrested Develpoment             |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          5           |Arrested Develpoment             |
 |Prison Break                     |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |          5           |Prison Break                     |
 |Yu-Gi-Oh!                        |          5           |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          5           |Yu-Gi-Oh!                        |
@@ -1399,6 +1419,7 @@ sorting by least number of seasons...
 |Mr. Robot                        |          4           |
 |The Last Man on Earth            |          4           |
 |Baskets                          |          4           |
+|What We Do In The Shadows        |          4           |
 |Arrested Develpoment             |          5           |
 |Prison Break                     |          5           |
 |Yu-Gi-Oh!                        |          5           |
@@ -1432,12 +1453,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          34          |
 ##########################################################
 
-Mean:		  6.11
+Mean:		  6.07
 Median:		  5.00
-Pstdev:		  5.57
-Pvariance:	 31.06
-Stdev:		  5.62
-Variance:	 31.62
+Pstdev:		  5.53
+Pvariance:	 30.59
+Stdev:		  5.58
+Variance:	 31.14
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1495,6 +1516,7 @@ sorting by most number of seasons...
 |Mr. Robot                        |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          4          |Mr. Robot                        |
 |The Last Man on Earth            |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |          4          |The Last Man on Earth            |
 |Baskets                          |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          4          |Baskets                          |
+|What We Do In The Shadows        |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          4          |What We Do In The Shadows        |
 |The Orville                      |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          3          |The Orville                      |
 |The Mandalorian                  |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|          3          |The Mandalorian                  |
 |Avatar, the Last Airbender       |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          3          |Avatar, the Last Airbender       |
@@ -1572,6 +1594,7 @@ sorting by most number of seasons...
 |Mr. Robot                        |          4          |
 |The Last Man on Earth            |          4          |
 |Baskets                          |          4          |
+|What We Do In The Shadows        |          4          |
 |The Orville                      |          3          |
 |The Mandalorian                  |          3          |
 |Avatar, the Last Airbender       |          3          |
@@ -1593,12 +1616,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  6.11
+Mean:		  6.07
 Median:		  5.00
-Pstdev:		  5.57
-Pvariance:	 31.06
-Stdev:		  5.62
-Variance:	 31.62
+Pstdev:		  5.53
+Pvariance:	 30.59
+Stdev:		  5.58
+Variance:	 31.14
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1640,6 +1663,7 @@ sorting by least number of episodes...
 |Misfits                          |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          37           |Misfits                          |
 |The Mick                         |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37           |The Mick                         |
 |Baskets                          |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          40           |Baskets                          |
+|What We Do In The Shadows        |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          40           |What We Do In The Shadows        |
 |Gravity Falls                    |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          40           |Gravity Falls                    |
 |Mr. Robot                        |          45           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          45           |Mr. Robot                        |
 |Better Call Saul                 |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          50           |Better Call Saul                 |
@@ -1717,6 +1741,7 @@ sorting by least number of episodes...
 |Misfits                          |          37           |
 |The Mick                         |          37           |
 |Baskets                          |          40           |
+|What We Do In The Shadows        |          40           |
 |Gravity Falls                    |          40           |
 |Mr. Robot                        |          45           |
 |Better Call Saul                 |          50           |
@@ -1754,12 +1779,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          750          |
 ###########################################################
 
-Mean:		 96.66
-Median:		 61.50
-Pstdev:		119.44
-Pvariance:	14265.94
-Stdev:		120.52
-Variance:	14525.32
+Mean:		 95.67
+Median:		 61.00
+Pstdev:		118.62
+Pvariance:	14070.99
+Stdev:		119.68
+Variance:	14322.26
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1815,6 +1840,7 @@ sorting by most number of episodes...
 |Better Call Saul                 |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          50          |Better Call Saul                 |
 |Mr. Robot                        |          45          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          45          |Mr. Robot                        |
 |Baskets                          |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          40          |Baskets                          |
+|What We Do In The Shadows        |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          40          |What We Do In The Shadows        |
 |Gravity Falls                    |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          40          |Gravity Falls                    |
 |Misfits                          |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          37          |Misfits                          |
 |The Mick                         |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37          |The Mick                         |
@@ -1892,6 +1918,7 @@ sorting by most number of episodes...
 |Better Call Saul                 |          50          |
 |Mr. Robot                        |          45          |
 |Baskets                          |          40          |
+|What We Do In The Shadows        |          40          |
 |Gravity Falls                    |          40          |
 |Misfits                          |          37          |
 |The Mick                         |          37          |
@@ -1915,12 +1942,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		 96.66
-Median:		 61.50
-Pstdev:		119.44
-Pvariance:	14265.94
-Stdev:		120.52
-Variance:	14525.32
+Mean:		 95.67
+Median:		 61.00
+Pstdev:		118.62
+Pvariance:	14070.99
+Stdev:		119.68
+Variance:	14322.26
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1957,6 +1984,7 @@ sorting by shortest time...
 |The Mick                         |   13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |   13.566667   |The Mick                         |
 |Baskets                          |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |   14.666667   |Baskets                          |
 |Gravity Falls                    |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |   14.666667   |Gravity Falls                    |
+|What We Do In The Shadows        |   15.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |   15.333333   |What We Do In The Shadows        |
 |The Mandalorian                  |   17.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|   17.600000   |The Mandalorian                  |
 |Silicon Valley                   |   19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |   19.433333   |Silicon Valley                   |
 |Sherlock                         |   19.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |   19.500000   |Sherlock                         |
@@ -2034,6 +2062,7 @@ sorting by shortest time...
 |The Mick                         |   13.566667   |
 |Baskets                          |   14.666667   |
 |Gravity Falls                    |   14.666667   |
+|What We Do In The Shadows        |   15.333333   |
 |The Mandalorian                  |   17.600000   |
 |Silicon Valley                   |   19.433333   |
 |Sherlock                         |   19.500000   |
@@ -2076,12 +2105,12 @@ sorting by shortest time...
 |The Simpsons                     |     300.0     |
 ###################################################
 
-Mean:		 46.03
-Median:		 26.77
-Pstdev:		 53.74
-Pvariance:	2887.89
-Stdev:		 54.23
-Variance:	2940.40
+Mean:		 45.49
+Median:		 26.40
+Pstdev:		 53.42
+Pvariance:	2853.46
+Stdev:		 53.89
+Variance:	2904.42
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2142,6 +2171,7 @@ sorting by longest time...
 |Sherlock                         |  19.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |  19.500000   |Sherlock                         |
 |Silicon Valley                   |  19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |  19.433333   |Silicon Valley                   |
 |The Mandalorian                  |  17.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|  17.600000   |The Mandalorian                  |
+|What We Do In The Shadows        |  15.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |  15.333333   |What We Do In The Shadows        |
 |Baskets                          |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |  14.666667   |Baskets                          |
 |Gravity Falls                    |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |  14.666667   |Gravity Falls                    |
 |The Mick                         |  13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |  13.566667   |The Mick                         |
@@ -2219,6 +2249,7 @@ sorting by longest time...
 |Sherlock                         |  19.500000   |
 |Silicon Valley                   |  19.433333   |
 |The Mandalorian                  |  17.600000   |
+|What We Do In The Shadows        |  15.333333   |
 |Baskets                          |  14.666667   |
 |Gravity Falls                    |  14.666667   |
 |The Mick                         |  13.566667   |
@@ -2237,12 +2268,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 46.03
-Median:		 26.77
-Pstdev:		 53.74
-Pvariance:	2887.89
-Stdev:		 54.23
-Variance:	2940.40
+Mean:		 45.49
+Median:		 26.40
+Pstdev:		 53.42
+Pvariance:	2853.46
+Stdev:		 53.89
+Variance:	2904.42
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2301,6 +2332,7 @@ sorting by most episodes per season...
 |It's Always Sunny in Philadelphia|        10.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        10.800000         |It's Always Sunny in Philadelphia|
 |Curb your Enthusiasm             |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |           10.0           |Curb your Enthusiasm             |
 |Better Call Saul                 |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0           |Better Call Saul                 |
+|What We Do In The Shadows        |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |           10.0           |What We Do In The Shadows        |
 |Baskets                          |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |           10.0           |Baskets                          |
 |Solar Opposites                  |         9.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |         9.333333         |Solar Opposites                  |
 |Game of Thrones                  |         9.125000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         9.125000         |Game of Thrones                  |
@@ -2378,6 +2410,7 @@ sorting by most episodes per season...
 |It's Always Sunny in Philadelphia|        10.800000         |
 |Curb your Enthusiasm             |           10.0           |
 |Better Call Saul                 |           10.0           |
+|What We Do In The Shadows        |           10.0           |
 |Baskets                          |           10.0           |
 |Solar Opposites                  |         9.333333         |
 |Game of Thrones                  |         9.125000         |
@@ -2398,12 +2431,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.51
-Median:		 12.77
-Pstdev:		  7.40
-Pvariance:	 54.77
-Stdev:		  7.47
-Variance:	 55.77
+Mean:		 14.43
+Median:		 12.40
+Pstdev:		  7.36
+Pvariance:	 54.16
+Stdev:		  7.43
+Variance:	 55.13
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2443,6 +2476,7 @@ sorting by least episodes per season...
 |Solar Opposites                  |         9.333333          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |         9.333333          |Solar Opposites                  |
 |Curb your Enthusiasm             |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |           10.0            |Curb your Enthusiasm             |
 |Better Call Saul                 |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0            |Better Call Saul                 |
+|What We Do In The Shadows        |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |           10.0            |What We Do In The Shadows        |
 |Baskets                          |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |           10.0            |Baskets                          |
 |It's Always Sunny in Philadelphia|         10.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         10.800000         |It's Always Sunny in Philadelphia|
 |Mr. Robot                        |         11.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |         11.250000         |Mr. Robot                        |
@@ -2520,6 +2554,7 @@ sorting by least episodes per season...
 |Solar Opposites                  |         9.333333          |
 |Curb your Enthusiasm             |           10.0            |
 |Better Call Saul                 |           10.0            |
+|What We Do In The Shadows        |           10.0            |
 |Baskets                          |           10.0            |
 |It's Always Sunny in Philadelphia|         10.800000         |
 |Mr. Robot                        |         11.250000         |
@@ -2559,14 +2594,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.51
-Median:		 12.77
-Pstdev:		  7.40
-Pvariance:	 54.77
-Stdev:		  7.47
-Variance:	 55.77
+Mean:		 14.43
+Median:		 12.40
+Pstdev:		  7.36
+Pvariance:	 54.16
+Stdev:		  7.43
+Variance:	 55.13
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 4  | 5  | 8  | 10 | 13 | 12 | 13 | 12 | 17 | 18 | 16 | 18 | 20 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 21 | 15 | 17 | 10 | 6  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 4  | 5  | 8  | 10 | 13 | 12 | 13 | 12 | 17 | 18 | 16 | 18 | 20 | 19 | 21 | 23 | 25 | 22 | 23 | 22 | 23 | 21 | 22 | 16 | 18 | 11 | 6  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################
