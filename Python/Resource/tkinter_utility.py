@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.42
-    Date...........2023-04-20
+    Version..............1.43
+    Date...........2023-04-25
     Author(s)....Avery Briggs
     """
 
@@ -1704,7 +1704,7 @@ class MultiComboBox(tkinter.Frame):
 
     def __init__(self, master, data, viewable_column_names=None, height_in_rows=10, indexable_column=0, tv_label=None,
                  kwargs_label=None, tv_combo=None, kwargs_combo=None, auto_grid=True, limit_to_list=True,
-                 new_entry_defaults=None, lock_result_col=None, allow_insert_ask=True):
+                 new_entry_defaults=None, lock_result_col=None, allow_insert_ask=True, viewable_column_widths=None):
         super().__init__(master)
 
         assert isinstance(data,
@@ -1763,9 +1763,16 @@ class MultiComboBox(tkinter.Frame):
 
         # print(f"{data.shape=}")
         # print(f"{data=}")
-        self.tree_controller = treeview_factory(self.frame_tree, data, kwargs_treeview={"selectmode": "browse",
-                                                                                        "height": height_in_rows},
-                                                viewable_column_names=viewable_column_names)
+        self.tree_controller = treeview_factory(
+            self.frame_tree,
+            data,
+            kwargs_treeview={
+                "selectmode": "browse",
+                "height": height_in_rows
+            },
+            viewable_column_names=viewable_column_names,
+            viewable_column_widths=viewable_column_widths
+        )
         self.tree_controller, \
             self.tree_tv_label, \
             self.tree_label, \
