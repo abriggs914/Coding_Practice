@@ -10,8 +10,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.27
-    Date...........2023-02-27
+    Version..............1.28
+    Date...........2023-04-27
     Author(s)....Avery Briggs
     """
 
@@ -25,11 +25,13 @@ def VERSION_NUMBER():
 
 
 def VERSION_DATE():
-    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(), "%Y-%m-%d")
+    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(),
+                                      "%Y-%m-%d")
 
 
 def VERSION_AUTHORS():
-    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if w.strip()]
+    return [w.removeprefix(".").strip().title() for w in VERSION.lower().split("author(s)")[-1].split("..") if
+            w.strip()]
 
 
 #######################################################################################################################
@@ -68,25 +70,20 @@ ANTIQUEWHITE_1 = (255, 239, 219)
 ANTIQUEWHITE_2 = (238, 223, 204)
 ANTIQUEWHITE_3 = (205, 192, 176)
 ANTIQUEWHITE_4 = (139, 131, 120)
-AQUAMARINE_1__AQUAMARINE_ = (127, 255, 212)
+AQUA = (0, 254, 254)
 AQUAMARINE_2 = (118, 238, 198)
-AQUAMARINE_3__MEDIUMAQUAMARINE_ = (102, 205, 170)
 AQUAMARINE_4 = (69, 139, 116)
-AZURE_1__AZURE_ = (240, 255, 255)
 AZURE_2 = (224, 238, 238)
 AZURE_3 = (193, 205, 205)
 AZURE_4 = (131, 139, 139)
 BANANA = (227, 207, 87)
 BEIGE = (245, 245, 220)
-BISQUE_1__BISQUE_ = (255, 228, 196)
 BISQUE_2 = (238, 213, 183)
 BISQUE_3 = (205, 183, 158)
 BISQUE_4 = (139, 125, 107)
 BLANCHEDALMOND = (255, 235, 205)
 BLUEVIOLET = (138, 43, 226)
 BLUE_2 = (0, 0, 238)
-BLUE_3__MEDIUMBLUE_ = (0, 0, 205)
-BLUE_4__DARKBLUE_ = (0, 0, 139)
 BRICK = (156, 102, 31)
 BROWN = (165, 42, 42)
 BROWN_1 = (255, 64, 64)
@@ -108,7 +105,6 @@ CADETBLUE_4 = (83, 134, 139)
 CADMIUMORANGE = (255, 97, 3)
 CADMIUMYELLOW = (255, 153, 18)
 CARROT = (237, 145, 33)
-CHARTREUSE_1__CHARTREUSE_ = (127, 255, 0)
 CHARTREUSE_2 = (118, 238, 0)
 CHARTREUSE_3 = (102, 205, 0)
 CHARTREUSE_4 = (69, 139, 0)
@@ -116,7 +112,6 @@ CHOCOLATE = (210, 105, 30)
 CHOCOLATE_1 = (255, 127, 36)
 CHOCOLATE_2 = (238, 118, 33)
 CHOCOLATE_3 = (205, 102, 29)
-CHOCOLATE_4__SADDLEBROWN_ = (139, 69, 19)
 COBALT = (61, 89, 171)
 COBALTGREEN = (61, 145, 64)
 COLDGREY = (128, 138, 135)
@@ -126,16 +121,13 @@ CORAL_2 = (238, 106, 80)
 CORAL_3 = (205, 91, 69)
 CORAL_4 = (139, 62, 47)
 CORNFLOWERBLUE = (100, 149, 237)
-CORNSILK_1__CORNSILK_ = (255, 248, 220)
 CORNSILK_2 = (238, 232, 205)
 CORNSILK_3 = (205, 200, 177)
 CORNSILK_4 = (139, 136, 120)
 CRIMSON = (220, 20, 60)
-CYAN__AQUA = (0, 255, 255)
 CYAN = (0, 255, 255)
 CYAN_2 = (0, 238, 238)
 CYAN_3 = (0, 205, 205)
-CYAN_4__DARKCYAN_ = (0, 139, 139)
 DARKGOLDENROD = (184, 134, 11)
 DARKGOLDENROD_1 = (255, 185, 15)
 DARKGOLDENROD_2 = (238, 173, 14)
@@ -173,16 +165,12 @@ DARKSLATEGRAY_3 = (121, 205, 205)
 DARKSLATEGRAY_4 = (82, 139, 139)
 DARKTURQUOISE = (0, 206, 209)
 DARKVIOLET = (148, 0, 211)
-DEEPPINK_1__DEEPPINK_ = (255, 20, 147)
 DEEPPINK_2 = (238, 18, 137)
 DEEPPINK_3 = (205, 16, 118)
 DEEPPINK_4 = (139, 10, 80)
-DEEPSKYBLUE_1__DEEPSKYBLUE_ = (0, 191, 255)
 DEEPSKYBLUE_2 = (0, 178, 238)
 DEEPSKYBLUE_3 = (0, 154, 205)
 DEEPSKYBLUE_4 = (0, 104, 139)
-DIMGRAY__GRAY_42_ = (105, 105, 105)
-DODGERBLUE_1__DODGERBLUE_ = (30, 144, 255)
 DODGERBLUE_2 = (28, 134, 238)
 DODGERBLUE_3 = (24, 116, 205)
 DODGERBLUE_4 = (16, 78, 139)
@@ -203,7 +191,6 @@ GOLDENROD_1 = (255, 193, 37)
 GOLDENROD_2 = (238, 180, 34)
 GOLDENROD_3 = (205, 155, 29)
 GOLDENROD_4 = (139, 105, 20)
-GOLD_1__GOLD_ = (255, 215, 0)
 GOLD_2 = (238, 201, 0)
 GOLD_3 = (205, 173, 0)
 GOLD_4 = (139, 117, 0)
@@ -227,7 +214,7 @@ GRAY_23 = (59, 59, 59)
 GRAY_24 = (61, 61, 61)
 GRAY_25 = (64, 64, 64)
 GRAY_26 = (66, 66, 66)
-GRAY_27 = (69, 69, 69)
+GRAY_27 = (69, 69, 68)
 GRAY_28 = (71, 71, 71)
 GRAY_29 = (74, 74, 74)
 GRAY_3 = (8, 8, 8)
@@ -247,7 +234,7 @@ GRAY_42 = (107, 107, 107)
 GRAY_43 = (110, 110, 110)
 GRAY_44 = (112, 112, 112)
 GRAY_45 = (115, 115, 115)
-GRAY_46 = (117, 117, 117)
+GRAY_46 = (117, 117, 116)
 GRAY_47 = (120, 120, 120)
 GRAY_48 = (122, 122, 122)
 GRAY_49 = (125, 125, 125)
@@ -306,11 +293,10 @@ GRAY_97 = (247, 247, 247)
 GRAY_98 = (250, 250, 250)
 GRAY_99 = (252, 252, 252)
 GREENYELLOW = (173, 255, 47)
-GREEN_1__LIME_ = (0, 255, 0)
+GREEN_1__LIME_ = (0, 240, 0)
 GREEN_2 = (0, 238, 0)
 GREEN_3 = (0, 205, 0)
 GREEN_4 = (0, 139, 0)
-HONEYDEW_1__HONEYDEW_ = (240, 255, 240)
 HONEYDEW_2 = (224, 238, 224)
 HONEYDEW_3 = (193, 205, 193)
 HONEYDEW_4 = (131, 139, 131)
@@ -327,7 +313,6 @@ INDIANRED_4 = (139, 58, 58)
 INDIAN_RED = (176, 23, 31)
 INDIGO = (75, 0, 130)
 IVORYBLACK = (41, 36, 33)
-IVORY_1__IVORY_ = (255, 255, 240)
 IVORY_2 = (238, 238, 224)
 IVORY_3 = (205, 205, 193)
 IVORY_4 = (139, 139, 131)
@@ -337,12 +322,10 @@ KHAKI_2 = (238, 230, 133)
 KHAKI_3 = (205, 198, 115)
 KHAKI_4 = (139, 134, 78)
 LAVENDER = (230, 230, 250)
-LAVENDERBLUSH_1__LAVENDERBLUSH_ = (255, 240, 245)
 LAVENDERBLUSH_2 = (238, 224, 229)
 LAVENDERBLUSH_3 = (205, 193, 197)
 LAVENDERBLUSH_4 = (139, 131, 134)
 LAWNGREEN = (124, 252, 0)
-LEMONCHIFFON_1__LEMONCHIFFON_ = (255, 250, 205)
 LEMONCHIFFON_2 = (238, 233, 191)
 LEMONCHIFFON_3 = (205, 201, 165)
 LEMONCHIFFON_4 = (139, 137, 112)
@@ -352,7 +335,6 @@ LIGHTBLUE_2 = (178, 223, 238)
 LIGHTBLUE_3 = (154, 192, 205)
 LIGHTBLUE_4 = (104, 131, 139)
 LIGHTCORAL = (240, 128, 128)
-LIGHTCYAN_1__LIGHTCYAN_ = (224, 255, 255)
 LIGHTCYAN_2 = (209, 238, 238)
 LIGHTCYAN_3 = (180, 205, 205)
 LIGHTCYAN_4 = (122, 139, 139)
@@ -367,7 +349,6 @@ LIGHTPINK_1 = (255, 174, 185)
 LIGHTPINK_2 = (238, 162, 173)
 LIGHTPINK_3 = (205, 140, 149)
 LIGHTPINK_4 = (139, 95, 101)
-LIGHTSALMON_1__LIGHTSALMON_ = (255, 160, 122)
 LIGHTSALMON_2 = (238, 149, 114)
 LIGHTSALMON_3 = (205, 129, 98)
 LIGHTSALMON_4 = (139, 87, 66)
@@ -384,7 +365,6 @@ LIGHTSTEELBLUE_1 = (202, 225, 255)
 LIGHTSTEELBLUE_2 = (188, 210, 238)
 LIGHTSTEELBLUE_3 = (162, 181, 205)
 LIGHTSTEELBLUE_4 = (110, 123, 139)
-LIGHTYELLOW_1__LIGHTYELLOW_ = (255, 255, 224)
 LIGHTYELLOW_2 = (238, 238, 209)
 LIGHTYELLOW_3 = (205, 205, 180)
 LIGHTYELLOW_4 = (139, 139, 122)
@@ -393,8 +373,6 @@ LINEN = (250, 240, 230)
 MAGENTA = (255, 0, 255)
 MAGENTA_2 = (238, 0, 238)
 MAGENTA_3 = (205, 0, 205)
-MAGENTA_4__DARKMAGENTA_ = (139, 0, 139)
-MAGENTA__FUCHSIA_ = (255, 0, 255)
 MANGANESEBLUE = (3, 168, 158)
 MAROON = (128, 0, 0)
 MAROON_1 = (255, 52, 179)
@@ -420,12 +398,10 @@ MELON = (227, 168, 105)
 MIDNIGHTBLUE = (25, 25, 112)
 MINT = (189, 252, 201)
 MINTCREAM = (245, 255, 250)
-MISTYROSE_1__MISTYROSE_ = (255, 228, 225)
 MISTYROSE_2 = (238, 213, 210)
 MISTYROSE_3 = (205, 183, 181)
 MISTYROSE_4 = (139, 125, 123)
 MOCCASIN = (255, 228, 181)
-NAVAJOWHITE_1__NAVAJOWHITE_ = (255, 222, 173)
 NAVAJOWHITE_2 = (238, 207, 161)
 NAVAJOWHITE_3 = (205, 179, 139)
 NAVAJOWHITE_4 = (139, 121, 94)
@@ -435,10 +411,8 @@ OLIVE = (128, 128, 0)
 OLIVEDRAB = (107, 142, 35)
 OLIVEDRAB_1 = (192, 255, 62)
 OLIVEDRAB_2 = (179, 238, 58)
-OLIVEDRAB_3__YELLOWGREEN_ = (154, 205, 50)
 OLIVEDRAB_4 = (105, 139, 34)
 ORANGE = (255, 128, 0)
-ORANGERED_1__ORANGERED_ = (255, 69, 0)
 ORANGERED_2 = (238, 64, 0)
 ORANGERED_3 = (205, 55, 0)
 ORANGERED_4 = (139, 37, 0)
@@ -454,7 +428,6 @@ ORCHID_4 = (139, 71, 137)
 PALEGOLDENROD = (238, 232, 170)
 PALEGREEN = (152, 251, 152)
 PALEGREEN_1 = (154, 255, 154)
-PALEGREEN_2__LIGHTGREEN_ = (144, 238, 144)
 PALEGREEN_3 = (124, 205, 124)
 PALEGREEN_4 = (84, 139, 84)
 PALETURQUOISE_1 = (187, 255, 255)
@@ -467,7 +440,6 @@ PALEVIOLETRED_2 = (238, 121, 159)
 PALEVIOLETRED_3 = (205, 104, 137)
 PALEVIOLETRED_4 = (139, 71, 93)
 PAPAYAWHIP = (255, 239, 213)
-PEACHPUFF_1__PEACHPUFF_ = (255, 218, 185)
 PEACHPUFF_2 = (238, 203, 173)
 PEACHPUFF_3 = (205, 175, 149)
 PEACHPUFF_4 = (139, 119, 101)
@@ -490,10 +462,8 @@ PURPLE_3 = (125, 38, 205)
 PURPLE_4 = (85, 26, 139)
 RASPBERRY = (135, 38, 87)
 RAWSIENNA = (199, 97, 20)
-RED_1__RED_ = (255, 0, 0)
 RED_2 = (238, 0, 0)
 RED_3 = (205, 0, 0)
-RED_4__DARKRED_ = (139, 0, 0)
 ROSYBROWN = (188, 143, 143)
 ROSYBROWN_1 = (255, 193, 193)
 ROSYBROWN_2 = (238, 180, 180)
@@ -514,8 +484,6 @@ SAPGREEN = (48, 128, 20)
 SEAGREEN_1 = (84, 255, 159)
 SEAGREEN_2 = (78, 238, 148)
 SEAGREEN_3 = (67, 205, 128)
-SEAGREEN_4__SEAGREEN_ = (46, 139, 87)
-SEASHELL_1__SEASHELL_ = (255, 245, 238)
 SEASHELL_2 = (238, 229, 222)
 SEASHELL_3 = (205, 197, 191)
 SEASHELL_4 = (139, 134, 130)
@@ -561,7 +529,6 @@ SLATEGRAY_1 = (198, 226, 255)
 SLATEGRAY_2 = (185, 211, 238)
 SLATEGRAY_3 = (159, 182, 205)
 SLATEGRAY_4 = (108, 123, 139)
-SNOW_1__SNOW_ = (255, 250, 250)
 SNOW_2 = (238, 233, 233)
 SNOW_3 = (205, 201, 201)
 SNOW_4 = (139, 137, 137)
@@ -577,7 +544,6 @@ STEELBLUE_4 = (54, 100, 139)
 TAN = (210, 180, 140)
 TAN_1 = (255, 165, 79)
 TAN_2 = (238, 154, 73)
-TAN_3__PERU_ = (205, 133, 63)
 TAN_4 = (139, 90, 43)
 TEAL = (0, 128, 128)
 THISTLE = (216, 191, 216)
@@ -585,7 +551,6 @@ THISTLE_1 = (255, 225, 255)
 THISTLE_2 = (238, 210, 238)
 THISTLE_3 = (205, 181, 205)
 THISTLE_4 = (139, 123, 139)
-TOMATO_1__TOMATO_ = (255, 99, 71)
 TOMATO_2 = (238, 92, 66)
 TOMATO_3 = (205, 79, 57)
 TOMATO_4 = (139, 54, 38)
@@ -607,8 +572,6 @@ WHEAT_1 = (255, 231, 186)
 WHEAT_2 = (238, 216, 174)
 WHEAT_3 = (205, 186, 150)
 WHEAT_4 = (139, 126, 102)
-WHITE_SMOKE__GRAY_96_ = (245, 245, 245)
-YELLOW_1__YELLOW_ = (255, 255, 0)
 YELLOW_2 = (238, 238, 0)
 YELLOW_3 = (205, 205, 0)
 YELLOW_4 = (139, 139, 0)
@@ -635,22 +598,17 @@ ALIEN_GRAY = (115, 111, 110)
 SONIC_SILVER = (117, 117, 117)
 PLATINUM_GRAY = (121, 121, 121)
 GRANITE = (131, 126, 124)
-GRAY_OR_GREY = (128, 128, 128)
 BATTLESHIP_GRAY = (132, 132, 130)
 GUNMETAL_GRAY = (141, 145, 141)
-DARKGRAY_OR_DARKGREY = (169, 169, 169)
 GRAY_CLOUD = (182, 182, 180)
 PALE_SILVER = (201, 192, 187)
 GRAY_GOOSE = (209, 208, 206)
 PLATINUM_SILVER = (206, 206, 206)
-LIGHTGRAY_OR_LIGHTGREY = (211, 211, 211)
 SILVER_WHITE = (218, 219, 221)
 PLATINUM = (229, 228, 226)
 METALLIC_SILVER = (188, 198, 204)
 BLUE_GRAY = (152, 175, 199)
 ROMAN_SILVER = (131, 137, 150)
-LIGHTSLATEGRAY_OR_LIGHTSLATEGREY = (119, 136, 153)
-SLATEGRAY_OR_SLATEGREY = (112, 128, 144)
 RAT_GRAY = (109, 123, 141)
 SLATE_GRANITE_GRAY = (101, 115, 131)
 JET_GRAY = (97, 109, 126)
@@ -720,7 +678,6 @@ LIGHT_SLATE = (204, 255, 255)
 ELECTRIC_BLUE = (154, 254, 255)
 TRON_BLUE = (125, 253, 254)
 BLUE_ZIRCON = (87, 254, 255)
-AQUA_OR_CYAN = (0, 255, 255)
 BRIGHT_CYAN = (10, 255, 255)
 CELESTE = (80, 235, 236)
 BLUE_DIAMOND = (78, 226, 236)
@@ -827,7 +784,7 @@ NEON_GREEN = (22, 245, 41)
 JADE_GREEN = (94, 251, 110)
 LIME_MINT_GREEN = (54, 245, 127)
 EMERALD_GREEN = (95, 251, 23)
-LIME = (0, 255, 0)
+LIME = (0, 250, 0)
 BRIGHT_GREEN = (102, 255, 0)
 CHARTREUSE = (127, 255, 0)
 YELLOW_LAWN_GREEN = (135, 247, 23)
@@ -1019,7 +976,7 @@ PURPLE_LILY = (85, 10, 53)
 PURPLE_MAROON = (129, 5, 65)
 PLUM_PIE = (125, 5, 65)
 PLUM_VELVET = (125, 5, 82)
-DARK_RASPBERRY = (135, 38, 87)
+DARK_RASPBERRY = (130, 37, 86)
 VELVET_MAROON = (126, 53, 77)
 ROSY_FINCH = (127, 78, 82)
 DULL_PURPLE = (127, 82, 93)
@@ -1089,9 +1046,9 @@ DARK_CARNATION_PINK = (193, 34, 131)
 RASPBERRY_PURPLE = (179, 68, 108)
 PINK_PLUM = (185, 59, 143)
 DEEP_MAUVE = (223, 115, 212)
+FUCHSIA = (254, 118, 254)
 FUCHSIA_PINK = (255, 119, 255)
 BRIGHT_NEON_PINK = (244, 51, 255)
-FUCHSIA_OR_MAGENTA = (255, 0, 255)
 CRIMSON_PURPLE = (226, 56, 236)
 HELIOTROPE_PURPLE = (212, 98, 255)
 TYRIAN_PURPLE = (196, 90, 236)
@@ -1176,6 +1133,56 @@ SNOW = (255, 250, 250)
 MILK_WHITE = (254, 252, 255)
 HALF_WHITE = (255, 254, 250)
 
+
+# removed 2023-04-27 to ensure that COLOURS and COLOURS_INVERSE dictionaries are the same length.
+# AQUAMARINE_1__AQUAMARINE_ = (127, 255, 212)
+# AQUAMARINE_3__MEDIUMAQUAMARINE_ = (102, 205, 170)
+# AZURE_1__AZURE_ = (240, 255, 255)
+# BISQUE_1__BISQUE_ = (255, 228, 196)
+# BLUE_3__MEDIUMBLUE_ = (0, 0, 205)
+# BLUE_4__DARKBLUE_ = (0, 0, 139)
+# CHARTREUSE_1__CHARTREUSE_ = (127, 255, 0)
+# CHOCOLATE_4__SADDLEBROWN_ = (139, 69, 19)
+# CORNSILK_1__CORNSILK_ = (255, 248, 220)
+# CYAN__AQUA = (0, 255, 255)
+# CYAN_4__DARKCYAN_ = (0, 139, 139)
+# DEEPPINK_1__DEEPPINK_ = (255, 20, 147)
+# DEEPSKYBLUE_1__DEEPSKYBLUE_ = (0, 191, 255)
+# DIMGRAY__GRAY_42_ = (105, 105, 105)
+# DODGERBLUE_1__DODGERBLUE_ = (30, 144, 255)
+# GOLD_1__GOLD_ = (255, 215, 0)
+# HONEYDEW_1__HONEYDEW_ = (240, 255, 240)
+# IVORY_1__IVORY_ = (255, 255, 240)
+# LAVENDERBLUSH_1__LAVENDERBLUSH_ = (255, 240, 245)
+# LEMONCHIFFON_1__LEMONCHIFFON_ = (255, 250, 205)
+# LIGHTCYAN_1__LIGHTCYAN_ = (224, 255, 255)
+# LIGHTSALMON_1__LIGHTSALMON_ = (255, 160, 122)
+# LIGHTYELLOW_1__LIGHTYELLOW_ = (255, 255, 224)
+# MAGENTA_4__DARKMAGENTA_ = (139, 0, 139)
+# MAGENTA__FUCHSIA_ = (255, 0, 255)
+# MISTYROSE_1__MISTYROSE_ = (255, 228, 225)
+# NAVAJOWHITE_1__NAVAJOWHITE_ = (255, 222, 173)
+# OLIVEDRAB_3__YELLOWGREEN_ = (154, 205, 50)
+# ORANGERED_1__ORANGERED_ = (255, 69, 0)
+# PALEGREEN_2__LIGHTGREEN_ = (144, 238, 144)
+# PEACHPUFF_1__PEACHPUFF_ = (255, 218, 185)
+# RED_1__RED_ = (255, 0, 0)
+# RED_4__DARKRED_ = (139, 0, 0)
+# SEAGREEN_4__SEAGREEN_ = (46, 139, 87)
+# SEASHELL_1__SEASHELL_ = (255, 245, 238)
+# SNOW_1__SNOW_ = (255, 250, 250)
+# TAN_3__PERU_ = (205, 133, 63)
+# TOMATO_1__TOMATO_ = (255, 99, 71)
+# WHITE_SMOKE__GRAY_96_ = (245, 245, 245)
+# YELLOW_1__YELLOW_ = (255, 255, 0)
+# GRAY_OR_GREY = (128, 128, 128)
+# DARKGRAY_OR_DARKGREY = (169, 169, 169)
+# LIGHTGRAY_OR_LIGHTGREY = (211, 211, 211)
+# LIGHTSLATEGRAY_OR_LIGHTSLATEGREY = (119, 136, 153)
+# SLATEGRAY_OR_SLATEGREY = (112, 128, 144)
+# AQUA_OR_CYAN = (0, 255, 255)
+# FUCHSIA_OR_MAGENTA = (255, 0, 255)
+
 colour_values_list = [
     WILDERNESS_MINT,
     BWS_RED,
@@ -1195,17 +1202,14 @@ colour_values_list = [
     ANTIQUEWHITE_2,
     ANTIQUEWHITE_3,
     ANTIQUEWHITE_4,
-    AQUAMARINE_1__AQUAMARINE_,
+    AQUA,
     AQUAMARINE_2,
-    AQUAMARINE_3__MEDIUMAQUAMARINE_,
     AQUAMARINE_4,
-    AZURE_1__AZURE_,
     AZURE_2,
     AZURE_3,
     AZURE_4,
     BANANA,
     BEIGE,
-    BISQUE_1__BISQUE_,
     BISQUE_2,
     BISQUE_3,
     BISQUE_4,
@@ -1214,8 +1218,6 @@ colour_values_list = [
     BLUE,
     BLUEVIOLET,
     BLUE_2,
-    BLUE_3__MEDIUMBLUE_,
-    BLUE_4__DARKBLUE_,
     BRICK,
     BROWN,
     BROWN_1,
@@ -1237,7 +1239,6 @@ colour_values_list = [
     CADMIUMORANGE,
     CADMIUMYELLOW,
     CARROT,
-    CHARTREUSE_1__CHARTREUSE_,
     CHARTREUSE_2,
     CHARTREUSE_3,
     CHARTREUSE_4,
@@ -1245,7 +1246,6 @@ colour_values_list = [
     CHOCOLATE_1,
     CHOCOLATE_2,
     CHOCOLATE_3,
-    CHOCOLATE_4__SADDLEBROWN_,
     COBALT,
     COBALTGREEN,
     COLDGREY,
@@ -1255,7 +1255,6 @@ colour_values_list = [
     CORAL_3,
     CORAL_4,
     CORNFLOWERBLUE,
-    CORNSILK_1__CORNSILK_,
     CORNSILK_2,
     CORNSILK_3,
     CORNSILK_4,
@@ -1263,8 +1262,6 @@ colour_values_list = [
     CYAN,
     CYAN_2,
     CYAN_3,
-    CYAN_4__DARKCYAN_,
-    CYAN__AQUA,
     DARKGOLDENROD,
     DARKGOLDENROD_1,
     DARKGOLDENROD_2,
@@ -1302,17 +1299,12 @@ colour_values_list = [
     DARKSLATEGRAY_4,
     DARKTURQUOISE,
     DARKVIOLET,
-    DEEPPINK_1__DEEPPINK_,
     DEEPPINK_2,
     DEEPPINK_3,
     DEEPPINK_4,
-    DEEPSKYBLUE_1__DEEPSKYBLUE_,
     DEEPSKYBLUE_2,
     DEEPSKYBLUE_3,
     DEEPSKYBLUE_4,
-    DIMGRAY__GRAY_42_,
-    DIMGRAY__GRAY_42_,
-    DODGERBLUE_1__DODGERBLUE_,
     DODGERBLUE_2,
     DODGERBLUE_3,
     DODGERBLUE_4,
@@ -1333,7 +1325,6 @@ colour_values_list = [
     GOLDENROD_2,
     GOLDENROD_3,
     GOLDENROD_4,
-    GOLD_1__GOLD_,
     GOLD_2,
     GOLD_3,
     GOLD_4,
@@ -1441,7 +1432,6 @@ colour_values_list = [
     GREEN_2,
     GREEN_3,
     GREEN_4,
-    HONEYDEW_1__HONEYDEW_,
     HONEYDEW_2,
     HONEYDEW_3,
     HONEYDEW_4,
@@ -1458,7 +1448,6 @@ colour_values_list = [
     INDIAN_RED,
     INDIGO,
     IVORYBLACK,
-    IVORY_1__IVORY_,
     IVORY_2,
     IVORY_3,
     IVORY_4,
@@ -1468,12 +1457,10 @@ colour_values_list = [
     KHAKI_3,
     KHAKI_4,
     LAVENDER,
-    LAVENDERBLUSH_1__LAVENDERBLUSH_,
     LAVENDERBLUSH_2,
     LAVENDERBLUSH_3,
     LAVENDERBLUSH_4,
     LAWNGREEN,
-    LEMONCHIFFON_1__LEMONCHIFFON_,
     LEMONCHIFFON_2,
     LEMONCHIFFON_3,
     LEMONCHIFFON_4,
@@ -1483,7 +1470,6 @@ colour_values_list = [
     LIGHTBLUE_3,
     LIGHTBLUE_4,
     LIGHTCORAL,
-    LIGHTCYAN_1__LIGHTCYAN_,
     LIGHTCYAN_2,
     LIGHTCYAN_3,
     LIGHTCYAN_4,
@@ -1498,7 +1484,6 @@ colour_values_list = [
     LIGHTPINK_2,
     LIGHTPINK_3,
     LIGHTPINK_4,
-    LIGHTSALMON_1__LIGHTSALMON_,
     LIGHTSALMON_2,
     LIGHTSALMON_3,
     LIGHTSALMON_4,
@@ -1515,7 +1500,6 @@ colour_values_list = [
     LIGHTSTEELBLUE_2,
     LIGHTSTEELBLUE_3,
     LIGHTSTEELBLUE_4,
-    LIGHTYELLOW_1__LIGHTYELLOW_,
     LIGHTYELLOW_2,
     LIGHTYELLOW_3,
     LIGHTYELLOW_4,
@@ -1524,8 +1508,6 @@ colour_values_list = [
     MAGENTA,
     MAGENTA_2,
     MAGENTA_3,
-    MAGENTA_4__DARKMAGENTA_,
-    MAGENTA__FUCHSIA_,
     MANGANESEBLUE,
     MAROON,
     MAROON_1,
@@ -1551,12 +1533,10 @@ colour_values_list = [
     MIDNIGHTBLUE,
     MINT,
     MINTCREAM,
-    MISTYROSE_1__MISTYROSE_,
     MISTYROSE_2,
     MISTYROSE_3,
     MISTYROSE_4,
     MOCCASIN,
-    NAVAJOWHITE_1__NAVAJOWHITE_,
     NAVAJOWHITE_2,
     NAVAJOWHITE_3,
     NAVAJOWHITE_4,
@@ -1566,10 +1546,8 @@ colour_values_list = [
     OLIVEDRAB,
     OLIVEDRAB_1,
     OLIVEDRAB_2,
-    OLIVEDRAB_3__YELLOWGREEN_,
     OLIVEDRAB_4,
     ORANGE,
-    ORANGERED_1__ORANGERED_,
     ORANGERED_2,
     ORANGERED_3,
     ORANGERED_4,
@@ -1585,7 +1563,6 @@ colour_values_list = [
     PALEGOLDENROD,
     PALEGREEN,
     PALEGREEN_1,
-    PALEGREEN_2__LIGHTGREEN_,
     PALEGREEN_3,
     PALEGREEN_4,
     PALETURQUOISE_1,
@@ -1598,7 +1575,6 @@ colour_values_list = [
     PALEVIOLETRED_3,
     PALEVIOLETRED_4,
     PAPAYAWHIP,
-    PEACHPUFF_1__PEACHPUFF_,
     PEACHPUFF_2,
     PEACHPUFF_3,
     PEACHPUFF_4,
@@ -1621,10 +1597,8 @@ colour_values_list = [
     PURPLE_4,
     RASPBERRY,
     RAWSIENNA,
-    RED_1__RED_,
     RED_2,
     RED_3,
-    RED_4__DARKRED_,
     ROSYBROWN,
     ROSYBROWN_1,
     ROSYBROWN_2,
@@ -1645,8 +1619,6 @@ colour_values_list = [
     SEAGREEN_1,
     SEAGREEN_2,
     SEAGREEN_3,
-    SEAGREEN_4__SEAGREEN_,
-    SEASHELL_1__SEASHELL_,
     SEASHELL_2,
     SEASHELL_3,
     SEASHELL_4,
@@ -1692,7 +1664,6 @@ colour_values_list = [
     SLATEGRAY_2,
     SLATEGRAY_3,
     SLATEGRAY_4,
-    SNOW_1__SNOW_,
     SNOW_2,
     SNOW_3,
     SNOW_4,
@@ -1708,7 +1679,6 @@ colour_values_list = [
     TAN,
     TAN_1,
     TAN_2,
-    TAN_3__PERU_,
     TAN_4,
     TEAL,
     THISTLE,
@@ -1716,7 +1686,6 @@ colour_values_list = [
     THISTLE_2,
     THISTLE_3,
     THISTLE_4,
-    TOMATO_1__TOMATO_,
     TOMATO_2,
     TOMATO_3,
     TOMATO_4,
@@ -1739,9 +1708,6 @@ colour_values_list = [
     WHEAT_3,
     WHEAT_4,
     WHITE,
-    WHITE_SMOKE__GRAY_96_,
-    WHITE_SMOKE__GRAY_96_,
-    YELLOW_1__YELLOW_,
     YELLOW_2,
     YELLOW_3,
     YELLOW_4,
@@ -1767,22 +1733,17 @@ colour_values_list = [
     SONIC_SILVER,
     PLATINUM_GRAY,
     GRANITE,
-    GRAY_OR_GREY,
     BATTLESHIP_GRAY,
     GUNMETAL_GRAY,
-    DARKGRAY_OR_DARKGREY,
     GRAY_CLOUD,
     PALE_SILVER,
     GRAY_GOOSE,
     PLATINUM_SILVER,
-    LIGHTGRAY_OR_LIGHTGREY,
     SILVER_WHITE,
     PLATINUM,
     METALLIC_SILVER,
     BLUE_GRAY,
     ROMAN_SILVER,
-    LIGHTSLATEGRAY_OR_LIGHTSLATEGREY,
-    SLATEGRAY_OR_SLATEGREY,
     RAT_GRAY,
     SLATE_GRANITE_GRAY,
     JET_GRAY,
@@ -1852,7 +1813,6 @@ colour_values_list = [
     ELECTRIC_BLUE,
     TRON_BLUE,
     BLUE_ZIRCON,
-    AQUA_OR_CYAN,
     BRIGHT_CYAN,
     CELESTE,
     BLUE_DIAMOND,
@@ -2221,9 +2181,9 @@ colour_values_list = [
     RASPBERRY_PURPLE,
     PINK_PLUM,
     DEEP_MAUVE,
+    FUCHSIA,
     FUCHSIA_PINK,
     BRIGHT_NEON_PINK,
-    FUCHSIA_OR_MAGENTA,
     CRIMSON_PURPLE,
     HELIOTROPE_PURPLE,
     TYRIAN_PURPLE,
@@ -2328,17 +2288,14 @@ colour_names_list = [
     "ANTIQUEWHITE_2",
     "ANTIQUEWHITE_3",
     "ANTIQUEWHITE_4",
-    "AQUAMARINE_1__AQUAMARINE_",
+    "AQUA",
     "AQUAMARINE_2",
-    "AQUAMARINE_3__MEDIUMAQUAMARINE_",
     "AQUAMARINE_4",
-    "AZURE_1__AZURE_",
     "AZURE_2",
     "AZURE_3",
     "AZURE_4",
     "BANANA",
     "BEIGE",
-    "BISQUE_1__BISQUE_",
     "BISQUE_2",
     "BISQUE_3",
     "BISQUE_4",
@@ -2347,8 +2304,6 @@ colour_names_list = [
     "BLUE",
     "BLUEVIOLET",
     "BLUE_2",
-    "BLUE_3__MEDIUMBLUE_",
-    "BLUE_4__DARKBLUE_",
     "BRICK",
     "BROWN",
     "BROWN_1",
@@ -2370,7 +2325,6 @@ colour_names_list = [
     "CADMIUMORANGE",
     "CADMIUMYELLOW",
     "CARROT",
-    "CHARTREUSE_1__CHARTREUSE_",
     "CHARTREUSE_2",
     "CHARTREUSE_3",
     "CHARTREUSE_4",
@@ -2378,7 +2332,6 @@ colour_names_list = [
     "CHOCOLATE_1",
     "CHOCOLATE_2",
     "CHOCOLATE_3",
-    "CHOCOLATE_4__SADDLEBROWN_",
     "COBALT",
     "COBALTGREEN",
     "COLDGREY",
@@ -2388,7 +2341,6 @@ colour_names_list = [
     "CORAL_3",
     "CORAL_4",
     "CORNFLOWERBLUE",
-    "CORNSILK_1__CORNSILK_",
     "CORNSILK_2",
     "CORNSILK_3",
     "CORNSILK_4",
@@ -2396,8 +2348,6 @@ colour_names_list = [
     "CYAN",
     "CYAN_2",
     "CYAN_3",
-    "CYAN_4__DARKCYAN_",
-    "CYAN__AQUA",
     "DARKGOLDENROD",
     "DARKGOLDENROD_1",
     "DARKGOLDENROD_2",
@@ -2435,17 +2385,12 @@ colour_names_list = [
     "DARKSLATEGRAY_4",
     "DARKTURQUOISE",
     "DARKVIOLET",
-    "DEEPPINK_1__DEEPPINK_",
     "DEEPPINK_2",
     "DEEPPINK_3",
     "DEEPPINK_4",
-    "DEEPSKYBLUE_1__DEEPSKYBLUE_",
     "DEEPSKYBLUE_2",
     "DEEPSKYBLUE_3",
     "DEEPSKYBLUE_4",
-    "DIMGRAY__GRAY_42_",
-    "DIMGRAY__GRAY_42_",
-    "DODGERBLUE_1__DODGERBLUE_",
     "DODGERBLUE_2",
     "DODGERBLUE_3",
     "DODGERBLUE_4",
@@ -2466,7 +2411,6 @@ colour_names_list = [
     "GOLDENROD_2",
     "GOLDENROD_3",
     "GOLDENROD_4",
-    "GOLD_1__GOLD_",
     "GOLD_2",
     "GOLD_3",
     "GOLD_4",
@@ -2574,7 +2518,6 @@ colour_names_list = [
     "GREEN_2",
     "GREEN_3",
     "GREEN_4",
-    "HONEYDEW_1__HONEYDEW_",
     "HONEYDEW_2",
     "HONEYDEW_3",
     "HONEYDEW_4",
@@ -2591,7 +2534,6 @@ colour_names_list = [
     "INDIAN_RED",
     "INDIGO",
     "IVORYBLACK",
-    "IVORY_1__IVORY_",
     "IVORY_2",
     "IVORY_3",
     "IVORY_4",
@@ -2601,12 +2543,10 @@ colour_names_list = [
     "KHAKI_3",
     "KHAKI_4",
     "LAVENDER",
-    "LAVENDERBLUSH_1__LAVENDERBLUSH_",
     "LAVENDERBLUSH_2",
     "LAVENDERBLUSH_3",
     "LAVENDERBLUSH_4",
     "LAWNGREEN",
-    "LEMONCHIFFON_1__LEMONCHIFFON_",
     "LEMONCHIFFON_2",
     "LEMONCHIFFON_3",
     "LEMONCHIFFON_4",
@@ -2616,7 +2556,6 @@ colour_names_list = [
     "LIGHTBLUE_3",
     "LIGHTBLUE_4",
     "LIGHTCORAL",
-    "LIGHTCYAN_1__LIGHTCYAN_",
     "LIGHTCYAN_2",
     "LIGHTCYAN_3",
     "LIGHTCYAN_4",
@@ -2631,7 +2570,6 @@ colour_names_list = [
     "LIGHTPINK_2",
     "LIGHTPINK_3",
     "LIGHTPINK_4",
-    "LIGHTSALMON_1__LIGHTSALMON_",
     "LIGHTSALMON_2",
     "LIGHTSALMON_3",
     "LIGHTSALMON_4",
@@ -2648,7 +2586,6 @@ colour_names_list = [
     "LIGHTSTEELBLUE_2",
     "LIGHTSTEELBLUE_3",
     "LIGHTSTEELBLUE_4",
-    "LIGHTYELLOW_1__LIGHTYELLOW_",
     "LIGHTYELLOW_2",
     "LIGHTYELLOW_3",
     "LIGHTYELLOW_4",
@@ -2657,8 +2594,6 @@ colour_names_list = [
     "MAGENTA",
     "MAGENTA_2",
     "MAGENTA_3",
-    "MAGENTA_4__DARKMAGENTA_",
-    "MAGENTA__FUCHSIA_",
     "MANGANESEBLUE",
     "MAROON",
     "MAROON_1",
@@ -2684,12 +2619,10 @@ colour_names_list = [
     "MIDNIGHTBLUE",
     "MINT",
     "MINTCREAM",
-    "MISTYROSE_1__MISTYROSE_",
     "MISTYROSE_2",
     "MISTYROSE_3",
     "MISTYROSE_4",
     "MOCCASIN",
-    "NAVAJOWHITE_1__NAVAJOWHITE_",
     "NAVAJOWHITE_2",
     "NAVAJOWHITE_3",
     "NAVAJOWHITE_4",
@@ -2699,10 +2632,8 @@ colour_names_list = [
     "OLIVEDRAB",
     "OLIVEDRAB_1",
     "OLIVEDRAB_2",
-    "OLIVEDRAB_3__YELLOWGREEN_",
     "OLIVEDRAB_4",
     "ORANGE",
-    "ORANGERED_1__ORANGERED_",
     "ORANGERED_2",
     "ORANGERED_3",
     "ORANGERED_4",
@@ -2718,7 +2649,6 @@ colour_names_list = [
     "PALEGOLDENROD",
     "PALEGREEN",
     "PALEGREEN_1",
-    "PALEGREEN_2__LIGHTGREEN_",
     "PALEGREEN_3",
     "PALEGREEN_4",
     "PALETURQUOISE_1",
@@ -2731,7 +2661,6 @@ colour_names_list = [
     "PALEVIOLETRED_3",
     "PALEVIOLETRED_4",
     "PAPAYAWHIP",
-    "PEACHPUFF_1__PEACHPUFF_",
     "PEACHPUFF_2",
     "PEACHPUFF_3",
     "PEACHPUFF_4",
@@ -2754,10 +2683,8 @@ colour_names_list = [
     "PURPLE_4",
     "RASPBERRY",
     "RAWSIENNA",
-    "RED_1__RED_",
     "RED_2",
     "RED_3",
-    "RED_4__DARKRED_",
     "ROSYBROWN",
     "ROSYBROWN_1",
     "ROSYBROWN_2",
@@ -2778,8 +2705,6 @@ colour_names_list = [
     "SEAGREEN_1",
     "SEAGREEN_2",
     "SEAGREEN_3",
-    "SEAGREEN_4__SEAGREEN_",
-    "SEASHELL_1__SEASHELL_",
     "SEASHELL_2",
     "SEASHELL_3",
     "SEASHELL_4",
@@ -2825,7 +2750,6 @@ colour_names_list = [
     "SLATEGRAY_2",
     "SLATEGRAY_3",
     "SLATEGRAY_4",
-    "SNOW_1__SNOW_",
     "SNOW_2",
     "SNOW_3",
     "SNOW_4",
@@ -2841,7 +2765,6 @@ colour_names_list = [
     "TAN",
     "TAN_1",
     "TAN_2",
-    "TAN_3__PERU_",
     "TAN_4",
     "TEAL",
     "THISTLE",
@@ -2849,7 +2772,6 @@ colour_names_list = [
     "THISTLE_2",
     "THISTLE_3",
     "THISTLE_4",
-    "TOMATO_1__TOMATO_",
     "TOMATO_2",
     "TOMATO_3",
     "TOMATO_4",
@@ -2872,9 +2794,6 @@ colour_names_list = [
     "WHEAT_3",
     "WHEAT_4",
     "WHITE",
-    "WHITE_SMOKE__GRAY_96_",
-    "WHITE_SMOKE__GRAY_96_",
-    "YELLOW_1__YELLOW_",
     "YELLOW_2",
     "YELLOW_3",
     "YELLOW_4",
@@ -2900,22 +2819,17 @@ colour_names_list = [
     "SONIC_SILVER",
     "PLATINUM_GRAY",
     "GRANITE",
-    "GRAY_OR_GREY",
     "BATTLESHIP_GRAY",
     "GUNMETAL_GRAY",
-    "DARKGRAY_OR_DARKGREY",
     "GRAY_CLOUD",
     "PALE_SILVER",
     "GRAY_GOOSE",
     "PLATINUM_SILVER",
-    "LIGHTGRAY_OR_LIGHTGREY",
     "SILVER_WHITE",
     "PLATINUM",
     "METALLIC_SILVER",
     "BLUE_GRAY",
     "ROMAN_SILVER",
-    "LIGHTSLATEGRAY_OR_LIGHTSLATEGREY",
-    "SLATEGRAY_OR_SLATEGREY",
     "RAT_GRAY",
     "SLATE_GRANITE_GRAY",
     "JET_GRAY",
@@ -2985,7 +2899,6 @@ colour_names_list = [
     "ELECTRIC_BLUE",
     "TRON_BLUE",
     "BLUE_ZIRCON",
-    "AQUA_OR_CYAN",
     "BRIGHT_CYAN",
     "CELESTE",
     "BLUE_DIAMOND",
@@ -3354,9 +3267,9 @@ colour_names_list = [
     "RASPBERRY_PURPLE",
     "PINK_PLUM",
     "DEEP_MAUVE",
+    "FUCHSIA",
     "FUCHSIA_PINK",
     "BRIGHT_NEON_PINK",
-    "FUCHSIA_OR_MAGENTA",
     "CRIMSON_PURPLE",
     "HELIOTROPE_PURPLE",
     "TYRIAN_PURPLE",
@@ -3452,9 +3365,11 @@ def iscolour(c, g=None, b=None):
     elif is_hex_colour(c):
         return True
     elif isinstance(c, str) and g is None and b is None:
+        c = c.replace("-", "_")
         if c.upper() in COLOURS:
             return True
     return False
+
 
 def rgb_to_hex(colour):
     if is_hex_colour(colour):
@@ -3477,7 +3392,10 @@ def hex_to_rgb(colour):
         return colour
     elif iscolour(colour) and isinstance(colour, str) and not ("#" in colour and (len(colour) == 7)):
         print(f"{colour}")
-        return eval(colour)
+        try:
+            return eval(colour)
+        except NameError as ne:
+            raise NameError(ne)
     try:
         return (int(colour[1:3], 16), int(colour[3:5], 16), int(colour[5:], 16))
     except ValueError:
@@ -3557,7 +3475,6 @@ def random_rgb(l_bound=10, h_bound=245):
     )
 
 
-
 # def rgb_to_hex(colour):
 #    return "#" + "".join([hex(x).split("x")[-1] for x in colour]).upper()
 
@@ -3596,13 +3513,16 @@ def random_rgb(l_bound=10, h_bound=245):
 
 class Colour:
 
+    class ColourCreationError(Exception):
+        pass
+
     def __init__(self, c, g=None, b=None, hex_code=None, rgb_code=None, colour_name=None):
         self.hex_code = hex_code
         self.rgb_code = rgb_code
         self.colour_name = colour_name
         # print(f"{c=}, {g=}, {b=}, {self.hex_code=}, {self.rgb_code=}")
         if not iscolour(c, g, b):
-            raise TypeError(f"Error params {c=}, {g=}, {b=} do not represent a valid colour.")
+            raise Colour.ColourCreationError(f"Error params {c=}, {g=}, {b=} do not represent a valid or known colour.")
         else:
             if is_rgb_colour(c, g, b):
                 if g is None and b is None:
@@ -3610,9 +3530,11 @@ class Colour:
                 else:
                     r, g, b = c, g, b
             elif is_hex_colour(c):
+                if not c.startswith("#"):
+                    c = f"#{c}"
                 r, g, b = hex_to_rgb(c)
-            elif isinstance(c, str) and c.upper() in COLOURS:
-                r, g, b = COLOURS[c.upper()]["R"], COLOURS[c.upper()]["G"], COLOURS[c.upper()]["B"]
+            elif isinstance(c, str) and ((col := c.replace("-", "_").upper()) in COLOURS):
+                r, g, b = COLOURS[col]["R"], COLOURS[col]["G"], COLOURS[col]["B"]
             else:
                 r, g, b = None, None, None
                 # print(f"{c=}, {type(c)=}")
@@ -3704,7 +3626,8 @@ def brighten(c, p, rgb=True):
 
 def font_foreground(colour_in, threshold=255 * 3 / 2, rgb=True):
     """Given a background colour and a minimum threshold, return BLACK or WHITE to ensure a font of this colour will be visible on the background."""
-    assert iscolour(colour_in), f"Error cannot infer the correct font fore-colour from a non colour object. Got '{colour_in}', type={type(colour_in)}"
+    assert iscolour(
+        colour_in), f"Error cannot infer the correct font fore-colour from a non colour object. Got '{colour_in}', type={type(colour_in)}"
     try:
         if isinstance(colour_in, str):
             colour_in = hex_to_rgb(colour_in)
@@ -3766,3 +3689,144 @@ def rainbow_gradient(n_slices=None, start_colour="red", rgb=True):
             yield val
         else:
             yield rgb_to_hex(val)
+
+
+def get_colour_name(hx, name_only=True, r_type=dict, rgb=False, certainty_as_percent=True, default_colour=None):
+    """Given an input, hex or return the closest name for that colour.
+    Modified from: https://stackoverflow.com/questions/2453344/find-the-colour-name-from-a-hexadecimal-colour-code
+    :param hx - colour value to determine the colour name of. Can be hex colour, RGB colour, or known name.
+    :param name_only - default True for simple string name result, otherwise, it will include data on its search.
+    :param r_type - control whether you get a list, tuple, or a dict result
+    :param rgb - returned colour representation in the data, default hex
+    :param certainty_as_percent - convert certainty number to a percentage when returning data.
+    :param default_colour - if the colour name cannot be determined, then return the default value.
+    :return string name for the colour, or an iterable of data collected while deciphering this input.
+    :raises Assertion Error if r_type not recognized, ValueError if the input is not recognized as a colour via Colour class"""
+
+    assert r_type in [dict, list, tuple], f"Error, r_type must be one of; list, tuple, or dict. Got '{r_type}'."
+
+    # print(f"START hx='{hx}', dc='{default_colour}'")
+
+    res_keys = ["name", "hex", "exact", "certainty", "certainty_score"]
+    t = (255**2)*3
+    if rgb:
+        res_keys.insert(1, "rgb")
+        res_keys.remove("hex")
+
+    if isinstance(hx, Colour):
+        c = hx.hex_code if not rgb else hx.rgb_code
+        result = dict(zip(res_keys, (hx.colour_name, c, True, 1, 0)))
+    else:
+        if hx in COLOURS:
+            # print(f"A")
+            c = COLOURS[hx] if not rgb else rgb_to_hex(COLOURS[hx])
+            result = dict(zip(res_keys, (hx, c, True, 1, t)))
+        else:
+            # print(f"B")
+
+            try:
+                c = Colour(hx)
+            except Colour.ColourCreationError as cce1:
+                if default_colour is not None:
+                    try:
+                        c = Colour(default_colour)
+                    except Colour.ColourCreationError as cce2:
+                        c = None
+                    else:
+                        # print(f"BACK_IN {c=}")
+                        hx = get_colour_name(c, name_only=True)
+                        result = dict(zip(res_keys, (hx, c.hex_code, False, 0, t)))
+                        # print(f"result {result}")
+                    # return default_colour
+                else:
+                    raise TypeError(f"Error cannot determine colour name from input '{hx}'. Perhaps try passing a default colour using the param 'default_colour'.")
+
+            if c is not None:
+                hx = c.hex_code
+
+                if not hx.startswith("#"):
+                    hx = f"#{hx}"
+
+                # if color is found in dict
+                # print(f"{hx=}, {COLOURS_INVERSE.get(hx.upper(), None)=}")
+                if COLOURS_INVERSE.get(hx.upper(), None):
+                    # print(f"C")
+                    # c = f"#{hx}" if not rgb else rgb_to_hex(hx)
+                    c = hx if not rgb else rgb_to_hex(hx)
+                    result = dict(zip(res_keys, (COLOURS_INVERSE[hx.upper()], c, True, 1, t)))
+
+                else:
+                    # print(f"D")
+                    # print(f"SEARCHING {hx=}")
+
+                    # # else return its closest available color
+                    m = float("inf")
+                    k = "000000"
+                    hx = hx.removeprefix("#")
+                    for key in COLOURS_INVERSE.keys():
+                        key = key.removeprefix("#") if key else k
+                        a = int(hx[:2], 16) - int(key[:2], 16)
+                        b = int(hx[2:4], 16) - int(key[2:4], 16)
+                        c = int(hx[4:], 16) - int(key[4:], 16)
+
+                        v = a * a + b * b + c * c  # simple measure for distance between colors
+
+                        # v = (r1 - r2)^2 + (g1 - g2)^2 + (b1 - b2)^2
+                        # print(f"{key=}, {k=}, {v=}, {m=}")
+
+                        if v < m:
+                            m = v
+                            k = key
+
+                    n = COLOURS_INVERSE[f"#{k}"]
+                    c = f"#{hx}" if not rgb else rgb_to_hex(f"#{hx}")
+                    result = dict(zip(res_keys, (n, c, False, (1 - (m / t)), m)))
+            else:
+                raise ValueError(f"Error cannot determine colour name from input '{hx}'")
+
+    if certainty_as_percent:
+        result["certainty"] = f"{result['certainty']*100:.4f} %"
+    if r_type == dict:
+        if name_only:
+            return result["name"]
+        return result
+    else:
+        if name_only:
+            return list(result.values())[0]
+        return list(result.values())
+
+
+if __name__ == '__main__':
+    print(f"{get_colour_name('f0f8ff')=}")  # found in dict
+    print(f"{get_colour_name('faeb11')=}")  # closest to Antique white
+    print(f"{get_colour_name('968244')=}")
+    print(f"{get_colour_name('FF0000')=}")
+    print(f"{get_colour_name((255, 0, 0))=}")
+    print(f"{get_colour_name('BLUE')=}")
+    print(f"{get_colour_name('blue')=}")
+    print(f"{get_colour_name('blue-indigo', default_colour='blue')=}")
+    print(f"{get_colour_name('banana-yellow')=}")
+    print(f"{get_colour_name('banana_yellow')=}")
+    print(f"{get_colour_name('blue-indigo')=}")
+
+    len_a, len_b = len(COLOURS), len(COLOURS_INVERSE)
+    d = abs(len_a - len_b)
+
+    if d != 0:
+
+        print(f"len(COLOURS) = {len_a}")
+        print(f"len(COLOURS_INVERSE) = {len_b}")
+
+        found = {}
+        for k, v in COLOURS.items():
+            nk = rgb_to_hex(v.values())
+            if nk not in found:
+                found[nk] = []
+            found[nk].append(k)
+
+        print(f"\n\n\t\tNeeds fixing:\n")
+        for k, v in found.items():
+            if len(v) > 1:
+                print(f"{k=}, {v=}")
+
+        assert len_a == len_b, f"Error, these lists must be the same length, or some colours have duplicate hex keys.\n{d} colour(s) need fixed"
