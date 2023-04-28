@@ -50,7 +50,7 @@ DEFAULT_SEASONS = {
     },
     "Summer": {
         "test": lambda date: datetime.datetime(date.year, 6, 21) <= date < datetime.datetime(date.year, 9, 22),
-        "colour": GOLD_1__GOLD_,
+        "colour": GOLD,
         "font_colour": BLACK
     },
     "Fall": {
