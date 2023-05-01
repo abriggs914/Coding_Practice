@@ -15,8 +15,8 @@ import numpy as np
 VERSION = \
     """	
     Class to add an Orbiting Date Picker Widget in place of a traditional date picker. Works with tkcalendar.DateEntry and datetime.datetime objects.
-    Version..............1.06
-    Date...........2023-03-02
+    Version..............1.07
+    Date...........2023-04-29
     Author(s)....Avery Briggs
     """
 
