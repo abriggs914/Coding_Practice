@@ -1,11 +1,15 @@
 import datetime
 import json
 import os
+import random
 import tkinter
 
 import pandas
 
+import datetime as dt
+from random import sample
 import tkinter_utility
+from datetime_utility import first_of_week, first_of_day, first_of_month, date_suffix, date_str_format, is_date
 from tkinter_utility import *
 from tkinter import messagebox, font
 from utility import *
@@ -2025,6 +2029,58 @@ def test_margins():
     print(margins(600, 1, 200))
 
 
+def test_is_number():
+    def is_number(x):
+        if isinstance(x, (int, float, complex, Decimal, Fraction)) or pd.api.types.is_numeric_dtype(x):
+            return True
+        xs = str(x)
+        if xs.count(".") < 2 and xs.count("-") < 2:
+            return xs.replace(".", "").removeprefix("-").isnumeric()
+        return False
+
+    print("\nALL VALID")
+    for v in [1, 6j, float("inf"), 1/8, "25.2", "-2", "-12.24", 4e3, ".125", "125."]:
+        print(f"{v=}, {is_number(v)=}")
+    print("\nALL INVALID")
+    for v in [Foo(), "16.16.2", "-16.25j", "-16.25x", dict(), list(), "0-", "-g."]:
+        print(f"{v=}, {is_number(v)=}")
+
+
+def test_spread():
+
+
+            # ss =
+            # i = 0
+            # x = ((ll - 1) - 2)
+            # result = [lst[0]]
+            # print(f"{x=}")
+            # while i < x:
+            #     a = lst[i]
+            #     b = lst[i + 1]
+            #     is_num_a = isnumber(a)
+            #     is_num_b = isnumber(b)
+            #     is_num = is_num_a and is_num_b
+            #     if filler is None:
+            #         if is_num:
+            #             d = b - a
+            #             result.append(a + (d / 2))
+            #         else:
+            #             result.append(filler)
+            #     else:
+            #         result.append(filler)
+            #
+            #     i += 1
+            # result.append(lst[-1])
+            # return result
+
+    # print(f"{spread([1,2,3], 6)}")
+    # print(f"{spread([1,'2',3], 6)}")
+    # print(f"{spread([1,'_2',3], 6)}")
+    print(f"{spread([1,'_2',3], 6, how='exact')}")
+    print(f"{spread([5,6,7,9,14,18,22,25,116,130,200,205,206,306,307], 21, how='exact')}")
+
+
+
 
 if __name__ == "__main__":
     # test_block_letters()
@@ -2077,6 +2133,8 @@ if __name__ == "__main__":
     # test_tk_slider()
     # test_rgb_slider()
     # test_theme_publisher()
-    # test_alpha_seq()
+    test_alpha_seq()
     # test_grid_manager()
-    test_margins()
+    # test_margins()
+    test_is_number()
+    test_spread()

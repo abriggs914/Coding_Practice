@@ -1,11 +1,16 @@
 import datetime
 import math
 import ctypes
+from typing import Literal
+
+import pandas as pd
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
-from random import random, choice, randint
+from random import random, choice, randint, sample
 from operator import itemgetter
 from plyer import notification
+from decimal import Decimal
+from fractions import Fraction
 import datetime
 import calendar
 import shutil
@@ -19,8 +24,8 @@ import os
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.69
-    Date...........2023-03-01
+    Version..............1.70
+    Date...........2023-05-04
     Author(s)....Avery Briggs
     """
 
@@ -472,12 +477,18 @@ def isfloat(value):
 
 
 def isnumber(value):
-    if isinstance(value, int) or isinstance(value, float):
+    # if isinstance(value, int) or isinstance(value, float):
+    #     return True
+    # if isinstance(value, str):
+    #     if value.count("-") < 2 and value.count(".") < 2:
+    #         if value.replace("-", "").replace(".", "").isnumeric():
+    #             return True
+    # return False
+    if isinstance(value, (int, float, complex, Decimal, Fraction)) or pd.api.types.is_numeric_dtype(value):
         return True
-    if isinstance(value, str):
-        if value.count("-") < 2 and value.count(".") < 2:
-            if value.replace("-", "").replace(".", "").isnumeric():
-                return True
+    xs = str(value)
+    if xs.count(".") < 2 and xs.count("-") < 2:
+        return xs.replace(".", "").removeprefix("-").isnumeric()
     return False
 
 
@@ -740,6 +751,88 @@ def reduce(lst, p, how="left"):
         return lst[l - n_items:]
     else:
         return lst[0: l: l // n_items]
+
+
+def spread(lst, desired_len, filler=None, how: Literal["average", "exact"]="average"):
+    """Take a list and a desired lenght, return a list of those elements spread over the desired length.
+    Use how='average' to increment by the average increase between the first and last elements.
+     WARNING when using how='average' the input list should be sorted first, AND new elements may be created.
+     Use how='exact' to ensure that elements are only duplicated. No new elements will be created.
+     Use filler to populate non-number lists."""
+
+    assert isinstance(desired_len, int) and desired_len >= 0, f"Error param 'desired_len' must be a non-negative integer."
+    assert hasattr(lst, "__iter__"), f"Error param 'lst' must be an iterable."
+    assert how in ("average", "exact")
+
+    t_lst = list(lst)
+    # t_lst.sort()
+    ll = len(t_lst)
+    is_num = all([isnumber(v) for v in t_lst])
+
+    # print(f"input= {t_lst}")
+
+    if desired_len == ll:
+        return lst
+    elif desired_len < ll:
+        return reduce(lst, ll, how="distribute")
+    else:
+
+        if how == "average":
+            # print(f"A")
+            ub = t_lst[-1]
+            lb = t_lst[0]
+            if desired_len == 1:
+                return t_lst[ll // 2]
+            else:
+                s = (ub - lb) / (desired_len - 1)
+
+            i = 0
+            x = ((desired_len - 1) - 1)
+            result = [lst[0]]
+            # print(f"{x=}")
+            while i < x:
+                if filler is None:
+                    if is_num:
+                        result.append(lb + ((i + 1) * s))
+                    else:
+                        result.append(filler)
+                else:
+                    result.append(filler)
+
+                i += 1
+
+            result.append(lst[-1])
+        else:
+            # print(f"B")
+            mf = desired_len // ll
+            o = desired_len - (mf * ll)
+            result = []
+            if mf > 1:
+                # print(f"C")
+                for i, val in enumerate(t_lst):
+                    for j in range(mf):
+                        result.append(val)
+            else:
+                # print(f"D")
+                result = list(t_lst)
+
+            if o < mf:
+                # print(f"E")
+                m = desired_len // 2
+                v = result[m]
+                # print(f"{result=}")
+                for i in range(mf - o):
+                    result.insert(m + i, v)
+            else:
+                # print(f"F")
+                idxs = list(range(len(result)))
+                idxs = sample(idxs, k=desired_len - (mf * ll))
+                # print(f"{result=}")
+                # print(f"{idxs=}")
+                for i in idxs:
+                    result.insert(i, result[i])
+
+        return result
 
 
 class Line:
