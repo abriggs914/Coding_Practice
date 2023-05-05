@@ -184,7 +184,6 @@ def text_rect_and_line():
 # print(rotate_matrix())
 
 
-
 def test_TextBox():
     app = PygameApplication("Test TextBox", 600, 600)
     game = app.get_game()
@@ -1180,7 +1179,6 @@ def test_font_foreground():
         }
     }))
 
-
     WIN = tkinter.Tk()
     WIN.geometry(f"500x500")
     slider_red = tkinter_utility.Slider(WIN, minimum=0, maximum=255)
@@ -1192,7 +1190,8 @@ def test_font_foreground():
     tv_label_red, label_red, tv_entry_red, entry_red = entry_factory(WIN, tv_label="Red:", tv_entry=tv_red)
     tv_label_green, label_green, tv_entry_green, entry_green = entry_factory(WIN, tv_label="Green:", tv_entry=tv_green)
     tv_label_blue, label_blue, tv_entry_blue, entry_blue = entry_factory(WIN, tv_label="Blue:", tv_entry=tv_blue)
-    tv_label_res, label_res, tv_entry_res, entry_res = entry_factory(WIN, tv_label="Result:", tv_entry="Sample Text #123.")
+    tv_label_res, label_res, tv_entry_res, entry_res = entry_factory(WIN, tv_label="Result:",
+                                                                     tv_entry="Sample Text #123.")
 
     def update_colour(var_name, index, mode):
         r = tv_red.get()
@@ -1496,7 +1495,9 @@ def test_rainbow_gradient():
 def test_pyodbc_connection():
     ts = TestSuite(name="pyodbcConnection Tests", test_func=connect)
     ts.add_test("Test1", [["SELECT * FROM [IT Requests]"], pandas.DataFrame()])
-    ts.add_test("Test2", [["SELECT * FROM [IT Requests]", "{SQL Server}", "server3", "BWSdb", "user5", None, False, False], ValueError])
+    ts.add_test("Test2",
+                [["SELECT * FROM [IT Requests]", "{SQL Server}", "server3", "BWSdb", "user5", None, False, False],
+                 ValueError])
     ts.execute_log()
 
 
@@ -1526,40 +1527,40 @@ def test_grid_cells():
         ((-500, 500, "10", 10, 1, -18), AssertionError),
         ((500, -500, "-10", 10, 1, 18), AssertionError),
         (("100", "2"), [
-                        [
-                            [0.5, 0.5, 49.5, 49.5],
-                            [50.5, 0.5, 99.5, 49.5]
-                        ],
-                        [
-                            [0.5, 50.5, 49.5, 99.5],
-                            [50.5, 50.5, 99.5, 99.5]
-                        ]
+            [
+                [0.5, 0.5, 49.5, 49.5],
+                [50.5, 0.5, 99.5, 49.5]
+            ],
+            [
+                [0.5, 50.5, 49.5, 99.5],
+                [50.5, 50.5, 99.5, 99.5]
+            ]
         ]),
         (("100", "4"), [
-                        [
-                            [0.5, 0.5, 24.5, 24.5],
-                            [25.5, 0.5, 49.5, 24.5],
-                            [50.5, 0.5, 74.5, 24.5],
-                            [75.5, 0.5, 99.5, 24.5]
-                        ],
-                        [
-                            [0.5, 25.5, 24.5, 49.5],
-                            [25.5, 25.5, 49.5, 49.5],
-                            [50.5, 25.5, 74.5, 49.5],
-                            [75.5, 25.5, 99.5, 49.5]
-                        ],
-                        [
-                            [0.5, 50.5, 24.5, 74.5],
-                            [25.5, 50.5, 49.5, 74.5],
-                            [50.5, 50.5, 74.5, 74.5],
-                            [75.5, 50.5, 99.5, 74.5]
-                        ],
-                        [
-                            [0.5, 75.5, 24.5, 99.5],
-                            [25.5, 75.5, 49.5, 99.5],
-                            [50.5, 75.5, 74.5, 99.5],
-                            [75.5, 75.5, 99.5, 99.5]
-                        ],
+            [
+                [0.5, 0.5, 24.5, 24.5],
+                [25.5, 0.5, 49.5, 24.5],
+                [50.5, 0.5, 74.5, 24.5],
+                [75.5, 0.5, 99.5, 24.5]
+            ],
+            [
+                [0.5, 25.5, 24.5, 49.5],
+                [25.5, 25.5, 49.5, 49.5],
+                [50.5, 25.5, 74.5, 49.5],
+                [75.5, 25.5, 99.5, 49.5]
+            ],
+            [
+                [0.5, 50.5, 24.5, 74.5],
+                [25.5, 50.5, 49.5, 74.5],
+                [50.5, 50.5, 74.5, 74.5],
+                [75.5, 50.5, 99.5, 74.5]
+            ],
+            [
+                [0.5, 75.5, 24.5, 99.5],
+                [25.5, 75.5, 49.5, 99.5],
+                [50.5, 75.5, 74.5, 99.5],
+                [75.5, 75.5, 99.5, 99.5]
+            ],
         ]),
         (("100", 2, "100", 2, 1, 1, 0, 0, dict), {
             0: {
@@ -1570,13 +1571,13 @@ def test_grid_cells():
                 0: {"x_1": 0.5, "y_1": 50.5, "x_2": 49.5, "y_2": 99.5, "w": 49.0, "h": 49.0},
                 1: {"x_1": 50.5, "y_1": 50.5, "x_2": 99.5, "y_2": 99.5, "w": 49.0, "h": 49.0}
             }
-         }),
+        }),
     ]
     for i, call_arg in enumerate(call_args):
         args, ans = call_arg
         test_args = [[*args], ans]
         print(f"{call_arg=}, {args=}, {ans=}, {test_args=}")
-        TS.add_test(f"Test_{i+1}", test_args)
+        TS.add_test(f"Test_{i + 1}", test_args)
         # grid_cells(*call_arg)
 
     TS.execute_log()
@@ -1589,31 +1590,31 @@ def test_grid_cells():
     cell_dims = grid_cells("100", 1, x_pad=25, y_pad=25)
 
     dims_2 = [
-                        [
-                            [0.5, 0.5, 24.5, 24.5],
-                            [25.5, 0.5, 49.5, 24.5],
-                            [50.5, 0.5, 74.5, 24.5],
-                            [75.5, 0.5, 99.5, 24.5]
-                        ],
-                        [
-                            [0.5, 25.5, 24.5, 49.5],
-                            [25.5, 25.5, 49.5, 49.5],
-                            [50.5, 25.5, 74.5, 49.5],
-                            [75.5, 25.5, 99.5, 49.5]
-                        ],
-                        [
-                            [0.5, 50.5, 24.5, 74.5],
-                            [25.5, 50.5, 49.5, 74.5],
-                            [50.5, 50.5, 74.5, 74.5],
-                            [75.5, 50.5, 99.5, 74.5]
-                        ],
-                        [
-                            [0.5, 74.5, 24.5, 99.5],
-                            [25.5, 74.5, 49.5, 99.5],
-                            [50.5, 74.5, 74.5, 99.5],
-                            [75.5, 74.5, 99.5, 99.5]
-                        ],
-        ]
+        [
+            [0.5, 0.5, 24.5, 24.5],
+            [25.5, 0.5, 49.5, 24.5],
+            [50.5, 0.5, 74.5, 24.5],
+            [75.5, 0.5, 99.5, 24.5]
+        ],
+        [
+            [0.5, 25.5, 24.5, 49.5],
+            [25.5, 25.5, 49.5, 49.5],
+            [50.5, 25.5, 74.5, 49.5],
+            [75.5, 25.5, 99.5, 49.5]
+        ],
+        [
+            [0.5, 50.5, 24.5, 74.5],
+            [25.5, 50.5, 49.5, 74.5],
+            [50.5, 50.5, 74.5, 74.5],
+            [75.5, 50.5, 99.5, 74.5]
+        ],
+        [
+            [0.5, 74.5, 24.5, 99.5],
+            [25.5, 74.5, 49.5, 99.5],
+            [50.5, 74.5, 74.5, 99.5],
+            [75.5, 74.5, 99.5, 99.5]
+        ],
+    ]
 
     for row in cell_dims:
         for dim in row:
@@ -1629,7 +1630,6 @@ def test_grid_cells():
 
 
 def test_rect_bounds():
-
     TS = TestSuite(test_func=clamp_rect, name="'clamp_rect' TestSuite")
     call_args = [
         ([[20, 20, 50, 50], [0, 0, 100, 100]], [20, 20, 50, 50]),
@@ -1668,7 +1668,8 @@ def test_rect_bounds():
             self.c_width, self.c_height = 400, 400
             self.canvas = tkinter.Canvas(self, width=self.c_width, height=self.c_height, background=rgb_to_hex(KHAKI_4))
             self.r_width, self.r_height = 100, 100
-            self.rect_bounds = [((self.c_width - self.r_width) / 2), ((self.c_height - self.r_height) / 2), ((self.c_width + self.r_width) / 2), ((self.c_height + self.r_height) / 2)]
+            self.rect_bounds = [((self.c_width - self.r_width) / 2), ((self.c_height - self.r_height) / 2),
+                                ((self.c_width + self.r_width) / 2), ((self.c_height + self.r_height) / 2)]
             self.tag_rect = self.canvas.create_rectangle(*self.rect_bounds, fill=random_colour(rgb=False))
 
             self.canvas.tag_bind(self.tag_rect, "<Button-1>", self.click_canvas)
@@ -1686,7 +1687,8 @@ def test_rect_bounds():
                 # cx, cy = xy
                 # cx, cy = self.canvas.canvasx(cx), self.canvas.canvasy(cy)
                 # print(f"{cx=}, {cy=}")
-                new_rect = [cx - (self.r_width / 2), cy - (self.r_height / 2), cx + (self.r_width / 2), cy + (self.r_height / 2)]
+                new_rect = [cx - (self.r_width / 2), cy - (self.r_height / 2), cx + (self.r_width / 2),
+                            cy + (self.r_height / 2)]
                 new_rect = clamp_rect(
                     new_rect, [0, 0, self.c_width, self.c_height], maintain_inner_dims=True
                 )
@@ -1702,7 +1704,6 @@ def test_rect_bounds():
 
 
 def test_colourify():
-
     colours = [
         c1 := Colour(10, 20, 30),
         c2 := Colour((10, 20, 30)),
@@ -1741,7 +1742,6 @@ def test_rgb_slider():
 
 
 def test_theme_publisher():
-
     ThemePublisher().mainloop()
 
 
@@ -1762,7 +1762,6 @@ def test_tk_slider():
 
 
 def test_alpha_seq():
-
     result = set()
     # namer = alpha_seq(n_digits=3, prefix="frame_")
     namer = alpha_seq(n_digits=3, prefix="frame_", pad_0=True, pad_char="_")
@@ -1773,9 +1772,8 @@ def test_alpha_seq():
         res = next(namer)
         print(f"{str(i).ljust(3)=} | {res}")
         if res in result:
-           raise ValueError(f"Error. {i=}, '{res}' already calculated.")
+            raise ValueError(f"Error. {i=}, '{res}' already calculated.")
         result.add(res)
-
 
     # TS = TestSuite(name="AlpaSeq", test_func=alpha_seq)
     # TS.add_test("t1", [[], ])
@@ -1783,7 +1781,6 @@ def test_alpha_seq():
 
 
 def test_grid_manager():
-
     WIN = tkinter.Tk()
     WIN.title("test_grid_manager")
     WIDTH, HEIGHT = 900, 600
@@ -1808,7 +1805,8 @@ def test_grid_manager():
         ],
         [
             {
-                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50,
+                                         height=50),
                 "columnspan": 2,
                 "rowspan": 2,
                 "sticky": "ew"
@@ -1816,8 +1814,9 @@ def test_grid_manager():
                 # "pady": 45
             },
             {
-                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
-                "columnspan":2,
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50,
+                                         height=50),
+                "columnspan": 2,
                 "sticky": "ew"
             }
         ],
@@ -1826,8 +1825,11 @@ def test_grid_manager():
             tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
             tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
         ],
-        [None, None, None, tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)],
-        [None, {"widget":tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50), "ipadx":20,"ipady":20}]
+        [None, None, None,
+         tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)],
+        [None,
+         {"widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+          "ipadx": 20, "ipady": 20}]
 
     ]
 
@@ -1843,7 +1845,8 @@ def test_grid_manager():
         ],
         [
             {
-                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50),
+                "widget": tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50,
+                                         height=50),
                 "columnspan": 2
             },
             tkinter.Canvas(WIN, name=next(namer), background=random_colour(rgb=False), width=50, height=50)
@@ -2006,7 +2009,6 @@ def test_grid_manager():
 
 
 def test_margins():
-
     def margins1(t_width, n_btns, btn_width):
         mw = (t_width - (n_btns * btn_width)) / (n_btns + 1)
 
@@ -2039,7 +2041,7 @@ def test_is_number():
         return False
 
     print("\nALL VALID")
-    for v in [1, 6j, float("inf"), 1/8, "25.2", "-2", "-12.24", 4e3, ".125", "125."]:
+    for v in [1, 6j, float("inf"), 1 / 8, "25.2", "-2", "-12.24", 4e3, ".125", "125."]:
         print(f"{v=}, {is_number(v)=}")
     print("\nALL INVALID")
     for v in [Foo(), "16.16.2", "-16.25j", "-16.25x", dict(), list(), "0-", "-g."]:
@@ -2047,42 +2049,91 @@ def test_is_number():
 
 
 def test_spread():
-
-
-            # ss =
-            # i = 0
-            # x = ((ll - 1) - 2)
-            # result = [lst[0]]
-            # print(f"{x=}")
-            # while i < x:
-            #     a = lst[i]
-            #     b = lst[i + 1]
-            #     is_num_a = isnumber(a)
-            #     is_num_b = isnumber(b)
-            #     is_num = is_num_a and is_num_b
-            #     if filler is None:
-            #         if is_num:
-            #             d = b - a
-            #             result.append(a + (d / 2))
-            #         else:
-            #             result.append(filler)
-            #     else:
-            #         result.append(filler)
-            #
-            #     i += 1
-            # result.append(lst[-1])
-            # return result
+    # ss =
+    # i = 0
+    # x = ((ll - 1) - 2)
+    # result = [lst[0]]
+    # print(f"{x=}")
+    # while i < x:
+    #     a = lst[i]
+    #     b = lst[i + 1]
+    #     is_num_a = isnumber(a)
+    #     is_num_b = isnumber(b)
+    #     is_num = is_num_a and is_num_b
+    #     if filler is None:
+    #         if is_num:
+    #             d = b - a
+    #             result.append(a + (d / 2))
+    #         else:
+    #             result.append(filler)
+    #     else:
+    #         result.append(filler)
+    #
+    #     i += 1
+    # result.append(lst[-1])
+    # return result
 
     # print(f"{spread([1,2,3], 6)}")
     # print(f"{spread([1,'2',3], 6)}")
     # print(f"{spread([1,'_2',3], 6)}")
-    print(f"{spread([1,'_2',3], 6, how='exact')}")
-    print(f"{spread([5,6,7,9,14,18,22,25,116,130,200,205,206,306,307], 21, how='exact')}")
+    print(f"{spread([1, '_2', 3], 6, how='exact')}")
+    print(f"{spread([5, 6, 7, 9, 14, 18, 22, 25, 116, 130, 200, 205, 206, 306, 307], 21, how='exact')}")
 
 
+def test_pdf():
+    # import tabula
+    # import pandas as pd
+    # df = tabula.read_pdf(r"C:\Users\ABriggs\Downloads\2023-04 LASER AMP 244246 PO 140194 POSTED.pdf", pages='all')
+    # print(f"DF: {df}")
+
+    import PyPDF2
+
+    fn = r"C:\Users\ABriggs\Downloads\2023-04 LASER AMP 244246 PO 140194 POSTED.pdf"
+
+    # open the PDF file in binary mode
+    with open(fn, 'rb') as f:
+        # create a PDF reader object
+        pdf_reader = PyPDF2.PdfFileReader(f)
+        # read each page of the PDF file
+        text = ''
+        for page_num in range(pdf_reader.numPages):
+            page = pdf_reader.getPage(page_num)
+            # extract text from the page
+            page_text = page.extractText()
+            # append the text from this page to the overall text
+            text += page_text
+
+    values = text.split("Price Montant")[-1]
+    values = values.split("amount")[-1].split("SOUS-TOTAL")[0]
+    rows = values.split("\n")
+    columns = [
+        "Qté /qty",
+        "Numéro de pièce / Part Number",
+        "Rev.",
+        "Prix /Price",
+        "Montant / amount"
+    ]
+    print(f"{values=}")
+    for row in rows:
+        if row:
+            vals = row.split(" ")
+            qty_part_number, rev, price, amount = vals
+            part_number = qty_part_number.split("-")[-1]
+            idx = qty_part_number.index("-")
+            part_number = f"{qty_part_number[idx - 5:idx]}-{part_number}"
+            qty = int(qty_part_number[:idx][:-5])
+            print(f"{qty=}, {part_number=}, {int(rev)=}, {money_value(price)=}, {money_value(amount)=}")
+
+    # write the text to a file
+    with open(r'C:\Users\ABriggs\Downloads\2023-04 LASER AMP 244246 PO 140194 POSTED GEN (1).txt', 'w') as f:
+        f.write(text)
+
+    a = 10
+    print(a + 10)
 
 
 if __name__ == "__main__":
+    a = "avery"
     # test_block_letters()
     # test_TextBox()
     # test_buttonbar()
@@ -2133,8 +2184,9 @@ if __name__ == "__main__":
     # test_tk_slider()
     # test_rgb_slider()
     # test_theme_publisher()
-    test_alpha_seq()
+    # test_alpha_seq()
     # test_grid_manager()
     # test_margins()
-    test_is_number()
-    test_spread()
+    # test_is_number()
+    # test_spread()
+    test_pdf()
