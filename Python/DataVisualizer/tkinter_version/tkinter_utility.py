@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.43
-    Date...........2023-04-25
+    Version..............1.45
+    Date...........2023-05-04
     Author(s)....Avery Briggs
     """
 
@@ -1865,7 +1865,7 @@ class MultiComboBox(tkinter.Frame):
         self.res_canvas.grid(row=0, column=1)
 
     def treeview_selection_update(self, event):
-        # print(f"treeview_selection_update")
+        print(f"treeview_selection_update")
         row_ids = self.tree_treeview.selection()
         if row_ids:
 
@@ -1917,12 +1917,12 @@ class MultiComboBox(tkinter.Frame):
         # print(f"update_entity")
         self.filter_treeview()
 
-    def submit_typed_in(self, event):
+    def submit_typed_in(self, event, bypass=False):
         # print(f"submit_typed_in")
         children = self.tree_treeview.get_children()
-        if children:
+        if children and not bypass:
             self.tree_treeview.selection_set(children[0])
-        else:
+        elif bypass or not children:
             val = self.res_tv_entry.get()
             col = self.rg_var.get()
             if val:
@@ -1998,8 +1998,16 @@ class MultiComboBox(tkinter.Frame):
                     self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row)
                     # self.res_entry.config(foreground="black")
                 else:
-                    row = rest_values.update({col: val})
-                    self.data = self.data.append(pandas.DataFrame(row), ignore_index=True)
+                    row = dict(rest_values)
+                    row.update({col: val})
+                    # print(f"\n\n\t\trow:\n{row}\n>\n\tcn\n{cn}\n>")
+                    # self.data = self.data.append(pandas.DataFrame(row))
+                    # print(f"\n\n\tData\n{self.data}")
+                    # print(f"\n\n\tcols\n{self.data.columns}")
+                    # print(f"DF 2:{pandas.DataFrame(row)}")
+                    # print(f"DF 1:{pandas.DataFrame([row], columns=list(row.keys()))}")
+                    self.data = self.data.append(pandas.DataFrame([row], columns=row.keys()), ignore_index=True)
+                    # self.data = self.data.append(pandas.DataFrame(row))
                     self.tree_treeview.insert("", "end", iid=i, text=str(i + 1),
                                               values=list({k: [v] for k, v in zip(cn, row)}.values()))
 
@@ -2078,6 +2086,7 @@ class MultiComboBox(tkinter.Frame):
         # print(f"filter_treeview: {self.typed_in.get()}\n\n\tDATA\n{self.data}")
         if self.typed_in.get():
             val = self.res_tv_entry.get().lower()
+            print(f"SUBMISSION VAL {val=}")
             col = self.rg_var.get()
             some = False
             if not val:
@@ -2112,7 +2121,8 @@ class MultiComboBox(tkinter.Frame):
                 for i, row in self.data.iterrows():
                     found = False
                     for j, x in enumerate(row.values):
-                        if val in str(x):
+                        # print(f"\t\t{j=}, {x=} {val=} {val in str(x)=}")
+                        if val in str(x).lower():
                             found = True
                             break
                     if found:
