@@ -2132,6 +2132,31 @@ def test_pdf():
     print(a + 10)
 
 
+def test_custom_message_box():
+
+    root = tkinter.Tk()
+    w, h = 500, 500
+    root.geometry(f"{w}x{h}")
+
+    def open_tl():
+        title = f"Testing CustomMessageBox2 Title"
+        msg = f"Testing CustomMessageBox2 Message"
+        x, y = 200, 200
+        cmb_1 = CustomMessageBox2(
+            title=title,
+            msg=msg,
+            x=x,
+            y=y,
+        )
+
+        print(f"{cmb_1.choice=}")
+
+    tv_btn, btn = button_factory(root, "open", command=open_tl)
+    btn.pack()
+
+    root.mainloop()
+
+
 if __name__ == "__main__":
     a = "avery"
     # test_block_letters()
@@ -2189,4 +2214,5 @@ if __name__ == "__main__":
     # test_margins()
     # test_is_number()
     # test_spread()
-    test_pdf()
+    # test_pdf()
+    test_custom_message_box()
