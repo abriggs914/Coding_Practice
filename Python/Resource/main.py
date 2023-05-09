@@ -2142,12 +2142,15 @@ def test_custom_message_box():
         title = f"Testing CustomMessageBox2 Title"
         msg = f"Testing CustomMessageBox2 Message"
         x, y = 200, 200
-        cmb_1 = CustomMessageBox2(
+        cmb_1 = CustomMessageBox(
             title=title,
             msg=msg,
             x=x,
             y=y,
+            bg_colour=random_colour(rgb=False),
+            bg_colour2=random_colour(rgb=False)
         )
+        cmb_1.grab_set()
 
         print(f"{cmb_1.choice=}")
 
