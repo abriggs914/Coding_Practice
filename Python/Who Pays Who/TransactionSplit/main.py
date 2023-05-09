@@ -1,4 +1,7 @@
 import datetime
+import tkinter
+
+from tkinter_utility import button_factory
 
 
 class Transaction:
@@ -221,8 +224,6 @@ class TransactionSplit:
         for p_ent, r_ent, amount in results:
             print(f"{p_ent} pays {amount=} to {r_ent}")
 
-
-
         # outstanding = sum([trans.amount for trans in self.transactions])
         # equal_share = outstanding / len(entites)
         # while outstanding != 0:
@@ -238,13 +239,150 @@ class TransactionSplit:
         #     outstanding *= 0
 
 
-
 POT = Entity("POT")
 TOL = 1e-7
 
 
+class TkSplitMenu(tkinter.Tk):
+
+    ent_gener = (i for i in range(10000))
+
+    class Entity:
+
+        def __init__(self, tag, name=None, start_balance=0):
+            id_number = next(TkSplitMenu.ent_gener)
+            idn = f"00000{id_number}"[-5:]
+            if name is None:
+                name = f"entity_{idn}"
+            self.name = name
+            self.id_number = id_number
+            self.id_number_s = idn
+            self.tag = tag
+            self.start_balance = start_balance
+            self.balance = self.start_balance
+
+        def __repr__(self):
+            return f"<Ent {self.name}>"
+
+    def __init__(self):
+        super().__init__()
+        self.entities = []
+        self.transactions = []
+
+        self.data = dict()
+        self.data["canvas_width"] = 500
+        self.data["canvas_height"] = 500
+        self.data["canvas_background"] = "#505050"
+
+        self.data["width_entity"] = 80
+        self.data["fill_entity"] = "#DCDCDC"
+        self.data["outline_entity"] = "#000000"
+        self.data["outline_width_entity"] = 1
+
+        r, c, rs, cs, ix, iy, px, py, s = self.grid_keys()
+        self.grid_args = {
+            "top_frame": {r: 0, c: 0, cs: 1, rs: 1},
+            "canvas": {r: 1, c: 0, cs: 1, rs: 1},
+
+            "btn_new_entity": {r: 0, c: 0}
+        }
+
+        self.top_frame = tkinter.Frame(self)
+        self.tv_btn_new_entity, \
+        self.btn_new_entity = \
+            button_factory(
+                self.top_frame,
+                tv_btn="New Entity",
+                command=self.click_new_entity
+            )
+        self.canvas = tkinter.Canvas(
+            self,
+            width=self.data["canvas_width"],
+            height=self.data["canvas_height"],
+            background=self.data["canvas_background"]
+        )
+
+        self.grid_widgets()
+
+    def grid_widgets(self):
+        for k, args in self.grid_args.items():
+            eval(f"self.{k}.grid(**{args})")
+
+    def grid_keys(self):
+        return "row", "column", "rowspan", "columnspan", "ipadx", "ipady", "padx", "pady", "sticky"
+
+    def pick_spawn_pos(self):
+        cw = self.data["canvas_width"]
+        ew = self.data["width_entity"]
+        ch = self.data["canvas_height"]
+        eh = self.data["width_entity"]
+        ow = self.data["outline_width_entity"]
+        hh = eh // 2
+        hw = ew // 2
+        found = False
+        res = hw + ow, hh + ow, hw + ew + (2 * ow), hh + eh + (2 * ow)
+        for i in range(ew // 2, cw, ew):
+            for j in range(eh // 2, ch, eh):
+                a, b, c, d = j - ow, i - ow, j + ew + ow, i + eh + ow
+                for ent in self.entities:
+                    pos = self.canvas.bbox(ent.tag)
+                    print(f"{ent} {pos=}, c_pos={(a, b, c, d)}")
+                    x1, y1, x2, y2 = pos
+                    if not (x1 <= a <= x2) and not (y1 <= b <= y2) and not (x1 <= c <= x2) and not (y1 <= d <= y2):
+                        res = j, i, j + ew, i + eh
+                        found = True
+                        break
+                if found:
+                    break
+            if found:
+                break
+        print(f"{res=}")
+        return res
+
+
+
+            # x1, y1, ww, hh = pos
+            # x2, y2 = x1 + ww, y1 + hh
+        # i, j = ew // 2, eh // 2
+        # for i in range(ew // 2, w, ew):
+        #     for j in range(eh // 2, h, eh):
+        #         pt = (i, j)
+        #         for ent in self.entities:
+        #             pos = self.canvas.bbox(ent.tag)
+        #             print(f"{ent} {pos=}")
+        #             x1, y1, ww, hh = pos
+        #             x2, y2 = x1 + ww, y1 + hh
+        #             if not (x1 <= j <= x2) and not (y1 <= i <= y2):
+        #                 found = True
+        #                 break
+        #         if found:
+        #             break
+        #     if found:
+        #         break
+        #
+        # return 180, 180, 100, 65
+
+    def click_new_entity(self, *args):
+        print()
+        x1, y1, x2, y2 = self.pick_spawn_pos()
+        fill = self.data["fill_entity"]
+        outline = self.data["outline_entity"]
+        outline_width = self.data["outline_width_entity"]
+        print(f"P {x1=}, {y1=}, {x2=}, {y2=}")
+        tag = self.canvas.create_oval(
+            x1, y1, x2, y2,
+            fill=fill,
+            outline=outline,
+            width=outline_width
+        )
+        print(f"{self.canvas.bbox(tag)=}")
+        ent = TkSplitMenu.Entity(tag=tag)
+        self.entities.append(ent)
+
+
 if __name__ == '__main__':
     ts = TransactionSplit()
+
 
     def test_1():
         ts.add_transaction(30, "Avery", description="TEST")
@@ -254,11 +392,13 @@ if __name__ == '__main__':
         ts.add_transaction(10, ["Emily"], e_to="Avery", description="TEST")
         ts.add_transaction(20, ["Kristen"], e_to="Avery", description="TEST")
 
+
     def test_2():
         ts.add_transaction(20, "Avery", description="TEST")
         ts.add_transaction(20, "Kristen", description="TEST")
         ts.add_transaction(20, ["Emily"], description="TEST")
         ts.add_transaction(40, ["Hayley"], description="TEST")
+
 
     def test_4():
         ts.add_transaction(75, "Avery", description="TEST")
@@ -266,11 +406,13 @@ if __name__ == '__main__':
         ts.add_transaction(40, ["Emily"], description="TEST")
         ts.add_transaction(40, ["Hayley"], description="TEST")
 
+
     def test_5():
         ts.add_transaction(100, "Avery", description="TEST")
         ts.add_transaction(0, "Kristen", description="TEST")
         ts.add_transaction(15, ["Emily"], description="TEST")
         ts.add_transaction(85, ["Hayley"], description="TEST")
+
 
     def test_6():
         ts.add_transaction(50, "Avery", description="TEST")
@@ -278,10 +420,12 @@ if __name__ == '__main__':
         ts.add_transaction(25, ["Emily"], description="TEST")
         ts.add_transaction(21, ["Hayley"], e_to="Avery", description="TEST")
 
+
     def test_3():
         ts.add_transaction(20, ["Avery"], description="TEST")
         ts.add_transaction(200, ["Avery"], description="TEST")
         ts.add_transaction(1, [POT], e_to=["Avery"], description="TEST")
+
 
     def historic():
         ts.add_transaction(100, "Avery", description="Mother's Day Supper (Wingo's)")
@@ -316,14 +460,11 @@ if __name__ == '__main__':
     #     Payment("Disney+", "A", "P", 89.99, datetime.datetime.strptime("2021-08-04", "%Y-%m-%d"))
     # ]
 
-
-
     # test_3()
     # test_4()
     # test_5()
     # test_6()
     historic()
-
 
     print(f"Entities")
     for ent in ts.entities:
@@ -334,3 +475,6 @@ if __name__ == '__main__':
         print(f"{trans}")
 
     ts.split()
+
+    app = TkSplitMenu()
+    app.mainloop()
