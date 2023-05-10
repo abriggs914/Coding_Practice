@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.47
-    Date...........2023-05-09
+    Version..............1.48
+    Date...........2023-05-10
     Author(s)....Avery Briggs
     """
 
@@ -1527,7 +1527,7 @@ class CustomMessageBox(tkinter.Toplevel):
                  bg_colour="blue", bg_colour2="yellow", text_colour="Green", btn_font_colour="white",
                  close_btn_active_colour="red", close_btn_active_font_colour="white", w=500, h=120,
                  font_message=("Helvetica", 9), font_title=("Helvetica", 10, 'bold'), font_x_btn=("Helvetica", 12),
-                 font_btn=("Helvetica", 10)):
+                 font_btn=("Helvetica", 10), answer_handle=None, ret_btn_text=False):
 
         # Required Data of Init Function
         super().__init__()
@@ -1545,7 +1545,8 @@ class CustomMessageBox(tkinter.Toplevel):
         self.b2 = b2  # Button 2 (outputs '2')
         self.b3 = b3  # Button 3 (outputs '3')
         self.b4 = b4  # Button 4 (outputs '4')
-        self.choice = ''  # it will be the return of messagebox according to button press
+        self.ret_btn_text = ret_btn_text
+        # self.choice = ''  # it will be the return of messagebox according to button press
 
         # Just the colors for my messagebox
 
@@ -1651,7 +1652,16 @@ class CustomMessageBox(tkinter.Toplevel):
                                      activeforeground=self.text_colour)
             self.B4.place(x=r1c4[0], y=r1c4[1], height=r1c4[3] - r1c4[1], width=r1c4[2] - r1c4[0])
 
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.destroy_funcs = [self.destroy]
+        print(f"{answer_handle=}")
+        self.choice = tkinter.StringVar(self, value="") if not is_tk_var(answer_handle) else answer_handle
+        print(f"{self.choice=}, {self.choice.get()=}")
+
+        # if answer_handle is None:
+        #     self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        # elif callable(answer_handle):
+        #     self.destroy_funcs.insert(0, answer_handle)
+
         # self.root.bind("<Configure>", self.update_configure)
         # x = self.root.winfo_x()
         # y = self.root.winfo_y()
@@ -1661,7 +1671,13 @@ class CustomMessageBox(tkinter.Toplevel):
         # self.root.wait_window()
 
     def on_closing(self, *args):
+        print(f"self closing")
         self.closed()
+
+    def destroy_handle(self):
+        for func in self.destroy_funcs:
+            func()
+        # self.answer_handle()
 
     # def update_configure(self, *args):
     #     print(f"{args=}")
@@ -1671,28 +1687,43 @@ class CustomMessageBox(tkinter.Toplevel):
 
     # Function on Closeing MessageBox
     def closed(self):
-        self.destroy()  # Destroying Dialogue
-        self.choice = 'closed'  # Assigning Value
+        if self.ret_btn_text:
+            self.choice.set("closed")  # Assigning Value
+        else:
+            self.choice.set("-1")  # Assigning Value
+        self.destroy_handle()  # Destroying Dialogue
 
     # Function on pressing B1
     def click1(self):
-        self.destroy()  # Destroying Dialogue
-        self.choice = '1'  # Assigning Value
+        if self.ret_btn_text:
+            self.choice.set(self.b1)  # Assigning Value
+        else:
+            self.choice.set("1")  # Assigning Value
+        self.destroy_handle()  # Destroying Dialogue
 
     # Function on pressing B2
     def click2(self):
-        self.destroy()  # Destroying Dialogue
-        self.choice = '2'  # Assigning Value
+        if self.ret_btn_text:
+            self.choice.set(self.b2)  # Assigning Value
+        else:
+            self.choice.set("2")  # Assigning Value
+        self.destroy_handle()  # Destroying Dialogue
 
     # Function on pressing B3
     def click3(self):
-        self.destroy()  # Destroying Dialogue
-        self.choice = '3'  # Assigning Value
+        if self.ret_btn_text:
+            self.choice.set(self.b3)  # Assigning Value
+        else:
+            self.choice.set("3")  # Assigning Value
+        self.destroy_handle()  # Destroying Dialogue
 
     # Function on pressing B4
     def click4(self):
-        self.destroy()  # Destroying Dialogue
-        self.choice = '4'  # Assigning Value
+        if self.ret_btn_text:
+            self.choice.set(self.b4)  # Assigning Value
+        else:
+            self.choice.set("4")  # Assigning Value
+        self.destroy_handle()  # Destroying Dialogue
 
 
 class ScannableEntry(tkinter.Entry):

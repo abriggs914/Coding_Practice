@@ -10,8 +10,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.28
-    Date...........2023-04-27
+    Version..............1.29
+    Date...........2023-05-10
     Author(s)....Avery Briggs
     """
 
@@ -3368,6 +3368,14 @@ def iscolour(c, g=None, b=None):
         c = c.replace("-", "_")
         if c.upper() in COLOURS:
             return True
+    elif all([
+            hasattr(c, "hex_code"),
+            hasattr(c, "rgb_code"),
+            hasattr(c, "colour_name"),
+            hasattr(c, "__iter__"),
+            hasattr(c, "__hash__")
+    ]):
+        return True
     return False
 
 
@@ -3382,9 +3390,9 @@ def rgb_to_hex(colour):
         r, g, b = colour
         return "#{}{}{}".format(*list(map(lambda x: hex(int(x) % 256)[2:].rjust(2, "0"), [r, g, b]))).upper()
     except ValueError:
-        raise ValueError("Failed to convert r: {}, g: {}, b: {} values to a hex colour.".format(r, g, b))
+        raise ValueError(f"Failed to convert r: {r}, g: {g}, b: {b} values to a hex colour.")
     except TypeError:
-        raise TypeError("Failed to convert r: {}, g: {}, b: {} values to a hex colour.".format(r, g, b))
+        raise TypeError(f"Failed to convert r: {r}, g: {g}, b: {b} values to a hex colour.")
 
 
 def hex_to_rgb(colour):
@@ -3399,9 +3407,9 @@ def hex_to_rgb(colour):
     try:
         return (int(colour[1:3], 16), int(colour[3:5], 16), int(colour[5:], 16))
     except ValueError:
-        raise ValueError("Failed to convert colour: {} to a valid RGB colour.".format(colour))
+        raise ValueError(f"Failed to convert colour: {colour} to a valid RGB colour.")
     except TypeError:
-        raise TypeError("Failed to convert colour: {} to a valid RGB colour.".format(colour))
+        raise TypeError(f"Failed to convert colour: {colour} to a valid RGB colour.")
 
 
 def is_rgb_colour(c, g=None, b=None):
@@ -3524,7 +3532,9 @@ class Colour:
         if not iscolour(c, g, b):
             raise Colour.ColourCreationError(f"Error params {c=}, {g=}, {b=} do not represent a valid or known colour.")
         else:
-            if is_rgb_colour(c, g, b):
+            if isinstance(c, Colour):
+                r, g, b = c.rgb_code
+            elif is_rgb_colour(c, g, b):
                 if g is None and b is None:
                     r, g, b = c
                 else:
@@ -3536,12 +3546,14 @@ class Colour:
             elif isinstance(c, str) and ((col := c.replace("-", "_").upper()) in COLOURS):
                 r, g, b = COLOURS[col]["R"], COLOURS[col]["G"], COLOURS[col]["B"]
             else:
-                r, g, b = None, None, None
+                # r, g, b = None, None, None
+                raise Colour.ColourCreationError(f"Error params {c=}, {g=}, {b=} do not represent a valid or known colour.")
                 # print(f"{c=}, {type(c)=}")
 
             self.rgb_code = r, g, b
-            # print(f"{self.hex_code=}, {self.rgb_code=}")
+            print(f"PTA {self.hex_code=}, {self.rgb_code=}")
             self.hex_code = rgb_to_hex(self.rgb_code)
+            print(f"PTB {self.hex_code=}, {self.rgb_code=}")
 
             if self.colour_name is None:
                 if self.hex_code in COLOURS_INVERSE:
