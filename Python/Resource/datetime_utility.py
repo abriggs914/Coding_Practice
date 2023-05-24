@@ -7,8 +7,8 @@ from utility import minmax, clamp, choice
 
 """
 	General datetime Utility Functions
-	Version...............1.7
-	Date...........2023-04-17
+	Version...............1.9
+	Date...........2023-05-24
 	Author.......Avery Briggs
 """
 
@@ -75,7 +75,10 @@ def same_calendar_day(d1, d2):
 
 
 def date_suffix(day):
-    s_day = str(day)
+    if isinstance(day, datetime.datetime):
+        s_day = f"{day:%Y-%m-%d}"
+    else:
+        s_day = str(day)
     if s_day[-1] == "1":
         res = "st"
         if len(s_day) > 1:
@@ -101,13 +104,14 @@ def date_suffix(day):
 # date_str_format(d)                                            -> January 1st, 2023
 # date_str_format(d, include_time=True)                         -> January 1st, 2023 at 8:30 AM
 # date_str_format(d, include_time=True, include_weekday=True)   -> Sunday January 1st, 2023 at 8:30 AM
-def date_str_format(date_str, include_time=False, include_weekday=False, short_month=False, short_weekday=False, delim=" at "):
+def date_str_format(date_str, include_time=False, include_weekday=False, short_month=False, short_weekday=False,
+                    delim=" at "):
     """Return a date as a nicely formatted date or date and time string."""
     if isinstance(date_str, datetime.datetime):
         date_obj = date_str
     else:
         date_obj = datetime.datetime.fromisoformat(date_str)
-    suffix = date_suffix(date_obj.day)
+    suffix = date_suffix(date_obj)
     res = datetime.datetime.strftime(date_obj, f"%{'b' if short_month else 'B'} %d###, %Y").replace("###", suffix)
     s_res = res.split(" ")
     x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
@@ -174,11 +178,13 @@ def is_date_w_fmt(date_in, fmt="%Y-%m-%d"):
         print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
     except ValueError:
         print("Cannot determine if date param \"{}\" is a valid date using datetime format: {}".format(date_in, fmt))
-	
+
     return False
-	
+
 
 def is_date(date_string):
+    if isinstance(date_string, datetime.datetime) or isinstance(date_string, datetime.date):
+        return True
     if not date_string:  # Check if the input string is empty
         return False
     try:
