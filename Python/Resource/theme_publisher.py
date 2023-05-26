@@ -1,5 +1,7 @@
 import os
 import json
+import tkinter
+
 from colour_utility import *
 from tkinter_utility import *
 

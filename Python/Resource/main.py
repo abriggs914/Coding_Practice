@@ -4,6 +4,14 @@ import os
 import random
 import tkinter
 
+# from camelot import core
+# from camelot.core import TableList
+import camelot
+from camelot.core import TableList
+# from PyPDF2 import PdfReader, SimplePDFViewer
+import pdfreader
+from pdfreader import SimplePDFViewer
+
 import pandas
 
 import datetime as dt
@@ -2094,6 +2102,7 @@ def test_pdf():
     with open(fn, 'rb') as f:
         # create a PDF reader object
         pdf_reader = PyPDF2.PdfFileReader(f)
+        # pdf_reader = PdfReader(f)
         # read each page of the PDF file
         text = ''
         for page_num in range(pdf_reader.numPages):
@@ -2130,6 +2139,110 @@ def test_pdf():
 
     a = 10
     print(a + 10)
+
+
+def test_pdf_textract():
+    import textract
+
+    fn = r"C:\Users\ABriggs\Downloads\2023-04 LASER AMP 244246 PO 140194 POSTED.pdf"
+
+    # with open(fn, 'rb') as f:
+    #     text = textract.process(f, method="pdfminer")
+    #     print(f"{text=}")
+
+    # text = textract.process(fn, method="pdfminer")
+    # print(f"{text=}")
+
+    f = open(fn, 'rb')
+    # doc = PDFDocument(f)
+    # all_pages = [p for p in doc.pages()]
+    viewer = SimplePDFViewer(f)
+    print(f"{viewer.metadata=}")
+    text = ""
+
+    for i, canvas in enumerate(viewer):
+        page_images = canvas.images
+        page_forms = canvas.forms
+        page_text = canvas.text_content
+        page_inline_images = canvas.inline_images
+        page_strings = canvas.strings
+        # print(f"{i=} {page_images=}\n{page_forms=}\n{page_text=}\n{page_inline_images=}\n{page_strings=}")
+        print(f"{page_strings=}")
+        text = " ".join(("".join(page_strings)).split("\x03"))
+        print(f"--1   {text=}")
+
+    print(f"--2   {text=}")
+    values = text.split("Price Montant")[-1]
+    print(f"--1 {values=}")
+    values = values.split("amount")[-1].split("SOUS-TOTAL")[0]
+    rows = values.split("\n")
+    columns = [
+        "Qté /qty",
+        "Numéro de pièce / Part Number",
+        "Rev.",
+        "Prix /Price",
+        "Montant / amount"
+    ]
+    print(f"--2 {values=}")
+    for row in rows:
+        if row:
+            vals = row.split(" ")
+            qty_part_number, rev, price, amount = vals
+            part_number = qty_part_number.split("-")[-1]
+            idx = qty_part_number.index("-")
+            part_number = f"{qty_part_number[idx - 5:idx]}-{part_number}"
+            qty = int(qty_part_number[:idx][:-5])
+            print(f"{qty=}, {part_number=}, {int(rev)=}, {money_value(price)=}, {money_value(amount)=}")
+
+    # # open the PDF file in binary mode
+    # with open(fn, 'rb') as f:
+    #     # create a PDF reader object
+    #     # pdf_reader = PyPDF2.PdfFileReader(f)
+    #     pdf_reader = PdfReader(f)
+    #     # read each page of the PDF file
+    #     text = ''
+    #     for page_num in range(pdf_reader.numPages):
+    #         page = pdf_reader.getPage(page_num)
+    #         # extract text from the page
+    #         page_text = page.extractText()
+    #         # append the text from this page to the overall text
+    #         text += page_text
+
+    # values = text.split("Price Montant")[-1]
+    # values = values.split("amount")[-1].split("SOUS-TOTAL")[0]
+    # rows = values.split("\n")
+    # columns = [
+    #     "Qté /qty",
+    #     "Numéro de pièce / Part Number",
+    #     "Rev.",
+    #     "Prix /Price",
+    #     "Montant / amount"
+    # ]
+    # print(f"{values=}")
+    # for row in rows:
+    #     if row:
+    #         vals = row.split(" ")
+    #         qty_part_number, rev, price, amount = vals
+    #         part_number = qty_part_number.split("-")[-1]
+    #         idx = qty_part_number.index("-")
+    #         part_number = f"{qty_part_number[idx - 5:idx]}-{part_number}"
+    #         qty = int(qty_part_number[:idx][:-5])
+    #         print(f"{qty=}, {part_number=}, {int(rev)=}, {money_value(price)=}, {money_value(amount)=}")
+    #
+    # # write the text to a file
+    # with open(r'C:\Users\ABriggs\Downloads\2023-04 LASER AMP 244246 PO 140194 POSTED GEN (1).txt', 'w') as f:
+    #     f.write(text)
+    #
+    # a = 10
+    # print(a + 10)
+
+
+def test_pdf_camelot():
+    import textract
+
+    fn = r"C:\Users\ABriggs\Downloads\2023-04 LASER AMP 244246 PO 140194 POSTED.pdf"
+    tables = camelot.read_pdf(fn)
+    print(f"{tables=}")
 
 
 def test_custom_message_box():
@@ -2218,4 +2331,6 @@ if __name__ == "__main__":
     # test_is_number()
     # test_spread()
     # test_pdf()
-    test_custom_message_box()
+    # test_pdf_textract()
+    test_pdf_camelot()
+    # test_custom_message_box()
