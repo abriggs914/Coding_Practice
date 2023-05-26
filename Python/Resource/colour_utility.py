@@ -10,8 +10,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.29
-    Date...........2023-05-10
+    Version..............1.30
+    Date...........2023-05-25
     Author(s)....Avery Briggs
     """
 
@@ -3524,11 +3524,36 @@ class Colour:
     class ColourCreationError(Exception):
         pass
 
-    def __init__(self, c, g=None, b=None, hex_code=None, rgb_code=None, colour_name=None):
-        self.hex_code = hex_code
-        self.rgb_code = rgb_code
-        self.colour_name = colour_name
+    # def __init__(self, c, g=None, b=None, hex_code=None, rgb_code=None, colour_name=None):
+    def __init__(self, c, g=None, b=None):
+
+        self._hex_code = None
+        self._rgb_code = None
+        self._colour_name = None
+
+        # self.hex_code = hex_code
+        # self.rgb_code = rgb_code
+        # self.colour_name = colour_name
         # print(f"{c=}, {g=}, {b=}, {self.hex_code=}, {self.rgb_code=}")
+        self.set_colour_values(c=c, g=g, b=b)
+
+    def brighten(self, p):
+        # return Colour(brighten(self.rgb_code, p, rgb=False))
+        self.rgb_code = Colour(brighten(self.rgb_code, p, rgb=False)).rgb_code
+        return self
+
+    def darken(self, p):
+        self.rgb_code = Colour(darken(self.rgb_code, p, rgb=False)).rgb_code
+        return self
+
+    def brightened(self, p):
+        # return Colour(brighten(self.rgb_code, p, rgb=False))
+        return Colour(brighten(self.rgb_code, p, rgb=False))
+
+    def darkened(self, p):
+        return Colour(darken(self.rgb_code, p, rgb=False))
+
+    def set_colour_values(self, c, g, b):
         if not iscolour(c, g, b):
             raise Colour.ColourCreationError(f"Error params {c=}, {g=}, {b=} do not represent a valid or known colour.")
         else:
@@ -3550,17 +3575,17 @@ class Colour:
                 raise Colour.ColourCreationError(f"Error params {c=}, {g=}, {b=} do not represent a valid or known colour.")
                 # print(f"{c=}, {type(c)=}")
 
-            self.rgb_code = r, g, b
-            print(f"PTA {self.hex_code=}, {self.rgb_code=}")
-            self.hex_code = rgb_to_hex(self.rgb_code)
-            print(f"PTB {self.hex_code=}, {self.rgb_code=}")
-
-            if self.colour_name is None:
-                if self.hex_code in COLOURS_INVERSE:
-                    self.colour_name = COLOURS_INVERSE[self.hex_code]
-
             # print(f"{self.hex_code=}, {self.rgb_code=}")
             # self.hex_code = rgb_to_hex(self.rgb_code)
+
+        self.rgb_code = r, g, b
+        # print(f"PTA {self.hex_code=}, {self.rgb_code=}")
+        self.hex_code = rgb_to_hex(self.rgb_code)
+        # print(f"PTB {self.hex_code=}, {self.rgb_code=}")
+
+        if self.colour_name is None:
+            if self.hex_code in COLOURS_INVERSE:
+                self.colour_name = COLOURS_INVERSE[self.hex_code]
 
     def __iter__(self):
         rgb = self.rgb_code
@@ -3577,6 +3602,62 @@ class Colour:
         r, g, b = self.rgb_code
         name = self.colour_name if self.colour_name else "UNNAMED"
         return "<Colour RGB=({r}, {g}, {b}), hex = '{h}', name = '{n}'>".format(r=r, g=g, b=b, h=self.hex_code, n=name)
+
+    def get_colour_name(self):
+        return self._colour_name
+
+    def get_rgb_code(self):
+        return self._rgb_code
+
+    def get_hex_code(self):
+        return self._hex_code
+
+    def set_colour_name(self, colour_name_in):
+        sc = str(colour_name_in).upper()
+        if self.colour_name is not None and sc != self.colour_name:
+            if sc in COLOURS:
+                print(f"Changing colour name '{self.colour_name}' to '{colour_name_in}'.\nThis new colour name does not match the original rgb values of this colour.")
+        self._colour_name = colour_name_in
+
+    def set_rgb_code(self, rgb_code_in):
+        # print(f"{rgb_code_in=}, s.rgb={self.rgb_code}, s.hex={self.hex_code}")
+        if not isinstance(rgb_code_in, (tuple, list)) or len(rgb_code_in) != 3 or any([(not isinstance(v, int) or (0 > v > 255)) for v in rgb_code_in]):
+            raise TypeError(f"Error param 'rgb_code' must be a tuple or list of three integer between 0 and 255. Got '{rgb_code_in}'")
+        sr = self.rgb_code
+        self._rgb_code = rgb_code_in
+        if sr is not None:
+            if sr != rgb_code_in:
+                c = Colour(rgb_code_in)
+                if c.hex_code != self.hex_code:
+                    self.hex_code = c.hex_code
+        # self.colour_name = get_colour_name(self)
+
+    def set_hex_code(self, hex_code_in):
+        # print(f"{hex_code_in=}, s.rgb={self.rgb_code}, s.hex={self.hex_code}")
+        # if not isinstance(hex_code_in, str) or (len(hex_code_in) not in (6, 7)) or (len(hex_code_in) == 7 and not hex_code_in.startswith("#")) or (not hex_code_in[-6:].isalnum()) or not is_hex_colour(hex_code_in):
+        if not is_hex_colour(hex_code_in):
+            raise TypeError(f"Error, param 'hex_code' must be a valid hex representation of a colour. Got {hex_code_in}")
+        hc = self.hex_code
+        self._hex_code = hex_code_in
+        if hc is not None:
+            if hc != hex_code_in:
+                c = Colour(hex_code_in)
+                if c.rgb_code != self.rgb_code:
+                    self.rgb_code = c.rgb_code
+        # self.colour_name = get_colour_name(self)
+
+    def del_colour_name(self):
+        del self._colour_name
+
+    def del_rgb_code(self):
+        del self._rgb_code
+
+    def del_hex_code(self):
+        del self._hex_code
+
+    colour_name = property(get_colour_name, set_colour_name, del_colour_name)
+    rgb_code = property(get_rgb_code, set_rgb_code, del_rgb_code)
+    hex_code = property(get_hex_code, set_hex_code, del_hex_code)
 
 
 def gradient(x, n, c1, c2, rgb=True):
