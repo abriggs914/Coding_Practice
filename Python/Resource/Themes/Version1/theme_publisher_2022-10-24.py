@@ -956,3 +956,7 @@ class ThemePublisher(tkinter.Tk):
         theme = theme.parse(parsed_theme)
         print(f"theme={theme}")
         return theme
+
+
+if __name__ == '__main__':
+    ThemePublisher().mainloop()
