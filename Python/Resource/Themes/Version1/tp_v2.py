@@ -37,7 +37,7 @@ class App(tkinter.Tk):
             callback=self.update_font_chooser
         )
         self.frame_text_colour = tkinter.Frame(self.frame_elem_controller)
-        self.ctl_text_colour = ttkwidgets.C(
+        self.ctl_text_colour = ttkwidgets.c(
             self.frame_text_colour,
             callback=self.update_text_colour
         )
