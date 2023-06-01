@@ -842,6 +842,35 @@ what_we_do_in_the_shadows = TVSeries("What We Do In The Shadows", {
 	True,
 	"Comedy",
 	"Disney+")
+	
+
+american_dad = TVSeries("American Dad", {
+	1: 7,
+	2: 16,
+	3: 19,
+	4: 16,
+	5: 20,
+	6: 18,
+	7: 19,
+	8: 18,
+	9: 19,
+	10: 20,
+	11: 3,
+	12: 15,
+	12: 22,
+	13: 22,
+	14: 22,
+	15: 22,
+	16: 22,
+	17: 22,
+	18: 22,
+	19: 22},
+	23,
+	2005,
+	2022,
+	True,
+	"Comedy",
+	"Disney+")
 
 
 series_list = [
@@ -901,7 +930,8 @@ series_list = [
 	bless_the_harts,
 	buffy_the_vampire_slayer,
 	angel,
-	what_we_do_in_the_shadows
+	what_we_do_in_the_shadows,
+	american_dad
 ]
 
    
