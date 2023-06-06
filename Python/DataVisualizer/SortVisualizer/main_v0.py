@@ -15,20 +15,13 @@ class App(tkinter.Tk):
 
         self.zero_at_top = zero_at_top
         self.original_array = list(array[:MAX_N])
-        self.working_array = list(array[:MAX_N])
         self.n = len(self.original_array)
         self.geometry(f"700x500")
         self.title("")
-
-        self.state = "IDLE"
-        self.animation_time = 100 * self.n
-        self.fps = 24
-
         self.background_canvas = Colour(SUN_YELLOW).hex_code
         self.width_canvas, self.height_canvas = 550, 200
         self.fc_bars, self.oc_bars = Colour(DODGERBLUE).hex_code, Colour(BLACK).hex_code
         self.fc_texts = Colour(BLACK).hex_code
-
         self.canvas = tkinter.Canvas(
             self,
             width=self.width_canvas,
@@ -121,12 +114,31 @@ class App(tkinter.Tk):
                         y_m += clamp(18, y_d, 24)
                 code += "\n"
 
-            self.canvas.tag_bind(tb, "<Button-1>", lambda event, idx=i: self.click_bar(event, i=idx))
-            self.canvas.tag_bind(tt, "<Button-1>", lambda event, idx=i: self.click_bar(event, i=idx))
-
-            # print(f"{i=}, {el=}, {y_0=:.3f}, {y_1=:.3f}, {y_d=:.3f}, {y_r=:.3f}, ypp={self.ypp:.3f}, {y_m=:.3f}\n{bbb=}\n{bbt=} {wt=:.3f} {ht=:.3f}\n{code}")
+            # if int(y_d / self.ypp) <= abs(el):
+            #     code += "A"
+            #     if el < 0:
+            #         code += "B"
+            #         y_r = self.height_canvas - y_1
+            #         if y_r > y_d:
+            #             code += "D"
+            #             y_m += clamp(18, y_d, 24)
+            #         else:
+            #             code += "E"
+            #             y_m -= clamp(18, y_d, 24)
+            #     else:
+            #         code += "C"
+            #         y_r = y_1
+            #         if y_r > y_d:
+            #             code += "F"
+            #             y_m -= clamp(18, y_d, 24)
+            #         else:
+            #             code += "G"
+            #             y_m += clamp(18, y_d, 24)
+            #     code += "\n"
+            print(f"{i=}, {el=}, {y_0=:.3f}, {y_1=:.3f}, {y_d=:.3f}, {y_r=:.3f}, ypp={self.ypp:.3f}, {y_m=:.3f}\n{bbb=}\n{bbt=} {wt=:.3f} {ht=:.3f}\n{code}")
             self.canvas.coords(tb, (cdb[0], y_0, cdb[2], y_1))
             self.canvas.coords(tt, (cdt[0], y_m))
+            # self.canvas.coords(tt, (cdt[0] + (self.w_bar / 2), y_1 + (yh / 2)))
 
         self.canvas.create_line(0, self.y_0, self.width_canvas, self.y_0, fill=Colour(ORANGE).hex_code, width=3)
 
@@ -139,106 +151,33 @@ class App(tkinter.Tk):
             return (abs(self.min_) - v_in) * self.ypp
         else:
             return (self.max_ - v_in) * self.ypp
+        # ypp = self.height_canvas / (self.spread if self.spread != 0 else 1)
+        #
+        # # if v_in < 0:
+        # #     off = self.max_
+        # # else:
+        # #     off = 0
+        # # print(f"{ypp=}, {off=}, {v_in=}, zat={self.zero_at_top}")
+        # # print(f"{self.min_=}, {self.max_=}, {self.spread=}")
+        #
+        # res = (self.max_ - v_in) * ypp
+        # # print(f"RES = <{self.height_canvas - ((v_in + off) * ypp)}>")
+        # # return self.height_canvas - ((v_in + off) * ypp)
+        # print(f"RES = <{res}>")
+        # return res
+        #
+        # # if self.zero_at_top:
+        # #     print(f"RES A= <{(v_in + off) * ypp}>")
+        # #     return (v_in + off) * ypp
+        # # else:
+        # #     print(f"RES B= <{self.height_canvas - ((v_in + off) * ypp)}>")
+        # #     return self.height_canvas - ((v_in + off) * ypp)
+        # # # if self.has_negatives:
+        # # # else:
 
-    def click_bar(self, event, i):
-        self.flash_bar(i)
-
-    def bubble_sort(self):
-        res = list(self.original_array)
-        n = self.n
-        code = ""
-        print(f"START: {res=}")
-        comparisons = 0
-        swaps = 0
-        operations = []
-        for i in range(n - 1):
-            for j in range(n - i - 1):
-                comparisons += 1
-                code += f"{i=}, {j=}\n"
-                v1 = res[j]
-                v2 = res[j + 1]
-                # op = f"compare {i=}, {j=}, {j+1=}, {res[j]=} {res[j + 1]=}"
-                op = {
-                    "op": "compare",
-                    "i": i,
-                    "j": j,
-                    "res[j]": res[j],
-                    "res[j + 1]": res[j + 1],
-                    "bb_0": self.canvas.bbox(self.bars[j]),
-                    "bb_1": self.canvas.bbox(self.bars[j + 1])
-                }
-                if v2 < v1:
-                    swaps += 1
-                    res[j], res[j + 1] = res[j + 1], res[j]
-                    # op = f"swap {i=}, {j=}, {j+1=}, {res[j]=} {res[j + 1]=}"
-                    op["op"] = "swap"
-                operations.append(op)
-        print(f"FINAL: {res=}")
-        print(f"{comparisons=}\n{swaps=}\n{len(operations)=}\n", end="")
-        # print("\n".join(operations))
-        # print(f"{code}")
-        self.working_array = res
-        return operations
-
-    def flash_bar(self, i):
-        tb = self.bars[i]
-        tt = self.texts[i]
-        fill1 = Colour(self.canvas.itemcget(tb, "fill"))
-        fill2 = fill1.darkened(0.5)
-        fill3 = Colour(self.canvas.itemcget(tt, "fill"))
-        fill4 = fill3.brightened(0.5)
-        n_slices = 10
-        half_offset = 250
-        grads_b = [gradient(i, n_slices, fill1, fill2, rgb=False) for i in range(n_slices)]
-        grads_b = grads_b + grads_b[::-1]
-        grads_t = [gradient(i, n_slices, fill3, fill4, rgb=False) for i in range(n_slices)]
-        grads_t = grads_t + grads_t[::-1]
-        for j, grad in enumerate(grads_b):
-            if j >= len(grads_b) // 2:
-                o = half_offset
-            else:
-                o = 0
-            self.after(100 + (15 * j) + o, lambda t=tb, jj=j: self.canvas.itemconfigure(tb, fill=grads_b[jj]))
-            self.after(100 + (15 * j) + o, lambda t=tt, jj=j: self.canvas.itemconfigure(tt, fill=grads_t[jj]))
-        # n_slices = 10
-        # 100 + (0 * 15) + 0 -> 100 + (9 * 15) + 0 ==> 100, 115, 130, 145, 160, 175, 190, 205, 220, 235
-        # 100 + (10 * 15) + 250 -> 100 + (19 * 15) + 250 ==> 500, 515, 530, 545, 560, 575, 590, 605, 620, 635
-        # total time = 7350 ms
 
     def go(self):
         print(f"go")
-        operations = self.bubble_sort()
-
-        frames = 12
-        nop = len(operations)
-        tm = sum([op["bb_1"][0] - op["bb_0"][0] for op in operations])
-        print(f"{tm=}")
-        o = 0
-        for i, op in enumerate(operations):
-            typ = op["op"]
-            j = op["j"]
-            j_1 = j + 1
-            self.after(100 + (i * 685) + o, lambda ij=j: self.flash_bar(i=ij))
-            self.after(100 + (i * 685) + o, lambda ij=j_1: self.flash_bar(i=ij))
-            if typ == "swap":
-                bb_0 = op["bb_0"]
-                bb_1 = op["bb_1"]
-                xd = abs(bb_1[0] - bb_0[0])
-                xpf = xd / frames
-                d = -1 if bb_1[0] < bb_0[0] else 1
-                tb1 = self.bars[j]
-                tb2 = self.bars[j_1]
-                for j in range(frames):
-                    self.after(
-                        100 + (i * 685) + (j * 120),\
-                        # 10,\
-                        lambda tb1_=tb1, bb_0_=bb_0, d_=d, j_=j, xpf_=xpf:\
-                            self.canvas.coords(tb1_, (bb_0_[0] + (d_ * (j_ * xpf_)), bb_0_[1], bb_0_[1] + (d_ * (j_ * xpf_)), bb_0_[3])))
-                    # self.after(100 + (i * 685) + (j * 120), lambda tb1_=tb2, bb_0_=bb_1, d_=-d, j_=j, xpf_=xpf: self.canvas.coords(tb1_, (bb_0_[0] + (d_ * (j_ * xpf_)), bb_0_[1], bb_0_[1] + (d_ * (j_ * xpf_)), bb_0_[3])))
-                    o += 100 + (i * 685) + (j * 120)
-            print(f"{op}")
-        # ops = nop / self.animation_time
-
 
     def reset(self):
         print(f"reset")
