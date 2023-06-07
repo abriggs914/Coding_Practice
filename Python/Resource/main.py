@@ -2393,6 +2393,13 @@ def test_pdf():
 #     print(a + 10)
 
 
+def test_is_money():
+    true_tests = [1, -1, -0.1, -11, 1.1, "1", "-1", "-0.1", "-11", "1.1", "$1", "$-1", "$-0.1", "$-11", "$1.1"]
+    false_tests = [None, {}, [], "1.1.1", "$15-"]
+    print(f"{all(list(map(is_money, true_tests)))=}")
+    print(f"{not all(list(map(is_money, false_tests)))=}")
+
+
 def test_custom_message_box():
 
     root = tkinter.Tk()
@@ -2483,4 +2490,5 @@ if __name__ == "__main__":
     # test_pdf_camelot()
     # test_pdf4()
     # test_batch_laser_amp()
+    test_is_money()
     test_custom_message_box()

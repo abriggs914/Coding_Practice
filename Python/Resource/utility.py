@@ -24,8 +24,8 @@ import os
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.70
-    Date...........2023-05-04
+    Version..............1.71
+    Date...........2023-06-07
     Author(s)....Avery Briggs
     """
 
@@ -374,6 +374,15 @@ def money(v, int_only=False):
 
 def money_value(m):
     return float("".join(m[1:].split(",")))
+
+
+def is_money(value):
+    if isnumber(value):
+        value = f"$ {value}"
+    if isinstance(value, str):
+        value = value.replace(',', '').replace(' ', '').replace('.', '', 1).replace('-', '', 1)
+        return value.startswith('$') and value.count('$') == 1 and value[1:].isdigit()
+    return False
 
 
 def percent(v):
