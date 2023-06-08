@@ -180,15 +180,17 @@ class App(tkinter.Tk):
         self.working_array = res
         return operations
 
-    def flash_bar(self, i):
+    def anim_time(self, frames, ms_per_frame, i_0=0, half_offset=None):
+        ho = half_offset if half_offset is not None else 1
+        return sum([i_0 + (i * ms_per_frame) + (ho * (1 if half_offset is not None else 0) * (1 if ((i // 2) >= frames) else 0)) for i in range(frames)])
+
+    def flash_bar(self, i, n_slices=10, half_offset=250, ms_per_frame=15, i_0=0):
         tb = self.bars[i]
         tt = self.texts[i]
         fill1 = Colour(self.canvas.itemcget(tb, "fill"))
         fill2 = fill1.darkened(0.5)
         fill3 = Colour(self.canvas.itemcget(tt, "fill"))
         fill4 = fill3.brightened(0.5)
-        n_slices = 10
-        half_offset = 250
         grads_b = [gradient(i, n_slices, fill1, fill2, rgb=False) for i in range(n_slices)]
         grads_b = grads_b + grads_b[::-1]
         grads_t = [gradient(i, n_slices, fill3, fill4, rgb=False) for i in range(n_slices)]
@@ -198,12 +200,13 @@ class App(tkinter.Tk):
                 o = half_offset
             else:
                 o = 0
-            self.after(100 + (15 * j) + o, lambda t=tb, jj=j: self.canvas.itemconfigure(tb, fill=grads_b[jj]))
-            self.after(100 + (15 * j) + o, lambda t=tt, jj=j: self.canvas.itemconfigure(tt, fill=grads_t[jj]))
+            self.after(i_0 + (ms_per_frame * j) + o, lambda t=tb, jj=j: self.canvas.itemconfigure(tb, fill=grads_b[jj]))
+            self.after(i_0 + (ms_per_frame * j) + o, lambda t=tt, jj=j: self.canvas.itemconfigure(tt, fill=grads_t[jj]))
         # n_slices = 10
         # 100 + (0 * 15) + 0 -> 100 + (9 * 15) + 0 ==> 100, 115, 130, 145, 160, 175, 190, 205, 220, 235
         # 100 + (10 * 15) + 250 -> 100 + (19 * 15) + 250 ==> 500, 515, 530, 545, 560, 575, 590, 605, 620, 635
         # total time = 7350 ms
+        return self.anim_time(n_slices * 2, ms_per_frame, i_0, half_offset=half_offset)
 
     def go(self):
         print(f"go")
@@ -214,12 +217,16 @@ class App(tkinter.Tk):
         tm = sum([op["bb_1"][0] - op["bb_0"][0] for op in operations])
         print(f"{tm=}")
         o = 0
+        a_times = []
+        t_a_time = 0
         for i, op in enumerate(operations):
             typ = op["op"]
             j = op["j"]
             j_1 = j + 1
-            self.after(100 + (i * 685) + o, lambda ij=j: self.flash_bar(i=ij))
-            self.after(100 + (i * 685) + o, lambda ij=j_1: self.flash_bar(i=ij))
+            a_times.append(self.anim_time(frames=10, ms_per_frame=15, i_0=0, half_offset=250))
+            t_a_time += a_times[-1]
+            self.after(100 + (i * 685) + o, lambda ij=j: self.flash_bar(i=ij, n_slices=10, half_offset=250, ms_per_frame=15, i_0=0))
+            self.after(100 + (i * 685) + o, lambda ij=j_1: self.flash_bar(i=ij, n_slices=10, half_offset=250, ms_per_frame=15, i_0=0))
             if typ == "swap":
                 bb_0 = op["bb_0"]
                 bb_1 = op["bb_1"]
