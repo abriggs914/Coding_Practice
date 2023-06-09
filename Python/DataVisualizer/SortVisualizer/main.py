@@ -17,6 +17,8 @@ class App(tkinter.Tk):
         self.zero_at_top = zero_at_top
         self.original_array = list(array[:MAX_N])
         self.working_array = list(array[:MAX_N])
+        self.sorted_array = sorted(list(self.original_array))
+        print(f"og={self.original_array}\nsa={self.sorted_array}")
         self.n = len(self.original_array)
         self.geometry(f"700x500")
         self.title("")
@@ -64,8 +66,14 @@ class App(tkinter.Tk):
         print(f"{self.y_0=}")
 
         grads = list(rainbow_gradient(self.n * 2, rgb=False))[:self.n]
-        # dummy, grads = sort_2_lists(list(self.original_array), grads)
-        grads, dummy = sort_2_lists(grads, list(self.original_array))
+        grads = [grads[self.sorted_array.index(k)] for k in self.original_array]
+        # print(f"{grads=}")
+        # wk = sort_2_lists(self.original_array, list(range(self.n)))
+        # print(f"{wk[0]}\n{wk[1]}")
+        # grads = [grads[k] for k in wk[1]]
+        # # dummy, grads = sort_2_lists(list(self.sorted_array), grads)
+        # # grads, dummy = sort_2_lists(grads, list(self.sorted_array))
+        print(f"{grads=}")
         self.bars = [
             self.canvas.create_rectangle(
                 *gc[0][i],
@@ -287,13 +295,15 @@ class App(tkinter.Tk):
 if __name__ == '__main__':
     zat = True
     zat = False
-    arr = [8, 18, 9, -1, 0, 6, 1, 5, -7, 15, 16, 7]
+    # arr = [8, 18, 9, -1, 0, 6, 1, 5, -7, 15, 16, 7]
     # arr = list(range(6))
     # arr = list(range(25))
     # arr = list(range(-12, 0, 1)) + list(range(60))
     # arr = list(range(-1, 0, 1)) + list(range(60))
     # arr = list(range(-20, 0, 1)) + list(range(60))
     # arr = [-199, 2000, 15, 16, 55, 999, 484, -55, -156, 1400]
+    arr = [-99, 15, 16, 55, 99, 84, -55, -16] + [8, 18, 9, -1, 0, 6, 1, 5, -7, 15, 16, 7]
+    # arr += list(range(-60, 15, 4))
     app = App(arr, zero_at_top=zat)
 
     # print(f"{app.y_at_v(max(arr))=}")
