@@ -234,12 +234,12 @@ class App(tkinter.Tk):
 
     def go(self):
         print(f"go")
-        operations = self.bubble_sort()
+        operations = self.bubble_sort()[:5]
 
         frames = 12
         nop = len(operations)
         tm = sum([op["bb_1"][0] - op["bb_0"][0] for op in operations])
-        print(f"{tm=}")
+        print(f"{tm=}\n{nop=}")
         o = 0
         a_times = []
         t_a_time = 0
@@ -248,7 +248,7 @@ class App(tkinter.Tk):
             typ = op["op"]
             j = op["j"]
             j_1 = j + 1
-            print(f"{t_a_time=}, {a_off=}, {t_a_time+a_off}")
+            print(f"{i=}, {t_a_time=}, {a_off=}, {t_a_time+a_off}")
             # self.after(100 + (i * 685) + o, lambda ij=j: self.flash_bar(i=ij, n_slices=10, half_offset=250, ms_per_frame=15, i_0=0))
             # self.after(100 + (i * 685) + o, lambda ij=j_1: self.flash_bar(i=ij, n_slices=10, half_offset=250, ms_per_frame=15, i_0=0))
             self.after(t_a_time + a_off, lambda ij=j: self.flash_bar(i=ij, n_slices=10, half_offset=250, ms_per_frame=15, i_0=0))
@@ -268,25 +268,29 @@ class App(tkinter.Tk):
                 sub_a_time = self.anim_time(frames, mpf)
                 # a_times.append(sub_a_time)
                 a_off += sub_a_time
-                for j in range(frames):
-                    c_time = t_a_time + (j * mpf)
+                for k in range(frames):
+                    c_time = t_a_time + (k * mpf)
                     self.after(
                         c_time,\
                         # t_a_time,\
                         # 100 + (i * 685) + (j * 120),\
                         # 10,\
-                        lambda tb1_=tb1, bb_0_=bb_0, d_=d, j_=j, xpf_=xpf:\
+                        lambda tb1_=tb1, bb_0_=bb_0, d_=d, j_=k, xpf_=xpf:\
                             self.canvas.coords(tb1_, (bb_0_[0] + (d_ * (j_ * xpf_)), bb_0_[1], bb_0_[1] + (d_ * (j_ * xpf_)), bb_0_[3])))
                     self.after(
                         c_time,
-                        lambda tb1_=tb2, bb_0_=bb_1, d_=-d, j_=j, xpf_=xpf: \
+                        lambda tb1_=tb2, bb_0_=bb_1, d_=-d, j_=k, xpf_=xpf: \
                             self.canvas.coords(tb1_, (
                             bb_0_[0] + (d_ * (j_ * xpf_)), bb_0_[1], bb_0_[1] + (d_ * (j_ * xpf_)), bb_0_[3])))
                     # self.after(100 + (i * 685) + (j * 120), lambda tb1_=tb2, bb_0_=bb_1, d_=-d, j_=j, xpf_=xpf: self.canvas.coords(tb1_, (bb_0_[0] + (d_ * (j_ * xpf_)), bb_0_[1], bb_0_[1] + (d_ * (j_ * xpf_)), bb_0_[3])))
                     o += 100 + (i * 685) + (j * 120)
+                self.after(t_a_time + a_off, self.swap(j, j_1))
             print(f"{op}")
         # ops = nop / self.animation_time
 
+    def swap(self, i_1, i_2):
+        self.bars[i_1], self.bars[i_2] = self.bars[i_2], self.bars[i_1]
+        self.texts[i_1], self.texts[i_2] = self.texts[i_2], self.texts[i_1]
 
     def reset(self):
         print(f"reset")
