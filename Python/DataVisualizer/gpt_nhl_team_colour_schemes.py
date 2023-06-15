@@ -1,3 +1,5 @@
+import pandas
+
 scheme = {
     "Anaheim Ducks": [
         "Orange: #FE7F00",
@@ -191,5 +193,20 @@ if __name__ == '__main__':
     z = [(y[i].split("\n")[-1], "\n".join(y[i + 1].split("\n")[:-1])) for i in range(len(y) - 1)]
     a = [[t] + [cs for cs in list(c.rsplit("\n")) if cs] for t, c in z]
     b = {a_[0]: a_[1:] for a_ in a}
-    print("{\t\"" + "\n\t],\n\t".join(
-        ["\"" + k + "\": [\n\t\t\"" + "\",\n\t\t\"".join(v) + "\"" for k, v, in b.items()]) + "\n\t]\n}")
+    #print("{\t\"" + "\n\t],\n\t".join(
+    #    ["\"" + k + "\": [\n\t\t\"" + "\",\n\t\t\"".join(v) + "\"" for k, v, in b.items()]) + "\n\t]\n}")
+    
+    df = pandas.DataFrame(
+        columns=[
+            "FullTeamName",
+            "Colour_1",
+            "Colour_2",
+            "Colour_3",
+            "Colour_4",
+            "Colour_5",
+            "Colour_6"
+            ],
+        data=[[k] + [list(v_.split(":"))[1::2][0] for v_ in v] for k, v in scheme.items()]
+    )
+    print(df)
+    df.to_excel(r"C:\Users\ABriggs\Documents\Coding Practice\Coding_Practice\Python\Hockey pool\2023\NHL Teams.xlsx")
