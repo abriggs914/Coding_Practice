@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.51
-    Date...........2023-05-26
+    Version..............1.52
+    Date...........2023-07-10
     Author(s)....Avery Briggs
     """
 
@@ -2019,7 +2019,9 @@ class MultiComboBox(tkinter.Frame):
 
     def __init__(self, master, data, viewable_column_names=None, height_in_rows=10, indexable_column=0, tv_label=None,
                  kwargs_label=None, tv_combo=None, kwargs_combo=None, auto_grid=True, limit_to_list=True,
-                 new_entry_defaults=None, lock_result_col=None, allow_insert_ask=True, viewable_column_widths=None):
+                 new_entry_defaults=None, lock_result_col=None, allow_insert_ask=True, viewable_column_widths=None,
+                 include_aggregate_row=True, include_drop_down_arrow=True, drop_down_is_clicked=True,
+                 include_searching_widgets=True, exhaustive_filtering=False, default_null_char=""):
         super().__init__(master)
 
         assert isinstance(data,
@@ -2036,8 +2038,8 @@ class MultiComboBox(tkinter.Frame):
 
         if len(viewable_column_names) == 1:
             new_entry_defaults = []
-        assert (
-                new_entry_defaults is not None or allow_insert_ask) if not limit_to_list else 1, "Error, if allow new inserts to this combobox, then you must also either pass rest_values as 'new_entry_defaults' or set 'allow_insert_ask' to True.\nOtherwise there is no way to assign the rest of the column values."
+        #assert (
+        #        new_entry_defaults is not None or allow_insert_ask) if not limit_to_list else 1, "Error, if allow new inserts to this combobox, then you must also either pass rest_values as 'new_entry_defaults' or set 'allow_insert_ask' to True.\nOtherwise there is no way to assign the rest of the column values."
 
         self.master = master
         self.namer = alpha_seq(10000000)
@@ -2047,6 +2049,16 @@ class MultiComboBox(tkinter.Frame):
         self.p_allow_insert_ask = allow_insert_ask
         self.allow_insert_ask = False if limit_to_list else allow_insert_ask
         self.lock_result_col = lock_result_col
+        self.inc_aggregate_row = include_aggregate_row
+        self.include_drop_down_arrow = include_drop_down_arrow
+        self.drop_down_is_clicked = drop_down_is_clicked
+        self.include_searching_widgets = include_searching_widgets
+        self.exhaustive_filtering = exhaustive_filtering
+        self.default_null_char = default_null_char
+
+        if not self.include_drop_down_arrow:
+            # must show table, if this is false
+            self.drop_down_is_clicked = True
 
         self.ask_cancelled = f"#!#!# CANCELLED #!#!#"
         self.insert_none = "|/|/||NONE||/|/|"
@@ -2122,7 +2134,7 @@ class MultiComboBox(tkinter.Frame):
         # self.configure(width=t_width)
         # self.frame_top_most.configure(width=t_width)
 
-        self.tv_tree_is_hidden = tkinter.BooleanVar(self, value=True)
+        self.tv_tree_is_hidden = tkinter.BooleanVar(self, value=not self.drop_down_is_clicked)
 
         self.frame_top_most.grid_columnconfigure(0, weight=9)
         self.frame_top_most.grid_columnconfigure(1, weight=1)
@@ -2167,6 +2179,12 @@ class MultiComboBox(tkinter.Frame):
 
         if auto_grid:
             self.grid_widget()
+        if not self.tv_tree_is_hidden.get():
+            print(f"NOT is hidden")
+            self.tv_tree_is_hidden.set(True)
+            self.click_canvas_dropdown_button(None)
+        else:
+            print(f"is hidden")
 
         # print(f"Multicombobox created with dimensions (r x c)=({self.data.shape[0]} x {self.data.shape[1]})")
 
@@ -2176,9 +2194,15 @@ class MultiComboBox(tkinter.Frame):
         # self.grid_columnconfigure(, weight=10)
         self.res_label.grid(row=0, column=0)
 
-        self.frame_top_most.grid(row=1, column=0, sticky="ew")
-        self.res_entry.grid(row=0, column=0, sticky="ew")
-        self.res_canvas.grid(row=0, column=1)
+        if self.include_searching_widgets:
+            self.frame_top_most.grid(row=1, column=0, sticky="ew")
+            self.res_entry.grid(row=0, column=0, sticky="ew")
+
+        if self.include_drop_down_arrow:
+            self.res_canvas.grid(row=0, column=1)
+        else:
+            if self.tv_tree_is_hidden.get():
+                self.click_canvas_dropdown_button(None)
 
     def treeview_selection_update(self, event):
         print(f"treeview_selection_update")
@@ -2253,9 +2277,10 @@ class MultiComboBox(tkinter.Frame):
     def update_radio_group(self, *args):
         # print(f"update_radio_group, {args=}")
         col = self.rg_var.get()
-        # print(f"{col=}")
-        self.filter_treeview()
-        self.indexable_column = 0 if col == "All" else self.tree_controller.viewable_column_names.index(col)
+        print(f"{col=}")
+        # self.filter_treeview()
+        self.indexable_column = col
+        self.update_typed_in(None)
 
     def delete_item(self, iid=None, value="|/|/||NONE||/|/|", mode="first" | Literal["first", "all", "ask"]):
         delete_code = "|/|/||NONE||/|/|"
@@ -2331,8 +2356,18 @@ class MultiComboBox(tkinter.Frame):
                     self.data = pd.concat([self.data, df1], ignore_index=True)
                     print(f"B\n\tData\n{self.data}\n{type(self.data)=}")
                     # self.data = self.data.append(pandas.DataFrame(row))
-                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1),
-                                              values=list({k: [v] for k, v in zip(cn, row)}.values()))
+
+                    row_vals = [row.get(c, self.default_null_char) for c in cn]
+                    cdvd = {k: [v] for k, v in zip(cn, row)}.values()
+                    print(f"{row_vals=}")
+                    print(f"{cn=}, {row=}")
+                    print(f"{cdvd=}")
+                    print(f"{list({k: [v] for k, v in zip(cn, row)}.values())=}")
+
+                    # self.tree_treeview.insert("", "end", iid=i, text=str(i + 1),
+                    #                           values=list({k: [v] for k, v in zip(cn, row)}.values()))
+
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row_vals)
 
             elif self.allow_insert_ask and not self.p_allow_insert_ask:
                 # prevents situations where an item can be inserted by typing. Will accept if and only if its column values are passed with it.
@@ -2460,6 +2495,38 @@ class MultiComboBox(tkinter.Frame):
                         some = True
                     # print(f"{i=}\n{row=}\n{found=}")
 
+            if self.exhaustive_filtering and not some:
+                cn = self.tree_controller.viewable_column_names
+                for i, row in self.data.iterrows():
+                    do_break = False
+                    # for j, x in enumerate(row.values):
+                    for j, col_name in enumerate(cn):
+                        # print(f"\t\t{j=}, {x=} {val=} {val in str(x)=}")
+                        x = row[col_name]
+                        if val in str(x).lower():
+                            # print(f"FLASHING")
+                            self.rg_btns[j + 1].flash()
+                            do_break = True
+                            break
+                    if do_break:
+                        break
+
+                    # # self.tree_treeview.delete(*self.tree_treeview.get_children())
+                    # # do_break = False
+                    # if col != 0 and col != "All":
+                    #     for j, value in enumerate(self.data[].tolist()):
+                    #         # print(f"\t\t{i=}, {value=}")
+                    #         if val in str(value).lower():
+                    #             self.rg_btns[0].flash()
+                    #             # do_break = True
+                    #             break
+                    # # if do_break:
+                    # #     break
+                    #         # some = True
+                    #         # row = self.data.iloc[[i]].values
+                    #         # print(f"\t\t{i=}, {value=}, {row=}")
+                    #         # self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(*row))
+
             if some:
                 self.res_entry.config(foreground="black")
             else:
@@ -2476,20 +2543,22 @@ class MultiComboBox(tkinter.Frame):
             self.frame_middle.grid(row=2, column=0)
             self.frame_tree.grid(row=3, column=0)
 
-            for i, btn in enumerate(self.rg_btns):
-                btn.grid(row=0, column=i)
+            if self.include_searching_widgets:
+                for i, btn in enumerate(self.rg_btns):
+                    btn.grid(row=0, column=i)
 
             self.tree_controller.grid(row=1, column=0)
             self.tree_treeview.grid(row=0, column=0)
             self.tree_scrollbar_x.grid(row=3, sticky="ew")
             self.tree_scrollbar_y.grid(row=0, column=1, sticky="ns")
-            for i, data in enumerate(self.tree_aggregate_objects):
-                if i > 0:
-                    tv, entry, x1x2 = data
-                    # print(f"{i=}, {tv.get()=}")
-                    entry.grid(row=0, column=i)
-                else:
-                    data.grid(row=2)
+            if self.inc_aggregate_row:
+                for i, data in enumerate(self.tree_aggregate_objects):
+                    if i > 0:
+                        tv, entry, x1x2 = data
+                        # print(f"{i=}, {tv.get()=}")
+                        entry.grid(row=0, column=i)
+                    else:
+                        data.grid(row=2)
         else:
             # now hide
             self.res_canvas.change_direction("s")
