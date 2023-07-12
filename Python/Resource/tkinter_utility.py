@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.52
-    Date...........2023-07-10
+    Version..............1.53
+    Date...........2023-07-12
     Author(s)....Avery Briggs
     """
 
@@ -342,6 +342,10 @@ class TreeviewExt(ttk.Treeview):
     def __init__(self, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
 
+        self.key_delim = "_|_=_|_=_|_"
+        self.col_keys = ["background", "foreground"]
+        self.colours = {}
+
     def treeview_sort_column(self, col, reverse):
         l = [(self.set(k, col), k) for k in self.get_children('')]
         l.sort(reverse=reverse)
@@ -354,6 +358,28 @@ class TreeviewExt(ttk.Treeview):
         self.heading(col, command=lambda: \
             self.treeview_sort_column(col, not reverse))
 
+    def keyify(self, row, column):
+        if self.key_delim in str(row):
+            raise ValueError("Error, cannot use key_delim in the table it is a reserved string.")
+        if self.key_delim in str(column):
+            raise ValueError("Error, cannot use key_delim in the table it is a reserved string.")
+        return f"{row}{self.key_delim}{column}"
+
+    def set(self, item, column=None, value=None, options=None):
+        super().set(item, column, value)
+        if self.key_delim in str(value):
+            raise ValueError("Error, cannot use key_delim in the table it is a reserved string.")
+
+        if options:
+            if not isinstance(options, dict):
+                raise TypeError(f"Error, 'options' must either be none or a dictionary, got '{type(options)}'.")
+
+            key = self.keyify(item, column)
+            self.colours.update({
+                key: {k: options[k] for k in self.col_keys if k in options}
+            })
+
+        print(f"{self.colours=}")
 
 class TreeviewController(tkinter.Frame):
 
@@ -2021,7 +2047,9 @@ class MultiComboBox(tkinter.Frame):
                  kwargs_label=None, tv_combo=None, kwargs_combo=None, auto_grid=True, limit_to_list=True,
                  new_entry_defaults=None, lock_result_col=None, allow_insert_ask=True, viewable_column_widths=None,
                  include_aggregate_row=True, include_drop_down_arrow=True, drop_down_is_clicked=True,
-                 include_searching_widgets=True, exhaustive_filtering=False, default_null_char=""):
+                 include_searching_widgets=True, exhaustive_filtering=False, default_null_char="",
+                 row_colour_bg=None, row_colour_fg=None
+                 ):
         super().__init__(master)
 
         assert isinstance(data,
@@ -2203,6 +2231,12 @@ class MultiComboBox(tkinter.Frame):
         else:
             if self.tv_tree_is_hidden.get():
                 self.click_canvas_dropdown_button(None)
+
+    def set_cell_colours(self, row, column, bg_colour, fg_colour):
+        # self.tree_treeview.tag_configure(f"{row}-{column}", background=bg_colour, foreground=fg_colour)
+        self.tree_treeview.tag_configure(f"{row}", background=bg_colour, foreground=fg_colour)
+        self.tree_treeview.tag_configure(f"{column}", background=bg_colour, foreground=fg_colour)
+        self.tree_treeview.set
 
     def treeview_selection_update(self, event):
         print(f"treeview_selection_update")

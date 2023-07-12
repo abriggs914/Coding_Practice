@@ -131,13 +131,13 @@ def list_to_html__(items: Union[List[str], List[Tuple[str, str]]], title: str = 
 #         if style is not None and 'alternate_row_background' in style and 'alternate_row_foreground' in style:
 #             alt_row_bg = style['alternate_row_background']
 #             alt_row_fg = style['alternate_row_foreground']
-#             bg_color = alt_row_bg[i % len(alt_row_bg)]
-#             fg_color = alt_row_fg[i % len(alt_row_fg)]
+#             bg_colour = alt_row_bg[i % len(alt_row_bg)]
+#             fg_colour = alt_row_fg[i % len(alt_row_fg)]
 #         else:
-#             bg_color = ''
-#             fg_color = ''
+#             bg_colour = ''
+#             fg_colour = ''
 #         # Generate item HTML with background and foreground styling
-#         item_html = f'<li style="background-color:{bg_color};color:{fg_color}">{html.escape(str(item))}</li>'
+#         item_html = f'<li style="background-color:{bg_colour};color:{fg_colour}">{html.escape(str(item))}</li>'
 #         items_html += item_html
 #     # Wrap list items HTML in list tags
 #     list_html = f'<{list_tag}>{items_html}</{list_tag}>'
@@ -145,9 +145,9 @@ def list_to_html__(items: Union[List[str], List[Tuple[str, str]]], title: str = 
 #     if title is not None:
 #         # Determine title background and foreground colors
 #         if style is not None and ('background_title' in style or 'foreground_title' in style):
-#             bg_color = style.get('background_title', '')
-#             fg_color = style.get('foreground_title', '')
-#             title_style = f'style="background-color:{bg_color};color:{fg_color}"'
+#             bg_colour = style.get('background_title', '')
+#             fg_colour = style.get('foreground_title', '')
+#             title_style = f'style="background-color:{bg_colour};color:{fg_colour}"'
 #         else:
 #             title_style = ''
 #         title_html = f'<h2 {title_style}>{html.escape(title)}</h2>'

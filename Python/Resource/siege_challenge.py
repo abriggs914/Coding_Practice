@@ -43,6 +43,7 @@ class App(tkinter.Tk):
                 tv_btn="New Op",
                 command=self.click_new_op
             )
+
         self.tv_btn_new_map,\
             self.btn_new_map = \
             button_factory(
@@ -50,6 +51,7 @@ class App(tkinter.Tk):
                 tv_btn="New Map",
                 command=self.click_new_map
             )
+
         self.tv_btn_save,\
             self.btn_save = \
             button_factory(
@@ -77,6 +79,13 @@ class App(tkinter.Tk):
             viewable_column_widths=[100, 75, 50],
             exhaustive_filtering=True
         )
+
+        self.mc_attackers.set_cell_colours("0", "Name", Colour(DODGERBLUE).hex_code, Colour(SILVER_WHITE).hex_code)
+        print(f"{self.mc_attackers.tree_treeview.tag_has('0-Name')=}")
+        # print(f"{self.mc_attackers.tree_treeview.tag_names()}")
+
+        all_tags = self.mc_attackers.tree_treeview.get_children()
+        print(f"{all_tags=}")
 
         self.mc_defenders = MultiComboBox(
             self.frame_defenders,
@@ -106,7 +115,7 @@ class App(tkinter.Tk):
             exhaustive_filtering=True
         )
 
-        self.count_down_timer = CountDownTimer()
+        # self.count_down_timer = CountDownTimer()
 
         # self.res_tv_lbl_lst_atk, \
         #     self.res_lbl_lst_atk, \
