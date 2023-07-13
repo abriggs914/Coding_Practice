@@ -342,9 +342,9 @@ class TreeviewExt(ttk.Treeview):
     def __init__(self, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
 
-        self.key_delim = "_|_=_|_=_|_"
-        self.col_keys = ["background", "foreground"]
-        self.colours = {}
+        # self.key_delim = "_|_=_|_=_|_"
+        # self.col_keys = ["background", "foreground"]
+        # self.colours = {}
 
     def treeview_sort_column(self, col, reverse):
         l = [(self.set(k, col), k) for k in self.get_children('')]
@@ -358,28 +358,28 @@ class TreeviewExt(ttk.Treeview):
         self.heading(col, command=lambda: \
             self.treeview_sort_column(col, not reverse))
 
-    def keyify(self, row, column):
-        if self.key_delim in str(row):
-            raise ValueError("Error, cannot use key_delim in the table it is a reserved string.")
-        if self.key_delim in str(column):
-            raise ValueError("Error, cannot use key_delim in the table it is a reserved string.")
-        return f"{row}{self.key_delim}{column}"
+    # def keyify(self, row, column):
+    #     if self.key_delim in str(row):
+    #         raise ValueError("Error, cannot use key_delim in the table it is a reserved string.")
+    #     if self.key_delim in str(column):
+    #         raise ValueError("Error, cannot use key_delim in the table it is a reserved string.")
+    #     return f"{row}{self.key_delim}{column}"
 
-    def set(self, item, column=None, value=None, options=None):
-        super().set(item, column, value)
-        if self.key_delim in str(value):
-            raise ValueError("Error, cannot use key_delim in the table it is a reserved string.")
-
-        if options:
-            if not isinstance(options, dict):
-                raise TypeError(f"Error, 'options' must either be none or a dictionary, got '{type(options)}'.")
-
-            key = self.keyify(item, column)
-            self.colours.update({
-                key: {k: options[k] for k in self.col_keys if k in options}
-            })
-
-        print(f"{self.colours=}")
+    # def set(self, item, column=None, value=None, options=None):
+    #     super().set(item, column, value)
+    #     if self.key_delim in str(value):
+    #         raise ValueError("Error, cannot use key_delim in the table it is a reserved string.")
+    #
+    #     if options:
+    #         if not isinstance(options, dict):
+    #             raise TypeError(f"Error, 'options' must either be none or a dictionary, got '{type(options)}'.")
+    #
+    #         key = self.keyify(item, column)
+    #         self.colours.update({
+    #             key: {k: options[k] for k in self.col_keys if k in options}
+    #         })
+    #
+    #     print(f"{self.colours=}")
 
 class TreeviewController(tkinter.Frame):
 
@@ -439,6 +439,8 @@ class TreeviewController(tkinter.Frame):
         self.include_scroll_y = include_scroll_y
         self.p_width = 0.16
         self.aggregate_data = aggregate_data if isinstance(aggregate_data, dict) else dict()
+        self.cell_tag_delim = "|-=-=-=-|"
+        self.row_tag_delim = "row="
 
         # self.iid_namer = (i for i in range(1000000))
 
@@ -488,7 +490,9 @@ class TreeviewController(tkinter.Frame):
             # next(self.iid_namer)
             # print(f"{i=}, {row=}, {type(row)=}")
             dat = [row[c_name] for c_name in self.viewable_column_names]
-            self.treeview.insert("", tkinter.END, text=f"{i + 1}", iid=i, values=dat)
+            tags = (self.gen_row_tag(i),)
+            self.treeview.insert("", tkinter.END, text=f"{i + 1}", iid=i, values=dat, tags=tags)
+            print(f"{tags=}")
             # f.remove(i)
         # print(f"{f=}")
         # print(f"B {df.shape=}")
@@ -510,7 +514,7 @@ class TreeviewController(tkinter.Frame):
             self.treeview.configure(yscrollcommand=self.scrollbar_y.set)
 
         self.tv_button_new_item, self.button_new_item = button_factory(self, tv_btn="new entry",
-                                                                       kwargs_btn={"command": self.insert_new_entry})
+                                                                       kwargs_btn={"command": self.insert_new_random_entry})
         self.tv_button_delete_item, self.button_delete_item = button_factory(self, tv_btn="del entry",
                                                                              kwargs_btn={"command": self.delete_entry})
         # button_new_item.pack()
@@ -602,6 +606,14 @@ class TreeviewController(tkinter.Frame):
 
         self.treeview.bind("<B1-Motion>", self.check_column_width_update)
         self.treeview.bind("<Button-1>", self.stop_row_idx_resize)
+
+    def gen_cell_tag(self, i, j):
+        """12|-=-=-=-|12"""
+        return f"{i}{self.cell_tag_delim}{j}"
+
+    def gen_row_tag(self, i):
+        """row=5"""
+        return f"{self.row_tag_delim}{i}"
 
     def column_x(self, column_name):
         x1, x2 = 0, 0
@@ -755,7 +767,7 @@ class TreeviewController(tkinter.Frame):
     def gen_random_entry(self):
         return [random.randint(0, 25) for _ in self.viewable_column_names]
 
-    def insert_new_entry(self, index=tkinter.END):
+    def insert_new_random_entry(self, index=tkinter.END):
         data = self.gen_random_entry()
         iid = self.next_iid()
         text = f"{iid}"
@@ -2232,11 +2244,18 @@ class MultiComboBox(tkinter.Frame):
             if self.tv_tree_is_hidden.get():
                 self.click_canvas_dropdown_button(None)
 
-    def set_cell_colours(self, row, column, bg_colour, fg_colour):
+    def set_cell_colours(self, i, j, bg_colour, fg_colour):
         # self.tree_treeview.tag_configure(f"{row}-{column}", background=bg_colour, foreground=fg_colour)
-        self.tree_treeview.tag_configure(f"{row}", background=bg_colour, foreground=fg_colour)
-        self.tree_treeview.tag_configure(f"{column}", background=bg_colour, foreground=fg_colour)
-        self.tree_treeview.set
+        # self.tree_treeview.tag_configure(f"{row}", background=bg_colour, foreground=fg_colour)
+        # self.tree_treeview.tag_configure(f"{column}", background=bg_colour, foreground=fg_colour)
+        self.tree_treeview.tag_configure(self.tree_controller.gen_cell_tag(i, j), background=bg_colour, foreground=fg_colour)
+        # self.tree_treeview.set
+
+    def set_row_colours(self, i, bg_colour, fg_colour):
+        # self.tree_treeview.tag_configure(f"{row}-{column}", background=bg_colour, foreground=fg_colour)
+        # self.tree_treeview.tag_configure(f"{row}", background=bg_colour, foreground=fg_colour)
+        # self.tree_treeview.tag_configure(f"{column}", background=bg_colour, foreground=fg_colour)
+        self.tree_treeview.tag_configure(self.tree_controller.gen_row_tag(i, j), background=bg_colour, foreground=fg_colour)
 
     def treeview_selection_update(self, event):
         print(f"treeview_selection_update")
@@ -2354,7 +2373,7 @@ class MultiComboBox(tkinter.Frame):
                         f"Cannot delete row(s) containing value '{value}' from this dataframe. The value was not found was not Found.")
         self.update_treeview()
 
-    def add_new_item(self, val, col, rest_values=None):
+    def add_new_item(self, val, col, rest_values=None, rest_tags=None):
         if val in self.invalid_inp_codes:
             self.throw_fit(val)
         cn = self.tree_controller.viewable_column_names
@@ -2362,18 +2381,37 @@ class MultiComboBox(tkinter.Frame):
         # idx = col
         # col = cn[col]
         # col = cn[0] if col == 0 else col
+        tags = set()
         idx = cn.index(col)
         i = self.data.shape[0]
         # print(f"{type(rest_values)=}\n{rest_values=}")
         if not self.limit_to_list:
             if rest_values and (
-                    isinstance(rest_values, list) or isinstance(rest_values, list) or isinstance(rest_values, dict)):
+                    isinstance(rest_values, (tuple, list, dict))):
+
+                is_dict = False
+                is_list = False
+                if (is_list:=isinstance(rest_tags, (tuple, list))) or (is_dict:=isinstance(rest_tags, dict)):
+                    if is_dict:
+                        for j, col in enumerate(cn):
+                            tags.add(rest_tags.get(col, self.tree_controller.gen_row_tag(i)))
+                    else:
+                        if (l_rt := len(rest_tags)) != (l_cn := len(cn)):
+                            if l_rt > l_cn:
+                                raise ValueError(f"Error, too many tags were passed for this table. Got {l_rt}, expected {l_cn}")
+                            else:
+                                raise ValueError(f"Error, too few tags were passed for this table. Got {l_rt}, expected {l_cn}")
+                        else:
+                            [tags.add(tag) for tag in rest_tags]
+                else:
+                    tags = [self.gen_cell_tag(i, j) for j in range(len(cn))]
+
                 if isinstance(rest_values, list) or isinstance(rest_values, tuple):
                     row = list(rest_values)
                     row.insert(idx, val)
                     self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
-                    # print(f"\nB\t{self.data=}")
-                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row)
+                    # print(f"\nB\t{self.data=}").0
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row, tags=tuple(tags))
                     # self.res_entry.config(foreground="black")
                 else:
                     row = dict(rest_values)
@@ -2401,7 +2439,7 @@ class MultiComboBox(tkinter.Frame):
                     # self.tree_treeview.insert("", "end", iid=i, text=str(i + 1),
                     #                           values=list({k: [v] for k, v in zip(cn, row)}.values()))
 
-                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row_vals)
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row_vals, tags=tuple(tags))
 
             elif self.allow_insert_ask and not self.p_allow_insert_ask:
                 # prevents situations where an item can be inserted by typing. Will accept if and only if its column values are passed with it.
@@ -2411,6 +2449,7 @@ class MultiComboBox(tkinter.Frame):
                                                         message=f"Create a new combo box entry with '{val}' in column '{col}' position?")
                 row = []
                 if ans == tkinter.YES:
+                    tags = (self.tree_controller.gen_row_tag(i),)
                     # print(f"SELECTING {i=}")
                     column_names = self.tree_controller.viewable_column_names
                     for column in column_names:
@@ -2432,7 +2471,7 @@ class MultiComboBox(tkinter.Frame):
                     # self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
                     self.data = pd.concat([self.data, (pandas.DataFrame({k: [v] for k, v in zip(cn, row)}))], ignore_index=True)
                     # print(f"\nB\t{self.data=}")
-                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row))
+                    self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row), tags=tuple(tags))
                     self.res_entry.config(foreground="black")
                 else:
                     self.res_entry.config(foreground="red")
@@ -2442,6 +2481,8 @@ class MultiComboBox(tkinter.Frame):
                 raise ValueError("Cannot insert into this combobox")
         else:
             raise ValueError("Cannot insert into this combobox")
+
+        print(f"{tags=}")
 
     def throw_fit(self, code):
         raise ValueError(f"You cannot use code='{code}'. It is a keyword.")
@@ -2472,11 +2513,22 @@ class MultiComboBox(tkinter.Frame):
 
         return self.returned_value.get()
 
+    # def update_treeview(self):
+    #     self.tree_treeview.delete(*self.tree_treeview.get_children())
+    #     for i, row in self.data.iterrows():
+    #         # print(f"{i=}, {row=}")
+    #         tags =[self.tree_controller.gen_row_tag(i)]
+    #         self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row), tags=tags)
+    #         print(f"{tags=}")
+
     def update_treeview(self):
         self.tree_treeview.delete(*self.tree_treeview.get_children())
-        for i, row in self.data.iterrows():
+        for i, row in self.data.itertuples():
             # print(f"{i=}, {row=}")
-            self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row))
+            tags =[self.tree_controller.gen_row_tag(i)]
+            self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row, tags=tags)
+            self.tree_treeview.set(str(i + 1), j, val, tags=)
+            print(f"{tags=}")
 
     def filter_treeview(self):
         # print(f"filter_treeview: {self.typed_in.get()}\n\n\tDATA\n{self.data}")
@@ -2510,7 +2562,9 @@ class MultiComboBox(tkinter.Frame):
                         some = True
                         row = self.data.iloc[[i]].values
                         # print(f"\t\t{i=}, {value=}, {row=}")
-                        self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(*row))
+                        tags = tags=[self.tree_controller.gen_cell_tag(i, j) for j in range(len(self.tree_controller.viewable_column_names))]
+                        self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(*row), tags=tags)
+                        print(f"{tags=}")
             else:
                 # print(f"\n\nFilter Else")
                 self.tree_treeview.delete(*self.tree_treeview.get_children())
@@ -2524,7 +2578,10 @@ class MultiComboBox(tkinter.Frame):
                             break
                     if found:
                         # print(f"BACK IN {i=}\t{row=}")
-                        self.tree_treeview.insert("", "end", iid=i, text=i + 1, values=list(row))
+                        tags = [self.tree_controller.gen_cell_tag(i, j) for j in
+                                range(len(self.tree_controller.viewable_column_names))]
+                        self.tree_treeview.insert("", "end", iid=i, text=i + 1, values=list(row), tags=tags)
+                        print(f"{tags=}")
                         c += 1
                         some = True
                     # print(f"{i=}\n{row=}\n{found=}")

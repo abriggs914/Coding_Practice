@@ -80,12 +80,18 @@ class App(tkinter.Tk):
             exhaustive_filtering=True
         )
 
-        self.mc_attackers.set_cell_colours("0", "Name", Colour(DODGERBLUE).hex_code, Colour(SILVER_WHITE).hex_code)
-        print(f"{self.mc_attackers.tree_treeview.tag_has('0-Name')=}")
+        self.mc_attackers.set_cell_colours("0", "0", Colour(ORANGE_3).hex_code, Colour(CRIMSON_RED).hex_code)
+        self.mc_attackers.set_cell_colours("0", "1", Colour(PURPLE).hex_code, Colour(YELLOW).hex_code)
+        self.mc_attackers.set_cell_colours("1", "1", Colour(DODGERBLUE).hex_code, Colour(ORANGE_3).hex_code)
+        print(f"{self.mc_attackers.tree_treeview.tag_has(f'0{self.mc_attackers.tree_controller.cell_tag_delim}0')=}")
         # print(f"{self.mc_attackers.tree_treeview.tag_names()}")
 
         all_tags = self.mc_attackers.tree_treeview.get_children()
         print(f"{all_tags=}")
+        print(f"all_tags0=|{self.mc_attackers.tree_treeview.item('0')}|")
+        print(f"all_tags1=|{self.mc_attackers.tree_treeview.item('1')}|")
+        print(f"all_tags2=|{self.mc_attackers.tree_treeview.item('2')}|")
+        print(f"all_tags3=|{self.mc_attackers.tree_treeview.item('3')}|")
 
         self.mc_defenders = MultiComboBox(
             self.frame_defenders,
