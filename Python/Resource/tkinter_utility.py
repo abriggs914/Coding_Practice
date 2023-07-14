@@ -2527,7 +2527,7 @@ class MultiComboBox(tkinter.Frame):
             # print(f"{i=}, {row=}")
             tags =[self.tree_controller.gen_row_tag(i)]
             self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row, tags=tags)
-            self.tree_treeview.set(str(i + 1), j, val, tags=)
+            # self.tree_treeview.set(str(i + 1), j, val, tags=)
             print(f"{tags=}")
 
     def filter_treeview(self):

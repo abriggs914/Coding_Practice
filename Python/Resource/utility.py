@@ -15,6 +15,8 @@ import shutil
 import sys
 import os
 
+from screeninfo import get_monitors
+
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
@@ -1982,6 +1984,10 @@ def get_windows_user(EXTENDED_NAME_FORMAT: int = 3):
     nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
     GetUserNameEx(data, nameBuffer, size)
     return nameBuffer.value
+
+
+def get_largest_monitor():
+    return sorted(get_monitors(), key=lambda m: (-m.width_mm, m.width_mm * m.height_mm))[0]
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
