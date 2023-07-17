@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.53
-    Date...........2023-07-12
+    Version..............1.54
+    Date...........2023-07-16
     Author(s)....Avery Briggs
     """
 
@@ -49,6 +49,10 @@ def VERSION_AUTHORS():
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
+
+
+def grid_keys():
+    return "row", "column", "rowspan", "columnspan", "ipadx", "ipady", "padx", "pady", "sticky"
 
 
 def is_tk_var(var_in, str_var=True, int_var=True, dbl_var=True, bol_var=True, var_var=True):
