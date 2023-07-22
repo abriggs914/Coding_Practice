@@ -1,0 +1,422 @@
+Option Compare Database
+
+
+' String utility
+' File utility
+' Random utility
+' Sql utility
+' Shell utility
+' Office utility
+
+
+Public Function Printf(ByRef text As Variant, Optional ByVal doPrint As Boolean = True) As String
+    
+    If IsArray(text) Then
+        Printf = PrintArr(text, doPrint:=False)
+    Else
+        Printf = CStr(text)
+    End If
+    
+    If doPrint Then
+        Debug.Print Printf
+    End If
+
+End Function
+
+
+Public Sub ExecSQL(sql As String, Optional ByVal doPrint As Boolean = True, Optional ByVal doExec As Boolean = True, Optional ByVal quitOnFail As Boolean = True, Optional ByVal trace As Variant = "")
+
+    On Error GoTo PrintTrace
+
+    If doPrint Then
+        Debug.Print "SQL <" & sql & ">"
+    End If
+    If doExec Then
+        DoCmd.RunSQL sql
+    End If
+    
+    If Not doPrint And Not doExec Then
+        MsgBox "You must print, execute, or both." & vbNewLine & """" & sql & """"
+    End If
+    
+CleanExit:
+    On Error GoTo 0
+    Exit Sub
+    
+PrintTrace:
+    Printf vbNewLine & "Error executing sql."
+    Printf "SQL: <" & sql & ">"
+    Printf "Err.Number: <" & Err.Number & ">"
+    Printf "Err.Description: <" & Err.Description & ">"
+    If Len(trace) > 0 Then
+        Printf vbNewLine
+        Printf "StackTrace:"
+        Dim t As Variant
+        Dim spl As Variant
+        spl = Split(trace, ",")
+        For Each t In spl
+            Printf vbTab & "-" & t
+        Next t
+    End If
+    
+    If quitOnFail Then
+        Err.Raise Err.Number, "Utility.execSQL", Err.Description
+    End If
+    
+    Resume CleanExit
+    
+End Sub
+
+
+Public Sub ExecShell(shellCmd As String, Optional ByVal doPrint As Boolean = True, Optional ByVal doExec As Boolean = True)
+    
+    If doPrint Then
+        Call Printf("execShell <" & shellCmd & ">")
+    End If
+    If doExec Then
+        Shell shellCmd
+    End If
+    
+    If Not doPrint And Not doExec Then
+        MsgBox "You must print, execute, or both." & vbNewLine & """" & shellCmd & """"
+    End If
+    
+End Sub
+
+
+Public Sub OpenWordDoc(filePath As String)
+    ' https://stackoverflow.com/questions/17973041/opening-word-document-using-vba-in-access-2013
+    Call Printf("Trying to open word doc: '" & filePath & "'")
+    If IsNull(filePath) Or Len(CStr(filePath)) = 0 Then
+        MsgBox "Error, please select a valid word document to open."
+        Exit Sub
+    End If
+    'Dim wrdApp As Word.Application
+    'Dim wrdDoc As Word.Document
+
+
+    'Set wrdApp = CreateObject("Word.Application")
+    'wrdApp.Visible = True
+
+    'Set wrdDoc = wrdApp.Documents.Open(filePath)
+    Dim shellCmd As String
+    shellCmd = "winword """ & filePath & """"
+    Call ExecShell(shellCmd)
+End Sub
+
+
+Function LogError(ByVal lngErrNumber As Long, ByVal strErrDescription As String, _
+    strCallingProc As String, Optional vParameters, Optional bShowUser As Boolean = True) As Boolean
+'On Error GoTo Err_LogError
+    ' Purpose: Generic error handler.
+    ' Logs errors to table "tLogErrors".
+    ' Arguments: lngErrNumber - value of Err.Number
+    ' strErrDescription - value of Err.Description
+    ' strCallingProc - name of sub|function that generated the error.
+    ' vParameters - optional string: List of parameters to record.
+    ' bShowUser - optional boolean: If False, suppresses display.
+    ' Author: Allen Browne, allen@allenbrowne.com
+
+    Dim strMsg As String      ' String for display in MsgBox
+    Dim rst As DAO.Recordset  ' The tLogErrors table
+
+    Select Case lngErrNumber
+    Case 0
+        Debug.Print strCallingProc & " called error 0."
+    Case 2501                ' Cancelled
+        'Do nothing.
+    Case 3314, 2101, 2115    ' Can't save.
+        If bShowUser Then
+            strMsg = "Record cannot be saved at this time." & vbCrLf & _
+                "Complete the entry, or press <Esc> to undo."
+            MsgBox strMsg, vbExclamation, strCallingProc
+        End If
+    Case Else
+        If bShowUser Then
+            strMsg = "Error " & lngErrNumber & ": " & strErrDescription
+            MsgBox strMsg, vbExclamation, strCallingProc
+        End If
+        Set rst = CurrentDb.OpenRecordset("tLogError", , dbAppendOnly)
+        rst.AddNew
+            rst![ErrNumber] = lngErrNumber
+            rst![ErrDescription] = Left$(strErrDescription, 255)
+            rst![ErrDate] = Now()
+            rst![CallingProc] = strCallingProc
+            rst![UserName] = CurrentUser()
+            rst![ShowUser] = bShowUser
+            If Not IsMissing(vParameters) Then
+                rst![Parameters] = Left(vParameters, 255)
+            End If
+        rst.Update
+        rst.Close
+        LogError = True
+    End Select
+
+Exit_LogError:
+    Set rst = Nothing
+    Exit Function
+
+Err_LogError:
+    strMsg = "An unexpected situation arose in your program." & vbCrLf & _
+        "Please write down the following details:" & vbCrLf & vbCrLf & _
+        "Calling Proc: " & strCallingProc & vbCrLf & _
+        "Error Number " & lngErrNumber & vbCrLf & strErrDescription & vbCrLf & vbCrLf & _
+        "Unable to record because Error " & Err.Number & vbCrLf & Err.Description
+    MsgBox strMsg, vbCritical, "LogError()"
+    Resume Exit_LogError
+End Function
+
+
+Public Function NullPad(word As String) As String
+
+    If IsNull(word) Then
+        NullPad = "NULL"
+        Exit Function
+    End If
+    
+    If word = "NULL" Then
+        NullPad = "NULL"
+    Else
+        NullPad = "'" & word & "'"
+    End If
+    
+End Function
+
+
+Public Function Divmod(ByVal x As Integer, ByVal y As Integer) As Integer()
+
+    If y = 0 Then
+        Err.Raise "y cannot be 0"
+    End If
+
+    Dim res(0 To 1) As Integer
+    res(0) = CInt(x / y)
+    res(1) = x Mod y
+    If res(1) >= (0.5 * y) Then
+        res(0) = res(0) - 1
+    End If
+    Divmod = res
+
+End Function
+
+
+' https://stackoverflow.com/questions/46013120/whats-a-very-simple-way-to-enter-key-value-pairs-in-vba
+' We then add items to the dictionary using the 'Add' method,
+'   where each item consists of a key-value pair.
+'   We can access the values by providing the corresponding keys.
+' The 'Exists' method is used to check if a specific key exists in the dictionary.
+'   We can loop through all the keys using the Keys property and access the
+'   corresponding values using the keys.
+' The 'Remove' method allows us to remove a specific item from the dictionary,
+'   and the 'Count' property gives us the number of items in the dictionary.
+' Finally, we can clear all items from the dictionary using the 'RemoveAll' method.
+' Remember to add a reference to the "Microsoft Scripting Runtime" library
+'   in your VBA project for the Scripting.Dictionary object to be available.
+Public Function Dictionary(ParamArray args()) As Object
+  Dim i As Long, arr()
+  Set Dictionary = CreateObject("Scripting.Dictionary")
+
+  If UBound(args) >= 0 Then   ' if has arguments '
+    If VBA.IsObject(args(0)) Then   ' if object then load a Range '
+      arr = args(0).Resize(args(0).End(xlDown).Row - args(0).Row + 1, 2).value
+
+      For i = 1 To UBound(arr)
+        Dictionary.Add arr(i, 1), arr(i, 2)
+      Next
+    Else                               ' else load an Array '
+      For i = 0 To UBound(args) Step 2
+        Dictionary.Add args(i), args(i + 1)
+      Next
+    End If
+  End If
+End Function
+
+
+Public Function IsInstance(ByVal var As Variant, ByVal vbType As Variant) As Boolean
+
+    'Printf "ISINTANCE vt <" & VarType(var) & ">, tn <" & TypeName(var) & ">"
+
+    If IsArray(vbType) Then
+        Dim wArray As Variant
+        wArray = Array()
+        For Each el In vbType
+            wArray = Append(wArray, IsInstance(var, el))
+        Next el
+        'Call printArr(wArray, "BEFORE ANY")
+        IsInstance = Any_(wArray)
+    Else
+        If vbType = vbArray Then
+            IsInstance = IsArray(var)
+        ElseIf VarType(vbType) = vbLong Then
+            IsInstance = IIf(VarType(var) = vbType, True, False)
+        Else
+            IsInstance = IIf(TypeName(var) = vbType, True, False)
+        End If
+    End If
+
+End Function
+
+
+Public Function Ljust(ByVal word As String, ByVal Width As Integer, Optional ByVal fillChar As String = " ")
+
+    If Width < 0 Then
+        Err.Raise vbObjectError + 513, , "Width parameter must be greater then 0."
+    End If
+    If Len(fillChar) <> 1 Then
+        Err.Raise vbObjectError + 513, , "Length of parameter 'fillChar' must equal to 1."
+    End If
+
+    Dim result As String
+    Dim i As Integer
+    Dim c As Integer
+    For i = 0 To Width - 1
+        If i > ((Width - 1) - Len(word)) Then
+            c = (Len(word) + 1) - (i - (Width - Len(word))) - 1
+            'printf "i: <" & i & ">, c: <" & c & ">"
+            'printf vbTab & "width - Len(word): <" & (width - Len(word)) & ">"
+            result = Mid(word, c, 1) + result
+        Else
+            result = fillChar + result
+        End If
+    Next i
+    
+    'Ljust = "<" & result & ">"
+    Ljust = result
+
+End Function
+
+
+Public Function Rjust(ByVal word As String, ByVal Width As Integer, Optional ByVal fillChar As String = " ")
+
+    If Width < 0 Then
+        Err.Raise vbObjectError + 513, , "Width parameter must be greater then 0."
+    End If
+    If Len(fillChar) <> 1 Then
+        Err.Raise vbObjectError + 513, , "Length of parameter 'fillChar' must equal to 1."
+    End If
+
+    Dim result As String
+    Dim i As Integer
+    Dim c As Integer
+    For i = 0 To Width - 1
+        If i > ((Width - 1) - Len(word)) Then
+            c = (i - (Width - Len(word))) + 1
+            'printf "i: <" & i & ">, c: <" & c & ">"
+            'printf vbTab & "width - Len(word): <" & (width - Len(word)) & ">"
+            result = result + Mid(word, c, 1)
+        Else
+            result = result + fillChar
+        End If
+    Next i
+    
+    'Ljust = "<" & result & ">"
+    Rjust = result
+
+End Function
+
+
+Function IsFileOpen(fileName As String) As Integer
+    
+    Dim fileNum As Integer
+    Dim errNum As Integer
+    
+    'Allow all errors to happen
+    On Error Resume Next
+    fileNum = FreeFile()
+    
+    'Try to open and close the file for input.
+    'Errors mean the file is already open
+    Open fileName For Input Lock Read As #fileNum
+    Close fileNum
+    
+    'Get the error number
+    errNum = Err
+    
+    'Do not allow errors to happen
+    On Error GoTo 0
+    
+    'Check the Error Number
+    Select Case errNum
+    
+        'errNum = 0 means no errors, therefore file closed
+        Case 0
+        IsFileOpen = False
+     
+        'errNum = 70 means the file is already open
+        Case 70
+        IsFileOpen = True
+    
+        'Something else went wrong
+        Case Else
+        IsFileOpen = errNum
+    
+    End Select
+
+End Function
+
+' https://www.devhut.net/ms-access-vba-close-all-open-forms/
+'---------------------------------------------------------------------------------------
+' Procedure : CloseAllOpenFrms
+' Author    : Daniel Pineault, CARDA Consultants Inc.
+' Website   : http://www.cardaconsultants.com
+' Purpose   : Close all the currently open forms in the database
+' Copyright : The following may be altered and reused as you wish so long as the
+'             copyright notice is left unchanged (including Author, Website and
+'             Copyright).  It may not be sold/resold or reposted on other sites (links
+'             back to this site are allowed).
+'
+' Usage:
+' ~~~~~~
+' Call CloseAllOpenFrms
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)        Description
+' **************************************************************************************
+' 1         2015-02-17                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Sub CloseAllOpenFrms()
+    On Error GoTo Error_Handler
+    Dim DbF                   As Access.Form
+    Dim DbO                   As Object
+ 
+    Set DbO = Application.Forms    'Collection of all the open forms
+ 
+    For Each DbF In DbO    'Loop all the forms
+            DoCmd.Close acForm, DbF.name, acSaveNo
+    Next DbF
+ 
+Error_Handler_Exit:
+    On Error Resume Next
+    Set DbF = Nothing
+    Set DbO = Nothing
+    Exit Sub
+ 
+Error_Handler:
+    MsgBox "The following error has occurred." & vbCrLf & vbCrLf & _
+           "Error Number: " & Err.Number & vbCrLf & _
+           "Error Source: CloseAllOpenFrms" & vbCrLf & _
+           "Error Description: " & Err.Description, _
+           vbCritical, "An Error has Occurred!"
+    Resume Error_Handler_Exit
+End Sub
+
+
+Public Function Clamp(ByVal value As Double, ByVal low As Double, ByVal high As Double) As Double
+
+    Clamp = IIf(value <= low, low, IIf(value >= high, high, value))
+
+End Function
+
+
+Public Function Ceiling(ByVal value As Double) As Integer
+
+    Ceiling = -Int(-value)
+    
+End Function
+
+
+Public Function Between(value As Variant, low As Variant, high As Variant) As Boolean
+
+    Between = IIf(value >= low And value <= high, True, False)
+    
+End Function

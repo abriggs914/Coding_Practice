@@ -1,0 +1,1379 @@
+Option Compare Database
+
+
+' General Colour Utility Functions
+' Version.....................1.00
+' Date..................2023-07-06
+' Author(s)...........Avery Briggs
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   AlterColour             -   Return altered VBA Hexdeicmal colour for a given hexidecimal colour string after lightening or darkening it.
+'   GetBrightestColour      -   Return the brightest colour from an array of hex colours.
+'   GetDarkestColour        -   Return the darkest colour from an array of hex colours.
+'   Hex2RGB                 -   Return the string representation for a hexidecimal colour as an RGB colour, either an array or a string.
+'   Hex2VBAHex              -   Return the VBA hexidecimal representation for a given hexidecimal string (RGB -> BGR).
+'   IsBlack                 -   Using a threshold offset, determine if a given colour can be considered black.
+'   IsColour                -   Determine if a value is recognized as an RGB colour, or a hex colour (VBA or normal hex).
+'   IsHexColour             -   Determine if a value is recognized as a hex colour (VBA or normal hex).
+'   IsRGBColour             -   Determine if a value is recognized as an RGB colour.
+'   IsWhite                 -   Using a threshold offset, determine if a given colour can be considered white.
+'   Long2hex                -   Return a hexicedimal colour representation for a given Long value.
+'   Long2rgb                -   Return an array of RGB colour values for a given Long value
+'   NotUsedColour           -   Return whether a colour is used as a fore-colour for any of an array of controls.
+'   RandomHex               -   Return a random hexidecimal colour.
+'   RandomRGB               -   Return and array of RGB colour values randomly. Use min and max R, G, and B values to constrain the output colour.
+'   Rgb2Hex                 -   Return the hex value for given r, g, and b values.
+'   ShimmerControls         -   Using a list of control labels, iteratively change their colours in sequence, imitating a shimmer.
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+'---------------------------------------------------------------------------------------
+' Function : shimmerControls
+' Author    : Avery Briggs
+' Purpose   : Adjust control fore-colours for an array of controls, typically labels.
+'             Meant to be called in a forms on_timer Sub, typically with a form timer interval of 120
+'             Controls "pass" their colour either left or right, and then become the next colour in sequence.
+'             Adjust the shimmer direction, by changing "direction" to one of "left", "right", or "middle".
+'             Currently supports 12 colour palettes.
+'             - 1   Vibrant
+'             - 2   Semi-Random
+'             - 3   BWS
+'             - 4   STG
+'             - 5   Easter
+'             - 6   Christmas
+'             - 7   Halloween
+'             - 8   Canada Day
+'             - 9   Civic Holiday (NB Day)
+'             - 10  Thanksgiving
+'             - 11  Mother's Day
+'             - 12  Father's Day
+'
+' Usage:
+' ~~~~~~
+' shimmerControls(Array(Me.Label0, Me.Label1, Me.Label2), direction:="middle", palette:=3)
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Sub ShimmerControls(controls As Variant, Optional direction As String = "right", Optional palette As Integer = 0)
+
+    If LCase(direction) <> "right" And LCase(direction) <> "left" And LCase(direction) <> "middle" Then
+        direction = "right"
+    End If
+    
+    Dim bwsRed, bwsGrey, bwsBlack As String
+    Dim stgRed, stgGrey, stgBlack As String
+    Dim foundBwsRed, foundBwsGrey, foundBwsGrey2, foundBwsRed2 As Boolean
+    Dim foundStgRed, foundStgGrey, foundStgGrey2, foundStgRed2 As Boolean
+    bwsBlack = Hex2VBAHex(Rgb2Hex(0, 0, 0))
+    bwsGrey = Hex2VBAHex(Rgb2Hex(162, 170, 173))
+    bwsRed = Hex2VBAHex(Rgb2Hex(171, 35, 40))
+    stgBlack = Hex2VBAHex(Rgb2Hex(0, 0, 0))
+    stgRed = Hex2VBAHex(Rgb2Hex(27, 69, 129))
+    stgGrey = Hex2VBAHex(Rgb2Hex(162, 170, 173))
+
+    Dim oldColours() As String
+    Dim oldColour As String
+    Dim idx_OC, idx_NC As Integer
+    Dim ctrl As Label
+    Dim i, m, ub, lb As Integer
+    Dim ctrl_1 As Variant
+    Dim ctrl_2 As Variant
+    Dim c As Variant
+    Dim fC As Boolean
+    
+    ub = UBound(controls)
+    lb = LBound(controls)
+    idx_OC = 0
+    m = CInt(ub / 2)
+    
+    foundBwsRed = False
+    foundBwsRed2 = False
+    foundBwsGrey = False
+    foundBwsGrey2 = False
+    foundStgRed = False
+    foundStgRed2 = False
+    foundStgGrey = False
+    foundStgGrey2 = False
+    ' record old colours based on input array
+    For Each ctrl_ In controls
+        ReDim Preserve oldColours(idx_OC)
+        oldColour = ctrl_.ForeColor
+        'printf "oldcolour: <" & oldColour & ">"
+        'printf vbTab & "OC= <" & hex2VBAHex(long2hex(oldColour)) & "> Red<" & bwsRed & "> Grey<" & bwsGrey & ">"
+        
+        If Hex2VBAHex(Long2hex(oldColour)) = bwsRed Then
+            If foundBwsRed Then
+                foundBwsRed2 = True
+            End If
+            foundBwsRed = True
+        End If
+        If Hex2VBAHex(Long2hex(oldColour)) = bwsGrey Then
+            If foundBwsGrey Then
+                foundBwsGrey2 = True
+            End If
+            foundBwsGrey = True
+        End If
+        If Hex2VBAHex(Long2hex(oldColour)) = stgRed Then
+            If foundStgRed Then
+                foundStgRed2 = True
+            End If
+            foundStgRed = True
+        End If
+        If Hex2VBAHex(Long2hex(oldColour)) = stgGrey Then
+            If foundStgGrey Then
+                foundStgGrey2 = True
+            End If
+            foundStgGrey = True
+        End If
+        
+        oldColours(idx_OC) = oldColour
+        idx_OC = idx_OC + 1
+    Next ctrl_
+    
+    Dim colours() As String
+    If palette = 1 Then
+        ' vibrant
+        ReDim colours(5)
+        colours(0) = Hex2VBAHex(Rgb2Hex(238, 44, 44))
+        colours(1) = Hex2VBAHex(Rgb2Hex(28, 134, 238))
+        colours(2) = Hex2VBAHex(Rgb2Hex(0, 100, 0))
+        colours(3) = Hex2VBAHex(Rgb2Hex(154, 50, 205))
+        colours(4) = Hex2VBAHex(Rgb2Hex(205, 173, 0))
+        
+    ElseIf palette = 2 Then
+        ' semi-random
+        ReDim colours(9)
+        colours(0) = Hex2VBAHex(Rgb2Hex(255, 0, 0))
+        colours(1) = Hex2VBAHex(Rgb2Hex(0, 255, 0))
+        colours(2) = Hex2VBAHex(Rgb2Hex(0, 0, 255))
+        colours(3) = Hex2VBAHex(Rgb2Hex(80, 128, 0))
+        colours(4) = Hex2VBAHex(Rgb2Hex(0, 128, 80))
+        colours(5) = Hex2VBAHex(Rgb2Hex(128, 0, 80))
+        colours(6) = Hex2VBAHex(Rgb2Hex(128, 80, 0))
+        colours(7) = Hex2VBAHex(Rgb2Hex(145, 66, 174))
+        colours(8) = Hex2VBAHex(Rgb2Hex(255, 200, 99))
+        colours(9) = Hex2VBAHex(Rgb2Hex(255, 99, 56))
+        
+    ElseIf palette = 3 Then
+        ' bws
+        
+        'printf "foundred: <" & IIf(foundBwsRed, "Y", "N") & ">"
+        'printf "foundgrey: <" & IIf(foundBwsGrey, "Y", "N") & ">"
+        ReDim colours(0)
+        'colours(0) = IIf(foundBwsGrey, IIf(Not foundBwsRed, bwsRed, bwsblack), bwsGrey)
+        colours(0) = IIf(Not foundBwsGrey, bwsGrey, IIf(Not foundBwsGrey2, bwsGrey, IIf(Not foundBwsRed2, bwsRed, bwsBlack)))
+        
+    ElseIf palette = 4 Then
+        ' stg
+        
+        'printf "foundred: <" & IIf(foundBwsRed, "Y", "N") & ">"
+        'printf "foundgrey: <" & IIf(foundBwsGrey, "Y", "N") & ">"
+        ReDim colours(0)
+        'colours(0) = IIf(foundBwsGrey, IIf(Not foundBwsRed, bwsRed, bwsblack), bwsGrey)
+        colours(0) = IIf(Not foundStgGrey, stgGrey, IIf(Not foundStgGrey2, stgGrey, IIf(Not foundStgRed2, stgRed, stgBlack)))
+        
+    ElseIf palette = 5 Then
+        ' Easter
+        ReDim colours(4)
+        colours(0) = Hex2VBAHex(Rgb2Hex(135, 206, 255))
+        colours(1) = Hex2VBAHex(Rgb2Hex(131, 111, 255))
+        colours(2) = Hex2VBAHex(Rgb2Hex(255, 181, 197))
+        colours(3) = Hex2VBAHex(Rgb2Hex(255, 215, 0))
+        colours(4) = Hex2VBAHex(Rgb2Hex(0, 250, 154))
+        
+        If direction = "right" Then
+            For i = ub To lb + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            idx_NC = 0
+        ElseIf direction = "left" Then
+            For i = lb To ub - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = ub - 1
+        Else
+            ' middle
+            
+            For i = ub To m + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            For i = lb To m - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = m
+        End If
+        
+        Set ctrl_ = controls(idx_NC)
+        For Each c In colours
+            If NotUsedColour(c, controls) Then
+                ctrl_.ForeColor = c
+                fC = True
+                Exit For
+            End If
+        Next c
+        If Not fC Then
+            ctrl_.ForeColor = "&H000000"
+        End If
+        
+        ' exit now
+        Exit Sub
+        
+    ElseIf palette = 6 Then
+        ' Christmas
+        ReDim colours(4)
+        colours(0) = Hex2VBAHex(Rgb2Hex(238, 0, 0))
+        colours(1) = Hex2VBAHex(Rgb2Hex(139, 0, 0))
+        colours(2) = Hex2VBAHex(Rgb2Hex(102, 205, 0))
+        colours(3) = Hex2VBAHex(Rgb2Hex(0, 100, 0))
+        colours(4) = Hex2VBAHex(Rgb2Hex(255, 255, 255))
+        
+        If direction = "right" Then
+            For i = ub To lb + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            idx_NC = 0
+        ElseIf direction = "left" Then
+            For i = lb To ub - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = ub - 1
+        Else
+            ' middle
+            
+            For i = ub To m + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            For i = lb To m - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = m
+        End If
+        
+        Set ctrl_ = controls(idx_NC)
+        For Each c In colours
+            If NotUsedColour(c, controls) Then
+                ctrl_.ForeColor = c
+                fC = True
+                Exit For
+            End If
+        Next c
+        If Not fC Then
+            ctrl_.ForeColor = "&H000000"
+        End If
+        
+        ' exit now
+        Exit Sub
+    
+    ElseIf palette = 7 Then
+        ' Halloween
+        ReDim colours(4)
+        colours(0) = Hex2VBAHex(Rgb2Hex(139, 69, 19))
+        colours(1) = Hex2VBAHex(Rgb2Hex(255, 127, 36))
+        colours(2) = Hex2VBAHex(Rgb2Hex(255, 97, 3))
+        colours(3) = Hex2VBAHex(Rgb2Hex(104, 34, 139))
+        colours(4) = Hex2VBAHex(Rgb2Hex(255, 255, 255))
+        
+        If direction = "right" Then
+            For i = ub To lb + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            idx_NC = 0
+        ElseIf direction = "left" Then
+            For i = lb To ub - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = ub - 1
+        Else
+            ' middle
+            
+            For i = ub To m + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            For i = lb To m - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = m
+        End If
+        
+        Set ctrl_ = controls(idx_NC)
+        For Each c In colours
+            If NotUsedColour(c, controls) Then
+                ctrl_.ForeColor = c
+                fC = True
+                Exit For
+            End If
+        Next c
+        If Not fC Then
+            ctrl_.ForeColor = "&H000000"
+        End If
+        
+        ' exit now
+        Exit Sub
+    
+    ElseIf palette = 8 Then
+        ' Canada Day
+        ReDim colours(5)
+        colours(0) = Hex2VBAHex(Rgb2Hex(255, 0, 0))
+        colours(1) = Hex2VBAHex(Rgb2Hex(238, 0, 0))
+        colours(2) = Hex2VBAHex(Rgb2Hex(205, 0, 0))
+        colours(3) = Hex2VBAHex(Rgb2Hex(139, 0, 0))
+        colours(4) = Hex2VBAHex(Rgb2Hex(250, 250, 250))
+        colours(5) = Hex2VBAHex(Rgb2Hex(245, 245, 245))
+        
+        If direction = "right" Then
+            For i = ub To lb + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            idx_NC = 0
+        ElseIf direction = "left" Then
+            For i = lb To ub - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = ub - 1
+        Else
+            ' middle
+            
+            For i = ub To m + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            For i = lb To m - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = m
+        End If
+        
+        Set ctrl_ = controls(idx_NC)
+        For Each c In colours
+            If NotUsedColour(c, controls) Then
+                ctrl_.ForeColor = c
+                fC = True
+                Exit For
+            End If
+        Next c
+        If Not fC Then
+            ctrl_.ForeColor = "&H000000"
+        End If
+        
+        ' exit now
+        Exit Sub
+        
+    ElseIf palette = 9 Then
+        ' Civic Holiday (Default New Brunswick Day)
+        ReDim colours(7)
+        colours(0) = Hex2VBAHex(Rgb2Hex(49, 74, 199))
+        colours(1) = Hex2VBAHex(Rgb2Hex(48, 73, 198))
+        colours(2) = Hex2VBAHex(Rgb2Hex(255, 255, 255))
+        colours(3) = Hex2VBAHex(Rgb2Hex(254, 254, 254))
+        colours(4) = Hex2VBAHex(Rgb2Hex(255, 215, 0))
+        colours(5) = Hex2VBAHex(Rgb2Hex(256, 216, 1))
+        colours(6) = Hex2VBAHex(Rgb2Hex(255, 48, 48))
+        colours(7) = Hex2VBAHex(Rgb2Hex(254, 47, 47))
+        
+        If direction = "right" Then
+            For i = ub To lb + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            idx_NC = 0
+        ElseIf direction = "left" Then
+            For i = lb To ub - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = ub - 1
+        Else
+            ' middle
+            
+            For i = ub To m + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            For i = lb To m - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = m
+        End If
+        
+        Set ctrl_ = controls(idx_NC)
+        For Each c In colours
+            If NotUsedColour(c, controls) Then
+                ctrl_.ForeColor = c
+                fC = True
+                Exit For
+            End If
+        Next c
+        If Not fC Then
+            ctrl_.ForeColor = "&H000000"
+        End If
+        
+        ' exit now
+        Exit Sub
+    
+    ElseIf palette = 10 Then
+        ' Thanksgiving
+        ReDim colours(9)
+        colours(0) = Hex2VBAHex(Rgb2Hex(129, 80, 33))
+        colours(1) = Hex2VBAHex(Rgb2Hex(128, 79, 32))
+        colours(2) = Hex2VBAHex(Rgb2Hex(124, 205, 124))
+        colours(3) = Hex2VBAHex(Rgb2Hex(123, 204, 123))
+        colours(4) = Hex2VBAHex(Rgb2Hex(139, 37, 0))
+        colours(5) = Hex2VBAHex(Rgb2Hex(140, 38, 1))
+        colours(6) = Hex2VBAHex(Rgb2Hex(255, 128, 0))
+        colours(7) = Hex2VBAHex(Rgb2Hex(254, 129, 1))
+        colours(8) = Hex2VBAHex(Rgb2Hex(255, 193, 37))
+        colours(9) = Hex2VBAHex(Rgb2Hex(254, 194, 38))
+        
+        If direction = "right" Then
+            For i = ub To lb + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            idx_NC = 0
+        ElseIf direction = "left" Then
+            For i = lb To ub - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = ub - 1
+        Else
+            ' middle
+            
+            For i = ub To m + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            For i = lb To m - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = m
+        End If
+        
+        Set ctrl_ = controls(idx_NC)
+        For Each c In colours
+            If NotUsedColour(c, controls) Then
+                ctrl_.ForeColor = c
+                fC = True
+                Exit For
+            End If
+        Next c
+        If Not fC Then
+            ctrl_.ForeColor = "&H000000"
+        End If
+        
+        ' exit now
+        Exit Sub
+        
+    ElseIf palette = 11 Then
+        ' Mother's Day
+        ReDim colours(4)
+        colours(0) = Hex2VBAHex(Rgb2Hex(224, 102, 255))
+        colours(1) = Hex2VBAHex(Rgb2Hex(223, 101, 254))
+        colours(2) = Hex2VBAHex(Rgb2Hex(132, 112, 255))
+        'colours(3) = hex2VBAHex(rgb2Hex(133, 111, 254))
+        colours(3) = Hex2VBAHex(Rgb2Hex(72, 209, 204))
+        colours(4) = Hex2VBAHex(Rgb2Hex(71, 208, 203))
+        
+        If direction = "right" Then
+            For i = ub To lb + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            idx_NC = 0
+        ElseIf direction = "left" Then
+            For i = lb To ub - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = ub - 1
+        Else
+            ' middle
+            
+            For i = ub To m + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            For i = lb To m - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = m
+        End If
+        
+        Set ctrl_ = controls(idx_NC)
+        For Each c In colours
+            If NotUsedColour(c, controls) Then
+                ctrl_.ForeColor = c
+                fC = True
+                Exit For
+            End If
+        Next c
+        If Not fC Then
+            ctrl_.ForeColor = "&H000000"
+        End If
+        
+        ' exit now
+        Exit Sub
+    
+    ElseIf palette = 12 Then
+        ' Father's Day
+        ReDim colours(5)
+        colours(0) = Hex2VBAHex(Rgb2Hex(71, 99, 240))
+        colours(1) = Hex2VBAHex(Rgb2Hex(71, 99, 240))
+        colours(2) = Hex2VBAHex(Rgb2Hex(235, 235, 235))
+        colours(3) = Hex2VBAHex(Rgb2Hex(225, 225, 225))
+        colours(4) = Hex2VBAHex(Rgb2Hex(255, 97, 3))
+        colours(5) = Hex2VBAHex(Rgb2Hex(254, 96, 3))
+        
+        If direction = "right" Then
+            For i = ub To lb + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            idx_NC = 0
+        ElseIf direction = "left" Then
+            For i = lb To ub - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = ub - 1
+        Else
+            ' middle
+            
+            For i = ub To m + 1 Step -1
+                Set ctrl_1 = controls(i - 1)
+                Set ctrl_2 = controls(i)
+                ctrl_2.ForeColor = ctrl_1.ForeColor
+            Next i
+            For i = lb To m - 1
+                Set ctrl_1 = controls(i)
+                Set ctrl_2 = controls(i + 1)
+                ctrl_1.ForeColor = ctrl_2.ForeColor
+            Next i
+            idx_NC = m
+        End If
+        
+        Set ctrl_ = controls(idx_NC)
+        For Each c In colours
+            If NotUsedColour(c, controls) Then
+                ctrl_.ForeColor = c
+                fC = True
+                Exit For
+            End If
+        Next c
+        If Not fC Then
+            ctrl_.ForeColor = "&H000000"
+        End If
+        
+        ' exit now
+        Exit Sub
+    Else
+        ReDim colours(0)
+        colours(0) = Hex2VBAHex(RandomHex(40, 215, 40, 215, 40, 215))
+    End If
+    
+    If direction = "right" Then
+        'printf "<right>"
+        For i = ub To 1 Step -1
+            Set ctrl = controls(i)
+            ctrl.ForeColor = oldColours(i - 1)
+        Next i
+        idx_NC = 0
+    ElseIf direction = "left" Then
+        'printf "<left>"
+        For i = lb To ub - 1
+            Set ctrl = controls(i)
+            ctrl.ForeColor = oldColours(i + 1)
+        Next i
+        idx_NC = idx_OC - 1
+    Else
+        'printf "<middle>"
+        For i = ub To m + 1 Step -1
+            Set ctrl = controls(i)
+            ctrl.ForeColor = oldColours(i - 1)
+        Next i
+        For i = lb To m - 1
+            Set ctrl = controls(i)
+            ctrl.ForeColor = oldColours(i + 1)
+        Next i
+        idx_NC = m
+    
+    End If
+    
+    controls(idx_NC).ForeColor = Choice(colours)
+
+End Sub
+
+
+'---------------------------------------------------------------------------------------
+' Function : notUsedColour
+' Author    : Avery Briggs
+' Purpose   : Given an array of controls, and a colour value in VBA hexidecimal format,
+'             return whether the colour is used as a fore-colour for any of those controls.
+'
+' Usage:
+' ~~~~~~
+' notUsedColour("&H775566", Array(Me.Label0, Me.Label1, Me.Label2))  ' => True or False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Private Function NotUsedColour(ByVal colourIn As Variant, controls As Variant) As Boolean
+    'printf vbTab & "c: <" & colourIn & ">"
+    For Each ctrl_ In controls
+        'printf "ctrl.FC: <" & ctrl_.ForeColor & ">, c: <" & CLng(colourIn) & ">"
+        If ctrl_.ForeColor = CLng(colourIn) Then
+            NotUsedColour = False
+            Exit Function
+        End If
+    Next ctrl_
+    NotUsedColour = True
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : hex2VBAHex
+' Author    : Avery Briggs
+' Purpose   : Return the VBA hexidecimal representation for a given hexidecimal string.
+'             For some reason VBA does Hex as BGR instead of RGB, therefore I just need to swap R and B values.
+'             And replace the "#" with "&H"
+'
+' Usage:
+' ~~~~~~
+' dim c as String
+' c = "#5577DD"
+' hex2VBAHex(c)  ' => "&HDD7755"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Hex2VBAHex(ByVal colourIn As String) As String
+    
+    Dim c As String
+    c = Right(colourIn, 6)
+    'Debug.Print "c: <" & c & ">"
+    'Debug.Print "Left(c, 2): <" & Left(c, 2) & ">"
+    'Debug.Print "Right(c, 2): <" & Right(c, 2) & ">"
+    'Debug.Print "Mid(c, 3, 2): <" & Mid(c, 3, 2) & ">"
+    Hex2VBAHex = "&H" & Right(c, 2) & Mid(c, 3, 2) & Left(c, 2)
+    If Len(Hex2VBAHex) = 2 Then
+        Hex2VBAHex = ""
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : hex2RGB
+' Author    : Avery Briggs
+' Purpose   : Return the string representation for a hexidecimal colour as an RGB colour.
+'             Result can be split using ", ".
+'
+' Usage:
+' ~~~~~~
+' dim c as string
+' dim v as variant
+' dim x as integer
+' dim y as integer
+' dim z as integer
+' c = "#5577DD"
+' hex2RGB(c)  ' => "(85, 119, 221)"
+' v = hex2RGB(c)
+' v = split(Mid(hex2RGB(c), 2, len(v) - 2), ", ")
+' x = v(0)  ' 85
+' y = v(1)  ' 119
+' z = v(2)  ' 221
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Hex2RGB(ByVal colourIn As String, Optional rType As Variant = "String")
+'Public Function hex2RGB(ByVal colourIn As String)
+
+    Dim colourW As String
+    colourW = colourIn
+    If InStr(colourIn, "&H") = 1 Then
+        'MsgBox "Error this function requires proper hex colours '#FFFFFF' or even #000, but not access hex &H000000." & vbNewLine & "This function is likely about to throw a second error, This message is only to help be more specific."
+        colourW = Right(colourW, 6)
+        colourW = Right(colourW, 2) & Mid(colourW, 3, 2) & Left(colourW, 2)
+    End If
+
+    colourW = Right("#000000" & Replace(colourW, "#", ""), 6)
+    Dim delim As String
+    Dim joined As String
+    Dim Colour(2) As Variant
+    delim = ", "
+    'printf "ColourIn: <" & colourW & ">"
+    Colour(0) = CStr(Int("&H" & Left(colourW, 2)))
+    Colour(1) = CStr(Int("&H" & Mid(colourW, 3, 2)))
+    Colour(2) = CStr(Int("&H" & Right(colourW, 2)))
+    Select Case rType
+        Case "String":
+            joined = Join(Colour, delim)
+            Hex2RGB = "(" & Left(joined, Len(joined)) & ")"
+        Case Else:
+            Hex2RGB = Colour
+    End Select
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : long2rgb
+' Author    : Avery Briggs
+' Purpose   : Return an array of RGB colour values for a given Long value.
+'
+' Usage:
+' ~~~~~~
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Long2rgb(ByVal colourIn As Long) As Variant
+
+    Dim r, g, b As Integer
+    b = Fix(colourIn / (CLng(256) * 256))
+    g = Fix((colourIn - (CLng(256) * 256 * b)) / 256)
+    r = Fix(colourIn - (CLng(256) * 256 * b) - (CLng(256) * g))
+    Long2rgb = Array(r, g, b)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : long2hex
+' Author    : Avery Briggs
+' Purpose   : Return a hexicedimal colour representation for a given Long value.
+'
+' Usage:
+' ~~~~~~
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Long2hex(ByVal colourIn As Long) As Variant
+
+    Dim r, g, b As Integer
+    Dim rgbArray As Variant
+    rgbArray = Long2rgb(colourIn)
+    r = rgbArray(0)
+    g = rgbArray(1)
+    b = rgbArray(2)
+    
+    Long2hex = Rgb2Hex(r, g, b)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : rgb2Hex
+' Author    : Avery Briggs
+' Purpose   : Return the hex value for given r, g, and b values.
+'
+' Usage:
+' ~~~~~~
+' dim r as integer
+' dim g as integer
+' dim b as integer
+' dim h as string
+' r = 255
+' g = 255
+' b = 255
+' h = rgb2hex(r, g, b)  ' => "#FFFFFF"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Rgb2Hex(ByVal r As Integer, ByVal g As Integer, ByVal b As Integer) As String
+
+    Rgb2Hex = "#" & Right("00" & Hex(Clamp(CDbl(r), 0, 255)), 2) & Right("00" & Hex(Clamp(CDbl(g), 0, 255)), 2) & Right("00" & Hex(Clamp(CDbl(b), 0, 255)), 2)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : RandomRGB
+' Author    : Avery Briggs
+' Purpose   : Return and array of RGB colour values randomly. Use min and max R, G, and B values to constrain the output colour.
+'
+' Usage:
+' ~~~~~~
+' dim c as variant
+' c = randomRGB()
+' dim r as integer
+' dim g as integer
+' dim b as integer
+' r = v(0)
+' g = v(1)
+' b = v(2)
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function RandomRGB(Optional ByVal minR As Integer = 0, Optional ByVal maxR As Integer = 255, Optional ByVal minG As Integer = 0, Optional ByVal maxG As Integer = 255, Optional ByVal minB As Integer = 0, Optional ByVal maxB As Integer = 255) As Variant
+           
+    Dim r, g, b As Integer
+    r = RandomInRange(minR, maxR, rType:="int")
+    g = RandomInRange(minG, maxG, rType:="int")
+    b = RandomInRange(minB, maxB, rType:="int")
+    
+    RandomRGB = Array(r, g, b)
+        
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : RandomHex
+' Author    : Avery Briggs
+' Purpose   : Return a random hexidecimal colour.
+'             See randomRGB for more details
+'
+' Usage:
+' ~~~~~~
+' dim c as String
+' c = randomHex()
+' printf ifori("randomhex()", 5, true)  ' ['#B48894', '#4A4DC6', '#04C2D0', '#B50C6A', '#DCCA5F']
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function RandomHex(Optional minR As Integer = 0, Optional maxR As Integer = 255, Optional minG As Integer = 0, Optional maxG As Integer = 255, Optional minB As Integer = 0, Optional maxB As Integer = 255) As String
+
+    Dim rgbArr() As Variant
+    rgbArr = RandomRGB(minR:=minR, maxR:=maxR, minG:=minG, maxG:=maxG, minB:=minB, maxB:=maxB)
+    Dim r, g, b As Integer
+    r = CInt(rgbArr(0))
+    g = CInt(rgbArr(1))
+    b = CInt(rgbArr(2))
+    RandomHex = Rgb2Hex(r, g, b)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : AlterColour
+' Author    : Avery Briggs
+' Purpose   : Return altered VBA Hexdeicmal colour for a given hexidecimal colour string.
+'             Use style param to indicate "Darker", "Lighter", or "Darken", "Lighten"
+'             and the p param to simulate the percentage change.
+'
+' Usage:
+' ~~~~~~
+' dim c as string
+' dim s as string
+' dim p as integer
+' c = "#FFAACF"
+' s = "darken"
+' p = 25
+' alterColour(c, s, p)  ' => "&H8F6ABF"
+' ' simulates the colour c darker by 25%
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function AlterColour(ByVal Colour As String, Optional ByVal style As String = "", Optional ByVal p As Integer = 0)
+    
+    Dim pd As Double
+    pd = Clamp(CDbl(p), 0, 100) / 100
+    
+    Dim pStyle As String
+    If LCase(style) = "darker" Or LCase(style) = "darken" Then
+        pStyle = "Darker"
+    ElseIf LCase(style) = "lighter" Or LCase(style) = "lighten" Then
+        pStyle = "Lighter"
+    Else
+        pStyle = ""
+    End If
+    
+    Dim r As Integer
+    Dim g As Integer
+    Dim b As Integer
+    Dim c As Variant
+    c = Hex2RGB(Colour)
+    c = Mid(c, 2, Len(c) - 2)
+    c = Split(c, ", ")
+    r = c(0)
+    g = c(1)
+    b = c(2)
+    If pStyle = "Darker" Then
+        r = Clamp(Round(r - (255 * pd)), 0, 255)
+        g = Clamp(Round(g - (255 * pd)), 0, 255)
+        b = Clamp(Round(b - (255 * pd)), 0, 255)
+    ElseIf pStyle = "Lighter" Then
+        r = Clamp(Round(r + (255 * pd)), 0, 255)
+        g = Clamp(Round(g + (255 * pd)), 0, 255)
+        b = Clamp(Round(b + (255 * pd)), 0, 255)
+    End If
+    
+    'printf "Colour: " & Colour
+    'printf "pStyle: " & pStyle
+    'printf "P: " & pd
+    
+    AlterColour = Hex2VBAHex(Rgb2Hex(r, g, b))
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : RGB2Long
+' Author    : Avery Briggs
+' Purpose   : Return the long colour representation for a given RGB Colour array.
+'
+' Usage:
+' ~~~~~~
+' printf rgb2long(array(255,255,255))  ' => 255
+' printf rgb2long(array(0,0,255))  ' => 29
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function RGB2Long(ByVal rgbColour As Variant) As Long
+    Dim red As Integer
+    Dim green As Integer
+    Dim blue As Integer
+
+    red = rgbColour(0)
+    green = rgbColour(1)
+    blue = rgbColour(2)
+    
+    'printf "r: <" & red & ">, g: <" & green & ">, b: <" & blue & ">"
+
+    RGB2Long = (CLng(red) * 299& + CLng(green) * 587& + CLng(blue) * 114&) \ 1000&
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : GetBrightestColour
+' Author    : Avery Briggs
+' Purpose   : Return the brightest colour from an array of hex colours.
+'
+' Usage:
+' ~~~~~~
+' dim c as variant
+' c = ifori("randomhex()", 5, isfunc:=True)  ' => ['#4A4DC6', '#04C2D0', '#B50C6A', '#DCCA5F', '#F5DE0E']
+' printf getbrightestcolour(c)  ' => '#F5DE0E'
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function GetBrightestColour(ByVal colours As Variant) As String
+
+    If Not IsArray(colours) Then
+        Err.Raise vbObjectError, "getBrightestColour", "Error, cannot determine the brightest colour from a non array object."
+    End If
+
+    If IsArrayEmpty(colours) Then
+        Err.Raise vbObjectError, "getBrightestColour", "Error, cannot determine the brightest colour from an empty array."
+    End If
+
+    Dim brightestColour As String
+    brightestColour = colours(0) ' Initialize with the first color in the array
+    Dim maxBrightness As Long
+    maxBrightness = RGB2Long(Hex2RGB(brightestColour, rType:="Array"))
+    
+    Dim i As Integer
+    Dim currentBrightness As Long
+    For i = 1 To UBound(colours)
+        If Not IsNull(colours(i)) Then
+            currentBrightness = RGB2Long(Hex2RGB(colours(i), rType:="Array"))
+            If currentBrightness > maxBrightness Then
+                brightestColour = colours(i)
+                maxBrightness = currentBrightness
+            End If
+        End If
+    Next i
+    
+    GetBrightestColour = brightestColour
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : GetDarkestColour
+' Author    : Avery Briggs
+' Purpose   : Return the brightest colour from an array of hex colours.
+'
+' Usage:
+' ~~~~~~
+' dim c as variant
+' c = ifori("randomhex()", 5, isfunc:=True)  ' => ['#4A4DC6', '#04C2D0', '#B50C6A', '#DCCA5F', '#F5DE0E']
+' printf GetDarkestColour(c)  ' => '#B50C6A'
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function GetDarkestColour(ByVal colours As Variant) As String
+
+    If Not IsArray(colours) Then
+        Err.Raise vbObjectError, "getDarkestColour", "Error, cannot determine the darkest colour from a non array object."
+    End If
+
+    If IsArrayEmpty(colours) Then
+        Err.Raise vbObjectError, "getDarkestColour", "Error, cannot determine the darkest colour from an empty array."
+    End If
+    
+    Dim darkestColour As String
+    darkestColour = colours(0) ' Initialize with the first color in the array
+    Dim minBrightness As Long
+    minBrightness = RGB2Long(Hex2RGB(darkestColour, rType:="Array"))
+    
+    Dim i As Integer
+    Dim currentBrightness As Long
+    For i = 1 To UBound(colours)
+        If Not IsNull(colours(i)) Then
+            currentBrightness = RGB2Long(Hex2RGB(colours(i), rType:="Array"))
+            If currentBrightness < minBrightness Then
+                darkestColour = colours(i)
+                minBrightness = currentBrightness
+            End If
+        End If
+    Next i
+    
+    GetDarkestColour = darkestColour
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsWhite
+' Author    : Avery Briggs
+' Purpose   : Using a threshold offset, determine if a given colour can be considered white.
+'             The threshold works in increments of 3; 3(n + 1).
+'             Variation applies to sum of differences between WHITE(#FFFFFF) and each of R, G, and B values
+'               i.e. offset:=16 provides 3*(16 + 1) space for variation in R, G, AND/OR B values.
+'               if offset:=0 then ((255-R) + (255-G) + (255-B)) <= 3
+'               if offset:=16 then ((255-R) + (255-G) + (255-B)) <= 51
+'               if offset:=254 then ((255-R) + (255-G) + (255-B)) <= 765
+'
+' Usage:
+' ~~~~~~
+' dim o as integer
+' dim wh as string
+' o = 16
+' wh = "E0E0Ff"
+' Printf "iW: wh:<" & wh & ">, o:<" & o & ">, <" & IIf(IsWhite(wh, o), "T", "F") & ">"  ' => False
+' printf "Any of c is White: <" & any_(map("iswhite", ifori("randomhex()", 4, True))) & ">"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IsWhite(ByVal c As Variant, Optional ByVal offset As Integer = 0) As Boolean
+
+    If Not IsRGBColour(c) Then
+        If IsHexColour(c) Then
+            c = Hex2RGB(c, rType:="Array")
+        Else
+            Err.Raise vbObjectError, "isBlack", "Error, cannot determine if this is colour is black or not."
+        End If
+    End If
+    
+    offset = (255 * 3) - ((Clamp(offset, 0, 254) + 1) * 3)
+            
+    Dim r As Integer
+    Dim g As Integer
+    Dim b As Integer
+                
+    r = c(0)
+    g = c(1)
+    b = c(2)
+    
+    'Call PrintArr(Array(r, g, b), "sum(" & Sum(Array(r, g, b)) & "), off(" & offset & ")")
+                
+    IsWhite = Sum(Array(r, g, b)) >= offset
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsBlack
+' Author    : Avery Briggs
+' Purpose   : Using a threshold offset, determine if a given colour can be considered black.
+'             The threshold works in increments of 3; 3(n + 1).
+'             Variation applies to sum of differences between BLACK(#000000) and each of R, G, and B values
+'               i.e. offset:=16 provides 3*(16 + 1) space for variation in R, G, AND/OR B values.
+'               if offset:=0 then (R + G + B) <= 3
+'               if offset:=16 then (R + G + B) <= 51
+'               if offset:=254 then (R + G + B) <= 765
+'
+' Usage:
+' ~~~~~~
+' dim o as integer
+' dim wh as string
+' o = 16
+' wh = "E0E0Ff"
+' Printf "iW: wh:<" & wh & ">, o:<" & o & ">, <" & IIf(IsBlack(wh, o), "T", "F") & ">"  ' => False
+' printf "Any of c is Black: <" & any_(map("isblack", ifori("randomhex()", 4, True))) & ">"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IsBlack(ByVal c As Variant, Optional ByVal offset As Integer = 0) As Boolean
+
+    If Not IsRGBColour(c) Then
+        If IsHexColour(c) Then
+            c = Hex2RGB(c, rType:="Array")
+        Else
+            Err.Raise vbObjectError, "isBlack", "Error, cannot determine if this is colour is black or not."
+        End If
+    End If
+    
+    offset = (Clamp(offset, 0, 254) + 1) * 3
+            
+    Dim r As Integer
+    Dim g As Integer
+    Dim b As Integer
+                
+    r = c(0)
+    g = c(1)
+    b = c(2)
+    
+    'Call printArr(Array(r, g, b), "sum(" & Sum(Array(r, g, b)) & "), off(" & offset & ")")
+                
+    IsBlack = Sum(Array(r, g, b)) <= offset
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsColour
+' Author    : Avery Briggs
+' Purpose   : Determine if a value is recognized as an RGB colour, or a hex colour (VBA or normal hex).
+'
+' Usage:
+' ~~~~~~
+' printf iscolour(array(0,0,0))  ' => True
+' printf iscolour(array(-1,0,0))  ' => False
+' printf iscolour("")  ' => False
+' printf iscolour("#FFF")  ' => False
+' printf iscolour("#FFFFFF")  ' => true
+' printf iscolour("&H")  ' => False
+' printf iscolour("&H040404")  ' => True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IsColour(ByVal c As Variant) As Boolean
+
+    IsColour = IsHexColour(c)
+    If Not IsColour Then
+        IsColour = IsRGBColour(c)
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsRGBColour
+' Author    : Avery Briggs
+' Purpose   : Determine if a value is recognized as an RGB colour.
+'
+' Usage:
+' ~~~~~~
+' printf isRGBcolour(array(0,0,0))  ' => True
+' printf isRGBcolour(array(-1,0,0))  ' => False
+' printf isRGBcolour(array())  ' => False
+' printf isRGBcolour("")  ' => False
+' printf isRGBcolour("[1,1,1]")  ' => False
+' printf isRGBcolour("array(23,23,23)")  ' => False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IsRGBColour(ByVal c As Variant) As Boolean
+
+    If IsArray(c) Then
+        If Not IsArrayEmpty(c) Then
+            If UBound(c) = 2 Then
+            
+                Dim r As Integer
+                Dim g As Integer
+                Dim b As Integer
+                
+                r = c(0)
+                g = c(1)
+                b = c(2)
+                
+                'Call printArr(Array(r, g, b), "RGB")
+                
+                IsRGBColour = All(Array(Between(r, 0, 255), Between(g, 0, 255), Between(b, 0, 255)))
+                Exit Function
+                
+            End If
+        End If
+    End If
+    
+    IsRGBColour = False
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsHexColour
+' Author    : Avery Briggs
+' Purpose   : Determine if a value is recognized as a hex colour (VBA or normal hex).
+'
+' Usage:
+' ~~~~~~
+' printf IsHexColour(array(0,0,0))  ' => False
+' printf IsHexColour(array(-1,0,0))  ' => False
+' printf IsHexColour(array())  ' => False
+' printf IsHexColour("")  ' => False
+' printf IsHexColour("[1,1,1]")  ' => False
+' printf IsHexColour("array(23,23,23)")  ' => False
+' printf IsHexColour(array(0,0,0))  ' => False
+' printf IsHexColour(array(-1,0,0))  ' => False
+' printf IsHexColour("")  ' => False
+' printf IsHexColour("#FFF")  ' => False
+' printf IsHexColour("#FFFFFF")  ' => true
+' printf IsHexColour("&H")  ' => False
+' printf IsHexColour("&H040404")  ' => True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IsHexColour(ByVal c As Variant) As Boolean
+    
+    If IsInstance(c, vbString) Then
+        If Between(Len(c), 6, 8) Then
+            If Len(c) <> 6 Then
+                If Left(c, 1) = "#" Or UCase(Left(c, 2)) = "&H" Then
+                    c = Right(c, 6)
+                Else
+                    'Err.Raise vbObjectError, "isHexColour", "Error, cannot determin if this value is a hex colour or not. <" & c & ">"
+                    IsHexColour = False
+                    Exit Function
+                End If
+            End If
+            
+            Dim lb1 As Integer
+            Dim lb2 As Integer
+            Dim ub1 As Integer
+            Dim ub2 As Integer
+            
+            Dim aC As Integer
+            Dim bC As Integer
+            Dim cC As Integer
+            Dim dC As Integer
+            Dim eC As Integer
+            Dim fC As Integer
+            
+            lb1 = Asc("0")
+            ub1 = Asc("9")
+            lb2 = Asc("a")
+            ub2 = Asc("f")
+            
+            aC = Asc(LCase(Mid(c, 1, 1)))
+            bC = Asc(LCase(Mid(c, 2, 1)))
+            cC = Asc(LCase(Mid(c, 3, 1)))
+            dC = Asc(LCase(Mid(c, 4, 1)))
+            eC = Asc(LCase(Mid(c, 5, 1)))
+            fC = Asc(LCase(Mid(c, 6, 1)))
+            
+            'Call printArr(Array(aC, bC, cC, dC, eC, fC), "here")
+            
+            IsHexColour = All(Array( _
+                Any_(Array(Between(aC, lb1, ub1), Between(aC, lb2, ub2))), _
+                Any_(Array(Between(bC, lb1, ub1), Between(bC, lb2, ub2))), _
+                Any_(Array(Between(cC, lb1, ub1), Between(cC, lb2, ub2))), _
+                Any_(Array(Between(dC, lb1, ub1), Between(dC, lb2, ub2))), _
+                Any_(Array(Between(eC, lb1, ub1), Between(eC, lb2, ub2))), _
+                Any_(Array(Between(fC, lb1, ub1), Between(fC, lb2, ub2)))))
+            Exit Function
+            
+        End If
+    End If
+    
+    IsHexColour = False
+    
+End Function

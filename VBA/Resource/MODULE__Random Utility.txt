@@ -1,0 +1,232 @@
+Option Compare Database
+
+
+' General Random Utility Functions
+' Version.....................1.00
+' Date..................2023-07-06
+' Author(s)...........Avery Briggs
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   Choice                  -   Given an array, randomly select one element to return.
+'   RandomInRange           -   Using bounds return a random number between them.
+'   Sample                  -   Return n random elements from an array without replacement.
+'   Shuffle                 -   Randomly shuffle an array or string.
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+
+'---------------------------------------------------------------------------------------
+' Function : Shuffle
+' Author    : Avery Briggs
+' Purpose   : Randomly shuffle an array or string.
+'
+' Usage:
+' ~~~~~~
+' dim s1 as string
+' dim s2 as string
+' s1 = "Avery"
+' s2 = shuffle(s1)
+' printf (s1 = s2)  ' True
+' printf shuffle(range(6))  ' some list of 0 -> 6 shuffled ex: [4, 1, 3, 0, 2, 5]
+'
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-06-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Shuffle(ByRef srcArray As Variant) As Variant
+    
+    If Not IsInstance(srcArray, Array(vbArray, vbString)) Then
+        Err.Raise vbObjectError, "Shuffle", "Error, cannot shuffle a non array or non string object."
+    End If
+    
+    If IsArray(srcArray) Then
+        If Not IsArrayEmpty(srcArray) Then
+            Dim wArray As Variant
+            Dim idxsLeft As Variant
+            Dim lb As Long
+            Dim ub As Long
+            Dim i As Long
+            wArray = Array()
+            lb = LBound(srcArray)
+            ub = UBound(srcArray)
+            'Printf "lb: <" & lb & ">, ub: <" & ub & ">"
+            idxsLeft = Range(lb, ub + 1)
+            'Printf "V"
+            'Printf Range(lb, ub + 1)
+            'Printf idxsLeft
+            'Printf "^"
+            'PrintArr idxsLeft, "Idxsleft -A"
+            For i = lb To ub
+                chx = Choice(idxsLeft)
+                'PrintArr idxsLeft, "Idxsleft A"
+                Call Append(wArray, srcArray(chx), unPackNewVal:=False)
+                Call Remove(idxsLeft, chx, unpackTarget:=False)
+                'PrintArr idxsLeft, "Idxsleft B"
+            Next i
+            
+            Shuffle = wArray
+        Else
+            Shuffle = srcArray
+        End If
+    Else
+        Shuffle = Join(Shuffle(Str2Array(srcArray)), "")
+    End If
+    
+    srcArray = Shuffle
+
+End Function
+
+
+
+'---------------------------------------------------------------------------------------
+' Function : Choice
+' Author    : Avery Briggs
+' Purpose   : Given an array, randomly select one element to return.
+'
+' Usage:
+' ~~~~~~
+' printf choice(range(5))  ' Some number between 0 and 4
+' printf choice(array("Dog", "Cat", "Fish"))
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-06-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Choice(ByVal arr As Variant) As Variant
+    
+    Dim lb As Long
+    Dim RB As Long
+    Dim i As Long
+    Dim vt As Long
+    
+    vt = VarType(arr)
+    If IsArray(arr) Then
+        
+        If IsArrayEmpty(arr) Then
+            Err.Raise vbObjectError, "choice", "Error, cannot choose from an empty array."
+            Exit Function
+        End If
+    
+        lb = LBound(arr)
+        ub = UBound(arr)
+        If ub < lb Then
+            Choice = vbEmpty
+            Exit Function
+        End If
+        i = RandomInRange(lb, ub)
+        Choice = arr(i)
+        Exit Function
+        
+    Else
+        Err.Raise vbObjectError + 513, , "Parameter to choice function must be an array. Got '" & vt & "'"
+    End If
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : RandomInRange
+' Author    : Avery Briggs
+' Purpose   : Using bounds return a random number between them.
+'             Change the 'rtype' paramater to alter how you want your result.
+'             Supports Integers, Longs, and Doubles as return types.
+'
+' Usage:
+' ~~~~~~
+' printf randominrange(7, 15)
+' printf randominrange(7, 15, "int")
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-06-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function RandomInRange(ByVal a As Long, ByVal b As Long, Optional ByVal rType As String = "dbl")
+
+    Dim c As Integer
+    c = a
+    a = Min(a, b)
+    b = Max(c, b)
+
+    If LCase(rType) = "int" Or LCase(rType) = "integer" Then
+        RandomInRange = CInt((a + ((Rnd() * (b - a)))))
+    ElseIf LCase(rType) = "double" Or LCase(rType) = "dbl" Then
+        RandomInRange = (a + ((Rnd() * (b - a))))
+    ElseIf LCase(rType) = "long" Or LCase(rType) = "lng" Then
+        RandomInRange = CLng((a + ((Rnd() * (b - a)))))
+    Else
+        Err.Number = 1
+    End If
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Sample
+' Author    : Avery Briggs
+' Purpose   : Return n random elements sampled from a given array. Does not use replacement when picking.
+'
+' Usage:
+' ~~~~~~
+' printf sample(ifori(array(), 10), 5)  ' => [[], [], [], [], []]
+' printf sample(range(1), 1)  ' => [0]
+' printf sample("Avery", 3)  ' => ["r", "e", "v"]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-06-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Sample(ByVal srcArray As Variant, ByVal N As Integer)
+
+    If Not IsInstance(srcArray, Array(vbArray, vbString)) Then
+        Err.Raise vbObjectError, "Sample", "Error, cannot sample a non array or non string object."
+    End If
+    
+    If N < 0 Then
+        Err.Raise vbObjectError, "Sample", "Error, cannot sample n=" & N & " elements. Sample size cannot be negative."
+    ElseIf N = 0 Then
+        Sample = Array()
+    Else
+        If IsArray(srcArray) Then
+            
+            Dim lb As Long
+            Dim ub As Long
+            lb = LBound(srcArray)
+            ub = UBound(srcArray)
+            If (ub + 1) < N Then
+                Err.Raise vbObjectError, "Sample", "Error, cannot sample n=" & N & " elements from an array of " & (ub + 1) & " elements."
+            Else
+            End If
+            Dim vArray As Variant
+            Dim wArray As Variant
+            Dim chx As Variant
+            Dim idx As Long
+            Dim i As Integer
+            vArray = Copy(srcArray)
+            wArray = Array()
+            For i = 0 To Min(ub, N - 1)
+                chx = Choice(vArray)
+                'Printf "-> " & chx
+                Call Append(wArray, chx, unPackNewVal:=False)
+                Call Remove(vArray, chx, unpackTarget:=False)
+            Next i
+            
+            Sample = wArray
+            
+        Else
+            Sample = Sample(Str2Array(srcArray), N)
+        End If
+    End If
+    
+End Function

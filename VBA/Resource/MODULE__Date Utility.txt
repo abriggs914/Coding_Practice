@@ -1,0 +1,133 @@
+Option Compare Database
+
+
+' General Date Utility Functions
+' Version...................1.01
+' Date................2023-07-11
+' Author(s).........Avery Briggs
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   Am_Pm                   -   return "AM"/"PM" for a time
+'   Datetime                -   return a date object with time, think python's datetime.datetime method
+'   Hourify                 -   return a times hour in 12-H format
+'   Round2Nearest5Minutes   -   round time to nearest 5 min increment
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+'---------------------------------------------------------------------------------------
+' Function : Am_Pm
+' Author    : Avery Briggs
+' Purpose   : Return "AM"/"PM" for a time
+'
+' Usage:
+' ~~~~~~
+' dim d as date
+' d = TimeSerial(15,6,6)
+' am_pm(d)  ' => "PM"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Am_Pm(ByVal dateIn As Date) As String
+
+    Am_Pm = IIf(DatePart("h", dateIn) >= 12, "PM", "AM")
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Round2Nearest5Minutes
+' Author    : Avery Briggs
+' Purpose   : round time to nearest a 5 minute increment.
+'
+' Usage:
+' ~~~~~~
+' dim d as date
+' d = timeserial(3,6,6)
+' round2Nearest5Minutes(d)  ' => 3:05:00 AM
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Round2Nearest5Minutes(ByVal dateIn As Date) As Date
+
+    Dim m As Integer
+    Dim h As Integer
+    Dim p As Integer
+    Dim q As Integer
+    Dim x() As Integer
+    h = DatePart("h", dateIn)
+    m = DatePart("n", dateIn)
+    x = Divmod(m, 5)
+    p = x(0) * 5
+    q = IIf(x(1) > 2, 5, 0)
+    p = p + q
+    Round2Nearest5Minutes = Format(CStr(h) & ":" & Right("00" & CStr(p), 2), "Medium Time")
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Hourify
+' Author    : Avery Briggs
+' Purpose   : return a times hour in 12-H format.
+'
+' Usage:
+' ~~~~~~
+' dim d as date
+' d = dateserial(2023,6,6)
+' hourify(d)  ' => 12
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Hourify(ByVal timeIn As Date) As Integer
+
+    Dim x As Double
+    x = DatePart("h", timeIn)
+    If x > 12 Then
+        x = x Mod 12
+    End If
+    If x = 0 Then
+        x = 12
+    End If
+    
+    Hourify = x
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Datetime
+' Author    : Avery Briggs
+' Purpose   : return a time variable equal to parameterized year, month, day, hour, minute, and second values.
+'             Requires Year, Month, and Day at minimum.
+'             Think python's datetime.datetime method.
+'
+' Usage:
+' ~~~~~~
+' datetime(2023,6,6, 12, 35)  ' => 2023-06-22 12:35:00 PM
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Datetime(ByVal Year_ As Integer, ByVal Month_ As Integer, ByVal Day_ As Integer, Optional ByVal Hour_ As Integer = 0, Optional ByVal Minute_ As Integer = 0, Optional ByVal Second_ As Integer = 0) As Date
+
+    Datetime = DateSerial(Year_, Month_, Day_) + TimeSerial(Hour_, Minute_, Second_)
+
+End Function

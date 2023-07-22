@@ -7,8 +7,8 @@ from utility import minmax, clamp, choice
 
 """
 	General datetime Utility Functions
-	Version..............1.10
-	Date...........2023-06-05
+	Version..............1.11
+	Date...........2023-07-17
 	Author.......Avery Briggs
 """
 
@@ -106,7 +106,7 @@ def date_suffix(day):
 # date_str_format(d, include_time=True, include_weekday=True)   -> Sunday January 1st, 2023 at 8:30 AM
 # date_str_format(d, file_name)                                 -> 2021-08-03 0830
 def date_str_format(date_str, include_time=False, include_weekday=False, short_month=False, short_weekday=False,
-                    delim=" at ", file_name=False):
+                    short_time=True, delim=" at ", file_name=False):
     """Return a date as a nicely formatted date or date and time string."""
     if isinstance(date_str, datetime.datetime):
         date_obj = date_str
@@ -124,12 +124,14 @@ def date_str_format(date_str, include_time=False, include_weekday=False, short_m
         res = " ".join([s_res[0], x, s_res[2]])
         if include_time:
             h = str(date_obj.hour)
-            if h == "0":
+            if short_time and (date_obj.hour > 12):
+                h = str(date_obj.hour - 12)
+            if short_time and (h == "0"):
                 h = "12"
             h = h.removeprefix("0")
             m = ("00" + str(date_obj.minute))[-2:]
-            p = date_obj.strftime("%p")
-            res = f"{res}{delim}{h}:{m} {p}"
+            p = date_obj.strftime("%p") if short_time else ""
+            res = f"{res}{delim}{h}:{m} {p}".strip()
 
         if include_weekday:
             res = f"{date_obj:%{'a' if short_weekday else 'A'}}, {res}"

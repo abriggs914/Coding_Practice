@@ -1,0 +1,7 @@
+Option Compare Database
+
+
+Public Const ONE_CM_TWIP As Integer = 567
+Public Const SWATCH_BOX_HEIGHT As Double = 0.8 * ONE_CM_TWIP
+Public Const SWATCH_BOX_SPACE_HEIGHT As Double = ONE_CM_TWIP - SWATCH_BOX_HEIGHT
+Public Const SWATCH_BOX6_HEIGHT As Integer = 6.4 * ONE_CM_TWIP

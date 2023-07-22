@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.72
-    Date...........2023-06-08
+    Version..............1.74
+    Date...........2023-07-20
     Author(s)....Avery Briggs
     """
 
@@ -373,7 +373,7 @@ def money(v, int_only=False):
 
 
 def money_value(m):
-    return float("".join(m[1:].split(",")))
+    return float("".join(m.removeprefix("$").strip().split(",")))
 
 
 def is_money(value):
@@ -706,9 +706,17 @@ def bar(a, b, c=10):
 
 def lstindex(lst, target):
     """Iterate a list and return the index of a target value. Avoids IndexError, but iterates the whole list."""
-    for i, val in enumerate(lst):
-        if val == target:
-            return i
+    if lenstr(target) == 1:
+        for i, val in enumerate(lst):
+            if val == target:
+                return i
+    else:
+        for i, val in enumerate(lst):
+            for j, tar in enumerate(target):
+                if tar != lst[i + j]:
+                    break
+                if j == len(target) - 1:
+                    return i
     return -1
 
 
