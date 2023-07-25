@@ -10,8 +10,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.31
-    Date...........2023-07-10
+    Version..............1.32
+    Date...........2023-07-25
     Author(s)....Avery Briggs
     """
 
@@ -3649,19 +3649,32 @@ class Colour:
 
     def brighten(self, p):
         # return Colour(brighten(self.rgb_code, p, rgb=False))
-        self.rgb_code = Colour(brighten(self.rgb_code, p, rgb=False)).rgb_code
+        self.rgb_code = Colour(brighten(self, p, rgb=False)).rgb_code
         return self
 
     def darken(self, p):
-        self.rgb_code = Colour(darken(self.rgb_code, p, rgb=False)).rgb_code
+        self.rgb_code = Colour(darken(self, p, rgb=False)).rgb_code
+        return self
+
+    def inverse(self):
+        self.rgb_code = Colour(inverse(self, rgb=False)).rgb_code
         return self
 
     def brightened(self, p):
         # return Colour(brighten(self.rgb_code, p, rgb=False))
-        return Colour(brighten(self.rgb_code, p, rgb=False))
+        return Colour(brighten(self, p, rgb=False))
 
     def darkened(self, p):
-        return Colour(darken(self.rgb_code, p, rgb=False))
+        return Colour(darken(self, p, rgb=False))
+
+    def inverted(self):
+        return Colour(inverse(self, rgb=False))
+
+    def font_foreground(self, threshold=255 * 3 / 2, rgb=True):
+        return font_foreground(self, threshold=threshold, rgb=rgb)
+
+    def font_foreground_c(self, threshold=255 * 3 / 2):
+        return Colour(font_foreground(self, threshold, rgb=False))
 
     def set_colour_values(self, c, g, b):
         if not iscolour(c, g, b):
@@ -3825,6 +3838,16 @@ def brighten(c, p, rgb=True):
     g = clamp(0, round(g + (255 * p)), 255)
     b = clamp(0, round(b + (255 * p)), 255)
     return (r, g, b) if rgb else rgb_to_hex((r, g, b))
+
+
+def inverse(c, rgb=True):
+    if not iscolour(c):
+        raise ValueError(f"Error, cannot invert non-colour param '{c}', it is not a colour.")
+    col = Colour(c)
+    r, g, b = map(lambda x: x + 1, col.rgb_code)
+    dr, dg, db = 128 - r, 128 - g, 128 - b
+    nc = Colour((128 + dr if (dr < 0) else 128 - dr), (128 + dg if (dg < 0) else 128 - dg), (128 + db if (db < 0) else 128 - db))
+    return nc.rgb_code if rgb else nc.hex_code
 
 
 def font_foreground(colour_in, threshold=255 * 3 / 2, rgb=True):

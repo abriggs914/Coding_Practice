@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.74
-    Date...........2023-07-20
+    Version..............1.75
+    Date...........2023-07-25
     Author(s)....Avery Briggs
     """
 
@@ -129,6 +129,8 @@ def maxmin(a, b=None):
 
 def avg(lst):
     try:
+        if isinstance(lst, map):
+            return avg(list(lst))
         return sum(lst) / max(1, len(lst))
     except TypeError:
         # print(f"TypeError1")
@@ -771,7 +773,7 @@ def reduce(lst, p, how="left"):
 
 
 def spread(lst, desired_len, filler=None, how: Literal["average", "exact"]="average"):
-    """Take a list and a desired lenght, return a list of those elements spread over the desired length.
+    """Take a list and a desired length, return a list of those elements spread over the desired length.
     Use how='average' to increment by the average increase between the first and last elements.
      WARNING when using how='average' the input list should be sorted first, AND new elements may be created.
      Use how='exact' to ensure that elements are only duplicated. No new elements will be created.
@@ -1723,8 +1725,8 @@ def grid_cells(
         n_cols: int | str,
         t_height: int | float | str = None,
         n_rows: int | str = None,
-        x_pad: int | float | str = 1,
-        y_pad: int | float | str = 1,
+        x_pad: int | float | str = 0,
+        y_pad: int | float | str = 0,
         x_0: int | float = 0,
         y_0: int | float = 0,
         r_type: list | dict = list,
@@ -1752,12 +1754,15 @@ def grid_cells(
     assert y_pad > -1, f"Error, y padding cannot be negative. Got {y_pad=}"
     print(f"{t_width=}, {t_height=}, {n_rows=}, {n_cols=}, {x_pad=}, {y_pad=}, {r_type=}")
 
-    tw = (t_width - ((n_cols + 0) * x_pad)) / (n_cols + 0)  # tile width_canvas
-    th = (t_height - ((n_rows + 0) * y_pad)) / (n_rows + 0)  # tile height_canvas
+    tw = (t_width - ((n_cols + 1) * x_pad)) / (n_cols + 0)  # tile width_canvas
+    th = (t_height - ((n_rows + 1) * y_pad)) / (n_rows + 0)  # tile height_canvas
 
     tiles = []
     if r_type == dict:
         tiles = {}
+
+    print(f"{tw=}, {t_width=}, {n_cols=}, {x_pad=}")
+    print(f"{th=}, {t_height=}, {n_rows=}, {y_pad=}")
 
     for r in range(n_rows):
         if r_type == list:
@@ -1766,20 +1771,20 @@ def grid_cells(
             row = {}
 
         for c in range(n_cols):
-            x1 = float(x_0 + (c * tw) + ((c + 0) * x_pad) + (x_pad / 2))
-            y1 = float(y_0 + (r * th) + ((r + 0) * y_pad) + (y_pad / 2))
-            x2 = float(x_0 + ((c + 1) * tw) + ((c + 0) * x_pad) + (x_pad / 2))
-            y2 = float(y_0 + ((r + 1) * th) + ((r + 0) * y_pad) + (y_pad / 2))
+            x1 = float(x_0 + (c * tw) + ((c + 1) * x_pad))  # + (x_pad / 1))
+            y1 = float(y_0 + (r * th) + ((r + 1) * y_pad))  # + (y_pad / 1))
+            x2 = float(x_0 + ((c + 1) * tw) + ((c + 1) * x_pad))  # + (x_pad / 1))
+            y2 = float(y_0 + ((r + 1) * th) + ((r + 1) * y_pad))  # + (y_pad / 1))
             xd = float(x2 - x1)
             yd = float(y2 - y1)
 
             if r_int:
-                x1 = int(x1)
-                x2 = int(x2)
-                y1 = int(y1)
-                y2 = int(y2)
-                xd = int(xd)
-                yd = int(yd)
+                x1 = round(x1)
+                x2 = round(x2)
+                y1 = round(y1)
+                y2 = round(y2)
+                xd = round(xd)
+                yd = round(yd)
 
             if r_type == list:
                 row.append([x1, y1, x2, y2])

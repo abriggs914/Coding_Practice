@@ -33,7 +33,7 @@ class Example(tkinter.Frame):
         self.textvar = tkinter.StringVar()
         self.textvar.set("Hello, world!")
 
-        # create an entry widget and a text widget that
+        # create an cell_is_entry widget and a text widget that
         # share a textvariable; typing in one should update
         # the other
         self.entry = tkinter.Entry(self, textvariable=self.textvar)
@@ -337,8 +337,8 @@ def test_treeview_factory_3():
     treeview.pack(side=tkinter.TOP)
     scrollbar_x.pack(side=tkinter.BOTTOM)
 
-    tv_btn1, btn1 = button_factory(WIN, tv_btn="new entry", kwargs_btn={"command": insert_new_entry})
-    tv_btn2, btn2 = button_factory(WIN, tv_btn="del entry", kwargs_btn={"command": delete_entry})
+    tv_btn1, btn1 = button_factory(WIN, tv_btn="new cell_is_entry", kwargs_btn={"command": insert_new_entry})
+    tv_btn2, btn2 = button_factory(WIN, tv_btn="del cell_is_entry", kwargs_btn={"command": delete_entry})
     btn1.pack()
     btn2.pack()
 
@@ -435,7 +435,7 @@ def test_treeview_factory_4():
             entry.pack(side=tkinter.LEFT)
             x1, x2 = x1x2
             # print(f"{x1=}")
-            # entry.place(x=x1, y=500)
+            # cell_is_entry.place(x=x1, y=500)
 
     button_insert_item.grid()
     button_delete_item.grid()
@@ -689,9 +689,9 @@ def test_multi_combo_factory():
     # tv1_scrollbar_y.grid(row=1, column=1, sticky="ns")
     # for i, data in enumerate(tv1_aggregate_objects):
     #     if i > 0:
-    #         tv, entry, x1x2 = data
+    #         tv, cell_is_entry, x1x2 = data
     #         # print(f"{i=}, {tv.get()=}")
-    #         entry.grid(row=0, column=i)
+    #         cell_is_entry.grid(row=0, column=i)
     #     else:
     #         data.grid(row=2)
 

@@ -483,9 +483,9 @@ class TreeviewController(tkinter.Frame):
         elif self.scrollbar_y is not None:
             self.treeview.configure(yscrollcommand=self.scrollbar_y.set)
 
-        self.tv_button_new_item, self.button_new_item = button_factory(self, tv_btn="new entry",
+        self.tv_button_new_item, self.button_new_item = button_factory(self, tv_btn="new cell_is_entry",
                                                                        kwargs_btn={"command": self.insert_new_entry})
-        self.tv_button_delete_item, self.button_delete_item = button_factory(self, tv_btn="del entry",
+        self.tv_button_delete_item, self.button_delete_item = button_factory(self, tv_btn="del cell_is_entry",
                                                                              kwargs_btn={"command": self.delete_entry})
         # button_new_item.pack()
         # button_delete_item.pack()
@@ -1844,7 +1844,7 @@ class ScannableEntry(tkinter.Entry):
 
         self.entry = tkinter.Entry(self, textvariable=self.text, font=("Arial", 16), justify=tkinter.CENTER)
 
-        # show entry widget
+        # show cell_is_entry widget
         self.entry.pack()
 
         # bind and trace widgets and variables
@@ -1861,7 +1861,7 @@ class ScannableEntry(tkinter.Entry):
         self.stop_bindings()
         self.entry.bind("<Return>", self.return_text)
         self.entry.bind("<FocusIn>",
-                        self.update_has_focus_in)  # prevents duplicate event firing when typing directly into the entry widget
+                        self.update_has_focus_in)  # prevents duplicate event firing when typing directly into the cell_is_entry widget
         self.entry.bind("<FocusOut>", self.update_has_focus_out)
 
     def stop_listeners(self):
@@ -1873,7 +1873,7 @@ class ScannableEntry(tkinter.Entry):
             self.text.trace_remove(*self.text.trace_info()[0])
 
     def stop_bindings(self):
-        # self.entry.unbind("<Return>")
+        # self.cell_is_entry.unbind("<Return>")
         self.entry.unbind("<FocusIn>")
         self.entry.unbind("<FocusOut>")
 
@@ -1927,7 +1927,7 @@ class ScannableEntry(tkinter.Entry):
         #     print(f"{self.accepting_counter.get()=}")
 
     def update_valid_submission(self, *args):
-        # this is called when the entry is ready to be read.
+        # this is called when the cell_is_entry is ready to be read.
         if self.valid_submission.get() and self.text.get():
             print(f"DONE!! '{self.text.get()}'")
             self.validated_text.set(self.text.get())
@@ -1946,7 +1946,7 @@ class ScannableEntry(tkinter.Entry):
 
     def set_scan_pass_through(self):
         print(
-            f"WARNING, this forces all generic keyPress and Return key events through this widget.\nDo not use on a single form with multiple text / entry input widgets.")
+            f"WARNING, this forces all generic keyPress and Return key events through this widget.\nDo not use on a single form with multiple text / cell_is_entry input widgets.")
         self.passing_through.set(True)
         self.has_passed_through.set(True)
         self.top_level_keypress.set(self.top_most.bind("<KeyPress>"))
@@ -2339,7 +2339,7 @@ class MultiComboBox(tkinter.Frame):
                 print(f"Combobox is not limited to list contents, however, it is alos not allowed to ask for new values. You must pass default values.")
             elif self.allow_insert_ask:
                 ans = tkinter.messagebox.askyesnocancel("Create New Item",
-                                                        message=f"Create a new combo box entry with '{val}' in column '{col}' position?")
+                                                        message=f"Create a new combo box cell_is_entry with '{val}' in column '{col}' position?")
                 row = []
                 if ans == tkinter.YES:
                     # print(f"SELECTING {i=}")
