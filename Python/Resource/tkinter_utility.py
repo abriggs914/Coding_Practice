@@ -11,7 +11,7 @@ import pandas as pd
 
 import utility
 from datetime_utility import random_date
-from utility import grid_cells, clamp_rect, clamp, isnumber, alpha_seq, lstindex
+from utility import grid_cells, clamp_rect, clamp, isnumber, alpha_seq, lstindex, dict_print
 from colour_utility import *
 from tkinter import ttk, messagebox
 
@@ -21,9 +21,9 @@ from tkinter import ttk, messagebox
 
 VERSION = \
     """	
-    General Utility Functions
-    Version..............1.55
-    Date...........2023-07-25
+    General tkinter Centered Utility Functions
+    Version..............1.57
+    Date...........2023-07-26
     Author(s)....Avery Briggs
     """
 
@@ -269,12 +269,12 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
         if not (isinstance(buttons, list) and isinstance(buttons, tuple)):
             buttons = list(buttons)
         if default_value is not None:
-            print(f"not None")
+            # print(f"not None")
             if isinstance(default_value, tkinter.IntVar):
-                print(f"is_var")
+                # print(f"is_var")
                 var = default_value
             elif isnumber(default_value):
-                print(f"not var")
+                # print(f"not var")
                 var = tkinter.IntVar(master, value=int(default_value))
             else:
                 raise ValueError(f"Error default value '{default_value}' is not a number.")
@@ -304,7 +304,7 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
                     tkinter.Radiobutton(master, variable=var, textvariable=tv_var, value=i, name=f"rbtn_{btn}")
                 )
 
-        print(f"OUT {var.get()=}")
+        # print(f"OUT {var.get()=}")
         return var, tv_vars, r_buttons
     else:
         raise Exception("Error, must pass a list of buttons.")
@@ -496,7 +496,7 @@ class TreeviewController(tkinter.Frame):
             dat = [row[c_name] for c_name in self.viewable_column_names]
             tags = (self.gen_row_tag(i),)
             self.treeview.insert("", tkinter.END, text=f"{i + 1}", iid=i, values=dat, tags=tags)
-            print(f"{tags=}")
+            # print(f"{tags=}")
             # f.remove(i)
         # print(f"{f=}")
         # print(f"B {df.shape=}")
@@ -2224,11 +2224,11 @@ class MultiComboBox(tkinter.Frame):
         if auto_grid:
             self.grid_widget()
         if not self.tv_tree_is_hidden.get():
-            print(f"NOT is hidden")
+            # print(f"NOT is hidden")
             self.tv_tree_is_hidden.set(True)
             self.click_canvas_dropdown_button(None)
-        else:
-            print(f"is hidden")
+        # else:
+        #     print(f"is hidden")
 
         # print(f"Multicombobox created with dimensions (r x c)=({self.data.shape[0]} x {self.data.shape[1]})")
 
@@ -2983,11 +2983,11 @@ class ToggleButton(tkinter.Frame):
 
         x, y = 0, 0
         if not isinstance(auto_grid, bool):
-            print(f"A")
+            # print(f"A")
             if isinstance(auto_grid, list) or isinstance(auto_grid, tuple):
-                print(f"B")
+                # print(f"B")
                 if len(auto_grid) == 2:
-                    print(f"C")
+                    # print(f"C")
                     x, y = auto_grid
                 else:
                     raise ValueError(f"Error, auto_grid param is not the right dimensions.")
@@ -2996,7 +2996,7 @@ class ToggleButton(tkinter.Frame):
                 x, y = 0, auto_grid
             if x < 0 or y < 0:
                 raise ValueError(f"Error, auto_grid param is invalid.")
-        print(f"AAA {x=}, {y=}")
+        # print(f"AAA {x=}, {y=}")
         self.grid_args = {
             "self": {"row": 0 + y, "column": 0 + x},
             "self.tv_label": {},
@@ -3011,7 +3011,7 @@ class ToggleButton(tkinter.Frame):
 
     def grid_widgets(self):
         """Use this to grid self and all sub-widgets."""
-        print(f"Auto_grid '{self.tv_label.get()}'")
+        # print(f"Auto_grid '{self.tv_label.get()}'")
         # # self.grid(row=0, column=0)
         # self.grid()
         # self.label.grid(row=0, column=0)
@@ -3371,7 +3371,7 @@ class InfoFrame(tkinter.Frame):
 
     def __init__(self, master, labels=None, auto_grid=False, key_width=10, val_width=10, header=None, footer=None,
                  cell_border=None, key_label_keywords=None, value_label_keywords=None, header_kwargs=None,
-                 footer_kwargs=None, *args, **kwargs):
+                 footer_kwargs=None, formats=None, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.auto_grid = auto_grid
         self.header = header
@@ -3391,6 +3391,23 @@ class InfoFrame(tkinter.Frame):
 
         assert hasattr(self.labels_in,
                        "__iter__"), f"Error param 'labels_in' must be an iterable. Got type='{type(self.labels_in)}'"
+
+        self.formats = {}
+        if formats is None:
+            pass
+        elif isinstance(formats, dict):
+            for k, v in formats.items():
+                if k in self.labels_in:
+                    self.formats.update({k: v})
+                else:
+                    raise KeyError(f"Error key '{k}' is not a valid label for this infoframe.")
+        elif isinstance(formats, (list, tuple)):
+            for lbl, v in zip(self.labels_in, formats):
+                self.formats.update({lbl: v})
+        else:
+            self.formats = {lbl: formats for lbl in self.labels_in}
+
+        print(dict_print(self.formats, "formats"))
 
         self.check_header()
         self.check_footer()
@@ -3556,7 +3573,16 @@ class InfoFrame(tkinter.Frame):
         else:
             ke = key
 
-        self.info_labels[ke]["v_tv"].set(value)
+        val = value
+        if key in self.formats:
+            fmt = self.formats[key]
+            try:
+                val = fmt(value)
+            except Exception as e:
+                print(f"FAILED TO FORMAT key='{key}'.")
+                val = value
+
+        self.info_labels[ke]["v_tv"].set(val)
 
     def get_value(self, key, default=None):
         if key not in self.info_labels:
@@ -3568,6 +3594,120 @@ class InfoFrame(tkinter.Frame):
         else:
             ke = key
         return self.info_labels[ke]["v_tv"].get()
+		
+
+def calc_geometry_tl(
+    width:int|float,
+    height:int|float,
+    dims:None|tuple|list=None,
+    largest:bool|int=True
+
+    # one_display_orient: Literal["horizontal", "vertical"]="horizontal"
+    ) -> str:
+	
+        x_off, y_off = 0, 0
+        if dims is None:
+        
+            monitors = utility.get_largest_monitors()
+            monitors_lr = sorted(list(monitors), key=lambda m: m.x)
+            if isinstance(largest, bool) and largest:
+                monitor = monitors[0]
+                largest = 1
+            else:
+                assert isinstance(largest, int), f"Error param 'largest' must be an integer."
+                assert -1 < largest < len(monitors), f"Error param 'largest' must be in range {len(monitors)}. That is the maximum number of monitors you have."
+                monitor = monitors[largest]
+            x_, y_, width_, height_ = monitor.x, monitor.y, monitor.width, monitor.height
+
+            # if treat_as_one_display:
+            x_off = monitor.x
+            y_off = monitor.y
+                #if one_display_orient == "horizontal":
+                #    x_off = monitor.x  # sum([m.width for m in monitors_lr[:largest]])
+                #else:
+                #    y_off = monitor.y  #  sum([m.height for m in monitors_lr[:largest]])
+        else:
+            x_, y_, width_, height_ = dims
+        
+        t_width, t_height = width_, height_
+
+        if isinstance(height, float):
+            assert 0 < height <= 1, "Error, if param 'height' is a float, it must be between 0 and 1."
+            height = int(height * height_)
+
+        if isinstance(width, float):
+            assert 0 < width <= 1, "Error, if param 'width' is a float, it must be between 0 and 1."
+            width = int(width * width_)
+
+        if width == height == "zoomed":
+            return width
+        else:
+            if width == "zoomed":
+                x_ = 0
+                height_c = clamp(1, height, height_)
+                y_ = (height_ - height_c) // 2
+                height_ = height
+            elif height == "zoomed":
+                y_ = 0
+                width_c = clamp(1, width, width_)
+                x_ = (width_ - width_c) // 2
+                width_ = width
+            else:
+                width_c = clamp(1, width, width_)
+                height_c = clamp(1, height, height_)
+                x = (width_ - width_c) // 2
+                y = (height_ - height_c) // 2
+                x_, y_, width_, height_ = x, y, width_c, height_c
+
+            x_ += x_off
+            y_ += y_off
+
+            print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f"geo=({width_}x{height_}+{x_}+{y_})")
+            return f"{width_}x{height_}+{x_}+{y_}"
+
+
+def auto_font(font, text, c_width, c_height, min_font_size=4, max_font_size=300):
+    """Clamp a font's size between c_width, and c_height when rendering text in pixels."""
+
+    assert isinstance(min_font_size, int) and (3 < min_font_size < 301), f"Error param 'min_font_size' must be an integer between 4 and 301 exclusive."
+    assert isinstance(max_font_size, int) and (3 < max_font_size < 301), f"Error param 'max_font_size' must be an integer between 4 and 301 exclusive."
+    assert min_font_size <= max_font_size, f"Error param 'min_font_size' cannot be larger than param 'max_font_size'."
+
+    width = font.measure(text)
+    family = font.actual()["family"]
+    size = font.actual()["size"]
+    ls = font.metrics()["linespace"]
+    # print(f"{family=}, {size=}, {ls=}, {font=}")
+    while size < max_font_size:
+        # font = tkinter.font.Font(family=family, size=size)
+        font.configure(size=size)
+        width = font.measure(text)
+        ls = font.metrics()["linespace"]
+        c_a = (width * ls) >= (c_width * c_height)
+        c_w = (width >= c_width)
+        c_h = (ls >= c_height)
+        # print(f"{ls=}, {width=}, {c_width=}, {c_height=}, {width*ls=}, {c_width*c_height=}, {c_a=}, {c_w=}, {c_h=}")
+        if c_a or c_w or c_h:
+            break
+        size += 1
+        # print(f"\tgrow {size=}")
+    while size > min_font_size:
+        # font = tkinter.font.Font(family=family, size=size)
+        font.configure(size=size)
+        width = font.measure(text)
+        ls = font.metrics()["linespace"]
+        c_a = (width * ls) <= (c_width * c_height)
+        c_w = (width <= c_width)
+        c_h = (ls <= c_height)
+        # print(f"{ls=}, {width=}, {c_width=}, {c_height=}, {width*ls=}, {c_width*c_height=}, {c_a=}, {c_w=}, {c_h=}")
+        if c_a or c_w or c_h:
+            break
+        size -= 1
+        # print(f"\tshrink {size=}")
+
+    # ls = font.metrics()["linespace"]
+    # print(f"FINAL {family=}, {size=}, {ls=}, {font=}")
+    return font
 
 
 if __name__ == '__main__':

@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.75
-    Date...........2023-07-25
+    Version..............1.77
+    Date...........2023-07-26
     Author(s)....Avery Briggs
     """
 
@@ -1999,8 +1999,8 @@ def get_windows_user(EXTENDED_NAME_FORMAT: int = 3):
     return nameBuffer.value
 
 
-def get_largest_monitor():
-    return sorted(get_monitors(), key=lambda m: (-m.width_mm, m.width_mm * m.height_mm))[0]
+def get_largest_monitors():
+    return sorted(get_monitors(), key=lambda m: (-m.width_mm, m.width_mm * m.height_mm))
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
@@ -2044,3 +2044,12 @@ BLK_SUBTRACTION = "-", "     \n     \n --- \n     \n     "
 BLK_MULTIPLICATION = "X", "     \n X X \n  X  \n X X \n     "
 BLK_DIVISON = "/", "     \n   / \n  /  \n /   \n     "
 BLK_PERCENTAGE = "%", "%   %\n   % \n  %  \n %   \n%   %"
+
+
+
+if __name__ == '__main__':
+    print(f"\n\tVersion:\n{VERSION}\n")
+    print(f"Details: {VERSION_DETAILS()}.")
+    print(f"{VERSION_NUMBER()=}.")
+    print(f"{VERSION_DATE()=}.")
+    print(f"{VERSION_AUTHORS()=}.")
