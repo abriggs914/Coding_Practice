@@ -871,6 +871,25 @@ american_dad = TVSeries("American Dad", {
 	True,
 	"Comedy",
 	"Disney+")
+	
+
+smallville = TVSeries("Smallville", {
+	1: 21,
+	2: 23,
+	3: 22,
+	4: 22,
+	5: 22,
+	6: 22,
+	7: 20,
+	8: 22,
+	9: 21,
+	10: 22},
+	44,
+	2001,
+	2011,
+	True,
+	"Drama",
+	"Prime TV")
 
 
 series_list = [
@@ -931,7 +950,8 @@ series_list = [
 	buffy_the_vampire_slayer,
 	angel,
 	what_we_do_in_the_shadows,
-	american_dad
+	american_dad,
+	smallville
 ]
 
    

@@ -637,24 +637,35 @@ Total minutes:			8073
 Total hours:			134.55
 Where to watch:			Disney+
 
+	Smallville
+Genre:				Drama
+Run (2001 -> 2011):		10 years
+number seasons:			10
+number episodes:		217
+episodes per season:		21.7
+average length of an episode:	44
+Total minutes:			9548
+Total hours:			159.13333333333333
+Where to watch:			Prime TV
+
 
 	What to watch?
 
 Series:
 
-	Family Guy
+	Futurama
 Genre:				Comedy
-Run (1999 -> 2023):		24 years
-number seasons:			21
-number episodes:		405
-episodes per season:		19.285714285714285
-average length of an episode:	24
-Total minutes:			9720
-Total hours:			162.0
+Run (1999 -> 2013):		14 years
+number seasons:			10
+number episodes:		140
+episodes per season:		14.0
+average length of an episode:	22
+Total minutes:			3080
+Total hours:			51.333333333333336
 Where to watch:			Disney+
 
-Season: 21
-Episode: 10
+Season: 7
+Episode: 12
 
 	How would you like to print the stats?
 1	-	By start year
@@ -688,6 +699,7 @@ sorting by start year...
 |Trailer Park Boys                |    2001    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    2001    |Trailer Park Boys                |
 |Scrubs                           |    2001    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    2001    |Scrubs                           |
 |The Proud Family                 |    2001    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2001    |The Proud Family                 |
+|Smallville                       |    2001    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    2001    |Smallville                       |
 |Arrested Develpoment             |    2003    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    2003    |Arrested Develpoment             |
 |The Office                       |    2005    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    2005    |The Office                       |
 |Avatar, the Last Airbender       |    2005    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2005    |Avatar, the Last Airbender       |
@@ -767,6 +779,7 @@ sorting by start year...
 |Trailer Park Boys                |    2001    |
 |Scrubs                           |    2001    |
 |The Proud Family                 |    2001    |
+|Smallville                       |    2001    |
 |Arrested Develpoment             |    2003    |
 |The Office                       |    2005    |
 |Avatar, the Last Airbender       |    2005    |
@@ -814,12 +827,12 @@ sorting by start year...
 |The Great North                  |    2021    |
 ################################################
 
-Mean:		2009.48
-Median:		2009.50
-Pstdev:		  7.95
-Pvariance:	 63.22
-Stdev:		  8.02
-Variance:	 64.32
+Mean:		2009.34
+Median:		2009.00
+Pstdev:		  7.96
+Pvariance:	 63.34
+Stdev:		  8.03
+Variance:	 64.43
 
 	How would you like to print the stats?
 1	-	By start year
@@ -851,6 +864,7 @@ sorting by end year...
 |King of the Hill                 |   2009   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2009   |King of the Hill                 |
 |My Name is Earl                  |   2009   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2009   |My Name is Earl                  |
 |Scrubs                           |   2010   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   2010   |Scrubs                           |
+|Smallville                       |   2011   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |   2011   |Smallville                       |
 |The Office                       |   2012   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |   2012   |The Office                       |
 |Futurama                         |   2013   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2013   |Futurama                         |
 |The IT Crowd                     |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2013   |The IT Crowd                     |
@@ -930,6 +944,7 @@ sorting by end year...
 |King of the Hill                 |   2009   |
 |My Name is Earl                  |   2009   |
 |Scrubs                           |   2010   |
+|Smallville                       |   2011   |
 |The Office                       |   2012   |
 |Futurama                         |   2013   |
 |The IT Crowd                     |   2013   |
@@ -979,12 +994,12 @@ sorting by end year...
 |The Great North                  |   2023   |
 ##############################################
 
-Mean:		2016.48
+Mean:		2016.39
 Median:		2019.00
 Pstdev:		  5.89
-Pvariance:	 34.73
+Pvariance:	 34.64
 Stdev:		  5.94
-Variance:	 35.34
+Variance:	 35.24
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1051,6 +1066,7 @@ sorting by shortest series length...
 |Black Mirror                     |             8              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |             8              |Black Mirror                     |
 |Brooklyn Nine-Nine               |             8              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |             8              |Brooklyn Nine-Nine               |
 |Scrubs                           |             9              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             9              |Scrubs                           |
+|Smallville                       |             10             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |             10             |Smallville                       |
 |King of the Hill                 |             12             |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             12             |King of the Hill                 |
 |Prison Break                     |             12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |             12             |Prison Break                     |
 |Star Wars the Clone Wars         |             12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |             12             |Star Wars the Clone Wars         |
@@ -1130,6 +1146,7 @@ sorting by shortest series length...
 |Black Mirror                     |             8              |
 |Brooklyn Nine-Nine               |             8              |
 |Scrubs                           |             9              |
+|Smallville                       |             10             |
 |King of the Hill                 |             12             |
 |Prison Break                     |             12             |
 |Star Wars the Clone Wars         |             12             |
@@ -1144,12 +1161,12 @@ sorting by shortest series length...
 |The Simpsons                     |             34             |
 ################################################################
 
-Mean:		  7.10
+Mean:		  7.15
 Median:		  5.00
-Pstdev:		  6.50
-Pvariance:	 42.30
-Stdev:		  6.56
-Variance:	 43.04
+Pstdev:		  6.46
+Pvariance:	 41.72
+Stdev:		  6.51
+Variance:	 42.44
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1182,6 +1199,7 @@ sorting by longest series length...
 |King of the Hill                 |            12             |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |            12             |King of the Hill                 |
 |Prison Break                     |            12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |            12             |Prison Break                     |
 |Star Wars the Clone Wars         |            12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |            12             |Star Wars the Clone Wars         |
+|Smallville                       |            10             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |            10             |Smallville                       |
 |Scrubs                           |             9             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |             9             |Scrubs                           |
 |Yu-Gi-Oh!                        |             8             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             8             |Yu-Gi-Oh!                        |
 |Game of Thrones                  |             8             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |             8             |Game of Thrones                  |
@@ -1261,6 +1279,7 @@ sorting by longest series length...
 |King of the Hill                 |            12             |
 |Prison Break                     |            12             |
 |Star Wars the Clone Wars         |            12             |
+|Smallville                       |            10             |
 |Scrubs                           |             9             |
 |Yu-Gi-Oh!                        |             8             |
 |Game of Thrones                  |             8             |
@@ -1309,12 +1328,12 @@ sorting by longest series length...
 |Hawkeye                          |             1             |
 ###############################################################
 
-Mean:		  7.10
+Mean:		  7.15
 Median:		  5.00
-Pstdev:		  6.50
-Pvariance:	 42.30
-Stdev:		  6.56
-Variance:	 43.04
+Pstdev:		  6.46
+Pvariance:	 41.72
+Stdev:		  6.51
+Variance:	 42.44
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1384,6 +1403,7 @@ sorting by least number of seasons...
 |Scrubs                           |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          9           |Scrubs                           |
 |The Office                       |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          9           |The Office                       |
 |Futurama                         |          10          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          10          |Futurama                         |
+|Smallville                       |          10          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          10          |Smallville                       |
 |Curb your Enthusiasm             |          11          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |          11          |Curb your Enthusiasm             |
 |Letterkenny                      |          11          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |          11          |Letterkenny                      |
 |Trailer Park Boys                |          12          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          12          |Trailer Park Boys                |
@@ -1463,6 +1483,7 @@ sorting by least number of seasons...
 |Scrubs                           |          9           |
 |The Office                       |          9           |
 |Futurama                         |          10          |
+|Smallville                       |          10          |
 |Curb your Enthusiasm             |          11          |
 |Letterkenny                      |          11          |
 |Trailer Park Boys                |          12          |
@@ -1474,12 +1495,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          34          |
 ##########################################################
 
-Mean:		  6.29
+Mean:		  6.36
 Median:		  5.00
-Pstdev:		  5.74
-Pvariance:	 32.90
-Stdev:		  5.79
-Variance:	 33.47
+Pstdev:		  5.71
+Pvariance:	 32.57
+Stdev:		  5.76
+Variance:	 33.13
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1510,6 +1531,7 @@ sorting by most number of seasons...
 |Curb your Enthusiasm             |         11          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |         11          |Curb your Enthusiasm             |
 |Letterkenny                      |         11          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |         11          |Letterkenny                      |
 |Futurama                         |         10          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         10          |Futurama                         |
+|Smallville                       |         10          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         10          |Smallville                       |
 |Scrubs                           |          9          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          9          |Scrubs                           |
 |The Office                       |          9          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          9          |The Office                       |
 |Game of Thrones                  |          8          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          8          |Game of Thrones                  |
@@ -1589,6 +1611,7 @@ sorting by most number of seasons...
 |Curb your Enthusiasm             |         11          |
 |Letterkenny                      |         11          |
 |Futurama                         |         10          |
+|Smallville                       |         10          |
 |Scrubs                           |          9          |
 |The Office                       |          9          |
 |Game of Thrones                  |          8          |
@@ -1639,12 +1662,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  6.29
+Mean:		  6.36
 Median:		  5.00
-Pstdev:		  5.74
-Pvariance:	 32.90
-Stdev:		  5.79
-Variance:	 33.47
+Pstdev:		  5.71
+Pvariance:	 32.57
+Stdev:		  5.76
+Variance:	 33.13
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1717,6 +1740,7 @@ sorting by least number of episodes...
 |It's Always Sunny in Philadelphia|          162          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          162          |It's Always Sunny in Philadelphia|
 |Scrubs                           |          182          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          182          |Scrubs                           |
 |The Office                       |          201          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          201          |The Office                       |
+|Smallville                       |          217          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          217          |Smallville                       |
 |Yu-Gi-Oh!                        |          236          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          236          |Yu-Gi-Oh!                        |
 |King of the Hill                 |          259          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          259          |King of the Hill                 |
 |Criminal Minds                   |          334          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          334          |Criminal Minds                   |
@@ -1796,6 +1820,7 @@ sorting by least number of episodes...
 |It's Always Sunny in Philadelphia|          162          |
 |Scrubs                           |          182          |
 |The Office                       |          201          |
+|Smallville                       |          217          |
 |Yu-Gi-Oh!                        |          236          |
 |King of the Hill                 |          259          |
 |Criminal Minds                   |          334          |
@@ -1804,12 +1829,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          750          |
 ###########################################################
 
-Mean:		100.07
-Median:		 61.50
-Pstdev:		122.20
-Pvariance:	14933.06
-Stdev:		123.27
-Variance:	15195.05
+Mean:		102.05
+Median:		 62.00
+Pstdev:		122.10
+Pvariance:	14907.78
+Stdev:		123.15
+Variance:	15164.81
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1836,6 +1861,7 @@ sorting by most number of episodes...
 |Criminal Minds                   |         334          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         334          |Criminal Minds                   |
 |King of the Hill                 |         259          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         259          |King of the Hill                 |
 |Yu-Gi-Oh!                        |         236          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         236          |Yu-Gi-Oh!                        |
+|Smallville                       |         217          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         217          |Smallville                       |
 |The Office                       |         201          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |         201          |The Office                       |
 |Scrubs                           |         182          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         182          |Scrubs                           |
 |It's Always Sunny in Philadelphia|         162          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         162          |It's Always Sunny in Philadelphia|
@@ -1915,6 +1941,7 @@ sorting by most number of episodes...
 |Criminal Minds                   |         334          |
 |King of the Hill                 |         259          |
 |Yu-Gi-Oh!                        |         236          |
+|Smallville                       |         217          |
 |The Office                       |         201          |
 |Scrubs                           |         182          |
 |It's Always Sunny in Philadelphia|         162          |
@@ -1969,12 +1996,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		100.07
-Median:		 61.50
-Pstdev:		122.20
-Pvariance:	14933.06
-Stdev:		123.27
-Variance:	15195.05
+Mean:		102.05
+Median:		 62.00
+Pstdev:		122.10
+Pvariance:	14907.78
+Stdev:		123.15
+Variance:	15164.81
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2050,6 +2077,7 @@ sorting by shortest time...
 |King of the Hill                 |   99.283333   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |   99.283333   |King of the Hill                 |
 |Buffy The Vampire Slayer         |     108.0     |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |     108.0     |Buffy The Vampire Slayer         |
 |American Dad                     |  134.550000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  134.550000   |American Dad                     |
+|Smallville                       |  159.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |  159.133333   |Smallville                       |
 |Family Guy                       |     162.0     |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|     162.0     |Family Guy                       |
 |Criminal Minds                   |  244.933333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  244.933333   |Criminal Minds                   |
 |The Simpsons                     |     300.0     |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|     300.0     |The Simpsons                     |
@@ -2129,17 +2157,18 @@ sorting by shortest time...
 |King of the Hill                 |   99.283333   |
 |Buffy The Vampire Slayer         |     108.0     |
 |American Dad                     |  134.550000   |
+|Smallville                       |  159.133333   |
 |Family Guy                       |     162.0     |
 |Criminal Minds                   |  244.933333   |
 |The Simpsons                     |     300.0     |
 ###################################################
 
-Mean:		 47.02
-Median:		 26.77
-Pstdev:		 54.21
-Pvariance:	2938.66
-Stdev:		 54.68
-Variance:	2990.22
+Mean:		 48.93
+Median:		 27.13
+Pstdev:		 55.66
+Pvariance:	3098.27
+Stdev:		 56.14
+Variance:	3151.68
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2163,6 +2192,7 @@ sorting by longest time...
 |The Simpsons                     |    300.0     |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    300.0     |The Simpsons                     |
 |Criminal Minds                   |  244.933333  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  244.933333  |Criminal Minds                   |
 |Family Guy                       |    162.0     |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    162.0     |Family Guy                       |
+|Smallville                       |  159.133333  |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |  159.133333  |Smallville                       |
 |American Dad                     |  134.550000  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  134.550000  |American Dad                     |
 |Buffy The Vampire Slayer         |    108.0     |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    108.0     |Buffy The Vampire Slayer         |
 |King of the Hill                 |  99.283333   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |  99.283333   |King of the Hill                 |
@@ -2242,6 +2272,7 @@ sorting by longest time...
 |The Simpsons                     |    300.0     |
 |Criminal Minds                   |  244.933333  |
 |Family Guy                       |    162.0     |
+|Smallville                       |  159.133333  |
 |American Dad                     |  134.550000  |
 |Buffy The Vampire Slayer         |    108.0     |
 |King of the Hill                 |  99.283333   |
@@ -2299,12 +2330,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 47.02
-Median:		 26.77
-Pstdev:		 54.21
-Pvariance:	2938.66
-Stdev:		 54.68
-Variance:	2990.22
+Mean:		 48.93
+Median:		 27.13
+Pstdev:		 55.66
+Pvariance:	3098.27
+Stdev:		 56.14
+Variance:	3151.68
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2331,6 +2362,7 @@ sorting by most episodes per season...
 |The Office                       |        22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |        22.333333         |The Office                       |
 |The Simpsons                     |        22.058824         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        22.058824         |The Simpsons                     |
 |Angel                            |           22.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0           |Angel                            |
+|Smallville                       |        21.700000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |        21.700000         |Smallville                       |
 |Malcolm in the Middle            |        21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        21.571429         |Malcolm in the Middle            |
 |The Replacements                 |           21.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0           |The Replacements                 |
 |Criminal Minds                   |        20.875000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        20.875000         |Criminal Minds                   |
@@ -2410,6 +2442,7 @@ sorting by most episodes per season...
 |The Office                       |        22.333333         |
 |The Simpsons                     |        22.058824         |
 |Angel                            |           22.0           |
+|Smallville                       |        21.700000         |
 |Malcolm in the Middle            |        21.571429         |
 |The Replacements                 |           21.0           |
 |Criminal Minds                   |        20.875000         |
@@ -2464,12 +2497,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.50
-Median:		 12.77
+Mean:		 14.63
+Median:		 13.14
 Pstdev:		  7.31
-Pvariance:	 53.51
-Stdev:		  7.38
-Variance:	 54.45
+Pvariance:	 53.46
+Stdev:		  7.37
+Variance:	 54.39
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2542,6 +2575,7 @@ sorting by least episodes per season...
 |Criminal Minds                   |         20.875000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         20.875000         |Criminal Minds                   |
 |The Replacements                 |           21.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0            |The Replacements                 |
 |Malcolm in the Middle            |         21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         21.571429         |Malcolm in the Middle            |
+|Smallville                       |         21.700000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         21.700000         |Smallville                       |
 |Angel                            |           22.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0            |Angel                            |
 |The Simpsons                     |         22.058824         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         22.058824         |The Simpsons                     |
 |The Office                       |         22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |         22.333333         |The Office                       |
@@ -2621,6 +2655,7 @@ sorting by least episodes per season...
 |Criminal Minds                   |         20.875000         |
 |The Replacements                 |           21.0            |
 |Malcolm in the Middle            |         21.571429         |
+|Smallville                       |         21.700000         |
 |Angel                            |           22.0            |
 |The Simpsons                     |         22.058824         |
 |The Office                       |         22.333333         |
@@ -2629,14 +2664,14 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.50
-Median:		 12.77
+Mean:		 14.63
+Median:		 13.14
 Pstdev:		  7.31
-Pvariance:	 53.51
-Stdev:		  7.38
-Variance:	 54.45
+Pvariance:	 53.46
+Stdev:		  7.37
+Variance:	 54.39
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 4  | 5  | 8  | 10 | 13 | 12 | 13 | 12 | 18 | 19 | 17 | 19 | 21 | 20 | 22 | 24 | 26 | 23 | 24 | 23 | 24 | 22 | 23 | 17 | 19 | 12 | 6  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 1  | 4  | 5  | 8  | 10 | 14 | 13 | 14 | 13 | 19 | 20 | 18 | 20 | 22 | 21 | 23 | 24 | 26 | 23 | 24 | 23 | 24 | 22 | 23 | 17 | 19 | 12 | 6  | start year |Concurrent                       |
 ###################################################################################################################################################################################################################################################################################
