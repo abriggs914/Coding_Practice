@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.77
-    Date...........2023-07-26
+    Version..............1.78
+    Date...........2023-08-02
     Author(s)....Avery Briggs
     """
 
@@ -1939,7 +1939,7 @@ def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=Fal
         yield f"{prefix}{val}{suffix}"
 
 
-def sort_2_lists(list_1, list_2):
+def sort_2_lists(list_1, list_2, reverse=False):
     # https://stackoverflow.com/questions/13668393/python-sorting-two-lists
     # l1 = [-7, 4, 0, -6, 14, 1, -4]
     # l2 = list(range(len(l1)))
@@ -1947,7 +1947,7 @@ def sort_2_lists(list_1, list_2):
     # # [[-7, -6, -4, 0, 1, 4, 14], [0, 3, 6, 2, 5, 1, 4]]
     # sort_2_lists(l2, l1)
     # # [[0, 1, 2, 3, 4, 5, 6], [-7, 4, 0, -6, 14, 1, -4]]
-    return [list(x) for x in zip(*sorted(zip(list_1, list_2), key=itemgetter(0)))]
+    return [list(x) for x in zip(*sorted(zip(list_1, list_2), key=itemgetter(0), reverse=reverse))]
 
 
 def margins(t_width, n_btns, btn_width):
