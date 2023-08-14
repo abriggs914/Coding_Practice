@@ -76,19 +76,189 @@ def draw_letter(char, x, y, w, h, fw=3):
     can.create_polygon(points, fill=Colour(CRIMSON_RED).hex_code)
 
 
+def test_cursor():
+    import win32con
+    import win32api
+    import win32gui
+    import ctypes
+    import time
+    import atexit
+
+    # save system cursor, before changing it
+    cursor = win32gui.LoadImage(0, 32512, win32con.IMAGE_CURSOR,
+                                0, 0, win32con.LR_SHARED)
+    save_system_cursor = ctypes.windll.user32.CopyImage(cursor, win32con.IMAGE_CURSOR,
+                                                        0, 0, win32con.LR_COPYFROMRESOURCE)
+
+    def restore_cursor():
+        # restore the old cursor
+        print("restore_cursor")
+        ctypes.windll.user32.SetSystemCursor(save_system_cursor, 32512)
+        ctypes.windll.user32.DestroyCursor(save_system_cursor)
+
+    # Make sure cursor is restored at the end
+    atexit.register(restore_cursor)
+
+    # change system cursor
+    cursor = win32gui.LoadImage(0, r"C:\Users\ABriggs\Downloads\sword.ico", win32con.IMAGE_CURSOR,
+                                0, 0, win32con.LR_LOADFROMFILE)
+    ctypes.windll.user32.SetSystemCursor(cursor, 32512)
+    ctypes.windll.user32.DestroyCursor(cursor)
+
+    time.sleep(9)
+    exit()
+
+
+def test_cursor2():
+    import win32con
+    import win32api
+    import win32gui
+    import ctypes
+    import time
+    import atexit
+
+    def restore_cursor():
+        # restore the old cursor
+        print("restore_cursor")
+        ctypes.windll.user32.SetSystemCursor(save_system_cursor, 32512)
+        ctypes.windll.user32.DestroyCursor(save_system_cursor)
+
+    try:
+
+        # save system cursor, before changing it
+        cursor = win32gui.LoadImage(0, 32512, win32con.IMAGE_CURSOR,
+                                    0, 0, win32con.LR_SHARED)
+        save_system_cursor = ctypes.windll.user32.CopyImage(cursor, win32con.IMAGE_CURSOR,
+                                                            0, 0, win32con.LR_COPYFROMRESOURCE)
+
+        # Make sure cursor is restored at the end
+        atexit.register(restore_cursor)
+
+        # change system cursor
+        ico_x = win32api.GetSystemMetrics(win32con.SM_CXSMICON)
+        ico_y = win32api.GetSystemMetrics(win32con.SM_CYSMICON)
+        cursor = win32gui.LoadImage(
+            # 0,
+            None,
+            r"C:\Users\ABriggs\Downloads\sword_18_23.ico",
+            win32con.IMAGE_CURSOR,
+            ico_x,
+            ico_y,
+            win32con.LR_LOADFROMFILE
+        )
+
+        ctypes.windll.user32.SetSystemCursor(cursor, 32512)
+        ctypes.windll.user32.DestroyCursor(cursor)
+
+        def click_change_colour(event=None):
+            lbl.configure(background=random_colour(rgb=False))
+
+        # time.sleep(9)
+        win = tkinter.Tk()
+        win.geometry(calc_geometry_tl(0.63, 0.42))
+
+        tv_lbl, lbl = label_factory(
+            win,
+            "Hello World!",
+            {
+                "bg": random_colour(rgb=False),
+                "width": 60,
+                "height": 20,
+                "font": ("Arial", 20)
+            }
+        )
+        lbl.bind("<Button-1>", click_change_colour)
+        lbl.pack()
+
+        win.mainloop()
+
+    except Exception as e:
+        print(f"{e=}")
+    finally:
+        exit()
+
+
+def test_cursor3():
+    import win32con
+    import win32api
+    import win32gui
+    import ctypes
+    import time
+    import atexit
+
+    def restore_cursor():
+        # restore the old cursor
+        print("restore_cursor")
+        ctypes.windll.user32.SetSystemCursor(save_system_cursor, 32512)
+        ctypes.windll.user32.DestroyCursor(save_system_cursor)
+
+    try:
+
+        # save system cursor, before changing it
+        cursor = win32gui.LoadImage(0, 32512, win32con.IMAGE_CURSOR,
+                                    0, 0, win32con.LR_SHARED)
+        save_system_cursor = ctypes.windll.user32.CopyImage(cursor, win32con.IMAGE_CURSOR,
+                                                            0, 0, win32con.LR_COPYFROMRESOURCE)
+
+        # Make sure cursor is restored at the end
+        atexit.register(restore_cursor)
+
+        # change system cursor
+        cursor = win32gui.LoadImage(0, r"C:\Users\ABriggs\Downloads\sword_18_23.ico", win32con.IMAGE_CURSOR,
+                                    0, 0, win32con.LR_LOADFROMFILE)
+
+        ctypes.windll.user32.SetSystemCursor(cursor, 32512)
+        ctypes.windll.user32.DestroyCursor(cursor)
+
+        info = win32gui.GetCursorInfo()
+        x_hotspot, y_hotspot = 9, 11  # Adjust hotspot coordinates
+        cursor = win32gui.CreateIconFromResourceEx(
+            info[2],
+            info[3],
+            True,
+            0x00030000,
+            x_hotspot,
+            y_hotspot,
+            win32con.LR_DEFAULTSIZE | win32con.LR_SHARED
+        )
+        ctypes.windll.user32.SetSystemCursor(cursor, 32512)
+        ctypes.windll.user32.DestroyCursor(cursor)
+
+
+        def click_change_colour(event=None):
+            lbl.configure(background=random_colour(rgb=False))
+
+        # time.sleep(9)
+        win = tkinter.Tk()
+        win.geometry(calc_geometry_tl(0.63, 0.42))
+
+        tv_lbl, lbl = label_factory(win, "Hello World!", {"bg": random_colour(rgb=False)})
+        lbl.bind("<Button-1>", click_change_colour)
+        lbl.pack()
+
+        win.mainloop()
+
+    except Exception as e:
+        print(f"{e=}")
+    finally:
+        exit()
+
 
 if __name__ == '__main__':
 
-    win = tkinter.Tk()
-    win.geometry(calc_geometry_tl(500, 300))
+    # win = tkinter.Tk()
+    # win.geometry(calc_geometry_tl(500, 300))
+    #
+    # can = tkinter.Canvas(win, width=500, height=300, bg=Colour(GRAY_9).hex_code)
+    # # can.configure(bg=)
+    # # _draw_gradient(Colour(RED).hex_code, Colour(EMERALD).hex_code)
+    # can.pack()
+    # draw_letter("A", 50, 50, 150, 150, fw=16)
+    # draw_letter("B", 200, 50, 150, 150, fw=16)
+    # # can.bind("<Configure>", _draw_gradient(Colour(RED).hex_code, Colour(EMERALD).hex_code))
+    #
+    # win.after(3000, _draw_gradient, Colour(RED).hex_code, Colour(EMERALD).hex_code)
+    # win.mainloop()
 
-    can = tkinter.Canvas(win, width=500, height=300, bg=Colour(GRAY_9).hex_code)
-    # can.configure(bg=)
-    # _draw_gradient(Colour(RED).hex_code, Colour(EMERALD).hex_code)
-    can.pack()
-    draw_letter("A", 50, 50, 150, 150, fw=16)
-    draw_letter("B", 200, 50, 150, 150, fw=16)
-    # can.bind("<Configure>", _draw_gradient(Colour(RED).hex_code, Colour(EMERALD).hex_code))
-
-    win.after(3000, _draw_gradient, Colour(RED).hex_code, Colour(EMERALD).hex_code)
-    win.mainloop()
+    # test_cursor()
+    test_cursor2()

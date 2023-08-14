@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.57
-    Date...........2023-07-26
+    Version..............1.58
+    Date...........2023-08-14
     Author(s)....Avery Briggs
     """
 
@@ -2527,12 +2527,12 @@ class MultiComboBox(tkinter.Frame):
 
     def update_treeview(self):
         self.tree_treeview.delete(*self.tree_treeview.get_children())
-        for i, row in self.data.itertuples():
+        for i, row in enumerate(self.data.itertuples(), 0):
             # print(f"{i=}, {row=}")
             tags =[self.tree_controller.gen_row_tag(i)]
-            self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row, tags=tags)
+            self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row[1:], tags=tags)
             # self.tree_treeview.set(str(i + 1), j, val, tags=)
-            print(f"{tags=}")
+            # print(f"{tags=}")
 
     def filter_treeview(self):
         # print(f"filter_treeview: {self.typed_in.get()}\n\n\tDATA\n{self.data}")
