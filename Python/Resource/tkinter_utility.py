@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.58
-    Date...........2023-08-14
+    Version..............1.59
+    Date...........2023-08-15
     Author(s)....Avery Briggs
     """
 
@@ -298,7 +298,8 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
             if kwargs_buttons is not None:
                 print(f"WARNING kwargs param is applied to each radio button")
                 r_buttons.append(
-                    tkinter.Radiobutton(master, variable=var, textvariable=tv_var, **kwargs_buttons, value=i, name=f"rbtn_{btn}"))
+                    tkinter.Radiobutton(master, variable=var, textvariable=tv_var, **kwargs_buttons, value=i,
+                                        name=f"rbtn_{btn}"))
             else:
                 r_buttons.append(
                     tkinter.Radiobutton(master, variable=var, textvariable=tv_var, value=i, name=f"rbtn_{btn}")
@@ -384,6 +385,7 @@ class TreeviewExt(ttk.Treeview):
     #         })
     #
     #     print(f"{self.colours=}")
+
 
 class TreeviewController(tkinter.Frame):
 
@@ -518,7 +520,8 @@ class TreeviewController(tkinter.Frame):
             self.treeview.configure(yscrollcommand=self.scrollbar_y.set)
 
         self.tv_button_new_item, self.button_new_item = button_factory(self, tv_btn="new cell_is_entry",
-                                                                       kwargs_btn={"command": self.insert_new_random_entry})
+                                                                       kwargs_btn={
+                                                                           "command": self.insert_new_random_entry})
         self.tv_button_delete_item, self.button_delete_item = button_factory(self, tv_btn="del cell_is_entry",
                                                                              kwargs_btn={"command": self.delete_entry})
         # button_new_item.pack()
@@ -1583,7 +1586,8 @@ class CustomMessageBox(tkinter.Toplevel):
                  bg_colour="blue", bg_colour2="yellow", text_colour="Green", btn_font_colour="white",
                  close_btn_active_colour="red", close_btn_active_font_colour="white", w=500, h=120,
                  font_message=("Helvetica", 10), font_title=("Helvetica", 10, 'bold'), font_x_btn=("Helvetica", 12),
-                 font_btn=("Helvetica", 10), btn_border_colour=Colour(TEAL).hex_code, btn_border_sel_colour="#d2d2d2", answer_handle=None, ret_btn_text=False):
+                 font_btn=("Helvetica", 10), btn_border_colour=Colour(TEAL).hex_code, btn_border_sel_colour="#d2d2d2",
+                 answer_handle=None, ret_btn_text=False):
 
         # Required Data of Init Function
         super().__init__()
@@ -2082,7 +2086,7 @@ class MultiComboBox(tkinter.Frame):
 
         if len(viewable_column_names) == 1:
             new_entry_defaults = []
-        #assert (
+        # assert (
         #        new_entry_defaults is not None or allow_insert_ask) if not limit_to_list else 1, "Error, if allow new inserts to this combobox, then you must also either pass rest_values as 'new_entry_defaults' or set 'allow_insert_ask' to True.\nOtherwise there is no way to assign the rest of the column values."
 
         self.master = master
@@ -2252,14 +2256,16 @@ class MultiComboBox(tkinter.Frame):
         # self.tree_treeview.tag_configure(f"{row}-{column}", background=bg_colour, foreground=fg_colour)
         # self.tree_treeview.tag_configure(f"{row}", background=bg_colour, foreground=fg_colour)
         # self.tree_treeview.tag_configure(f"{column}", background=bg_colour, foreground=fg_colour)
-        self.tree_treeview.tag_configure(self.tree_controller.gen_cell_tag(i, j), background=bg_colour, foreground=fg_colour)
+        self.tree_treeview.tag_configure(self.tree_controller.gen_cell_tag(i, j), background=bg_colour,
+                                         foreground=fg_colour)
         # self.tree_treeview.set
 
     def set_row_colours(self, i, bg_colour, fg_colour):
         # self.tree_treeview.tag_configure(f"{row}-{column}", background=bg_colour, foreground=fg_colour)
         # self.tree_treeview.tag_configure(f"{row}", background=bg_colour, foreground=fg_colour)
         # self.tree_treeview.tag_configure(f"{column}", background=bg_colour, foreground=fg_colour)
-        self.tree_treeview.tag_configure(self.tree_controller.gen_row_tag(i, j), background=bg_colour, foreground=fg_colour)
+        self.tree_treeview.tag_configure(self.tree_controller.gen_row_tag(i, j), background=bg_colour,
+                                         foreground=fg_colour)
 
     def treeview_selection_update(self, event):
         print(f"treeview_selection_update")
@@ -2371,7 +2377,14 @@ class MultiComboBox(tkinter.Frame):
 
                 if to_delete:
                     # print(f"DROPPING {to_delete=}")
+                    # print(f"PRE  SHAPE: {self.data.shape=}")
+                    # print(f"{self.data.head(5)}")
+                    # print(f"{self.data.iloc[to_delete[0] - 3: to_delete[0] + 3]}")
                     self.data.drop(to_delete, inplace=True)
+                    self.data.reset_index(drop=True, inplace=True)
+                    # print(f"POST SHAPE: {self.data.shape=}")
+                    # print(f"{self.data.head(5)}")
+                    # print(f"{self.data.iloc[to_delete[0] - 3: to_delete[0] + 3]}")
                 else:
                     raise ValueError(
                         f"Cannot delete row(s) containing value '{value}' from this dataframe. The value was not found was not Found.")
@@ -2395,16 +2408,18 @@ class MultiComboBox(tkinter.Frame):
 
                 is_dict = False
                 is_list = False
-                if (is_list:=isinstance(rest_tags, (tuple, list))) or (is_dict:=isinstance(rest_tags, dict)):
+                if (is_list := isinstance(rest_tags, (tuple, list))) or (is_dict := isinstance(rest_tags, dict)):
                     if is_dict:
                         for j, col in enumerate(cn):
                             tags.add(rest_tags.get(col, self.tree_controller.gen_row_tag(i)))
                     else:
                         if (l_rt := len(rest_tags)) != (l_cn := len(cn)):
                             if l_rt > l_cn:
-                                raise ValueError(f"Error, too many tags were passed for this table. Got {l_rt}, expected {l_cn}")
+                                raise ValueError(
+                                    f"Error, too many tags were passed for this table. Got {l_rt}, expected {l_cn}")
                             else:
-                                raise ValueError(f"Error, too few tags were passed for this table. Got {l_rt}, expected {l_cn}")
+                                raise ValueError(
+                                    f"Error, too few tags were passed for this table. Got {l_rt}, expected {l_cn}")
                         else:
                             [tags.add(tag) for tag in rest_tags]
                 else:
@@ -2447,7 +2462,8 @@ class MultiComboBox(tkinter.Frame):
 
             elif self.allow_insert_ask and not self.p_allow_insert_ask:
                 # prevents situations where an item can be inserted by typing. Will accept if and only if its column values are passed with it.
-                print(f"Combobox is not limited to list contents, however, it is alos not allowed to ask for new values. You must pass default values.")
+                print(
+                    f"Combobox is not limited to list contents, however, it is alos not allowed to ask for new values. You must pass default values.")
             elif self.allow_insert_ask:
                 ans = tkinter.messagebox.askyesnocancel("Create New Item",
                                                         message=f"Create a new combo box cell_is_entry with '{val}' in column '{col}' position?")
@@ -2473,7 +2489,8 @@ class MultiComboBox(tkinter.Frame):
                     # print(f"\nA\t{self.data=}")
                     # print(f"{pandas.DataFrame({k: [v] for k, v in zip(cn, row)})}")
                     # self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
-                    self.data = pd.concat([self.data, (pandas.DataFrame({k: [v] for k, v in zip(cn, row)}))], ignore_index=True)
+                    self.data = pd.concat([self.data, (pandas.DataFrame({k: [v] for k, v in zip(cn, row)}))],
+                                          ignore_index=True)
                     # print(f"\nB\t{self.data=}")
                     self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row), tags=tuple(tags))
                     self.res_entry.config(foreground="black")
@@ -2529,7 +2546,7 @@ class MultiComboBox(tkinter.Frame):
         self.tree_treeview.delete(*self.tree_treeview.get_children())
         for i, row in enumerate(self.data.itertuples(), 0):
             # print(f"{i=}, {row=}")
-            tags =[self.tree_controller.gen_row_tag(i)]
+            tags = [self.tree_controller.gen_row_tag(i)]
             self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row[1:], tags=tags)
             # self.tree_treeview.set(str(i + 1), j, val, tags=)
             # print(f"{tags=}")
@@ -2566,9 +2583,10 @@ class MultiComboBox(tkinter.Frame):
                         some = True
                         row = self.data.iloc[[i]].values
                         # print(f"\t\t{i=}, {value=}, {row=}")
-                        tags = tags=[self.tree_controller.gen_cell_tag(i, j) for j in range(len(self.tree_controller.viewable_column_names))]
+                        tags = tags = [self.tree_controller.gen_cell_tag(i, j) for j in
+                                       range(len(self.tree_controller.viewable_column_names))]
                         self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(*row), tags=tags)
-                        print(f"{tags=}")
+                        # print(f"{tags=}")
             else:
                 # print(f"\n\nFilter Else")
                 self.tree_treeview.delete(*self.tree_treeview.get_children())
@@ -3594,83 +3612,85 @@ class InfoFrame(tkinter.Frame):
         else:
             ke = key
         return self.info_labels[ke]["v_tv"].get()
-		
+
 
 def calc_geometry_tl(
-    width:int|float,
-    height:int|float,
-    dims:None|tuple|list=None,
-    largest:bool|int=True
+        width: int | float,
+        height: int | float,
+        dims: None | tuple | list = None,
+        largest: bool | int = True
 
-    # one_display_orient: Literal["horizontal", "vertical"]="horizontal"
-    ) -> str:
-	
-        x_off, y_off = 0, 0
-        if dims is None:
-        
-            monitors = utility.get_largest_monitors()
-            monitors_lr = sorted(list(monitors), key=lambda m: m.x)
-            if isinstance(largest, bool) and largest:
-                monitor = monitors[0]
-                largest = 1
-            else:
-                assert isinstance(largest, int), f"Error param 'largest' must be an integer."
-                assert -1 < largest < len(monitors), f"Error param 'largest' must be in range {len(monitors)}. That is the maximum number of monitors you have."
-                monitor = monitors[largest]
-            x_, y_, width_, height_ = monitor.x, monitor.y, monitor.width, monitor.height
+        # one_display_orient: Literal["horizontal", "vertical"]="horizontal"
+) -> str:
+    x_off, y_off = 0, 0
+    if dims is None:
 
-            # if treat_as_one_display:
-            x_off = monitor.x
-            y_off = monitor.y
-                #if one_display_orient == "horizontal":
-                #    x_off = monitor.x  # sum([m.width for m in monitors_lr[:largest]])
-                #else:
-                #    y_off = monitor.y  #  sum([m.height for m in monitors_lr[:largest]])
+        monitors = utility.get_largest_monitors()
+        monitors_lr = sorted(list(monitors), key=lambda m: m.x)
+        if isinstance(largest, bool) and largest:
+            monitor = monitors[0]
+            largest = 1
         else:
-            x_, y_, width_, height_ = dims
-        
-        t_width, t_height = width_, height_
+            assert isinstance(largest, int), f"Error param 'largest' must be an integer."
+            assert -1 < largest < len(
+                monitors), f"Error param 'largest' must be in range {len(monitors)}. That is the maximum number of monitors you have."
+            monitor = monitors[largest]
+        x_, y_, width_, height_ = monitor.x, monitor.y, monitor.width, monitor.height
 
-        if isinstance(height, float):
-            assert 0 < height <= 1, "Error, if param 'height' is a float, it must be between 0 and 1."
-            height = int(height * height_)
+        # if treat_as_one_display:
+        x_off = monitor.x
+        y_off = monitor.y
+        # if one_display_orient == "horizontal":
+        #    x_off = monitor.x  # sum([m.width for m in monitors_lr[:largest]])
+        # else:
+        #    y_off = monitor.y  #  sum([m.height for m in monitors_lr[:largest]])
+    else:
+        x_, y_, width_, height_ = dims
 
-        if isinstance(width, float):
-            assert 0 < width <= 1, "Error, if param 'width' is a float, it must be between 0 and 1."
-            width = int(width * width_)
+    t_width, t_height = width_, height_
 
-        if width == height == "zoomed":
-            return width
+    if isinstance(height, float):
+        assert 0 < height <= 1, "Error, if param 'height' is a float, it must be between 0 and 1."
+        height = int(height * height_)
+
+    if isinstance(width, float):
+        assert 0 < width <= 1, "Error, if param 'width' is a float, it must be between 0 and 1."
+        width = int(width * width_)
+
+    if width == height == "zoomed":
+        return width
+    else:
+        if width == "zoomed":
+            x_ = 0
+            height_c = clamp(1, height, height_)
+            y_ = (height_ - height_c) // 2
+            height_ = height
+        elif height == "zoomed":
+            y_ = 0
+            width_c = clamp(1, width, width_)
+            x_ = (width_ - width_c) // 2
+            width_ = width
         else:
-            if width == "zoomed":
-                x_ = 0
-                height_c = clamp(1, height, height_)
-                y_ = (height_ - height_c) // 2
-                height_ = height
-            elif height == "zoomed":
-                y_ = 0
-                width_c = clamp(1, width, width_)
-                x_ = (width_ - width_c) // 2
-                width_ = width
-            else:
-                width_c = clamp(1, width, width_)
-                height_c = clamp(1, height, height_)
-                x = (width_ - width_c) // 2
-                y = (height_ - height_c) // 2
-                x_, y_, width_, height_ = x, y, width_c, height_c
+            width_c = clamp(1, width, width_)
+            height_c = clamp(1, height, height_)
+            x = (width_ - width_c) // 2
+            y = (height_ - height_c) // 2
+            x_, y_, width_, height_ = x, y, width_c, height_c
 
-            x_ += x_off
-            y_ += y_off
+        x_ += x_off
+        y_ += y_off
 
-            print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f"geo=({width_}x{height_}+{x_}+{y_})")
-            return f"{width_}x{height_}+{x_}+{y_}"
+        print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f"geo=({width_}x{height_}+{x_}+{y_})")
+        return f"{width_}x{height_}+{x_}+{y_}"
 
 
 def auto_font(font, text, c_width, c_height, min_font_size=4, max_font_size=300):
     """Clamp a font's size between c_width, and c_height when rendering text in pixels."""
 
-    assert isinstance(min_font_size, int) and (3 < min_font_size < 301), f"Error param 'min_font_size' must be an integer between 4 and 301 exclusive."
-    assert isinstance(max_font_size, int) and (3 < max_font_size < 301), f"Error param 'max_font_size' must be an integer between 4 and 301 exclusive."
+    assert isinstance(min_font_size, int) and (
+                3 < min_font_size < 301), f"Error param 'min_font_size' must be an integer between 4 and 301 exclusive."
+    assert isinstance(max_font_size, int) and (
+                3 < max_font_size < 301), f"Error param 'max_font_size' must be an integer between 4 and 301 exclusive."
     assert min_font_size <= max_font_size, f"Error param 'min_font_size' cannot be larger than param 'max_font_size'."
 
     width = font.measure(text)

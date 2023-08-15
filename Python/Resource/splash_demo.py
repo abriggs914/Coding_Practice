@@ -142,8 +142,9 @@ def test_cursor2():
             None,
             r"C:\Users\ABriggs\Downloads\sword_18_23.ico",
             win32con.IMAGE_CURSOR,
-            ico_x,
-            ico_y,
+            # ico_x,
+            # ico_y,
+            40,40,
             win32con.LR_LOADFROMFILE
         )
 
