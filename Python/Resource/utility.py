@@ -712,13 +712,17 @@ def lstindex(lst, target):
         for i, val in enumerate(lst):
             if val == target:
                 return i
-    else:
-        for i, val in enumerate(lst):
-            for j, tar in enumerate(target):
-                if tar != lst[i + j]:
-                    break
-                if j == len(target) - 1:
-                    return i
+
+    if (not hasattr(target, "__iter__")) or isinstance(target, str):
+        target = [target]
+
+    for i, val in enumerate(lst):
+        for j, tar in enumerate(target):
+            if tar != lst[i + j]:
+                break
+            if j == len(target) - 1:
+                return i
+
     return -1
 
 
