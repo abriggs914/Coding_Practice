@@ -3618,10 +3618,11 @@ def calc_geometry_tl(
         width: int | float,
         height: int | float,
         dims: None | tuple | list = None,
-        largest: bool | int = True
+        largest: bool | int = True,
+        rtype: str | dict | list | tuple = str
 
         # one_display_orient: Literal["horizontal", "vertical"]="horizontal"
-) -> str:
+) -> str | dict | list | tuple:
     x_off, y_off = 0, 0
     if dims is None:
 
@@ -3680,8 +3681,14 @@ def calc_geometry_tl(
         x_ += x_off
         y_ += y_off
 
-        print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f"geo=({width_}x{height_}+{x_}+{y_})")
-        return f"{width_}x{height_}+{x_}+{y_}"
+        res = f"{width_}x{height_}+{x_}+{y_}"
+        print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f"geo=({res})")
+        if rtype == str:
+            return res
+        elif rtype == dict:
+            return {"x": x_, "y": y_, "width": width_, "height": height_, "x1": x_, "y1": y_, "x2": x_ + width_, "y2": y_ + height_, "str": res, str: res}
+        else:
+            return [x_, y_, width_, height_]
 
 
 def auto_font(font, text, c_width, c_height, min_font_size=4, max_font_size=300):
