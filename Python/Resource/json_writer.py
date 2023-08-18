@@ -716,7 +716,6 @@ if __name__ == "__main__":
         except json.JSONDecodeError:
             return False
 
-
     TS = TestSuite(valid_json)
     # TS.add_test("test1", [[test_1], True])
     # TS.add_test("test2", [[test_2], True])

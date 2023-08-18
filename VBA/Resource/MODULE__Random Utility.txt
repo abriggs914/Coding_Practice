@@ -151,19 +151,19 @@ End Function
 ' **************************************************************************************
 ' 1         2023-06-28                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function RandomInRange(ByVal a As Long, ByVal b As Long, Optional ByVal rType As String = "dbl")
+Public Function RandomInRange(ByVal A As Long, ByVal b As Long, Optional ByVal rType As String = "dbl")
 
-    Dim c As Integer
-    c = a
-    a = Min(a, b)
-    b = Max(c, b)
+    Dim C As Integer
+    C = A
+    A = Min(A, b)
+    b = Max(C, b)
 
     If LCase(rType) = "int" Or LCase(rType) = "integer" Then
-        RandomInRange = CInt((a + ((Rnd() * (b - a)))))
+        RandomInRange = CInt((A + ((Rnd() * (b - A)))))
     ElseIf LCase(rType) = "double" Or LCase(rType) = "dbl" Then
-        RandomInRange = (a + ((Rnd() * (b - a))))
+        RandomInRange = (A + ((Rnd() * (b - A))))
     ElseIf LCase(rType) = "long" Or LCase(rType) = "lng" Then
-        RandomInRange = CLng((a + ((Rnd() * (b - a)))))
+        RandomInRange = CLng((A + ((Rnd() * (b - A)))))
     Else
         Err.Number = 1
     End If
@@ -187,15 +187,15 @@ End Function
 ' **************************************************************************************
 ' 1         2023-06-28                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function Sample(ByVal srcArray As Variant, ByVal N As Integer)
+Public Function Sample(ByVal srcArray As Variant, ByVal n As Integer)
 
     If Not IsInstance(srcArray, Array(vbArray, vbString)) Then
         Err.Raise vbObjectError, "Sample", "Error, cannot sample a non array or non string object."
     End If
     
-    If N < 0 Then
-        Err.Raise vbObjectError, "Sample", "Error, cannot sample n=" & N & " elements. Sample size cannot be negative."
-    ElseIf N = 0 Then
+    If n < 0 Then
+        Err.Raise vbObjectError, "Sample", "Error, cannot sample n=" & n & " elements. Sample size cannot be negative."
+    ElseIf n = 0 Then
         Sample = Array()
     Else
         If IsArray(srcArray) Then
@@ -204,8 +204,8 @@ Public Function Sample(ByVal srcArray As Variant, ByVal N As Integer)
             Dim ub As Long
             lb = LBound(srcArray)
             ub = UBound(srcArray)
-            If (ub + 1) < N Then
-                Err.Raise vbObjectError, "Sample", "Error, cannot sample n=" & N & " elements from an array of " & (ub + 1) & " elements."
+            If (ub + 1) < n Then
+                Err.Raise vbObjectError, "Sample", "Error, cannot sample n=" & n & " elements from an array of " & (ub + 1) & " elements."
             Else
             End If
             Dim vArray As Variant
@@ -215,7 +215,7 @@ Public Function Sample(ByVal srcArray As Variant, ByVal N As Integer)
             Dim i As Integer
             vArray = Copy(srcArray)
             wArray = Array()
-            For i = 0 To Min(ub, N - 1)
+            For i = 0 To Min(ub, n - 1)
                 chx = Choice(vArray)
                 'Printf "-> " & chx
                 Call Append(wArray, chx, unPackNewVal:=False)
@@ -225,7 +225,7 @@ Public Function Sample(ByVal srcArray As Variant, ByVal N As Integer)
             Sample = wArray
             
         Else
-            Sample = Sample(Str2Array(srcArray), N)
+            Sample = Sample(Str2Array(srcArray), n)
         End If
     End If
     

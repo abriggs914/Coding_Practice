@@ -12,14 +12,17 @@ Option Compare Database
 '                   Contents
 '
 '   AlterColour             -   Return altered VBA Hexdeicmal colour for a given hexidecimal colour string after lightening or darkening it.
+'   FontForeground          -   Return Black or White ensuring that this colour will be visible on the given backcolour
 '   GetBrightestColour      -   Return the brightest colour from an array of hex colours.
 '   GetDarkestColour        -   Return the darkest colour from an array of hex colours.
+'   Hex2Long                -   Return the Long representation for a hexidecimal colour as an RGB colour.
 '   Hex2RGB                 -   Return the string representation for a hexidecimal colour as an RGB colour, either an array or a string.
 '   Hex2VBAHex              -   Return the VBA hexidecimal representation for a given hexidecimal string (RGB -> BGR).
 '   IsBlack                 -   Using a threshold offset, determine if a given colour can be considered black.
 '   IsColour                -   Determine if a value is recognized as an RGB colour, or a hex colour (VBA or normal hex).
 '   IsHexColour             -   Determine if a value is recognized as a hex colour (VBA or normal hex).
 '   IsRGBColour             -   Determine if a value is recognized as an RGB colour.
+'   IsVBAHex                -   Determine if a value matches expected access hex colour syntax (&H______)
 '   IsWhite                 -   Using a threshold offset, determine if a given colour can be considered white.
 '   Long2hex                -   Return a hexicedimal colour representation for a given Long value.
 '   Long2rgb                -   Return an array of RGB colour values for a given Long value
@@ -88,7 +91,7 @@ Public Sub ShimmerControls(controls As Variant, Optional direction As String = "
     Dim i, m, ub, lb As Integer
     Dim ctrl_1 As Variant
     Dim ctrl_2 As Variant
-    Dim c As Variant
+    Dim C As Variant
     Dim fC As Boolean
     
     ub = UBound(controls)
@@ -222,13 +225,13 @@ Public Sub ShimmerControls(controls As Variant, Optional direction As String = "
         End If
         
         Set ctrl_ = controls(idx_NC)
-        For Each c In colours
-            If NotUsedColour(c, controls) Then
-                ctrl_.ForeColor = c
+        For Each C In colours
+            If NotUsedColour(C, controls) Then
+                ctrl_.ForeColor = C
                 fC = True
                 Exit For
             End If
-        Next c
+        Next C
         If Not fC Then
             ctrl_.ForeColor = "&H000000"
         End If
@@ -276,13 +279,13 @@ Public Sub ShimmerControls(controls As Variant, Optional direction As String = "
         End If
         
         Set ctrl_ = controls(idx_NC)
-        For Each c In colours
-            If NotUsedColour(c, controls) Then
-                ctrl_.ForeColor = c
+        For Each C In colours
+            If NotUsedColour(C, controls) Then
+                ctrl_.ForeColor = C
                 fC = True
                 Exit For
             End If
-        Next c
+        Next C
         If Not fC Then
             ctrl_.ForeColor = "&H000000"
         End If
@@ -330,13 +333,13 @@ Public Sub ShimmerControls(controls As Variant, Optional direction As String = "
         End If
         
         Set ctrl_ = controls(idx_NC)
-        For Each c In colours
-            If NotUsedColour(c, controls) Then
-                ctrl_.ForeColor = c
+        For Each C In colours
+            If NotUsedColour(C, controls) Then
+                ctrl_.ForeColor = C
                 fC = True
                 Exit For
             End If
-        Next c
+        Next C
         If Not fC Then
             ctrl_.ForeColor = "&H000000"
         End If
@@ -385,13 +388,13 @@ Public Sub ShimmerControls(controls As Variant, Optional direction As String = "
         End If
         
         Set ctrl_ = controls(idx_NC)
-        For Each c In colours
-            If NotUsedColour(c, controls) Then
-                ctrl_.ForeColor = c
+        For Each C In colours
+            If NotUsedColour(C, controls) Then
+                ctrl_.ForeColor = C
                 fC = True
                 Exit For
             End If
-        Next c
+        Next C
         If Not fC Then
             ctrl_.ForeColor = "&H000000"
         End If
@@ -442,13 +445,13 @@ Public Sub ShimmerControls(controls As Variant, Optional direction As String = "
         End If
         
         Set ctrl_ = controls(idx_NC)
-        For Each c In colours
-            If NotUsedColour(c, controls) Then
-                ctrl_.ForeColor = c
+        For Each C In colours
+            If NotUsedColour(C, controls) Then
+                ctrl_.ForeColor = C
                 fC = True
                 Exit For
             End If
-        Next c
+        Next C
         If Not fC Then
             ctrl_.ForeColor = "&H000000"
         End If
@@ -501,13 +504,13 @@ Public Sub ShimmerControls(controls As Variant, Optional direction As String = "
         End If
         
         Set ctrl_ = controls(idx_NC)
-        For Each c In colours
-            If NotUsedColour(c, controls) Then
-                ctrl_.ForeColor = c
+        For Each C In colours
+            If NotUsedColour(C, controls) Then
+                ctrl_.ForeColor = C
                 fC = True
                 Exit For
             End If
-        Next c
+        Next C
         If Not fC Then
             ctrl_.ForeColor = "&H000000"
         End If
@@ -556,13 +559,13 @@ Public Sub ShimmerControls(controls As Variant, Optional direction As String = "
         End If
         
         Set ctrl_ = controls(idx_NC)
-        For Each c In colours
-            If NotUsedColour(c, controls) Then
-                ctrl_.ForeColor = c
+        For Each C In colours
+            If NotUsedColour(C, controls) Then
+                ctrl_.ForeColor = C
                 fC = True
                 Exit For
             End If
-        Next c
+        Next C
         If Not fC Then
             ctrl_.ForeColor = "&H000000"
         End If
@@ -611,13 +614,13 @@ Public Sub ShimmerControls(controls As Variant, Optional direction As String = "
         End If
         
         Set ctrl_ = controls(idx_NC)
-        For Each c In colours
-            If NotUsedColour(c, controls) Then
-                ctrl_.ForeColor = c
+        For Each C In colours
+            If NotUsedColour(C, controls) Then
+                ctrl_.ForeColor = C
                 fC = True
                 Exit For
             End If
-        Next c
+        Next C
         If Not fC Then
             ctrl_.ForeColor = "&H000000"
         End If
@@ -710,13 +713,13 @@ End Function
 '---------------------------------------------------------------------------------------
 Public Function Hex2VBAHex(ByVal colourIn As String) As String
     
-    Dim c As String
-    c = Right(colourIn, 6)
+    Dim C As String
+    C = Right(colourIn, 6)
     'Debug.Print "c: <" & c & ">"
     'Debug.Print "Left(c, 2): <" & Left(c, 2) & ">"
     'Debug.Print "Right(c, 2): <" & Right(c, 2) & ">"
     'Debug.Print "Mid(c, 3, 2): <" & Mid(c, 3, 2) & ">"
-    Hex2VBAHex = "&H" & Right(c, 2) & Mid(c, 3, 2) & Left(c, 2)
+    Hex2VBAHex = "&H" & Right(C, 2) & Mid(C, 3, 2) & Left(C, 2)
     If Len(Hex2VBAHex) = 2 Then
         Hex2VBAHex = ""
     End If
@@ -775,7 +778,7 @@ Public Function Hex2RGB(ByVal colourIn As String, Optional rType As Variant = "S
             joined = Join(Colour, delim)
             Hex2RGB = "(" & Left(joined, Len(joined)) & ")"
         Case Else:
-            Hex2RGB = Colour
+            Hex2RGB = Array(CLng(Colour(0)), CLng(Colour(1)), CLng(Colour(2)))
     End Select
 
 End Function
@@ -853,9 +856,29 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function Rgb2Hex(ByVal r As Integer, ByVal g As Integer, ByVal b As Integer) As String
+Public Function Rgb2Hex(ByVal r As Variant, Optional ByVal g As Integer = 0, Optional ByVal b As Integer = 0) As String
 
-    Rgb2Hex = "#" & Right("00" & Hex(Clamp(CDbl(r), 0, 255)), 2) & Right("00" & Hex(Clamp(CDbl(g), 0, 255)), 2) & Right("00" & Hex(Clamp(CDbl(b), 0, 255)), 2)
+    If IsArray(r) Then
+        If Size(r) = 3 Then
+            If All(Array(IsInstance(r(0), Array(vbInteger, vbDouble, vbLong)), _
+                IsInstance(r(1), Array(vbInteger, vbDouble, vbLong)), _
+                IsInstance(r(2), Array(vbInteger, vbDouble, vbLong)))) Then
+                If All(Array(((0 <= r(0)) And (r(0) <= 255)), _
+                    ((0 <= r(1)) And (r(1) <= 255)), _
+                    ((0 <= r(2)) And (r(2) <= 255)))) Then
+                    Rgb2Hex = "#" & Right("00" & Hex(Clamp(CDbl(r(0)), 0, 255)), 2) & Right("00" & Hex(Clamp(CDbl(r(1)), 0, 255)), 2) & Right("00" & Hex(Clamp(CDbl(r(2)), 0, 255)), 2)
+                Else
+                    Err.Raise vbObjectError, "Rgb2Hex", "Error, rgb parameters must be numbers between 0 and 255."
+                End If
+            Else
+                Err.Raise vbObjectError, "Rgb2Hex", "Error, rgb parameter array must be 3 integers."
+            End If
+        Else
+            Err.Raise vbObjectError, "Rgb2Hex", "Error, rgb array parameter must be of length 3."
+        End If
+    Else
+        Rgb2Hex = "#" & Right("00" & Hex(Clamp(CDbl(r), 0, 255)), 2) & Right("00" & Hex(Clamp(CDbl(g), 0, 255)), 2) & Right("00" & Hex(Clamp(CDbl(b), 0, 255)), 2)
+    End If
 
 End Function
 
@@ -945,16 +968,32 @@ End Function
 ' Rev       Date(yyyy/mm/dd)            Description
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
+' 2         2023-08-14                  Added error checking on colour, and p params.
+'                                       Allowed doubles for p value.
 '---------------------------------------------------------------------------------------
-Public Function AlterColour(ByVal Colour As String, Optional ByVal style As String = "", Optional ByVal p As Integer = 0)
+Public Function AlterColour(ByVal Colour As String, Optional ByVal Style As String = "", Optional ByVal p As Variant = 0)
     
-    Dim pd As Double
-    pd = Clamp(CDbl(p), 0, 100) / 100
+    If Not IsInstance(p, Array(vbInteger, vbLong, vbDouble)) Then
+        Err.Raise vbObjectError, "AlterColour", "Error, param 'p' must be a number."
+    End If
+    
+    If Not IsHexColour(Colour) Then
+        Err.Raise vbObjectError, "AlterColour", "Error, cannot alter a non colour object."
+    End If
+    
+    If p < 0 Then
+        Err.Raise vbObjectError, "AlterColour", "Error, cannot alter with a negative threshold."
+    ElseIf (0 <= p) And (p <= 1) Then
+        p = 100# * p
+    End If
+    
+    Dim PD As Double
+    PD = Clamp(CDbl(p), 0, 100) / 100
     
     Dim pStyle As String
-    If LCase(style) = "darker" Or LCase(style) = "darken" Then
+    If LCase(Style) = "darker" Or LCase(Style) = "darken" Then
         pStyle = "Darker"
-    ElseIf LCase(style) = "lighter" Or LCase(style) = "lighten" Then
+    ElseIf LCase(Style) = "lighter" Or LCase(Style) = "lighten" Or LCase(Style) = "brighter" Or LCase(Style) = "brighten" Then
         pStyle = "Lighter"
     Else
         pStyle = ""
@@ -963,21 +1002,24 @@ Public Function AlterColour(ByVal Colour As String, Optional ByVal style As Stri
     Dim r As Integer
     Dim g As Integer
     Dim b As Integer
-    Dim c As Variant
-    c = Hex2RGB(Colour)
-    c = Mid(c, 2, Len(c) - 2)
-    c = Split(c, ", ")
-    r = c(0)
-    g = c(1)
-    b = c(2)
+    Dim C As Variant
+    C = Hex2RGB(Colour)
+    C = Mid(C, 2, Len(C) - 2)
+    C = Split(C, ", ")
+    r = C(0)
+    g = C(1)
+    b = C(2)
+    'Printf "PD <" & PD & ">"
     If pStyle = "Darker" Then
-        r = Clamp(Round(r - (255 * pd)), 0, 255)
-        g = Clamp(Round(g - (255 * pd)), 0, 255)
-        b = Clamp(Round(b - (255 * pd)), 0, 255)
+        r = Clamp(Round(r - (255 * PD)), 0, 255)
+        g = Clamp(Round(g - (255 * PD)), 0, 255)
+        b = Clamp(Round(b - (255 * PD)), 0, 255)
     ElseIf pStyle = "Lighter" Then
-        r = Clamp(Round(r + (255 * pd)), 0, 255)
-        g = Clamp(Round(g + (255 * pd)), 0, 255)
-        b = Clamp(Round(b + (255 * pd)), 0, 255)
+        r = Clamp(Round(r + (255 * PD)), 0, 255)
+        g = Clamp(Round(g + (255 * PD)), 0, 255)
+        b = Clamp(Round(b + (255 * PD)), 0, 255)
+    Else
+        Err.Raise vbObjectError, "AlterColour", "Error, unsure what to do with style param '" & Style & "'."
     End If
     
     'printf "Colour: " & Colour
@@ -1013,7 +1055,7 @@ Public Function RGB2Long(ByVal rgbColour As Variant) As Long
     green = rgbColour(1)
     blue = rgbColour(2)
     
-    'printf "r: <" & red & ">, g: <" & green & ">, b: <" & blue & ">"
+    'Printf "r: <" & red & ">, g: <" & green & ">, b: <" & blue & ">"
 
     RGB2Long = (CLng(red) * 299& + CLng(green) * 587& + CLng(blue) * 114&) \ 1000&
 End Function
@@ -1140,11 +1182,11 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function IsWhite(ByVal c As Variant, Optional ByVal offset As Integer = 0) As Boolean
+Public Function IsWhite(ByVal C As Variant, Optional ByVal offset As Integer = 0) As Boolean
 
-    If Not IsRGBColour(c) Then
-        If IsHexColour(c) Then
-            c = Hex2RGB(c, rType:="Array")
+    If Not IsRGBColour(C) Then
+        If IsHexColour(C) Then
+            C = Hex2RGB(C, rType:="Array")
         Else
             Err.Raise vbObjectError, "isBlack", "Error, cannot determine if this is colour is black or not."
         End If
@@ -1156,9 +1198,9 @@ Public Function IsWhite(ByVal c As Variant, Optional ByVal offset As Integer = 0
     Dim g As Integer
     Dim b As Integer
                 
-    r = c(0)
-    g = c(1)
-    b = c(2)
+    r = C(0)
+    g = C(1)
+    b = C(2)
     
     'Call PrintArr(Array(r, g, b), "sum(" & Sum(Array(r, g, b)) & "), off(" & offset & ")")
                 
@@ -1192,11 +1234,11 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function IsBlack(ByVal c As Variant, Optional ByVal offset As Integer = 0) As Boolean
+Public Function IsBlack(ByVal C As Variant, Optional ByVal offset As Integer = 0) As Boolean
 
-    If Not IsRGBColour(c) Then
-        If IsHexColour(c) Then
-            c = Hex2RGB(c, rType:="Array")
+    If Not IsRGBColour(C) Then
+        If IsHexColour(C) Then
+            C = Hex2RGB(C, rType:="Array")
         Else
             Err.Raise vbObjectError, "isBlack", "Error, cannot determine if this is colour is black or not."
         End If
@@ -1208,9 +1250,9 @@ Public Function IsBlack(ByVal c As Variant, Optional ByVal offset As Integer = 0
     Dim g As Integer
     Dim b As Integer
                 
-    r = c(0)
-    g = c(1)
-    b = c(2)
+    r = C(0)
+    g = C(1)
+    b = C(2)
     
     'Call printArr(Array(r, g, b), "sum(" & Sum(Array(r, g, b)) & "), off(" & offset & ")")
                 
@@ -1239,11 +1281,11 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function IsColour(ByVal c As Variant) As Boolean
+Public Function IsColour(ByVal C As Variant) As Boolean
 
-    IsColour = IsHexColour(c)
+    IsColour = IsHexColour(C)
     If Not IsColour Then
-        IsColour = IsRGBColour(c)
+        IsColour = IsRGBColour(C)
     End If
 
 End Function
@@ -1268,19 +1310,19 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function IsRGBColour(ByVal c As Variant) As Boolean
+Public Function IsRGBColour(ByVal C As Variant) As Boolean
 
-    If IsArray(c) Then
-        If Not IsArrayEmpty(c) Then
-            If UBound(c) = 2 Then
+    If IsArray(C) Then
+        If Not IsArrayEmpty(C) Then
+            If UBound(C) = 2 Then
             
                 Dim r As Integer
                 Dim g As Integer
                 Dim b As Integer
                 
-                r = c(0)
-                g = c(1)
-                b = c(2)
+                r = C(0)
+                g = C(1)
+                b = C(2)
                 
                 'Call printArr(Array(r, g, b), "RGB")
                 
@@ -1322,13 +1364,13 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function IsHexColour(ByVal c As Variant) As Boolean
+Public Function IsHexColour(ByVal C As Variant) As Boolean
     
-    If IsInstance(c, vbString) Then
-        If Between(Len(c), 6, 8) Then
-            If Len(c) <> 6 Then
-                If Left(c, 1) = "#" Or UCase(Left(c, 2)) = "&H" Then
-                    c = Right(c, 6)
+    If IsInstance(C, vbString) Then
+        If Between(Len(C), 6, 8) Then
+            If Len(C) <> 6 Then
+                If Left(C, 1) = "#" Or UCase(Left(C, 2)) = "&H" Then
+                    C = Right(C, 6)
                 Else
                     'Err.Raise vbObjectError, "isHexColour", "Error, cannot determin if this value is a hex colour or not. <" & c & ">"
                     IsHexColour = False
@@ -1343,7 +1385,7 @@ Public Function IsHexColour(ByVal c As Variant) As Boolean
             
             Dim aC As Integer
             Dim bC As Integer
-            Dim cC As Integer
+            Dim CC As Integer
             Dim dC As Integer
             Dim eC As Integer
             Dim fC As Integer
@@ -1353,19 +1395,19 @@ Public Function IsHexColour(ByVal c As Variant) As Boolean
             lb2 = Asc("a")
             ub2 = Asc("f")
             
-            aC = Asc(LCase(Mid(c, 1, 1)))
-            bC = Asc(LCase(Mid(c, 2, 1)))
-            cC = Asc(LCase(Mid(c, 3, 1)))
-            dC = Asc(LCase(Mid(c, 4, 1)))
-            eC = Asc(LCase(Mid(c, 5, 1)))
-            fC = Asc(LCase(Mid(c, 6, 1)))
+            aC = Asc(LCase(Mid(C, 1, 1)))
+            bC = Asc(LCase(Mid(C, 2, 1)))
+            CC = Asc(LCase(Mid(C, 3, 1)))
+            dC = Asc(LCase(Mid(C, 4, 1)))
+            eC = Asc(LCase(Mid(C, 5, 1)))
+            fC = Asc(LCase(Mid(C, 6, 1)))
             
             'Call printArr(Array(aC, bC, cC, dC, eC, fC), "here")
             
             IsHexColour = All(Array( _
                 Any_(Array(Between(aC, lb1, ub1), Between(aC, lb2, ub2))), _
                 Any_(Array(Between(bC, lb1, ub1), Between(bC, lb2, ub2))), _
-                Any_(Array(Between(cC, lb1, ub1), Between(cC, lb2, ub2))), _
+                Any_(Array(Between(CC, lb1, ub1), Between(CC, lb2, ub2))), _
                 Any_(Array(Between(dC, lb1, ub1), Between(dC, lb2, ub2))), _
                 Any_(Array(Between(eC, lb1, ub1), Between(eC, lb2, ub2))), _
                 Any_(Array(Between(fC, lb1, ub1), Between(fC, lb2, ub2)))))
@@ -1375,5 +1417,92 @@ Public Function IsHexColour(ByVal c As Variant) As Boolean
     End If
     
     IsHexColour = False
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : FontForeground
+' Author    : Avery Briggs
+' Purpose   :
+
+' Usage:
+' ~~~~~~
+' notUsedColour("&H775566", Array(Me.Label0, Me.Label1, Me.Label2))  ' => True or False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function FontForeground(ByVal colourIn As Variant, Optional ByVal threshold As Variant = (255 * 3) / 2) As String
+
+    If Not IsColour(colourIn) Then
+        Err.Raise vbObjectError, "FontForeground", "Error, param 'colourIn' must be a valid colour."
+    End If
+    
+    If IsHexColour(colourIn) Then
+        colourIn = Hex2RGB(colourIn, rType:="")
+    End If
+    
+    Dim S As Long
+    S = Sum(colourIn)
+    If S < threshold Then
+        FontForeground = "#FFFFFF"
+    Else
+        FontForeground = "#000000"
+    End If
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Hex2Long
+' Author    : Avery Briggs
+' Purpose   :
+
+' Usage:
+' ~~~~~~
+' notUsedColour("&H775566", Array(Me.Label0, Me.Label1, Me.Label2))  ' => True or False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Hex2Long(ByVal colourIn As Variant) As Long
+
+    If Not IsColour(colourIn) Then
+        Err.Raise vbObjectError, "FontForeground", "Error, param 'colourIn' must be a valid colour."
+    End If
+    
+    If IsHexColour(colourIn) Then
+        colourIn = Hex2RGB(colourIn, rType:="")
+    End If
+    
+    Hex2Long = RGB2Long(colourIn)
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsVBAHex
+' Author    : Avery Briggs
+' Purpose   :
+
+' Usage:
+' ~~~~~~
+' notUsedColour("&H775566", Array(Me.Label0, Me.Label1, Me.Label2))  ' => True or False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IsVBAHex(ByVal colourIn As Variant) As Boolean
+
+    IsVBAHex = IsColour(colourIn)
+    IsVBAHex = IsVBAHex And IsHexColour(colourIn)
+    IsVBAHex = IsVBAHex And Left(colourIn, 2) = "&H"
     
 End Function

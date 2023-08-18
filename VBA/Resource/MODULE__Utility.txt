@@ -13,8 +13,14 @@ Public Function Printf(ByRef text As Variant, Optional ByVal doPrint As Boolean 
     
     If IsArray(text) Then
         Printf = PrintArr(text, doPrint:=False)
+    ElseIf TypeName(text) = "Dictionary" Then
+        Printf = PrintDict(text, doPrint:=False)
     Else
-        Printf = CStr(text)
+        If IsNull(text) Then
+            Printf = "NULL"
+        Else
+            Printf = CStr(text)
+        End If
     End If
     
     If doPrint Then
@@ -200,44 +206,13 @@ Public Function Divmod(ByVal x As Integer, ByVal y As Integer) As Integer()
 End Function
 
 
-' https://stackoverflow.com/questions/46013120/whats-a-very-simple-way-to-enter-key-value-pairs-in-vba
-' We then add items to the dictionary using the 'Add' method,
-'   where each item consists of a key-value pair.
-'   We can access the values by providing the corresponding keys.
-' The 'Exists' method is used to check if a specific key exists in the dictionary.
-'   We can loop through all the keys using the Keys property and access the
-'   corresponding values using the keys.
-' The 'Remove' method allows us to remove a specific item from the dictionary,
-'   and the 'Count' property gives us the number of items in the dictionary.
-' Finally, we can clear all items from the dictionary using the 'RemoveAll' method.
-' Remember to add a reference to the "Microsoft Scripting Runtime" library
-'   in your VBA project for the Scripting.Dictionary object to be available.
-Public Function Dictionary(ParamArray args()) As Object
-  Dim i As Long, arr()
-  Set Dictionary = CreateObject("Scripting.Dictionary")
-
-  If UBound(args) >= 0 Then   ' if has arguments '
-    If VBA.IsObject(args(0)) Then   ' if object then load a Range '
-      arr = args(0).Resize(args(0).End(xlDown).Row - args(0).Row + 1, 2).value
-
-      For i = 1 To UBound(arr)
-        Dictionary.Add arr(i, 1), arr(i, 2)
-      Next
-    Else                               ' else load an Array '
-      For i = 0 To UBound(args) Step 2
-        Dictionary.Add args(i), args(i + 1)
-      Next
-    End If
-  End If
-End Function
-
-
 Public Function IsInstance(ByVal var As Variant, ByVal vbType As Variant) As Boolean
 
-    'Printf "ISINTANCE vt <" & VarType(var) & ">, tn <" & TypeName(var) & ">"
+    'Printf "ISINTANCE vt <" & VarType(var) & ">, tn <" & TypeName(var) & "> vbType:<" & Printf(vbType, False) & ">"
 
     If IsArray(vbType) Then
         Dim wArray As Variant
+        Dim el As Variant
         wArray = Array()
         For Each el In vbType
             wArray = Append(wArray, IsInstance(var, el))
@@ -247,8 +222,8 @@ Public Function IsInstance(ByVal var As Variant, ByVal vbType As Variant) As Boo
     Else
         If vbType = vbArray Then
             IsInstance = IsArray(var)
-        ElseIf VarType(vbType) = vbLong Then
-            IsInstance = IIf(VarType(var) = vbType, True, False)
+        ElseIf VarType(vbType) = vbLong Or VarType(vbType) = vbInteger Then
+            IsInstance = IIf(VarType(var) = CLng(vbType), True, False)
         Else
             IsInstance = IIf(TypeName(var) = vbType, True, False)
         End If
@@ -268,13 +243,13 @@ Public Function Ljust(ByVal word As String, ByVal Width As Integer, Optional ByV
 
     Dim result As String
     Dim i As Integer
-    Dim c As Integer
+    Dim C As Integer
     For i = 0 To Width - 1
         If i > ((Width - 1) - Len(word)) Then
-            c = (Len(word) + 1) - (i - (Width - Len(word))) - 1
+            C = (Len(word) + 1) - (i - (Width - Len(word))) - 1
             'printf "i: <" & i & ">, c: <" & c & ">"
             'printf vbTab & "width - Len(word): <" & (width - Len(word)) & ">"
-            result = Mid(word, c, 1) + result
+            result = Mid(word, C, 1) + result
         Else
             result = fillChar + result
         End If
@@ -297,13 +272,13 @@ Public Function Rjust(ByVal word As String, ByVal Width As Integer, Optional ByV
 
     Dim result As String
     Dim i As Integer
-    Dim c As Integer
+    Dim C As Integer
     For i = 0 To Width - 1
         If i > ((Width - 1) - Len(word)) Then
-            c = (i - (Width - Len(word))) + 1
+            C = (i - (Width - Len(word))) + 1
             'printf "i: <" & i & ">, c: <" & c & ">"
             'printf vbTab & "width - Len(word): <" & (width - Len(word)) & ">"
-            result = result + Mid(word, c, 1)
+            result = result + Mid(word, C, 1)
         Else
             result = result + fillChar
         End If
@@ -382,7 +357,7 @@ Public Sub CloseAllOpenFrms()
     Set DbO = Application.Forms    'Collection of all the open forms
  
     For Each DbF In DbO    'Loop all the forms
-            DoCmd.Close acForm, DbF.name, acSaveNo
+            DoCmd.Close acForm, DbF.Name, acSaveNo
     Next DbF
  
 Error_Handler_Exit:
@@ -401,22 +376,93 @@ Error_Handler:
 End Sub
 
 
-Public Function Clamp(ByVal value As Double, ByVal low As Double, ByVal high As Double) As Double
+Public Function Clamp(ByVal Value As Double, ByVal low As Double, ByVal high As Double) As Double
 
-    Clamp = IIf(value <= low, low, IIf(value >= high, high, value))
+    Clamp = IIf(Value <= low, low, IIf(Value >= high, high, Value))
 
 End Function
 
 
-Public Function Ceiling(ByVal value As Double) As Integer
+Public Function Ceiling(ByVal Value As Double) As Integer
 
-    Ceiling = -Int(-value)
+    Ceiling = -Int(-Value)
     
 End Function
 
 
-Public Function Between(value As Variant, low As Variant, high As Variant) As Boolean
+Public Function Between(Value As Variant, low As Variant, high As Variant) As Boolean
 
-    Between = IIf(value >= low And value <= high, True, False)
+    Between = IIf(Value >= low And Value <= high, True, False)
     
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Size
+' Author    : Avery Briggs
+' Purpose   : Return the length, ubound+1, or count of a string, array, or dictionary
+'
+' Usage:
+' ~~~~~~
+' dim a as variant
+' a = array(1,8,6,4)
+' dim s as string
+' s = Printarr(a)  ' => "[1, 8, 6, 4]"
+' Size(a)  ' 4
+' Size(s)  ' 12
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-08                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Size(ByVal Value As Variant) As Long
+
+    If IsArray(Value) Then
+        Size = IIf(IsArrayEmpty(Value), 0, UBound(Value) + 1)
+    ElseIf IsInstance(Value, vbString) Then
+        Size = Len(Value)
+    ElseIf IsInstance(Value, "Dictionary") Then
+        Size = Value.Count
+    Else
+        Err.Raise vbObjectError, "Size", "Error, cannot determine size of this value: <" & Value & ">, type: <" & TypeName(Value) & ">"
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Flatten
+' Author    : Avery Briggs
+' Purpose   : Given a one or multi-dimensional array, return a single demension
+'             array of all elements, unpacked and inserted in a DFS manner.
+'
+' Usage:
+' ~~~~~~
+' dim a as variant
+' a = array(1,8,6,4)
+' printf flatten(a)  ' [1, 8, 6, 4]
+' dim b as variant
+' b = array(1,8,array(6,13),array(-1,4,array(0,array(11))),45)  ' [1, 8, [6, 13], [-1, 4, [0, [11]]], 45]
+' printf flatten(b)  ' [1, 8, 6, 13, -1, 4, 0, 11, 45]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-08                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Flatten(ByVal arr As Variant) As Variant
+
+    If Not IsArray(arr) Then
+        Flatten = arr
+    Else
+        Dim res As Variant
+        Dim k As Variant
+        res = Array()
+        For Each k In arr
+            Call Append(res, Flatten(k))
+        Next k
+        Flatten = res
+    End If
+
 End Function

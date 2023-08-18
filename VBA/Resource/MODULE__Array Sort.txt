@@ -543,7 +543,7 @@ Public Function ReverseArrayInPlace2(InputArray As Variant, _
 ' set to less than 0 the LB and UB parameters. To reverse only part of tbe array, set LB and/or
 ' UB to the LBound and UBound of the sub array to be reversed.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Dim N As Long
+Dim n As Long
 Dim temp As Variant
 Dim Ndx As Long
 Dim Ndx2 As Long
@@ -623,11 +623,11 @@ If ub < 0 Then
     ub = UBound(InputArray)
 End If
 
-For N = lb To (lb + ((ub - lb - 1) \ 2))
-    temp = InputArray(N)
-    InputArray(N) = InputArray(ub - (N - lb))
-    InputArray(ub - (N - lb)) = temp
-Next N
+For n = lb To (lb + ((ub - lb - 1) \ 2))
+    temp = InputArray(n)
+    InputArray(n) = InputArray(ub - (n - lb))
+    InputArray(ub - (n - lb)) = temp
+Next n
 
 ReverseArrayInPlace2 = True
 End Function
@@ -758,7 +758,7 @@ Public Function IsArrayAllocated(arr As Variant) As Boolean
 ' been sized with Redim, or a dynamic array that has been Erased).
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Dim N As Long
+Dim n As Long
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''
 ' If Arr is not an array, return FALSE and get out.
@@ -773,7 +773,7 @@ End If
 ' an error will occur. Test Err.Number to see if an error occured.
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 On Error Resume Next
-N = UBound(arr, 1)
+n = UBound(arr, 1)
 If Err.Number = 0 Then
     '''''''''''''''''''''''''''''''''''''
     ' No error. Array has been allocated.

@@ -8,29 +8,39 @@ Public Function DisplayImage(ctlImageControl As Control, strImagePath As Variant
     Dim intSlashLocation As Integer
     Dim msg As String
     
+    strDatabasePath = CurrentProject.FullName
+    intSlashLocation = InStrRev(strDatabasePath, "\", Len(strDatabasePath))
+    strDatabasePath = Left(strDatabasePath, intSlashLocation)
+    
     With ctlImageControl
         If IsNull(strImagePath) Then
-            .Visible = False
+            .visible = False
             strResult = "No image name specified."
             msg = msg & "-A"
         Else
             msg = msg & "-B"
-            If InStr(1, strImagePath, "\") = 0 Then
+            Dim idx As Long
+            idx = InStr(1, strImagePath, "\")
+            'Printf "HERE 1, idx=(" & idx & ")"
+            'If idx <> 0 Then
+            If Left(strImagePath, Len(strDatabasePath)) <> strsatabasepath Then
                 msg = msg & "-C"
                 ' Path is relative
-                strDatabasePath = CurrentProject.FullName
-                intSlashLocation = InStrRev(strDatabasePath, "\", Len(strDatabasePath))
-                strDatabasePath = Left(strDatabasePath, intSlashLocation)
+                
                 strImagePath = strDatabasePath & strImagePath
             End If
-            .Visible = True
+            'Printf "HERE 2"
+            .visible = True
+            'Printf "HERE 3"
             .Picture = strImagePath
+            'Printf "HERE 4"
             strResult = "Image found and displayed."
         End If
     End With
     
 Exit_DisplayImage:
-    Printf "msg <" & msg & ">"
+    'Printf vbNewLine & "strImagePath(" & strImagePath & ")"
+    'Printf "msg <" & msg & ">"
     DisplayImage = strResult
     Exit Function
     
@@ -39,7 +49,7 @@ Err_DisplayImage:
     Select Case Err.Number
         Case 2220       ' Can't find the picture.
             msg = msg & "-E"
-            ctlImageControl.Visible = False
+            ctlImageControl.visible = False
             strResult = "Can't find image in the specified name."
             Resume Exit_DisplayImage:
         Case Else       ' Some other error.
@@ -70,7 +80,7 @@ End Function
 Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As String = "") As String()
     Dim res() As String
     Dim toCheck() As String
-    Dim fs, f, f1, f2, fC, s, sFldr
+    Dim fs, f, f1, f2, fC, S, sFldr
     Set fs = CreateObject("Scripting.FileSystemObject")
     Set f = fs.getfolder(folderspec)
     Set fC = f.subFolders
@@ -79,7 +89,7 @@ Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As Stri
     Dim idx As Integer
     Dim i As Integer
     Dim j As Integer
-    Dim c As Integer
+    Dim C As Integer
     Dim ub As Integer
     Dim fn As String
     'ReDim Preserve toCheck(0)
@@ -88,19 +98,19 @@ Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As Stri
     
     For Each f1 In fC
         ReDim Preserve toCheck(idx)
-        toCheck(idx) = folderspec & "\" & f1.name
+        toCheck(idx) = folderspec & "\" & f1.Name
         idx = idx + 1
     Next
     Printf vbNewLine & "==A==" & vbNewLine & Join(toCheck, vbNewLine)
     ri = 0
     i = 0
-    c = fC.Count
-    Printf "i= <" & i & ">, c= <" & c & ">"
+    C = fC.Count
+    Printf "i= <" & i & ">, c= <" & C & ">"
     'Do Until i = c
     ub = UBound(toCheck)
     Do Until i = ub
     
-        Printf vbNewLine & "====" & vbNewLine & "i= <" & i & ">, c= <" & c & ">, idx= <" & idx & ">, ub= <" & ub & ">"
+        Printf vbNewLine & "====" & vbNewLine & "i= <" & i & ">, c= <" & C & ">, idx= <" & idx & ">, ub= <" & ub & ">"
         
         ub = UBound(toCheck)
         'For Each f1 In fc
@@ -138,20 +148,20 @@ Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As Stri
         fn = toCheck(i)
         Set f = fs.getfolder(fn)
         For Each f1 In f.files
-            Debug.Print "--" & fn & "\" & f1.name
+            Debug.Print "--" & fn & "\" & f1.Name
             For j = LBound(suffixes) To UBound(suffixes)
                 suff = suffixes(j)
                 Printf "suff= <" & suff & ">"
                 If Len(suff) > 0 Then
-                    If Right(f1.name, Len(suff)) = suff Then
+                    If Right(f1.Name, Len(suff)) = suff Then
                         ReDim Preserve res(ri)
-                        res(ri) = fn & "\" & f1.name
+                        res(ri) = fn & "\" & f1.Name
                         ri = ri + 1
                         Exit For
                     End If
                 Else
                     ReDim Preserve res(ri)
-                    res(ri) = fn & "\" & f1.name
+                    res(ri) = fn & "\" & f1.Name
                     ri = ri + 1
                 End If
             Next j
@@ -215,16 +225,16 @@ Public Sub testStuff()
     testIndex = True
     
     If testSlice Then
-        Call Append(answers, Append(Array("[4:0:-1], ans=[9, 2, 7, 6]"), PrintArr(Slice(q, 4, 0, -1), name:="Slice Test1", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[0:4:2], [1, 7]"), PrintArr(Slice(q, 0, 4, 2), name:="Slice Test2", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[-1:14:3], []"), PrintArr(Slice(q, -1, 14, 3), name:="Slice Test3", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[1:14:3], [6, 9, 8, 1, 7]"), PrintArr(Slice(q, 1, 14, 3), name:="Slice Test4", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[::], [1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7, -5, -6, -7]"), PrintArr(Slice(q), name:="Slice Test5", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[:5:], [1, 6, 7, 2, 9]"), PrintArr(Slice(q, , 5), name:="Slice Test6", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[:15:3], [1, 2, 3, 6, 1]"), PrintArr(Slice(q, , 15, 3), name:="Slice Test7", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[::5], ans=[1, 4, 1, 4, 1, 7, 2, -5]"), PrintArr(Slice(q, , , 5), name:="Slice Test8", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[1::], ans=[1, 2, 3, 4]"), PrintArr(Slice(Range(5), 1), name:="Slice Test9", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[:15:3], ans=[0, 3, 6, 9, 12]"), PrintArr(Slice(Range(15), , 15, 3), name:="Slice Test10", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[4:0:-1], ans=[9, 2, 7, 6]"), PrintArr(Slice(q, 4, 0, -1), Name:="Slice Test1", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[0:4:2], [1, 7]"), PrintArr(Slice(q, 0, 4, 2), Name:="Slice Test2", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[-1:14:3], []"), PrintArr(Slice(q, -1, 14, 3), Name:="Slice Test3", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[1:14:3], [6, 9, 8, 1, 7]"), PrintArr(Slice(q, 1, 14, 3), Name:="Slice Test4", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[::], [1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7, -5, -6, -7]"), PrintArr(Slice(q), Name:="Slice Test5", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[:5:], [1, 6, 7, 2, 9]"), PrintArr(Slice(q, , 5), Name:="Slice Test6", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[:15:3], [1, 2, 3, 6, 1]"), PrintArr(Slice(q, , 15, 3), Name:="Slice Test7", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[::5], ans=[1, 4, 1, 4, 1, 7, 2, -5]"), PrintArr(Slice(q, , , 5), Name:="Slice Test8", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[1::], ans=[1, 2, 3, 4]"), PrintArr(Slice(Range(5), 1), Name:="Slice Test9", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[:15:3], ans=[0, 3, 6, 9, 12]"), PrintArr(Slice(Range(15), , 15, 3), Name:="Slice Test10", doPrint:=False), False), False)
         
         'Call PrintArr(Slice(q, 0, 4, 2), name:="Slice Test2", inLine:=True)
         'Call PrintArr(Slice(q, -1, 14, 3), name:="Slice Test3")
@@ -417,21 +427,6 @@ Public Sub testStuff()
     'Call PrintArr(Append(Append(Array(Array(Array(Array()))), Range(9), False), Range(0, -6, -1), False), , False)
     
 End Sub
-
-
-Public Function Size(ByVal value As Variant) As Long
-
-    If IsArray(value) Then
-        Size = IIf(IsArrayEmpty(value), 0, UBound(value) + 1)
-    ElseIf IsInstance(value, vbString) Then
-        Size = Len(value)
-    ElseIf IsInstance(value, "Dictionary") Then
-        Size = value.Count
-    Else
-        Err.Raise vbObjectError, "size", "Error, cannot determine size of this value: <" & value & ">, type: <" & TypeName(value) & ">"
-    End If
-
-End Function
 
 
 'Public Sub sayHello()
@@ -750,6 +745,28 @@ End Sub
 'End Function
 
 
+'---------------------------------------------------------------------------------------
+' Function : Equal
+' Author    : Avery Briggs
+' Purpose   : Acts as a safer way to verify array contents.
+'
+' Usage:
+' ~~~~~~
+' dim a as variant
+' a = array(1,8,6,4)
+' dim b as variant
+' b = array(1,8,array(6,13),array(-1,4,array(0,array(11))),45)  ' [1, 8, [6, 13], [-1, 4, [0, [11]]], 45]
+' printf equal(a, b)  ' False
+' printf equal(1, 0)  ' False
+' printf equal(10, 1.0)  ' False
+' printf equal(a, a)  ' True
+' printf equal(3, 3)  ' True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-08                  Initial Release
+'---------------------------------------------------------------------------------------
 Public Function Equal(ByRef valA As Variant, ByRef valB As Variant) As Boolean
 
     If IsArray(valA) Or IsArray(valB) Then
@@ -811,7 +828,7 @@ Public Function OldRange2023_07_06(ByVal start_ As Variant, Optional ByVal end_ 
     Dim zeroIsBound As Boolean
     Dim lb As Long
     Dim ub As Long
-    Dim N As Long
+    Dim n As Long
     Dim wArray As Variant
     
     wArray = Array()
@@ -832,12 +849,12 @@ Public Function OldRange2023_07_06(ByVal start_ As Variant, Optional ByVal end_ 
     zeroIsBound = (start_ = 0 Or end_ = 0)
     'N = ceiling(Abs(end_ - IIf(start_ = 0, -1, start_)) / (0# + step_))
     'N = N - IIf(startWasNull And Not endWasNull, 1, 0)
-    N = Ceiling(Abs(end_ - start_) / (0# + step_))
-    N = N - IIf(endWasNull, 1, 0)
+    n = Ceiling(Abs(end_ - start_) / (0# + step_))
+    n = n - IIf(endWasNull, 1, 0)
     'printf "A: zir<" & zeroInRange & ">, zib<" & zeroIsBound & ">, ewn<" & endWasNull & ">, swn<" & stepWasNull & ">"
     If zeroInRange Or zeroIsBound Then
         'printf "PLUS 1"
-        N = N + 1
+        n = n + 1
     End If
     
     If (start_ > end_) And (step_ < 0) Then
@@ -868,7 +885,7 @@ Public Function OldRange2023_07_06(ByVal start_ As Variant, Optional ByVal end_ 
                 wArray = Append(wArray, i)
             End If
         End If
-        If UBound(wArray) >= (N - 1) Then
+        If UBound(wArray) >= (n - 1) Then
             Exit For
         End If
     Next i
@@ -899,7 +916,7 @@ Public Function ArrayMatchesTableDimensions(ByRef srcArray As Variant, ByVal row
     End If
     
     Dim sR As Long
-    Dim sC As Long
+    Dim SC As Long
     sR = Size(srcArray)
     If sR <> rows Then
         If minRowMatch Then
@@ -927,10 +944,10 @@ Public Function ArrayMatchesTableDimensions(ByRef srcArray As Variant, ByVal row
             ArrayMatchesTableDimensions = cols = 0
             Exit Function
         End If
-        sC = Size(el)
-        If sC <> cols Then
+        SC = Size(el)
+        If SC <> cols Then
             If minColMatch Then
-                If sC < cols Then
+                If SC < cols Then
                     'Printf "-F"
                     ArrayMatchesTableDimensions = False
                     Exit Function
@@ -969,4 +986,71 @@ Public Function ArrayHas2Dimensions(ByRef srcArray As Variant) As Boolean
     
     ArrayHas2Dimensions = True
 
+End Function
+
+
+Public Function NextAvailableFileName(ByVal path As String) As String
+    
+    If VarType(path) <> vbString Then
+        Err.Raise vbObjectError, "NextAvailableFileName", "Error cannot determine next file name for non-string path."
+    End If
+    If Size(path) = 0 Then
+        Err.Raise vbObjectError, "NextAvailableFileName", "Error cannot determine next file name for empty path."
+    End If
+    Dim suffix As String
+    Dim direc As String
+    Dim fName As String
+    Dim dotSplt As Variant
+    Dim slashSplt As Variant
+    dotSplt = Split(Replace(path, "/", "\"), ".")
+    If Size(dotSplt) <> 2 Then
+        Err.Raise vbObjectError, "NextAvailableFileName", "Error cannot determine next file name for invalid path '" & path & "'."
+    End If
+    suffix = dotSplt(1)
+    slashSplt = Split(dotSplt(0), "\")
+    
+    If Size(slashSplt) < 2 Then
+        Err.Raise vbObjectError, "NextAvailableFileName", "Error cannot determine next file name for invalid path '" & path & "'."
+    End If
+    
+    direc = Join(Slice(slashSplt, , UBound(slashSplt)), "\") & "\"
+    fName = slashSplt(UBound(slashSplt))
+    
+    Printf Dictionary("p", path, "s", suffix, "f", fName, "d", direc)
+    
+    If Len(Dir(direc, vbDirectory)) = 0 Then 'MkDir strCheckPath
+        Err.Raise "NextAvailableFileName", "Error, directory '" & direc & "' does not exist."
+    End If
+    
+    NextAvailableFileName = "UNFINISHED"
+    
+End Function
+
+
+
+Public Function WriteFile(ByVal text As String, ByVal path As String, Optional ByVal allowOverwrites As Boolean = False) As Boolean
+
+    On Error GoTo FailedToWrite
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    Dim oFile As Object
+    If Not allowOverwrites Then
+        'path = NextAvailableFileName(path)
+    End If
+    Set oFile = fso.CreateTextFile(path)
+    oFile.Writeline text
+    oFile.Close
+    Set fso = Nothing
+    Set oFile = Nothing
+    WriteFile = True
+    
+CleanExit:
+    Exit Function
+    
+FailedToWrite:
+    WriteFile = False
+    Printf "WriteFile failure:"
+    Printf vbTab & Err.Number
+    Printf vbTab & Err.Description
+    
 End Function

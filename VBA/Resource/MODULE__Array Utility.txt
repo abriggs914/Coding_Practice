@@ -2,8 +2,8 @@ Option Compare Database
 
 
 ' General Array Utility Functions
-' Version....................1.01
-' Date.................2023-07-11
+' Version....................1.04
+' Date.................2023-08-11
 ' Author(s)..........Avery Briggs
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -15,6 +15,7 @@ Option Compare Database
 '   Any_                    -   Returns True if any element is condisdered a true value. Uses short-circuiting.
 '   Append                  -   Adds an element to an array in place, also returns the array.
 '   ArrayEqual              -   Determine if two arrays have matching elements in value, type, and order.
+'   Average                 -   Determine the average of numerical arrays.
 '   Copy                    -   Return a copy of an array.
 '   Count                   -   Count how many occurences of an element occur in an array, string or dictionary object.
 '   Enumerate               -   Return a 2D array of list elements with their indexes. Think Python's enumerate function.
@@ -61,7 +62,7 @@ Option Compare Database
 '---------------------------------------------------------------------------------------
 Public Function PrintArr( _
     ByVal srcArray As Variant, _
-    Optional ByVal name As String = "", _
+    Optional ByVal Name As String = "", _
     Optional ByVal inLine As Boolean = True, _
     Optional ByVal arrayOnly As Boolean = False, _
     Optional ByVal doPrint As Boolean = True, _
@@ -84,7 +85,7 @@ Public Function PrintArr( _
     Dim wTypes As Variant
         
     msg = IIf(incLabel, "printArr: ", "")
-    msg = msg & IIf(name <> "" And incName, "'" & name & "', ", "")
+    msg = msg & IIf(Name <> "" And incName, "'" & Name & "', ", "")
     
     'msgA = "[" & Join(srcArray, ", ") & "]"
     
@@ -96,7 +97,7 @@ Public Function PrintArr( _
         
         Dim typ As String
         Dim val_ As Variant
-        Dim s As Variant
+        Dim S As Variant
         Dim lb As Long
         Dim RB As Long
         Dim i As Long
@@ -113,7 +114,7 @@ Public Function PrintArr( _
         msgA = "["
         For i = lb To ub
             If IsArray(srcArray(i)) Then
-                nName = IIf(name <> "", name & "_" & i, "")
+                nName = IIf(Name <> "", Name & "_" & i, "")
                 Call Append(wTypes, "Array")
                 'Call Append(wVals, "Arr<" & PrintArr(srcArray(i), name:=nName, inLine:=inLine, arrayOnly:=arrayOnly, incLabel:=incLabel, incName:=incName, doPrint:=False) & ">")
                 Call Append(wVals, PrintArr(srcArray(i), arrayOnly:=True, doPrint:=False))
@@ -121,8 +122,8 @@ Public Function PrintArr( _
             Else
                 val_ = srcArray(i)
                 typ = TypeName(val_)
-                s = IIf(IsInstance(val_, vbString), "'", "")
-                Call Append(wVals, s & val_ & s)
+                S = IIf(IsInstance(val_, vbString), "'", "")
+                Call Append(wVals, S & val_ & S)
                 Call Append(wTypes, typ)
                 'msgA = msgA & srcArray(i) & ", "
             End If
@@ -146,8 +147,8 @@ Public Function PrintArr( _
     If doPrint Then
         Printf msg
     End If
-    If Not doPrint And incName And Not arrayOnly And name <> "" Then
-        msgA = "'" & name & "', " & msgA
+    If Not doPrint And incName And Not arrayOnly And Name <> "" Then
+        msgA = "'" & Name & "', " & msgA
         'msgA = name & msgA
     End If
     PrintArr = msgA
@@ -273,13 +274,13 @@ Public Function Str2Array(ByVal srcString As String) As Variant
 
     Dim wArray As Variant
     Dim i As Long
-    Dim c As Long
+    Dim C As Long
     Dim V As String
     
     wArray = Array()
-    c = Len(srcString)
+    C = Len(srcString)
     
-    For i = 0 To c - 1
+    For i = 0 To C - 1
         'printf "i <" & i & ">, c <" & c & ">"
         wArray = Append(wArray, Mid(srcString, i + 1, 1))
     Next i
@@ -892,6 +893,7 @@ End Function
 ' Rev       Date(yyyy/mm/dd)            Description
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
+' 2         2023-08-02                  Fix to isNumerical and vIsNumerical checks
 '---------------------------------------------------------------------------------------
 Public Function Sum(ParamArray var() As Variant) As Variant
     
@@ -907,11 +909,12 @@ Public Function Sum(ParamArray var() As Variant) As Variant
     Dim ub As Long
     Dim tmp As Variant
     Dim val_ As Variant
-    Dim isNumerical As Boolean
+    Dim isNumerical As Variant
     Dim vIsNumerical As Boolean
     Dim vt As Long
     lb = LBound(var)
     ub = UBound(var)
+    isNumerical = -1
     
     'printf "A vartype(var): '" & VarType(var) & "'"
     'printf "A lbound(var): " & LB & ", ubound(var): " & UB
@@ -953,20 +956,27 @@ Public Function Sum(ParamArray var() As Variant) As Variant
     'printf "B vartype(working): '" & VarType(working) & "'"
     'printf "B lbound(working): " & LB & ", ubound(working): " & UB
 
+    'printf Dictionary("T", 0, "isNumerical", isNumerical, "vIsNumerical", vIsNumerical)
     Dim bba As Boolean
     Dim bbb As Boolean
     Dim bbc As Boolean
     For i = lb To ub
         val_ = working(i)
         vIsNumerical = IIf(IsNumeric(val_), True, False)
+        If isNumerical = -1 Then
+            isNumerical = vIsNumerical
+        End If
         If VarType(val_) = vbString Then
+            Printf "-A"
             vIsNumerical = False
         End If
         
-        If i = LBound(var) Then
-            isNumerical = vIsNumerical
-        End If
+        'If i = LBound(var) Then
+        '    printf "-B"
+        '    isNumerical = vIsNumerical
+        'End If
         
+        'printf Dictionary("T", 1, "isNumerical", isNumerical, "vIsNumerical", vIsNumerical)
         If isNumerical And Not vIsNumerical Then
             Err.Raise vbObjectError + 513, , "Cannot compare string value '" & val_ & "' in an array with numerical values"
         ElseIf Not isNumerical And vIsNumerical Then
@@ -1376,6 +1386,7 @@ Public Function Append(ByRef srcArray As Variant, ByRef newVal As Variant, Optio
     End If
     
     Append = srcArray
+    'srcArray = Append
 
 End Function
 
@@ -1408,7 +1419,7 @@ Public Function Remove(ByRef srcArray As Variant, ByRef target As Variant, Optio
         Err.Raise vbObjectError, "remove", "Error, cannot call remove on a non array object"
     End If
     
-    Dim c As Long
+    Dim C As Long
     Dim wArray As Variant
     wArray = Array()
     
@@ -1422,17 +1433,17 @@ Public Function Remove(ByRef srcArray As Variant, ByRef target As Variant, Optio
         Next el
     Else
         'Printf "-B"
-        c = 0
+        C = 0
         For Each el In srcArray
             'Printf "c: <" & c & "> <" & Printf(el, doPrint:=False) & ">"
             'Printf "el <" & Printf(el, False) & ">"
             'Printf "target <" & Printf(target, False) & ">"
-            If Not Equal(el, target) Or (c > Count) Then
+            If Not Equal(el, target) Or (C > Count) Then
                 'Printf "APPEND el <" & Printf(el, False) & ">, c <" & c & ">, vt <" & TypeName(wArray) & ">"
                 Call Append(wArray, el, unPackNewVal:=False)
             Else
                 'Printf "SKIP el <" & Printf(el, False) & ">, c <" & c & ">, vt <" & TypeName(wArray) & ">"
-                c = c + 1
+                C = C + 1
             End If
         Next el
     End If
@@ -1509,8 +1520,15 @@ Public Function Insert(ByRef srcArray As Variant, ByRef target As Variant, Optio
     'ubT = UBound(srcArray)
     isNeg = iIndex < 0
     
-    If Between(iIndex, -ub, ub) Then
+    'printf "RESULT: <" & printf(Array(lb, iIndex, ub), doPrint:=False) & ">"
+    
+    If ub = 1 And iIndex = 1 Then
+        iIndex = 1
+        ub = 2
+    ElseIf Between(iIndex, -ub, ub + IIf(isNeg, 1, -1)) Then
+        'printf vbTab & "A MINUS 1 (" & iIndex & ") (" & isNeg & ")"
         iIndex = IIf(isNeg, ub - (1 + (iIndex Mod ub)), iIndex Mod ub)
+        'printf vbTab & "B MINUS 1 (" & iIndex & ") (" & isNeg & ")"
     End If
     
     'iIndex = IIf(isNeg, ub - (1 + iIndex), iIndex)
@@ -1591,8 +1609,9 @@ Public Function Insert(ByRef srcArray As Variant, ByRef target As Variant, Optio
         End If
     End If
     
-    'Printf "msgg: <" & msgg & ">, index: <" & iIndex & ">, ub: <" & ub & ">, isneg: <" & isNeg & ">, A|B: <" & IIf((targetIsArr Or idxIsArr) And unPackTarget, "A", "B") & ">"
+    'printf vbTab & "msgg: <" & msgg & ">, index: <" & iIndex & ">, ub: <" & ub & ">, isneg: <" & isNeg & ">, A|B: <" & IIf((targetIsArr Or idxIsArr) And unpackTarget, "A", "B") & ">"
     
+    srcArray = wArray
     Insert = wArray
 
 End Function
@@ -1730,7 +1749,7 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-05                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function IForI(ByVal val_ As Variant, ByVal s As Long, Optional ByVal isFunc As Boolean = False, Optional ByVal V As Boolean = True) As Variant
+Public Function IForI(ByVal val_ As Variant, ByVal S As Long, Optional ByVal isFunc As Boolean = False, Optional ByVal V As Boolean = True) As Variant
 
     On Error GoTo FuncNotApplicable
 
@@ -1738,7 +1757,7 @@ Public Function IForI(ByVal val_ As Variant, ByVal s As Long, Optional ByVal isF
     Dim res As String
     Dim i As Long
     wArray = Array()
-    For i = 1 To s
+    For i = 1 To S
         If isFunc Then
             'Printf "i: <" & i & ">, val: <" & val_ & ">"
             'Printf "HERE A"
@@ -1782,14 +1801,20 @@ End Function
 ' Rev       Date(yyyy/mm/dd)            Description
 ' **************************************************************************************
 ' 1         2023-07-05                  Initial Release
+' 2         2023-07-20                  Corrected ObjectError, and supported strings
 '---------------------------------------------------------------------------------------
 Public Function Enumerate(ByRef srcArray As Variant) As Variant
 
     Dim wArray As Variant
     wArray = Array()
+    
+    If IsInstance(srcArray, vbString) Then
+        Enumerate = Enumerate(Str2Array(srcArray))
+        Exit Function
+    End If
 
     If Not IsArray(srcArray) Then
-        Err.Raise vbonjecterror, "Enumerate", "Error, can not enumerate a non array object."
+        Err.Raise vbObjectError, "Enumerate", "Error, can not enumerate a non array object."
     End If
     
     If IsArrayEmpty(srcArray) Then
@@ -1896,6 +1921,7 @@ End Function
 ' Rev       Date(yyyy/mm/dd)            Description
 ' **************************************************************************************
 ' 1         2023-07-05                  Initial Release
+' 2         2023-08-11                  Isinstance branch
 '---------------------------------------------------------------------------------------
 Public Function Map(ByVal funcString As String, ByRef srcArray As Variant) As Variant
 
@@ -1903,6 +1929,8 @@ Public Function Map(ByVal funcString As String, ByRef srcArray As Variant) As Va
         Err.Raise vbObjectError, "map", "Error, cannot call map on a non array object."
         Exit Function
     End If
+    
+    Printf "-A"
     
     Dim wArray As Variant
     Dim el As Variant
@@ -1941,7 +1969,7 @@ FailedLambda:
 
 TryLambda:
 
-    Printf "err1<" & Err.Number & ">"
+    'printf "err1<" & Err.Number & ">"
 
     On Error GoTo FailedLambda
     
@@ -1952,19 +1980,39 @@ TryLambda:
     Printf "lfunc: <" & lFunc & ">"
     aFunc = Mid(funcString, idxLambda1 + 7, Len(funcString) - Len(lFunc) - (idxLambda1 + 8))
     
-    Printf aFunc
+    'Printf aFunc
     
     If UBound(Split(aFunc, ",")) <> 0 Then
-        er.Raise vbObjectError, "Map", "Only 1 argument is supported in lambdas currently."
+        ER.Raise vbObjectError, "Map", "Only 1 argument is supported in lambdas currently."
     End If
     
     For Each el In srcArray
-        q = IIf(IsInstance(el, Array(vbString, vbDate)), "'", "")
-        Printf vbTab & Replace(lFunc, aFunc, q & el & q)
-        wArray = Append(wArray, Eval(Replace(lFunc, aFunc, q & el & q)))
+        'Printf "HERE -A"
+        q = IIf(IsInstance(el, Array(vbString, vbDate)), """", "")
+        'Printf "HERE -B"
+        'Printf vbTab & "q=(" & q & ")" & vbTab & "?" & Replace(lFunc, aFunc, q & el & q) & "  ' " & Printf(Eval(Replace(lFunc, aFunc, q & el & q)), False)
+        'Printf vbTab & lFunc & "  ' " & Printf(Eval(Replace(lFunc, aFunc, q & el & q)), False)
+        If Left(lFunc, 11) = "isinstance(" Then
+            ' Special condition for isinstance in order to maintain param types.
+            'Printf "SPA"
+            Dim vbType As String
+            vbType = Replace(Replace(LTrim(RTrim(Split(Reverse(Split(Reverse(RTrim(lFunc)), ",")(0)), ")")(0))), "'", ""), """", "")
+            'vbType = LTrim(RTrim(Split(Reverse(Split(Reverse(RTrim(lFunc)), ",")(0)), ")")(0)))
+            vbType = IIf(Left(vbType, 2) = "vb", Right(vbType, Len(vbType) - 2), vbType)
+            'Printf "VBTYPE: {" & vbType & "} tn(el)=(" & TypeName(el) & ")"
+            wArray = Append(wArray, TypeName(el) = vbType) ' Replace(lFunc, aFunc, q & el & q))
+        Else
+            'Printf "?eval(" & Replace(lFunc, aFunc, q & el & q) & ")"
+            Dim w As Variant
+            'w = Eval("'" & Replace(lFunc, aFunc, q & el & q) & "'")
+            w = Eval(Replace(lFunc, aFunc, q & el & q))
+            wArray = Append(wArray, w)
+        End If
     '        i = i + 1
     Next el
     'Printf "HERE 2"
+    Printf wArray
+    'Printf "HERE 3"
     Map = wArray
     GoTo CleanExit
     
@@ -2018,8 +2066,8 @@ Public Function Count(ByVal srcArray As Variant, ByVal target As Variant, Option
     Dim lb As Long
     Dim ub As Long
     Dim i As Long
-    Dim c As Long
-    c = 0
+    Dim C As Long
+    C = 0
     
     If IsArray(target) And unpackTarget Then
         
@@ -2030,7 +2078,7 @@ Public Function Count(ByVal srcArray As Variant, ByVal target As Variant, Option
         lb = LBound(target)
         ub = UBound(target)
         For i = lb To ub
-            c = c + Count(srcArray, target(i), unpackTarget:=False)
+            C = C + Count(srcArray, target(i), unpackTarget:=False)
         Next i
         
     Else
@@ -2038,35 +2086,69 @@ Public Function Count(ByVal srcArray As Variant, ByVal target As Variant, Option
         If IsArray(srcArray) Then
         
             If UBound(srcArray) < 0 Then
-                c = 0
+                C = 0
             Else
                 
                 lb = LBound(srcArray)
                 ub = UBound(srcArray)
                 For i = lb To ub
-                    c = c + IIf(Equal(srcArray(i), target), 1, 0)
+                    C = C + IIf(Equal(srcArray(i), target), 1, 0)
                 Next i
             End If
             
         ElseIf IsInstance(srcArray, vbString) Then
             If Len(srcArray) = 0 Then
-                c = 0
+                C = 0
             Else
                 lb = 0
                 ub = Len(srcArray)
                 For i = lb To ub
-                    c = c + IIf(Equal(Mid(srcArray, i, 1), target), 1, 0)
+                    C = C + IIf(Equal(Mid(srcArray, i, 1), target), 1, 0)
                 Next i
             End If
             
         Else
             Dim key As Variant
             For Each key In srcArray.keys
-                c = c + IIf(Equal(key, target), 1, 0)
+                C = C + IIf(Equal(key, target), 1, 0)
             Next key
         End If
     End If
     
-    Count = c
+    Count = C
+
+End Function
+
+
+Public Function Average(ByRef arr As Variant) As Double
+
+    Dim i As Long
+    Dim lb As Long
+    Dim ub As Long
+    Dim val As Variant
+    Dim tot As Double
+
+    If IsArray(arr) Then
+        If IsArrayEmpty(arr) Then
+            Err.Raise vbObjectError, "Average", "Error, cannot compute the average of an empty array."
+        End If
+        
+        lb = LBound(arr)
+        ub = UBound(arr)
+        tot = 0
+        For i = lb To ub
+            val = arr(i)
+            If Not IsInstance(val, Array(vbSingle, vbInteger, vbLong, vbDouble, vbBoolean)) Then
+                Err.Raise vbObjectError, "Average", "Error, cannot compute the average of an array that has a value of type '" & TypeName(val) & "'."
+            End If
+            tot = tot + val
+            'printf "tot=(" & tot & "), val=(" & val & ")"
+        Next i
+        
+        Average = tot / (ub + 1)
+        Exit Function
+    Else
+        Err.Raise vbObjectError, "Average", "Error, cannot compute the average of an non-array object."
+    End If
 
 End Function
