@@ -44,35 +44,49 @@ def jsonify(value: Any, t_depth: int = 0, in_line: bool = True) -> str:
     s_ = " " * 4 * t_depth
     s1_ = s_ + (" " * 4)
 
-    if isinstance(value, dict):
+    if value is None:
+        return "null"
+
+    elif isinstance(value, dict):
         if in_line:
-            return "{" + "".join([f"{jsonify(k)}: {jsonify(v, 0, True)}" for k, v in value.items()]) + "}"
+            return "{" + ", ".join([f"{jsonify(k)}: {jsonify(v, 0, True)}" for k, v in value.items()]) + "}"
         else:
             return f"{s_ if t_depth == 0 else ''}{{\n{s1_}" + f"\n{s1_}".join(
                 [f"{jsonify(k, t_depth + 1, False)}: {jsonify(v, t_depth + 1, False)}," for k, v in value.items()])[
                                                               :-1] + f"\n{s_}}}"
-    if typ := isinstance(value, (list, tuple, set)):
-        if typ == set:
-            p1, p2 = "{", "}"
-        elif typ == list:
-            p1, p2 = "[", "]"
-        else:
-            p1, p2 = "(", ")"
+    elif typ := isinstance(value, (list, tuple, set)):
+        # if typ == set:
+        #     p1, p2 = "{", "}"
+        # elif typ == list:
+        #     p1, p2 = "[", "]"
+        # else:
+        #     p1, p2 = "(", ")"
+        p1, p2 = "[", "]"
 
         if in_line:
-            return f"{p1}" + "".join([f"{jsonify(v, 0, True)}" for v in value]) + f"{p2}"
+            return f"{p1}" + ", ".join([f"{jsonify(v, 0, True)}" for v in value]) + f"{p2}"
         else:
             return f"{s_ if t_depth == 0 else ''}{p1}\n{s1_}" + f"\n{s1_}".join(
                 [f"{jsonify(v, t_depth + 1, False)}," for v in value])[:-1] + f"\n{s_}{p2}"
 
     elif isinstance(value, datetime.datetime):
-        return f"{s_}datetime.datetime({value.strftime('yyyy, mm, dd, HH, MM, SS')})"
+        y, n, d, h, m, s = value.year, value.month, value.day, value.hour, value.minute, value.second
+        return f"\"datetime.datetime({', '.join(map(str, [y, n, d, h, m, s]))})\""
     elif isinstance(value, str):
-        return f"'{value}'"
+        return f"\"{value}\""
     elif hasattr(value, "__repr__"):
         return repr(value)
+    elif hasattr(value, "__str__"):
+        return str(value)
     else:
         return str(value)
+
+
+    # def de_jsonify(value):
+    #     if isinstance(value, str):
+    #         if value.startswith("datetime.datetime(") and value.endswith(")") and value.count(",") == 5:
+    #             # datetime
+
 
 
 if __name__ == '__main__':

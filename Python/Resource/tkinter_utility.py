@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.59
-    Date...........2023-08-15
+    Version..............1.60
+    Date...........2023-08-22
     Author(s)....Avery Briggs
     """
 
@@ -52,6 +52,7 @@ def VERSION_AUTHORS():
 
 
 def grid_keys():
+    """r, c, rs, cs, ix, iy, x, y, s = grid_keys()"""
     return "row", "column", "rowspan", "columnspan", "ipadx", "ipady", "padx", "pady", "sticky"
 
 
@@ -108,6 +109,76 @@ def entry_factory(master, tv_label=None, tv_entry=None, kwargs_label=None, kwarg
     else:
         res_label = tkinter.Label(master, textvariable=res_tv_label)
         res_entry = tkinter.Entry(master, textvariable=res_tv_entry)
+    return res_tv_label, res_label, res_tv_entry, res_entry
+
+
+def entry_tip_factory(master, tip, tv_label=None, tv_entry=None, kwargs_label=None, kwargs_entry=None):
+    """Return tkinter StringVar, Label, StringVar, Entry objects"""
+    if tv_label is not None and tv_entry is not None:
+        res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
+        res_tv_entry = tv_entry if is_tk_var(tv_entry) else tkinter.StringVar(master, value=tv_entry)
+    elif tv_label is not None:
+        res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
+        res_tv_entry = tkinter.StringVar(master)
+    elif tv_entry is not None:
+        res_tv_label = tkinter.StringVar(master)
+        res_tv_entry = tv_entry if is_tk_var(tv_entry) else tkinter.StringVar(master, value=tv_entry)
+    else:
+        res_tv_label = tkinter.StringVar(master)
+        res_tv_entry = tkinter.StringVar(master)
+
+    if kwargs_label is not None and kwargs_entry is not None:
+        res_label = tkinter.Label(master, textvariable=res_tv_label, **kwargs_label)
+        res_entry = tkinter.Entry(master, textvariable=res_tv_entry, **kwargs_entry)
+    elif kwargs_label is not None:
+        res_label = tkinter.Label(master, textvariable=res_tv_label, **kwargs_label)
+        res_entry = tkinter.Entry(master, textvariable=res_tv_entry)
+    elif kwargs_entry is not None:
+        res_label = tkinter.Label(master, textvariable=res_tv_label)
+        res_entry = tkinter.Entry(master, textvariable=res_tv_entry, **kwargs_entry)
+    else:
+        res_label = tkinter.Label(master, textvariable=res_tv_label)
+        res_entry = tkinter.Entry(master, textvariable=res_tv_entry)
+
+    fg = res_entry.cget("foreground")
+
+    def check_empty(*args):
+        # print(f"check_empty, {tip=}, {res_tv_entry.get()=} {res_tv_entry.get()==tip=}")
+        if (txt := res_entry.get()) == "":
+            res_tv_entry.set(tip)
+            res_entry.configure(foreground=Colour(fg).brighten(0.75).hex_code)
+        else:
+            res_entry.configure(foreground=fg)
+            clear_entry()
+
+    def kp(event=None):
+        # print(f"1 kp => {event}, {tip=}, {res_tv_entry.get()=} {res_tv_entry.get()==tip=}")
+        if (txt := res_tv_entry.get()) == tip and event.char in valid_chars:
+            res_tv_entry.trace_remove("write", tv_cb.get())
+            res_tv_entry.set("")
+            tv_cb.set(res_tv_entry.trace_variable("w", check_empty))
+            # print(f"DONE: {res_tv_entry.get()=}")
+
+        # print(f"2 kp => {event}, {tip=}, {res_tv_entry.get()=} {res_tv_entry.get()==tip=}")
+
+    def clear_entry(event=None):
+        # print(f"clear_entry, {res_tv_entry.get()=} {res_tv_entry.get()==tip=}")
+        if res_tv_entry.get() == tip:
+            res_tv_entry.set("")
+
+    valid_chars = {chr(i) for i in range(97, 124)}
+    valid_chars.update({c.upper() for c in valid_chars})
+    for i in range(10):
+        valid_chars.add(str(i))
+    for c in ["!", "@", "#", "$", "%", "%", "^", "&", "*", "(", ")", "_", "-", "=", "+", "`", "~", "\\", "|", "[", "]", "{", "}", ";", ":", "'", "\"", ",", "<", ".", ">", "/", "?"]:
+        valid_chars.add(c)
+
+    tv_cb = tkinter.Variable(value=res_tv_entry.trace_variable("w", check_empty))
+    res_entry.bind("<FocusIn>", clear_entry)
+    res_entry.bind("<KeyPress>", kp)
+    check_empty()
+    res_entry.setvar("tip", tip)
+
     return res_tv_label, res_label, res_tv_entry, res_entry
 
 
@@ -173,7 +244,7 @@ def button_factory(master, tv_btn=None, kwargs_btn=None, command=None):
     return res_tv_btn, res_btn
 
 
-def combo_factory(master, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None):
+def combo_factory(master, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None, values=None):
     """Return tkinter StringVar, Label, StringVar, Entry objects"""
     if tv_label is not None and tv_combo is not None:
         res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
@@ -187,6 +258,15 @@ def combo_factory(master, tv_label=None, kwargs_label=None, tv_combo=None, kwarg
     else:
         res_tv_label = tkinter.StringVar(master)
         res_tv_combo = tkinter.StringVar(master)
+
+    if values is not None:
+        if not (kcn := kwargs_combo is None) and not (kcvn := kwargs_combo.get("values") is None):
+            raise ValueError("Error, cannot explicitly pass values as parameter and in 'kwargs_combo'.")
+        else:
+            if kcn:
+                kwargs_combo = {"values": values}
+            else:
+                kwargs_combo.update({"values": values})
 
     if kwargs_label is not None and kwargs_combo is not None:
         res_label = tkinter.Label(master, textvariable=res_tv_label, **kwargs_label)
@@ -3127,8 +3207,8 @@ class TextWithVar(tkinter.Text):
         super().__init__(master, *args, **kwargs)
         self.text = textvariable
         if self.text is None:
-            self.text = tkinter.StringVar(value=self.get("1.0", tkinter.END))
-        self.text.trace_variable("w", self._on_text_changed)
+            self.text = tkinter.StringVar(value=self.get("0.0", tkinter.END))
+        self.trace = self.text.trace_variable("w", self._on_text_changed)
 
         self.max_undos = max_undos
         self.history = deque(maxlen=self.max_undos)
@@ -3139,10 +3219,18 @@ class TextWithVar(tkinter.Text):
 
         self.bind("<Control-z>", self.undo)
         self.bind("<Control-Shift-z>", self.redo)
+        self.bind("<KeyRelease>", self.key_up)
+
+    def key_up(self, event):
+        self.text.trace_remove("write", self.trace)
+        self.text.set(self.get("0.0", tkinter.END))
+        self.trace = self.text.trace_variable("w", self._on_text_changed)
+        # nl = "\n"
+        # print(f"KP '{event.char}', t='{self.get('0.0', tkinter.END).removesuffix(nl)}', txt:{self.text.get()}")
 
     def _on_text_changed(self, *args):
-        self.delete("1.0", tkinter.END)
-        self.insert("1.0", self.text.get())
+        self.delete("0.0", tkinter.END)
+        self.insert("0.0", self.text.get())
         self.history.append(self.text.get())
 
     def set_text(self, new_text):
@@ -3154,7 +3242,7 @@ class TextWithVar(tkinter.Text):
             self.history.pop()  # Remove the current state
             previous_state = self.history.pop()
             self.text.set(previous_state)
-            self.insert("1.0", self.text.get())  # Update the text widget
+            self.insert("0.0", self.text.get())  # Update the text widget
             self.history.append(previous_state)  # Add back the previous state
             self.history.append(current_state)  # Add the current state for redo
             return "break"  # Prevent default behavior of Ctrl+z
@@ -3166,7 +3254,7 @@ class TextWithVar(tkinter.Text):
             self.history.pop()  # Remove the current state (undo of undo)
             next_state = self.history.pop()
             self.text.set(next_state)
-            self.insert("1.0", self.text.get())  # Update the text widget
+            self.insert("0.0", self.text.get())  # Update the text widget
             self.history.append(next_state)  # Add back the next state
             self.history.append(current_state)  # Add the current state for undo
             return "break"  # Prevent default behavior of Ctrl+y
@@ -3686,7 +3774,8 @@ def calc_geometry_tl(
         if rtype == str:
             return res
         elif rtype == dict:
-            return {"x": x_, "y": y_, "width": width_, "height": height_, "x1": x_, "y1": y_, "x2": x_ + width_, "y2": y_ + height_, "str": res, str: res}
+            return {"x": x_, "y": y_, "width": width_, "height": height_, "x1": x_, "y1": y_, "x2": x_ + width_,
+                    "y2": y_ + height_, "str": res, str: res}
         else:
             return [x_, y_, width_, height_]
 
@@ -3695,9 +3784,9 @@ def auto_font(font, text, c_width, c_height, min_font_size=4, max_font_size=300)
     """Clamp a font's size between c_width, and c_height when rendering text in pixels."""
 
     assert isinstance(min_font_size, int) and (
-                3 < min_font_size < 301), f"Error param 'min_font_size' must be an integer between 4 and 301 exclusive."
+            3 < min_font_size < 301), f"Error param 'min_font_size' must be an integer between 4 and 301 exclusive."
     assert isinstance(max_font_size, int) and (
-                3 < max_font_size < 301), f"Error param 'max_font_size' must be an integer between 4 and 301 exclusive."
+            3 < max_font_size < 301), f"Error param 'max_font_size' must be an integer between 4 and 301 exclusive."
     assert min_font_size <= max_font_size, f"Error param 'min_font_size' cannot be larger than param 'max_font_size'."
 
     width = font.measure(text)

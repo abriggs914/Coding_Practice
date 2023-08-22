@@ -10,8 +10,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.32
-    Date...........2023-07-25
+    Version..............1.33
+    Date...........2023-08-22
     Author(s)....Avery Briggs
     """
 
@@ -1161,6 +1161,7 @@ MENU = (240, 243, 241)
 MENUTEXT = (3, 2, 1)
 SCROLLBAR = (202, 200, 199)
 SYSTEMBUTTONTEXT = (15, 15, 15)
+SYSTEMWINDOWTEXT = (19, 18, 19)
 THREEDDARKSHADOW = (135, 136, 137)
 THREEDFACE = (240, 242, 245)
 THREEDHIGHLIGHT = (251, 253, 251)
@@ -2332,6 +2333,7 @@ colour_values_list = [
     MENUTEXT,
     SCROLLBAR,
     SYSTEMBUTTONTEXT,
+    SYSTEMWINDOWTEXT,
     THREEDDARKSHADOW,
     THREEDFACE,
     THREEDHIGHLIGHT,
@@ -3455,6 +3457,7 @@ colour_names_list = [
     "MENUTEXT",
     "SCROLLBAR",
     "SYSTEMBUTTONTEXT",
+    "SYSTEMWINDOWTEXT",
     "THREEDDARKSHADOW",
     "THREEDFACE",
     "THREEDHIGHLIGHT",
