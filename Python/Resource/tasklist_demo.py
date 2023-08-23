@@ -25,6 +25,19 @@ class Priority(enum.Enum):
     NINE: int = 9
     TEN: int = 10
 
+    def __eq__(self, other):
+        return isinstance(other, Priority) and self.value == other.value and self.name == other.name
+
+    def __lt__(self, other):
+        if not isinstance(other, Priority):
+            raise TypeError(f"Error, cannot compare type '{type(other)}' with type 'Priority'.")
+        return self.value < other.value
+
+    def __le__(self, other):
+        if not isinstance(other, Priority):
+            raise TypeError(f"Error, cannot compare type '{type(other)}' with type 'Priority'.")
+        return self.value <= other.value
+
     def __iter__(self):
         for v in [
             self.NEG_TWO,
@@ -209,7 +222,7 @@ class App(tkinter.Tk):
             command=self.canvas.xview,
             orient="horizontal"
         )
-        self.canvas.configure(yscrollcommand=self.v_scrollbar.set, xscrollcommand=self.h_scrollbar.set)
+        self.canvas.configure(yscrollcommand=self.v_scrollbar_set, xscrollcommand=self.h_scrollbar_set)
 
         self.tv_btn_new_task, \
             self.btn_new_task \
@@ -237,12 +250,12 @@ class App(tkinter.Tk):
             self.tv_entry_tsk_inp_name, \
             self.entry_tsk_inp_name \
             = entry_tip_factory(
-            self.frame_task_input,
-            tip="Optional",
-            tv_label="Name:",
-            kwargs_entry={
-                "width": 50
-            }
+                self.frame_task_input,
+                tip="Optional",
+                tv_label="Name:",
+                kwargs_entry={
+                    "width": 50
+                }
         )
         # self.entry_tsk_inp_name.bind("<KeyDown>", )
 
@@ -278,9 +291,9 @@ class App(tkinter.Tk):
             self.tv_combo_tsk_inp_priority, \
             self.combo_tsk_inp_priority, \
             = combo_factory(
-            self.frame_task_input,
-            tv_label="Priority:",
-            values=self.combo_priorities_list
+                self.frame_task_input,
+                tv_label="Priority:",
+                values=self.combo_priorities_list
         )
 
         # Due Date
@@ -378,6 +391,13 @@ class App(tkinter.Tk):
 
         self.protocol_oc = self.protocol("WM_DELETE_WINDOW", self.on_close)
 
+    def v_scrollbar_set(self, *args):
+        print(f"v scroll {args=}")
+        self.v_scrollbar.set(*args)
+    def h_scrollbar_set(self, *args):
+        print(f"h scroll {args=}")
+        self.h_scrollbar.set(*args)
+
     def on_close(self, event=None):
         print(f"closing")
         if self.tv_checkbox_submit_on_close.get():
@@ -462,7 +482,7 @@ class App(tkinter.Tk):
             fill=c_fill,
             outline=c_outl,
             activefill=c_acfi,
-            activeoutline=c_acou,
+            activeoutline=c_acou
         )
         tag_name = self.canvas.create_text(
             dims["x_name"],
