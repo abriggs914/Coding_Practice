@@ -1,3 +1,4 @@
+import datetime
 import enum
 import json
 import tkinter
@@ -8,6 +9,62 @@ from datetime_utility import is_date
 from json_utility import jsonify
 from orbiting_date_picker import OrbitingDatePicker
 from tkinter_utility import *
+
+
+def hours_until(d1: datetime.datetime, d2: datetime.datetime=None, rtype:str = "h"):
+    if d2 is None:
+        d2 = datetime.datetime.now()
+    x = f"{d1=:%Y-%m-%d %H:%M}, {d2=:%Y-%m-%d %H:%M}"
+    dd = (d2 - d1)
+    d = dd.seconds + (86400 * dd.days)
+    f_days = d // 86400
+    f_hrs = (d - (f_days * 86400)) // 3600
+    f_mins, f_secs = divmod(d - (3600 * f_hrs),  60)
+    match rtype:
+        case "d":
+            # Days as decimal
+            r = f"{d / 86400} Hrs"
+            print(f"A: {x=}, {r=}")
+            return r
+        case "h":
+            # Hours as decimal
+            r = f"{d / 3600} Hrs"
+            print(f"B: {x=}, {r=}")
+            return r
+        case "m":
+            # Minutes as decimal
+            r = f"{d / 60} Mins"
+            print(f"C: {x=}, {r=}")
+            return r
+        case "s":
+            # Seconds as decimal
+            r = f"{d} Secs"
+            print(f"D: {x=}, {r=}")
+            return r
+        case "tt":
+            # Total time
+            r = f"{f_hrs} Hrs, {f_mins} Mins, {f_secs} Secs"
+            print(f"E: {x=}, {r=}")
+            return r
+        case "t":
+            # Max time unit and less.
+            m = ""
+            if f_days > 0:
+                m = f"{f_days} Days, "
+
+            if f_hrs > 0:
+                m = m + f"{f_hrs} Hrs, "
+                if f_mins > 0:
+                    m = m + f"{f_mins} Mins, "
+            else:
+                if f_mins > 0:
+                    m = f"{f_mins} Mins, "
+            m = m + f"{f_secs} Secs, "
+            r = m[:-2]
+            print(f"F: {x=}, {r=}")
+            return r
+        case _:
+            raise ValueError(f"Error unrecognized return type value. Got '{rtype}'")
 
 
 class Priority(enum.Enum):
@@ -178,7 +235,11 @@ class TaskCell:
     active_outline: Colour = Colour(BLACK).brighten(0.1)
     is_expanded: bool = False
 
+    fmt_task_due_date_long: str = "%Y-%m-%d %H:%M"
+    fmt_task_due_date_short: str = lambda x: hours_until(x, rtype="t")
+
     tag_text_name: int = None
+    tag_text_due: int = None
 
     # default_proportion, min_size, max_size
     # check, status, #, name, due, hrs
@@ -200,6 +261,7 @@ class App(tkinter.Tk):
         self.combo_priorities_list = self.priorities_list[2:]
         self.showing_input_form = tkinter.BooleanVar(self, value=False)
         self.editing_input_form = tkinter.BooleanVar(self, value=False)
+        self.show_full_due_date = tkinter.BooleanVar(self, value=False)
 
         dims = calc_geometry_tl(0.54, 0.36, rtype=dict)
         self.geometry()
@@ -390,10 +452,31 @@ class App(tkinter.Tk):
         self.grid_init()
 
         self.protocol_oc = self.protocol("WM_DELETE_WINDOW", self.on_close)
+        self.after(1000, self.task_timer)
+
+    def task_timer(self):
+        if self.tasks:
+            for i, tc in enumerate(self.tasks):
+                t = tc.task
+                td = tc.tag_text_due
+
+                fmt_due = tc.fmt_task_due_date_long
+                if not self.show_full_due_date.get():
+                    fmt_due = tc.fmt_task_due_date_short
+                    if callable(fmt_due):
+                        text_due = fmt_due(t.due_date)
+                    else:
+                        text_due = t.due_date.strftime(fmt_due)
+                else:
+                    text_due = t.due_date.strftime(fmt_due)
+
+                self.canvas.itemconfigure(td, text=text_due)
+            self.after(1000, self.task_timer)
 
     def v_scrollbar_set(self, *args):
         print(f"v scroll {args=}")
         self.v_scrollbar.set(*args)
+
     def h_scrollbar_set(self, *args):
         print(f"h scroll {args=}")
         self.h_scrollbar.set(*args)
@@ -472,6 +555,7 @@ class App(tkinter.Tk):
             bbox = task_in.bbox
 
         dims = self.calc_task_dims(task_in, bbox)
+        fmt_due = task_in.fmt_task_due_date_long
 
         c_fill = task_in.fill.hex_code
         c_outl = task_in.outline.hex_code
@@ -484,16 +568,35 @@ class App(tkinter.Tk):
             activefill=c_acfi,
             activeoutline=c_acou
         )
+
+        if not self.show_full_due_date.get():
+            fmt_due = task_in.fmt_task_due_date_short
+            if callable(fmt_due):
+                text_due = fmt_due(task_in.task.due_date)
+            else:
+                text_due = task_in.task.due_date.strftime(fmt_due)
+        else:
+            text_due = task_in.task.due_date.strftime(fmt_due)
+
+        text_name = task_in.task.text[:25]
+
         tag_name = self.canvas.create_text(
             dims["x_name"],
             dims["y_name"],
-            text=task_in.task.text[:25]
+            text=text_name
+        )
+
+        tag_due = self.canvas.create_text(
+            dims["x_due"],
+            dims["y_due"],
+            text=text_due
         )
         self.canvas.tag_bind(tag_rect, "<Double-Button-1>", lambda event, t_=task_in: self.dbl_click_task(event, t_))
         if bbox is not None:
             task_in.bbox = bbox
         task_in.tag = tag_rect
         task_in.tag_text_name = tag_name
+        task_in.tag_text_due = tag_due
 
     @staticmethod
     def calc_task_dims(task_in: TaskCell, bbox=None):
@@ -532,7 +635,7 @@ class App(tkinter.Tk):
         x_status, y_status = x_check + w_check, bbox[1]
         x_idn, y_idn = x_status + w_status, bbox[1]
         x_name, y_name = x_idn + w_idn + (w_name * 0.5), bbox[1] + (h * 0.5)
-        x_due, y_due = x_name + w_name, bbox[1]
+        x_due, y_due = x_name + w_name + (w_due * 0.5), bbox[1] + (h * 0.5)
         x_hrs, y_hrs = x_due + w_due, bbox[1]
 
         return {
