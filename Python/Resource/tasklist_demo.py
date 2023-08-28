@@ -856,10 +856,15 @@ class App(tkinter.Tk):
         self.file_tasks = r".\task_manager_records.json"
         self.tasks = []
         self.threads = {}
+        self.found_settings = False
         self.load_tasks()
 
         for k, t in self.threads.items():
             t.join()
+
+        if self.found_settings:
+            print(f"Loaded settings!")
+            self.apply_settings()
 
         self.init_tasks()
         self.grid_init()
@@ -915,11 +920,15 @@ class App(tkinter.Tk):
     def on_close(self, event=None):
         print(f"closing")
         if self.tv_checkbox_submit_on_close.get():
-            if self.tasks:
+            if self.tasks or self.found_settings:
+                sett = self.settings
+                sett = {"settings_data": {k: sett[k]["value"] for k in sett if sett[k]["value"]}}
                 with open(self.file_tasks, "w") as f:
                     # res = {str(i): jsonify(t.task.json_entry()) for i, t in enumerate(self.tasks)}
                     # res = {str(i): t.task.json_entry() for i, t in enumerate(self.tasks)}
-                    res = jsonify({str(i): t.task.json_entry() for i, t in enumerate(self.tasks)})
+                    tsks = dict(sett)
+                    tsks.update({str(i): t.task.json_entry() for i, t in enumerate(self.tasks)})
+                    res = jsonify(tsks, in_line=0)
                     print("XX" + jsonify({str(i): t.task.json_entry() for i, t in enumerate(self.tasks)}, in_line=0))
                     # print(f"{res=}")
                     # res =
@@ -1182,7 +1191,7 @@ class App(tkinter.Tk):
         def sub_load_tasks():
             fn = self.file_tasks
             tasks = []
-            found_settings = False
+            self.found_settings = False
             try:
                 with open(fn, "r") as f:
                     # print(f"{f.read()}")
@@ -1194,7 +1203,7 @@ class App(tkinter.Tk):
                             for sk, sv in raw_task_data.items():
                                 self.settings[sk]["value"] = sv
                                 self.settings[sk]["kwargs"]["default_value"] = sv
-                            found_settings = True
+                            self.found_settings = True
                         else:
                             # idn, name, due_date, text, priority, comments, attachments, date_created, date_created_og, due_date_og,
                             tasks.append(TaskCell(Task(
@@ -1215,10 +1224,6 @@ class App(tkinter.Tk):
                 self.make_task_file()
             except PermissionError:
                 print(f"\nfile '{fn}' could not be opened due to permission.")
-
-            if found_settings:
-                print(f"Loaded settings!")
-                self.apply_settings()
 
             n = len(tasks)
             if n:
@@ -1364,6 +1369,7 @@ class App(tkinter.Tk):
         for k, w in zip(self.tl_settings.settings, self.tl_settings.widgets):
             print(f"{k=}: {w.value.get()=}")
         self.apply_settings()
+        self.found_settings = True
         self.tl_settings.destroy()
 
     def show_task_input_form(self):
