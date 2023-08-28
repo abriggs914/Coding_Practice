@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.60
-    Date...........2023-08-22
+    Version..............1.61
+    Date...........2023-08-28
     Author(s)....Avery Briggs
     """
 
@@ -3775,7 +3775,7 @@ def calc_geometry_tl(
             return res
         elif rtype == dict:
             return {"x": x_, "y": y_, "width": width_, "height": height_, "x1": x_, "y1": y_, "x2": x_ + width_,
-                    "y2": y_ + height_, "str": res, str: res}
+                    "y2": y_ + height_, "str": res, str: res, "geometry": res, str: res, "res": res, str: res}
         else:
             return [x_, y_, width_, height_]
 

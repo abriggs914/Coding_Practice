@@ -4,47 +4,58 @@ import json
 import tkinter
 from threading import Thread
 from dataclasses import dataclass
+from typing import Tuple
 
 from datetime_utility import is_date
 from json_utility import jsonify
 from orbiting_date_picker import OrbitingDatePicker
 from tkinter_utility import *
+from tktimepicker import SpinTimePickerModern, constants as tktp_constants
 
 
-def hours_until(d1: datetime.datetime, d2: datetime.datetime=None, rtype:str = "h"):
+def hours_until(d1: datetime.datetime, d2: datetime.datetime = None, rtype: str = "h"):
     if d2 is None:
         d2 = datetime.datetime.now()
     x = f"{d1=:%Y-%m-%d %H:%M}, {d2=:%Y-%m-%d %H:%M}"
     dd = (d2 - d1)
-    d = dd.seconds + (86400 * dd.days)
-    f_days = d // 86400
-    f_hrs = (d - (f_days * 86400)) // 3600
-    f_mins, f_secs = divmod(d - (3600 * f_hrs),  60)
+    d = dd.total_seconds()
+    overdue = d < 0
+    if rtype != "b":
+        d = abs(d)
+        f_days = int(abs(d // 86400))
+        f_hrs = int(abs((d - (f_days * 86400)) // 3600))
+        f_mins, f_secs = divmod(d - ((86400 * f_days) + (3600 * f_hrs)), 60)
+        f_mins = int(abs(f_mins))
+        f_secs = int(abs(round(f_secs, 0)))
+        w = f"{d=}, {f_days=}, {f_hrs=}, {f_mins=}, {f_secs=}"
     match rtype:
+        case "b":
+            # overdue or not
+            return overdue
         case "d":
             # Days as decimal
-            r = f"{d / 86400} Hrs"
-            print(f"A: {x=}, {r=}")
+            r = f"{round(d / 86400, 4)} Days"
+            # print(f"A: {w}, {x=}, {r=}")
             return r
         case "h":
             # Hours as decimal
-            r = f"{d / 3600} Hrs"
-            print(f"B: {x=}, {r=}")
+            r = f"{round(d / 3600, 3)} Hrs"
+            # print(f"B: {w}, {x=}, {r=}")
             return r
         case "m":
             # Minutes as decimal
-            r = f"{d / 60} Mins"
-            print(f"C: {x=}, {r=}")
+            r = f"{int(round(d / 60, 0))} Mins"
+            # print(f"C: {w}, {x=}, {r=}")
             return r
         case "s":
             # Seconds as decimal
-            r = f"{d} Secs"
-            print(f"D: {x=}, {r=}")
+            r = f"{int(round(d))} Secs"
+            # print(f"D: {w}, {x=}, {r=}")
             return r
         case "tt":
             # Total time
-            r = f"{f_hrs} Hrs, {f_mins} Mins, {f_secs} Secs"
-            print(f"E: {x=}, {r=}")
+            r = f"{f_days} Days, {f_hrs} Hrs, {f_mins} Mins, {f_secs} Secs"
+            # print(f"E: {w}, {x=}, {r=}")
             return r
         case "t":
             # Max time unit and less.
@@ -58,13 +69,80 @@ def hours_until(d1: datetime.datetime, d2: datetime.datetime=None, rtype:str = "
                     m = m + f"{f_mins} Mins, "
             else:
                 if f_mins > 0:
-                    m = f"{f_mins} Mins, "
+                    m = m + f"{f_mins} Mins, "
             m = m + f"{f_secs} Secs, "
             r = m[:-2]
-            print(f"F: {x=}, {r=}")
+            # print(f"F: {w}, {x=}, {r=}")
             return r
         case _:
             raise ValueError(f"Error unrecognized return type value. Got '{rtype}'")
+
+
+class TimeSlider(tkinter.Frame):
+
+    def __init__(self, master):
+        super().__init__(master)
+        self.value = tkinter.DoubleVar(self)
+        # d_min_t = is_date(min_time)
+        # d_max_t = is_date(max_time)
+        # ds = (d_max_t - d_min_t).total_seconds()
+        #
+        # h_mi, m_mi, s_mi = d_min_t.hour, d_min_t.minute, d_min_t.second
+        # h_ma, m_ma, s_ma = d_max_t.hour, d_max_t.minute, d_max_t.second
+
+        # self.min_time, self.max_time = 1, 12
+        # self.slider = tkinter.Scale(
+        #     self,
+        #     from_=self.min_time,
+        #     to=self.max_time,
+        #     variable=self.value,
+        #     orient="horizontal"
+        # )
+        # self.slider.grid()
+
+        self.time_picker = SpinTimePickerModern(self)
+        self.time_picker.addAll(tktp_constants.HOURS12)  # adds hours clock, minutes and period
+        self.time_picker.grid()
+
+
+class State(enum.Enum):
+
+    # State Name, StateID, State Acronym, State is Timed
+    QUEUED: Tuple[str, int, str, bool] = "Queued", 0, "QUE", True
+    INPROGRESS: Tuple[str, int, str, bool] = "In Progress", 1, "IPR", True
+    EXPIRED: Tuple[str, int, str, bool] = "Expired", 2, "EXP", True
+    WAITING: Tuple[str, int, str, bool] = "Waiting", 3, "WTG", True
+    DEBUGGING: Tuple[str, int, str, bool] = "Debugging", 4, "BUG", True
+    COMPLETE: Tuple[str, int, str, bool] = "Complete", 5, "CMP", False
+    INCOMPLETE: Tuple[str, int, str, bool] = "Incomplete", 6, "INC", False
+    DECLINED: Tuple[str, int, str, bool] = "Declined", 7, "DCL", False
+
+    def is_timed_state(self):
+        return self.value[3]
+
+    def __hash__(self):
+        return self.value[1]
+
+    def __eq__(self, other):
+        return isinstance(other, State) and self.value == other.value and self.name == other.name
+
+    def __iter__(self):
+        for v in [
+            self.QUEUED,
+            self.INPROGRESS,
+            self.WAITING,
+            self.DEBUGGING,
+            self.COMPLETE,
+            self.INCOMPLETE,
+            self.DECLINED
+        ]:
+            yield v
+
+    def __repr__(self):
+        return str(self.value[0])
+
+    def __str__(self):
+        return str(self.value[0])
 
 
 class Priority(enum.Enum):
@@ -136,11 +214,13 @@ class Task:
     priority: Priority
     comments: str = ""
     attachments: list = []
+    state: State = State.QUEUED
     date_created: datetime.datetime = datetime.datetime.now()  # adjusted when requirement attributes are adjusted
     date_created_og: datetime.datetime = datetime.datetime.now()  # marks original request date
     due_date_og: datetime.datetime = None  # marks original due date
 
-    def __init__(self, idn, name, due_date, text, priority, comments=None, attachments=None, date_created=datetime.datetime.now(), date_created_og=datetime.datetime.now(), due_date_og=None):
+    def __init__(self, idn, name, due_date, text, priority, comments=None, attachments=None,
+                 date_created=datetime.datetime.now(), date_created_og=datetime.datetime.now(), due_date_og=None):
         if attachments is None:
             attachments = []
         self.idn = idn
@@ -229,17 +309,26 @@ class TaskCell:
     task: Task
     tag: str = None
     bbox: tuple = None
+
     fill: Colour = Colour("#CCA0A0")
     active_fill: Colour = Colour("#CCA0A0").brighten(0.1)
     outline: Colour = Colour(BLACK)
     active_outline: Colour = Colour(BLACK).brighten(0.1)
+
+    bg_check_expand: Colour = Colour("123456")
+    active_bg_check_expand: Colour = Colour("123456").brighten(0.1)
+    fg_check_expand: Colour = Colour("676555")
+    active_fg_check_expand: Colour = Colour("676555").darken(0.1)
+
     is_expanded: bool = False
 
     fmt_task_due_date_long: str = "%Y-%m-%d %H:%M"
-    fmt_task_due_date_short: str = lambda x: hours_until(x, rtype="t")
+    fmt_task_due_date_short: str = lambda x: hours_until(x, rtype="h")
 
+    tag_text_check: int = None
     tag_text_name: int = None
     tag_text_due: int = None
+    tag_text_state: int = None
 
     # default_proportion, min_size, max_size
     # check, status, #, name, due, hrs
@@ -249,6 +338,265 @@ class TaskCell:
     p_width_name = (0.40, 50, 300)
     p_width_due = (0.2, 50, 300)
     p_width_hrs = (0.2, 50, 300)
+
+
+class TLSettings(tkinter.Toplevel):
+
+    # sliders with int and value list ranges
+    class OptionSlider(tkinter.Canvas):
+
+        def __init__(self, master, options, default_value=None, width=300, height=80):
+            super().__init__(master)
+            self.configure(width=width, height=height, background=Colour("#AFCACF").hex_code)
+
+            self.font_option_labels = tkinter.font.Font(self, font=("Arial", 10))
+
+            self.continuous = False
+            self.default_value = default_value
+            self.value = tkinter.StringVar(self)
+
+            self.width = width
+            self.height = height
+            self.margin_w = 5
+            self.dims = [0, 0, width, height]
+
+            self.options = options
+            self.option_tags = []
+            self.option_label_tags = []
+            self.lngst_opt_label = sorted([opt for opt in self.options], key=lambda o: len(str(o)), reverse=True)
+            self.width_option_label = (self.width - (2 * self.margin_w)) / len(self.options)
+            self.rotate_option_labels = [
+                self.font_option_labels.measure(opt) > (
+                        self.width_option_label +
+                        sum(map(lambda o: self.font_option_labels.measure(o) / 2, self.options[i-1:i] + self.options[i+1:i+2])))
+                for i, opt in enumerate(self.options)]
+            self.y_option_label = self.height * 0.45
+            print(f"{self.rotate_option_labels=}")
+
+            self.height_option_label = 12
+            self.slider_width = 10
+            self.slider_height = 15
+            self.line_width = 6
+            self.y_slider = self.height * 0.06
+
+            self.dims_slider = {
+                "x1": (self.width * 0.5) - (self.slider_width * 0.5),
+                "y1": self.y_slider,
+                "x2": (self.width * 0.5) + (self.slider_width * 0.5),
+                "y2": self.y_slider + self.slider_height
+            }
+
+            pts = [
+                (self.dims_slider["x1"], self.dims_slider["y1"]),
+                (self.dims_slider["x2"], self.dims_slider["y1"]),
+                (self.dims_slider["x2"], self.dims_slider["y2"] - (self.slider_height / 3)),
+                (self.dims_slider["x1"] + (self.slider_width * 0.5), self.dims_slider["y2"]),
+                (self.dims_slider["x1"], self.dims_slider["y2"] - (self.slider_height / 3)),
+            ]
+            self.slider = self.create_polygon(pts, fill="#456724")
+            self.y_line = self.dims_slider["y2"] + (self.line_width * 0.5)
+            self.line = self.create_line(
+                self.margin_w,
+                self.y_line,
+                self.width - self.margin_w,
+                self.y_line,
+                fill="#ACEFAC",
+                width=self.line_width
+            )
+
+            self.tag_bind(self.line, "<ButtonRelease-1>", self.click_line)
+            self.tag_bind(self.slider, "<B1-Motion>", self.drag_slider)
+            w_s = self.font_option_labels.measure(" ")
+            tol = 6
+            n_s = int((self.width_option_label - tol) // w_s)
+            for i, opt in enumerate(self.options):
+                # t = f"{'|'.center(n_s, chr(ord('.') + i))}\n"
+                t = f"{'|'.center(n_s)}\n"
+                l = ""
+                dc = True
+                ln = 2
+                for j, c in enumerate(opt):
+                    l += c
+                    if self.font_option_labels.measure(l) > (self.width_option_label - tol):
+                        l_space = lstindex(l, " ")
+                        if l_space > -1:
+                            l = l[:l_space] + f"\n{l[l_space:]}"
+                        else:
+                            l = l[:-2] + f"-\n{l[-2]}{c}"
+                        # print(f"{opt=}, {n_s=}, {l=}, {c=} {l_space=}")
+                        # t += l.center(n_s)
+                        t += l
+                        l = ""
+                        dc = False
+                        ln += 1
+                    # else:
+                    #     dc = True
+                # t += l.center(n_s, "_") if dc else l
+                t += l.center(n_s) if dc else l
+                self.option_tags.append(self.create_rectangle(
+                    self.margin_w + (i * self.width_option_label),
+                    self.y_option_label - (self.height_option_label * 0.5),
+                    self.margin_w + ((i + 1) * self.width_option_label),
+                    self.y_option_label + (self.height_option_label * ln)
+                    # ,
+                    # fill=random_colour(rgb=False)
+                ))
+                self.option_label_tags.append(self.create_text(
+                    self.margin_w + (self.width_option_label * 0.5) + (i * self.width_option_label),
+                    self.y_option_label + (self.height_option_label * 0.5),
+                    text=t,
+                    font=self.font_option_labels,
+                    justify=tkinter.CENTER
+                ))
+                self.tag_bind(self.option_tags[-1], "<ButtonRelease-1>", lambda event, x_=self.margin_w + (i * self.width_option_label): self.set_slider(x_))
+                self.tag_bind(self.option_label_tags[-1], "<ButtonRelease-1>", lambda event, x_=self.margin_w + (i * self.width_option_label): self.set_slider(x_))
+
+            if self.default_value is not None:
+                self.set_slider(self.default_value)
+
+        def drag_slider(self, event):
+            # print(f"drag slider {event=}")
+            self.set_slider(event.x)
+
+        def click_line(self, event):
+            # print(f"click line {event=}")
+            self.set_slider(event.x)
+
+        def set_slider(self, pos):
+            if isinstance(pos, (int, float)):
+                x, y = pos, self.y_slider
+            elif isinstance(pos, (tuple, list)):
+                x, y = pos
+            elif isinstance(pos, str):
+                if (idx := lstindex(self.options, pos)) >= 0:
+                    x, y = self.margin_w + (idx * self.width_option_label), self.y_slider
+                else:
+                    raise ValueError(f"Error, cannot use value '{pos}' as param 'pos'.")
+            else:
+                raise ValueError(f"Error, cannot use value '{pos}' as param 'pos'.")
+
+            if self.continuous:
+                self.dims_slider.update({
+                    "x1": clamp(self.margin_w, int(round(x - (self.slider_width * 0.5))), self.width - self.margin_w),
+                    "y1": int(round(y)),
+                    "x2": clamp(self.margin_w, int(round(x + (self.slider_width * 0.5))), self.width - self.margin_w),
+                    "y2": int(round(y + self.slider_height))
+                })
+            else:
+                bi = int(clamp(0, x // self.width_option_label, len(self.options) - 1))
+                x = (self.width_option_label * bi) + (self.width_option_label * 0.5)
+                self.dims_slider.update({
+                    "x1": clamp(self.margin_w, int(round(x - (self.slider_width * 0.5))), self.width - self.margin_w),
+                    "y1": int(round(y)),
+                    "x2": clamp(self.margin_w, int(round(x + (self.slider_width * 0.5))), self.width - self.margin_w),
+                    "y2": int(round(y + self.slider_height))
+                })
+                self.value.set(self.options[bi])
+                # print(f"NV: {self.value.get()}")
+
+            pts = [
+                clamp(
+                    self.margin_w,
+                    int(round(self.dims_slider["x1"])),
+                    self.width - self.margin_w - self.slider_width)
+                , int(round(self.dims_slider["y1"])),
+                clamp(
+                    self.margin_w + self.slider_width,
+                    int(round(self.dims_slider["x2"])),
+                    self.width - self.margin_w)
+                , int(round(self.dims_slider["y1"])),
+                clamp(
+                    self.margin_w + self.slider_width,
+                    int(round(self.dims_slider["x2"])),
+                    self.width - self.margin_w)
+                , int(round(self.dims_slider["y2"] - (self.slider_height / 3))),
+                clamp(
+                    self.margin_w,
+                    int(round(self.dims_slider["x1"] + (self.slider_width * 0.5))),
+                    self.width - self.margin_w - (self.slider_width * 0.5))
+                , int(round(self.dims_slider["y2"])),
+                clamp(
+                    self.margin_w,
+                    int(round(self.dims_slider["x1"])),
+                    self.width - self.margin_w - self.slider_width),
+                int(round(self.dims_slider["y2"] - (self.slider_height / 3))),
+            ]
+            pts = pts + pts[0:2]
+            # print(f"set slider {pts=}")
+            self.coords(self.slider, *pts)
+
+    def __init__(self, master, settings):
+        super().__init__(master)
+
+        self.title("Task Organizer Settings")
+        self.geometry(calc_geometry_tl(width=0.72, height=0.48))
+
+        # due time unit
+        # days, hrs, mins, secs, total
+
+        # number of digits for the due time unit
+
+        # auto expand all tasks on load
+        # self.columnconfigure(1, weight=100)
+        self.columnconfigure(0, weight=50)
+        self.columnconfigure(1, weight=50)
+
+        self.settings = settings
+        self.frames = []
+        self.widgets = []
+        for i, k_v in enumerate(settings.items()):
+            k, v = k_v
+            f = tkinter.Frame(self)
+            self.frames.append(f)
+            fl = tkinter.Frame(f)
+            fw = tkinter.Frame(f)
+
+            widget = v["widget"]
+            kwargs = v["kwargs"]
+
+            tv_lbl, lbl = label_factory(
+                fl, tv_label=k
+            )
+
+            r, c, rs, cs, ix, iy, x, y, s = grid_keys()
+
+            match widget:
+                case "slider":
+                    v = kwargs["default_value"]
+                    if v == "d":
+                        kwargs["default_value"] = "Days"
+                    if v == "h":
+                        kwargs["default_value"] = "Hours"
+                    if v == "m":
+                        kwargs["default_value"] = "Minutes"
+                    if v == "s":
+                        kwargs["default_value"] = "Seconds"
+                    if v == "t":
+                        kwargs["default_value"] = "Minimum"
+                    if v == "tt":
+                        kwargs["default_value"] = "Total"
+                    widget = TLSettings.OptionSlider(fw, **kwargs)
+                case _:
+                    raise ValueError(f"Error, unsure what to do with widget entry '{widget}'.")
+
+            self.widgets.append(widget)
+
+            lbl.grid(**{r: 0, c: 0, s: "nsew"})
+            widget.grid(**{r: 0, c: 0, s: "nsew"})
+            fl.grid(**{r: 0, c: 0, s: "nsew"})
+            fw.grid(**{r: 0, c: 1, s: "nsew"})
+            f.grid(**{r: i, c: 0, s: "nsew"})
+            fw.columnconfigure(0, weight=100)
+            fl.columnconfigure(0, weight=100)
+            f.columnconfigure(0, weight=50)
+            f.columnconfigure(1, weight=50)
+
+        # self.option_slider1 = TLSettings.OptionSlider(self, options=["yes", "no", "cancel"])
+        # self.option_slider1.grid()
+        # self.option_slider2 = TLSettings.OptionSlider(self, options=["Please take me back", "yes", "no", "cancel", "Cat in a hat", "Dog", "Mouse", "Parrot", "Squirrel"])
+        # self.option_slider2.grid()
+
+        self.grab_set()
 
 
 class App(tkinter.Tk):
@@ -263,16 +611,34 @@ class App(tkinter.Tk):
         self.editing_input_form = tkinter.BooleanVar(self, value=False)
         self.show_full_due_date = tkinter.BooleanVar(self, value=False)
 
-        dims = calc_geometry_tl(0.54, 0.36, rtype=dict)
-        self.geometry()
-        self.width_canvas, self.height_canvas = dims["width"], dims["height"]
+        self.colours = {
+            State.QUEUED: {
+                "bg": Colour(GRAY_60),
+                "active_bg": Colour(GRAY_60).brighten(0.1),
+                "fg": Colour(BLACK),
+                "outline": Colour(GRAY_45),
+                "active_outline": Colour(GRAY_45)
+            },
+            State.EXPIRED: {
+                "bg": Colour("#CCA0A0"),
+                "active_bg": Colour("#CCA0A0").brighten(0.1),
+                "fg": Colour(BLACK),
+                "outline": Colour("#782111"),
+                "active_outline": Colour("#782111").brighten(0.1)
+            }
+        }
+        dims = calc_geometry_tl(0.81, 0.54, rtype=dict)
+        self.geometry(dims["geometry"])
+        self.p_width_canvas, self.p_height_canvas = 0.8, 0.9
+        self.width_canvas, self.height_canvas = int(round(dims["width"] * self.p_width_canvas)), int(round(dims["height"] * self.p_height_canvas))
         self.canvas = tkinter.Canvas(
             self,
             width=self.width_canvas,
             height=self.height_canvas,
             bg=Colour("#664242").hex_code,
             # ,
-            scrollregion=(0, 0, self.width_canvas*2, self.height_canvas*10)
+            # scrollregion=(0, 0, self.width_canvas*2, self.height_canvas*10)
+            scrollregion=(0, 0, self.width_canvas, self.height_canvas * 10)
         )
         self.v_scrollbar = tkinter.Scrollbar(
             self,
@@ -284,7 +650,10 @@ class App(tkinter.Tk):
             command=self.canvas.xview,
             orient="horizontal"
         )
-        self.canvas.configure(yscrollcommand=self.v_scrollbar_set, xscrollcommand=self.h_scrollbar_set)
+        # self.canvas.configure(yscrollcommand=self.v_scrollbar_set, xscrollcommand=self.h_scrollbar_set)
+        self.canvas.configure(yscrollcommand=self.v_scrollbar.set, xscrollcommand=self.h_scrollbar.set)
+        self.canvas.bind("<MouseWheel>",
+                         lambda event: self.canvas.yview('scroll', int(-1 * (event.delta / 120)), 'units'))
 
         self.tv_btn_new_task, \
             self.btn_new_task \
@@ -292,6 +661,14 @@ class App(tkinter.Tk):
             self,
             tv_btn="+",
             command=self.click_new_btn
+        )
+
+        self.tv_btn_settings, \
+            self.btn_settings \
+            = button_factory(
+            self,
+            tv_btn="settings",
+            command=self.click_settings
         )
 
         self.tv_checkbox_submit_on_close, \
@@ -312,12 +689,12 @@ class App(tkinter.Tk):
             self.tv_entry_tsk_inp_name, \
             self.entry_tsk_inp_name \
             = entry_tip_factory(
-                self.frame_task_input,
-                tip="Optional",
-                tv_label="Name:",
-                kwargs_entry={
-                    "width": 50
-                }
+            self.frame_task_input,
+            tip="Optional",
+            tv_label="Name:",
+            kwargs_entry={
+                "width": 50
+            }
         )
         # self.entry_tsk_inp_name.bind("<KeyDown>", )
 
@@ -353,9 +730,9 @@ class App(tkinter.Tk):
             self.tv_combo_tsk_inp_priority, \
             self.combo_tsk_inp_priority, \
             = combo_factory(
-                self.frame_task_input,
-                tv_label="Priority:",
-                values=self.combo_priorities_list
+            self.frame_task_input,
+            tv_label="Priority:",
+            values=self.combo_priorities_list
         )
 
         # Due Date
@@ -368,6 +745,11 @@ class App(tkinter.Tk):
         self.odp_due_date = OrbitingDatePicker(
             self.frame_task_input,
             start_date=datetime.datetime.now()
+        )
+
+        # Due Time
+        self.due_time_slider = TimeSlider(
+            self.frame_task_input
         )
 
         # clear button
@@ -391,17 +773,19 @@ class App(tkinter.Tk):
         r, c, rs, cs, ix, iy, x, y, s = grid_keys()
         self.grid_args = {
             "btn_new_task": {r: 0, c: 0},
-            "checkbox_submit_on_close": {r: 0, c: 1},
-            "frame_task_input": {r: 1, c: 0},
-            "canvas": {r: 2, c: 0},
-            "v_scrollbar": {r: 2, c: 1, s: "ns"},
-            "h_scrollbar": {r: 3, c: 0, s: "ew"},
+            "checkbox_submit_on_close": {r: 0, c: 2},
+            "btn_settings": {r: 1, c: 2},
+            "frame_task_input": {r: 2, c: 0},
+            "canvas": {r: 3, c: 0},
+            "v_scrollbar": {r: 3, c: 1, s: "ns"},
+            "h_scrollbar": {r: 4, c: 0, s: "ew"},
 
             # frame_task_input
             "lbl_tsk_inp_name": {r: 0, c: 0},
             "entry_tsk_inp_name": {r: 1, c: 0},
             "lbl_tsk_inp_due_date": {r: 0, c: 1},
             "odp_due_date": {r: 1, c: 1},
+            "due_time_slider": {r: 1, c: 2},
             "lbl_tsk_inp_text": {r: 2, c: 0},
             "tsk_inp_text": {r: 3, c: 0},
             "lbl_tsk_inp_comments": {r: 2, c: 1},
@@ -418,12 +802,14 @@ class App(tkinter.Tk):
 
         self.init_grid_args = {
             "btn_new_task",
+            "btn_settings",
             "checkbox_submit_on_close",
             "canvas",
             "v_scrollbar",
             "h_scrollbar",
             "lbl_tsk_inp_due_date",
             "odp_due_date",
+            "due_time_slider",
             "lbl_tsk_inp_name",
             "entry_tsk_inp_name",
             "lbl_tsk_inp_text",
@@ -439,6 +825,33 @@ class App(tkinter.Tk):
         self.width_task_cell, self.height_task_cell = self.width_canvas, 60
         self.height_expanded_task_cell = 200
         self.margin_task_horizontal, self.margin_task_vertical = 2, 5
+
+        self.tl_settings = None
+        self.settings_s_width = 600
+        self.settings = {
+            "Auto-expand tasks on application open:": {
+                "desc": "On start-up, all the tasks will be fully expanded",
+                "widget": "slider",
+                "kwargs": {
+                    "options": ["Yes", "No"],
+                    "default_value": "No",
+                    "width": self.settings_s_width
+                },
+                "value": None,
+                "func": None
+            },
+            "Due-date time units": {
+                "desc": "Days, Hours, Minutes, Seconds, Total, Min",
+                "widget": "slider",
+                "kwargs": {
+                    "options": ["Total", "Days", "Hours", "Minutes", "Seconds", "Minimum"],
+                    "default_value": "Hours",
+                    "width": self.settings_s_width
+                },
+                "value": None,
+                "func": self.set_due_date_units
+            }
+        }
 
         self.file_tasks = r".\task_manager_records.json"
         self.tasks = []
@@ -456,9 +869,13 @@ class App(tkinter.Tk):
 
     def task_timer(self):
         if self.tasks:
+            now = datetime.datetime.now()
             for i, tc in enumerate(self.tasks):
                 t = tc.task
                 td = tc.tag_text_due
+
+                if not t.state.is_timed_state():
+                    continue
 
                 fmt_due = tc.fmt_task_due_date_long
                 if not self.show_full_due_date.get():
@@ -470,8 +887,22 @@ class App(tkinter.Tk):
                 else:
                     text_due = t.due_date.strftime(fmt_due)
 
+                # check_expiry
+                if t.due_date < now and t.state != State.EXPIRED:
+                    self.set_task_expired(tc)
+
                 self.canvas.itemconfigure(td, text=text_due)
             self.after(1000, self.task_timer)
+
+    def set_task_expired(self, tc: TaskCell):
+        print(f"Set Expired {tc.task}")
+        tc.task.state = State.EXPIRED
+        tc.fill = self.colours[State.EXPIRED]["bg"]
+        tc.active_fill = self.colours[State.EXPIRED]["active_bg"]
+        tc.outline = self.colours[State.EXPIRED]["outline"]
+        tc.active_outline = self.colours[State.EXPIRED]["active_outline"]
+        self.canvas.itemconfigure(tc.tag_text_state, text=tc.task.state.value[2])
+        self.redraw_tasks(tc)
 
     def v_scrollbar_set(self, *args):
         print(f"v scroll {args=}")
@@ -502,7 +933,23 @@ class App(tkinter.Tk):
             args = self.grid_args[k]
             eval(f"self.{k}.grid(**{args})")
 
+    def init_colours(self):
+        if self.tasks:
+            cols = self.colours
+            for tc in self.tasks:
+                s = tc.task.state
+                bg = self.colours[s]["bg"]
+                a_bg = self.colours[s]["active_bg"]
+                out = self.colours[s]["outline"]
+                a_out = self.colours[s]["active_outline"]
+
+                tc.fill = bg
+                tc.active_fill = a_bg
+                tc.outline = out
+                tc.active_outline = a_out
+
     def init_tasks(self):
+        self.init_colours()
         the = self.height_expanded_task_cell
         x, y, tw, th = 0, 0, self.width_task_cell, self.height_task_cell
         mh, mv = self.margin_task_horizontal, self.margin_task_vertical
@@ -525,7 +972,11 @@ class App(tkinter.Tk):
         self.draw_task(task_in, bbox=bbox)
         self.tasks.append(task_in)
 
-    def redraw_tasks(self, start=0):
+    def redraw_tasks(self, start: int | TaskCell = 0):
+
+        if isinstance(start, TaskCell):
+            start = self.tasks.index(start)
+
         the = self.height_expanded_task_cell
         x, y, tw, th = 0, 0, self.width_task_cell, self.height_task_cell
         mh, mv = self.margin_task_horizontal, self.margin_task_vertical
@@ -536,6 +987,12 @@ class App(tkinter.Tk):
         # y += ((n_reg * th) + (max(0, n_reg - 2) * mv)) + (n_exp * the)
         y += ((n_reg * th) + (n_exp * the))
         for i, t in enumerate(self.tasks[start:]):
+
+            c_fill = t.fill.hex_code
+            c_outl = t.outline.hex_code
+            c_acfi = t.active_fill.hex_code
+            c_acou = t.active_outline.hex_code
+
             th_ = the if t.is_expanded else th
             bbox = x + mh + mh, y + (mv if start + i == 0 else 0), x + tw - (1 * mh), y + th_ - (1 * mv)
             # self.canvas.moveto(t.tag, *bbox[:2])
@@ -544,7 +1001,12 @@ class App(tkinter.Tk):
             t.bbox = bbox
 
             dims = self.calc_task_dims(t)
+            self.canvas.coords(t.tag_text_check, dims["bbox_check"])
+            self.canvas.itemconfigure(t.tag_text_check, height=dims["h"])
             self.canvas.coords(t.tag_text_name, dims["bbox_name"])
+            self.canvas.coords(t.tag_text_due, dims["bbox_due"])
+            self.canvas.coords(t.tag_text_state, dims["bbox_status"])
+            self.canvas.itemconfigure(t.tag, fill=c_fill, outline=c_outl, activefill=c_acfi, activeoutline=c_acou)
 
             # self.draw_task(t, bbox)
             y += th_
@@ -561,6 +1023,12 @@ class App(tkinter.Tk):
         c_outl = task_in.outline.hex_code
         c_acfi = task_in.active_fill.hex_code
         c_acou = task_in.active_outline.hex_code
+
+        c_cbbg = task_in.bg_check_expand.hex_code
+        c_cbab = task_in.active_bg_check_expand.hex_code
+        c_cbfg = task_in.fg_check_expand.hex_code
+        c_cbaf = task_in.active_fg_check_expand.hex_code
+
         tag_rect = self.canvas.create_rectangle(
             *bbox,
             fill=c_fill,
@@ -579,6 +1047,27 @@ class App(tkinter.Tk):
             text_due = task_in.task.due_date.strftime(fmt_due)
 
         text_name = task_in.task.text[:25]
+        text_status = task_in.task.state.value[2]
+
+        check_box_f = checkbox_factory(self.canvas, buttons=[""], default_values=[False])
+        # print(f"{check_box_f=}")
+        tv_check_box, check_box = check_box_f
+        tv_check_box, check_box = tv_check_box[0], check_box[0]
+        check_box.configure(bg=c_cbbg, activebackground=c_cbab, fg=c_cbfg, activeforeground=c_cbaf)
+
+        tag_check = self.canvas.create_window(
+            dims["x_check"],
+            dims["y_check"],
+            width=dims["w_check"],
+            height=dims["h_check"],
+            window=check_box
+        )
+
+        tag_status = self.canvas.create_text(
+            dims["x_status"],
+            dims["y_status"],
+            text=text_status
+        )
 
         tag_name = self.canvas.create_text(
             dims["x_name"],
@@ -595,8 +1084,11 @@ class App(tkinter.Tk):
         if bbox is not None:
             task_in.bbox = bbox
         task_in.tag = tag_rect
+        task_in.tv_check_expanded = tv_check_box
+        task_in.tag_text_check = tag_check
         task_in.tag_text_name = tag_name
         task_in.tag_text_due = tag_due
+        task_in.tag_text_state = tag_status
 
     @staticmethod
     def calc_task_dims(task_in: TaskCell, bbox=None):
@@ -631,23 +1123,28 @@ class App(tkinter.Tk):
         # print(f"{p_check=}")
         # print(f"{p_check[0]=}")
 
-        x_check, y_check = bbox[0], bbox[1]
-        x_status, y_status = x_check + w_check, bbox[1]
+        x_check, y_check = bbox[0] + (w_check * 0.5), bbox[1] + (h * 0.5)
+        x_status, y_status = x_check + w_check + (w_check * 0.5), bbox[1] + (h * 0.5)
         x_idn, y_idn = x_status + w_status, bbox[1]
         x_name, y_name = x_idn + w_idn + (w_name * 0.5), bbox[1] + (h * 0.5)
         x_due, y_due = x_name + w_name + (w_due * 0.5), bbox[1] + (h * 0.5)
         x_hrs, y_hrs = x_due + w_due, bbox[1]
 
         return {
+            "w": w,
+            "h": h,
+
             "x_check": x_check,
             "y_check": y_check,
             "w_check": w_check,
             "h_check": h_check,
+            "bbox_check": (x_check, y_check),
 
             "x_status": x_status,
             "y_status": y_status,
             "w_status": w_status,
             "h_status": h_status,
+            "bbox_status": (x_status, y_status),
 
             "x_idn": x_idn,
             "y_idn": y_idn,
@@ -664,6 +1161,7 @@ class App(tkinter.Tk):
             "y_due": y_due,
             "w_due": w_due,
             "h_due": h_due,
+            "bbox_due": (x_due, y_due),
 
             "x_hrs": x_hrs,
             "y_hrs": y_hrs,
@@ -684,6 +1182,7 @@ class App(tkinter.Tk):
         def sub_load_tasks():
             fn = self.file_tasks
             tasks = []
+            found_settings = False
             try:
                 with open(fn, "r") as f:
                     # print(f"{f.read()}")
@@ -691,25 +1190,35 @@ class App(tkinter.Tk):
                     for i, k_raw_task_data in enumerate(lines.items()):
                         key, raw_task_data = k_raw_task_data
                         print(f"{i=}, {raw_task_data=}")
-                        # idn, name, due_date, text, priority, comments, attachments, date_created, date_created_og, due_date_og,
-                        tasks.append(TaskCell(Task(
-                            raw_task_data.get("idn", i),
-                            raw_task_data.get("name"),
-                            eval(raw_task_data.get("due_date")),
-                            raw_task_data.get("text"),
-                            raw_task_data.get("priority"),
-                            raw_task_data.get("comments"),
-                            raw_task_data.get("attachments"),
-                            eval(raw_task_data.get("date_created")),
-                            eval(raw_task_data.get("date_created_og")),
-                            eval(raw_task_data.get("due_date_og"))
-                        )))
+                        if key == "settings_data":
+                            for sk, sv in raw_task_data.items():
+                                self.settings[sk]["value"] = sv
+                                self.settings[sk]["kwargs"]["default_value"] = sv
+                            found_settings = True
+                        else:
+                            # idn, name, due_date, text, priority, comments, attachments, date_created, date_created_og, due_date_og,
+                            tasks.append(TaskCell(Task(
+                                raw_task_data.get("idn", i),
+                                raw_task_data.get("name"),
+                                eval(raw_task_data.get("due_date")),
+                                raw_task_data.get("text"),
+                                raw_task_data.get("priority"),
+                                raw_task_data.get("comments"),
+                                raw_task_data.get("attachments"),
+                                eval(raw_task_data.get("date_created")),
+                                eval(raw_task_data.get("date_created_og")),
+                                eval(raw_task_data.get("due_date_og"))
+                            )))
 
             except FileNotFoundError:
                 print(f"\nfile '{fn}' not found.")
                 self.make_task_file()
             except PermissionError:
                 print(f"\nfile '{fn}' could not be opened due to permission.")
+
+            if found_settings:
+                print(f"Loaded settings!")
+                self.apply_settings()
 
             n = len(tasks)
             if n:
@@ -730,6 +1239,11 @@ class App(tkinter.Tk):
             f.close()
         print(f"Task file creation successful.")
 
+    def apply_settings(self):
+        for k, v in self.settings.items():
+            if v["value"] is not None:
+                v["func"]()
+
     def click_clear_input_form(self):
         print(f"click_clea_input_form")
         self.tv_entry_tsk_inp_name.set("")
@@ -745,9 +1259,12 @@ class App(tkinter.Tk):
         #                                                                                                      in
         #                                                                                                      range(9)]
 
+        hr, mn, pr = self.due_time_slider.time_picker.time()
+        hr += 0 if pr == "AM" else 12
+
         vars = [
             self.tv_entry_tsk_inp_name.get().strip(),
-            self.odp_due_date.date,
+            self.odp_due_date.date + datetime.timedelta(hours=hr, minutes=mn),
             self.tsk_inp_text.text.get().strip(),
             self.tv_combo_tsk_inp_priority.get().strip(),
             self.tsk_inp_comments.text.get().strip()
@@ -777,7 +1294,7 @@ class App(tkinter.Tk):
         #     attachments := None,
         #     date_created := None,
         #     date_created_og := None,
-            # due_date_og := None
+        # due_date_og := None
         # ]
 
         # name = self.tv_entry_tsk_inp_name.get()
@@ -831,6 +1348,24 @@ class App(tkinter.Tk):
         print(f"click new task")
         self.show_task_input_form()
 
+    def click_settings(self):
+        print(f"click settings")
+        self.show_settings_menu()
+
+    def show_settings_menu(self):
+        s_width = 600
+        self.tl_settings = TLSettings(self, self.settings)
+        self.tl_settings.protocol("WM_DELETE_WINDOW", self.tl_settings_on_close)
+        self.wait_window(self.tl_settings)
+
+    def tl_settings_on_close(self, event=None):
+        print("settings_tl on_close")
+        sett = self.settings
+        for k, w in zip(self.tl_settings.settings, self.tl_settings.widgets):
+            print(f"{k=}: {w.value.get()=}")
+        self.apply_settings()
+        self.tl_settings.destroy()
+
     def show_task_input_form(self):
         showing = self.showing_input_form.get()
         if showing:
@@ -841,6 +1376,25 @@ class App(tkinter.Tk):
             self.frame_task_input.grid(**self.grid_args["frame_task_input"])
 
         self.showing_input_form.set(not showing)
+
+    def set_due_date_units(self):
+        v = self.settings["Due-date time units"]["value"]
+
+        if v == "Days":
+            v = "d"
+        if v == "Hours":
+            v = "h"
+        if v == "Minutes":
+            v = "m"
+        if v == "Seconds":
+            v = "s"
+        if v == "Minimum":
+            v = "t"
+        if v == "Total":
+            v = "tt"
+
+        for tc in self.tasks:
+            tc.fmt_task_due_date_short = lambda x: hours_until(x, rtype=v)
 
 
 if __name__ == '__main__':
