@@ -1,6 +1,7 @@
 {
     "settings_data": {
-        "Due-date time units": "tt"
+        "Auto-expand tasks on application open:": "Yes",
+        "Due-date time units": "Days"
     },
     "0": {
         "idn": 0,

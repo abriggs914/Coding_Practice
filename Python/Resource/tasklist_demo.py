@@ -106,7 +106,6 @@ class TimeSlider(tkinter.Frame):
 
 
 class State(enum.Enum):
-
     # State Name, StateID, State Acronym, State is Timed
     QUEUED: Tuple[str, int, str, bool] = "Queued", 0, "QUE", True
     INPROGRESS: Tuple[str, int, str, bool] = "In Progress", 1, "IPR", True
@@ -341,7 +340,6 @@ class TaskCell:
 
 
 class TLSettings(tkinter.Toplevel):
-
     # sliders with int and value list ranges
     class OptionSlider(tkinter.Canvas):
 
@@ -368,7 +366,8 @@ class TLSettings(tkinter.Toplevel):
             self.rotate_option_labels = [
                 self.font_option_labels.measure(opt) > (
                         self.width_option_label +
-                        sum(map(lambda o: self.font_option_labels.measure(o) / 2, self.options[i-1:i] + self.options[i+1:i+2])))
+                        sum(map(lambda o: self.font_option_labels.measure(o) / 2,
+                                self.options[i - 1:i] + self.options[i + 1:i + 2])))
                 for i, opt in enumerate(self.options)]
             self.y_option_label = self.height * 0.45
             print(f"{self.rotate_option_labels=}")
@@ -448,8 +447,10 @@ class TLSettings(tkinter.Toplevel):
                     font=self.font_option_labels,
                     justify=tkinter.CENTER
                 ))
-                self.tag_bind(self.option_tags[-1], "<ButtonRelease-1>", lambda event, x_=self.margin_w + (i * self.width_option_label): self.set_slider(x_))
-                self.tag_bind(self.option_label_tags[-1], "<ButtonRelease-1>", lambda event, x_=self.margin_w + (i * self.width_option_label): self.set_slider(x_))
+                self.tag_bind(self.option_tags[-1], "<ButtonRelease-1>",
+                              lambda event, x_=self.margin_w + (i * self.width_option_label): self.set_slider(x_))
+                self.tag_bind(self.option_label_tags[-1], "<ButtonRelease-1>",
+                              lambda event, x_=self.margin_w + (i * self.width_option_label): self.set_slider(x_))
 
             if self.default_value is not None:
                 self.set_slider(self.default_value)
@@ -630,7 +631,8 @@ class App(tkinter.Tk):
         dims = calc_geometry_tl(0.81, 0.54, rtype=dict)
         self.geometry(dims["geometry"])
         self.p_width_canvas, self.p_height_canvas = 0.8, 0.9
-        self.width_canvas, self.height_canvas = int(round(dims["width"] * self.p_width_canvas)), int(round(dims["height"] * self.p_height_canvas))
+        self.width_canvas, self.height_canvas = int(round(dims["width"] * self.p_width_canvas)), int(
+            round(dims["height"] * self.p_height_canvas))
         self.canvas = tkinter.Canvas(
             self,
             width=self.width_canvas,
@@ -838,7 +840,7 @@ class App(tkinter.Tk):
                     "width": self.settings_s_width
                 },
                 "value": None,
-                "func": None
+                "func": self.expand_task
             },
             "Due-date time units": {
                 "desc": "Days, Hours, Minutes, Seconds, Total, Min",
@@ -862,12 +864,12 @@ class App(tkinter.Tk):
         for k, t in self.threads.items():
             t.join()
 
+        self.init_tasks()
+        self.grid_init()
+
         if self.found_settings:
             print(f"Loaded settings!")
             self.apply_settings()
-
-        self.init_tasks()
-        self.grid_init()
 
         self.protocol_oc = self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.after(1000, self.task_timer)
@@ -996,7 +998,6 @@ class App(tkinter.Tk):
         # y += ((n_reg * th) + (max(0, n_reg - 2) * mv)) + (n_exp * the)
         y += ((n_reg * th) + (n_exp * the))
         for i, t in enumerate(self.tasks[start:]):
-
             c_fill = t.fill.hex_code
             c_outl = t.outline.hex_code
             c_acfi = t.active_fill.hex_code
@@ -1058,11 +1059,12 @@ class App(tkinter.Tk):
         text_name = task_in.task.text[:25]
         text_status = task_in.task.state.value[2]
 
-        check_box_f = checkbox_factory(self.canvas, buttons=[""], default_values=[False])
+        check_box_f = checkbox_factory(self.canvas, buttons=[""], default_values=[task_in.is_expanded])
         # print(f"{check_box_f=}")
         tv_check_box, check_box = check_box_f
         tv_check_box, check_box = tv_check_box[0], check_box[0]
         check_box.configure(bg=c_cbbg, activebackground=c_cbab, fg=c_cbfg, activeforeground=c_cbaf)
+        check_box.bind("<ButtonRelease-1>", lambda event=None, t_=task_in: self.click_checkbox_expand(event, t_))
 
         tag_check = self.canvas.create_window(
             dims["x_check"],
@@ -1178,12 +1180,30 @@ class App(tkinter.Tk):
             "h_hrs": h_hrs
         }
 
-    def dbl_click_task(self, event, task):
-        # print(f"{task=}")
-        task.is_expanded = not task.is_expanded
-        idx = self.tasks.index(task)
-        # print(f"double click: {idx=}")
+    def expand_task(self, task: TaskCell = None, value=None):
+        if task is None:
+            for t in self.tasks:
+                print(f"A {t.is_expanded=}")
+                t.is_expanded = (not t.is_expanded) if (value is None) else value
+                print(f"B {t.is_expanded=}")
+                t.tv_check_expanded.set(t.is_expanded)
+            idx = 0
+        else:
+            # print(f"{task=}")
+            print(f"A {task.is_expanded=}")
+            task.is_expanded = (not task.is_expanded) if (value is None) else value
+            print(f"B {task.is_expanded=}")
+            task.tv_check_expanded.set(task.is_expanded)
+            idx = self.tasks.index(task)
+            # print(f"double click: {idx=}")
+
         self.redraw_tasks(idx)
+
+    def click_checkbox_expand(self, event, task: TaskCell):
+        self.expand_task(task)
+
+    def dbl_click_task(self, event, task: TaskCell):
+        self.expand_task(task)
 
     def load_tasks(self):
         print(f"Loading tasks... ", end="")
@@ -1245,9 +1265,14 @@ class App(tkinter.Tk):
         print(f"Task file creation successful.")
 
     def apply_settings(self):
+        print(f"Apply settings")
         for k, v in self.settings.items():
+            print(f"{k=}, {v=}")
             if v["value"] is not None:
+                print(f"Apply {k=}")
                 v["func"]()
+            else:
+                print(f"skipped {k=}")
 
     def click_clear_input_form(self):
         print(f"click_clea_input_form")
@@ -1368,6 +1393,7 @@ class App(tkinter.Tk):
         sett = self.settings
         for k, w in zip(self.tl_settings.settings, self.tl_settings.widgets):
             print(f"{k=}: {w.value.get()=}")
+            self.settings[k]["value"] = w.value.get()
         self.apply_settings()
         self.found_settings = True
         self.tl_settings.destroy()
@@ -1385,6 +1411,7 @@ class App(tkinter.Tk):
 
     def set_due_date_units(self):
         v = self.settings["Due-date time units"]["value"]
+        print(f"{v=}")
 
         if v == "Days":
             v = "d"
