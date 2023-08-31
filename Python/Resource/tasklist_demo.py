@@ -13,6 +13,13 @@ from tkinter_utility import *
 from tktimepicker import SpinTimePickerModern, constants as tktp_constants
 
 
+def yes_no_to_bool(val: str):
+    v = val.lower()
+    if v not in {"yes", "no"}:
+        raise ValueError(f"Unsure what to do with input '{val}'.")
+    return v == "yes"
+
+
 def hours_until(d1: datetime.datetime, d2: datetime.datetime = None, rtype: str = "h"):
     if d2 is None:
         d2 = datetime.datetime.now()
@@ -219,7 +226,7 @@ class Task:
     due_date_og: datetime.datetime = None  # marks original due date
 
     def __init__(self, idn, name, due_date, text, priority, comments=None, attachments=None,
-                 date_created=datetime.datetime.now(), date_created_og=datetime.datetime.now(), due_date_og=None):
+                 date_created=datetime.datetime.now(), date_created_og=datetime.datetime.now(), due_date_og=None, tkinter_attrs=None):
         if attachments is None:
             attachments = []
         self.idn = idn
@@ -232,6 +239,7 @@ class Task:
         self.date_created = date_created
         self.date_created_og = date_created_og
         self.due_date_og = due_date_og
+        self.tkinter_attrs = tkinter_attrs
 
         if self.due_date_og is None:
             self.due_date_og = self.due_date
@@ -319,7 +327,7 @@ class TaskCell:
     fg_check_expand: Colour = Colour("676555")
     active_fg_check_expand: Colour = Colour("676555").darken(0.1)
 
-    is_expanded: bool = False
+    is_expanded: bool = None
 
     fmt_task_due_date_long: str = "%Y-%m-%d %H:%M"
     fmt_task_due_date_short: str = lambda x: hours_until(x, rtype="h")
@@ -328,6 +336,7 @@ class TaskCell:
     tag_text_name: int = None
     tag_text_due: int = None
     tag_text_state: int = None
+    tv_check_expanded: tkinter.BooleanVar = None
 
     # default_proportion, min_size, max_size
     # check, status, #, name, due, hrs
@@ -337,6 +346,20 @@ class TaskCell:
     p_width_name = (0.40, 50, 300)
     p_width_due = (0.2, 50, 300)
     p_width_hrs = (0.2, 50, 300)
+
+    def init(self, root: tkinter.Tk):
+
+        if (attrs := self.task.tkinter_attrs) is not None:
+            for ak, av in attrs.items():
+                self.__setattr__(ak, eval(av))
+
+        print(f"{self.is_expanded=}, {type(self.is_expanded)=}")
+
+        if self.is_expanded is None:
+            # print(f"{self.task.idn=} ie NONE")
+            self.is_expanded = tkinter.BooleanVar(root, value=False)
+        elif not isinstance(self.is_expanded, tkinter.BooleanVar):
+            self.is_expanded = tkinter.BooleanVar(root, value=self.is_expanded)
 
 
 class TLSettings(tkinter.Toplevel):
@@ -561,21 +584,22 @@ class TLSettings(tkinter.Toplevel):
 
             r, c, rs, cs, ix, iy, x, y, s = grid_keys()
 
+            k = "default_value"
             match widget:
                 case "slider":
-                    v = kwargs["default_value"]
+                    v = kwargs[k]
                     if v == "d":
-                        kwargs["default_value"] = "Days"
+                        kwargs[k] = "Days"
                     if v == "h":
-                        kwargs["default_value"] = "Hours"
+                        kwargs[k] = "Hours"
                     if v == "m":
-                        kwargs["default_value"] = "Minutes"
+                        kwargs[k] = "Minutes"
                     if v == "s":
-                        kwargs["default_value"] = "Seconds"
+                        kwargs[k] = "Seconds"
                     if v == "t":
-                        kwargs["default_value"] = "Minimum"
+                        kwargs[k] = "Minimum"
                     if v == "tt":
-                        kwargs["default_value"] = "Total"
+                        kwargs[k] = "Total"
                     widget = TLSettings.OptionSlider(fw, **kwargs)
                 case _:
                     raise ValueError(f"Error, unsure what to do with widget entry '{widget}'.")
@@ -840,7 +864,8 @@ class App(tkinter.Tk):
                     "width": self.settings_s_width
                 },
                 "value": None,
-                "func": self.expand_task
+                "func": lambda v_, init_pass: self.expand_task(value=v_, init_pass=init_pass),  # if func accepts ANY parameters EXCEPT 'init_pass', they must be defined as the args value.
+                "args": [lambda v_: yes_no_to_bool(v_)]  # args MUST accept the settings value retrieved from json file as ONE-AND-ONLY parameter.
             },
             "Due-date time units": {
                 "desc": "Days, Hours, Minutes, Seconds, Total, Min",
@@ -851,7 +876,7 @@ class App(tkinter.Tk):
                     "width": self.settings_s_width
                 },
                 "value": None,
-                "func": self.set_due_date_units
+                "func": lambda init_pass: self.set_due_date_units(init_pass=init_pass)
             }
         }
 
@@ -863,13 +888,16 @@ class App(tkinter.Tk):
 
         for k, t in self.threads.items():
             t.join()
+        for t in self.tasks:
+            t.init(self)
 
         self.init_tasks()
         self.grid_init()
 
         if self.found_settings:
             print(f"Loaded settings!")
-            self.apply_settings()
+            print(f"{self.settings=}")
+            self.apply_settings(init_pass=True)
 
         self.protocol_oc = self.protocol("WM_DELETE_WINDOW", self.on_close)
         self.after(1000, self.task_timer)
@@ -929,12 +957,20 @@ class App(tkinter.Tk):
                     # res = {str(i): jsonify(t.task.json_entry()) for i, t in enumerate(self.tasks)}
                     # res = {str(i): t.task.json_entry() for i, t in enumerate(self.tasks)}
                     tsks = dict(sett)
-                    tsks.update({str(i): t.task.json_entry() for i, t in enumerate(self.tasks)})
-                    res = jsonify(tsks, in_line=0)
-                    print("XX" + jsonify({str(i): t.task.json_entry() for i, t in enumerate(self.tasks)}, in_line=0))
+                    # tsks.update({str(i): t.task.json_entry() for i, t in enumerate(self.tasks)})
+                    # res = jsonify(tsks, in_line=0)
+                    # print("XX" + jsonify({str(i): t.task.json_entry() for i, t in enumerate(self.tasks)}, in_line=0))
                     # print(f"{res=}")
                     # res =
                     # json.dump(res, f)
+
+                    for i, t in enumerate(self.tasks):
+                        j = t.task.json_entry()
+                        j.update({"is_expanded": t.is_expanded})
+                        tsks.update({str(i): j})
+
+                    res = jsonify(tsks, in_line=False)
+
                     f.write(res)
                     print(f"{res=}")
         self.destroy()
@@ -965,7 +1001,7 @@ class App(tkinter.Tk):
         x, y, tw, th = 0, 0, self.width_task_cell, self.height_task_cell
         mh, mv = self.margin_task_horizontal, self.margin_task_vertical
         for i, t in enumerate(self.tasks):
-            th_ = the if t.is_expanded else th
+            th_ = the if t.is_expanded.get() else th
             bbox = x + mh + mh, y + (mv if i == 0 else 0), x + tw - (1 * mh), y + th_ - (1 * mv)
             self.draw_task(t, bbox)
             y += th_
@@ -975,7 +1011,7 @@ class App(tkinter.Tk):
         x, y, tw, th = 0, 0, self.width_task_cell, self.height_task_cell
         mh, mv = self.margin_task_horizontal, self.margin_task_vertical
         n_prev = len(self.tasks)
-        n_reg = len([t for t in self.tasks if not t.is_expanded])
+        n_reg = len([t for t in self.tasks if not t.is_expanded.get()])
         n_exp = n_prev - n_reg
         # y += ((n_reg * th) + (max(0, n_reg - 2) * mv)) + (n_exp * the)
         y += ((n_reg * th) + (n_exp * the))
@@ -993,7 +1029,7 @@ class App(tkinter.Tk):
         mh, mv = self.margin_task_horizontal, self.margin_task_vertical
         n_prev = start
         # n_prev = len(self.tasks[:start])
-        n_reg = len([t for t in self.tasks[:start] if not t.is_expanded])
+        n_reg = len([t for t in self.tasks[:start] if not t.is_expanded.get()])
         n_exp = n_prev - n_reg
         # y += ((n_reg * th) + (max(0, n_reg - 2) * mv)) + (n_exp * the)
         y += ((n_reg * th) + (n_exp * the))
@@ -1003,7 +1039,7 @@ class App(tkinter.Tk):
             c_acfi = t.active_fill.hex_code
             c_acou = t.active_outline.hex_code
 
-            th_ = the if t.is_expanded else th
+            th_ = the if t.is_expanded.get() else th
             bbox = x + mh + mh, y + (mv if start + i == 0 else 0), x + tw - (1 * mh), y + th_ - (1 * mv)
             # self.canvas.moveto(t.tag, *bbox[:2])
             self.canvas.coords(t.tag, *bbox)
@@ -1059,7 +1095,7 @@ class App(tkinter.Tk):
         text_name = task_in.task.text[:25]
         text_status = task_in.task.state.value[2]
 
-        check_box_f = checkbox_factory(self.canvas, buttons=[""], default_values=[task_in.is_expanded])
+        check_box_f = checkbox_factory(self.canvas, buttons=[""], default_values=[task_in.is_expanded.get()])
         # print(f"{check_box_f=}")
         tv_check_box, check_box = check_box_f
         tv_check_box, check_box = tv_check_box[0], check_box[0]
@@ -1180,20 +1216,22 @@ class App(tkinter.Tk):
             "h_hrs": h_hrs
         }
 
-    def expand_task(self, task: TaskCell = None, value=None):
+    def expand_task(self, task: TaskCell = None, value=None, init_pass=False):
         if task is None:
             for t in self.tasks:
-                print(f"A {t.is_expanded=}")
-                t.is_expanded = (not t.is_expanded) if (value is None) else value
-                print(f"B {t.is_expanded=}")
-                t.tv_check_expanded.set(t.is_expanded)
+                ie = t.is_expanded.get()
+                print(f"A {t.task.idn=}, {ie=}, {value=}, {init_pass=}")
+                t.is_expanded.set(ie if init_pass else ((not ie) if (value is None) else value))
+                print(f"B {t.task.idn=},  {ie=}, {value=}, {init_pass=}")
+                t.tv_check_expanded.set(ie)
             idx = 0
         else:
             # print(f"{task=}")
-            print(f"A {task.is_expanded=}")
-            task.is_expanded = (not task.is_expanded) if (value is None) else value
-            print(f"B {task.is_expanded=}")
-            task.tv_check_expanded.set(task.is_expanded)
+            ie = task.is_expanded.get()
+            print(f"A {task.task.idn=}, {ie=}, {value=}, {init_pass=}")
+            task.is_expanded.set(ie if not init_pass else ((not ie) if (value is None) else value))
+            print(f"B {task.task.idn=}, {ie=}, {value=}, {init_pass=}")
+            task.tv_check_expanded.set(not ie)
             idx = self.tasks.index(task)
             # print(f"double click: {idx=}")
 
@@ -1236,7 +1274,10 @@ class App(tkinter.Tk):
                                 raw_task_data.get("attachments"),
                                 eval(raw_task_data.get("date_created")),
                                 eval(raw_task_data.get("date_created_og")),
-                                eval(raw_task_data.get("due_date_og"))
+                                eval(raw_task_data.get("due_date_og")),
+                                tkinter_attrs={
+                                    "is_expanded": raw_task_data.get("is_expanded")
+                                }
                             )))
 
             except FileNotFoundError:
@@ -1264,13 +1305,22 @@ class App(tkinter.Tk):
             f.close()
         print(f"Task file creation successful.")
 
-    def apply_settings(self):
+    def apply_settings(self, init_pass=False):
         print(f"Apply settings")
         for k, v in self.settings.items():
             print(f"{k=}, {v=}")
             if v["value"] is not None:
-                print(f"Apply {k=}")
-                v["func"]()
+                print(f"Apply {k=}", end="")
+                args = v.get("args")
+                if args:
+                    print(f" with args")
+                    r_args = []
+                    for a in args:
+                        r_args.append(a(v["value"]))
+                    v["func"](*r_args, init_pass=init_pass)
+                else:
+                    print(f" without args")
+                    v["func"](init_pass=init_pass)
             else:
                 print(f"skipped {k=}")
 
@@ -1384,6 +1434,7 @@ class App(tkinter.Tk):
 
     def show_settings_menu(self):
         s_width = 600
+        print(f"{self.settings=}")
         self.tl_settings = TLSettings(self, self.settings)
         self.tl_settings.protocol("WM_DELETE_WINDOW", self.tl_settings_on_close)
         self.wait_window(self.tl_settings)
@@ -1394,6 +1445,7 @@ class App(tkinter.Tk):
         for k, w in zip(self.tl_settings.settings, self.tl_settings.widgets):
             print(f"{k=}: {w.value.get()=}")
             self.settings[k]["value"] = w.value.get()
+            self.settings[k]["kwargs"]["default_value"] = w.value.get()
         self.apply_settings()
         self.found_settings = True
         self.tl_settings.destroy()
@@ -1409,7 +1461,7 @@ class App(tkinter.Tk):
 
         self.showing_input_form.set(not showing)
 
-    def set_due_date_units(self):
+    def set_due_date_units(self, init_pass=None):
         v = self.settings["Due-date time units"]["value"]
         print(f"{v=}")
 

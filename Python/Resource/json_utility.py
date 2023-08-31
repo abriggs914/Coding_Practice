@@ -1,4 +1,5 @@
 import datetime
+import tkinter
 from typing import Any
 
 
@@ -9,8 +10,8 @@ from typing import Any
 VERSION = \
     """	
     General JSON Centered Utility Functions
-    Version..............1.01
-    Date...........2023-08-17
+    Version..............1.02
+    Date...........2023-08-29
     Author(s)....Avery Briggs
     """
 
@@ -72,6 +73,19 @@ def jsonify(value: Any, t_depth: int = 0, in_line: bool = True) -> str:
     elif isinstance(value, datetime.datetime):
         y, n, d, h, m, s = value.year, value.month, value.day, value.hour, value.minute, value.second
         return f"\"datetime.datetime({', '.join(map(str, [y, n, d, h, m, s]))})\""
+
+    if isinstance(value, tkinter.Variable):
+        if isinstance(value, tkinter.BooleanVar):
+            return f"\"tkinter.BooleanVar(value={jsonify(value.get())})\""
+        elif isinstance(value, tkinter.IntVar):
+            return f"\"tkinter.IntVar(value={jsonify(value.get())})\""
+        elif isinstance(value, tkinter.DoubleVar):
+            return f"\"tkinter.DoubleVar(value={jsonify(value.get())})\""
+        elif isinstance(value, tkinter.StringVar):
+            return f"\"tkinter.StringVar(value={jsonify(value.get())})\""
+        else:
+            return f"\"tkinter.Variable(value={jsonify(value.get())})\""
+
     elif isinstance(value, str):
         return f"\"{value}\""
     elif hasattr(value, "__repr__"):

@@ -1,7 +1,7 @@
 {
     "settings_data": {
-        "Auto-expand tasks on application open:": "Yes",
-        "Due-date time units": "Days"
+        "Auto-expand tasks on application open:": "No",
+        "Due-date time units": "Minimum"
     },
     "0": {
         "idn": 0,
@@ -15,7 +15,8 @@
         "priority": "3",
         "attachments": [
             
-        ]
+        ],
+        "is_expanded": "tkinter.BooleanVar(value=False)"
     },
     "1": {
         "idn": 1,
@@ -29,7 +30,8 @@
         "priority": "9",
         "attachments": [
             
-        ]
+        ],
+        "is_expanded": "tkinter.BooleanVar(value=False)"
     },
     "2": {
         "idn": 2,
@@ -43,7 +45,8 @@
         "priority": "3",
         "attachments": [
             
-        ]
+        ],
+        "is_expanded": "tkinter.BooleanVar(value=False)"
     },
     "3": {
         "idn": 3,
@@ -57,7 +60,8 @@
         "priority": "0",
         "attachments": [
             
-        ]
+        ],
+        "is_expanded": "tkinter.BooleanVar(value=False)"
     },
     "4": {
         "idn": 4,
@@ -71,7 +75,8 @@
         "priority": "1",
         "attachments": [
             
-        ]
+        ],
+        "is_expanded": "tkinter.BooleanVar(value=False)"
     },
     "5": {
         "idn": 5,
@@ -85,6 +90,7 @@
         "priority": "0",
         "attachments": [
             
-        ]
+        ],
+        "is_expanded": "tkinter.BooleanVar(value=False)"
     }
 }
