@@ -485,7 +485,7 @@ class ThemePublisher(tkinter.Tk):
     def combo_update(self, var_name, index, mode, *rest):
         print(f"combo_update")
         message = ""
-        # print(f"{var_name=}, {index=}, {mode=}, {rest=}")
+        # print(f"{var_name=}, {index=}, {game_mode=}, {rest=}")
         if var_name == "tv_combo_1":
             self.tv_combo_choice_2.set("")
             self.tv_combo_choice_3.set("")

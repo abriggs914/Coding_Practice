@@ -543,10 +543,10 @@ class PlotFrame(tkinter.Frame):
 
 
     # def update_check_boxes(self, *args):
-    #     var, x, mode = args
+    #     var, x, game_mode = args
     #     text = self.cb_lookup[f"text_{var}"]
     #     l = self.max_chart_elements - len(self.selected_queue)
-    #     print(f"\n{var=}, {text=}, {type(var)=}\n{x=}, {type(x)=}\n{mode=}, {type(mode)=}\n{l=}")
+    #     print(f"\n{var=}, {text=}, {type(var)=}\n{x=}, {type(x)=}\n{game_mode=}, {type(game_mode)=}\n{l=}")
     #
     #     val = self.getvar(var)
     #
@@ -649,10 +649,10 @@ class PlotFrame(tkinter.Frame):
         # fig, ax = plt.subplots()
         #
         # # alpha
-        # if mode == "alpha":
+        # if game_mode == "alpha":
         #     show_names, data_points = [list(x) for x in
         #                                zip(*sorted(zip(show_names, data_points), key=itemgetter(0), reverse=reverse))]
-        # elif mode == "value":
+        # elif game_mode == "value":
         #     data_points, show_names = [list(x) for x in
         #                                zip(*sorted(zip(data_points, show_names), key=itemgetter(0), reverse=reverse))]
         # # data_points, show_names = [list(x) for x in zip(*sorted(zip(data_points, show_names), key=itemgetter(0)))]
@@ -709,7 +709,7 @@ class PlotFrame(tkinter.Frame):
     # print(data_series_by_minutes)
     # show_graph(
     #     data_series_by_minutes,
-    #     mode="value" if self.tv_sort_style.get() == "by value" else "alpha",
+    #     game_mode="value" if self.tv_sort_style.get() == "by value" else "alpha",
     #     reverse=self.tv_sort_direction.get() == "descending",
     #     title="Shows by length in minutes",
     #     xlabel="time (mins)",
@@ -765,7 +765,7 @@ if __name__ == '__main__':
     # # print(data_series_by_episodes)
     # # show_graph(
     # #     data_series_by_episodes,
-    # #     mode="value",
+    # #     game_mode="value",
     # #     reverse=True,
     # #     title="Shows by number of episodes",
     # #     xlabel="# episodes",
@@ -777,7 +777,7 @@ if __name__ == '__main__':
     # # print(data_series_by_seasons)
     # # show_graph(
     # #     data_series_by_seasons,
-    # #     mode="value",
+    # #     game_mode="value",
     # #     reverse=True,
     # #     title="Shows by number of seasons",
     # #     xlabel="# seasons",

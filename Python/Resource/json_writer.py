@@ -129,7 +129,7 @@ class JSONWriter:
         # safe_leave = False
         # if self.safe:
         #     if not self.app_state.started:
-        #         print("WARNING wrinting has begun in safe mode without calling \'start()\' on this file.")
+        #         print("WARNING wrinting has begun in safe game_mode without calling \'start()\' on this file.")
         #         typ = type(value)
         #         obj = False
         #         single = True
@@ -157,7 +157,7 @@ class JSONWriter:
 
     def set_safe(self, value):
         if self._safe is not None:
-            raise self.StateException("Error cannot alter \'safe\' mode after creation.")
+            raise self.StateException("Error cannot alter \'safe\' game_mode after creation.")
         self._safe = value
 
     def del_string(self):

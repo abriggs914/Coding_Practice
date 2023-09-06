@@ -11,7 +11,7 @@ class FormOperator(Form):
         super().__init__(callback)
 
         self.known_operators = operators_in
-        self.known_ctus = list(set([op.country for op in self.known_operators]))
+        self.known_ctus = list(set([op.ctu for op in self.known_operators]))
 
         self.frame_radios = tkinter.Frame(self)
         self.frame_atk_def = tkinter.Frame(self.frame_radios)

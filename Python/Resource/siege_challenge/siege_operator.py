@@ -1,11 +1,12 @@
 
 class Operator:
-    def __init__(self, name, ctu, atk_def, sex, colours=None):
+    def __init__(self, name, ctu, atk_def, sex, colours=None, country=None):
         self.name = name
         self.ctu = ctu
         self.atk_def = atk_def
         self.sex = sex
         self.colours = colours
+        self.country = country
 
     def to_json(self):
         return {

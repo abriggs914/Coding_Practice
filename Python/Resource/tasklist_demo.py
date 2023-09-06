@@ -336,6 +336,7 @@ class TaskCell:
     tag_text_name: int = None
     tag_text_due: int = None
     tag_text_state: int = None
+    check_expanded: tkinter.Checkbutton = None
     tv_check_expanded: tkinter.BooleanVar = None
 
     # default_proportion, min_size, max_size
@@ -1132,6 +1133,7 @@ class App(tkinter.Tk):
             task_in.bbox = bbox
         task_in.tag = tag_rect
         task_in.tv_check_expanded = tv_check_box
+        task_in.check_expanded = check_box
         task_in.tag_text_check = tag_check
         task_in.tag_text_name = tag_name
         task_in.tag_text_due = tag_due
@@ -1220,17 +1222,17 @@ class App(tkinter.Tk):
         if task is None:
             for t in self.tasks:
                 ie = t.is_expanded.get()
-                print(f"A {t.task.idn=}, {ie=}, {value=}, {init_pass=}")
+                print(f"A {t.task.idn=}, {ie=}, {value=}, tv={t.tv_check_expanded.get()}, {init_pass=}")
                 t.is_expanded.set(ie if init_pass else ((not ie) if (value is None) else value))
-                print(f"B {t.task.idn=},  {ie=}, {value=}, {init_pass=}")
+                print(f"B {t.task.idn=},  {ie=}, {value=}, tv={t.tv_check_expanded.get()}, {init_pass=}")
                 t.tv_check_expanded.set(ie)
             idx = 0
         else:
             # print(f"{task=}")
             ie = task.is_expanded.get()
-            print(f"A {task.task.idn=}, {ie=}, {value=}, {init_pass=}")
-            task.is_expanded.set(ie if not init_pass else ((not ie) if (value is None) else value))
-            print(f"B {task.task.idn=}, {ie=}, {value=}, {init_pass=}")
+            print(f"A {task.task.idn=}, {ie=}, {value=}, tv={task.tv_check_expanded.get()}, {init_pass=}")
+            task.is_expanded.set(ie if init_pass else ((not ie) if (value is None) else value))
+            print(f"B {task.task.idn=}, {ie=}, {value=}, tv={task.tv_check_expanded.get()}, {init_pass=}")
             task.tv_check_expanded.set(not ie)
             idx = self.tasks.index(task)
             # print(f"double click: {idx=}")
@@ -1238,9 +1240,12 @@ class App(tkinter.Tk):
         self.redraw_tasks(idx)
 
     def click_checkbox_expand(self, event, task: TaskCell):
+        print(f"by check")
+        task.tv_check_expanded.set(not task.tv_check_expanded.get())
         self.expand_task(task)
 
     def dbl_click_task(self, event, task: TaskCell):
+        print(f"by click")
         self.expand_task(task)
 
     def load_tasks(self):

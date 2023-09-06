@@ -168,7 +168,7 @@ def median(lst):
 
 def mode(lst):
     if not isinstance(lst, list) and not isinstance(lst, str):
-        raise TypeError("Cannot find mode of \"{}\" of type: \"{}\".".format(lst, type(lst)))
+        raise TypeError("Cannot find game_mode of \"{}\" of type: \"{}\".".format(lst, type(lst)))
     d = {}
     mv = float("-inf")
     for el in lst:

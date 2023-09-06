@@ -222,15 +222,15 @@ fajjspjf = 10
 
 # class GridManager:
 #
-#     def __init__(self, root, mode: Literal["superimpose", "wrap"], wrap_dir: Literal["vertical", "horizontal"]="vertical"):
+#     def __init__(self, root, game_mode: Literal["superimpose", "wrap"], wrap_dir: Literal["vertical", "horizontal"]="vertical"):
 #
-#         assert mode in ["superimpose", "wrap"], f"Error param 'mode' must be one of 'wrap' or 'superimpose'. GOT '{mode}'"
-#         self.mode = mode
+#         assert game_mode in ["superimpose", "wrap"], f"Error param 'game_mode' must be one of 'wrap' or 'superimpose'. GOT '{game_mode}'"
+#         self.game_mode = game_mode
 #
 #         assert wrap_dir in ["vertical", "horizontal"], f"Error param 'wrap_dir' must be one of 'vertical' or 'horizontal'. GOT '{wrap_dir}'"
 #         self.wrap_dir = wrap_dir
 #
-#         print(f"NEW GM {self.mode=}, {self.wrap_dir=}")
+#         print(f"NEW GM {self.game_mode=}, {self.wrap_dir=}")
 #
 #         self.root = root
 #
@@ -272,7 +272,7 @@ fajjspjf = 10
 #             ixp = None
 #             iyp = None
 #             st = None
-#             row_count = self.row_idx if self.mode == "wrap" else 0
+#             row_count = self.row_idx if self.game_mode == "wrap" else 0
 #             c_off = self._col_idx
 #             mc = 0
 #             if self.wrap_dir == "horizontal":
@@ -325,7 +325,7 @@ fajjspjf = 10
 #                             col_count += cs
 #                             ci += (col_count - 1)
 #
-#                         # if self.mode == "superimpose":
+#                         # if self.game_mode == "superimpose":
 #                         #
 #                         # else:
 #                         #     # wrap
@@ -761,7 +761,7 @@ class GridManager:
 
     def __init__(self, root, mode: Literal["superimpose", "wrap"], wrap_dir: Literal["vertical", "horizontal"]="vertical"):
 
-        assert mode in ["superimpose", "wrap"], f"Error param 'mode' must be one of 'wrap' or 'superimpose'. GOT '{mode}'"
+        assert mode in ["superimpose", "wrap"], f"Error param 'game_mode' must be one of 'wrap' or 'superimpose'. GOT '{mode}'"
         self.mode = mode
 
         assert wrap_dir in ["vertical", "horizontal"], f"Error param 'wrap_dir' must be one of 'vertical' or 'horizontal'. GOT '{wrap_dir}'"
@@ -863,7 +863,7 @@ class GridManager:
                             col_count += cs
                             # ci += (col_count - 1)
 
-                        # if self.mode == "superimpose":
+                        # if self.game_mode == "superimpose":
                         #
                         # else:
                         #     # wrap

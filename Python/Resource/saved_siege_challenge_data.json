@@ -1,1 +1,65 @@
-{"known_operators": [{"name": "Sledge", "ctu": "SAS", "sex": "Male", "atk_def": "attacker"}, {"name": "Thatcher", "ctu": "SAS", "sex": "Male", "atk_def": "attacker"}, {"name": "Ash", "ctu": "FBI", "sex": "Female", "atk_def": "attacker"}, {"name": "Thermite", "ctu": "FBI", "sex": "Male", "atk_def": "attacker"}], "known_maps": [{"name": "Yacht", "country": "Canada", "num_floors": 4}]}
+{
+    "known_operators": [
+        {
+            "name": "Sledge",
+            "ctu": "SAS",
+            "sex": "Male",
+            "atk_def": "attacker"
+        },
+        {
+            "name": "Thatcher",
+            "ctu": "SAS",
+            "sex": "Male",
+            "atk_def": "attacker"
+        },
+        {
+            "name": "Ash",
+            "ctu": "FBI",
+            "sex": "Female",
+            "atk_def": "attacker"
+        },
+        {
+            "name": "Thermite",
+            "ctu": "FBI",
+            "sex": "Male",
+            "atk_def": "attacker"
+        },
+        {
+            "name": "Twitch",
+            "ctu": "GIGN",
+            "sex": "Female",
+            "atk_def": "attacker"
+        },
+        {
+            "name": "Montagne",
+            "ctu": "GIGN",
+            "sex": "Male",
+            "atk_def": "attacker"
+        },
+        {
+            "name": "Glaz",
+            "ctu": "Spetsnaz",
+            "sex": "Male",
+            "atk_def": "attacker"
+        },
+        {
+            "name": "Fuze",
+            "ctu": "Spetsnaz",
+            "sex": "Male",
+            "atk_def": "attacker"
+        },
+        {
+            "name": "Smoke",
+            "ctu": "SAS",
+            "sex": "Male",
+            "atk_def": "defender"
+        }
+    ],
+    "known_maps": [
+        {
+            "name": "Yacht",
+            "country": "Canada",
+            "num_floors": 4
+        }
+    ]
+}

@@ -1,5 +1,6 @@
 import json
 
+from json_utility import jsonify
 from siege_challenge.form_map import FormMap
 from siege_challenge.form_operator import FormOperator
 from siege_challenge.siege_map import Map
@@ -7,11 +8,11 @@ from siege_challenge.siege_operator import Operator
 from tkinter_utility import *
 
 
-# mode 1
+# game_mode 1
 # every operator in order
 # pick Map, Atk/Def, then op
 
-# mode 2
+# game_mode 2
 # every operator random
 # pick Map, Atk/Def, then op
 
@@ -31,11 +32,13 @@ class App(tkinter.Tk):
         self.df_attackers = pandas.DataFrame(columns=["Name", "CTU", "Sex", "Completed"])
         self.df_defenders = pandas.DataFrame(columns=["Name", "CTU", "Sex", "Completed"])
         self.df_maps = pandas.DataFrame(columns=["Name", "Country", "Num Floors", "Completed"])
+        self.df_games = pandas.DataFrame(columns=["Date", "Mode", "Rnds", "Res", "Map"])
 
         self.load_data()
 
         self.tl_form_operator = None
         self.tl_form_map = None
+        self.tl_form_game = None
         self.tv_btn_new_op,\
             self.btn_new_op = \
             button_factory(
@@ -52,6 +55,14 @@ class App(tkinter.Tk):
                 command=self.click_new_map
             )
 
+        self.tv_btn_new_game,\
+            self.btn_new_game = \
+            button_factory(
+                self,
+                tv_btn="New Game",
+                command=self.click_new_game
+            )
+
         self.tv_btn_save,\
             self.btn_save = \
             button_factory(
@@ -62,6 +73,7 @@ class App(tkinter.Tk):
 
         self.frame_operators = tkinter.Frame(self)
         self.frame_maps = tkinter.Frame(self)
+        self.frame_games = tkinter.Frame(self)
         self.frame_attackers = tkinter.Frame(self.frame_operators)
         self.frame_defenders = tkinter.Frame(self.frame_operators)
         print(f"{self.list_defenders=}")
@@ -121,6 +133,21 @@ class App(tkinter.Tk):
             exhaustive_filtering=True
         )
 
+        self.mc_games = MultiComboBox(
+            self.frame_games,
+            data=self.df_games,
+            tv_label="Games:",
+            # lock_result_col="Name",
+            allow_insert_ask=False,
+            limit_to_list=False,
+            include_aggregate_row=False,
+            drop_down_is_clicked=True,
+            include_searching_widgets=0,
+            viewable_column_widths=[100, 75, 50]
+            # ,
+            # exhaustive_filtering=True
+        )
+
         # self.count_down_timer = CountDownTimer()
 
         # self.res_tv_lbl_lst_atk, \
@@ -154,6 +181,7 @@ class App(tkinter.Tk):
 
         self.frame_operators.pack(side=tkinter.LEFT)
         self.frame_maps.pack(side=tkinter.LEFT)
+        self.frame_games.pack(side=tkinter.LEFT)
         self.frame_attackers.pack(side=tkinter.TOP)
         self.frame_defenders.pack(side=tkinter.TOP)
         # self.res_lbl_lst_atk.pack()
@@ -210,6 +238,14 @@ class App(tkinter.Tk):
         self.tl_form_map.protocol("WM_DELETE_WINDOW", self.close_form_map)
         self.tl_form_map.grab_set()
 
+    def click_new_game(self, event=None):
+        self.tl_form_game = FormGame(self.list_maps, self.close_form_game)
+        self.tl_form_game.protocol("WM_DELETE_WINDOW", self.close_form_game)
+        self.tl_form_game.grab_set()
+
+    def close_form_game(self):
+        pass
+
     def close_form_operator(self, event=None):
         assert isinstance(self.tl_form_operator, FormOperator)
         new_status = self.tl_form_operator.tv_status.get()
@@ -262,7 +298,8 @@ class App(tkinter.Tk):
         data["known_maps"] = [m.to_json() for m in self.list_maps]
 
         with open(file, "w") as f:
-            json.dump(data, f)
+            # json.dump(data, f)
+            f.write(jsonify(data, in_line=False))
 
     def close_app(self):
         self.save()

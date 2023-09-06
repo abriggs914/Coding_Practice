@@ -44,12 +44,12 @@ if __name__ == '__main__':
 
     #
     #
-    # gps = gps(mode=WATCH_ENABLE)
+    # gps = gps(game_mode=WATCH_ENABLE)
     # lock = False
     # while not lock:
     #     report = gps.next()
     #     # 3D Fix
-    #     if report['class'] == 'TPV' and report['mode'] == 3:
+    #     if report['class'] == 'TPV' and report['game_mode'] == 3:
     #         print(report.lon)
     #         print(report.lat)
     #         print(report.alt)

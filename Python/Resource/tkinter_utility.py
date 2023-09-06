@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.61
-    Date...........2023-08-28
+    Version..............1.62
+    Date...........2023-09-06
     Author(s)....Avery Briggs
     """
 
@@ -1185,7 +1185,7 @@ class Slider(tkinter.Frame):
 #         print(f"update_colour_entry {args=}")
 #         # self.
 #
-#     def update_colour(self, var_name, index, mode):
+#     def update_colour(self, var_name, index, game_mode):
 #         print(f"update_colour")
 #         try:
 #             r = self.slider_red.value.get()
@@ -2503,7 +2503,7 @@ class MultiComboBox(tkinter.Frame):
                         else:
                             [tags.add(tag) for tag in rest_tags]
                 else:
-                    tags = [self.gen_cell_tag(i, j) for j in range(len(cn))]
+                    tags = [self.tree_controller.gen_cell_tag(i, j) for j in range(len(cn))]
 
                 if isinstance(rest_values, list) or isinstance(rest_values, tuple):
                     row = list(rest_values)
@@ -2799,7 +2799,7 @@ class ArrowButton(tkinter.Canvas):
         self.configure(width=20, height=20, background=rgb_to_hex("GRAY_62"))
 
         self.draw_arrow()
-        # print(f"=={mode=} :: ({x1}, {y1}), ({x2}, {y2})")
+        # print(f"=={game_mode=} :: ({x1}, {y1}), ({x2}, {y2})")
         self.bind("<Button-1>", self.click_canvas_button)
 
     def validate_mode(self, mode):
@@ -3021,7 +3021,7 @@ class ToggleButton(tkinter.Frame):
         )
 
         if not self.switch_mode.get():
-            # print(f"init NOT switch mode")
+            # print(f"init NOT switch game_mode")
             self.labels = labels  # (True part, False part)
             lbl_on, lbl_off = self.labels
             self.text_off = self.canvas.create_text(self.width * 0.25, self.height / 2, text=lbl_off,
@@ -3029,7 +3029,7 @@ class ToggleButton(tkinter.Frame):
             self.text_on = self.canvas.create_text(self.width * 0.75, self.height / 2, text=lbl_on,
                                                    fill=self.colour_fg_true, font=self.labels_font)
         else:
-            # print(f"init switch mode")
+            # print(f"init switch game_mode")
             x1, y1, x2, y2 = \
                 o_x1 * 0.5, \
                 o_y1 * 0.35, \
@@ -3168,11 +3168,11 @@ class ToggleButton(tkinter.Frame):
             )
 
             if not self.switch_mode.get():
-                # print(f"update NOT switch mode")
+                # print(f"update NOT switch game_mode")
                 self.canvas.itemconfigure(self.text_on, fill=fg_colour)
                 self.canvas.itemconfigure(self.text_off, fill=fg_colour)
             else:
-                # print(f"update switch mode")
+                # print(f"update switch game_mode")
                 x, y = self.switch_positions[i]
                 self.canvas.moveto(self.switch_btn, x=x, y=y)
                 self.canvas.itemconfigure(self.switch_btn, outline=fg_colour, fill=switch_colour)

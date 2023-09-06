@@ -700,7 +700,7 @@ def test_multi_combo_factory():
     # sv_lbl_1, lbl_1, sv_cb_1, cb_1 = combo_factory(WIN, tv_label="Dealer", kwargs_combo={"values": dealers})
     # sv_lbl_2, lbl_2, sv_cb_2, cb_2 = combo_factory(WIN, tv_label="Colour", kwargs_combo={"values": colours})
     #
-    # def new_dealer(var_name, index, mode):
+    # def new_dealer(var_name, index, game_mode):
     #     d = sv_cb_1.get()
     #     c = sv_cb_2.get()
     #     if c and d:
@@ -711,7 +711,7 @@ def test_multi_combo_factory():
     #         else:
     #             print(f"removing colour from dealer {d=}")
     #
-    # def new_colour(var_name, index, mode):
+    # def new_colour(var_name, index, game_mode):
     #     d = sv_cb_1.get()
     #     c = sv_cb_2.get()
     #     if c and d:

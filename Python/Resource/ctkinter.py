@@ -244,7 +244,7 @@ class CButton:
 
     def _change_color(self, leave):
         """
-        :param leave: when ture: change the color, when false set transparency mode
+        :param leave: when ture: change the color, when false set transparency game_mode
         :                           -> change the color when moving the mouse over it
         """
         if not leave:

@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.78
-    Date...........2023-08-02
+    Version..............1.79
+    Date...........2023-09-05
     Author(s)....Avery Briggs
     """
 
@@ -170,7 +170,7 @@ def median(lst):
 
 def mode(lst):
     if not isinstance(lst, list) and not isinstance(lst, str):
-        raise TypeError("Cannot find mode of \"{}\" of type: \"{}\".".format(lst, type(lst)))
+        raise TypeError("Cannot find game_mode of \"{}\" of type: \"{}\".".format(lst, type(lst)))
     d = {}
     mv = float("-inf")
     for el in lst:
@@ -2005,6 +2005,35 @@ def get_windows_user(EXTENDED_NAME_FORMAT: int = 3):
 
 def get_largest_monitors():
     return sorted(get_monitors(), key=lambda m: (-m.width_mm, m.width_mm * m.height_mm))
+
+
+def number_suffix(n):
+    if not isnumber(n):
+        raise ValueError(f"Error cannot determine suffix for non-number input '{n}'")
+    if isinstance(n, str) and n.count(".") != 0:
+        raise ValueError(f"Error cannot determine suffix for non-integer input '{n}'")
+    if not isinstance(n, str):
+        n = str(n)
+    # if len(n) < 2:
+    #     n = f"0{n}"
+    if n[-1] == "1":
+        res = "st"
+        if len(n) > 1:
+            if n[-2] == "1":
+                res = "th"
+    elif n[-1] == "2":
+        res = "nd"
+        if len(n) > 1:
+            if n[-2] == "1":
+                res = "th"
+    elif n[-1] == "3":
+        res = "rd"
+        if len(n) > 1:
+            if n[-2] == "1":
+                res = "th"
+    else:
+        res = "th"
+    return res
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

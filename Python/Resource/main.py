@@ -2099,7 +2099,7 @@ def test_pdf():
 
     fn = r"C:\Users\ABriggs\Downloads\2023-04 LASER AMP 244246 PO 140194 POSTED.pdf"
 
-    # open the PDF file in binary mode
+    # open the PDF file in binary game_mode
     with open(fn, 'rb') as f:
         # create a PDF reader object
         pdf_reader = PyPDF2.PdfFileReader(f)
@@ -2149,7 +2149,7 @@ def test_pdf():
 # async def process_pdf(fn):
 #     # fn = r"C:\Users\ABriggs\Downloads\2023-04 LASER AMP 244246 PO 140194 POSTED.pdf"
 #
-#     # open the PDF file in binary mode
+#     # open the PDF file in binary game_mode
 #     with open(fn, 'rb') as f:
 #         # create a PDF reader object
 #         pdf_reader = PyPDF2.PdfFileReader(f)
@@ -2288,7 +2288,7 @@ def test_pdf():
 #             qty = int(qty_part_number[:idx][:-5])
 #             print(f"{qty=}, {part_number=}, {int(rev)=}, {money_value(price)=}, {money_value(amount)=}")
 #
-#     # # open the PDF file in binary mode
+#     # # open the PDF file in binary game_mode
 #     # with open(fn, 'rb') as f:
 #     #     # create a PDF reader object
 #     #     # pdf_reader = PyPDF2.PdfFileReader(f)
@@ -2349,7 +2349,7 @@ def test_pdf():
 #
 #     fn = r"C:\Users\ABriggs\Downloads\2023-04 LASER AMP 244246 PO 140194 POSTED.pdf"
 #
-#     # open the PDF file in binary mode
+#     # open the PDF file in binary game_mode
 #     with open(fn, 'rb') as f:
 #         # create a PDF reader object
 #         pdf_reader = PyPDF4.PdfFileReader(f)

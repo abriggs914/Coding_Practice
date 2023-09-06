@@ -47,7 +47,7 @@ def grid_keys():
 #
 # def show_graph(
 #         data_in,
-#         mode="alpha",
+#         game_mode="alpha",
 #         reverse=False,
 #         title="Shows by length in minutes",
 #         xlabel="time (mins)",
@@ -62,9 +62,9 @@ def grid_keys():
 #     fig, ax = plt.subplots()
 #
 #     # alpha
-#     if mode == "alpha":
+#     if game_mode == "alpha":
 #         show_names, data_points = [list(x) for x in zip(*sorted(zip(show_names, data_points), key=itemgetter(0), reverse=reverse))]
-#     elif mode == "value":
+#     elif game_mode == "value":
 #         data_points, show_names = [list(x) for x in zip(*sorted(zip(data_points, show_names), key=itemgetter(0), reverse=reverse))]
 #     # data_points, show_names = [list(x) for x in zip(*sorted(zip(data_points, show_names), key=itemgetter(0)))]
 #
@@ -96,7 +96,7 @@ def grid_keys():
 #     print(data_series_by_minutes)
 #     show_graph(
 #         data_series_by_minutes,
-#         mode="value" if tv_sort_style.get() == "by value" else "alpha",
+#         game_mode="value" if tv_sort_style.get() == "by value" else "alpha",
 #         reverse=tv_sort_direction.get() == "descending",
 #         title="Shows by length in minutes",
 #         xlabel="time (mins)",
@@ -509,10 +509,10 @@ class PlotFrame(tkinter.Frame):
                 self.can_plot.set(True)
 
     # def update_check_boxes(self, *args):
-    #     var, x, mode = args
+    #     var, x, game_mode = args
     #     text = self.cb_lookup[f"text_{var}"]
     #     l = self.max_chart_elements - len(self.selected_queue)
-    #     print(f"\n{var=}, {text=}, {type(var)=}\n{x=}, {type(x)=}\n{mode=}, {type(mode)=}\n{l=}")
+    #     print(f"\n{var=}, {text=}, {type(var)=}\n{x=}, {type(x)=}\n{game_mode=}, {type(game_mode)=}\n{l=}")
     #
     #     val = self.getvar(var)
     #
@@ -784,10 +784,10 @@ class PlotFrame(tkinter.Frame):
         # fig, ax = plt.subplots()
         #
         # # alpha
-        # if mode == "alpha":
+        # if game_mode == "alpha":
         #     show_names, data_points = [list(x) for x in
         #                                zip(*sorted(zip(show_names, data_points), key=itemgetter(0), reverse=reverse))]
-        # elif mode == "value":
+        # elif game_mode == "value":
         #     data_points, show_names = [list(x) for x in
         #                                zip(*sorted(zip(data_points, show_names), key=itemgetter(0), reverse=reverse))]
         # # data_points, show_names = [list(x) for x in zip(*sorted(zip(data_points, show_names), key=itemgetter(0)))]

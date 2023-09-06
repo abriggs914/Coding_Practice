@@ -829,7 +829,7 @@ class App(tkinter.Tk):
         for mon in monitors:
             print(f"{mon=}")
 
-        lm = get_largest_monitor()
+        lm = get_largest_monitors()[0]
         print(f"\n{lm}")
         return lm.x, lm.y, lm.width, lm.height
 
