@@ -2,6 +2,7 @@ import datetime
 
 from siege_challenge.siege_enums import GameMode, TypeMode, PlayMode
 from siege_challenge.siege_map import Map, MapLocation
+from siege_challenge.siege_utility import siege_acronym
 
 
 class Round:
