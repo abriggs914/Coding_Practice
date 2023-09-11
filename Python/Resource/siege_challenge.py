@@ -1,7 +1,10 @@
 import json
 
+import pandas
+
 from json_utility import jsonify
 from siege_challenge.form_map import FormMap
+from siege_challenge.form_game import FormGame
 from siege_challenge.form_operator import FormOperator
 from siege_challenge.siege_map import Map
 from siege_challenge.siege_operator import Operator
@@ -61,6 +64,14 @@ class App(tkinter.Tk):
                 self,
                 tv_btn="New Game",
                 command=self.click_new_game
+            )
+
+        self.tv_btn_new_map_location,\
+            self.btn_new_map_location = \
+            button_factory(
+                self,
+                tv_btn="New Map Location",
+                command=self.click_new_map_location
             )
 
         self.tv_btn_save,\
@@ -190,6 +201,7 @@ class App(tkinter.Tk):
         # self.res_list_lst_def.pack()
         self.btn_new_op.pack(side=tkinter.BOTTOM)
         self.btn_new_map.pack(side=tkinter.BOTTOM)
+        self.btn_new_game.pack(side=tkinter.BOTTOM)
         self.btn_save.pack(side=tkinter.BOTTOM)
         self.protocol("WM_DELETE_WINDOW", self.close_app)
 
@@ -242,6 +254,9 @@ class App(tkinter.Tk):
         self.tl_form_game = FormGame(self.list_maps, self.close_form_game)
         self.tl_form_game.protocol("WM_DELETE_WINDOW", self.close_form_game)
         self.tl_form_game.grab_set()
+
+    def click_new_map_location(self, event=None):
+        pass
 
     def close_form_game(self):
         pass
@@ -306,7 +321,63 @@ class App(tkinter.Tk):
         self.destroy()
 
 
+def load_data():
+    save_file = "saved_siege_challenge_data.json"
+    list_maps = []
+    list_operators = []
+    list_attackers = []
+    list_defenders = []
+    df_maps = pandas.DataFrame(columns=["Name", "Country", "Num Floors", "Completed"])
+    df_attackers = pandas.DataFrame(columns=["Name", "CTU", "Sex", "Completed"])
+    df_defenders = pandas.DataFrame(columns=["Name", "CTU", "Sex", "Completed"])
+    file = save_file
+    with open(file, "r") as f:
+        data = json.load(f)
+    ops = data["known_operators"]
+    maps = data["known_maps"]
+    for i, op in enumerate(ops):
+        name = op.get("name", "")
+        ctu = op.get("ctu", "")
+        atk_def = op.get("atk_def", "")
+        sex = op.get("sex", "")
+        completed = op.get("competed", "")
+        new_op = Operator(name, ctu, atk_def, sex)
+        list_operators.append(new_op)
+        if atk_def == "attacker":
+            list_attackers.append(new_op)
+            # print(f"{self.df_attackers=}\n{self.df_attackers.size=}")
+            df_attackers.loc[len(df_attackers)] = [name, ctu, sex, completed]
+            # self.df_attackers.index += 1
+        else:
+            list_defenders.append(new_op)
+            df_defenders.loc[len(df_defenders)] = [name, ctu, sex, completed]
+            # self.df_defenders.index += 1
+        print(f"{i=}, {op=}")
+        # print(df_attackers)
+
+    for i, map_ in enumerate(maps):
+        name = map_.get("name", "")
+        country = map_.get("country", "")
+        num_floors = map_.get("num_floors", "")
+        completed = map_.get("competed", "")
+        new_map = Map(name, country, num_floors)
+        list_maps.append(new_map)
+        df_maps.loc[len(df_maps)] = [name, country, num_floors, completed]
+
+    return list_maps, df_maps, list_operators, list_attackers, list_defenders, df_attackers, df_defenders
+
+def app2():
+
+    list_maps, df_maps, list_operators, list_attackers, list_defenders, df_attackers, df_defenders = load_data()
+
+    app = FormGame(list_maps)
+    app.mainloop()
+    # app.protocol("WM_DELETE_WINDOW")
+    # app.grab_set()
+
 if __name__ == '__main__':
 
-    app = App()
-    app.mainloop()
+    # app = App()
+    # app.mainloop()
+
+    app2()

@@ -13,6 +13,8 @@ class FormMapLocation(Form):
         self.base_map = map_in
 
 
+
+
         self.known_countries = list(set([m.country for m in self.known_maps]))
 
         self.frame_radios = tkinter.Frame(self)

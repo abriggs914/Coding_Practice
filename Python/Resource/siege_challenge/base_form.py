@@ -36,7 +36,7 @@ class Form(tkinter.Toplevel):
         self.btn_submit.bind("<Return>", self.return_submit)
 
     @abstractmethod
-    def valid_input(self):
+    def valid_input(self) -> bool:
         pass
 
     def flash_lbl(self, lbl):

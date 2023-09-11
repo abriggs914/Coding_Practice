@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.62
-    Date...........2023-09-06
+    Version..............1.63
+    Date...........2023-09-11
     Author(s)....Avery Briggs
     """
 
@@ -382,7 +382,7 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
                                         name=f"rbtn_{btn}"))
             else:
                 r_buttons.append(
-                    tkinter.Radiobutton(master, variable=var, textvariable=tv_var, value=i, name=f"rbtn_{btn}")
+                    tkinter.Radiobutton(master, variable=var, textvariable=tv_var, value=i, name=f"rbtn_{str(btn).lower()}")
                 )
 
         # print(f"OUT {var.get()=}")

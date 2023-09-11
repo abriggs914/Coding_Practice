@@ -1,4 +1,4 @@
-from siege_enums import *
+from siege_challenge.siege_enums import *
 
 
 def siege_acronym(val):
