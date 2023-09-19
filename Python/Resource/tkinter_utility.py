@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.63
-    Date...........2023-09-11
+    Version..............1.64
+    Date...........2023-09-19
     Author(s)....Avery Briggs
     """
 
@@ -170,7 +170,8 @@ def entry_tip_factory(master, tip, tv_label=None, tv_entry=None, kwargs_label=No
     valid_chars.update({c.upper() for c in valid_chars})
     for i in range(10):
         valid_chars.add(str(i))
-    for c in ["!", "@", "#", "$", "%", "%", "^", "&", "*", "(", ")", "_", "-", "=", "+", "`", "~", "\\", "|", "[", "]", "{", "}", ";", ":", "'", "\"", ",", "<", ".", ">", "/", "?"]:
+    for c in ["!", "@", "#", "$", "%", "%", "^", "&", "*", "(", ")", "_", "-", "=", "+", "`", "~", "\\", "|", "[", "]",
+              "{", "}", ";", ":", "'", "\"", ",", "<", ".", ">", "/", "?"]:
         valid_chars.add(c)
 
     tv_cb = tkinter.Variable(value=res_tv_entry.trace_variable("w", check_empty))
@@ -370,6 +371,7 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
         r_buttons = []
         tv_vars = []
         for i, btn in enumerate(buttons):
+            # print(f"{i=}, {btn=}, name=rbtn_{str(btn).lower()}, {master=}, {master.winfo_parent()=}, {type(master)=}")
             if is_tk_var(btn):
                 tv_var = btn
             else:
@@ -379,10 +381,11 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
                 print(f"WARNING kwargs param is applied to each radio button")
                 r_buttons.append(
                     tkinter.Radiobutton(master, variable=var, textvariable=tv_var, **kwargs_buttons, value=i,
-                                        name=f"rbtn_{btn}"))
+                                        name=f"rbtn_{btn.replace('.', '_')}"))
             else:
                 r_buttons.append(
-                    tkinter.Radiobutton(master, variable=var, textvariable=tv_var, value=i, name=f"rbtn_{str(btn).lower()}")
+                    tkinter.Radiobutton(master, variable=var, textvariable=tv_var, value=i,
+                                        name=f"rbtn_{str(btn).lower().replace('.', '_')}")
                 )
 
         # print(f"OUT {var.get()=}")

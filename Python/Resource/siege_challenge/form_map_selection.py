@@ -14,9 +14,9 @@ class FormMapSelection(Form):
             buttons=self.known_maps
         )
 
-        for btn in self.list_btn_maps:
-            btn.pack()
         self.frame_radios.pack()
+        for btn in self.list_btn_maps:
+            btn.grid()
 
     def valid_input(self):
         return bool(self.tv_var_maps.get())
