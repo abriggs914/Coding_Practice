@@ -371,7 +371,7 @@ def app2():
 
     list_maps, df_maps, list_operators, list_attackers, list_defenders, df_attackers, df_defenders = load_data()
 
-    app = FormGame(list_maps)
+    app = FormGame(list_maps, list_operators)
     app.mainloop()
     # app.protocol("WM_DELETE_WINDOW")
     # app.grab_set()

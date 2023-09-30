@@ -13,7 +13,7 @@ from tkinter_utility import *
 
 
 class FormGame(tkinter.Tk):
-    def __init__(self, maps_in):
+    def __init__(self, maps_in, ops_in):
 
         # choose game mode      # Ranked
         # choose map            # House
@@ -31,6 +31,7 @@ class FormGame(tkinter.Tk):
         self.known_types = list(TypeMode)
         self.known_plays = list(PlayMode)
         self.known_maps = maps_in
+        self.ops_in = ops_in
 
         self.frame_playing = tkinter.Frame(self, name="f_playing")
         self.frame_atk_def_history = tkinter.Frame(self, name="f_history")
@@ -380,6 +381,7 @@ class FormGame(tkinter.Tk):
         self.tl_ask_operator_bans = tkinter.Toplevel(self)
         f_ban_labels = tkinter.Frame(self.tl_ask_operator_bans)
         tv_lbl_q, lbl_q = label_factory(self.tl_ask_operator_bans, tv_label="")
+        bans = []
         ban_labels = [
             label_factory(f_ban_labels) for _ in range(4)
         ]
@@ -392,9 +394,11 @@ class FormGame(tkinter.Tk):
         order = [(f"1st {a}", list_a), (f"2nd {a}", list_a), (f"1st {d}", list_d), (f"2nd {d}", list_d)]
 
         f_lst_a = tkinter.Frame(self.tl_ask_operator_bans)
-        
+        data_a = []
+        data_d = []
 
         def init_lst_a():
+
 
 
 
@@ -425,10 +429,10 @@ class FormGame(tkinter.Tk):
             self.wait_window(self.tl_ask_operator_bans)
 
     def attackers_list(self):
-        return []
+        return [op for op in self.ops_in if op.atk_def == "attacker"]
 
     def defenders_list(self):
-        return []
+        return [op for op in self.ops_in if op.atk_def == "defender"]
 
     # def toggle_factory(self, master, buttons, def, tv_label=None, kwargs_lbl=None, kwargs_btn=None):
     #     tkinter.Tog
