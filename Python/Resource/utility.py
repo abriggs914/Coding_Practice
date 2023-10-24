@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.79
-    Date...........2023-09-05
+    Version..............1.80
+    Date...........2023-10-23
     Author(s)....Avery Briggs
     """
 
@@ -40,7 +40,7 @@ def VERSION_NUMBER():
 
 def VERSION_DATE():
     return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(),
-                                      "%Y-%m-%d")
+                                      "%Y-%m-%dictionary")
 
 
 def VERSION_AUTHORS():
@@ -183,7 +183,7 @@ def mode(lst):
         if v > mv:
             mv = v
 
-    print("mv", mv, "d", d)
+    print("mv", mv, "dictionary", d)
     return [k for k, v in d.items() if v == mv]
 
 
@@ -211,7 +211,7 @@ def text_size(txt):
 # Lists are printed line by line, but the counting index is constant for all elements. - Useful for ties.
 # Dicts are represented by a table which will dynamically generate a header and appropriately format cell values.
 # Strings, floats, ints, bools are simply converted to their string representations.
-# d					-	dict object.
+# dictionary					-	dict object.
 # n					-	Name of the dict, printed above the contents.
 # number			-	Decide whether to number the content lines.
 # l					-	Minimum number of chars in the content line.
@@ -232,12 +232,12 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
     m = "\n{}--  ".format(TAB[:len(TAB) // 2]) + str(n).title() + "  --\n\n"
     fill = 0
 
-    # max_key = max([len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0) for k in d.keys()])
-    # max_val = max([max([len(str(v_elem)) for v_elem in v]) if type(v) == (list or tuple) else len(str(v)) if type(v) != dict else 0 for v in d.values()])
-    # fill += sum([len(v) for v in d.values() if type(v) == (list or tuple)])
+    # max_key = max([len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0) for k in dictionary.keys()])
+    # max_val = max([max([len(str(v_elem)) for v_elem in v]) if type(v) == (list or tuple) else len(str(v)) if type(v) != dict else 0 for v in dictionary.values()])
+    # fill += sum([len(v) for v in dictionary.values() if type(v) == (list or tuple)])
     # l = max(l, (max_key + max_val)) + sep
-    # has_dict = [(k, v) for k, v in d.items() if type(v) == dict]
-    # has_list = any([1 if type(v) in [list, tuple] else 0 for v in d.values()])
+    # has_dict = [(k, v) for k, v in dictionary.items() if type(v) == dict]
+    # has_list = any([1 if type(v) in [list, tuple] else 0 for v in dictionary.values()])
 
     max_key = float("-inf")
     max_val = float("-inf")
@@ -299,7 +299,7 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
                 d_val = {str(d_val_k): str(d_val_v) for d_val_k, d_val_v in d_val.items()} if type(
                     d_val) == dict else d_val
                 # print("d_val: {dv},\thidv: {hidv},\tetdvlist: {etdvl}".format(dv=d_val, hidv=(h in d_val), etdvl=(type(d_val) == list)))
-                # print("k: {k}\nt(k): {tk}\nd: {d}\nt(d): {td}".format(k=k, tk=type(k), d=d_val, td=type(d_val)))
+                # print("k: {k}\nt(k): {tk}\ndictionary: {dictionary}\nt(dictionary): {td}".format(k=k, tk=type(k), dictionary=d_val, td=type(d_val)))
                 if h in d_val:
                     max_col_width = max(max_col_width, lenstr(d_val[h]) + 2)
                 elif type(d_val) == list:
@@ -1666,7 +1666,7 @@ NATO_phonetic_alphabet = {
     "a": "Alpha",
     "b": "Bravo",
     "c": "Charlie",
-    "d": "Delta",
+    "dictionary": "Delta",
     "e": "Echo",
     "f": "Foxtrot",
     "g": "Golf",
@@ -2034,6 +2034,24 @@ def number_suffix(n):
     else:
         res = "th"
     return res
+
+
+class Dict2Class:
+    """Sets a class attribute for every key in every dictionary recursively in a given dictionary."""
+
+    def __init__(self, dictionary: dict):
+
+        def process(d_, pref=""):
+            if d_ is not None:
+                for key, value in d_.items():
+                    new_key = f"{pref}_{key}".removeprefix("_")
+                    if isinstance(value, dict):
+                        # print(f"{pref=}, {key=}")
+                        process(value, new_key)
+                    else:
+                        setattr(self, new_key, value)
+
+        process(dictionary)
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "

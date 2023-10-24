@@ -23,7 +23,7 @@ def yes_no_to_bool(val: str):
 def hours_until(d1: datetime.datetime, d2: datetime.datetime = None, rtype: str = "h"):
     if d2 is None:
         d2 = datetime.datetime.now()
-    x = f"{d1=:%Y-%m-%d %H:%M}, {d2=:%Y-%m-%d %H:%M}"
+    x = f"{d1=:%Y-%m-%dictionary %H:%M}, {d2=:%Y-%m-%dictionary %H:%M}"
     dd = (d2 - d1)
     d = dd.total_seconds()
     overdue = d < 0
@@ -39,7 +39,7 @@ def hours_until(d1: datetime.datetime, d2: datetime.datetime = None, rtype: str 
         case "b":
             # overdue or not
             return overdue
-        case "d":
+        case "dictionary":
             # Days as decimal
             r = f"{round(d / 86400, 4)} Days"
             # print(f"A: {w}, {x=}, {r=}")
@@ -329,7 +329,7 @@ class TaskCell:
 
     is_expanded: bool = None
 
-    fmt_task_due_date_long: str = "%Y-%m-%d %H:%M"
+    fmt_task_due_date_long: str = "%Y-%m-%dictionary %H:%M"
     fmt_task_due_date_short: str = lambda x: hours_until(x, rtype="h")
 
     tag_text_check: int = None
@@ -589,7 +589,7 @@ class TLSettings(tkinter.Toplevel):
             match widget:
                 case "slider":
                     v = kwargs[k]
-                    if v == "d":
+                    if v == "dictionary":
                         kwargs[k] = "Days"
                     if v == "h":
                         kwargs[k] = "Hours"
@@ -1471,7 +1471,7 @@ class App(tkinter.Tk):
         print(f"{v=}")
 
         if v == "Days":
-            v = "d"
+            v = "dictionary"
         if v == "Hours":
             v = "h"
         if v == "Minutes":

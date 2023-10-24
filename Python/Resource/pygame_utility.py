@@ -1875,14 +1875,14 @@ class MenuBar(Widget):
     #         dat = btns[key]
     #         write_text(game, display, game.Rect(rect.x + (i * w_drop_down), rect.y, w_drop_down, rect.h), key, game.font.Font(None, 16))
     #
-    #     def rec_menu(last_rect, press_key, rem_btn_data, d=0):
+    #     def rec_menu(last_rect, press_key, rem_btn_data, dictionary=0):
     #         print("last_rect: {}\npress_key: {}\nrem_btn_data: {}".format(last_rect, press_key, rem_btn_data))
     #         dat = rem_btn_data[press_key]
     #         sub_data = []
     #         for i, k in enumerate(dat):
     #             print("DRAWING K: {}".format(k))
     #             v = dat[k]
-    #             if d == 0:
+    #             if dictionary == 0:
     #                 new_rect = last_rect
     #             else:
     #                 new_rect = game.Rect(last_rect.x + last_rect.w, last_rect.y + (i * last_rect.h), last_rect.w,
@@ -1892,7 +1892,7 @@ class MenuBar(Widget):
     #             if new_rect.collidepoint(mouse):
     #                 # rec_menu(new_rect, k, v)
     #                 if isinstance(v, dict):
-    #                     sub_data.append((new_rect, k, dat, d + 1))
+    #                     sub_data.append((new_rect, k, dat, dictionary + 1))
     #                 else:
     #                     # leaf node
     #                     if click[0]:
@@ -2284,7 +2284,7 @@ class PygameApplication:
             kbd_la = kbd.is_pressed('left')
             kbd_s = kbd.is_pressed('s')
             kbd_da = kbd.is_pressed('down')
-            kbd_d = kbd.is_pressed('d')
+            kbd_d = kbd.is_pressed('dictionary')
             kbd_ra = kbd.is_pressed('right')
             str_dir_keys = ["kbd_w", "kbd_ua", "kbd_a", "kbd_la", "kbd_s", "kbd_da", "kbd_d", "kbd_ra"]
             dir_keys = [kbd_w, kbd_ua, kbd_a, kbd_la, kbd_s, kbd_da, kbd_d, kbd_ra]

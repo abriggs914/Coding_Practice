@@ -480,7 +480,7 @@ def test_apply_state_1():
     f = tkinter.StringVar(root, value="a")
     g = tkinter.StringVar(root, value="b")
     h = tkinter.StringVar(root, value="c")
-    i = tkinter.StringVar(root, value="d")
+    i = tkinter.StringVar(root, value="dictionary")
     j = tkinter.StringVar(root, value="e")
 
     k = tkinter.Entry(a, textvariable=f)
@@ -669,7 +669,7 @@ def test_multi_combo_factory():
     # mc.delete_item(value=14)
     # mc.delete_item(iid=0)
 
-    # a, c, d, b = multi_combo_factory(WIN, data, tv_label="Multi-ComboBox Demo")
+    # a, c, dictionary, b = multi_combo_factory(WIN, data, tv_label="Multi-ComboBox Demo")
     #
     # a1, a2 = a
     # c1, c2 = c
@@ -680,7 +680,7 @@ def test_multi_combo_factory():
     #
     # a2.grid()
     # c2.grid(row=1, column=0)
-    # d.grid(row=1, column=1)
+    # dictionary.grid(row=1, column=1)
     #
     # tv1_fact.grid()
     # tv1_label.grid(row=0)
@@ -701,26 +701,26 @@ def test_multi_combo_factory():
     # sv_lbl_2, lbl_2, sv_cb_2, cb_2 = combo_factory(WIN, tv_label="Colour", kwargs_combo={"values": colours})
     #
     # def new_dealer(var_name, index, game_mode):
-    #     d = sv_cb_1.get()
+    #     dictionary = sv_cb_1.get()
     #     c = sv_cb_2.get()
-    #     if c and d:
+    #     if c and dictionary:
     #         if c not in ["custom", "none"]:
-    #             print(f"Setting {d=} to {c=}")
+    #             print(f"Setting {dictionary=} to {c=}")
     #         elif c == "custom":
-    #             print(f"custom colour from dealer {d=}")
+    #             print(f"custom colour from dealer {dictionary=}")
     #         else:
-    #             print(f"removing colour from dealer {d=}")
+    #             print(f"removing colour from dealer {dictionary=}")
     #
     # def new_colour(var_name, index, game_mode):
-    #     d = sv_cb_1.get()
+    #     dictionary = sv_cb_1.get()
     #     c = sv_cb_2.get()
-    #     if c and d:
+    #     if c and dictionary:
     #         if c not in ["custom", "none"]:
-    #             print(f"Setting {d=} to {c=}")
+    #             print(f"Setting {dictionary=} to {c=}")
     #         elif c == "custom":
-    #             print(f"custom colour from dealer {d=}")
+    #             print(f"custom colour from dealer {dictionary=}")
     #         else:
-    #             print(f"removing colour from dealer {d=}")
+    #             print(f"removing colour from dealer {dictionary=}")
     #
     # sv_cb_1.trace_variable("w", new_dealer)
     # sv_cb_2.trace_variable("w", new_colour)

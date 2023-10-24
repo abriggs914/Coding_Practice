@@ -30,7 +30,7 @@ def VERSION_NUMBER():
 
 
 def VERSION_DATE():
-    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(), "%Y-%m-%d")
+    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(), "%Y-%m-%dictionary")
 
 
 def VERSION_AUTHORS():
@@ -171,7 +171,7 @@ class OrbitingDatePicker(Frame):
                     start_month = self.today.month
                 if start_day is None:
                     start_day = self.today.day
-                start_date = datetime.datetime.strptime(f"{start_year}-{start_month}-{start_day}", "%Y-%m-%d")
+                start_date = datetime.datetime.strptime(f"{start_year}-{start_month}-{start_day}", "%Y-%m-%dictionary")
         elif not isinstance(start_date, datetime.datetime):
             raise TypeError("Error param 'start_date' must either be None or a datetime.datetime object.")
         else:
@@ -358,11 +358,11 @@ class OrbitingDatePicker(Frame):
             pos_x + (self.earth_width / 2),
             pos_y + (self.earth_width / 2)
         ]
-        # print(f"-> {pos=}, {data=}, {self.date=:%Y-%m-%d}")
+        # print(f"-> {pos=}, {data=}, {self.date=:%Y-%m-%dictionary}")
         self.update_date(pos, data, year=year)
         if not from_date_entry:
             self.dateentry_entry.set_date(datetime.date(self.date.year, self.date.month, self.date.day))
-        # print(f"<- {pos=}, {data=}, {self.date=:%Y-%m-%d}")
+        # print(f"<- {pos=}, {data=}, {self.date=:%Y-%m-%dictionary}")
         season = self.get_season()
         self.canvas_background.coords(self.oval_earth, *self.earth_rect)
         self.canvas_background.itemconfig(self.oval_earth, fill=rgb_to_hex(self.seasons[season]["colour"]))

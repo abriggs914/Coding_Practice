@@ -466,7 +466,7 @@ class HardwareFormApp(tkinter.Tk):
         self.default_data = {
             "start_of_day_hour": 8,
             "start_of_day_minute": 0,
-            "start_of_day_format": "%A %a %d %Y"
+            "start_of_day_format": "%A %a %dictionary %Y"
         }
 
         self.flags = {

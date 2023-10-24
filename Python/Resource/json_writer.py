@@ -479,9 +479,9 @@ class JSONWriter:
 
     def record(self, k, v, depth=None):
         d = self.tab_depth if depth is None else depth
-        # if k in self.items[d]:
+        # if k in self.items[dictionary]:
         #     raise KeyError("This k=\'{}\' cannot be duplicated within the same nesting.")
-        # self.items[d][k] = v
+        # self.items[dictionary][k] = v
 
     string = property(get_string, set_string, del_string)
     safe = property(get_safe, set_safe, del_safe)
@@ -952,10 +952,10 @@ if __name__ == "__main__":
 #         pass
 #
 #     def record(self, k, v, depth=None):
-#         d = self.tab_depth if depth is None else depth
-#         if k in self.items[d]:
+#         dictionary = self.tab_depth if depth is None else depth
+#         if k in self.items[dictionary]:
 #             raise KeyError("This k=\'{}\' cannot be duplicated within the same nesting.")
-#         self.items[d][k] = v
+#         self.items[dictionary][k] = v
 #
 #     string = property(get_string, set_string, del_string)
 #

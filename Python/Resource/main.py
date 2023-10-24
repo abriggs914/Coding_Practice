@@ -521,7 +521,7 @@ def test_date_suffix(day):
 def datestr_format(date_str):
     date_obj = dt.datetime.fromisoformat(date_str)
     suffix = date_suffix(date_obj.day)
-    res = dt.datetime.strftime(date_obj, "%B %d###, %Y").replace("###", suffix)
+    res = dt.datetime.strftime(date_obj, "%B %dictionary###, %Y").replace("###", suffix)
     s_res = res.split(" ")
     x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
     res = " ".join([s_res[0], x, s_res[2]])
@@ -666,8 +666,8 @@ def test_new_rect():
             game.draw.line(display, BROWN_1, pi4, pi1)
 
         game.draw.circle(display, TAN, d, 3)
-        # d = d[0] + 1, d[1] + 1
-        # print("d", d, "collision:", r.collide_point(*d))
+        # dictionary = dictionary[0] + 1, dictionary[1] + 1
+        # print("dictionary", dictionary, "collision:", r.collide_point(*dictionary))
         #
         # draw_rect1(r0)
         # draw_rect1(r1)
@@ -1006,7 +1006,7 @@ def test_random_date():
     dates = [random_date() for i in range(300)]
     for d in dates:
         print("D: {}".format(d))
-        print("d: {}, parsed: {}".format(d, dt.date.fromisoformat(d)))
+        print("dictionary: {}, parsed: {}".format(d, dt.date.fromisoformat(d)))
 
     calendar = set()
     while len(calendar) < (2026 - 1995) * 365:
@@ -1236,7 +1236,7 @@ def test_dict_print2():
     # Lists are printed line by line, but the counting index is constant for all elements. - Useful for ties.
     # Dicts are represented by a table which will dynamically generate a header and appropriately format cell values.
     # Strings, floats, ints, bools are simply converted to their string representations.
-    # d					-	dict object.
+    # dictionary					-	dict object.
     # n					-	Name of the dict, printed above the contents.
     # number			-	Decide whether to number the content lines.
     # l					-	Minimum number of chars in the content line.
@@ -1250,19 +1250,19 @@ def test_dict_print2():
     #						possible. This will most likely produce varying widths.
     # table_title		-	If a table is created, then display the title in the first
     #						column directly above the row names.
-    # def dict_print2(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_header=False, min_encapsulation=True,
+    # def dict_print2(dictionary, n="Untitled", number=False, l=15, sep=5, marker=".", sort_header=False, min_encapsulation=True,
     #                table_title="", TAB="    ", SEPARATOR="  -  ", TABLE_DIVIDER="|"):
-    #     if not d or not n or type(d) != dict:
+    #     if not dictionary or not n or type(dictionary) != dict:
     #         return "None"
     #     m = "\n{}--  ".format(TAB[:len(TAB) // 2]) + str(n).title() + "  --\n\n"
     #     fill = 0
     #
-    #     # max_key = max([len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0) for k in d.keys()])
-    #     # max_val = max([max([len(str(v_elem)) for v_elem in v]) if type(v) == (list or tuple) else len(str(v)) if type(v) != dict else 0 for v in d.values()])
-    #     # fill += sum([len(v) for v in d.values() if type(v) == (list or tuple)])
+    #     # max_key = max([len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0) for k in dictionary.keys()])
+    #     # max_val = max([max([len(str(v_elem)) for v_elem in v]) if type(v) == (list or tuple) else len(str(v)) if type(v) != dict else 0 for v in dictionary.values()])
+    #     # fill += sum([len(v) for v in dictionary.values() if type(v) == (list or tuple)])
     #     # l = max(l, (max_key + max_val)) + sep
-    #     # has_dict = [(k, v) for k, v in d.items() if type(v) == dict]
-    #     # has_list = any([1 if type(v) in [list, tuple] else 0 for v in d.values()])
+    #     # has_dict = [(k, v) for k, v in dictionary.items() if type(v) == dict]
+    #     # has_list = any([1 if type(v) in [list, tuple] else 0 for v in dictionary.values()])
     #
     #     max_key = float("-inf")
     #     max_val = float("-inf")
@@ -1271,15 +1271,15 @@ def test_dict_print2():
     #     has_dict = False
     #     has_list = False
     #
-    #     for k, v in d.items():
+    #     for k, v in dictionary.items():
     #         max_key = max((len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0)), max_key)
     #         max_val = max((max([len(str(v_elem)) for v_elem in v] if v else [0]) if (
     #                 (type(v) == list) or (type(v) == tuple)) else len(
     #             str(v)) if type(v) != dict else 0), max_val)
     #
     #     l = max(len(table_title), max(l, (max_key + max_val))) + sep
-    #     has_dict = [(k, v) for k, v in d.items() if type(v) == dict or (type(v) == list and v and type(v[0]) == dict)]
-    #     has_list = any([1 if type(v) in [list, tuple] else 0 for v in d.values()])
+    #     has_dict = [(k, v) for k, v in dictionary.items() if type(v) == dict or (type(v) == list and v and type(v[0]) == dict)]
+    #     has_list = any([1 if type(v) in [list, tuple] else 0 for v in dictionary.values()])
     #
     #     header = []
     #     max_cell = 0
@@ -1324,7 +1324,7 @@ def test_dict_print2():
     #                 d_val = {str(d_val_k): str(d_val_v) for d_val_k, d_val_v in d_val.items()} if type(
     #                     d_val) == dict else d_val
     #                 # print("d_val: {dv},\thidv: {hidv},\tetdvlist: {etdvl}".format(dv=d_val, hidv=(h in d_val), etdvl=(type(d_val) == list)))
-    #                 # print("k: {k}\nt(k): {tk}\nd: {d}\nt(d): {td}".format(k=k, tk=type(k), d=d_val, td=type(d_val)))
+    #                 # print("k: {k}\nt(k): {tk}\ndictionary: {dictionary}\nt(dictionary): {td}".format(k=k, tk=type(k), dictionary=d_val, td=type(d_val)))
     #                 if h in d_val:
     #                     max_col_width = max(max_col_width, lenstr(d_val[h]) + 2)
     #                 elif type(d_val) == list:
@@ -1348,7 +1348,7 @@ def test_dict_print2():
     #         max_cell_widths = [max_cell for i in range(len(header))]
     #
     #     # print("Header: {h}\nTable Header: {th}".format(h=header, th=table_header))
-    #     fill = "".join([" " for i in range(len(str(fill + len(d))))])
+    #     fill = "".join([" " for i in range(len(str(fill + len(dictionary))))])
     #     table_width = l + len(fill) + len(SEPARATOR) + len(TAB) + len(table_header) - (4 * len(TABLE_DIVIDER))
     #     table_tab = "".join([marker for i in range(len(TAB))])
     #     if has_dict:
@@ -1359,7 +1359,7 @@ def test_dict_print2():
     #             table_width - len(table_header_title) - len(fill) - len(SEPARATOR)) + "\n"
     #     i = 0
     #     # print("FINAL L: {l}\nFill: {n}<{f}>".format(l=l, n=len(fill), f=fill))
-    #     for k, v in d.items():
+    #     for k, v in dictionary.items():
     #         if type(v) not in [list, tuple]:
     #             v = [v]
     #         for j, v_elem in enumerate(v):
@@ -2071,8 +2071,8 @@ def test_spread():
     #     is_num = is_num_a and is_num_b
     #     if filler is None:
     #         if is_num:
-    #             d = b - a
-    #             result.append(a + (d / 2))
+    #             dictionary = b - a
+    #             result.append(a + (dictionary / 2))
     #         else:
     #             result.append(filler)
     #     else:

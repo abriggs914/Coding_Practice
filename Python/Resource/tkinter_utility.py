@@ -38,7 +38,7 @@ def VERSION_NUMBER():
 
 def VERSION_DATE():
     return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(),
-                                      "%Y-%m-%d")
+                                      "%Y-%m-%dictionary")
 
 
 def VERSION_AUTHORS():
@@ -3118,13 +3118,13 @@ class ToggleButton(tkinter.Frame):
         # self.label.grid(row=0, column=0)
         # self.frame_canvas.grid(row=0, column=1)
         # self.canvas.grid(row=0, column=0)
-        # d = self.__dict__
-        # print(f"{d=}")
+        # dictionary = self.__dict__
+        # print(f"{dictionary=}")
         for k, v in self.grid_args.items():
             if k != "self.state" and k != "self.tv_label":
                 # print(f"{k=}")
                 eval(f"{k}.grid(**{v})")
-            # if isinstance(d.get(k, None), tkinter.Widget):
+            # if isinstance(dictionary.get(k, None), tkinter.Widget):
             #     eval(f"{k}.grid(**{v})")
             # else:
             #     print(f"not a widget")
