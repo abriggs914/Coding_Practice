@@ -2,8 +2,11 @@ import os.path
 from functools import reduce
 import operator
 
+import numpy as np
 import pandas as pd
+import pandas._libs
 import streamlit as st
+from streamlit_timeline import timeline
 from pyodbc_connection import connect
 
 
@@ -12,13 +15,13 @@ sql_ = """SELECT * FROM [v_SFC_BWSUnionSTGOrders];"""
 sql_options = """SELECT * FROM [v_SFC_OrdersDataOptions]"""
 
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_data_orders():
     """Loading Data"""
     return connect(sql_)
 
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_data_options():
     """Loading Data"""
     return connect(sql_options)
@@ -95,6 +98,20 @@ def update_data_table(input_type):
         message = f"Quote == '{input_search}'"
         df_sub1 = df_orders.loc[df_orders["Orders_Quote"] == input_search]
 
+    df_dates = to_datetime(df_sub1[ordered_dates_list.keys()])
+    print(f"A {df_dates=}")
+    # df_dates["IsCancelled"] = 1 if (not df_dates["Orders_DateDeclined"].any() and df_dates["Orders_DeclineRejected"] != 4) else 0
+    df_dates["IsCancelled"] = np.where((df_dates["Orders_DateDeclined"].empty and df_dates["Orders_DeclineRejected"] != 4), 1, 0)
+    del df_dates["dtProdSched_DateProd1"]
+    del df_dates["dtProdSched_DateProd2"]
+    del df_dates["Orders_DeclineRejected"]
+    df_dates = df_dates.rename(columns=ordered_dates_list)
+    unit_is_cancelled = df_dates.iloc[0]["IsCancelled"] == 1
+    del df_dates["IsCancelled"]
+    chartable_df_dates = df_dates.transpose()
+
+    print(f"B {df_dates=}")
+
     print(f"{message=}")
     print(f"{df_sub1=}")
 
@@ -103,6 +120,13 @@ def update_data_table(input_type):
     promo_drawing = df_sub1.iloc[0]["Products_PromoDrawing"]
     order_price = float(df_sub1.iloc[0]["Orders_Price"])
 
+    st.session_state["choice_unit_cancelled"] = unit_is_cancelled
+
+    checkbox_unit_is_cancelled = st.checkbox(
+        label="Cancelled",
+        key="choice_unit_cancelled",
+        disabled=True
+    )
     st.markdown(f"## {company} {input_type}")
 
     company = 1 if company == "STG" else 0
@@ -195,8 +219,8 @@ def update_data_table(input_type):
     df_sub1["Ttl NPO Cost"] = ttl_npo_cost
 
     df_sub1 = df_sub1.rename(columns=col_renames_orders)
-    df_sub_options = df_sub_options.rename(columns=col_renames_options)
-    df_sub_npos = df_sub_npos.rename(columns=col_renames_options)
+    chartable_df_sub_options = df_sub_options.rename(columns=col_renames_options)
+    chartable_df_sub_npos = df_sub_npos.rename(columns=col_renames_options)
 
     # df_table = st.dataframe(df_sub1)
     st.dataframe(df_sub1.transpose(), use_container_width=True)
@@ -205,16 +229,75 @@ def update_data_table(input_type):
         st.link_button("Promo Drawing", promo_drawing)
 
     expander_options = st.expander("Options")
-    expander_options.dataframe(df_sub_options, hide_index=True, use_container_width=True)
+    expander_options.dataframe(chartable_df_sub_options, hide_index=True, use_container_width=True)
 
     expander_npos = st.expander("NPOs")
-    expander_npos.dataframe(df_sub_npos, hide_index=True, use_container_width=True)
+    expander_npos.dataframe(chartable_df_sub_npos, hide_index=True, use_container_width=True)
+
+    expander_move_history = st.expander("Movement History")
+    expander_move_history.dataframe(chartable_df_dates, use_container_width=True, height=420)
+
+    for data in chartable_df_dates.iterrows():
+        print(f"\t\t{data=}")
+    # movements_data = df_dates[[""]]
+    # movements_data = df_dates.to_dict()
+    movement_keys = ["id", "content", "start"]
+    fmt = "%Y-%m-%d"
+    movements_data = [dict(zip(movement_keys, (i, dat[0], dat[1]))) for i, dat in enumerate(chartable_df_dates.itertuples()) if not isinstance(dat[1], pandas._libs.NaTType)]
+    movements_dict = {
+        "title": {
+            "text": {
+                "headline": "Movements",
+                "text": "HERE IS MY SAMPLE TIMELINE"
+            }
+        },
+        "events": []
+    }
+    for event in movements_data:
+        movements_dict["events"].append({
+            "start_date": {
+                "day": event["start"].day,
+                "month": event["start"].month,
+                "year": event["start"].year
+            },
+            "text": {
+                "headline": event["content"],
+                "text": event["content"]
+            }
+        })
+
+    print(f"{movements_data=}")
+    # movements_data = movement_data
+    movements_timeline = timeline(movements_dict, height=400)
+    # movements_timeline = timeline(movements_dict, height=400)
+    # expander_move_history.
+    # movements_timeline = expander_move_history.timeline(movements_dict, height=400)
+    # expander_move_history.write(movements_timeline)
 
     st.metric("Options Price", ttl_option_price, -1 * ttl_option_cost)
     st.metric("NPO Price", ttl_npo_price, -1 * ttl_npo_cost)
 
 
 if __name__ == '__main__':
+
+    st.set_page_config(page_title="Sales Dashbord", layout="wide")
+
+    ordered_dates_list = {
+        "Orders_DeclineRejected": "DecRej",
+        "Orders_DateDeclined": "Date Declined",
+        "Orders_DateQuote": "Quote Date",
+        "Orders_DateOrder": "Order Date",
+        "dtProdSched_DateBeam": "Beam Date",
+        "dtProdSched_DateGN": "GNK Date",
+        "dtProdSched_DateProd1": "Prod Date 1",
+        "dtProdSched_DateProd2": "Prod Date 2",
+        "Orders_DateFinish": "Finish Date",
+        "Orders_DateAvailable": "Available Date",
+        "Orders_DateShipped": "Shipped Date",
+        "Orders_DateDelivery": "Delivery Date",
+        "Orders_DateInService": "Date In Service",
+        "Orders_DateRegistered": "Date Registered"
+    }
 
     # with st.spinner('Loading Data'):
     df_orders = load_data_orders()
