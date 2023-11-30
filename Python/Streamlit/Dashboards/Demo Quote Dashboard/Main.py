@@ -106,14 +106,17 @@ def update_data_table(input_type):
     st.markdown(f"## {company} {input_type}")
 
     company = 1 if company == "STG" else 0
-    promo_drawing = os.path.abspath(promo_drawing)
-    promo_drawing = promo_drawing.replace('/', '\\')
-    promo_drawing = f"file:///{promo_drawing}"
+    if promo_drawing:
+        promo_drawing = os.path.abspath(promo_drawing)
+        promo_drawing = promo_drawing.replace('/', '\\')
+        promo_drawing = f"file:///{promo_drawing}"
 
     df_sub2 = get_options_data(company, quote_number)
     df_sub_options = df_sub2[(df_sub2["OriginTable"] == "Order Options") | (df_sub2["OriginTable"] == "Order OptionsV2")]
     df_sub_npos = df_sub2[(df_sub2["OriginTable"] == "Custom Work") | (df_sub2["OriginTable"] == "Custom WorkV2")]
 
+    df_sub_options = df_sub_options[~df_sub_options["OptionDescription"].isin([None, "None", "NO OPTIONS FOR THIS WORK ORDER"])]
+    df_sub_npos = df_sub_npos[~df_sub_npos["OptionDescription"].isin([None, "None"])]
     n_options, n_option_cols = df_sub_options.shape
     n_npos, n_option_cols = df_sub_npos.shape
 
@@ -130,8 +133,9 @@ def update_data_table(input_type):
     print("\n\t" + "\n\t".join([f"{d_} -- {dt_}" for d_, dt_ in list_discs]))
 
     # apply discounts Fixed-First
+    discs_percent = [1 - d_ for d_, dt_ in list_discs if dt_ == "Percent"]
     ttl_fixed = sum([d_ for d_, dt_ in list_discs if dt_ == "Fixed"])
-    ttl_percent = reduce(operator.mul, [1 - d_ for d_, dt_ in list_discs if dt_ == "Percent"])
+    ttl_percent = reduce(operator.mul, discs_percent) if discs_percent else 1
 
     ttl_order_subtotal = order_price + ttl_option_price + ttl_npo_price
     calc_order_price = (ttl_order_subtotal + ttl_fixed) * ttl_percent
@@ -172,7 +176,6 @@ def update_data_table(input_type):
     df_sub1 = df_sub1[col_renames_orders.keys()]
     df_sub_options = df_sub_options[col_renames_options.keys()]
     df_sub_npos = df_sub_npos[col_renames_options.keys()]
-    df_sub_npos = df_sub_npos[~df_sub_npos["OptionDescription"].isin([None, "None"])]
 
     # print(f"{df_sub_options}")
 
@@ -198,7 +201,8 @@ def update_data_table(input_type):
     # df_table = st.dataframe(df_sub1)
     st.dataframe(df_sub1.transpose(), use_container_width=True)
 
-    st.link_button("Promo Drawing", promo_drawing)
+    if promo_drawing:
+        st.link_button("Promo Drawing", promo_drawing)
 
     expander_options = st.expander("Options")
     expander_options.dataframe(df_sub_options, hide_index=True, use_container_width=True)
