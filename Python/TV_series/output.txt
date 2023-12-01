@@ -321,12 +321,12 @@ Where to watch:			Disney+
 	It's Always Sunny in Philadelphia
 Genre:				Comedy
 Run (2005 -> 2023):		18 years
-number seasons:			15
-number episodes:		162
-episodes per season:		10.8
+number seasons:			16
+number episodes:		170
+episodes per season:		10.625
 average length of an episode:	22
-Total minutes:			3564
-Total hours:			59.4
+Total minutes:			3740
+Total hours:			62.333333333333336
 Where to watch:			Disney+
 
 	The Last Man on Earth
@@ -653,19 +653,19 @@ Where to watch:			Prime TV
 
 Series:
 
-	Futurama
-Genre:				Comedy
-Run (1999 -> 2013):		14 years
-number seasons:			10
-number episodes:		140
-episodes per season:		14.0
-average length of an episode:	22
-Total minutes:			3080
-Total hours:			51.333333333333336
-Where to watch:			Disney+
+	Black Mirror
+Genre:				Drama, Sci-fi
+Run (2011 -> 2019):		8 years
+number seasons:			5
+number episodes:		21
+episodes per season:		4.2
+average length of an episode:	60
+Total minutes:			1260
+Total hours:			21.0
+Where to watch:			Netflix
 
-Season: 7
-Episode: 12
+Season: 3
+Episode: 5
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1408,7 +1408,7 @@ sorting by least number of seasons...
 |Letterkenny                      |          11          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |          11          |Letterkenny                      |
 |Trailer Park Boys                |          12          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          12          |Trailer Park Boys                |
 |King of the Hill                 |          13          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          13          |King of the Hill                 |
-|It's Always Sunny in Philadelphia|          15          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          15          |It's Always Sunny in Philadelphia|
+|It's Always Sunny in Philadelphia|          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          16          |It's Always Sunny in Philadelphia|
 |Criminal Minds                   |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          16          |Criminal Minds                   |
 |American Dad                     |          19          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          19          |American Dad                     |
 |Family Guy                       |          21          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          21          |Family Guy                       |
@@ -1488,19 +1488,19 @@ sorting by least number of seasons...
 |Letterkenny                      |          11          |
 |Trailer Park Boys                |          12          |
 |King of the Hill                 |          13          |
-|It's Always Sunny in Philadelphia|          15          |
+|It's Always Sunny in Philadelphia|          16          |
 |Criminal Minds                   |          16          |
 |American Dad                     |          19          |
 |Family Guy                       |          21          |
 |The Simpsons                     |          34          |
 ##########################################################
 
-Mean:		  6.36
+Mean:		  6.37
 Median:		  5.00
-Pstdev:		  5.71
-Pvariance:	 32.57
-Stdev:		  5.76
-Variance:	 33.13
+Pstdev:		  5.73
+Pvariance:	 32.88
+Stdev:		  5.78
+Variance:	 33.44
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1524,8 +1524,8 @@ sorting by most number of seasons...
 |The Simpsons                     |         34          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         34          |The Simpsons                     |
 |Family Guy                       |         21          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         21          |Family Guy                       |
 |American Dad                     |         19          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         19          |American Dad                     |
+|It's Always Sunny in Philadelphia|         16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         16          |It's Always Sunny in Philadelphia|
 |Criminal Minds                   |         16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         16          |Criminal Minds                   |
-|It's Always Sunny in Philadelphia|         15          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         15          |It's Always Sunny in Philadelphia|
 |King of the Hill                 |         13          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         13          |King of the Hill                 |
 |Trailer Park Boys                |         12          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         12          |Trailer Park Boys                |
 |Curb your Enthusiasm             |         11          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |         11          |Curb your Enthusiasm             |
@@ -1604,8 +1604,8 @@ sorting by most number of seasons...
 |The Simpsons                     |         34          |
 |Family Guy                       |         21          |
 |American Dad                     |         19          |
+|It's Always Sunny in Philadelphia|         16          |
 |Criminal Minds                   |         16          |
-|It's Always Sunny in Philadelphia|         15          |
 |King of the Hill                 |         13          |
 |Trailer Park Boys                |         12          |
 |Curb your Enthusiasm             |         11          |
@@ -1662,12 +1662,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  6.36
+Mean:		  6.37
 Median:		  5.00
-Pstdev:		  5.71
-Pvariance:	 32.57
-Stdev:		  5.76
-Variance:	 33.13
+Pstdev:		  5.73
+Pvariance:	 32.88
+Stdev:		  5.78
+Variance:	 33.44
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1737,7 +1737,7 @@ sorting by least number of episodes...
 |Buffy The Vampire Slayer         |          144          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          144          |Buffy The Vampire Slayer         |
 |Malcolm in the Middle            |          151          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          151          |Malcolm in the Middle            |
 |Brooklyn Nine-Nine               |          153          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |          153          |Brooklyn Nine-Nine               |
-|It's Always Sunny in Philadelphia|          162          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          162          |It's Always Sunny in Philadelphia|
+|It's Always Sunny in Philadelphia|          170          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          170          |It's Always Sunny in Philadelphia|
 |Scrubs                           |          182          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          182          |Scrubs                           |
 |The Office                       |          201          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          201          |The Office                       |
 |Smallville                       |          217          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          217          |Smallville                       |
@@ -1817,7 +1817,7 @@ sorting by least number of episodes...
 |Buffy The Vampire Slayer         |          144          |
 |Malcolm in the Middle            |          151          |
 |Brooklyn Nine-Nine               |          153          |
-|It's Always Sunny in Philadelphia|          162          |
+|It's Always Sunny in Philadelphia|          170          |
 |Scrubs                           |          182          |
 |The Office                       |          201          |
 |Smallville                       |          217          |
@@ -1829,12 +1829,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          750          |
 ###########################################################
 
-Mean:		102.05
+Mean:		102.19
 Median:		 62.00
-Pstdev:		122.10
-Pvariance:	14907.78
-Stdev:		123.15
-Variance:	15164.81
+Pstdev:		122.17
+Pvariance:	14925.10
+Stdev:		123.22
+Variance:	15182.43
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1864,7 +1864,7 @@ sorting by most number of episodes...
 |Smallville                       |         217          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         217          |Smallville                       |
 |The Office                       |         201          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |         201          |The Office                       |
 |Scrubs                           |         182          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         182          |Scrubs                           |
-|It's Always Sunny in Philadelphia|         162          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         162          |It's Always Sunny in Philadelphia|
+|It's Always Sunny in Philadelphia|         170          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         170          |It's Always Sunny in Philadelphia|
 |Brooklyn Nine-Nine               |         153          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |         153          |Brooklyn Nine-Nine               |
 |Malcolm in the Middle            |         151          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         151          |Malcolm in the Middle            |
 |Buffy The Vampire Slayer         |         144          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         144          |Buffy The Vampire Slayer         |
@@ -1944,7 +1944,7 @@ sorting by most number of episodes...
 |Smallville                       |         217          |
 |The Office                       |         201          |
 |Scrubs                           |         182          |
-|It's Always Sunny in Philadelphia|         162          |
+|It's Always Sunny in Philadelphia|         170          |
 |Brooklyn Nine-Nine               |         153          |
 |Malcolm in the Middle            |         151          |
 |Buffy The Vampire Slayer         |         144          |
@@ -1996,12 +1996,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		102.05
+Mean:		102.19
 Median:		 62.00
-Pstdev:		122.10
-Pvariance:	14907.78
-Stdev:		123.15
-Variance:	15164.81
+Pstdev:		122.17
+Pvariance:	14925.10
+Stdev:		123.22
+Variance:	15182.43
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2065,10 +2065,10 @@ sorting by shortest time...
 |Curb your Enthusiasm             |     55.0      |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |     55.0      |Curb your Enthusiasm             |
 |Star Wars the Clone Wars         |   55.416667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |   55.416667   |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |   56.100000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |   56.100000   |Brooklyn Nine-Nine               |
-|It's Always Sunny in Philadelphia|   59.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   59.400000   |It's Always Sunny in Philadelphia|
 |Malcolm in the Middle            |   60.400000   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   60.400000   |Malcolm in the Middle            |
 |Game of Thrones                  |   60.833333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |   60.833333   |Game of Thrones                  |
 |Prison Break                     |   61.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |   61.600000   |Prison Break                     |
+|It's Always Sunny in Philadelphia|   62.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   62.333333   |It's Always Sunny in Philadelphia|
 |Scrubs                           |   66.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   66.733333   |Scrubs                           |
 |The Office                       |   73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |   73.700000   |The Office                       |
 |Angel                            |   82.500000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   82.500000   |Angel                            |
@@ -2145,10 +2145,10 @@ sorting by shortest time...
 |Curb your Enthusiasm             |     55.0      |
 |Star Wars the Clone Wars         |   55.416667   |
 |Brooklyn Nine-Nine               |   56.100000   |
-|It's Always Sunny in Philadelphia|   59.400000   |
 |Malcolm in the Middle            |   60.400000   |
 |Game of Thrones                  |   60.833333   |
 |Prison Break                     |   61.600000   |
+|It's Always Sunny in Philadelphia|   62.333333   |
 |Scrubs                           |   66.733333   |
 |The Office                       |   73.700000   |
 |Angel                            |   82.500000   |
@@ -2163,12 +2163,12 @@ sorting by shortest time...
 |The Simpsons                     |     300.0     |
 ###################################################
 
-Mean:		 48.93
+Mean:		 48.97
 Median:		 27.13
-Pstdev:		 55.66
-Pvariance:	3098.27
-Stdev:		 56.14
-Variance:	3151.68
+Pstdev:		 55.67
+Pvariance:	3099.45
+Stdev:		 56.15
+Variance:	3152.89
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2201,10 +2201,10 @@ sorting by longest time...
 |Angel                            |  82.500000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  82.500000   |Angel                            |
 |The Office                       |  73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |  73.700000   |The Office                       |
 |Scrubs                           |  66.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |  66.733333   |Scrubs                           |
+|It's Always Sunny in Philadelphia|  62.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  62.333333   |It's Always Sunny in Philadelphia|
 |Prison Break                     |  61.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |  61.600000   |Prison Break                     |
 |Game of Thrones                  |  60.833333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |  60.833333   |Game of Thrones                  |
 |Malcolm in the Middle            |  60.400000   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  60.400000   |Malcolm in the Middle            |
-|It's Always Sunny in Philadelphia|  59.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  59.400000   |It's Always Sunny in Philadelphia|
 |Brooklyn Nine-Nine               |  56.100000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |  56.100000   |Brooklyn Nine-Nine               |
 |Star Wars the Clone Wars         |  55.416667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |  55.416667   |Star Wars the Clone Wars         |
 |Curb your Enthusiasm             |     55.0     |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |     55.0     |Curb your Enthusiasm             |
@@ -2281,10 +2281,10 @@ sorting by longest time...
 |Angel                            |  82.500000   |
 |The Office                       |  73.700000   |
 |Scrubs                           |  66.733333   |
+|It's Always Sunny in Philadelphia|  62.333333   |
 |Prison Break                     |  61.600000   |
 |Game of Thrones                  |  60.833333   |
 |Malcolm in the Middle            |  60.400000   |
-|It's Always Sunny in Philadelphia|  59.400000   |
 |Brooklyn Nine-Nine               |  56.100000   |
 |Star Wars the Clone Wars         |  55.416667   |
 |Curb your Enthusiasm             |     55.0     |
@@ -2330,12 +2330,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 48.93
+Mean:		 48.97
 Median:		 27.13
-Pstdev:		 55.66
-Pvariance:	3098.27
-Stdev:		 56.14
-Variance:	3151.68
+Pstdev:		 55.67
+Pvariance:	3099.45
+Stdev:		 56.15
+Variance:	3152.89
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2393,7 +2393,7 @@ sorting by most episodes per season...
 |Final Space                      |        11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |        11.500000         |Final Space                      |
 |Recess                           |        11.333333         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        11.333333         |Recess                           |
 |Mr. Robot                        |        11.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |        11.250000         |Mr. Robot                        |
-|It's Always Sunny in Philadelphia|        10.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        10.800000         |It's Always Sunny in Philadelphia|
+|It's Always Sunny in Philadelphia|        10.625000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        10.625000         |It's Always Sunny in Philadelphia|
 |Curb your Enthusiasm             |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |           10.0           |Curb your Enthusiasm             |
 |Better Call Saul                 |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0           |Better Call Saul                 |
 |What We Do In The Shadows        |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |           10.0           |What We Do In The Shadows        |
@@ -2473,7 +2473,7 @@ sorting by most episodes per season...
 |Final Space                      |        11.500000         |
 |Recess                           |        11.333333         |
 |Mr. Robot                        |        11.250000         |
-|It's Always Sunny in Philadelphia|        10.800000         |
+|It's Always Sunny in Philadelphia|        10.625000         |
 |Curb your Enthusiasm             |           10.0           |
 |Better Call Saul                 |           10.0           |
 |What We Do In The Shadows        |           10.0           |
@@ -2497,12 +2497,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.63
+Mean:		 14.62
 Median:		 13.14
 Pstdev:		  7.31
-Pvariance:	 53.46
-Stdev:		  7.37
-Variance:	 54.39
+Pvariance:	 53.49
+Stdev:		  7.38
+Variance:	 54.41
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2544,7 +2544,7 @@ sorting by least episodes per season...
 |Better Call Saul                 |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0            |Better Call Saul                 |
 |What We Do In The Shadows        |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |           10.0            |What We Do In The Shadows        |
 |Baskets                          |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |           10.0            |Baskets                          |
-|It's Always Sunny in Philadelphia|         10.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         10.800000         |It's Always Sunny in Philadelphia|
+|It's Always Sunny in Philadelphia|         10.625000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         10.625000         |It's Always Sunny in Philadelphia|
 |Mr. Robot                        |         11.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |         11.250000         |Mr. Robot                        |
 |Recess                           |         11.333333         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         11.333333         |Recess                           |
 |Final Space                      |         11.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |         11.500000         |Final Space                      |
@@ -2624,7 +2624,7 @@ sorting by least episodes per season...
 |Better Call Saul                 |           10.0            |
 |What We Do In The Shadows        |           10.0            |
 |Baskets                          |           10.0            |
-|It's Always Sunny in Philadelphia|         10.800000         |
+|It's Always Sunny in Philadelphia|         10.625000         |
 |Mr. Robot                        |         11.250000         |
 |Recess                           |         11.333333         |
 |Final Space                      |         11.500000         |
@@ -2664,12 +2664,12 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.63
+Mean:		 14.62
 Median:		 13.14
 Pstdev:		  7.31
-Pvariance:	 53.46
-Stdev:		  7.37
-Variance:	 54.39
+Pvariance:	 53.49
+Stdev:		  7.38
+Variance:	 54.41
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################

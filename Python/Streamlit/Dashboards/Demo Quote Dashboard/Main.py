@@ -24,13 +24,13 @@ sql_sp_performance = """EXEC sp_SFC_IndividualSalesData
 CACHE_TIME = 4 * 3600
 
 
-@st.cache_data(ttl=CACHE_TIME)
+@st.cache_data(ttl=CACHE_TIME, show_spinner="Fetching Orders Data...")
 def load_data_orders():
     """Loading Data"""
     return connect(sql_)
 
 
-@st.cache_data(ttl=CACHE_TIME)
+@st.cache_data(ttl=CACHE_TIME, show_spinner="Fetching Options Data...")
 def load_data_options():
     """Loading Data"""
     return connect(sql_options)
@@ -384,6 +384,23 @@ def update_data_table(input_type):
 
     expander_options.metric("Options Price", f"$ {ttl_option_price:20,.2f}")  #, -1 * ttl_option_cost)
     expander_npos.metric("NPO Price", f"$ {ttl_npo_price:20,.2f}")  #, -1 * ttl_npo_cost)
+
+    expander_reports = st.expander("Reports")
+    # if company == 1:
+    #     # STG
+    #     path_quote_report = f"\\NAS1\\Public\\Quote Information - Stargate\\{quote_number}\\WIP\\"
+    # else:
+    #     # BWS
+    #     path_quote_report = f"\\NAS1\\Public\\Quote Information\\{quote_number}\\WIP\\"
+    #
+    # if os.path.exists(path_quote_report):
+    #     files = os.listdir(path_quote_report)
+    #     files.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+    #     if files:
+    #         last_file = files[0]
+    #         with open(last_file, "wb") as f:
+    #             f.write(uploaded_file.getvalue())
+
 
     expander_qcp = st.expander("Quote Capture Performances")
     sql_qcp_specific = sql_sp_performance.format(
