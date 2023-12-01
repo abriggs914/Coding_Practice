@@ -14,14 +14,23 @@ sql_ = """SELECT * FROM [v_SFC_BWSUnionSTGOrders];"""
 
 sql_options = """SELECT * FROM [v_SFC_OrdersDataOptions]"""
 
+sql_sp_performance = """EXEC sp_SFC_IndividualSalesData
+	@companyID={COMPANYID}
+	,@dealerID={DEALERID}
+	,@productID={PRODUCTID}
+	,@salesPersonID={SALESPERSONID}
+	,@allCompanies={ALLCOMPANIES}"""
 
-@st.cache_data(ttl=3600)
+CACHE_TIME = 4 * 3600
+
+
+@st.cache_data(ttl=CACHE_TIME)
 def load_data_orders():
     """Loading Data"""
     return connect(sql_)
 
 
-@st.cache_data(ttl=3600)
+@st.cache_data(ttl=CACHE_TIME)
 def load_data_options():
     """Loading Data"""
     return connect(sql_options)
@@ -81,13 +90,17 @@ def what_is_searchbox_input_type() -> str | None:
     # return options[idx]
 
 
-def update_data_table(input_type):
+def get_order_data(input_type, company=None):
+
+    if company is not None:
+        if isinstance(company, str):
+            company = 1 if company == "STG" else 0
 
     input_search = st.session_state["choice_searchbox"]
     print(f"{input_type=}, {input_search=}")
     if input_type == "PO":
         message = f"PO == '{input_search}'"
-        df_sub1 = df_orders.loc[df_orders["Orders_PO"] == input_search]
+        df_sub1 = df_orders.loc[df_orders["Orders_PurchaseOrder"] == input_search]
     elif input_type == "SN":
         message = f"SN == '{input_search}'"
         df_sub1 = df_orders.loc[df_orders["Orders_SerialNumber"] == input_search]
@@ -97,6 +110,23 @@ def update_data_table(input_type):
     else:
         message = f"Quote == '{input_search}'"
         df_sub1 = df_orders.loc[df_orders["Orders_Quote"] == input_search]
+
+    if company is not None:
+        message = f"{message} && Company == {company}"
+        df_sub1 = df_sub1[df_sub1["Orders_CompanyID"] == company]
+
+    return df_sub1, message
+
+
+def click_option(df_idx: int):
+    print(f"{df_idx=}")
+    quote = df_orders.iloc[df_idx]["Orders_Quote"]
+    st.session_state["choice_searchbox"] = quote
+
+
+def update_data_table(input_type):
+
+    df_sub1, message = get_order_data(input_type)
 
     df_dates = to_datetime(df_sub1[ordered_dates_list.keys()])
     print(f"A {df_dates=}")
@@ -115,19 +145,82 @@ def update_data_table(input_type):
     print(f"{message=}")
     print(f"{df_sub1=}")
 
+    print(f"{df_sub1.shape=}")
+
+    if df_sub1.shape[0] > 1:
+        st.markdown("## Please choose an option:")
+        for i, row in df_sub1.iterrows():
+            o_comp = row["Orders_CompanyID"]
+            o_comp = "STG" if o_comp == 1 else "BWS"
+            o_quote = row["Orders_Quote"]
+            o_model = row["Orders_ModelNo"]
+            st.button(
+                label=f"{o_comp} Quote: {o_quote}, Model: {o_model}",
+                type="primary",
+                on_click=lambda idx_=i: click_option(idx_)
+            )
+        return
+
+    b_col1, b_col2 = st.columns(2, gap="large")
+    b_col1.button(
+        label="Previous Quote",
+        type="primary",
+        use_container_width=True,
+        on_click=click_previous_quote
+    )
+    b_col2.button(
+        label="Next Quote",
+        type="primary",
+        use_container_width=True,
+        on_click=click_next_quote
+    )
+
+    unit_is_us = df_sub1.iloc[0]["Orders_USSale"]
     quote_number = df_sub1.iloc[0]["Orders_Quote"]
+    wo_number = df_sub1.iloc[0]["Orders_WO"]
+    serial_number = df_sub1.iloc[0]["Orders_SerialNumber"]
+    po_number = df_sub1.iloc[0]["Orders_PurchaseOrder"]
     company = df_sub1.iloc[0]["OriginTable"]
     promo_drawing = df_sub1.iloc[0]["Products_PromoDrawing"]
     order_price = float(df_sub1.iloc[0]["Orders_Price"])
+    product_price = float(df_sub1.iloc[0]['Products_Price'])
+    date_quote = df_sub1.iloc[0]["Orders_DateQuote"]
+    date_order = df_sub1.iloc[0]["Orders_DateOrder"]
+    unit_is_ordered = not isinstance(date_order, pd._libs.NaTType)
+
+    id_company = df_sub1.iloc[0]["Orders_CompanyID"]
+    id_dealer = df_sub1.iloc[0]["Orders_DealerID"]
+    id_product = df_sub1.iloc[0]["Orders_ProductID"]
+    id_sales_person = df_sub1.iloc[0]["Orders_CompanyID"]
 
     st.session_state["choice_unit_cancelled"] = unit_is_cancelled
+    st.session_state["choice_unit_ordered"] = unit_is_ordered
+    st.session_state["choice_unit_is_us"] = unit_is_us
 
-    checkbox_unit_is_cancelled = st.checkbox(
-        label="Cancelled",
+    t_company = "Stargate" if company == "STG" else "BWS"
+    t_col1, t_col2, t_col3, t_col4 = st.columns(4)
+    t_col1.markdown(f"## {t_company} {input_type}")
+    checkbox_unit_is_us = t_col2.checkbox(
+        label="US Sale",
+        key="choice_unit_is_us",
+        disabled=True
+    )
+    checkbox_unit_is_ordered = t_col3.checkbox(
+        label="Ordered",
+        key="choice_unit_ordered",
+        disabled=True
+    )
+    checkbox_unit_is_cancelled = t_col4.checkbox(
+        label="Cancelled " + ("Order" if unit_is_ordered else "Quote") + ":",
         key="choice_unit_cancelled",
         disabled=True
     )
-    st.markdown(f"## {company} {input_type}")
+
+    m_col1, m_col2, m_col3, m_col4 = st.columns(4)
+    m_col1.metric(label="Quote", value=quote_number)
+    m_col2.metric(label="WO", value=wo_number)
+    m_col3.metric(label="Serial", value=serial_number)
+    m_col4.metric(label="PO", value=po_number)
 
     company = 1 if company == "STG" else 0
     if promo_drawing:
@@ -173,16 +266,17 @@ def update_data_table(input_type):
     print(f"{df_sub_npos=}")
 
     col_renames_orders = {
+        "Orders_DateQuote": "Quote Date",
         "Orders_USSale": "US Sale",
         "Orders_Quote": "Quote",
         "Orders_WO": "WO",
         "Orders_PurchaseOrder": "PO",
         "Orders_SerialNumber": "SN",
         "Orders_ModelNo": "Model",
+        "WipMaster_StockCode": "Syspro StockCode",
         "Orders_Price": "Order Base Price",
         "Products_Price": "Product Base Price",
         "Dealers_COMPANYNAME": "Dealer",
-        "WipMaster_StockCode": "Syspro StockCode",
         "SalesStaff_SalesPerson": "Sales Person"
     }
 
@@ -208,22 +302,35 @@ def update_data_table(input_type):
     del df_sub_options["OptionSortSe"]
     del df_sub_npos["OptionSortSe"]
 
-    df_sub1["Calculated Sub-Total"] = f"{ttl_order_subtotal:.2f}"
-    df_sub1["Calculated Price"] = f"{calc_order_price:.2f}"
-    df_sub1["Total Discounts"] = f"{ttl_discounts:.2f}"
+    df_sub1["Orders_Price"] = f"$ {order_price:20,.2f}"
+    df_sub1["Products_Price"] = f"$ {product_price:20,.2f}"
+    df_sub1["Calculated Sub-Total"] = f"$ {ttl_order_subtotal:20,.2f}"
+    df_sub1["Calculated Price"] = f"$ {calc_order_price:20,.2f}"
+    df_sub1["Total Discounts"] = f"$ {ttl_discounts:20,.2f}"
+    df_sub1["Ttl Option Price"] = f"$ {ttl_option_price:20,.2f}"
+    # df_sub1["Ttl Option Cost"] = f"$ {ttl_option_cost:20,.2f}"
+    df_sub1["Ttl NPO Price"] = f"$ {ttl_npo_price:20,.2f}"
+    # df_sub1["Ttl NPO Cost"] = f"$ {ttl_npo_cost:20,.2f}"
     df_sub1["# Options"] = n_options
     df_sub1["# NPOs"] = n_npos
-    df_sub1["Ttl Option Price"] = ttl_option_price
-    df_sub1["Ttl Option Cost"] = ttl_option_cost
-    df_sub1["Ttl NPO Price"] = ttl_npo_price
-    df_sub1["Ttl NPO Cost"] = ttl_npo_cost
+
+    del df_sub1["Orders_USSale"]
+    del df_sub1["Orders_Quote"]
+    del df_sub1["Orders_WO"]
+    del df_sub1["Orders_PurchaseOrder"]
+    del df_sub1["Orders_SerialNumber"]
 
     df_sub1 = df_sub1.rename(columns=col_renames_orders)
     chartable_df_sub_options = df_sub_options.rename(columns=col_renames_options)
     chartable_df_sub_npos = df_sub_npos.rename(columns=col_renames_options)
 
     # df_table = st.dataframe(df_sub1)
-    st.dataframe(df_sub1.transpose(), use_container_width=True)
+    chartable_model_data = df_sub1.transpose()
+    st.dataframe(
+        chartable_model_data,
+        use_container_width=True,
+        height=550
+    )
 
     if promo_drawing:
         st.link_button("Promo Drawing", promo_drawing)
@@ -248,7 +355,7 @@ def update_data_table(input_type):
         "title": {
             "text": {
                 "headline": "Movements",
-                "text": "HERE IS MY SAMPLE TIMELINE"
+                "text": ""
             }
         },
         "events": []
@@ -268,14 +375,144 @@ def update_data_table(input_type):
 
     print(f"{movements_data=}")
     # movements_data = movement_data
-    movements_timeline = timeline(movements_dict, height=400)
+    with expander_move_history:
+        movements_timeline = timeline(movements_dict, height=400)
     # movements_timeline = timeline(movements_dict, height=400)
     # expander_move_history.
     # movements_timeline = expander_move_history.timeline(movements_dict, height=400)
     # expander_move_history.write(movements_timeline)
 
-    st.metric("Options Price", ttl_option_price, -1 * ttl_option_cost)
-    st.metric("NPO Price", ttl_npo_price, -1 * ttl_npo_cost)
+    expander_options.metric("Options Price", f"$ {ttl_option_price:20,.2f}")  #, -1 * ttl_option_cost)
+    expander_npos.metric("NPO Price", f"$ {ttl_npo_price:20,.2f}")  #, -1 * ttl_npo_cost)
+
+    expander_qcp = st.expander("Quote Capture Performances")
+    sql_qcp_specific = sql_sp_performance.format(
+        COMPANYID=-id_company,
+        DEALERID=-id_dealer,
+        PRODUCTID=-id_product,
+        SALESPERSONID=-id_sales_person,
+        ALLCOMPANIES=0
+    )
+    df_qcp_specific = connect(sql_qcp_specific)
+
+    sql_qcp_company = sql_sp_performance.format(
+        COMPANYID=-id_company,
+        DEALERID="NULL",
+        PRODUCTID="NULL",
+        SALESPERSONID="NULL",
+        ALLCOMPANIES=0
+    )
+    df_qcp_company = connect(sql_qcp_company)
+    sql_qcp_dealer = sql_sp_performance.format(
+        COMPANYID="NULL",
+        DEALERID=-id_dealer,
+        PRODUCTID="NULL",
+        SALESPERSONID="NULL",
+        ALLCOMPANIES=0
+    )
+    df_qcp_dealer = connect(sql_qcp_dealer)
+    sql_qcp_product = sql_sp_performance.format(
+        COMPANYID="NULL",
+        DEALERID="NULL",
+        PRODUCTID=-id_product,
+        SALESPERSONID="NULL",
+        ALLCOMPANIES=0
+    )
+    df_qcp_product = connect(sql_qcp_product)
+    sql_qcp_sales_person = sql_sp_performance.format(
+        COMPANYID="NULL",
+        DEALERID="NULL",
+        PRODUCTID="NULL",
+        SALESPERSONID=-id_sales_person,
+        ALLCOMPANIES=0
+    )
+    df_qcp_sales_person = connect(sql_qcp_sales_person)
+
+    selectable_cols = {
+        "NumQuotesPrepared": "# Quotes Prepared",
+        "NumInvalidQuotes": "# Invalid Quotes",
+        "NumSoldDeliveredUnits": "# Sold & Delivered Quotes",
+        "NumUnitsOnOrder": "# Quotes on Order",
+        "NumQuotesOutToDealer": "# Quotes out to Dealer",
+        "NumCancelledQuotes": "# Cancelled Quotes",
+        "NumCancelledOrders": "# Cancelled Orders",
+
+        "PctInvalidQuotes": "% Invalid Quotes",
+        "PctSoldDeliveredUnits": "% Sold & Delivered Quotes",
+        "PctUnitsOnOrder": "% Quotes on Order",
+        "PctQuotesOutToDealer": "% Quotes out to Dealer",
+        "PctCancelledQuotes": "% Cancelled Quotes",
+        "PctCancelledOrders": "% Cancelled Orders"
+    }
+
+    df_qcp_specific = df_qcp_specific[selectable_cols.keys()]
+    df_qcp_specific = df_qcp_specific.rename(columns=selectable_cols)
+    df_qcp_company = df_qcp_company[selectable_cols.keys()]
+    df_qcp_company = df_qcp_company.rename(columns=selectable_cols)
+    df_qcp_dealer = df_qcp_dealer[selectable_cols.keys()]
+    df_qcp_dealer = df_qcp_dealer.rename(columns=selectable_cols)
+    df_qcp_product = df_qcp_product[selectable_cols.keys()]
+    df_qcp_product = df_qcp_product.rename(columns=selectable_cols)
+    df_qcp_sales_person = df_qcp_sales_person[selectable_cols.keys()]
+    df_qcp_sales_person = df_qcp_sales_person.rename(columns=selectable_cols)
+
+    df_qcp_specific = df_qcp_specific.transpose()
+    df_qcp_company = df_qcp_company.transpose()
+    df_qcp_dealer = df_qcp_dealer.transpose()
+    df_qcp_product = df_qcp_product.transpose()
+    df_qcp_sales_person = df_qcp_sales_person.transpose()
+
+    expander_qcp.markdown(f"### Specific to Company, Dealer, Product, and Sales Person")
+    expander_qcp.dataframe(df_qcp_specific, height=700)
+    qcp_col1, qcp_col2, qcp_col3, qcp_col4 = expander_qcp.columns(4)
+    qcp_col1.markdown(f"### Specific to Company")
+    qcp_col1.dataframe(df_qcp_company, height=700)
+    qcp_col2.markdown(f"### Specific to Dealer")
+    qcp_col2.dataframe(df_qcp_dealer, height=700)
+    qcp_col3.markdown(f"### Specific to Product")
+    qcp_col3.dataframe(df_qcp_product, height=700)
+    qcp_col4.markdown(f"### Specific to Sales Person")
+    qcp_col4.dataframe(df_qcp_sales_person, height=700)
+
+
+def click_previous_quote():
+    if not (sb_inp := st.session_state["choice_searchbox"]):
+        st.warning("Please enter a BWS Quote, WO, PO, or Serial Number")
+        return
+
+    sb_inp_type = st.session_state["choice_searchbox_type"]
+    df_sub1, message = get_order_data(sb_inp_type)
+    idx = df_sub1.index
+
+    if idx == 0:
+        st.warning("This is the first quote.")
+        return
+
+    df_sub2 = df_orders.iloc[idx - 1].reset_index()
+    prev_quote = df_sub2.iloc[0]["Orders_Quote"]
+    print(f"{sb_inp=}, {sb_inp_type=}, {idx=}, {prev_quote=}")
+    st.session_state["choice_searchbox"] = prev_quote
+
+
+def click_next_quote():
+    if not (sb_inp := st.session_state["choice_searchbox"]):
+        st.warning("Please enter a BWS Quote, WO, PO, or Serial Number")
+        return
+
+    sb_inp_type = st.session_state["choice_searchbox_type"]
+    df_sub1, message = get_order_data(sb_inp_type)
+    idx = df_sub1.index
+
+    print(f"{df_orders.index=}")
+    print(f"{df_orders.index.stop=}")
+    if idx == df_orders.index.stop:
+        st.warning("This is the last quote.")
+        return
+
+    df_sub2 = df_orders.iloc[idx + 1].reset_index()
+    next_quote = df_sub2.iloc[0]["Orders_Quote"]
+    print(f"{sb_inp=}, {sb_inp_type=}, {idx=}, {next_quote=}")
+    st.session_state["choice_searchbox"] = next_quote
 
 
 if __name__ == '__main__':
@@ -355,6 +592,7 @@ if __name__ == '__main__':
 
     if st.session_state["choice_searchbox"]:
         searchbox_input_type = what_is_searchbox_input_type()
+        st.session_state["choice_searchbox_type"] = searchbox_input_type
         if searchbox_input_type is not None:
             msg = st.toast(f"LOADED {searchbox_input_type}")
             update_data_table(searchbox_input_type)
