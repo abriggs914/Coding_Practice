@@ -187,11 +187,16 @@ def update_data_table(input_type):
     date_quote = df_sub1.iloc[0]["Orders_DateQuote"]
     date_order = df_sub1.iloc[0]["Orders_DateOrder"]
     unit_is_ordered = not isinstance(date_order, pd._libs.NaTType)
+    name_dealer = df_sub1.iloc[0]["Dealers_COMPANYNAME"]
+    name_product = df_sub1.iloc[0]["Orders_ModelNo"]
+    name_sales_person = df_sub1.iloc[0]["SalesStaff_SalesPerson"]
+
+    wo_number = None if np.isnan(float(wo_number)) else wo_number
 
     id_company = df_sub1.iloc[0]["Orders_CompanyID"]
     id_dealer = df_sub1.iloc[0]["Orders_DealerID"]
     id_product = df_sub1.iloc[0]["Orders_ProductID"]
-    id_sales_person = df_sub1.iloc[0]["Orders_CompanyID"]
+    id_sales_person = df_sub1.iloc[0]["Orders_SalePersonID"]
 
     st.session_state["choice_unit_cancelled"] = unit_is_cancelled
     st.session_state["choice_unit_ordered"] = unit_is_ordered
@@ -462,15 +467,55 @@ def update_data_table(input_type):
         "PctCancelledOrders": "% Cancelled Orders"
     }
 
-    df_qcp_specific = df_qcp_specific[selectable_cols.keys()]
+    # df_qcp_specific = df_qcp_specific[selectable_cols.keys()]
+    # df_qcp_company = df_qcp_company[selectable_cols.keys()]
+    # df_qcp_dealer = df_qcp_dealer[selectable_cols.keys()]
+    # df_qcp_product = df_qcp_product[selectable_cols.keys()]
+    # df_qcp_sales_person = df_qcp_sales_person[selectable_cols.keys()]
+
+    # format all columns that start with prefix 'pct' indicating percentage
+    for col in df_qcp_specific.columns:
+        if col.startswith("Pct"):
+            df_qcp_specific[col] = df_qcp_specific[col].apply(lambda x: f"{x:3.3f} %")
+    for col in df_qcp_company.columns:
+        if col.startswith("Pct"):
+            df_qcp_company[col] = df_qcp_company[col].apply(lambda x: f"{x:3.3f} %")
+    for col in df_qcp_dealer.columns:
+        if col.startswith("Pct"):
+            df_qcp_dealer[col] = df_qcp_dealer[col].apply(lambda x: f"{x:3.3f} %")
+    for col in df_qcp_product.columns:
+        if col.startswith("Pct"):
+            df_qcp_product[col] = df_qcp_product[col].apply(lambda x: f"{x:3.3f} %")
+    for col in df_qcp_sales_person.columns:
+        if col.startswith("Pct"):
+            df_qcp_sales_person[col] = df_qcp_sales_person[col].apply(lambda x: f"{x:3.3f} %")
+
+    df_all = pd.concat(
+        [
+            df_qcp_specific[selectable_cols.keys()],
+            df_qcp_company[selectable_cols.keys()],
+            df_qcp_dealer[selectable_cols.keys()],
+            df_qcp_product[selectable_cols.keys()],
+            df_qcp_sales_person[selectable_cols.keys()]
+        ],
+        ignore_index=True
+    ).rename(columns=selectable_cols).transpose().rename(
+        columns=dict(zip(
+            range(5),
+            [
+                "Specific",
+                t_company,
+                name_dealer,
+                name_product,
+                name_sales_person
+            ]
+        ))
+    )
+
     df_qcp_specific = df_qcp_specific.rename(columns=selectable_cols)
-    df_qcp_company = df_qcp_company[selectable_cols.keys()]
     df_qcp_company = df_qcp_company.rename(columns=selectable_cols)
-    df_qcp_dealer = df_qcp_dealer[selectable_cols.keys()]
     df_qcp_dealer = df_qcp_dealer.rename(columns=selectable_cols)
-    df_qcp_product = df_qcp_product[selectable_cols.keys()]
     df_qcp_product = df_qcp_product.rename(columns=selectable_cols)
-    df_qcp_sales_person = df_qcp_sales_person[selectable_cols.keys()]
     df_qcp_sales_person = df_qcp_sales_person.rename(columns=selectable_cols)
 
     df_qcp_specific = df_qcp_specific.transpose()
@@ -479,23 +524,29 @@ def update_data_table(input_type):
     df_qcp_product = df_qcp_product.transpose()
     df_qcp_sales_person = df_qcp_sales_person.transpose()
 
-    expander_qcp.markdown(f"### Specific to Company, Dealer, Product, and Sales Person")
-    expander_qcp.dataframe(df_qcp_specific, height=700)
-    qcp_col1, qcp_col2, qcp_col3, qcp_col4 = expander_qcp.columns(4)
-    qcp_col1.markdown(f"### Specific to Company")
-    qcp_col1.dataframe(df_qcp_company, height=700)
-    qcp_col2.markdown(f"### Specific to Dealer")
-    qcp_col2.dataframe(df_qcp_dealer, height=700)
-    qcp_col3.markdown(f"### Specific to Product")
-    qcp_col3.dataframe(df_qcp_product, height=700)
-    qcp_col4.markdown(f"### Specific to Sales Person")
-    qcp_col4.dataframe(df_qcp_sales_person, height=700)
+    print(f"{df_qcp_sales_person.columns=}")
+
+    # expander_qcp.markdown(f"### Specific to Company, Dealer, Product, and Sales Person")
+    # expander_qcp.dataframe(df_qcp_specific, height=700)
+    # qcp_col1, qcp_col2, qcp_col3, qcp_col4 = expander_qcp.columns(4)
+    # qcp_col1.markdown(f"### Specific to Company")
+    # qcp_col1.dataframe(df_qcp_company, height=700)
+    # qcp_col2.markdown(f"### Specific to Dealer")
+    # qcp_col2.dataframe(df_qcp_dealer, height=700)
+    # qcp_col3.markdown(f"### Specific to Product")
+    # qcp_col3.dataframe(df_qcp_product, height=700)
+    # qcp_col4.markdown(f"### Specific to Sales Person")
+    # qcp_col4.dataframe(df_qcp_sales_person, height=700)
+
+    expander_qcp.dataframe(df_all, height=500)
 
 
 def click_previous_quote():
     if not (sb_inp := st.session_state["choice_searchbox"]):
         st.warning("Please enter a BWS Quote, WO, PO, or Serial Number")
         return
+
+    # TODO prevent going into BWS quotes from STG
 
     sb_inp_type = st.session_state["choice_searchbox_type"]
     df_sub1, message = get_order_data(sb_inp_type)
@@ -515,6 +566,8 @@ def click_next_quote():
     if not (sb_inp := st.session_state["choice_searchbox"]):
         st.warning("Please enter a BWS Quote, WO, PO, or Serial Number")
         return
+
+    # TODO prevent going into STG quotes from BWS
 
     sb_inp_type = st.session_state["choice_searchbox_type"]
     df_sub1, message = get_order_data(sb_inp_type)
@@ -554,6 +607,7 @@ if __name__ == '__main__':
     }
 
     # with st.spinner('Loading Data'):
+    st.empty()
     df_orders = load_data_orders()
     df_options = load_data_options()
 
@@ -573,6 +627,8 @@ if __name__ == '__main__':
 
     # print(f"A {df_orders['Orders_WO']}")
     df_orders['Orders_WO'] = df_orders['Orders_WO'].apply(lambda x: f"{x:.0f}")
+    df_orders = df_orders.fillna({"Orders_ProductID": -1})
+    df_orders['Orders_ProductID'] = df_orders['Orders_ProductID'].apply(lambda x: int(f"{x:.0f}"))
     # print(f"B {df_orders['Orders_WO']}")
     df_orders = df_orders.fillna({"Orders_WO": ""})
     # print(f"C {df_orders['Orders_WO']}")
