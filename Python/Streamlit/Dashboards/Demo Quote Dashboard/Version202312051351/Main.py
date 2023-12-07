@@ -1,7 +1,4 @@
-import datetime
-import math
 import os.path
-import subprocess
 from functools import reduce
 import operator
 
@@ -13,22 +10,9 @@ from pdf2image import convert_from_path
 from streamlit_timeline import timeline
 from pyodbc_connection import connect
 
-resources_raw = {
-    "settings_icon": (
-        r"\\nas1.bwsdomain.local\Public\IT\Program Resources\Sales Dashboard\settings_icon.png", "Settings Icon")
-}
-
-resources = {k: None for k in resources_raw}
-
 sql_ = """SELECT * FROM [v_SFC_BWSUnionSTGOrders];"""
 
 sql_options = """SELECT * FROM [v_SFC_OrdersDataOptions]"""
-
-sql_products = """SELECT * FROM [v_SFC_BWSUnionSTGProducts]"""
-
-sql_labour = f"""SELECT * FROM [v_SFC_BWSUnionSTGLabour];"""
-
-sql_dealers = f"""SELECT * FROM [v_SFC_BWSUnionSTGDealers];"""
 
 sql_sp_performance = """EXEC sp_SFC_IndividualSalesData
 	@companyID={COMPANYID}
@@ -60,24 +44,6 @@ def load_data_options():
     return connect(sql_options)
 
 
-@st.cache_data(ttl=CACHE_TIME, show_spinner="Fetching Products Data...")
-def load_data_products():
-    """Loading Products Data"""
-    return connect(sql_products)
-
-
-@st.cache_data(ttl=CACHE_TIME, show_spinner="Fetching Labour Data...")
-def load_data_labour():
-    """Loading Products Data"""
-    return connect(sql_labour)
-
-
-@st.cache_data(ttl=CACHE_TIME, show_spinner="Fetching Dealers Data...")
-def load_data_dealers():
-    """Loading Dealers Data"""
-    return connect(sql_dealers)
-
-
 @st.cache_data(ttl=CACHE_TIME, show_spinner="Fetching Defects Data...")
 def load_data_defects():
     """Loading Defects Data"""
@@ -102,15 +68,9 @@ def load_data_product_performance():
 
 
 def get_options_data(company: int, quote: str):
-    """Fetch options data for a company's quote number"""
+    """Loading Options Data"""
     # return connect(f"{sql_options} WHERE [CompanyID] = {company} AND [Quote] = '{quote}'")
     return df_options[(df_options["CompanyID"] == company) & (df_options["Quote"] == quote)]
-
-
-def get_labour_data(company: int, wo: str):
-    """Fetch labour data for a company's WO"""
-    # return connect(f"{sql_options} WHERE [CompanyID] = {company} AND [Quote] = '{quote}'")
-    return df_labour[(df_labour["CompanyID"] == company) & (df_labour["Job"] == wo)]
 
 
 def to_datetime(df_in: pd.DataFrame):
@@ -123,20 +83,6 @@ def to_datetime(df_in: pd.DataFrame):
                 # print(f"FAILURE {col=}")
                 pass
     return df_in
-
-
-# def load_resources():
-#     for k, data in resources_raw.items():
-#         url, caption = data
-#         image = None
-#         try:
-#             with open(url, "rb") as f:
-#                 image = f.read()
-#         except FileNotFoundError:
-#             pass
-#         resources.update({
-#             k:
-#         })
 
 
 @st.cache_data
@@ -208,80 +154,24 @@ def click_option(df_idx: int):
     st.session_state["choice_searchbox"] = quote
 
 
-def click_promo_drawing(promo_dwng, container):
-    print(f"CLICK PD {promo_dwng=}")
-    if os.path.exists(promo_dwng):
-        subprocess.Popen(fr'explorer /select,"{promo_dwng}')
-    else:
-        container.warning(f"Could not find file '{promo_dwng}'")
-
-
-def click_quote_info_dir(qid):
-    print(f"CLICK QID {qid=}")
-    if os.path.exists(qid):
-        subprocess.Popen(fr'explorer "{qid}')
-    else:
-        btns_col2.warning(f"Could not find folder '{qid}'")
-
-
 def update_data_table(input_type):
-    global btns_col1, btns_col2, btns_col3
     df_sub1, message = get_order_data(input_type)
 
     df_dates = to_datetime(df_sub1[ordered_dates_list.keys()])
     print(f"A {df_dates=}")
     # df_dates["IsCancelled"] = 1 if (not df_dates["Orders_DateDeclined"].any() and df_dates["Orders_DeclineRejected"] != 4) else 0
-    # df_dates["IsCancelled"] = np.where(
-    #     ~((df_dates["Orders_DateDeclined"].empty or isinstance(df_dates["Orders_DateDeclined"], pd._libs.NaTType)) and df_dates["Orders_DeclineRejected"] == 4), 1, 0)
-    # df_dates["IsCancelled"] = np.where(
-    #     ((~df_dates["Orders_DateDeclined"].empty
-    #       or isinstance(df_dates["Orders_DateDeclined"], pd._libs.NaTType))
-    #      or df_dates["Orders_DeclineRejected"] != 4
-    #      ), 1, 0)
-    # df_dates["IsCancelled"] = np.where(
-    #     ((~isinstance(df_dates["Orders_DateDeclined"], pd._libs.NaT))
-    #      or df_dates["Orders_DeclineRejected"] != 4
-    #     ), 1, 0)
-    # df_dates["IsCancelled"] = np.where(
-    #     ((~df_dates["Orders_DateDeclined"].isnull()
-    #       or ~df_dates["Orders_DateDeclined"].isna())
-    #      or df_dates["Orders_DeclineRejected"] != 4
-    #     ), 1, 0)
-    # df_dates["IsCancelled"] = (
-    #     ((~df_dates["Orders_DateDeclined"].isnull())
-    #         & (~df_dates["Orders_DateDeclined"].isna()))
-    #     | int(df_dates["Orders_DeclineRejected"]) != 4
-    # )
-    df_dates["IsCancelled"] = (
-        # (~isinstance(df_dates["Orders_DateDeclined"], pd.NaT))
-        (~(df_dates["Orders_DateDeclined"].isnull()))
-        | (int(df_dates["Orders_DeclineRejected"]) != 4)
-    )
-
-    # print(f"HERE")
-    # print(f"{df_dates['Orders_DateDeclined']=}")
-    # print(f"{df_dates['IsCancelled']=}")
-    # print(f"{(df_dates['Orders_DateDeclined'] is pd.NaT)=}")
-    # print(f"{(df_dates['Orders_DateDeclined'].isnull())=}")
-    # print(f"{(df_dates['Orders_DateDeclined'].isna())=}")
-    # print(f"{(df_dates['Orders_DeclineRejected'] != 4)=}")
-    # print(f"{df_dates['Orders_DeclineRejected']=}")
-
-    df_dates["IsOrder"] = np.where(~df_dates["Orders_DateOrder"].isnull(), 1, 0)
+    df_dates["IsCancelled"] = np.where(
+        (df_dates["Orders_DateDeclined"].empty and df_dates["Orders_DeclineRejected"] != 4), 1, 0)
     del df_dates["dtProdSched_DateProd1"]
     del df_dates["dtProdSched_DateProd2"]
     del df_dates["Orders_DeclineRejected"]
     df_dates = df_dates.rename(columns=ordered_dates_list)
     unit_is_cancelled = df_dates.iloc[0]["IsCancelled"] == 1
-    unit_is_ordered = df_dates.iloc[0]["IsOrder"] == 1
     del df_dates["IsCancelled"]
-    del df_dates["IsOrder"]
     chartable_df_dates = df_dates.transpose()
 
     print(f"B {df_dates=}")
 
-    print(f"{unit_is_cancelled=}")
-    print(f"{unit_is_ordered=}")
     print(f"{message=}")
     print(f"{df_sub1=}")
 
@@ -321,8 +211,7 @@ def update_data_table(input_type):
     serial_number = df_sub1.iloc[0]["Orders_SerialNumber"]
     po_number = df_sub1.iloc[0]["Orders_PurchaseOrder"]
     company = df_sub1.iloc[0]["OriginTable"]
-    promo_drawing_product = df_sub1.iloc[0]["Products_PromoDrawing"]
-    promo_drawing_order = df_sub1.iloc[0]["Orders_PromDrawing"]
+    promo_drawing = df_sub1.iloc[0]["Products_PromoDrawing"]
     order_price = float(df_sub1.iloc[0]["Orders_Price"])
     product_price = float(df_sub1.iloc[0]['Products_Price'])
     date_quote = df_sub1.iloc[0]["Orders_DateQuote"]
@@ -368,31 +257,11 @@ def update_data_table(input_type):
     m_col3.metric(label="Serial", value=serial_number)
     m_col4.metric(label="PO", value=po_number)
 
-    print(f"HERE '{promo_drawing_order=}'")
-    s_company = company
     company = 1 if company == "STG" else 0
-    if promo_drawing_order:
-        promo_drawing_order = os.path.abspath(promo_drawing_order)
-        promo_drawing_order = promo_drawing_order.replace('/', '\\')
-        # promo_drawing = f"file:///{promo_drawing}"
-
-    # correct links stored using Access syntax "link#link#"
-    if promo_drawing_order:
-        if promo_drawing_order.endswith("#"):
-            if ((l := len(promo_drawing_order)) - 1) % 2 == 1:
-                if promo_drawing_order[(l - 1) // 2] == "#":
-                    promo_drawing_order = promo_drawing_order[:(l - 1) // 2]
-    if promo_drawing_product:
-        if promo_drawing_product.endswith("#"):
-            if ((l := len(promo_drawing_product)) - 1) % 2 == 1:
-                if promo_drawing_product[(l - 1) // 2] == "#":
-                    # promo_drawing_product = promo_drawing_product[:int(math.ceil((l - 1)/2))]
-                    promo_drawing_product = promo_drawing_product[:(l - 1) // 2]
-
-    if company == 1:
-        quote_info_dir = rf"\\\\nas1.bwsdomain.local\\Public\\Quote Information - Stargate\\{quote_number}\\"
-    else:
-        quote_info_dir = rf"\\\\nas1.bwsdomain.local\\Public\\Quote Information\\{quote_number}\\"
+    if promo_drawing:
+        promo_drawing = os.path.abspath(promo_drawing)
+        promo_drawing = promo_drawing.replace('/', '\\')
+        promo_drawing = f"file:///{promo_drawing}"
 
     df_sub2 = get_options_data(company, quote_number)
     df_sub_options = df_sub2[
@@ -428,7 +297,7 @@ def update_data_table(input_type):
 
     print(f"{ttl_fixed=}, {ttl_percent=}, {ttl_discounts=}, {calc_order_price=}")
 
-    print(f"{company=}, {quote_number=}, '{promo_drawing_order}'")
+    print(f"{company=}, {quote_number=}, '{promo_drawing}'")
     print(f"{df_sub2=}")
     print(f"{df_sub_options=}")
     print(f"{df_sub_npos=}")
@@ -441,7 +310,6 @@ def update_data_table(input_type):
         "Orders_PurchaseOrder": "PO",
         "Orders_SerialNumber": "SN",
         "Orders_ModelNo": "Model",
-        "Products_Class": "Class",
         "WipMaster_StockCode": "Syspro StockCode",
         "Orders_Price": "Order Base Price",
         "Products_Price": "Product Base Price",
@@ -501,41 +369,8 @@ def update_data_table(input_type):
         height=550
     )
 
-    btns_col1, btns_col2, btns_col3 = st.columns(3)
-
-    if quote_info_dir:
-        btns_col1.button(
-            "Quote Info Folder",
-            key="choice_quote_info_dir",
-            type="primary",
-            on_click=lambda qid=quote_info_dir: click_quote_info_dir(qid)
-        )
-    else:
-        btns_col1.markdown(f"###### No quote information folder found for this order")
-
-    if promo_drawing_order:
-        # st.link_button("Promo Drawing", promo_drawing)
-        btns_col2.button(
-            "Order Promo Drawing",
-            key="choice_promo_drawing_order",
-            type="primary",
-            on_click=lambda promo_dwng=promo_drawing_order, container=btns_col2: click_promo_drawing(promo_dwng,
-                                                                                                     container)
-        )
-    else:
-        btns_col2.markdown(f"###### No promo drawing on file for this order")
-
-    if promo_drawing_product:
-        # st.link_button("Promo Drawing", promo_drawing)
-        btns_col3.button(
-            "Product Promo Drawing",
-            key="choice_promo_drawing_product",
-            type="primary",
-            on_click=lambda promo_dwng=promo_drawing_product, container=btns_col3: click_promo_drawing(promo_dwng,
-                                                                                                       container)
-        )
-    else:
-        btns_col3.markdown(f"###### No promo drawing on file for this product")
+    if promo_drawing:
+        st.link_button("Promo Drawing", promo_drawing)
 
     expander_options = st.expander("Options")
     expander_options.dataframe(chartable_df_sub_options, hide_index=True, use_container_width=True)
@@ -544,14 +379,10 @@ def update_data_table(input_type):
     expander_npos.dataframe(chartable_df_sub_npos, hide_index=True, use_container_width=True)
 
     expander_move_history = st.expander("Movement History")
-    expander_move_history.dataframe(
-        chartable_df_dates,
-        use_container_width=True,
-        height=500
-    )
+    expander_move_history.dataframe(chartable_df_dates, use_container_width=True, height=420)
 
-    # for data in chartable_df_dates.iterrows():
-    #     print(f"\t\t{data=}")
+    for data in chartable_df_dates.iterrows():
+        print(f"\t\t{data=}")
     # movements_data = df_dates[[""]]
     # movements_data = df_dates.to_dict()
     movement_keys = ["id", "content", "start"]
@@ -650,7 +481,7 @@ def update_data_table(input_type):
         expander_reports.markdown(f"## Quote Report")
         expander_reports.markdown(f"###### {last_file_quote}")
         for i, img in enumerate(image_quote):
-            expander_reports.image(img, caption=f"Quote Report P{i + 1}", use_column_width=True)
+            expander_reports.image(img, caption=f"Quote Report P{i+1}", use_column_width=True)
     else:
         expander_reports.markdown(f"## Quote Report must be run in access before it can be displayed here.")
 
@@ -658,7 +489,7 @@ def update_data_table(input_type):
         expander_reports.markdown(f"## WO Report")
         expander_reports.markdown(f"###### {last_file_wo}")
         for i, img in enumerate(image_wo):
-            expander_reports.image(img, caption=f"WO Report P{i + 1}", use_column_width=True)
+            expander_reports.image(img, caption=f"WO Report P{i+1}", use_column_width=True)
     else:
         expander_reports.markdown(f"## WO Report must be run in access before it can be displayed here.")
 
@@ -769,19 +600,19 @@ def update_data_table(input_type):
         ))
     )
 
-    # df_qcp_specific = df_qcp_specific.rename(columns=selectable_cols)
-    # df_qcp_company = df_qcp_company.rename(columns=selectable_cols)
-    # df_qcp_dealer = df_qcp_dealer.rename(columns=selectable_cols)
-    # df_qcp_product = df_qcp_product.rename(columns=selectable_cols)
-    # df_qcp_sales_person = df_qcp_sales_person.rename(columns=selectable_cols)
+    df_qcp_specific = df_qcp_specific.rename(columns=selectable_cols)
+    df_qcp_company = df_qcp_company.rename(columns=selectable_cols)
+    df_qcp_dealer = df_qcp_dealer.rename(columns=selectable_cols)
+    df_qcp_product = df_qcp_product.rename(columns=selectable_cols)
+    df_qcp_sales_person = df_qcp_sales_person.rename(columns=selectable_cols)
 
-    # df_qcp_specific = df_qcp_specific.transpose()
-    # df_qcp_company = df_qcp_company.transpose()
-    # df_qcp_dealer = df_qcp_dealer.transpose()
-    # df_qcp_product = df_qcp_product.transpose()
-    # df_qcp_sales_person = df_qcp_sales_person.transpose()
-    #
-    # print(f"{df_qcp_sales_person.columns=}")
+    df_qcp_specific = df_qcp_specific.transpose()
+    df_qcp_company = df_qcp_company.transpose()
+    df_qcp_dealer = df_qcp_dealer.transpose()
+    df_qcp_product = df_qcp_product.transpose()
+    df_qcp_sales_person = df_qcp_sales_person.transpose()
+
+    print(f"{df_qcp_sales_person.columns=}")
 
     # expander_qcp.markdown(f"### Specific to Company, Dealer, Product, and Sales Person")
     # expander_qcp.dataframe(df_qcp_specific, height=700)
@@ -803,25 +634,6 @@ def update_data_table(input_type):
     df_root_product_performance = df_product_performance_stg if company == 1 else df_product_performance_bws
     df_product_performance = df_root_product_performance[df_root_product_performance["Model No"] == name_product]
     df_product_performance = df_product_performance[["ArchiveDate", "New Price", "Old Price"]]
-
-    print(f"PRE PERFORMANCE")
-    print(f"{df_product_performance}")
-
-    now = datetime.datetime.now()
-    p_table = "ProductsV2" if company == 1 else "Products"
-    prod_curr_price = df_products[(df_products["OGTable"] == p_table) & (df_products["Model No"] == name_product)]
-    prod_curr_price = prod_curr_price.iloc[0]["Price"]
-    prod_last_price = df_product_performance.iloc[df_product_performance.shape[0] - 1]["New Price"]
-    print(f"{df_product_performance.index=}")
-    print(f"{list(df_product_performance.columns)=}")
-    df_product_performance.loc[df_product_performance.index] = (
-        now,
-        prod_curr_price,
-        prod_last_price
-    )
-    print(f"POST PERFORMANCE")
-    print(f"{df_product_performance}")
-
     df_product_performance.set_index("ArchiveDate")
     df_product_performance["Change"] = df_product_performance['New Price'] - df_product_performance['Old Price']
     print(f"{df_product_performance=}")
@@ -876,84 +688,6 @@ def update_data_table(input_type):
     else:
         expander_defects_history.markdown(f"## WO # Required")
 
-    # -- Labour --
-
-    expander_labour_history = st.expander("Labour History")
-    selectable_cols_labour = {
-        "Operation": "OP",
-        "IMachine": "Machine",
-        "IExpUnitRunTim": "Run Time Est. (H)",
-        "RunTimeIssued": "Run Time Act (H)",
-        # "IExpSetUpTime": "Set-Up. Est. (H)",
-        # "IExpStartupTime": "Start-Up. Est. (H)",
-        # "IExpShutdownTim": "Shut-down Est. (H)",
-        # "IWaitTime": "Wait (H)",
-        # "ICapacityReqd": "Capacity Reqd.",
-        "IMaxWorkOpertrs": "Max Operators",
-        "IMaxProdUnits": "Max Prod Units",
-        "ITimeTaken": "Time (H)",
-        # "IQuantity": "Qty",
-        "IExpUnitRunTimEnt": "Est. Run Time (H)",
-        "UnitValueReqd": "Value Reqd. ($)",
-        # "SetUpIssued": "Set-Up Time (H)",
-        # "ShutdownIssued": "Shut-down Time (H)",
-        # "ValueIssued": "Value Issued (Total $)",
-        # "PiecesCompleted": "Pieces Completed",
-        "ValueBilled": "Value Billed",
-        "OperCompleted": "OP Complete",
-        "QtyCompleted": "Qty Completed",
-        "QtyScrapped": "Qty Scrapped",
-        "LastScrapReason": "Last Scrap Desc.",
-        "PlannedQueueDate": "Planned Queue Date",
-        "PlannedStartDate": "Planned Start Date",
-        "PlannedEndDate": "Planned End Date",
-        "ActualQueueDate": "Actual Queue Date",
-        "ActualStartDate": "Actual Start Date",
-        "ActualFinishDate": "Actual End Date",
-        "WorkCentre": "WorkCentre",
-        "WorkCentreDesc": "WorkCentre Description",
-        "ElapsedTime": "Elapsed Time",
-        "MovementTime": "Movement Time",
-        "UnitNumOfPieces": "Num Pieces",
-        "InspectionFlag": "Inspection Flag"
-        # ,
-        # "CapacityIssued": "Capacity Issued",
-        # "ParentQtyPlanned": "Parent Qty Planned",
-        # "ParentQtyPlanEnt": "Parent Qty Plan Ent"
-    }
-    if wo_number is not None:
-        df_sub_labour = get_labour_data(company, wo_number).reset_index()
-        df_sub_labour = df_sub_labour[selectable_cols_labour.keys()]
-
-        total_run_time_est = df_sub_labour["IExpUnitRunTim"].sum()
-        total_run_time_act = df_sub_labour["RunTimeIssued"].sum()
-
-        col_lab1, col_lab2 = expander_labour_history.columns(2)
-
-        col_lab1.metric(
-            label="Total Run Time Est.",
-            value=total_run_time_est
-        )
-
-        col_lab2.metric(
-            label="Total Run Time Act",
-            value=total_run_time_act
-        )
-
-        df_sub_labour = df_sub_labour.rename(columns=selectable_cols_labour)
-        expander_labour_history.dataframe(
-            df_sub_labour,
-            hide_index=True,
-            height=530,
-            use_container_width=True
-        )
-    else:
-        expander_labour_history.markdown(f"## WO # Required")
-
-    if unit_is_cancelled:
-        expander_defects_history.markdown(f"#### WO Cancelled")
-        expander_labour_history.markdown(f"#### WO Cancelled")
-
 
 def click_previous_quote():
     if not (sb_inp := st.session_state["choice_searchbox"]):
@@ -1003,170 +737,124 @@ def correct_wo_numbers(lst_dfs):
     """Ensure that all values in the specified 'WO' column are str representations of integers."""
     # result = []
     for df, col_name in lst_dfs:
-        df[col_name] = df[col_name].apply(
-            lambda x: (x if isinstance(x, str) else (f"{x:.0f}" if x is not None else None)))
+        df[col_name] = df[col_name].apply(lambda x: (x if isinstance(x, str) else (f"{x:.0f}" if x is not None else None)))
     # return result
-
-
-def click_settings_menu():
-    # state = st.session_state["choice_settings_menu"]
-    # if state
-    if "choice_settings_menu" not in st.session_state:
-        st.session_state["choice_settings_menu"] = False
-    st.session_state["choice_settings_menu"] = not st.session_state["choice_settings_menu"]
 
 
 if __name__ == '__main__':
 
-    st.echo("HELLO")
-    btns_col1, btns_col2, btns_col3 = None, None, None
-
-    st.set_page_config(page_title="Sales Dashbord", layout="wide")
+    st.set_page_config(page_title="Sales Dashboard", layout="wide")
     st.title("Sales Dashboard")
     st.markdown(f"###### Version 2023-12-05 13:51")
 
-    if "choice_settings_menu" not in st.session_state:
-        st.session_state["choice_settings_menu"] = False
+    ordered_dates_list = {
+        "Orders_DeclineRejected": "DecRej",
+        "Orders_DateDeclined": "Date Declined",
+        "Orders_DateQuote": "Quote Date",
+        "Orders_DateOrder": "Order Date",
+        "dtProdSched_DateBeam": "Beam Date",
+        "dtProdSched_DateGN": "GNK Date",
+        "dtProdSched_DateProd1": "Prod Date 1",
+        "dtProdSched_DateProd2": "Prod Date 2",
+        "Orders_DateFinish": "Finish Date",
+        "Orders_DateAvailable": "Available Date",
+        "Orders_DatePO": "Purchase Order",
+        "Orders_DateShipped": "Shipped Date",
+        "Orders_DateDelivery": "Delivery Date",
+        "Orders_DateInService": "Date In Service",
+        "Orders_DateRegistered": "Date Registered"
+    }
 
-    settings_state = st.session_state["choice_settings_menu"]
+    # with st.spinner('Loading Data'):
+    st.empty()
+    df_orders = load_data_orders()
+    df_options = load_data_options()
+    df_product_performance_bws, df_product_performance_stg = load_data_product_performance()
+    df_defects_production, df_defects_finish, df_defects_print, df_defects_snags = load_data_defects()
 
-    # st.sidebar.image(
-    #     *resources_raw["settings_icon"],
-    #     output_format="png"
-    # )
-    # st.sidebar.markdown(
-    #     # f"<input type='image' id='id_img_btn_settings' src={resources_raw['settings_icon'][0]}>",
-    #     f"###### [![this is the settings link](https://i.imgur.com/mQAQwvt.png)](https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=686079794781-0bt8ot3ie81iii7i17far5vj4s0p20t7.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fwebmasters.readonly&state=vryYlMrqKikWGlFVwqhnMpfqr1HMiq&prompt=consent&access_type=offline)",
-    #     unsafe_allow_html=True
-    # )
-    # st.sidebar.toggle(
-    #     label="Settings",
-    #     key="choice_settings_menu",
-    #     help="Open Settings Menu"
-    # )
-    st.sidebar.button(
-        label="Settings" if not settings_state else "Main Menu",
-        # key="choice_settings_menu",
-        help="Open Settings Menu",
-        type="secondary",
-        on_click=click_settings_menu
+    # df_orders = promo_dwng.to_datetime(df_orders.stack()).unstack().
+    df_orders = to_datetime(df_orders)
+
+    # df_orders["Orders_WO"] = df_orders["Orders_WO"].astype(dtype=int, errors="ignore")
+    # df_orders = df_orders.astype({"Orders_WO": int}, errors="ignore")
+    # df_orders["Orders_WO"] = df_orders["Orders_WO"].astype(int, errors="ignore")
+
+    # df_orders,\
+    #     df_options,\
+    #     df_defects_production,\
+    #     df_defects_print,\
+    #     df_defects_finish,\
+    #     df_defects_snags \
+    #     = \
+    correct_wo_numbers([
+        (df_orders, "Orders_WO"),
+        (df_options, "WO"),
+        (df_defects_production, "WO#"),
+        (df_defects_print, "WO#"),
+        (df_defects_finish, "WO#"),
+        (df_defects_snags, "WO#")
+    ])
+
+    print(f"{df_options=}")
+
+    df_orders.fillna(0)
+    df_options['OptionPrice'] = df_options['OptionPrice'].apply(lambda x: f"{x:.2f}")
+    df_options['OptionCost'] = df_options['OptionCost'].apply(lambda x: f"{x:.2f}")
+
+    df_orders['Orders_Price'] = df_orders['Orders_Price'].apply(lambda x: f"{x:.2f}")
+    df_orders['Products_Price'] = df_orders['Products_Price'].apply(lambda x: f"{x:.2f}")
+
+    # print(f"A {df_orders['Orders_WO']}")
+    # df_orders['Orders_WO'] = df_orders['Orders_WO'].apply(lambda x: f"{x:.0f}")
+    df_orders = df_orders.fillna({"Orders_ProductID": -1})
+    df_orders['Orders_ProductID'] = df_orders['Orders_ProductID'].apply(lambda x: int(f"{x:.0f}"))
+    # print(f"B {df_orders['Orders_WO']}")
+    df_orders = df_orders.fillna({"Orders_WO": ""})
+    # print(f"C {df_orders['Orders_WO']}")
+    # df_orders["Orders_WO"] = df_orders["Orders_WO"].map({"nan": ""})
+    # print(f"D {df_orders['Orders_WO']}")
+
+    # print(f"{df_orders['Orders_DateQuote'].dropna().unique()}")
+    # print(f"WOS == {df_orders['Orders_WO'].dropna().unique()}")
+
+    min_date_quote, max_date_quote = df_orders["Orders_DateQuote"].dropna().min(), df_orders[
+        "Orders_DateQuote"].dropna().max()
+    min_date_order, max_date_order = df_orders["Orders_DateOrder"].dropna().min(), df_orders[
+        "Orders_DateOrder"].dropna().max()
+    min_date_cancel, max_date_cancel = df_orders["Orders_DateDeclined"].dropna().min(), df_orders[
+        "Orders_DateDeclined"].dropna().max()
+    min_date_delivery, max_date_delivery = df_orders["Orders_DateDelivery"].dropna().min(), df_orders[
+        "Orders_DateDelivery"].dropna().max()
+    min_date_in_service, max_date_in_service = df_orders["Orders_DateInService"].dropna().min(), df_orders[
+        "Orders_DateInService"].dropna().max()
+    min_date_registered, max_date_registered = df_orders["Orders_DateRegistered"].dropna().min(), df_orders[
+        "Orders_DateRegistered"].dropna().max()
+
+    list_quote_numbers = df_orders["Orders_Quote"].dropna().unique()
+    list_wo_numbers = df_orders["Orders_WO"].dropna().unique()
+    list_serial_numbers = df_orders["Orders_SerialNumber"].dropna().unique()
+    list_po_numbers = df_orders["Orders_PurchaseOrder"].dropna().unique()
+
+    list_search_options = collect_searchbox_data()
+
+    if "choice_searchbox" not in st.session_state:
+        st.session_state["choice_searchbox"] = None
+
+    searchbox = st.selectbox(
+        label="HIDE ME",
+        options=list_search_options,
+        placeholder="Search Quote / WO / SN",
+        key="choice_searchbox",
+        label_visibility="hidden"
     )
 
-    if settings_state:
-        st.markdown(f"### SETTINGS")
-    else:
-
-        ordered_dates_list = {
-            "Orders_DeclineRejected": "DecRej",
-            "Orders_DateDeclined": "Date Declined",
-            "Orders_DateQuote": "Quote Date",
-            "Orders_DateOrder": "Order Date",
-            "dtProdSched_DateBeam": "Beam Date",
-            "dtProdSched_DateGN": "GNK Date",
-            "dtProdSched_DateProd1": "Prod Date 1",
-            "dtProdSched_DateProd2": "Prod Date 2",
-            "Orders_DateFinish": "Finish Date",
-            "Orders_DateAvailable": "Available Date",
-            "Orders_DatePO": "Purchase Order",
-            "Orders_DateShipped": "Shipped Date",
-            "Orders_DateDelivery": "Delivery Date",
-            "Orders_DateInService": "Date In Service",
-            "Orders_DateRegistered": "Date Registered"
-        }
-
-        # with st.spinner('Loading Data'):
-        st.empty()
-        df_orders = load_data_orders()
-        df_options = load_data_options()
-        df_products = load_data_products()
-        df_labour = load_data_labour()
-        df_dealers = load_data_dealers()
-        df_product_performance_bws, df_product_performance_stg = load_data_product_performance()
-        df_defects_production, df_defects_finish, df_defects_print, df_defects_snags = load_data_defects()
-
-        # df_orders = promo_dwng.to_datetime(df_orders.stack()).unstack().
-        df_orders = to_datetime(df_orders)
-
-        # df_orders["Orders_WO"] = df_orders["Orders_WO"].astype(dtype=int, errors="ignore")
-        # df_orders = df_orders.astype({"Orders_WO": int}, errors="ignore")
-        # df_orders["Orders_WO"] = df_orders["Orders_WO"].astype(int, errors="ignore")
-
-        # df_orders,\
-        #     df_options,\
-        #     df_defects_production,\
-        #     df_defects_print,\
-        #     df_defects_finish,\
-        #     df_defects_snags \
-        #     = \
-        correct_wo_numbers([
-            (df_orders, "Orders_WO"),
-            (df_options, "WO"),
-            (df_defects_production, "WO#"),
-            (df_defects_print, "WO#"),
-            (df_defects_finish, "WO#"),
-            (df_defects_snags, "WO#")
-        ])
-
-        print(f"{df_options=}")
-
-        df_orders.fillna(0)
-        df_options['OptionPrice'] = df_options['OptionPrice'].apply(lambda x: f"{x:.2f}")
-        df_options['OptionCost'] = df_options['OptionCost'].apply(lambda x: f"{x:.2f}")
-
-        df_orders['Orders_Price'] = df_orders['Orders_Price'].apply(lambda x: f"{x:.2f}")
-        df_orders['Products_Price'] = df_orders['Products_Price'].apply(lambda x: f"{x:.2f}")
-
-        # print(f"A {df_orders['Orders_WO']}")
-        # df_orders['Orders_WO'] = df_orders['Orders_WO'].apply(lambda x: f"{x:.0f}")
-        df_orders = df_orders.fillna({"Orders_ProductID": -1})
-        df_orders['Orders_ProductID'] = df_orders['Orders_ProductID'].apply(lambda x: int(f"{x:.0f}"))
-        # print(f"B {df_orders['Orders_WO']}")
-        df_orders = df_orders.fillna({"Orders_WO": ""})
-        # print(f"C {df_orders['Orders_WO']}")
-        # df_orders["Orders_WO"] = df_orders["Orders_WO"].map({"nan": ""})
-        # print(f"D {df_orders['Orders_WO']}")
-
-        # print(f"{df_orders['Orders_DateQuote'].dropna().unique()}")
-        # print(f"WOS == {df_orders['Orders_WO'].dropna().unique()}")
-
-        min_date_quote, max_date_quote = df_orders["Orders_DateQuote"].dropna().min(), df_orders[
-            "Orders_DateQuote"].dropna().max()
-        min_date_order, max_date_order = df_orders["Orders_DateOrder"].dropna().min(), df_orders[
-            "Orders_DateOrder"].dropna().max()
-        min_date_cancel, max_date_cancel = df_orders["Orders_DateDeclined"].dropna().min(), df_orders[
-            "Orders_DateDeclined"].dropna().max()
-        min_date_delivery, max_date_delivery = df_orders["Orders_DateDelivery"].dropna().min(), df_orders[
-            "Orders_DateDelivery"].dropna().max()
-        min_date_in_service, max_date_in_service = df_orders["Orders_DateInService"].dropna().min(), df_orders[
-            "Orders_DateInService"].dropna().max()
-        min_date_registered, max_date_registered = df_orders["Orders_DateRegistered"].dropna().min(), df_orders[
-            "Orders_DateRegistered"].dropna().max()
-
-        list_quote_numbers = df_orders["Orders_Quote"].dropna().unique()
-        list_wo_numbers = df_orders["Orders_WO"].dropna().unique()
-        list_serial_numbers = df_orders["Orders_SerialNumber"].dropna().unique()
-        list_po_numbers = df_orders["Orders_PurchaseOrder"].dropna().unique()
-
-        list_search_options = collect_searchbox_data()
-
-        if "choice_searchbox" not in st.session_state:
-            st.session_state["choice_searchbox"] = None
-
-        searchbox = st.selectbox(
-            label="HIDE ME",
-            options=list_search_options,
-            placeholder="Search Quote / WO / SN",
-            key="choice_searchbox",
-            label_visibility="hidden"
-        )
-
-        if st.session_state["choice_searchbox"]:
-            searchbox_input_type = what_is_searchbox_input_type()
-            st.session_state["choice_searchbox_type"] = searchbox_input_type
-            if searchbox_input_type is not None:
-                msg = st.toast(f"LOADED {searchbox_input_type}")
-                update_data_table(searchbox_input_type)
-            else:
-                st.warning(f"Unknown entry '{searchbox_input_type}'")
+    if st.session_state["choice_searchbox"]:
+        searchbox_input_type = what_is_searchbox_input_type()
+        st.session_state["choice_searchbox_type"] = searchbox_input_type
+        if searchbox_input_type is not None:
+            msg = st.toast(f"LOADED {searchbox_input_type}")
+            update_data_table(searchbox_input_type)
         else:
-            print(f"NOTHING")
+            st.warning(f"Unknown entry '{searchbox_input_type}'")
+    else:
+        print(f"NOTHING")

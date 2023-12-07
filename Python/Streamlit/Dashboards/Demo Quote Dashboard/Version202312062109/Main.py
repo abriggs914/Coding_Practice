@@ -1023,7 +1023,7 @@ if __name__ == '__main__':
 
     st.set_page_config(page_title="Sales Dashbord", layout="wide")
     st.title("Sales Dashboard")
-    st.markdown(f"###### Version 2023-12-05 13:51")
+    st.markdown(f"###### Version 2023-12-06 21:09")
 
     if "choice_settings_menu" not in st.session_state:
         st.session_state["choice_settings_menu"] = False
