@@ -141,18 +141,63 @@ def to_datetime(df_in: pd.DataFrame):
 
 @st.cache_data
 def collect_searchbox_data():
-    return list(list_quote_numbers) + list(list_wo_numbers) + list(list_serial_numbers) + list(list_po_numbers)
+
+    result = []
+    use_bws = st.session_state["settings_allow_bws_searchbox"]
+    use_stg = st.session_state["settings_allow_stg_searchbox"]
+    use_q = st.session_state["settings_allow_quote_searchbox"]
+    use_w = st.session_state["settings_allow_wo_searchbox"]
+    use_s = st.session_state["settings_allow_serial_searchbox"]
+    use_p = st.session_state["settings_allow_po_searchbox"]
+
+    # print(f"{use_bws=}, {use_stg=}, {use_q=}, {use_w=}, {use_p=}, {use_s=}")
+
+    if use_bws and use_stg:
+        df_master = df_orders
+    elif use_stg:
+        df_master = df_orders_stg
+    else:
+        df_master = df_orders_bws
+
+    list_numbers_quote, list_numbers_wo, list_numbers_serial, list_numbers_po = [], [], [], []
+    if use_q:
+        list_numbers_quote = list(df_master["Orders_Quote"].dropna().unique())
+        result += list_numbers_quote
+    if use_w:
+        list_numbers_wo = list(df_master["Orders_WO"].dropna().unique())
+        result += list_numbers_wo
+    if use_s:
+        list_numbers_serial = list(df_master["Orders_SerialNumber"].dropna().unique())
+        result += list_numbers_serial
+    if use_p:
+        list_numbers_po = list(df_master["Orders_PurchaseOrder"].dropna().unique())
+        result += list_numbers_po
+
+    st.session_state["list_numbers_quote"] = list_numbers_quote
+    st.session_state["list_numbers_wo"] = list_numbers_wo
+    st.session_state["list_numbers_serial"] = list_numbers_serial
+    st.session_state["list_numbers_po"] = list_numbers_po
+
+    return result
 
 
 def what_is_searchbox_input_type() -> str | None:
+
+    list_numbers_quote = st.session_state["list_numbers_quote"]
+    list_numbers_wo = st.session_state["list_numbers_wo"]
+    list_numbers_serial = st.session_state["list_numbers_serial"]
+    list_numbers_po = st.session_state["list_numbers_po"]
+
     inp = st.session_state["choice_searchbox"]
-    print(f"{inp=}, {type(inp)=}")
+    # print(f"{inp=}, {type(inp)=}")
     # print(f"{list_quote_numbers}")
     # print(f"{list_wo_numbers}")
-    in_qs = [q for q in list_quote_numbers if q == inp]
-    in_wos = [wo for wo in list_wo_numbers if wo == inp]
-    in_sns = [sn for sn in list_serial_numbers if sn == inp]
-    in_pos = [po for po in list_po_numbers if po == inp]
+
+    # print(f"\t{len(list_numbers_quote)=}\n\t{len(list_numbers_wo)=}\n\t{len(list_numbers_serial)=}\n\t{len(list_numbers_po)=}")
+    in_qs = [q for q in list_numbers_quote if q == inp]
+    in_wos = [wo for wo in list_numbers_wo if wo == inp]
+    in_sns = [sn for sn in list_numbers_serial if sn == inp]
+    in_pos = [po for po in list_numbers_po if po == inp]
     # print(f"\t{in_qs=}\n\t{in_wos=}\n\t{in_sns=}\n\t{in_pos=}")
 
     options = ["Quote", "WO", "SN", "PO"]
@@ -255,7 +300,7 @@ def update_data_table(input_type):
     df_dates["IsCancelled"] = (
         # (~isinstance(df_dates["Orders_DateDeclined"], pd.NaT))
         (~(df_dates["Orders_DateDeclined"].isnull()))
-        | (int(df_dates["Orders_DeclineRejected"]) != 4)
+        | (df_dates["Orders_DeclineRejected"] != 4)
     )
 
     # print(f"HERE")
@@ -494,7 +539,13 @@ def update_data_table(input_type):
     chartable_df_sub_npos = df_sub_npos.rename(columns=col_renames_options)
 
     # df_table = st.dataframe(df_sub1)
-    chartable_model_data = df_sub1.transpose()
+    original_index = df_sub1.index
+    chartable_model_data = df_sub1.reset_index()
+    del chartable_model_data["index"]
+    print(f"A {chartable_model_data=}")
+    chartable_model_data = chartable_model_data.transpose()
+    print(f"B {chartable_model_data=}")
+    chartable_model_data = chartable_model_data.rename(columns={0: "Overview"})
     st.dataframe(
         chartable_model_data,
         use_container_width=True,
@@ -814,7 +865,7 @@ def update_data_table(input_type):
     prod_last_price = df_product_performance.iloc[df_product_performance.shape[0] - 1]["New Price"]
     print(f"{df_product_performance.index=}")
     print(f"{list(df_product_performance.columns)=}")
-    df_product_performance.loc[df_product_performance.index] = (
+    df_product_performance.loc[len(df_product_performance.index)] = (
         now,
         prod_curr_price,
         prod_last_price
@@ -1013,20 +1064,101 @@ def click_settings_menu():
     # if state
     if "choice_settings_menu" not in st.session_state:
         st.session_state["choice_settings_menu"] = False
-    st.session_state["choice_settings_menu"] = not st.session_state["choice_settings_menu"]
+    # st.session_state["choice_settings_menu"] = not st.session_state["choice_settings_menu"]
+    st.session_state.update({
+        "choice_settings_menu": not st.session_state["choice_settings_menu"]
+    })
+
+
+def change_settings_stargate():
+    print(f"change_settings_stg")
+    using_bws = st.session_state["settings_allow_bws_searchbox"]
+    using_stg = st.session_state["settings_allow_stg_searchbox"]
+    if not using_bws:
+        #comp_col2.warning(f"")
+        if not using_stg:
+            # cant turn both off, since stg was last, flip bws
+            st.session_state["settings_allow_bws_searchbox"] = True
+
+
+def change_settings_bws():
+    print(f"change_settings_bws")
+    using_bws = st.session_state["settings_allow_bws_searchbox"]
+    using_stg = st.session_state["settings_allow_stg_searchbox"]
+    if not using_stg:
+        #comp_col2.warning(f"")
+        if not using_bws:
+            # cant turn both off, since bws was last, flip stg
+            st.session_state["settings_allow_stg_searchbox"] = True
+
+
+# def change_settings_quote():
+
+def click_settings_searchbox():
+    # use_bws = st.session_state["settings_allow_bws_searchbox"]
+    # use_stg = st.session_state["settings_allow_stg_searchbox"]
+    use_q = st.session_state["settings_allow_quote_searchbox"]
+    use_w = st.session_state["settings_allow_wo_searchbox"]
+    use_s = st.session_state["settings_allow_serial_searchbox"]
+    use_p = st.session_state["settings_allow_po_searchbox"]
+    rng = st.session_state["settings_order_searchbox"]
+
+    order = [
+        "settings_allow_quote_searchbox",
+        "settings_allow_wo_searchbox",
+        "settings_allow_serial_searchbox",
+        "settings_allow_po_searchbox"
+    ]
+
+    idx = rng.pop(0)
+    upd = {
+        "settings_order_searchbox": [*rng, idx]
+    }
+
+    if not any([use_q, use_w, use_s, use_p]):
+        # print(f"A {rng=}")
+        # Cant use nothing, flip the first flipped off, back on.
+        # st.session_state[order[idx]] = True
+        upd.update({order[idx]: True})
+        # print(f"B {st.session_state['settings_order_searchbox']=}")
+    st.session_state.update(upd)
+
+
+INITIAL_ST_SETTINGS = {
+    "choice_searchbox": None,
+    "choice_settings_menu": False,
+    "settings_allow_bws_searchbox": True,
+    "settings_allow_stg_searchbox": True,
+    "settings_allow_quote_searchbox": True,
+    "settings_allow_wo_searchbox": True,
+    "settings_allow_serial_searchbox": True,
+    "settings_allow_po_searchbox": True,
+    "settings_order_searchbox": list(range(4)),
+    "list_numbers_quote": [],
+    "list_numbers_wo": [],
+    "list_numbers_serial": [],
+    "list_numbers_po": []
+}
 
 
 if __name__ == '__main__':
 
-    st.echo("HELLO")
     btns_col1, btns_col2, btns_col3 = None, None, None
 
     st.set_page_config(page_title="Sales Dashbord", layout="wide")
     st.title("Sales Dashboard")
     st.markdown(f"###### Version 2023-12-05 13:51")
 
-    if "choice_settings_menu" not in st.session_state:
-        st.session_state["choice_settings_menu"] = False
+    # Ensure all session information has been initialized
+    upd = {}
+    for k, v in INITIAL_ST_SETTINGS.items():
+        if k not in st.session_state:
+            upd.update({k: v})
+            # st.session_state[k] = v
+
+        print(f"SS['{k}'] = {v}, Actual={str(st.session_state[k])[:50]}")
+
+    st.session_state.update(upd)
 
     settings_state = st.session_state["choice_settings_menu"]
 
@@ -1054,6 +1186,56 @@ if __name__ == '__main__':
 
     if settings_state:
         st.markdown(f"### SETTINGS")
+
+        st.divider()
+
+        st.markdown(f"##### Main Searchfield Settings")
+        comp_col1, comp_col2 = st.columns(2)
+
+        comp_col1.checkbox(
+            label="BWS Data",
+            key="settings_allow_bws_searchbox",
+            help="Allow BWS data to be searchable in the main search field.",
+            on_change=change_settings_bws
+        )
+        comp_col2.checkbox(
+            label="Stargate Data",
+            key="settings_allow_stg_searchbox",
+            help="Allow Stargate Data to be searchable in the main search field.",
+            on_change=change_settings_stargate
+        )
+
+        st.divider()
+
+        st.checkbox(
+            label="Quote Numbers",
+            key="settings_allow_quote_searchbox",
+            help="Allow Quote Numbers to be searchable in the main search field.",
+            # on_change=change_settings_quote
+            on_change=click_settings_searchbox
+        )
+        st.checkbox(
+            label="Work Orders",
+            key="settings_allow_wo_searchbox",
+            help="Allow Work Order Numbers to be searchable in the main search field.",
+            # on_change=change_settings_wo
+            on_change=click_settings_searchbox
+        )
+        st.checkbox(
+            label="Serial Numbers",
+            key="settings_allow_serial_searchbox",
+            help="Allow Serial Numbers to be searchable in the main search field.",
+            # on_change=change_settings_serial
+            on_change=click_settings_searchbox
+        )
+        st.checkbox(
+            label="Purchase Orders",
+            key="settings_allow_po_searchbox",
+            help="Allow Purchase Order Numbers to be searchable in the main search field.",
+            # on_change=change_settings_po
+            on_change=click_settings_searchbox
+        )
+
     else:
 
         ordered_dates_list = {
@@ -1122,6 +1304,8 @@ if __name__ == '__main__':
         df_orders['Orders_ProductID'] = df_orders['Orders_ProductID'].apply(lambda x: int(f"{x:.0f}"))
         # print(f"B {df_orders['Orders_WO']}")
         df_orders = df_orders.fillna({"Orders_WO": ""})
+        df_orders_bws = df_orders[df_orders["OriginTable"] == "BWS"]
+        df_orders_stg = df_orders[df_orders["OriginTable"] == "STG"]
         # print(f"C {df_orders['Orders_WO']}")
         # df_orders["Orders_WO"] = df_orders["Orders_WO"].map({"nan": ""})
         # print(f"D {df_orders['Orders_WO']}")
@@ -1142,15 +1326,12 @@ if __name__ == '__main__':
         min_date_registered, max_date_registered = df_orders["Orders_DateRegistered"].dropna().min(), df_orders[
             "Orders_DateRegistered"].dropna().max()
 
-        list_quote_numbers = df_orders["Orders_Quote"].dropna().unique()
-        list_wo_numbers = df_orders["Orders_WO"].dropna().unique()
-        list_serial_numbers = df_orders["Orders_SerialNumber"].dropna().unique()
-        list_po_numbers = df_orders["Orders_PurchaseOrder"].dropna().unique()
+        # list_quote_numbers = df_orders["Orders_Quote"].dropna().unique()
+        # list_wo_numbers = df_orders["Orders_WO"].dropna().unique()
+        # list_serial_numbers = df_orders["Orders_SerialNumber"].dropna().unique()
+        # list_po_numbers = df_orders["Orders_PurchaseOrder"].dropna().unique()
 
         list_search_options = collect_searchbox_data()
-
-        if "choice_searchbox" not in st.session_state:
-            st.session_state["choice_searchbox"] = None
 
         searchbox = st.selectbox(
             label="HIDE ME",
@@ -1167,6 +1348,6 @@ if __name__ == '__main__':
                 msg = st.toast(f"LOADED {searchbox_input_type}")
                 update_data_table(searchbox_input_type)
             else:
-                st.warning(f"Unknown entry '{searchbox_input_type}'")
+                st.warning(f"Unable to determine if '{searchbox_input_type}' is a Quote, WO, Serial, or PO Number.")
         else:
             print(f"NOTHING")
