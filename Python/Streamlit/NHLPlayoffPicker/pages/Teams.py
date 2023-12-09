@@ -29,6 +29,7 @@ if __name__ == '__main__':
             for team, team_data in div_data.items():
                 tn = team.title()
                 st.write(f"{tn}")
+                # st.write(team_data)
                 if team_data["logo"] is not None:
                     img = team_data["logo"]
                     masc = team_data["mascot"].title()
