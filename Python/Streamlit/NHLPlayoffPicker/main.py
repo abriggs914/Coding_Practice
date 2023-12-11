@@ -4,6 +4,7 @@ from typing import Literal
 from PIL import Image
 import streamlit as st
 
+from utility import sort_2_lists
 
 root_image_logos = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images"
 
@@ -731,8 +732,8 @@ if __name__ == '__main__':
             for i, ms_let in enumerate(zip(ms, ["a", "b", "c"])):
                 team, let = ms_let
                 val = st.session_state[f"{div}_choice_pts_{let}"]
-                lst[0].append(team)
-                lst[1].append(val)
+                lst[0].append(val)
+                lst[1].append(team)
 
     if ms_wc_e:
         conf = "eastern"
@@ -749,8 +750,13 @@ if __name__ == '__main__':
                 key=ss_
             )
 
+    ordered_west = sort_2_lists(*ordered_west, reverse=True)
+    ordered_east = sort_2_lists(*ordered_east, reverse=True)
+
     print(f"{ordered_west=}")
     print(f"{ordered_east=}")
+
+
 
     st.divider()
 
