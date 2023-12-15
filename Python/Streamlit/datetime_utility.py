@@ -335,16 +335,17 @@ def time_between(date_1: datetime.datetime, date_2: datetime.datetime):
 
     years = years + leap_years / 365  # Adjust for leap years
 
+    days_without_leap_years -= (years * 365)
     months, days = divmod(days_without_leap_years, 30)
 
     # Format the description
     parts = []
     if int(years) > 0:
-        parts.append(f"{int(years)} {'year' if int(years) == 1 else 'years'}")
+        parts.append(f"{int(years)} year{'' if int(years) == 1 else 's'}")
     if int(months) > 0:
-        parts.append(f"{int(months)} {'month' if int(months) == 1 else 'months'}")
+        parts.append(f"{int(months)} month{'' if int(months) == 1 else 's'}")
     if int(days) > 0:
-        parts.append(f"{int(days)} {'day' if int(days) == 1 else 'days'}")
+        parts.append(f"{int(days)} day{'' if int(days) == 1 else 's'}")
 
     return ", ".join(parts) if parts else "0 days"
 

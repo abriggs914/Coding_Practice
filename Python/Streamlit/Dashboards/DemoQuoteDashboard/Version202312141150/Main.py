@@ -1,4 +1,5 @@
 import datetime
+import json
 import math
 import os.path
 import subprocess
@@ -11,7 +12,14 @@ import pandas._libs
 import streamlit as st
 from pdf2image import convert_from_path
 from streamlit_timeline import timeline
+
+from json_utility import jsonify
 from pyodbc_connection import connect
+
+
+SETTINGS_FILE = "./settings.json"
+VERSION_LOCKED = True
+
 
 resources_raw = {
     "settings_icon": (
@@ -113,12 +121,16 @@ def get_labour_data(company: int, wo: str):
     return df_labour[(df_labour["CompanyID"] == company) & (df_labour["Job"] == wo)]
 
 
-def to_datetime(df_in: pd.DataFrame):
+def to_datetime(df_in: pd.DataFrame, is_datetime: bool = True):
     for col in df_in.columns:
         # print(f"{col=}")
         if "_date" in col.lower():
             try:
                 df_in[col] = df_in[col].dt.date
+                if is_datetime:
+                    y, m, d = df_in[col].year, df_in[col].month, df_in[col].day
+                    df_in[col] = datetime.datetime(y, m, d)
+                # df_in[col] = df_in[col].astype('datetime64[ns]')
             except AttributeError:
                 # print(f"FAILURE {col=}")
                 pass
@@ -261,12 +273,12 @@ def click_promo_drawing(promo_dwng, container):
         container.warning(f"Could not find file '{promo_dwng}'")
 
 
-def click_quote_info_dir(qid):
+def click_quote_info_dir(qid, container):
     print(f"CLICK QID {qid=}")
     if os.path.exists(qid):
         subprocess.Popen(fr'explorer "{qid}')
     else:
-        btns_col2.warning(f"Could not find folder '{qid}'")
+        container.warning(f"Could not find folder '{qid}'")
 
 
 def update_data_table(input_type):
@@ -559,7 +571,7 @@ def update_data_table(input_type):
             "Quote Info Folder",
             key="choice_quote_info_dir",
             type="primary",
-            on_click=lambda qid=quote_info_dir: click_quote_info_dir(qid)
+            on_click=lambda qid=quote_info_dir: click_quote_info_dir(qid, btns_col1)
         )
     else:
         btns_col1.markdown(f"###### No quote information folder found for this order")
@@ -856,9 +868,8 @@ def update_data_table(input_type):
     df_product_performance = df_product_performance[["ArchiveDate", "New Price", "Old Price"]]
 
     print(f"PRE PERFORMANCE")
-    print(f"{df_product_performance}")
+    print(f"{df_product_performance.shape=} {df_product_performance=}")
 
-    now = datetime.datetime.now()
     p_table = "ProductsV2" if company == 1 else "Products"
     prod_curr_price = df_products[(df_products["OGTable"] == p_table) & (df_products["Model No"] == name_product)]
     prod_curr_price = prod_curr_price.iloc[0]["Price"]
@@ -1124,6 +1135,29 @@ def click_settings_searchbox():
     st.session_state.update(upd)
 
 
+def check_versioning() -> datetime.datetime:
+
+    key = "date"
+
+    try:
+        with open(SETTINGS_FILE, "r") as f:
+            data = json.load(f)
+        data.update({key: eval(data[key])})
+    except FileNotFoundError:
+        data = {}
+
+    if (not VERSION_LOCKED) or (data.get(key, None) is None):
+        data.update({key: now})
+
+        with open(SETTINGS_FILE, "w") as f:
+            f.write(jsonify(data))
+
+    print(f"check versioning")
+    print(f"{data[key]=}")
+
+    return data[key]
+
+
 INITIAL_ST_SETTINGS = {
     "choice_searchbox": None,
     "choice_settings_menu": False,
@@ -1137,52 +1171,78 @@ INITIAL_ST_SETTINGS = {
     "list_numbers_quote": [],
     "list_numbers_wo": [],
     "list_numbers_serial": [],
-    "list_numbers_po": []
+    "list_numbers_po": [],
+    "sql_sp_performance": sql_sp_performance
 }
 
 
+# DATA_PAGES_KEYS = {
+#     "df_orders": None,
+#     "df_options": None,
+#     "df_labour": None,
+#     "df_dealers": None,
+#     "df_defects": None,
+#     "minimum_date": None,
+#     "maximum_date": None,
+#     "sql_sp_performance": sql_sp_performance
+# }
+
+
 if __name__ == '__main__':
+
+    now = datetime.datetime.now()
+    version_date = check_versioning()
 
     btns_col1, btns_col2, btns_col3 = None, None, None
 
     st.set_page_config(page_title="Sales Dashbord", layout="wide")
     st.title("Sales Dashboard")
-    st.markdown(f"###### Version 2023-12-05 13:51")
+
+    st.markdown(f"###### Version {version_date:%Y-%m-%d %H:%M}")
 
     # Ensure all session information has been initialized
     upd = {}
+    upd_results = {}
     for k, v in INITIAL_ST_SETTINGS.items():
         if k not in st.session_state:
             upd.update({k: v})
             # st.session_state[k] = v
 
-        print(f"SS['{k}'] = {v}, Actual={str(st.session_state[k])[:50]}")
+        upd_results[k] = f"SS[{k}] = {v}, Actual=ACT"
+        # print(f"SS['{k}'] = {v}")
 
     st.session_state.update(upd)
+    # print(f"HERE\n{st.session_state['sql_sp_performance']=}")
+    # upd_results = {k: [upd_results[k].format(ACT=str(st.session_state[k])[:50])] for k, v in INITIAL_ST_SETTINGS.items()}
+    # print(f"Update Results:          VVV")
+    # print(f"{upd_results=}")
+    # print(pd.DataFrame(upd_results))
+    # print(f":Update Results          ^^^")
 
     settings_state = st.session_state["choice_settings_menu"]
 
-    # st.sidebar.image(
-    #     *resources_raw["settings_icon"],
-    #     output_format="png"
+    # # st.sidebar.image(
+    # #     *resources_raw["settings_icon"],
+    # #     output_format="png"
+    # # )
+    # # st.sidebar.markdown(
+    # #     # f"<input type='image' id='id_img_btn_settings' src={resources_raw['settings_icon'][0]}>",
+    # #     f"###### [![this is the settings link](https://i.imgur.com/mQAQwvt.png)](https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=686079794781-0bt8ot3ie81iii7i17far5vj4s0p20t7.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fwebmasters.readonly&state=vryYlMrqKikWGlFVwqhnMpfqr1HMiq&prompt=consent&access_type=offline)",
+    # #     unsafe_allow_html=True
+    # # )
+    # # st.sidebar.toggle(
+    # #     label="Settings",
+    # #     key="choice_settings_menu",
+    # #     help="Open Settings Menu"
+    # # )
+    # st.sidebar.button(
+    #     label="Settings" if not settings_state else "Main Menu",
+    #     # key="choice_settings_menu",
+    #     help="Open Settings Menu",
+    #     type="secondary",
+    #     on_click=click_settings_menu,
+    #     disabled=True
     # )
-    # st.sidebar.markdown(
-    #     # f"<input type='image' id='id_img_btn_settings' src={resources_raw['settings_icon'][0]}>",
-    #     f"###### [![this is the settings link](https://i.imgur.com/mQAQwvt.png)](https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=686079794781-0bt8ot3ie81iii7i17far5vj4s0p20t7.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fwebmasters.readonly&state=vryYlMrqKikWGlFVwqhnMpfqr1HMiq&prompt=consent&access_type=offline)",
-    #     unsafe_allow_html=True
-    # )
-    # st.sidebar.toggle(
-    #     label="Settings",
-    #     key="choice_settings_menu",
-    #     help="Open Settings Menu"
-    # )
-    st.sidebar.button(
-        label="Settings" if not settings_state else "Main Menu",
-        # key="choice_settings_menu",
-        help="Open Settings Menu",
-        type="secondary",
-        on_click=click_settings_menu
-    )
 
     if settings_state:
         st.markdown(f"### SETTINGS")
@@ -1267,7 +1327,8 @@ if __name__ == '__main__':
         df_defects_production, df_defects_finish, df_defects_print, df_defects_snags = load_data_defects()
 
         # df_orders = promo_dwng.to_datetime(df_orders.stack()).unstack().
-        df_orders = to_datetime(df_orders)
+        df_orders = to_datetime(df_orders, False)
+        df_orders["Orders_SalesOrder"] = df_orders["Orders_SalesOrder"].astype(str)
 
         # df_orders["Orders_WO"] = df_orders["Orders_WO"].astype(dtype=int, errors="ignore")
         # df_orders = df_orders.astype({"Orders_WO": int}, errors="ignore")
@@ -1303,9 +1364,39 @@ if __name__ == '__main__':
         df_orders = df_orders.fillna({"Orders_ProductID": -1})
         df_orders['Orders_ProductID'] = df_orders['Orders_ProductID'].apply(lambda x: int(f"{x:.0f}"))
         # print(f"B {df_orders['Orders_WO']}")
-        df_orders = df_orders.fillna({"Orders_WO": ""})
+        df_orders = df_orders.fillna({
+            "Orders_WO": "",
+            "Orders_Discount1": 0,
+            "Orders_Discount2": 0,
+            "Orders_Discount3": 0
+        })
+
+        # calculate the price:
+        df_orders["SumDiscounts"] = 0
+        for row_data in df_orders.iterrows():
+            i, row = row_data
+            obp = float(row["Orders_Price"].removeprefix("$").strip())  # orders base price
+            d1 = row["Orders_Discount1_Type"], row["Orders_Discount1"]
+            d2 = row["Orders_Discount2_Type"], row["Orders_Discount2"]
+            d3 = row["Orders_Discount3_Type"], row["Orders_Discount3"]
+            sum_fixed = sum([dv for dt, dv in [d1, d2, d3] if dt != "Percent"])
+            percents = [dv for dt, dv in [d1, d2, d3] if dt == "Percent"]
+            r_percents = reduce(operator.mul, percents, 0)
+            # print(f"{obp=}, {sum_fixed=}, {r_percents=}")
+            # df_orders.loc[i]["SumDiscounts"] = sum_fixed + (obp * r_percents)
+            df_orders.loc[i, "SumDiscounts"] = sum_fixed + (obp * r_percents)
+
         df_orders_bws = df_orders[df_orders["OriginTable"] == "BWS"]
         df_orders_stg = df_orders[df_orders["OriginTable"] == "STG"]
+
+        st.session_state.update({
+            "df_orders": df_orders,
+            "df_options": df_options,
+            "df_orders_bws": df_orders_bws,
+            "df_orders_stg": df_orders_stg,
+            "df_dealers": df_dealers
+        })
+
         # print(f"C {df_orders['Orders_WO']}")
         # df_orders["Orders_WO"] = df_orders["Orders_WO"].map({"nan": ""})
         # print(f"D {df_orders['Orders_WO']}")
@@ -1325,6 +1416,13 @@ if __name__ == '__main__':
             "Orders_DateInService"].dropna().max()
         min_date_registered, max_date_registered = df_orders["Orders_DateRegistered"].dropna().min(), df_orders[
             "Orders_DateRegistered"].dropna().max()
+
+        minimum_date = min([min_date_quote, min_date_order, min_date_cancel, min_date_delivery, min_date_in_service, min_date_in_service])
+        maximum_date = max([max_date_quote, max_date_order, max_date_cancel, max_date_delivery, max_date_in_service, max_date_in_service])
+        st.session_state.update({
+            "minimum_date": minimum_date,
+            "maximum_date": maximum_date
+        })
 
         # list_quote_numbers = df_orders["Orders_Quote"].dropna().unique()
         # list_wo_numbers = df_orders["Orders_WO"].dropna().unique()
