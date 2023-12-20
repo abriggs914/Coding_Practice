@@ -159,8 +159,16 @@ def to_datetime(df_in: pd.DataFrame, is_datetime: bool = True):
 #         })
 
 
-@st.cache_data
+# @st.cache_data
 def collect_searchbox_data():
+    print(f"COLLECTING")
+
+    keys = [
+        "list_numbers_quote",
+        "list_numbers_wo",
+        "list_numbers_serial",
+        "list_numbers_po"
+    ]
 
     result = []
     use_bws = st.session_state["settings_allow_bws_searchbox"]
@@ -178,25 +186,37 @@ def collect_searchbox_data():
         df_master = df_orders_stg
     else:
         df_master = df_orders_bws
-
-    list_numbers_quote, list_numbers_wo, list_numbers_serial, list_numbers_po = [], [], [], []
+    # list_numbers_quote, list_numbers_wo, list_numbers_serial, list_numbers_po = [], [], [], []
+    lsts = [[], [], [], []]
+    for i, lst_k in enumerate(keys):
+        m = ""
+        if lst_k in st.session_state:
+            m = "FOUND"
+            lsts[i] = st.session_state[lst_k]
+        else:
+            m = "NOT FOUND"
+        print(f"{m=}, {lst_k=}")
     if use_q:
-        list_numbers_quote = list(df_master["Orders_Quote"].dropna().unique())
-        result += list_numbers_quote
+        lsts[0] = list(df_master["Orders_Quote"].dropna().unique())
+        result += lsts[0]
     if use_w:
-        list_numbers_wo = list(df_master["Orders_WO"].dropna().unique())
-        result += list_numbers_wo
+        lsts[1] = list(df_master["Orders_WO"].dropna().unique())
+        result += lsts[1]
     if use_s:
-        list_numbers_serial = list(df_master["Orders_SerialNumber"].dropna().unique())
-        result += list_numbers_serial
+        lsts[2] = list(df_master["Orders_SerialNumber"].dropna().unique())
+        result += lsts[2]
     if use_p:
-        list_numbers_po = list(df_master["Orders_PurchaseOrder"].dropna().unique())
-        result += list_numbers_po
+        lsts[3] = list(df_master["Orders_PurchaseOrder"].dropna().unique())
+        result += lsts[3]
 
-    st.session_state["list_numbers_quote"] = list_numbers_quote
-    st.session_state["list_numbers_wo"] = list_numbers_wo
-    st.session_state["list_numbers_serial"] = list_numbers_serial
-    st.session_state["list_numbers_po"] = list_numbers_po
+    for i, lst_k in enumerate(keys):
+        if lst_k not in st.session_state:
+            st.session_state[lst_k] = lsts[i]
+    # st.session_state["list_numbers_wo"] = list_numbers_wo
+    # st.session_state["list_numbers_serial"] = list_numbers_serial
+    # st.session_state["list_numbers_po"] = list_numbers_po
+
+    print(f"LIST OF Q/Q/S/P #s == {len(result)=}")
 
     return result
 
@@ -209,16 +229,16 @@ def what_is_searchbox_input_type() -> str | None:
     list_numbers_po = st.session_state["list_numbers_po"]
 
     inp = st.session_state["choice_searchbox"]
-    # print(f"{inp=}, {type(inp)=}")
+    print(f"{inp=}, {type(inp)=}")
     # print(f"{list_quote_numbers}")
     # print(f"{list_wo_numbers}")
 
-    # print(f"\t{len(list_numbers_quote)=}\n\t{len(list_numbers_wo)=}\n\t{len(list_numbers_serial)=}\n\t{len(list_numbers_po)=}")
+    print(f"\t{len(list_numbers_quote)=}\n\t{len(list_numbers_wo)=}\n\t{len(list_numbers_serial)=}\n\t{len(list_numbers_po)=}")
     in_qs = [q for q in list_numbers_quote if q == inp]
     in_wos = [wo for wo in list_numbers_wo if wo == inp]
     in_sns = [sn for sn in list_numbers_serial if sn == inp]
     in_pos = [po for po in list_numbers_po if po == inp]
-    # print(f"\t{in_qs=}\n\t{in_wos=}\n\t{in_sns=}\n\t{in_pos=}")
+    print(f"\t{in_qs=}\n\t{in_wos=}\n\t{in_sns=}\n\t{in_pos=}")
 
     options = ["Quote", "WO", "SN", "PO"]
 
@@ -1176,10 +1196,10 @@ INITIAL_ST_SETTINGS = {
     "settings_allow_serial_searchbox": True,
     "settings_allow_po_searchbox": True,
     "settings_order_searchbox": list(range(4)),
-    "list_numbers_quote": [],
-    "list_numbers_wo": [],
-    "list_numbers_serial": [],
-    "list_numbers_po": [],
+    # "list_numbers_quote": [],
+    # "list_numbers_wo": [],
+    # "list_numbers_serial": [],
+    # "list_numbers_po": [],
     "sql_sp_performance": sql_sp_performance
 }
 
@@ -1197,6 +1217,8 @@ INITIAL_ST_SETTINGS = {
 
 
 if __name__ == '__main__':
+
+    print(f"\n\n\n\tRERUN!!!\n\n")
 
     now = datetime.datetime.now()
     version_date = check_versioning()
@@ -1359,7 +1381,7 @@ if __name__ == '__main__':
             (df_defects_snags, "WO#")
         ])
 
-        print(f"{df_options=}")
+        # print(f"{df_options=}")
 
         df_orders.fillna(0)
         df_options['OptionPrice'] = df_options['OptionPrice'].apply(lambda x: f"{x:.2f}")
@@ -1439,7 +1461,9 @@ if __name__ == '__main__':
         # list_serial_numbers = df_orders["Orders_SerialNumber"].dropna().unique()
         # list_po_numbers = df_orders["Orders_PurchaseOrder"].dropna().unique()
 
+        # print(f"PRE COLLECTION")
         list_search_options = collect_searchbox_data()
+        # print(f"POST COLLECTION")
 
         searchbox = st.selectbox(
             label="HIDE ME",
@@ -1457,5 +1481,6 @@ if __name__ == '__main__':
                 update_data_table(searchbox_input_type)
             else:
                 st.warning(f"Unable to determine if '{searchbox_input_type}' is a Quote, WO, Serial, or PO Number.")
+                st.warning(f"{st.session_state['choice_searchbox']=}")
         else:
             print(f"NOTHING")
