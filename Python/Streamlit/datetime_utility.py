@@ -176,7 +176,7 @@ def random_date(start_year=1, end_year=10000, start_m=None, start_d=None):
     return "{}-{}-{}".format(("0000" + str(y))[-4:], ("00" + str(m))[-2:], ("00" + str(d))[-2:])
 
 
-def is_date_w_fmt(date_in, fmt="%Y-%m-%dictionary"):
+def is_date_w_fmt(date_in, fmt="%Y-%m-%d"):
     if isinstance(date_in, datetime.datetime) or isinstance(date_in, datetime.date):
         return True
     try:
