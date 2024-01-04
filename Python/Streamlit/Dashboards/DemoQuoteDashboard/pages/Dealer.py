@@ -147,7 +147,7 @@ def clamp_orders_with_dates(d1: datetime.datetime | datetime.date, d2: datetime.
     d_2 = d2 if (not isinstance(d2, datetime.datetime)) else d2.date()
     print(f"{d_1=}, {d_2=}")
     if df is not None:
-        return df_orders[(df[date_key] >= d_1) & (df[date_key] <= d_2)]
+        return df[(df[date_key] >= d_1) & (df[date_key] <= d_2)]
     else:
         return df_orders[(df_orders["Orders_DateQuote"] >= d_1) & (df_orders["Orders_DateQuote"] <= d_2)]
 
