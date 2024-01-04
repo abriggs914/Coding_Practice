@@ -222,8 +222,7 @@ if __name__ == '__main__':
     # st.write(df_scores_today_oddsPartners)
     st.write(df_scores_today_games)
 
-    # game_expanders = []
-    game_containers = []
+    game_expanders = []
 
     for i, game_data in enumerate(scores_today_dict):
         # keys:
@@ -302,10 +301,8 @@ if __name__ == '__main__':
         elif game_state == "PRE":
             game_message = message_pregame
 
-        st.divider()
-        exp_game = st.container()
-        game_containers.append(exp_game)
-        # f"{status_away}{away_team} {away_score} @ {home_score} {home_team} {status_home}  |  {game_message}"
+        exp_game = st.expander(f"{status_away}{away_team} {away_score} @ {home_score} {home_team} {status_home}  |  {game_message}")
+        game_expanders.append(exp_game)
 
         container_top = exp_game.container()
 
@@ -407,14 +404,12 @@ if __name__ == '__main__':
             #     cols_team_details[1].expander(f"{teams['home']['name_abbrev']} Leaders")
             # )
 
-            # elements[f"{i}_exp_cols_expanders"] = (
-            #     cols_team_details[0].container(),
-            #     cols_team_details[1].container()
-            # )
-            elements[f"{i}_exp_cols_expanders"] = [
-                cols_team_details[0].expander(f"### {teams['away']['name_abbrev']} Leaders"),
-                cols_team_details[1].expander(f"### {teams['home']['name_abbrev']} Leaders")
-            ]
+            elements[f"{i}_exp_cols_expanders"] = (
+                cols_team_details[0].container(),
+                cols_team_details[1].container()
+            )
+            elements[f"{i}_exp_cols_expanders"][0].markdown(f"### {teams['away']['name_abbrev']} Leaders")
+            elements[f"{i}_exp_cols_expanders"][1].markdown(f"### {teams['home']['name_abbrev']} Leaders")
 
             # away_leaders = [l for l in team_leader_data if l["teamAbbrev"] in away_team]
             # home_leaders = [l for l in team_leader_data if l["teamAbbrev"] in home_team]
