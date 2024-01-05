@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.80
-    Date...........2023-10-23
+    Version..............1.81
+    Date...........2024-01-05
     Author(s)....Avery Briggs
     """
 
@@ -2052,6 +2052,18 @@ class Dict2Class:
                         setattr(self, new_key, value)
 
         process(dictionary)
+
+
+def collect_all_files(root):
+    """Return a list of absolute file paths for files in and below a given root directory."""
+    walked = os.walk(root)
+    all_files = []
+
+    for root, directories, files in walked:
+        all_files += [os.path.normpath(f"{root}/{file}") for file in files]
+
+    return all_files
+
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
