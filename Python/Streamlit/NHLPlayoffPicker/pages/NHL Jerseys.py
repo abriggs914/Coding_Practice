@@ -17,6 +17,18 @@ jerseys_excel_path = r"D:\NHL Jerseys.xlsm"
 labels_choice_toggle_unique_teams = [f"All Jersey Data", f"Unique Teams Only"]
 
 
+def exclusive_mean(lst, invalid=None):
+    ttl = 0
+    count = 0
+    if invalid is None:
+        invalid = set()
+    for v in lst:
+        if v not in invalid:
+            ttl += v
+            count += 1
+    return ttl / count
+
+
 class NHLAPIHandler:
     # 2023-12-21 0036
 
@@ -142,6 +154,8 @@ if __name__ == '__main__':
 
     print(f"\n\n\trerun\n\n")
 
+    st.set_page_config(layout="wide")
+
     if platform.uname().node == "DESKTOP-47DUBI9":
 
         if "choice_toggle_unique_teams" not in st.session_state:
@@ -262,6 +276,26 @@ if __name__ == '__main__':
             country = c_data["country"]
             col.metric(label=country, value=count)
 
+        # -------------------------------------------------------------------
+        # -------------------------------------------------------------------
+
+        average_wait_days = exclusive_mean(sheet_jersey_data["WaitDays"].dropna().values.tolist(), invalid=[0])
+        average_owned_days = exclusive_mean(sheet_jersey_data["OwnedDays"].dropna().values.tolist(), invalid=[45298.77416736111])
+
+        st.subheader("Wait & Owned Days")
+        wait_cols = st.columns(2)
+        wait_cols[0].metric(
+            label="Average Wait Days",
+            value=average_wait_days
+        )
+        wait_cols[1].metric(
+            label="Average Owned Days",
+            value=average_owned_days
+        )
+
+        # -------------------------------------------------------------------
+        # -------------------------------------------------------------------
+
         print(f"{distinct_owned_teams_homes=}")
         print(f"{distinct_owned_teams_aways=}")
 
@@ -342,11 +376,13 @@ if __name__ == '__main__':
         #     ("Receive Date", receive_date)
         # ]
         graphable_dates = [
+            "Made Date",
             "Order Date",
             "Receive Date",
-            "Open Date"
+            "Open Date",
+            "DOB"
         ]
-        btn_gdate_cols = st.columns(3)
+        btn_gdate_cols = st.columns(len(graphable_dates))
         g_date_btns = []
         for lbl, col in zip(graphable_dates, btn_gdate_cols):
             g_date_btns.append(col.toggle(
@@ -371,10 +407,20 @@ if __name__ == '__main__':
                 order_date = pd.to_datetime(data["OrderDate"]).date()
                 receive_date = pd.to_datetime(data["ReceiveDate"]).date()
                 open_date = pd.to_datetime(data["OpenDate"]).date()
+                made_date = data["MadeDate"]
+                made_m, made_y = made_date.split("/") if made_date else (None, None)
+                if made_m and made_y:
+                    made_date = datetime.datetime.strptime(f"20{made_y}-{made_m}-01", "%Y-%m-%d")
+                else:
+                    made_date = None
+                birth_date = pd.to_datetime(data["DOB"]).date()
+
                 g_dates_dict = {
                     "Order Date": order_date,
                     "Receive Date": receive_date,
-                    "Open Date": open_date
+                    "Open Date": open_date,
+                    "Made Date": made_date,
+                    "DOB": birth_date
                 }
                 graphable_dates_d = [(k, g_dates_dict[k]) for k in graphable_dates]
                 for t_typ, dat in graphable_dates_d:
@@ -382,8 +428,11 @@ if __name__ == '__main__':
                         print(f"{team=}, {player=}, {t_typ=}, {dat=}, {order_date=}, {receive_date=}")
                         movements_data.append({
                             "id": ii,
-                            "content": f"{t_typ}",
-                            "text": f"{team}  -  {player}",
+                            # "content": f"{t_typ}",
+                            # "text": f"{team}  -  {player}",
+                            # "content": f"{team}  -  {player}",
+                            "content": f"{player}  -  {team}",
+                            "text": f"{t_typ}",
                             "start": dat
                         })
                         ii += 1
@@ -413,7 +462,10 @@ if __name__ == '__main__':
             })
         # df_all_dates = sheet_jersey_data[]
         if movements_dict["events"]:
-            timeline_all_data = timeline(movements_dict, height=400)
+            timeline_all_data = timeline(
+                movements_dict,
+                height=500
+            )
         else:
             st.write(f"Please choose a date to graph on the timeline first.")
 
