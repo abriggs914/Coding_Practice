@@ -470,75 +470,75 @@ if __name__ == '__main__':
                     exp.image(headshot, name)
                     exp.write(f"{name}")
 
-        if game_state in ("LIVE", "FINAL", "OFF"):
-            exp_away_dets, exp_home_dets = team_expanders
-            if not game_goals:
-                exp_away_dets.markdown(f"### No goals yet")
-                exp_home_dets.markdown(f"### No goals yet")
-            else:
-                away_goals = [g for g in game_goals if g["teamAbbrev"] == away_team]
-                home_goals = [g for g in game_goals if g["teamAbbrev"] == home_team]
-                # away_p1 = [g for g in away_goals if g.get("periodDescriptor", {}).get("number", -1) == 1 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
-                # away_p2 = [g for g in away_goals if g.get("periodDescriptor", {}).get("number", -1) == 2 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
-                # away_p3 = [g for g in away_goals if g.get("periodDescriptor", {}).get("number", -1) == 3 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
-                #
-                # home_p1 = [g for g in home_goals if g.get("periodDescriptor", {}).get("number", -1) == 1 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
-                # home_p2 = [g for g in home_goals if g.get("periodDescriptor", {}).get("number", -1) == 2 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
-                # home_p3 = [g for g in home_goals if g.get("periodDescriptor", {}).get("number", -1) == 3 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
-
-                print(f"LEN=={len(away_goals)}, {away_goals=}\nLEN=={len(home_goals)}, {home_goals=}")
-                s_a, s_h = 0, 0
-                for exp, goals_data, key in zip(team_expanders, (away_goals, home_goals), ("away", "home")):
-                    b_type, b_pn = False, False
-                    print(f"{i=}, {key=}, {home_team}_{away_team}, {s_a=}, {s_h=}, {b_pn=}, {b_type=}, len={len(goals_data)}, {goals_data=}")
-                    if not b_type:
-                        for pt in ["REG", "OT", "SO"]:
-                            if (pt != "REG") and (s_a != s_h):
-                                break
-                            shown_ptl = False
-                            ptl = game_state_full[pt]
-                            # if not shown_ptl:
-                            exp.divider()
-                            exp.markdown(f"# {ptl}")
-                            # shown_ptl = True
-                            for pn in range(1, (3 if pt == "REG" else 12) + 1):
-                                shown_period = False
-                                for goal_data in goals_data:
-                                    if not b_pn:
-                                        pd = goal_data.get("periodDescriptor", {})
-                                        if pd.get("number", -1) == pn and pd.get("periodType", "") == pt:
-                                            s_a += 1 if key == "away" else 0
-                                            s_h += 1 if key == "home" else 0
-                                            if not shown_period:
-                                                exp.divider()
-                                                exp.markdown(f"### {pn}{number_suffix(pn)} Period")
-                                                shown_period = True
-                                            exp.markdown(f"#### GOAL! A={s_a} {s_h}=H")
-
-                                    if s_a != s_h:
-                                        # score is not tied
-                                        if pn > 3:
-                                            # regulation ended
-                                            b_pn = True
-                                            b_type = True
-
-                                    if not shown_period:
-                                        exp.divider()
-                                        exp.markdown(f"### {pn}{number_suffix(pn)} Period")
-                                        shown_period = True
-
-                                    if b_pn:
-                                        break
-
-                            # exp.divider()
-
-                            # if not shown_ptl:
-                            #     exp.divider()
-                            #     exp.markdown(f"# {ptl}")
-                            #     shown_ptl = True
-
-                            if b_type:
-                                break
+        # if game_state in ("LIVE", "FINAL", "OFF"):
+        #     exp_away_dets, exp_home_dets = team_expanders
+        #     if not game_goals:
+        #         exp_away_dets.markdown(f"### No goals yet")
+        #         exp_home_dets.markdown(f"### No goals yet")
+        #     else:
+        #         away_goals = [g for g in game_goals if g["teamAbbrev"] == away_team]
+        #         home_goals = [g for g in game_goals if g["teamAbbrev"] == home_team]
+        #         # away_p1 = [g for g in away_goals if g.get("periodDescriptor", {}).get("number", -1) == 1 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
+        #         # away_p2 = [g for g in away_goals if g.get("periodDescriptor", {}).get("number", -1) == 2 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
+        #         # away_p3 = [g for g in away_goals if g.get("periodDescriptor", {}).get("number", -1) == 3 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
+        #         #
+        #         # home_p1 = [g for g in home_goals if g.get("periodDescriptor", {}).get("number", -1) == 1 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
+        #         # home_p2 = [g for g in home_goals if g.get("periodDescriptor", {}).get("number", -1) == 2 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
+        #         # home_p3 = [g for g in home_goals if g.get("periodDescriptor", {}).get("number", -1) == 3 and g.get("periodDescriptor", {}).get("periodType", "") == "REG"]
+        #
+        #         print(f"LEN=={len(away_goals)}, {away_goals=}\nLEN=={len(home_goals)}, {home_goals=}")
+        #         s_a, s_h = 0, 0
+        #         for exp, goals_data, key in zip(team_expanders, (away_goals, home_goals), ("away", "home")):
+        #             b_type, b_pn = False, False
+        #             print(f"{i=}, {key=}, {home_team}_{away_team}, {s_a=}, {s_h=}, {b_pn=}, {b_type=}, len={len(goals_data)}, {goals_data=}")
+        #             if not b_type:
+        #                 for pt in ["REG", "OT", "SO"]:
+        #                     if (pt != "REG") and (s_a != s_h):
+        #                         break
+        #                     shown_ptl = False
+        #                     ptl = game_state_full[pt]
+        #                     # if not shown_ptl:
+        #                     exp.divider()
+        #                     exp.markdown(f"# {ptl}")
+        #                     # shown_ptl = True
+        #                     for pn in range(1, (3 if pt == "REG" else 12) + 1):
+        #                         shown_period = False
+        #                         for goal_data in goals_data:
+        #                             if not b_pn:
+        #                                 pd = goal_data.get("periodDescriptor", {})
+        #                                 if pd.get("number", -1) == pn and pd.get("periodType", "") == pt:
+        #                                     s_a += 1 if key == "away" else 0
+        #                                     s_h += 1 if key == "home" else 0
+        #                                     if not shown_period:
+        #                                         exp.divider()
+        #                                         exp.markdown(f"### {pn}{number_suffix(pn)} Period")
+        #                                         shown_period = True
+        #                                     exp.markdown(f"#### GOAL! A={s_a} {s_h}=H")
+        #
+        #                             if s_a != s_h:
+        #                                 # score is not tied
+        #                                 if pn > 3:
+        #                                     # regulation ended
+        #                                     b_pn = True
+        #                                     b_type = True
+        #
+        #                             if not shown_period:
+        #                                 exp.divider()
+        #                                 exp.markdown(f"### {pn}{number_suffix(pn)} Period")
+        #                                 shown_period = True
+        #
+        #                             if b_pn:
+        #                                 break
+        #
+        #                     # exp.divider()
+        #
+        #                     # if not shown_ptl:
+        #                     #     exp.divider()
+        #                     #     exp.markdown(f"# {ptl}")
+        #                     #     shown_ptl = True
+        #
+        #                     if b_type:
+        #                         break
 
 
     # for k,
