@@ -505,18 +505,18 @@ class PDF(FPDF):
     #             # self.texts(cx, cy, cell_value)
     #             if cy >= self.h:
     #                 raise ValueError("cy {} is too high".format(cy))
-    #             align = "C"
+    #             h_align = "C"
     #             if isinstance(col_align, list):
     #                 if j < len(col_align):
-    #                     align = col_align[j]
+    #                     h_align = col_align[j]
     #             elif isinstance(col_align, dict):
     #                 col_name = header[j][0]
     #                 # print("\t\tcol_name:", col_name)
     #                 if col_name in col_align:
-    #                     align = col_align[col_name]
+    #                     h_align = col_align[col_name]
     #
     #             self.set_xy(cx, cy)
-    #             # self.cell(cell_width, ch, cell_value, cell_border_style, 1, align, fill=1)
+    #             # self.cell(cell_width, ch, cell_value, cell_border_style, 1, h_align, fill=1)
     #             if trh - 1:
     #                 bs = "F" + ("" if not cell_border_style else "D")
     #                 # old_colo = list(map(lambda abc: int(255 * float(abc.strip())), self.fill_color.split(" ")[:3]))
@@ -526,7 +526,7 @@ class PDF(FPDF):
     #                 # self.rect(cx - w_off, cy, cell_width + (2 * w_off), (max(0, (trh)) * och), bs)
     #                 # self.set_fill_color(*old_colo)
     #             bef = self.get_y()
-    #             self.multi_cell(w=cell_width, h=och, txt=cell_value[:300], border=cell_border_style, align=align,
+    #             self.multi_cell(w=cell_width, h=och, txt=cell_value[:300], border=cell_border_style, h_align=h_align,
     #                             fill=1)
     #             aft = self.get_y()
     #             m_c_y = max(m_c_y, self.get_y(), max(0, (trh if trh > 1 else 0)) * och)
@@ -892,7 +892,7 @@ class PDF(FPDF):
                         align = col_align[col_name]
 
                 self.set_xy(cx, cy)
-                # self.cell(cell_width, ch, cell_value, cell_border_style, 1, align, fill=1)
+                # self.cell(cell_width, ch, cell_value, cell_border_style, 1, h_align, fill=1)
                 if trh - 1:
                     bs = "F" + ("" if not cell_border_style else "D")
                     # old_colo = list(map(lambda abc: int(255 * float(abc.strip())), self.fill_color.split(" ")[:3]))

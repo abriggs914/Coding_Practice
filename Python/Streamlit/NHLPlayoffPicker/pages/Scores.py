@@ -54,8 +54,115 @@ def number_suffix(n):
     return res
 
 
+def date_suffix(day):
+    if isinstance(day, datetime.datetime):
+        s_day = f"{day:%Y-%m-%d}"
+    else:
+        s_day = str(day)
+    if s_day[-1] == "1":
+        res = "st"
+        if len(s_day) > 1:
+            if s_day[-2] == "1":
+                res = "th"
+    elif s_day[-1] == "2":
+        res = "nd"
+        if len(s_day) > 1:
+            if s_day[-2] == "1":
+                res = "th"
+    elif s_day[-1] == "3":
+        res = "rd"
+        if len(s_day) > 1:
+            if s_day[-2] == "1":
+                res = "th"
+    else:
+        res = "th"
+    return res
+
+
+# Takes "2021-08-03"                                            -> August 3rd, 2021
+# dictionary = datetime.datetime(2023,1,1, 8, 30)
+# date_str_format(dictionary)                                            -> January 1st, 2023
+# date_str_format(dictionary, include_time=True)                         -> January 1st, 2023 at 8:30 AM
+# date_str_format(dictionary, include_time=True, include_weekday=True)   -> Sunday January 1st, 2023 at 8:30 AM
+# date_str_format(dictionary, file_name)                                 -> 2021-08-03 0830
+def date_str_format(date_str, include_time=False, include_weekday=False, short_month=False, short_weekday=False,
+                    short_time=True, delim=" at ", file_name=False):
+    """Return a date as a nicely formatted date or date and time string."""
+    if isinstance(date_str, datetime.datetime):
+        date_obj = date_str
+    else:
+        date_obj = datetime.datetime.fromisoformat(date_str)
+
+    if file_name:
+        h, m = date_obj.hour, date_obj.minute
+        res = f"{date_obj:%Y-%m-%d} {f'00{h}'[-2:]}{f'00{m}'[-2:]}"
+    else:
+        suffix = date_suffix(date_obj)
+        res = datetime.datetime.strftime(date_obj, f"%{'b' if short_month else 'B'} %d###, %Y").replace("###", suffix)
+        s_res = res.split(" ")
+        x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
+        res = " ".join([s_res[0], x, s_res[2]])
+        if include_time:
+            h = str(date_obj.hour)
+            if short_time and (date_obj.hour > 12):
+                h = str(date_obj.hour - 12)
+            if short_time and (h == "0"):
+                h = "12"
+            h = h.removeprefix("0")
+            m = ("00" + str(date_obj.minute))[-2:]
+            p = date_obj.strftime("%p") if short_time else ""
+            res = f"{res}{delim}{h}:{m} {p}".strip()
+
+        if include_weekday:
+            res = f"{date_obj:%{'a' if short_weekday else 'A'}}, {res}"
+    return res
+
+
+def aligned_text(txt: str, tag_style: Literal["h1", "h2", "h3", "h4", "h5", "h6", "p"] = "h1", h_align: Literal["left", "center", "right"] = "center", colour: str = "#FFFFFF", line_height: int = 1) -> str:
+    """
+    Return formatted HTML, and in-line CSS to h_align a given text in a container.
+    Use with streamlit's markdown function and with 'unsafe_allow_html' set to True.
+    """
+    return f"<{tag_style} style='line-height: {line_height}; text-align: {h_align}; color: {colour};'>{txt}</{tag_style}>"
+
+
+def hide_image_fullscreen_buttons():
+    """https://discuss.streamlit.io/t/hide-fullscreen-option-when-displaying-images-using-st-image/19792"""
+    hide_img_fs = '''
+    <style>
+    button[title="View fullscreen"]{
+        visibility: hidden;}
+    </style>
+    '''
+    st.markdown(hide_img_fs, unsafe_allow_html=True)
+
+
+def center_fullscreen_images():
+    """
+    Center an image when in fullscreen browsing mode
+    https://discuss.streamlit.io/t/how-can-i-center-a-picture/30995/3
+    """
+    st.markdown(
+        """
+        <style>
+            button[title^=Exit]+div [data-testid=stImage]{
+                text-align: center;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+            }
+        </style>
+        """, unsafe_allow_html=True
+    )
+
+    # "# Center an image when in fullscreen"
+    # "Images (and most elements in general) are always aligned to the left"
+    # st.image("https://placekitten.com/g/200/200")
+
+
 class NHLAPIHandler:
-    # 2023-12-21 0036
+    # 2024-01-09 0036
 
     HOST_NAME = f"https://api-web.nhle.com"
 
@@ -138,7 +245,6 @@ class NHLAPIHandler:
             return True if r_type == "bool" else gt
         return False if r_type == "bool" else (gt if r_type == "next_games" else {})
 
-
     def get_geolocation(self, do_print=False) -> dict | None:
         url = "https://geolocation.onetrust.com/cookieconsentpub/v1/geo/location"
         if do_print:
@@ -165,6 +271,15 @@ class NHLAPIHandler:
         # standings keys:
         # ['wildCardIndicator', 'standings']
         url = f"{NHLAPIHandler.HOST_NAME}/v1/standings/{date:%Y-%m-%d}"
+        if do_print:
+            print(f"{url=}")
+        return self.query_url(url)
+
+    def get_player_info(self, player_id: int, do_print=False) -> dict | None:
+        """Get data on a specific player"""
+        # standings keys:
+        # ['wildCardIndicator', 'standings']
+        url = f"{NHLAPIHandler.HOST_NAME}/v1/player/{player_id}/landing"
         if do_print:
             print(f"{url=}")
         return self.query_url(url)
@@ -281,7 +396,8 @@ if __name__ == '__main__':
                                                                                               minutes=m_off)
 
         fmt = "%Y-%m-%d %H:%M"
-        message_future = f"{start_time_utc:{fmt}}  -  {venue_english}"
+        # message_future = f"{start_time_utc:{fmt}}  -  {venue_english}"
+        message_future = f"{date_str_format(start_time_utc, include_time=True)}  -  {venue_english}"
         message_live_action = f"{time_remaining} {period_number}{number_suffix(period_number)}  -  {venue_english}"
         message_live_intermission = f"{period_number} INT  -  {venue_english}"
         message_pregame = f"PRE-GAME  -  {start_time_utc:{fmt}}  -  {venue_english}"
@@ -342,19 +458,53 @@ if __name__ == '__main__':
         col_away_score = team_img_cols[1]
         col_home_score = team_img_cols[-2]
         col_home_logo = team_img_cols[-1]
-        col_away_logo.image(teams["away"]["logo"], teams["away"]["name_abbrev"])  # ,
-        team_img_cols[len(team_img_cols) // 2].write(f"@")  # ,
-        col_home_logo.image(teams["home"]["logo"], teams["home"]["name_abbrev"])
+        col_away_logo_sub = col_away_logo.columns([0.25, 0.5, 0.25])
+        col_home_logo_sub = col_home_logo.columns([0.25, 0.5, 0.25])
+        col_away_logo_sub[1].image(teams["away"]["logo"], teams["away"]["name_abbrev"], width=100)  # ,
+        # team_img_cols[len(team_img_cols) // 2].write(f"@")  # ,
+        team_img_cols[len(team_img_cols) // 2].markdown(
+            aligned_text(
+                "@"
+                , tag_style="h1"
+                , line_height=2
+            )
+            , unsafe_allow_html=True
+        )
+        col_home_logo_sub[1].image(teams["home"]["logo"], teams["home"]["name_abbrev"], width=100)
         # )
         # elements[f"{i}_team_img_cols"][0].write(f"{teams['away']['record']}")
         # elements[f"{i}_team_img_cols"][2].write(f"{teams['home']['record']}")
         if game_state != "LIVE":
-            col_away_logo.write(f"{teams['away']['record']}")
-            col_home_logo.write(f"{teams['home']['record']}")
+            col_away_logo.markdown(
+                aligned_text(
+                    f"{teams['away']['record']}"
+                    , tag_style="h4"
+                )
+                , unsafe_allow_html=True
+            )
+            col_home_logo.markdown(
+                aligned_text(
+                    f"{teams['home']['record']}"
+                    , tag_style="h4"
+                )
+                , unsafe_allow_html=True
+            )
 
         if game_state not in ("FUT", "PRE"):
-            col_away_score.markdown(f"### {away_score}")
-            col_home_score.markdown(f"### {home_score}")
+            col_away_score.markdown(
+                aligned_text(
+                    f"### {away_score}"
+                    , tag_style="h4"
+                )
+                , unsafe_allow_html=True
+            )
+            col_home_score.markdown(
+                aligned_text(
+                    f"### {home_score}"
+                    , tag_style="h4"
+                ),
+                unsafe_allow_html=True
+            )
 
         # players data
         # elements[f"{i}_exp_cols_columns"] = st.columns(2)
@@ -428,47 +578,79 @@ if __name__ == '__main__':
 
             players = {"away": {}, "home": {}}
             # for j, k_pd in enumerate(zip(players, team_leader_data)):
-            for j, pd in enumerate(team_leader_data):
+            for j, p_d in enumerate(team_leader_data):
                 # k, pd = k_pd
                 # k = ""
-                k = "away" if pd["teamAbbrev"] == away_team else "home"
-                print(f"{i=}, {j=}, {k=}, {pd=}")
+                k = "away" if p_d["teamAbbrev"] == away_team else "home"
+                print(f"{i=}, {j=}, {k=}, {p_d=}")
                 if j not in players[k]:
                     players[k][j] = {}
-                players[k][j]["id"] = pd["id"]
-                players[k][j]["name_english"] = pd["name"].get("default")
-                players[k][j]["name_french"] = pd["name"].get("fr", None)
+                players[k][j]["id"] = p_d["id"]
+                players[k][j]["name_english"] = p_d["name"].get("default")
+                players[k][j]["name_french"] = p_d["name"].get("fr", None)
                 if players[k][j]["name_french"] is None:
                     players[k][j]["name_french"] = players[k][j]["name_english"]
-                players[k][j]["headshot"] = pd["headshot"]
-                players[k][j]["playerTeam"] = pd["teamAbbrev"]
-                players[k][j]["category"] = pd["category"]
-                players[k][j]["value"] = pd["value"]
+                players[k][j]["headshot"] = p_d["headshot"]
+                players[k][j]["playerTeam"] = p_d["teamAbbrev"]
+                players[k][j]["category"] = p_d["category"]
+                players[k][j]["value"] = p_d["value"]
+                player_info = nhl_api.get_player_info(p_d["id"])
+                players[k][j]["position"] = player_info["position"]
 
                 print(
                     f"{i=}, {j=}, {k=}, t={teams[k]['name_abbrev']}, pt={players[k][j]['playerTeam']}, c={players[k][j]['category']}, p={players[k][j]['name_english']}")
 
             print(f"{list(players)=}, {players=}")
 
+            # Goals, Assists, Wins
+
             # exp1, exp2 = elements[f"{}_exp_cols_expanders"]
             # exp1.image(teams["away"]["logo"], teams["away"]["name_abbrev"])
             # exp2.image(teams["home"]["logo"], teams["home"]["name_abbrev"])
             for j, k_pd in enumerate(players.items()):
-                key, pd = k_pd
+                key, p_d = k_pd
                 exp = elements[f"{i}_exp_cols_expanders"][j]
+                cols_row_0 = exp.columns(3)
+                cols_row_1 = exp.columns(3)
                 print(f"{i=}\n{j=}\n{key=}\n{pd=}")
                 # for k, pdd in enumerate(pd):
-                for k, pdd in pd.items():
+                for l, k in enumerate(p_d):
+                    pdd = p_d[k]
                     name = pdd["name_english"]
                     team = pdd["playerTeam"]
+                    position = pdd["position"]
                     headshot = pdd["headshot"]
                     category = pdd["category"]
                     value = pdd["value"]
 
-                    exp.write(
-                        f"{value} {category}{'s' if ((int(value) != 0) and (not category.endswith('s'))) else ''}")
-                    exp.image(headshot, name)
-                    exp.write(f"{name}")
+                    # exp.write(
+                    #     f"{value} {category}{'s' if ((int(value) != 0) and (not category.endswith('s'))) else ''}")
+                    # cols_row_1[l].write(
+                    #     f"{value} {category}{'s' if ((int(value) != 0) and (not category.endswith('s'))) else ''}")
+                    # cols_row_1[l].markdown(f"<h6 style='text-align: center; color: white;'>{value} {category}{'s' if ((int(value) != 0) and (not category.endswith('s'))) else ''}</h6>",
+                    #             unsafe_allow_html=True)
+                    cols_row_1[l].markdown(
+                        aligned_text(
+                            f"{value} {category}{'s' if ((int(value) != 0) and (not category.endswith('s'))) else ''}",
+                            h_align="center",
+                            colour="#FFFFFF",
+                            tag_style="h6"
+                        ),
+                        unsafe_allow_html=True
+                    )
+                    # cols_row_0[l].write(f"{name}")
+                    cols_row_0[l].image(headshot, f"{name}, {position}")
+
+        center_fullscreen_images()
+
+        # hide_img_fs = '''
+        # <style>
+        # button[title="View fullscreen"]{
+        #     visibility: hidden;}
+        # </style>
+        # '''
+        #
+        # st.markdown(hide_img_fs, unsafe_allow_html=True)
 
         # if game_state in ("LIVE", "FINAL", "OFF"):
         #     exp_away_dets, exp_home_dets = team_expanders

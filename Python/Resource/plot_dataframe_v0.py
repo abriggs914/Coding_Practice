@@ -659,13 +659,13 @@ class PlotFrame(tkinter.Frame):
         #
         # y_pos = np.arange(len(show_names))
         # if orientation == "horizontal":
-        #     ax.barh(y_pos, data_points, align="center")
+        #     ax.barh(y_pos, data_points, h_align="center")
         #     ax.set_yticks(y_pos, labels=show_names)
         #     ax.invert_yaxis()
         #     ax.set_xlabel(xlabel)
         #     ax.set_title(title)
         # else:
-        #     ax.bar(y_pos, data_points, align="center")
+        #     ax.bar(y_pos, data_points, h_align="center")
         #     ax.set_xticks(y_pos, labels=show_names)
         #     ax.tick_params(axis="x", rotation=90)
         #     ax.invert_xaxis()
