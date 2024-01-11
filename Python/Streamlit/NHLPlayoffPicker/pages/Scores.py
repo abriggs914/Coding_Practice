@@ -8,6 +8,12 @@ import requests
 from decimal import Decimal
 from fractions import Fraction
 
+from PIL import Image
+from urllib.request import urlopen
+from io import BytesIO
+from xml.etree import ElementTree as ET
+import numpy as np
+
 
 def isnumber(value):
     # if isinstance(value, int) or isinstance(value, float):
@@ -162,14 +168,14 @@ def center_fullscreen_images():
 
 
 class NHLAPIHandler:
-    # 2024-01-09 0036
+    # 2024-01-09 2145
 
     HOST_NAME = f"https://api-web.nhle.com"
 
     def __init__(self):
         self.history = {}
 
-    def query_url(self, url, do_print=False, check_history=True) -> dict | None:
+    def query_url(self, url, do_print=False, check_history=True, is_image=False) -> dict | None:
         if do_print:
             print(f"{url=}")
 
@@ -177,14 +183,42 @@ class NHLAPIHandler:
             if url in self.history:
                 return self.history[url]
 
-        response = requests.get(url)
-        response.raise_for_status()  # raises exception when not a 2xx response
-        if response.status_code != 204:
-            ct = response.headers["Content-Type"].lower()
-            if ct.startswith("application/json"):
-                self.history[url] = response.json()
-            elif ct.startswith("text/javascript"):
-                self.history[url] = eval(response.text.replace("jsonFeed(", "")[:-2])
+        if is_image:
+            # response = requests.get(url)
+            # print(f"{response=}\n{response.content=}\n{response.raw=}")
+            # response = requests.get(url, stream=True)
+            # self.history[url] = Image.open(BytesIO(requests.get(url).content))
+            # self.history[url] = Image.open(requests.get(url, stream=True).raw)
+
+            # self.history[url] = Image.open(response.raw)
+
+            # self.history[url] = Image.open(urlopen(url))
+
+            # response = requests.get(url)
+            # svg_content = response.content.decode()
+            # svg = ET.ElementTree(ET.fromstring(svg_content.encode("utf-8")))
+            # self.history[url] = Image.open(BytesIO(svg))
+
+            # response = requests.get(url)
+            # print(f"{response.text.encode('utf-8')=}")
+            # print(f"{BytesIO(response.text.encode('utf-8'))=}")
+            # self.history[url] = BytesIO(response.text.encode("utf-8"))
+
+            response = urlopen(url)
+            # print(f"{response.text.encode('utf-8')=}")
+            # print(f"{BytesIO(response.text.encode('utf-8'))=}")
+            self.history[url] = BytesIO(response.read())
+        else:
+            response = requests.get(url)
+
+            response.raise_for_status()  # raises exception when not a 2xx response
+            if response.status_code != 204:
+
+                ct = response.headers["Content-Type"].lower()
+                if ct.startswith("application/json"):
+                    self.history[url] = response.json()
+                elif ct.startswith("text/javascript"):
+                    self.history[url] = eval(response.text.replace("jsonFeed(", "")[:-2])
 
         return self.history.get(url, None)
 
@@ -212,17 +246,18 @@ class NHLAPIHandler:
         valid = ["LIVE"] + ([] if not include_pregames else ["PRE"])
         now = datetime.datetime.now()
 
-        # check yesterday first since east coast means late night games
-        gy = self.get_score((now + datetime.timedelta(days=-1)).date())
-        gsy = [g["gameState"] in valid for g in gy["games"]]
-        print(f"{gy=}\n{gsy=}")
-        if any(gsy):
-            return True if r_type == "bool" else gy
+        if now.hour < 7:
+            # check yesterday first since east coast means late night games
+            gy = self.get_score((now + datetime.timedelta(days=-1)).date())
+            gsy = [g["gameState"] in valid for g in gy["games"]]
+            print(f"{gy['games']=}\n{gsy=}")
+            if any(gsy):
+                return True if r_type == "bool" else gy
 
         # check today's games
         gt = self.get_score(now.date())
         gst = [g["gameState"] in valid for g in gt["games"]]
-        print(f"{gt=}\n{gst=}")
+        print(f"{gt['games']=}\n{gst=}")
         if any(gst):
             return True if r_type == "bool" else gt
         return False if r_type == "bool" else (gt if r_type == "next_games" else {})
@@ -284,6 +319,10 @@ class NHLAPIHandler:
             print(f"{url=}")
         return self.query_url(url)
 
+    def fetch_image(self, url):
+        return self.query_url(url, is_image=True, do_print=True)
+
+
 
 game_state_full = {
     "REG": "Regulation",
@@ -335,7 +374,7 @@ if __name__ == '__main__':
     #
     # st.write(df_scores_today_gameWeek)
     # st.write(df_scores_today_oddsPartners)
-    st.write(df_scores_today_games)
+    # st.write(df_scores_today_games)
 
     # game_expanders = []
     game_containers = []
@@ -400,7 +439,8 @@ if __name__ == '__main__':
         message_future = f"{date_str_format(start_time_utc, include_time=True)}  -  {venue_english}"
         message_live_action = f"{time_remaining} {period_number}{number_suffix(period_number)}  -  {venue_english}"
         message_live_intermission = f"{period_number} INT  -  {venue_english}"
-        message_pregame = f"PRE-GAME  -  {start_time_utc:{fmt}}  -  {venue_english}"
+        # message_pregame = f"PRE-GAME  -  {start_time_utc:{fmt}}  -  {venue_english}"
+        message_pregame = f"PRE-GAME  -  {date_str_format(start_time_utc, include_time=True)}  -  {venue_english}"
 
         status_away, status_home = "", ""
         game_message = ""
@@ -460,17 +500,24 @@ if __name__ == '__main__':
         col_home_logo = team_img_cols[-1]
         col_away_logo_sub = col_away_logo.columns([0.25, 0.5, 0.25])
         col_home_logo_sub = col_home_logo.columns([0.25, 0.5, 0.25])
-        col_away_logo_sub[1].image(teams["away"]["logo"], teams["away"]["name_abbrev"], width=100)  # ,
+
+        logo_away = nhl_api.fetch_image(teams["away"]["logo"])
+        logo_home = nhl_api.fetch_image(teams["home"]["logo"])
+
+        print(f"{type(logo_away)=}, {logo_away=}")
+        print(f"{type(logo_away)=}, {logo_home=}")
+
+        col_away_logo_sub[1].image(logo_away, teams["away"]["name_abbrev"], width=100)  # ,
         # team_img_cols[len(team_img_cols) // 2].write(f"@")  # ,
         team_img_cols[len(team_img_cols) // 2].markdown(
             aligned_text(
                 "@"
-                , tag_style="h1"
+                , tag_style="h3"
                 , line_height=2
             )
             , unsafe_allow_html=True
         )
-        col_home_logo_sub[1].image(teams["home"]["logo"], teams["home"]["name_abbrev"], width=100)
+        col_home_logo_sub[1].image(logo_home, teams["home"]["name_abbrev"], width=100)
         # )
         # elements[f"{i}_team_img_cols"][0].write(f"{teams['away']['record']}")
         # elements[f"{i}_team_img_cols"][2].write(f"{teams['home']['record']}")
@@ -493,14 +540,14 @@ if __name__ == '__main__':
         if game_state not in ("FUT", "PRE"):
             col_away_score.markdown(
                 aligned_text(
-                    f"### {away_score}"
+                    f"{away_score}"
                     , tag_style="h4"
                 )
                 , unsafe_allow_html=True
             )
             col_home_score.markdown(
                 aligned_text(
-                    f"### {home_score}"
+                    f"{home_score}"
                     , tag_style="h4"
                 ),
                 unsafe_allow_html=True
@@ -548,57 +595,57 @@ if __name__ == '__main__':
             det_col_0, det_col_1 = cols_team_details
             # det_col_0.markdown(f"#### {scores_today}")
 
-        elif game_state == "FUT":
+        # elif game_state == "FUT":
 
-            container_top.markdown(message_future)
+        container_top.markdown(message_future)
 
-            # elements[f"{i}_exp_cols_expanders"] = (
-            #     cols_team_details[0].expander(f"{teams['away']['name_abbrev']} Leaders"),
-            #     cols_team_details[1].expander(f"{teams['home']['name_abbrev']} Leaders")
-            # )
+        # elements[f"{i}_exp_cols_expanders"] = (
+        #     cols_team_details[0].expander(f"{teams['away']['name_abbrev']} Leaders"),
+        #     cols_team_details[1].expander(f"{teams['home']['name_abbrev']} Leaders")
+        # )
 
-            # elements[f"{i}_exp_cols_expanders"] = (
-            #     cols_team_details[0].container(),
-            #     cols_team_details[1].container()
-            # )
-            elements[f"{i}_exp_cols_expanders"] = [
-                cols_team_details[0].expander(f"### {teams['away']['name_abbrev']} Leaders"),
-                cols_team_details[1].expander(f"### {teams['home']['name_abbrev']} Leaders")
-            ]
+        # elements[f"{i}_exp_cols_expanders"] = (
+        #     cols_team_details[0].container(),
+        #     cols_team_details[1].container()
+        # )
+        elements[f"{i}_exp_cols_expanders"] = [
+            cols_team_details[0].expander(f"### {teams['away']['name_abbrev']} Leaders"),
+            cols_team_details[1].expander(f"### {teams['home']['name_abbrev']} Leaders")
+        ]
 
-            # away_leaders = [l for l in team_leader_data if l["teamAbbrev"] in away_team]
-            # home_leaders = [l for l in team_leader_data if l["teamAbbrev"] in home_team]
+        # away_leaders = [l for l in team_leader_data if l["teamAbbrev"] in away_team]
+        # home_leaders = [l for l in team_leader_data if l["teamAbbrev"] in home_team]
 
-            # # ensure that the team_leader_data is sorted away then home
-            # l_t1 = team_leader_data[0]
-            # l_t2 = team_leader_data[1]
-            # print(f"{team_leader_data=}\n{l_t1}\n{l_t2}")
-            # if l_t1[0]["playerTeam"] != teams["away"]["name_abbrev"]:
-            #     team_leader_data = (l_t2, l_t1)
+        # # ensure that the team_leader_data is sorted away then home
+        # l_t1 = team_leader_data[0]
+        # l_t2 = team_leader_data[1]
+        # print(f"{team_leader_data=}\n{l_t1}\n{l_t2}")
+        # if l_t1[0]["playerTeam"] != teams["away"]["name_abbrev"]:
+        #     team_leader_data = (l_t2, l_t1)
 
-            players = {"away": {}, "home": {}}
-            # for j, k_pd in enumerate(zip(players, team_leader_data)):
-            for j, p_d in enumerate(team_leader_data):
-                # k, pd = k_pd
-                # k = ""
-                k = "away" if p_d["teamAbbrev"] == away_team else "home"
-                print(f"{i=}, {j=}, {k=}, {p_d=}")
-                if j not in players[k]:
-                    players[k][j] = {}
-                players[k][j]["id"] = p_d["id"]
-                players[k][j]["name_english"] = p_d["name"].get("default")
-                players[k][j]["name_french"] = p_d["name"].get("fr", None)
-                if players[k][j]["name_french"] is None:
-                    players[k][j]["name_french"] = players[k][j]["name_english"]
-                players[k][j]["headshot"] = p_d["headshot"]
-                players[k][j]["playerTeam"] = p_d["teamAbbrev"]
-                players[k][j]["category"] = p_d["category"]
-                players[k][j]["value"] = p_d["value"]
-                player_info = nhl_api.get_player_info(p_d["id"])
-                players[k][j]["position"] = player_info["position"]
+        players = {"away": {}, "home": {}}
+        # for j, k_pd in enumerate(zip(players, team_leader_data)):
+        for j, p_d in enumerate(team_leader_data):
+            # k, pd = k_pd
+            # k = ""
+            k = "away" if p_d["teamAbbrev"] == away_team else "home"
+            print(f"{i=}, {j=}, {k=}, {p_d=}")
+            if j not in players[k]:
+                players[k][j] = {}
+            players[k][j]["id"] = p_d["id"]
+            players[k][j]["name_english"] = p_d["name"].get("default")
+            players[k][j]["name_french"] = p_d["name"].get("fr", None)
+            if players[k][j]["name_french"] is None:
+                players[k][j]["name_french"] = players[k][j]["name_english"]
+            players[k][j]["headshot"] = p_d["headshot"]
+            players[k][j]["playerTeam"] = p_d["teamAbbrev"]
+            players[k][j]["category"] = p_d["category"]
+            players[k][j]["value"] = p_d["value"]
+            player_info = nhl_api.get_player_info(p_d["id"])
+            players[k][j]["position"] = player_info["position"]
 
-                print(
-                    f"{i=}, {j=}, {k=}, t={teams[k]['name_abbrev']}, pt={players[k][j]['playerTeam']}, c={players[k][j]['category']}, p={players[k][j]['name_english']}")
+            print(
+                f"{i=}, {j=}, {k=}, t={teams[k]['name_abbrev']}, pt={players[k][j]['playerTeam']}, c={players[k][j]['category']}, p={players[k][j]['name_english']}")
 
             print(f"{list(players)=}, {players=}")
 
@@ -612,7 +659,7 @@ if __name__ == '__main__':
                 exp = elements[f"{i}_exp_cols_expanders"][j]
                 cols_row_0 = exp.columns(3)
                 cols_row_1 = exp.columns(3)
-                print(f"{i=}\n{j=}\n{key=}\n{pd=}")
+                print(f"{i=}\n{j=}\n{key=}\n{p_d=}")
                 # for k, pdd in enumerate(pd):
                 for l, k in enumerate(p_d):
                     pdd = p_d[k]
@@ -620,6 +667,7 @@ if __name__ == '__main__':
                     team = pdd["playerTeam"]
                     position = pdd["position"]
                     headshot = pdd["headshot"]
+                    headshot = nhl_api.fetch_image(headshot)
                     category = pdd["category"]
                     value = pdd["value"]
 
