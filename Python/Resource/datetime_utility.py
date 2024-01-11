@@ -7,8 +7,8 @@ from utility import minmax, clamp, choice, dict_print
 
 """
 	General datetime Utility Functions
-	Version..............1.12
-	Date...........2023-12-11
+	Version..............1.13
+	Date...........2024-01-11
 	Author.......Avery Briggs
 """
 
@@ -40,8 +40,8 @@ def business_days_between(d1, d2, holidays=None):
     business_days = 0
     if holidays is None:
         holidays = []
-    date_1 = d1 if type(d1) == datetime.datetime else datetime.datetime.strptime(d1, "%dictionary-%b-%y")
-    date_2 = d2 if type(d2) == datetime.datetime else datetime.datetime.strptime(d2, "%dictionary-%b-%y")
+    date_1 = d1 if type(d1) == datetime.datetime else datetime.datetime.strptime(d1, "%d-%b-%y")
+    date_2 = d2 if type(d2) == datetime.datetime else datetime.datetime.strptime(d2, "%d-%b-%y")
 
     date_1, date_2 = minmax(date_1, date_2)
 
@@ -76,7 +76,7 @@ def same_calendar_day(d1, d2):
 
 def date_suffix(day):
     if isinstance(day, datetime.datetime):
-        s_day = f"{day:%Y-%m-%dictionary}"
+        s_day = f"{day:%Y-%m-%d}"
     else:
         s_day = str(day)
     if s_day[-1] == "1":
@@ -115,10 +115,10 @@ def date_str_format(date_str, include_time=False, include_weekday=False, short_m
 
     if file_name:
         h, m = date_obj.hour, date_obj.minute
-        res = f"{date_obj:%Y-%m-%dictionary} {f'00{h}'[-2:]}{f'00{m}'[-2:]}"
+        res = f"{date_obj:%Y-%m-%d} {f'00{h}'[-2:]}{f'00{m}'[-2:]}"
     else:
         suffix = date_suffix(date_obj)
-        res = datetime.datetime.strftime(date_obj, f"%{'b' if short_month else 'B'} %dictionary###, %Y").replace("###", suffix)
+        res = datetime.datetime.strftime(date_obj, f"%{'b' if short_month else 'B'} %d###, %Y").replace("###", suffix)
         s_res = res.split(" ")
         x = s_res[1] if s_res[1][0] != "0" else s_res[1][1:]
         res = " ".join([s_res[0], x, s_res[2]])
@@ -176,7 +176,7 @@ def random_date(start_year=1, end_year=10000, start_m=None, start_d=None):
     return "{}-{}-{}".format(("0000" + str(y))[-4:], ("00" + str(m))[-2:], ("00" + str(d))[-2:])
 
 
-def is_date_w_fmt(date_in, fmt="%Y-%m-%dictionary"):
+def is_date_w_fmt(date_in, fmt="%Y-%m-%d"):
     if isinstance(date_in, datetime.datetime) or isinstance(date_in, datetime.date):
         return True
     try:
@@ -284,7 +284,7 @@ def replace_timestamp_datetime(str_in, col_in_question=None):
     for s in spl:
         # print_by_line([(s.replace("{'", "").startswith(col), col, s) for col in col_in_question])
         if not col_in_question or any([s.replace("{'", "").startswith(col) for col in col_in_question]):
-            end = s[-22:-1] + ", '%Y-%m-%dictionary %H:%M:%S')"
+            end = s[-22:-1] + ", '%Y-%m-%d %H:%M:%S')"
             ss = s.replace(r_out, r_in)
             ss = ss[:-22] + end
             result += ss
