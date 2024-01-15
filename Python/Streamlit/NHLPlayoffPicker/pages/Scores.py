@@ -204,10 +204,16 @@ class NHLAPIHandler:
             # print(f"{BytesIO(response.text.encode('utf-8'))=}")
             # self.history[url] = BytesIO(response.text.encode("utf-8"))
 
-            response = urlopen(url)
+            # response = urlopen(url)
+            # # print(f"{response.text.encode('utf-8')=}")
+            # # print(f"{BytesIO(response.text.encode('utf-8'))=}")
+            # self.history[url] = BytesIO(response.read())
+
+            response = requests.get(url)
+            image_data = BytesIO(response.content)
             # print(f"{response.text.encode('utf-8')=}")
             # print(f"{BytesIO(response.text.encode('utf-8'))=}")
-            self.history[url] = BytesIO(response.read())
+            self.history[url] = Image.open(image_data)
         else:
             response = requests.get(url)
 
@@ -501,6 +507,8 @@ if __name__ == '__main__':
         col_away_logo_sub = col_away_logo.columns([0.25, 0.5, 0.25])
         col_home_logo_sub = col_home_logo.columns([0.25, 0.5, 0.25])
 
+        # logo_away = teams["away"]["logo"]
+        # logo_home = teams["home"]["logo"]
         logo_away = nhl_api.fetch_image(teams["away"]["logo"])
         logo_home = nhl_api.fetch_image(teams["home"]["logo"])
 
@@ -667,7 +675,7 @@ if __name__ == '__main__':
                     team = pdd["playerTeam"]
                     position = pdd["position"]
                     headshot = pdd["headshot"]
-                    headshot = nhl_api.fetch_image(headshot)
+                    # headshot = nhl_api.fetch_image(headshot)
                     category = pdd["category"]
                     value = pdd["value"]
 
