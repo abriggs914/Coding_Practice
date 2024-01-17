@@ -34,7 +34,7 @@ if __name__ == "__main__":
 		
 	win = tkinter.Tk()
 	win.geometry(f"800x550")
-	can = tkinter.Canvas(win, width=400, height=400, bg="#E10000").pack()
+	can = tkinter.Canvas(win, width=400, height=400, bg="#E10000")
 	
 	[add_point(p, r=8) for p in triangle_points]
 	
