@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.64
-    Date...........2023-09-19
+    Version..............1.65
+    Date...........2024-01-17
     Author(s)....Avery Briggs
     """
 
@@ -3707,7 +3707,7 @@ class InfoFrame(tkinter.Frame):
 
 def calc_geometry_tl(
         width: int | float,
-        height: int | float,
+        height: int | float = None,
         dims: None | tuple | list = None,
         largest: bool | int = True,
         rtype: str | dict | list | tuple = str
@@ -3740,6 +3740,9 @@ def calc_geometry_tl(
         x_, y_, width_, height_ = dims
 
     t_width, t_height = width_, height_
+    
+    if height is None:
+        height = width
 
     if isinstance(height, float):
         assert 0 < height <= 1, "Error, if param 'height' is a float, it must be between 0 and 1."
@@ -3773,7 +3776,7 @@ def calc_geometry_tl(
         y_ += y_off
 
         res = f"{width_}x{height_}+{x_}+{y_}"
-        print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f"geo=({res})")
+        print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f" geo=({res})")
         if rtype == str:
             return res
         elif rtype == dict:

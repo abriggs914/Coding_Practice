@@ -1,7 +1,7 @@
 import tkinter
 
 import requests
-from PIL import Image
+from PIL import Image, ImageTk
 from tkinter import PhotoImage
 import streamlit as st
 from io import BytesIO
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # #
     # # except:
     # #
-    image =
+    image = ImageTk.PhotoImage(url)
     app = tkinter.Tk()
     app.geometry(f"900x600")
     canvas = tk.Canvas(app, width=900, height=600, background="#878787")

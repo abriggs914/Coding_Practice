@@ -507,10 +507,10 @@ if __name__ == '__main__':
         col_away_logo_sub = col_away_logo.columns([0.25, 0.5, 0.25])
         col_home_logo_sub = col_home_logo.columns([0.25, 0.5, 0.25])
 
-        # logo_away = teams["away"]["logo"]
-        # logo_home = teams["home"]["logo"]
-        logo_away = nhl_api.fetch_image(teams["away"]["logo"])
-        logo_home = nhl_api.fetch_image(teams["home"]["logo"])
+        logo_away = teams["away"]["logo"]
+        logo_home = teams["home"]["logo"]
+        #logo_away = nhl_api.fetch_image(teams["away"]["logo"])
+        #logo_home = nhl_api.fetch_image(teams["home"]["logo"])
 
         print(f"{type(logo_away)=}, {logo_away=}")
         print(f"{type(logo_away)=}, {logo_home=}")
