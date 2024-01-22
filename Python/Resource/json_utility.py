@@ -2,6 +2,7 @@ import datetime
 import tkinter
 from typing import Any
 
+import pandas
 
 #######################################################################################################################
 #######################################################################################################################
@@ -69,6 +70,9 @@ def jsonify(value: Any, t_depth: int = 0, in_line: bool = True) -> str:
         else:
             return f"{s_ if t_depth == 0 else ''}{p1}\n{s1_}" + f"\n{s1_}".join(
                 [f"{jsonify(v, t_depth + 1, False)}," for v in value])[:-1] + f"\n{s_}{p2}"
+
+    elif isinstance(value, pandas.DataFrame):
+        return value.to_json()
 
     elif isinstance(value, datetime.datetime):
         y, n, d, h, m, s = value.year, value.month, value.day, value.hour, value.minute, value.second

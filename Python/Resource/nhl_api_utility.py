@@ -3,18 +3,17 @@ import datetime
 from typing import Literal
 import pandas as pd
 
-
 #######################################################################################################################
 #######################################################################################################################
 #######################################################################################################################
 
 VERSION = \
     """	
-    NHL API Handler class and utility
-    Version..............1.01
-    Date...........2024-01-09
-    Author(s)....Avery Briggs
-    """
+	NHL API Handler class and utility
+	Version..............1.01
+	Date...........2024-01-09
+	Author(s)....Avery Briggs
+	"""
 
 
 def VERSION_DETAILS():
@@ -40,8 +39,6 @@ def VERSION_AUTHORS():
 #######################################################################################################################
 
 
-
-
 game_state_full = {
     "REG": "Regulation",
     "OT": "Overtime",
@@ -49,7 +46,6 @@ game_state_full = {
     "FINAL": "Final",
     "OFF": "Final"
 }
-
 
 
 class NHLAPIHandler:
@@ -98,7 +94,8 @@ class NHLAPIHandler:
         # ['nextStartDate', 'previousStartDate', 'gameWeek', 'oddsPartners', 'preSeasonStartDate', 'regularSeasonStartDate', 'regularSeasonEndDate', 'playoffEndDate', 'numberOfGames']
         return self.query_url(url)
 
-    def is_game_ongoing_now(self, include_pregames: bool = True, r_type: Literal["bool", "dict", "next_games"] = "bool") -> bool | dict:
+    def is_game_ongoing_now(self, include_pregames: bool = True,
+                            r_type: Literal["bool", "dict", "next_games"] = "bool") -> bool | dict:
         """Return True if a game is in the 'LIVE' state or optionally 'PRE' state NOW!"""
         valid = ["LIVE"] + ([] if not include_pregames else ["PRE"])
         now = datetime.datetime.now()
@@ -118,7 +115,8 @@ class NHLAPIHandler:
             return True if r_type == "bool" else gt
         return False if r_type == "bool" else (gt if r_type == "next_games" else {})
 
-    def are_games_going_on_today(self, include_finals: bool = True, r_type: Literal["bool", "dict", "next_games"] = "bool") -> bool | dict:
+    def are_games_going_on_today(self, include_finals: bool = True,
+                                 r_type: Literal["bool", "dict", "next_games"] = "bool") -> bool | dict:
         """Return True if a game is on the 'LIVE' state or optionally 'PRE' state NOW!"""
         valid = ["FUT", "PRE", "LIVE"]
         now = datetime.datetime.now()
@@ -177,7 +175,7 @@ class NHLAPIHandler:
 
 
 if __name__ == "__main__":
-	nhl_api = NHLAPIHandler()
+    nhl_api = NHLAPIHandler()
 
     today = datetime.datetime.today()
     # scores_today = nhl_api.get_score(today + datetime.timedelta(days=-1))

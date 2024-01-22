@@ -144,22 +144,25 @@ def show_results():
     lbl_2_np = tkinter.Label(frame_bottom_results_np, text=f"Bottom {top_n}")
     lbl_1_np.pack(side=tkinter.TOP)
     lbl_2_np.pack(side=tkinter.TOP)
-    sorted_teams_np = [(k, v["+"]) for k, v in history.items()]
-    sorted_teams_np.sort(key=lambda tup: tup[1])
+    sorted_teams_np_best = [(k, (v["+"], v["+"] + v["-"])) for k, v in history.items()]
+    sorted_teams_np_worst = [(k, (v["+"], v["+"] + v["-"])) for k, v in history.items()]
+    sorted_teams_np_best.sort(key=lambda tup: (tup[1][0], tup[1][1]))
+    sorted_teams_np_worst.sort(key=lambda tup: (-tup[1][1], tup[1][0]))
     # sorted_teams_pm = tie_break(sorted_teams_pm)
 
     # print(f"{history=}\n{sorted_teams_pm=}")
 
-    for team, np in sorted_teams_np[len(sorted_teams_np) - 1: len(sorted_teams_np) - (top_n + 1): -1]:
+    for team, np in sorted_teams_np_best[len(sorted_teams_np_best) - 1: len(sorted_teams_np_best) - (top_n + 1): -1]:
         # print(f"TOP5 {team=}, {np=}")
         f = tkinter.Frame(frame_top_results_np)
         btn = tkinter.Button(f, image=res_images[team])
-        lbl = tkinter.Label(f, text=f"{np}")
+        p, t = np
+        lbl = tkinter.Label(f, text=f"{p} / {t}")
         f.pack()
         btn.pack(side=tkinter.LEFT)
         lbl.pack(side=tkinter.RIGHT)
 
-    for team, np in sorted_teams_np[:top_n]:
+    for team, np in sorted_teams_np_worst[:top_n]:
         # print(f"BOT5 {team=}, {np=}")
         f = tkinter.Frame(frame_bottom_results_np)
         btn = tkinter.Button(f, image=res_images[team])
