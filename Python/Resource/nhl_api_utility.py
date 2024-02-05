@@ -1,7 +1,13 @@
+import json
+
 import requests
 import datetime
 from typing import Literal
 import pandas as pd
+
+import nhl_utility
+from json_utility import jsonify
+from nhl_utility import *
 
 #######################################################################################################################
 #######################################################################################################################
@@ -53,8 +59,35 @@ class NHLAPIHandler:
 
     HOST_NAME = f"https://api-web.nhle.com"
 
-    def __init__(self):
+    def __init__(self, max_query_hold_time=21600):
+        # default re-query time-out time = 6 Hours = 21600s
         self.history = {}
+        self.max_query_hold_time = max_query_hold_time
+        self.file_history = r"./nhl_api_utility_history.json"
+        self.now = datetime.datetime.now()
+        with open(self.file_history, "r") as f:
+            self.history = {k: [eval(v[0]), v[1]] for k, v in eval(json.load(f)).items()}
+
+        if not isinstance(self.history, dict):
+            raise ValueError(f"json format in the history file is not a valid dict")
+
+        self.reported_requerying = False
+        for url, url_data in self.history.items():
+            self.now = datetime.datetime.now()
+            time, result = url_data
+            # print(f"{time=}, {result=}")
+            # time = datetime.datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+            if (self.now - time).total_seconds() > self.max_query_hold_time:
+                # requery this url, it is too old
+                if not self.reported_requerying:
+                    print(f"Need to requery some resources because they are too old.")
+                    self.reported_requerying = True
+                result = self.query_url(url)
+                self.history[url] = (self.now, result)
+
+    def save_data(self):
+        with open(self.file_history, "w") as f:
+            json.dump(jsonify(self.history), f)
 
     def query_url(self, url, do_print=False, check_history=True) -> dict | None:
         if do_print:
@@ -62,18 +95,23 @@ class NHLAPIHandler:
 
         if check_history:
             if url in self.history:
-                return self.history[url]
+            # for url_, url_data in self.history.items():
+            #     if url == url_:
+                if not (self.now - self.history[url][0]).total_seconds() > self.max_query_hold_time:
+                    # self.history[url] = (self.now, self.query_url(url, do_print=False))
+                    return self.history[url][1]
 
+        now = datetime.datetime.now()
         response = requests.get(url)
         response.raise_for_status()  # raises exception when not a 2xx response
         if response.status_code != 204:
             ct = response.headers["Content-Type"].lower()
             if ct.startswith("application/json"):
-                self.history[url] = response.json()
+                self.history[url] = (now, response.json())
             elif ct.startswith("text/javascript"):
-                self.history[url] = eval(response.text.replace("jsonFeed(", "")[:-2])
+                self.history[url] = (now, eval(response.text.replace("jsonFeed(", "")[:-2]))
 
-        return self.history.get(url, None)
+        return self.history.get(url, None)[1]
 
     def get_calendar_schedule(self, date: datetime.date, do_print=False) -> dict | None:
         url = f"{NHLAPIHandler.HOST_NAME}/v1/schedule-calendar/{date:%Y-%m-%d}"
@@ -173,12 +211,21 @@ class NHLAPIHandler:
             print(f"{url=}")
         return self.query_url(url)
 
+    def get_team_roster(self, team_acr, season: str="20232024"):
+        # return requests.get(f"https://api-web.nhle.com/v1/roster/{team_acr}/{season}").json()
+        return self.query_url(f"{NHLAPIHandler.HOST_NAME}/v1/roster/{team_acr}/{season}")
+
+    def get_player_stats(self, player_id: str):
+        return self.query_url(f"{NHLAPIHandler.HOST_NAME}/v1/player/{player_id}/landing")
+
 
 def playoff_pool_sheet(
-        n_forwards: int = 7,
-        n_defence: int = 3
+        n_forward_boxes: int = 7,
+        n_defence_boxes: int = 3,
+        n_forwards_per_boxes: int = 6,
+        n_defence_per_boxes: int = 6
 ):
-    nhl_api = NHLAPIHandler()
+    nhl_api = NHLAPIHandler(max_query_hold_time=2*24*3600)
     today = datetime.datetime.today()
     standings_today = nhl_api.get_standings(today)
     print(f"{standings_today=}")
@@ -196,6 +243,7 @@ def playoff_pool_sheet(
     # w = '/stats/rest/en/skater/summary', h = 'http://api.nhle.com', t = '/stats/rest/en/leaders/skaters/goals', HOST_NAME = 'https://api-web.nhle.com'
 
     for standings_data_ in standings_today["standings"]:
+        # print(f"{standings_data_=}")
         conf_abbrev = standings_data_.get("conferenceAbbrev")
         conf_name = standings_data_.get("conferenceName")
         div_abbrev = standings_data_.get("divisionAbbrev")
@@ -329,49 +377,247 @@ def playoff_pool_sheet(
         if len(wc_west) == 2:
             break
 
-    print(f"\nTop East")
-    print(f"\nTop Atlantic:")
-    for team_data in top_atl:
-        print(f"{team_data['teamCommonName']['default']}")
-    print(f"\nTop Metropolitan:")
-    for team_data in top_met:
-        print(f"{team_data['teamCommonName']['default']}")
+    fmt_final_results = [
+        f"\nTop East",
+        f"\nTop Atlantic:",
+        top_atl,
+        f"\nTop Metropolitan:",
+        top_met,
+        f"\nWildcard East:",
+        wc_east,
+        f"\nTop West:",
+        f"\nTop Central:",
+        top_cen,
+        f"\nTop Pacific:",
+        top_pac,
+        f"\nWildcard West:",
+        wc_west
+    ]
 
-    print(f"\nWildcard East:")
-    for team_data in wc_east:
-        print(f"{team_data['teamCommonName']['default']}")
+    lpk_keys = ["div", "conf", "team_id", "position", "name", "number"]
+    list_of_players_and_keys = {}  # div, conf, teamid, position,
+    list_of_players_and_teams = {}
+    list_of_teams = {"E": [], "W": []}
+    list_id_pts_skaters = {"E": [], "W": []}
+    list_id_sv_pctg_goalies = {"E": [], "W": []}
+    team_div, team_conf, team_id, player_position, player_name, player_number = [None for _ in range(6)]
+    for line in fmt_final_results:
+        if isinstance(line, list):
+            for team_data in line:
+                if isinstance(team_data, dict):
+                    team_conf = team_data["conferenceAbbrev"]
+                    team_div = team_data["divisionAbbrev"]
+                    team_points = team_data["points"]
+                    mascot = team_data['teamCommonName']['default']
+                    nhl_util_k = nhl_utility.name_from_mascot(mascot)
+                    acronym = nhl_utility.team_attribute(nhl_util_k, "acr")
+                    roster = nhl_api.get_team_roster(acronym)
+                    print(f"\t{mascot}, {acronym}")
+                    for position, position_data in roster.items():
+                        print(f"\t\t{position=}")
+                        for player in position_data:
+                            player_id = player.get("id", "")
+                            if player_id:
+                                player_position = player.get("positionCode", "")
+                                player_number = player.get("sweaterNumber", "")
+                                player_name = player.get("firstName", {}).get("default", "") + " " + player.get("lastName", {}).get("default", "")
+                                stats = nhl_api.get_player_stats(player_id)
+                                team_id = stats["currentTeamId"]
+                                if team_id not in [t[0] for t in list_of_teams[team_conf]]:
+                                    list_of_teams[team_conf].append((team_id, acronym, team_points))
+                                if player_id not in list_of_players_and_teams:
+                                    list_of_players_and_teams[player_id] = acronym
+                                    list_of_players_and_keys[player_id] = {k: v for k, v in zip(lpk_keys, [team_div, team_conf, team_id, player_position, player_name, player_number])}
+                                if player_position == "G":
+                                    save_pctg = stats.get("featuredStats", {}).get("regularSeason", {}).get("subSeason", {}).get("points", 0)
+                                    list_id_sv_pctg_goalies[team_conf].append((stats["playerId"], save_pctg))
+                                else:
+                                    pts_this_season = stats.get("featuredStats", {}).get("regularSeason", {}).get("subSeason", {}).get("points", 0)
+                                    list_id_pts_skaters[team_conf].append((stats["playerId"], pts_this_season))
+                            else:
+                                stats = "N/A"
+                            team_data["stats"] = stats
+                            print("\t\t\t" + ", ".join([f"{k}: {v}" for k, v in zip(lpk_keys,
+                                            [team_div, team_conf, team_id, player_position, player_name, player_number])]))
+                            # print(f"\t\t\t{player=}")
+                            # print(f"\t\t\t\t{stats=}")
+                            # i = 14/0
 
-    print(f"\nTop West:")
-    print(f"\nTop Central:")
-    for team_data in top_cen:
-        print(f"{team_data['teamCommonName']['default']}")
-    print(f"\nTop Pacific:")
-    for team_data in top_pac:
-        print(f"{team_data['teamCommonName']['default']}")
+                    list_id_pts_skaters["E"].sort(key=lambda tup: tup[1], reverse=True)
+                    list_id_pts_skaters["W"].sort(key=lambda tup: tup[1], reverse=True)
 
-    print(f"\nWildcard West:")
-    for team_data in wc_west:
-        print(f"{team_data['teamCommonName']['default']}")
+                    # print(f"\t\t{roster=}")
+        else:
+            print(line)
 
-    print(f"{nhl_api.get_schedule(today)}")
+    list_of_teams["E"].sort(key=lambda tup: tup[2], reverse=True)
+    list_of_teams["W"].sort(key=lambda tup: tup[2], reverse=True)
+    print(f"{list_of_teams=}")
+
+    top_players_on_team = {}
+    for conf, conf_data in list_id_pts_skaters.items():
+        for player_id, pts in conf_data:
+            player_team = list_of_players_and_teams[player_id]
+            if player_team not in top_players_on_team:
+                top_players_on_team[player_team] = []
+            p_div, p_conf, p_team, p_pos, p_name, p_num = list_of_players_and_keys[player_id].values()
+            top_players_on_team[player_team].append(list_of_players_and_keys[player_id].values())
+            print(f"{pts=}, {player_id=}, {player_team=}, {p_div=}, {p_conf=}, {p_team=}, {p_pos=}, {p_name=}, {p_num=}")
+
+    # box_num = 0
+    pool_sheet_boxes = {"E": {"F": [], "D": [], "T": []}, "W": {"F": [], "D": [], "T": []}}
+    pool_sheet_team_counts = {"F": {}, "D": {}, "T": {}}
+    for t in list_of_teams["E"] + list_of_teams["W"]:
+        team_id, team_acr, team_pts = t
+        for k in pool_sheet_team_counts:
+            pool_sheet_team_counts[k][team_acr] = 0
+    max_same_team_per_box = 4
+    for conf in ["E", "W"]:
+        for i in range(n_forward_boxes):
+            team_picks_per_box = {}
+            box = []
+            for j in range(n_forwards_per_boxes):
+                k = 0
+                chx_player_id, chx_player_pts, chx_player_team = None, None, None
+                # lens = {t: len(t) for t in pool_sheet_team_counts["F"]}
+
+                while k < len(list_id_pts_skaters[conf]):
+                    chx_player_id, chx_player_pts = list_id_pts_skaters[conf][k]
+                    chx_player_team = list_of_players_and_teams[chx_player_id]
+                    chx_player_pos = list_of_players_and_keys[chx_player_id]["position"]
+                    if chx_player_pos in ("C", "L", "R"):
+                        w_lens = {t: len(t) for t in pool_sheet_team_counts["F"]}
+                        if w_lens.get(chx_player_team, None) is None:
+                            w_lens[chx_player_team] = 0
+                        w_lens[chx_player_team] += 1
+                        if abs(min(w_lens.values()) - max(w_lens.values())) <= 1:
+                            # begin selecting
+                            if chx_player_team not in team_picks_per_box:
+                                team_picks_per_box[chx_player_team] = 0
+                            if team_picks_per_box[chx_player_team] <= max_same_team_per_box:
+                                team_picks_per_box[chx_player_team] += 1
+                                del list_id_pts_skaters[conf][k]
+                                break
+                    k += 1
+
+                box.append((chx_player_id, chx_player_pts, chx_player_team))
+                if chx_player_team not in pool_sheet_team_counts["F"]:
+                    pool_sheet_team_counts["F"][chx_player_team] = 0
+                pool_sheet_team_counts["F"][chx_player_team] += 1
+            pool_sheet_boxes[conf]["F"].append(box)
+
+        for i in range(n_defence_boxes):
+            team_picks_per_box = {}
+            box = []
+            for j in range(n_defence_per_boxes):
+                k = 0
+                chx_player_id, chx_player_pts, chx_player_team = None, None, None
+                while k < len(list_id_pts_skaters[conf]):
+                    chx_player_id, chx_player_pts = list_id_pts_skaters[conf][k]
+                    chx_player_team = list_of_players_and_teams[chx_player_id]
+                    chx_player_pos = list_of_players_and_keys[chx_player_id]["position"]
+                    if chx_player_pos == "D":
+                        w_lens = {t: len(t) for t in pool_sheet_team_counts["F"]}
+                        if w_lens.get(chx_player_team, None) is None:
+                            w_lens[chx_player_team] = 0
+                        w_lens[chx_player_team] += 1
+                        if abs(min(w_lens.values()) - max(w_lens.values())) <= 1:
+                            # begin selecting
+                            if chx_player_team not in team_picks_per_box:
+                                team_picks_per_box[chx_player_team] = 0
+                            if team_picks_per_box[chx_player_team] <= max_same_team_per_box:
+                                team_picks_per_box[chx_player_team] += 1
+                                del list_id_pts_skaters[conf][k]
+                                break
+                    k += 1
+
+                box.append((chx_player_id, chx_player_pts, chx_player_team))
+                if chx_player_team not in pool_sheet_team_counts["D"]:
+                    pool_sheet_team_counts["D"][chx_player_team] = 0
+                pool_sheet_team_counts["D"][chx_player_team] += 1
+            pool_sheet_boxes[conf]["D"].append(box)
+
+        for team_data in list_of_teams[conf]:
+            team_id, team_acr, team_pts = team_data
+            pool_sheet_boxes[conf]["T"].append((team_id, team_pts, team_acr))
+            if team_acr not in pool_sheet_team_counts["T"]:
+                pool_sheet_team_counts["T"][team_acr] = 0
+            pool_sheet_team_counts["T"][team_acr] += 1
+
+    print(f"{pool_sheet_boxes=}")
+    print(f"{pool_sheet_team_counts=}")
+    print(f"{list_id_pts_skaters=}")
+    for conf, team_data in list_of_teams.items():
+        print(f"{conf=}")
+        for team_dat in team_data:
+            print(f"\t{team_dat=}")
+
+    # save queries to json output for quicker access on re-run
+    nhl_api.save_data()
+
+
+    # print(f"\nTop East")
+    # print(f"\nTop Atlantic:")
+    # for team_data in top_atl:
+    #     mascot = team_data['teamCommonName']['default']
+    #     nhl_util_k = nhl_utility.name_from_mascot(mascot)
+    #     acronym = nhl_utility.team_attribute(nhl_util_k, "acr")
+    #     print(f"{mascot}, {acronym}")
+    # print(f"\nTop Metropolitan:")
+    # for team_data in top_met:
+    #     mascot = team_data['teamCommonName']['default']
+    #     nhl_util_k = nhl_utility.name_from_mascot(mascot)
+    #     acronym = nhl_utility.team_attribute(nhl_util_k, "acr")
+    #     print(f"{mascot}, {acronym}")
+    #
+    # print(f"\nWildcard East:")
+    # for team_data in wc_east:
+    #     mascot = team_data['teamCommonName']['default']
+    #     nhl_util_k = nhl_utility.name_from_mascot(mascot)
+    #     acronym = nhl_utility.team_attribute(nhl_util_k, "acr")
+    #     print(f"{mascot}, {acronym}")
+    #
+    # print(f"\nTop West:")
+    # print(f"\nTop Central:")
+    # for team_data in top_cen:
+    #     mascot = team_data['teamCommonName']['default']
+    #     nhl_util_k = nhl_utility.name_from_mascot(mascot)
+    #     acronym = nhl_utility.team_attribute(nhl_util_k, "acr")
+    #     print(f"{mascot}, {acronym}")
+    # print(f"\nTop Pacific:")
+    # for team_data in top_pac:
+    #     mascot = team_data['teamCommonName']['default']
+    #     nhl_util_k = nhl_utility.name_from_mascot(mascot)
+    #     acronym = nhl_utility.team_attribute(nhl_util_k, "acr")
+    #     print(f"{mascot}, {acronym}")
+    #
+    # print(f"\nWildcard West:")
+    # for team_data in wc_west:
+    #     mascot = team_data['teamCommonName']['default']
+    #     nhl_util_k = nhl_utility.name_from_mascot(mascot)
+    #     acronym = nhl_utility.team_attribute(nhl_util_k, "acr")
+    #     print(f"{mascot}, {acronym}")
+
+    # print(f"{nhl_api.get_schedule(today)}")
+
 
 
 if __name__ == "__main__":
-    nhl_api = NHLAPIHandler()
+    # nhl_api = NHLAPIHandler()
 
-    today = datetime.datetime.today()
-    # scores_today = nhl_api.get_score(today + datetime.timedelta(days=-1))
-    scores_today = nhl_api.is_game_ongoing_now(r_type="next_games")  # fetches the newest data
-
-    # scores_today = nhl_api.get_score(today)
-
-    print(f"{type(scores_today)=} {scores_today=}")
-
-    df_scores_today_gameWeek = pd.DataFrame(scores_today.get("gameWeek", {}))
-    df_scores_today_oddsPartners = pd.DataFrame(scores_today.get("oddsPartners", {}))
-    scores_today_dict = scores_today.get("games", [])
-    df_scores_today_games = pd.DataFrame(scores_today_dict)
-
-    print(f"{nhl_api.get_standings(today)=}")
+    # today = datetime.datetime.today()
+    # # scores_today = nhl_api.get_score(today + datetime.timedelta(days=-1))
+    # scores_today = nhl_api.is_game_ongoing_now(r_type="next_games")  # fetches the newest data
+    #
+    # # scores_today = nhl_api.get_score(today)
+    #
+    # print(f"{type(scores_today)=} {scores_today=}")
+    #
+    # df_scores_today_gameWeek = pd.DataFrame(scores_today.get("gameWeek", {}))
+    # df_scores_today_oddsPartners = pd.DataFrame(scores_today.get("oddsPartners", {}))
+    # scores_today_dict = scores_today.get("games", [])
+    # df_scores_today_games = pd.DataFrame(scores_today_dict)
+    #
+    # print(f"{nhl_api.get_standings(today)=}")
 
     playoff_pool_sheet()
