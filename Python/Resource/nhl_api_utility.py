@@ -225,7 +225,7 @@ def playoff_pool_sheet(
         n_forwards_per_boxes: int = 6,
         n_defence_per_boxes: int = 6
 ):
-    nhl_api = NHLAPIHandler(max_query_hold_time=2*24*3600)
+    nhl_api = NHLAPIHandler(max_query_hold_time=1*24*3600)
     today = datetime.datetime.today()
     standings_today = nhl_api.get_standings(today)
     print(f"{standings_today=}")
