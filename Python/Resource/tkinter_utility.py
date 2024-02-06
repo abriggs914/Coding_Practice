@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.65
-    Date...........2024-01-17
+    Version..............1.66
+    Date...........2024-01-31
     Author(s)....Avery Briggs
     """
 
@@ -38,7 +38,7 @@ def VERSION_NUMBER():
 
 def VERSION_DATE():
     return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(),
-                                      "%Y-%m-%dictionary")
+                                      "%Y-%m-%d")
 
 
 def VERSION_AUTHORS():
@@ -2274,7 +2274,7 @@ class MultiComboBox(tkinter.Frame):
         self.rg_var, self.rg_tv_var, self.rg_btns = radio_factory(self.frame_middle,
                                                                   buttons=self.radio_btn_texts, default_value=0)
         self.rg_var.trace_variable("w", self.update_radio_group)
-        self.res_tv_entry.trace_variable("w", self.update_entry)
+        self.trace_res_tv_entry = self.res_tv_entry.trace_variable("w", self.update_entry)
         self.typed_in = tkinter.BooleanVar(self, value=False)
 
         self.res_entry = tkinter.Entry(self.frame_top_most, textvariable=self.res_tv_entry, justify="center")
@@ -2474,15 +2474,30 @@ class MultiComboBox(tkinter.Frame):
         self.update_treeview()
 
     def add_new_item(self, val, col, rest_values=None, rest_tags=None):
+        # TODO support multiple values to be passed in iterable or dictionary fashion.
+
+        cn = self.tree_controller.viewable_column_names
+
+        idx = cn.index(col)
+        if (typ := type(val)) == dict:
+            val_keys = set(val.keys())
+            set_cn = set(cn)
+            if val_keys.difference(set_cn):
+                # the dictionary 'val' has unknown column names.
+                raise KeyError(f"param 'val' has unknown column names.")
+
+        elif typ in (list, tuple):
+            if len(val) > len(cn):
+                # the list or tuple has too many positional values to insert
+                raise ValueError(f"param 'val' has too many values.")
+
         if val in self.invalid_inp_codes:
             self.throw_fit(val)
-        cn = self.tree_controller.viewable_column_names
         print(f"{col=}")
         # idx = col
         # col = cn[col]
         # col = cn[0] if col == 0 else col
         tags = set()
-        idx = cn.index(col)
         i = self.data.shape[0]
         # print(f"{type(rest_values)=}\n{rest_values=}")
         if not self.limit_to_list:
@@ -2493,8 +2508,8 @@ class MultiComboBox(tkinter.Frame):
                 is_list = False
                 if (is_list := isinstance(rest_tags, (tuple, list))) or (is_dict := isinstance(rest_tags, dict)):
                     if is_dict:
-                        for j, col in enumerate(cn):
-                            tags.add(rest_tags.get(col, self.tree_controller.gen_row_tag(i)))
+                        for j, col_ in enumerate(cn):
+                            tags.add(rest_tags.get(col_, self.tree_controller.gen_row_tag(i)))
                     else:
                         if (l_rt := len(rest_tags)) != (l_cn := len(cn)):
                             if l_rt > l_cn:
@@ -2582,11 +2597,141 @@ class MultiComboBox(tkinter.Frame):
             elif len(self.tree_controller.viewable_column_names) == 1:
                 return
             else:
-                raise ValueError("Cannot insert into this combobox")
+                raise ValueError("Cannot insert into this combobox.")
         else:
-            raise ValueError("Cannot insert into this combobox")
+            raise ValueError("Cannot insert into this combobox, 'limit_to_list' is True.")
 
         print(f"{tags=}")
+
+    # def add_new_item(self, val, col, rest_values=None, rest_tags=None):
+    #     # TODO support multiple values to be passed in iterable or dictionary fashion.
+    #
+    #     cn = self.tree_controller.viewable_column_names
+    #
+    #     idx = cn.index(col)
+    #     if (typ := type(val)) == dict:
+    #         val_keys = set(val.keys())
+    #         set_cn = set(cn)
+    #         if val_keys.difference(set_cn):
+    #             # the dictionary 'val' has unknown column names.
+    #             raise KeyError(f"param 'val' has unknown column names.")
+    #
+    #     elif typ in (list, tuple):
+    #         if len(val) > len(cn):
+    #             # the list or tuple has too many positional values to insert
+    #             raise ValueError(f"param 'val' has too many values.")
+    #
+    #     if val in self.invalid_inp_codes:
+    #         self.throw_fit(val)
+    #     print(f"{col=}")
+    #     # idx = col
+    #     # col = cn[col]
+    #     # col = cn[0] if col == 0 else col
+    #     tags = set()
+    #     i = self.data.shape[0]
+    #     # print(f"{type(rest_values)=}\n{rest_values=}")
+    #     if not self.limit_to_list:
+    #         if rest_values and (
+    #                 isinstance(rest_values, (tuple, list, dict))):
+    #
+    #             is_dict = False
+    #             is_list = False
+    #             if (is_list := isinstance(rest_tags, (tuple, list))) or (is_dict := isinstance(rest_tags, dict)):
+    #                 if is_dict:
+    #                     for j, col_ in enumerate(cn):
+    #                         tags.add(rest_tags.get(col_, self.tree_controller.gen_row_tag(i)))
+    #                 else:
+    #                     if (l_rt := len(rest_tags)) != (l_cn := len(cn)):
+    #                         if l_rt > l_cn:
+    #                             raise ValueError(
+    #                                 f"Error, too many tags were passed for this table. Got {l_rt}, expected {l_cn}")
+    #                         else:
+    #                             raise ValueError(
+    #                                 f"Error, too few tags were passed for this table. Got {l_rt}, expected {l_cn}")
+    #                     else:
+    #                         [tags.add(tag) for tag in rest_tags]
+    #             else:
+    #                 tags = [self.tree_controller.gen_cell_tag(i, j) for j in range(len(cn))]
+    #
+    #             if isinstance(rest_values, list) or isinstance(rest_values, tuple):
+    #                 row = list(rest_values)
+    #                 row.insert(idx, val)
+    #                 self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
+    #                 # print(f"\nB\t{self.data=}").0
+    #                 self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row, tags=tuple(tags))
+    #                 # self.res_entry.config(foreground="black")
+    #             else:
+    #                 row = dict(rest_values)
+    #                 row.update({col: val})
+    #                 print(f"\n\trow:\n{row}\n\n\tcn\n{cn}\n>")
+    #                 # self.data = self.data.append(pandas.DataFrame(row))
+    #                 print(f"A\n\tData\n{self.data}\n{type(self.data)=}")
+    #                 print(f"\n\tcols\n{self.data.columns}")
+    #                 # print(f"DF 2:{pandas.DataFrame(row)}")
+    #                 df1 = pandas.DataFrame([row], columns=list(row.keys()))
+    #                 print(f"DF 1:{df1}\n{type(df1)=}")
+    #                 # self.data = self.data.append(pandas.DataFrame([row], columns=row.keys()), ignore_index=True)
+    #                 # self.data = self.data.append(df1, ignore_index=True)
+    #                 self.data = pd.concat([self.data, df1], ignore_index=True)
+    #                 print(f"B\n\tData\n{self.data}\n{type(self.data)=}")
+    #                 # self.data = self.data.append(pandas.DataFrame(row))
+    #
+    #                 row_vals = [row.get(c, self.default_null_char) for c in cn]
+    #                 cdvd = {k: [v] for k, v in zip(cn, row)}.values()
+    #                 print(f"{row_vals=}")
+    #                 print(f"{cn=}, {row=}")
+    #                 print(f"{cdvd=}")
+    #                 print(f"{list({k: [v] for k, v in zip(cn, row)}.values())=}")
+    #
+    #                 # self.tree_treeview.insert("", "end", iid=i, text=str(i + 1),
+    #                 #                           values=list({k: [v] for k, v in zip(cn, row)}.values()))
+    #
+    #                 self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=row_vals, tags=tuple(tags))
+    #
+    #         elif self.allow_insert_ask and not self.p_allow_insert_ask:
+    #             # prevents situations where an item can be inserted by typing. Will accept if and only if its column values are passed with it.
+    #             print(
+    #                 f"Combobox is not limited to list contents, however, it is alos not allowed to ask for new values. You must pass default values.")
+    #         elif self.allow_insert_ask:
+    #             ans = tkinter.messagebox.askyesnocancel("Create New Item",
+    #                                                     message=f"Create a new combo box cell_is_entry with '{val}' in column '{col}' position?")
+    #             row = []
+    #             if ans == tkinter.YES:
+    #                 tags = (self.tree_controller.gen_row_tag(i),)
+    #                 # print(f"SELECTING {i=}")
+    #                 column_names = self.tree_controller.viewable_column_names
+    #                 for column in column_names:
+    #                     if col != column:
+    #                         if column in self.new_entry_defaults:
+    #                             row.append(self.new_entry_defaults[column])
+    #                         else:
+    #                             ask_value = self.ask_value(column)
+    #                             if ask_value in self.invalid_inp_codes:
+    #                                 self.throw_fit(ask_value)
+    #                             else:
+    #                                 row.append(ask_value)
+    #                     else:
+    #                         row.append(val)
+    #
+    #                 # row = [(self.new_entry_defaults[col] if col in self.new_entry_defaults else self.ask_value(col)) for col in column_names]
+    #                 # print(f"\nA\t{self.data=}")
+    #                 # print(f"{pandas.DataFrame({k: [v] for k, v in zip(cn, row)})}")
+    #                 # self.data = self.data.append(pandas.DataFrame({k: [v] for k, v in zip(cn, row)}), ignore_index=True)
+    #                 self.data = pd.concat([self.data, (pandas.DataFrame({k: [v] for k, v in zip(cn, row)}))],
+    #                                       ignore_index=True)
+    #                 # print(f"\nB\t{self.data=}")
+    #                 self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=list(row), tags=tuple(tags))
+    #                 self.res_entry.config(foreground="black")
+    #             else:
+    #                 self.res_entry.config(foreground="red")
+    #         elif len(self.tree_controller.viewable_column_names) == 1:
+    #             return
+    #         else:
+    #             raise ValueError("Cannot insert into this combobox")
+    #     else:
+    #         raise ValueError("Cannot insert into this combobox")
+    #
+    #     print(f"{tags=}")
 
     def throw_fit(self, code):
         raise ValueError(f"You cannot use code='{code}'. It is a keyword.")
@@ -3740,7 +3885,7 @@ def calc_geometry_tl(
         x_, y_, width_, height_ = dims
 
     t_width, t_height = width_, height_
-    
+
     if height is None:
         height = width
 
@@ -3752,38 +3897,48 @@ def calc_geometry_tl(
         assert 0 < width <= 1, "Error, if param 'width' is a float, it must be between 0 and 1."
         width = int(width * width_)
 
-    if width == height == "zoomed":
-        return width
-    else:
-        if width == "zoomed":
+    p_a = width == "zoomed"
+    p_b = height == "zoomed"
+    if p_a or p_b:
+        print(f"A, {p_a=}, {p_b=}")
+
+        if p_a:
+            height_o = height_ if p_b else height
             x_ = 0
-            height_c = clamp(1, height, height_)
+            height_c = clamp(1, height_o, height_)
             y_ = (height_ - height_c) // 2
-            height_ = height
-        elif height == "zoomed":
+            height_ = height_c
+
+        if p_b:
+            width_o = width_ if p_a else width
             y_ = 0
-            width_c = clamp(1, width, width_)
+            width_c = clamp(1, width_o, width_)
             x_ = (width_ - width_c) // 2
-            width_ = width
-        else:
-            width_c = clamp(1, width, width_)
-            height_c = clamp(1, height, height_)
-            x = (width_ - width_c) // 2
-            y = (height_ - height_c) // 2
-            x_, y_, width_, height_ = x, y, width_c, height_c
+            width_ = width_c
+    else:
+        print(f"B")
+        width_c = clamp(1, width, width_)
+        height_c = clamp(1, height, height_)
+        x = (width_ - width_c) // 2
+        y = (height_ - height_c) // 2
+        x_, y_, width_, height_ = x, y, width_c, height_c
 
-        x_ += x_off
-        y_ += y_off
+    x_ += x_off
+    y_ += y_off
 
+    if width == height == "zoomed":
+        res = "zoomed"
+    else:
         res = f"{width_}x{height_}+{x_}+{y_}"
-        print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f" geo=({res})")
-        if rtype == str:
-            return res
-        elif rtype == dict:
-            return {"x": x_, "y": y_, "width": width_, "height": height_, "x1": x_, "y1": y_, "x2": x_ + width_,
-                    "y2": y_ + height_, "str": res, str: res, "geometry": res, str: res, "res": res, str: res}
-        else:
-            return [x_, y_, width_, height_]
+
+    print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f" geo=({res})")
+    if rtype == str:
+        return res
+    elif rtype == dict:
+        return {"x": x_, "y": y_, "width": width_, "height": height_, "x1": x_, "y1": y_, "x2": x_ + width_,
+                "y2": y_ + height_, "str": res, str: res, "geometry": res, str: res, "res": res, str: res}
+    else:
+        return [x_, y_, width_, height_]
 
 
 def auto_font(font, text, c_width, c_height, min_font_size=4, max_font_size=300):
