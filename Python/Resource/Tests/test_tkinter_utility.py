@@ -1,5 +1,7 @@
 import random
 
+import pandas as pd
+
 from tkinter_utility import *
 
 
@@ -644,28 +646,80 @@ def test_multi_combo_factory():
     WIN.geometry(f"800x800")
     WIN.title("Select Start Date")
 
-    data = pandas.DataFrame({
+    data = pd.DataFrame({
         "ColA": list(range(5)),
         "ColB": list(range(6, 11)),
         "ColC": list(range(11, 16)),
         "ColD": list(range(16, 21))
     })
 
+    data2 = pd.DataFrame({
+        "ColA": ["A1", "A2"],
+        "ColB": ["B1", "B2"],
+        "ColC": ["C1", "C2"],
+        "ColD": ["D1", "D2"]
+    })
+
+    data3 = pd.DataFrame({
+        "ColE": ["E1", "E2"]
+    })
+
+    data5 = pd.DataFrame({
+        "Animal": ["dog", "fish", "cat", "whale", "snake", "bird", "flying fish"],
+        "Num Legs": [4, 0, 4, 0, 0, 2, 0],
+        "Can Fly": [False, False, False, False, False, True, True],
+        "Lives Underwater": [False, True, False, True, False, False, True]
+    })
+
+    data4 = pd.DataFrame(columns=["ColA", "ColB", "ColC", "ColD"])
+    data4["ColA"] = range(4)
+
     print(f"{data.to_html()=}")
 
-    mc = MultiComboBox(
+    # mc1 = MultiComboBox(
+    #     WIN,
+    #     data,
+    #     limit_to_list=False
+    # )
+    #
+    # mc2 = MultiComboBox(
+    #     WIN,
+    #     data,
+    #     limit_to_list=False
+    # )
+
+    mc3 = MultiComboBox(
         WIN,
-        data,
-        limit_to_list=False
+        data4,
+        limit_to_list=False,
+        nan_repr=""
     )
 
-    def dd():
-        print(f"\n\nAbout to delete:\n")
-        mc.delete_item(value=14)
+    # mc4 = MultiComboBox(
+    #     WIN,
+    #     data5,
+    #     limit_to_list=False,
+    #     allow_insert_ask=True,
+    #     viewable_column_names={"Num Legs": "# Legs", "Lives Underwater": "Aquatic"},
+    #     nan_repr=""
+    # )
+    #
+    # def dd():
+    #     # print(f"\n\nAbout to delete:\n")
+    #     print(f"\n\nAbout to INSERT:\n")
+    #     # mc4.delete_item(value=14)
+    #     mc4.add_new_item(val="NEW ITEM HERE", col="Animal")
+    # #
+    #
+    # WIN.after(5000, dd)
+    # mc1.add_new_item(val=1001, col="ColA", rest_values=[-1, False, "0"])
+    # mc1.add_new_item(val=1002, col="ColA", rest_values={"ColB": -4, "ColC": True, "ColD": "9"})
+    # mc1.add_new_item(val=7, rest_values={"ColB": 13, "ColC": 18, "ColD": 23})
+    # # WIN.after(5000, dd)
+    #
+    # mc2.add_new_item(data2)
+    # # mc2.add_new_item(data3)
 
-    mc.add_new_item(val=1000, col="ColA", rest_values=[-1, False, "0"])
-    mc.add_new_item(val=1000, col="ColA", rest_values={"ColB": -1, "ColC": False, "ColD": "0"})
-    WIN.after(5000, dd)
     # mc.delete_item(value=14)
     # mc.delete_item(iid=0)
 
