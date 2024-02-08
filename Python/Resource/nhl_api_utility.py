@@ -537,14 +537,30 @@ def playoff_pool_sheet(
                 pool_sheet_team_counts["D"][chx_player_team] += 1
             pool_sheet_boxes[conf]["D"].append(box)
 
-        for team_data in list_of_teams[conf]:
-            team_id, team_acr, team_pts = team_data
-            pool_sheet_boxes[conf]["T"].append((team_id, team_pts, team_acr))
-            if team_acr not in pool_sheet_team_counts["T"]:
-                pool_sheet_team_counts["T"][team_acr] = 0
-            pool_sheet_team_counts["T"][team_acr] += 1
+        for i in range(2):
+            box = []
+            for team_data in list_of_teams[conf]:
+                team_id, team_acr, team_pts = team_data
+                box.append((team_id, team_pts, team_acr))
+                if team_acr not in pool_sheet_team_counts["T"]:
+                    pool_sheet_team_counts["T"][team_acr] = 0
+                pool_sheet_team_counts["T"][team_acr] += 1
+            pool_sheet_boxes[conf]["T"].append(box)
 
-    print(f"{pool_sheet_boxes=}")
+    print(f"pool_sheet_boxes")
+    for conf, position_boxes in pool_sheet_boxes.items():
+        print(f"\tConference: '{conf}'")
+        for position, boxes in position_boxes.items():
+            print(f"\t\tPosition: '{position}'")
+            for i, box in enumerate(boxes):
+                print(f"\t\t\tBox {i+1}")
+                if position != "T":
+                    for player_id, player_pts, player_team in box:
+                        p_name = list_of_players_and_keys[player_id]["name"]
+                        print(f"\t\t\t\t{player_pts=}, {player_id=}, {player_team}, {p_name}")
+                else:
+                    for team_id, team_pts, team_team in box:
+                        print(f"\t\t\t\t{team_pts=}, {team_id=}, {team_team}")
     print(f"{pool_sheet_team_counts=}")
     print(f"{list_id_pts_skaters=}")
     for conf, team_data in list_of_teams.items():
