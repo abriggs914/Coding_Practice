@@ -1,3 +1,5 @@
+import datetime
+
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 from reportlab.graphics.shapes import String
@@ -184,4 +186,74 @@ if __name__ == '__main__':
         generate_pdf(data, title)
 
 
-    test_3()
+    def my_version_1():
+        def generate_pdf(data, title):
+            now = datetime.datetime.now()
+            # Create a PDF canvas
+            canvas = Canvas(f"output_{now:%Y-%m-%d_%H%M%S}.pdf", pagesize=letter)
+
+            # Define the size of the checkbox
+            checkbox_size = 10
+
+            # Define the position of the title
+            title_x = 50
+            title_y = 750
+
+            # Define the starting position of the table
+            table_x = 50
+            table_y = 700
+
+            # Define the row and column sizes
+            row_height = 20
+            col_width = 100
+
+            # Draw the title
+            styles = getSampleStyleSheet()
+            title_text = Paragraph(title, styles["Title"])
+            title_text.wrapOn(canvas, 400, 20)
+            title_text.drawOn(canvas, title_x, title_y)
+
+            box_row_max = {"p": 6, "t": 8}
+            box_row_count = {"p": 0, "t": 0}
+
+            # rows 0, 1, 2, 4, 5, 6 are 'player' rows and only have 6 rows max
+            # rows 3 and 7 are player and 'team' rows, and need 8 rows in just the team cells
+
+            # Draw the checkboxes and text
+            for i, item in enumerate(data):
+                row_key = "t" if i in (3, 7) else "p"
+                col = i % 4
+                row = i // 4
+                x = table_x + col * col_width
+                y = table_y - row * row_height
+                canvas.drawString(x + checkbox_size + 5, y, item)
+                canvas.rect(x, y - checkbox_size / 2, checkbox_size, checkbox_size, stroke=1, fill=0)
+                box_row_count[row_key] += 1
+                box_row_count[row_key] %= box_row_max[row_key]
+                print(f"{row_key=}, {box_row_count=}")
+
+            # Save the PDF
+            canvas.save()
+
+        # Example data and title
+        data = ["Item 1", "Item 2", "Item 3", "Item 4",
+                "Item 5", "Item 6", "Item 7", "Item 8",
+                "Item 9", "Item 10", "Item 11", "Item 12",
+                "Item 13", "Item 14", "Item 15", "Item 16",
+                "Item 17", "Item 18", "Item 19", "Item 20",
+                "Item 21", "Item 22", "Item 23", "Item 24",
+                "Item 25", "Item 26", "Item 27", "Item 28",
+                "Item 29", "Item 30", "Item 31", "Item 32",
+                "Item 33", "Item 34", "Item 35", "Item 36",
+                "Item 37", "Item 38", "Item 39", "Item 40",
+                "Item 41", "Item 42", "Item 43", "Item 44",
+                "Item 45", "Item 46", "Item 47", "Item 48"]
+
+        title = "Sample PDF"
+
+        # Generate the PDF
+        generate_pdf(data, title)
+
+
+    # test_3()
+    my_version_1()

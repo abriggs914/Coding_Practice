@@ -107,7 +107,7 @@ def name_from_mascot(mascot: str) -> str:
     if not l_masc:
         raise ValueError(f"mascot param must not be empty.")
     for div in [atlantic, metropolitan, central, pacific]:
-        for k, dat in div.items():
+        for k, dat in div.items( ):
             if l_masc == dat.get("mascot", "").lower():
                 return k
     raise ValueError(f"mascot '{mascot}' could not be found")

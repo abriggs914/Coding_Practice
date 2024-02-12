@@ -65,13 +65,19 @@ class NHLAPIHandler:
         self.max_query_hold_time = max_query_hold_time
         self.file_history = r"./nhl_api_utility_history.json"
         self.now = datetime.datetime.now()
+        print(f"Loading Data:", end="")
         with open(self.file_history, "r") as f:
             self.history = {k: [eval(v[0]), v[1]] for k, v in eval(json.load(f)).items()}
 
         if not isinstance(self.history, dict):
             raise ValueError(f"json format in the history file is not a valid dict")
 
+        TOL = 1e-6
         self.reported_requerying = False
+        self.number_queries = [0, len(self.history)]
+        self.number_queries.append(100.0 / self.number_queries[1])  # dots per query
+        # print(f"{self.number_queries=}")
+        print(f" # Queries: {self.number_queries[1]}")
         for url, url_data in self.history.items():
             self.now = datetime.datetime.now()
             time, result = url_data
@@ -84,6 +90,10 @@ class NHLAPIHandler:
                     self.reported_requerying = True
                 result = self.query_url(url)
                 self.history[url] = (self.now, result)
+            self.number_queries[0] += self.number_queries[2]
+            if (self.number_queries[0] + TOL) <= 1:
+                self.number_queries[0] = 0
+                print(f".", end="")
 
     def save_data(self):
         with open(self.file_history, "w") as f:
