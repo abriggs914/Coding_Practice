@@ -9,7 +9,7 @@ from reportlab.pdfgen.canvas import Canvas
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 
-
+import nhl_api_utility
 
 if __name__ == '__main__':
 
@@ -188,6 +188,8 @@ if __name__ == '__main__':
 
     def my_version_1():
         def generate_pdf(data, title):
+
+            canvas_width, canvas_height = 600,  800
             now = datetime.datetime.now()
             # Create a PDF canvas
             canvas = Canvas(f"output_{now:%Y-%m-%d_%H%M%S}.pdf", pagesize=letter)
@@ -210,7 +212,7 @@ if __name__ == '__main__':
             # Draw the title
             styles = getSampleStyleSheet()
             title_text = Paragraph(title, styles["Title"])
-            title_text.wrapOn(canvas, 400, 20)
+            title_text.wrapOn(canvas, canvas_width, 20)
             title_text.drawOn(canvas, title_x, title_y)
 
             box_row_max = {"p": 6, "t": 8}
@@ -252,7 +254,9 @@ if __name__ == '__main__':
         title = "Sample PDF"
 
         # Generate the PDF
-        generate_pdf(data, title)
+        # generate_pdf(data, title)
+
+        nhl_api_utility.playoff_pool_sheet_view_only()
 
 
     # test_3()
