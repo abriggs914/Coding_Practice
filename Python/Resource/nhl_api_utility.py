@@ -78,11 +78,18 @@ class NHLAPIHandler:
         self.number_queries = [0, len(self.history)]
         self.number_queries.append(100.0 / self.number_queries[1])  # dots per query
         self.first_query_time = self.now
+        self.n_requeries = []
+        for url, url_data in self.history.items():
+            time, result = url_data
+            if (self.now - time).total_seconds() > self.max_query_hold_time:
+                self.n_requeries.append(url)
         # print(f"{self.number_queries=}")
         if not self.view_only:
-            print(f" # Queries:")
+            print(f" # Queries: {self.number_queries[1]}")
             query_times = [[None, None]] * 2
-            for url, url_data in self.history.items():
+            # for url, url_data in self.history.items():
+            for url in self.n_requeries:
+                url_data = self.history[url]
                 self.now = datetime.datetime.now()
                 time, result = url_data
                 # print(f"{time=}, {result=}")
@@ -90,7 +97,7 @@ class NHLAPIHandler:
                 if (self.now - time).total_seconds() > self.max_query_hold_time:
                     # requery this url, it is too old
                     if not self.reported_requerying:
-                        print(f"Need to requery some resources because they are too old.")
+                        print(f"Need to requery {len(self.n_requeries)} resource(s) because they are too old.")
                         print(("|iiiiliiii" * 10) + "|")
                         print(f".", end="")  # this is 0
                         self.reported_requerying = True
@@ -119,21 +126,21 @@ class NHLAPIHandler:
             tqt = f"{self.total_query_time:,.2f}"
             if self.reported_requerying:
                 tpq = f"{self.total_query_time / self.number_queries[1]:,.2f}"
-                print(f"Total Query Time:\n\t{tqt} seconds\n\t{self.number_queries[1]} queries\n\t{tpq} seconds / query")
+                print(f"Total Query Time:\n\t{tqt} seconds\n\t{self.number_queries[1]} queries\n\t{tpq} seconds / query\n\tMin Time: {query_times[0][1]} seconds for url '{query_times[0][0]}'\n\tMax Time: {query_times[1][1]} seconds for url '{query_times[1][0]}'")
             else:
                 print(f"Loaded {self.number_queries[1]} total queries in {tqt} seconds.")
         else:
             self.now = datetime.datetime.now()
             self.total_query_time = (self.now - self.first_query_time).total_seconds()
             tqt = f"{self.total_query_time:,.2f}"
-            print(f"\nNHLAPIHandler is in 'view-only' mode.\nNo changes will be saved to the history json.\nLoaded {self.number_queries[1]} total queries in {tqt} seconds.")
+            print(f"\nNHLAPIHandler is in 'view-only' mode. No changes will be saved to the history json.\nLoaded {self.number_queries[1]} total queries in {tqt} seconds.")
 
     def save_data(self):
         if not self.view_only:
             with open(self.file_history, "w") as f:
                 json.dump(jsonify(self.history), f)
         else:
-            print(f"NHLAPIHandler is set to 'view-only'.\nSaving cannot be completed.")
+            print(f"NHLAPIHandler is set to 'view-only', saving cannot be completed.")
 
     def query_url(self, url, do_print=False, check_history=True) -> dict | None:
         if do_print:
@@ -148,7 +155,7 @@ class NHLAPIHandler:
                     return self.history[url][1]
 
         if self.view_only:
-            print(f"Need to fetch '{url}'.\nThe results will not be saved, 'view-only' is enabled.")
+            print(f"Need to fetch '{url}'. The results will not be saved, 'view-only' is enabled.")
 
         now = datetime.datetime.now()
         response = requests.get(url)
@@ -274,7 +281,8 @@ def playoff_pool_sheet_view_only(
         n_forwards_per_boxes: int = 6,
         n_defence_per_boxes: int = 6
 ):
-    nhl_api = NHLAPIHandler(view_only=True)
+    # nhl_api = NHLAPIHandler(view_only=True)
+    nhl_api = NHLAPIHandler(view_only=False, max_query_hold_time=60*60*24)
     today = datetime.datetime.today()
     standings_today = nhl_api.get_standings(today)
     print(f"{standings_today=}")
