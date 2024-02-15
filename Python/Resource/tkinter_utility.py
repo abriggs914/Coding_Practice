@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.67
-    Date...........2024-02-07
+    Version..............1.68
+    Date...........2024-02-14
     Author(s)....Avery Briggs
     """
 
@@ -740,8 +740,8 @@ class TreeviewController(tkinter.Frame):
             # print(f"{self.treeview.column(key)=}, {type(self.treeview.column(key))=}")
             # print(f"{self.treeview.heading(key)=}, {type(self.treeview.heading(key))=}")
 
-        self.treeview.bind("<B1-Motion>", self.check_column_width_update)
-        self.treeview.bind("<Button-1>", self.stop_row_idx_resize)
+        self.binding_treeview_b1_motion = self.treeview.bind("<B1-Motion>", self.check_column_width_update)
+        self.binding_treeview_b1 = self.treeview.bind("<Button-1>", self.stop_row_idx_resize)
 
     def gen_cell_tag(self, i, j):
         """12|-=-=-=-|12"""
@@ -857,32 +857,34 @@ class TreeviewController(tkinter.Frame):
         # print(f"{event=}, {type(event)=}")
         region1 = self.treeview.identify("region", event.x, event.y)
         column = self.treeview.identify_column(event.x)
-        column_data = self.treeview.column(column)
-        width1 = column_data.get("width_canvas", 0)
-        name = column_data.get("id", None)
-        # print(f"{name=}\n{self.viewable_column_names=}\n{self.viewable_column_widths=}")
-        col_idx1 = self.viewable_column_names.index(name)
-        col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (
-                len(self.viewable_column_names) - 1)
-        width2 = self.treeview.column(f"#{col_idx2}").get("width_canvas", 0)
-        if region1 == "separator" and column != "#0":
-            diff_width = self.viewable_column_widths[col_idx1 - 1] - width1
-            # print(f"\n\n\t{column_data=}, {width1=}, {width2=}, {diff_width=}")
-            # print(f"{region1=}, {column=}")
-            # print(f"{col_idx1=}, {col_idx2=}")
-            # print(f"{self.viewable_column_widths=}")
-            # print(f"{self.viewable_column_widths[col_idx1]=}, {self.viewable_column_widths[col_idx2]=}")
-
-            self.viewable_column_widths[col_idx1 - 1] -= diff_width
-            self.viewable_column_widths[col_idx2 - 1] += diff_width
-
-            # print(f"{self.aggregate_objects=}")
-            # print(f"{self.aggregate_objects[col_idx1 + 2]=}")
-            # print(f"{self.aggregate_objects[col_idx1 + 2][1]=}")
-            self.aggregate_objects[col_idx1 + 2][1].configure(
-                width=int(self.viewable_column_widths[col_idx1 - 1] * self.p_width))
-            self.aggregate_objects[col_idx2 + 2][1].configure(
-                width=int(self.viewable_column_widths[col_idx2 - 1] * self.p_width))
+        # print(f"Treeview B1 Motion {column=}")
+        if column:
+            column_data = self.treeview.column(column)
+            width1 = column_data.get("width_canvas", 0)
+            name = column_data.get("id", None)
+            # print(f"{name=}\n{self.viewable_column_names=}\n{self.viewable_column_widths=}")
+            col_idx1 = self.viewable_column_names.index(name)
+            col_idx2 = (col_idx1 + 1) if col_idx1 < len(self.viewable_column_names) else (
+                    len(self.viewable_column_names) - 1)
+            width2 = self.treeview.column(f"#{col_idx2}").get("width_canvas", 0)
+            if region1 == "separator" and column != "#0":
+                diff_width = self.viewable_column_widths[col_idx1 - 1] - width1
+                # print(f"\n\n\t{column_data=}, {width1=}, {width2=}, {diff_width=}")
+                # print(f"{region1=}, {column=}")
+                # print(f"{col_idx1=}, {col_idx2=}")
+                # print(f"{self.viewable_column_widths=}")
+                # print(f"{self.viewable_column_widths[col_idx1]=}, {self.viewable_column_widths[col_idx2]=}")
+    
+                self.viewable_column_widths[col_idx1 - 1] -= diff_width
+                self.viewable_column_widths[col_idx2 - 1] += diff_width
+    
+                # print(f"{self.aggregate_objects=}")
+                # print(f"{self.aggregate_objects[col_idx1 + 2]=}")
+                # print(f"{self.aggregate_objects[col_idx1 + 2][1]=}")
+                self.aggregate_objects[col_idx1 + 2][1].configure(
+                    width=int(self.viewable_column_widths[col_idx1 - 1] * self.p_width))
+                self.aggregate_objects[col_idx2 + 2][1].configure(
+                    width=int(self.viewable_column_widths[col_idx2 - 1] * self.p_width))
 
     def get_objects(self):
         """TreeViewController(tkinter.Frame) || StringVar || Label || TreeViewExt(ttk.TreeView) || ttk.Srollbar || ttk.ScrollBar || Tuple(StringVar, Button) || Tuple(StringVar, Button) || ListOf(Frame, Tuple(TextVariablev, Entry, (x1, x2))) ... Tuple(TextVariablev, Entry, (x1, x2)))"""
