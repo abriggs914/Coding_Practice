@@ -193,6 +193,7 @@ if __name__ == '__main__':
             now = datetime.datetime.now()
             # Create a PDF canvas
             canvas = Canvas(f"output_{now:%Y-%m-%d_%H%M%S}.pdf", pagesize=letter)
+            canvas.setFont("Helvetica", 9)
 
             # Define the size of the checkbox
             checkbox_size = 10
@@ -207,12 +208,12 @@ if __name__ == '__main__':
 
             # Define the row and column sizes
             row_height = 20
-            col_width = 100
+            col_width = 135
 
             # Draw the title
             styles = getSampleStyleSheet()
             title_text = Paragraph(title, styles["Title"])
-            title_text.wrapOn(canvas, canvas_width, 20)
+            title_text.wrapOn(canvas, canvas_width, 2)
             title_text.drawOn(canvas, title_x, title_y)
 
             box_row_max = {"p": 6, "t": 8}
@@ -228,7 +229,7 @@ if __name__ == '__main__':
                 row = i // 4
                 x = table_x + col * col_width
                 y = table_y - row * row_height
-                canvas.drawString(x + checkbox_size + 5, y, item)
+                canvas.drawString(x + checkbox_size + 5, y - 3, item)
                 canvas.rect(x, y - checkbox_size / 2, checkbox_size, checkbox_size, stroke=1, fill=0)
                 box_row_count[row_key] += 1
                 box_row_count[row_key] %= box_row_max[row_key]
@@ -251,13 +252,52 @@ if __name__ == '__main__':
                 "Item 41", "Item 42", "Item 43", "Item 44",
                 "Item 45", "Item 46", "Item 47", "Item 48"]
 
-        title = "Sample PDF"
+        title = "BWS 2024 NHL Playoff Pool"
 
         # Generate the PDF
         # generate_pdf(data, title)
 
-        nhl_api_utility.playoff_pool_sheet_view_only()
+        pool_boxes = nhl_api_utility.playoff_pool_sheet_view_only(
+            kwargs_nhl_api_utility={"view_only": False},
+            do_save_api_handler=True,
+            pool_texts=True
+        )
+        print(f"{pool_boxes=}")
 
+        prepped_pool_boxes = []
+
+        for conf, conf_data in pool_boxes.items():
+            for position, position_data in conf_data.items():
+                for i, box in enumerate(position_data):
+                    for j, text in enumerate(box):
+                        print(f"\t{i=}, {j=}, {((j + 1)*4)+i=}, {(i*6)+j=}, {text=}")
+                        prepped_pool_boxes.insert(((j + 1)*4)+i, pool_boxes[conf][position][i][j])
+
+        p_conf_boxes = []
+        row_boxes = []
+
+        # # Top row West
+        # prepped_pool_boxes += [f"East - Forward {i} (pick 1)" for i in range(1, 5)]
+        # for j in range(4):
+        #     for i in range(6):
+        #         print(f"ROW1 ({i}, {j}) {((j + 1)*4)+i}, {(i*6)+j} = {pool_boxes['W']['F'][i][j]=}")
+        #         # prepped_pool_boxes.append(pool_boxes['W']['F'][i][j])
+        #         prepped_pool_boxes.insert((i*6)+j, pool_boxes['W']['F'][i][j])
+
+        # space row
+        prepped_pool_boxes += [" "] * 4
+
+        # # 2nd row West
+        # prepped_pool_boxes += [f"East - Forward {i} (pick 1)" for i in range(5, 9)]
+        # for j in range(4, 8):
+        #     for i in range(6):
+        #         print(f"ROW2 ({i}, {j}) = {pool_boxes['W']['F'][i][j]=}")
+        #         prepped_pool_boxes.append(pool_boxes['W']['F'][i][j])
+
+        print(f"{prepped_pool_boxes=}")
+
+        # Generate the PDF
+        generate_pdf(prepped_pool_boxes, title)
 
     # test_3()
     my_version_1()

@@ -279,10 +279,18 @@ def playoff_pool_sheet_view_only(
         n_forward_boxes: int = 7,
         n_defence_boxes: int = 3,
         n_forwards_per_boxes: int = 6,
-        n_defence_per_boxes: int = 6
+        n_defence_per_boxes: int = 6,
+        kwargs_nhl_api_utility: dict | None = None,
+        do_save_api_handler: bool = False,
+        pool_texts: bool = False
 ):
+    if (kwargs_nhl_api_utility is None) or (not isinstance(kwargs_nhl_api_utility, dict)):
+        kwargs_nhl_api_utility = {
+            "view_only": False,
+            "max_query_hold_time": 60 * 60 * 24  # 1 day
+        }
     # nhl_api = NHLAPIHandler(view_only=True)
-    nhl_api = NHLAPIHandler(view_only=False, max_query_hold_time=60*60*24)
+    nhl_api = NHLAPIHandler(**kwargs_nhl_api_utility)
     today = datetime.datetime.today()
     standings_today = nhl_api.get_standings(today)
     print(f"{standings_today=}")
@@ -457,7 +465,7 @@ def playoff_pool_sheet_view_only(
     list_of_teams = {"E": [], "W": []}
     list_id_pts_skaters = {"E": [], "W": []}
     list_id_sv_pctg_goalies = {"E": [], "W": []}
-    team_div, team_conf, team_id, player_position, player_name, player_number = [None for _ in range(6)]
+    team_div, team_conf, team_id, player_position, player_name, player_number = [None] * 6
     for line in fmt_final_results:
         if isinstance(line, list):
             for team_data in line:
@@ -618,26 +626,46 @@ def playoff_pool_sheet_view_only(
                 pool_sheet_team_counts["T"][team_acr] += 1
             pool_sheet_boxes[conf]["T"].append(box)
 
+    pool_sheet_boxes_text = {}
     print(f"pool_sheet_boxes")
+    print(f"{list_of_players_and_keys=}")
+    print(f"{list_of_players_and_teams=}")
     for conf, position_boxes in pool_sheet_boxes.items():
+        pool_sheet_boxes_text[conf] = {}
         print(f"\tConference: '{conf}'")
         for position, boxes in position_boxes.items():
+            pool_sheet_boxes_text[conf][position] = []
             print(f"\t\tPosition: '{position}'")
             for i, box in enumerate(boxes):
+                pool_sheet_boxes_text[conf][position].append([])
                 print(f"\t\t\tBox {i + 1}")
                 if position != "T":
                     for player_id, player_pts, player_team in box:
                         p_name = list_of_players_and_keys[player_id]["name"]
+                        p_name_s = p_name.split(" ")
+                        p_name_l = p_name_s[-1].title()
+                        p_name_f = p_name_s[0][0].upper()
+                        gp = 1
+                        ppg = player_pts / gp
                         print(f"\t\t\t\t{player_pts=}, {player_id=}, {player_team}, {p_name}")
+                        pool_sheet_boxes_text[conf][position][i].append(f"{p_name_l}, {p_name_f} ({player_team}) : {ppg:.2f}")
                 else:
                     for team_id, team_pts, team_team in box:
                         print(f"\t\t\t\t{team_pts=}, {team_id=}, {team_team}")
+                        gp = 1
+                        ppg = team_pts / gp
+                        pool_sheet_boxes_text[conf][position][i].append(f"{team_team} ({team_team}) : {ppg:.2f}")
     print(f"{pool_sheet_team_counts=}")
     print(f"{list_id_pts_skaters=}")
     for conf, team_data in list_of_teams.items():
         print(f"{conf=}")
         for team_dat in team_data:
             print(f"\t{team_dat=}")
+
+    if do_save_api_handler:
+        nhl_api.save_data()
+
+    return pool_sheet_boxes if (not pool_texts) else pool_sheet_boxes_text
 
 
 def playoff_pool_sheet(
