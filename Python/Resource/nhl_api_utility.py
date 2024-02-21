@@ -1,9 +1,18 @@
+import io
 import json
+import os
+import tkinter
+from urllib.request import urlopen
 
 import requests
 import datetime
 from typing import Literal
 import pandas as pd
+from PIL import Image, ImageTk
+# from cairosvg import svg2png
+# import cairosvg
+# import cairo
+import pyvips
 
 import nhl_utility
 from json_utility import jsonify
@@ -674,7 +683,7 @@ def playoff_pool_sheet(
         n_forwards_per_boxes: int = 6,
         n_defence_per_boxes: int = 6
 ):
-    nhl_api = NHLAPIHandler(max_query_hold_time=1 * 24 * 3600)
+    nhl_api = NHLAPIHandler(max_query_hold_time=3 * 24 * 3600)
     today = datetime.datetime.today()
     standings_today = nhl_api.get_standings(today)
     print(f"{standings_today=}")
@@ -1077,6 +1086,301 @@ def playoff_pool_sheet(
     # print(f"{nhl_api.get_schedule(today)}")
 
 
+def bracket_challenge():
+    app = tkinter.Tk()
+
+    nhl_api = NHLAPIHandler(max_query_hold_time=3 * 24 * 3600)
+    today = datetime.datetime.today()
+    standings_today = nhl_api.get_standings(today)
+    print(f"{standings_today=}")
+    standings_data = {}
+
+    top_east = []
+    top_west = []
+    top_atl = []
+    top_met = []
+    top_cen = []
+    top_pac = []
+    wc_east = []
+    wc_west = []
+
+    # w = '/stats/rest/en/skater/summary', h = 'http://api.nhle.com', t = '/stats/rest/en/leaders/skaters/goals', HOST_NAME = 'https://api-web.nhle.com'
+
+    for standings_data_ in standings_today["standings"]:
+        # print(f"{standings_data_=}")
+        conf_abbrev = standings_data_.get("conferenceAbbrev")
+        conf_name = standings_data_.get("conferenceName")
+        div_abbrev = standings_data_.get("divisionAbbrev")
+        div_name = standings_data_.get("divisionName")
+
+        league_place = standings_data_.get("leagueSequence")
+        conf_place = standings_data_.get("conferenceSequence")
+        div_place = standings_data_.get("divisionSequence")
+
+        league_place_home = standings_data_.get("leagueHomeSequence")
+        league_place_road = standings_data_.get("leagueRoadSequence")
+        league_place_l10 = standings_data_.get("leagueL10Sequence")
+
+        conf_place_home = standings_data_.get("conferenceHomeSequence")
+        div_place_home = standings_data_.get("divisionHomeSequence")
+        conf_place_road = standings_data_.get("conferenceRoadSequence")
+        div_place_road = standings_data_.get("divisionRoadSequence")
+        conf_place_l10 = standings_data_.get("conferenceL10Sequence")
+        div_place_l10 = standings_data_.get("divisionL10Sequence")
+        wc_place = standings_data_.get("wildcardSequence")
+
+        team_name = standings_data_.get("teamName", {}).get("default")
+        team_name_common = standings_data_.get("teamCommonName", {}).get("default")
+        team_name_abbrev = standings_data_.get("teamAbbrev", {}).get("default")
+        team_name_fr = standings_data_.get("teamName", {}).get("fr")
+        team_name_common_fr = standings_data_.get("teamCommonName", {}).get("fr")
+        team_name_abbrev_fr = standings_data_.get("teamAbbrev", {}).get("fr")
+        team_logo = standings_data_.get("teamLogo")
+
+        streak_count = standings_data_.get("streakCount", 0)
+        streak_code = standings_data_.get("streakCode")
+        games_played = standings_data_.get("gamesPlayed", 0)
+        points = standings_data_.get("points", 0)
+        win_pctg = standings_data_.get("winPctg", 0)
+        wins = standings_data_.get("wins", 0)
+        losses = standings_data_.get("losses", 0)
+        wins_ot = standings_data_.get("shootoutWins", 0)
+        losses_ot = standings_data_.get("otLosses", 0)
+        losses_so = standings_data_.get("shootoutLosses", 0)
+        wins_reg = standings_data_.get("regulationWins", 0)
+        wins_reg_ot = standings_data_.get("regulationPlusOtWins", 0)
+        wins_reg_ot_pctg = standings_data_.get("regulationPlusOtWinsPctg", 0)
+
+        point_pctg = standings_data_.get("pointsPctg", 0)
+        goal_diff = standings_data_.get("goalDifferential", 0)
+        goal_diff_pctg = standings_data_.get("goalDifferentialPctg", 0)
+        goals_for = standings_data_.get("goalsFor", 0)
+        goals_against = standings_data_.get("goalsAgainst", 0)
+        goals_per_game = standings_data_.get("goalsForPctg", 0)
+
+        games_played_home = standings_data_.get("homeGamesPlayed", 0)
+        goal_diff_home = standings_data_.get("homeGoalDifferential", 0)
+        goals_against_home = standings_data_.get("homeGoalsAgainst", 0)
+        goals_for_home = standings_data_.get("homeGoalsFor", 0)
+        losses_home = standings_data_.get("homeLosses", 0)
+        ot_losses_home = standings_data_.get("homeOtLosses", 0)
+        wins_home = standings_data_.get("homeWins", 0)
+        points_home = standings_data_.get("homePoints", 0)
+        wins_reg_ot_home = standings_data_.get("homeRegulationPlusOtWins", 0)
+        wins_reg_home = standings_data_.get("homeRegulationWins", 0)
+
+        games_played_l10 = standings_data_.get("l10GamesPlayed", 0)
+        goal_diff_l10 = standings_data_.get("l10GoalDifferential", 0)
+        goals_against_l10 = standings_data_.get("l10GoalsAgainst", 0)
+        goals_for_l10 = standings_data_.get("l10GoalsFor", 0)
+        losses_l10 = standings_data_.get("l10Losses", 0)
+        ot_losses_l10 = standings_data_.get("l10OtLosses", 0)
+        wins_l10 = standings_data_.get("l10Wins", 0)
+        points_l10 = standings_data_.get("l10Points", 0)
+        wins_reg_ot_l10 = standings_data_.get("l10RegulationPlusOtWins", 0)
+        wins_reg_l10 = standings_data_.get("l10RegulationWins", 0)
+
+        games_played_road = standings_data_.get("roadGamesPlayed", 0)
+        goal_diff_road = standings_data_.get("roadGoalDifferential", 0)
+        goals_against_road = standings_data_.get("roadGoalsAgainst", 0)
+        goals_for_road = standings_data_.get("roadGoalsFor", 0)
+        losses_road = standings_data_.get("roadLosses", 0)
+        ot_losses_road = standings_data_.get("roadOtLosses", 0)
+        wins_road = standings_data_.get("roadWins", 0)
+        points_road = standings_data_.get("roadPoints", 0)
+        wins_reg_ot_road = standings_data_.get("roadRegulationPlusOtWins", 0)
+        wins_reg_road = standings_data_.get("roadRegulationWins", 0)
+
+        if conf_abbrev == "W":
+            top_west.insert(conf_place, standings_data_)
+            if div_abbrev == "P":
+                top_pac.insert(div_place, standings_data_)
+            else:
+                top_cen.insert(div_place, standings_data_)
+        else:
+            top_east.insert(conf_place, standings_data_)
+            if div_abbrev == "A":
+                top_atl.insert(div_place, standings_data_)
+            else:
+                top_met.insert(div_place, standings_data_)
+
+    top_atl = top_atl[:3]
+    top_met = top_met[:3]
+    top_cen = top_cen[:3]
+    top_pac = top_pac[:3]
+
+    for team_data in top_east:
+        div = team_data["divisionAbbrev"]
+        if div == "A":
+            if team_data in top_atl:
+                continue
+            else:
+                wc_east.append(team_data)
+        else:
+            if team_data in top_met:
+                continue
+            else:
+                wc_east.append(team_data)
+
+        if len(wc_east) == 2:
+            break
+
+    for team_data in top_west:
+        div = team_data["divisionAbbrev"]
+        if div == "P":
+            if team_data in top_pac:
+                continue
+            else:
+                wc_west.append(team_data)
+        else:
+            if team_data in top_cen:
+                continue
+            else:
+                wc_west.append(team_data)
+
+        if len(wc_west) == 2:
+            break
+
+    fmt_final_results = [
+        f"\nTop East",
+        f"\nTop Atlantic:",
+        top_atl,
+        f"\nTop Metropolitan:",
+        top_met,
+        f"\nWildcard East:",
+        wc_east,
+        f"\nTop West:",
+        f"\nTop Central:",
+        top_cen,
+        f"\nTop Pacific:",
+        top_pac,
+        f"\nWildcard West:",
+        wc_west
+    ]
+
+    # lpk_keys = ["div", "conf", "team_id", "position", "name", "number"]
+    # list_of_players_and_keys = {}  # div, conf, teamid, position,
+    # list_of_players_and_teams = {}
+    # list_of_teams = {"E": [], "W": []}
+    # list_id_pts_skaters = {"E": [], "W": []}
+    # list_id_sv_pctg_goalies = {"E": [], "W": []}
+    # team_div, team_conf, team_id, player_position, player_name, player_number = [None for _ in range(6)]
+
+    logos = {}
+    logo_size = 60, 60
+    logo_root = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Web SVGs"
+    known_logos = {}
+    for pth in os.listdir(logo_root):
+        if pth.endswith(".png"):
+            splt1 = pth.split("logo_")
+            splt2 = splt1[-1].split("_")
+            acronym = splt2[0].upper()
+            when = splt2[-1][:-4]
+            when = datetime.datetime(int(f"20{when[:2]}"), int(f"{when[2:4]}"), int(f"{when[4:]}"))
+            known_logos[acronym] = when
+
+    print(f"{known_logos=}")
+
+    for line in fmt_final_results:
+        if isinstance(line, list):
+            for team_data in line:
+                if isinstance(team_data, dict):
+                    team_conf = team_data["conferenceAbbrev"]
+                    team_div = team_data["divisionAbbrev"]
+                    team_points = team_data["points"]
+                    team_logo = team_data["teamLogo"]
+                    team_games_played = team_data["gamesPlayed"]
+                    team_points_per_game = team_points / (1 if team_games_played == 0 else (2 * team_games_played))
+                    mascot = team_data['teamCommonName']['default']
+                    conf_place = team_data["conferenceSequence"]
+                    nhl_util_k = nhl_utility.name_from_mascot(mascot)
+                    acronym = nhl_utility.team_attribute(nhl_util_k, "acr")
+                    # roster = nhl_api.get_team_roster(acronym)
+                    print(f"\t{mascot}, {acronym}, pts={team_points}, gp={team_games_played}, ppg={team_points_per_game}, logo={team_logo}")
+                    # logos[acronym] = ImageTk.PhotoImage(Image.open(team_logo).resize(logo_size))
+
+                    if acronym not in known_logos:
+
+                        logo_path_name = f"logo_{acronym.lower()}_{datetime.datetime.now():%Y%m%d}.png"
+                        print(f"{logo_path_name=}")
+                        my_page = urlopen(team_logo)
+                        svg_code = my_page.read()
+                        pyvip_img = pyvips.Image.svgload_buffer(svg_code)
+                        pyvip_img.write_to_file(logo_path_name)
+                        # cairosvg.svg2png(bytestring=svg_code, write_to=logo_path_name)
+
+                    # # create an image file object
+                    # print(f"{my_page=}\n{my_page.read()=}")
+                    # my_picture = io.BytesIO(my_page.read())
+                    # # use PIL to open image formats like .jpg  .png  .gif  etc.
+                    # pil_img = Image.open(my_picture).resize(logo_size)
+                    # tk_img = ImageTk.PhotoImage(pil_img)
+                    # logos[acronym] = tk_img
+
+                    wwww=44
+                    # for position, position_data in roster.items():
+                    #     print(f"\t\t{position=}")
+                    #     for player in position_data:
+                    #         player_id = player.get("id", "")
+                    #         if player_id:
+                    #             player_position = player.get("positionCode", "")
+                    #             player_number = player.get("sweaterNumber", "")
+                    #             player_name = player.get("firstName", {}).get("default", "") + " " + player.get(
+                    #                 "lastName", {}).get("default", "")
+                    #             stats = nhl_api.get_player_stats(player_id)
+                    #             team_id = stats["currentTeamId"]
+                    #             if team_id not in [t[0] for t in list_of_teams[team_conf]]:
+                    #                 list_of_teams[team_conf].append((team_id, acronym, team_points, conf_place))
+                    #             if player_id not in list_of_players_and_teams:
+                    #                 list_of_players_and_teams[player_id] = acronym
+                    #                 list_of_players_and_keys[player_id] = {k: v for k, v in zip(lpk_keys,
+                    #                                                                             [team_div, team_conf,
+                    #                                                                              team_id,
+                    #                                                                              player_position,
+                    #                                                                              player_name,
+                    #                                                                              player_number])}
+                    #             if player_position == "G":
+                    #                 save_pctg = stats.get("featuredStats", {}).get("regularSeason", {}).get("subSeason",
+                    #                                                                                         {}).get(
+                    #                     "points", 0)
+                    #                 list_id_sv_pctg_goalies[team_conf].append((stats["playerId"], save_pctg))
+                    #             else:
+                    #                 pts_this_season = stats.get("featuredStats", {}).get("regularSeason", {}).get(
+                    #                     "subSeason", {}).get("points", 0)
+                    #                 list_id_pts_skaters[team_conf].append((stats["playerId"], pts_this_season))
+                    #         else:
+                    #             stats = "N/A"
+                    #         team_data["stats"] = stats
+                    #         print("\t\t\t" + ", ".join([f"{k}: {v}" for k, v in zip(lpk_keys,
+                    #                                                                 [team_div, team_conf, team_id,
+                    #                                                                  player_position, player_name,
+                    #                                                                  player_number])]))
+                    #         # print(f"\t\t\t{player=}")
+                    #         # print(f"\t\t\t\t{stats=}")
+                    #         # i = 14/0
+                    #
+                    # list_id_pts_skaters["E"].sort(key=lambda tup: tup[1], reverse=True)
+                    # list_id_pts_skaters["W"].sort(key=lambda tup: tup[1], reverse=True)
+                    #
+                    # # print(f"\t\t{roster=}")
+        else:
+            print(line)
+
+    # list_of_teams["E"].sort(key=lambda tup: tup[3])
+    # list_of_teams["W"].sort(key=lambda tup: tup[3])
+    # print(f"{list_of_teams=}")
+
+    positions = [
+        [
+            [],
+            []
+        ]
+    ]
+
+    app.mainloop()
+
+
+
 if __name__ == "__main__":
     # nhl_api = NHLAPIHandler()
 
@@ -1096,4 +1400,6 @@ if __name__ == "__main__":
     # print(f"{nhl_api.get_standings(today)=}")
 
     # playoff_pool_sheet()
-    playoff_pool_sheet_view_only()
+    # playoff_pool_sheet_view_only()
+
+    bracket_challenge()

@@ -271,7 +271,7 @@ if __name__ == '__main__':
             n_defence_per_boxes=n_defence_per_boxes,
             kwargs_nhl_api_utility={
                 "view_only": False,
-                "max_query_hold_time": 60*60*24*2
+                "max_query_hold_time": 60*60*24*3
             },
             do_save_api_handler=True,
             pool_texts=True
