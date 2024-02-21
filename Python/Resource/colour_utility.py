@@ -10,8 +10,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.33
-    Date...........2023-08-22
+    Version..............1.34
+    Date...........2024-02-20
     Author(s)....Avery Briggs
     """
 
@@ -1170,6 +1170,7 @@ THREEDSHADOW = (162, 164, 161)
 WINDOW = (251, 250, 253)
 WINDOWFRAME = (2, 1, 0)
 WINDOWTEXT = (1, 0, 4)
+SYSTEMBUTTONFACE = (240, 240, 241)
 
 
 # removed 2023-04-27 to ensure that COLOURS and COLOURS_INVERSE dictionaries are the same length.
@@ -2341,7 +2342,9 @@ colour_values_list = [
     THREEDSHADOW,
     WINDOW,
     WINDOWFRAME,
-    WINDOWTEXT
+    WINDOWTEXT,
+
+    SYSTEMBUTTONFACE
 ]
 
 
@@ -3465,7 +3468,9 @@ colour_names_list = [
     "THREEDSHADOW",
     "WINDOW",
     "WINDOWFRAME",
-    "WINDOWTEXT"
+    "WINDOWTEXT",
+
+    "SYSTEMBUTTONFACE"
 ]
 
 
