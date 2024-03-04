@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.68
-    Date...........2024-02-14
+    Version..............1.71
+    Date...........2024-02-29
     Author(s)....Avery Briggs
     """
 
@@ -874,10 +874,10 @@ class TreeviewController(tkinter.Frame):
                 # print(f"{col_idx1=}, {col_idx2=}")
                 # print(f"{self.viewable_column_widths=}")
                 # print(f"{self.viewable_column_widths[col_idx1]=}, {self.viewable_column_widths[col_idx2]=}")
-    
+
                 self.viewable_column_widths[col_idx1 - 1] -= diff_width
                 self.viewable_column_widths[col_idx2 - 1] += diff_width
-    
+
                 # print(f"{self.aggregate_objects=}")
                 # print(f"{self.aggregate_objects[col_idx1 + 2]=}")
                 # print(f"{self.aggregate_objects[col_idx1 + 2][1]=}")
@@ -2361,10 +2361,10 @@ class MultiComboBox(tkinter.Frame):
 
         self.res_canvas = ArrowButton(self.frame_top_most, background=rgb_to_hex("GRAY_62"))
 
-        self.res_canvas.bind("<Button-1>", self.click_canvas_dropdown_button)
-        self.tree_treeview.bind("<<TreeviewSelect>>", self.treeview_selection_update)
-        self.res_entry.bind("<Key>", self.update_typed_in)
-        self.res_entry.bind("<Return>", self.submit_typed_in)
+        self.bind_button1_res_camvas = self.res_canvas.bind("<Button-1>", self.click_canvas_dropdown_button)
+        self.bind_treeview_select_tree_treeview = self.tree_treeview.bind("<<TreeviewSelect>>", self.treeview_selection_update)
+        self.bind_key_res_entry = self.res_entry.bind("<Key>", self.update_typed_in)
+        self.bind_return_res_entry = self.res_entry.bind("<Return>", self.submit_typed_in)
 
         self.returned_value = tkinter.StringVar(self, value="")
 
@@ -2491,7 +2491,7 @@ class MultiComboBox(tkinter.Frame):
             self.tree_treeview.selection_set(children[0])
         elif bypass or not children and not self.limit_to_list:
             val = self.res_tv_entry.get()
-            col = self.rg_var.get()
+            col = self.tree_controller.viewable_column_names[self.rg_var.get()]
             if val:
                 self.add_new_item(val, col, self.new_entry_defaults)
 
@@ -2781,9 +2781,9 @@ class MultiComboBox(tkinter.Frame):
                 vals_ = vals[i]
                 tags_ = tags[i]
             # # for df_, vals_, tags_ in zip(df.iterrows(), vals, tags):
-            #     print(f"INSERTING {vals_=}, {tags_=}, {i=}\n\tDF\n\t{df=}")
+            #     print(f"INSERTING {vals_=}, {k+i=}, {tags_=}, {i=}")
                 self.tree_treeview.insert("", "end", iid=k + i, text=str(k + i + 1), values=vals_, tags=tuple(tags_))
-                k += 1
+            k += df.shape[0]
         self.data = pd.concat([self.data, *[df for df, *rest in new_dfs]], ignore_index=True)
 
         if self.nan_repr is not None:
@@ -3850,7 +3850,7 @@ class InfoFrame(tkinter.Frame):
         else:
             self.formats = {lbl: formats for lbl in self.labels_in}
 
-        print(dict_print(self.formats, "formats"))
+        # print(dict_print(self.formats, "formats"))
 
         self.check_header()
         self.check_footer()
@@ -4011,7 +4011,7 @@ class InfoFrame(tkinter.Frame):
 
     def change_value(self, key, value):
         if key not in self.info_labels:
-            print(f"de-keying")
+            # print(f"de-keying")
             ke = self.de_keyify(key)
         else:
             ke = key
@@ -4029,7 +4029,7 @@ class InfoFrame(tkinter.Frame):
 
     def get_value(self, key, default=None):
         if key not in self.info_labels:
-            print(f"de-keying")
+            # print(f"de-keying")
             try:
                 ke = self.de_keyify(key)
             except KeyError:
@@ -4044,11 +4044,15 @@ def calc_geometry_tl(
         height: int | float = None,
         dims: None | tuple | list = None,
         largest: bool | int = True,
-        rtype: str | dict | list | tuple = str
+        rtype: str | dict | list | tuple = str,
+        parent: tkinter.BaseWidget | tkinter.Toplevel | tkinter.Tk = None
 
         # one_display_orient: Literal["horizontal", "vertical"]="horizontal"
 ) -> str | dict | list | tuple:
+    # TODO add 'parent' param. Would allow you to specify where a screen's parent is, and to match it's dimensions.
+
     x_off, y_off = 0, 0
+
     if dims is None:
 
         monitors = utility.get_largest_monitors()
@@ -4072,6 +4076,15 @@ def calc_geometry_tl(
         #    y_off = monitor.y  #  sum([m.height for m in monitors_lr[:largest]])
     else:
         x_, y_, width_, height_ = dims
+
+    # print(f"{parent=}")
+    if parent is not None:
+        # a parent widget or window has been identified.
+        # calculate this new geometry
+        px, py = parent.winfo_rootx(), parent.winfo_rooty()
+        # print(f"{px=}, {py=}")
+        x_off = px
+        y_off = py
 
     t_width, t_height = width_, height_
 

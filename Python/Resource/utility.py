@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.81
-    Date...........2024-01-05
+    Version..............1.82
+    Date...........2024-02-29
     Author(s)....Avery Briggs
     """
 
@@ -1989,18 +1989,55 @@ def get_windows_user(EXTENDED_NAME_FORMAT: int = 3):
     print("NameServicePrincipal   : ", get_data(10)) -> ''
     print("NameDnsDomain          : ", get_data(12)) -> BWSDOMAIN.LOCAL\abriggs
 
+    Use "all" or -1 to return a dictionary of all of the values.
+    Use an explicit key to return a single value, number or string (9, "NameCanonicalEx").
+
     https://stackoverflow.com/questions/21766954/how-to-get-windows-users-full-name-in-python
     """
+    dct = {
+        "NameUnknown": 0,
+        "NameFullyQualifiedDN": 1,
+        "NameSamCompatible": 2,
+        "NameDisplay": 3,
+        "NameUniqueId": 6,
+        "NameCanonical": 7,
+        "NameUserPrincipal": 8,
+        "NameCanonicalEx": 9,
+        "NameServicePrincipal": 10,
+        "NameDnsDomain": 12
+    }
+    dct_vk = {v: k for k, v in dct.items()}
 
     GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
-    data = EXTENDED_NAME_FORMAT
+    if EXTENDED_NAME_FORMAT in (-1, "all"):
+        EXTENDED_NAME_FORMAT = dct
+    else:
+        if isinstance(EXTENDED_NAME_FORMAT, int):
+            EXTENDED_NAME_FORMAT = {
+                dct_vk[EXTENDED_NAME_FORMAT]: EXTENDED_NAME_FORMAT
+            }
+        elif isinstance(EXTENDED_NAME_FORMAT, str):
+            EXTENDED_NAME_FORMAT = {
+                EXTENDED_NAME_FORMAT: dct[EXTENDED_NAME_FORMAT]
+            }
+        else:
+            raise ValueError(f"param 'EXTENDED_NAME_FORMAT' is an unrecognized value ({EXTENDED_NAME_FORMAT}).")
 
-    size = ctypes.pointer(ctypes.c_ulong(0))
-    GetUserNameEx(data, None, size)
+    results = {}
 
-    nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
-    GetUserNameEx(data, nameBuffer, size)
-    return nameBuffer.value
+    for name, data in EXTENDED_NAME_FORMAT.items():
+        size = ctypes.pointer(ctypes.c_ulong(0))
+        GetUserNameEx(data, None, size)
+        nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
+        GetUserNameEx(data, nameBuffer, size)
+        results[name] = nameBuffer.value
+
+    if len(EXTENDED_NAME_FORMAT) == 1:
+        k = list(EXTENDED_NAME_FORMAT)[0]
+        # print(f"{k=}, {results=}")
+        return results[k]
+
+    return results
 
 
 def get_largest_monitors():

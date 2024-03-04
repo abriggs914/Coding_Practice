@@ -8,8 +8,8 @@ VERSION = \
     """
     General Pyodbc connection handler.
     Geared towards BWS connections.
-    Version...............1.6
-    Date...........2023-03-15
+    Version...............1.7
+    Date...........2024-02-29
     Author(s)....Avery Briggs
     """
 
@@ -51,7 +51,8 @@ def connect(sql, driver="{SQL Server}",
     # print(f"before {template=}")
     cstr = template.format(dri=driver, svr=server, db=database, uid=uid, pwd=pwd)
 
-    has_insert = all([(stmt in sql.upper()) for stmt in ["INSERT INTO ", "VALUES "]])
+    has_insert = all([(stmt in sql.upper()) for stmt in ["INSERT INTO", "VALUES"]])
+    has_update = all([(stmt in sql.upper()) for stmt in ["UPDATE", "SET"]])
 
     # print(f"after {template=}")
     df = None
@@ -69,7 +70,8 @@ def connect(sql, driver="{SQL Server}",
         if do_show:
             print(sql)
 
-        if has_insert:
+        if has_insert or has_update:
+            # no return value
             crsr.execute(sql)
             conn.commit()
         else:
