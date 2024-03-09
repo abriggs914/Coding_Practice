@@ -8,8 +8,8 @@ VERSION = \
     """
     General Pyodbc connection handler.
     Geared towards BWS connections.
-    Version...............1.7
-    Date...........2024-02-29
+    Version...............1.8
+    Date...........2024-03-08
     Author(s)....Avery Briggs
     """
 
@@ -41,7 +41,7 @@ def VERSION_AUTHORS():
 
 
 def connect(sql, driver="{SQL Server}",
-            server="server3", database="BWSdb", uid="user5", pwd="M@gic456", do_print=False, do_show=False):
+            server="server3", database="BWSdb", uid="user5", pwd="M@gic456", do_print=False, do_show=False, do_exec=True):
     template = "DRIVER={dri};SERVER={svr};DATABASE={db};UID={uid};PWD={pwd}"
     # params = [driver, server, database, uid, pwd]
     if pwd and uid is None:
@@ -51,8 +51,15 @@ def connect(sql, driver="{SQL Server}",
     # print(f"before {template=}")
     cstr = template.format(dri=driver, svr=server, db=database, uid=uid, pwd=pwd)
 
+    distinct_queries = [stmt for stmt in f"{sql};".split(";") if stmt.strip()]
+    n_distinct_queries = len(distinct_queries)
     has_insert = all([(stmt in sql.upper()) for stmt in ["INSERT INTO", "VALUES"]])
     has_update = all([(stmt in sql.upper()) for stmt in ["UPDATE", "SET"]])
+
+    if n_distinct_queries == 1 and ("SELECT" not in sql.upper()) and ("FROM" not in sql.upper()):
+        # single table name passed
+        tbl = sql.removeprefix("[").removesuffix("]")
+        sql = f"SELECT * FROM [{tbl}];"
 
     # print(f"after {template=}")
     df = None
@@ -61,25 +68,31 @@ def connect(sql, driver="{SQL Server}",
         # sql_opt = "SELECT [IT Requests].*, [dept].[Dept] AS [DeptName], [IT Personnel].[Name] AS [ITPersonnelAssignedName] FROM [IT Requests] LEFT JOIN [Dept] ON [IT Requests].[Department] = [Dept].[DeptID] LEFT JOIN [IT Personnel] ON [IT Requests].[ITPersonAssignedID] = [IT Personnel].[ITPersonID#]"
         if do_print:
             print("connecting...")
-        if do_show:
+        if do_show and do_print:
             print(f"cstr: '{cstr}'")
-        conn = pyodbc.connect(cstr)
-        crsr = conn.cursor()
+        if do_exec:
+            conn = pyodbc.connect(cstr)
+            crsr = conn.cursor()
         if do_print:
             print("querying...")
         if do_show:
+            if not do_exec:
+                print(f"NO-EXEC SQL: ", end="")
             print(sql)
 
         if has_insert or has_update:
             # no return value
-            crsr.execute(sql)
-            conn.commit()
+            if do_exec:
+                crsr.execute(sql)
+                conn.commit()
         else:
-            df = pd.DataFrame(pd.read_sql_query(sql, conn))
+            if do_exec:
+                df = pd.DataFrame(pd.read_sql_query(sql, conn))
 
         if do_print:
             print("closing...")
-        conn.close()
+        if do_exec:
+            conn.close()
     except pyodbc.DatabaseError as de:
         print(f"DatabaseError\n{de}")
     # except TypeError as te:
