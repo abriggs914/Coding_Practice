@@ -32,16 +32,16 @@ conf0_teams = [t[0] for t in conf0]
 conf1_teams = [t[0] for t in conf1]
 
 teams_to_confs = {
-    t: conf0 if t in conf0_teams else conf1_teams
+    t: conf0_teams if t in conf0_teams else conf1_teams
     for t in t_list
 }
 
 teams_to_divs = {
-    t: div0 if t in div0_teams else (div1 if t in div1_teams else (div2 if t in div2_teams else div3))
+    t: div0_teams if t in div0_teams else (div1_teams if t in div1_teams else (div2_teams if t in div2_teams else div3_teams))
     for t in t_list
 }
 
-print(f"{div0=}\n{div1=}\n{div2=}\n{div3=}\n{conf0=}\n{conf1=}")
+print(f"{div0=}\n{div1=}\n{div2=}\n{div3=}\n{conf0=}\n{conf1=}\n{teams_to_confs=}\n{teams_to_divs=}")
 
 games = []
 
@@ -175,10 +175,15 @@ if __name__ == '__main__':
         del s_template["sol"]
         del s_template["sow"]
 
+    for i, t in enumerate(t_list):
+        if t not in standings:
+            standings.update({t: {k: v for k, v in s_template.items()}})
+
     # a wins all, then b, then c ...
     # for i, t in enumerate(t_list):
     #     idx = t_list.index(t)
     print(f"{t_list=}")
+    eliminated_teams = {}
     for i, game in enumerate(games):
         t0, t1 = game
         i0, i1 = t_list.index(t0), t_list.index(t1)
@@ -192,10 +197,6 @@ if __name__ == '__main__':
         #     div_t1 = div0_teams if t1 in div0_teams else div1_teams
         # else:
         #     div_t1 = div2_teams if t1 in div2_teams else div3_teams
-        if t0 not in standings:
-            standings.update({t0: {k: v for k, v in s_template.items()}})
-        if t1 not in standings:
-            standings.update({t1: {k: v for k, v in s_template.items()}})
 
         in_ot = INC_OT and (random.random() <= OT_CHANCE)
         in_so = INC_OT and INC_SO and (random.random() <= SO_CHANCE)
@@ -224,27 +225,30 @@ if __name__ == '__main__':
                 if t1 in g:
                     games_left_tb.append(g)
 
-            conf_ta = teams_to_confs[ta][0]
-            conf_tb = teams_to_confs[tb][0]
-            div_ta = teams_to_divs[ta][0]
-            div_tb = teams_to_divs[tb][0]
+            conf_ta = teams_to_confs[ta]
+            conf_tb = teams_to_confs[tb]
+            div_ta = teams_to_divs[ta]
+            div_tb = teams_to_divs[tb]
 
             games_left_ta_conf = [g for g in games_left_ta if ta in conf_ta or tb in conf_ta]
             games_left_tb_conf = [g for g in games_left_tb if ta in conf_tb or tb in conf_tb]
             games_left_ta_div = [g for g in games_left_ta_conf if ta in div_ta or tb in div_ta]
             games_left_tb_div = [g for g in games_left_tb_conf if ta in div_tb or tb in div_tb]
 
-        s0 = standings[t0]
-        s1 = standings[t1]
-        gp_0_t = sum(s0.values())
-        gp_1_t = sum(s1.values())
-        gl_0 = TTL_GAMES_PER_TEAM - gp_0_t
-        gl_1 = TTL_GAMES_PER_TEAM - gp_1_t
-        pts_0 = get_pts(s0)
-        pts_1 = get_pts(s1)
+            sa = standings[ta]
+            sb = standings[tb]
+            gp_a_t = sum(sa.values())
+            gp_b_t = sum(sb.values())
+            gl_a = TTL_GAMES_PER_TEAM - gp_a_t
+            gl_b = TTL_GAMES_PER_TEAM - gp_b_t
+            pts_a = get_pts(sa)
+            pts_b = get_pts(sb)
 
-        print(f"{t0=}, C0={conf_t0}, D0={div_t0}, pts={pts_0}, glC={len(games_left_t0_conf)}, glD={len(games_left_t0_div)}, ", end="")
-        print(f"{t1=}, C0={conf_t1}, D0={div_t1}, pts={pts_1}, glC={len(games_left_t1_conf)}, glD={len(games_left_t1_div)}")
+            # print(f"{ta=}, C0={conf_ta}, D0={div_ta}, pts={pts_a}, glC={len(games_left_ta_conf)}, glD={len(games_left_ta_div)}, ", end="")
+            # print(f"{tb=}, C0={conf_tb}, D0={div_tb}, pts={pts_b}, glC={len(games_left_tb_conf)}, glD={len(games_left_tb_div)}")
+
+            print(f"{ta=}, pts={pts_a}, glC={len(games_left_ta_conf)}, glD={len(games_left_ta_div)}, ", end="")
+            print(f"{tb=}, pts={pts_b}, glC={len(games_left_tb_conf)}, glD={len(games_left_tb_div)}")
 
     for k in t_list:
         v = standings[k]
