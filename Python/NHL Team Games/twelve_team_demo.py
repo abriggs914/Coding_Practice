@@ -2,7 +2,7 @@ import random
 
 NHL_MODE = False
 
-
+n_seeds_per_div = 2
 teams = [
     ("A", 0, 0),
     ("B", 0, 0),
@@ -39,6 +39,7 @@ teams = [
 
 
 if NHL_MODE:
+    n_seeds_per_div = 3
     teams = [
         ("00", 0, 0),
         ("01", 0, 0),
@@ -337,38 +338,109 @@ if __name__ == '__main__':
 
         # check
 
+        max_pts_conf0 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in conf0_teams]
+        max_pts_conf1 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in conf1_teams]
         max_pts_div0 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in div0_teams]
         max_pts_div1 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in div1_teams]
         max_pts_div2 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in div2_teams]
         max_pts_div3 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in div3_teams]
+
+        max_pts_conf0.sort(key=lambda tup: tup[1], reverse=True)
+        max_pts_conf1.sort(key=lambda tup: tup[1], reverse=True)
         max_pts_div0.sort(key=lambda tup: tup[1], reverse=True)
         max_pts_div1.sort(key=lambda tup: tup[1], reverse=True)
         max_pts_div2.sort(key=lambda tup: tup[1], reverse=True)
         max_pts_div3.sort(key=lambda tup: tup[1], reverse=True)
-        div0_possible_cutoff = max_pts_div0[2]
-        div1_possible_cutoff = max_pts_div1[2]
-        div2_possible_cutoff = max_pts_div2[2]
-        div3_possible_cutoff = max_pts_div3[2]
 
-        po_t3_div0 = max_pts_div0[:3]
-        po_t3_div1 = max_pts_div1[:3]
-        po_t3_div2 = max_pts_div2[:3]
-        po_t3_div3 = max_pts_div3[:3]
+        div0_possible_cutoff = max_pts_div0[n_seeds_per_div - 1]
+        div1_possible_cutoff = max_pts_div1[n_seeds_per_div - 1]
+        div2_possible_cutoff = max_pts_div2[n_seeds_per_div - 1]
+        div3_possible_cutoff = max_pts_div3[n_seeds_per_div - 1]
 
-        max_pts_conf0 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in conf0_teams]
-        max_pts_conf1 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in conf1_teams]
-        max_pts_conf0.sort(key=lambda tup: tup[1], reverse=True)
-        max_pts_conf1.sort(key=lambda tup: tup[1], reverse=True)
+        po_t3_div0 = max_pts_div0[:n_seeds_per_div]
+        po_t3_div1 = max_pts_div1[:n_seeds_per_div]
+        po_t3_div2 = max_pts_div2[:n_seeds_per_div]
+        po_t3_div3 = max_pts_div3[:n_seeds_per_div]
+        max_pts_conf0_copy = max_pts_conf0.copy()
+        max_pts_conf1_copy = max_pts_conf1.copy()
+        for t_pts_ in [*po_t3_div0, *po_t3_div1]:
+            max_pts_conf0_copy.remove(t_pts_)
+        for t_pts_ in [*po_t3_div2, *po_t3_div3]:
+            max_pts_conf1_copy.remove(t_pts_)
+        conf0_possible_cutoff = max_pts_conf0_copy[1]
+        conf1_possible_cutoff = max_pts_conf1_copy[1]
         # conf0_possible_cutoff = max_pts_conf0[2]
         # conf1_possible_cutoff = max_pts_conf1[2]
 
-        print(f"div0_cutoff={div0_possible_cutoff}")
+        print(f" div0_cutoff={div0_possible_cutoff}")
+        print(f"conf0_cutoff={conf0_possible_cutoff}")
         print(f"{elim_data[t_list[0]]=}")
         print(f"{elim_data[t_list[1]]=}")
         print(f"{elim_data[t_list[2]]=}")
         print(f"{elim_data[t_list[3]]=}")
         print(f"{elim_data[t_list[4]]=}")
         print(f"{elim_data[t_list[5]]=}")
+        for t_ in div0_teams:
+            t_pts_d = elim_data[t_]["pts_p_d"]
+            t_pts_c = elim_data[t_]["pts_p_c"]
+            c_pts_d = div0_possible_cutoff[1]
+            c_pts_c = conf0_possible_cutoff[1]
+            print(f"d0: {t_=}, {t_pts_d=}, {t_pts_c=}, {c_pts_d=}, {c_pts_c=}")
+            if t_pts_d < c_pts_d:
+                # eliminated from division seed.
+                if t_ not in eliminated_teams:
+                    eliminated_teams[t_] = {"d": (standings[t_].get("gp", 0),)}
+                    # if "d" not in eliminated_teams[t_]:
+                    print(f"{t_} has been eliminated from division seed.")
+                else:
+                    if "d" not in eliminated_teams[t_]:
+                        print(f"{t_} has been eliminated from division seed.")
+                        eliminated_teams[t_] = {"d": (standings[t_].get("gp", 0),)}
+            if t_pts_c < c_pts_c:
+                # eliminated from conference wildcard
+                if t_ not in eliminated_teams:
+                    eliminated_teams[t_] = {"wc": (standings[t_].get("gp", 0),)}
+                    # if "wc" not in eliminated_teams[t_]:
+                    #     eliminated_teams[t_]["wc"] = (standings[t_]["gp"],)
+                    print(f"{t_} has been eliminated from playoff contention.")
+                else:
+                    if "wc" not in eliminated_teams[t_]:
+                        eliminated_teams[t_] = {"wc": (standings[t_].get("gp", 0),)}
+                        print(f"{t_} has been eliminated from playoff contention.")
+        # for t_ in div1_teams:
+        #     if elim_data[t_]["pts_p_d"] < div1_possible_cutoff[1]:
+        #         # eliminated from division seed.
+        #         if t_ not in eliminated_teams:
+        #             print(f"{t_} has been eliminated from division seed.")
+        #     if elim_data[t_]["pts_p_c"] < conf0_possible_cutoff[1]:
+        #         # eliminated from conference wildcard
+        #         if t_ not in eliminated_teams:
+        #             eliminated_teams[t_] = (standings[t_]["gp"],)
+        #             print(f"{t_} has been eliminated from playoff contention.")
+        #
+        # for t_ in div2_teams:
+        #     if elim_data[t_]["pts_p_d"] < div2_possible_cutoff[1]:
+        #         # eliminated from division seed.
+        #         if t_ not in eliminated_teams:
+        #             print(f"{t_} has been eliminated from division seed.")
+        #     if elim_data[t_]["pts_p_c"] < conf1_possible_cutoff[1]:
+        #         # eliminated from conference wildcard
+        #         if t_ not in eliminated_teams:
+        #             eliminated_teams[t_] = (standings[t_]["gp"],)
+        #             print(f"{t_} has been eliminated from playoff contention.")
+        #
+        # for t_ in div3_teams:
+        #     if elim_data[t_]["pts_p_d"] < div3_possible_cutoff[1]:
+        #         # eliminated from division seed.
+        #         if t_ not in eliminated_teams:
+        #             print(f"{t_} has been eliminated from division seed.")
+        #     if elim_data[t_]["pts_p_c"] < conf1_possible_cutoff[1]:
+        #         # eliminated from conference wildcard
+        #         if t_ not in eliminated_teams:
+        #             eliminated_teams[t_] = (standings[t_]["gp"],)
+        #             print(f"{t_} has been eliminated from playoff contention.")
+
+        print(f"{eliminated_teams=}")
 
         # for ta, tb in games_left:
         #     games_left_ta = []
