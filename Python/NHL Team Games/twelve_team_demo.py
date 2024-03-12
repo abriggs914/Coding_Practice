@@ -1,5 +1,8 @@
 import random
 
+NHL_MODE = False
+
+
 teams = [
     ("A", 0, 0),
     ("B", 0, 0),
@@ -14,6 +17,65 @@ teams = [
     ("K", 1, 3),
     ("L", 1, 3)
 ]
+
+# teams = [
+#     ("A", 0, 0),
+#     ("B", 0, 0),
+#     ("C", 0, 0),
+#     ("D", 0, 0),
+#     ("E", 0, 1),
+#     ("F", 0, 1),
+#     ("G", 0, 1),
+#     ("H", 0, 1),
+#     ("I", 1, 2),
+#     ("J", 1, 2),
+#     ("K", 1, 2),
+#     ("L", 1, 2),
+#     ("M", 1, 3),
+#     ("N", 1, 3),
+#     ("O", 1, 3),
+#     ("P", 1, 3)
+# ]
+
+
+if NHL_MODE:
+    teams = [
+        ("00", 0, 0),
+        ("01", 0, 0),
+        ("02", 0, 0),
+        ("03", 0, 0),
+        ("04", 0, 0),
+        ("05", 0, 0),
+        ("06", 0, 0),
+        ("07", 0, 0),
+
+        ("08", 0, 1),
+        ("09", 0, 1),
+        ("10", 0, 1),
+        ("11", 0, 1),
+        ("12", 0, 1),
+        ("13", 0, 1),
+        ("14", 0, 1),
+        ("15", 0, 1),
+
+        ("16", 1, 2),
+        ("17", 1, 2),
+        ("18", 1, 2),
+        ("19", 1, 2),
+        ("20", 1, 2),
+        ("21", 1, 2),
+        ("22", 1, 2),
+        ("23", 1, 2),
+
+        ("24", 1, 3),
+        ("25", 1, 3),
+        ("26", 1, 3),
+        ("27", 1, 3),
+        ("28", 1, 3),
+        ("29", 1, 3),
+        ("30", 1, 3),
+        ("31", 1, 3)
+    ]
 
 t_list = [t[0] for t in teams]
 
@@ -122,9 +184,11 @@ if __name__ == '__main__':
 
     # Bottom 4
     # same div other team
+    n_inner_div_games = 0
     for t0 in div0:
         for t1 in div0:
             if t0 != t1:
+                n_inner_div_games += 1
                 games.append((t0[0], t1[0]))
     # same div other team
     for t0 in div1:
@@ -141,6 +205,17 @@ if __name__ == '__main__':
         for t1 in div3:
             if t0 != t1:
                 games.append((t0[0], t1[0]))
+
+    if NHL_MODE:
+        n_games_rem = 4
+        to_rem_div0 = random.sample(games[-4*n_inner_div_games:-3*n_inner_div_games], n_games_rem)
+        to_rem_div1 = random.sample(games[-3*n_inner_div_games:-2*n_inner_div_games], n_games_rem)
+        to_rem_div2 = random.sample(games[-2*n_inner_div_games:-n_inner_div_games], n_games_rem)
+        to_rem_div3 = random.sample(games[-n_inner_div_games:], n_games_rem)
+
+        for to_rem in [to_rem_div0, to_rem_div1, to_rem_div2, to_rem_div3]:
+            for g_ in to_rem:
+                games.remove(g_)
 
     for g in games:
         print(f"{g=}")
@@ -162,7 +237,7 @@ if __name__ == '__main__':
 
     standings = {}
     s_template = {"w": 0, "l": 0, "otw": 0, "otl": 0, "sow": 0, "sol": 0}
-    TTL_GAMES_PER_TEAM = len(games) / (len(t_list) / 2)
+    TTL_GAMES_PER_TEAM = int(len(games) / (len(t_list) / 2))
     INC_OT = True
     INC_SO = False
     OT_CHANCE = 0.25
@@ -183,6 +258,7 @@ if __name__ == '__main__':
     # for i, t in enumerate(t_list):
     #     idx = t_list.index(t)
     print(f"{t_list=}")
+    print(f"{TTL_GAMES_PER_TEAM=}")
     eliminated_teams = {}
     for i, game in enumerate(games):
         t0, t1 = game
@@ -206,50 +282,130 @@ if __name__ == '__main__':
 
         print(f"{t0=} VS. {t1=}, OT={'T' if in_ot else 'F'}, SO={'T' if in_so else 'F'} ", end="")
         if i0 < i1:
-            print(f">A ", end="")
+            print(f">A")
             standings[t0][wk] += 1
             standings[t1][lk] += 1
         else:
-            print(f">B ", end="")
+            print(f">B")
             standings[t0][lk] += 1
             standings[t1][wk] += 1
 
         games_left.remove(game)
 
-        for ta, tb in games_left:
-            games_left_ta = []
-            games_left_tb = []
+        elim_data = {}
+
+        for t_ in t_list:
+            games_left_t_ = []
             for g in games_left:
-                if t0 in g:
-                    games_left_ta.append(g)
-                if t1 in g:
-                    games_left_tb.append(g)
+                if t_ in g:
+                    games_left_t_.append(g)
 
-            conf_ta = teams_to_confs[ta]
-            conf_tb = teams_to_confs[tb]
-            div_ta = teams_to_divs[ta]
-            div_tb = teams_to_divs[tb]
+            conf_t_ = teams_to_confs[t_]
+            div_t_ = teams_to_divs[t_]
 
-            games_left_ta_conf = [g for g in games_left_ta if ta in conf_ta or tb in conf_ta]
-            games_left_tb_conf = [g for g in games_left_tb if ta in conf_tb or tb in conf_tb]
-            games_left_ta_div = [g for g in games_left_ta_conf if ta in div_ta or tb in div_ta]
-            games_left_tb_div = [g for g in games_left_tb_conf if ta in div_tb or tb in div_tb]
+            games_left_t_conf = [g for g in games_left_t_ if t_ in conf_t_]
+            games_left_t_div = [g for g in games_left_t_conf if t_ in div_t_]
 
-            sa = standings[ta]
-            sb = standings[tb]
-            gp_a_t = sum(sa.values())
-            gp_b_t = sum(sb.values())
-            gl_a = TTL_GAMES_PER_TEAM - gp_a_t
-            gl_b = TTL_GAMES_PER_TEAM - gp_b_t
-            pts_a = get_pts(sa)
-            pts_b = get_pts(sb)
+            s_ = standings[t_]
+            gp_t = int(sum(s_.values()))
+            gl_t = TTL_GAMES_PER_TEAM - gp_t
+            gl_c = len(games_left_t_conf)
+            gl_d = len(games_left_t_div)
+            pts_ = get_pts(s_)
+            pts_avail_t = get_pts(gl_t)
+            pts_avail_c = get_pts(gl_c)
+            pts_avail_d = get_pts(gl_d)
+
+            elim_data[t_] = {
+                "gp_t": gp_t,
+                "gl_t": gl_t,
+                "gl_c": gl_c,
+                "gl_d": gl_d,
+                "pts": pts_,
+                "pts_p_t": pts_ + pts_avail_t,
+                "pts_p_c": pts_ + pts_avail_c,
+                "pts_p_d": pts_ + pts_avail_d,
+                "pts_a_t": pts_avail_t,
+                "pts_a_c": pts_avail_c,
+                "pts_a_d": pts_avail_d
+            }
 
             # print(f"{ta=}, C0={conf_ta}, D0={div_ta}, pts={pts_a}, glC={len(games_left_ta_conf)}, glD={len(games_left_ta_div)}, ", end="")
             # print(f"{tb=}, C0={conf_tb}, D0={div_tb}, pts={pts_b}, glC={len(games_left_tb_conf)}, glD={len(games_left_tb_div)}")
 
-            print(f"{ta=}, pts={pts_a}, glC={len(games_left_ta_conf)}, glD={len(games_left_ta_div)}, ", end="")
-            print(f"{tb=}, pts={pts_b}, glC={len(games_left_tb_conf)}, glD={len(games_left_tb_div)}")
+            print(f"{t_=}, pts={pts_}, glC={gl_c}, glD={gl_d}")
 
+        # check
+
+        max_pts_div0 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in div0_teams]
+        max_pts_div1 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in div1_teams]
+        max_pts_div2 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in div2_teams]
+        max_pts_div3 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in div3_teams]
+        max_pts_div0.sort(key=lambda tup: tup[1], reverse=True)
+        max_pts_div1.sort(key=lambda tup: tup[1], reverse=True)
+        max_pts_div2.sort(key=lambda tup: tup[1], reverse=True)
+        max_pts_div3.sort(key=lambda tup: tup[1], reverse=True)
+        div0_possible_cutoff = max_pts_div0[2]
+        div1_possible_cutoff = max_pts_div1[2]
+        div2_possible_cutoff = max_pts_div2[2]
+        div3_possible_cutoff = max_pts_div3[2]
+
+        po_t3_div0 = max_pts_div0[:3]
+        po_t3_div1 = max_pts_div1[:3]
+        po_t3_div2 = max_pts_div2[:3]
+        po_t3_div3 = max_pts_div3[:3]
+
+        max_pts_conf0 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in conf0_teams]
+        max_pts_conf1 = [(t_, v["pts_p_t"]) for t_, v in elim_data.items() if t_ in conf1_teams]
+        max_pts_conf0.sort(key=lambda tup: tup[1], reverse=True)
+        max_pts_conf1.sort(key=lambda tup: tup[1], reverse=True)
+        # conf0_possible_cutoff = max_pts_conf0[2]
+        # conf1_possible_cutoff = max_pts_conf1[2]
+
+        print(f"div0_cutoff={div0_possible_cutoff}")
+        print(f"{elim_data[t_list[0]]=}")
+        print(f"{elim_data[t_list[1]]=}")
+        print(f"{elim_data[t_list[2]]=}")
+        print(f"{elim_data[t_list[3]]=}")
+        print(f"{elim_data[t_list[4]]=}")
+        print(f"{elim_data[t_list[5]]=}")
+
+        # for ta, tb in games_left:
+        #     games_left_ta = []
+        #     games_left_tb = []
+        #     for g in games_left:
+        #         if t0 in g:
+        #             games_left_ta.append(g)
+        #         if t1 in g:
+        #             games_left_tb.append(g)
+        #
+        #     conf_ta = teams_to_confs[ta]
+        #     conf_tb = teams_to_confs[tb]
+        #     div_ta = teams_to_divs[ta]
+        #     div_tb = teams_to_divs[tb]
+        #
+        #     games_left_ta_conf = [g for g in games_left_ta if ta in conf_ta or tb in conf_ta]
+        #     games_left_tb_conf = [g for g in games_left_tb if ta in conf_tb or tb in conf_tb]
+        #     games_left_ta_div = [g for g in games_left_ta_conf if ta in div_ta or tb in div_ta]
+        #     games_left_tb_div = [g for g in games_left_tb_conf if ta in div_tb or tb in div_tb]
+        #
+        #     sa = standings[ta]
+        #     sb = standings[tb]
+        #     gp_a_t = sum(sa.values())
+        #     gp_b_t = sum(sb.values())
+        #     gl_a = TTL_GAMES_PER_TEAM - gp_a_t
+        #     gl_b = TTL_GAMES_PER_TEAM - gp_b_t
+        #     pts_a = get_pts(sa)
+        #     pts_b = get_pts(sb)
+        #
+        #     # print(f"{ta=}, C0={conf_ta}, D0={div_ta}, pts={pts_a}, glC={len(games_left_ta_conf)}, glD={len(games_left_ta_div)}, ", end="")
+        #     # print(f"{tb=}, C0={conf_tb}, D0={div_tb}, pts={pts_b}, glC={len(games_left_tb_conf)}, glD={len(games_left_tb_div)}")
+        #
+        #     print(f"{ta=}, pts={pts_a}, glC={len(games_left_ta_conf)}, glD={len(games_left_ta_div)}, ", end="")
+        #     print(f"{tb=}, pts={pts_b}, glC={len(games_left_tb_conf)}, glD={len(games_left_tb_div)}")
+
+    print(f"{t_list=}\n{TTL_GAMES_PER_TEAM=}")
+    print(f"{len(games) / (len(t_list) / 2)=}")
     for k in t_list:
         v = standings[k]
         pts = get_pts(standings[k])
