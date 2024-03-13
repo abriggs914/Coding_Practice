@@ -223,6 +223,7 @@ if __name__ == '__main__':
     print(f"{len(btn_images)=}")
 
     n_questions = 32
+    n_questions = 50
     total_games = list(combinations(btn_images, 2))
     shuffle(total_games)
     total_games = sample(total_games, n_questions)
