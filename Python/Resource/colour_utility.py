@@ -10,8 +10,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.35
-    Date...........2024-02-29
+    Version..............1.36
+    Date...........2024-03-26
     Author(s)....Avery Briggs
     """
 
@@ -3875,11 +3875,16 @@ def brighten(c, p: float, rgb=True, safe=False):
 def inverse(c, rgb=True):
     if not iscolour(c):
         raise ValueError(f"Error, cannot invert non-colour param '{c}', it is not a colour.")
-    col = Colour(c)
-    r, g, b = map(lambda x: x + 1, col.rgb_code)
-    dr, dg, db = 128 - r, 128 - g, 128 - b
-    nc = Colour((128 + dr if (dr < 0) else 128 - dr), (128 + dg if (dg < 0) else 128 - dg), (128 + db if (db < 0) else 128 - db))
+    r, g, b = map(lambda x: 255 - x, Colour(c).rgb_code)
+    nc = Colour(r, g, b)
     return nc.rgb_code if rgb else nc.hex_code
+    # if not iscolour(c):
+    #     raise ValueError(f"Error, cannot invert non-colour param '{c}', it is not a colour.")
+    # col = Colour(c)
+    # r, g, b = map(lambda x: x + 1, col.rgb_code)
+    # dr, dg, db = 128 - r, 128 - g, 128 - b
+    # nc = Colour((128 + dr if (dr < 0) else 128 - dr), (128 + dg if (dg < 0) else 128 - dg), (128 + db if (db < 0) else 128 - db))
+    # return nc.rgb_code if rgb else nc.hex_code
 
 
 def font_foreground(colour_in, threshold=255 * 3 / 2, rgb=True):
