@@ -245,6 +245,7 @@ pacific = {
 
 
 full_team_to_div = {}
+full_team_to_div_name = {}
 for div_n, div in {
     "pacific": pacific,
     "central": central,
@@ -253,6 +254,7 @@ for div_n, div in {
 }.items():
     for t, t_dat in div.items():
         full_team_to_div[t_dat["full"].replace(".", "")] = div
+        full_team_to_div_name[t_dat["full"].replace(".", "")] = div_n
 full_team_to_conf = {t: ("w" if div_dat in (pacific, central) else "e") for t, div_dat in full_team_to_div.items()}
 west_teams = [t for t, c in full_team_to_conf.items() if c == "w"]
 east_teams = [t for t, c in full_team_to_conf.items() if c == "e"]
@@ -279,18 +281,26 @@ class PlayoffChooser(tkinter.Tk):
         self.bg_empty_east = "#8e1919"
         self.fg_empty_east = "#000000"
         self.font_empty_east = ("Arial", 14)
+        self.bg_line_west = "#000000"
+        self.bg_opt_ps_west = "#328944"
+        self.bg_line_east = "#000000"
+        self.bg_opt_ps_east = "#328944"
+        self.w_line = 2
 
-        self.w_ps = 50
-        self.h_ps = 50
+        self.w_ps = 75
+        self.h_ps = 75
         self.w_space_between_rect = 25
         self.h_space_between_rect = 10
-        self.pos_bank_west = (25, 25, 155, 25 + (8 * (self.h_ps + self.h_space_between_rect)))
+        self.pos_bank_west = (25, 25, 205, 25 + (8 * (self.h_ps + self.h_space_between_rect)))
         self.w_canvas, self.h_canvas = self.dims_root[0] * 0.9, self.dims_root[1] * 0.9
+
+        # West PlayOff Spot Xs
         self.x_ps_w_r1 = self.pos_bank_west[2] + self.w_space_between_rect
         self.x_ps_w_r2 = self.x_ps_w_r1 + self.w_ps + self.w_space_between_rect
         self.x_ps_w_r3 = self.x_ps_w_r2 + self.w_ps + self.w_space_between_rect
         self.x_ps_w_r4 = self.x_ps_w_r3 + self.w_ps + self.w_space_between_rect
 
+        # West PlayOff Spot Ys R1
         self.y_ps_wc_t_r1 = self.pos_bank_west[1] + (self.h_space_between_rect / 2)
         self.y_ps_p1_r1 = self.y_ps_wc_t_r1 + self.h_ps + self.h_space_between_rect
         self.y_ps_p2_r1 = self.y_ps_wc_t_r1 + (2 * (self.h_ps + self.h_space_between_rect))
@@ -300,6 +310,19 @@ class PlayoffChooser(tkinter.Tk):
         self.y_ps_c1_r1 = self.y_ps_wc_t_r1 + (6 * (self.h_ps + self.h_space_between_rect))
         self.y_ps_wx_b_r1 = self.y_ps_wc_t_r1 + (7 * (self.h_ps + self.h_space_between_rect))
 
+        # West PlayOff Spot Ys R1
+        self.y_ps_w_r2_p1 = self.y_ps_wc_t_r1 + ((self.y_ps_p1_r1 - self.y_ps_wc_t_r1) / 2)
+        self.y_ps_w_r2_p2 = self.y_ps_p2_r1 + ((self.y_ps_p3_r1 - self.y_ps_p2_r1) / 2)
+        self.y_ps_w_r2_c2 = self.y_ps_c3_r1 + ((self.y_ps_c2_r1 - self.y_ps_c3_r1) / 2)
+        self.y_ps_w_r2_c1 = self.y_ps_c1_r1 + ((self.y_ps_wx_b_r1 - self.y_ps_c1_r1) / 2)
+
+        # West PlayOff Spot Ys R2
+        self.y_ps_w_r3_p = self.y_ps_w_r2_p1 + ((self.y_ps_w_r2_p2 - self.y_ps_w_r2_p1) / 2)
+        self.y_ps_w_r3_c = self.y_ps_w_r2_c1 + ((self.y_ps_w_r2_c2 - self.y_ps_w_r2_c1) / 2)
+
+        # West PlayOff Spot Ys R3
+        self.y_ps_w_r4_w = self.y_ps_w_r3_p + ((self.y_ps_w_r3_c - self.y_ps_w_r3_p) / 2)
+
         print(f"{self.x_ps_w_r1=}, {self.y_ps_wc_t_r1=}")
         print(f"{self.x_ps_w_r2=}, {self.y_ps_p1_r1=}")
         print(f"{self.x_ps_w_r3=}, {self.y_ps_p2_r1=}")
@@ -308,6 +331,7 @@ class PlayoffChooser(tkinter.Tk):
         self.image_directory = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images"
         self.btn_images = {}
         self.res_images = {}
+        self.res_img_to_t = {}
         self.history = {}
         self.full_size_image = (200, 200)
         self.small_size_image = (self.w_ps, self.h_ps)
@@ -317,6 +341,8 @@ class PlayoffChooser(tkinter.Tk):
         # sample_west_teams = random.sample(west_teams, 8)
         sample_west_teams = [t for t, p in self.sorted_west]
 
+        self.dragging = tkinter.BooleanVar(self, value=False)
+        self.drag_team = tkinter.StringVar(self, value="")
 
         self.canvas = tkinter.Canvas(
             self,
@@ -332,195 +358,544 @@ class PlayoffChooser(tkinter.Tk):
         )
 
         self.drag_rect = self.canvas.create_image(
-            0, 0, image=self.res_images[self.sorted_west[0][0]],
+            0, 0,
+            image=self.res_images[self.sorted_west[0][0]],
             state="hidden"
         )
 
+        self.template_ps_data = {
+            "x0": None,
+            "y0": None,
+            "x1": None,
+            "y1": None,
+            "image": None,
+            "text": None,
+            "tag_rect": None,
+            "tag_text": None,
+            "tag_image": None,
+            "is_wc": None
+        }
+        self.ps_codes = {
+            "west": {
+                0: {k: self.template_ps_data.copy() for k in ["WC_t", "P1", "P2", "P3", "C3", "C2", "C1", "WC_b"]},
+                1: {k: self.template_ps_data.copy() for k in ["P1", "P2", "C2", "C1"]},
+                2: {k: self.template_ps_data.copy() for k in ["P", "C"]},
+                3: {k: self.template_ps_data.copy() for k in ["W"]}
+            }
+            # ,
+            # "east": {"R1": {k: self.template_ps_data.copy() for k in ["WC_t", "A1", "A2", "A3", "M3", "M2", "M1", "WC_b"]}}
+        }
+
+        # Round 1
+
         # west wildcard top
-        self.rect_ps_w_wc_t = self.canvas.create_rectangle(
-            self.x_ps_w_r1,
-            self.y_ps_wc_t_r1,
-            self.x_ps_w_r1 + self.w_ps,
-            self.y_ps_wc_t_r1 + self.h_ps,
-            fill=self.bg_empty_west
-        )
-        self.text_ps_w_wc_t = self.canvas.create_text(
-            self.x_ps_w_r1 + (self.w_ps / 2),
-            self.y_ps_wc_t_r1 + (self.h_ps / 2),
-            text="WC",
-            fill=self.fg_empty_west,
-            font=self.font_empty_west
-        )
-        self.img_ps_w_wc_t = self.canvas.create_image(
-            self.x_ps_w_r1,
-            self.y_ps_wc_t_r1,
-            image=self.res_images[sample_west_teams[0]],
-            anchor=tkinter.NW
-        )
+        self.ps_codes["west"][0]["WC_t"].update({
+            "x0": self.x_ps_w_r1,
+            "y0": self.y_ps_wc_t_r1,
+            "x1": self.x_ps_w_r1 + self.w_ps,
+            "y1": self.y_ps_wc_t_r1 + self.h_ps,
+            "text": "WC"
+        })
 
         # pacific 1
-        self.rect_ps_w_p1 = self.canvas.create_rectangle(
-            self.x_ps_w_r1,
-            self.y_ps_p1_r1,
-            self.x_ps_w_r1 + self.w_ps,
-            self.y_ps_p1_r1 + self.h_ps,
-            fill=self.bg_empty_west
-        )
-        self.text_ps_w_p1 = self.canvas.create_text(
-            self.x_ps_w_r1 + (self.w_ps / 2),
-            self.y_ps_p1_r1 + (self.h_ps / 2),
-            text="P1",
-            fill=self.fg_empty_west,
-            font=self.font_empty_west
-        )
-        self.img_ps_w_p1 = self.canvas.create_image(
-            self.x_ps_w_r1,
-            self.y_ps_p1_r1,
-            image=self.res_images[sample_west_teams[1]],
-            anchor=tkinter.NW
-        )
+        self.ps_codes["west"][0]["P1"].update({
+            "x0": self.x_ps_w_r1,
+            "y0": self.y_ps_p1_r1,
+            "x1": self.x_ps_w_r1 + self.w_ps,
+            "y1": self.y_ps_p1_r1 + self.h_ps,
+            "text": "P1"
+        })
 
         # pacific 2
-        self.rect_ps_w_p2 = self.canvas.create_rectangle(
-            self.x_ps_w_r1,
-            self.y_ps_p2_r1,
-            self.x_ps_w_r1 + self.w_ps,
-            self.y_ps_p2_r1 + self.h_ps,
-            fill=self.bg_empty_west
-        )
-        self.text_ps_w_p2 = self.canvas.create_text(
-            self.x_ps_w_r1 + (self.w_ps / 2),
-            self.y_ps_p2_r1 + (self.h_ps / 2),
-            text="P2",
-            fill=self.fg_empty_west,
-            font=self.font_empty_west
-        )
-        self.img_ps_w_p2 = self.canvas.create_image(
-            self.x_ps_w_r1,
-            self.y_ps_p2_r1,
-            image=self.res_images[sample_west_teams[2]],
-            anchor=tkinter.NW
-        )
+        self.ps_codes["west"][0]["P2"].update({
+            "x0": self.x_ps_w_r1,
+            "y0": self.y_ps_p2_r1,
+            "x1": self.x_ps_w_r1 + self.w_ps,
+            "y1": self.y_ps_p2_r1 + self.h_ps,
+            "text": "P2"
+        })
 
         # pacific 3
-        self.rect_ps_w_p3 = self.canvas.create_rectangle(
-            self.x_ps_w_r1,
-            self.y_ps_p3_r1,
-            self.x_ps_w_r1 + self.w_ps,
-            self.y_ps_p3_r1 + self.h_ps,
-            fill=self.bg_empty_west
-        )
-        self.text_ps_w_p3 = self.canvas.create_text(
-            self.x_ps_w_r1 + (self.w_ps / 2),
-            self.y_ps_p3_r1 + (self.h_ps / 2),
-            text="P3",
-            fill=self.fg_empty_west,
-            font=self.font_empty_west
-        )
-        self.img_ps_w_p3 = self.canvas.create_image(
-            self.x_ps_w_r1,
-            self.y_ps_p3_r1,
-            image=self.res_images[sample_west_teams[3]],
-            anchor=tkinter.NW
-        )
+        self.ps_codes["west"][0]["P3"].update({
+            "x0": self.x_ps_w_r1,
+            "y0": self.y_ps_p3_r1,
+            "x1": self.x_ps_w_r1 + self.w_ps,
+            "y1": self.y_ps_p3_r1 + self.h_ps,
+            "text": "P3"
+        })
 
         # central 3
-        self.rect_ps_w_c3 = self.canvas.create_rectangle(
-            self.x_ps_w_r1,
-            self.y_ps_c3_r1,
-            self.x_ps_w_r1 + self.w_ps,
-            self.y_ps_c3_r1 + self.h_ps,
-            fill=self.bg_empty_west
-        )
-        self.text_ps_w_c3 = self.canvas.create_text(
-            self.x_ps_w_r1 + (self.w_ps / 2),
-            self.y_ps_c3_r1 + (self.h_ps / 2),
-            text="C3",
-            fill=self.fg_empty_west,
-            font=self.font_empty_west
-        )
-        self.img_ps_w_c3 = self.canvas.create_image(
-            self.x_ps_w_r1,
-            self.y_ps_c3_r1,
-            image=self.res_images[sample_west_teams[4]],
-            anchor=tkinter.NW
-        )
+        self.ps_codes["west"][0]["C3"].update({
+            "x0": self.x_ps_w_r1,
+            "y0": self.y_ps_c3_r1,
+            "x1": self.x_ps_w_r1 + self.w_ps,
+            "y1": self.y_ps_c3_r1 + self.h_ps,
+            "text": "C3"
+        })
 
         # central 2
-        self.rect_ps_w_c2 = self.canvas.create_rectangle(
-            self.x_ps_w_r1,
-            self.y_ps_c2_r1,
-            self.x_ps_w_r1 + self.w_ps,
-            self.y_ps_c2_r1 + self.h_ps,
-            fill=self.bg_empty_west
-        )
-        self.text_ps_w_c2 = self.canvas.create_text(
-            self.x_ps_w_r1 + (self.w_ps / 2),
-            self.y_ps_c2_r1 + (self.h_ps / 2),
-            text="C2",
-            fill=self.fg_empty_west,
-            font=self.font_empty_west
-        )
-        self.img_ps_w_c2 = self.canvas.create_image(
-            self.x_ps_w_r1,
-            self.y_ps_c2_r1,
-            image=self.res_images[sample_west_teams[5]],
-            anchor=tkinter.NW
-        )
+        self.ps_codes["west"][0]["C2"].update({
+            "x0": self.x_ps_w_r1,
+            "y0": self.y_ps_c2_r1,
+            "x1": self.x_ps_w_r1 + self.w_ps,
+            "y1": self.y_ps_c2_r1 + self.h_ps,
+            "text": "C2"
+        })
 
         # central 1
-        self.rect_ps_w_c1 = self.canvas.create_rectangle(
-            self.x_ps_w_r1,
-            self.y_ps_c1_r1,
-            self.x_ps_w_r1 + self.w_ps,
-            self.y_ps_c1_r1 + self.h_ps,
-            fill=self.bg_empty_west
-        )
-        self.text_ps_w_c1 = self.canvas.create_text(
-            self.x_ps_w_r1 + (self.w_ps / 2),
-            self.y_ps_c1_r1 + (self.h_ps / 2),
-            text="C1",
-            fill=self.fg_empty_west,
-            font=self.font_empty_west
-        )
-        self.img_ps_w_c1 = self.canvas.create_image(
-            self.x_ps_w_r1,
-            self.y_ps_c1_r1,
-            image=self.res_images[sample_west_teams[6]],
-            anchor=tkinter.NW
-        )
+        self.ps_codes["west"][0]["C1"].update({
+            "x0": self.x_ps_w_r1,
+            "y0": self.y_ps_c1_r1,
+            "x1": self.x_ps_w_r1 + self.w_ps,
+            "y1": self.y_ps_c1_r1 + self.h_ps,
+            "text": "C1"
+        })
 
         # west wild card bottom
-        self.rect_ps_w_wc_b = self.canvas.create_rectangle(
-            self.x_ps_w_r1,
-            self.y_ps_wx_b_r1,
+        self.ps_codes["west"][0]["WC_b"].update({
+            "x0": self.x_ps_w_r1,
+            "y0": self.y_ps_wx_b_r1,
+            "x1": self.x_ps_w_r1 + self.w_ps,
+            "y1": self.y_ps_wx_b_r1 + self.h_ps,
+            "text": "WC"
+        })
+
+        # Round 2
+
+        # pacific seed 1
+        self.ps_codes["west"][1]["P1"].update({
+            "x0": self.x_ps_w_r2,
+            "y0": self.y_ps_w_r2_p1,
+            "x1": self.x_ps_w_r2 + self.w_ps,
+            "y1": self.y_ps_w_r2_p1 + self.h_ps,
+            "text": "P1"
+        })
+
+        # pacific seed 2
+        self.ps_codes["west"][1]["P2"].update({
+            "x0": self.x_ps_w_r2,
+            "y0": self.y_ps_w_r2_p2,
+            "x1": self.x_ps_w_r2 + self.w_ps,
+            "y1": self.y_ps_w_r2_p2 + self.h_ps,
+            "text": "P2"
+        })
+
+        # central seed 1
+        self.ps_codes["west"][1]["C2"].update({
+            "x0": self.x_ps_w_r2,
+            "y0": self.y_ps_w_r2_c2,
+            "x1": self.x_ps_w_r2 + self.w_ps,
+            "y1": self.y_ps_w_r2_c2 + self.h_ps,
+            "text": "C2"
+        })
+
+        # central seed 2
+        self.ps_codes["west"][1]["C1"].update({
+            "x0": self.x_ps_w_r2,
+            "y0": self.y_ps_w_r2_c1,
+            "x1": self.x_ps_w_r2 + self.w_ps,
+            "y1": self.y_ps_w_r2_c1 + self.h_ps,
+            "text": "C1"
+        })
+
+        # Round 3
+
+        # pacific seed
+        self.ps_codes["west"][2]["P"].update({
+            "x0": self.x_ps_w_r3,
+            "y0": self.y_ps_w_r3_p,
+            "x1": self.x_ps_w_r3 + self.w_ps,
+            "y1": self.y_ps_w_r3_p + self.h_ps,
+            "text": "P"
+        })
+
+        # central seed
+        self.ps_codes["west"][2]["C"].update({
+            "x0": self.x_ps_w_r3,
+            "y0": self.y_ps_w_r3_c,
+            "x1": self.x_ps_w_r3 + self.w_ps,
+            "y1": self.y_ps_w_r3_c + self.h_ps,
+            "text": "C"
+        })
+
+        # Round 4
+
+        # west seed
+        self.ps_codes["west"][3]["W"].update({
+            "x0": self.x_ps_w_r4,
+            "y0": self.y_ps_w_r4_w,
+            "x1": self.x_ps_w_r4 + self.w_ps,
+            "y1": self.y_ps_w_r4_w + self.h_ps,
+            "text": "W"
+        })
+
+        for conf, conf_data in self.ps_codes.items():
+            for rnd, round_data in conf_data.items():
+                for ps_code, ps_data in round_data.items():
+                    print(f"{conf=}, {rnd=}, {ps_code=}")
+                    t_rect = self.canvas.create_rectangle(
+                        ps_data["x0"],
+                        ps_data["y0"],
+                        ps_data["x1"],
+                        ps_data["y1"],
+                        fill=self.bg_empty_west
+                    )
+                    t_text = self.canvas.create_text(
+                        ps_data["x0"] + (self.w_ps / 2),
+                        ps_data["y0"] + (self.h_ps / 2),
+                        text=ps_data["text"]
+                    )
+                    t_img = self.canvas.create_image(
+                        ps_data["x0"] + (self.w_ps / 2),
+                        ps_data["y0"] + (self.h_ps / 2),
+                        state="hidden"
+                    )
+                    self.ps_codes[conf][rnd][ps_code].update({
+                        "tag_rect": t_rect,
+                        "tag_text": t_text,
+                        "tag_image": t_img
+                    })
+
+        # Lines
+
+        self.lines = {}
+
+        # west R1 WC top to R2 P1
+        self.lines[(("west", 0, "WC_t"), ("west", 1, "P1"))] = self.canvas.create_line(
             self.x_ps_w_r1 + self.w_ps,
-            self.y_ps_wx_b_r1 + self.h_ps,
-            fill=self.bg_empty_west
+            self.y_ps_wc_t_r1 + (self.h_ps / 2),
+            self.x_ps_w_r2,
+            self.y_ps_w_r2_p1 + (self.h_ps / 2)
         )
-        self.text_ps_w_wc_b = self.canvas.create_text(
-            self.x_ps_w_r1 + (self.w_ps / 2),
+
+        # west R1 P1 to R2 P1
+        self.lines[(("west", 0, "P1"), ("west", 1, "P1"))] = self.canvas.create_line(
+            self.x_ps_w_r1 + self.w_ps,
+            self.y_ps_p1_r1 + (self.h_ps / 2),
+            self.x_ps_w_r2,
+            self.y_ps_w_r2_p1 + (self.h_ps / 2)
+        )
+
+        # west R1 P2 to R2 P2
+        self.lines[(("west", 0, "P2"), ("west", 1, "P2"))] = self.canvas.create_line(
+            self.x_ps_w_r1 + self.w_ps,
+            self.y_ps_p2_r1 + (self.h_ps / 2),
+            self.x_ps_w_r2,
+            self.y_ps_w_r2_p2 + (self.h_ps / 2)
+        )
+
+        # west R1 P3 to R2 P2
+        self.lines[(("west", 0, "P3"), ("west", 1, "P2"))] = self.canvas.create_line(
+            self.x_ps_w_r1 + self.w_ps,
+            self.y_ps_p3_r1 + (self.h_ps / 2),
+            self.x_ps_w_r2,
+            self.y_ps_w_r2_p2 + (self.h_ps / 2)
+        )
+
+        # west R1 C3 to R2 C2
+        self.lines[(("west", 0, "C3"), ("west", 1, "C2"))] = self.canvas.create_line(
+            self.x_ps_w_r1 + self.w_ps,
+            self.y_ps_c3_r1 + (self.h_ps / 2),
+            self.x_ps_w_r2,
+            self.y_ps_w_r2_c2 + (self.h_ps / 2)
+        )
+
+        # west R1 C2 to R2 C2
+        self.lines[(("west", 0, "C2"), ("west", 1, "C2"))] = self.canvas.create_line(
+            self.x_ps_w_r1 + self.w_ps,
+            self.y_ps_c2_r1 + (self.h_ps / 2),
+            self.x_ps_w_r2,
+            self.y_ps_w_r2_c2 + (self.h_ps / 2)
+        )
+
+        # west R1 C1 to R2 C1
+        self.lines[(("west", 0, "C1"), ("west", 1, "C1"))] = self.canvas.create_line(
+            self.x_ps_w_r1 + self.w_ps,
+            self.y_ps_c1_r1 + (self.h_ps / 2),
+            self.x_ps_w_r2,
+            self.y_ps_w_r2_c1 + (self.h_ps / 2)
+        )
+
+        # west R1 WC bottom to R2 C1
+        self.lines[(("west", 0, "WC_b"), ("west", 1, "C1"))] = self.canvas.create_line(
+            self.x_ps_w_r1 + self.w_ps,
             self.y_ps_wx_b_r1 + (self.h_ps / 2),
-            text="WC",
-            fill=self.fg_empty_west,
-            font=self.font_empty_west
+            self.x_ps_w_r2,
+            self.y_ps_w_r2_c1 + (self.h_ps / 2)
         )
-        self.img_ps_w_wc_b = self.canvas.create_image(
-            self.x_ps_w_r1,
-            self.y_ps_wx_b_r1,
-            image=self.res_images[sample_west_teams[7]],
-            anchor=tkinter.NW
+
+        # west R2 P1 to R3 P
+        self.lines[(("west", 1, "P1"), ("west", 2, "P"))] = self.canvas.create_line(
+            self.x_ps_w_r2 + self.w_ps,
+            self.y_ps_w_r2_p1 + (self.h_ps / 2),
+            self.x_ps_w_r3,
+            self.y_ps_w_r3_p + (self.h_ps / 2)
         )
-        self.west_images = [
-            self.img_ps_w_wc_t,
-            self.img_ps_w_p1,
-            self.img_ps_w_p2,
-            self.img_ps_w_p3,
-            self.img_ps_w_c3,
-            self.img_ps_w_c2,
-            self.img_ps_w_c1,
-            self.img_ps_w_wc_b
-        ]
+
+        # west R2 P2 to R3 P
+        self.lines[(("west", 1, "P2"), ("west", 2, "P"))] = self.canvas.create_line(
+            self.x_ps_w_r2 + self.w_ps,
+            self.y_ps_w_r2_p2 + (self.h_ps / 2),
+            self.x_ps_w_r3,
+            self.y_ps_w_r3_p + (self.h_ps / 2)
+        )
+
+        # west R2 C2 to R3 C
+        self.lines[(("west", 1, "C2"), ("west", 2, "C"))] = self.canvas.create_line(
+            self.x_ps_w_r2 + self.w_ps,
+            self.y_ps_w_r2_c2 + (self.h_ps / 2),
+            self.x_ps_w_r3,
+            self.y_ps_w_r3_c + (self.h_ps / 2)
+        )
+
+        # west R2 C1 to R3 C
+        self.lines[(("west", 1, "C1"), ("west", 2, "C"))] = self.canvas.create_line(
+            self.x_ps_w_r2 + self.w_ps,
+            self.y_ps_w_r2_c1 + (self.h_ps / 2),
+            self.x_ps_w_r3,
+            self.y_ps_w_r3_c + (self.h_ps / 2)
+        )
+
+        # west R3 P to R4 W
+        self.lines[(("west", 2, "P"), ("west", 3, "W"))] = self.canvas.create_line(
+            self.x_ps_w_r3 + self.w_ps,
+            self.y_ps_w_r3_p + (self.h_ps / 2),
+            self.x_ps_w_r4,
+            self.y_ps_w_r4_w + (self.h_ps / 2)
+        )
+
+        # west R3 C to R4 W
+        self.lines[(("west", 2, "C"), ("west", 3, "W"))] = self.canvas.create_line(
+            self.x_ps_w_r3 + self.w_ps,
+            self.y_ps_w_r3_c + (self.h_ps / 2),
+            self.x_ps_w_r4,
+            self.y_ps_w_r4_w + (self.h_ps / 2)
+        )
+
+        for k, line in self.lines.items():
+            self.canvas.itemconfigure(
+                line,
+                fill=self.bg_line_west,
+                width=self.w_line
+            )
+            self.canvas.tag_lower(line)
+
+        # self.rect_ps_w_wc_b = self.canvas.create_rectangle(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_wx_b_r1,
+        #     self.x_ps_w_r1 + self.w_ps,
+        #     self.y_ps_wx_b_r1 + self.h_ps,
+        #     fill=self.bg_empty_west
+        # )
+        # self.text_ps_w_wc_b = self.canvas.create_text(
+        #     self.x_ps_w_r1 + (self.w_ps / 2),
+        #     self.y_ps_wx_b_r1 + (self.h_ps / 2),
+        #     text="WC",
+        #     fill=self.fg_empty_west,
+        #     font=self.font_empty_west
+        # )
+        # self.img_ps_w_wc_b = self.canvas.create_image(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_wx_b_r1,
+        #     image=self.res_images[sample_west_teams[7]],
+        #     anchor=tkinter.NW
+        # )
+        # self.west_images = [
+        #     self.img_ps_w_wc_t,
+        #     self.img_ps_w_p1,
+        #     self.img_ps_w_p2,
+        #     self.img_ps_w_p3,
+        #     self.img_ps_w_c3,
+        #     self.img_ps_w_c2,
+        #     self.img_ps_w_c1,
+        #     self.img_ps_w_wc_b
+        # ]
+
+        # # west wildcard top
+        # self.rect_ps_w_wc_t = self.canvas.create_rectangle(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_wc_t_r1,
+        #     self.x_ps_w_r1 + self.w_ps,
+        #     self.y_ps_wc_t_r1 + self.h_ps,
+        #     fill=self.bg_empty_west
+        # )
+        # self.text_ps_w_wc_t = self.canvas.create_text(
+        #     self.x_ps_w_r1 + (self.w_ps / 2),
+        #     self.y_ps_wc_t_r1 + (self.h_ps / 2),
+        #     text="WC",
+        #     fill=self.fg_empty_west,
+        #     font=self.font_empty_west
+        # )
+        # self.img_ps_w_wc_t = self.canvas.create_image(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_wc_t_r1,
+        #     image=self.res_images[sample_west_teams[0]],
+        #     anchor=tkinter.NW
+        # )
+        #
+        # # pacific 1
+        # self.rect_ps_w_p1 = self.canvas.create_rectangle(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_p1_r1,
+        #     self.x_ps_w_r1 + self.w_ps,
+        #     self.y_ps_p1_r1 + self.h_ps,
+        #     fill=self.bg_empty_west
+        # )
+        # self.text_ps_w_p1 = self.canvas.create_text(
+        #     self.x_ps_w_r1 + (self.w_ps / 2),
+        #     self.y_ps_p1_r1 + (self.h_ps / 2),
+        #     text="P1",
+        #     fill=self.fg_empty_west,
+        #     font=self.font_empty_west
+        # )
+        # self.img_ps_w_p1 = self.canvas.create_image(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_p1_r1,
+        #     image=self.res_images[sample_west_teams[1]],
+        #     anchor=tkinter.NW
+        # )
+        #
+        # # pacific 2
+        # self.rect_ps_w_p2 = self.canvas.create_rectangle(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_p2_r1,
+        #     self.x_ps_w_r1 + self.w_ps,
+        #     self.y_ps_p2_r1 + self.h_ps,
+        #     fill=self.bg_empty_west
+        # )
+        # self.text_ps_w_p2 = self.canvas.create_text(
+        #     self.x_ps_w_r1 + (self.w_ps / 2),
+        #     self.y_ps_p2_r1 + (self.h_ps / 2),
+        #     text="P2",
+        #     fill=self.fg_empty_west,
+        #     font=self.font_empty_west
+        # )
+        # self.img_ps_w_p2 = self.canvas.create_image(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_p2_r1,
+        #     image=self.res_images[sample_west_teams[2]],
+        #     anchor=tkinter.NW
+        # )
+        #
+        # # pacific 3
+        # self.rect_ps_w_p3 = self.canvas.create_rectangle(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_p3_r1,
+        #     self.x_ps_w_r1 + self.w_ps,
+        #     self.y_ps_p3_r1 + self.h_ps,
+        #     fill=self.bg_empty_west
+        # )
+        # self.text_ps_w_p3 = self.canvas.create_text(
+        #     self.x_ps_w_r1 + (self.w_ps / 2),
+        #     self.y_ps_p3_r1 + (self.h_ps / 2),
+        #     text="P3",
+        #     fill=self.fg_empty_west,
+        #     font=self.font_empty_west
+        # )
+        # self.img_ps_w_p3 = self.canvas.create_image(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_p3_r1,
+        #     image=self.res_images[sample_west_teams[3]],
+        #     anchor=tkinter.NW
+        # )
+        #
+        # # central 3
+        # self.rect_ps_w_c3 = self.canvas.create_rectangle(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_c3_r1,
+        #     self.x_ps_w_r1 + self.w_ps,
+        #     self.y_ps_c3_r1 + self.h_ps,
+        #     fill=self.bg_empty_west
+        # )
+        # self.text_ps_w_c3 = self.canvas.create_text(
+        #     self.x_ps_w_r1 + (self.w_ps / 2),
+        #     self.y_ps_c3_r1 + (self.h_ps / 2),
+        #     text="C3",
+        #     fill=self.fg_empty_west,
+        #     font=self.font_empty_west
+        # )
+        # self.img_ps_w_c3 = self.canvas.create_image(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_c3_r1,
+        #     image=self.res_images[sample_west_teams[4]],
+        #     anchor=tkinter.NW
+        # )
+        #
+        # # central 2
+        # self.rect_ps_w_c2 = self.canvas.create_rectangle(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_c2_r1,
+        #     self.x_ps_w_r1 + self.w_ps,
+        #     self.y_ps_c2_r1 + self.h_ps,
+        #     fill=self.bg_empty_west
+        # )
+        # self.text_ps_w_c2 = self.canvas.create_text(
+        #     self.x_ps_w_r1 + (self.w_ps / 2),
+        #     self.y_ps_c2_r1 + (self.h_ps / 2),
+        #     text="C2",
+        #     fill=self.fg_empty_west,
+        #     font=self.font_empty_west
+        # )
+        # self.img_ps_w_c2 = self.canvas.create_image(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_c2_r1,
+        #     image=self.res_images[sample_west_teams[5]],
+        #     anchor=tkinter.NW
+        # )
+        #
+        # # central 1
+        # self.rect_ps_w_c1 = self.canvas.create_rectangle(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_c1_r1,
+        #     self.x_ps_w_r1 + self.w_ps,
+        #     self.y_ps_c1_r1 + self.h_ps,
+        #     fill=self.bg_empty_west
+        # )
+        # self.text_ps_w_c1 = self.canvas.create_text(
+        #     self.x_ps_w_r1 + (self.w_ps / 2),
+        #     self.y_ps_c1_r1 + (self.h_ps / 2),
+        #     text="C1",
+        #     fill=self.fg_empty_west,
+        #     font=self.font_empty_west
+        # )
+        # self.img_ps_w_c1 = self.canvas.create_image(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_c1_r1,
+        #     image=self.res_images[sample_west_teams[6]],
+        #     anchor=tkinter.NW
+        # )
+        #
+        # # west wild card bottom
+        # self.rect_ps_w_wc_b = self.canvas.create_rectangle(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_wx_b_r1,
+        #     self.x_ps_w_r1 + self.w_ps,
+        #     self.y_ps_wx_b_r1 + self.h_ps,
+        #     fill=self.bg_empty_west
+        # )
+        # self.text_ps_w_wc_b = self.canvas.create_text(
+        #     self.x_ps_w_r1 + (self.w_ps / 2),
+        #     self.y_ps_wx_b_r1 + (self.h_ps / 2),
+        #     text="WC",
+        #     fill=self.fg_empty_west,
+        #     font=self.font_empty_west
+        # )
+        # self.img_ps_w_wc_b = self.canvas.create_image(
+        #     self.x_ps_w_r1,
+        #     self.y_ps_wx_b_r1,
+        #     image=self.res_images[sample_west_teams[7]],
+        #     anchor=tkinter.NW
+        # )
+        # self.west_images = [
+        #     self.img_ps_w_wc_t,
+        #     self.img_ps_w_p1,
+        #     self.img_ps_w_p2,
+        #     self.img_ps_w_p3,
+        #     self.img_ps_w_c3,
+        #     self.img_ps_w_c2,
+        #     self.img_ps_w_c1,
+        #     self.img_ps_w_wc_b
+        # ]
         # self.east_images = [
         #     self.img_ps_e_wc_t,
         #     self.img_ps_e_a1,
@@ -532,37 +907,325 @@ class PlayoffChooser(tkinter.Tk):
         #     self.img_ps_e_wc_b
         # ]
 
+        self.positions_ps_west = {
+            rnd: {
+                k: {
+                    "rect": self.canvas.bbox(dat["tag_rect"]),
+                    "text": self.canvas.bbox(dat["tag_text"])
+                }
+                for k, dat in rnd_dat.items()
+            }
+            for rnd, rnd_dat in self.ps_codes["west"].items()
+        }
+        self.positions_bank_west_teams = {}
+
         for i, t_pts in enumerate(self.sorted_west):
             t, pts = t_pts
-            self.canvas.create_image(
-                self.pos_bank_west[0] + 10 + (0 if (i % 2 == 0) else self.w_ps + 10),
-                self.pos_bank_west[1] + ((i // 2) * (self.h_ps + 10)) + 5,
-                image=self.res_images[t],
+            x = self.pos_bank_west[0] + 10 + (0 if (i % 2 == 0) else self.w_ps + 10)
+            y = self.pos_bank_west[1] + ((i // 2) * (self.h_ps + 10)) + 5
+            img = self.res_images[t]
+            self.res_img_to_t[img] = t
+            tag = self.canvas.create_image(
+                x, y,
+                image=img,
                 anchor=tkinter.NW
             )
+            self.positions_bank_west_teams[t] = (x, y, img, tag)
+            self.canvas.tag_bind(tag, "<Button-1>", lambda event, t_=t: self.click_bank_team(event, t_))
 
         self.canvas.grid(row=0, column=0)
-        self.canvas.tag_bind(self.img_ps_w_wc_t, "<B1-Motion>", lambda event, rect=self.img_ps_w_wc_t: self.motion_rect(event, rect))
-        self.canvas.tag_bind(self.img_ps_w_p1, "<B1-Motion>", lambda event, rect=self.img_ps_w_p1: self.motion_rect(event, rect))
-        self.canvas.tag_bind(self.img_ps_w_p2, "<B1-Motion>", lambda event, rect=self.img_ps_w_p2: self.motion_rect(event, rect))
-        self.canvas.tag_bind(self.img_ps_w_p3, "<B1-Motion>", lambda event, rect=self.img_ps_w_p3: self.motion_rect(event, rect))
-        self.canvas.tag_bind(self.img_ps_w_c3, "<B1-Motion>", lambda event, rect=self.img_ps_w_c3: self.motion_rect(event, rect))
-        self.canvas.tag_bind(self.img_ps_w_c2, "<B1-Motion>", lambda event, rect=self.img_ps_w_c2: self.motion_rect(event, rect))
-        self.canvas.tag_bind(self.img_ps_w_c1, "<B1-Motion>", lambda event, rect=self.img_ps_w_c1: self.motion_rect(event, rect))
-        self.canvas.tag_bind(self.img_ps_w_wc_b, "<B1-Motion>", lambda event, rect=self.img_ps_w_wc_b: self.motion_rect(event, rect))
+        # self.canvas.tag_bind(self.img_ps_w_wc_t, "<B1-Motion>", lambda event, rect=self.img_ps_w_wc_t: self.motion_rect(event, rect))
+        # self.canvas.tag_bind(self.img_ps_w_p1, "<B1-Motion>", lambda event, rect=self.img_ps_w_p1: self.motion_rect(event, rect))
+        # self.canvas.tag_bind(self.img_ps_w_p2, "<B1-Motion>", lambda event, rect=self.img_ps_w_p2: self.motion_rect(event, rect))
+        # self.canvas.tag_bind(self.img_ps_w_p3, "<B1-Motion>", lambda event, rect=self.img_ps_w_p3: self.motion_rect(event, rect))
+        # self.canvas.tag_bind(self.img_ps_w_c3, "<B1-Motion>", lambda event, rect=self.img_ps_w_c3: self.motion_rect(event, rect))
+        # self.canvas.tag_bind(self.img_ps_w_c2, "<B1-Motion>", lambda event, rect=self.img_ps_w_c2: self.motion_rect(event, rect))
+        # self.canvas.tag_bind(self.img_ps_w_c1, "<B1-Motion>", lambda event, rect=self.img_ps_w_c1: self.motion_rect(event, rect))
+        # self.canvas.tag_bind(self.img_ps_w_wc_b, "<B1-Motion>", lambda event, rect=self.img_ps_w_wc_b: self.motion_rect(event, rect))
+        #
+        #
+        # self.canvas.tag_bind(self.img_ps_w_wc_t, "<ButtonRelease-1>", lambda event, rect=self.img_ps_w_wc_t: self.release_rect(event, rect))
+
+        # self.canvas.tag_bind(self.drag_rect, "<B1-Motion>", lambda event, rect=self.img_ps_w_wc_b: self.motion_rect(event, rect))
+        self.canvas.bind("<ButtonRelease-1>", self.release_click)
+        self.canvas.bind("<B1-Motion>", self.motion)
+        self.canvas.tag_raise(self.drag_rect)
+
+        # for img in self.west_images:
+        #     self.canvas.itemconfigure(img, state="hidden")
+
+    def collide_bbox_point(self, bbox_a, point):
+        x0_a, y0_a, x1_a, y1_a = bbox_a
+        x_p, y_p = point
+        return all([
+            x0_a <= x_p <= x1_a,
+            y0_a <= y_p <= y1_a
+        ])
+
+    def motion(self, event):
+        if self.dragging.get():
+            e_x, e_y = event.x, event.y
+            # print(f"00 {e_x=}, {e_y=}")
+            e_x = self.canvas.canvasx(e_x)
+            e_y = self.canvas.canvasy(e_y)
+            # print(f"11 {e_x=}, {e_y=}")
+            point = (e_x, e_y)
+            self.canvas.coords(self.drag_rect, e_x, e_y)
+            self.revert_lines()
+            # drag_team = self.res_img_to_t[self.canvas.itemcget(self.drag_rect, "image")]
+            drag_team = self.drag_team.get()
+            drag_div = full_team_to_div_name[drag_team].upper()[0]
+            print(f"{drag_team=}, {drag_div=}")
+
+            for rnd_code, rnd_dat in self.positions_ps_west.items():
+                for ps_code, dat in rnd_dat.items():
+                    for k, bbox in dat.items():
+                        paths = []
+                        p_y = -1
+                        if self.collide_bbox_point(bbox, point):
+                            if rnd_code == 4:
+                                # stanley cup finalist
+                                # p_y = int(((e_y - bbox[1]) / self.h_ps) * 4)
+                                # paths = self.calc_path("west", rnd_code, ps_code)
+                                pass
+                            elif rnd_code == 3:
+                                # conf finalist
+                                # p_y = int(((e_y - bbox[1]) / self.h_ps) * 4)
+                                # paths = self.calc_path("west", rnd_code, ps_code)
+                                pass
+                            elif rnd_code == 2:
+                                # div finalist
+                                p_y = int(((e_y - bbox[1]) / self.h_ps) * 4)
+                                paths = self.calc_path("west", rnd_code, ps_code)
+                            elif rnd_code == 1:
+                                # quarter finalist
+                                p_y = int(((e_y - bbox[1]) / self.h_ps) * 2)
+                                paths = self.calc_path("west", rnd_code, ps_code)
+                                # print(f"{p_y=}\n{self.h_ps=}\n{bbox=}\n{e_y-bbox[1]=}\n{(e_y-bbox[1])/self.h_ps=}\n{((e_y-bbox[1])/self.h_ps)*2=}\npaths:")
+                                # for p in paths:
+                                #     print(f"\t{p=}")
+                                # pass
+                            else:
+                                # round 1
+                                pass
+                        # print(f"{p_y=}, {len(paths)=}, {paths=}")
+                        if paths:
+                            path = paths[p_y]
+                            if path:
+                                pth_0 = path.pop(0)
+                            while path:
+                                pth_1 = path.pop(0)
+                                cc_0, rc_0, pc_0 = pth_0
+                                cc_1, rc_1, pc_1 = pth_1
+                                # if cc_0 == "west" and
+                                do_highlight = False
+                                match drag_div:
+                                    case "A":
+                                        do_highlight = ps_code in ["A1", "A2", "A3", "WC_t", "A", "E"]
+                                    case "M":
+                                        do_highlight = ps_code in ["M1", "M2", "M3", "WC_b", "M", "E"]
+                                    case "C":
+                                        do_highlight = ps_code in ["C1", "C2", "C3", "WC_b", "C", "W"]
+                                    case _:
+                                        do_highlight = ps_code in ["P1", "P2", "P3", "WC_t", "P", "W"]
+
+                                if do_highlight:
+                                    print(f"\t{pth_0=}, {pth_1=}")
+                                    self.canvas.itemconfigure(
+                                        self.lines[(tuple(pth_0), tuple(pth_1))],
+                                        fill=self.bg_opt_ps_west
+                                    )
+                                pth_0 = pth_1
+
+    def revert_lines(self):
+        for k, line in self.lines.items():
+            conf = k[0][0]
+            self.canvas.itemconfigure(
+                line,
+                fill=self.bg_line_east if conf == "east" else self.bg_line_west
+            )
+
+    def release_click(self, event):
+        is_dragging = self.dragging.get()
+        e_x, e_y = event.x, event.y
+        point = (e_x, e_y)
+        # bbox_drag = self.canvas.bbox(self.drag_rect)
+        if is_dragging:
+            for rnd_code, rnd_dat in self.positions_ps_west.items():
+                for ps_code, dat in rnd_dat.items():
+                    for k, bbox in dat.items():
+                        if self.collide_bbox_point(bbox, point):
+                            # release in a ps spot
+                            print(f"Release {rnd_code=} {ps_code=}, {k=}")
+                            # check that previous spots not empty
+                            do_change = False
+                            if rnd_code == 4:
+                                # stanley cup finalist
+                                pass
+                            elif rnd_code == 3:
+                                # conf finalist
+                                pass
+                            elif rnd_code == 2:
+                                # div finalist
+                                pass
+                            elif rnd_code == 1:
+                                # quarter finalist
+                                p_y = int(((e_y - bbox[0]) / self.h_ps) * 2)
+                                paths = self.calc_path("west", rnd_code, ps_code)
+                                # pass
+                            else:
+                                # round 1
+                                do_change = True
+
+                            if do_change:
+                                self.canvas.itemconfigure(
+                                    self.ps_codes["west"][rnd_code][ps_code]["tag_image"],
+                                    image=self.canvas.itemcget(
+                                        self.drag_rect,
+                                        "image"
+                                    ),
+                                    state="normal"
+                                )
+
+        self.dragging.set(False)
+        self.revert_lines()
+        self.canvas.itemconfigure(self.drag_rect, state="hidden")
+
+    def calc_path(self, conf_code, rnd_code, ps_code):
+        inp = [conf_code, rnd_code, ps_code]
+        if rnd_code == 4:
+            # stanley cup finalist
+            pass
+        elif rnd_code == 3:
+            # conf finalist
+            match ps_code:
+                case "W":
+                    return [
+                        [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], [conf_code, 2, "P"], inp],
+                        [[conf_code, 0, "P1"], [conf_code, 1, "P1"], [conf_code, 2, "P"], inp],
+                        [[conf_code, 0, "P2"], [conf_code, 1, "P2"], [conf_code, 2, "P"], inp],
+                        [[conf_code, 0, "P3"], [conf_code, 1, "P2"], [conf_code, 2, "P"], inp],
+                        [[conf_code, 0, "C3"], [conf_code, 1, "C2"], [conf_code, 2, "C"], inp],
+                        [[conf_code, 0, "C2"], [conf_code, 1, "C2"], [conf_code, 2, "C"], inp],
+                        [[conf_code, 0, "C1"], [conf_code, 1, "C1"], [conf_code, 2, "C"], inp],
+                        [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], [conf_code, 2, "C"], inp]
+                    ]
+                case _:
+                    return [
+                        [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], [conf_code, 2, "A"], inp],
+                        [[conf_code, 0, "A1"], [conf_code, 1, "A1"], [conf_code, 2, "A"], inp],
+                        [[conf_code, 0, "A2"], [conf_code, 1, "A2"], [conf_code, 2, "A"], inp],
+                        [[conf_code, 0, "A3"], [conf_code, 1, "A2"], [conf_code, 2, "A"], inp],
+                        [[conf_code, 0, "M3"], [conf_code, 1, "M2"], [conf_code, 2, "M"], inp],
+                        [[conf_code, 0, "M2"], [conf_code, 1, "M2"], [conf_code, 2, "M"], inp],
+                        [[conf_code, 0, "M1"], [conf_code, 1, "M1"], [conf_code, 2, "M"], inp],
+                        [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], [conf_code, 2, "M"], inp]
+                    ]
+        elif rnd_code == 2:
+            # div finalist
+            if conf_code == "west":
+                match ps_code:
+                    case "P":
+                        return [
+                            [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], inp],
+                            [[conf_code, 0, "P1"], [conf_code, 1, "P1"], inp],
+                            [[conf_code, 0, "P2"], [conf_code, 1, "P2"], inp],
+                            [[conf_code, 0, "P3"], [conf_code, 1, "P2"], inp]
+                        ]
+                    case _:
+                        return [
+                            [[conf_code, 0, "C3"], [conf_code, 1, "C2"], inp],
+                            [[conf_code, 0, "C2"], [conf_code, 1, "C2"], inp],
+                            [[conf_code, 0, "C1"], [conf_code, 1, "C1"], inp],
+                            [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], inp]
+                        ]
+            else:
+                match ps_code:
+                    case "A":
+                        return [
+                            [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], inp],
+                            [[conf_code, 0, "A1"], [conf_code, 1, "A1"], inp],
+                            [[conf_code, 0, "A2"], [conf_code, 1, "A2"], inp],
+                            [[conf_code, 0, "A3"], [conf_code, 1, "A2"], inp]
+                        ]
+                    case _:
+                        return [
+                            [[conf_code, 0, "M3"], [conf_code, 1, "M2"], inp],
+                            [[conf_code, 0, "M2"], [conf_code, 1, "M2"], inp],
+                            [[conf_code, 0, "M1"], [conf_code, 1, "M1"], inp],
+                            [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], inp]
+                        ]
+        elif rnd_code == 1:
+            # quarter finalist
+            if conf_code == "west":
+                match ps_code:
+                    case "P1":
+                        return [
+                            [[conf_code, 0, "WC_t"], inp],
+                            [[conf_code, 0, "P1"], inp]
+                        ]
+                    case "P2":
+                        return [
+                            [[conf_code, 0, "P2"], inp],
+                            [[conf_code, 0, "P3"], inp]
+                        ]
+                    case "C2":
+                        return [
+                            [[conf_code, 0, "C3"], inp],
+                            [[conf_code, 0, "C2"], inp]
+                        ]
+                    case _:
+                        return [
+                            [[conf_code, 0, "C1"], inp],
+                            [[conf_code, 0, "WC_b"], inp]
+                        ]
+            else:
+                match ps_code:
+                    case "A1":
+                        return [
+                            [[conf_code, 0, "WC_t"], inp],
+                            [[conf_code, 0, "A1"], inp]
+                        ]
+                    case "A2":
+                        return [
+                            [[conf_code, 0, "A2"], inp],
+                            [[conf_code, 0, "A3"], inp]
+                        ]
+                    case "M2":
+                        return [
+                            [[conf_code, 0, "M3"], inp],
+                            [[conf_code, 0, "M2"], inp]
+                        ]
+                    case _:
+                        return [
+                            [[conf_code, 0, "M1"], inp],
+                            [[conf_code, 0, "WC_b"], inp]
+                        ]
+        else:
+            # round 1
+            return inp
+
+    def click_bank_team(self, event, team_name):
+        b_x, b_y, b_img, b_tag = self.positions_bank_west_teams[team_name]
+        e_x, e_y = event.x, event.y
+        self.canvas.itemconfigure(
+            self.drag_rect,
+            state="normal",
+            image=b_img,
+            anchor=tkinter.CENTER
+        )
+        self.canvas.coords(self.drag_rect, e_x, e_y)
+        self.dragging.set(True)
+        self.drag_team.set(team_name)
 
 
-        self.canvas.tag_bind(self.img_ps_w_wc_t, "<ButtonRelease-1>", lambda event, rect=self.img_ps_w_wc_t: self.release_rect(event, rect))
-        for img in self.west_images:
-            self.canvas.itemconfigure(img, state="hidden")
-
-    def motion_rect(self, event, rect):
-        print(f"motion {rect=}, {event=}")
-        ex, ey = event.x, event.y
-        ex -= (self.w_ps / 2)
-        ey -= (self.h_ps / 2)
-        self.canvas.tag_raise(rect)
-        self.canvas.coords(rect, ex, ey)
+    # def motion_rect(self, event, rect):
+    #     print(f"motion {rect=}, {event=}")
+    #     ex, ey = event.x, event.y
+    #     ex -= (self.w_ps / 2)
+    #     ey -= (self.h_ps / 2)
+    #     self.canvas.tag_raise(rect)
+    #     self.canvas.coords(rect, ex, ey)
 
     def release_rect(self, event, rect):
         print(f"release_rect {rect=}, {event=}")
@@ -597,7 +1260,7 @@ if __name__ == '__main__':
 
     # df = pd.read_excel(r"D:\NHL Standings 2024-03-22.xlsx")
     df = pd.read_excel(r"NHL Standings 2024-03-22.xlsx")
-    df_sub = df[["Team", "PTS"]]
+    df_sub = df[["Team", "PTS"]].copy()
     df_sub["Team"] = df_sub["Team"].str.lower().str.replace(".", "")
     # df_sub["Team"] = df_sub["Team"].apply(lambda t: t.lower().replace(".", ""))
     standings_20240322 = df_sub.set_index("Team")["PTS"].to_dict()
