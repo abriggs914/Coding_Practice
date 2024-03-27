@@ -32,9 +32,9 @@ class Game:
         self.global_event = pg.USEREVENT + 0
         pg.time.set_timer(self.global_event, 40)
 
-        self.show_settings()
-
-        # self.new_game()
+        # self.show_settings()
+        #
+        self.new_game()
 
     def show_settings(self):
         self.top_level_settings = SettingsPopUp(self)
@@ -122,13 +122,11 @@ class Game:
                 self.pause_trigger = True
             self.player.single_fire_event(event)
 
-        while self.pause_trigger:
-            self.show_settings()
-            self.pause_trigger = False
+        # while self.pause_trigger:dddss
 
     def run(self):
         self.running_trigger = True
-        self.pause_trigger = False
+        self.pause_trigger = True
         while True:
             if not pg.get_init():
                 self.running_trigger = False
