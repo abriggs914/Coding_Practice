@@ -1065,9 +1065,26 @@ class PlayoffChooser(tkinter.Tk):
                             # div finalist
                             p_y = int(p_y * (4 - tol))
                             # if ps_code not in self.valid_ps_codes_a
+
+                            if drag_div == "C":
+                                if ps_code in self.valid_ps_codes_root_op_c:
+                                    paths = paths[:1]
+                                    p_y = 0
+                            else:
+                                if ps_code in self.valid_ps_codes_root_op_p:
+                                    paths = paths[-1:]
+                                    p_y = 0
                         elif rnd_code == 1:
                             # quarter finalist
                             p_y = int(p_y * (2 - tol))
+                            if drag_div == "C":
+                                if ps_code in self.valid_ps_codes_root_op_c:
+                                    paths = paths[:1]
+                                    p_y = 0
+                            else:
+                                if ps_code in self.valid_ps_codes_root_op_p:
+                                    paths = paths[-1:]
+                                    p_y = 0
                         else:
                             # round 1
                             p_y = 0
@@ -1079,8 +1096,8 @@ class PlayoffChooser(tkinter.Tk):
                             pth_0 = path.pop(0)
                         while path:
                             pth_1 = path.pop(0)
-                            cc_0, rc_0, pc_0 = pth_0
-                            cc_1, rc_1, pc_1 = pth_1
+                            # cc_0, rc_0, pc_0 = pth_0
+                            # cc_1, rc_1, pc_1 = pth_1
                             # if cc_0 == "west" and
                             match drag_div:
                                 case "A":
@@ -1093,7 +1110,7 @@ class PlayoffChooser(tkinter.Tk):
                                     do_highlight = ps_code in self.valid_ps_codes_p
 
                             if do_highlight:
-                                # print(f"\t{pth_0=}, {pth_1=}")
+                                print(f"\t{pth_0=}, {pth_1=}")
                                 self.canvas.itemconfigure(
                                     self.lines[(tuple(pth_0), tuple(pth_1))],
                                     fill=self.bg_opt_ps_west
@@ -1162,9 +1179,25 @@ class PlayoffChooser(tkinter.Tk):
                             elif rnd_code == 2:
                                 # div finalist
                                 p_y = int(p_y * (4 - tol))
+                                if drag_div == "C":
+                                    if ps_code in self.valid_ps_codes_root_op_c:
+                                        paths = paths[:1]
+                                        p_y = 0
+                                else:
+                                    if ps_code in self.valid_ps_codes_root_op_p:
+                                        paths = paths[-1:]
+                                        p_y = 0
                             elif rnd_code == 1:
                                 # quarter finalist
                                 p_y = int(p_y * (2 - tol))
+                                if drag_div == "C":
+                                    if ps_code in self.valid_ps_codes_root_op_c:
+                                        paths = paths[:1]
+                                        p_y = 0
+                                else:
+                                    if ps_code in self.valid_ps_codes_root_op_p:
+                                        paths = paths[-1:]
+                                        p_y = 0
 
                             else:
                                 # round 1
@@ -1206,6 +1239,18 @@ class PlayoffChooser(tkinter.Tk):
         self.dragging.set(False)
         self.revert_lines()
         self.canvas.itemconfigure(self.drag_rect, state="hidden")
+
+    def calc_path_2_sc(self, conf_code, rnd_code, ps_code):
+        inp = [conf_code, rnd_code, ps_code]
+        if rnd_code == 4:
+            return inp
+        elif rnd_code == 3:
+            return [
+                [inp, [conf_code, 4, "SC"]]
+            ]
+        elif rnd_code == 2:
+        elif rnd_code == 1:
+        else:
 
     def calc_path(self, conf_code, rnd_code, ps_code):
         inp = [conf_code, rnd_code, ps_code]
