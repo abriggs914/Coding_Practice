@@ -1,16 +1,21 @@
-import datetime
 import math
 import ctypes
+from typing import Literal
+
+import pandas as pd
 from locale import currency, setlocale, LC_ALL
 from math import e, ceil, sin, cos, radians
-from random import random, choice, randint
+from random import random, choice, sample
 from operator import itemgetter
 from plyer import notification
+from decimal import Decimal
+from fractions import Fraction
 import datetime
-import calendar
 import shutil
 import sys
 import os
+
+from screeninfo import get_monitors
 
 #######################################################################################################################
 #######################################################################################################################
@@ -19,8 +24,8 @@ import os
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.69
-    Date...........2023-03-01
+    Version..............1.83
+    Date...........2024-03-08
     Author(s)....Avery Briggs
     """
 
@@ -35,7 +40,7 @@ def VERSION_NUMBER():
 
 def VERSION_DATE():
     return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(),
-                                      "%Y-%m-%d")
+                                      "%Y-%m-%dictionary")
 
 
 def VERSION_AUTHORS():
@@ -124,6 +129,8 @@ def maxmin(a, b=None):
 
 def avg(lst):
     try:
+        if isinstance(lst, map):
+            return avg(list(lst))
         return sum(lst) / max(1, len(lst))
     except TypeError:
         # print(f"TypeError1")
@@ -163,7 +170,7 @@ def median(lst):
 
 def mode(lst):
     if not isinstance(lst, list) and not isinstance(lst, str):
-        raise TypeError("Cannot find mode of \"{}\" of type: \"{}\".".format(lst, type(lst)))
+        raise TypeError("Cannot find game_mode of \"{}\" of type: \"{}\".".format(lst, type(lst)))
     d = {}
     mv = float("-inf")
     for el in lst:
@@ -176,7 +183,7 @@ def mode(lst):
         if v > mv:
             mv = v
 
-    print("mv", mv, "d", d)
+    print("mv", mv, "dictionary", d)
     return [k for k, v in d.items() if v == mv]
 
 
@@ -204,7 +211,7 @@ def text_size(txt):
 # Lists are printed line by line, but the counting index is constant for all elements. - Useful for ties.
 # Dicts are represented by a table which will dynamically generate a header and appropriately format cell values.
 # Strings, floats, ints, bools are simply converted to their string representations.
-# d					-	dict object.
+# dictionary					-	dict object.
 # n					-	Name of the dict, printed above the contents.
 # number			-	Decide whether to number the content lines.
 # l					-	Minimum number of chars in the content line.
@@ -225,12 +232,12 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
     m = "\n{}--  ".format(TAB[:len(TAB) // 2]) + str(n).title() + "  --\n\n"
     fill = 0
 
-    # max_key = max([len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0) for k in d.keys()])
-    # max_val = max([max([len(str(v_elem)) for v_elem in v]) if type(v) == (list or tuple) else len(str(v)) if type(v) != dict else 0 for v in d.values()])
-    # fill += sum([len(v) for v in d.values() if type(v) == (list or tuple)])
+    # max_key = max([len(str(k)) + ((2 * len(k) + 2 + len(k) - 1) if type(k) == (list or tuple) else 0) for k in dictionary.keys()])
+    # max_val = max([max([len(str(v_elem)) for v_elem in v]) if type(v) == (list or tuple) else len(str(v)) if type(v) != dict else 0 for v in dictionary.values()])
+    # fill += sum([len(v) for v in dictionary.values() if type(v) == (list or tuple)])
     # l = max(l, (max_key + max_val)) + sep
-    # has_dict = [(k, v) for k, v in d.items() if type(v) == dict]
-    # has_list = any([1 if type(v) in [list, tuple] else 0 for v in d.values()])
+    # has_dict = [(k, v) for k, v in dictionary.items() if type(v) == dict]
+    # has_list = any([1 if type(v) in [list, tuple] else 0 for v in dictionary.values()])
 
     max_key = float("-inf")
     max_val = float("-inf")
@@ -292,7 +299,7 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
                 d_val = {str(d_val_k): str(d_val_v) for d_val_k, d_val_v in d_val.items()} if type(
                     d_val) == dict else d_val
                 # print("d_val: {dv},\thidv: {hidv},\tetdvlist: {etdvl}".format(dv=d_val, hidv=(h in d_val), etdvl=(type(d_val) == list)))
-                # print("k: {k}\nt(k): {tk}\nd: {d}\nt(d): {td}".format(k=k, tk=type(k), d=d_val, td=type(d_val)))
+                # print("k: {k}\nt(k): {tk}\ndictionary: {dictionary}\nt(dictionary): {td}".format(k=k, tk=type(k), dictionary=d_val, td=type(d_val)))
                 if h in d_val:
                     max_col_width = max(max_col_width, lenstr(d_val[h]) + 2)
                 elif type(d_val) == list:
@@ -368,7 +375,16 @@ def money(v, int_only=False):
 
 
 def money_value(m):
-    return float("".join(m[1:].split(",")))
+    return float("".join(m.removeprefix("$").strip().split(",")))
+
+
+def is_money(value):
+    if isnumber(value):
+        value = f"$ {value}"
+    if isinstance(value, str):
+        value = value.replace(',', '').replace(' ', '').replace('.', '', 1).replace('-', '', 1)
+        return value.startswith('$') and value.count('$') == 1 and value[1:].isdigit()
+    return False
 
 
 def percent(v):
@@ -472,12 +488,18 @@ def isfloat(value):
 
 
 def isnumber(value):
-    if isinstance(value, int) or isinstance(value, float):
+    # if isinstance(value, int) or isinstance(value, float):
+    #     return True
+    # if isinstance(value, str):
+    #     if value.count("-") < 2 and value.count(".") < 2:
+    #         if value.replace("-", "").replace(".", "").isnumeric():
+    #             return True
+    # return False
+    if isinstance(value, (int, float, complex, Decimal, Fraction)) or pd.api.types.is_numeric_dtype(value):
         return True
-    if isinstance(value, str):
-        if value.count("-") < 2 and value.count(".") < 2:
-            if value.replace("-", "").replace(".", "").isnumeric():
-                return True
+    xs = str(value)
+    if xs.count(".") < 2 and xs.count("-") < 2:
+        return xs.replace(".", "").removeprefix("-").isnumeric()
     return False
 
 
@@ -686,9 +708,21 @@ def bar(a, b, c=10):
 
 def lstindex(lst, target):
     """Iterate a list and return the index of a target value. Avoids IndexError, but iterates the whole list."""
+    if lenstr(target) == 1:
+        for i, val in enumerate(lst):
+            if val == target:
+                return i
+
+    if (not hasattr(target, "__iter__")) or isinstance(target, str):
+        target = [target]
+
     for i, val in enumerate(lst):
-        if val == target:
-            return i
+        for j, tar in enumerate(target):
+            if tar != lst[i + j]:
+                break
+            if j == len(target) - 1:
+                return i
+
     return -1
 
 
@@ -740,6 +774,88 @@ def reduce(lst, p, how="left"):
         return lst[l - n_items:]
     else:
         return lst[0: l: l // n_items]
+
+
+def spread(lst, desired_len, filler=None, how: Literal["average", "exact"]="average"):
+    """Take a list and a desired length, return a list of those elements spread over the desired length.
+    Use how='average' to increment by the average increase between the first and last elements.
+     WARNING when using how='average' the input list should be sorted first, AND new elements may be created.
+     Use how='exact' to ensure that elements are only duplicated. No new elements will be created.
+     Use filler to populate non-number lists."""
+
+    assert isinstance(desired_len, int) and desired_len >= 0, f"Error param 'desired_len' must be a non-negative integer."
+    assert hasattr(lst, "__iter__"), f"Error param 'lst' must be an iterable."
+    assert how in ("average", "exact")
+
+    t_lst = list(lst)
+    # t_lst.sort()
+    ll = len(t_lst)
+    is_num = all([isnumber(v) for v in t_lst])
+
+    # print(f"input= {t_lst}")
+
+    if desired_len == ll:
+        return lst
+    elif desired_len < ll:
+        return reduce(lst, ll, how="distribute")
+    else:
+
+        if how == "average":
+            # print(f"A")
+            ub = t_lst[-1]
+            lb = t_lst[0]
+            if desired_len == 1:
+                return t_lst[ll // 2]
+            else:
+                s = (ub - lb) / (desired_len - 1)
+
+            i = 0
+            x = ((desired_len - 1) - 1)
+            result = [lst[0]]
+            # print(f"{x=}")
+            while i < x:
+                if filler is None:
+                    if is_num:
+                        result.append(lb + ((i + 1) * s))
+                    else:
+                        result.append(filler)
+                else:
+                    result.append(filler)
+
+                i += 1
+
+            result.append(lst[-1])
+        else:
+            # print(f"B")
+            mf = desired_len // ll
+            o = desired_len - (mf * ll)
+            result = []
+            if mf > 1:
+                # print(f"C")
+                for i, val in enumerate(t_lst):
+                    for j in range(mf):
+                        result.append(val)
+            else:
+                # print(f"D")
+                result = list(t_lst)
+
+            if o < mf:
+                # print(f"E")
+                m = desired_len // 2
+                v = result[m]
+                # print(f"{result=}")
+                for i in range(mf - o):
+                    result.insert(m + i, v)
+            else:
+                # print(f"F")
+                idxs = list(range(len(result)))
+                idxs = sample(idxs, k=desired_len - (mf * ll))
+                # print(f"{result=}")
+                # print(f"{idxs=}")
+                for i in idxs:
+                    result.insert(i, result[i])
+
+        return result
 
 
 class Line:
@@ -1550,7 +1666,7 @@ NATO_phonetic_alphabet = {
     "a": "Alpha",
     "b": "Bravo",
     "c": "Charlie",
-    "d": "Delta",
+    "dictionary": "Delta",
     "e": "Echo",
     "f": "Foxtrot",
     "g": "Golf",
@@ -1613,8 +1729,8 @@ def grid_cells(
         n_cols: int | str,
         t_height: int | float | str = None,
         n_rows: int | str = None,
-        x_pad: int | float | str = 1,
-        y_pad: int | float | str = 1,
+        x_pad: int | float | str = 0,
+        y_pad: int | float | str = 0,
         x_0: int | float = 0,
         y_0: int | float = 0,
         r_type: list | dict = list,
@@ -1642,12 +1758,15 @@ def grid_cells(
     assert y_pad > -1, f"Error, y padding cannot be negative. Got {y_pad=}"
     print(f"{t_width=}, {t_height=}, {n_rows=}, {n_cols=}, {x_pad=}, {y_pad=}, {r_type=}")
 
-    tw = (t_width - ((n_cols + 0) * x_pad)) / (n_cols + 0)  # tile width_canvas
-    th = (t_height - ((n_rows + 0) * y_pad)) / (n_rows + 0)  # tile height_canvas
+    tw = (t_width - ((n_cols + 1) * x_pad)) / (n_cols + 0)  # tile width_canvas
+    th = (t_height - ((n_rows + 1) * y_pad)) / (n_rows + 0)  # tile height_canvas
 
     tiles = []
     if r_type == dict:
         tiles = {}
+
+    print(f"{tw=}, {t_width=}, {n_cols=}, {x_pad=}")
+    print(f"{th=}, {t_height=}, {n_rows=}, {y_pad=}")
 
     for r in range(n_rows):
         if r_type == list:
@@ -1656,20 +1775,20 @@ def grid_cells(
             row = {}
 
         for c in range(n_cols):
-            x1 = float(x_0 + (c * tw) + ((c + 0) * x_pad) + (x_pad / 2))
-            y1 = float(y_0 + (r * th) + ((r + 0) * y_pad) + (y_pad / 2))
-            x2 = float(x_0 + ((c + 1) * tw) + ((c + 0) * x_pad) + (x_pad / 2))
-            y2 = float(y_0 + ((r + 1) * th) + ((r + 0) * y_pad) + (y_pad / 2))
+            x1 = float(x_0 + (c * tw) + ((c + 1) * x_pad))  # + (x_pad / 1))
+            y1 = float(y_0 + (r * th) + ((r + 1) * y_pad))  # + (y_pad / 1))
+            x2 = float(x_0 + ((c + 1) * tw) + ((c + 1) * x_pad))  # + (x_pad / 1))
+            y2 = float(y_0 + ((r + 1) * th) + ((r + 1) * y_pad))  # + (y_pad / 1))
             xd = float(x2 - x1)
             yd = float(y2 - y1)
 
             if r_int:
-                x1 = int(x1)
-                x2 = int(x2)
-                y1 = int(y1)
-                y2 = int(y2)
-                xd = int(xd)
-                yd = int(yd)
+                x1 = round(x1)
+                x2 = round(x2)
+                y1 = round(y1)
+                y2 = round(y2)
+                xd = round(xd)
+                yd = round(yd)
 
             if r_type == list:
                 row.append([x1, y1, x2, y2])
@@ -1824,9 +1943,15 @@ def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=Fal
         yield f"{prefix}{val}{suffix}"
 
 
-def sort_2_lists(list_1, list_2):
+def sort_2_lists(list_1, list_2, reverse=False):
     # https://stackoverflow.com/questions/13668393/python-sorting-two-lists
-    return [list(x) for x in zip(*sorted(zip(list_1, list_2), key=itemgetter(0)))]
+    # l1 = [-7, 4, 0, -6, 14, 1, -4]
+    # l2 = list(range(len(l1)))
+    # sort_2_lists(l1, l2)
+    # # [[-7, -6, -4, 0, 1, 4, 14], [0, 3, 6, 2, 5, 1, 4]]
+    # sort_2_lists(l2, l1)
+    # # [[0, 1, 2, 3, 4, 5, 6], [-7, 4, 0, -6, 14, 1, -4]]
+    return [list(x) for x in zip(*sorted(zip(list_1, list_2), key=itemgetter(0), reverse=reverse))]
 
 
 def margins(t_width, n_btns, btn_width):
@@ -1864,18 +1989,140 @@ def get_windows_user(EXTENDED_NAME_FORMAT: int = 3):
     print("NameServicePrincipal   : ", get_data(10)) -> ''
     print("NameDnsDomain          : ", get_data(12)) -> BWSDOMAIN.LOCAL\abriggs
 
+    Use "all" or -1 to return a dictionary of all of the values.
+    Use an explicit key to return a single value, number or string (9, "NameCanonicalEx").
+
     https://stackoverflow.com/questions/21766954/how-to-get-windows-users-full-name-in-python
     """
+    dct = {
+        "NameUnknown": 0,
+        "NameFullyQualifiedDN": 1,
+        "NameSamCompatible": 2,
+        "NameDisplay": 3,
+        "NameUniqueId": 6,
+        "NameCanonical": 7,
+        "NameUserPrincipal": 8,
+        "NameCanonicalEx": 9,
+        "NameServicePrincipal": 10,
+        "NameDnsDomain": 12
+    }
+    dct_vk = {v: k for k, v in dct.items()}
 
     GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
-    data = EXTENDED_NAME_FORMAT
+    if EXTENDED_NAME_FORMAT in (-1, "all"):
+        EXTENDED_NAME_FORMAT = dct
+    else:
+        if isinstance(EXTENDED_NAME_FORMAT, int):
+            EXTENDED_NAME_FORMAT = {
+                dct_vk[EXTENDED_NAME_FORMAT]: EXTENDED_NAME_FORMAT
+            }
+        elif isinstance(EXTENDED_NAME_FORMAT, str):
+            EXTENDED_NAME_FORMAT = {
+                EXTENDED_NAME_FORMAT: dct[EXTENDED_NAME_FORMAT]
+            }
+        else:
+            raise ValueError(f"param 'EXTENDED_NAME_FORMAT' is an unrecognized value ({EXTENDED_NAME_FORMAT}).")
 
-    size = ctypes.pointer(ctypes.c_ulong(0))
-    GetUserNameEx(data, None, size)
+    results = {}
 
-    nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
-    GetUserNameEx(data, nameBuffer, size)
-    return nameBuffer.value
+    for name, data in EXTENDED_NAME_FORMAT.items():
+        size = ctypes.pointer(ctypes.c_ulong(0))
+        GetUserNameEx(data, None, size)
+        nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
+        GetUserNameEx(data, nameBuffer, size)
+        results[name] = nameBuffer.value
+
+    if len(EXTENDED_NAME_FORMAT) == 1:
+        k = list(EXTENDED_NAME_FORMAT)[0]
+        # print(f"{k=}, {results=}")
+        return results[k]
+
+    return results
+
+
+def get_largest_monitors():
+    return sorted(get_monitors(), key=lambda m: (-m.width_mm, m.width_mm * m.height_mm))
+
+
+def number_suffix(n):
+    if not isnumber(n):
+        raise ValueError(f"Error cannot determine suffix for non-number input '{n}'")
+    if isinstance(n, str) and n.count(".") != 0:
+        raise ValueError(f"Error cannot determine suffix for non-integer input '{n}'")
+    if not isinstance(n, str):
+        n = str(n)
+    # if len(n) < 2:
+    #     n = f"0{n}"
+    if n[-1] == "1":
+        res = "st"
+        if len(n) > 1:
+            if n[-2] == "1":
+                res = "th"
+    elif n[-1] == "2":
+        res = "nd"
+        if len(n) > 1:
+            if n[-2] == "1":
+                res = "th"
+    elif n[-1] == "3":
+        res = "rd"
+        if len(n) > 1:
+            if n[-2] == "1":
+                res = "th"
+    else:
+        res = "th"
+    return res
+
+
+class Dict2Class:
+    """Sets a class attribute for every key in every dictionary recursively in a given dictionary."""
+
+    def __init__(self, dictionary: dict):
+
+        def process(d_, pref=""):
+            if d_ is not None:
+                for key, value in d_.items():
+                    new_key = f"{pref}_{key}".removeprefix("_")
+                    if isinstance(value, dict):
+                        # print(f"{pref=}, {key=}")
+                        process(value, new_key)
+                    else:
+                        setattr(self, new_key, value)
+
+        process(dictionary)
+
+
+def collect_all_files(root):
+    """Return a list of absolute file paths for files in and below a given root directory."""
+    walked = os.walk(root)
+    all_files = []
+
+    for root, directories, files in walked:
+        all_files += [os.path.normpath(f"{root}/{file}") for file in files]
+
+    return all_files
+
+
+def mc_mac_title(name: str) -> str:
+    names = name.split(" ")
+    if len(names) > 1:
+        # print(f"A", end="")
+        f_names = " ".join([n.strip() for n in names[:-1] if n]).title()
+        last_name = names[-1].lower().strip()
+        if last_name.startswith("mc"):
+            # print(f"A", end="")
+            last_name = f"Mc{last_name[2:].title()}"
+        elif last_name.startswith("mac"):
+            # print(f"B", end="")
+            last_name = f"Mac{last_name[2:].title()}"
+        else:
+            # print(f"C, '{f_names}', '{last_name}'", end="")
+            last_name = last_name.title()
+        r_name = f"{f_names} {last_name}"
+    else:
+        # print(f"B", end="")
+        r_name = name
+    # print(f" {r_name=}")
+    return r_name
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
@@ -1919,3 +2166,11 @@ BLK_SUBTRACTION = "-", "     \n     \n --- \n     \n     "
 BLK_MULTIPLICATION = "X", "     \n X X \n  X  \n X X \n     "
 BLK_DIVISON = "/", "     \n   / \n  /  \n /   \n     "
 BLK_PERCENTAGE = "%", "%   %\n   % \n  %  \n %   \n%   %"
+
+
+if __name__ == '__main__':
+    print(f"\n\tVersion:\n{VERSION}\n")
+    print(f"Details: {VERSION_DETAILS()}.")
+    print(f"{VERSION_NUMBER()=}.")
+    print(f"{VERSION_DATE()=}.")
+    print(f"{VERSION_AUTHORS()=}.")

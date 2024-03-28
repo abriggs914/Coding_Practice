@@ -8,6 +8,8 @@ from itertools import combinations
 from random import shuffle, sample
 from tkinter import ttk
 
+from colour_utility import gradient
+from tkinter_utility import calc_geometry_tl
 
 # def click(t1, t2):
 #     default = {
@@ -270,7 +272,8 @@ class PlayoffChooser(tkinter.Tk):
         self.sorted_east = [tup for tup in self.sorted_standings if tup[0] in east_teams]
         self.dims_root = 1500, 1000
         self.title("2024 Playoff Bracket Challenge")
-        self.geometry(f"{self.dims_root[0]}x{self.dims_root[0]}")
+        self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=2, rtype=dict)
+        self.geometry(self.calc_geometry["geometry"])
 
         self.bg_canvas = "#686868"
         self.bg_bank_west = "#7793EF"
@@ -286,19 +289,26 @@ class PlayoffChooser(tkinter.Tk):
         self.bg_line_east = "#000000"
         self.bg_opt_ps_east = "#328944"
         self.w_line = 2
+        self.bw_ps_west = 2
 
         self.w_ps = 75
         self.h_ps = 75
-        self.w_space_between_rect = 25
+        self.w_space_between_rect = 35
         self.h_space_between_rect = 10
         self.pos_bank_west = (25, 25, 205, 25 + (8 * (self.h_ps + self.h_space_between_rect)))
         self.w_canvas, self.h_canvas = self.dims_root[0] * 0.9, self.dims_root[1] * 0.9
+
+
+        #### NOTE ####
+        # Stanley Cup Final PlayOff Spot is treated as though it is in the west conference
+
 
         # West PlayOff Spot Xs
         self.x_ps_w_r1 = self.pos_bank_west[2] + self.w_space_between_rect
         self.x_ps_w_r2 = self.x_ps_w_r1 + self.w_ps + self.w_space_between_rect
         self.x_ps_w_r3 = self.x_ps_w_r2 + self.w_ps + self.w_space_between_rect
         self.x_ps_w_r4 = self.x_ps_w_r3 + self.w_ps + self.w_space_between_rect
+        self.x_ps_sc = self.x_ps_w_r4 + self.w_ps + self.w_space_between_rect
 
         # West PlayOff Spot Ys R1
         self.y_ps_wc_t_r1 = self.pos_bank_west[1] + (self.h_space_between_rect / 2)
@@ -322,6 +332,9 @@ class PlayoffChooser(tkinter.Tk):
 
         # West PlayOff Spot Ys R3
         self.y_ps_w_r4_w = self.y_ps_w_r3_p + ((self.y_ps_w_r3_c - self.y_ps_w_r3_p) / 2)
+
+        # West PlayOff Spot Ys SC
+        self.y_ps_sc = self.y_ps_w_r3_p + ((self.y_ps_w_r3_c - self.y_ps_w_r3_p) / 2)
 
         print(f"{self.x_ps_w_r1=}, {self.y_ps_wc_t_r1=}")
         print(f"{self.x_ps_w_r2=}, {self.y_ps_p1_r1=}")
@@ -380,7 +393,8 @@ class PlayoffChooser(tkinter.Tk):
                 0: {k: self.template_ps_data.copy() for k in ["WC_t", "P1", "P2", "P3", "C3", "C2", "C1", "WC_b"]},
                 1: {k: self.template_ps_data.copy() for k in ["P1", "P2", "C2", "C1"]},
                 2: {k: self.template_ps_data.copy() for k in ["P", "C"]},
-                3: {k: self.template_ps_data.copy() for k in ["W"]}
+                3: {k: self.template_ps_data.copy() for k in ["W"]},
+                4: {k: self.template_ps_data.copy() for k in ["SC"]}
             }
             # ,
             # "east": {"R1": {k: self.template_ps_data.copy() for k in ["WC_t", "A1", "A2", "A3", "M3", "M2", "M1", "WC_b"]}}
@@ -529,6 +543,17 @@ class PlayoffChooser(tkinter.Tk):
             "text": "W"
         })
 
+        # Round 5
+
+        # Stanley Cup Winner
+        self.ps_codes["west"][4]["SC"].update({
+            "x0": self.x_ps_sc,
+            "y0": self.y_ps_sc,
+            "x1": self.x_ps_sc + self.w_ps,
+            "y1": self.y_ps_sc + self.h_ps,
+            "text": "W"
+        })
+
         for conf, conf_data in self.ps_codes.items():
             for rnd, round_data in conf_data.items():
                 for ps_code, ps_data in round_data.items():
@@ -538,7 +563,8 @@ class PlayoffChooser(tkinter.Tk):
                         ps_data["y0"],
                         ps_data["x1"],
                         ps_data["y1"],
-                        fill=self.bg_empty_west
+                        fill=self.bg_empty_west,
+                        width=self.bw_ps_west
                     )
                     t_text = self.canvas.create_text(
                         ps_data["x0"] + (self.w_ps / 2),
@@ -557,7 +583,6 @@ class PlayoffChooser(tkinter.Tk):
                     })
 
         # Lines
-
         self.lines = {}
 
         # west R1 WC top to R2 P1
@@ -670,6 +695,14 @@ class PlayoffChooser(tkinter.Tk):
             self.y_ps_w_r3_c + (self.h_ps / 2),
             self.x_ps_w_r4,
             self.y_ps_w_r4_w + (self.h_ps / 2)
+        )
+
+        # west R4 W to R5 SC
+        self.lines[(("west", 3, "W"), ("west", 4, "SC"))] = self.canvas.create_line(
+            self.x_ps_w_r4 + self.w_ps,
+            self.y_ps_w_r4_w + (self.h_ps / 2),
+            self.x_ps_sc,
+            self.y_ps_sc + (self.h_ps / 2)
         )
 
         for k, line in self.lines.items():
@@ -910,7 +943,7 @@ class PlayoffChooser(tkinter.Tk):
         self.positions_ps_west = {
             rnd: {
                 k: {
-                    "rect": self.canvas.bbox(dat["tag_rect"]),
+                    "rect": list(map(lambda i_x: (i_x[1] + self.bw_ps_west) if (i_x[0] < 2) else (i_x[1] - self.bw_ps_west), enumerate(self.canvas.bbox(dat["tag_rect"])))),
                     "text": self.canvas.bbox(dat["tag_text"])
                 }
                 for k, dat in rnd_dat.items()
@@ -947,6 +980,28 @@ class PlayoffChooser(tkinter.Tk):
         # self.canvas.tag_bind(self.img_ps_w_wc_t, "<ButtonRelease-1>", lambda event, rect=self.img_ps_w_wc_t: self.release_rect(event, rect))
 
         # self.canvas.tag_bind(self.drag_rect, "<B1-Motion>", lambda event, rect=self.img_ps_w_wc_b: self.motion_rect(event, rect))
+
+        self.valid_ps_codes_root_a = ["A1", "A2", "A3", "WC_t", "A"]
+        self.valid_ps_codes_root_op_a = ["WC_b", "M1", "M"]
+        self.valid_ps_codes_a = [*self.valid_ps_codes_root_a, *self.valid_ps_codes_root_op_a, "E", "SC"]
+
+        self.valid_ps_codes_root_m = ["M1", "M2", "M3", "WC_b", "M"]
+        self.valid_ps_codes_root_op_m = ["WC_t", "A1", "A"]
+        self.valid_ps_codes_m = [*self.valid_ps_codes_root_m, *self.valid_ps_codes_root_op_m, "E", "SC"]
+
+        self.valid_ps_codes_root_c = ["C1", "C2", "C3", "WC_b", "C"]
+        self.valid_ps_codes_root_op_c = ["WC_t", "P1", "P"]
+        self.valid_ps_codes_c = [*self.valid_ps_codes_root_c, *self.valid_ps_codes_root_op_c, "W", "SC"]
+
+        self.valid_ps_codes_root_p = ["P1", "P2", "P3", "WC_t", "P"]
+        self.valid_ps_codes_root_op_p = ["WC_b", "C1", "C"]
+        self.valid_ps_codes_p = [*self.valid_ps_codes_root_p, *self.valid_ps_codes_root_op_p, "W", "SC"]
+
+        self.valid_ps_codes_list_a = [self.valid_ps_codes_root_a, self.valid_ps_codes_root_op_a, self.valid_ps_codes_a]
+        self.valid_ps_codes_list_m = [self.valid_ps_codes_root_m, self.valid_ps_codes_root_op_m, self.valid_ps_codes_m]
+        self.valid_ps_codes_list_c = [self.valid_ps_codes_root_c, self.valid_ps_codes_root_op_c, self.valid_ps_codes_c]
+        self.valid_ps_codes_list_p = [self.valid_ps_codes_root_p, self.valid_ps_codes_root_op_p, self.valid_ps_codes_p]
+
         self.canvas.bind("<ButtonRelease-1>", self.release_click)
         self.canvas.bind("<B1-Motion>", self.motion)
         self.canvas.tag_raise(self.drag_rect)
@@ -977,65 +1032,73 @@ class PlayoffChooser(tkinter.Tk):
             drag_div = full_team_to_div_name[drag_team].upper()[0]
             print(f"{drag_team=}, {drag_div=}")
 
+            tol = 1e-10
             for rnd_code, rnd_dat in self.positions_ps_west.items():
                 for ps_code, dat in rnd_dat.items():
-                    for k, bbox in dat.items():
-                        paths = []
-                        p_y = -1
-                        if self.collide_bbox_point(bbox, point):
-                            if rnd_code == 4:
-                                # stanley cup finalist
-                                # p_y = int(((e_y - bbox[1]) / self.h_ps) * 4)
-                                # paths = self.calc_path("west", rnd_code, ps_code)
-                                pass
-                            elif rnd_code == 3:
-                                # conf finalist
-                                # p_y = int(((e_y - bbox[1]) / self.h_ps) * 4)
-                                # paths = self.calc_path("west", rnd_code, ps_code)
-                                pass
-                            elif rnd_code == 2:
-                                # div finalist
-                                p_y = int(((e_y - bbox[1]) / self.h_ps) * 4)
-                                paths = self.calc_path("west", rnd_code, ps_code)
-                            elif rnd_code == 1:
-                                # quarter finalist
-                                p_y = int(((e_y - bbox[1]) / self.h_ps) * 2)
-                                paths = self.calc_path("west", rnd_code, ps_code)
-                                # print(f"{p_y=}\n{self.h_ps=}\n{bbox=}\n{e_y-bbox[1]=}\n{(e_y-bbox[1])/self.h_ps=}\n{((e_y-bbox[1])/self.h_ps)*2=}\npaths:")
-                                # for p in paths:
-                                #     print(f"\t{p=}")
-                                # pass
+                    # for k, bbox in dat.items():
+                    # k = "rect"
+                    bbox = dat["rect"]
+                    bw = self.bw_ps_west
+                    paths = []
+                    p_y = ((e_y - bbox[1]) / self.h_ps)
+                    if self.collide_bbox_point(bbox, point):
+                        paths = self.calc_path("west", rnd_code, ps_code)
+                        if rnd_code == 4:
+                            # stanley cup finalist
+                            p_y = int(p_y * (5 - tol))
+                            if drag_div == "P":
+                                paths = paths[:5]
+                            elif drag_div == "C":
+                                paths = paths[5:10]
+                            elif drag_div == "A":
+                                paths = paths[10:15]
                             else:
-                                # round 1
-                                pass
-                        # print(f"{p_y=}, {len(paths)=}, {paths=}")
-                        if paths:
-                            path = paths[p_y]
-                            if path:
-                                pth_0 = path.pop(0)
-                            while path:
-                                pth_1 = path.pop(0)
-                                cc_0, rc_0, pc_0 = pth_0
-                                cc_1, rc_1, pc_1 = pth_1
-                                # if cc_0 == "west" and
-                                do_highlight = False
-                                match drag_div:
-                                    case "A":
-                                        do_highlight = ps_code in ["A1", "A2", "A3", "WC_t", "A", "E"]
-                                    case "M":
-                                        do_highlight = ps_code in ["M1", "M2", "M3", "WC_b", "M", "E"]
-                                    case "C":
-                                        do_highlight = ps_code in ["C1", "C2", "C3", "WC_b", "C", "W"]
-                                    case _:
-                                        do_highlight = ps_code in ["P1", "P2", "P3", "WC_t", "P", "W"]
+                                paths = paths[15:]
+                        elif rnd_code == 3:
+                            # conf finalist
+                            p_y = int(p_y * (5 - tol))
+                            if drag_div == "P":
+                                paths = paths[:5]
+                            else:
+                                paths = paths[5:]
+                        elif rnd_code == 2:
+                            # div finalist
+                            p_y = int(p_y * (4 - tol))
+                            # if ps_code not in self.valid_ps_codes_a
+                        elif rnd_code == 1:
+                            # quarter finalist
+                            p_y = int(p_y * (2 - tol))
+                        else:
+                            # round 1
+                            p_y = 0
+                        print(f"{p_y=}, {rnd_code=}, {ps_code=}, {len(paths)=}, {paths=}")
+                        # print(f"{point=}\n{self.h_ps=}\n{bbox=}\n{e_y-bbox[1]=}\n{(e_y-bbox[1])/self.h_ps=}\n{((e_y-bbox[1])/self.h_ps)*2=}")
+                    if paths:
+                        path = paths[p_y]
+                        if path:
+                            pth_0 = path.pop(0)
+                        while path:
+                            pth_1 = path.pop(0)
+                            cc_0, rc_0, pc_0 = pth_0
+                            cc_1, rc_1, pc_1 = pth_1
+                            # if cc_0 == "west" and
+                            match drag_div:
+                                case "A":
+                                    do_highlight = ps_code in self.valid_ps_codes_a
+                                case "M":
+                                    do_highlight = ps_code in self.valid_ps_codes_m
+                                case "C":
+                                    do_highlight = ps_code in self.valid_ps_codes_c
+                                case _:
+                                    do_highlight = ps_code in self.valid_ps_codes_p
 
-                                if do_highlight:
-                                    print(f"\t{pth_0=}, {pth_1=}")
-                                    self.canvas.itemconfigure(
-                                        self.lines[(tuple(pth_0), tuple(pth_1))],
-                                        fill=self.bg_opt_ps_west
-                                    )
-                                pth_0 = pth_1
+                            if do_highlight:
+                                # print(f"\t{pth_0=}, {pth_1=}")
+                                self.canvas.itemconfigure(
+                                    self.lines[(tuple(pth_0), tuple(pth_1))],
+                                    fill=self.bg_opt_ps_west
+                                )
+                            pth_0 = pth_1
 
     def revert_lines(self):
         for k, line in self.lines.items():
@@ -1045,47 +1108,100 @@ class PlayoffChooser(tkinter.Tk):
                 fill=self.bg_line_east if conf == "east" else self.bg_line_west
             )
 
+    def flash_ps(self, conf_code, rnd_code, ps_code):
+        sc = "#FFFFFF"
+        ec = "#000000"
+        grad = [gradient(i+1, 10, sc, ec, rgb=False) for i in range(10)]
+        for i, c in enumerate(grad):
+            self.after(
+                i * 100,
+                lambda: self.canvas.itemconfigure(
+                    self.ps_codes[conf_code][rnd_code][ps_code]["tag_rect"],
+                    outline=c
+                )
+            )
+
     def release_click(self, event):
         is_dragging = self.dragging.get()
         e_x, e_y = event.x, event.y
         point = (e_x, e_y)
+        tol = 1e-10
+        drag_team = self.drag_team.get()
+        drag_div = full_team_to_div_name[drag_team].upper()[0]
         # bbox_drag = self.canvas.bbox(self.drag_rect)
         if is_dragging:
             for rnd_code, rnd_dat in self.positions_ps_west.items():
                 for ps_code, dat in rnd_dat.items():
                     for k, bbox in dat.items():
                         if self.collide_bbox_point(bbox, point):
-                            # release in a ps spot
-                            print(f"Release {rnd_code=} {ps_code=}, {k=}")
-                            # check that previous spots not empty
-                            do_change = False
+                            p_y = ((e_y - bbox[1]) / self.h_ps)
+                            # # release in a ps spot
+                            # print(f"Release {rnd_code=} {ps_code=}, {k=}")
+                            # # check that previous spots not empty
+                            # do_change = False
+
+                            paths = self.calc_path("west", rnd_code, ps_code)
                             if rnd_code == 4:
                                 # stanley cup finalist
-                                pass
+                                p_y = int(p_y * (5 - tol))
+                                if drag_div == "P":
+                                    paths = paths[:5]
+                                elif drag_div == "C":
+                                    paths = paths[5:10]
+                                elif drag_div == "A":
+                                    paths = paths[10:15]
+                                else:
+                                    paths = paths[15:]
                             elif rnd_code == 3:
                                 # conf finalist
-                                pass
+                                p_y = int(p_y * (5 - tol))
+                                if drag_div == "P":
+                                    paths = paths[:5]
+                                else:
+                                    paths = paths[5:]
                             elif rnd_code == 2:
                                 # div finalist
-                                pass
+                                p_y = int(p_y * (4 - tol))
                             elif rnd_code == 1:
                                 # quarter finalist
-                                p_y = int(((e_y - bbox[0]) / self.h_ps) * 2)
-                                paths = self.calc_path("west", rnd_code, ps_code)
-                                # pass
+                                p_y = int(p_y * (2 - tol))
+
                             else:
                                 # round 1
-                                do_change = True
+                                p_y = 0
+
+                            match drag_div:
+                                case "A":
+                                    do_change = ps_code in self.valid_ps_codes_a
+                                case "M":
+                                    do_change = ps_code in self.valid_ps_codes_m
+                                case "C":
+                                    do_change = ps_code in self.valid_ps_codes_c
+                                case _:
+                                    do_change = ps_code in self.valid_ps_codes_p
 
                             if do_change:
-                                self.canvas.itemconfigure(
-                                    self.ps_codes["west"][rnd_code][ps_code]["tag_image"],
-                                    image=self.canvas.itemcget(
-                                        self.drag_rect,
-                                        "image"
-                                    ),
-                                    state="normal"
-                                )
+                                # for ps in paths:
+                                path = paths[p_y]
+                                for cc, rc, pc in path:
+                                    self.canvas.itemconfigure(
+                                        self.ps_codes[cc][rc][pc]["tag_image"],
+                                        image=self.canvas.itemcget(
+                                            self.drag_rect,
+                                            "image"
+                                        ),
+                                        state="normal"
+                                    )
+                                    self.flash_ps(cc, rc, pc)
+                                # self.canvas.itemconfigure(
+                                #     self.ps_codes["west"][rnd_code][ps_code]["tag_image"],
+                                #     image=self.canvas.itemcget(
+                                #         self.drag_rect,
+                                #         "image"
+                                #     ),
+                                #     state="normal"
+                                # )
+                                # self.flash_ps("west", rnd_code, ps_code)
 
         self.dragging.set(False)
         self.revert_lines()
@@ -1095,7 +1211,31 @@ class PlayoffChooser(tkinter.Tk):
         inp = [conf_code, rnd_code, ps_code]
         if rnd_code == 4:
             # stanley cup finalist
-            pass
+            return [
+                [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
+                [[conf_code, 0, "P1"], [conf_code, 1, "P1"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
+                [[conf_code, 0, "P2"], [conf_code, 1, "P2"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
+                [[conf_code, 0, "P3"], [conf_code, 1, "P2"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
+                [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
+
+                [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
+                [[conf_code, 0, "C3"], [conf_code, 1, "C2"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
+                [[conf_code, 0, "C2"], [conf_code, 1, "C2"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
+                [[conf_code, 0, "C1"], [conf_code, 1, "C1"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
+                [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
+
+                [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
+                [[conf_code, 0, "A1"], [conf_code, 1, "A1"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
+                [[conf_code, 0, "A2"], [conf_code, 1, "A2"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
+                [[conf_code, 0, "A3"], [conf_code, 1, "A2"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
+                [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp],
+
+                [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
+                [[conf_code, 0, "M3"], [conf_code, 1, "M2"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp],
+                [[conf_code, 0, "M2"], [conf_code, 1, "M2"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp],
+                [[conf_code, 0, "M1"], [conf_code, 1, "M1"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp],
+                [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp]
+            ]
         elif rnd_code == 3:
             # conf finalist
             match ps_code:
@@ -1105,6 +1245,9 @@ class PlayoffChooser(tkinter.Tk):
                         [[conf_code, 0, "P1"], [conf_code, 1, "P1"], [conf_code, 2, "P"], inp],
                         [[conf_code, 0, "P2"], [conf_code, 1, "P2"], [conf_code, 2, "P"], inp],
                         [[conf_code, 0, "P3"], [conf_code, 1, "P2"], [conf_code, 2, "P"], inp],
+                        [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], [conf_code, 2, "C"], inp],
+
+                        [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], [conf_code, 2, "P"], inp],
                         [[conf_code, 0, "C3"], [conf_code, 1, "C2"], [conf_code, 2, "C"], inp],
                         [[conf_code, 0, "C2"], [conf_code, 1, "C2"], [conf_code, 2, "C"], inp],
                         [[conf_code, 0, "C1"], [conf_code, 1, "C1"], [conf_code, 2, "C"], inp],
@@ -1116,6 +1259,9 @@ class PlayoffChooser(tkinter.Tk):
                         [[conf_code, 0, "A1"], [conf_code, 1, "A1"], [conf_code, 2, "A"], inp],
                         [[conf_code, 0, "A2"], [conf_code, 1, "A2"], [conf_code, 2, "A"], inp],
                         [[conf_code, 0, "A3"], [conf_code, 1, "A2"], [conf_code, 2, "A"], inp],
+                        [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], [conf_code, 2, "M"], inp],
+
+                        [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], [conf_code, 2, "A"], inp],
                         [[conf_code, 0, "M3"], [conf_code, 1, "M2"], [conf_code, 2, "M"], inp],
                         [[conf_code, 0, "M2"], [conf_code, 1, "M2"], [conf_code, 2, "M"], inp],
                         [[conf_code, 0, "M1"], [conf_code, 1, "M1"], [conf_code, 2, "M"], inp],
@@ -1203,7 +1349,7 @@ class PlayoffChooser(tkinter.Tk):
                         ]
         else:
             # round 1
-            return inp
+            return [[inp]]
 
     def click_bank_team(self, event, team_name):
         b_x, b_y, b_img, b_tag = self.positions_bank_west_teams[team_name]
@@ -1227,9 +1373,8 @@ class PlayoffChooser(tkinter.Tk):
     #     self.canvas.tag_raise(rect)
     #     self.canvas.coords(rect, ex, ey)
 
-    def release_rect(self, event, rect):
-        print(f"release_rect {rect=}, {event=}")
-
+    # def release_rect(self, event, rect):
+    #     print(f"release_rect {rect=}, {event=}")
 
     def load_images(self):
 
