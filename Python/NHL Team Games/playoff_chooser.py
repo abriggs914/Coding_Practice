@@ -272,7 +272,8 @@ class PlayoffChooser(tkinter.Tk):
         self.sorted_east = [tup for tup in self.sorted_standings if tup[0] in east_teams]
         self.dims_root = 1500, 1000
         self.title("2024 Playoff Bracket Challenge")
-        self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=2, rtype=dict)
+        # self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=2, rtype=dict)
+        self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=0, rtype=dict)
         self.geometry(self.calc_geometry["geometry"])
 
         self.bg_canvas = "#686868"
@@ -345,6 +346,7 @@ class PlayoffChooser(tkinter.Tk):
         self.btn_images = {}
         self.res_images = {}
         self.res_img_to_t = {}
+        self.res_pyimage_to_t = {}
         self.history = {}
         self.full_size_image = (200, 200)
         self.small_size_image = (self.w_ps, self.h_ps)
@@ -551,7 +553,7 @@ class PlayoffChooser(tkinter.Tk):
             "y0": self.y_ps_sc,
             "x1": self.x_ps_sc + self.w_ps,
             "y1": self.y_ps_sc + self.h_ps,
-            "text": "W"
+            "text": "SC"
         })
 
         for conf, conf_data in self.ps_codes.items():
@@ -581,9 +583,21 @@ class PlayoffChooser(tkinter.Tk):
                         "tag_text": t_text,
                         "tag_image": t_img
                     })
+                    self.canvas.tag_bind(
+                        t_img,
+                        "<Button-1>",
+                        lambda event, cc=conf, rc=rnd, pc=ps_code:
+                            self.click_ps(event, cc, rc, pc)
+                    )
+                    self.canvas.tag_bind(
+                        t_img,
+                        "<B1-Motion>",
+                        lambda event, cc=conf, rc=rnd, pc=ps_code:
+                            self.motion_ps(event, cc, rc, pc)
+                    )
 
         # Lines
-        self.lines = {}
+        self.lines = dict()
 
         # west R1 WC top to R2 P1
         self.lines[(("west", 0, "WC_t"), ("west", 1, "P1"))] = self.canvas.create_line(
@@ -963,6 +977,12 @@ class PlayoffChooser(tkinter.Tk):
                 image=img,
                 anchor=tkinter.NW
             )
+            self.res_pyimage_to_t[
+                self.canvas.itemcget(
+                    tag,
+                    "image"
+                )
+            ] = t
             self.positions_bank_west_teams[t] = (x, y, img, tag)
             self.canvas.tag_bind(tag, "<Button-1>", lambda event, t_=t: self.click_bank_team(event, t_))
 
@@ -1038,7 +1058,6 @@ class PlayoffChooser(tkinter.Tk):
                     # for k, bbox in dat.items():
                     # k = "rect"
                     bbox = dat["rect"]
-                    bw = self.bw_ps_west
                     paths = []
                     p_y = ((e_y - bbox[1]) / self.h_ps)
                     if self.collide_bbox_point(bbox, point):
@@ -1139,6 +1158,7 @@ class PlayoffChooser(tkinter.Tk):
             )
 
     def release_click(self, event):
+        print(f"RELEASE ", end="")
         is_dragging = self.dragging.get()
         e_x, e_y = event.x, event.y
         point = (e_x, e_y)
@@ -1147,110 +1167,303 @@ class PlayoffChooser(tkinter.Tk):
         drag_div = full_team_to_div_name[drag_team].upper()[0]
         # bbox_drag = self.canvas.bbox(self.drag_rect)
         if is_dragging:
+            print(f"DRAG ", end="")
             for rnd_code, rnd_dat in self.positions_ps_west.items():
                 for ps_code, dat in rnd_dat.items():
-                    for k, bbox in dat.items():
-                        if self.collide_bbox_point(bbox, point):
-                            p_y = ((e_y - bbox[1]) / self.h_ps)
-                            # # release in a ps spot
-                            # print(f"Release {rnd_code=} {ps_code=}, {k=}")
-                            # # check that previous spots not empty
-                            # do_change = False
+                    # for k, bbox in dat.items():
+                    bbox = dat["rect"]
+                    if self.collide_bbox_point(bbox, point):
+                        print(f"COLLIDE cc='west', rc={rnd_code}, pc={ps_code} ", end="")
+                        p_y = ((e_y - bbox[1]) / self.h_ps)
+                        # # release in a ps spot
+                        # print(f"Release {rnd_code=} {ps_code=}, {k=}")
+                        # # check that previous spots not empty
+                        # do_change = False
 
-                            paths = self.calc_path("west", rnd_code, ps_code)
-                            if rnd_code == 4:
-                                # stanley cup finalist
-                                p_y = int(p_y * (5 - tol))
-                                if drag_div == "P":
-                                    paths = paths[:5]
-                                elif drag_div == "C":
-                                    paths = paths[5:10]
-                                elif drag_div == "A":
-                                    paths = paths[10:15]
-                                else:
-                                    paths = paths[15:]
-                            elif rnd_code == 3:
-                                # conf finalist
-                                p_y = int(p_y * (5 - tol))
-                                if drag_div == "P":
-                                    paths = paths[:5]
-                                else:
-                                    paths = paths[5:]
-                            elif rnd_code == 2:
-                                # div finalist
-                                p_y = int(p_y * (4 - tol))
-                                if drag_div == "C":
-                                    if ps_code in self.valid_ps_codes_root_op_c:
-                                        paths = paths[:1]
-                                        p_y = 0
-                                else:
-                                    if ps_code in self.valid_ps_codes_root_op_p:
-                                        paths = paths[-1:]
-                                        p_y = 0
-                            elif rnd_code == 1:
-                                # quarter finalist
-                                p_y = int(p_y * (2 - tol))
-                                if drag_div == "C":
-                                    if ps_code in self.valid_ps_codes_root_op_c:
-                                        paths = paths[:1]
-                                        p_y = 0
-                                else:
-                                    if ps_code in self.valid_ps_codes_root_op_p:
-                                        paths = paths[-1:]
-                                        p_y = 0
-
+                        paths = self.calc_path("west", rnd_code, ps_code)
+                        if rnd_code == 4:
+                            # stanley cup finalist
+                            p_y = int(p_y * (5 - tol))
+                            if drag_div == "P":
+                                paths = paths[:5]
+                            elif drag_div == "C":
+                                paths = paths[5:10]
+                            elif drag_div == "A":
+                                paths = paths[10:15]
                             else:
-                                # round 1
-                                p_y = 0
+                                paths = paths[15:]
+                        elif rnd_code == 3:
+                            # conf finalist
+                            p_y = int(p_y * (5 - tol))
+                            if drag_div == "P":
+                                paths = paths[:5]
+                            else:
+                                paths = paths[5:]
+                        elif rnd_code == 2:
+                            # div finalist
+                            p_y = int(p_y * (4 - tol))
+                            if drag_div == "C":
+                                if ps_code in self.valid_ps_codes_root_op_c:
+                                    paths = paths[:1]
+                                    p_y = 0
+                            else:
+                                if ps_code in self.valid_ps_codes_root_op_p:
+                                    paths = paths[-1:]
+                                    p_y = 0
+                        elif rnd_code == 1:
+                            # quarter finalist
+                            p_y = int(p_y * (2 - tol))
+                            if drag_div == "C":
+                                if ps_code in self.valid_ps_codes_root_op_c:
+                                    paths = paths[:1]
+                                    p_y = 0
+                            else:
+                                if ps_code in self.valid_ps_codes_root_op_p:
+                                    paths = paths[-1:]
+                                    p_y = 0
 
-                            match drag_div:
-                                case "A":
-                                    do_change = ps_code in self.valid_ps_codes_a
-                                case "M":
-                                    do_change = ps_code in self.valid_ps_codes_m
-                                case "C":
-                                    do_change = ps_code in self.valid_ps_codes_c
-                                case _:
-                                    do_change = ps_code in self.valid_ps_codes_p
+                        else:
+                            # round 1
+                            p_y = 0
 
-                            if do_change:
-                                # for ps in paths:
-                                path = paths[p_y]
-                                for cc, rc, pc in path:
+                        match drag_div:
+                            case "A":
+                                do_change = ps_code in self.valid_ps_codes_a
+                            case "M":
+                                do_change = ps_code in self.valid_ps_codes_m
+                            case "C":
+                                do_change = ps_code in self.valid_ps_codes_c
+                            case _:
+                                do_change = ps_code in self.valid_ps_codes_p
+
+                        drag_img = self.canvas.itemcget(self.drag_rect, "image")
+
+                        # check only one placement in conf bracket
+                        if do_change:
+                            path = paths[p_y]
+                            # path = paths[p_y]
+                            # p_cc, p_rc, p_pc = path
+                            c = 0
+                            print(f"\nA DO CHANGE {paths=}")
+                            for i, path_ in enumerate(paths):
+                                cc, rc, pc = path_[0]
+                                print(f"O1D: {cc=}, {rc=}, {pc=}, {path[0]=}")
+                                if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
+                                        and self.canvas.itemcget(
+                                    self.ps_codes[cc][rc][pc]["tag_image"],
+                                    "image"
+                                ) == drag_img:
+                                    # this team already has a round 1 placement
+                                    print(f"Path already made")
+                                    c += 1
+                                    if c == 1:
+                                        # do_change = False
+                                        p_y = i
+                                        break
+
+                            for pc in self.ps_codes["west"][0]:
+                                cc = "west"
+                                rc = 0
+                                if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
+                                        and self.canvas.itemcget(
+                                    self.ps_codes[cc][rc][pc]["tag_image"],
+                                    "image"
+                                ) == drag_img:
+                                    
+
+
+
+                        if do_change:
+                            # for ps in paths:
+                            print(f"DO CHANGE {p_y=}\n{path=}")
+                            cc, rc, pc = None, None, None
+                            for cc, rc, pc in path:
+                                self.canvas.itemconfigure(
+                                    self.ps_codes[cc][rc][pc]["tag_image"],
+                                    image=drag_img,
+                                    state="normal"
+                                )
+                                self.flash_ps(cc, rc, pc)
+
+                            # use the last path key to check the logic
+                            path_sc = self.calc_path_2_sc(cc, rc, pc)
+                            print(f"{path_sc[0]=}")
+                            for cc, rc, pc in path_sc[0]:
+                                if (cc == "west") and (rc == rnd_code) and (pc == ps_code):
+                                    break
+                                if self.canvas.itemcget(
+                                    self.ps_codes[cc][rc][pc]["tag_image"],
+                                    "image"
+                                ) != drag_img:
+                                    print(f"\tA BLANK {cc=}, {rc=}, {pc=}\n")
                                     self.canvas.itemconfigure(
                                         self.ps_codes[cc][rc][pc]["tag_image"],
-                                        image=self.canvas.itemcget(
-                                            self.drag_rect,
-                                            "image"
-                                        ),
-                                        state="normal"
+                                        state="hidden"
                                     )
-                                    self.flash_ps(cc, rc, pc)
-                                # self.canvas.itemconfigure(
-                                #     self.ps_codes["west"][rnd_code][ps_code]["tag_image"],
-                                #     image=self.canvas.itemcget(
-                                #         self.drag_rect,
-                                #         "image"
-                                #     ),
-                                #     state="normal"
-                                # )
-                                # self.flash_ps("west", rnd_code, ps_code)
+
+                            if 0 < rnd_code < 4:
+                                print(f"Start check path SC")
+                                for child in path_sc[0][1:]:
+                                    c_cc, c_rc, c_pc = child
+                                    paths_ = self.calc_path(c_cc, c_rc, c_pc)
+
+                                    if drag_div == "P":
+                                        paths_ = paths_[:5]
+                                    elif drag_div == "C":
+                                        paths_ = paths_[5:10]
+                                    elif drag_div == "A":
+                                        paths_ = paths_[10:15]
+                                    else:
+                                        paths_ = paths_[15:]
+
+                                    print(f"{paths_=}")
+                                    parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths_]))]
+                                    print(f"{parents=}")
+                                    # parents.remove(())
+                                    if parents:
+                                        # p_cc, p_rc, p_pc = parents[0]
+
+                                        print(f"{c_cc=}, {c_rc=}, {c_pc=}", end="")
+                                        img_child = self.canvas.itemcget(
+                                            self.ps_codes[c_cc][c_rc][c_pc],
+                                            "image"
+                                        )
+                                        for p_cc, p_rc, p_pc in parents:
+                                            print(f"{p_cc=}, {p_rc=}, {p_pc=}", end="")
+                                            if (p_cc != path[-2][0]) or (p_rc != path[-2][1]) or (p_pc != path[-2][2]):
+                                                img_parents = self.canvas.itemcget(
+                                                    self.ps_codes[p_cc][p_rc][p_pc],
+                                                    "image"
+                                                )
+                                                # ((rnd_code + 1) < rc) and (
+                                                if img_parents == img_child:
+                                                    print(f"\tB BLANK")
+                                                    self.canvas.itemconfigure(
+                                                        self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
+                                                        state="hidden"
+                                                    )
+                                                else:
+                                                    print(f"-B")
+
+                                            else:
+                                                print(f"-A")
+
+                            # if 0 < rnd_code < 4:
+                            #     print(f"Start check path SC")
+                            #     parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths]))]
+                            #     parents.remove(path[-2])
+                            #     if parents:
+                            #         p_cc, p_rc, p_pc = parents[0]
+                            #         img_parents = self.canvas.itemcget(
+                            #             self.ps_codes[p_cc][p_rc][p_pc],
+                            #             "image"
+                            #         )
+                            #         print(f"{p_cc=}, {p_rc=}, {p_pc=}")
+                            #         for child in path_sc[0][1:]:
+                            #             c_cc, c_rc, c_pc = child
+                            #             print(f"{c_cc=}, {c_rc=}, {c_pc=}", end="")
+                            #             img_child = self.canvas.itemcget(
+                            #                 self.ps_codes[c_cc][c_rc][c_pc],
+                            #                 "image"
+                            #             )
+                            #             # ((rnd_code + 1) < rc) and (
+                            #             if img_parents == img_child:
+                            #                 print(f"\tB BLANK", end="")
+                            #                 self.canvas.itemconfigure(
+                            #                     self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
+                            #                     state="hidden"
+                            #                 )
+                            #             print(f"")
+                            #
+                            # # self.canvas.itemconfigure(
+                            # #     self.ps_codes["west"][rnd_code][ps_code]["tag_image"],
+                            # #     image=self.canvas.itemcget(
+                            # #         self.drag_rect,
+                            # #         "image"
+                            # #     ),
+                            # #     state="normal"
+                            # # )
+                            # # self.flash_ps("west", rnd_code, ps_code)
 
         self.dragging.set(False)
         self.revert_lines()
         self.canvas.itemconfigure(self.drag_rect, state="hidden")
 
+    def get_ps_parents(self, conf_code, rnd_code, ps_code):
+        paths = self.calc_path(conf_code, rnd_code, ps_code)
+        return [list(tup) for tup in (set([tuple(path[-2]) for path in paths]))]
+
     def calc_path_2_sc(self, conf_code, rnd_code, ps_code):
         inp = [conf_code, rnd_code, ps_code]
         if rnd_code == 4:
-            return inp
+            return [[inp]]
         elif rnd_code == 3:
             return [
                 [inp, [conf_code, 4, "SC"]]
             ]
         elif rnd_code == 2:
+            if conf_code == "east":
+                return [
+                    [inp, [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                ]
+            else:
+                return [
+                    [inp, [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                ]
         elif rnd_code == 1:
+            if conf_code == "east":
+                if ps_code in self.valid_ps_codes_root_a:
+                    return [
+                        [inp, [conf_code, 2, "A"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                    ]
+                else:
+                    return [
+                        [inp, [conf_code, 2, "M"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                    ]
+            else:
+                if ps_code in self.valid_ps_codes_root_p:
+                    return [
+                        [inp, [conf_code, 2, "P"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                    ]
+                else:
+                    return [
+                        [inp, [conf_code, 2, "C"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                    ]
         else:
+            if conf_code == "east":
+                if ps_code in self.valid_ps_codes_root_a[:2]:
+                    return [
+                        [inp, [conf_code, 1, "A1"], [conf_code, 2, "A"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                    ]
+                elif ps_code in self.valid_ps_codes_root_a[2:4]:
+                    return [
+                        [inp, [conf_code, 1, "A2"], [conf_code, 2, "A"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                    ]
+                elif ps_code in self.valid_ps_codes_root_m[:2]:
+                    return [
+                        [inp, [conf_code, 1, "M2"], [conf_code, 2, "M"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                    ]
+                else:
+                    return [
+                        [inp, [conf_code, 1, "M1"], [conf_code, 2, "M"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                    ]
+            else:
+                if ps_code in self.valid_ps_codes_root_p[:2]:
+                    return [
+                        [inp, [conf_code, 1, "P1"], [conf_code, 2, "P"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                    ]
+                elif ps_code in self.valid_ps_codes_root_p[2:4]:
+                    return [
+                        [inp, [conf_code, 1, "P2"], [conf_code, 2, "P"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                    ]
+                elif ps_code in self.valid_ps_codes_root_c[:2]:
+                    return [
+                        [inp, [conf_code, 1, "C2"], [conf_code, 2, "C"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                    ]
+                else:
+                    return [
+                        [inp, [conf_code, 1, "C1"], [conf_code, 2, "C"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                    ]
 
     def calc_path(self, conf_code, rnd_code, ps_code):
         inp = [conf_code, rnd_code, ps_code]
@@ -1395,6 +1608,33 @@ class PlayoffChooser(tkinter.Tk):
         else:
             # round 1
             return [[inp]]
+
+    def motion_ps(self, event, conf_code, rnd_code, ps_code):
+        self.dragging.set(True)
+        if self.canvas.itemcget(self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"], "state") == "normal":
+            self.drag_team.set(self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"], "image")])
+        self.motion(event)
+
+    def click_ps(self, event, conf_code, rnd_code, ps_code):
+        print(f"click_ps {conf_code=}, {rnd_code=}, {ps_code=}")
+        hidden = self.canvas.itemcget(
+            self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"],
+            "state"
+        ) == "hidden"
+        if not hidden:
+            self.canvas.itemconfigure(
+                self.drag_rect,
+                state="normal",
+                image=self.canvas.itemcget(
+                    self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"],
+                    "image"
+                )
+            )
+            self.canvas.coords(
+                self.drag_rect,
+                event.x,
+                event.y
+            )
 
     def click_bank_team(self, event, team_name):
         b_x, b_y, b_img, b_tag = self.positions_bank_west_teams[team_name]
