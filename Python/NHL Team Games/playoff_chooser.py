@@ -1245,22 +1245,23 @@ class PlayoffChooser(tkinter.Tk):
                             # p_cc, p_rc, p_pc = path
                             c = 0
                             print(f"\nA DO CHANGE {paths=}")
-                            for i, path_ in enumerate(paths):
-                                cc, rc, pc = path_[0]
-                                print(f"O1D: {cc=}, {rc=}, {pc=}, {path[0]=}")
-                                if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
-                                        and self.canvas.itemcget(
-                                    self.ps_codes[cc][rc][pc]["tag_image"],
-                                    "image"
-                                ) == drag_img:
-                                    # this team already has a round 1 placement
-                                    print(f"Path already made")
-                                    c += 1
-                                    if c == 1:
-                                        # do_change = False
-                                        p_y = i
-                                        break
+                            # for i, path_ in enumerate(paths):
+                            #     cc, rc, pc = path_[0]
+                            #     print(f"O1D: {cc=}, {rc=}, {pc=}, {path[0]=}")
+                            #     if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
+                            #             and self.canvas.itemcget(
+                            #         self.ps_codes[cc][rc][pc]["tag_image"],
+                            #         "image"
+                            #     ) == drag_img:
+                            #         # this team already has a round 1 placement
+                            #         print(f"Path already made")
+                            #         c += 1
+                            #         if c == 1:
+                            #             # do_change = False
+                            #             p_y = i
+                            #             break
 
+                            clear_path = []
                             for pc in self.ps_codes["west"][0]:
                                 cc = "west"
                                 rc = 0
@@ -1269,8 +1270,20 @@ class PlayoffChooser(tkinter.Tk):
                                     self.ps_codes[cc][rc][pc]["tag_image"],
                                     "image"
                                 ) == drag_img:
-                                    
+                                    # path already exists
+                                    print(f"path already exists")
+                                    clear_path = self.calc_path_2_sc(cc, rc, pc)
+                                    # do_change = False
 
+                            print(f"PAE {clear_path=}")
+                            if clear_path:
+                                for cc, rc, pc in clear_path[0]:
+                                    if rc <= rnd_code:
+                                        print(f"PAE {cc=}, {rc=}, {pc=}")
+                                        self.canvas.itemconfigure(
+                                            self.ps_codes[cc][rc][pc]["tag_image"],
+                                            state="hidden"
+                                        )
 
 
                         if do_change:
