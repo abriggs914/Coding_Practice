@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.71
-    Date...........2024-02-29
+    Version..............1.72
+    Date...........2024-04-03
     Author(s)....Avery Briggs
     """
 
@@ -2513,6 +2513,7 @@ class MultiComboBox(tkinter.Frame):
         delete_code = "|/|/||NONE||/|/|"
         if iid is None and value == delete_code:
             self.tree_treeview.delete(*self.tree_treeview.get_children())
+            self.data = self.data.iloc[0:0]
         else:
             if iid is not None:
                 if isinstance(iid, int):
