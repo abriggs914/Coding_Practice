@@ -9,7 +9,7 @@ from random import shuffle, sample
 from tkinter import ttk
 
 from colour_utility import gradient
-from tkinter_utility import calc_geometry_tl
+from tkinter_utility import calc_geometry_tl, button_factory
 
 # def click(t1, t2):
 #     default = {
@@ -1001,19 +1001,19 @@ class PlayoffChooser(tkinter.Tk):
 
         # self.canvas.tag_bind(self.drag_rect, "<B1-Motion>", lambda event, rect=self.img_ps_w_wc_b: self.motion_rect(event, rect))
 
-        self.valid_ps_codes_root_a = ["A1", "A2", "A3", "WC_t", "A"]
+        self.valid_ps_codes_root_a = ["WC_t", "A1", "A2", "A3", "A"]
         self.valid_ps_codes_root_op_a = ["WC_b", "M1", "M"]
         self.valid_ps_codes_a = [*self.valid_ps_codes_root_a, *self.valid_ps_codes_root_op_a, "E", "SC"]
 
-        self.valid_ps_codes_root_m = ["M1", "M2", "M3", "WC_b", "M"]
+        self.valid_ps_codes_root_m = ["M3", "M2", "M1", "WC_b", "M"]
         self.valid_ps_codes_root_op_m = ["WC_t", "A1", "A"]
         self.valid_ps_codes_m = [*self.valid_ps_codes_root_m, *self.valid_ps_codes_root_op_m, "E", "SC"]
 
-        self.valid_ps_codes_root_c = ["C1", "C2", "C3", "WC_b", "C"]
+        self.valid_ps_codes_root_c = ["C3", "C2", "C1", "WC_b", "C"]
         self.valid_ps_codes_root_op_c = ["WC_t", "P1", "P"]
         self.valid_ps_codes_c = [*self.valid_ps_codes_root_c, *self.valid_ps_codes_root_op_c, "W", "SC"]
 
-        self.valid_ps_codes_root_p = ["P1", "P2", "P3", "WC_t", "P"]
+        self.valid_ps_codes_root_p = ["WC_t", "P1", "P2", "P3", "P"]
         self.valid_ps_codes_root_op_p = ["WC_b", "C1", "C"]
         self.valid_ps_codes_p = [*self.valid_ps_codes_root_p, *self.valid_ps_codes_root_op_p, "W", "SC"]
 
@@ -1022,12 +1022,30 @@ class PlayoffChooser(tkinter.Tk):
         self.valid_ps_codes_list_c = [self.valid_ps_codes_root_c, self.valid_ps_codes_root_op_c, self.valid_ps_codes_c]
         self.valid_ps_codes_list_p = [self.valid_ps_codes_root_p, self.valid_ps_codes_root_op_p, self.valid_ps_codes_p]
 
+        self.tv_btn_clear_ps, self.btn_clear_ps = button_factory(
+            self,
+            "clear",
+            command=self.click_clear_ps
+        )
+        self.btn_clear_ps.grid()
+
         self.canvas.bind("<ButtonRelease-1>", self.release_click)
         self.canvas.bind("<B1-Motion>", self.motion)
         self.canvas.tag_raise(self.drag_rect)
 
         # for img in self.west_images:
         #     self.canvas.itemconfigure(img, state="hidden")
+
+    def click_clear_ps(self):
+        for conf, conf_data in self.ps_codes.items():
+            for rnd, rnd_data in conf_data.items():
+                for pc, pc_data in rnd_data.items():
+                    tag = self.ps_codes[conf][rnd][pc].get("tag_image")
+                    if tag:
+                        self.canvas.itemconfigure(
+                            tag,
+                            state="hidden"
+                        )
 
     def collide_bbox_point(self, bbox_a, point):
         x0_a, y0_a, x1_a, y1_a = bbox_a
@@ -1266,24 +1284,28 @@ class PlayoffChooser(tkinter.Tk):
                                 cc = "west"
                                 rc = 0
                                 if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
-                                        and self.canvas.itemcget(
+                                        and (self.canvas.itemcget(
                                     self.ps_codes[cc][rc][pc]["tag_image"],
                                     "image"
-                                ) == drag_img:
+                                ) == drag_img) and (self.canvas.itemcget(self.ps_codes[cc][rc][pc]["tag_image"], "state") == "normal"):
                                     # path already exists
                                     print(f"path already exists")
                                     clear_path = self.calc_path_2_sc(cc, rc, pc)
+                                    break
                                     # do_change = False
 
-                            print(f"PAE {clear_path=}")
+                            print(f"PAE {cc=}, {rc=}, {pc=} {clear_path=}")
                             if clear_path:
                                 for cc, rc, pc in clear_path[0]:
+                                    print(f"PAE {cc=}, {rc=}, {pc=}")
                                     if rc <= rnd_code:
-                                        print(f"PAE {cc=}, {rc=}, {pc=}")
+                                    #     print(f"BLANK")
                                         self.canvas.itemconfigure(
                                             self.ps_codes[cc][rc][pc]["tag_image"],
                                             state="hidden"
                                         )
+                                    # else:
+                                    #     print(f"SKIP")
 
 
                         if do_change:
