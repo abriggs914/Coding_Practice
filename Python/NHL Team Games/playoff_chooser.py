@@ -1298,8 +1298,12 @@ class PlayoffChooser(tkinter.Tk):
                             if clear_path:
                                 for cc, rc, pc in clear_path[0]:
                                     print(f"PAE {cc=}, {rc=}, {pc=}")
-                                    if rc <= rnd_code:
+                                    # if rc <= rnd_code:
                                     #     print(f"BLANK")
+                                    if self.canvas.itemcget(
+                                            self.ps_codes[cc][rc][pc]["tag_image"],
+                                        "image"
+                                    ) == drag_img:
                                         self.canvas.itemconfigure(
                                             self.ps_codes[cc][rc][pc]["tag_image"],
                                             state="hidden"
@@ -1351,20 +1355,25 @@ class PlayoffChooser(tkinter.Tk):
                                     else:
                                         paths_ = paths_[15:]
 
-                                    print(f"{paths_=}")
+                                    print(f"A {paths_=}")
+                                    paths_ = [p[::-1] for p in paths_]
+                                    print(f"B {paths_=}")
                                     parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths_]))]
                                     print(f"{parents=}")
                                     # parents.remove(())
                                     if parents:
+                                        print(f"ME={self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image')]}")
                                         # p_cc, p_rc, p_pc = parents[0]
 
-                                        print(f"{c_cc=}, {c_rc=}, {c_pc=}", end="")
+                                        print(f"{c_cc=}, {c_rc=}, {c_pc=}, t='{self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image')]}'")
                                         img_child = self.canvas.itemcget(
                                             self.ps_codes[c_cc][c_rc][c_pc],
                                             "image"
                                         )
+                                        lp = len(parents)
+                                        i = 0
                                         for p_cc, p_rc, p_pc in parents:
-                                            print(f"{p_cc=}, {p_rc=}, {p_pc=}", end="")
+                                            print(f"{p_cc=}, {p_rc=}, {p_pc=}, t='{self.res_pyimage_to_t.get(self.canvas.itemcget(self.ps_codes[p_cc][p_rc][p_pc]['tag_image'], 'image'),'no_team')}', {i=}, {lp=}")
                                             if (p_cc != path[-2][0]) or (p_rc != path[-2][1]) or (p_pc != path[-2][2]):
                                                 img_parents = self.canvas.itemcget(
                                                     self.ps_codes[p_cc][p_rc][p_pc],
@@ -1382,6 +1391,7 @@ class PlayoffChooser(tkinter.Tk):
 
                                             else:
                                                 print(f"-A")
+                                            i += 1
 
                             # if 0 < rnd_code < 4:
                             #     print(f"Start check path SC")
