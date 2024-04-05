@@ -1355,9 +1355,14 @@ class PlayoffChooser(tkinter.Tk):
                                     else:
                                         paths_ = paths_[15:]
 
-                                    print(f"A {paths_=}")
+                                    print(f"A paths_=")
+                                    for p in paths_:
+                                        print(f"{p}")
                                     paths_ = [p[::-1] for p in paths_]
-                                    print(f"B {paths_=}")
+                                    paths_.reverse()
+                                    print(f"B paths_=")
+                                    for p in paths_:
+                                        print(f"{p}")
                                     parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths_]))]
                                     print(f"{parents=}")
                                     # parents.remove(())
