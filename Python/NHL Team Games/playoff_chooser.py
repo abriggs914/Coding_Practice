@@ -6,7 +6,7 @@ import pandas as pd
 from PIL import ImageTk, Image
 from itertools import combinations
 from random import shuffle, sample
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 from colour_utility import gradient
 from tkinter_utility import calc_geometry_tl, button_factory
@@ -270,13 +270,14 @@ class PlayoffChooser(tkinter.Tk):
         self.sorted_standings = sorted([(t, p) for t, p in self.season_stats.items()], key=lambda tup: tup[1], reverse=True)
         self.sorted_west = [tup for tup in self.sorted_standings if tup[0] in west_teams]
         self.sorted_east = [tup for tup in self.sorted_standings if tup[0] in east_teams]
-        self.dims_root = 1500, 1000
+        self.dims_root = 1625, 1000
         self.title("2024 Playoff Bracket Challenge")
         # self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=2, rtype=dict)
         self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=0, rtype=dict)
         self.geometry(self.calc_geometry["geometry"])
 
         self.bg_canvas = "#686868"
+        self.bg_empty_sc = "#D8D525"
         self.bg_bank_west = "#7793EF"
         self.bg_empty_west = "#25339F"
         self.fg_empty_west = "#000000"
@@ -291,13 +292,20 @@ class PlayoffChooser(tkinter.Tk):
         self.bg_opt_ps_east = "#328944"
         self.w_line = 2
         self.bw_ps_west = 2
+        self.bw_ps_east = 2
 
         self.w_ps = 75
         self.h_ps = 75
         self.w_space_between_rect = 35
         self.h_space_between_rect = 10
-        self.pos_bank_west = (25, 25, 205, 25 + (8 * (self.h_ps + self.h_space_between_rect)))
         self.w_canvas, self.h_canvas = self.dims_root[0] * 0.9, self.dims_root[1] * 0.9
+        self.pos_bank_west = (25, 25, 205, 25 + (8 * (self.h_ps + self.h_space_between_rect)))
+        self.pos_bank_east = (
+            self.w_canvas - (25 + 205 + 0),
+            25,
+            self.w_canvas - (25 + 0),
+            25 + (8 * (self.h_ps + self.h_space_between_rect))
+        )
 
 
         #### NOTE ####
@@ -311,6 +319,13 @@ class PlayoffChooser(tkinter.Tk):
         self.x_ps_w_r4 = self.x_ps_w_r3 + self.w_ps + self.w_space_between_rect
         self.x_ps_sc = self.x_ps_w_r4 + self.w_ps + self.w_space_between_rect
 
+        # East PlayOff Spot Xs
+        # self.x_ps_e_r4 = self.pos_bank_east[2] + self.w_space_between_rect
+        self.x_ps_e_r4 = self.x_ps_sc + self.w_ps + self.w_space_between_rect
+        self.x_ps_e_r3 = self.x_ps_e_r4 + self.w_ps + self.w_space_between_rect
+        self.x_ps_e_r2 = self.x_ps_e_r3 + self.w_ps + self.w_space_between_rect
+        self.x_ps_e_r1 = self.x_ps_e_r2 + self.w_ps + self.w_space_between_rect
+
         # West PlayOff Spot Ys R1
         self.y_ps_wc_t_r1 = self.pos_bank_west[1] + (self.h_space_between_rect / 2)
         self.y_ps_p1_r1 = self.y_ps_wc_t_r1 + self.h_ps + self.h_space_between_rect
@@ -319,20 +334,43 @@ class PlayoffChooser(tkinter.Tk):
         self.y_ps_c3_r1 = self.y_ps_wc_t_r1 + (4 * (self.h_ps + self.h_space_between_rect))
         self.y_ps_c2_r1 = self.y_ps_wc_t_r1 + (5 * (self.h_ps + self.h_space_between_rect))
         self.y_ps_c1_r1 = self.y_ps_wc_t_r1 + (6 * (self.h_ps + self.h_space_between_rect))
-        self.y_ps_wx_b_r1 = self.y_ps_wc_t_r1 + (7 * (self.h_ps + self.h_space_between_rect))
+        self.y_ps_w_wc_b_r1 = self.y_ps_wc_t_r1 + (7 * (self.h_ps + self.h_space_between_rect))
+
+        # West PlayOff Spot Ys R1
+        self.y_ps_e_wc_t_r1 = self.pos_bank_east[1] + (self.h_space_between_rect / 2)
+        self.y_ps_a1_r1 = self.y_ps_e_wc_t_r1 + self.h_ps + self.h_space_between_rect
+        self.y_ps_a2_r1 = self.y_ps_e_wc_t_r1 + (2 * (self.h_ps + self.h_space_between_rect))
+        self.y_ps_a3_r1 = self.y_ps_e_wc_t_r1 + (3 * (self.h_ps + self.h_space_between_rect))
+        self.y_ps_m3_r1 = self.y_ps_e_wc_t_r1 + (4 * (self.h_ps + self.h_space_between_rect))
+        self.y_ps_m2_r1 = self.y_ps_e_wc_t_r1 + (5 * (self.h_ps + self.h_space_between_rect))
+        self.y_ps_m1_r1 = self.y_ps_e_wc_t_r1 + (6 * (self.h_ps + self.h_space_between_rect))
+        self.y_ps_e_wc_b_r1 = self.y_ps_e_wc_t_r1 + (7 * (self.h_ps + self.h_space_between_rect))
 
         # West PlayOff Spot Ys R1
         self.y_ps_w_r2_p1 = self.y_ps_wc_t_r1 + ((self.y_ps_p1_r1 - self.y_ps_wc_t_r1) / 2)
         self.y_ps_w_r2_p2 = self.y_ps_p2_r1 + ((self.y_ps_p3_r1 - self.y_ps_p2_r1) / 2)
         self.y_ps_w_r2_c2 = self.y_ps_c3_r1 + ((self.y_ps_c2_r1 - self.y_ps_c3_r1) / 2)
-        self.y_ps_w_r2_c1 = self.y_ps_c1_r1 + ((self.y_ps_wx_b_r1 - self.y_ps_c1_r1) / 2)
+        self.y_ps_w_r2_c1 = self.y_ps_c1_r1 + ((self.y_ps_w_wc_b_r1 - self.y_ps_c1_r1) / 2)
+
+        # East PlayOff Spot Ys R1
+        self.y_ps_e_r2_a1 = self.y_ps_e_wc_t_r1 + ((self.y_ps_a1_r1 - self.y_ps_e_wc_t_r1) / 2)
+        self.y_ps_e_r2_a2 = self.y_ps_a2_r1 + ((self.y_ps_a3_r1 - self.y_ps_a2_r1) / 2)
+        self.y_ps_e_r2_m2 = self.y_ps_m3_r1 + ((self.y_ps_m2_r1 - self.y_ps_m3_r1) / 2)
+        self.y_ps_e_r2_m1 = self.y_ps_m1_r1 + ((self.y_ps_e_wc_b_r1 - self.y_ps_m1_r1) / 2)
 
         # West PlayOff Spot Ys R2
         self.y_ps_w_r3_p = self.y_ps_w_r2_p1 + ((self.y_ps_w_r2_p2 - self.y_ps_w_r2_p1) / 2)
         self.y_ps_w_r3_c = self.y_ps_w_r2_c1 + ((self.y_ps_w_r2_c2 - self.y_ps_w_r2_c1) / 2)
 
+        # East PlayOff Spot Ys R2
+        self.y_ps_e_r3_a = self.y_ps_e_r2_a1 + ((self.y_ps_e_r2_a2 - self.y_ps_e_r2_a1) / 2)
+        self.y_ps_e_r3_m = self.y_ps_e_r2_m1 + ((self.y_ps_e_r2_m2 - self.y_ps_e_r2_m1) / 2)
+
         # West PlayOff Spot Ys R3
         self.y_ps_w_r4_w = self.y_ps_w_r3_p + ((self.y_ps_w_r3_c - self.y_ps_w_r3_p) / 2)
+
+        # East PlayOff Spot Ys R3
+        self.y_ps_e_r4_e = self.y_ps_e_r3_a + ((self.y_ps_e_r3_m - self.y_ps_e_r3_a) / 2)
 
         # West PlayOff Spot Ys SC
         self.y_ps_sc = self.y_ps_w_r3_p + ((self.y_ps_w_r3_c - self.y_ps_w_r3_p) / 2)
@@ -372,6 +410,12 @@ class PlayoffChooser(tkinter.Tk):
             fill=self.bg_bank_west
         )
 
+        # east team bank
+        self.rect_e_bank = self.canvas.create_rectangle(
+            *self.pos_bank_east,
+            fill=self.bg_bank_east
+        )
+
         self.drag_rect = self.canvas.create_image(
             0, 0,
             image=self.res_images[self.sorted_west[0][0]],
@@ -397,6 +441,12 @@ class PlayoffChooser(tkinter.Tk):
                 2: {k: self.template_ps_data.copy() for k in ["P", "C"]},
                 3: {k: self.template_ps_data.copy() for k in ["W"]},
                 4: {k: self.template_ps_data.copy() for k in ["SC"]}
+            },
+            "east": {
+                0: {k: self.template_ps_data.copy() for k in ["WC_t", "A1", "A2", "A3", "M3", "M2", "M1", "WC_b"]},
+                1: {k: self.template_ps_data.copy() for k in ["A1", "A2", "M2", "M1"]},
+                2: {k: self.template_ps_data.copy() for k in ["A", "M"]},
+                3: {k: self.template_ps_data.copy() for k in ["E"]}
             }
             # ,
             # "east": {"R1": {k: self.template_ps_data.copy() for k in ["WC_t", "A1", "A2", "A3", "M3", "M2", "M1", "WC_b"]}}
@@ -470,9 +520,9 @@ class PlayoffChooser(tkinter.Tk):
         # west wild card bottom
         self.ps_codes["west"][0]["WC_b"].update({
             "x0": self.x_ps_w_r1,
-            "y0": self.y_ps_wx_b_r1,
+            "y0": self.y_ps_w_wc_b_r1,
             "x1": self.x_ps_w_r1 + self.w_ps,
-            "y1": self.y_ps_wx_b_r1 + self.h_ps,
+            "y1": self.y_ps_w_wc_b_r1 + self.h_ps,
             "text": "WC"
         })
 
@@ -556,6 +606,163 @@ class PlayoffChooser(tkinter.Tk):
             "text": "SC"
         })
 
+        ################################################################
+
+        # Round 1
+
+        # east wildcard top
+        self.ps_codes["east"][0]["WC_t"].update({
+            "x0": self.x_ps_e_r1,
+            "y0": self.y_ps_e_wc_t_r1,
+            "x1": self.x_ps_e_r1 + self.w_ps,
+            "y1": self.y_ps_e_wc_t_r1 + self.h_ps,
+            "text": "WC"
+        })
+
+        # atlantic 1
+        self.ps_codes["east"][0]["A1"].update({
+            "x0": self.x_ps_e_r1,
+            "y0": self.y_ps_a1_r1,
+            "x1": self.x_ps_e_r1 + self.w_ps,
+            "y1": self.y_ps_a1_r1 + self.h_ps,
+            "text": "A1"
+        })
+
+        # atlantic 2
+        self.ps_codes["east"][0]["A2"].update({
+            "x0": self.x_ps_e_r1,
+            "y0": self.y_ps_a2_r1,
+            "x1": self.x_ps_e_r1 + self.w_ps,
+            "y1": self.y_ps_a2_r1 + self.h_ps,
+            "text": "A2"
+        })
+
+        # atlantic 3
+        self.ps_codes["east"][0]["A3"].update({
+            "x0": self.x_ps_e_r1,
+            "y0": self.y_ps_a3_r1,
+            "x1": self.x_ps_e_r1 + self.w_ps,
+            "y1": self.y_ps_a3_r1 + self.h_ps,
+            "text": "A3"
+        })
+
+        # metropolitan 3
+        self.ps_codes["east"][0]["M3"].update({
+            "x0": self.x_ps_e_r1,
+            "y0": self.y_ps_m3_r1,
+            "x1": self.x_ps_e_r1 + self.w_ps,
+            "y1": self.y_ps_m3_r1 + self.h_ps,
+            "text": "M3"
+        })
+
+        # metropolitan 2
+        self.ps_codes["east"][0]["M2"].update({
+            "x0": self.x_ps_e_r1,
+            "y0": self.y_ps_m2_r1,
+            "x1": self.x_ps_e_r1 + self.w_ps,
+            "y1": self.y_ps_m2_r1 + self.h_ps,
+            "text": "M2"
+        })
+
+        # metropolitan 1
+        self.ps_codes["east"][0]["M1"].update({
+            "x0": self.x_ps_e_r1,
+            "y0": self.y_ps_m1_r1,
+            "x1": self.x_ps_e_r1 + self.w_ps,
+            "y1": self.y_ps_m1_r1 + self.h_ps,
+            "text": "M1"
+        })
+
+        # east wild card bottom
+        self.ps_codes["east"][0]["WC_b"].update({
+            "x0": self.x_ps_e_r1,
+            "y0": self.y_ps_e_wc_b_r1,
+            "x1": self.x_ps_e_r1 + self.w_ps,
+            "y1": self.y_ps_e_wc_b_r1 + self.h_ps,
+            "text": "WC"
+        })
+
+        # Round 2
+
+        # atlantic seed 1
+        self.ps_codes["east"][1]["A1"].update({
+            "x0": self.x_ps_e_r2,
+            "y0": self.y_ps_e_r2_a1,
+            "x1": self.x_ps_e_r2 + self.w_ps,
+            "y1": self.y_ps_e_r2_a1 + self.h_ps,
+            "text": "A1"
+        })
+
+        # atlantic seed 2
+        self.ps_codes["east"][1]["A2"].update({
+            "x0": self.x_ps_e_r2,
+            "y0": self.y_ps_e_r2_a2,
+            "x1": self.x_ps_e_r2 + self.w_ps,
+            "y1": self.y_ps_e_r2_a2 + self.h_ps,
+            "text": "A2"
+        })
+
+        # metropolitan seed 1
+        self.ps_codes["east"][1]["M2"].update({
+            "x0": self.x_ps_e_r2,
+            "y0": self.y_ps_e_r2_m2,
+            "x1": self.x_ps_e_r2 + self.w_ps,
+            "y1": self.y_ps_e_r2_m2 + self.h_ps,
+            "text": "M2"
+        })
+
+        # metropolitan seed 2
+        self.ps_codes["east"][1]["M1"].update({
+            "x0": self.x_ps_e_r2,
+            "y0": self.y_ps_e_r2_m1,
+            "x1": self.x_ps_e_r2 + self.w_ps,
+            "y1": self.y_ps_e_r2_m1 + self.h_ps,
+            "text": "M1"
+        })
+
+        # Round 3
+
+        # atlantic seed
+        self.ps_codes["east"][2]["A"].update({
+            "x0": self.x_ps_e_r3,
+            "y0": self.y_ps_e_r3_a,
+            "x1": self.x_ps_e_r3 + self.w_ps,
+            "y1": self.y_ps_e_r3_a + self.h_ps,
+            "text": "A"
+        })
+
+        # metropolitan seed
+        self.ps_codes["east"][2]["M"].update({
+            "x0": self.x_ps_e_r3,
+            "y0": self.y_ps_e_r3_m,
+            "x1": self.x_ps_e_r3 + self.w_ps,
+            "y1": self.y_ps_e_r3_m + self.h_ps,
+            "text": "M"
+        })
+
+        # Round 4
+
+        # east seed
+        self.ps_codes["east"][3]["E"].update({
+            "x0": self.x_ps_e_r4,
+            "y0": self.y_ps_e_r4_e,
+            "x1": self.x_ps_e_r4 + self.w_ps,
+            "y1": self.y_ps_e_r4_e + self.h_ps,
+            "text": "E"
+        })
+
+
+
+
+
+
+
+
+
+
+
+        ##############################################################
+
         for conf, conf_data in self.ps_codes.items():
             for rnd, round_data in conf_data.items():
                 for ps_code, ps_data in round_data.items():
@@ -565,8 +772,8 @@ class PlayoffChooser(tkinter.Tk):
                         ps_data["y0"],
                         ps_data["x1"],
                         ps_data["y1"],
-                        fill=self.bg_empty_west,
-                        width=self.bw_ps_west
+                        fill=self.bg_empty_east if conf == "east" else self.bg_empty_west,
+                        width=self.bw_ps_east if conf == "east" else self.bw_ps_west
                     )
                     t_text = self.canvas.create_text(
                         ps_data["x0"] + (self.w_ps / 2),
@@ -595,6 +802,11 @@ class PlayoffChooser(tkinter.Tk):
                         lambda event, cc=conf, rc=rnd, pc=ps_code:
                             self.motion_ps(event, cc, rc, pc)
                     )
+
+        self.canvas.itemconfigure(
+            self.ps_codes["west"][4]["SC"]["tag_rect"],
+            fill=self.bg_empty_sc
+        )
 
         # Lines
         self.lines = dict()
@@ -658,7 +870,7 @@ class PlayoffChooser(tkinter.Tk):
         # west R1 WC bottom to R2 C1
         self.lines[(("west", 0, "WC_b"), ("west", 1, "C1"))] = self.canvas.create_line(
             self.x_ps_w_r1 + self.w_ps,
-            self.y_ps_wx_b_r1 + (self.h_ps / 2),
+            self.y_ps_w_wc_b_r1 + (self.h_ps / 2),
             self.x_ps_w_r2,
             self.y_ps_w_r2_c1 + (self.h_ps / 2)
         )
@@ -719,6 +931,132 @@ class PlayoffChooser(tkinter.Tk):
             self.y_ps_sc + (self.h_ps / 2)
         )
 
+        ######################################################################################
+
+
+
+        # east R1 WC top to R2 A1
+        self.lines[(("east", 0, "WC_t"), ("east", 1, "A1"))] = self.canvas.create_line(
+            self.x_ps_e_r1,
+            self.y_ps_e_wc_t_r1 + (self.h_ps / 2),
+            self.x_ps_e_r2 + self.w_ps,
+            self.y_ps_e_r2_a1 + (self.h_ps / 2)
+        )
+
+        # east R1 A1 to R2 A1
+        self.lines[(("east", 0, "A1"), ("east", 1, "A1"))] = self.canvas.create_line(
+            self.x_ps_e_r1,
+            self.y_ps_a1_r1 + (self.h_ps / 2),
+            self.x_ps_e_r2 + self.w_ps,
+            self.y_ps_e_r2_a1 + (self.h_ps / 2)
+        )
+
+        # east R1 A2 to R2 A2
+        self.lines[(("east", 0, "A2"), ("east", 1, "A2"))] = self.canvas.create_line(
+            self.x_ps_e_r1,
+            self.y_ps_a2_r1 + (self.h_ps / 2),
+            self.x_ps_e_r2 + self.w_ps,
+            self.y_ps_e_r2_a2 + (self.h_ps / 2)
+        )
+
+        # east R1 A3 to R2 A2
+        self.lines[(("east", 0, "A3"), ("east", 1, "A2"))] = self.canvas.create_line(
+            self.x_ps_e_r1,
+            self.y_ps_a3_r1 + (self.h_ps / 2),
+            self.x_ps_e_r2 + self.w_ps,
+            self.y_ps_e_r2_a2 + (self.h_ps / 2)
+        )
+
+        # east R1 M3 to R2 M2
+        self.lines[(("east", 0, "M3"), ("east", 1, "M2"))] = self.canvas.create_line(
+            self.x_ps_e_r1,
+            self.y_ps_m3_r1 + (self.h_ps / 2),
+            self.x_ps_e_r2 + self.w_ps,
+            self.y_ps_e_r2_m2 + (self.h_ps / 2)
+        )
+
+        # east R1 M2 to R2 M2
+        self.lines[(("east", 0, "M2"), ("east", 1, "M2"))] = self.canvas.create_line(
+            self.x_ps_e_r1,
+            self.y_ps_m2_r1 + (self.h_ps / 2),
+            self.x_ps_e_r2 + self.w_ps,
+            self.y_ps_e_r2_m2 + (self.h_ps / 2)
+        )
+
+        # east R1 M1 to R2 M1
+        self.lines[(("east", 0, "M1"), ("east", 1, "M1"))] = self.canvas.create_line(
+            self.x_ps_e_r1,
+            self.y_ps_m1_r1 + (self.h_ps / 2),
+            self.x_ps_e_r2 + self.w_ps,
+            self.y_ps_e_r2_m1 + (self.h_ps / 2)
+        )
+
+        # east R1 WC bottom to R2 M1
+        self.lines[(("east", 0, "WC_b"), ("east", 1, "M1"))] = self.canvas.create_line(
+            self.x_ps_e_r1,
+            self.y_ps_e_wc_b_r1 + (self.h_ps / 2),
+            self.x_ps_e_r2 + self.w_ps,
+            self.y_ps_e_r2_m1 + (self.h_ps / 2)
+        )
+
+        # east R2 A1 to R3 A
+        self.lines[(("east", 1, "A1"), ("east", 2, "A"))] = self.canvas.create_line(
+            self.x_ps_e_r2,
+            self.y_ps_e_r2_a1 + (self.h_ps / 2),
+            self.x_ps_e_r3 + self.w_ps,
+            self.y_ps_e_r3_a + (self.h_ps / 2)
+        )
+
+        # east R2 A2 to R3 A
+        self.lines[(("east", 1, "A2"), ("east", 2, "A"))] = self.canvas.create_line(
+            self.x_ps_e_r2,
+            self.y_ps_e_r2_a2 + (self.h_ps / 2),
+            self.x_ps_e_r3 + self.w_ps,
+            self.y_ps_e_r3_a + (self.h_ps / 2)
+        )
+
+        # east R2 M2 to R3 M
+        self.lines[(("east", 1, "M2"), ("east", 2, "M"))] = self.canvas.create_line(
+            self.x_ps_e_r2,
+            self.y_ps_e_r2_m2 + (self.h_ps / 2),
+            self.x_ps_e_r3 + self.w_ps,
+            self.y_ps_e_r3_m + (self.h_ps / 2)
+        )
+
+        # east R2 M1 to R3 M
+        self.lines[(("east", 1, "M1"), ("east", 2, "M"))] = self.canvas.create_line(
+            self.x_ps_e_r2,
+            self.y_ps_e_r2_m1 + (self.h_ps / 2),
+            self.x_ps_e_r3 + self.w_ps,
+            self.y_ps_e_r3_m + (self.h_ps / 2)
+        )
+
+        # east R3 A to R4 E
+        self.lines[(("east", 2, "A"), ("east", 3, "E"))] = self.canvas.create_line(
+            self.x_ps_e_r3,
+            self.y_ps_e_r3_a + (self.h_ps / 2),
+            self.x_ps_e_r4 + self.w_ps,
+            self.y_ps_e_r4_e + (self.h_ps / 2)
+        )
+
+        # east R3 M to R4 E
+        self.lines[(("east", 2, "M"), ("east", 3, "E"))] = self.canvas.create_line(
+            self.x_ps_e_r3,
+            self.y_ps_e_r3_m + (self.h_ps / 2),
+            self.x_ps_e_r4 + self.w_ps,
+            self.y_ps_e_r4_e + (self.h_ps / 2)
+        )
+
+        # east R4 E to R5 SC
+        self.lines[(("east", 3, "E"), ("west", 4, "SC"))] = self.canvas.create_line(
+            self.x_ps_e_r4,
+            self.y_ps_e_r4_e + (self.h_ps / 2),
+            self.x_ps_sc + self.w_ps,
+            self.y_ps_sc + (self.h_ps / 2)
+        )
+
+        ######################################################################################
+
         for k, line in self.lines.items():
             self.canvas.itemconfigure(
                 line,
@@ -729,21 +1067,21 @@ class PlayoffChooser(tkinter.Tk):
 
         # self.rect_ps_w_wc_b = self.canvas.create_rectangle(
         #     self.x_ps_w_r1,
-        #     self.y_ps_wx_b_r1,
+        #     self.y_ps_w_wc_b_r1,
         #     self.x_ps_w_r1 + self.w_ps,
-        #     self.y_ps_wx_b_r1 + self.h_ps,
+        #     self.y_ps_w_wc_b_r1 + self.h_ps,
         #     fill=self.bg_empty_west
         # )
         # self.text_ps_w_wc_b = self.canvas.create_text(
         #     self.x_ps_w_r1 + (self.w_ps / 2),
-        #     self.y_ps_wx_b_r1 + (self.h_ps / 2),
+        #     self.y_ps_w_wc_b_r1 + (self.h_ps / 2),
         #     text="WC",
         #     fill=self.fg_empty_west,
         #     font=self.font_empty_west
         # )
         # self.img_ps_w_wc_b = self.canvas.create_image(
         #     self.x_ps_w_r1,
-        #     self.y_ps_wx_b_r1,
+        #     self.y_ps_w_wc_b_r1,
         #     image=self.res_images[sample_west_teams[7]],
         #     anchor=tkinter.NW
         # )
@@ -915,21 +1253,21 @@ class PlayoffChooser(tkinter.Tk):
         # # west wild card bottom
         # self.rect_ps_w_wc_b = self.canvas.create_rectangle(
         #     self.x_ps_w_r1,
-        #     self.y_ps_wx_b_r1,
+        #     self.y_ps_w_wc_b_r1,
         #     self.x_ps_w_r1 + self.w_ps,
-        #     self.y_ps_wx_b_r1 + self.h_ps,
+        #     self.y_ps_w_wc_b_r1 + self.h_ps,
         #     fill=self.bg_empty_west
         # )
         # self.text_ps_w_wc_b = self.canvas.create_text(
         #     self.x_ps_w_r1 + (self.w_ps / 2),
-        #     self.y_ps_wx_b_r1 + (self.h_ps / 2),
+        #     self.y_ps_w_wc_b_r1 + (self.h_ps / 2),
         #     text="WC",
         #     fill=self.fg_empty_west,
         #     font=self.font_empty_west
         # )
         # self.img_ps_w_wc_b = self.canvas.create_image(
         #     self.x_ps_w_r1,
-        #     self.y_ps_wx_b_r1,
+        #     self.y_ps_w_wc_b_r1,
         #     image=self.res_images[sample_west_teams[7]],
         #     anchor=tkinter.NW
         # )
@@ -966,6 +1304,21 @@ class PlayoffChooser(tkinter.Tk):
         }
         self.positions_bank_west_teams = {}
 
+        self.positions_ps_east = {
+            rnd: {
+                k: {
+                    "rect": list(map(lambda i_x: (i_x[1] + self.bw_ps_east) if (i_x[0] < 2) else (i_x[1] - self.bw_ps_east), enumerate(self.canvas.bbox(dat["tag_rect"])))),
+                    "text": self.canvas.bbox(dat["tag_text"])
+                }
+                for k, dat in rnd_dat.items()
+            }
+            for rnd, rnd_dat in self.ps_codes["east"].items()
+        }
+        print(f"{self.positions_ps_west[4]['SC']=}")
+        self.positions_ps_east.update({4: {"SC": self.positions_ps_west[4]["SC"]}})
+
+        self.positions_bank_east_teams = {}
+
         for i, t_pts in enumerate(self.sorted_west):
             t, pts = t_pts
             x = self.pos_bank_west[0] + 10 + (0 if (i % 2 == 0) else self.w_ps + 10)
@@ -984,6 +1337,26 @@ class PlayoffChooser(tkinter.Tk):
                 )
             ] = t
             self.positions_bank_west_teams[t] = (x, y, img, tag)
+            self.canvas.tag_bind(tag, "<Button-1>", lambda event, t_=t: self.click_bank_team(event, t_))
+
+        for i, t_pts in enumerate(self.sorted_east):
+            t, pts = t_pts
+            x = self.pos_bank_east[0] + 10 + (0 if (i % 2 == 0) else self.w_ps + 10)
+            y = self.pos_bank_east[1] + ((i // 2) * (self.h_ps + 10)) + 5
+            img = self.res_images[t]
+            self.res_img_to_t[img] = t
+            tag = self.canvas.create_image(
+                x, y,
+                image=img,
+                anchor=tkinter.NW
+            )
+            self.res_pyimage_to_t[
+                self.canvas.itemcget(
+                    tag,
+                    "image"
+                )
+            ] = t
+            self.positions_bank_east_teams[t] = (x, y, img, tag)
             self.canvas.tag_bind(tag, "<Button-1>", lambda event, t_=t: self.click_bank_team(event, t_))
 
         self.canvas.grid(row=0, column=0)
@@ -1022,12 +1395,25 @@ class PlayoffChooser(tkinter.Tk):
         self.valid_ps_codes_list_c = [self.valid_ps_codes_root_c, self.valid_ps_codes_root_op_c, self.valid_ps_codes_c]
         self.valid_ps_codes_list_p = [self.valid_ps_codes_root_p, self.valid_ps_codes_root_op_p, self.valid_ps_codes_p]
 
+        self.frame_btn_bar = tkinter.Frame(self)
         self.tv_btn_clear_ps, self.btn_clear_ps = button_factory(
-            self,
+            self.frame_btn_bar,
             "clear",
             command=self.click_clear_ps
         )
-        self.btn_clear_ps.grid()
+        self.tv_btn_export_ps, self.btn_export_ps = button_factory(
+            self.frame_btn_bar,
+            "export",
+            command=self.click_export_ps
+        )
+        self.tv_btn_sr1fs, self.btn_sr1fs = button_factory(
+            self.frame_btn_bar,
+            "set round 1 based on standings",
+            command=self.click_sr1fs
+        )
+        self.btn_clear_ps.grid(row=0, column=0)
+        self.btn_export_ps.grid(row=0, column=1)
+        self.btn_sr1fs.grid(row=0, column=2)
 
         self.canvas.bind("<ButtonRelease-1>", self.release_click)
         self.canvas.bind("<B1-Motion>", self.motion)
@@ -1035,6 +1421,101 @@ class PlayoffChooser(tkinter.Tk):
 
         # for img in self.west_images:
         #     self.canvas.itemconfigure(img, state="hidden")
+
+    def click_sr1fs(self):
+        self.click_clear_ps()
+        top_p, top_c, top_a, top_m = [[] for _ in range(4)]
+        for i, t_pts in enumerate(self.sorted_west):
+            t, pts = t_pts
+            d = full_team_to_div_name[t][0].upper()
+            # print(f"{pts=}, {t=}, {d=}")
+            if d == "P":
+                top_p.append(t_pts)
+            else:
+                top_c.append(t_pts)
+        top_p.sort(key=lambda tup: tup[1], reverse=True)
+        top_c.sort(key=lambda tup: tup[1], reverse=True)
+        wc_w = top_p[3:] + top_c[3:]
+        wc_w.sort(key=lambda tup: tup[1], reverse=True)
+        # print(f"{top_p=}, {top_c=}, {wc_w=}")
+        t_p, t_c = top_p[0], top_c[0]
+        if t_p[0] <= t_c[0]:
+            w_ps_ordered = wc_w[1:2] + top_p[:3] + top_c[:3][::-1] + wc_w[:1]
+        else:
+            w_ps_ordered = wc_w[:1] + top_p[:3] + top_c[:3][::-1] + wc_w[1:2]
+
+        for i, t_pts in enumerate(self.sorted_east):
+            t, pts = t_pts
+            d = full_team_to_div_name[t][0].upper()
+            # print(f"{pts=}, {t=}, {d=}")
+            if d == "A":
+                top_a.append(t_pts)
+            else:
+                top_m.append(t_pts)
+        top_a.sort(key=lambda tup: tup[1], reverse=True)
+        top_m.sort(key=lambda tup: tup[1], reverse=True)
+        wc_e = top_a[3:] + top_m[3:]
+        wc_e.sort(key=lambda tup: tup[1], reverse=True)
+        # print(f"{top_a=}, {top_m=}, {wc_e=}")
+        t_a, t_m = top_a[0], top_m[0]
+        if t_a[0] <= t_m[0]:
+            e_ps_ordered = wc_e[1:2] + top_a[:3] + top_m[:3][::-1] + wc_e[:1]
+        else:
+            e_ps_ordered = wc_e[:1] + top_a[:3] + top_m[:3][::-1] + wc_e[1:2]
+
+        w_ps_keys = self.valid_ps_codes_root_p[:4] + self.valid_ps_codes_root_c[:4]
+        e_ps_keys = self.valid_ps_codes_root_a[:4] + self.valid_ps_codes_root_m[:4]
+
+        for conf, zips in {
+            "west": zip(w_ps_keys, w_ps_ordered),
+            "east": zip(e_ps_keys, e_ps_ordered)
+        }.items():
+            for ps_c, t_pts in zips:
+                self.canvas.itemconfigure(
+                    self.ps_codes[conf][0][ps_c]["tag_image"],
+                    state="normal",
+                    image=self.res_images[t_pts[0]]
+                )
+
+        # print(f"{w_ps_ordered=}")
+        # print(f"{e_ps_ordered=}")
+
+
+    def click_export_ps(self):
+        missing = {}
+        unk_team = "no_team"
+        for conf, conf_data in self.ps_codes.items():
+            for rnd, rnd_data in conf_data.items():
+                for pc, pc_data in rnd_data.items():
+                    tag = self.ps_codes[conf][rnd][pc]["tag_image"]
+                    img = self.canvas.itemcget(
+                        tag,
+                        "image"
+                    )
+                    v = self.canvas.itemcget(
+                        tag,
+                        "state"
+                    )
+                    t = self.res_pyimage_to_t.get(
+                        img,
+                        unk_team
+                    )
+                    if v == "hidden":
+                        t = unk_team
+                    print(f"C={conf[0].upper()}, R={rnd}, PC={pc.ljust(6)}, t={t}")
+                    if t == unk_team:
+                        missing.update({conf: {rnd: {pc: t}}})
+
+        if missing:
+            messagebox.showinfo(
+                title=self.title_app,
+                message=f"Please finish making selections."
+            )
+
+            for cc, c_data in missing.items():
+                for rc, r_data in c_data.items():
+                    for pc, p_data in r_data.itemnkiis():
+                        self.flash_ps(cc, rc, pc)
 
     def click_clear_ps(self):
         for conf, conf_data in self.ps_codes.items():
@@ -1068,10 +1549,13 @@ class PlayoffChooser(tkinter.Tk):
             # drag_team = self.res_img_to_t[self.canvas.itemcget(self.drag_rect, "image")]
             drag_team = self.drag_team.get()
             drag_div = full_team_to_div_name[drag_team].upper()[0]
-            print(f"{drag_team=}, {drag_div=}")
+            drag_conf = full_team_to_conf[drag_team].upper()[0]
+            print(f"{drag_team=}, {drag_div=}, {drag_conf=}")
+            positions = self.positions_ps_east if drag_conf == "E" else self.positions_ps_west
+            drag_conf = "east" if drag_conf == "E" else "west"
 
             tol = 1e-10
-            for rnd_code, rnd_dat in self.positions_ps_west.items():
+            for rnd_code, rnd_dat in positions.items():
                 for ps_code, dat in rnd_dat.items():
                     # for k, bbox in dat.items():
                     # k = "rect"
@@ -1079,7 +1563,7 @@ class PlayoffChooser(tkinter.Tk):
                     paths = []
                     p_y = ((e_y - bbox[1]) / self.h_ps)
                     if self.collide_bbox_point(bbox, point):
-                        paths = self.calc_path("west", rnd_code, ps_code)
+                        paths = self.calc_path(drag_conf, rnd_code, ps_code)
                         if rnd_code == 4:
                             # stanley cup finalist
                             p_y = int(p_y * (5 - tol))
@@ -1094,7 +1578,7 @@ class PlayoffChooser(tkinter.Tk):
                         elif rnd_code == 3:
                             # conf finalist
                             p_y = int(p_y * (5 - tol))
-                            if drag_div == "P":
+                            if drag_div in ("P", "A"):
                                 paths = paths[:5]
                             else:
                                 paths = paths[5:]
@@ -1183,22 +1667,26 @@ class PlayoffChooser(tkinter.Tk):
         tol = 1e-10
         drag_team = self.drag_team.get()
         drag_div = full_team_to_div_name[drag_team].upper()[0]
+        drag_conf = full_team_to_conf[drag_team].upper()[0]
+        positions = self.positions_ps_east if drag_conf == "E" else self.positions_ps_west
+        drag_conf = "east" if drag_conf == "E" else "west"
+        print(f"{drag_team=}, {drag_div=}, {drag_conf=}")
         # bbox_drag = self.canvas.bbox(self.drag_rect)
         if is_dragging:
             print(f"DRAG ", end="")
-            for rnd_code, rnd_dat in self.positions_ps_west.items():
+            for rnd_code, rnd_dat in positions.items():
                 for ps_code, dat in rnd_dat.items():
                     # for k, bbox in dat.items():
                     bbox = dat["rect"]
                     if self.collide_bbox_point(bbox, point):
-                        print(f"COLLIDE cc='west', rc={rnd_code}, pc={ps_code} ", end="")
+                        print(f"COLLIDE cc='{drag_conf}', rc={rnd_code}, pc={ps_code} ", end="")
                         p_y = ((e_y - bbox[1]) / self.h_ps)
                         # # release in a ps spot
                         # print(f"Release {rnd_code=} {ps_code=}, {k=}")
                         # # check that previous spots not empty
                         # do_change = False
 
-                        paths = self.calc_path("west", rnd_code, ps_code)
+                        paths = self.calc_path(drag_conf, rnd_code, ps_code)
                         if rnd_code == 4:
                             # stanley cup finalist
                             p_y = int(p_y * (5 - tol))
@@ -1213,7 +1701,7 @@ class PlayoffChooser(tkinter.Tk):
                         elif rnd_code == 3:
                             # conf finalist
                             p_y = int(p_y * (5 - tol))
-                            if drag_div == "P":
+                            if drag_div in ("P", "A"):
                                 paths = paths[:5]
                             else:
                                 paths = paths[5:]
@@ -1247,12 +1735,20 @@ class PlayoffChooser(tkinter.Tk):
                         match drag_div:
                             case "A":
                                 do_change = ps_code in self.valid_ps_codes_a
+                                if rnd_code == 0:
+                                    do_change = ps_code in (self.valid_ps_codes_root_a[:4] + self.valid_ps_codes_root_op_a[:1])
                             case "M":
                                 do_change = ps_code in self.valid_ps_codes_m
+                                if rnd_code == 0:
+                                    do_change = ps_code in (self.valid_ps_codes_root_m[:4] + self.valid_ps_codes_root_op_m[:1])
                             case "C":
                                 do_change = ps_code in self.valid_ps_codes_c
+                                if rnd_code == 0:
+                                    do_change = ps_code in (self.valid_ps_codes_root_c[:4] + self.valid_ps_codes_root_op_c[:1])
                             case _:
                                 do_change = ps_code in self.valid_ps_codes_p
+                                if rnd_code == 0:
+                                    do_change = ps_code in (self.valid_ps_codes_root_p[:4] + self.valid_ps_codes_root_op_p[:1])
 
                         drag_img = self.canvas.itemcget(self.drag_rect, "image")
 
@@ -1280,8 +1776,8 @@ class PlayoffChooser(tkinter.Tk):
                             #             break
 
                             clear_path = []
-                            for pc in self.ps_codes["west"][0]:
-                                cc = "west"
+                            for pc in self.ps_codes[drag_conf][0]:
+                                cc = drag_conf
                                 rc = 0
                                 if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
                                         and (self.canvas.itemcget(
@@ -1328,7 +1824,7 @@ class PlayoffChooser(tkinter.Tk):
                             path_sc = self.calc_path_2_sc(cc, rc, pc)
                             print(f"{path_sc[0]=}")
                             for cc, rc, pc in path_sc[0]:
-                                if (cc == "west") and (rc == rnd_code) and (pc == ps_code):
+                                if (cc == drag_conf) and (rc == rnd_code) and (pc == ps_code):
                                     break
                                 if self.canvas.itemcget(
                                     self.ps_codes[cc][rc][pc]["tag_image"],
@@ -1345,58 +1841,90 @@ class PlayoffChooser(tkinter.Tk):
                                 for child in path_sc[0][1:]:
                                     c_cc, c_rc, c_pc = child
                                     paths_ = self.calc_path(c_cc, c_rc, c_pc)
-
-                                    if drag_div == "P":
-                                        paths_ = paths_[:5]
-                                    elif drag_div == "C":
-                                        paths_ = paths_[5:10]
-                                    elif drag_div == "A":
-                                        paths_ = paths_[10:15]
-                                    else:
-                                        paths_ = paths_[15:]
-
                                     print(f"A paths_=")
                                     for p in paths_:
                                         print(f"{p}")
-                                    paths_ = [p[::-1] for p in paths_]
-                                    paths_.reverse()
+
+                                    # if 3 <= c_rc <= 4:
+                                    if c_rc == 4:
+                                        if drag_div == "P":
+                                            paths_ = paths_[:5]
+                                        elif drag_div == "C":
+                                            paths_ = paths_[5:10]
+                                        elif drag_div == "A":
+                                            paths_ = paths_[10:15]
+                                        else:
+                                            paths_ = paths_[15:]
+
+                                        # ensure that a west path to SC is considered
+                                        paths_.insert(0, self.calc_path("west", 4, "SC")[0])
+                                    else:
+                                        if drag_div in ("P", "A"):
+                                            paths_ = paths_[:5]
+                                        # elif drag_div == "C":
+                                        else:
+                                            paths_ = paths_[5:10]
+                                    # elif drag_div == "A":
+                                    #     paths_ = paths_[10:15]
+                                    # else:
+                                    #     paths_ = paths_[15:]
+
+                                    c_team = self.res_pyimage_to_t.get(
+                                        self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image'), "no_child")
+                                    print(f"{c_cc=}, {c_rc=}, {c_pc=}, t='{c_team}'")
                                     print(f"B paths_=")
                                     for p in paths_:
                                         print(f"{p}")
+                                    # paths_ = [p[::-1] for p in paths_]
+                                    # paths_.reverse()
+                                    # print(f"B paths_=")
+                                    # for p in paths_:
+                                    #     print(f"{p}")
                                     parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths_]))]
                                     print(f"{parents=}")
                                     # parents.remove(())
                                     if parents:
-                                        print(f"ME={self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image')]}")
+                                        # print(f"ME={self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image')]}")
+                                        # print(f"ME={c_team}")
                                         # p_cc, p_rc, p_pc = parents[0]
 
-                                        print(f"{c_cc=}, {c_rc=}, {c_pc=}, t='{self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image')]}'")
                                         img_child = self.canvas.itemcget(
                                             self.ps_codes[c_cc][c_rc][c_pc],
                                             "image"
                                         )
                                         lp = len(parents)
                                         i = 0
+                                        found_parent = False
                                         for p_cc, p_rc, p_pc in parents:
-                                            print(f"{p_cc=}, {p_rc=}, {p_pc=}, t='{self.res_pyimage_to_t.get(self.canvas.itemcget(self.ps_codes[p_cc][p_rc][p_pc]['tag_image'], 'image'),'no_team')}', {i=}, {lp=}")
+                                            p_team = self.res_pyimage_to_t.get(self.canvas.itemcget(self.ps_codes[p_cc][p_rc][p_pc]['tag_image'], 'image'), 'no_parent')
+                                            print(f"{p_cc=}, {p_rc=}, {p_pc=}, t='{p_team}', {i=}, {lp=}")
                                             if (p_cc != path[-2][0]) or (p_rc != path[-2][1]) or (p_pc != path[-2][2]):
-                                                img_parents = self.canvas.itemcget(
-                                                    self.ps_codes[p_cc][p_rc][p_pc],
-                                                    "image"
+                                                par_vis = self.canvas.itemcget(
+                                                    self.ps_codes[p_cc][p_rc][p_pc]["tag_image"],
+                                                    "state"
                                                 )
+                                                # print(f"{par_vis=}")
                                                 # ((rnd_code + 1) < rc) and (
-                                                if img_parents == img_child:
-                                                    print(f"\tB BLANK")
-                                                    self.canvas.itemconfigure(
-                                                        self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
-                                                        state="hidden"
-                                                    )
+                                                # if img_parents == img_child:
+                                                if (par_vis == "normal") and (p_team == c_team):
+                                                    # print(f"\tB BLANK")
+                                                    # self.canvas.itemconfigure(
+                                                    #     self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
+                                                    #     state="hidden"
+                                                    # )
+                                                    found_parent = True
                                                 else:
                                                     print(f"-B")
 
                                             else:
                                                 print(f"-A")
                                             i += 1
+                                        print(f"{found_parent=}")
+                                        if not found_parent:
+                                            self.canvas.itemconfigure(
+                                                self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
+                                                state="hidden"
+                                            )
 
                             # if 0 < rnd_code < 4:
                             #     print(f"Start check path SC")
@@ -1445,135 +1973,137 @@ class PlayoffChooser(tkinter.Tk):
 
     def calc_path_2_sc(self, conf_code, rnd_code, ps_code):
         inp = [conf_code, rnd_code, ps_code]
+        sc = ["west", 4, "SC"]
         if rnd_code == 4:
             return [[inp]]
         elif rnd_code == 3:
             return [
-                [inp, [conf_code, 4, "SC"]]
+                [inp, sc]
             ]
         elif rnd_code == 2:
             if conf_code == "east":
                 return [
-                    [inp, [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                    [inp, ["east", 3, "E"], sc]
                 ]
             else:
                 return [
-                    [inp, [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                    [inp, ["west", 3, "W"], sc]
                 ]
         elif rnd_code == 1:
             if conf_code == "east":
                 if ps_code in self.valid_ps_codes_root_a:
                     return [
-                        [inp, [conf_code, 2, "A"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                        [inp, ["east", 2, "A"], ["east", 3, "E"], sc]
                     ]
                 else:
                     return [
-                        [inp, [conf_code, 2, "M"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                        [inp, ["east", 2, "M"], ["east", 3, "E"], sc]
                     ]
             else:
                 if ps_code in self.valid_ps_codes_root_p:
                     return [
-                        [inp, [conf_code, 2, "P"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                        [inp, ["west", 2, "P"], ["west", 3, "W"], sc]
                     ]
                 else:
                     return [
-                        [inp, [conf_code, 2, "C"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                        [inp, ["west", 2, "C"], ["west", 3, "W"], sc]
                     ]
         else:
             if conf_code == "east":
                 if ps_code in self.valid_ps_codes_root_a[:2]:
                     return [
-                        [inp, [conf_code, 1, "A1"], [conf_code, 2, "A"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                        [inp, ["east", 1, "A1"], ["east", 2, "A"], ["east", 3, "E"], sc]
                     ]
                 elif ps_code in self.valid_ps_codes_root_a[2:4]:
                     return [
-                        [inp, [conf_code, 1, "A2"], [conf_code, 2, "A"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                        [inp, ["east", 1, "A2"], ["east", 2, "A"], ["east", 3, "E"], sc]
                     ]
                 elif ps_code in self.valid_ps_codes_root_m[:2]:
                     return [
-                        [inp, [conf_code, 1, "M2"], [conf_code, 2, "M"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                        [inp, ["east", 1, "M2"], ["east", 2, "M"], ["east", 3, "E"], sc]
                     ]
                 else:
                     return [
-                        [inp, [conf_code, 1, "M1"], [conf_code, 2, "M"], [conf_code, 3, "E"], [conf_code, 4, "SC"]]
+                        [inp, ["east", 1, "M1"], ["east", 2, "M"], ["east", 3, "E"], sc]
                     ]
             else:
                 if ps_code in self.valid_ps_codes_root_p[:2]:
                     return [
-                        [inp, [conf_code, 1, "P1"], [conf_code, 2, "P"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                        [inp, ["west", 1, "P1"], ["west", 2, "P"], ["west", 3, "W"], sc]
                     ]
                 elif ps_code in self.valid_ps_codes_root_p[2:4]:
                     return [
-                        [inp, [conf_code, 1, "P2"], [conf_code, 2, "P"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                        [inp, ["west", 1, "P2"], ["west", 2, "P"], ["west", 3, "W"], sc]
                     ]
                 elif ps_code in self.valid_ps_codes_root_c[:2]:
                     return [
-                        [inp, [conf_code, 1, "C2"], [conf_code, 2, "C"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                        [inp, ["west", 1, "C2"], ["west", 2, "C"], ["west", 3, "W"], sc]
                     ]
                 else:
                     return [
-                        [inp, [conf_code, 1, "C1"], [conf_code, 2, "C"], [conf_code, 3, "W"], [conf_code, 4, "SC"]]
+                        [inp, ["west", 1, "C1"], ["west", 2, "C"], ["west", 3, "W"], sc]
                     ]
 
     def calc_path(self, conf_code, rnd_code, ps_code):
         inp = [conf_code, rnd_code, ps_code]
+        sc = ["west", 4, "SC"]
         if rnd_code == 4:
             # stanley cup finalist
             return [
-                [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
-                [[conf_code, 0, "P1"], [conf_code, 1, "P1"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
-                [[conf_code, 0, "P2"], [conf_code, 1, "P2"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
-                [[conf_code, 0, "P3"], [conf_code, 1, "P2"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
-                [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
+                [["west", 0, "WC_t"], ["west", 1, "P1"], ["west", 2, "P"], ["west", 3, "W"], sc],
+                [["west", 0, "P1"], ["west", 1, "P1"], ["west", 2, "P"], ["west", 3, "W"], sc],
+                [["west", 0, "P2"], ["west", 1, "P2"], ["west", 2, "P"], ["west", 3, "W"], sc],
+                [["west", 0, "P3"], ["west", 1, "P2"], ["west", 2, "P"], ["west", 3, "W"], sc],
+                [["west", 0, "WC_b"], ["west", 1, "C1"], ["west", 2, "C"], ["west", 3, "W"], sc],
 
-                [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], [conf_code, 2, "P"], [conf_code, 3, "W"], inp],
-                [[conf_code, 0, "C3"], [conf_code, 1, "C2"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
-                [[conf_code, 0, "C2"], [conf_code, 1, "C2"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
-                [[conf_code, 0, "C1"], [conf_code, 1, "C1"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
-                [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], [conf_code, 2, "C"], [conf_code, 3, "W"], inp],
+                [["west", 0, "WC_t"], ["west", 1, "P1"], ["west", 2, "P"], ["west", 3, "W"], sc],
+                [["west", 0, "C3"], ["west", 1, "C2"], ["west", 2, "C"], ["west", 3, "W"], sc],
+                [["west", 0, "C2"], ["west", 1, "C2"], ["west", 2, "C"], ["west", 3, "W"], sc],
+                [["west", 0, "C1"], ["west", 1, "C1"], ["west", 2, "C"], ["west", 3, "W"], sc],
+                [["west", 0, "WC_b"], ["west", 1, "C1"], ["west", 2, "C"], ["west", 3, "W"], sc],
 
-                [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
-                [[conf_code, 0, "A1"], [conf_code, 1, "A1"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
-                [[conf_code, 0, "A2"], [conf_code, 1, "A2"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
-                [[conf_code, 0, "A3"], [conf_code, 1, "A2"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
-                [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp],
+                [["east", 0, "WC_t"], ["east", 1, "A1"], ["east", 2, "A"], ["east", 3, "E"], sc],
+                [["east", 0, "A1"], ["east", 1, "A1"], ["east", 2, "A"], ["east", 3, "E"], sc],
+                [["east", 0, "A2"], ["east", 1, "A2"], ["east", 2, "A"], ["east", 3, "E"], sc],
+                [["east", 0, "A3"], ["east", 1, "A2"], ["east", 2, "A"], ["east", 3, "E"], sc],
+                [["east", 0, "WC_b"], ["east", 1, "M1"], ["east", 2, "M"], ["east", 3, "E"], sc],
 
-                [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], [conf_code, 2, "A"], [conf_code, 3, "E"], inp],
-                [[conf_code, 0, "M3"], [conf_code, 1, "M2"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp],
-                [[conf_code, 0, "M2"], [conf_code, 1, "M2"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp],
-                [[conf_code, 0, "M1"], [conf_code, 1, "M1"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp],
-                [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], [conf_code, 2, "M"], [conf_code, 3, "E"], inp]
+                [["east", 0, "WC_t"], ["east", 1, "A1"], ["east", 2, "A"], ["east", 3, "E"], sc],
+                [["east", 0, "M3"], ["east", 1, "M2"], ["east", 2, "M"], ["east", 3, "E"], sc],
+                [["east", 0, "M2"], ["east", 1, "M2"], ["east", 2, "M"], ["east", 3, "E"], sc],
+                [["east", 0, "M1"], ["east", 1, "M1"], ["east", 2, "M"], ["east", 3, "E"], sc],
+                [["east", 0, "WC_b"], ["east", 1, "M1"], ["east", 2, "M"], ["east", 3, "E"], sc]
             ]
         elif rnd_code == 3:
             # conf finalist
             match ps_code:
                 case "W":
                     return [
-                        [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], [conf_code, 2, "P"], inp],
-                        [[conf_code, 0, "P1"], [conf_code, 1, "P1"], [conf_code, 2, "P"], inp],
-                        [[conf_code, 0, "P2"], [conf_code, 1, "P2"], [conf_code, 2, "P"], inp],
-                        [[conf_code, 0, "P3"], [conf_code, 1, "P2"], [conf_code, 2, "P"], inp],
-                        [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], [conf_code, 2, "C"], inp],
+                        [["west", 0, "WC_t"], ["west", 1, "P1"], ["west", 2, "P"], inp],
+                        [["west", 0, "P1"], ["west", 1, "P1"], ["west", 2, "P"], inp],
+                        [["west", 0, "P2"], ["west", 1, "P2"], ["west", 2, "P"], inp],
+                        [["west", 0, "P3"], ["west", 1, "P2"], ["west", 2, "P"], inp],
+                        [["west", 0, "WC_b"], ["west", 1, "C1"], ["west", 2, "C"], inp],
 
-                        [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], [conf_code, 2, "P"], inp],
-                        [[conf_code, 0, "C3"], [conf_code, 1, "C2"], [conf_code, 2, "C"], inp],
-                        [[conf_code, 0, "C2"], [conf_code, 1, "C2"], [conf_code, 2, "C"], inp],
-                        [[conf_code, 0, "C1"], [conf_code, 1, "C1"], [conf_code, 2, "C"], inp],
-                        [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], [conf_code, 2, "C"], inp]
+                        [["west", 0, "WC_t"], ["west", 1, "P1"], ["west", 2, "P"], inp],
+                        [["west", 0, "C3"], ["west", 1, "C2"], ["west", 2, "C"], inp],
+                        [["west", 0, "C2"], ["west", 1, "C2"], ["west", 2, "C"], inp],
+                        [["west", 0, "C1"], ["west", 1, "C1"], ["west", 2, "C"], inp],
+                        [["west", 0, "WC_b"], ["west", 1, "C1"], ["west", 2, "C"], inp]
                     ]
                 case _:
                     return [
-                        [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], [conf_code, 2, "A"], inp],
-                        [[conf_code, 0, "A1"], [conf_code, 1, "A1"], [conf_code, 2, "A"], inp],
-                        [[conf_code, 0, "A2"], [conf_code, 1, "A2"], [conf_code, 2, "A"], inp],
-                        [[conf_code, 0, "A3"], [conf_code, 1, "A2"], [conf_code, 2, "A"], inp],
-                        [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], [conf_code, 2, "M"], inp],
+                        [["east", 0, "WC_t"], ["east", 1, "A1"], ["east", 2, "A"], inp],
+                        [["east", 0, "A1"], ["east", 1, "A1"], ["east", 2, "A"], inp],
+                        [["east", 0, "A2"], ["east", 1, "A2"], ["east", 2, "A"], inp],
+                        [["east", 0, "A3"], ["east", 1, "A2"], ["east", 2, "A"], inp],
+                        [["east", 0, "WC_b"], ["east", 1, "M1"], ["east", 2, "M"], inp],
 
-                        [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], [conf_code, 2, "A"], inp],
-                        [[conf_code, 0, "M3"], [conf_code, 1, "M2"], [conf_code, 2, "M"], inp],
-                        [[conf_code, 0, "M2"], [conf_code, 1, "M2"], [conf_code, 2, "M"], inp],
-                        [[conf_code, 0, "M1"], [conf_code, 1, "M1"], [conf_code, 2, "M"], inp],
-                        [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], [conf_code, 2, "M"], inp]
+                        [["east", 0, "WC_t"], ["east", 1, "A1"], ["east", 2, "A"], inp],
+                        [["east", 0, "M3"], ["east", 1, "M2"], ["east", 2, "M"], inp],
+                        [["east", 0, "M2"], ["east", 1, "M2"], ["east", 2, "M"], inp],
+                        [["east", 0, "M1"], ["east", 1, "M1"], ["east", 2, "M"], inp],
+                        [["east", 0, "WC_b"], ["east", 1, "M1"], ["east", 2, "M"], inp]
                     ]
         elif rnd_code == 2:
             # div finalist
@@ -1581,33 +2111,33 @@ class PlayoffChooser(tkinter.Tk):
                 match ps_code:
                     case "P":
                         return [
-                            [[conf_code, 0, "WC_t"], [conf_code, 1, "P1"], inp],
-                            [[conf_code, 0, "P1"], [conf_code, 1, "P1"], inp],
-                            [[conf_code, 0, "P2"], [conf_code, 1, "P2"], inp],
-                            [[conf_code, 0, "P3"], [conf_code, 1, "P2"], inp]
+                            [["west", 0, "WC_t"], ["west", 1, "P1"], inp],
+                            [["west", 0, "P1"], ["west", 1, "P1"], inp],
+                            [["west", 0, "P2"], ["west", 1, "P2"], inp],
+                            [["west", 0, "P3"], ["west", 1, "P2"], inp]
                         ]
                     case _:
                         return [
-                            [[conf_code, 0, "C3"], [conf_code, 1, "C2"], inp],
-                            [[conf_code, 0, "C2"], [conf_code, 1, "C2"], inp],
-                            [[conf_code, 0, "C1"], [conf_code, 1, "C1"], inp],
-                            [[conf_code, 0, "WC_b"], [conf_code, 1, "C1"], inp]
+                            [["west", 0, "C3"], ["west", 1, "C2"], inp],
+                            [["west", 0, "C2"], ["west", 1, "C2"], inp],
+                            [["west", 0, "C1"], ["west", 1, "C1"], inp],
+                            [["west", 0, "WC_b"], ["west", 1, "C1"], inp]
                         ]
             else:
                 match ps_code:
                     case "A":
                         return [
-                            [[conf_code, 0, "WC_t"], [conf_code, 1, "A1"], inp],
-                            [[conf_code, 0, "A1"], [conf_code, 1, "A1"], inp],
-                            [[conf_code, 0, "A2"], [conf_code, 1, "A2"], inp],
-                            [[conf_code, 0, "A3"], [conf_code, 1, "A2"], inp]
+                            [["east", 0, "WC_t"], ["east", 1, "A1"], inp],
+                            [["east", 0, "A1"], ["east", 1, "A1"], inp],
+                            [["east", 0, "A2"], ["east", 1, "A2"], inp],
+                            [["east", 0, "A3"], ["east", 1, "A2"], inp]
                         ]
                     case _:
                         return [
-                            [[conf_code, 0, "M3"], [conf_code, 1, "M2"], inp],
-                            [[conf_code, 0, "M2"], [conf_code, 1, "M2"], inp],
-                            [[conf_code, 0, "M1"], [conf_code, 1, "M1"], inp],
-                            [[conf_code, 0, "WC_b"], [conf_code, 1, "M1"], inp]
+                            [["east", 0, "M3"], ["east", 1, "M2"], inp],
+                            [["east", 0, "M2"], ["east", 1, "M2"], inp],
+                            [["east", 0, "M1"], ["east", 1, "M1"], inp],
+                            [["east", 0, "WC_b"], ["east", 1, "M1"], inp]
                         ]
         elif rnd_code == 1:
             # quarter finalist
@@ -1615,45 +2145,45 @@ class PlayoffChooser(tkinter.Tk):
                 match ps_code:
                     case "P1":
                         return [
-                            [[conf_code, 0, "WC_t"], inp],
-                            [[conf_code, 0, "P1"], inp]
+                            [["west", 0, "WC_t"], inp],
+                            [["west", 0, "P1"], inp]
                         ]
                     case "P2":
                         return [
-                            [[conf_code, 0, "P2"], inp],
-                            [[conf_code, 0, "P3"], inp]
+                            [["west", 0, "P2"], inp],
+                            [["west", 0, "P3"], inp]
                         ]
                     case "C2":
                         return [
-                            [[conf_code, 0, "C3"], inp],
-                            [[conf_code, 0, "C2"], inp]
+                            [["west", 0, "C3"], inp],
+                            [["west", 0, "C2"], inp]
                         ]
                     case _:
                         return [
-                            [[conf_code, 0, "C1"], inp],
-                            [[conf_code, 0, "WC_b"], inp]
+                            [["west", 0, "C1"], inp],
+                            [["west", 0, "WC_b"], inp]
                         ]
             else:
                 match ps_code:
                     case "A1":
                         return [
-                            [[conf_code, 0, "WC_t"], inp],
-                            [[conf_code, 0, "A1"], inp]
+                            [["east", 0, "WC_t"], inp],
+                            [["east", 0, "A1"], inp]
                         ]
                     case "A2":
                         return [
-                            [[conf_code, 0, "A2"], inp],
-                            [[conf_code, 0, "A3"], inp]
+                            [["east", 0, "A2"], inp],
+                            [["east", 0, "A3"], inp]
                         ]
                     case "M2":
                         return [
-                            [[conf_code, 0, "M3"], inp],
-                            [[conf_code, 0, "M2"], inp]
+                            [["east", 0, "M3"], inp],
+                            [["east", 0, "M2"], inp]
                         ]
                     case _:
                         return [
-                            [[conf_code, 0, "M1"], inp],
-                            [[conf_code, 0, "WC_b"], inp]
+                            [["east", 0, "M1"], inp],
+                            [["east", 0, "WC_b"], inp]
                         ]
         else:
             # round 1
@@ -1687,7 +2217,13 @@ class PlayoffChooser(tkinter.Tk):
             )
 
     def click_bank_team(self, event, team_name):
-        b_x, b_y, b_img, b_tag = self.positions_bank_west_teams[team_name]
+        try:
+            b_x, b_y, b_img, b_tag = self.positions_bank_west_teams[team_name]
+        except KeyError:
+            try:
+                b_x, b_y, b_img, b_tag = self.positions_bank_east_teams[team_name]
+            except KeyError as ke:
+                raise ke
         e_x, e_y = event.x, event.y
         self.canvas.itemconfigure(
             self.drag_rect,
@@ -1696,8 +2232,8 @@ class PlayoffChooser(tkinter.Tk):
             anchor=tkinter.CENTER
         )
         self.canvas.coords(self.drag_rect, e_x, e_y)
-        self.dragging.set(True)
         self.drag_team.set(team_name)
+        self.dragging.set(True)
 
 
     # def motion_rect(self, event, rect):
