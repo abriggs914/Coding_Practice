@@ -271,7 +271,8 @@ class PlayoffChooser(tkinter.Tk):
         self.sorted_west = [tup for tup in self.sorted_standings if tup[0] in west_teams]
         self.sorted_east = [tup for tup in self.sorted_standings if tup[0] in east_teams]
         self.dims_root = 1625, 1000
-        self.title("2024 Playoff Bracket Challenge")
+        self.title_app = "2024 Playoff Bracket Challenge"
+        self.title(self.title_app)
         # self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=2, rtype=dict)
         self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=0, rtype=dict)
         self.geometry(self.calc_geometry["geometry"])
@@ -1411,6 +1412,7 @@ class PlayoffChooser(tkinter.Tk):
             "set round 1 based on standings",
             command=self.click_sr1fs
         )
+        self.frame_btn_bar.grid()
         self.btn_clear_ps.grid(row=0, column=0)
         self.btn_export_ps.grid(row=0, column=1)
         self.btn_sr1fs.grid(row=0, column=2)
@@ -1514,7 +1516,7 @@ class PlayoffChooser(tkinter.Tk):
 
             for cc, c_data in missing.items():
                 for rc, r_data in c_data.items():
-                    for pc, p_data in r_data.itemnkiis():
+                    for pc, p_data in r_data.items():
                         self.flash_ps(cc, rc, pc)
 
     def click_clear_ps(self):
@@ -1649,13 +1651,25 @@ class PlayoffChooser(tkinter.Tk):
     def flash_ps(self, conf_code, rnd_code, ps_code):
         sc = "#FFFFFF"
         ec = "#000000"
-        grad = [gradient(i+1, 10, sc, ec, rgb=False) for i in range(10)]
-        for i, c in enumerate(grad):
+        if conf_code == "east":
+            cc = self.outline
+            d--
+        grad_c = [gradient(i+1, 10, sc, ec, rgb=False) for i in range(10)]
+        grad_f = [gradient(i+1, 10, sc, ec, rgb=False) for i in range(10)]
+        for i, c_f in enumerate(zip(grad_c, grad_f)):
+            c, f = c_f
             self.after(
                 i * 100,
                 lambda: self.canvas.itemconfigure(
                     self.ps_codes[conf_code][rnd_code][ps_code]["tag_rect"],
                     outline=c
+                )
+            )
+            self.after(
+                i * 100,
+                lambda: self.canvas.itemconfigure(
+                    self.ps_codes[conf_code][rnd_code][ps_code]["tag_text"],
+                    fill=f
                 )
             )
 
