@@ -1318,6 +1318,12 @@ class PlayoffChooser(tkinter.Tk):
             }
             for rnd, rnd_dat in self.ps_codes["east"].items()
         }
+        self.ordered_positions = []
+        for conf, conf_data in self.ps_codes.items():
+            for rnd, rnd_data in conf_data.items():
+                for pc, pc_data in rnd_data.items():
+                    self.ordered_positions.append((conf, rnd, pc))
+        self.ordered_positions.sort(key=lambda tup: (tup[1], tup[0]))
         print(f"{self.positions_ps_west[4]['SC']=}")
         self.positions_ps_east.update({4: {"SC": self.positions_ps_west[4]["SC"]}})
 
@@ -1415,17 +1421,94 @@ class PlayoffChooser(tkinter.Tk):
             "set round 1 based on standings",
             command=self.click_sr1fs
         )
+        self.tv_btn_random_complete, self.btn_random_complete = button_factory(
+            self.frame_btn_bar,
+            "complete bracket randomly",
+            command=self.click_random_complete
+        )
+
         self.frame_btn_bar.grid()
         self.btn_clear_ps.grid(row=0, column=0)
         self.btn_export_ps.grid(row=0, column=1)
         self.btn_sr1fs.grid(row=0, column=2)
+        self.btn_random_complete.grid(row=0, column=3)
 
         self.canvas.bind("<ButtonRelease-1>", self.release_click)
+        self.canvas.bind("<ButtonRelease-3>", self.r_click_get_parents)
         self.canvas.bind("<B1-Motion>", self.motion)
         self.canvas.tag_raise(self.drag_rect)
 
         # for img in self.west_images:
         #     self.canvas.itemconfigure(img, state="hidden")
+
+    def get_parents(self, conf_code, rnd_code, ps_code):
+
+        if conf_code == "east":
+            if ps_code in self.valid_ps_codes_root_c:
+                drag_div = "C"
+            else:
+                drag_div = "P"
+        else:
+            if ps_code in self.valid_ps_codes_root_m:
+                drag_div = "M"
+            else:
+                drag_div = "A"
+
+        paths_ = self.calc_path(conf_code, rnd_code, ps_code)
+
+        if rnd_code == 4:
+            if drag_div == "P":
+                paths_ = paths_[:5]
+            elif drag_div == "C":
+                paths_ = paths_[5:10]
+            elif drag_div == "A":
+                paths_ = paths_[10:15]
+            else:
+                paths_ = paths_[15:]
+
+            # ensure that a west path to SC is considered
+            paths_.insert(0, self.calc_path("west", 4, "SC")[0])
+        else:
+            if drag_div in ("P", "A"):
+                paths_ = paths_[:5]
+            # elif drag_div == "C":
+            else:
+                paths_ = paths_[5:10]
+
+        # c_team = self.res_pyimage_to_t.get(
+        #     self.canvas.itemcget(self.ps_codes[conf_code][rnd_code][ps_code]['tag_image'], 'image'), "no_child")
+        # # print(f"{conf_code=}, {rnd_code=}, {ps_code=}, t='{c_team}'")
+        # # print(f"B paths_=")
+        # # for p in paths_:
+        # #     print(f"{p}")
+        if rnd_code == 0:
+            return []
+        else:
+            return [list(tup) for tup in (set([tuple(path[-2]) for path in paths_]))]
+
+    def r_click_get_parents(self, event):
+        e_x, e_y = event.x, event.y
+        all_positions = {"west": self.positions_ps_west}
+        all_positions.update({"east": self.positions_ps_east})
+        # drag_conf = "east" if drag_conf == "E" else "west"
+        for conf, conf_data in all_positions.items():
+            for rnd, rnd_data in conf_data.items():
+                for pc, pc_data in rnd_data.items():
+                    bbox = pc_data["rect"]
+                    if self.collide_bbox_point(bbox, (e_x, e_y)):
+                        if rnd == 4:
+                            conf = "west"
+                        print(f"{self.get_parents(conf, rnd, pc)=}")
+
+    def click_random_complete(self):
+        for od in self.ordered_positions:
+            print(f"{od=}")
+        # positions = []
+        # for conf, conf_data in self.ps_codes.items():
+        #     for rnd, rnd_data in conf_data.items():
+        #         for pc, pc_data in rnd_data.items():
+        #             print(f"CRC {conf=}, {rnd=}, {pc=}")
+        #             # parents = self.get_parents()
 
     def click_sr1fs(self):
         self.click_clear_ps()
@@ -1484,7 +1567,6 @@ class PlayoffChooser(tkinter.Tk):
 
         # print(f"{w_ps_ordered=}")
         # print(f"{e_ps_ordered=}")
-
 
     def click_export_ps(self):
         missing = {}
@@ -1827,7 +1909,6 @@ class PlayoffChooser(tkinter.Tk):
                                     # else:
                                     #     print(f"SKIP")
 
-
                         if do_change:
                             # for ps in paths:
                             print(f"DO CHANGE {p_y=}\n{path=}")
@@ -1860,47 +1941,48 @@ class PlayoffChooser(tkinter.Tk):
                                 print(f"Start check path SC")
                                 for child in path_sc[0][1:]:
                                     c_cc, c_rc, c_pc = child
-                                    paths_ = self.calc_path(c_cc, c_rc, c_pc)
-                                    print(f"A paths_=")
-                                    for p in paths_:
-                                        print(f"{p}")
-
-                                    # if 3 <= c_rc <= 4:
-                                    if c_rc == 4:
-                                        if drag_div == "P":
-                                            paths_ = paths_[:5]
-                                        elif drag_div == "C":
-                                            paths_ = paths_[5:10]
-                                        elif drag_div == "A":
-                                            paths_ = paths_[10:15]
-                                        else:
-                                            paths_ = paths_[15:]
-
-                                        # ensure that a west path to SC is considered
-                                        paths_.insert(0, self.calc_path("west", 4, "SC")[0])
-                                    else:
-                                        if drag_div in ("P", "A"):
-                                            paths_ = paths_[:5]
-                                        # elif drag_div == "C":
-                                        else:
-                                            paths_ = paths_[5:10]
-                                    # elif drag_div == "A":
-                                    #     paths_ = paths_[10:15]
+                                    parents = self.get_parents(c_cc, c_rc, c_pc)
+                                    # paths_ = self.calc_path(c_cc, c_rc, c_pc)
+                                    # print(f"A paths_=")
+                                    # for p in paths_:
+                                    #     print(f"{p}")
+                                    #
+                                    # # if 3 <= c_rc <= 4:
+                                    # if c_rc == 4:
+                                    #     if drag_div == "P":
+                                    #         paths_ = paths_[:5]
+                                    #     elif drag_div == "C":
+                                    #         paths_ = paths_[5:10]
+                                    #     elif drag_div == "A":
+                                    #         paths_ = paths_[10:15]
+                                    #     else:
+                                    #         paths_ = paths_[15:]
+                                    #
+                                    #     # ensure that a west path to SC is considered
+                                    #     paths_.insert(0, self.calc_path("west", 4, "SC")[0])
                                     # else:
-                                    #     paths_ = paths_[15:]
-
+                                    #     if drag_div in ("P", "A"):
+                                    #         paths_ = paths_[:5]
+                                    #     # elif drag_div == "C":
+                                    #     else:
+                                    #         paths_ = paths_[5:10]
+                                    # # elif drag_div == "A":
+                                    # #     paths_ = paths_[10:15]
+                                    # # else:
+                                    # #     paths_ = paths_[15:]
+                                    #
                                     c_team = self.res_pyimage_to_t.get(
                                         self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image'), "no_child")
-                                    print(f"{c_cc=}, {c_rc=}, {c_pc=}, t='{c_team}'")
-                                    print(f"B paths_=")
-                                    for p in paths_:
-                                        print(f"{p}")
-                                    # paths_ = [p[::-1] for p in paths_]
-                                    # paths_.reverse()
+                                    # print(f"{c_cc=}, {c_rc=}, {c_pc=}, t='{c_team}'")
                                     # print(f"B paths_=")
                                     # for p in paths_:
                                     #     print(f"{p}")
-                                    parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths_]))]
+                                    # # paths_ = [p[::-1] for p in paths_]
+                                    # # paths_.reverse()
+                                    # # print(f"B paths_=")
+                                    # # for p in paths_:
+                                    # #     print(f"{p}")
+                                    # parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths_]))]
                                     print(f"{parents=}")
                                     # parents.remove(())
                                     if parents:
