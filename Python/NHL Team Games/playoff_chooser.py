@@ -279,12 +279,15 @@ class PlayoffChooser(tkinter.Tk):
 
         self.bg_canvas = "#686868"
         self.bg_empty_sc = "#D8D525"
+        self.bd_empty_sc = "#D89505"
         self.bg_bank_west = "#7793EF"
         self.bg_empty_west = "#25339F"
         self.fg_empty_west = "#000000"
+        self.bd_empty_west = "#05134F"
         self.font_empty_west = ("Arial", 14)
         self.bg_bank_east = "#e03535"
         self.bg_empty_east = "#8e1919"
+        self.bd_empty_east = "#4F0513"
         self.fg_empty_east = "#000000"
         self.font_empty_east = ("Arial", 14)
         self.bg_line_west = "#000000"
@@ -1652,8 +1655,11 @@ class PlayoffChooser(tkinter.Tk):
         sc = "#FFFFFF"
         ec = "#000000"
         if conf_code == "east":
-            cc = self.outline
-            d--
+            cc = self.bg_empty_east
+            bd = self.bd_empty_east
+        else:
+            cc = self.bg_empty_west
+            bd = self.bd_empty_west
         grad_c = [gradient(i+1, 10, sc, ec, rgb=False) for i in range(10)]
         grad_f = [gradient(i+1, 10, sc, ec, rgb=False) for i in range(10)]
         for i, c_f in enumerate(zip(grad_c, grad_f)):
