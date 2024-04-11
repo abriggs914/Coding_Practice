@@ -277,6 +277,7 @@ class PlayoffChooser(tkinter.Tk):
         self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=0, rtype=dict)
         self.geometry(self.calc_geometry["geometry"])
 
+        self.unk_team = "no_team"
         self.bg_canvas = "#686868"
         self.bg_empty_sc = "#D8D525"
         self.bd_empty_sc = "#D89505"
@@ -1441,6 +1442,8 @@ class PlayoffChooser(tkinter.Tk):
         # for img in self.west_images:
         #     self.canvas.itemconfigure(img, state="hidden")
 
+        print(f"{full_team_to_div=}, {full_team_to_div_name=}, {full_team_to_conf=}, {west_teams=}, {east_teams=}")
+
     def get_parents(self, conf_code, rnd_code, ps_code):
 
         if conf_code == "east":
@@ -1501,8 +1504,27 @@ class PlayoffChooser(tkinter.Tk):
                         print(f"{self.get_parents(conf, rnd, pc)=}")
 
     def click_random_complete(self):
+        print(f"click_random_complete")
         for od in self.ordered_positions:
-            print(f"{od=}")
+            print(f"{od=}, t=")
+            conf, rnd, pc = od
+            tag = self.ps_codes[conf][rnd][pc]["tag_image"]
+            img = self.canvas.itemcget(
+                tag,
+                "image"
+            )
+            v = self.canvas.itemcget(
+                tag,
+                "state"
+            )
+            t = self.res_pyimage_to_t.get(
+                img,
+                self.unk_team
+            )
+            if t == self.unk_team:
+                # set a team here.
+                teams_left = []
+        # self.ordered_positions
         # positions = []
         # for conf, conf_data in self.ps_codes.items():
         #     for rnd, rnd_data in conf_data.items():
@@ -1570,7 +1592,6 @@ class PlayoffChooser(tkinter.Tk):
 
     def click_export_ps(self):
         missing = {}
-        unk_team = "no_team"
         for conf, conf_data in self.ps_codes.items():
             for rnd, rnd_data in conf_data.items():
                 for pc, pc_data in rnd_data.items():
@@ -1585,12 +1606,12 @@ class PlayoffChooser(tkinter.Tk):
                     )
                     t = self.res_pyimage_to_t.get(
                         img,
-                        unk_team
+                        self.unk_team
                     )
                     if v == "hidden":
-                        t = unk_team
+                        t = self.unk_team
                     print(f"C={conf[0].upper()}, R={rnd}, PC={pc.ljust(6)}, t={t}")
-                    if t == unk_team:
+                    if t == self.unk_team:
                         missing.update({conf: {rnd: {pc: t}}})
 
         if missing:
