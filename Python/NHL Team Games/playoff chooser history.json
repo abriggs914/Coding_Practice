@@ -1,0 +1,932 @@
+{
+    "Calgary Wins 202404141815": {
+        "west": {
+            "0": {
+                "WC_t": {
+                    "x0": 275,
+                    "y0": 30.0,
+                    "x1": 350,
+                    "y1": 105.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 4,
+                    "tag_text": 5,
+                    "tag_image": 6,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "P1": {
+                    "x0": 275,
+                    "y0": 115.0,
+                    "x1": 350,
+                    "y1": 190.0,
+                    "image": null,
+                    "text": "P1",
+                    "tag_rect": 7,
+                    "tag_text": 8,
+                    "tag_image": 9,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "P2": {
+                    "x0": 275,
+                    "y0": 200.0,
+                    "x1": 350,
+                    "y1": 275.0,
+                    "image": null,
+                    "text": "P2",
+                    "tag_rect": 10,
+                    "tag_text": 11,
+                    "tag_image": 12,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "P3": {
+                    "x0": 275,
+                    "y0": 285.0,
+                    "x1": 350,
+                    "y1": 360.0,
+                    "image": null,
+                    "text": "P3",
+                    "tag_rect": 13,
+                    "tag_text": 14,
+                    "tag_image": 15,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "C3": {
+                    "x0": 275,
+                    "y0": 370.0,
+                    "x1": 350,
+                    "y1": 445.0,
+                    "image": null,
+                    "text": "C3",
+                    "tag_rect": 16,
+                    "tag_text": 17,
+                    "tag_image": 18,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "C2": {
+                    "x0": 275,
+                    "y0": 455.0,
+                    "x1": 350,
+                    "y1": 530.0,
+                    "image": null,
+                    "text": "C2",
+                    "tag_rect": 19,
+                    "tag_text": 20,
+                    "tag_image": 21,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "C1": {
+                    "x0": 275,
+                    "y0": 540.0,
+                    "x1": 350,
+                    "y1": 615.0,
+                    "image": null,
+                    "text": "C1",
+                    "tag_rect": 22,
+                    "tag_text": 23,
+                    "tag_image": 24,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "WC_b": {
+                    "x0": 275,
+                    "y0": 625.0,
+                    "x1": 350,
+                    "y1": 700.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 25,
+                    "tag_text": 26,
+                    "tag_image": 27,
+                    "is_wc": null,
+                    "sb": null
+                }
+            },
+            "1": {
+                "P1": {
+                    "x0": 420,
+                    "y0": 72.5,
+                    "x1": 495,
+                    "y1": 147.5,
+                    "image": null,
+                    "text": "P1",
+                    "tag_rect": 28,
+                    "tag_text": 29,
+                    "tag_image": 30,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 7
+                    }
+                },
+                "P2": {
+                    "x0": 420,
+                    "y0": 242.5,
+                    "x1": 495,
+                    "y1": 317.5,
+                    "image": null,
+                    "text": "P2",
+                    "tag_rect": 37,
+                    "tag_text": 38,
+                    "tag_image": 39,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 5
+                    }
+                },
+                "C2": {
+                    "x0": 420,
+                    "y0": 412.5,
+                    "x1": 495,
+                    "y1": 487.5,
+                    "image": null,
+                    "text": "C2",
+                    "tag_rect": 46,
+                    "tag_text": 47,
+                    "tag_image": 48,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 7
+                    }
+                },
+                "C1": {
+                    "x0": 420,
+                    "y0": 582.5,
+                    "x1": 495,
+                    "y1": 657.5,
+                    "image": null,
+                    "text": "C1",
+                    "tag_rect": 55,
+                    "tag_text": 56,
+                    "tag_image": 57,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 6
+                    }
+                }
+            },
+            "2": {
+                "P": {
+                    "x0": 565,
+                    "y0": 157.5,
+                    "x1": 640,
+                    "y1": 232.5,
+                    "image": null,
+                    "text": "P",
+                    "tag_rect": 64,
+                    "tag_text": 65,
+                    "tag_image": 66,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 7
+                    }
+                },
+                "C": {
+                    "x0": 565,
+                    "y0": 497.5,
+                    "x1": 640,
+                    "y1": 572.5,
+                    "image": null,
+                    "text": "C",
+                    "tag_rect": 73,
+                    "tag_text": 74,
+                    "tag_image": 75,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 6
+                    }
+                }
+            },
+            "3": {
+                "W": {
+                    "x0": 710,
+                    "y0": 327.5,
+                    "x1": 785,
+                    "y1": 402.5,
+                    "image": null,
+                    "text": "W",
+                    "tag_rect": 82,
+                    "tag_text": 83,
+                    "tag_image": 84,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 6
+                    }
+                }
+            },
+            "4": {
+                "SC": {
+                    "x0": 855,
+                    "y0": 327.5,
+                    "x1": 930,
+                    "y1": 402.5,
+                    "image": null,
+                    "text": "SC",
+                    "tag_rect": 91,
+                    "tag_text": 92,
+                    "tag_image": 93,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "horizontal",
+                        "num": 7
+                    }
+                }
+            }
+        },
+        "east": {
+            "0": {
+                "WC_t": {
+                    "x0": 1435,
+                    "y0": 30.0,
+                    "x1": 1510,
+                    "y1": 105.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 100,
+                    "tag_text": 101,
+                    "tag_image": 102,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "A1": {
+                    "x0": 1435,
+                    "y0": 115.0,
+                    "x1": 1510,
+                    "y1": 190.0,
+                    "image": null,
+                    "text": "A1",
+                    "tag_rect": 103,
+                    "tag_text": 104,
+                    "tag_image": 105,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "A2": {
+                    "x0": 1435,
+                    "y0": 200.0,
+                    "x1": 1510,
+                    "y1": 275.0,
+                    "image": null,
+                    "text": "A2",
+                    "tag_rect": 106,
+                    "tag_text": 107,
+                    "tag_image": 108,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "A3": {
+                    "x0": 1435,
+                    "y0": 285.0,
+                    "x1": 1510,
+                    "y1": 360.0,
+                    "image": null,
+                    "text": "A3",
+                    "tag_rect": 109,
+                    "tag_text": 110,
+                    "tag_image": 111,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "M3": {
+                    "x0": 1435,
+                    "y0": 370.0,
+                    "x1": 1510,
+                    "y1": 445.0,
+                    "image": null,
+                    "text": "M3",
+                    "tag_rect": 112,
+                    "tag_text": 113,
+                    "tag_image": 114,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "M2": {
+                    "x0": 1435,
+                    "y0": 455.0,
+                    "x1": 1510,
+                    "y1": 530.0,
+                    "image": null,
+                    "text": "M2",
+                    "tag_rect": 115,
+                    "tag_text": 116,
+                    "tag_image": 117,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "M1": {
+                    "x0": 1435,
+                    "y0": 540.0,
+                    "x1": 1510,
+                    "y1": 615.0,
+                    "image": null,
+                    "text": "M1",
+                    "tag_rect": 118,
+                    "tag_text": 119,
+                    "tag_image": 120,
+                    "is_wc": null,
+                    "sb": null
+                },
+                "WC_b": {
+                    "x0": 1435,
+                    "y0": 625.0,
+                    "x1": 1510,
+                    "y1": 700.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 121,
+                    "tag_text": 122,
+                    "tag_image": 123,
+                    "is_wc": null,
+                    "sb": null
+                }
+            },
+            "1": {
+                "A1": {
+                    "x0": 1290,
+                    "y0": 72.5,
+                    "x1": 1365,
+                    "y1": 147.5,
+                    "image": null,
+                    "text": "A1",
+                    "tag_rect": 124,
+                    "tag_text": 125,
+                    "tag_image": 126,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 5
+                    }
+                },
+                "A2": {
+                    "x0": 1290,
+                    "y0": 242.5,
+                    "x1": 1365,
+                    "y1": 317.5,
+                    "image": null,
+                    "text": "A2",
+                    "tag_rect": 133,
+                    "tag_text": 134,
+                    "tag_image": 135,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 5
+                    }
+                },
+                "M2": {
+                    "x0": 1290,
+                    "y0": 412.5,
+                    "x1": 1365,
+                    "y1": 487.5,
+                    "image": null,
+                    "text": "M2",
+                    "tag_rect": 142,
+                    "tag_text": 143,
+                    "tag_image": 144,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 4
+                    }
+                },
+                "M1": {
+                    "x0": 1290,
+                    "y0": 582.5,
+                    "x1": 1365,
+                    "y1": 657.5,
+                    "image": null,
+                    "text": "M1",
+                    "tag_rect": 151,
+                    "tag_text": 152,
+                    "tag_image": 153,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 7
+                    }
+                }
+            },
+            "2": {
+                "A": {
+                    "x0": 1145,
+                    "y0": 157.5,
+                    "x1": 1220,
+                    "y1": 232.5,
+                    "image": null,
+                    "text": "A",
+                    "tag_rect": 160,
+                    "tag_text": 161,
+                    "tag_image": 162,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 6
+                    }
+                },
+                "M": {
+                    "x0": 1145,
+                    "y0": 497.5,
+                    "x1": 1220,
+                    "y1": 572.5,
+                    "image": null,
+                    "text": "M",
+                    "tag_rect": 169,
+                    "tag_text": 170,
+                    "tag_image": 171,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 4
+                    }
+                }
+            },
+            "3": {
+                "E": {
+                    "x0": 1000,
+                    "y0": 327.5,
+                    "x1": 1075,
+                    "y1": 402.5,
+                    "image": null,
+                    "text": "E",
+                    "tag_rect": 178,
+                    "tag_text": 179,
+                    "tag_image": 180,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 7
+                    }
+                }
+            }
+        }
+    },
+    "Calgary Wins 202404150133": {
+        "west": {
+            "0": {
+                "WC_t": {
+                    "x0": 275,
+                    "y0": 30.0,
+                    "x1": 350,
+                    "y1": 105.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 4,
+                    "tag_text": 5,
+                    "tag_image": 6,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "P1": {
+                    "x0": 275,
+                    "y0": 115.0,
+                    "x1": 350,
+                    "y1": 190.0,
+                    "image": null,
+                    "text": "P1",
+                    "tag_rect": 11,
+                    "tag_text": 12,
+                    "tag_image": 13,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "P2": {
+                    "x0": 275,
+                    "y0": 200.0,
+                    "x1": 350,
+                    "y1": 275.0,
+                    "image": null,
+                    "text": "P2",
+                    "tag_rect": 18,
+                    "tag_text": 19,
+                    "tag_image": 20,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "P3": {
+                    "x0": 275,
+                    "y0": 285.0,
+                    "x1": 350,
+                    "y1": 360.0,
+                    "image": null,
+                    "text": "P3",
+                    "tag_rect": 25,
+                    "tag_text": 26,
+                    "tag_image": 27,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "C3": {
+                    "x0": 275,
+                    "y0": 370.0,
+                    "x1": 350,
+                    "y1": 445.0,
+                    "image": null,
+                    "text": "C3",
+                    "tag_rect": 32,
+                    "tag_text": 33,
+                    "tag_image": 34,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "C2": {
+                    "x0": 275,
+                    "y0": 455.0,
+                    "x1": 350,
+                    "y1": 530.0,
+                    "image": null,
+                    "text": "C2",
+                    "tag_rect": 39,
+                    "tag_text": 40,
+                    "tag_image": 41,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "C1": {
+                    "x0": 275,
+                    "y0": 540.0,
+                    "x1": 350,
+                    "y1": 615.0,
+                    "image": null,
+                    "text": "C1",
+                    "tag_rect": 46,
+                    "tag_text": 47,
+                    "tag_image": 48,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "WC_b": {
+                    "x0": 275,
+                    "y0": 625.0,
+                    "x1": 350,
+                    "y1": 700.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 53,
+                    "tag_text": 54,
+                    "tag_image": 55,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                }
+            },
+            "1": {
+                "P1": {
+                    "x0": 420,
+                    "y0": 72.5,
+                    "x1": 495,
+                    "y1": 147.5,
+                    "image": null,
+                    "text": "P1",
+                    "tag_rect": 60,
+                    "tag_text": 61,
+                    "tag_image": 62,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 6},
+                    "lock": {"state": false}
+                },
+                "P2": {
+                    "x0": 420,
+                    "y0": 242.5,
+                    "x1": 495,
+                    "y1": 317.5,
+                    "image": null,
+                    "text": "P2",
+                    "tag_rect": 73,
+                    "tag_text": 74,
+                    "tag_image": 75,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 7},
+                    "lock": {"state": true}
+                },
+                "C2": {
+                    "x0": 420,
+                    "y0": 412.5,
+                    "x1": 495,
+                    "y1": 487.5,
+                    "image": null,
+                    "text": "C2",
+                    "tag_rect": 86,
+                    "tag_text": 87,
+                    "tag_image": 88,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 6},
+                    "lock": {"state": false}
+                },
+                "C1": {
+                    "x0": 420,
+                    "y0": 582.5,
+                    "x1": 495,
+                    "y1": 657.5,
+                    "image": null,
+                    "text": "C1",
+                    "tag_rect": 99,
+                    "tag_text": 100,
+                    "tag_image": 101,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 5},
+                    "lock": {"state": false}
+                }
+            },
+            "2": {
+                "P": {
+                    "x0": 565,
+                    "y0": 157.5,
+                    "x1": 640,
+                    "y1": 232.5,
+                    "image": null,
+                    "text": "P",
+                    "tag_rect": 112,
+                    "tag_text": 113,
+                    "tag_image": 114,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 6},
+                    "lock": {"state": true}
+                },
+                "C": {
+                    "x0": 565,
+                    "y0": 497.5,
+                    "x1": 640,
+                    "y1": 572.5,
+                    "image": null,
+                    "text": "C",
+                    "tag_rect": 125,
+                    "tag_text": 126,
+                    "tag_image": 127,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 7},
+                    "lock": {"state": false}
+                }
+            },
+            "3": {
+                "W": {
+                    "x0": 710,
+                    "y0": 327.5,
+                    "x1": 785,
+                    "y1": 402.5,
+                    "image": null,
+                    "text": "W",
+                    "tag_rect": 138,
+                    "tag_text": 139,
+                    "tag_image": 140,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 5},
+                    "lock": {"state": true}
+                }
+            },
+            "4": {
+                "SC": {
+                    "x0": 855,
+                    "y0": 327.5,
+                    "x1": 930,
+                    "y1": 402.5,
+                    "image": null,
+                    "text": "SC",
+                    "tag_rect": 151,
+                    "tag_text": 152,
+                    "tag_image": 153,
+                    "is_wc": null,
+                    "sb": {"orientation": "horizontal", "num": 7},
+                    "lock": {"state": true}
+                }
+            }
+        },
+        "east": {
+            "0": {
+                "WC_t": {
+                    "x0": 1435,
+                    "y0": 30.0,
+                    "x1": 1510,
+                    "y1": 105.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 164,
+                    "tag_text": 165,
+                    "tag_image": 166,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "A1": {
+                    "x0": 1435,
+                    "y0": 115.0,
+                    "x1": 1510,
+                    "y1": 190.0,
+                    "image": null,
+                    "text": "A1",
+                    "tag_rect": 171,
+                    "tag_text": 172,
+                    "tag_image": 173,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "A2": {
+                    "x0": 1435,
+                    "y0": 200.0,
+                    "x1": 1510,
+                    "y1": 275.0,
+                    "image": null,
+                    "text": "A2",
+                    "tag_rect": 178,
+                    "tag_text": 179,
+                    "tag_image": 180,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "A3": {
+                    "x0": 1435,
+                    "y0": 285.0,
+                    "x1": 1510,
+                    "y1": 360.0,
+                    "image": null,
+                    "text": "A3",
+                    "tag_rect": 185,
+                    "tag_text": 186,
+                    "tag_image": 187,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "M3": {
+                    "x0": 1435,
+                    "y0": 370.0,
+                    "x1": 1510,
+                    "y1": 445.0,
+                    "image": null,
+                    "text": "M3",
+                    "tag_rect": 192,
+                    "tag_text": 193,
+                    "tag_image": 194,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "M2": {
+                    "x0": 1435,
+                    "y0": 455.0,
+                    "x1": 1510,
+                    "y1": 530.0,
+                    "image": null,
+                    "text": "M2",
+                    "tag_rect": 199,
+                    "tag_text": 200,
+                    "tag_image": 201,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "M1": {
+                    "x0": 1435,
+                    "y0": 540.0,
+                    "x1": 1510,
+                    "y1": 615.0,
+                    "image": null,
+                    "text": "M1",
+                    "tag_rect": 206,
+                    "tag_text": 207,
+                    "tag_image": 208,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                },
+                "WC_b": {
+                    "x0": 1435,
+                    "y0": 625.0,
+                    "x1": 1510,
+                    "y1": 700.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 213,
+                    "tag_text": 214,
+                    "tag_image": 215,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": false}
+                }
+            },
+            "1": {
+                "A1": {
+                    "x0": 1290,
+                    "y0": 72.5,
+                    "x1": 1365,
+                    "y1": 147.5,
+                    "image": null,
+                    "text": "A1",
+                    "tag_rect": 220,
+                    "tag_text": 221,
+                    "tag_image": 222,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 4},
+                    "lock": {"state": false}
+                },
+                "A2": {
+                    "x0": 1290,
+                    "y0": 242.5,
+                    "x1": 1365,
+                    "y1": 317.5,
+                    "image": null,
+                    "text": "A2",
+                    "tag_rect": 233,
+                    "tag_text": 234,
+                    "tag_image": 235,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 4},
+                    "lock": {"state": false}
+                },
+                "M2": {
+                    "x0": 1290,
+                    "y0": 412.5,
+                    "x1": 1365,
+                    "y1": 487.5,
+                    "image": null,
+                    "text": "M2",
+                    "tag_rect": 246,
+                    "tag_text": 247,
+                    "tag_image": 248,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 5},
+                    "lock": {"state": false}
+                },
+                "M1": {
+                    "x0": 1290,
+                    "y0": 582.5,
+                    "x1": 1365,
+                    "y1": 657.5,
+                    "image": null,
+                    "text": "M1",
+                    "tag_rect": 259,
+                    "tag_text": 260,
+                    "tag_image": 261,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 6},
+                    "lock": {"state": false}
+                }
+            },
+            "2": {
+                "A": {
+                    "x0": 1145,
+                    "y0": 157.5,
+                    "x1": 1220,
+                    "y1": 232.5,
+                    "image": null,
+                    "text": "A",
+                    "tag_rect": 272,
+                    "tag_text": 273,
+                    "tag_image": 274,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 4},
+                    "lock": {"state": false}
+                },
+                "M": {
+                    "x0": 1145,
+                    "y0": 497.5,
+                    "x1": 1220,
+                    "y1": 572.5,
+                    "image": null,
+                    "text": "M",
+                    "tag_rect": 285,
+                    "tag_text": 286,
+                    "tag_image": 287,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 6},
+                    "lock": {"state": false}
+                }
+            },
+            "3": {
+                "E": {
+                    "x0": 1000,
+                    "y0": 327.5,
+                    "x1": 1075,
+                    "y1": 402.5,
+                    "image": null,
+                    "text": "E",
+                    "tag_rect": 298,
+                    "tag_text": 299,
+                    "tag_image": 300,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 7},
+                    "lock": {"state": false}
+                }
+            }
+        }
+    }
+}

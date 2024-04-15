@@ -1,9 +1,6 @@
-import json
 import os
 import random
 import tkinter
-from typing import Literal
-from json_utility import jsonify
 
 import pandas as pd
 from PIL import ImageTk, Image
@@ -12,8 +9,7 @@ from random import shuffle, sample
 from tkinter import ttk, messagebox
 
 from colour_utility import gradient
-from tkinter_utility import calc_geometry_tl, button_factory, entry_factory, checkbox_factory, combo_factory
-from utility import clamp, weighted_choice
+from tkinter_utility import calc_geometry_tl, button_factory
 
 # def click(t1, t2):
 #     default = {
@@ -201,25 +197,6 @@ from utility import clamp, weighted_choice
 #         # print(f"{progressbar.cget('value')=}")
 #         pb_label.configure(text=f"{n_questions - len(total_games)} / {n_questions} -- {value:.2f} %")
 
-bg_canvas = "#686868"
-bg_empty_sc = "#D8D525"
-bd_empty_sc = "#D89505"
-bg_bank_west = "#7793EF"
-bg_empty_west = "#25339F"
-fg_empty_west = "#000000"
-bd_empty_west = "#05134F"
-font_empty_west = ("Arial", 14)
-bg_bank_east = "#e03535"
-bg_empty_east = "#8e1919"
-bd_empty_east = "#4F0513"
-fg_empty_east = "#000000"
-font_empty_east = ("Arial", 14)
-bg_line_west = "#000000"
-bg_opt_ps_west = "#328944"
-bg_line_east = "#000000"
-bg_opt_ps_east = "#328944"
-bg_btn_sb = "#C7C7C7"
-bg_entry_sb = "#E7E7E7"
 
 metropolitan = {
     'Carolina': {'acr': 'CAR', 'mascot': 'Hurricanes', 'masc_short': 'Canes', 'full': 'carolina hurricanes'},
@@ -287,537 +264,6 @@ full_team_to_conf = {t: ("w" if div_dat[1] in (pacific, central) else "e") for t
 west_teams = [t for t, c in full_team_to_conf.items() if c == "w"]
 east_teams = [t for t, c in full_team_to_conf.items() if c == "e"]
 
-#
-#   Functional SPinBox class using tkinter widgets.
-#   Not usable on this project because the widgets are rendered on the top
-#
-# class SpinBox(tkinter.Frame):
-#
-#     def __init__(self, master, conf, h, w=2, orientation: Literal["horizontal", "vertical"] = "vertical"):
-#         super().__init__(master)
-#
-#         self.conf = conf
-#         self.orientation = tkinter.StringVar(self, value=orientation)
-#
-#         self.w = w
-#         self.h = h
-#         self.configure(width=self.w, height=self.h)
-#
-#         self._min = 4
-#         self._max = 7
-#
-#         self.kwargs_btn = {
-#             "background": bg_btn_sb,
-#             "width": self.w
-#         }
-#
-#         self.kwargs_entry = {
-#             "background": bg_entry_sb,
-#             "state": "disabled",
-#             "width": self.w,
-#             "justify": tkinter.CENTER
-#         }
-#
-#         self.tv_btn_up, self.btn_up = button_factory(
-#             self,
-#             "^",
-#             kwargs_btn=self.kwargs_btn,
-#             command=self.click_up
-#         )
-#
-#         self.tv_lbl_entry_num, self.lbl_entry_num, self.tv_entry_num, self.entry_num = entry_factory(
-#             self,
-#             tv_entry=f"{self._min}",
-#             kwargs_entry=self.kwargs_entry
-#         )
-#
-#         self.tv_btn_dn, self.btn_dn = button_factory(
-#             self,
-#             "v",
-#             kwargs_btn=self.kwargs_btn,
-#             command=self.click_dn
-#         )
-#
-#         self.btn_up.bind("<MouseWheel>", self.scroll)
-#         self.entry_num.bind("<MouseWheel>", self.scroll)
-#         self.btn_dn.bind("<MouseWheel>", self.scroll)
-#         self.bind("<MouseWheel>", self.scroll)
-#
-#         self.set_mode()
-#
-#     def set_mode(self, orientation: Literal["horizontal", "vertical"] = None):
-#         self.btn_up.grid_forget()
-#         self.entry_num.grid_forget()
-#         self.btn_dn.grid_forget()
-#
-#         if orientation is None:
-#             orientation = self.orientation.get()
-#
-#         if orientation == "vertical":
-#             self.btn_up.grid()
-#             self.entry_num.grid()
-#             self.btn_dn.grid()
-#             self.tv_btn_up.set("^")
-#             self.tv_btn_dn.set("v")
-#         else:
-#             self.btn_up.grid(row=0, column=0)
-#             self.entry_num.grid(row=0, column=1)
-#             self.btn_dn.grid(row=0, column=2)
-#             self.tv_btn_up.set("<")
-#             self.tv_btn_dn.set(">")
-#
-#         self.orientation.set(orientation)
-#
-#     def scroll(self, event):
-#         # print(f"scroll, {event=}")
-#         x = event.x
-#         y = event.y
-#         delta = event.delta
-#         if delta < 0:
-#             self.dec()
-#         elif delta > 0:
-#             self.inc()
-#
-#     def inc(self):
-#         v = int(self.tv_entry_num.get())
-#         self.tv_entry_num.set(max(min(self._max, v + 1), self._min))
-#
-#     def dec(self):
-#         v = int(self.tv_entry_num.get())
-#         self.tv_entry_num.set(max(min(self._max, v - 1), self._min))
-#
-#     def click_up(self):
-#         print(f"click up")
-#         self.inc()
-#
-#     def click_dn(self):
-#         print(f"click dn")
-#         self.dec()
-
-
-class SpinBox:
-
-    def __init__(self, canvas, conf, x, y, h, w=30, orientation: Literal["horizontal", "vertical"] = "vertical"):
-
-        self.canvas: tkinter.Canvas = canvas
-        self.conf = conf
-        self._min = 4
-        self._max = 7
-        self.num = tkinter.IntVar(self.canvas, value=self._min)
-        self.orientation = tkinter.StringVar(self.canvas, value="vertical")
-
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
-        self.bbox = (self.x, self.y, self.x + self.w, self.y + self.h)
-        # self.configure(width=self.w, height=self.h)
-
-        self.kwargs_btn = {
-            "background": bg_btn_sb,
-            "width": self.w
-        }
-
-        self.kwargs_entry = {
-            "background": bg_entry_sb,
-            "state": "disabled",
-            "width": self.w,
-            "justify": tkinter.CENTER
-        }
-
-        t_w = self.w / 3
-        t_h = self.h / 3
-        h_w = t_w / 2
-        h_h = t_h / 2
-
-        self.pos_btn_up = (
-            self.x + h_w,
-            self.y + h_h
-        )
-
-        self.pos_entry_num = (
-            self.x + h_w,
-            self.y + t_h + h_h
-        )
-
-        self.pos_btn_dn = (
-            self.x + h_w,
-            self.y + (2 * t_h) + h_h
-        )
-        print(f"pos={self.pos_btn_up}, {self.x=}, {self.y=}, {self.w=}, {self.h=}, {t_w=}, {t_h=}, {h_w=}, {h_h=}")
-
-        self.tag_btn_up = self.canvas.create_rectangle(
-            self.pos_btn_up[0] - h_w,
-            self.pos_btn_up[1] - h_h,
-            self.pos_btn_up[0] + h_w,
-            self.pos_btn_up[1] + h_h,
-            fill=bg_btn_sb
-        )
-
-        self.tag_btn_txt_up = self.canvas.create_text(
-            *self.pos_btn_up,
-            fill="#000000",
-            text="^"
-        )
-
-        self.tag_entry_num = self.canvas.create_rectangle(
-            self.pos_entry_num[0] - h_w,
-            self.pos_entry_num[1] - h_h,
-            self.pos_entry_num[0] + h_w,
-            self.pos_entry_num[1] + h_h,
-            # self.x,
-            # self.y + (1 * t_h),
-            # self.x + t_w,
-            # self.y + (2 * t_h),
-            fill=bg_entry_sb
-        )
-
-        self.tag_num = self.canvas.create_text(
-            # self.x + h_w,
-            # self.y + h_h + t_h,
-            *self.pos_entry_num,
-            fill="#000000",
-            text=self.num.get()
-        )
-
-        self.tag_btn_dn = self.canvas.create_rectangle(
-            self.pos_btn_dn[0] - h_w,
-            self.pos_btn_dn[1] - h_h,
-            self.pos_btn_dn[0] + h_w,
-            self.pos_btn_dn[1] + h_h,
-            fill=bg_btn_sb
-        )
-
-        self.tag_btn_txt_dn = self.canvas.create_text(
-            *self.pos_btn_dn,
-            fill="#000000",
-            text="v"
-        )
-
-        self.bind_btn1_btn_up = self.canvas.tag_bind(self.tag_btn_up, "<Button-1>", self.click_up)
-        self.bind_btn1_txt_up = self.canvas.tag_bind(self.tag_btn_txt_up, "<Button-1>", self.click_up)
-        # self.canvas.tag_bind(self.tag_btn_up, "<MouseWheel>", self.scroll)
-        # self.canvas.tag_bind(self.tag_entry_num, "<MouseWheel>", self.scroll)
-        # self.canvas.tag_bind(self.tag_btn_dn, "<MouseWheel>", self.scroll)
-        self.bind_btn1_btn_dn = self.canvas.tag_bind(self.tag_btn_dn, "<Button-1>", self.click_dn)
-        self.bind_btn1_txt_dn = self.canvas.tag_bind(self.tag_btn_txt_dn, "<Button-1>", self.click_dn)
-
-        # self.tv_btn_up, self.btn_up = button_factory(
-        #     self,
-        #     "^",
-        #     kwargs_btn=self.kwargs_btn,
-        #     command=self.click_up
-        # )
-        #
-        # self.tv_lbl_entry_num, self.lbl_entry_num, self.tv_entry_num, self.entry_num = entry_factory(
-        #     self,
-        #     tv_entry=f"{self._min}",
-        #     kwargs_entry=self.kwargs_entry
-        # )
-        #
-        # self.tv_btn_dn, self.btn_dn = button_factory(
-        #     self,
-        #     "v",
-        #     kwargs_btn=self.kwargs_btn,
-        #     command=self.click_dn
-        # )
-        #
-        # self.btn_up.bind("<MouseWheel>", self.scroll)
-        # self.entry_num.bind("<MouseWheel>", self.scroll)
-        # self.btn_dn.bind("<MouseWheel>", self.scroll)
-        # self.bind("<MouseWheel>", self.scroll)
-
-        self.set_mode(orientation)
-
-    def set_mode(self, orientation: Literal["horizontal", "vertical"] = None):
-        # self.btn_up.grid_forget()
-        # self.entry_num.grid_forget()
-        # self.btn_dn.grid_forget()
-
-        if orientation is None:
-            orientation = self.orientation.get()
-
-        if orientation != self.orientation.get():
-
-            # swap functions
-            self.canvas.tag_unbind(self.tag_btn_up, "<Buttom-1>", self.bind_btn1_btn_up)
-            self.canvas.tag_unbind(self.tag_btn_txt_up, "<Buttom-1>", self.bind_btn1_txt_up)
-            self.canvas.tag_unbind(self.tag_btn_dn, "<Buttom-1>", self.bind_btn1_btn_dn)
-            self.canvas.tag_unbind(self.tag_btn_txt_dn, "<Buttom-1>", self.bind_btn1_txt_dn)
-
-            # swap dims
-            self.w, self.h = self.h, self.w
-            self.bbox = (self.x, self.y, self.x + self.w, self.y + self.h)
-            t_w = self.w / 3
-            t_h = self.h / 3
-            h_w = t_w / 2
-            h_h = t_h / 2
-
-            if orientation == "vertical":
-                self.pos_btn_up = (
-                    self.x + h_w,
-                    self.y + h_h
-                )
-
-                self.pos_entry_num = (
-                    self.x + h_w,
-                    self.y + t_h + h_h
-                )
-
-                self.pos_btn_dn = (
-                    self.x + h_w,
-                    self.y + (2 * t_h) + h_h
-                )
-                self.canvas.itemconfigure(self.tag_btn_txt_up, text="^")
-                self.canvas.itemconfigure(self.tag_btn_txt_dn, text="v")
-
-                self.bind_btn1_btn_up = self.canvas.tag_bind(self.tag_btn_up, "<Button-1>", self.click_up)
-                self.bind_btn1_txt_up = self.canvas.tag_bind(self.tag_btn_txt_up, "<Button-1>", self.click_up)
-                self.bind_btn1_btn_dn = self.canvas.tag_bind(self.tag_btn_dn, "<Button-1>", self.click_dn)
-                self.bind_btn1_txt_dn = self.canvas.tag_bind(self.tag_btn_txt_dn, "<Button-1>", self.click_dn)
-            else:
-                self.pos_btn_up = (
-                    self.x + h_w,
-                    self.y + h_h
-                )
-
-                self.pos_entry_num = (
-                    self.x + t_w + h_w,
-                    self.y + h_h
-                )
-
-                self.pos_btn_dn = (
-                    self.x + (2 * t_w) + h_w,
-                    self.y  + h_h
-                )
-                self.canvas.itemconfigure(self.tag_btn_txt_up, text="<")
-                self.canvas.itemconfigure(self.tag_btn_txt_dn, text=">")
-
-                self.bind_btn1_btn_up = self.canvas.tag_bind(self.tag_btn_up, "<Button-1>", self.click_dn)
-                self.bind_btn1_txt_up = self.canvas.tag_bind(self.tag_btn_txt_up, "<Button-1>", self.click_dn)
-                self.bind_btn1_btn_dn = self.canvas.tag_bind(self.tag_btn_dn, "<Button-1>", self.click_up)
-                self.bind_btn1_txt_dn = self.canvas.tag_bind(self.tag_btn_txt_dn, "<Button-1>", self.click_up)
-
-            self.canvas.coords(
-                self.tag_btn_up,
-                self.pos_btn_up[0] - h_w,
-                self.pos_btn_up[1] - h_h,
-                self.pos_btn_up[0] + h_w,
-                self.pos_btn_up[1] + h_h
-            )
-
-            self.canvas.coords(
-                self.tag_entry_num,
-                self.pos_entry_num[0] - h_w,
-                self.pos_entry_num[1] - h_h,
-                self.pos_entry_num[0] + h_w,
-                self.pos_entry_num[1] + h_h
-            )
-
-            self.canvas.coords(
-                self.tag_btn_dn,
-                self.pos_btn_dn[0] - h_w,
-                self.pos_btn_dn[1] - h_h,
-                self.pos_btn_dn[0] + h_w,
-                self.pos_btn_dn[1] + h_h
-            )
-
-            self.canvas.coords(
-                self.tag_num,
-                *self.pos_entry_num
-            )
-
-            self.canvas.coords(
-                self.tag_btn_txt_up,
-                *self.pos_btn_up
-            )
-
-            self.canvas.coords(
-                self.tag_btn_txt_dn,
-                *self.pos_btn_dn
-            )
-
-            self.orientation.set(orientation)
-
-    def scroll(self, event):
-        # print(f"scroll, {event=}")
-        x = event.x
-        y = event.y
-        delta = event.delta
-        if delta < 0:
-            self.dec()
-        elif delta > 0:
-            self.inc()
-
-    def show(self):
-        for tag in [
-            self.tag_btn_up,
-            self.tag_btn_txt_up,
-            self.tag_num,
-            self.tag_entry_num,
-            self.tag_btn_dn,
-            self.tag_btn_txt_dn
-        ]:
-            self.canvas.itemconfigure(tag, state="normal")
-
-    def hide(self):
-        for tag in [
-            self.tag_btn_up,
-            self.tag_btn_txt_up,
-            self.tag_num,
-            self.tag_entry_num,
-            self.tag_btn_dn,
-            self.tag_btn_txt_dn
-        ]:
-            self.canvas.itemconfigure(tag, state="hidden")
-
-    def inc(self):
-        self.num.set(max(min(self._max, self.num.get() + 1), self._min))
-        self.canvas.itemconfigure(self.tag_num, text=self.num.get())
-
-    def dec(self):
-        self.num.set(max(min(self._max, self.num.get() - 1), self._min))
-        self.canvas.itemconfigure(self.tag_num, text=self.num.get())
-
-    def set(self, val: int):
-        self.num.set(clamp(self._min, val, self._max))
-        self.canvas.itemconfigure(self.tag_num, text=self.num.get())
-
-    def click_up(self, event):
-        print(f"click up")
-        self.inc()
-
-    def click_dn(self, event):
-        print(f"click dn")
-        self.dec()
-
-    def __repr__(self):
-        vals = {
-            "orientation": self.orientation.get(),
-            "num": self.num.get()
-        }
-        # return f"{vals}"
-        return jsonify(vals)
-    
-    
-class Lock:
-    
-    def __init__(self, canvas: tkinter.Canvas, x, y, w=50, h=50, state="unlocked"):
-
-        self.canvas: tkinter.Canvas = canvas
-        self.state = tkinter.BooleanVar(self.canvas, value=state == "locked")
-
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
-        self.bbox = (self.x, self.y, self.x + self.w, self.y + self.h)
-
-        lbhm, lbvm = 10, 10
-        p_box = 0.55
-        w_bar = 5
-        lbxc = "#111145"
-        lbrc = "#33337C"
-        diff_ul = 10
-
-        self.pos_bar = {
-            True: [
-                self.x + lbhm,
-                self.y + lbvm,
-                self.x + (self.w - (2 * lbhm)),
-                self.y + (self.h * clamp(p_box, p_box + 0.15, 1))
-            ],
-            False: [
-                self.x + lbhm,
-                self.y + lbvm - diff_ul,
-                self.x + (self.w - (2 * lbhm)),
-                self.y + (self.h * clamp(p_box, p_box + 0.15, 1)) - diff_ul
-            ]
-        }
-
-        self.pos_bar_cover = {
-            True: [
-                self.x + lbhm + w_bar,
-                self.y + lbvm + w_bar,
-                self.x + (self.w - (2 * lbhm)) - w_bar,
-                self.y + (self.h * clamp(p_box, p_box + 0.15, 1)) - w_bar
-            ],
-            False: [
-                self.x + lbhm + w_bar,
-                self.y + lbvm + w_bar - diff_ul,
-                self.x + (self.w - (2 * lbhm)) - w_bar,
-                self.y + (self.h * clamp(p_box, p_box + 0.15, 1)) - w_bar - diff_ul
-            ]
-        }
-
-        self.pos_bar_vert = {
-            True: [
-                self.x + (self.w - (2 * lbhm) - w_bar),
-                self.y + (self.h * (1 - (p_box + 0.1))),
-                self.x + (self.w - (2 * lbhm)),
-                self.y + (self.h - lbvm)
-            ],
-            False: [
-                self.x + (self.w - (2 * lbhm) - w_bar),
-                self.y + (self.h * (1 - (p_box + 0.1))) - diff_ul,
-                self.x + (self.w - (2 * lbhm)),
-                self.y + (self.h - lbvm) - diff_ul
-            ]
-        }
-
-        self.tag_lock_bar_vert = self.canvas.create_rectangle(
-            *self.pos_bar_vert[self.state.get()],
-            fill=lbrc,
-            outline=lbrc
-        )
-
-        self.tag_lock_box = self.canvas.create_rectangle(
-            self.x + lbhm,
-            self.y + (self.h * (1 - p_box)),
-            self.x + (self.w - (2 * lbhm)),
-            self.y + (self.h - lbvm),
-            fill=lbxc
-        )
-
-        self.tag_lock_bar = self.canvas.create_arc(
-            *self.pos_bar[self.state.get()],
-            fill=lbrc,
-            outline=lbrc,
-            start=0,
-            extent=180
-        )
-
-        self.tag_lock_bar_cover = self.canvas.create_arc(
-            *self.pos_bar_cover[self.state.get()],
-            fill=self.canvas.cget("background"),
-            outline=self.canvas.cget("background"),
-            start=0,
-            extent=180
-        )
-
-    def set_mode(self, state: bool):
-        print(f"set_mode {state=}")
-        if state != self.state.get():
-            self.canvas.coords(
-                self.tag_lock_bar,
-                self.pos_bar[state]
-            )
-            self.canvas.coords(
-                self.tag_lock_bar_cover,
-                self.pos_bar_cover[state]
-            )
-            self.canvas.coords(
-                self.tag_lock_bar_vert,
-                self.pos_bar_vert[state]
-            )
-            self.state.set(state)
-
-    def __repr__(self):
-        vals = {
-            "state": self.state.get()
-        }
-        return jsonify(vals)
-
 
 class PlayoffChooser(tkinter.Tk):
 
@@ -827,39 +273,38 @@ class PlayoffChooser(tkinter.Tk):
         self.sorted_standings = sorted([(t, p) for t, p in self.season_stats.items()], key=lambda tup: tup[1], reverse=True)
         self.sorted_west = [tup for tup in self.sorted_standings if tup[0] in west_teams]
         self.sorted_east = [tup for tup in self.sorted_standings if tup[0] in east_teams]
-        self.dims_root = 2100, 800
+        self.dims_root = 1625, 1000
         self.title_app = "2024 Playoff Bracket Challenge"
         self.title(self.title_app)
         # self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=2, rtype=dict)
-        # self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=0, rtype=dict)
-        self.calc_geometry = calc_geometry_tl(1.0, 1.0, largest=0, rtype=dict)
+        self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=0, rtype=dict)
         self.geometry(self.calc_geometry["geometry"])
 
         self.unk_team = "no_team"
-        self.bg_canvas = bg_canvas
-        self.bg_empty_sc = bg_empty_sc
-        self.bd_empty_sc = bd_empty_sc
-        self.bg_bank_west = bg_bank_west
-        self.bg_empty_west = bg_empty_west
-        self.fg_empty_west = fg_empty_west
-        self.bd_empty_west = bd_empty_west
-        self.font_empty_west = font_empty_west
-        self.bg_bank_east = bg_bank_east
-        self.bg_empty_east = bg_empty_east
-        self.bd_empty_east = bd_empty_east
-        self.fg_empty_east = fg_empty_east
-        self.font_empty_east = font_empty_east
-        self.bg_line_west = bg_line_west
-        self.bg_opt_ps_west = bg_opt_ps_west
-        self.bg_line_east = bg_line_east
-        self.bg_opt_ps_east = bg_opt_ps_east
+        self.bg_canvas = "#686868"
+        self.bg_empty_sc = "#D8D525"
+        self.bd_empty_sc = "#D89505"
+        self.bg_bank_west = "#7793EF"
+        self.bg_empty_west = "#25339F"
+        self.fg_empty_west = "#000000"
+        self.bd_empty_west = "#05134F"
+        self.font_empty_west = ("Arial", 14)
+        self.bg_bank_east = "#e03535"
+        self.bg_empty_east = "#8e1919"
+        self.bd_empty_east = "#4F0513"
+        self.fg_empty_east = "#000000"
+        self.font_empty_east = ("Arial", 14)
+        self.bg_line_west = "#000000"
+        self.bg_opt_ps_west = "#328944"
+        self.bg_line_east = "#000000"
+        self.bg_opt_ps_east = "#328944"
         self.w_line = 2
         self.bw_ps_west = 2
         self.bw_ps_east = 2
 
         self.w_ps = 75
         self.h_ps = 75
-        self.w_space_between_rect = 70
+        self.w_space_between_rect = 35
         self.h_space_between_rect = 10
         self.w_canvas, self.h_canvas = self.dims_root[0] * 0.9, self.dims_root[1] * 0.9
         self.pos_bank_west = (25, 25, 205, 25 + (8 * (self.h_ps + self.h_space_between_rect)))
@@ -943,7 +388,6 @@ class PlayoffChooser(tkinter.Tk):
         print(f"{self.x_ps_w_r3=}, {self.y_ps_p2_r1=}")
         print(f"{self.x_ps_w_r4=}, {self.y_ps_p3_r1=}")
 
-        self.history_file = r"playoff chooser history.json"
         self.image_directory = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images"
         self.btn_images = {}
         self.res_images = {}
@@ -953,7 +397,6 @@ class PlayoffChooser(tkinter.Tk):
         self.full_size_image = (200, 200)
         self.small_size_image = (self.w_ps, self.h_ps)
 
-        self.load_history()
         self.load_images()
         print(f"{self.sorted_west=}")
         print(f"{self.sorted_east=}")
@@ -1326,7 +769,6 @@ class PlayoffChooser(tkinter.Tk):
             for rnd, round_data in conf_data.items():
                 for ps_code, ps_data in round_data.items():
                     print(f"{conf=}, {rnd=}, {ps_code=}")
-
                     t_rect = self.canvas.create_rectangle(
                         ps_data["x0"],
                         ps_data["y0"],
@@ -1345,58 +787,10 @@ class PlayoffChooser(tkinter.Tk):
                         ps_data["y0"] + (self.h_ps / 2),
                         state="hidden"
                     )
-
-                    if rnd > 0:
-                        # spinbox
-                        sb_w = 15
-                        orientation = "vertical"
-                        if conf == "east":
-                            sb_x = ps_data["x1"] # + sb_w
-                            sb_y = ps_data["y0"] # + (self.h_ps / 2)
-                        else:
-                            if ps_code == "SC":
-                                orientation = "horizontal"
-                                sb_x = ps_data["x0"] #+ (self.w_ps / 2)
-                                sb_y = ps_data["y1"] #+ sb_w
-                            else:
-                                sb_x = ps_data["x0"] - (sb_w / 2)
-                                sb_y = ps_data["y0"] # + (self.h_ps / 2)
-
-                        sb = SpinBox(
-                            self.canvas,
-                            "west",
-                            sb_x,
-                            sb_y,
-                            self.h_ps,
-                            orientation=orientation
-                        )
-                        sb.hide()
-                        # self.canvas.create_window(sb_x, sb_y, window=sb)
-
-                        lock_x = ps_data["x0"] + (self.w_ps / 2)
-                        lock_y = ps_data["y0"] - 50
-                    else:
-                        sb = None
-                        if conf == "east":
-                            lock_x = ps_data["x1"] + 10
-                            lock_y = ps_data["y0"] + (self.h_ps / 6)
-                        else:
-                            lock_x = ps_data["x0"] - 40
-                            lock_y = ps_data["y0"] + (self.h_ps / 6)
-
-                    # lock
-                    lock = Lock(
-                        self.canvas,
-                        lock_x,
-                        lock_y
-                    )
-
                     self.ps_codes[conf][rnd][ps_code].update({
                         "tag_rect": t_rect,
                         "tag_text": t_text,
-                        "tag_image": t_img,
-                        "sb": sb,
-                        "lock": lock
+                        "tag_image": t_img
                     })
                     self.canvas.tag_bind(
                         t_img,
@@ -2010,10 +1404,8 @@ class PlayoffChooser(tkinter.Tk):
         self.valid_ps_codes_list_p = [self.valid_ps_codes_root_p, self.valid_ps_codes_root_op_p, self.valid_ps_codes_p]
 
         self.frame_btn_bar = tkinter.Frame(self)
-        self.frame_clear_options = tkinter.Frame(self.frame_btn_bar)
-        self.tv_cb_clear, self.cb_clear = checkbox_factory(self.frame_clear_options, ["clear locks"])
         self.tv_btn_clear_ps, self.btn_clear_ps = button_factory(
-            self.frame_clear_options,
+            self.frame_btn_bar,
             "clear",
             command=self.click_clear_ps
         )
@@ -2032,49 +1424,21 @@ class PlayoffChooser(tkinter.Tk):
             "complete bracket randomly",
             command=self.click_random_complete
         )
-        self.tv_lbl_cb_history, self.lbl_cb_history, self.tv_cb_history, self.cb_history = combo_factory(
-            self,
-            "History",
-            values=list(self.history.keys())
-        )
 
         self.frame_btn_bar.grid()
-        self.frame_clear_options.grid(row=0, column=0)
-        self.cb_clear[0].grid(row=0, column=0)
-        self.btn_clear_ps.grid(row=0, column=1)
+        self.btn_clear_ps.grid(row=0, column=0)
         self.btn_export_ps.grid(row=0, column=1)
         self.btn_sr1fs.grid(row=0, column=2)
         self.btn_random_complete.grid(row=0, column=3)
-        self.lbl_cb_history.grid()
-        self.cb_history.grid()
 
         self.canvas.bind("<ButtonRelease-1>", self.release_click)
         self.canvas.bind("<ButtonRelease-3>", self.r_click_get_parents)
         self.canvas.bind("<B1-Motion>", self.motion)
-        self.canvas.bind("<MouseWheel>", self.scroll)
-        self.tv_cb_history.trace_variable("w", self.select_cb_history)
+        self.canvas.tag_raise(self.drag_rect)
 
         # for img in self.west_images:
         #     self.canvas.itemconfigure(img, state="hidden")
 
-        # self.lb = Lock(self.canvas, 750, 175)
-
-    def select_cb_history(self, *args):
-        h_key = self.tv_cb_history.get()
-        print(f"select_cb_history {h_key=}")
-        print(f"{self.history[h_key]=}")
-
-        # TODO 
-
-
-    def get_children(self, conf_code, rnd_code, ps_code):
-        if rnd_code <= 0:
-            return []
-        else:
-            path = self.calc_path(conf_code, rnd_code, ps_code)
-            s_path = [list(tup) for tup in (set([tuple(path_[-2]) for path_ in path]))]
-            print(f"{s_path=}")
-            return s_path
 
     def get_parents(self, conf_code, rnd_code, ps_code):
 
@@ -2244,13 +1608,9 @@ class PlayoffChooser(tkinter.Tk):
                     image=self.res_images[rand_team],
                     state="normal"
                 )
-                sb = self.ps_codes[conf][rnd][pc]["sb"]
-                if sb is not None:
-                    # rand_games = random.randrange(sb._min, sb._max)
-                    rand_games = weighted_choice([(v_, v_) for v_ in range(sb._min, sb._max+1)])
-                    print(f"{rand_games=}")
-                    sb.set(rand_games)
-                    sb.show()
+
+
+
 
         #     if t == self.unk_team:
         #         # set a team here.
@@ -2344,14 +1704,9 @@ class PlayoffChooser(tkinter.Tk):
                     img = self.canvas.itemcget(tag, "image")
                     v = self.canvas.itemcget(tag, "state")
                     t = self.res_pyimage_to_t.get(img, self.unk_team)
-                    sb_text = ""
                     if v == "hidden":
                         t = self.unk_team
-                    if rnd > 0:
-                        sb = self.ps_codes[conf][rnd][pc]["sb"]
-                        num = sb.num.get()
-                        sb_text = f" #Games={num}"
-                    print(f"C={conf[0].upper()}, R={rnd}, PC={pc.ljust(6)}, t={t}{sb_text}")
+                    print(f"C={conf[0].upper()}, R={rnd}, PC={pc.ljust(6)}, t={t}")
                     if t == self.unk_team:
                         missing.update({conf: {rnd: {pc: t}}})
 
@@ -2365,69 +1720,17 @@ class PlayoffChooser(tkinter.Tk):
                 for rc, r_data in c_data.items():
                     for pc, p_data in r_data.items():
                         self.flash_ps(cc, rc, pc)
-        else:
-            # name and save
-            self.tl_window = tkinter.Toplevel(self)
-            self.tl_geometry = calc_geometry_tl(0.25, 0.1, parent=self, rtype=dict)
-            self.tl_window.geometry(self.tl_geometry["geometry"])
-            self.tl_tv_lbl_name_entry, \
-            self.tl_lbl_name_entry, \
-            self.tl_tv_name_entry, \
-            self.tl_name_entry = entry_factory(
-                self.tl_window,
-                tv_label="Name this bracket:"
-            )
-            self.tl_name_entry.bind("<Return>", self.tl_name_entry_return)
-            self.tl_lbl_name_entry.grid()
-            self.tl_name_entry.grid()
-            self.tl_window.grab_set()
-            self.tl_name_entry.focus()
-            self.wait_window(self.tl_window)
-
-    def tl_name_entry_return(self, event):
-        print(f"tl_name_entry_return")
-        name = self.tl_tv_name_entry.get()
-        if name:
-            if name not in self.history:
-                self.history.update({
-                    name: {conf: {rnd: {ps: {k: v for k, v in ps_data.items()} for ps, ps_data in rnd_data.items()} for rnd, rnd_data in conf_data.items()} for conf, conf_data in self.ps_codes.items()}
-                })
-
-                with open(self.history_file, "w") as f:
-                    # json.dump(jsonify(self.history), f)
-                    f.write(jsonify(self.history, in_line=False))
-
-                self.tl_window.destroy()
 
     def click_clear_ps(self):
-        do_locks = self.tv_cb_clear[0].get()
-        print(f"{do_locks=}")
         for conf, conf_data in self.ps_codes.items():
             for rnd, rnd_data in conf_data.items():
                 for pc, pc_data in rnd_data.items():
-                    tag = pc_data["tag_image"]
-                    lock = pc_data["lock"]
+                    tag = self.ps_codes[conf][rnd][pc].get("tag_image")
                     if tag:
-                        print(f"{conf=}, {rnd=}, {pc=}, {lock=}")
-                        skip = False
-                        # if rnd > 0:
-                        if lock.state.get() and not do_locks:
-                            continue
-                        # else:
-                        #before clearing, check that parent is not locked
-                            # for p_cc, p_rc, p_pc in self.get_parents(conf, rnd, pc):
-                            #     if self.ps_codes[p_cc][p_rc][p_pc]["lock"].state.get():
-                                    # locked
-                                    # skip = True
-                        # if not skip:
                         self.canvas.itemconfigure(
                             tag,
                             state="hidden"
                         )
-                    if do_locks:
-                        lock.set_mode(False)
-        if do_locks:
-            self.tv_cb_clear[0].set(False)
 
     def collide_bbox_point(self, bbox_a, point):
         x0_a, y0_a, x1_a, y1_a = bbox_a
@@ -2437,20 +1740,7 @@ class PlayoffChooser(tkinter.Tk):
             y0_a <= y_p <= y1_a
         ])
 
-    def scroll(self, event):
-        e_x, e_y = event.x, event.y
-        delta = event.delta
-        point = e_x, e_y
-        for conf, conf_data in self.ps_codes.items():
-            for rnd_code, rnd_data in conf_data.items():
-                for ps_code, dat in rnd_data.items():
-                    sb = dat["sb"]
-                    if sb is not None:
-                        if self.collide_bbox_point(sb.bbox, point):
-                            sb.scroll(event)
-
     def motion(self, event):
-        self.canvas.tag_raise(self.drag_rect)
         if self.dragging.get():
             e_x, e_y = event.x, event.y
             # print(f"00 {e_x=}, {e_y=}")
@@ -2590,351 +1880,307 @@ class PlayoffChooser(tkinter.Tk):
 
     def release_click(self, event):
         print(f"RELEASE ", end="")
+        is_dragging = self.dragging.get()
         e_x, e_y = event.x, event.y
         point = (e_x, e_y)
-        is_dragging = self.dragging.get()
-        do_ps_check = True
-        for conf, conf_data in self.ps_codes.items():
-            for rnd_code, rnd_data in conf_data.items():
-                for ps_code, dat in rnd_data.items():
-                    sb = dat["sb"]
-                    lock = dat["lock"]
-                    if sb is not None:
-                        if self.collide_bbox_point(sb.bbox, point):
-                            # released on a game spinbox
-                            do_ps_check = False
+        tol = 1e-10
+        drag_team = self.drag_team.get()
+        drag_div = full_team_to_div_name[drag_team].upper()[0]
+        drag_conf = full_team_to_conf[drag_team].upper()[0]
+        positions = self.positions_ps_east if drag_conf == "E" else self.positions_ps_west
+        drag_conf = "east" if drag_conf == "E" else "west"
+        print(f"{drag_team=}, {drag_div=}, {drag_conf=}")
+        # bbox_drag = self.canvas.bbox(self.drag_rect)
+        if is_dragging:
+            print(f"DRAG ", end="")
+            for rnd_code, rnd_dat in positions.items():
+                for ps_code, dat in rnd_dat.items():
+                    # for k, bbox in dat.items():
+                    bbox = dat["rect"]
+                    if self.collide_bbox_point(bbox, point):
+                        print(f"COLLIDE cc='{drag_conf}', rc={rnd_code}, pc={ps_code} ", end="")
+                        p_y = ((e_y - bbox[1]) / self.h_ps)
+                        # # release in a ps spot
+                        # print(f"Release {rnd_code=} {ps_code=}, {k=}")
+                        # # check that previous spots not empty
+                        # do_change = False
 
-                    if lock is not None:
-                        if self.collide_bbox_point(lock.bbox, point):
-                            do_ps_check = False
-                            locked = lock.state.get() == True
-                            c_team = self.res_pyimage_to_t.get(self.canvas.itemcget(dat["tag_image"], "image"), self.unk_team)
-                            visible = self.canvas.itemcget(dat["tag_image"], "state") == "normal"
-                            if not locked:
-                                if visible:
-                                    lock.set_mode(True)
-                                    check_back = rnd_code > 0
-                                    c_conf, c_rnd_code, c_ps_code = conf, rnd_code, ps_code
-                                    while check_back:
-                                        print(f"{check_back=}, {c_conf=}, {c_rnd_code=}, {c_ps_code=}")
-                                        check_back = False
-                                        for p_cc, p_rc, p_pc in self.get_children(c_conf, c_rnd_code, c_ps_code):
-                                            p_tag = self.ps_codes[p_cc][p_rc][p_pc]["tag_image"]
-                                            p_team = self.res_pyimage_to_t.get(
-                                                self.canvas.itemcget(p_tag, "image"), self.unk_team)
-                                            print(f"\t{p_cc=}, {p_rc=}, {p_pc=}, {p_team=}")
-                                            if (p_team != self.unk_team) and (c_team == p_team):
-                                                # lock parent too
-                                                p_lock = self.ps_codes[p_cc][p_rc][p_pc]["lock"]
-                                                p_lock.set_mode(True)
-                                                c_conf, c_rnd_code, c_ps_code = p_cc, p_rc, p_pc
-                                            check_back = p_rc > 0
-                                        # check_back = check_back or bool(parents)
-
-        if do_ps_check:
-            tol = 1e-10
-            drag_team = self.drag_team.get()
-            drag_is_visible = self.canvas.itemcget(self.drag_rect, "state") == "normal"
-            if drag_is_visible:
-                drag_div = full_team_to_div_name[drag_team].upper()[0]
-                drag_conf = full_team_to_conf[drag_team].upper()[0]
-                positions = self.positions_ps_east if drag_conf == "E" else self.positions_ps_west
-                drag_conf = "east" if drag_conf == "E" else "west"
-                print(f"{drag_team=}, {drag_div=}, {drag_conf=}")
-                # bbox_drag = self.canvas.bbox(self.drag_rect)
-                if is_dragging:
-                    print(f"DRAG ", end="")
-                    for rnd_code, rnd_dat in positions.items():
-                        for ps_code, dat in rnd_dat.items():
-                            # for k, bbox in dat.items():
-                            bbox = dat["rect"]
-                            if self.collide_bbox_point(bbox, point):
-                                print(f"COLLIDE cc='{drag_conf}', rc={rnd_code}, pc={ps_code} ", end="")
-                                p_y = ((e_y - bbox[1]) / self.h_ps)
-                                # # release in a ps spot
-                                # print(f"Release {rnd_code=} {ps_code=}, {k=}")
-                                # # check that previous spots not empty
-                                # do_change = False
-
-                                paths = self.calc_path(drag_conf, rnd_code, ps_code)
-                                if rnd_code == 4:
-                                    # stanley cup finalist
-                                    p_y = int(p_y * (5 - tol))
-                                    if drag_div == "P":
-                                        paths = paths[:5]
-                                    elif drag_div == "C":
-                                        paths = paths[5:10]
-                                    elif drag_div == "A":
-                                        paths = paths[10:15]
-                                    else:
-                                        paths = paths[15:]
-                                elif rnd_code == 3:
-                                    # conf finalist
-                                    p_y = int(p_y * (5 - tol))
-                                    if drag_div in ("P", "A"):
-                                        paths = paths[:5]
-                                    else:
-                                        paths = paths[5:]
-                                elif rnd_code == 2:
-                                    # div finalist
-                                    p_y = int(p_y * (4 - tol))
-                                    if drag_div == "C":
-                                        if ps_code in self.valid_ps_codes_root_op_c:
-                                            paths = paths[:1]
-                                            p_y = 0
-                                    else:
-                                        if ps_code in self.valid_ps_codes_root_op_p:
-                                            paths = paths[-1:]
-                                            p_y = 0
-                                elif rnd_code == 1:
-                                    # quarter finalist
-                                    p_y = int(p_y * (2 - tol))
-                                    if drag_div == "C":
-                                        if ps_code in self.valid_ps_codes_root_op_c:
-                                            paths = paths[:1]
-                                            p_y = 0
-                                    else:
-                                        if ps_code in self.valid_ps_codes_root_op_p:
-                                            paths = paths[-1:]
-                                            p_y = 0
-
-                                else:
-                                    # round 1
+                        paths = self.calc_path(drag_conf, rnd_code, ps_code)
+                        if rnd_code == 4:
+                            # stanley cup finalist
+                            p_y = int(p_y * (5 - tol))
+                            if drag_div == "P":
+                                paths = paths[:5]
+                            elif drag_div == "C":
+                                paths = paths[5:10]
+                            elif drag_div == "A":
+                                paths = paths[10:15]
+                            else:
+                                paths = paths[15:]
+                        elif rnd_code == 3:
+                            # conf finalist
+                            p_y = int(p_y * (5 - tol))
+                            if drag_div in ("P", "A"):
+                                paths = paths[:5]
+                            else:
+                                paths = paths[5:]
+                        elif rnd_code == 2:
+                            # div finalist
+                            p_y = int(p_y * (4 - tol))
+                            if drag_div == "C":
+                                if ps_code in self.valid_ps_codes_root_op_c:
+                                    paths = paths[:1]
+                                    p_y = 0
+                            else:
+                                if ps_code in self.valid_ps_codes_root_op_p:
+                                    paths = paths[-1:]
+                                    p_y = 0
+                        elif rnd_code == 1:
+                            # quarter finalist
+                            p_y = int(p_y * (2 - tol))
+                            if drag_div == "C":
+                                if ps_code in self.valid_ps_codes_root_op_c:
+                                    paths = paths[:1]
+                                    p_y = 0
+                            else:
+                                if ps_code in self.valid_ps_codes_root_op_p:
+                                    paths = paths[-1:]
                                     p_y = 0
 
-                                match drag_div:
-                                    case "A":
-                                        do_change = ps_code in self.valid_ps_codes_a
-                                        if rnd_code == 0:
-                                            do_change = ps_code in (self.valid_ps_codes_root_a[:4] + self.valid_ps_codes_root_op_a[:1])
-                                    case "M":
-                                        do_change = ps_code in self.valid_ps_codes_m
-                                        if rnd_code == 0:
-                                            do_change = ps_code in (self.valid_ps_codes_root_m[:4] + self.valid_ps_codes_root_op_m[:1])
-                                    case "C":
-                                        do_change = ps_code in self.valid_ps_codes_c
-                                        if rnd_code == 0:
-                                            do_change = ps_code in (self.valid_ps_codes_root_c[:4] + self.valid_ps_codes_root_op_c[:1])
-                                    case _:
-                                        do_change = ps_code in self.valid_ps_codes_p
-                                        if rnd_code == 0:
-                                            do_change = ps_code in (self.valid_ps_codes_root_p[:4] + self.valid_ps_codes_root_op_p[:1])
+                        else:
+                            # round 1
+                            p_y = 0
 
-                                drag_img = self.canvas.itemcget(self.drag_rect, "image")
+                        match drag_div:
+                            case "A":
+                                do_change = ps_code in self.valid_ps_codes_a
+                                if rnd_code == 0:
+                                    do_change = ps_code in (self.valid_ps_codes_root_a[:4] + self.valid_ps_codes_root_op_a[:1])
+                            case "M":
+                                do_change = ps_code in self.valid_ps_codes_m
+                                if rnd_code == 0:
+                                    do_change = ps_code in (self.valid_ps_codes_root_m[:4] + self.valid_ps_codes_root_op_m[:1])
+                            case "C":
+                                do_change = ps_code in self.valid_ps_codes_c
+                                if rnd_code == 0:
+                                    do_change = ps_code in (self.valid_ps_codes_root_c[:4] + self.valid_ps_codes_root_op_c[:1])
+                            case _:
+                                do_change = ps_code in self.valid_ps_codes_p
+                                if rnd_code == 0:
+                                    do_change = ps_code in (self.valid_ps_codes_root_p[:4] + self.valid_ps_codes_root_op_p[:1])
 
-                                # check only one placement in conf bracket
-                                if do_change:
-                                    path = paths[p_y]
-                                    # path = paths[p_y]
-                                    # p_cc, p_rc, p_pc = path
-                                    c = 0
-                                    print(f"\nA DO CHANGE {paths=}")
-                                    # for i, path_ in enumerate(paths):
-                                    #     cc, rc, pc = path_[0]
-                                    #     print(f"O1D: {cc=}, {rc=}, {pc=}, {path[0]=}")
-                                    #     if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
-                                    #             and self.canvas.itemcget(
-                                    #         self.ps_codes[cc][rc][pc]["tag_image"],
-                                    #         "image"
-                                    #     ) == drag_img:
-                                    #         # this team already has a round 1 placement
-                                    #         print(f"Path already made")
-                                    #         c += 1
-                                    #         if c == 1:
-                                    #             # do_change = False
-                                    #             p_y = i
-                                    #             break
+                        drag_img = self.canvas.itemcget(self.drag_rect, "image")
 
-                                    clear_path = []
-                                    for pc in self.ps_codes[drag_conf][0]:
-                                        cc = drag_conf
-                                        rc = 0
-                                        if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
-                                                and (self.canvas.itemcget(
+                        # check only one placement in conf bracket
+                        if do_change:
+                            path = paths[p_y]
+                            # path = paths[p_y]
+                            # p_cc, p_rc, p_pc = path
+                            c = 0
+                            print(f"\nA DO CHANGE {paths=}")
+                            # for i, path_ in enumerate(paths):
+                            #     cc, rc, pc = path_[0]
+                            #     print(f"O1D: {cc=}, {rc=}, {pc=}, {path[0]=}")
+                            #     if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
+                            #             and self.canvas.itemcget(
+                            #         self.ps_codes[cc][rc][pc]["tag_image"],
+                            #         "image"
+                            #     ) == drag_img:
+                            #         # this team already has a round 1 placement
+                            #         print(f"Path already made")
+                            #         c += 1
+                            #         if c == 1:
+                            #             # do_change = False
+                            #             p_y = i
+                            #             break
+
+                            clear_path = []
+                            for pc in self.ps_codes[drag_conf][0]:
+                                cc = drag_conf
+                                rc = 0
+                                if ((cc != path[0][0]) or (rc != path[0][1]) or (pc != path[0][2])) \
+                                        and (self.canvas.itemcget(
+                                    self.ps_codes[cc][rc][pc]["tag_image"],
+                                    "image"
+                                ) == drag_img) and (self.canvas.itemcget(self.ps_codes[cc][rc][pc]["tag_image"], "state") == "normal"):
+                                    # path already exists
+                                    print(f"path already exists")
+                                    clear_path = self.calc_path_2_sc(cc, rc, pc)
+                                    break
+                                    # do_change = False
+
+                            print(f"PAE {cc=}, {rc=}, {pc=} {clear_path=}")
+                            if clear_path:
+                                for cc, rc, pc in clear_path[0]:
+                                    print(f"PAE {cc=}, {rc=}, {pc=}")
+                                    # if rc <= rnd_code:
+                                    #     print(f"BLANK")
+                                    if self.canvas.itemcget(
                                             self.ps_codes[cc][rc][pc]["tag_image"],
-                                            "image"
-                                        ) == drag_img) and (self.canvas.itemcget(self.ps_codes[cc][rc][pc]["tag_image"], "state") == "normal"):
-                                            # path already exists
-                                            print(f"path already exists")
-                                            clear_path = self.calc_path_2_sc(cc, rc, pc)
-                                            break
-                                            # do_change = False
-
-                                    print(f"PAE {cc=}, {rc=}, {pc=} {clear_path=}")
-                                    if clear_path:
-                                        for cc, rc, pc in clear_path[0]:
-                                            print(f"PAE {cc=}, {rc=}, {pc=}")
-                                            # if rc <= rnd_code:
-                                            #     print(f"BLANK")
-                                            if self.canvas.itemcget(
-                                                    self.ps_codes[cc][rc][pc]["tag_image"],
-                                                "image"
-                                            ) == drag_img:
-                                                self.canvas.itemconfigure(
-                                                    self.ps_codes[cc][rc][pc]["tag_image"],
-                                                    state="hidden"
-                                                )
-                                            # else:
-                                            #     print(f"SKIP")
-
-                                if do_change:
-                                    # for ps in paths:
-                                    print(f"DO CHANGE {p_y=}\n{path=}")
-                                    cc, rc, pc = None, None, None
-                                    for cc, rc, pc in path:
+                                        "image"
+                                    ) == drag_img:
                                         self.canvas.itemconfigure(
                                             self.ps_codes[cc][rc][pc]["tag_image"],
-                                            image=drag_img,
-                                            state="normal"
+                                            state="hidden"
                                         )
-                                        sb = self.ps_codes[cc][rc][pc]["sb"]
-                                        if sb is not None:
-                                            sb.show()
-                                        self.flash_ps(cc, rc, pc)
+                                    # else:
+                                    #     print(f"SKIP")
 
-                                    # use the last path key to check the logic
-                                    path_sc = self.calc_path_2_sc(cc, rc, pc)
-                                    print(f"{path_sc[0]=}")
-                                    for cc, rc, pc in path_sc[0]:
-                                        if (cc == drag_conf) and (rc == rnd_code) and (pc == ps_code):
-                                            break
-                                        if self.canvas.itemcget(
-                                            self.ps_codes[cc][rc][pc]["tag_image"],
+                        if do_change:
+                            # for ps in paths:
+                            print(f"DO CHANGE {p_y=}\n{path=}")
+                            cc, rc, pc = None, None, None
+                            for cc, rc, pc in path:
+                                self.canvas.itemconfigure(
+                                    self.ps_codes[cc][rc][pc]["tag_image"],
+                                    image=drag_img,
+                                    state="normal"
+                                )
+                                self.flash_ps(cc, rc, pc)
+
+                            # use the last path key to check the logic
+                            path_sc = self.calc_path_2_sc(cc, rc, pc)
+                            print(f"{path_sc[0]=}")
+                            for cc, rc, pc in path_sc[0]:
+                                if (cc == drag_conf) and (rc == rnd_code) and (pc == ps_code):
+                                    break
+                                if self.canvas.itemcget(
+                                    self.ps_codes[cc][rc][pc]["tag_image"],
+                                    "image"
+                                ) != drag_img:
+                                    print(f"\tA BLANK {cc=}, {rc=}, {pc=}\n")
+                                    self.canvas.itemconfigure(
+                                        self.ps_codes[cc][rc][pc]["tag_image"],
+                                        state="hidden"
+                                    )
+
+                            if 0 < rnd_code < 4:
+                                print(f"Start check path SC")
+                                for child in path_sc[0][1:]:
+                                    c_cc, c_rc, c_pc = child
+                                    parents = self.get_parents(c_cc, c_rc, c_pc)
+                                    # paths_ = self.calc_path(c_cc, c_rc, c_pc)
+                                    # print(f"A paths_=")
+                                    # for p in paths_:
+                                    #     print(f"{p}")
+                                    #
+                                    # # if 3 <= c_rc <= 4:
+                                    # if c_rc == 4:
+                                    #     if drag_div == "P":
+                                    #         paths_ = paths_[:5]
+                                    #     elif drag_div == "C":
+                                    #         paths_ = paths_[5:10]
+                                    #     elif drag_div == "A":
+                                    #         paths_ = paths_[10:15]
+                                    #     else:
+                                    #         paths_ = paths_[15:]
+                                    #
+                                    #     # ensure that a west path to SC is considered
+                                    #     paths_.insert(0, self.calc_path("west", 4, "SC")[0])
+                                    # else:
+                                    #     if drag_div in ("P", "A"):
+                                    #         paths_ = paths_[:5]
+                                    #     # elif drag_div == "C":
+                                    #     else:
+                                    #         paths_ = paths_[5:10]
+                                    # # elif drag_div == "A":
+                                    # #     paths_ = paths_[10:15]
+                                    # # else:
+                                    # #     paths_ = paths_[15:]
+                                    #
+                                    c_team = self.res_pyimage_to_t.get(
+                                        self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image'), "no_child")
+                                    # print(f"{c_cc=}, {c_rc=}, {c_pc=}, t='{c_team}'")
+                                    # print(f"B paths_=")
+                                    # for p in paths_:
+                                    #     print(f"{p}")
+                                    # # paths_ = [p[::-1] for p in paths_]
+                                    # # paths_.reverse()
+                                    # # print(f"B paths_=")
+                                    # # for p in paths_:
+                                    # #     print(f"{p}")
+                                    # parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths_]))]
+                                    print(f"{parents=}")
+                                    # parents.remove(())
+                                    if parents:
+                                        # print(f"ME={self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image')]}")
+                                        # print(f"ME={c_team}")
+                                        # p_cc, p_rc, p_pc = parents[0]
+
+                                        img_child = self.canvas.itemcget(
+                                            self.ps_codes[c_cc][c_rc][c_pc],
                                             "image"
-                                        ) != drag_img:
-                                            print(f"\tA BLANK {cc=}, {rc=}, {pc=}\n")
+                                        )
+                                        lp = len(parents)
+                                        i = 0
+                                        found_parent = False
+                                        for p_cc, p_rc, p_pc in parents:
+                                            p_team = self.res_pyimage_to_t.get(self.canvas.itemcget(self.ps_codes[p_cc][p_rc][p_pc]['tag_image'], 'image'), 'no_parent')
+                                            print(f"{p_cc=}, {p_rc=}, {p_pc=}, t='{p_team}', {i=}, {lp=}")
+                                            if (p_cc != path[-2][0]) or (p_rc != path[-2][1]) or (p_pc != path[-2][2]):
+                                                par_vis = self.canvas.itemcget(
+                                                    self.ps_codes[p_cc][p_rc][p_pc]["tag_image"],
+                                                    "state"
+                                                )
+                                                # print(f"{par_vis=}")
+                                                # ((rnd_code + 1) < rc) and (
+                                                # if img_parents == img_child:
+                                                if (par_vis == "normal") and (p_team == c_team):
+                                                    # print(f"\tB BLANK")
+                                                    # self.canvas.itemconfigure(
+                                                    #     self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
+                                                    #     state="hidden"
+                                                    # )
+                                                    found_parent = True
+                                                else:
+                                                    print(f"-B")
+
+                                            else:
+                                                print(f"-A")
+                                            i += 1
+                                        print(f"{found_parent=}")
+                                        if not found_parent:
                                             self.canvas.itemconfigure(
-                                                self.ps_codes[cc][rc][pc]["tag_image"],
+                                                self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
                                                 state="hidden"
                                             )
 
-                                    if 0 < rnd_code < 4:
-                                        print(f"Start check path SC")
-                                        for child in path_sc[0][1:]:
-                                            c_cc, c_rc, c_pc = child
-                                            parents = self.get_parents(c_cc, c_rc, c_pc)
-                                            # paths_ = self.calc_path(c_cc, c_rc, c_pc)
-                                            # print(f"A paths_=")
-                                            # for p in paths_:
-                                            #     print(f"{p}")
-                                            #
-                                            # # if 3 <= c_rc <= 4:
-                                            # if c_rc == 4:
-                                            #     if drag_div == "P":
-                                            #         paths_ = paths_[:5]
-                                            #     elif drag_div == "C":
-                                            #         paths_ = paths_[5:10]
-                                            #     elif drag_div == "A":
-                                            #         paths_ = paths_[10:15]
-                                            #     else:
-                                            #         paths_ = paths_[15:]
-                                            #
-                                            #     # ensure that a west path to SC is considered
-                                            #     paths_.insert(0, self.calc_path("west", 4, "SC")[0])
-                                            # else:
-                                            #     if drag_div in ("P", "A"):
-                                            #         paths_ = paths_[:5]
-                                            #     # elif drag_div == "C":
-                                            #     else:
-                                            #         paths_ = paths_[5:10]
-                                            # # elif drag_div == "A":
-                                            # #     paths_ = paths_[10:15]
-                                            # # else:
-                                            # #     paths_ = paths_[15:]
-                                            #
-                                            c_team = self.res_pyimage_to_t.get(
-                                                self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image'), "no_child")
-                                            # print(f"{c_cc=}, {c_rc=}, {c_pc=}, t='{c_team}'")
-                                            # print(f"B paths_=")
-                                            # for p in paths_:
-                                            #     print(f"{p}")
-                                            # # paths_ = [p[::-1] for p in paths_]
-                                            # # paths_.reverse()
-                                            # # print(f"B paths_=")
-                                            # # for p in paths_:
-                                            # #     print(f"{p}")
-                                            # parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths_]))]
-                                            print(f"{parents=}")
-                                            # parents.remove(())
-                                            if parents:
-                                                # print(f"ME={self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image')]}")
-                                                # print(f"ME={c_team}")
-                                                # p_cc, p_rc, p_pc = parents[0]
-
-                                                img_child = self.canvas.itemcget(
-                                                    self.ps_codes[c_cc][c_rc][c_pc],
-                                                    "image"
-                                                )
-                                                lp = len(parents)
-                                                i = 0
-                                                found_parent = False
-                                                for p_cc, p_rc, p_pc in parents:
-                                                    p_team = self.res_pyimage_to_t.get(self.canvas.itemcget(self.ps_codes[p_cc][p_rc][p_pc]['tag_image'], 'image'), 'no_parent')
-                                                    print(f"{p_cc=}, {p_rc=}, {p_pc=}, t='{p_team}', {i=}, {lp=}")
-                                                    if (p_cc != path[-2][0]) or (p_rc != path[-2][1]) or (p_pc != path[-2][2]):
-                                                        par_vis = self.canvas.itemcget(
-                                                            self.ps_codes[p_cc][p_rc][p_pc]["tag_image"],
-                                                            "state"
-                                                        )
-                                                        # print(f"{par_vis=}")
-                                                        # ((rnd_code + 1) < rc) and (
-                                                        # if img_parents == img_child:
-                                                        if (par_vis == "normal") and (p_team == c_team):
-                                                            # print(f"\tB BLANK")
-                                                            # self.canvas.itemconfigure(
-                                                            #     self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
-                                                            #     state="hidden"
-                                                            # )
-                                                            found_parent = True
-                                                        else:
-                                                            print(f"-B")
-
-                                                    else:
-                                                        print(f"-A")
-                                                    i += 1
-                                                print(f"{found_parent=}")
-                                                if not found_parent:
-                                                    self.canvas.itemconfigure(
-                                                        self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
-                                                        state="hidden"
-                                                    )
-
-                                    # if 0 < rnd_code < 4:
-                                    #     print(f"Start check path SC")
-                                    #     parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths]))]
-                                    #     parents.remove(path[-2])
-                                    #     if parents:
-                                    #         p_cc, p_rc, p_pc = parents[0]
-                                    #         img_parents = self.canvas.itemcget(
-                                    #             self.ps_codes[p_cc][p_rc][p_pc],
-                                    #             "image"
-                                    #         )
-                                    #         print(f"{p_cc=}, {p_rc=}, {p_pc=}")
-                                    #         for child in path_sc[0][1:]:
-                                    #             c_cc, c_rc, c_pc = child
-                                    #             print(f"{c_cc=}, {c_rc=}, {c_pc=}", end="")
-                                    #             img_child = self.canvas.itemcget(
-                                    #                 self.ps_codes[c_cc][c_rc][c_pc],
-                                    #                 "image"
-                                    #             )
-                                    #             # ((rnd_code + 1) < rc) and (
-                                    #             if img_parents == img_child:
-                                    #                 print(f"\tB BLANK", end="")
-                                    #                 self.canvas.itemconfigure(
-                                    #                     self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
-                                    #                     state="hidden"
-                                    #                 )
-                                    #             print(f"")
-                                    #
-                                    # # self.canvas.itemconfigure(
-                                    # #     self.ps_codes["west"][rnd_code][ps_code]["tag_image"],
-                                    # #     image=self.canvas.itemcget(
-                                    # #         self.drag_rect,
-                                    # #         "image"
-                                    # #     ),
-                                    # #     state="normal"
-                                    # # )
-                                    # # self.flash_ps("west", rnd_code, ps_code)
+                            # if 0 < rnd_code < 4:
+                            #     print(f"Start check path SC")
+                            #     parents = [list(tup) for tup in (set([tuple(path[-2]) for path in paths]))]
+                            #     parents.remove(path[-2])
+                            #     if parents:
+                            #         p_cc, p_rc, p_pc = parents[0]
+                            #         img_parents = self.canvas.itemcget(
+                            #             self.ps_codes[p_cc][p_rc][p_pc],
+                            #             "image"
+                            #         )
+                            #         print(f"{p_cc=}, {p_rc=}, {p_pc=}")
+                            #         for child in path_sc[0][1:]:
+                            #             c_cc, c_rc, c_pc = child
+                            #             print(f"{c_cc=}, {c_rc=}, {c_pc=}", end="")
+                            #             img_child = self.canvas.itemcget(
+                            #                 self.ps_codes[c_cc][c_rc][c_pc],
+                            #                 "image"
+                            #             )
+                            #             # ((rnd_code + 1) < rc) and (
+                            #             if img_parents == img_child:
+                            #                 print(f"\tB BLANK", end="")
+                            #                 self.canvas.itemconfigure(
+                            #                     self.ps_codes[c_cc][c_rc][c_pc]["tag_image"],
+                            #                     state="hidden"
+                            #                 )
+                            #             print(f"")
+                            #
+                            # # self.canvas.itemconfigure(
+                            # #     self.ps_codes["west"][rnd_code][ps_code]["tag_image"],
+                            # #     image=self.canvas.itemcget(
+                            # #         self.drag_rect,
+                            # #         "image"
+                            # #     ),
+                            # #     state="normal"
+                            # # )
+                            # # self.flash_ps("west", rnd_code, ps_code)
 
         self.dragging.set(False)
         self.revert_lines()
@@ -3170,7 +2416,6 @@ class PlayoffChooser(tkinter.Tk):
 
     def click_ps(self, event, conf_code, rnd_code, ps_code):
         print(f"click_ps {conf_code=}, {rnd_code=}, {ps_code=}")
-        self.canvas.tag_raise(self.drag_rect)
         hidden = self.canvas.itemcget(
             self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"],
             "state"
@@ -3220,12 +2465,6 @@ class PlayoffChooser(tkinter.Tk):
 
     # def release_rect(self, event, rect):
     #     print(f"release_rect {rect=}, {event=}")
-
-    def load_history(self):
-        if not os.path.exists(os.path.join(os.getcwd(), self.history_file)):
-            return
-        with open(self.history_file, "r") as f:
-            self.history = json.load(f)
 
     def load_images(self):
 

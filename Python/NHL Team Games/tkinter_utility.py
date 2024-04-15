@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.71
-    Date...........2024-02-29
+    Version..............1.72
+    Date...........2024-04-03
     Author(s)....Avery Briggs
     """
 
@@ -227,6 +227,7 @@ def button_factory(master, tv_btn=None, kwargs_btn=None, command=None):
                 f"Error, command key has already been passed in param 'kwargs_btn'. Please pass only one command.")
         elif command is not None:
             assert callable(command), "Error, param 'command' is not callable."
+            kwargs_btn = kwargs_btn.copy()
             kwargs_btn.update({"command": command})
     elif command is not None:
         assert callable(command), "Error, param 'command' is not callable."
@@ -267,6 +268,7 @@ def combo_factory(master, tv_label=None, kwargs_label=None, tv_combo=None, kwarg
             if kcn:
                 kwargs_combo = {"values": values}
             else:
+                kwargs_combo = kwargs_combo.copy()
                 kwargs_combo.update({"values": values})
 
     if kwargs_label is not None and kwargs_combo is not None:
@@ -529,7 +531,7 @@ class TreeviewController(tkinter.Frame):
         self.include_scroll_x = include_scroll_x
         self.include_scroll_y = include_scroll_y
         self.p_width = 0.16
-        self.aggregate_data = aggregate_data if isinstance(aggregate_data, dict) else dict()
+        self.aggregate_data = aggregate_data.copy() if isinstance(aggregate_data, dict) else dict()
         self.cell_tag_delim = "|-=-=-=-|"
         self.row_tag_delim = "row="
 
@@ -2513,6 +2515,7 @@ class MultiComboBox(tkinter.Frame):
         delete_code = "|/|/||NONE||/|/|"
         if iid is None and value == delete_code:
             self.tree_treeview.delete(*self.tree_treeview.get_children())
+            self.data = self.data.iloc[0:0]
         else:
             if iid is not None:
                 if isinstance(iid, int):
@@ -3828,8 +3831,8 @@ class InfoFrame(tkinter.Frame):
         self.key_width = key_width
         self.val_width = val_width
         self.cell_border = cell_border
-        self.key_label_kwargs = key_label_keywords if key_label_keywords is not None else {}
-        self.val_label_kwargs = value_label_keywords if value_label_keywords is not None else {}
+        self.key_label_kwargs = key_label_keywords.copy() if key_label_keywords is not None else {}
+        self.val_label_kwargs = value_label_keywords.copy() if value_label_keywords is not None else {}
         r, c, rs, cs, ix, iy, x, y, s = self.grid_keys()
 
         assert hasattr(self.labels_in,
