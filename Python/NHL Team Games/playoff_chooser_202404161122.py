@@ -11,7 +11,7 @@ from itertools import combinations
 from random import shuffle, sample
 from tkinter import ttk, messagebox
 
-from colour_utility import gradient, Colour
+from colour_utility import gradient
 from tkinter_utility import calc_geometry_tl, button_factory, entry_factory, checkbox_factory, combo_factory
 from utility import clamp, weighted_choice
 
@@ -205,15 +205,11 @@ bg_canvas = "#686868"
 bg_empty_sc = "#D8D525"
 bd_empty_sc = "#D89505"
 bg_bank_west = "#7793EF"
-bg_w_top_lbl = "#AACAFF"
-bg_w_txt_top_lbl = "#020240"
 bg_empty_west = "#25339F"
 fg_empty_west = "#000000"
 bd_empty_west = "#05134F"
 font_empty_west = ("Arial", 14)
 bg_bank_east = "#e03535"
-bg_e_top_lbl = "#FFAACA"
-bg_e_txt_top_lbl = "#400202"
 bg_empty_east = "#8e1919"
 bd_empty_east = "#4F0513"
 fg_empty_east = "#000000"
@@ -236,18 +232,16 @@ metropolitan = {
     'Columbus': {'acr': 'CBJ', 'mascot': 'Blue Jackets', 'masc_short': 'Jackets', 'full': 'columbus blue jackets'}
 }
 
-
 atlantic = {
     'Boston': {'acr': 'BOS', 'mascot': 'Bruins', 'masc_short': 'Bruins', 'full': 'boston bruins'},
     'Toronto': {'acr': 'TOR', 'mascot': 'Maple Leafs', 'masc_short': 'Leafs', 'full': 'toronto maple leafs'},
     'Tampa Bay': {'acr': 'TBL', 'mascot': 'Lightning', 'masc_short': 'Bolts', 'full': 'tampa bay lightning'},
-    'Buffalo': {'acr': 'BUF','mascot': 'Sabres', 'masc_short': 'Sabres', 'full': 'buffalo sabres'},
+    'Buffalo': {'acr': 'BUF', 'mascot': 'Sabres', 'masc_short': 'Sabres', 'full': 'buffalo sabres'},
     'Florida': {'acr': 'FLA', 'mascot': 'Panthers', 'masc_short': 'Panthers', 'full': 'florida panthers'},
     'Detroit': {'acr': 'DET', 'mascot': 'Red Wings', 'masc_short': 'Wings', 'full': 'detroit red wings'},
     'Ottawa': {'acr': 'OTT', 'mascot': 'Senators', 'masc_short': 'Sens', 'full': 'ottawa senators'},
     'Montreal': {'acr': 'MTL', 'mascot': 'Canadiens', 'masc_short': 'Habs', 'full': 'montreal canadiens'}
 }
-
 
 central = {
     'Winnipeg': {'acr': 'WPG', 'mascot': 'Jets', 'masc_short': 'Jets', 'full': 'winnipeg jets'},
@@ -260,7 +254,6 @@ central = {
     'Chicago': {'acr': 'CHI', 'mascot': 'Blackhawks', 'masc_short': 'Hawks', 'full': 'chicago blackhawks'}
 }
 
-
 pacific = {
     'Vegas': {'acr': 'VGK', 'mascot': 'Golden Knights', 'masc_short': 'Knights', 'full': 'vegas golden knights'},
     'Seattle': {'acr': 'SEA', 'mascot': 'Kraken', 'masc_short': 'Kraken', 'full': 'seattle kraken'},
@@ -271,7 +264,6 @@ pacific = {
     'San Jose': {'acr': 'SJS', 'mascot': 'Sharks', 'masc_short': 'Sharks', 'full': 'san jose sharks'},
     'Anaheim': {'acr': 'ANA', 'mascot': 'Ducks', 'masc_short': 'Ducks', 'full': 'anaheim ducks'}
 }
-
 
 full_team_to_div = {}
 full_team_to_div_name = {}
@@ -290,6 +282,7 @@ for div_n, div in {
 full_team_to_conf = {t: ("w" if div_dat[1] in (pacific, central) else "e") for t, div_dat in full_team_to_div.items()}
 west_teams = [t for t, c in full_team_to_conf.items() if c == "w"]
 east_teams = [t for t, c in full_team_to_conf.items() if c == "e"]
+
 
 #
 #   Functional SPinBox class using tkinter widgets.
@@ -592,7 +585,7 @@ class SpinBox:
 
                 self.pos_btn_dn = (
                     self.x + (2 * t_w) + h_w,
-                    self.y  + h_h
+                    self.y + h_h
                 )
                 self.canvas.itemconfigure(self.tag_btn_txt_up, text="<")
                 self.canvas.itemconfigure(self.tag_btn_txt_dn, text=">")
@@ -702,12 +695,11 @@ class SpinBox:
         }
         # return f"{vals}"
         return jsonify(vals)
-    
-    
-class Lock:
-    
-    def __init__(self, canvas: tkinter.Canvas, x, y, w=50, h=50, state="unlocked"):
 
+
+class Lock:
+
+    def __init__(self, canvas: tkinter.Canvas, x, y, w=50, h=50, state="unlocked"):
         self.canvas: tkinter.Canvas = canvas
         self.state = tkinter.BooleanVar(self.canvas, value=state == "locked")
 
@@ -816,11 +808,6 @@ class Lock:
             )
             self.state.set(state)
 
-    def set_bg(self, colour: str | Colour):
-        if isinstance(colour, Colour):
-            colour = colour.hex_code
-        self.canvas.itemconfigure(self.tag_lock_bar_cover, fill=colour, outline=colour)
-
     def __repr__(self):
         vals = {
             "state": self.state.get()
@@ -833,10 +820,11 @@ class PlayoffChooser(tkinter.Tk):
     def __init__(self, season_stats):
         super().__init__()
         self.season_stats = season_stats
-        self.sorted_standings = sorted([(t, p) for t, p in self.season_stats.items()], key=lambda tup: tup[1], reverse=True)
+        self.sorted_standings = sorted([(t, p) for t, p in self.season_stats.items()], key=lambda tup: tup[1],
+                                       reverse=True)
         self.sorted_west = [tup for tup in self.sorted_standings if tup[0] in west_teams]
         self.sorted_east = [tup for tup in self.sorted_standings if tup[0] in east_teams]
-        self.dims_root = 2100, 900
+        self.dims_root = 2100, 800
         self.title_app = "2024 Playoff Bracket Challenge"
         self.title(self.title_app)
         # self.calc_geometry = calc_geometry_tl(*self.dims_root, largest=2, rtype=dict)
@@ -849,15 +837,11 @@ class PlayoffChooser(tkinter.Tk):
         self.bg_empty_sc = bg_empty_sc
         self.bd_empty_sc = bd_empty_sc
         self.bg_bank_west = bg_bank_west
-        self.bg_w_top_lbl = bg_w_top_lbl
-        self.bg_w_txt_top_lbl = bg_w_txt_top_lbl
         self.bg_empty_west = bg_empty_west
         self.fg_empty_west = fg_empty_west
         self.bd_empty_west = bd_empty_west
         self.font_empty_west = font_empty_west
         self.bg_bank_east = bg_bank_east
-        self.bg_e_top_lbl = bg_e_top_lbl
-        self.bg_e_txt_top_lbl = bg_e_txt_top_lbl
         self.bg_empty_east = bg_empty_east
         self.bd_empty_east = bd_empty_east
         self.fg_empty_east = fg_empty_east
@@ -875,33 +859,16 @@ class PlayoffChooser(tkinter.Tk):
         self.w_space_between_rect = 70
         self.h_space_between_rect = 10
         self.w_canvas, self.h_canvas = self.dims_root[0] * 0.9, self.dims_root[1] * 0.9
-
-        self.canvas = tkinter.Canvas(
-            self,
-            width=self.w_canvas,
-            height=self.h_canvas,
-            background=self.bg_canvas
-        )
-
-        # self.pos_bank_west = (25, 25, 205, 25 + (8 * (self.h_ps + self.h_space_between_rect)))
-        # self.pos_bank_east = (
-        #     self.w_canvas - (25 + 205 + 0),
-        #     25,
-        #     self.w_canvas - (25 + 0),
-        #     25 + (8 * (self.h_ps + self.h_space_between_rect))
-        # )
-        self.pos_bank_west = (25, 125, 205, 125 + (8 * (self.h_ps + self.h_space_between_rect)))
+        self.pos_bank_west = (25, 25, 205, 25 + (8 * (self.h_ps + self.h_space_between_rect)))
         self.pos_bank_east = (
             self.w_canvas - (25 + 205 + 0),
-            125,
+            25,
             self.w_canvas - (25 + 0),
-            125 + (8 * (self.h_ps + self.h_space_between_rect))
+            25 + (8 * (self.h_ps + self.h_space_between_rect))
         )
-
 
         #### NOTE ####
         # Stanley Cup Final PlayOff Spot is treated as though it is in the west conference
-
 
         # West PlayOff Spot Xs
         self.x_ps_w_r1 = self.pos_bank_west[2] + self.w_space_between_rect
@@ -966,49 +933,6 @@ class PlayoffChooser(tkinter.Tk):
         # West PlayOff Spot Ys SC
         self.y_ps_sc = self.y_ps_w_r3_p + ((self.y_ps_w_r3_c - self.y_ps_w_r3_p) / 2)
 
-        self.pos_top_lbl_west = (
-            self.pos_bank_west[0],
-            10,
-            self.x_ps_sc + (self.w_ps / 2),
-            115
-        )
-        self.pos_top_lbl_east = (
-            self.x_ps_sc + (self.w_ps / 2),
-            10,
-            self.pos_bank_east[2],
-            115,
-        )
-        self.pos_txt_top_lbl_west = (
-            self.pos_top_lbl_west[0] + ((self.pos_top_lbl_west[2] - self.pos_top_lbl_west[0]) / 2),
-            # self.pos_top_lbl_west[1] + ((self.pos_top_lbl_west[3] - self.pos_top_lbl_west[1]) / 2) - 10
-            self.pos_top_lbl_west[1] + 25
-        )
-        self.pos_txt_top_lbl_east = (
-            self.pos_top_lbl_east[0] + ((self.pos_top_lbl_east[2] - self.pos_top_lbl_east[0]) / 2),
-            # self.pos_top_lbl_east[1] + ((self.pos_top_lbl_east[3] - self.pos_top_lbl_east[1]) / 2) - 10
-            self.pos_top_lbl_east[1] + 25
-        )
-        self.pos_txt_top_lbl_west_r1 = (
-            self.x_ps_w_r1 + (self.w_ps / 2),
-            self.pos_top_lbl_east[1] + 40
-        )
-        self.pos_txt_top_lbl_west_r2 = (
-            self.x_ps_w_r2 + (self.w_ps / 2),
-            self.pos_top_lbl_east[1] + 40
-        )
-        self.pos_txt_top_lbl_west_r3 = (
-            self.x_ps_w_r3 + (self.w_ps / 2),
-            self.pos_top_lbl_east[1] + 40
-        )
-        self.pos_txt_top_lbl_west_r4 = (
-            self.x_ps_w_r4 + (self.w_ps / 2),
-            self.pos_top_lbl_east[1] + 40
-        )
-        self.pos_txt_top_lbl_west_SC = (
-            self.x_ps_sc + (self.w_ps / 2),
-            self.pos_top_lbl_east[1] + 40
-        )
-
         print(f"{self.x_ps_w_r1=}, {self.y_ps_wc_t_r1=}")
         print(f"{self.x_ps_w_r2=}, {self.y_ps_p1_r1=}")
         print(f"{self.x_ps_w_r3=}, {self.y_ps_p2_r1=}")
@@ -1037,6 +961,13 @@ class PlayoffChooser(tkinter.Tk):
         self.dragging = tkinter.BooleanVar(self, value=False)
         self.drag_team = tkinter.StringVar(self, value="")
 
+        self.canvas = tkinter.Canvas(
+            self,
+            width=self.w_canvas,
+            height=self.h_canvas,
+            background=self.bg_canvas
+        )
+
         # west team bank
         self.rect_w_bank = self.canvas.create_rectangle(
             *self.pos_bank_west,
@@ -1048,102 +979,6 @@ class PlayoffChooser(tkinter.Tk):
             *self.pos_bank_east,
             fill=self.bg_bank_east
         )
-
-        self.tag_rect_w_conf_lbl = self.canvas.create_rectangle(
-            *self.pos_top_lbl_west,
-            fill=self.bg_w_top_lbl
-        )
-
-        self.tag_rect_e_conf_lbl = self.canvas.create_rectangle(
-            *self.pos_top_lbl_east,
-            fill=self.bg_e_top_lbl
-        )
-
-        self.tag_txt_top_lbl_west = self.canvas.create_text(
-            *self.pos_txt_top_lbl_west,
-            fill=self.bg_w_txt_top_lbl,
-            text="Western Conference"
-        )
-
-        self.tag_txt_top_lbl_east = self.canvas.create_text(
-            *self.pos_txt_top_lbl_east,
-            fill=self.bg_e_txt_top_lbl,
-            text="Eastern Conference"
-        )
-
-        self.tag_txt_top_lbl_west_r1 = self.canvas.create_text(
-            *self.pos_txt_top_lbl_west_r1,
-            fill=self.bg_e_txt_top_lbl,
-            text="R1"
-        )
-
-        self.tag_txt_top_lbl_west_r1 = self.canvas.create_text(
-            *self.pos_txt_top_lbl_west_r2,
-            fill=self.bg_e_txt_top_lbl,
-            text="R2"
-        )
-
-        self.tag_txt_top_lbl_west_r1 = self.canvas.create_text(
-            *self.pos_txt_top_lbl_west_r3,
-            fill=self.bg_e_txt_top_lbl,
-            text="R3"
-        )
-
-        self.tag_txt_top_lbl_west_r1 = self.canvas.create_text(
-            *self.pos_txt_top_lbl_west_r4,
-            fill=self.bg_e_txt_top_lbl,
-            text="R4"
-        )
-
-        self.tag_txt_top_lbl_west_r1 = self.canvas.create_text(
-            *self.pos_txt_top_lbl_west_SC,
-            fill=self.bg_e_txt_top_lbl,
-            text="SC"
-        )
-
-        self.lock_west_r1 = Lock(
-            self.canvas,
-            self.pos_txt_top_lbl_west_r1[0],
-            self.pos_txt_top_lbl_west_r1[1] + 15
-        )
-        self.lock_west_r2 = Lock(
-            self.canvas,
-            self.pos_txt_top_lbl_west_r2[0],
-            self.pos_txt_top_lbl_west_r2[1] + 15
-        )
-        self.lock_west_r3 = Lock(
-            self.canvas,
-            self.pos_txt_top_lbl_west_r3[0],
-            self.pos_txt_top_lbl_west_r3[1] + 15
-        )
-        self.lock_west_r4 = Lock(
-            self.canvas,
-            self.pos_txt_top_lbl_west_r4[0],
-            self.pos_txt_top_lbl_west_r4[1] + 15
-        )
-        self.lock_west_SC = Lock(
-            self.canvas,
-            self.pos_txt_top_lbl_west_SC[0],
-            self.pos_txt_top_lbl_west_SC[1] + 15
-        )
-        self.round_locks = {
-            "west": [
-                self.lock_west_r1,
-                self.lock_west_r2,
-                self.lock_west_r3,
-                self.lock_west_r4,
-                self.lock_west_SC
-            ],
-            "east": []
-        }
-        for conf, conf_locks in self.round_locks.items():
-            if conf == "east":
-                l_bg = self.bg_e_top_lbl
-            else:
-                l_bg = self.bg_w_top_lbl
-
-            for lock in conf_locks:
-                lock.set_bg(l_bg)
 
         self.drag_rect = self.canvas.create_image(
             0, 0,
@@ -1511,16 +1346,16 @@ class PlayoffChooser(tkinter.Tk):
                         sb_w = 15
                         orientation = "vertical"
                         if conf == "east":
-                            sb_x = ps_data["x1"] # + sb_w
-                            sb_y = ps_data["y0"] # + (self.h_ps / 2)
+                            sb_x = ps_data["x1"]  # + sb_w
+                            sb_y = ps_data["y0"]  # + (self.h_ps / 2)
                         else:
                             if ps_code == "SC":
                                 orientation = "horizontal"
-                                sb_x = ps_data["x0"] #+ (self.w_ps / 2)
-                                sb_y = ps_data["y1"] #+ sb_w
+                                sb_x = ps_data["x0"]  # + (self.w_ps / 2)
+                                sb_y = ps_data["y1"]  # + sb_w
                             else:
                                 sb_x = ps_data["x0"] - (sb_w / 2)
-                                sb_y = ps_data["y0"] # + (self.h_ps / 2)
+                                sb_y = ps_data["y0"]  # + (self.h_ps / 2)
 
                         sb = SpinBox(
                             self.canvas,
@@ -1562,13 +1397,13 @@ class PlayoffChooser(tkinter.Tk):
                         t_img,
                         "<Button-1>",
                         lambda event, cc=conf, rc=rnd, pc=ps_code:
-                            self.click_ps(event, cc, rc, pc)
+                        self.click_ps(event, cc, rc, pc)
                     )
                     self.canvas.tag_bind(
                         t_img,
                         "<B1-Motion>",
                         lambda event, cc=conf, rc=rnd, pc=ps_code:
-                            self.motion_ps(event, cc, rc, pc)
+                        self.motion_ps(event, cc, rc, pc)
                     )
 
         self.canvas.itemconfigure(
@@ -1700,8 +1535,6 @@ class PlayoffChooser(tkinter.Tk):
         )
 
         ######################################################################################
-
-
 
         # east R1 WC top to R2 A1
         self.lines[(("east", 0, "WC_t"), ("east", 1, "A1"))] = self.canvas.create_line(
@@ -2063,7 +1896,9 @@ class PlayoffChooser(tkinter.Tk):
         self.positions_ps_west = {
             rnd: {
                 k: {
-                    "rect": list(map(lambda i_x: (i_x[1] + self.bw_ps_west) if (i_x[0] < 2) else (i_x[1] - self.bw_ps_west), enumerate(self.canvas.bbox(dat["tag_rect"])))),
+                    "rect": list(
+                        map(lambda i_x: (i_x[1] + self.bw_ps_west) if (i_x[0] < 2) else (i_x[1] - self.bw_ps_west),
+                            enumerate(self.canvas.bbox(dat["tag_rect"])))),
                     "text": self.canvas.bbox(dat["tag_text"])
                 }
                 for k, dat in rnd_dat.items()
@@ -2075,7 +1910,9 @@ class PlayoffChooser(tkinter.Tk):
         self.positions_ps_east = {
             rnd: {
                 k: {
-                    "rect": list(map(lambda i_x: (i_x[1] + self.bw_ps_east) if (i_x[0] < 2) else (i_x[1] - self.bw_ps_east), enumerate(self.canvas.bbox(dat["tag_rect"])))),
+                    "rect": list(
+                        map(lambda i_x: (i_x[1] + self.bw_ps_east) if (i_x[0] < 2) else (i_x[1] - self.bw_ps_east),
+                            enumerate(self.canvas.bbox(dat["tag_rect"])))),
                     "text": self.canvas.bbox(dat["tag_text"])
                 }
                 for k, dat in rnd_dat.items()
@@ -2224,8 +2061,7 @@ class PlayoffChooser(tkinter.Tk):
         print(f"select_cb_history {h_key=}")
         print(f"{self.history[h_key]=}")
 
-        # TODO 
-
+        # TODO
 
     def get_children(self, conf_code, rnd_code, ps_code):
         if rnd_code <= 0:
@@ -2407,7 +2243,7 @@ class PlayoffChooser(tkinter.Tk):
                 sb = self.ps_codes[conf][rnd][pc]["sb"]
                 if sb is not None:
                     # rand_games = random.randrange(sb._min, sb._max)
-                    rand_games = weighted_choice([(v_, v_) for v_ in range(sb._min, sb._max+1)])
+                    rand_games = weighted_choice([(v_, v_) for v_ in range(sb._min, sb._max + 1)])
                     print(f"{rand_games=}")
                     sb.set(rand_games)
                     sb.show()
@@ -2531,9 +2367,9 @@ class PlayoffChooser(tkinter.Tk):
             self.tl_geometry = calc_geometry_tl(0.25, 0.1, parent=self, rtype=dict)
             self.tl_window.geometry(self.tl_geometry["geometry"])
             self.tl_tv_lbl_name_entry, \
-            self.tl_lbl_name_entry, \
-            self.tl_tv_name_entry, \
-            self.tl_name_entry = entry_factory(
+                self.tl_lbl_name_entry, \
+                self.tl_tv_name_entry, \
+                self.tl_name_entry = entry_factory(
                 self.tl_window,
                 tv_label="Name this bracket:"
             )
@@ -2550,7 +2386,8 @@ class PlayoffChooser(tkinter.Tk):
         if name:
             if name not in self.history:
                 self.history.update({
-                    name: {conf: {rnd: {ps: {k: v for k, v in ps_data.items()} for ps, ps_data in rnd_data.items()} for rnd, rnd_data in conf_data.items()} for conf, conf_data in self.ps_codes.items()}
+                    name: {conf: {rnd: {ps: {k: v for k, v in ps_data.items()} for ps, ps_data in rnd_data.items()} for
+                                  rnd, rnd_data in conf_data.items()} for conf, conf_data in self.ps_codes.items()}
                 })
 
                 with open(self.history_file, "w") as f:
@@ -2574,11 +2411,11 @@ class PlayoffChooser(tkinter.Tk):
                         if lock.state.get() and not do_locks:
                             continue
                         # else:
-                        #before clearing, check that parent is not locked
-                            # for p_cc, p_rc, p_pc in self.get_parents(conf, rnd, pc):
-                            #     if self.ps_codes[p_cc][p_rc][p_pc]["lock"].state.get():
-                                    # locked
-                                    # skip = True
+                        # before clearing, check that parent is not locked
+                        # for p_cc, p_rc, p_pc in self.get_parents(conf, rnd, pc):
+                        #     if self.ps_codes[p_cc][p_rc][p_pc]["lock"].state.get():
+                        # locked
+                        # skip = True
                         # if not skip:
                         self.canvas.itemconfigure(
                             tag,
@@ -2729,8 +2566,8 @@ class PlayoffChooser(tkinter.Tk):
         else:
             cc = self.bg_empty_west
             bd = self.bd_empty_west
-        grad_c = [gradient(i+1, 10, sc, ec, rgb=False) for i in range(10)]
-        grad_f = [gradient(i+1, 10, sc, ec, rgb=False) for i in range(10)]
+        grad_c = [gradient(i + 1, 10, sc, ec, rgb=False) for i in range(10)]
+        grad_f = [gradient(i + 1, 10, sc, ec, rgb=False) for i in range(10)]
         for i, c_f in enumerate(zip(grad_c, grad_f)):
             c, f = c_f
             self.after(
@@ -2755,25 +2592,6 @@ class PlayoffChooser(tkinter.Tk):
         is_dragging = self.dragging.get()
         do_ps_check = True
         for conf, conf_data in self.ps_codes.items():
-
-            for rnd, rnd_lock in enumerate(self.round_locks[conf]):
-                if self.collide_bbox_point(rnd_lock.bbox, point):
-                    do_ps_check = False
-                    new_state = not rnd_lock.state.get()
-                    rnd_lock.set_mode(new_state)
-                    for ps_code, dat in conf_data[rnd].items():
-                        team_img = self.canvas.itemcget(dat["tag_image"], "image")
-                        team_name = self.res_pyimage_to_t.get(team_img, self.unk_team)
-                        if self.canvas.itemcget(dat["tag_image"], "state") == "normal":
-                            lock = dat["lock"]
-                            lock.set_mode(new_state)
-                            # TODO
-                            # if rnd > 0:
-                            #     children = self.get_children(conf, rnd, ps_code)
-                            #     while children:
-                            #         children = self.get_children(conf, rnd, ps_code)
-
-
             for rnd_code, rnd_data in conf_data.items():
                 for ps_code, dat in rnd_data.items():
                     sb = dat["sb"]
@@ -2787,7 +2605,8 @@ class PlayoffChooser(tkinter.Tk):
                         if self.collide_bbox_point(lock.bbox, point):
                             do_ps_check = False
                             locked = lock.state.get() == True
-                            c_team = self.res_pyimage_to_t.get(self.canvas.itemcget(dat["tag_image"], "image"), self.unk_team)
+                            c_team = self.res_pyimage_to_t.get(self.canvas.itemcget(dat["tag_image"], "image"),
+                                                               self.unk_team)
                             visible = self.canvas.itemcget(dat["tag_image"], "state") == "normal"
                             if not locked:
                                 if visible:
@@ -2885,19 +2704,27 @@ class PlayoffChooser(tkinter.Tk):
                                     case "A":
                                         do_change = ps_code in self.valid_ps_codes_a
                                         if rnd_code == 0:
-                                            do_change = ps_code in (self.valid_ps_codes_root_a[:4] + self.valid_ps_codes_root_op_a[:1])
+                                            do_change = ps_code in (
+                                                        self.valid_ps_codes_root_a[:4] + self.valid_ps_codes_root_op_a[
+                                                                                         :1])
                                     case "M":
                                         do_change = ps_code in self.valid_ps_codes_m
                                         if rnd_code == 0:
-                                            do_change = ps_code in (self.valid_ps_codes_root_m[:4] + self.valid_ps_codes_root_op_m[:1])
+                                            do_change = ps_code in (
+                                                        self.valid_ps_codes_root_m[:4] + self.valid_ps_codes_root_op_m[
+                                                                                         :1])
                                     case "C":
                                         do_change = ps_code in self.valid_ps_codes_c
                                         if rnd_code == 0:
-                                            do_change = ps_code in (self.valid_ps_codes_root_c[:4] + self.valid_ps_codes_root_op_c[:1])
+                                            do_change = ps_code in (
+                                                        self.valid_ps_codes_root_c[:4] + self.valid_ps_codes_root_op_c[
+                                                                                         :1])
                                     case _:
                                         do_change = ps_code in self.valid_ps_codes_p
                                         if rnd_code == 0:
-                                            do_change = ps_code in (self.valid_ps_codes_root_p[:4] + self.valid_ps_codes_root_op_p[:1])
+                                            do_change = ps_code in (
+                                                        self.valid_ps_codes_root_p[:4] + self.valid_ps_codes_root_op_p[
+                                                                                         :1])
 
                                 drag_img = self.canvas.itemcget(self.drag_rect, "image")
 
@@ -2932,7 +2759,8 @@ class PlayoffChooser(tkinter.Tk):
                                                 and (self.canvas.itemcget(
                                             self.ps_codes[cc][rc][pc]["tag_image"],
                                             "image"
-                                        ) == drag_img) and (self.canvas.itemcget(self.ps_codes[cc][rc][pc]["tag_image"], "state") == "normal"):
+                                        ) == drag_img) and (self.canvas.itemcget(self.ps_codes[cc][rc][pc]["tag_image"],
+                                                                                 "state") == "normal"):
                                             # path already exists
                                             print(f"path already exists")
                                             clear_path = self.calc_path_2_sc(cc, rc, pc)
@@ -2947,7 +2775,7 @@ class PlayoffChooser(tkinter.Tk):
                                             #     print(f"BLANK")
                                             if self.canvas.itemcget(
                                                     self.ps_codes[cc][rc][pc]["tag_image"],
-                                                "image"
+                                                    "image"
                                             ) == drag_img:
                                                 self.canvas.itemconfigure(
                                                     self.ps_codes[cc][rc][pc]["tag_image"],
@@ -2978,8 +2806,8 @@ class PlayoffChooser(tkinter.Tk):
                                         if (cc == drag_conf) and (rc == rnd_code) and (pc == ps_code):
                                             break
                                         if self.canvas.itemcget(
-                                            self.ps_codes[cc][rc][pc]["tag_image"],
-                                            "image"
+                                                self.ps_codes[cc][rc][pc]["tag_image"],
+                                                "image"
                                         ) != drag_img:
                                             print(f"\tA BLANK {cc=}, {rc=}, {pc=}\n")
                                             self.canvas.itemconfigure(
@@ -3022,7 +2850,8 @@ class PlayoffChooser(tkinter.Tk):
                                             # #     paths_ = paths_[15:]
                                             #
                                             c_team = self.res_pyimage_to_t.get(
-                                                self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'], 'image'), "no_child")
+                                                self.canvas.itemcget(self.ps_codes[c_cc][c_rc][c_pc]['tag_image'],
+                                                                     'image'), "no_child")
                                             # print(f"{c_cc=}, {c_rc=}, {c_pc=}, t='{c_team}'")
                                             # print(f"B paths_=")
                                             # for p in paths_:
@@ -3048,9 +2877,12 @@ class PlayoffChooser(tkinter.Tk):
                                                 i = 0
                                                 found_parent = False
                                                 for p_cc, p_rc, p_pc in parents:
-                                                    p_team = self.res_pyimage_to_t.get(self.canvas.itemcget(self.ps_codes[p_cc][p_rc][p_pc]['tag_image'], 'image'), 'no_parent')
+                                                    p_team = self.res_pyimage_to_t.get(self.canvas.itemcget(
+                                                        self.ps_codes[p_cc][p_rc][p_pc]['tag_image'], 'image'),
+                                                                                       'no_parent')
                                                     print(f"{p_cc=}, {p_rc=}, {p_pc=}, t='{p_team}', {i=}, {lp=}")
-                                                    if (p_cc != path[-2][0]) or (p_rc != path[-2][1]) or (p_pc != path[-2][2]):
+                                                    if (p_cc != path[-2][0]) or (p_rc != path[-2][1]) or (
+                                                            p_pc != path[-2][2]):
                                                         par_vis = self.canvas.itemcget(
                                                             self.ps_codes[p_cc][p_rc][p_pc]["tag_image"],
                                                             "state"
@@ -3344,7 +3176,9 @@ class PlayoffChooser(tkinter.Tk):
     def motion_ps(self, event, conf_code, rnd_code, ps_code):
         self.dragging.set(True)
         if self.canvas.itemcget(self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"], "state") == "normal":
-            self.drag_team.set(self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"], "image")])
+            self.drag_team.set(self.res_pyimage_to_t[
+                                   self.canvas.itemcget(self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"],
+                                                        "image")])
         self.motion(event)
 
     def click_ps(self, event, conf_code, rnd_code, ps_code):
@@ -3387,7 +3221,6 @@ class PlayoffChooser(tkinter.Tk):
         self.canvas.coords(self.drag_rect, e_x, e_y)
         self.drag_team.set(team_name)
         self.dragging.set(True)
-
 
     # def motion_rect(self, event, rect):
     #     print(f"motion {rect=}, {event=}")
@@ -3432,7 +3265,6 @@ class PlayoffChooser(tkinter.Tk):
 
 
 if __name__ == '__main__':
-
     # df = pd.read_excel(r"D:\NHL Standings 2024-03-22.xlsx")
     df = pd.read_excel(r"NHL Standings 2024-03-22.xlsx")
     df_sub = df[["Team", "PTS"]].copy()
@@ -3444,7 +3276,6 @@ if __name__ == '__main__':
 
     app = PlayoffChooser(standings_20240322)
     app.mainloop()
-
 
     # n_questions = 32
     # n_questions = 50
