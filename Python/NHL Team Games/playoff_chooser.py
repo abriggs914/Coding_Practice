@@ -12,8 +12,9 @@ from random import shuffle, sample
 from tkinter import ttk, messagebox
 
 from colour_utility import gradient, Colour
-from tkinter_utility import calc_geometry_tl, button_factory, entry_factory, checkbox_factory, combo_factory
-from utility import clamp, weighted_choice
+from tkinter_utility import calc_geometry_tl, button_factory, entry_factory, checkbox_factory, combo_factory, \
+    label_factory
+from utility import clamp, weighted_choice, flatten
 
 # def click(t1, t2):
 #     default = {
@@ -2214,10 +2215,58 @@ class PlayoffChooser(tkinter.Tk):
         self.canvas.bind("<MouseWheel>", self.scroll)
         self.tv_cb_history.trace_variable("w", self.select_cb_history)
 
+        self.frame_test_gc_gp = tkinter.Frame(self)
+        self.tv_tgg_lbl_conf, self.tgg_lbl_conf = label_factory(self.frame_test_gc_gp, "-")
+        self.tv_tgg_lbl_rnd, self.tgg_lbl_rnd = label_factory(self.frame_test_gc_gp, "-")
+        self.tv_tgg_lbl_pc, self.tgg_lbl_pc = label_factory(self.frame_test_gc_gp, "-")
+        self.tv_test_gc_gp, self.test_gc_gp = button_factory(
+            self.frame_test_gc_gp,
+            "Test GC GP",
+            command=self.test_gc_gp
+        )
+        # self.tgg_lbl_conf.bind("<Button-1>", lambda event: self.tv_tgg_lbl_conf.set(random.choice(list(self.ps_codes.keys()))))
+        # self.tgg_lbl_rnd.bind("<Button-1>", lambda event: self.tv_tgg_lbl_rnd.set(random.choice(list(self.ps_codes[self.tv_tgg_lbl_conf.get()].keys()))))
+        # self.tgg_lbl_pc.bind("<Button-1>", lambda event: self.tv_tgg_lbl_pc.set(random.choice(list(flatten([[[ps for ps, ps_data in rnd_data.items()] for rnd_data in conf_data[self.tv_tgg_lbl_rnd.get()]] for conf_data in self.ps_codes[self.tv_tgg_lbl_conf.get()]]).keys()))))
+        self.tgg_lbl_conf.bind("<Button-1>", self.random_conf)
+        self.tgg_lbl_rnd.bind("<Button-1>", self.random_rnd)
+        self.tgg_lbl_pc.bind("<Button-1>", self.random_pc)
+        self.frame_test_gc_gp.grid()
+        self.tgg_lbl_conf.grid(row=0, column=0)
+        self.tgg_lbl_rnd.grid(row=0, column=1)
+        self.tgg_lbl_pc.grid(row=0, column=2)
+        self.test_gc_gp.grid(row=0, column=3)
+
         # for img in self.west_images:
         #     self.canvas.itemconfigure(img, state="hidden")
 
         # self.lb = Lock(self.canvas, 750, 175)
+
+    def random_conf(self, event):
+        confs = [c for c in self.ps_codes.keys() if c]
+        self.tv_tgg_lbl_conf.set(random.choice(confs))
+
+    def random_rnd(self, event):
+        conf = self.tv_tgg_lbl_conf.get()
+        # print(f"{conf=}")
+        if conf != "-":
+            rnds = [rnd for rnd in self.ps_codes[conf].keys() if rnd]
+            # print(f"{rnds=}")
+            self.tv_tgg_lbl_rnd.set(random.choice(rnds))
+
+    def random_pc(self, event):
+        conf = self.tv_tgg_lbl_conf.get()
+        rnd = int(self.tv_tgg_lbl_rnd.get())
+        # print(f"{conf=}, {rnd=}")
+        if conf != "-" and rnd != "-":
+            self.tv_tgg_lbl_pc.set(random.choice(list(self.ps_codes[conf][rnd].keys())))
+
+    def test_gc_gp(self):
+        conf = self.tv_tgg_lbl_conf.get()
+        rnd = int(self.tv_tgg_lbl_rnd.get())
+        pc = self.tv_tgg_lbl_pc.get()
+        print(f"{conf=}, {rnd=}, {pc=}")
+        print(f"{self.get_parents(conf, rnd, pc)=}")
+        print(f"{self.get_children(conf, rnd, pc)=}")
 
     def select_cb_history(self, *args):
         h_key = self.tv_cb_history.get()
