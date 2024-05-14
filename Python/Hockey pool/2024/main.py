@@ -18,7 +18,7 @@ out_round_1 = [
     "NYI",
     "WAS",
     "TOR",
-    "LAK",
+    "LA",
     "WPG",
     "VGK",
     "NSH"
@@ -29,6 +29,11 @@ out_round_2 = [
     "NYR",
     "VAN",
     "COL"
+]
+
+out_round_3 = [
+    "CAR",
+    "EDM"
 ]
 
 
@@ -63,6 +68,7 @@ if __name__ == '__main__':
     percentage_alike_r1 = {}
     percentage_alike_r2 = {}
     percentage_alike_r3 = {}
+    percentage_alike_r4 = {}
     player_data = {}
     team_data = {}
     box_choices = {}
@@ -74,6 +80,7 @@ if __name__ == '__main__':
         percentage_alike_r1[person_a] = {}
         percentage_alike_r2[person_a] = {}
         percentage_alike_r3[person_a] = {}
+        percentage_alike_r4[person_a] = {}
 
         print(f"{person_a=}")
         for person_b in list_pool_people:
@@ -86,6 +93,8 @@ if __name__ == '__main__':
                 cnt_alike_r2 = 0
                 n_picks_r3 = 0
                 cnt_alike_r3 = 0
+                n_picks_r4 = 0
+                cnt_alike_r4 = 0
                 for i in range(n_picks):
                     pick_a = df_picks_a.iloc[i].replace("è", "e").replace("Van Ri", "van Ri").replace(" Rangers", "(NYR)").replace(" Islanders", "(NYI)")
                     pick_b = df_picks_b.iloc[i].replace("è", "e").replace("Van Ri", "van Ri").replace(" Rangers", "(NYR)").replace(" Islanders", "(NYI)")
@@ -105,9 +114,12 @@ if __name__ == '__main__':
                     pick_a_in_r2 = player_2_team[pa] not in out_round_1
                     pick_b_in_r2 = player_2_team[pb] not in out_round_1
                     picks_in_r2 = pick_a_in_r2 and pick_b_in_r2
-                    pick_a_in_r3 = player_2_team[pa] not in out_round_2
-                    pick_b_in_r3 = player_2_team[pb] not in out_round_2
+                    pick_a_in_r3 = (player_2_team[pa] not in out_round_1) and (player_2_team[pa] not in out_round_2)
+                    pick_b_in_r3 = (player_2_team[pb] not in out_round_1) and (player_2_team[pb] not in out_round_2)
                     picks_in_r3 = pick_a_in_r3 and pick_b_in_r3
+                    pick_a_in_r4 = (player_2_team[pa] not in out_round_1) and (player_2_team[pa] not in out_round_2) and (player_2_team[pa] not in out_round_3)
+                    pick_b_in_r4 = (player_2_team[pb] not in out_round_1) and (player_2_team[pb] not in out_round_2) and (player_2_team[pb] not in out_round_3)
+                    picks_in_r4 = pick_a_in_r4 and pick_b_in_r4
                     same = pick_a == pick_b
 
                     # if "(team)" in pick_a.lower():
@@ -121,6 +133,8 @@ if __name__ == '__main__':
                         n_picks_r2 += 1
                         if picks_in_r3:
                             n_picks_r3 += 1
+                            if picks_in_r4:
+                                n_picks_r4 += 1
 
                     if same:
                         cnt_alike += 1
@@ -128,6 +142,8 @@ if __name__ == '__main__':
                             cnt_alike_r2 += 1
                             if picks_in_r3:
                                 cnt_alike_r3 += 1
+                                if picks_in_r4:
+                                    cnt_alike_r4 += 1
 
                     if box_type_a != "team":
                         if pick_a not in player_data:
@@ -171,8 +187,14 @@ if __name__ == '__main__':
                 pct_alike_r3 = (cnt_alike_r3 / n_picks_r3) if (n_picks_r3 != 0) else 0
                 # percentage_alike_r2[person_a][person_b] = pct_alike_r2
                 percentage_alike_r3[person_a][person_b] = (cnt_alike_r3, n_picks_r3) if (n_picks_r3 != 0) else (0, 0)
+
+                pct_alike_r4 = (cnt_alike_r4 / n_picks_r4) if (n_picks_r4 != 0) else 0
+                # percentage_alike_r2[person_a][person_b] = pct_alike_r2
+                percentage_alike_r4[person_a][person_b] = (cnt_alike_r4, n_picks_r4) if (n_picks_r4 != 0) else (0, 0)
                 print(f"\t{person_a=}, {person_b=}, {percentage_alike_r1[person_a][person_b]=}")
                 print(f"\t{person_a=}, {person_b=}, {percentage_alike_r2[person_a][person_b]=}")
+                print(f"\t{person_a=}, {person_b=}, {percentage_alike_r3[person_a][person_b]=}")
+                print(f"\t{person_a=}, {person_b=}, {percentage_alike_r4[person_a][person_b]=}")
 
     for box_n, box_data in box_choices.items():
         for pick in box_data["choices"]:
@@ -181,6 +203,7 @@ if __name__ == '__main__':
     print(f"{percentage_alike_r1=}")
     print(f"{percentage_alike_r2=}")
     print(f"{percentage_alike_r3=}")
+    print(f"{percentage_alike_r4=}")
     print(f"{player_data=}")
     print(f"{team_data=}")
 
@@ -239,6 +262,7 @@ if __name__ == '__main__':
     pct_alike_matrix_r1 = set()
     pct_alike_matrix_r2 = set()
     pct_alike_matrix_r3 = set()
+    pct_alike_matrix_r4 = set()
     for person_a, data_a in percentage_alike_r1.items():
         print(f"{person_a=}")
         sort_pct_choices = sorted(
@@ -272,6 +296,17 @@ if __name__ == '__main__':
             print(f"\t{percent(p_a).ljust(8)} | {person_b}")
             pct_alike_matrix_r3.add((min(person_a, person_b), max(person_a, person_b), p_alike))
 
+    for person_a, data_a in percentage_alike_r4.items():
+        print(f"{person_a=}")
+        sort_pct_choices = sorted(
+            [(name, p_alike) for name, p_alike in data_a.items()],
+            key=lambda tup: (-((tup[1][0] / tup[1][1]) if tup[1][1] != 0 else 0), tup[0])
+        )
+        for person_b, p_alike in sort_pct_choices:
+            p_a = (p_alike[0] / p_alike[1]) if p_alike[1] != 0 else 0
+            print(f"\t{percent(p_a).ljust(8)} | {person_b}")
+            pct_alike_matrix_r4.add((min(person_a, person_b), max(person_a, person_b), p_alike))
+
     print(f"\n\n")
     for person_a, person_b, p_alike in sorted(
         [(a, b, p) for a, b, p in pct_alike_matrix_r1],
@@ -301,13 +336,29 @@ if __name__ == '__main__':
     #  End Round 2
     ################################################################################
 
-    players_left_r3 = [name for name, team in player_2_team.items() if team not in out_round_2]
+    players_left_r3 = [name for name, team in player_2_team.items() if ((team not in out_round_1) and (team not in out_round_2))]
     print(f"{players_left_r3=}")
 
     print(f"\n\n")
     for person_a, person_b, p_alike in sorted(
         [(a, b, p) for a, b, p in pct_alike_matrix_r3],
         key=lambda tup: (tup[2][0] / tup[2][1]) if tup[2][1] != 0 else 0,
+        reverse=True
+    ):
+        p_a = (p_alike[0] / p_alike[1]) if p_alike[1] != 0 else 0
+        print(f"{percent(p_a).ljust(8)} | {person_a.rjust(12)} | {person_b.ljust(12)} | {p_alike=}")
+
+    ################################################################################
+    #  End Round 3
+    ################################################################################
+
+    players_left_r4 = [name for name, team in player_2_team.items() if ((team not in out_round_1) and (team not in out_round_2) and (team not in out_round_3))]
+    print(f"{players_left_r4=}")
+
+    print(f"\n\n")
+    for person_a, person_b, p_alike in sorted(
+        [(a, b, p) for a, b, p in pct_alike_matrix_r4],
+        key=lambda tup: (tup[2][0] / tup[2][1], tup[2][0]) if tup[2][1] != 0 else (0, 0),
         reverse=True
     ):
         p_a = (p_alike[0] / p_alike[1]) if p_alike[1] != 0 else 0
