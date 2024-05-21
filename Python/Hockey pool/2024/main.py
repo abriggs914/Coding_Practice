@@ -26,13 +26,13 @@ out_round_1 = [
 
 out_round_2 = [
     "BOS",
-    "NYR",
+    "CAR",
     "VAN",
     "COL"
 ]
 
 out_round_3 = [
-    "CAR",
+    "NYR",
     "EDM"
 ]
 
