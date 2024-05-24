@@ -7,8 +7,8 @@ from utility import minmax, clamp, choice, dict_print
 
 """
 	General datetime Utility Functions
-	Version..............1.13
-	Date...........2024-01-11
+	Version..............1.14
+	Date...........2024-05-22
 	Author.......Avery Briggs
 """
 
@@ -28,6 +28,7 @@ def add_business_days(d, bd, holidays=None):
     i = 0
     t = datetime.datetime(d.year, d.month, d.day)
     # print("holidays: " + str(holidays))
+    bd = max(i, bd)
     while i < bd:
         t = t + datetime.timedelta(days=1)
         # print("t: " + str(t) + ", (t not in holidays): " + str(t not in holidays))
@@ -492,6 +493,11 @@ def is_leap_year(date_in: datetime.datetime):
     #     ((y % 400) == 0)
     # ])
     return calendar.isleap(date_in.year)
+
+
+def date_to_datetime(date: datetime.date) -> datetime.datetime:
+    # print(f"CONVERT {date=}")
+    return datetime.datetime(int(date.year), int(date.month), int(date.day))
 
 
 if __name__ == '__main__':
