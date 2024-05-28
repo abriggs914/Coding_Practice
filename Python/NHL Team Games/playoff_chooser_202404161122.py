@@ -3223,7 +3223,7 @@ class PlayoffChooser(tkinter.Tk):
         self.dragging.set(True)
 
     # def motion_rect(self, event, rect):
-    #     print(f"motion {rect=}, {event=}")
+    #     print(f"b1_motion {rect=}, {event=}")
     #     ex, ey = event.x, event.y
     #     ex -= (self.w_ps / 2)
     #     ey -= (self.h_ps / 2)

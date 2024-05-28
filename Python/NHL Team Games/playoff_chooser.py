@@ -1,8 +1,11 @@
 import json
+import math
 import os
 import random
 import tkinter
 from typing import Literal
+
+import utility
 from json_utility import jsonify
 
 import pandas as pd
@@ -221,7 +224,9 @@ fg_empty_east = "#000000"
 font_empty_east = ("Arial", 14)
 bg_line_west = "#000000"
 bg_opt_ps_west = "#328944"
+bg_active_line_west = Colour(bg_line_west).brightened(0.8).hex_code
 bg_line_east = "#000000"
+bg_active_line_east = Colour(bg_line_east).brightened(0.8).hex_code
 bg_opt_ps_east = "#328944"
 bg_btn_sb = "#C7C7C7"
 bg_entry_sb = "#E7E7E7"
@@ -402,7 +407,7 @@ east_teams = [t for t, c in full_team_to_conf.items() if c == "e"]
 
 class SpinBox:
 
-    def __init__(self, canvas, conf, x, y, h, w=30, orientation: Literal["horizontal", "vertical"] = "vertical"):
+    def __init__(self, canvas, conf, x, y, h, w=50, orientation: Literal["horizontal", "vertical"] = "vertical"):
 
         self.canvas: tkinter.Canvas = canvas
         self.conf = conf
@@ -427,7 +432,8 @@ class SpinBox:
             "background": bg_entry_sb,
             "state": "disabled",
             "width": self.w,
-            "justify": tkinter.CENTER
+            "justify": tkinter.CENTER,
+            "font": ("Arial", 14, "bold")
         }
 
         t_w = self.w / 3
@@ -864,8 +870,10 @@ class PlayoffChooser(tkinter.Tk):
         self.fg_empty_east = fg_empty_east
         self.font_empty_east = font_empty_east
         self.bg_line_west = bg_line_west
+        self.bg_line_active_west = bg_active_line_west
         self.bg_opt_ps_west = bg_opt_ps_west
         self.bg_line_east = bg_line_east
+        self.bg_line_active_east = bg_active_line_east
         self.bg_opt_ps_east = bg_opt_ps_east
         self.w_line = 2
         self.bw_ps_west = 2
@@ -1824,15 +1832,145 @@ class PlayoffChooser(tkinter.Tk):
             self.y_ps_sc + (self.h_ps / 2)
         )
 
+        self.line_fins = {}
+
         ######################################################################################
 
         for k, line in self.lines.items():
+            conf = k[0][0]
+            bbox = self.canvas.bbox(line)
             self.canvas.itemconfigure(
                 line,
-                fill=self.bg_line_west,
-                width=self.w_line
+                fill=self.bg_line_east if (conf == "east") else self.bg_line_west,
+                width=self.w_line,
+                activefill=self.bg_line_active_east if (conf == "east") else self.bg_line_active_west,
             )
             self.canvas.tag_lower(line)
+
+            conf1, rnd1, ps_code1 = k[0]
+            conf2, rnd2, ps_code2 = k[1]
+            ps_box1 = self.ps_codes[conf1][rnd1][ps_code1]["tag_rect"]
+            ps_box2 = self.ps_codes[conf2][rnd2][ps_code2]["tag_rect"]
+            bbox_ps1 = self.canvas.bbox(ps_box1)
+            bbox_ps2 = self.canvas.bbox(ps_box2)
+            w_ps1, h_ps1 = bbox_ps1[2] - bbox_ps1[0], bbox_ps1[3] - bbox_ps1[1]
+            w_ps2, h_ps2 = bbox_ps2[2] - bbox_ps2[0], bbox_ps2[3] - bbox_ps2[1]
+            mid_x_ps1, mid_y_ps1 = bbox_ps1[0] + (w_ps1 / 2), bbox_ps1[1] + (h_ps1 / 2)
+            mid_x_ps2, mid_y_ps2 = bbox_ps2[0] + (w_ps2 / 2), bbox_ps2[1] + (h_ps2 / 2)
+
+            x0, y0, x1, y1 = bbox
+
+            # Calculate the midpoint of the diagonal
+            mid_x = (x0 + x1) / 2
+            mid_y = (y0 + y1) / 2
+
+            # Calculate the direction vector of the diagonal
+            if conf1 == "east":
+                xx2 = mid_x - 5
+                if mid_y_ps1 >= mid_y_ps2:
+                    # bottom-left -> top-right
+                    dx = x1 - x0
+                    dy = y1 - y0
+                    # slope = (y0 - y1) / (x1 - x0)
+                    slope = (y1 - y0) / (x1 - x0)
+                else:
+                    # top-left -> bottom-right
+                    dx = x1 - x0
+                    dy = y0 - y1
+                    slope = (y0 - y1) / (x1 - x0)
+                    # slope = (y1 - y0) / (x1 - x0)
+            else:
+                xx2 = mid_x + 5
+                if mid_y_ps1 <= mid_y_ps2:
+                    # top-left -> bottom-right
+                    dx = x1 - x0
+                    dy = y1 - y0
+                    slope = (y1 - y0) / (x1 - x0)
+                    # slope = (y1 - y0) / (x1 - x0)
+                else:
+                    # bottom-left -> top-right
+                    dx = x1 - x0
+                    dy = y0 - y1
+                    slope = (y0 - y1) / (x1 - x0)
+                    # slope = (y1 - y0) / (x1 - x0)
+
+            b = mid_y - (slope * mid_x)
+            yy2 = (slope * xx2) + b
+
+            # ww, hh = 6, 6
+            # self.canvas.create_oval(
+            #     xx2 - ww,
+            #     yy2 - hh,
+            #     xx2 + ww,
+            #     yy2 + hh,
+            #     fill="#2331D2"
+            # )
+
+            # Normalize the direction vector
+            length = math.sqrt(dx ** 2 + dy ** 2)
+            dx /= length
+            dy /= length
+
+            fin_length = length * (1 / 6)
+
+            # Calculate the 45-degree unit vectors relative to the diagonal
+            if conf1 == "east":
+                # angle1 = math.radians(90)
+                # angle2 = -math.radians(180)
+                angle1 = math.radians(45)
+                angle2 = -math.radians(45)
+            else:
+                angle1 = math.radians(135)
+                angle2 = -math.radians(135)
+            # if mid_y_ps1 <= mid_y_ps2:
+            #     # top-left to bottom-right
+            #     angle1 = math.radians(135)
+            #     angle2 = -math.radians(135)
+            # else:
+            #     angle1 = math.radians(90)
+            #     angle2 = -math.radians(135)
+
+            # Calculate the fin endpoints
+            fin_dx1 = fin_length * (dx * math.cos(angle1) - dy * math.sin(angle1))
+            fin_dy1 = fin_length * (dx * math.sin(angle1) + dy * math.cos(angle1))
+
+            fin_dx2 = fin_length * (dx * math.cos(angle2) - dy * math.sin(angle2))
+            fin_dy2 = fin_length * (dx * math.sin(angle2) + dy * math.cos(angle2))
+
+            ep_1 = (mid_x + fin_dx1, mid_y + fin_dy1)
+            ep_2 = (mid_x + fin_dx2, mid_y + fin_dy2)
+
+            # w = bbox[2] - bbox[0]
+            # h = bbox[3] - bbox[1]
+            # l_line = utility.distance(bbox[:2], bbox[2:])
+            # a_line = math.tan(math.radians(w / h))
+            # mx, my = bbox[0] + (w / 2), bbox[1] + (h / 2)
+            # ang = 45
+            # a_rot = a_line - ang
+            # l_fin = l_line * 0.6
+            # ep_1 = mx, my - l_fin
+            # ep_1 = utility.rotate_point(mx, my, *ep_1, a_rot)
+            mx, my = mid_x, mid_y
+            # bbox_1 = (mx, my, *ep_1)
+            # bbox_2 = (mx, my, *ep_2)
+            bbox_1 = (xx2, yy2, *ep_1)
+            bbox_2 = (xx2, yy2, *ep_2)
+            # print(f"k={''.join(map(str, k)).ljust(36)}, {w=:.2f}, {h=:.2f}, {a_line=:.2f}, {l_line=:.2f}, {a_rot=:.2f}, {mx=}, {my=}, {ep_1=}")
+            self.line_fins[k] = (
+                self.canvas.create_line(
+                    bbox_1,
+                    fill=self.bg_line_east if (conf == "east") else self.bg_line_west,
+                    width=self.w_line + 1,
+                    activefill=self.bg_line_active_east if (conf == "east") else self.bg_line_active_west,
+                ),
+                self.canvas.create_line(
+                    bbox_2,
+                    fill=self.bg_line_east if (conf == "east") else self.bg_line_west,
+                    width=self.w_line + 1,
+                    activefill=self.bg_line_active_east if (conf == "east") else self.bg_line_active_west,
+                )
+            )
+            # self.canvas.tag_bind(self.line_fins[k][0], "<Motion>", )
 
         # self.rect_ps_w_wc_b = self.canvas.create_rectangle(
         #     self.x_ps_w_r1,
@@ -2211,7 +2349,8 @@ class PlayoffChooser(tkinter.Tk):
 
         self.canvas.bind("<ButtonRelease-1>", self.release_click)
         self.canvas.bind("<ButtonRelease-3>", self.r_click_get_parents)
-        self.canvas.bind("<B1-Motion>", self.motion)
+        self.canvas.bind("<B1-Motion>", self.b1_motion)
+        self.canvas.bind("<Motion>", self.motion)
         self.canvas.bind("<MouseWheel>", self.scroll)
         self.tv_cb_history.trace_variable("w", self.select_cb_history)
 
@@ -2659,6 +2798,69 @@ class PlayoffChooser(tkinter.Tk):
                             sb.scroll(event)
 
     def motion(self, event):
+        ex, ey = event.x, event.y
+        point = ex, ey
+        found_line = False
+        for k, line in self.lines.items():
+            conf = k[0][0]
+            bbox = self.canvas.bbox(line)
+            fill = self.canvas.itemcget(line, "fill")
+            if (not found_line) and self.collide_bbox_point(bbox, point):
+                self.canvas.itemconfigure(
+                    line,
+                    fill=bg_active_line_east if conf == "east" else bg_active_line_west
+                )
+                found_line = True
+                for fin in self.line_fins[k]:
+                    self.canvas.itemconfigure(
+                        fin,
+                        fill=bg_active_line_east if conf == "east" else bg_active_line_west
+                    )
+
+            else:
+                if fill in (bg_active_line_east, bg_active_line_west):
+                    self.canvas.itemconfigure(
+                        line,
+                        fill=bg_line_east if conf == "east" else bg_line_west
+                    )
+                    for fin in self.line_fins[k]:
+                        self.canvas.itemconfigure(
+                            fin,
+                            fill=bg_line_east if conf == "east" else bg_line_west
+                        )
+        if not found_line:
+            for k, fin_list in self.line_fins.items():
+                conf = k[0][0]
+                for i, fin in enumerate(fin_list):
+                    bbox = self.canvas.bbox(fin)
+                    fill = self.canvas.itemcget(fin, "fill")
+                    line = self.lines[k]
+                    if self.collide_bbox_point(bbox, point):
+                        self.canvas.itemconfigure(
+                            fin,
+                            fill=bg_active_line_east if conf == "east" else bg_active_line_west
+                        )
+                        mate_fin = self.line_fins[k][0] if (i == 1) else self.line_fins[k][0]
+                        self.canvas.itemconfigure(
+                            mate_fin,
+                            fill=bg_active_line_east if conf == "east" else bg_active_line_west
+                        )
+                        self.canvas.itemconfigure(
+                            line,
+                            fill=bg_active_line_east if conf == "east" else bg_active_line_west
+                        )
+                    else:
+                        self.canvas.itemconfigure(
+                            fin,
+                            fill=bg_line_east if conf == "east" else bg_line_west
+                        )
+                        self.canvas.itemconfigure(
+                            line,
+                            fill=bg_line_east if conf == "east" else bg_line_west
+                        )
+
+
+    def b1_motion(self, event):
         self.canvas.tag_raise(self.drag_rect)
         if self.dragging.get():
             e_x, e_y = event.x, event.y
@@ -2803,6 +3005,14 @@ class PlayoffChooser(tkinter.Tk):
         point = (e_x, e_y)
         is_dragging = self.dragging.get()
         do_ps_check = True
+
+        for k, line in self.lines.items():
+            bbox = self.canvas.bbox(line)
+            if self.collide_bbox_point(bbox, point):
+                # clicked a line
+                print(f"{k=}")
+                return
+
         for conf, conf_data in self.ps_codes.items():
 
             for rnd, rnd_lock in enumerate(self.round_locks[conf]):
@@ -3394,7 +3604,7 @@ class PlayoffChooser(tkinter.Tk):
         self.dragging.set(True)
         if self.canvas.itemcget(self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"], "state") == "normal":
             self.drag_team.set(self.res_pyimage_to_t[self.canvas.itemcget(self.ps_codes[conf_code][rnd_code][ps_code]["tag_image"], "image")])
-        self.motion(event)
+        self.b1_motion(event)
 
     def click_ps(self, event, conf_code, rnd_code, ps_code):
         print(f"click_ps {conf_code=}, {rnd_code=}, {ps_code=}")
@@ -3439,7 +3649,7 @@ class PlayoffChooser(tkinter.Tk):
 
 
     # def motion_rect(self, event, rect):
-    #     print(f"motion {rect=}, {event=}")
+    #     print(f"b1_motion {rect=}, {event=}")
     #     ex, ey = event.x, event.y
     #     ex -= (self.w_ps / 2)
     #     ey -= (self.h_ps / 2)
