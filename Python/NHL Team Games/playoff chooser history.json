@@ -486,7 +486,9 @@
                     "tag_image": 6,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "P1": {
                     "x0": 275,
@@ -500,7 +502,9 @@
                     "tag_image": 13,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "P2": {
                     "x0": 275,
@@ -514,7 +518,9 @@
                     "tag_image": 20,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "P3": {
                     "x0": 275,
@@ -528,7 +534,9 @@
                     "tag_image": 27,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": true}
+                    "lock": {
+                        "state": true
+                    }
                 },
                 "C3": {
                     "x0": 275,
@@ -542,7 +550,9 @@
                     "tag_image": 34,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "C2": {
                     "x0": 275,
@@ -556,7 +566,9 @@
                     "tag_image": 41,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "C1": {
                     "x0": 275,
@@ -570,7 +582,9 @@
                     "tag_image": 48,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "WC_b": {
                     "x0": 275,
@@ -584,7 +598,9 @@
                     "tag_image": 55,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 }
             },
             "1": {
@@ -599,8 +615,13 @@
                     "tag_text": 61,
                     "tag_image": 62,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 6},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 6
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "P2": {
                     "x0": 420,
@@ -613,8 +634,13 @@
                     "tag_text": 74,
                     "tag_image": 75,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 7},
-                    "lock": {"state": true}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 7
+                    },
+                    "lock": {
+                        "state": true
+                    }
                 },
                 "C2": {
                     "x0": 420,
@@ -627,8 +653,13 @@
                     "tag_text": 87,
                     "tag_image": 88,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 6},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 6
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "C1": {
                     "x0": 420,
@@ -641,8 +672,13 @@
                     "tag_text": 100,
                     "tag_image": 101,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 5},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 5
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 }
             },
             "2": {
@@ -657,8 +693,13 @@
                     "tag_text": 113,
                     "tag_image": 114,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 6},
-                    "lock": {"state": true}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 6
+                    },
+                    "lock": {
+                        "state": true
+                    }
                 },
                 "C": {
                     "x0": 565,
@@ -671,8 +712,13 @@
                     "tag_text": 126,
                     "tag_image": 127,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 7},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 7
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 }
             },
             "3": {
@@ -687,8 +733,13 @@
                     "tag_text": 139,
                     "tag_image": 140,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 5},
-                    "lock": {"state": true}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 5
+                    },
+                    "lock": {
+                        "state": true
+                    }
                 }
             },
             "4": {
@@ -703,8 +754,13 @@
                     "tag_text": 152,
                     "tag_image": 153,
                     "is_wc": null,
-                    "sb": {"orientation": "horizontal", "num": 7},
-                    "lock": {"state": true}
+                    "sb": {
+                        "orientation": "horizontal",
+                        "num": 7
+                    },
+                    "lock": {
+                        "state": true
+                    }
                 }
             }
         },
@@ -722,7 +778,9 @@
                     "tag_image": 166,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "A1": {
                     "x0": 1435,
@@ -736,7 +794,9 @@
                     "tag_image": 173,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "A2": {
                     "x0": 1435,
@@ -750,7 +810,9 @@
                     "tag_image": 180,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "A3": {
                     "x0": 1435,
@@ -764,7 +826,9 @@
                     "tag_image": 187,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "M3": {
                     "x0": 1435,
@@ -778,7 +842,9 @@
                     "tag_image": 194,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "M2": {
                     "x0": 1435,
@@ -792,7 +858,9 @@
                     "tag_image": 201,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "M1": {
                     "x0": 1435,
@@ -806,7 +874,9 @@
                     "tag_image": 208,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "WC_b": {
                     "x0": 1435,
@@ -820,7 +890,9 @@
                     "tag_image": 215,
                     "is_wc": null,
                     "sb": null,
-                    "lock": {"state": false}
+                    "lock": {
+                        "state": false
+                    }
                 }
             },
             "1": {
@@ -835,8 +907,13 @@
                     "tag_text": 221,
                     "tag_image": 222,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 4},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 4
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "A2": {
                     "x0": 1290,
@@ -849,8 +926,13 @@
                     "tag_text": 234,
                     "tag_image": 235,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 4},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 4
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "M2": {
                     "x0": 1290,
@@ -863,8 +945,13 @@
                     "tag_text": 247,
                     "tag_image": 248,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 5},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 5
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "M1": {
                     "x0": 1290,
@@ -877,8 +964,13 @@
                     "tag_text": 260,
                     "tag_image": 261,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 6},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 6
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 }
             },
             "2": {
@@ -893,8 +985,13 @@
                     "tag_text": 273,
                     "tag_image": 274,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 4},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 4
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 },
                 "M": {
                     "x0": 1145,
@@ -907,8 +1004,13 @@
                     "tag_text": 286,
                     "tag_image": 287,
                     "is_wc": null,
-                    "sb": {"orientation": "vertical", "num": 6},
-                    "lock": {"state": false}
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 6
+                    },
+                    "lock": {
+                        "state": false
+                    }
                 }
             },
             "3": {
@@ -922,6 +1024,469 @@
                     "tag_rect": 298,
                     "tag_text": 299,
                     "tag_image": 300,
+                    "is_wc": null,
+                    "sb": {
+                        "orientation": "vertical",
+                        "num": 7
+                    },
+                    "lock": {
+                        "state": false
+                    }
+                }
+            }
+        }
+    },
+    "Nashville Wins 2024-05-30": {
+        "west": {
+            "0": {
+                "WC_t": {
+                    "x0": 275,
+                    "y0": 130.0,
+                    "x1": 350,
+                    "y1": 205.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 33,
+                    "tag_text": 34,
+                    "tag_image": 35,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "P1": {
+                    "x0": 275,
+                    "y0": 215.0,
+                    "x1": 350,
+                    "y1": 290.0,
+                    "image": null,
+                    "text": "P1",
+                    "tag_rect": 40,
+                    "tag_text": 41,
+                    "tag_image": 42,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "P2": {
+                    "x0": 275,
+                    "y0": 300.0,
+                    "x1": 350,
+                    "y1": 375.0,
+                    "image": null,
+                    "text": "P2",
+                    "tag_rect": 47,
+                    "tag_text": 48,
+                    "tag_image": 49,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "P3": {
+                    "x0": 275,
+                    "y0": 385.0,
+                    "x1": 350,
+                    "y1": 460.0,
+                    "image": null,
+                    "text": "P3",
+                    "tag_rect": 54,
+                    "tag_text": 55,
+                    "tag_image": 56,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "C3": {
+                    "x0": 275,
+                    "y0": 470.0,
+                    "x1": 350,
+                    "y1": 545.0,
+                    "image": null,
+                    "text": "C3",
+                    "tag_rect": 61,
+                    "tag_text": 62,
+                    "tag_image": 63,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "C2": {
+                    "x0": 275,
+                    "y0": 555.0,
+                    "x1": 350,
+                    "y1": 630.0,
+                    "image": null,
+                    "text": "C2",
+                    "tag_rect": 68,
+                    "tag_text": 69,
+                    "tag_image": 70,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "C1": {
+                    "x0": 275,
+                    "y0": 640.0,
+                    "x1": 350,
+                    "y1": 715.0,
+                    "image": null,
+                    "text": "C1",
+                    "tag_rect": 75,
+                    "tag_text": 76,
+                    "tag_image": 77,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "WC_b": {
+                    "x0": 275,
+                    "y0": 725.0,
+                    "x1": 350,
+                    "y1": 800.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 82,
+                    "tag_text": 83,
+                    "tag_image": 84,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                }
+            },
+            "1": {
+                "P1": {
+                    "x0": 420,
+                    "y0": 172.5,
+                    "x1": 495,
+                    "y1": 247.5,
+                    "image": null,
+                    "text": "P1",
+                    "tag_rect": 89,
+                    "tag_text": 90,
+                    "tag_image": 91,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 4},
+                    "lock": {"state": false}
+                },
+                "P2": {
+                    "x0": 420,
+                    "y0": 342.5,
+                    "x1": 495,
+                    "y1": 417.5,
+                    "image": null,
+                    "text": "P2",
+                    "tag_rect": 102,
+                    "tag_text": 103,
+                    "tag_image": 104,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 7},
+                    "lock": {"state": false}
+                },
+                "C2": {
+                    "x0": 420,
+                    "y0": 512.5,
+                    "x1": 495,
+                    "y1": 587.5,
+                    "image": null,
+                    "text": "C2",
+                    "tag_rect": 115,
+                    "tag_text": 116,
+                    "tag_image": 117,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 4},
+                    "lock": {"state": false}
+                },
+                "C1": {
+                    "x0": 420,
+                    "y0": 682.5,
+                    "x1": 495,
+                    "y1": 757.5,
+                    "image": null,
+                    "text": "C1",
+                    "tag_rect": 128,
+                    "tag_text": 129,
+                    "tag_image": 130,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 4},
+                    "lock": {"state": false}
+                }
+            },
+            "2": {
+                "P": {
+                    "x0": 565,
+                    "y0": 257.5,
+                    "x1": 640,
+                    "y1": 332.5,
+                    "image": null,
+                    "text": "P",
+                    "tag_rect": 141,
+                    "tag_text": 142,
+                    "tag_image": 143,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 5},
+                    "lock": {"state": false}
+                },
+                "C": {
+                    "x0": 565,
+                    "y0": 597.5,
+                    "x1": 640,
+                    "y1": 672.5,
+                    "image": null,
+                    "text": "C",
+                    "tag_rect": 154,
+                    "tag_text": 155,
+                    "tag_image": 156,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 4},
+                    "lock": {"state": false}
+                }
+            },
+            "3": {
+                "W": {
+                    "x0": 710,
+                    "y0": 427.5,
+                    "x1": 785,
+                    "y1": 502.5,
+                    "image": null,
+                    "text": "W",
+                    "tag_rect": 167,
+                    "tag_text": 168,
+                    "tag_image": 169,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 7},
+                    "lock": {"state": false}
+                }
+            },
+            "4": {
+                "SC": {
+                    "x0": 855,
+                    "y0": 427.5,
+                    "x1": 930,
+                    "y1": 502.5,
+                    "image": null,
+                    "text": "SC",
+                    "tag_rect": 180,
+                    "tag_text": 181,
+                    "tag_image": 182,
+                    "is_wc": null,
+                    "sb": {"orientation": "horizontal", "num": 7},
+                    "lock": {"state": false}
+                }
+            }
+        },
+        "east": {
+            "0": {
+                "WC_t": {
+                    "x0": 1435,
+                    "y0": 130.0,
+                    "x1": 1510,
+                    "y1": 205.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 193,
+                    "tag_text": 194,
+                    "tag_image": 195,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "A1": {
+                    "x0": 1435,
+                    "y0": 215.0,
+                    "x1": 1510,
+                    "y1": 290.0,
+                    "image": null,
+                    "text": "A1",
+                    "tag_rect": 200,
+                    "tag_text": 201,
+                    "tag_image": 202,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "A2": {
+                    "x0": 1435,
+                    "y0": 300.0,
+                    "x1": 1510,
+                    "y1": 375.0,
+                    "image": null,
+                    "text": "A2",
+                    "tag_rect": 207,
+                    "tag_text": 208,
+                    "tag_image": 209,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "A3": {
+                    "x0": 1435,
+                    "y0": 385.0,
+                    "x1": 1510,
+                    "y1": 460.0,
+                    "image": null,
+                    "text": "A3",
+                    "tag_rect": 214,
+                    "tag_text": 215,
+                    "tag_image": 216,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "M3": {
+                    "x0": 1435,
+                    "y0": 470.0,
+                    "x1": 1510,
+                    "y1": 545.0,
+                    "image": null,
+                    "text": "M3",
+                    "tag_rect": 221,
+                    "tag_text": 222,
+                    "tag_image": 223,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "M2": {
+                    "x0": 1435,
+                    "y0": 555.0,
+                    "x1": 1510,
+                    "y1": 630.0,
+                    "image": null,
+                    "text": "M2",
+                    "tag_rect": 228,
+                    "tag_text": 229,
+                    "tag_image": 230,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "M1": {
+                    "x0": 1435,
+                    "y0": 640.0,
+                    "x1": 1510,
+                    "y1": 715.0,
+                    "image": null,
+                    "text": "M1",
+                    "tag_rect": 235,
+                    "tag_text": 236,
+                    "tag_image": 237,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                },
+                "WC_b": {
+                    "x0": 1435,
+                    "y0": 725.0,
+                    "x1": 1510,
+                    "y1": 800.0,
+                    "image": null,
+                    "text": "WC",
+                    "tag_rect": 242,
+                    "tag_text": 243,
+                    "tag_image": 244,
+                    "is_wc": null,
+                    "sb": null,
+                    "lock": {"state": true}
+                }
+            },
+            "1": {
+                "A1": {
+                    "x0": 1290,
+                    "y0": 172.5,
+                    "x1": 1365,
+                    "y1": 247.5,
+                    "image": null,
+                    "text": "A1",
+                    "tag_rect": 249,
+                    "tag_text": 250,
+                    "tag_image": 251,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 5},
+                    "lock": {"state": false}
+                },
+                "A2": {
+                    "x0": 1290,
+                    "y0": 342.5,
+                    "x1": 1365,
+                    "y1": 417.5,
+                    "image": null,
+                    "text": "A2",
+                    "tag_rect": 262,
+                    "tag_text": 263,
+                    "tag_image": 264,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 5},
+                    "lock": {"state": false}
+                },
+                "M2": {
+                    "x0": 1290,
+                    "y0": 512.5,
+                    "x1": 1365,
+                    "y1": 587.5,
+                    "image": null,
+                    "text": "M2",
+                    "tag_rect": 275,
+                    "tag_text": 276,
+                    "tag_image": 277,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 7},
+                    "lock": {"state": false}
+                },
+                "M1": {
+                    "x0": 1290,
+                    "y0": 682.5,
+                    "x1": 1365,
+                    "y1": 757.5,
+                    "image": null,
+                    "text": "M1",
+                    "tag_rect": 288,
+                    "tag_text": 289,
+                    "tag_image": 290,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 6},
+                    "lock": {"state": false}
+                }
+            },
+            "2": {
+                "A": {
+                    "x0": 1145,
+                    "y0": 257.5,
+                    "x1": 1220,
+                    "y1": 332.5,
+                    "image": null,
+                    "text": "A",
+                    "tag_rect": 301,
+                    "tag_text": 302,
+                    "tag_image": 303,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 5},
+                    "lock": {"state": false}
+                },
+                "M": {
+                    "x0": 1145,
+                    "y0": 597.5,
+                    "x1": 1220,
+                    "y1": 672.5,
+                    "image": null,
+                    "text": "M",
+                    "tag_rect": 314,
+                    "tag_text": 315,
+                    "tag_image": 316,
+                    "is_wc": null,
+                    "sb": {"orientation": "vertical", "num": 7},
+                    "lock": {"state": false}
+                }
+            },
+            "3": {
+                "E": {
+                    "x0": 1000,
+                    "y0": 427.5,
+                    "x1": 1075,
+                    "y1": 502.5,
+                    "image": null,
+                    "text": "E",
+                    "tag_rect": 327,
+                    "tag_text": 328,
+                    "tag_image": 329,
                     "is_wc": null,
                     "sb": {"orientation": "vertical", "num": 7},
                     "lock": {"state": false}
