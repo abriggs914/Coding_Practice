@@ -897,6 +897,26 @@ smallville = TVSeries("Smallville", {
 	True,
 	"Drama",
 	"Prime TV")
+	
+	
+the_x_files = TVSeries("The X-Files", {
+	1: 24,
+	2: 25,
+	3: 24,
+	4: 24,
+	5: 20,
+	6: 22,
+	7: 22,
+	8: 21,
+	9: 19,
+	10: 6,
+	11: 10},
+	45,
+	1993,
+	2018,
+	True,
+	"Drama / Crime / Mystery",
+	"Disney+")
 
 
 series_list = [
@@ -958,7 +978,8 @@ series_list = [
 	angel,
 	what_we_do_in_the_shadows,
 	american_dad,
-	smallville
+	smallville,
+	the_x_files
 ]
 
    
