@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.75
-    Date...........2024-05-29
+    Version..............1.76
+    Date...........2024-06-05
     Author(s)....Avery Briggs
     """
 
@@ -3889,15 +3889,31 @@ class TextWithVar_DON(tkinter.Text):
 
 class InfoFrame(tkinter.Frame):
 
-    def __init__(self, master, labels=None, auto_grid=False, key_width=10, val_width=10, header=None, footer=None,
-                 cell_border=None, key_label_keywords=None, value_label_keywords=None, header_kwargs=None,
-                 footer_kwargs=None, formats=None, *args, **kwargs):
+    def __init__(
+            self,
+            master,
+            labels=None,
+            auto_grid=False,
+            key_width=10,
+            val_width=10,
+            header=None,
+            footer=None,
+            cell_border=None,
+            key_label_keywords=None,
+            value_label_keywords=None,
+            header_kwargs=None,
+            footer_kwargs=None,
+            formats=None,
+            allow_inserts=True,
+            *args, **kwargs
+    ):
         super().__init__(master, *args, **kwargs)
         self.auto_grid = auto_grid
         self.header = header
         self.footer = footer
         self.header_kwargs = header_kwargs
         self.footer_kwargs = footer_kwargs
+        self.allow_inserts = allow_inserts
         self.grid_args = {}
         self.labels_in = labels
         self.info_labels = {}
@@ -3907,10 +3923,11 @@ class InfoFrame(tkinter.Frame):
         self.cell_border = cell_border
         self.key_label_kwargs = key_label_keywords if key_label_keywords is not None else {}
         self.val_label_kwargs = value_label_keywords if value_label_keywords is not None else {}
-        r, c, rs, cs, ix, iy, x, y, s = self.grid_keys()
 
         assert hasattr(self.labels_in,
                        "__iter__"), f"Error param 'labels_in' must be an iterable. Got type='{type(self.labels_in)}'"
+        if not isinstance(self.labels_in, dict):
+            self.labels_in = dict(zip(self.labels_in, [None] * len(self.labels_in)))
 
         self.formats = {}
         if formats is None:
@@ -3931,45 +3948,54 @@ class InfoFrame(tkinter.Frame):
 
         self.check_header()
         self.check_footer()
+
         hi = 1 if self.header is not None else 0
-
         for i, k in enumerate(self.labels_in):
-            if isinstance(self.labels_in, dict):
-                k, v = str(k), str(self.labels_in[k])
-            elif hasattr(k, "__iter__") and len(k) == 2:
-                k, v = map(str, k)
-            else:
-                k, v = str(k), ""
-
-            ke = self.keyify(k)
-
-            self.check_border()
-            self.check_width()
-
-            k_tv, k_label = label_factory(
-                self,
-                tv_label=k,
-                kwargs_label=self.key_label_kwargs
-            )
-            v_tv, v_label = label_factory(
-                self,
-                tv_label=v,
-                kwargs_label=self.val_label_kwargs
-            )
-            ri = i + hi
-            self.info_labels[ke] = {
-                "k_tv": k_tv,
-                "k_label": k_label,
-                "v_tv": v_tv,
-                "v_label": v_label
-            }
-            self.grid_args[ke] = {
-                "k_label": {r: ri, c: 0},
-                "v_label": {r: ri, c: 1}
-            }
+            self.create_key(i + hi, k)
 
         if self.auto_grid:
             self.auto_grid_widgets()
+
+    def create_key(self, i, k, v=None):
+        r, c, rs, cs, ix, iy, x, y, s = self.grid_keys()
+        if isinstance(self.labels_in, dict):
+            gk = str(self.labels_in.get(k, ""))
+            if gk:
+                k, v = str(k), gk
+            else:
+                self.labels_in.update({k: v})
+        elif hasattr(k, "__iter__") and len(k) == 2:
+            k, v = map(str, k)
+        else:
+            k, v = str(k), ""
+
+        # ke = self.keyify(k)
+
+        self.check_border()
+        self.check_width()
+
+        k_tv, k_label = label_factory(
+            self,
+            tv_label=k,
+            kwargs_label=self.key_label_kwargs
+        )
+        v_tv, v_label = label_factory(
+            self,
+            tv_label=v,
+            kwargs_label=self.val_label_kwargs
+        )
+        ri = i
+        self.info_labels[k] = {
+            "k_tv": k_tv,
+            "k_label": k_label,
+            "v_tv": v_tv,
+            "v_label": v_label
+        }
+        self.grid_args[k] = {
+            "k_label": {r: ri, c: 0},
+            "v_label": {r: ri, c: 1}
+        }
+        print(f"({i}) finished making key {k=}, {v=}")
 
     def check_border(self):
         if "highlightthickness" not in self.key_label_kwargs and "highlightbackground" not in self.key_label_kwargs and "borderwidth" not in self.key_label_kwargs:
@@ -4027,23 +4053,36 @@ class InfoFrame(tkinter.Frame):
             ri = len(self.labels_in) + (1 if self.header is not None else 0)
             self.grid_args["footer"] = {r: ri, c: 0, rs: 1, cs: 2}
 
-    def keyify(self, label_name_in):
-        return f"k_{('000000' + str(next(self.key_gener)))[-6:]}_{label_name_in}"
+    # def keyify(self, label_name_in):
+    #     return f"k_{('000000' + str(next(self.key_gener)))[-6:]}_{label_name_in}"
 
-    def de_keyify(self, key_in):
-        alike = []
-        ke = key_in.lower()
-        for k in self.info_labels:
-            if k.split("_")[-1].lower() == ke:
-                alike.append(k)
-
-        if not alike:
-            raise KeyError(f"Error cannot find any keys that are alike the given key '{key_in}'")
-        else:
-            if len(alike) > 1:
-                print(
-                    f"WARNING de-keyify function found multiple keys with the given name '{key_in}', returning the first occurence.")
-            return alike[0]
+    # def de_keyify(self, key_in, new_value=None):
+    #     print(f"dekeying '{key_in}'")
+    #     print(f"{self.labels_in=}")
+    #     alike = []
+    #     ke = key_in.lower()
+    #     for k in self.info_labels:
+    #         if k.split("_")[-1].lower() == ke:
+    #             alike.append(k)
+    #
+    #     if not alike:
+    #         print(f"not alike")
+    #         if not self.allow_inserts:
+    #             raise KeyError(f"Error cannot find any keys that are alike the given key '{key_in}'")
+    #         else:
+    #             if isinstance(self.labels_in, dict):
+    #                 print(f"adding new item")
+    #                 self.labels_in.update({key_in: new_value})
+    #                 self.create_key(len(self.labels_in) + 1, key_in)
+    #                 if self.auto_grid is not None:
+    #                     self.info_labels[key_in]["k_label"].grid(**self.grid_args[key_in])
+    #                     self.info_labels[key_in]["v_label"].grid(**self.grid_args[key_in])
+    #             return key_in
+    #     else:
+    #         if len(alike) > 1:
+    #             print(
+    #                 f"WARNING de-keyify function found multiple keys with the given name '{key_in}', returning the first occurence.")
+    #         return alike[0]
 
     def grid_keys(self):
         return "row", "column", "rowspan", "columnspan", "ipadx", "ipady", "padx", "pady", "sticky"
@@ -4089,9 +4128,17 @@ class InfoFrame(tkinter.Frame):
     def change_value(self, key, value):
         if key not in self.info_labels:
             # print(f"de-keying")
-            ke = self.de_keyify(key)
-        else:
-            ke = key
+            if not self.allow_inserts:
+                raise KeyError(f"Error cannot find any keys that are alike the given key '{key_in}'")
+            else:
+                self.create_key(len(self.info_labels), key, value)
+                if self.auto_grid is not None:
+                    self.info_labels[key]["k_label"].grid(**self.grid_args[key]["k_label"])
+                    self.info_labels[key]["v_label"].grid(**self.grid_args[key]["v_label"])
+        #         ke = key
+        #     # ke = self.de_keyify(key, new_value=value)
+        # else:
+        # ke = key
 
         val = value
         if key in self.formats:
@@ -4102,18 +4149,26 @@ class InfoFrame(tkinter.Frame):
                 print(f"FAILED TO FORMAT key='{key}'.")
                 val = value
 
-        self.info_labels[ke]["v_tv"].set(val)
+        self.info_labels[key]["v_tv"].set(val)
 
     def get_value(self, key, default=None):
         if key not in self.info_labels:
+            if not self.allow_inserts:
+                raise KeyError(f"Error cannot find any keys that are alike the given key '{key_in}'")
+            else:
+                self.create_key(len(self.info_labels), key, default)
+                self.change_value(key, default)
+                if self.auto_grid is not None:
+                    self.info_labels[key]["k_label"].grid(**self.grid_args[key]["k_label"])
+                    self.info_labels[key]["v_label"].grid(**self.grid_args[key]["v_label"])
             # print(f"de-keying")
-            try:
-                ke = self.de_keyify(key)
-            except KeyError:
-                return default
-        else:
-            ke = key
-        return self.info_labels[ke]["v_tv"].get()
+            # try:
+            #     ke = self.de_keyify(key)
+            # except KeyError:
+            #     return default
+        # else:
+        #     ke = key
+        return self.info_labels[key]["v_tv"].get()
 
 
 def calc_geometry_tl(

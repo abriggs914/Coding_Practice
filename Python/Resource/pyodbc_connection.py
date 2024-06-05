@@ -8,8 +8,8 @@ VERSION = \
     """
     General Pyodbc connection handler.
     Geared towards BWS connections.
-    Version...............1.9
-    Date...........2024-05-27
+    Version...............2.0
+    Date...........2024-06-04
     Author(s)....Avery Briggs
     """
 
@@ -40,8 +40,46 @@ def VERSION_AUTHORS():
 #######################################################################################################################
 
 
-def connect(sql, driver="{SQL Server}",
-            server="server3", database="BWSdb", uid="user5", pwd="M@gic456", do_print=False, do_show=False, do_exec=True):
+def connect(
+        sql: str,
+        driver: str = "{SQL Server}",
+        server: str = "server3",
+        database: str = "BWSdb",
+        uid: str = "user5",
+        pwd: str = "M@gic456",
+        do_print: bool = False,
+        do_show: bool = False,
+        do_exec: bool = True,
+        timeout: int = 0
+) -> pd.DataFrame:
+    """
+    A wrapper function for pyodbc.connect function.
+    Predefined parameters point to Server3's BWSdb Database using user5's credentials.
+    Executes in a try-except block that only catches pyodbc.DatahaseError
+
+    parameters:
+
+        sql         - a string of sql queries delimited by ';'
+                      OR a single table name in the database
+    
+        driver,
+        server,
+        database,
+        uid,
+        and pwd     - These parameters are combined using pyodbc connection string template
+    
+        do_print    - shows connection and query status via print statements
+        do_show     - shows connection information and sql queries via print statements
+        do_exec     - used with 'do_print' and 'do_exec' this parameter controls if the sql is sent to the database.
+                    - Use for testing
+        timeout     - see pyodbc.connect timeout parameter
+
+    examples:
+    
+        print(connect("[IT Requests]"))
+        print(connect("SELECT TOP 10 * FROM [IT Requests]", uid="user5", pwd="M@gic456"))
+        print(connect("SELECT TOP 10 * FROM [ClkTransaction]", database="SysproCompmanyA", uid="SRS", pwd=""))
+    """
     template = "DRIVER={dri};SERVER={svr};DATABASE={db};UID={uid};PWD={pwd}"
     # params = [driver, server, database, uid, pwd]
     if pwd and uid is None:
@@ -56,13 +94,19 @@ def connect(sql, driver="{SQL Server}",
     has_insert = all([(stmt in sql.upper()) for stmt in ["INSERT INTO", "VALUES"]])
     has_update = all([(stmt in sql.upper()) for stmt in ["UPDATE", "SET"]])
 
-    if n_distinct_queries == 1 and ("SELECT" not in sql.upper()) and ("FROM" not in sql.upper()) and (not any([has_update, has_insert])):
+    if all([
+        n_distinct_queries == 1,
+        "SELECT" not in sql.upper(),
+        "FROM" not in sql.upper(),
+        not any([has_update, has_insert])
+    ]):
         # single table name passed
         tbl = sql.removeprefix("[").removesuffix("]")
         sql = f"SELECT * FROM [{tbl}];"
 
     # print(f"after {template=}")
     df = None
+    conn, crsr = None, None
     # print(f"\tRES\t{cstr=}, {template=}")
     try:
         # sql_opt = "SELECT [IT Requests].*, [dept].[Dept] AS [DeptName], [IT Personnel].[Name] AS [ITPersonnelAssignedName] FROM [IT Requests] LEFT JOIN [Dept] ON [IT Requests].[Department] = [Dept].[DeptID] LEFT JOIN [IT Personnel] ON [IT Requests].[ITPersonAssignedID] = [IT Personnel].[ITPersonID#]"
@@ -71,7 +115,7 @@ def connect(sql, driver="{SQL Server}",
         if do_show and do_print:
             print(f"cstr: '{cstr}'")
         if do_exec:
-            conn = pyodbc.connect(cstr)
+            conn = pyodbc.connect(cstr, timeout=timeout)
             crsr = conn.cursor()
         if do_print:
             print("querying...")
