@@ -1005,7 +1005,7 @@ metric_possibilities = [
     "longest time",
 	"most episodes per season",
 	"least episodes per season"
-    ]
+]
 
     
 def ask_print_style(series_list) :
@@ -1200,22 +1200,57 @@ def print_time_line_horizontal_ongoing(series_list, start_year, end_year) :
         res += "|" + pad_centre(str(year_count), 4)
     res += "| " + metric_val + " |" + "{0:{1}}".format("Concurrent", longest_title_len - 1) + "|\n" + top_border
     return res
+      
+
+def print_time_line_horizontal_ongoing2(series_list, start_year, end_year) :
+    metric = (False, lambda s : s.start_year, metric_possibilities[0])
+    metric_val = ""
+    if metric :
+        rev_val = metric[0]
+        sort_metric = metric[1]
+        metric_val = metric[2]
+        series_list.sort(reverse=rev_val, key=sort_metric)
+        
+    longest_title_len = longest_series_title(series_list) + len("\t")
+    space_border = "".join(["#" for i in range(longest_title_len)])
+    
+    year_border = space_border
+    year_border += "| " + metric_val + " " if metric else "" 
+    year_border += "|" + "|".join([str(i) for i in range(start_year, end_year + 1)]) + "|"
+    year_border += " " + metric_val + " |" if metric else "" 
+    year_border += space_border
+    
+    top_border = "".join(["#" for i in range(len(year_border))])
+    res = top_border + "\n" + year_border + "\n"
+	
+    res += "|" + "{0:{1}}".format("End Year Count", longest_title_len - 1) + "| " + metric_val + " "
+    for year in range(start_year, end_year + 1) :
+        year_count = 0
+        for series in series_list :
+            # if series.start_year <= year and year <= series.end_year :
+            if series.end_year == year:
+                year_count += 1
+        # res += "|" + "".join(["*" for i in range(len(str(year)))]) + "|"
+        res += "|" + pad_centre(str(year_count), 4)
+    res += "| " + metric_val + " |" + "{0:{1}}".format("End Year Count", longest_title_len - 1) + "|\n" + top_border
+    return res
 
 
 if __name__ == "__main__" :
-  for series in series_list :
-    print(series)
+    for series in series_list :
+      print(series)
     
-  selected_series = random.choice(series_list)
-  print("\n\n\tWhat to watch?\n")
-  print("Series:\n" + str(selected_series))
-  selected_season = random.choice([seasonKey for seasonKey in selected_series.episodes_list.keys()])
-  print("\nSeason: " + str(selected_season))
-  selected_episode = random.choice([i for i in range(1, selected_series.episodes_list[selected_season] + 1)])
-  print("Episode: " + str(selected_episode))
+    selected_series = random.choice(series_list)
+    print("\n\n\tWhat to watch?\n")
+    print("Series:\n" + str(selected_series))
+    selected_season = random.choice([seasonKey for seasonKey in selected_series.episodes_list.keys()])
+    print("\nSeason: " + str(selected_season))
+    selected_episode = random.choice([i for i in range(1, selected_series.episodes_list[selected_season] + 1)])
+    print("Episode: " + str(selected_episode))
     
     
-  for i in range(len(metric_possibilities)) :
-    print(print_time_line_horizontal(series_list, 1988, 2023))
-    print(print_series_stats(series_list))
-  print("\n" + print_time_line_horizontal_ongoing(series_list, 1988, 2023))
+    for i in range(len(metric_possibilities)) :
+        print(print_time_line_horizontal(series_list, 1988, 2023))
+        print(print_series_stats(series_list))
+    print("\n" + print_time_line_horizontal_ongoing(series_list, 1988, 2023))
+    print("\n" + print_time_line_horizontal_ongoing2(series_list, 1988, 2023))

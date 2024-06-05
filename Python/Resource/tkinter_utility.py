@@ -5,7 +5,7 @@ from collections import OrderedDict, deque
 
 import pandas
 
-from typing import Literal, Tuple, List
+from typing import Literal, Tuple, List, Callable, Optional
 
 import pandas as pd
 
@@ -3191,11 +3191,24 @@ class MultiComboBox(tkinter.Frame):
 
 
 class ArrowButton(tkinter.Canvas):
-    def __init__(self, master, mode: Literal[
-        "up", "down", "left", "right",
-        "top-left", "top-right", "bottom-left", "bottom-right",
-        "n", "s", "e", "w", "ne", "nw", "se", "sw",
-        "N", "S", "E", "W", "NE", "NW", "SE", "SW"] = "down", width=20, height=20, *args, **kwargs):
+    def __init__(
+            self,
+            master,
+            mode: Literal[
+                "up", "down", "left", "right",
+                "top-left", "top-right", "bottom-left", "bottom-right",
+                "n", "s", "e", "w", "ne", "nw", "se", "sw",
+                "N", "S", "E", "W", "NE", "NW", "SE", "SW"
+            ] = "down",
+            width: int = 20,
+            height: int = 20,
+            autogrid: bool = True,
+            callback: Optional[Callable] = None,
+            callback_binding: Literal[
+                "<Button-1>", "<Button-2>", "<Button-3>"
+            ] = "<Button-1>",
+            *args, **kwargs
+    ):
         super().__init__(master, width=width, height=height, *args, **kwargs)
 
         self.valid = {
@@ -3204,17 +3217,26 @@ class ArrowButton(tkinter.Canvas):
             "n", "s", "e", "w", "ne", "nw", "se", "sw",
             "N", "S", "E", "W", "NE", "NW", "SE", "SW"
         }
+        self.valid_btns = ("<Button-1>", "<Button-2>", "<Button-3>")
         mode = self.validate_mode(mode)
+        binding = self.valid_btns[0] if (callback_binding not in self.valid_btns) else callback_binding
 
         self.mode = mode
         self.width = width
         self.height = height
+        self.auto_grid = autogrid
+        self.callback = callback
+        self.callback_binding = binding
 
         self.configure(width=20, height=20, background=rgb_to_hex("GRAY_62"))
 
-        self.draw_arrow()
+        if self.auto_grid:
+            self.draw_arrow()
         # print(f"=={game_mode=} :: ({x1}, {y1}), ({x2}, {y2})")
-        self.bind("<Button-1>", self.click_canvas_button)
+        if self.callback is None:
+            self.tag_bind_click_button = self.bind(self.callback_binding, self.click_canvas_button)
+        else:
+            self.tag_bind_click_button = self.bind(self.callback_binding, self.callback)
 
     def validate_mode(self, mode):
         if mode not in self.valid:
@@ -3915,7 +3937,7 @@ class InfoFrame(tkinter.Frame):
         self.footer_kwargs = footer_kwargs
         self.allow_inserts = allow_inserts
         self.grid_args = {}
-        self.labels_in = labels
+        self.labels_in = labels if (labels is not None) else dict()
         self.info_labels = {}
         self.key_gener = (i for i in range(1000000))
         self.key_width = key_width
@@ -4125,31 +4147,37 @@ class InfoFrame(tkinter.Frame):
     def get_objects(self):
         return self, *self.info_labels
 
-    def change_value(self, key, value):
-        if key not in self.info_labels:
-            # print(f"de-keying")
-            if not self.allow_inserts:
-                raise KeyError(f"Error cannot find any keys that are alike the given key '{key_in}'")
-            else:
-                self.create_key(len(self.info_labels), key, value)
-                if self.auto_grid is not None:
-                    self.info_labels[key]["k_label"].grid(**self.grid_args[key]["k_label"])
-                    self.info_labels[key]["v_label"].grid(**self.grid_args[key]["v_label"])
-        #         ke = key
-        #     # ke = self.de_keyify(key, new_value=value)
-        # else:
-        # ke = key
+    def change_value(self, key: str | dict, value=None):
+        if isinstance(key, str):
+            data = {key: value}
+        else:
+            data = {k: v for k, v in key.items()}
 
-        val = value
-        if key in self.formats:
-            fmt = self.formats[key]
-            try:
-                val = fmt(value)
-            except Exception as e:
-                print(f"FAILED TO FORMAT key='{key}'.")
-                val = value
+        for k, v in data.items():
+            if k not in self.info_labels:
+                # print(f"de-keying")
+                if not self.allow_inserts:
+                    raise KeyError(f"Error cannot find any keys that are alike the given key '{k}'")
+                else:
+                    self.create_key(len(self.info_labels), k, v)
+                    if self.auto_grid is not None:
+                        self.info_labels[k]["k_label"].grid(**self.grid_args[k]["k_label"])
+                        self.info_labels[k]["v_label"].grid(**self.grid_args[k]["v_label"])
+            #         ke = key
+            #     # ke = self.de_keyify(key, new_value=value)
+            # else:
+            # ke = key
 
-        self.info_labels[key]["v_tv"].set(val)
+            # val = value
+            if k in self.formats:
+                fmt = self.formats[k]
+                try:
+                    v = fmt(v)
+                except Exception as e:
+                    print(f"FAILED TO FORMAT key='{k}'.")
+                    # v = v
+
+            self.info_labels[k]["v_tv"].set(v)
 
     def get_value(self, key, default=None):
         if key not in self.info_labels:
