@@ -8,8 +8,8 @@ VERSION = \
     """
     General Pyodbc connection handler.
     Geared towards BWS connections.
-    Version...............2.0
-    Date...........2024-06-04
+    Version...............2.1
+    Date...........2024-06-08
     Author(s)....Avery Briggs
     """
 
@@ -40,6 +40,30 @@ def VERSION_AUTHORS():
 #######################################################################################################################
 
 
+def can_connect(
+        driver: str = "{SQL Server}",
+        server: str = "server3",
+        database: str = "BWSdb",
+        uid: str = "user5",
+        pwd: str = "M@gic456",
+        timeout: int = 0
+) -> None | pyodbc.Connection:
+    template = "DRIVER={dri};SERVER={svr};DATABASE={db};UID={uid};PWD={pwd}"
+    # params = [driver, server, database, uid, pwd]
+    if pwd and uid is None:
+        raise ValueError("Error you must pass both a username and a password. Got only a password.")
+    if uid and pwd is None:
+        raise ValueError("Error you must pass both a username and a password. Got only a username.")
+    # print(f"before {template=}")
+    cstr = template.format(dri=driver, svr=server, db=database, uid=uid, pwd=pwd)
+    try:
+        conn = pyodbc.connect(cstr, timeout=max(0, min(300, timeout)))
+    except pyodbc.DatabaseError as de:
+        print(f"DatabaseError\n{de}")
+    else:
+        return conn
+
+
 def connect(
         sql: str,
         driver: str = "{SQL Server}",
@@ -61,13 +85,13 @@ def connect(
 
         sql         - a string of sql queries delimited by ';'
                       OR a single table name in the database
-    
+
         driver,
         server,
         database,
         uid,
         and pwd     - These parameters are combined using pyodbc connection string template
-    
+
         do_print    - shows connection and query status via print statements
         do_show     - shows connection information and sql queries via print statements
         do_exec     - used with 'do_print' and 'do_exec' this parameter controls if the sql is sent to the database.
@@ -75,7 +99,7 @@ def connect(
         timeout     - see pyodbc.connect timeout parameter
 
     examples:
-    
+
         print(connect("[IT Requests]"))
         print(connect("SELECT TOP 10 * FROM [IT Requests]", uid="user5", pwd="M@gic456"))
         print(connect("SELECT TOP 10 * FROM [ClkTransaction]", database="SysproCompmanyA", uid="SRS", pwd=""))
