@@ -22,7 +22,7 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.76
+    Version..............1.77
     Date...........2024-06-05
     Author(s)....Avery Briggs
     """
@@ -4205,8 +4205,8 @@ def calc_geometry_tl(
         dims: None | tuple | list = None,
         largest: bool | int = True,
         rtype: str | dict | list | tuple = str,
-        parent: tkinter.BaseWidget | tkinter.Toplevel | tkinter.Tk = None
-
+        parent: tkinter.BaseWidget | tkinter.Toplevel | tkinter.Tk = None,
+        do_print: bool = False
         # one_display_orient: Literal["horizontal", "vertical"]="horizontal"
 ) -> str | dict | list | tuple:
     # TODO add 'parent' param. Would allow you to specify where a screen's parent is, and to match it's dimensions.
@@ -4262,7 +4262,8 @@ def calc_geometry_tl(
     p_a = width == "zoomed"
     p_b = height == "zoomed"
     if p_a or p_b:
-        print(f"A, {p_a=}, {p_b=}")
+        if do_print:
+            print(f"A, {p_a=}, {p_b=}")
 
         if p_a:
             height_o = height_ if p_b else height
@@ -4278,7 +4279,8 @@ def calc_geometry_tl(
             x_ = (width_ - width_c) // 2
             width_ = width_c
     else:
-        print(f"B")
+        if do_print:
+            print(f"B")
         width_c = clamp(1, width, width_)
         height_c = clamp(1, height, height_)
         x = (width_ - width_c) // 2
@@ -4293,7 +4295,8 @@ def calc_geometry_tl(
     else:
         res = f"{width_}x{height_}+{x_}+{y_}"
 
-    print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f" geo=({res})")
+    if do_print:
+        print(f"x={x_}, y={y_}, w={width_}, h={height_}, {x_off=}, {y_off=}" + f" geo=({res})")
     if rtype == str:
         return res
     elif rtype == dict:
