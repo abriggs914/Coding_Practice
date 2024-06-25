@@ -33,7 +33,7 @@ out_round_2 = [
 
 out_round_3 = [
     "NYR",
-    "EDM"
+    "DAL"
 ]
 
 
@@ -73,6 +73,8 @@ if __name__ == '__main__':
     team_data = {}
     box_choices = {}
 
+    print_by_player = False
+
     print(f"{player_2_team=}")
 
     for person_a in list_pool_people:
@@ -85,7 +87,7 @@ if __name__ == '__main__':
         print(f"{person_a=}")
         for person_b in list_pool_people:
             if person_a != person_b:
-                print(f"{person_b=}")
+                print(f"\t{person_b=}")
                 df_picks_b = df_picks[person_b]
                 cnt_alike = 0
                 n_picks = df_picks_a.shape[0]
@@ -127,7 +129,9 @@ if __name__ == '__main__':
                     # else:
                     #     if "(d)" in pick_a.lower():
                     #         box_type = "defence"
-                    print(f"A:{pick_a.rjust(25)}, B:{pick_b.rjust(25)}, {same=}, {box_type_a=}, {box_type_b=}, {picks_in_r2=}, {pa=}, {pb=}, {player_2_team[pa]=}, {player_2_team[pb]=}")
+
+                    if print_by_player:
+                        print(f"A:{pick_a.rjust(25)}, B:{pick_b.rjust(25)}, {same=}, {box_type_a=}, {box_type_b=}, {picks_in_r2=}, {pa=}, {pb=}, {player_2_team[pa]=}, {player_2_team[pb]=}")
 
                     if picks_in_r2:
                         n_picks_r2 += 1
@@ -191,10 +195,10 @@ if __name__ == '__main__':
                 pct_alike_r4 = (cnt_alike_r4 / n_picks_r4) if (n_picks_r4 != 0) else 0
                 # percentage_alike_r2[person_a][person_b] = pct_alike_r2
                 percentage_alike_r4[person_a][person_b] = (cnt_alike_r4, n_picks_r4) if (n_picks_r4 != 0) else (0, 0)
-                print(f"\t{person_a=}, {person_b=}, {percentage_alike_r1[person_a][person_b]=}")
-                print(f"\t{person_a=}, {person_b=}, {percentage_alike_r2[person_a][person_b]=}")
-                print(f"\t{person_a=}, {person_b=}, {percentage_alike_r3[person_a][person_b]=}")
-                print(f"\t{person_a=}, {person_b=}, {percentage_alike_r4[person_a][person_b]=}")
+                print(f"\t\t{person_a=}, {person_b=}, {percentage_alike_r1[person_a][person_b]=}")
+                print(f"\t\t{person_a=}, {person_b=}, {percentage_alike_r2[person_a][person_b]=}")
+                print(f"\t\t{person_a=}, {person_b=}, {percentage_alike_r3[person_a][person_b]=}")
+                print(f"\t\t{person_a=}, {person_b=}, {percentage_alike_r4[person_a][person_b]=}")
 
     for box_n, box_data in box_choices.items():
         for pick in box_data["choices"]:
@@ -255,7 +259,7 @@ if __name__ == '__main__':
             if pool_pickers is None:
                 pool_pickers = team_data.get(choice)
             n_picks = box_data['choices'][choice]
-            pct_pick = 100 * n_picks / len(list_pool_people)
+            pct_pick = n_picks / len(list_pool_people)
             print(f"\t{percent(pct_pick).ljust(8)} | {str(n_picks).rjust(3)} x {choice.ljust(28)}, {pool_pickers=}")
 
     print(f"\n\n")

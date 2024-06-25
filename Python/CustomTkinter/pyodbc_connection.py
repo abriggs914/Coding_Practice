@@ -8,8 +8,8 @@ VERSION = \
     """
     General Pyodbc connection handler.
     Geared towards BWS connections.
-    Version...............2.1
-    Date...........2024-06-08
+    Version...............2.2
+    Date...........2024-06-25
     Author(s)....Avery Briggs
     """
 
@@ -103,6 +103,15 @@ def connect(
         print(connect("[IT Requests]"))
         print(connect("SELECT TOP 10 * FROM [IT Requests]", uid="user5", pwd="M@gic456"))
         print(connect("SELECT TOP 10 * FROM [ClkTransaction]", database="SysproCompmanyA", uid="SRS", pwd=""))
+
+    Troubleshooting:
+
+        Stored Procedures - Be careful of non-return SPs, or error messages that may be passed.
+                            Recommend using in your SQL:
+
+                                SET NOCOUNT ON;
+                                SET ANSI_WARNINGS OFF;
+
     """
     template = "DRIVER={dri};SERVER={svr};DATABASE={db};UID={uid};PWD={pwd}"
     # params = [driver, server, database, uid, pwd]
@@ -113,7 +122,7 @@ def connect(
     # print(f"before {template=}")
     cstr = template.format(dri=driver, svr=server, db=database, uid=uid, pwd=pwd)
 
-    distinct_queries = [stmt for stmt in f"{sql};".split(";") if stmt.strip()]
+    distinct_queries = [stmt for stmt in f"{sql.strip()};".split(";") if stmt.strip()]
     n_distinct_queries = len(distinct_queries)
     has_insert = all([(stmt in sql.upper()) for stmt in ["INSERT INTO", "VALUES"]])
     has_update = all([(stmt in sql.upper()) for stmt in ["UPDATE", "SET"]])
@@ -122,6 +131,8 @@ def connect(
         n_distinct_queries == 1,
         "SELECT" not in sql.upper(),
         "FROM" not in sql.upper(),
+        "EXEC" not in sql.upper(),
+        "EXECUTE" not in sql.upper(),
         not any([has_update, has_insert])
     ]):
         # single table name passed
@@ -155,7 +166,17 @@ def connect(
                 conn.commit()
         else:
             if do_exec:
-                df = pd.DataFrame(pd.read_sql_query(sql, conn))
+                if sql.upper().startswith("EXEC"):
+                    crsr.execute(sql)
+                    # crsr.commit()
+                    # crsr.nextset()
+                    # conn.commit()
+                    if crsr.description is not None:
+                        columns = [column[0] for column in getattr(crsr, "description", [])]
+                        results = crsr.fetchall()
+                        df = pd.DataFrame.from_records(results, columns=columns)
+                else:
+                    df = pd.DataFrame(pd.read_sql_query(sql, conn))
 
         if do_print:
             print("closing...")
@@ -172,7 +193,12 @@ def connect(
 
 
 if __name__ == "__main__":
+    """
     print(connect("SELECT * FROM [IT Requests]"))
     # print(connect("SELECT * FROM [IT Requests]", uid="user5"))  # error this out
     print(connect("SELECT * FROM [IT Requests]", uid="user5", pwd="M@gic456"))
     print(connect("SELECT * FROM [ClkTransaction]", database="SysproCompmanyA", uid="SRS", pwd=""))
+    """
+
+    sql = 'EXEC [sp_ITREstimateLabour] @company=NULL, @department=NULL, @requestType=NULL, @requestSubType=NULL;'
+    df = connect(sql)

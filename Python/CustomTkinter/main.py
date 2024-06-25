@@ -8,7 +8,7 @@ from colour_utility import *
 from datetime_utility import date_str_format, is_date
 from pyodbc_connection import connect
 from tkinter_utility import calc_geometry_tl
-from customtkinter_utility import CtkTableExt, CtkEntryDate
+from customtkinter_utility import CtkTableExt, CtkEntryDate, CTkTable
 from utility import get_windows_user
 
 
@@ -33,7 +33,9 @@ class App(ctk.CTk):
         self.colour_default_cb_fg_colour = Colour("#092373")
         self.colour_default_cb_border_colour = Colour("#092373")
         self.colour_default_cb_dropdown_fg_color = self.colour_default_cb_fg_colour.brightened(0.05)
+        self.colour_default_table_header = Colour("#12A5FF")
 
+        self.sql_template_sp_predict_labour = """EXEC [sp_ITREstimateLabour] @company={A}, @department={B}, @requestType={C}, @requestSubType={D};"""
         self.sql_df_requests = {
             "sql": "[IT Requests]"
         }
@@ -45,7 +47,23 @@ SELECT
 	,[C].[Employee Name] AS [Name],
 	*
 FROM
-	[v_ITRCustomersWithDepartments] [C]"""
+	[v_ITRCustomersWithDepartments] [C]
+;
+"""
+        }
+        self.sql_df_departments = {
+            "sql": """
+SELECT
+    MIN(Dept.DeptID) AS [MinOfDeptID],
+    [Dept].[Dept]
+FROM
+    [Dept]
+GROUP BY
+    [Dept].[Dept] 
+HAVING
+    [Dept].[Dept]<>''
+;
+"""
         }
         self.sql_df_hardware = {
             "sql": "[ITR Hardware]"
@@ -58,6 +76,7 @@ FROM
         }
         self.df_requests: pd.DataFrame = None
         self.df_customers: pd.DataFrame = None
+        self.df_departments: pd.DataFrame = None
         self.df_req_hardware: pd.DataFrame = None
         self.df_req_software: pd.DataFrame = None
         self.df_req_training: pd.DataFrame = None
@@ -66,18 +85,22 @@ FROM
         self.list_companies = [
             "BWS",
             "STG",
-            "Lewis"
+            "HUGO",
+            "LEWIS"
         ]
-        self.list_departments = [
-            "IT",
-            "Admin",
-            "Sales",
-            "Warranty",
-            "Production",
-            "Parts",
-            "Engineering",
-            "Finish Off"
-        ]
+        if self.df_departments is None:
+            self.list_departments = [
+                "IT",
+                "Admin",
+                "Sales",
+                "Warranty",
+                "Production",
+                "Parts",
+                "Engineering",
+                "Finish Off"
+            ]
+        else:
+            self.list_departments = sorted(self.df_departments["Dept"].values.tolist())
         if any([
             self.df_req_hardware is None,
             self.df_req_software is None,
@@ -144,6 +167,12 @@ FROM
             ]
         self.og_table_follow_up_values = [[v for v in row] for row in self.data_follow_up]
         self.data_rev_follow_up = {k: None for k in self.header_follow_up}
+        self.header_predict_labour = ["", "Average", "Total", "# Requests", ""]
+        self.data_predict_labour = [self.header_predict_labour] + [["" for _ in range(4)] for _ in range(2)]
+        self.data_predict_labour[1][0] = "Actual"
+        self.data_predict_labour[2][0] = "Budget"
+        self.data_predict_labour[1][3] = "% Total Requests"
+        self.data_predict_labour[2][3] = "% Total Budget"
 
         self.c_cb_new = "+"
         if self.allow_list_edits:
@@ -188,6 +217,7 @@ FROM
         self.f_controls_b = ctk.CTkFrame(self)
         self.f_controls_c = ctk.CTkFrame(self)
         self.f_controls_d = ctk.CTkFrame(self)
+        self.f_labour_est = ctk.CTkFrame(self.f_controls_a)
         self.f_control_btns = ctk.CTkFrame(self.f_controls_d)
 
         # vars
@@ -200,6 +230,11 @@ FROM
         self.v_lbl_tb_comment = ctk.StringVar(self, value=f"Comments:")
         self.v_lbl_table_follow_up = ctk.StringVar(self, value=f"Request follow-up personnel:")
         self.v_lbl_s_priority = ctk.StringVar(self, value=f"Priority:")
+
+        self.v_lbl_sw_submit_request = ctk.StringVar(self, value=f"Submit Requests?")
+        self.v_sw_submit_request = ctk.StringVar(self)
+        self.v_lbl_sw_mark_complete = ctk.StringVar(self, value=f"Mark Complete?")
+        self.v_sw_mark_complete = ctk.StringVar(self)
 
         self.v_btn_date_stamp_request = ctk.StringVar(self, value="Date Stamp")
         self.v_btn_date_stamp_comment = ctk.StringVar(self, value="Date Stamp")
@@ -217,6 +252,16 @@ FROM
         self.tv_sw_all_follow_up = ctk.StringVar(self, name="switch_all_follow_up", value=self.text_sw_all_follow_up)
 
         # widgets
+        self.sw_submit_requests = ctk.CTkSwitch(
+            self.f_controls_a,
+            textvariable=self.v_lbl_sw_submit_request,
+            variable=self.v_sw_submit_request
+        )
+        self.sw_mark_complete = ctk.CTkSwitch(
+            self.f_controls_a,
+            textvariable=self.v_lbl_sw_mark_complete,
+            variable=self.v_sw_mark_complete
+        )
 
         self.lbl_dp_due_date = ctk.CTkLabel(
             self.f_controls_b,
@@ -364,6 +409,38 @@ FROM
             **self.default_btn_config
         )
 
+        self.table_predict_labour = CTkTable(
+            self.f_labour_est,
+            values=self.data_predict_labour
+            # ,            header_color=self.colour_default_table_header.hex_code
+        )
+        self.select_legend_cols_predict_labour()
+
+        self.v_s_labour_est_is_large = ctk.BooleanVar(self)
+        self.v_s_labour_est_is_neg = ctk.BooleanVar(self)
+        self.v_s_labour_est = ctk.DoubleVar(self)
+        self.s_labour_est = ctk.CTkSlider(
+            self.f_labour_est,
+            from_=0,
+            to=2,
+            number_of_steps=20,
+            variable=self.v_s_labour_est
+        )
+        self.list_v_sb_labour_est_is_large = [["0 - 2.5 H", "2.5 H+"], [0, 2.5, 20], [2.5, 30, 60]]
+        self.sb_labour_ext_is_large = ctk.CTkSegmentedButton(
+            self.f_labour_est,
+            values=self.list_v_sb_labour_est_is_large[0],
+            command=self.update_labour_est_is_large
+        )
+        self.list_v_sb_labour_est_is_neg = ["-", "+"]
+        self.sb_labour_ext_is_neg = ctk.CTkSegmentedButton(
+            self.f_labour_est,
+            values=self.list_v_sb_labour_est_is_neg,
+            command=self.update_labour_est_is_neg
+        )
+        self.sb_labour_ext_is_large.set(self.list_v_sb_labour_est_is_large[0][0])
+        self.sb_labour_ext_is_neg.set(self.list_v_sb_labour_est_is_neg[1])
+
         # self.sw_all_follow_up = ctk.CTkSwitch(
         #     master=self.f_controls_a,
         #     textvariable=self.tv_sw_all_follow_up
@@ -374,6 +451,11 @@ FROM
         self.f_controls_b.grid(row=1, column=0, rowspan=1, columnspan=1, sticky=tkinter.NSEW)
         self.f_controls_c.grid(row=2, column=0, rowspan=1, columnspan=1, sticky=tkinter.NSEW)
         self.f_controls_d.grid(row=3, column=0, rowspan=1, columnspan=1, sticky=tkinter.NSEW)
+
+        # self.f_controls_a
+        self.sw_submit_requests.grid(row=0, column=0, rowspan=1, columnspan=1)
+        self.sw_mark_complete.grid(row=1, column=0, rowspan=1, columnspan=1)
+        self.f_labour_est.grid(row=0, column=1, rowspan=2, columnspan=1)
 
         # self.f_controls_b
         self.lbl_dp_due_date.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=tkinter.NSEW)
@@ -407,15 +489,129 @@ FROM
         self.btn_go_back.grid(row=1, column=0, rowspan=1, columnspan=1)
         self.btn_submit.grid(row=2, column=0, rowspan=1, columnspan=1)
 
+        # self.f_labour_est
+        self.table_predict_labour.grid(row=0, column=0, rowspan=1, columnspan=3)
+        self.sb_labour_ext_is_neg.grid(row=1, column=0, rowspan=1, columnspan=1)
+        self.sb_labour_ext_is_large.grid(row=1, column=1, rowspan=1, columnspan=1)
+        self.s_labour_est.grid(row=1, column=2, rowspan=1, columnspan=1)
+
+        # bindings
+        self.v_s_labour_est_is_large.trace_variable("w", self.update_v_labour_est_is_large)
+        self.v_s_labour_est_is_neg.trace_variable("w", self.update_v_labour_est_is_neg)
+
+        # call init functions
+        self.update_predict_labour()
+
+    def department_name_to_id(self, department) -> None | int:
+        dfd = self.df_departments
+        df: pd.DataFrame = dfd.loc[dfd["Dept"].str.lower() == department.lower()]
+        if df.empty:
+            return
+        else:
+            return df.iloc[0]["MinOfDeptID"]
+
+    def select_legend_cols_predict_labour(self):
+        self.table_predict_labour.select(0, 0)
+        self.table_predict_labour.select(0, 1)
+        self.table_predict_labour.select(0, 2)
+        self.table_predict_labour.select(0, 3)
+        self.table_predict_labour.select_column(0)
+        self.table_predict_labour.select_column(3)
+
+    def get_field_company(self):
+        return self.v_cb_company.get().strip().replace("'", "''").removesuffix(";").upper()
+
+    def get_field_due_date(self):
+        return self.dp_due_date.var_date_picker.get().strip().replace("'", "''").removesuffix(";")
+
+    def get_field_department(self):
+        return self.v_cb_department.get().strip().replace("'", "''").removesuffix(";")
+
+    def get_field_req_type(self):
+        return self.v_cb_req_type.get().strip().replace("'", "''").removesuffix(";")
+
+    def get_field_req_sub_type(self):
+        return self.v_cb_req_sub_type.get().strip().replace("'", "''").removesuffix(";")
+
+    def get_field_request_text(self):
+        return self.tb_request_text.get("0.0", tkinter.END).strip().replace("'", "''").removesuffix(";")
+
+    def get_field_comment_text(self):
+        return self.tb_comment_text.get("0.0", tkinter.END).strip().replace("'", "''").removesuffix(";")
+
+    def get_field_priority(self):
+        return self.v_s_priority.get()
+
+    def get_field_labour_est(self):
+        return self.v_s_labour_est.get()
+
+    def update_labour_est_is_large(self, is_large):
+        self.v_s_labour_est_is_large.set(is_large == self.list_v_sb_labour_est_is_large[0][1])
+
+    def update_labour_est_is_neg(self, is_neg):
+        self.v_s_labour_est_is_neg.set(is_neg == self.list_v_sb_labour_est_is_neg[0])
+
+    def update_v_labour_est_is_neg(self, *args):
+        print(f"update_v_labour_est_is_neg")
+
+    def update_v_labour_est_is_large(self, *args):
+        """trace variable"""
+        is_large = self.v_s_labour_est_is_large.get()
+        if is_large:
+            values = self.list_v_sb_labour_est_is_large[2]
+        else:
+            values = self.list_v_sb_labour_est_is_large[1]
+
+        self.s_labour_est.configure(
+            from_=values[0],
+            to=values[1],
+            number_of_steps=values[2]
+        )
+        self.v_s_labour_est.set(clamp(values[0], self.v_s_labour_est.get(), values[1]))
+
+    def update_predict_labour(self):
+        company = self.get_field_company()
+        department = self.get_field_department()
+        req_type = self.get_field_req_type()
+        req_sub_type = self.get_field_req_sub_type()
+        department_id = self.department_name_to_id(department)
+
+        sql = self.sql_template_sp_predict_labour
+
+        print(f"{company=}, {department=}, {department_id=}, {req_type=}, {req_sub_type=}")
+        if company:
+            sql = sql.format(A=f"'{company}'", B="{B}", C="{C}", D="{D}")
+        if department_id:
+            sql = sql.format(B=department_id, A="{A}", C="{C}", D="{D}")
+        if req_type:
+            sql = sql.format(C=f"'{req_type}'", A="{A}", B="{B}", D="{D}")
+        if req_sub_type:
+            sql = sql.format(D=f"'{req_sub_type}'", A="{A}", B="{B}", C="{C}")
+
+        sql = sql.format(A="NULL", B="NULL", C="NULL", D="NULL")
+        print(f"{sql=}")
+        df = connect(sql)
+        if not df.empty:
+            row = df.iloc[0]
+            self.table_predict_labour.insert(0, 4, row["# Reqs"])
+            self.table_predict_labour.insert(1, 1, row["Act / Req"])
+            self.table_predict_labour.insert(2, 1, row["Bud / Req"])
+            self.table_predict_labour.insert(1, 2, row["Act"])
+            self.table_predict_labour.insert(2, 2, row["Bud"])
+            self.table_predict_labour.insert(1, 4, row["% Ttl Reqs"])
+            self.table_predict_labour.insert(2, 4, row["% Total Bud"])
+
     def update_cb_department(self, department):
         print(f"update_cb_department {department=}")
         if department == self.c_cb_new:
             print(f"Add new department")
+        self.update_predict_labour()
 
     def update_cb_company(self, company):
         print(f"update_cb_company {company=}")
         if company == self.c_cb_new:
             print(f"Add new company")
+        self.update_predict_labour()
 
     def update_cb_req_type(self, req_type):
         print(f"update_cb_req_type {req_type=}")
@@ -425,11 +621,13 @@ FROM
             self.cb_req_sub_type.values = self.dict_req_types[req_type]
             self.cb_req_sub_type.configure(values=self.dict_req_types[req_type])
             self.v_cb_req_sub_type.set("")
+        self.update_predict_labour()
 
     def update_cb_req_sub_type(self, re_sub_type):
         print(f"update_cb_req_sub_type {re_sub_type=}")
         if re_sub_type == self.c_cb_new:
             print(f"Add new re_sub_type")
+        self.update_predict_labour()
 
     def update_sl_priority(self, priority):
         print(f"update_s_priority {priority=}")
@@ -509,17 +707,18 @@ FROM
         # due_date = self.dp_due_date.selection_get()
         # due_date = self.dp_due_date.date
         # due_date = self.dp_due_date.var_date_picker.get()
-        due_date = self.dp_due_date.var_date_picker.get().strip().replace("'", "''").removesuffix(";")
-        company = self.v_cb_company.get().strip().replace("'", "''").removesuffix(";").upper()
-        department = self.v_cb_department.get().strip().replace("'", "''").removesuffix(";")
-        req_type = self.v_cb_req_type.get().strip().replace("'", "''").removesuffix(";")
-        req_sub_type = self.v_cb_req_sub_type.get().strip().replace("'", "''").removesuffix(";")
-        request_text = self.tb_request_text.get("0.0", tkinter.END).strip().replace("'", "''").removesuffix(";")
-        comment_text = self.tb_comment_text.get("0.0", tkinter.END).strip().replace("'", "''").removesuffix(";")
+        due_date = self.get_field_due_date()
+        company = self.get_field_company()
+        department = self.get_field_department()
+        req_type = self.get_field_req_type()
+        req_sub_type = self.get_field_req_sub_type()
+        request_text = self.get_field_request_text()
+        comment_text = self.get_field_comment_text()
         # req_follow_up = self.table_follow_up.selection_get()
         req_follow_up = self.table_follow_up.table.get_selected_row()
-        priority = self.v_s_priority.get()
+        priority = self.get_field_priority()
         o_due_date = due_date
+        labour_est = self.get_field_labour_est()
 
         print(f"{due_date=}\n{company=}\n{department=}\n{req_type=}\n{req_sub_type=}\n{request_text=}\n{comment_text=}\n{req_follow_up=}\n{priority=}")
 
@@ -574,21 +773,37 @@ FROM
         str_now = f"'{datetime.datetime.now():%x %X}'"
 
         insert_sql = f"INSERT INTO [IT Requests]"
-        insert_sql += f" [RequestDate] = {str_now}"
-        insert_sql += f", [DueDate] = {due_date}"
-        insert_sql += f", [Priority] = {priority}"
-        insert_sql += f", [SubPriority] = {sub_priority}"
-        insert_sql += f", [Request] = '{request_text}'"
-        insert_sql += f", [RequestedBy] = '{requested_by}'"
-        insert_sql += f", [Department] = {department_id}"
-        insert_sql += f", [Company] = '{company}'"
-        insert_sql += f", [RequestType] = '{req_type}'"
-        insert_sql += f", [RequestSubType] = '{req_sub_type}'"
-        insert_sql += f", [Comments] = '{comment_text}'"
-        insert_sql += f", [Status] = '{status}'"
-        insert_sql += f", [ITPersonAssignedID] = {personnel_assigned_id}"
-        insert_sql += f", [LabourEstimate] = {labour_est}"
-        insert_sql += f", [LastStatusUpdater] = '{self.user_full_name}'"
+        insert_sql += f" ([RequestDate], [DueDate], [Priority]"
+        insert_sql += f", [SubPriority], [Request], [RequestedBy]"
+        insert_sql += f", [Department], [Company], [RequestType]"
+        insert_sql += f", [RequestSubType], [Comments], [Status]"
+        insert_sql += f", [ITPersonAssignedID], [LabourEstimate], [LastStatusUpdater]"
+        insert_sql += ") VALUES ("
+        insert_sql += f"{str_now}, {due_date}, {priority}"
+        insert_sql += f", {sub_priority}, '{request_text}', '{requested_by}'"
+        insert_sql += f", {department_id}, '{company}', '{req_type}'"
+        insert_sql += f", '{req_sub_type}', '{comment_text}', '{status}'"
+        insert_sql += f", {personnel_assigned_id}, {labour_est}, '{self.user_full_name}'"
+        insert_sql += f")"
+
+
+        update_sql = f"UPDATE [IT Requests] SET"
+        update_sql += f" [RequestDate] = {str_now}"
+        update_sql += f", [DueDate] = {due_date}"
+        update_sql += f", [Priority] = {priority}"
+        update_sql += f", [SubPriority] = {sub_priority}"
+        update_sql += f", [Request] = '{request_text}'"
+        update_sql += f", [RequestedBy] = '{requested_by}'"
+        update_sql += f", [Department] = {department_id}"
+        update_sql += f", [Company] = '{company}'"
+        update_sql += f", [RequestType] = '{req_type}'"
+        update_sql += f", [RequestSubType] = '{req_sub_type}'"
+        update_sql += f", [Comments] = '{comment_text}'"
+        update_sql += f", [Status] = '{status}'"
+        update_sql += f", [ITPersonAssignedID] = {personnel_assigned_id}"
+        update_sql += f", [LabourEstimate] = {labour_est}"
+        update_sql += f", [LastStatusUpdater] = '{self.user_full_name}'"
+        update_sql += f" WHERE [ITRequestID#] = {self.request_id}"
 
 
     # def unselect_follow_up_table_rows(self):
@@ -622,6 +837,7 @@ FROM
     def load_dfs(self):
         self.df_requests = connect(**self.sql_df_requests)
         self.df_customers = connect(**self.sql_df_customers)
+        self.df_departments = connect(**self.sql_df_departments)
         self.df_req_hardware = connect(**self.sql_df_hardware)
         self.df_req_software = connect(**self.sql_df_software)
         self.df_req_training = connect(**self.sql_df_training)
