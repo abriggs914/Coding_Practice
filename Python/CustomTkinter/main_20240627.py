@@ -1,6 +1,6 @@
 import tkinter
 from tkinter import messagebox
-from typing import Optional, Any
+from typing import Optional
 
 import customtkinter as ctk
 import pandas as pd
@@ -20,7 +20,7 @@ class App(ctk.CTk):
 
         self.title_app_long = f"IT Request Maintenance"
         self.title_app_short = f"IT Request Maintenance"
-        # self.text_sw_all_follow_up = ""
+        self.text_sw_all_follow_up = ""
         self.user_windows_name = get_windows_user(2).split("\\")[-1]
         self.user_full_name = get_windows_user()
         self.allow_list_edits = False
@@ -185,6 +185,13 @@ HAVING
             ):
                 lst.append(self.c_cb_new)
 
+        # ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
+        # self.pack_propagate(False)
+        self.geometry(calc_geometry_tl(0.6, 0.3))
+        # self.state("zoomed")
+        self.title(self.title_app_long)
+
         self.default_cb_config = {
             "bg_color": self.colour_default_cb_bg_colour.hex_code,
             "fg_color": self.colour_default_cb_fg_colour.hex_code,
@@ -205,79 +212,6 @@ HAVING
         self.default_lbl_config = {
             "font": ("Calibri", 18, "bold")
         }
-
-        self.tab_view_master = ctk.CTkTabview(
-            self
-        )
-        self.tab_name_new = "New"
-        self.tab_name_edit = "Edit"
-        self.tab_view_master.add(self.tab_name_new)
-        self.tab_view_master.add(self.tab_name_edit)
-
-        self.f_new_request = FrameNewRequest(
-            self.tab_view_master.tab("New"),
-            self,
-            width=1000,
-            height=800
-        )
-
-        self.f_new_request = FrameEditRequest(
-            self.tab_view_master.tab("Edit"),
-            self,
-            width=1000,
-            height=800
-        )
-
-        self.tab_view_master.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
-        # self.tab_view_master.tab(self.tab_name_new).grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
-        # self.tab_view_master.tab(self.tab_name_edit).grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
-        self.f_new_request.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
-        ctk.set_default_color_theme("blue")
-        self.geometry(calc_geometry_tl(1.0, 1.0, largest=1))
-        self.title(self.title_app_long)
-
-    def department_name_to_id(self, department) -> None | int:
-        dfd = self.df_departments
-        df: pd.DataFrame = dfd.loc[dfd["Dept"].str.lower() == department.lower()]
-        if df.empty:
-            return
-        else:
-            return df.iloc[0]["MinOfDeptID"]
-
-    def get_newest_request_id(
-            self,
-            refresh_df: bool = True,
-            by: Optional[str] = None
-    ) -> int | None:
-        if refresh_df:
-            self.df_requests = connect(**self.sql_df_requests)
-
-        user: str = (by if by is not None else self.user_full_name).lower()
-        df: pd.DataFrame = self.df_requests.loc[self.df_requests["RequestedBy"].str.lower() == user]
-        df = df.sort_values(by="RequestDateOriginal", ascending=False)
-        # print(f"{user=}\n{df=}")
-
-        if not df.empty:
-            return df.iloc[0]["ITRequestID#"]
-
-    def format_request_id(self, last_request_id: int) -> str:
-        return "#" + str(last_request_id).rjust(6, "0")
-
-    def load_dfs(self):
-        self.df_requests = connect(**self.sql_df_requests)
-        self.df_customers = connect(**self.sql_df_customers)
-        self.df_departments = connect(**self.sql_df_departments)
-        self.df_req_hardware = connect(**self.sql_df_hardware)
-        self.df_req_software = connect(**self.sql_df_software)
-        self.df_req_training = connect(**self.sql_df_training)
-
-
-class FrameNewRequest(ctk.CTkScrollableFrame):
-
-    def __init__(self, master: Any, ctk_: App, **kwargs):
-        super().__init__(master, **kwargs)
-
-        self.data = ctk_
 
         # frames
         self.f_controls_a = ctk.CTkFrame(self)
@@ -317,7 +251,7 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.v_cb_req_sub_type = ctk.StringVar(self, name="request_sub_type")
         self.v_s_priority = ctk.IntVar(self, name="request_priority")
         self.v_table_selected_rows = list()
-        # self.tv_sw_all_follow_up = ctk.StringVar(self, name="switch_all_follow_up", value=self.text_sw_all_follow_up)
+        self.tv_sw_all_follow_up = ctk.StringVar(self, name="switch_all_follow_up", value=self.text_sw_all_follow_up)
 
         # widgets
         self.sw_submit_requests = ctk.CTkSwitch(
@@ -334,7 +268,7 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.lbl_dp_due_date = ctk.CTkLabel(
             self.f_controls_b,
             textvariable=self.v_lbl_dp_due_date,
-            **self.data.default_lbl_config
+            **self.default_lbl_config
         )
         self.dp_due_date = CtkEntryDate(
             self.f_controls_b
@@ -343,81 +277,81 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.lbl_cb_company = ctk.CTkLabel(
             self.f_controls_b,
             textvariable=self.v_lbl_cb_company,
-            **self.data.default_lbl_config
+            **self.default_lbl_config
         )
         self.cb_company = ctk.CTkComboBox(
             master=self.f_controls_b,
-            values=self.data.list_companies,
+            values=self.list_companies,
             command=self.update_cb_company,
             variable=self.v_cb_company,
-            **self.data.default_cb_config
+            **self.default_cb_config
         )
         self.lbl_cb_department = ctk.CTkLabel(
             self.f_controls_b,
             textvariable=self.v_lbl_cb_department,
-            **self.data.default_lbl_config
+            **self.default_lbl_config
         )
         self.cb_department = ctk.CTkComboBox(
             master=self.f_controls_b,
-            values=self.data.list_departments,
+            values=self.list_departments,
             command=self.update_cb_department,
             variable=self.v_cb_department,
-            **self.data.default_cb_config
+            **self.default_cb_config
         )
         self.lbl_cb_req_type = ctk.CTkLabel(
             self.f_controls_b,
             textvariable=self.v_lbl_cb_req_type,
-            **self.data.default_lbl_config
+            **self.default_lbl_config
         )
         self.cb_req_type = ctk.CTkComboBox(
             master=self.f_controls_b,
-            values=self.data.list_req_types,
+            values=self.list_req_types,
             command=self.update_cb_req_type,
             variable=self.v_cb_req_type,
-            **self.data.default_cb_config
+            **self.default_cb_config
         )
         self.lbl_cb_req_sub_type = ctk.CTkLabel(
             self.f_controls_b,
             textvariable=self.v_lbl_cb_req_sub_type,
-            **self.data.default_lbl_config
+            **self.default_lbl_config
         )
         self.cb_req_sub_type = ctk.CTkComboBox(
             master=self.f_controls_b,
-            values=self.data.list_req_sub_types,
+            values=self.list_req_sub_types,
             command=self.update_cb_req_sub_type,
             variable=self.v_cb_req_sub_type,
-            **self.data.default_cb_config
+            **self.default_cb_config
         )
 
         self.lbl_tb_request = ctk.CTkLabel(
             self.f_controls_c,
             textvariable=self.v_lbl_tb_request,
-            **self.data.default_lbl_config
+            **self.default_lbl_config
         )
         self.btn_date_stamp_request = ctk.CTkButton(
             self.f_controls_c,
             textvariable=self.v_btn_date_stamp_request,
             command=self.click_date_stamp_request,
-            **self.data.default_btn_config
+            **self.default_btn_config
         )
         self.tb_request_text = ctk.CTkTextbox(
             self.f_controls_c,
-            **self.data.default_tb_config
+            **self.default_tb_config
         )
         self.lbl_tb_comment = ctk.CTkLabel(
             self.f_controls_c,
             textvariable=self.v_lbl_tb_comment,
-            **self.data.default_lbl_config
+            **self.default_lbl_config
         )
         self.btn_date_stamp_comment = ctk.CTkButton(
             self.f_controls_c,
             textvariable=self.v_btn_date_stamp_comment,
             command=self.click_date_stamp_comment,
-            **self.data.default_btn_config
+            **self.default_btn_config
         )
         self.tb_comment_text = ctk.CTkTextbox(
             self.f_controls_c,
-            **self.data.default_tb_config
+            **self.default_tb_config
         )
 
         # self.table_follow_up = CTkTable(
@@ -430,11 +364,11 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.lbl_table_follow_up = ctk.CTkLabel(
             self.f_controls_d,
             textvariable=self.v_lbl_table_follow_up,
-            **self.data.default_lbl_config
+            **self.default_lbl_config
         )
         self.table_follow_up = CtkTableExt(
             master=self.f_controls_d,
-            table_data=self.data.data_follow_up,
+            table_data=self.data_follow_up,
             width=450,
             kwargs_table={
                 "header_color": "#019822",
@@ -445,13 +379,13 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.lbl_s_priority = ctk.CTkLabel(
             self.f_controls_d,
             textvariable=self.v_lbl_s_priority,
-            **self.data.default_lbl_config
+            **self.default_lbl_config
         )
         self.s_priority = ctk.CTkSlider(
             master=self.f_controls_d,
-            from_=self.data.list_priorities[0],
-            to=self.data.list_priorities[-1],
-            number_of_steps=(self.data.list_priorities[-1] - self.data.list_priorities[0]),
+            from_=self.list_priorities[0],
+            to=self.list_priorities[-1],
+            number_of_steps=(self.list_priorities[-1] - self.list_priorities[0]),
             variable=self.v_s_priority,
             command=self.update_sl_priority
         )
@@ -460,33 +394,26 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
             self.f_control_btns,
             textvariable=self.v_btn_clear_fields,
             command=self.click_clear_fields,
-            **self.data.default_btn_config
+            **self.default_btn_config
         )
 
         self.btn_go_back = ctk.CTkButton(
             self.f_control_btns,
             textvariable=self.v_btn_go_back,
             command=self.click_go_back,
-            **self.data.default_btn_config
+            **self.default_btn_config
         )
 
         self.btn_submit = ctk.CTkButton(
             self.f_control_btns,
             textvariable=self.v_btn_submit,
             command=self.click_submit,
-            **self.data.default_btn_config
-        )
-
-        self.btn_edit_last_request = ctk.CTkButton(
-            self.f_control_btns,
-            textvariable=self.v_btn_edit_last_request,
-            command=self.click_edit_last_request,
-            **self.data.default_btn_config
+            **self.default_btn_config
         )
 
         self.table_predict_labour = CTkTable(
             self.f_labour_est,
-            values=self.data.data_predict_labour
+            values=self.data_predict_labour
             # ,            header_color=self.colour_default_table_header.hex_code
         )
         self.select_legend_cols_predict_labour()
@@ -579,6 +506,14 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.request_id = None
         self.update_predict_labour()
 
+    def department_name_to_id(self, department) -> None | int:
+        dfd = self.df_departments
+        df: pd.DataFrame = dfd.loc[dfd["Dept"].str.lower() == department.lower()]
+        if df.empty:
+            return
+        else:
+            return df.iloc[0]["MinOfDeptID"]
+
     def select_legend_cols_predict_labour(self):
         self.table_predict_labour.select(0, 0)
         self.table_predict_labour.select(0, 1)
@@ -643,9 +578,9 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         department = self.get_field_department()
         req_type = self.get_field_req_type()
         req_sub_type = self.get_field_req_sub_type()
-        department_id = self.data.department_name_to_id(department)
+        department_id = self.department_name_to_id(department)
 
-        sql = self.data.sql_template_sp_predict_labour
+        sql = self.sql_template_sp_predict_labour
 
         print(f"{company=}, {department=}, {department_id=}, {req_type=}, {req_sub_type=}")
         if company:
@@ -672,29 +607,29 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
 
     def update_cb_department(self, department):
         print(f"update_cb_department {department=}")
-        if department == self.data.c_cb_new:
+        if department == self.c_cb_new:
             print(f"Add new department")
         self.update_predict_labour()
 
     def update_cb_company(self, company):
         print(f"update_cb_company {company=}")
-        if company == self.data.c_cb_new:
+        if company == self.c_cb_new:
             print(f"Add new company")
         self.update_predict_labour()
 
     def update_cb_req_type(self, req_type):
         print(f"update_cb_req_type {req_type=}")
-        if req_type == self.data.c_cb_new:
+        if req_type == self.c_cb_new:
             print(f"Add new req_type")
         else:
-            self.cb_req_sub_type.values = self.data.dict_req_types[req_type]
-            self.cb_req_sub_type.configure(values=self.data.dict_req_types[req_type])
+            self.cb_req_sub_type.values = self.dict_req_types[req_type]
+            self.cb_req_sub_type.configure(values=self.dict_req_types[req_type])
             self.v_cb_req_sub_type.set("")
         self.update_predict_labour()
 
     def update_cb_req_sub_type(self, re_sub_type):
         print(f"update_cb_req_sub_type {re_sub_type=}")
-        if re_sub_type == self.data.c_cb_new:
+        if re_sub_type == self.c_cb_new:
             print(f"Add new re_sub_type")
         self.update_predict_labour()
 
@@ -727,7 +662,7 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         text += "\n" if text else ""
         # text += f"{datetime.datetime.now():%Y-%m-%d} -- {self.user_windows_name}: "
         str_time = date_str_format(datetime.datetime.now(), include_time=True)
-        text += f"{str_time} -- {self.data.user_windows_name}: "
+        text += f"{str_time} -- {self.user_windows_name}: "
         self.tb_request_text.delete("0.0", ctk.END)
         self.tb_request_text.insert("0.0", text)
 
@@ -737,7 +672,7 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         text += "\n" if text else ""
         # text += f"{datetime.datetime.now():%Y-%m-%d} -- {self.user_windows_name}: "
         str_time = date_str_format(datetime.datetime.now(), include_time=True)
-        text += f"{str_time} -- {self.data.user_windows_name}: "
+        text += f"{str_time} -- {self.user_windows_name}: "
         self.tb_comment_text.delete("0.0", ctk.END)
         self.tb_comment_text.insert("0.0", text)
 
@@ -765,16 +700,10 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
 
     def focus_widget(self, widget, msg):
         messagebox.showinfo(
-            title=self.data.title_app_short,
+            title=self.title_app_short,
             message=msg
         )
         widget.focus()
-
-    def click_edit_last_request(self):
-        last_id = self.data.get_newest_request_id()
-        # TODO navigate to request based on the number
-        print(f"{last_id=}")
-        self.data.tab_view_master.set(self.data.tab_name_edit)
 
     def click_submit(self):
         print(f"click_submit")
@@ -794,7 +723,7 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         priority = self.get_field_priority()
         o_due_date = due_date
         labour_est = round(self.get_field_labour_est(), 2)
-        requested_by = self.data.user_full_name
+        requested_by = self.user_full_name
 
         print(
             f"{due_date=}\n{company=}\n{department=}\n{req_type=}\n{req_sub_type=}\n{request_text=}\n{comment_text=}\n{req_follow_up=}\n{priority=}")
@@ -841,7 +770,7 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         #     Me.SubPriority = p
         # End Sub
         sub_priority = 0
-        department_id = self.data.department_name_to_id(department)
+        department_id = self.department_name_to_id(department)
         status = "Queued"  # place directly in the queue
         personnel_assigned_id = 1  # Unknown assignment code
         due_date = is_date(due_date)
@@ -861,16 +790,16 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         insert_sql += f", {sub_priority}, '{request_text}', '{requested_by}'"
         insert_sql += f", {department_id}, '{company}', '{req_type}'"
         insert_sql += f", '{req_sub_type}', '{comment_text}', '{status}'"
-        insert_sql += f", {personnel_assigned_id}, {labour_est}, '{self.data.user_full_name}'"
+        insert_sql += f", {personnel_assigned_id}, {labour_est}, '{self.user_full_name}'"
         insert_sql += f")"
 
         connect(insert_sql, do_exec=False)
 
-        last_request_id = self.data.get_newest_request_id()
-        str_last_request_id = self.data.format_request_id(last_request_id)
+        last_request_id = self.get_newest_request_id()
+        str_last_request_id = self.format_request_id(last_request_id)
 
         messagebox.showinfo(
-            title=self.data.title_app_short,
+            title=self.title_app_short,
             message=f"Request {str_last_request_id} created successfully!"
         )
 
@@ -889,7 +818,7 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         update_sql += f", [Status] = '{status}'"
         update_sql += f", [ITPersonAssignedID] = {personnel_assigned_id}"
         update_sql += f", [LabourEstimate] = {labour_est}"
-        update_sql += f", [LastStatusUpdater] = '{self.data.user_full_name}'"
+        update_sql += f", [LastStatusUpdater] = '{self.user_full_name}'"
         update_sql += f" WHERE [ITRequestID#] = {self.request_id}"
 
         print(f"{insert_sql=}")
@@ -924,25 +853,44 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
     #     s_values.insert(0, self.header_follow_up)
     #     self.table_follow_up.update_values(s_values)
 
+    def get_newest_request_id(
+            self,
+            refresh_df: bool = True,
+            by: Optional[str] = None
+    ) -> int | None:
+        if refresh_df:
+            self.df_requests = connect(**self.sql_df_requests)
+
+        user: str = (by if by is not None else self.user_full_name).lower()
+        df: pd.DataFrame = self.df_requests.loc[self.df_requests["RequestedBy"].str.lower() == user]
+        df = df.sort_values(by="RequestDateOriginal", ascending=False)
+        # print(f"{user=}\n{df=}")
+
+        if not df.empty:
+            return df.iloc[0]["ITRequestID#"]
+
+    def format_request_id(self, last_request_id: int) -> str:
+        return "#" + str(last_request_id).rjust(6, "0")
+
+    def load_dfs(self):
+        self.df_requests = connect(**self.sql_df_requests)
+        self.df_customers = connect(**self.sql_df_customers)
+        self.df_departments = connect(**self.sql_df_departments)
+        self.df_req_hardware = connect(**self.sql_df_hardware)
+        self.df_req_software = connect(**self.sql_df_software)
+        self.df_req_training = connect(**self.sql_df_training)
+
     def insert_test_params(self, *args):
         print(f"insert_test_params {args=}")
-        self.v_cb_company.set(self.data.list_companies[0])
+        self.v_cb_company.set(self.list_companies[0])
         self.v_cb_department.set("IT")
-        self.v_cb_req_type.set(self.data.list_req_types[0])
-        self.v_cb_req_sub_type.set(self.data.dict_req_types[self.data.list_req_types[0]][0])
+        self.v_cb_req_type.set(self.list_req_types[0])
+        self.v_cb_req_sub_type.set(self.dict_req_types[self.list_req_types[0]][0])
         self.tb_request_text.insert("0.0", "TESTING")
         self.tb_comment_text.insert("0.0", "TESTING")
         self.v_s_priority.set(2)
         self.v_s_labour_est.set(2.5)
         self.table_follow_up.table.select_row(3)
-
-
-class FrameEditRequest(ctk.CTkScrollableFrame):
-
-    def __init__(self, master: Any, ctk_: App, **kwargs):
-        super().__init__(master, **kwargs)
-
-        self.data = ctk_
 
 
 if __name__ == '__main__':

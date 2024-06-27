@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.77
-    Date...........2024-06-05
+    Version..............1.78
+    Date...........2024-06-27
     Author(s)....Avery Briggs
     """
 
@@ -4206,17 +4206,17 @@ def calc_geometry_tl(
         largest: bool | int = True,
         rtype: str | dict | list | tuple = str,
         parent: tkinter.BaseWidget | tkinter.Toplevel | tkinter.Tk = None,
-        do_print: bool = False
+        do_print: bool = False,
+        ask: bool = False
         # one_display_orient: Literal["horizontal", "vertical"]="horizontal"
 ) -> str | dict | list | tuple:
-    # TODO add 'parent' param. Would allow you to specify where a screen's parent is, and to match it's dimensions.
 
     x_off, y_off = 0, 0
 
-    if dims is None:
+    monitors = utility.get_largest_monitors()
 
-        monitors = utility.get_largest_monitors()
-        monitors_lr = sorted(list(monitors), key=lambda m: m.x)
+    if dims is None:
+        # monitors_lr = sorted(list(monitors), key=lambda m: m.x)
         if isinstance(largest, bool) and largest:
             monitor = monitors[0]
             largest = 1
@@ -4245,6 +4245,72 @@ def calc_geometry_tl(
         # print(f"{px=}, {py=}")
         x_off = px
         y_off = py
+
+        if len(monitors) > 1:
+            if ask:
+
+                idx = tkinter.IntVar(parent, value=0)
+
+                def close_tl():
+                    tl.destroy()
+
+                def click(event, monitor_idx):
+                    # print(f"click {event=}, {idx=}")
+                    idx.set(monitor_idx)
+                    close_tl()
+
+                tl = tkinter.Toplevel(parent)
+                w_w, h_w = 600, 200
+                tl.geometry = calc_geometry_tl(w_w, h_w, parent=parent, ask=False)
+                tl_canvas = tkinter.Canvas(tl, width=w_w, height=h_w)
+
+                # print(f"{monitors=}")
+                wx0 = monitors[0].x
+                wx1 = monitors[-1].x + monitors[-1].height
+                wy0 = min([m.y for m in monitors])
+                wy1 = max([m.y + m.height for m in monitors])
+                wwr = w_w / (wx1 - wx0)
+                whr = h_w / (wy1 - wy0)
+                for i, m in enumerate(monitors):
+                    x0, y0 = (m.x - wx0), (m.y - wy0)
+                    x1, y1 = (x0 + m.width) * wwr, (y0 + m.height) * whr
+                    x0 *= wwr
+                    y0 *= wwr
+                    x0 = clamp(0, x0, w_w - ((len(monitors) - i) * 5))
+                    y0 = clamp(0, y0, h_w - ((len(monitors) - i) * 5))
+                    x1 = clamp(0, x1, w_w)
+                    y1 = clamp(0, y1, h_w)
+                    w, h = x1 - x0, y1 - y0
+                    tr = tl_canvas.create_rectangle(x0, y0, x1, y1, fill="#AEAEAE")
+                    tt = tl_canvas.create_text(x0 + (w / 2), y0 + (h / 2), fill="#000000", text=f"Monitor {i + 1}")
+                    tl_canvas.tag_bind(tr, "<Button-1>", lambda event, i_=i: click(event, i_))
+                    tl_canvas.tag_bind(tt, "<Button-1>", lambda event, i_=i: click(event, i_))
+
+                # gc = grid_cells(w_w, len(monitors), h_w, 1, r_type=list, x_pad=10, y_pad=5)[0]
+                # print(f"{monitors=}")
+                # for i, m in enumerate(monitors):
+                #     tr = tl_canvas.create_rectangle(*gc[i], fill="#AEAEAE")
+                #     x0, y0, x1, y1 = gc[i]
+                #     w, h = x1 - x0, y1 - y0
+                #     tt = tl_canvas.create_text(x0 + (w/2), y0 + (h/2), fill="#000000", text=f"Monitor {i+1}")
+                #     tl_canvas.tag_bind(tr, "<Button-1>", lambda event, i_=i: click(event, i_))
+                #     tl_canvas.tag_bind(tt, "<Button-1>", lambda event, i_=i: click(event, i_))
+
+                tl_canvas.grid()
+                tl.protocol("WM_DELETE_WINDOW", close_tl)
+                tl.grab_set()
+                parent.withdraw()
+                parent.wait_window(tl)
+                parent.deiconify()
+
+                monitor = monitors[idx.get()]
+                x_, y_, width_, height_ = monitor.x, monitor.y, monitor.width, monitor.height
+                x_off = monitor.x
+                y_off = monitor.y
+
+    else:
+        if ask:
+            raise ValueError(f"Cannot use param 'ask' when 'parent' is not supplied. The 'ask' param is used to create a brief TopLevel to ask which monitor you want to use. Therefore, 'parent' must be a valid instance of (tkinter.BaseWidget | tkinter.Toplevel | tkinter.Tk)")
 
     t_width, t_height = width_, height_
 
@@ -4590,6 +4656,7 @@ if __name__ == '__main__':
     print(f"{VERSION_AUTHORS()=}.")
 
     app = tkinter.Tk()
+    app.geometry(calc_geometry_tl(800, 800, parent=app, ask=True))
     tb = ToggleCanvas(
         app,
         width=600,
