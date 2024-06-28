@@ -221,7 +221,7 @@ HAVING
             height=800
         )
 
-        self.f_new_request = FrameEditRequest(
+        self.f_edit_request = FrameEditRequest(
             self.tab_view_master.tab("Edit"),
             self,
             width=1000,
@@ -232,6 +232,7 @@ HAVING
         # self.tab_view_master.tab(self.tab_name_new).grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
         # self.tab_view_master.tab(self.tab_name_edit).grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
         self.f_new_request.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
+        self.f_edit_request.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
         ctk.set_default_color_theme("blue")
         self.geometry(calc_geometry_tl(1.0, 1.0, largest=1))
         self.title(self.title_app_long)
@@ -272,7 +273,7 @@ HAVING
         self.df_req_training = connect(**self.sql_df_training)
 
 
-class FrameNewRequest(ctk.CTkScrollableFrame):
+class FrameRequest(ctk.CTkScrollableFrame):
 
     def __init__(self, master: Any, ctk_: App, **kwargs):
         super().__init__(master, **kwargs)
@@ -317,7 +318,6 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.v_cb_req_sub_type = ctk.StringVar(self, name="request_sub_type")
         self.v_s_priority = ctk.IntVar(self, name="request_priority")
         self.v_table_selected_rows = list()
-        # self.tv_sw_all_follow_up = ctk.StringVar(self, name="switch_all_follow_up", value=self.text_sw_all_follow_up)
 
         # widgets
         self.sw_submit_requests = ctk.CTkSwitch(
@@ -329,6 +329,13 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
             self.f_controls_a,
             textvariable=self.v_lbl_sw_mark_complete,
             variable=self.v_sw_mark_complete
+        )
+
+        self.btn_go_back = ctk.CTkButton(
+            self.f_control_btns,
+            textvariable=self.v_btn_go_back,
+            command=self.click_go_back,
+            **self.data.default_btn_config
         )
 
         self.lbl_dp_due_date = ctk.CTkLabel(
@@ -420,13 +427,6 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
             **self.data.default_tb_config
         )
 
-        # self.table_follow_up = CTkTable(
-        #     master=self.f_bottom_controls,
-        #     header_color="#019822",
-        #     values=self.data_follow_up,
-        #     command=self.update_table_follow_up
-        # )
-
         self.lbl_table_follow_up = ctk.CTkLabel(
             self.f_controls_d,
             textvariable=self.v_lbl_table_follow_up,
@@ -463,13 +463,6 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
             **self.data.default_btn_config
         )
 
-        self.btn_go_back = ctk.CTkButton(
-            self.f_control_btns,
-            textvariable=self.v_btn_go_back,
-            command=self.click_go_back,
-            **self.data.default_btn_config
-        )
-
         self.btn_submit = ctk.CTkButton(
             self.f_control_btns,
             textvariable=self.v_btn_submit,
@@ -483,13 +476,6 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
             command=self.click_edit_last_request,
             **self.data.default_btn_config
         )
-
-        self.table_predict_labour = CTkTable(
-            self.f_labour_est,
-            values=self.data.data_predict_labour
-            # ,            header_color=self.colour_default_table_header.hex_code
-        )
-        self.select_legend_cols_predict_labour()
 
         self.v_s_labour_est_is_large = ctk.BooleanVar(self)
         self.v_s_labour_est_is_neg = ctk.BooleanVar(self)
@@ -516,11 +502,12 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.sb_labour_ext_is_large.set(self.list_v_sb_labour_est_is_large[0][0])
         self.sb_labour_ext_is_neg.set(self.list_v_sb_labour_est_is_neg[1])
 
-        # self.sw_all_follow_up = ctk.CTkSwitch(
-        #     master=self.f_controls_a,
-        #     textvariable=self.tv_sw_all_follow_up
-        #
-        # )
+        self.table_predict_labour = CTkTable(
+            self.f_labour_est,
+            values=self.data.data_predict_labour
+            # ,            header_color=self.colour_default_table_header.hex_code
+        )
+        self.select_legend_cols_predict_labour()
 
         self.f_controls_a.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=tkinter.NSEW)
         self.f_controls_b.grid(row=1, column=0, rowspan=1, columnspan=1, sticky=tkinter.NSEW)
@@ -579,14 +566,6 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.request_id = None
         self.update_predict_labour()
 
-    def select_legend_cols_predict_labour(self):
-        self.table_predict_labour.select(0, 0)
-        self.table_predict_labour.select(0, 1)
-        self.table_predict_labour.select(0, 2)
-        self.table_predict_labour.select(0, 3)
-        self.table_predict_labour.select_column(0)
-        self.table_predict_labour.select_column(3)
-
     def get_field_company(self):
         return self.v_cb_company.get().strip().replace("'", "''").removesuffix(";").upper()
 
@@ -638,38 +617,6 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         )
         self.v_s_labour_est.set(clamp(values[0], self.v_s_labour_est.get(), values[1]))
 
-    def update_predict_labour(self):
-        company = self.get_field_company()
-        department = self.get_field_department()
-        req_type = self.get_field_req_type()
-        req_sub_type = self.get_field_req_sub_type()
-        department_id = self.data.department_name_to_id(department)
-
-        sql = self.data.sql_template_sp_predict_labour
-
-        print(f"{company=}, {department=}, {department_id=}, {req_type=}, {req_sub_type=}")
-        if company:
-            sql = sql.format(A=f"'{company}'", B="{B}", C="{C}", D="{D}")
-        if department_id:
-            sql = sql.format(B=department_id, A="{A}", C="{C}", D="{D}")
-        if req_type:
-            sql = sql.format(C=f"'{req_type}'", A="{A}", B="{B}", D="{D}")
-        if req_sub_type:
-            sql = sql.format(D=f"'{req_sub_type}'", A="{A}", B="{B}", C="{C}")
-
-        sql = sql.format(A="NULL", B="NULL", C="NULL", D="NULL")
-        print(f"{sql=}")
-        df = connect(sql)
-        if not df.empty:
-            row = df.iloc[0]
-            self.table_predict_labour.insert(0, 4, row["# Reqs"])
-            self.table_predict_labour.insert(1, 1, row["Act / Req"])
-            self.table_predict_labour.insert(2, 1, row["Bud / Req"])
-            self.table_predict_labour.insert(1, 2, row["Act"])
-            self.table_predict_labour.insert(2, 2, row["Bud"])
-            self.table_predict_labour.insert(1, 4, row["% Ttl Reqs"])
-            self.table_predict_labour.insert(2, 4, row["% Total Bud"])
-
     def update_cb_department(self, department):
         print(f"update_cb_department {department=}")
         if department == self.data.c_cb_new:
@@ -703,6 +650,46 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
 
     def update_sw_all_follow_up(self, new_val):
         print(f"update_sw_all_follow_up {new_val=}")
+
+    def select_legend_cols_predict_labour(self):
+        self.table_predict_labour.select(0, 0)
+        self.table_predict_labour.select(0, 1)
+        self.table_predict_labour.select(0, 2)
+        self.table_predict_labour.select(0, 3)
+        self.table_predict_labour.select_column(0)
+        self.table_predict_labour.select_column(3)
+
+    def update_predict_labour(self):
+        company = self.get_field_company()
+        department = self.get_field_department()
+        req_type = self.get_field_req_type()
+        req_sub_type = self.get_field_req_sub_type()
+        department_id = self.data.department_name_to_id(department)
+
+        sql = self.data.sql_template_sp_predict_labour
+
+        print(f"{company=}, {department=}, {department_id=}, {req_type=}, {req_sub_type=}")
+        if company:
+            sql = sql.format(A=f"'{company}'", B="{B}", C="{C}", D="{D}")
+        if department_id:
+            sql = sql.format(B=department_id, A="{A}", C="{C}", D="{D}")
+        if req_type:
+            sql = sql.format(C=f"'{req_type}'", A="{A}", B="{B}", D="{D}")
+        if req_sub_type:
+            sql = sql.format(D=f"'{req_sub_type}'", A="{A}", B="{B}", C="{C}")
+
+        sql = sql.format(A="NULL", B="NULL", C="NULL", D="NULL")
+        print(f"{sql=}")
+        df = connect(sql)
+        if not df.empty:
+            row = df.iloc[0]
+            self.table_predict_labour.insert(0, 4, row["# Reqs"])
+            self.table_predict_labour.insert(1, 1, row["Act / Req"])
+            self.table_predict_labour.insert(2, 1, row["Bud / Req"])
+            self.table_predict_labour.insert(1, 2, row["Act"])
+            self.table_predict_labour.insert(2, 2, row["Bud"])
+            self.table_predict_labour.insert(1, 4, row["% Ttl Reqs"])
+            self.table_predict_labour.insert(2, 4, row["% Total Bud"])
 
     def update_table_follow_up(self, data_follow_up):
         print(f"update_table_follow_up {data_follow_up=}")
@@ -759,6 +746,7 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
             self.table_follow_up.clear_search_idxs()
 
         self.v_s_priority.get()
+
 
     def click_go_back(self):
         print(f"click_go_back")
@@ -937,12 +925,20 @@ class FrameNewRequest(ctk.CTkScrollableFrame):
         self.table_follow_up.table.select_row(3)
 
 
-class FrameEditRequest(ctk.CTkScrollableFrame):
+class FrameNewRequest(FrameRequest):
 
     def __init__(self, master: Any, ctk_: App, **kwargs):
-        super().__init__(master, **kwargs)
+        super().__init__(master, ctk_=ctk_, **kwargs)
 
-        self.data = ctk_
+        # self.tv_sw_all_follow_up = ctk.StringVar(self, name="switch_all_follow_up", value=self.text_sw_all_follow_up)
+
+
+class FrameEditRequest(FrameRequest):
+
+    def __init__(self, master: Any, ctk_: App, **kwargs):
+        super().__init__(master, ctk_=ctk_, **kwargs)
+        
+        self.f_controls_a.grid_forget()
 
 
 if __name__ == '__main__':

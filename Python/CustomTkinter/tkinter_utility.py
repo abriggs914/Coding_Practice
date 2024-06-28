@@ -22,8 +22,8 @@ from tkinter import ttk, messagebox
 VERSION = \
     """	
     General tkinter Centered Utility Functions
-    Version..............1.78
-    Date...........2024-06-27
+    Version..............1.79
+    Date...........2024-06-28
     Author(s)....Avery Briggs
     """
 
@@ -4299,7 +4299,7 @@ def calc_geometry_tl(
                 tl_canvas.grid()
                 tl.protocol("WM_DELETE_WINDOW", close_tl)
                 tl.grab_set()
-                parent.withdraw()
+                # parent.withdraw()
                 parent.wait_window(tl)
                 parent.deiconify()
 
