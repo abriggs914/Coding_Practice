@@ -1,3 +1,4 @@
+import os.path
 import tkinter
 from tkinter import messagebox
 from typing import Optional, Any
@@ -236,6 +237,7 @@ HAVING
         ctk.set_default_color_theme("blue")
         self.geometry(calc_geometry_tl(1.0, 1.0, largest=1))
         self.title(self.title_app_long)
+        self.bind("<Control-t>", self.f_new_request.insert_test_params)
 
     def department_name_to_id(self, department) -> None | int:
         dfd = self.df_departments
@@ -300,9 +302,9 @@ class FrameRequest(ctk.CTkScrollableFrame):
         self.v_lbl_s_priority = ctk.StringVar(self, value=f"Priority:")
 
         self.v_lbl_sw_submit_request = ctk.StringVar(self, value=f"Submit Requests?")
-        self.v_sw_submit_request = ctk.StringVar(self)
+        self.v_sw_submit_request = ctk.BooleanVar(self)
         self.v_lbl_sw_mark_complete = ctk.StringVar(self, value=f"Mark Complete?")
-        self.v_sw_mark_complete = ctk.StringVar(self)
+        self.v_sw_mark_complete = ctk.BooleanVar(self)
 
         self.v_btn_date_stamp_request = ctk.StringVar(self, value="Date Stamp")
         self.v_btn_date_stamp_comment = ctk.StringVar(self, value="Date Stamp")
@@ -480,12 +482,18 @@ class FrameRequest(ctk.CTkScrollableFrame):
         self.v_s_labour_est_is_large = ctk.BooleanVar(self)
         self.v_s_labour_est_is_neg = ctk.BooleanVar(self)
         self.v_s_labour_est = ctk.DoubleVar(self)
+        self.v_lbl_s_labour_est = ctk.StringVar(self, value=f"Labour Est:")
+        self.lbl_txt_s_priority = ctk.CTkLabel(
+            self.f_labour_est,
+            textvariable=self.v_lbl_s_labour_est
+        )
         self.s_labour_est = ctk.CTkSlider(
             self.f_labour_est,
             from_=0,
             to=2,
             number_of_steps=20,
-            variable=self.v_s_labour_est
+            variable=self.v_s_labour_est,
+            command=self.update_v_labour_est
         )
         self.list_v_sb_labour_est_is_large = [["0 - 2.5 H", "2.5 H+"], [0, 2.5, 20], [2.5, 30, 60]]
         self.sb_labour_ext_is_large = ctk.CTkSegmentedButton(
@@ -552,15 +560,15 @@ class FrameRequest(ctk.CTkScrollableFrame):
         self.btn_submit.grid(row=2, column=0, rowspan=1, columnspan=1)
 
         # self.f_labour_est
-        self.table_predict_labour.grid(row=0, column=0, rowspan=1, columnspan=3)
+        self.table_predict_labour.grid(row=0, column=0, rowspan=1, columnspan=4)
         self.sb_labour_ext_is_neg.grid(row=1, column=0, rowspan=1, columnspan=1)
         self.sb_labour_ext_is_large.grid(row=1, column=1, rowspan=1, columnspan=1)
-        self.s_labour_est.grid(row=1, column=2, rowspan=1, columnspan=1)
+        self.lbl_txt_s_priority.grid(row=1, column=2, rowspan=1, columnspan=1)
+        self.s_labour_est.grid(row=1, column=3, rowspan=1, columnspan=1)
 
         # bindings
         self.v_s_labour_est_is_large.trace_variable("w", self.update_v_labour_est_is_large)
         self.v_s_labour_est_is_neg.trace_variable("w", self.update_v_labour_est_is_neg)
-        self.bind("<Control-t>", self.insert_test_params)
 
         # call init functions
         self.request_id = None
@@ -596,8 +604,22 @@ class FrameRequest(ctk.CTkScrollableFrame):
     def update_labour_est_is_large(self, is_large):
         self.v_s_labour_est_is_large.set(is_large == self.list_v_sb_labour_est_is_large[0][1])
 
+    def update_v_labour_est(self, labour_est):
+        print(f"update_v_labour_est, {labour_est=}")
+        txt = self.v_lbl_s_labour_est.get().split(":")[0]
+        self.v_lbl_s_labour_est.set(f"{txt}: {self.v_s_labour_est.get():.3f}")
+        print(f"{txt}: {(-1 if self.v_s_labour_est_is_neg.get() else 1) * self.v_s_priority.get()} H")
+
     def update_labour_est_is_neg(self, is_neg):
         self.v_s_labour_est_is_neg.set(is_neg == self.list_v_sb_labour_est_is_neg[0])
+        v = -1 * self.v_s_labour_est.get()
+        # print(f"is_neg={self.v_s_labour_est_is_neg.get()}, {v=}, to={self.s_labour_est.cget('to')}, from={self.s_labour_est.cget('from_')}")
+        self.s_labour_est.configure(
+            from_=-1 * self.s_labour_est.cget("to"),
+            to=-1 * self.s_labour_est.cget("from_")
+        )
+        self.v_s_labour_est.set(v)
+        self.update_v_labour_est(self.v_s_labour_est.get())
 
     def update_v_labour_est_is_neg(self, *args):
         print(f"update_v_labour_est_is_neg")
@@ -647,6 +669,9 @@ class FrameRequest(ctk.CTkScrollableFrame):
 
     def update_sl_priority(self, priority):
         print(f"update_s_priority {priority=}")
+        txt = self.v_lbl_s_priority.get().split(":")[0]
+        self.v_lbl_s_priority.set(f"{txt}: {self.v_s_priority.get()}")
+        print(f"{txt}: {self.v_s_priority.get()}")
 
     def update_sw_all_follow_up(self, new_val):
         print(f"update_sw_all_follow_up {new_val=}")
@@ -778,14 +803,18 @@ class FrameRequest(ctk.CTkScrollableFrame):
         request_text = self.get_field_request_text()
         comment_text = self.get_field_comment_text()
         # req_follow_up = self.table_follow_up.selection_get()
-        req_follow_up = self.table_follow_up.table.get_selected_row()
+        # req_follow_up = self.table_follow_up.table.get_selected_row()
         priority = self.get_field_priority()
         o_due_date = due_date
         labour_est = round(self.get_field_labour_est(), 2)
         requested_by = self.data.user_full_name
+        request_follow_up = self.get_request_follow_up()
+
+        submit_requests = self.v_sw_submit_request.get()
+        mark_as_complete = self.v_sw_mark_complete.get()
 
         print(
-            f"{due_date=}\n{company=}\n{department=}\n{req_type=}\n{req_sub_type=}\n{request_text=}\n{comment_text=}\n{req_follow_up=}\n{priority=}")
+            f"{due_date=}\n{company=}\n{department=}\n{req_type=}\n{req_sub_type=}\n{request_text=}\n{comment_text=}\n{request_follow_up=}\n{priority=}")
 
         for val, widget, msg in (
                 (due_date, self.dp_due_date.entry, f"Enter a due date first."),
@@ -844,18 +873,26 @@ class FrameRequest(ctk.CTkScrollableFrame):
         insert_sql += f", [Department], [Company], [RequestType]"
         insert_sql += f", [RequestSubType], [Comments], [Status]"
         insert_sql += f", [ITPersonAssignedID], [LabourEstimate], [LastStatusUpdater]"
+        insert_sql += f", [RequestFollowUpPersonnel]"
         insert_sql += ") VALUES ("
         insert_sql += f"{str_now}, {str_due_date}, {priority}"
         insert_sql += f", {sub_priority}, '{request_text}', '{requested_by}'"
         insert_sql += f", {department_id}, '{company}', '{req_type}'"
         insert_sql += f", '{req_sub_type}', '{comment_text}', '{status}'"
         insert_sql += f", {personnel_assigned_id}, {labour_est}, '{self.data.user_full_name}'"
+        insert_sql += f", '{request_follow_up}'"
         insert_sql += f")"
 
-        connect(insert_sql, do_exec=False)
+        connect(insert_sql, do_exec=submit_requests)
 
         last_request_id = self.data.get_newest_request_id()
         str_last_request_id = self.data.format_request_id(last_request_id)
+        directory = self.create_request_directory(last_request_id)
+        str_directory = f"'{directory}'" if directory else "NULL"
+
+        # after creating the directory, set the path
+        update_sql = f"UPDATE [IT Requests] SET [Directory] = {str_directory} WHERE [ITRequestID#] = {last_request_id}"
+        connect(update_sql, do_exec=submit_requests)
 
         messagebox.showinfo(
             title=self.data.title_app_short,
@@ -912,17 +949,77 @@ class FrameRequest(ctk.CTkScrollableFrame):
     #     s_values.insert(0, self.header_follow_up)
     #     self.table_follow_up.update_values(s_values)
 
-    def insert_test_params(self, *args):
+    def create_request_directory(self, request_number: int) -> str | None:
+        root = r"\\bwsfp01.bwsdomain.local\Public\IT\Requests"
+        path = root + r"\REQID#{N}".format(N=str(request_number).rjust(6, "0"))
+        if not os.path.exists(root):
+            messagebox.showerror(
+                title=self.data.title_app_short,
+                message=f"Could not locate parent directory '{root}', therefore could not create a request folder for request #{request_number}."
+            )
+            return
+
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        return path
+
+
+
+    def get_request_follow_up(self):
+        """Only allows for a single name to be selected at time."""
+        req_follow_up = self.table_follow_up.table.get_selected_row()
+        # print(f"{req_follow_up=}")
+        if (req_follow_up is None) or (not req_follow_up):
+            return "NULL"
+        # r, c = req_follow_up.get("row"), req_follow_up.get("column")
+        # r = req_follow_up.get("row_index")
+        values = req_follow_up.get("values", [])
+        # name = self.table_follow_up.table.values[r][self.header_follow_up.index("Name")]
+        name = values[self.data.header_follow_up.index("Name")]
+        l_name = name.lower()
+        result = ""
+        for i, row in self.data.df_customers.iterrows():
+            rl_name = row["Name"].lower()
+            if l_name == rl_name:
+                # print(f"T1: {rl_name=}")
+                email = row["C_Email"]
+                if email:
+                    result += email + ";"
+                # else:
+                    # print(f"E2: {email}")
+            # else:
+                # print(f"E1: {rl_name}")
+
+        return result.removesuffix(";")
+
+    def insert_test_params(self, *args, defaults):
         print(f"insert_test_params {args=}")
-        self.v_cb_company.set(self.data.list_companies[0])
-        self.v_cb_department.set("IT")
-        self.v_cb_req_type.set(self.data.list_req_types[0])
-        self.v_cb_req_sub_type.set(self.data.dict_req_types[self.data.list_req_types[0]][0])
-        self.tb_request_text.insert("0.0", "TESTING")
-        self.tb_comment_text.insert("0.0", "TESTING")
-        self.v_s_priority.set(2)
-        self.v_s_labour_est.set(2.5)
-        self.table_follow_up.table.select_row(3)
+
+        default = {
+            "v_cb_company": self.data.list_companies[0],
+            "v_cb_department": "IT",
+            "v_cb_req_type": self.data.list_req_types[0],
+            "v_cb_req_sub_type": self.data.dict_req_types[self.data.list_req_types[0]][0],
+            "tb_request_text": "TESTING",
+            "tb_comment_text": "TESTING",
+            "v_s_priority": 2,
+            "v_s_labour_est": 2.5,
+            "table_follow_up.table": 3
+        }
+
+        for k, v in defaults:
+            default[k] = v
+
+        self.v_cb_company.set(default.pop("v_cb_company"))
+        self.v_cb_department.set(default.pop("v_cb_department"))
+        self.v_cb_req_type.set(default.pop("v_cb_req_type"))
+        self.v_cb_req_sub_type.set(default.pop("v_cb_req_sub_type"))
+        self.tb_request_text.insert("0.0", default.pop("tb_request_text"))
+        self.tb_comment_text.insert("0.0", default.pop("tb_comment_text"))
+        self.v_s_priority.set(default.pop("v_s_priority"))
+        self.v_s_labour_est.set(default.pop("v_s_labour_est"))
+        self.table_follow_up.table.select_row(default.pop("table_follow_up.table"))
 
 
 class FrameNewRequest(FrameRequest):
