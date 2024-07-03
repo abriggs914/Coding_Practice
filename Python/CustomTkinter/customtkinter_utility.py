@@ -11,6 +11,9 @@ from CTkTable import CTkTable
 from tkcalendar import Calendar
 
 from datetime_utility import is_date
+from colour_utility import Colour, iscolour
+from tkinter_utility import calc_geometry_tl
+from utility import grid_cells, clamp
 
 #######################################################################################################################
 #######################################################################################################################
@@ -20,8 +23,8 @@ VERSION = \
     """	
     General Utility Functions
     ans class for customtkinter
-    Version................1.02
-    Date.............2024-06-24
+    Version................1.03
+    Date.............2024-07-03
     Author(s)......Avery Briggs
     """
 
@@ -636,6 +639,302 @@ def random_table(rows, cols, low=-8, high=20):
                                                     range(rows)]
 
 
+class CalendarCanvas(ctk.CTkCanvas):
+    def __init__(
+            self,
+            master,
+            year: int | None = datetime.datetime.now().year,
+            show_weekdays: bool = True,
+            months_per_row: int = 4,
+            width: int = 600,
+            height: int = 700,
+            colour_background_canvas: Colour = Colour("#AEBEBE"),
+            colour_background_owned_number_check: Colour = Colour("#2A4AFA"),
+            colour_background_owned_number_check_heat_map: Colour = Colour("#FA2A4A"),
+            colour_background_header_year: Colour = Colour("#627272"),
+            colour_background_header_month: Colour = Colour("#7B8B8B"),
+            colour_background_header_weekday: Colour = Colour("#94A4A4"),
+            colour_scheme_month: dict[int: Colour] = None,
+            *args, **kwargs
+    ):
+        super().__init__(master=master, *args, **kwargs)
+
+        self.year = year
+        self.show_weekdays = show_weekdays
+        self.months_per_row = clamp(3, months_per_row, 4)
+        self.weeks_per_month = 6 + 1  # for the month label
+        self.weeks_per_month += (1 if self.show_weekdays else 0)  # offset for weekday labels
+        self.n_rows: int = (self.weeks_per_month * (12 // self.months_per_row)) + 1
+        self.n_cols: int = 7 * self.months_per_row
+        self.w_canvas: int = width
+        self.h_canvas: int = height
+        self.colour_background_canvas = colour_background_canvas
+        self.colour_background_owned_number_check = colour_background_owned_number_check
+        self.colour_background_owned_number_check_heat_map = colour_background_owned_number_check_heat_map
+        self.colour_background_header_year = colour_background_header_year
+        self.colour_background_header_month = colour_background_header_month
+        self.colour_background_header_weekday = colour_background_header_weekday
+        self.colour_scheme_month: dict[int: Colour] = self.validate_colour_scheme(colour_scheme_month) if colour_scheme_month is not None else dict()
+        self.configure(
+            width=self.w_canvas,
+            height=self.h_canvas,
+            background=self.colour_background_canvas.hex_code
+        )
+        self.gc = grid_cells(
+            t_width=self.w_canvas,
+            n_cols=self.n_cols,
+            t_height=self.h_canvas,
+            n_rows=self.n_rows,
+            # x_pad=4,
+            # y_pad=4,
+            r_type=list
+        )
+        self.dict_canvas_tags = dict()
+
+        for i, row in enumerate(self.gc):
+            for j, coords in enumerate(row):
+                n = ((i * self.n_cols) + j) + 1
+                # if n == 100:
+                #     # no #100
+                #     break
+                x0, y0, x1, y1 = coords
+                col = self.colour_background_canvas
+                if j // 7 == 2:
+                    col.darkened(0.24)
+                elif j // 7 == 1:
+                    col.darkened(0.12)
+                tr = self.create_rectangle(
+                    x0, y0, x1, y1, fill=col.hex_code
+                )
+                tt = self.create_text(
+                    x0 + ((x1 - x0) / 2), y0 + ((y1 - y0) / 2),
+                    fill=col.font_foreground(rgb=False),
+                    text=f"{n}"
+                )
+                self.tag_bind(
+                    tt,
+                    "<Button-1>",
+                    lambda event, i_=i, j_=j: self.click_canvas(event, i_, j_)
+                )
+                self.tag_bind(
+                    tr,
+                    "<Button-1>",
+                    lambda event, i_=i, j_=j: self.click_canvas(event, i_, j_)
+                )
+                self.dict_canvas_tags[(i, j)] = {
+                    "rect": tr,
+                    "text": tt
+                }
+
+        self.dict_canvas_tags["header_year"] = {"rect": None, "text": None}
+        self.dict_canvas_tags["header_month"] = {"rect": None, "text": None}
+        self.dict_canvas_tags["header_weekday"] = {"rect": None, "text": None}
+
+        if self.year is not None:
+            # hide top row cells
+            # for j in range(self.n_cols):
+            #     for tag_name in ("rect", "text"):
+            #         self.itemconfigure(
+            #             self.dict_canvas_tags[(0, j)][tag_name],
+            #             state="hidden"
+            #         )
+
+            # create a new rectangle for the year label row
+            bbox_year = (
+                *self.gc[0][0][:2],
+                *self.gc[0][-1][-2:]
+            )
+            w = bbox_year[2] - bbox_year[0]
+            h = bbox_year[3] - bbox_year[1]
+            self.dict_canvas_tags["header_year"].update({
+                "rect": self.create_rectangle(
+                    *bbox_year,
+                    fill=self.colour_background_header_year.hex_code
+                ),
+                "text": self.create_text(
+                    bbox_year[0] + (w / 2),
+                    bbox_year[1] + (h / 2),
+                    text=f"{self.year}",
+                    fill=self.colour_background_header_year.font_foreground(rgb=False)
+                )
+            })
+
+        # blank month row
+        ri = 1 if self.year is not None else 0
+        # for j in range(self.n_cols):
+        #     for tag_name in ("rect", "text"):
+        #         self.itemconfigure(
+        #             self.dict_canvas_tags[(ri, j)][tag_name],
+        #             state="hidden"
+        #         )
+        self.dict_canvas_tags["header_month"] = list()
+        print(f"gc={self.gc}")
+        for c_i in range(12):
+            j = c_i // self.months_per_row
+            ri0 = ri + (j * self.weeks_per_month)
+            ci0 = (c_i % self.months_per_row) * 7
+            print(f"{c_i=}, {j=}, {ri0=}, {ci0=}")
+            month_name = calendar.month_name[c_i + 1]
+            bbox_month = (
+                *self.gc[ri0][ci0][:2],
+                *self.gc[ri0][ci0 + 7 - 1][-2:]
+            )
+            w = bbox_month[2] - bbox_month[0]
+            h = bbox_month[3] - bbox_month[1]
+            self.dict_canvas_tags[f"header_month"].append({
+                "rect": self.create_rectangle(
+                    *bbox_month,
+                    fill=self.colour_background_header_month.hex_code
+                ),
+                "text": self.create_text(
+                    bbox_month[0] + (w / 2),
+                    bbox_month[1] + (h / 2),
+                    text=f"{month_name}",
+                    fill=self.colour_background_header_month.font_foreground(rgb=False)
+                ),
+                "weekdays": list()
+            })
+            print(f"{month_name[:3].upper()}: {bbox_month=}")
+
+            if self.show_weekdays:
+                ri0 += 1
+                for k in range(self.n_cols):
+                    self.itemconfigure(
+                        self.dict_canvas_tags[(ri0, k)]["rect"],
+                        fill=self.colour_background_header_weekday.hex_code
+                    )
+        # print(f"{self.dict_canvas_tags['header_month']=}")
+
+        self.calc_days()
+
+    def validate_colour_scheme(self, colour_scheme_month) -> dict[int: Colour]:
+        if not isinstance(colour_scheme_month, dict):
+            raise ValueError(f"Param 'colour_scheme_month' must be an instance of a dictionary. Got '{type(colour_scheme_month)}'")
+
+        valid_style_keys = {
+            "colour_background_canvas": iscolour,
+            "colour_background_owned_number_check": iscolour,
+            "colour_background_owned_number_check_heat_map": iscolour,
+            "colour_background_header_year": iscolour,
+            "colour_background_header_month": iscolour,
+            "colour_background_header_weekday": iscolour
+        }
+
+        result = {}
+
+        for k, scheme_data in colour_scheme_month:
+            if not isinstance(k, int):
+                raise ValueError(f"Param 'colour_scheme_month' must only have integer key. Got '{k}'")
+            if not (0 < k < 12):
+                raise ValueError(f"Param 'colour_scheme_month' must only have integer keys between 0 and 11. Got '{k}'")
+            if not isinstance(scheme_data, dict):
+                raise ValueError(f"Param 'scheme_data' must be an instance of a dict. Got '{scheme_data}'")
+            result[k] = dict()
+            for k_style, v in scheme_data.items():
+                if k_style not in valid_style_keys:
+                    raise ValueError(f"Style key '{k_style}' is not recognized. Must be an one of: {', '.join(valid_style_keys)}")
+                try:
+                    col = Colour(v)
+                except Colour.ColourCreationError:
+                    raise ValueError(f"Param 'colour_scheme_month' must only have Colour objects or equivalent as values. Got '{k}'")
+                result[k][k_style] = col
+
+        return result
+
+    def calc_days(self):
+        ri = 2 if self.year is not None else 1
+        if self.year is not None:
+            # for i, data in enumerate(self.dict_canvas_tags["header_month"]):
+
+            for cal_i in range(12):
+                day_one = datetime.datetime(self.year, cal_i + 1, 1)
+                wd_d1 = day_one.isoweekday() % 7
+                j = cal_i // self.months_per_row
+                for wk_i in range(self.weeks_per_month - 1):
+                    used_row = False
+                    ri0 = ri + (j * self.weeks_per_month) + wk_i
+                    for wkd_i in range(7):
+                        str_day = f"{day_one.day}"
+                        ci0 = ((cal_i % self.months_per_row) * 7) + wkd_i
+                        print(f"{day_one:%Y-%m-%d}, {cal_i=}, {j=}, {ri0=}, {ci0=}, {wk_i=}, {wkd_i=}, {wd_d1=}", end="")
+                        month_name = calendar.month_name[cal_i + 1]
+                        tag_txt = self.dict_canvas_tags[(ri0, ci0)]["text"]
+                        tag_rect = self.dict_canvas_tags[(ri0, ci0)]["rect"]
+                        if self.show_weekdays and (wk_i == 0):
+                            self.dict_canvas_tags["header_month"][cal_i]["weekdays"].append({
+                                "rect": tag_rect,
+                                "text": tag_txt
+                            })
+                            self.itemconfigure(tag_txt, text=f"{calendar.day_abbr[(wkd_i - 1) % 7]}"[0])
+                            used_row = True
+                            continue
+                        if cal_i != (day_one.month - 1):
+                            self.itemconfigure(tag_txt, state="hidden")
+                            # day_one += datetime.timedelta(days=1)
+                            print(f" -A")
+                            continue
+                        if ((wk_i - (1 if self.show_weekdays else 0)) == 0) and (wd_d1 > 0):
+                            wd_d1 -= 1
+                            # day_one += datetime.timedelta(days=1)
+                            self.itemconfigure(tag_txt, state="hidden")
+                            print(f" -B")
+                            continue
+
+                        self.itemconfigure(tag_txt, text=str_day)
+                        txt = self.itemcget(tag_txt, "text")
+                        day_one += datetime.timedelta(days=1)
+                        used_row = True
+
+                        # bbox_month = (
+                        #     *self.gc[ri0][ci0][:2],
+                        #     *self.gc[ri0][ci0 + 7 - 1][-2:]
+                        # )
+                        # tag_txt = self.dict_canvas_tags["header_month"][cal_i]["text"]
+                        # txt = self.itemcget(tag_txt, "text")
+                        print(f" {txt=}")
+
+                    if not used_row:
+                        for k in range(7):
+                            self.itemconfigure(
+                                self.dict_canvas_tags[(ri0, ((cal_i % self.months_per_row) * 7) + k)]["rect"],
+                                state="hidden"
+                            )
+
+
+
+    # def get_cell_colour(self, n):
+    #     # n is offset by 1
+    #     if self.owned_numbers[n] > 0:
+    #         if self.v_sw_show_heat_map.get():
+    #             # return Colour(random_colour(name=True))
+    #             return self.heat_map_colours[n]
+    #         else:
+    #             return self.colour_background_owned_number_check
+    #     else:
+    #         return self.colour_background_canvas
+    def click_canvas(self, event, i, j):
+        print(f"click_canvas {i=}, {j=}, {event=}")
+        # self.tb_canvas_click_data.delete("0.0", ctk.END)
+        # n = ((i * self.n_cols) + j) + 1
+        #
+        # if not self.v_canvas_has_been_clicked.get():
+        #     self.lbl_canvas_click_instruction.grid_forget()
+        #     self.tb_canvas_click_data.grid(row=0, column=0, rowspan=1, columnspan=1)
+        #     self.v_canvas_has_been_clicked.set(True)
+        #
+        # n = datetime.datetime(datetime.datetime.now().year, 1, 1) + datetime.timedelta(days=n-1)
+        # print(f"{n=}")
+        # df = self.ctk_.df.loc[(self.ctk_.df["DOB"].dt.month == n.month) & (self.ctk_.df["DOB"].dt.day == n.day)]
+        # df = df.sort_values(by=["Team", "PlayerLast", "PlayerFirst"])
+        # text = ""
+        # for k, row in df.iterrows():
+        #     # text += f"{row['Team'].center(22)} - {row['PlayerFirst'].rjust(11)} {row['PlayerLast'].ljust(18)}\n"
+        #     text += f"{row['Team'].center(22)} - {row['PlayerLast']}, {row['PlayerFirst']}\n"
+        # if df.shape[0] == 0:
+        #     text = "No Data"
+        # self.tb_canvas_click_data.insert("0.0", text)
+
+
 def demo_1():
     def select_cols():
         col = int(round(var_n_cols.get()))
@@ -711,7 +1010,7 @@ def demo_1():
     win.mainloop()
 
 
-if __name__ == '__main__':
+def demo_2():
     win = ctk.CTk()
 
     n_rows, n_cols = 16, 6
@@ -792,3 +1091,27 @@ if __name__ == '__main__':
     table.grid(row=0, column=0, rowspan=1, columnspan=4)
     date.grid(row=1, column=0, rowspan=1, columnspan=4)
     win.mainloop()
+
+
+def demo_3():
+    win = ctk.CTk()
+    win.geometry(calc_geometry_tl(1.0, 1.0, parent=win, ask=True))
+    win.title("CalendarCanvas Demo")
+
+    frame = ctk.CTkFrame(win)
+    calendar = CalendarCanvas(
+        frame
+        # , year=None
+        ,show_weekdays=False
+    )
+
+    frame.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
+    calendar.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
+
+    win.mainloop()
+
+
+if __name__ == '__main__':
+    # demo_1()
+    # demo_2()
+    demo_3()
