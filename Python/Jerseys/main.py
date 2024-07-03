@@ -1,3 +1,4 @@
+import calendar
 import datetime
 import os
 from typing import Any
@@ -9,7 +10,7 @@ from PIL import ImageTk, Image
 
 from colour_utility import Colour, random_colour, font_foreground, gradient
 from tkinter_utility import calc_geometry_tl
-from utility import grid_cells
+from utility import grid_cells, clamp
 
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -325,6 +326,225 @@ class FrameNumbersView(ctk.CTkScrollableFrame):
         self.tb_canvas_click_data.insert("0.0", text)
 
 
+class CalendarCanvas(ctk.CTkCanvas):
+    def __init__(
+            self,
+            master,
+            year: int | None = datetime.datetime.now().year,
+            months_per_row: int = 4,
+            width: int = 600,
+            height: int = 700,
+            colour_background_canvas: Colour = Colour("#AEBEBE"),
+            colour_background_owned_number_check: Colour = Colour("#2A4AFA"),
+            colour_background_owned_number_check_heat_map: Colour = Colour("#FA2A4A"),
+            colour_background_header_year: Colour = Colour("#627272"),
+            colour_background_header_month: Colour = Colour("#7B8B8B"),
+            colour_background_header_weekday: Colour = Colour("#94A4A4"),
+            *args, **kwargs
+    ):
+        super().__init__(master=master, *args, **kwargs)
+
+        self.year = year
+        self.months_per_row = clamp(3, months_per_row, 4)
+        self.weeks_per_month = 6 + 1  # for the month label
+        self.n_rows: int = (self.weeks_per_month * (12 // self.months_per_row)) + 1
+        self.n_cols: int = 7 * self.months_per_row
+        self.w_canvas: int = width
+        self.h_canvas: int = height
+        self.colour_background_canvas = colour_background_canvas
+        self.colour_background_owned_number_check = colour_background_owned_number_check
+        self.colour_background_owned_number_check_heat_map = colour_background_owned_number_check_heat_map
+        self.colour_background_header_year = colour_background_header_year
+        self.colour_background_header_month = colour_background_header_month
+        self.colour_background_header_weekday = colour_background_header_weekday
+        self.configure(
+            width=self.w_canvas,
+            height=self.h_canvas,
+            background=self.colour_background_canvas.hex_code
+        )
+        self.gc = grid_cells(self.w_canvas, self.n_cols, self.h_canvas, self.n_rows, r_type=list)
+        self.dict_canvas_tags = dict()
+
+        for i, row in enumerate(self.gc):
+            for j, coords in enumerate(row):
+                n = ((i * self.n_cols) + j) + 1
+                # if n == 100:
+                #     # no #100
+                #     break
+                x0, y0, x1, y1 = coords
+                col = self.colour_background_canvas
+                if j // 7 == 2:
+                    col.darkened(0.24)
+                elif j // 7 == 1:
+                    col.darkened(0.12)
+                tr = self.create_rectangle(
+                    x0, y0, x1, y1, fill=col.hex_code
+                )
+                tt = self.create_text(
+                    x0 + ((x1 - x0) / 2), y0 + ((y1 - y0) / 2),
+                    fill=col.font_foreground(rgb=False),
+                    text=f"{n}"
+                )
+                self.tag_bind(
+                    tt,
+                    "<Button-1>",
+                    lambda event, i_=i, j_=j: self.click_canvas(event, i_, j_)
+                )
+                self.tag_bind(
+                    tr,
+                    "<Button-1>",
+                    lambda event, i_=i, j_=j: self.click_canvas(event, i_, j_)
+                )
+                self.dict_canvas_tags[(i, j)] = {
+                    "rect": tr,
+                    "text": tt
+                }
+
+        self.dict_canvas_tags["header_year"] = {"rect": None, "text": None}
+        self.dict_canvas_tags["header_month"] = {"rect": None, "text": None}
+        self.dict_canvas_tags["header_weekday"] = {"rect": None, "text": None}
+
+        if self.year is not None:
+            for j in range(self.n_cols):
+                for tag_name in ("rect", "text"):
+                    self.itemconfigure(
+                        self.dict_canvas_tags[(0, j)][tag_name],
+                        state="hidden"
+                    )
+
+            bbox_year = (
+                *self.gc[0][0][:2],
+                *self.gc[0][-1][-2:]
+            )
+            w = bbox_year[2] - bbox_year[0]
+            h = bbox_year[3] - bbox_year[1]
+            self.dict_canvas_tags["header_year"].update({
+                "rect": self.create_rectangle(
+                    *bbox_year,
+                    fill=self.colour_background_header_year.hex_code
+                ),
+                "text": self.create_text(
+                    bbox_year[0] + (w / 2),
+                    bbox_year[1] + (h / 2),
+                    text=f"{self.year}",
+                    fill=self.colour_background_header_year.font_foreground(rgb=False)
+                )
+            })
+
+        # blank month row
+        ri = 1 if self.year is not None else 0
+        for j in range(self.n_cols):
+            for tag_name in ("rect", "text"):
+                self.itemconfigure(
+                    self.dict_canvas_tags[(ri, j)][tag_name],
+                    state="hidden"
+                )
+        self.dict_canvas_tags["header_month"] = list()
+        print(f"gc={self.gc}")
+        for c_i in range(12):
+            j = c_i // self.months_per_row
+            ri0 = ri + (j * self.weeks_per_month)
+            ci0 = (c_i % self.months_per_row) * 7
+            print(f"{c_i=}, {j=}, {ri0=}, {ci0=}")
+            month_name = calendar.month_name[c_i + 1]
+            bbox_month = (
+                *self.gc[ri0][ci0][:2],
+                *self.gc[ri0][ci0 + 7 - 1][-2:]
+            )
+            w = bbox_month[2] - bbox_month[0]
+            h = bbox_month[3] - bbox_month[1]
+            self.dict_canvas_tags[f"header_month"].append({
+                "rect": self.create_rectangle(
+                    *bbox_month,
+                    fill=self.colour_background_header_month.hex_code
+                ),
+                "text": self.create_text(
+                    bbox_month[0] + (w / 2),
+                    bbox_month[1] + (h / 2),
+                    text=f"{month_name}",
+                    fill=self.colour_background_header_month.font_foreground(rgb=False)
+                )
+            })
+            print(f"{month_name[:3].upper()}: {bbox_month=}")
+        # print(f"{self.dict_canvas_tags['header_month']=}")
+
+        self.calc_days()
+
+    def calc_days(self):
+        ri = 2 if self.year is not None else 1
+        if self.year is not None:
+            # for i, data in enumerate(self.dict_canvas_tags["header_month"]):
+
+            for cal_i in range(12):
+                day_one = datetime.datetime(self.year, cal_i + 1, 1)
+                wd_d1 = day_one.isoweekday() % 7
+                for wk_i in range(self.weeks_per_month - 1):
+                    for wkd_i in range(7):
+                        str_day = f"{day_one.day}"
+                        j = cal_i // self.months_per_row
+                        ri0 = ri + (j * self.weeks_per_month) + wk_i
+                        ci0 = ((cal_i % self.months_per_row) * 7) + wkd_i
+                        print(f"{day_one:%Y-%m-%d}, {cal_i=}, {j=}, {ri0=}, {ci0=}, {wk_i=}, {wkd_i=}, {wd_d1=}", end="")
+                        month_name = calendar.month_name[cal_i + 1]
+                        tag_txt = self.dict_canvas_tags[(ri0, ci0)]["text"]
+                        if cal_i != (day_one.month - 1):
+                            self.itemconfigure(tag_txt, state="hidden")
+                            # day_one += datetime.timedelta(days=1)
+                            print(f" -A")
+                            continue
+                        if (wk_i == 0) and (wd_d1 > 0):
+                            wd_d1 -= 1
+                            # day_one += datetime.timedelta(days=1)
+                            self.itemconfigure(tag_txt, state="hidden")
+                            print(f" -B")
+                            continue
+
+                        self.itemconfigure(tag_txt, text=str_day)
+                        txt = self.itemcget(tag_txt, "text")
+                        day_one += datetime.timedelta(days=1)
+
+                        # bbox_month = (
+                        #     *self.gc[ri0][ci0][:2],
+                        #     *self.gc[ri0][ci0 + 7 - 1][-2:]
+                        # )
+                        # tag_txt = self.dict_canvas_tags["header_month"][cal_i]["text"]
+                        # txt = self.itemcget(tag_txt, "text")
+                        print(f" {txt=}")
+
+
+
+    # def get_cell_colour(self, n):
+    #     # n is offset by 1
+    #     if self.owned_numbers[n] > 0:
+    #         if self.v_sw_show_heat_map.get():
+    #             # return Colour(random_colour(name=True))
+    #             return self.heat_map_colours[n]
+    #         else:
+    #             return self.colour_background_owned_number_check
+    #     else:
+    #         return self.colour_background_canvas
+    def click_canvas(self, event, i, j):
+        print(f"click_canvas {i=}, {j=}, {event=}")
+        # self.tb_canvas_click_data.delete("0.0", ctk.END)
+        # n = ((i * self.n_cols) + j) + 1
+        #
+        # if not self.v_canvas_has_been_clicked.get():
+        #     self.lbl_canvas_click_instruction.grid_forget()
+        #     self.tb_canvas_click_data.grid(row=0, column=0, rowspan=1, columnspan=1)
+        #     self.v_canvas_has_been_clicked.set(True)
+        #
+        # n = datetime.datetime(datetime.datetime.now().year, 1, 1) + datetime.timedelta(days=n-1)
+        # print(f"{n=}")
+        # df = self.ctk_.df.loc[(self.ctk_.df["DOB"].dt.month == n.month) & (self.ctk_.df["DOB"].dt.day == n.day)]
+        # df = df.sort_values(by=["Team", "PlayerLast", "PlayerFirst"])
+        # text = ""
+        # for k, row in df.iterrows():
+        #     # text += f"{row['Team'].center(22)} - {row['PlayerFirst'].rjust(11)} {row['PlayerLast'].ljust(18)}\n"
+        #     text += f"{row['Team'].center(22)} - {row['PlayerLast']}, {row['PlayerFirst']}\n"
+        # if df.shape[0] == 0:
+        #     text = "No Data"
+        # self.tb_canvas_click_data.insert("0.0", text)
+
 class FrameBirthdaysView(ctk.CTkScrollableFrame):
 
     def __init__(self, master: Any, ctk_: App, **kwargs):
@@ -349,20 +569,28 @@ class FrameBirthdaysView(ctk.CTkScrollableFrame):
         self.lbl_demo = ctk.CTkLabel(self, textvariable=self.v_lbl_demo)
 
         self.w_canvas, self.h_canvas = 600, 700
-        self.n_rows, self.n_cols = 16, 28
-        self.gc = grid_cells(self.w_canvas, self.n_cols, self.h_canvas, self.n_rows, r_type=list)
+        # self.n_rows, self.n_cols = 16, 28
+        # self.gc = grid_cells(self.w_canvas, self.n_cols, self.h_canvas, self.n_rows, r_type=list)
 
         self.colour_background_canvas = Colour("#AEBEBE")
         self.colour_background_owned_number_check = Colour("#2A4AFA")
         self.colour_background_owned_number_check_heat_map = Colour("#FA2A4A")
 
         self.frame_top = ctk.CTkFrame(self)
-        self.canvas = ctk.CTkCanvas(
+        self.canvas = CalendarCanvas(
             self.frame_top,
             background=self.colour_background_canvas.hex_code,
             width=self.w_canvas,
-            height=self.h_canvas
+            height=self.h_canvas,
+            year=2025,
+            months_per_row=3
         )
+        # self.canvas = ctk.CTkCanvas(
+        #     self.frame_top,
+        #     background=self.colour_background_canvas.hex_code,
+        #     width=self.w_canvas,
+        #     height=self.h_canvas
+        # )
         self.frame_top_a = ctk.CTkFrame(self.frame_top)
         self.tv_lbl_canvas_click_instruction = ctk.StringVar(self, value=f"Click a Number")
         self.lbl_canvas_click_instruction = ctk.CTkLabel(self.frame_top_a, textvariable=self.tv_lbl_canvas_click_instruction)
@@ -375,40 +603,43 @@ class FrameBirthdaysView(ctk.CTkScrollableFrame):
         self.list_own_numbers = sorted(list(self.owned_numbers))
         self.heat_map_colours = self.calc_heat_map_colours()
         self.dict_canvas_tags = dict()
-        for i, row in enumerate(self.gc):
-            for j, coords in enumerate(row):
-                n = ((i * self.n_cols) + j) + 1
-                # if n == 100:
-                #     # no #100
-                #     break
-                x0, y0, x1, y1 = coords
-                col = self.get_cell_colour(n)
-                if j // 7 == 2:
-                    col.darkened(0.24)
-                elif j // 7 == 1:
-                    col.darkened(0.12)
-                tr = self.canvas.create_rectangle(
-                    x0, y0, x1, y1, fill=col.hex_code
-                )
-                tt = self.canvas.create_text(
-                    x0 + ((x1 - x0) / 2), y0 + ((y1 - y0) / 2),
-                    fill=col.font_foreground(rgb=False),
-                    text=f"{n}"
-                )
-                self.canvas.tag_bind(
-                    tt,
-                    "<Button-1>",
-                    lambda event, i_=i, j_=j: self.click_canvas(event, i_, j_)
-                )
-                self.canvas.tag_bind(
-                    tr,
-                    "<Button-1>",
-                    lambda event, i_=i, j_=j: self.click_canvas(event, i_, j_)
-                )
-                self.dict_canvas_tags[(i, j)] = {
-                    "rect": tr,
-                    "text": tt
-                }
+        # for i, row in enumerate(self.gc):
+        #     for j, coords in enumerate(row):
+        #         n = ((i * self.n_cols) + j) + 1
+        #         # if n == 100:
+        #         #     # no #100
+        #         #     break
+        #         x0, y0, x1, y1 = coords
+        #         col = self.get_cell_colour(n)
+        #         if j // 7 == 2:
+        #             col.darkened(0.24)
+        #         elif j // 7 == 1:
+        #             col.darkened(0.12)
+        #         tr = self.canvas.create_rectangle(
+        #             x0, y0, x1, y1, fill=col.hex_code
+        #         )
+        #         tt = self.canvas.create_text(
+        #             x0 + ((x1 - x0) / 2), y0 + ((y1 - y0) / 2),
+        #             fill=col.font_foreground(rgb=False),
+        #             text=f"{n}"
+        #         )
+        #         self.canvas.tag_bind(
+        #             tt,
+        #             "<Button-1>",
+        #             lambda event, i_=i, j_=j: self.click_canvas(event, i_, j_)
+        #         )
+        #         self.canvas.tag_bind(
+        #             tr,
+        #             "<Button-1>",
+        #             lambda event, i_=i, j_=j: self.click_canvas(event, i_, j_)
+        #         )
+        #         self.dict_canvas_tags[(i, j)] = {
+        #             "rect": tr,
+        #             "text": tt
+        #         }
+
+
+
         self.sw_show_heat_map = ctk.CTkSwitch(
             self,
             textvariable=self.tv_sw_show_heat_map,
@@ -448,20 +679,21 @@ class FrameBirthdaysView(ctk.CTkScrollableFrame):
         return self.colour_background_canvas
 
     def update_show_heat_map(self):
+        print(f"update_show_heat_map")
         for i, row in enumerate(self.gc):
             for j, coords in enumerate(row):
                 n = ((i * self.n_cols) + j) + 1
                 if n == 100:
                     break
                 col = self.get_cell_colour(n)
-                self.canvas.itemconfigure(
-                    self.dict_canvas_tags[(i, j)]["rect"],
-                    fill=col.hex_code
-                )
-                self.canvas.itemconfigure(
-                    self.dict_canvas_tags[(i, j)]["text"],
-                    fill=col.font_foreground(rgb=False)
-                )
+                # self.canvas.itemconfigure(
+                #     self.dict_canvas_tags[(i, j)]["rect"],
+                #     fill=col.hex_code
+                # )
+                # self.canvas.itemconfigure(
+                #     self.dict_canvas_tags[(i, j)]["text"],
+                #     fill=col.font_foreground(rgb=False)
+                # )
         # self.id_after_update_show_heat_map = self.after(self.time_after_update_show_heat_map, self.update)
 
     def calc_heat_map_colours(self):
