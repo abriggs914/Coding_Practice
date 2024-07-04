@@ -2,7 +2,7 @@ import functools
 import random
 import tkinter
 from copy import deepcopy
-from typing import List, Any
+from typing import List, Any, Literal
 import calendar
 
 import datetime
@@ -655,6 +655,7 @@ class CalendarCanvas(ctk.CTkCanvas):
             colour_background_header_month: Colour = Colour("#7B8B8B"),
             colour_background_header_weekday: Colour = Colour("#94A4A4"),
             colour_scheme_month: dict[int: Colour] = None,
+            hover_style: Literal[None, "darken", "brighten"] = "brighten",
             *args, **kwargs
     ):
         super().__init__(master=master, *args, **kwargs)
@@ -675,6 +676,8 @@ class CalendarCanvas(ctk.CTkCanvas):
         self.colour_background_header_month = colour_background_header_month
         self.colour_background_header_weekday = colour_background_header_weekday
         self.colour_scheme_month: dict[int: Colour] = self.validate_colour_scheme(colour_scheme_month) if colour_scheme_month is not None else dict()
+        self.hover_style = hover_style
+        self.v_cell_ids_hovered = ctk.Variable(self, value=None)
         self.configure(
             width=self.w_canvas,
             height=self.h_canvas,
@@ -690,6 +693,7 @@ class CalendarCanvas(ctk.CTkCanvas):
             r_type=list
         )
         self.dict_canvas_tags = dict()
+        self.set_date_cells = set()
 
         for i, row in enumerate(self.gc):
             for j, coords in enumerate(row):
@@ -698,17 +702,21 @@ class CalendarCanvas(ctk.CTkCanvas):
                 #     # no #100
                 #     break
                 x0, y0, x1, y1 = coords
-                col = self.colour_background_canvas
+                cal_idx = (j // 7) + (i // 7)  # + (i * ((7 * self.months_per_row) // self.weeks_per_month))
+                cs = self.colour_scheme_month.get(cal_idx, {})
+                col_wd = cs.get("colour_background_canvas", self.colour_background_canvas)
+                col_wd_txt = cs.get("colour_foreground_canvas", col_wd.font_foreground_c())
+                print(f"{i=}, {j=}, {cal_idx=}, {col_wd=}, {col_wd_txt=}, {cs=}")
                 if j // 7 == 2:
-                    col.darkened(0.24)
+                    col_wd.darkened(0.24)
                 elif j // 7 == 1:
-                    col.darkened(0.12)
+                    col_wd.darkened(0.12)
                 tr = self.create_rectangle(
-                    x0, y0, x1, y1, fill=col.hex_code
+                    x0, y0, x1, y1, fill=col_wd.hex_code
                 )
                 tt = self.create_text(
                     x0 + ((x1 - x0) / 2), y0 + ((y1 - y0) / 2),
-                    fill=col.font_foreground(rgb=False),
+                    fill=col_wd_txt.hex_code,
                     text=f"{n}"
                 )
                 self.tag_bind(
@@ -721,10 +729,14 @@ class CalendarCanvas(ctk.CTkCanvas):
                     "<Button-1>",
                     lambda event, i_=i, j_=j: self.click_canvas(event, i_, j_)
                 )
+                self.set_date_cells.add((i, j))
                 self.dict_canvas_tags[(i, j)] = {
                     "rect": tr,
                     "text": tt
                 }
+                if (hs := self.hover_style) is not None:
+                    for tag in (tr, tt):
+                        self.tag_bind(tr, "<Motion>", lambda event, i_=i, j_=j, t_=tag: self.motion_cell(event, i_, j_, t_))
 
         self.dict_canvas_tags["header_year"] = {"rect": None, "text": None}
         self.dict_canvas_tags["header_month"] = {"rect": None, "text": None}
@@ -732,12 +744,13 @@ class CalendarCanvas(ctk.CTkCanvas):
 
         if self.year is not None:
             # hide top row cells
-            # for j in range(self.n_cols):
+            for j in range(self.n_cols):
             #     for tag_name in ("rect", "text"):
             #         self.itemconfigure(
             #             self.dict_canvas_tags[(0, j)][tag_name],
             #             state="hidden"
             #         )
+                self.set_date_cells.discard((0, j))
 
             # create a new rectangle for the year label row
             bbox_year = (
@@ -762,6 +775,7 @@ class CalendarCanvas(ctk.CTkCanvas):
         # blank month row
         ri = 1 if self.year is not None else 0
         # for j in range(self.n_cols):
+        #     self.set_date_cells.discard((ri, j))
         #     for tag_name in ("rect", "text"):
         #         self.itemconfigure(
         #             self.dict_canvas_tags[(ri, j)][tag_name],
@@ -781,28 +795,33 @@ class CalendarCanvas(ctk.CTkCanvas):
             )
             w = bbox_month[2] - bbox_month[0]
             h = bbox_month[3] - bbox_month[1]
+            cs = self.colour_scheme_month.get(c_i, {})
+            col_hm = cs.get("colour_background_header_month", self.colour_background_header_month)
+            col_txt = cs.get("colour_foreground_header_month", col_hm.font_foreground_c())
             self.dict_canvas_tags[f"header_month"].append({
                 "rect": self.create_rectangle(
                     *bbox_month,
-                    fill=self.colour_background_header_month.hex_code
+                    fill=col_hm.hex_code
                 ),
                 "text": self.create_text(
                     bbox_month[0] + (w / 2),
                     bbox_month[1] + (h / 2),
                     text=f"{month_name}",
-                    fill=self.colour_background_header_month.font_foreground(rgb=False)
+                    fill=col_txt.hex_code
                 ),
                 "weekdays": list()
             })
             print(f"{month_name[:3].upper()}: {bbox_month=}")
 
+            col_hw = cs.get("colour_background_header_weekday", self.colour_background_header_weekday)
             if self.show_weekdays:
                 ri0 += 1
                 for k in range(self.n_cols):
                     self.itemconfigure(
                         self.dict_canvas_tags[(ri0, k)]["rect"],
-                        fill=self.colour_background_header_weekday.hex_code
+                        fill=col_hw.hex_code
                     )
+                    self.set_date_cells.discard((ri0, k))
         # print(f"{self.dict_canvas_tags['header_month']=}")
 
         self.calc_days()
@@ -815,17 +834,19 @@ class CalendarCanvas(ctk.CTkCanvas):
             "colour_background_canvas": iscolour,
             "colour_background_owned_number_check": iscolour,
             "colour_background_owned_number_check_heat_map": iscolour,
-            "colour_background_header_year": iscolour,
             "colour_background_header_month": iscolour,
-            "colour_background_header_weekday": iscolour
+            "colour_background_header_weekday": iscolour,
+
+            "colour_foreground_canvas": iscolour,
+            "colour_foreground_header_month": iscolour
         }
 
         result = {}
 
-        for k, scheme_data in colour_scheme_month:
+        for k, scheme_data in colour_scheme_month.items():
             if not isinstance(k, int):
                 raise ValueError(f"Param 'colour_scheme_month' must only have integer key. Got '{k}'")
-            if not (0 < k < 12):
+            if not (0 <= k < 12):
                 raise ValueError(f"Param 'colour_scheme_month' must only have integer keys between 0 and 11. Got '{k}'")
             if not isinstance(scheme_data, dict):
                 raise ValueError(f"Param 'scheme_data' must be an instance of a dict. Got '{scheme_data}'")
@@ -860,12 +881,22 @@ class CalendarCanvas(ctk.CTkCanvas):
                         month_name = calendar.month_name[cal_i + 1]
                         tag_txt = self.dict_canvas_tags[(ri0, ci0)]["text"]
                         tag_rect = self.dict_canvas_tags[(ri0, ci0)]["rect"]
+                        cs = self.colour_scheme_month.get(cal_i, {})
                         if self.show_weekdays and (wk_i == 0):
                             self.dict_canvas_tags["header_month"][cal_i]["weekdays"].append({
                                 "rect": tag_rect,
                                 "text": tag_txt
                             })
-                            self.itemconfigure(tag_txt, text=f"{calendar.day_abbr[(wkd_i - 1) % 7]}"[0])
+                            self.itemconfigure(
+                                tag_rect,
+                                fill=cs.get("colour_background_header_weekday", self.colour_background_header_weekday).hex_code
+                            )
+                            self.itemconfigure(
+                                tag_txt,
+                                text=f"{calendar.day_abbr[(wkd_i - 1) % 7]}"[0],
+                                fill=cs.get("colour_foreground_header_weekday", self.colour_background_header_weekday.font_foreground_c()).hex_code
+                            )
+                            self.set_date_cells.discard((ri0, ci0))
                             used_row = True
                             continue
                         if cal_i != (day_one.month - 1):
@@ -933,6 +964,65 @@ class CalendarCanvas(ctk.CTkCanvas):
         # if df.shape[0] == 0:
         #     text = "No Data"
         # self.tb_canvas_click_data.insert("0.0", text)
+
+    def motion_cell(self, event, i, j, t_):
+        # r1 = 1 + sum([bool(self.year), self.show_weekdays])
+
+        cal_idx = (j // 7) + (i // 7)  # + (i * ((7 * self.months_per_row) // self.weeks_per_month))
+        cs = self.colour_scheme_month.get(cal_idx, {})
+        col = cs.get("colour_background_canvas", self.colour_background_canvas)
+        col_txt = cs.get("colour_foreground_canvas", col.font_foreground_c())
+        hs = self.hover_style
+        tr = self.dict_canvas_tags[(i, j)]["rect"]
+        tt = self.dict_canvas_tags[(i, j)]["text"]
+        last_hover = self.v_cell_ids_hovered.get()
+        # print(f"LH={last_hover}, IJ={(i, j)=}, {col.hex_code=}, {col_txt.hex_code=}")
+
+        if last_hover:
+            cal_idx_lh = (last_hover[0] // 7) + (last_hover[1] // 7)  # + (i * ((7 * self.months_per_row) // self.weeks_per_month))
+            cs_lh = self.colour_scheme_month.get(cal_idx_lh, {})
+            col_lh = cs_lh.get("colour_background_canvas", self.colour_background_canvas)
+            col_txt_lh = cs_lh.get("colour_foreground_canvas", col_lh.font_foreground_c())
+            self.itemconfigure(
+                self.dict_canvas_tags[last_hover]["rect"],
+                fill=col_lh.hex_code
+            )
+            self.itemconfigure(
+                self.dict_canvas_tags[last_hover]["text"],
+                fill=col_txt_lh.hex_code
+            )
+
+        # too slow
+        # for r in range(self.n_rows):
+        #     for c in range(self.n_cols):
+        #         self.itemconfigure(
+        #             self.dict_canvas_tags[(r, c)]["rect"],
+        #             fill=col.hex_code
+        #         )
+        #         self.itemconfigure(
+        #             self.dict_canvas_tags[(r, c)]["text"],
+        #             fill=col_txt.hex_code
+        #         )
+
+        if hs is not None:
+            if (i, j) in self.set_date_cells:
+                col_a = cs.get("colour_active_background_canvas")
+                if col_a is None:
+                    col_a = col.darkened(0.25) if hs == "darken" else col.brightened(0.25)
+                col_txt_a = cs.get("colour_active_foreground_canvas")
+                if col_txt_a is None:
+                    col_txt_a = (col.darkened(0.25) if hs == "darken" else col.brightened(0.25)).font_foreground_c()
+                print(f"{col_a.hex_code=}, {col_txt_a.hex_code=}")
+                self.itemconfigure(
+                    tr,
+                    fill=col_a.hex_code
+                )
+                self.itemconfigure(
+                    tt,
+                    fill=col_txt_a.hex_code
+                )
+            self.v_cell_ids_hovered.set((i, j))
+
 
 
 def demo_1():
@@ -1095,14 +1185,36 @@ def demo_2():
 
 def demo_3():
     win = ctk.CTk()
-    win.geometry(calc_geometry_tl(1.0, 1.0, parent=win, ask=True))
+    win.geometry(calc_geometry_tl(1.0, 1.0))  # , parent=win, ask=True))
     win.title("CalendarCanvas Demo")
+
+    colour_scheme_keys = {
+        "colour_background_canvas": lambda c: c,
+        "colour_background_owned_number_check": lambda c: c.brightened(0.25),
+        "colour_background_owned_number_check_heat_map": lambda c: c.inverted(),
+        "colour_background_header_month": lambda c: c.darkened(0.2),
+        "colour_background_header_weekday": lambda c: c.darkened(0.1)
+    }
+    month_colours = {
+        0: Colour("#AACCFF")
+    }
+
+    colour_scheme_months = {
+        m_idx: {
+            k: func(col)
+            for k, func in colour_scheme_keys.items()
+        }
+        for m_idx, col in month_colours.items()
+    }
+
 
     frame = ctk.CTkFrame(win)
     calendar = CalendarCanvas(
         frame
         # , year=None
-        ,show_weekdays=False
+        # ,show_weekdays=False
+        ,colour_scheme_month=colour_scheme_months
+        ,hover_style="brighten"
     )
 
     frame.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
