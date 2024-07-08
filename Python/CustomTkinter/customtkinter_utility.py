@@ -2,7 +2,7 @@ import functools
 import random
 import tkinter
 from copy import deepcopy
-from typing import List, Any, Literal
+from typing import List, Any, Literal, Optional
 import calendar
 
 import datetime
@@ -649,6 +649,7 @@ class CalendarCanvas(ctk.CTkCanvas):
             width: int = 600,
             height: int = 700,
             colour_background_canvas: Colour = Colour("#AEBEBE"),
+            colour_foreground_canvas: Colour = Colour("#000000"),
             colour_background_owned_number_check: Colour = Colour("#2A4AFA"),
             colour_background_header_year: Colour = Colour("#627272"),
             colour_background_header_month: Colour = Colour("#7B8B8B"),
@@ -656,6 +657,7 @@ class CalendarCanvas(ctk.CTkCanvas):
             colour_background_canvas_selected: Colour = Colour("#081688"),
             colour_foreground_canvas_selected: Colour = Colour("#FFFFFF"),
             colour_scheme_month: dict[int: Colour] = None,
+            colour_scheme_day: dict[tuple[int, int]: Colour] = None,
             hover_style: Literal[None, "darken", "brighten"] = "brighten",
             invalid_style: Literal[None, "darken", "brighten", "invisible"] = None,
             show_all_rows: bool = False,
@@ -681,6 +683,7 @@ class CalendarCanvas(ctk.CTkCanvas):
         self.w_canvas: int = width
         self.h_canvas: int = height
         self.colour_background_canvas = colour_background_canvas
+        self.colour_foreground_canvas = colour_foreground_canvas
         self.colour_background_owned_number_check = colour_background_owned_number_check
         self.colour_background_header_year = colour_background_header_year
         self.colour_background_header_month = colour_background_header_month
@@ -688,6 +691,8 @@ class CalendarCanvas(ctk.CTkCanvas):
         self.colour_background_canvas_selected = colour_background_canvas_selected
         self.colour_foreground_canvas_selected = colour_foreground_canvas_selected
         self.colour_scheme_month: dict[int: Colour] = self.validate_colour_scheme(colour_scheme_month) if colour_scheme_month is not None else dict()
+        # self.colour_scheme_day: dict[tuple[int, int]: Colour] = self.validate_colour_scheme(colour_scheme_day) if colour_scheme_day is not None else dict()
+        self.colour_scheme_day: dict[tuple[int, int]: Colour] = colour_scheme_day if colour_scheme_day is not None else dict()
         self.hover_style = hover_style
         self.invalid_style = invalid_style
         self.v_cell_ids_hovered = ctk.Variable(self, value=None)
@@ -710,6 +715,9 @@ class CalendarCanvas(ctk.CTkCanvas):
         self.dict_canvas_tags = dict()
         self.set_date_cells = set()
         self.dict_cell_to_cal_idx = dict()
+        self.date_to_cell = dict()
+
+        self.disabled_cells = set()
 
         ri = 1 if self.year is not None else 0
 
@@ -856,6 +864,126 @@ class CalendarCanvas(ctk.CTkCanvas):
         self.calc_days()
         self.selected_date.trace_variable("w", self.update_selected_date)
 
+    # def deselect_day(self, day_in: int | datetime.datetime = None, month_in: Optional[int] = None)
+    def deselect_day(self):
+        last_select: tuple[int, int] = self.v_cell_ids_selected.get()
+        print(f"{last_select=}")
+        if last_select:
+            cal_idx_lh = self.dict_cell_to_cal_idx[last_select]
+            cs_lh = self.colour_scheme_month.get(cal_idx_lh, {})
+            col_lh = cs_lh.get("colour_background_canvas", self.colour_background_canvas)
+            col_txt_lh = cs_lh.get("colour_foreground_canvas", col_lh.font_foreground_c())
+            self.itemconfigure(
+                self.dict_canvas_tags[last_select]["rect"],
+                fill=col_lh.hex_code
+            )
+            self.itemconfigure(
+                self.dict_canvas_tags[last_select]["text"],
+                fill=col_txt_lh.hex_code
+            )
+
+    def disable_day(self, day_in: int | datetime.datetime, month_in: Optional[int] = None):
+        if isinstance(day_in, datetime.datetime):
+            m_idx = day_in.month - 1
+            d_idx = day_in.day
+            if not (0 <= m_idx < 12):
+                raise ValueError(f"Param 'month_in' must be between 1 and 12, representing the months of the year.")
+            if not (1 <= d_idx <= self.max_days_per_month[m_idx]):
+                raise ValueError(f"Param 'day_in' must be between 1 and {self.max_days_per_month[m_idx]}, since you supplied 'month_idx'={m_idx + 1}, the maximum number of days can only be {self.max_days_per_month[m_idx]} for {calendar.month_name[m_idx + 1]}.")
+
+        else:
+            m_idx, d_idx = month_in, day_in
+        i, j = self.date_to_cell[(m_idx, d_idx)]
+
+        # self.click_canvas(None, i, j)
+        if (i, j) not in self.disabled_cells:
+            self.disabled_cells.add((i, j))
+            tr = self.dict_canvas_tags[(i, j)]["rect"]
+            tt = self.dict_canvas_tags[(i, j)]["text"]
+            cs = self.colour_scheme_month.get(m_idx, {})
+            ds = self.colour_scheme_day.get((m_idx, d_idx), {})
+            bg, fg = None, None
+            if ds:
+                bg = ds.get("colour_background_canvas")
+                fg = ds.get("colour_foreground_canvas")
+            if not bg:
+                bg = cs.get("colour_background_canvas")
+            if not fg:
+                fg = cs.get("colour_foreground_canvas")
+            if not bg:
+                bg = self.colour_background_canvas.darkened(0.3)
+            if not fg:
+                fg = self.colour_foreground_canvas.darkened(0.3)
+
+            # is_ = self.invalid_style[]
+            self.itemconfigure(tt, fill=fg.hex_code)
+            self.itemconfigure(tr, fill=bg.hex_code)
+
+
+    def disable_date(self, date_in: datetime.datetime):
+        if self.year is None:
+            raise ValueError(f"Please use CalendarCanvas.disable_day when disabling a cell on a calendar with no specified year.")
+
+        d1 = datetime.datetime(self.year, 1, 1)
+        d2 = datetime.datetime(self.year, 12, 31, 23, 59, 59, 999999)
+        if not (d1 <= date_in <= d2):
+            raise ValueError(f"Param 'date_in' must be between {d1:%Y-%m-%d} and {d2:%Y-%m-%d} at end of day. Got {date_in:%x}")
+
+        i, j = self.date_to_cell[date_in]
+
+        if (i, j) not in self.disabled_cells:
+            cal_idx = date_in.month - 1
+            self.disabled_cells.add((i, j))
+
+            tr = self.dict_canvas_tags[(i, j)]["rect"]
+            tt = self.dict_canvas_tags[(i, j)]["text"]
+            cs = self.colour_scheme_month.get(cal_idx, {})
+            ds = self.colour_scheme_day.get((date_in.month, date_in.day), {})
+            bg, fg = None, None
+            if ds:
+                bg = ds.get("colour_background_canvas")
+                fg = ds.get("colour_foreground_canvas")
+            if not bg:
+                bg = cs.get("colour_background_canvas")
+            if not fg:
+                fg = cs.get("colour_foreground_canvas")
+            if not bg:
+                bg = self.colour_background_canvas.darkened(0.3)
+            if not fg:
+                fg = self.colour_foreground_canvas.darkened(0.3)
+
+            # is_ = self.invalid_style[]
+            self.itemconfigure(tt, fill=fg.hex_code)
+            self.itemconfigure(tr, fill=bg.hex_code)
+
+    def select_day(self, day_in: int | datetime.datetime, month_in: Optional[int] = None):
+        if isinstance(day_in, datetime.datetime):
+            m_idx = day_in.month - 1
+            d_idx = day_in.day
+            if not (0 <= m_idx < 12):
+                raise ValueError(f"Param 'month_in' must be between 1 and 12, representing the months of the year.")
+            if not (1 <= d_idx <= self.max_days_per_month[m_idx]):
+                raise ValueError(f"Param 'day_in' must be between 1 and {self.max_days_per_month[m_idx]}, since you supplied 'month_idx'={m_idx + 1}, the maximum number of days can only be {self.max_days_per_month[m_idx]} for {calendar.month_name[m_idx + 1]}.")
+
+        else:
+            m_idx, d_idx = month_in, day_in
+        i, j = self.date_to_cell[(m_idx, d_idx)]
+        self.click_canvas(None, i, j)
+
+
+    def select_date(self, date_in: datetime.datetime):
+        if self.year is None:
+            raise ValueError(f"Please use CalendarCanvas.select_day when selecting a cell on a calendar with no specified year.")
+
+        d1 = datetime.datetime(self.year, 1, 1)
+        d2 = datetime.datetime(self.year, 12, 31, 23, 59, 59, 999999)
+        if not (d1 <= date_in <= d2):
+            raise ValueError(f"Param 'date_in' must be between {d1:%Y-%m-%d} and {d2:%Y-%m-%d} at end of day. Got {date_in:%x}")
+
+        i, j = self.date_to_cell[date_in]
+
+        self.click_canvas(None, i, j)
+
     def validate_colour_scheme(self, colour_scheme_month) -> dict[int: Colour]:
         if not isinstance(colour_scheme_month, dict):
             raise ValueError(f"Param 'colour_scheme_month' must be an instance of a dictionary. Got '{type(colour_scheme_month)}'")
@@ -909,12 +1037,15 @@ class CalendarCanvas(ctk.CTkCanvas):
                     used_row = False
                     ri0 = ri + (j * self.weeks_per_month) + wk_i
                     for wkd_i in range(7):
+                        ds = self.colour_scheme_day[(day_one.month, day_one.day)]
                         str_day = f"{day_one.day}"
                         ci0 = ((cal_i % self.months_per_row) * 7) + wkd_i
                         # print(f"{day_one:%Y-%m-%d}, {cal_i=}, {j=}, {ri0=}, {ci0=}, {wk_i=}, {wkd_i=}, {wd_d1=}", end="")
                         # month_name = calendar.month_name[cal_i + 1]
                         tag_txt = self.dict_canvas_tags[(ri0, ci0)]["text"]
                         tag_rect = self.dict_canvas_tags[(ri0, ci0)]["rect"]
+
+                        s = ds if ds else cs  # TODO this won't work right
 
                         if self.show_weekdays and (wk_i == 0):
                             self.dict_canvas_tags["header_month"][cal_i]["weekdays"].append({
@@ -923,12 +1054,12 @@ class CalendarCanvas(ctk.CTkCanvas):
                             })
                             self.itemconfigure(
                                 tag_rect,
-                                fill=cs.get("colour_background_header_weekday", self.colour_background_header_weekday).hex_code
+                                fill=s.get("colour_background_header_weekday", self.colour_background_header_weekday).hex_code
                             )
                             self.itemconfigure(
                                 tag_txt,
                                 text=f"{calendar.day_abbr[(wkd_i - 1) % 7]}"[0],
-                                fill=cs.get("colour_foreground_header_weekday", self.colour_background_header_weekday.font_foreground_c()).hex_code
+                                fill=s.get("colour_foreground_header_weekday", self.colour_background_header_weekday.font_foreground_c()).hex_code
                             )
                             # self.set_date_cells.discard((ri0, ci0))
                             used_row = True
@@ -948,6 +1079,7 @@ class CalendarCanvas(ctk.CTkCanvas):
                             continue
 
                         self.itemconfigure(tag_txt, text=str_day)
+                        self.date_to_cell[day_one] = (ri0, ci0)
                         txt = self.itemcget(tag_txt, "text")
                         day_one += datetime.timedelta(days=1)
                         used_row = True
@@ -1002,6 +1134,7 @@ class CalendarCanvas(ctk.CTkCanvas):
                         print(f" End of Month")
                         continue
                     print(f" {str_day=}")
+                    self.date_to_cell[(cal_idx, str_day)] = (i, j)
                     self.itemconfigure(tag_txt, text=str_day)
                     used_row = True
                     # day_one = datetime.datetime(self.year, cal_i + 1, 1)
@@ -1014,7 +1147,33 @@ class CalendarCanvas(ctk.CTkCanvas):
                             state="hidden"
                         )
 
+    def get_colour(self, i, j, key):
+        ds = self.colour_scheme_day
+        cs = self.colour_scheme_month
+        is_ = self.invalid_style
+        valid_style_keys = {
+            "colour_background_canvas": iscolour,
+            "colour_background_owned_number_check": iscolour,
+            "colour_background_header_month": iscolour,
+            "colour_background_header_weekday": iscolour,
 
+            "colour_foreground_canvas": iscolour,
+            "colour_foreground_header_month": iscolour,
+
+            "colour_background_canvas_selected": iscolour,
+            "colour_foreground_canvas_selected": iscolour
+        }
+
+        if key not in valid_style_keys:
+            raise ValueError(f"Key '{key}' is not recognized as a valid colour key.")
+
+        val = ds.get(key)
+        if not val:
+            val = cs.get(key)
+        if not val:
+            val = self.__getattribute__(key)
+
+        return val
 
     # def get_cell_colour(self, n):
     #     # n is offset by 1
@@ -1028,6 +1187,8 @@ class CalendarCanvas(ctk.CTkCanvas):
     #         return self.colour_background_canvas
     def click_canvas(self, event, i, j):
         print(f"click_canvas {i=}, {j=}, {event=}", end="")
+        if (i, j) in self.disabled_cells:
+            return
         tr = self.dict_canvas_tags[(i, j)]["rect"]
         tt = self.dict_canvas_tags[(i, j)]["text"]
         cal_idx = self.dict_cell_to_cal_idx[(i, j)]
@@ -1042,6 +1203,9 @@ class CalendarCanvas(ctk.CTkCanvas):
             print(f"{last_select=}")
             if last_select:
                 cal_idx_lh = self.dict_cell_to_cal_idx[last_select]
+                ds = self.colour_scheme_day
+                cs = self.colour_scheme_month
+                bg = self.get_colour(i, j, "colour_background_canvas")
                 cs_lh = self.colour_scheme_month.get(cal_idx_lh, {})
                 col_lh = cs_lh.get("colour_background_canvas", self.colour_background_canvas)
                 col_txt_lh = cs_lh.get("colour_foreground_canvas", col_lh.font_foreground_c())
@@ -1081,6 +1245,11 @@ class CalendarCanvas(ctk.CTkCanvas):
     def motion_cell(self, event, i, j, t_):
         if self.id_after_motion is not None:
             self.after_cancel(self.id_after_motion)
+
+        self.id_after_motion = self.after(self.time_after_motion, self.after_motion)
+
+        if (i, j) in self.disabled_cells:
+            return
 
         cal_idx = self.dict_cell_to_cal_idx[(i, j)]
 
@@ -1167,8 +1336,6 @@ class CalendarCanvas(ctk.CTkCanvas):
                     fill=col_txt_a.hex_code
                 )
                 self.v_cell_ids_hovered.set((i, j))
-
-        self.id_after_motion = self.after(self.time_after_motion, self.after_motion)
 
     def after_motion(self, *args):
         mx = self.winfo_pointerx()
@@ -1424,6 +1591,16 @@ def demo_3():
         for m_idx, col in month_colours.items()
     }
 
+    colour_scheme_day = {
+        (12, 25): {
+            "name": "Christmas",
+            "colour_background_canvas": Colour("#A60824"),
+            "colour_foreground_canvas": Colour("#085624"),
+            "colour_ground_canvas_selected": Colour("#A99511"),
+            "colour_foreground_canvas_selected": Colour("#0000A1")
+        }
+    }
+
     # colour_scheme_months[0]["colour_background_canvas"] = Colour("#319141")
 
     frame = ctk.CTkFrame(win)
@@ -1436,10 +1613,17 @@ def demo_3():
         # ,invalid_style="darken"
         ,show_all_rows=True
         ,selectable=True
+        ,colour_scheme_day=colour_scheme_day
     )
 
     frame.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
     calendar.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
+
+    # calendar.disable_date(datetime.datetime(2024, 12, 25))  # holiday
+    # calendar.disable_date(datetime.datetime(2024, 1, 25))
+    calendar.disable_day(25, 1)
+    win.after(2500, lambda: calendar.select_day(datetime.datetime.now()))
+    win.after(8500, lambda: calendar.deselect_day())
 
     win.mainloop()
 
