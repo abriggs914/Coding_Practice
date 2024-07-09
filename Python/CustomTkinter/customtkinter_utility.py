@@ -655,6 +655,8 @@ class CalendarCanvas2(ctk.CTkCanvas):
             colour_background_header_month: Colour = Colour("#7B8B8B"),
             colour_background_header_weekday: Colour = Colour("#94A4A4"),
             colour_background_canvas_selected: Colour = Colour("#081688"),
+            colour_active_background_canvas_selected: Colour = Colour("#2836A8"),
+            colour_active_foreground_canvas_selected: Colour = Colour("#DDDDDD"),
             colour_foreground_canvas_selected: Colour = Colour("#FFFFFF"),
             colour_scheme_month: dict[int: Colour] = None,
             colour_scheme_day: dict[tuple[int, int]: Colour] = None,
@@ -690,6 +692,8 @@ class CalendarCanvas2(ctk.CTkCanvas):
         self.colour_background_header_weekday = colour_background_header_weekday
         self.colour_background_canvas_selected = colour_background_canvas_selected
         self.colour_foreground_canvas_selected = colour_foreground_canvas_selected
+        self.colour_active_background_canvas_selected = colour_active_background_canvas_selected
+        self.colour_active_foreground_canvas_selected = colour_active_foreground_canvas_selected
         self.colour_scheme_month: dict[int: Colour] = self.validate_colour_scheme(colour_scheme_month) if colour_scheme_month is not None else dict()
         # self.colour_scheme_day: dict[tuple[int, int]: Colour] = self.validate_colour_scheme(colour_scheme_day) if colour_scheme_day is not None else dict()
         self.colour_scheme_day: dict[tuple[int, int]: Colour] = colour_scheme_day if colour_scheme_day is not None else dict()
@@ -892,6 +896,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
                 self.dict_canvas_tags[last_select]["text"],
                 fill=col_txt_lh.hex_code
             )
+            self.v_cell_ids_selected.set(None)
 
     def disable_day(self, day_in: int | datetime.datetime, month_in: Optional[int] = None):
         if isinstance(day_in, datetime.datetime):
@@ -1214,13 +1219,16 @@ class CalendarCanvas2(ctk.CTkCanvas):
                     print(f"E: {val=}")
 
         if (i is not None) and (j is not None):
+            print(f"F: {val=}")
             # p_a = j // 7
             # p_ba = (i - ri) // (self.weeks_per_month + self.show_weekdays)
             # p_bb = p_ba * self.months_per_row
             # cal_idx = p_a + p_bb
-            cal_idx = self.dict_cell_to_cal_idx[(i, j)]
+            # cal_idx = self.dict_cell_to_cal_idx[(i, j)]
             if (i, j) == selected:
                 key_n = f"{key}_selected"
+                val = self.__getattribute__(key_n)
+                print(f"G: {val=}")
                 
 
         # # disabled
@@ -1258,6 +1266,11 @@ class CalendarCanvas2(ctk.CTkCanvas):
         print(f"click_canvas {i=}, {j=}, {event=}", end="")
         if (i, j) in self.disabled_cells:
             return
+        last_select: tuple[int, int] = self.v_cell_ids_selected.get()
+        last_select = eval(last_select) if (last_select and isinstance(last_select, str)) else last_select
+        if (i, j) == last_select:
+            self.deselect_day()
+            return
         tr = self.dict_canvas_tags[(i, j)]["rect"]
         tt = self.dict_canvas_tags[(i, j)]["text"]
         cal_idx = self.dict_cell_to_cal_idx[(i, j)]
@@ -1268,7 +1281,6 @@ class CalendarCanvas2(ctk.CTkCanvas):
             print(f" {year=}, month={cal_idx+1}, day={int(text)}")
             # TODO highlight that this is now selected
 
-            last_select: tuple[int, int] = self.v_cell_ids_selected.get()
             print(f"{last_select=}")
             if last_select:
                 cal_idx_lh = self.dict_cell_to_cal_idx[last_select]
