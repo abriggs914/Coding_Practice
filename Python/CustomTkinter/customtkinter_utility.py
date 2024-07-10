@@ -750,16 +750,17 @@ class CalendarCanvas2(ctk.CTkCanvas):
                 # ci0 = (c_i % self.months_per_row) * 7
                 # cal_idx =
                 p_a = j // 7
-                p_ba = (i - ri) // (self.weeks_per_month + self.show_weekdays)
+                # p_ba = (i - ri) // (self.weeks_per_month + self.show_weekdays)
+                p_ba = (i - ri) // (self.weeks_per_month)
                 p_bb = p_ba * self.months_per_row
                 cal_idx = p_a + p_bb
                 self.dict_cell_to_cal_idx[(i, j)] = cal_idx
 
-                cs = self.colour_scheme_month.get(cal_idx, {})
+                # cs = self.colour_scheme_month.get(cal_idx, {})
                 # col_wd = cs.get("colour_background_canvas", self.colour_background_canvas)
                 # col_wd_txt = cs.get("colour_foreground_canvas", col_wd.font_foreground_c())
                 col_wd = self.get_colour("colour_background_canvas", i, j)
-                col_wd_txt = self.get_colour("colour_foreground_canvas", i, j, default=col_wd.font_foreground_c())
+                col_wd_txt = self.get_colour("colour_foreground_canvas", i, j)
                 # print(f"{i=}, {j=}, {cal_idx=}, {p_a=}, {p_ba=}, {p_bb=}, col_wd={col_wd.hex_code}, col_wd_txt={col_wd_txt.hex_code}, {cs=}")
                 tr = self.create_rectangle(
                     x0, y0, x1, y1, fill=col_wd.hex_code
@@ -1119,6 +1120,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
                         self.itemconfigure(tag_txt, text=str_day)
                         self.date_to_cell[day_one] = (ri0, ci0)
                         self.cell_to_date[(ri0, ci0)] = day_one
+                        self.dict_cell_to_cal_idx[(ri0, ci0)] = day_one.month - 1
                         txt = self.itemcget(tag_txt, "text")
                         day_one += datetime.timedelta(days=1)
                         used_row = True
@@ -1782,6 +1784,7 @@ def demo_3():
         0: Colour("#4682B4"),  # January - Steel Blue
         1: Colour("#5F9EA0"),  # February - Cadet Blue
         # 2: Colour("#66CDAA"),  # March - Medium Aquamarine
+        2: Colour("#000000"),  # March - Medium Aquamarine
         # 3: Colour("#8FBC8F"),  # April - Dark Sea Green
         # 4: Colour("#98FB98"),  # May - Pale Green
         5: Colour("#FFD700"),  # June - Gold
