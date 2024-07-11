@@ -1252,46 +1252,57 @@ class CalendarCanvas2(ctk.CTkCanvas):
                     val = ms[cal_idx].get(key)
             if not val:
                 c_code += "f"
-                try:
-                    c_code += "g"
-                    val = self.__getattribute__(key)
-                except AttributeError:
-                    c_code += "h"
-                    val = fg if ("_foreground" in key) else bg
+                if key != key_n:
+                    if (midx, didx) in ds:
+                        c_code += "g"
+                        val = ds[(midx, didx)].get(key_n)
+                    if not val:
+                        c_code += "h"
+                        if cal_idx in ms:
+                            c_code += "i"
+                            val = ms[cal_idx].get(key_n)
+                if not val:
+                    c_code += "j"
+                    try:
+                        c_code += "k"
+                        val = self.__getattribute__(key)
+                    except AttributeError:
+                        c_code += "l"
+                        val = fg if ("_foreground" in key) else bg
 
             if is_invalid_cell:
-                c_code += "i"
+                c_code += "m"
                 if pos not in self.dict_canvas_tags[f"header_month_weekday"][cal_idx]:
-                    c_code += "j"
+                    c_code += "n"
                     print(f"invalid")
                     if is_:
-                        c_code += "k"
+                        c_code += "o"
                         val = val.darkened(0.25) if (is_ == "darken") else (
                             val.brightened(0.25) if (is_ == "brighten") else val)
 
             elif pos in dc:
-                c_code += "l"
+                c_code += "p"
                 print(f"disabled")
 
             elif pos == selected:
-                c_code += "m"
+                c_code += "q"
                 print(f"selected")
 
             elif pos == hovered:
-                c_code += "n"
+                c_code += "r"
                 print(f"hovered")
                 if hs:
-                    c_code += "o"
+                    c_code += "s"
                     val = val.darkened(0.25) if (hs == "darken") else (
                         val.brightened(0.25) if (hs == "brighten") else val)
 
         else:
-            c_code += "p"
+            c_code += "t"
             try:
-                c_code += "q"
+                c_code += "u"
                 val = self.__getattribute__(key)
             except AttributeError:
-                c_code += "r"
+                c_code += "v"
                 val = fg if ("_foreground" in key) else bg
 
         print(f"CC={c_code.ljust(15)}, C='{val.hex_code}', ij=({i}, {j}), {key=}")
