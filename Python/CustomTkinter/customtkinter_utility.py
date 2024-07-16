@@ -23,8 +23,8 @@ VERSION = \
     """	
     General Utility Functions
     ans class for customtkinter
-    Version................1.03
-    Date.............2024-07-03
+    Version................1.04
+    Date.............2024-07-11
     Author(s)......Avery Briggs
     """
 
@@ -534,11 +534,12 @@ class CtkEntryDate(ctk.CTkFrame):
         self.calendar_kwargs.setdefault("date_pattern", date_format)
         self.date: datetime.datetime = datetime.datetime.now()
         self.var_date_picker = tkinter.StringVar(self, value=f"{self.date:%Y-%m-%d}")
+        self.var_date_entry = tkinter.StringVar(self, value=self.var_date_picker.get())
 
         # self.var_entry = tkinter.StringVar(self, value="")
         self.entry = ctk.CTkEntry(
             self,
-            textvariable=self.var_date_picker,
+            textvariable=self.var_date_entry,
             **self.entry_kwargs
         )
         self.var_text_btn_dropdown = tkinter.StringVar(self, value="V")
@@ -575,8 +576,10 @@ class CtkEntryDate(ctk.CTkFrame):
             self.var_text_btn_dropdown.set("^")
 
     def submit_entry(self, event):
-        print(f"submit_entry v={self.var_entry.get()}")
-        val = self.var_entry.get()
+        # print(f"submit_entry v={self.var_date_picker.get()}")
+        # val = self.var_date_picker.get()
+        print(f"submit_entry v={self.var_date_entry.get()}")
+        val = self.var_date_entry.get()
         if is_date(val):
 
             # date = self.date_picker.parse_date(val)
@@ -588,22 +591,45 @@ class CtkEntryDate(ctk.CTkFrame):
             self.date_picker.selection_set(val)
 
     def update_selected_date(self, *args):
-        date = self.var_date_picker.get()
-        print(f"update_selected_date v={date}")
-        fmt = "%x"
-        for fmt in (
-            "%x",
-            "%Y-%m-%d"
-        ):
-            try:
-                self.date = datetime.datetime.strptime(date, fmt)
-            except ValueError:
-                pass
-            else:
-                break
+        self.var_date_entry.set(self.var_date_picker.get())
+        # text = self.var_date_picker.get()
+        # print(f"{text=}")
+        # if is_date(text):
+        #     print(f"ISDATE")
+        #     for fmt in (
+        #         "%x",
+        #         "%Y-%m-%d"
+        #     ):
+        #         try:
+        #             self.date = datetime.datetime.strptime(text, fmt)
+        #             print(f"{self.date=}")
+        #             self.date_picker.selection_set(self.date)
+        #         except ValueError:
+        #             pass
+        #         else:
+        #             break
+        # print(f"END")
 
-        print(f"New Date! {self.date:%Y-%m-%d}")
-        self.var_entry.set(f"{self.date:{fmt}}")
+        # date = self.date_picker.selection_get()
+        # print(f"update_selected_date v={date}")
+        # fmt = "%x"
+        # if isinstance(date, str):
+        #     for fmt in (
+        #         "%x",
+        #         "%Y-%m-%d"
+        #     ):
+        #         try:
+        #             self.date = datetime.datetime.strptime(date, fmt)
+        #         except ValueError:
+        #             pass
+        #         else:
+        #             break
+        # else:
+        #     # self.date = self.date_picker.format_date(date)
+        #     self.date = date
+        #
+        # print(f"New Date! {self.date:%Y-%m-%d}")
+        # self.var_date_picker.set(f"{self.date:%Y-%m-%d}")
 
 
 def callback_wrapper(obj, callback, secondary_callback):
@@ -1236,6 +1262,12 @@ class CalendarCanvas2(ctk.CTkCanvas):
             cal_idx = self.dict_cell_to_cal_idx[pos]
             is_invalid_cell = pos not in self.set_date_cells
 
+            if pos == selected:
+                c_code += "="
+                key = key.removesuffix("_selected") + f"_selected"
+                key_n = key_n.removesuffix("_selected") + f"_selected"
+                print(f"selected")
+
             midx, didx = None, None
             if (not is_invalid_cell) and self.finished_init and self.finished_calc:
                 c_code += "b"
@@ -1305,7 +1337,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
                 c_code += "v"
                 val = fg if ("_foreground" in key) else bg
 
-        print(f"CC={c_code.ljust(15)}, C='{val.hex_code}', ij=({i}, {j}), {key=}")
+        print(f"CC={c_code.ljust(15)}, C='{val.hex_code}', ij=({i}, {j}), {key=}, {key_n=}")
         return val
 
 
