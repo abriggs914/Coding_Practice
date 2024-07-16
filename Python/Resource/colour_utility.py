@@ -10,8 +10,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.36
-    Date...........2024-03-26
+    Version..............1.37
+    Date...........2024-07-16
     Author(s)....Avery Briggs
     """
 
@@ -3483,7 +3483,11 @@ def iscolour(c, g=None, b=None):
     elif is_hex_colour(c):
         return True
     elif isinstance(c, str) and g is None and b is None:
-        c = c.replace("-", "_")
+        c = c.replace("-", "_").upper()
+        c = c.replace("GREY", "GRAY")
+        if ("_" not in c) and ("GRAY" in c):
+            c = c.removeprefix("GRAY")
+            c = f"GRAY_{c}"
         if c.upper() in COLOURS:
             return True
     elif all([
@@ -3699,8 +3703,14 @@ class Colour:
                 if not c.startswith("#"):
                     c = f"#{c}"
                 r, g, b = hex_to_rgb(c)
-            elif isinstance(c, str) and ((col := c.replace("-", "_").upper()) in COLOURS):
-                r, g, b = COLOURS[col]["R"], COLOURS[col]["G"], COLOURS[col]["B"]
+            elif isinstance(c, str):
+                col = c.replace("-", "_").upper()
+                col = col.replace("GREY", "GRAY")
+                if ("_" not in col) and ("GRAY" in col):
+                    col = col.removeprefix("GRAY")
+                    col = f"GRAY_{col}"
+                if col in COLOURS:
+                    r, g, b = COLOURS[col]["R"], COLOURS[col]["G"], COLOURS[col]["B"]
             else:
                 # r, g, b = None, None, None
                 raise Colour.ColourCreationError(f"Error params {c=}, {g=}, {b=} do not represent a valid or known colour.")
