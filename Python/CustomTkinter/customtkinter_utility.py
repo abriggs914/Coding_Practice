@@ -2181,7 +2181,8 @@ def demo_2():
 
 def demo_3():
     win = ctk.CTk()
-    win.geometry(calc_geometry_tl(1.0, 1.0, largest=1))  # , parent=win, ask=True))
+    # win.geometry(calc_geometry_tl(1.0, 1.0, largest=1))  # , parent=win, ask=True))
+    win.geometry(calc_geometry_tl(1.0, 1.0, parent=win, ask=True))  # , parent=win, ask=True))
     win.title("CalendarCanvas Demo")
 
     colour_scheme_keys = {
