@@ -23,8 +23,8 @@ VERSION = \
     """	
     General Utility Functions
     ans class for customtkinter
-    Version................1.04
-    Date.............2024-07-17
+    Version................1.05
+    Date.............2024-07-18
     Author(s)......Avery Briggs
     """
 

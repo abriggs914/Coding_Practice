@@ -13,7 +13,7 @@ from tkcalendar import Calendar
 from datetime_utility import is_date
 from colour_utility import Colour, iscolour
 from tkinter_utility import calc_geometry_tl
-from utility import grid_cells, clamp
+from utility import grid_cells, clamp, isnumber
 
 #######################################################################################################################
 #######################################################################################################################
@@ -23,8 +23,8 @@ VERSION = \
     """	
     General Utility Functions
     ans class for customtkinter
-    Version................1.04
-    Date.............2024-07-11
+    Version................1.05
+    Date.............2024-07-18
     Author(s)......Avery Briggs
     """
 
@@ -424,7 +424,7 @@ class CtkTableExt(ctk.CTkScrollableFrame):
 
 
 class CtkEntryDate_2(ctk.CTkEntry):
-     # https://github.com/YakirNissim/customtkinter-CTkEntryDate
+    # https://github.com/YakirNissim/customtkinter-CTkEntryDate
     def __init__(self,
                  master: Any,
                  placeholder_text: str = 'DD / MM / YY',
@@ -581,7 +581,6 @@ class CtkEntryDate(ctk.CTkFrame):
         print(f"submit_entry v={self.var_date_entry.get()}")
         val = self.var_date_entry.get()
         if is_date(val):
-
             # date = self.date_picker.parse_date(val)
             # self.date_picker.date = date
             val = is_date(val)
@@ -690,6 +689,8 @@ class CalendarCanvas2(ctk.CTkCanvas):
             colour_scheme_day: dict[tuple[int, int]: Colour] = None,
             hover_style: Literal[None, "darken", "brighten"] = "brighten",
             invalid_style: Literal[None, "darken", "brighten", "invisible"] = None,
+            disabled_style: Literal[None, "darken", "brighten", ""] = None,
+            invalid_style_safe: bool = True,
             show_all_rows: bool = False,
             selectable: bool = False,
             *args, **kwargs
@@ -724,11 +725,14 @@ class CalendarCanvas2(ctk.CTkCanvas):
         self.colour_foreground_canvas_selected = colour_foreground_canvas_selected
         self.colour_active_background_canvas_selected = colour_active_background_canvas_selected
         self.colour_active_foreground_canvas_selected = colour_active_foreground_canvas_selected
-        self.colour_scheme_month: dict[int: Colour] = self.validate_colour_scheme(colour_scheme_month) if colour_scheme_month is not None else dict()
+        self.colour_scheme_month: dict[int: Colour] = self.validate_colour_scheme(
+            colour_scheme_month) if colour_scheme_month is not None else dict()
         # self.colour_scheme_day: dict[tuple[int, int]: Colour] = self.validate_colour_scheme(colour_scheme_day) if colour_scheme_day is not None else dict()
-        self.colour_scheme_day: dict[tuple[int, int]: Colour] = colour_scheme_day if colour_scheme_day is not None else dict()
+        self.colour_scheme_day: dict[tuple[
+                                         int, int]: Colour] = colour_scheme_day if colour_scheme_day is not None else dict()
         self.hover_style = hover_style
         self.invalid_style = invalid_style
+        self.invalid_style_safe = invalid_style_safe
         self.v_cell_ids_hovered = ctk.Variable(self, value=None)
         self.v_cell_ids_selected = ctk.Variable(self, value=None)
         self.max_days_per_month = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -817,7 +821,8 @@ class CalendarCanvas2(ctk.CTkCanvas):
                 }
                 if (hs := self.hover_style) is not None:
                     for tag in (tr, tt):
-                        self.tag_bind(tr, "<Motion>", lambda event, i_=i, j_=j, t_=tag: self.motion_cell(event, i_, j_, t_))
+                        self.tag_bind(tr, "<Motion>",
+                                      lambda event, i_=i, j_=j, t_=tag: self.motion_cell(event, i_, j_, t_))
 
         self.dict_canvas_tags["header_year"] = {"rect": None, "text": None}
         self.dict_canvas_tags["header_month"] = {"rect": None, "text": None}
@@ -826,11 +831,11 @@ class CalendarCanvas2(ctk.CTkCanvas):
         if self.year is not None:
             # hide top row cells
             for j in range(self.n_cols):
-            #     for tag_name in ("rect", "text"):
-            #         self.itemconfigure(
-            #             self.dict_canvas_tags[(0, j)][tag_name],
-            #             state="hidden"
-            #         )
+                #     for tag_name in ("rect", "text"):
+                #         self.itemconfigure(
+                #             self.dict_canvas_tags[(0, j)][tag_name],
+                #             state="hidden"
+                #         )
                 self.set_date_cells.discard((0, j))
 
             # create a new rectangle for the year label row
@@ -950,7 +955,8 @@ class CalendarCanvas2(ctk.CTkCanvas):
             if not (0 <= m_idx < 12):
                 raise ValueError(f"Param 'month_in' must be between 1 and 12, representing the months of the year.")
             if not (1 <= d_idx <= self.max_days_per_month[m_idx]):
-                raise ValueError(f"Param 'day_in' must be between 1 and {self.max_days_per_month[m_idx]}, since you supplied 'month_idx'={m_idx + 1}, the maximum number of days can only be {self.max_days_per_month[m_idx]} for {calendar.month_name[m_idx + 1]}.")
+                raise ValueError(
+                    f"Param 'day_in' must be between 1 and {self.max_days_per_month[m_idx]}, since you supplied 'month_idx'={m_idx + 1}, the maximum number of days can only be {self.max_days_per_month[m_idx]} for {calendar.month_name[m_idx + 1]}.")
 
         else:
             m_idx, d_idx = month_in - 1, day_in
@@ -960,7 +966,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
             date_in = datetime.datetime(self.year, month_in, day_in)
             i, j = self.date_to_cell[date_in]
 
-        print(f"DD -> {i=}, {j=}")
+        print(f"DD -> {i=}, {j=}, {self.disabled_cells=}")
 
         # self.click_canvas(None, i, j)
         if (i, j) not in self.disabled_cells:
@@ -990,12 +996,14 @@ class CalendarCanvas2(ctk.CTkCanvas):
 
     def disable_date(self, date_in: datetime.datetime):
         if self.year is None:
-            raise ValueError(f"Please use CalendarCanvas.disable_day when disabling a cell on a calendar with no specified year.")
+            raise ValueError(
+                f"Please use CalendarCanvas.disable_day when disabling a cell on a calendar with no specified year.")
 
         d1 = datetime.datetime(self.year, 1, 1)
         d2 = datetime.datetime(self.year, 12, 31, 23, 59, 59, 999999)
         if not (d1 <= date_in <= d2):
-            raise ValueError(f"Param 'date_in' must be between {d1:%Y-%m-%d} and {d2:%Y-%m-%d} at end of day. Got {date_in:%x}")
+            raise ValueError(
+                f"Param 'date_in' must be between {d1:%Y-%m-%d} and {d2:%Y-%m-%d} at end of day. Got {date_in:%x}")
 
         i, j = self.date_to_cell[date_in]
 
@@ -1034,7 +1042,8 @@ class CalendarCanvas2(ctk.CTkCanvas):
             if not (0 <= m_idx < 12):
                 raise ValueError(f"Param 'month_in' must be between 1 and 12, representing the months of the year.")
             if not (1 <= d_idx <= self.max_days_per_month[m_idx]):
-                raise ValueError(f"Param 'day_in' must be between 1 and {self.max_days_per_month[m_idx]}, since you supplied 'month_idx'={m_idx + 1}, the maximum number of days can only be {self.max_days_per_month[m_idx]} for {calendar.month_name[m_idx + 1]}.")
+                raise ValueError(
+                    f"Param 'day_in' must be between 1 and {self.max_days_per_month[m_idx]}, since you supplied 'month_idx'={m_idx + 1}, the maximum number of days can only be {self.max_days_per_month[m_idx]} for {calendar.month_name[m_idx + 1]}.")
 
         else:
             m_idx, d_idx = month_in, day_in
@@ -1043,12 +1052,14 @@ class CalendarCanvas2(ctk.CTkCanvas):
 
     def select_date(self, date_in: datetime.datetime):
         if self.year is None:
-            raise ValueError(f"Please use CalendarCanvas.select_day when selecting a cell on a calendar with no specified year.")
+            raise ValueError(
+                f"Please use CalendarCanvas.select_day when selecting a cell on a calendar with no specified year.")
 
         d1 = datetime.datetime(self.year, 1, 1)
         d2 = datetime.datetime(self.year, 12, 31, 23, 59, 59, 999999)
         if not (d1 <= date_in <= d2):
-            raise ValueError(f"Param 'date_in' must be between {d1:%Y-%m-%d} and {d2:%Y-%m-%d} at end of day. Got {date_in:%x}")
+            raise ValueError(
+                f"Param 'date_in' must be between {d1:%Y-%m-%d} and {d2:%Y-%m-%d} at end of day. Got {date_in:%x}")
 
         i, j = self.date_to_cell[date_in]
 
@@ -1056,7 +1067,8 @@ class CalendarCanvas2(ctk.CTkCanvas):
 
     def validate_colour_scheme(self, colour_scheme_month) -> dict[int: Colour]:
         if not isinstance(colour_scheme_month, dict):
-            raise ValueError(f"Param 'colour_scheme_month' must be an instance of a dictionary. Got '{type(colour_scheme_month)}'")
+            raise ValueError(
+                f"Param 'colour_scheme_month' must be an instance of a dictionary. Got '{type(colour_scheme_month)}'")
 
         valid_style_keys = {
             "colour_background_canvas": iscolour,
@@ -1083,11 +1095,13 @@ class CalendarCanvas2(ctk.CTkCanvas):
             result[k] = dict()
             for k_style, v in scheme_data.items():
                 if k_style not in valid_style_keys:
-                    raise ValueError(f"Style key '{k_style}' is not recognized. Must be an one of: {', '.join(valid_style_keys)}")
+                    raise ValueError(
+                        f"Style key '{k_style}' is not recognized. Must be an one of: {', '.join(valid_style_keys)}")
                 try:
                     col = Colour(v)
                 except Colour.ColourCreationError:
-                    raise ValueError(f"Param 'colour_scheme_month' must only have Colour objects or equivalent as values. Got '{k}'")
+                    raise ValueError(
+                        f"Param 'colour_scheme_month' must only have Colour objects or equivalent as values. Got '{k}'")
                 result[k][k_style] = col
 
         return result
@@ -1127,13 +1141,15 @@ class CalendarCanvas2(ctk.CTkCanvas):
                             self.itemconfigure(
                                 tag_rect,
                                 # fill=s.get("colour_background_header_weekday", self.colour_background_header_weekday).hex_code
-                                fill=self.get_colour("colour_background_header_weekday", ri0, ci0, do_show=((0 < ri0 < 20) and (15 < ci0 < 50))).hex_code
+                                fill=self.get_colour("colour_background_header_weekday", ri0, ci0,
+                                                     do_show=((0 < ri0 < 20) and (15 < ci0 < 50))).hex_code
                             )
                             self.itemconfigure(
                                 tag_txt,
                                 text=f"{calendar.day_abbr[(wkd_i - 1) % 7]}"[0],
                                 # fill=s.get("colour_foreground_header_weekday", self.colour_background_header_weekday.font_foreground_c()).hex_code
-                                fill=self.get_colour("colour_foreground_header_weekday", ri0, ci0, do_show=((0 < ri0 < 20) and (15 < ci0 < 50))).hex_code
+                                fill=self.get_colour("colour_foreground_header_weekday", ri0, ci0,
+                                                     do_show=((0 < ri0 < 20) and (15 < ci0 < 50))).hex_code
                             )
                             used_row = True
                             continue
@@ -1253,87 +1269,99 @@ class CalendarCanvas2(ctk.CTkCanvas):
 
         dc = self.disabled_cells
         dtc = self.set_date_cells
-        c_code = f""
 
-        if (i is not None) and (j is not None):
-            c_code += "a"
-            val = None
-            pos = i, j
-            cal_idx = self.dict_cell_to_cal_idx[pos]
-            is_invalid_cell = pos not in self.set_date_cells
+        print(f"{ds=}")
 
-            midx, didx = None, None
-            if (not is_invalid_cell) and self.finished_init and self.finished_calc:
-                c_code += "b"
-                date_in = self.cell_to_date[pos]
-                midx, didx = date_in.month - 1, date_in.day
+        def sub_get_colour(key_, i_=None, j_=None, default_=None, do_show_=False, depth=1):
+            print(f"{key_=}, {i_=}, {j_=}, {default_=}, {do_show_=}, {depth=}")
 
-            if (midx, didx) in ds:
-                c_code += "c"
-                val = ds[(midx, didx)].get(key)
-            if not val:
-                c_code += "d"
-                if cal_idx in ms:
-                    c_code += "e"
-                    val = ms[cal_idx].get(key)
-            if not val:
-                c_code += "f"
-                if key != key_n:
-                    if (midx, didx) in ds:
-                        c_code += "g"
-                        val = ds[(midx, didx)].get(key_n)
-                    if not val:
-                        c_code += "h"
-                        if cal_idx in ms:
-                            c_code += "i"
-                            val = ms[cal_idx].get(key_n)
+            c_code = f""
+
+            if (i_ is not None) and (j_ is not None):
+                c_code += "a"
+                val = None
+                pos = i_, j_
+                cal_idx = self.dict_cell_to_cal_idx[pos]
+                is_invalid_cell = pos not in self.set_date_cells
+
+                midx, didx = None, None
+                if (not is_invalid_cell) and self.finished_init and self.finished_calc:
+                    c_code += "b"
+                    date_in = self.cell_to_date[pos]
+                    midx, didx = date_in.month - 1, date_in.day
+
+                if (midx, didx) in ds:
+                    c_code += "c"
+                    val = ds[(midx, didx)].get(key_)
                 if not val:
-                    c_code += "j"
-                    try:
-                        c_code += "k"
-                        val = self.__getattribute__(key)
-                    except AttributeError:
-                        c_code += "l"
-                        val = fg if ("_foreground" in key) else bg
+                    c_code += "d"
+                    if cal_idx in ms:
+                        c_code += "e"
+                        val = ms[cal_idx].get(key_)
+                if not val:
+                    c_code += "f"
+                    if key_ != key_n:
+                        if (midx, didx) in ds:
+                            c_code += "g"
+                            val = ds[(midx, didx)].get(key_n)
+                        if not val:
+                            c_code += "h"
+                            if cal_idx in ms:
+                                c_code += "i"
+                                val = ms[cal_idx].get(key_n)
+                    if not val:
+                        c_code += "j"
+                        try:
+                            c_code += "k"
+                            val = self.__getattribute__(key_)
+                        except AttributeError:
+                            c_code += "l"
+                            val = fg if ("_foreground" in key) else bg
 
-            if is_invalid_cell:
-                c_code += "m"
-                if pos not in self.dict_canvas_tags[f"header_month_weekday"][cal_idx]:
-                    c_code += "n"
-                    print(f"invalid")
-                    if is_:
-                        c_code += "o"
-                        val = val.darkened(0.25) if (is_ == "darken") else (
-                            val.brightened(0.25) if (is_ == "brighten") else val)
+                if is_invalid_cell:
+                    c_code += "m"
+                    if pos not in self.dict_canvas_tags[f"header_month_weekday"][cal_idx]:
+                        c_code += "n"
+                        print(f"invalid  {hovered=}")
+                        if pos == hovered:
+                            c_code += "o"
+                            if is_:
+                                c_code += "p"
+                                val = val.darkened(0.25, safe=self.invalid_style_safe) if (is_ == "darken") else (
+                                    val.brightened(0.25, safe=self.invalid_style_safe) if (is_ == "brighten") else val)
 
-            elif pos in dc:
-                c_code += "p"
-                print(f"disabled")
+                elif pos in dc:
+                    c_code += "q"
+                    print(f"disabled")
 
-            elif pos == selected:
-                c_code += "q"
-                print(f"selected")
+                elif pos == selected:
+                    c_code += "r"
+                    print(f"selected")
+                    key_s = key_.replace("_active", "").removesuffix("_selected") + "_selected"
+                    if depth > 0:
+                        val = sub_get_colour(key_s, i_, j_, do_show_=do_show_, depth=depth-1)
 
-            elif pos == hovered:
-                c_code += "r"
-                print(f"hovered")
-                if hs:
+                elif pos == hovered:
                     c_code += "s"
-                    val = val.darkened(0.25) if (hs == "darken") else (
-                        val.brightened(0.25) if (hs == "brighten") else val)
+                    print(f"hovered")
+                    if hs:
+                        c_code += "t"
+                        val = val.darkened(0.25) if (hs == "darken") else (
+                            val.brightened(0.25) if (hs == "brighten") else val)
 
-        else:
-            c_code += "t"
-            try:
+            else:
                 c_code += "u"
-                val = self.__getattribute__(key)
-            except AttributeError:
-                c_code += "v"
-                val = fg if ("_foreground" in key) else bg
+                try:
+                    c_code += "v"
+                    val = self.__getattribute__(key_)
+                except AttributeError:
+                    c_code += "w"
+                    val = fg if ("_foreground" in key_) else bg
 
-        print(f"CC={c_code.ljust(15)}, C='{val.hex_code}', ij=({i}, {j}), {key=}")
-        return val
+            print(f"CC={c_code.ljust(15)}, C='{val.hex_code}', ij=({i_}, {j_}), {key_=}")
+            return val
 
+        return sub_get_colour(key, i, j, default, do_show, depth=1)
 
     def get_colour2(self, key, i=None, j=None, default=None, do_show=False):
         selected = self.v_cell_ids_selected.get()
@@ -1554,7 +1582,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
         text_vis: str = self.itemcget(tt, "state") != "hidden"
         year = self.year if self.year is not None else datetime.datetime.now().year
         if text_vis and text.isdigit():
-            print(f" {year=}, month={cal_idx+1}, day={int(text)}")
+            print(f" {year=}, month={cal_idx + 1}, day={int(text)}")
             # TODO highlight that this is now selected
 
             self.v_cell_ids_selected.set((i, j))
@@ -1622,7 +1650,8 @@ class CalendarCanvas2(ctk.CTkCanvas):
         # last_hover = eval(last_hover) if last_hover else ""
         # selected = eval(selected) if selected else ""
         # print(f"{last_hover=}, {selected=} {type(last_hover)=}, {type(selected)=}, {i=}, {j=}")
-        print(f"ij=({i}, {j}), lh={last_hover}, sl={selected} tlh={type(last_hover)}, tsl{type(selected)}, {is_=}, {hs=}")
+        print(
+            f"ij=({i}, {j}), lh={last_hover}, sl={selected} tlh={type(last_hover)}, tsl{type(selected)}, {is_=}, {hs=}")
 
         # last_hover = eval(self.v_cell_ids_hovered.get())
         # selected = eval(self.v_cell_ids_selected.get())
@@ -1776,6 +1805,220 @@ class CalendarCanvas2(ctk.CTkCanvas):
                 self.dict_canvas_tags[select]["text"],
                 fill=col_txt_lh.hex_code
             )
+
+
+def entry_factory(master, tv_label=None, tv_entry=None, kwargs_label=None, kwargs_entry=None):
+    """Return customtkinter StringVar, Label, StringVar, Entry objects"""
+    if tv_label is not None and tv_entry is not None:
+        res_tv_label = tv_label if isinstance(tv_label, ctk.Variable) else ctk.StringVar(master, value=tv_label)
+        res_tv_entry = tv_entry if isinstance(tv_entry, ctk.Variable) else ctk.StringVar(master, value=tv_entry)
+    elif tv_label is not None:
+        res_tv_label = tv_label if isinstance(tv_label, ctk.Variable) else ctk.StringVar(master, value=tv_label)
+        res_tv_entry = ctk.StringVar(master)
+    elif tv_entry is not None:
+        res_tv_label = ctk.StringVar(master)
+        res_tv_entry = tv_entry if isinstance(tv_entry, ctk.Variable) else ctk.StringVar(master, value=tv_entry)
+    else:
+        res_tv_label = ctk.StringVar(master)
+        res_tv_entry = ctk.StringVar(master)
+
+    if kwargs_label is not None and kwargs_entry is not None:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label, **kwargs_label)
+        res_entry = ctk.CTkEntry(master, textvariable=res_tv_entry, **kwargs_entry)
+    elif kwargs_label is not None:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label, **kwargs_label)
+        res_entry = ctk.CTkEntry(master, textvariable=res_tv_entry)
+    elif kwargs_entry is not None:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label)
+        res_entry = ctk.CTkEntry(master, textvariable=res_tv_entry, **kwargs_entry)
+    else:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label)
+        res_entry = ctk.CTkEntry(master, textvariable=res_tv_entry)
+    return res_tv_label, res_label, res_tv_entry, res_entry
+
+
+def button_factory(master, tv_btn=None, kwargs_btn=None, command=None):
+    """Return customtkinter StringVar, Button objects"""
+
+    if kwargs_btn is not None:
+        assert isinstance(kwargs_btn,
+                          dict), f"Error param 'kwargs_btn' must be a dict if not None. Got: '{kwargs_btn}'."
+        if "command" in kwargs_btn and command is not None:
+            raise KeyError(
+                f"Error, command key has already been passed in param 'kwargs_btn'. Please pass only one command.")
+        elif command is not None:
+            assert callable(command), "Error, param 'command' is not callable."
+            kwargs_btn.update({"command": command})
+    elif command is not None:
+        assert callable(command), "Error, param 'command' is not callable."
+        kwargs_btn = {"command": command}
+
+    if isinstance(tv_btn, ctk.Variable):
+        res_tv_btn = tv_btn
+    else:
+        if tv_btn is not None:
+            res_tv_btn = ctk.StringVar(master, value=tv_btn)
+        else:
+            res_tv_btn = ctk.StringVar(master)
+    res_btn = ctk.CTkButton(master, textvariable=res_tv_btn)
+    if kwargs_btn is not None:
+        res_btn = ctk.CTkButton(master, textvariable=res_tv_btn, **kwargs_btn)
+    return res_tv_btn, res_btn
+
+
+def combo_factory(master, tv_label=None, kwargs_label=None, tv_combo=None, kwargs_combo=None, values=None):
+    """Return customtkinter StringVar, Label, StringVar, Entry objects"""
+    if tv_label is not None and tv_combo is not None:
+        res_tv_label = tv_label if isinstance(tv_label, ctk.Variable) else ctk.StringVar(master, value=tv_label)
+        res_tv_combo = tv_combo if isinstance(tv_combo, ctk.Variable) else ctk.StringVar(master, value=tv_combo)
+    elif tv_label is not None:
+        res_tv_label = tv_label if isinstance(tv_label, ctk.Variable) else ctk.StringVar(master, value=tv_label)
+        res_tv_combo = ctk.StringVar(master)
+    elif tv_combo is not None:
+        res_tv_label = ctk.StringVar(master)
+        res_tv_combo = tv_combo if isinstance(tv_combo, ctk.Variable) else ctk.StringVar(master, value=tv_combo)
+    else:
+        res_tv_label = ctk.StringVar(master)
+        res_tv_combo = ctk.StringVar(master)
+
+    if values is not None:
+        if not (kcn := kwargs_combo is None) and not (kcvn := kwargs_combo.get("values") is None):
+            raise ValueError("Error, cannot explicitly pass values as parameter and in 'kwargs_combo'.")
+        else:
+            if kcn:
+                kwargs_combo = {"values": values}
+            else:
+                kwargs_combo.update({"values": values})
+
+    if kwargs_label is not None and kwargs_combo is not None:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label, **kwargs_label)
+        res_combo = ctk.CTkComboBox(master, variable=res_tv_combo, **kwargs_combo)
+    elif kwargs_label is not None:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label, **kwargs_label)
+        res_combo = ctk.CTkComboBox(master, variable=res_tv_combo)
+    elif kwargs_combo is not None:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label)
+        res_combo = ctk.CTkComboBox(master, variable=res_tv_combo, **kwargs_combo)
+    else:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label)
+        res_combo = ctk.CTkComboBox(master, variable=res_tv_combo)
+    return res_tv_label, res_label, res_tv_combo, res_combo
+
+
+def label_factory(master, tv_label=None, kwargs_label=None):
+    """Return customtkinter StringVar, label objects"""
+    if isinstance(tv_label, ctk.Variable):
+        res_tv_lbl = tv_label
+    else:
+        if tv_label is not None:
+            res_tv_lbl = ctk.StringVar(master, value=tv_label)
+        else:
+            res_tv_lbl = ctk.StringVar(master)
+    res_lbl = ctk.CTkLabel(master, textvariable=res_tv_lbl)
+    if kwargs_label is not None:
+        res_lbl = ctk.CTkLabel(master, textvariable=res_tv_lbl, **kwargs_label)
+    return res_tv_lbl, res_lbl
+
+
+def list_factory(master, tv_label=None, kwargs_label=None, tv_list=None, kwargs_list=None):
+    """Return customtkinter StringVar, Label, StringVar, Entry objects"""
+    if not (isinstance(tv_list, list) or isinstance(tv_list, tuple) or isinstance(tv_list, dict) or isinstance(tv_list,
+                                                                                                               set)):
+        if tv_list:
+            res_tv_list = list(tv_list)
+        else:
+            res_tv_list = []
+    else:
+        res_tv_list = tv_list
+
+    res_tv_list = ctk.Variable(master, res_tv_list)
+
+    print(f"{tv_list=}, {res_tv_list=}")
+
+    if tv_label is not None:
+        res_tv_label = tv_label if isinstance(tv_label, ctk.Variable) else ctk.StringVar(master, value=tv_label)
+    else:
+        res_tv_label = ctk.StringVar(master)
+
+        # res_tv_list = tv_list if is_tk_var(tv_list) else tkinter.StringVar(master, value=tv_list)
+    # elif tv_label is not None:
+    #     res_tv_label = tv_label if is_tk_var(tv_label) else tkinter.StringVar(master, value=tv_label)
+    # res_tv_list = tkinter.StringVar(master)
+    # elif tv_list is not None:
+    #     res_tv_label = tkinter.StringVar(master)
+    #     res_tv_list = tv_list if is_tk_var(tv_list) else tkinter.StringVar(master, value=tv_list)
+    # else:
+    #     res_tv_label = tkinter.StringVar(master)
+    #     res_tv_list = tkinter.StringVar(master)
+
+    if kwargs_label is not None and kwargs_list is not None:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label, **kwargs_label)
+        res_list = tkinter.Listbox(master, listvariable=res_tv_list, **kwargs_list)
+    elif kwargs_label is not None:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label, **kwargs_label)
+        res_list = tkinter.Listbox(master, listvariable=res_tv_list)
+    elif kwargs_list is not None:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label)
+        res_list = tkinter.Listbox(master, listvariable=res_tv_list, **kwargs_list)
+    else:
+        res_label = ctk.CTkLabel(master, textvariable=res_tv_label)
+        res_list = tkinter.Listbox(master, listvariable=res_tv_list)
+    return res_tv_label, res_label, res_tv_list, res_list
+
+
+def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
+    if hasattr(buttons, '__iter__') and buttons:
+        if not (isinstance(buttons, list) and isinstance(buttons, tuple)):
+            buttons = list(buttons)
+        if default_value is not None:
+            # print(f"not None")
+            if isinstance(default_value, tkinter.IntVar):
+                # print(f"is_var")
+                var = default_value
+            elif isnumber(default_value):
+                # print(f"not var")
+                var = ctk.IntVar(master, value=int(default_value))
+            else:
+                raise ValueError(f"Error default value '{default_value}' is not a number.")
+        else:
+            print(f"is None")
+            var = ctk.IntVar(master, value=-1)
+
+        if 0 > var.get() >= len(buttons):
+            raise IndexError("Error var index is out of range")
+
+        # print(f"CREATED {var.get()=}")
+
+        r_buttons = []
+        tv_vars = []
+        for i, btn in enumerate(buttons):
+            # print(f"{i=}, {btn=}, name=rbtn_{str(btn).lower()}, {master=}, {master.winfo_parent()=}, {type(master)=}")
+            if isinstance(btn, ctk.Variable):
+                tv_var = btn
+            else:
+                tv_var = ctk.StringVar(master, value=btn)
+            tv_vars.append(tv_var)
+            if kwargs_buttons is not None:
+                print(f"WARNING kwargs param is applied to each radio button")
+                r_buttons.append(
+                    ctk.CTkRadioButton(master, variable=var, textvariable=tv_var, **kwargs_buttons, value=i,
+                                        name=f"rbtn_{btn.replace('.', '_')}"))
+            else:
+                r_buttons.append(
+                    ctk.CTkRadioButton(master, variable=var, textvariable=tv_var, value=i,
+                                        name=f"rbtn_{str(btn).lower().replace('.', '_')}")
+                )
+
+        # print(f"OUT {var.get()=}")
+        return var, tv_vars, r_buttons
+    else:
+        raise Exception("Error, must pass a list of buttons.")
+
+        # tv_sort_direction = StringVar(WIN, value="descending")
+        # tv_sort_dir_a = StringVar(WIN, value="ascending")
+        # tv_sort_dir_d = StringVar(WIN, value="descending")
+        # rb_sda = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="ascending", textvariable=tv_sort_dir_a)
+        # rb_sdd = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="descending", textvariable=tv_sort_dir_d)
 
 
 def demo_1():
@@ -2010,13 +2253,13 @@ def demo_3():
         frame
         # , year=None
         # ,show_weekdays=False
-        ,months_per_row=3
-        ,colour_scheme_month=colour_scheme_months
-        ,hover_style="brighten"
-        ,invalid_style="darken"
-        ,show_all_rows=True
-        ,selectable=True
-        ,colour_scheme_day=colour_scheme_day
+        , months_per_row=3
+        , colour_scheme_month=colour_scheme_months
+        , hover_style="brighten"
+        , invalid_style="darken"
+        , show_all_rows=True
+        , selectable=True
+        , colour_scheme_day=colour_scheme_day
     )
 
     frame.grid(row=0, column=0, rowspan=1, columnspan=1, sticky=ctk.NSEW)
