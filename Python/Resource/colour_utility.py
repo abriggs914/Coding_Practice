@@ -1,3 +1,6 @@
+import ctypes
+import struct
+import winreg
 import datetime
 from random import randint, choice
 from utility import clamp, flatten, reduce
@@ -10,8 +13,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.37
-    Date...........2024-07-16
+    Version..............1.38
+    Date...........2024-07-25
     Author(s)....Avery Briggs
     """
 
@@ -3474,6 +3477,34 @@ colour_names_list = [
 ]
 
 
+# System color indices (see: https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getsyscolor)
+COLOR_SCROLLBAR = 0
+COLOR_BACKGROUND = 1
+COLOR_ACTIVECAPTION = 2
+COLOR_INACTIVECAPTION = 3
+COLOR_MENU = 4
+COLOR_WINDOW = 5
+COLOR_WINDOWFRAME = 6
+COLOR_MENUTEXT = 7
+COLOR_WINDOWTEXT = 8
+COLOR_CAPTIONTEXT = 9
+COLOR_ACTIVEBORDER = 10
+COLOR_INACTIVEBORDER = 11
+COLOR_APPWORKSPACE = 12
+COLOR_HIGHLIGHT = 13
+COLOR_HIGHLIGHTTEXT = 14
+COLOR_BTNFACE = 15
+COLOR_BTNSHADOW = 16
+COLOR_GRAYTEXT = 17
+COLOR_BTNTEXT = 18
+COLOR_INACTIVECAPTIONTEXT = 19
+COLOR_BTNHIGHLIGHT = 20
+COLOR_3DDKSHADOW = 21
+COLOR_3DLIGHT = 22
+COLOR_INFOTEXT = 23
+COLOR_INFOBK = 24
+
+
 def iscolour(c, g=None, b=None):
     # print("c: <{}>, t: <{}>".format(c, type(c)))
     # print("c: <{}>, t: <{}>".format(g, type(g)))
@@ -3877,6 +3908,7 @@ def brighten(c, p: float, rgb=True, safe=False):
         nwp = nw / max_
         if abs(ogp - nwp) < p:
             # this colour is too dark to darken p, lighten it
+            print(f"Adjust")
             r, g, b = Colour(o_r, o_g, o_b).darken(p, safe=False)
 
     return (r, g, b) if rgb else rgb_to_hex((r, g, b))
@@ -4097,6 +4129,31 @@ def long_to_rgb(long_colour: int, rgb: bool = True):
     return colour.rgb_code if rgb else colour
 
 
+def get_windows_theme() -> str | None:
+    try:
+        # Open the registry key for the current user's theme settings
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize")
+        # Read the value of AppsUseLightTheme
+        apps_use_light_theme, _ = winreg.QueryValueEx(key, "AppsUseLightTheme")
+        winreg.CloseKey(key)
+
+        # Determine if the theme is light or dark
+        if apps_use_light_theme == 1:
+            return "light"
+        else:
+            return "dark"
+    except Exception as e:
+        print(f"Error retrieving theme: {e}")
+        return None
+
+
+def get_system_color(color_index):
+    # Get the RGB color value
+    color = ctypes.windll.user32.GetSysColor(color_index)
+    # Convert the color value to a hex code
+    return "#{:02x}{:02x}{:02x}".format(color & 0xFF, (color >> 8) & 0xFF, (color >> 16) & 0xFF)
+
+
 if __name__ == '__main__':
     print(f"{get_colour_name('f0f8ff')=}")  # found in dict
     print(f"{get_colour_name('faeb11')=}")  # closest to Antique white
@@ -4131,3 +4188,15 @@ if __name__ == '__main__':
                 print(f"{k=}, {v=}")
 
         assert len_a == len_b, f"Error, these lists must be the same length, or some colours have duplicate hex keys.\n{d} colour(s) need fixed"
+
+    # Example usage
+    current_theme = get_windows_theme()
+    print(f"The current Windows theme is: {current_theme}")
+
+    # Example usage
+    print("Scrollbar color:", get_system_color(COLOR_SCROLLBAR))
+    print("Background color:", get_system_color(COLOR_BACKGROUND))
+    print("Active caption color:", get_system_color(COLOR_ACTIVECAPTION))
+    print("Window color:", get_system_color(COLOR_WINDOW))
+    print("Highlight color:", get_system_color(COLOR_HIGHLIGHT))
+    print("Button face color:", get_system_color(COLOR_BTNFACE))
