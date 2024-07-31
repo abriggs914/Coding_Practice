@@ -13,8 +13,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.38
-    Date...........2024-07-25
+    Version..............1.39
+    Date...........2024-07-31
     Author(s)....Avery Briggs
     """
 
@@ -4152,6 +4152,48 @@ def get_system_color(color_index):
     color = ctypes.windll.user32.GetSysColor(color_index)
     # Convert the color value to a hex code
     return "#{:02x}{:02x}{:02x}".format(color & 0xFF, (color >> 8) & 0xFF, (color >> 16) & 0xFF)
+
+
+def reder(colour_in: Colour, percent: float = 0.1) -> Colour:
+    r, g, b = colour_in.rgb_code
+
+    new_r = round(r + ((255 - r) * percent))
+    new_g = round(g - round(g * percent))
+    new_b = round(b - round(b * percent))
+
+    new_r = clamp(0, new_r, 255)
+    new_g = clamp(0, new_g, 255)
+    new_b = clamp(0, new_b, 255)
+
+    return Colour(new_r, new_g, new_b)
+
+
+def greener(colour_in: Colour, percent: float = 0.1) -> Colour:
+    r, g, b = colour_in.rgb_code
+
+    new_r = round(r - round(r * percent))
+    new_g = round(g + ((255 - g) * percent))
+    new_b = round(b - round(b * percent))
+
+    new_r = clamp(0, new_r, 255)
+    new_g = clamp(0, new_g, 255)
+    new_b = clamp(0, new_b, 255)
+
+    return Colour(new_r, new_g, new_b)
+
+
+def bluer(colour_in: Colour, percent: float = 0.1) -> Colour:
+    r, g, b = colour_in.rgb_code
+
+    new_r = round(r - round(r * percent))
+    new_g = round(g - round(g * percent))
+    new_b = round(b + ((255 - b) * percent))
+
+    new_r = clamp(0, new_r, 255)
+    new_g = clamp(0, new_g, 255)
+    new_b = clamp(0, new_b, 255)
+
+    return Colour(new_r, new_g, new_b)
 
 
 if __name__ == '__main__':
