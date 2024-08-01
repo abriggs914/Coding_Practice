@@ -13,8 +13,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.39
-    Date...........2024-07-31
+    Version..............1.40
+    Date...........2024-08-01
     Author(s)....Avery Briggs
     """
 
@@ -3703,6 +3703,18 @@ class Colour:
         self.rgb_code = Colour(inverse(self, rgb=False)).rgb_code
         return self
 
+    def reden(self, p):
+        self.rgb_code = Colour(reder(self, p))
+        return self
+
+    def bluer(self, p):
+        self.rgb_code = Colour(bluer(self, p))
+        return self
+
+    def greener(self, p):
+        self.rgb_code = Colour(greener(self, p))
+        return self
+
     def brightened(self, p, safe=False):
         # return Colour(brighten(self.rgb_code, p, rgb=False))
         return Colour(brighten(self, p, rgb=False, safe=safe))
@@ -3712,6 +3724,15 @@ class Colour:
 
     def inverted(self):
         return Colour(inverse(self, rgb=False))
+
+    def reden_c(self, p):
+        return Colour(reder(self, p))
+
+    def bluer_c(self, p):
+        return Colour(bluer(self, p))
+
+    def greener_c(self, p):
+        return Colour(greener(self, p))
 
     def font_foreground(self, threshold=255 * 3 / 2, rgb=True):
         return font_foreground(self, threshold=threshold, rgb=rgb)
