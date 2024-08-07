@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.83
-    Date...........2024-03-08
+    Version..............1.84
+    Date...........2024-08-07
     Author(s)....Avery Briggs
     """
 
@@ -1756,7 +1756,7 @@ def grid_cells(
     assert t_height > 0, f"Error, this grid must have at least 1 pixel of space. Got {t_height=}"
     assert n_rows > 0, f"Error, this grid must have at least 1 row. Got {n_rows=}"
     assert y_pad > -1, f"Error, y padding cannot be negative. Got {y_pad=}"
-    print(f"{t_width=}, {t_height=}, {n_rows=}, {n_cols=}, {x_pad=}, {y_pad=}, {r_type=}")
+    # print(f"{t_width=}, {t_height=}, {n_rows=}, {n_cols=}, {x_pad=}, {y_pad=}, {r_type=}")
 
     tw = (t_width - ((n_cols + 1) * x_pad)) / (n_cols + 0)  # tile width_canvas
     th = (t_height - ((n_rows + 1) * y_pad)) / (n_rows + 0)  # tile height_canvas
@@ -1765,8 +1765,8 @@ def grid_cells(
     if r_type == dict:
         tiles = {}
 
-    print(f"{tw=}, {t_width=}, {n_cols=}, {x_pad=}")
-    print(f"{th=}, {t_height=}, {n_rows=}, {y_pad=}")
+    # print(f"{tw=}, {t_width=}, {n_cols=}, {x_pad=}")
+    # print(f"{th=}, {t_height=}, {n_rows=}, {y_pad=}")
 
     for r in range(n_rows):
         if r_type == list:

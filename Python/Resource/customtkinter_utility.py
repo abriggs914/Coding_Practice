@@ -2,6 +2,7 @@ import functools
 import random
 import tkinter
 from copy import deepcopy
+from tkinter import font
 from typing import List, Any, Literal, Optional
 import calendar
 
@@ -9,9 +10,10 @@ import datetime
 import customtkinter as ctk
 from CTkTable import CTkTable
 from tkcalendar import Calendar
+from ttkwidgets.font import FontFamilyDropdown, FontSizeDropdown, FontPropertiesFrame
 
 from datetime_utility import is_date
-from colour_utility import Colour, iscolour
+from colour_utility import Colour, iscolour, random_colour
 from utility import grid_cells, clamp, isnumber
 import pandas as pd
 from screeninfo import get_monitors
@@ -24,8 +26,8 @@ VERSION = \
     """	
     General Utility Functions
     ans class for customtkinter
-    Version................1.07
-    Date.............2024-07-24
+    Version................1.08
+    Date.............2024-08-07
     Author(s)......Avery Briggs
     """
 
@@ -67,7 +69,6 @@ def calc_geometry_tl(
         # one_display_orient: Literal["horizontal", "vertical"]="horizontal",
         colour_code: Optional[dict[str: str]] = None
 ) -> str | dict | list | tuple:
-
     x_off, y_off = 0, 0
 
     if not isinstance(colour_code, dict):
@@ -197,7 +198,8 @@ def calc_geometry_tl(
 
     else:
         if ask:
-            raise ValueError(f"Cannot use param 'ask' when 'parent' is not supplied. The 'ask' param is used to create a brief TopLevel to ask which monitor you want to use. Therefore, 'parent' must be a valid instance of (tkinter.BaseWidget | tkinter.Toplevel | tkinter.Tk)")
+            raise ValueError(
+                f"Cannot use param 'ask' when 'parent' is not supplied. The 'ask' param is used to create a brief TopLevel to ask which monitor you want to use. Therefore, 'parent' must be a valid instance of (tkinter.BaseWidget | tkinter.Toplevel | tkinter.Tk)")
 
     t_width, t_height = width_, height_
 
@@ -1552,7 +1554,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
                                     i=i,
                                     j=j,
                                     do_show=do_show
-                                ).font_foreground_c(threshold=255/4)
+                                ).font_foreground_c(threshold=255 / 4)
                             else:
                                 val = self.__getattribute__(key_)
                         except AttributeError:
@@ -1585,7 +1587,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
                     print(f"selected")
                     key_s = key_.replace("_active", "").removesuffix("_selected") + "_selected"
                     if depth > 0:
-                        val = sub_get_colour(key_s, i_, j_, do_show_=do_show_, depth=depth-1)
+                        val = sub_get_colour(key_s, i_, j_, do_show_=do_show_, depth=depth - 1)
 
                 elif pos == hovered:
                     c_code += "r"
@@ -2248,11 +2250,11 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
                 print(f"WARNING kwargs param is applied to each radio button")
                 r_buttons.append(
                     ctk.CTkRadioButton(master, variable=var, textvariable=tv_var, **kwargs_buttons, value=i,
-                                        name=f"rbtn_{btn.replace('.', '_')}"))
+                                       name=f"rbtn_{btn.replace('.', '_')}"))
             else:
                 r_buttons.append(
                     ctk.CTkRadioButton(master, variable=var, textvariable=tv_var, value=i,
-                                        name=f"rbtn_{str(btn).lower().replace('.', '_')}")
+                                       name=f"rbtn_{str(btn).lower().replace('.', '_')}")
                 )
 
         # print(f"OUT {var.get()=}")
@@ -2823,9 +2825,11 @@ class MultiComboBox(ctk.CTkScrollableFrame):
 
         # print(f"{lock_result_col=}\n{viewable_column_names=}\n{data.columns=}")
         if lock_result_col is not None:
-            assert ((lock_result_col in viewable_column_names) if isinstance(viewable_column_names, (list, tuple)) else (lock_result_col in viewable_column_names.values())) if viewable_column_names else ((
-                                                                                                     lock_result_col in data.columns) if (
-                        lock_result_col is not None) else True), f"Error column '{lock_result_col}' cannot be set as the locked result column. It is not in the list of viewable column names or in the list of columns in the passed dataframe."
+            assert (
+                (lock_result_col in viewable_column_names) if isinstance(viewable_column_names, (list, tuple)) else (
+                            lock_result_col in viewable_column_names.values())) if viewable_column_names else ((
+                                                                                                                       lock_result_col in data.columns) if (
+                    lock_result_col is not None) else True), f"Error column '{lock_result_col}' cannot be set as the locked result column. It is not in the list of viewable column names or in the list of columns in the passed dataframe."
 
         self.data = data
         self.use_str_dtype = use_str_dtype
@@ -2985,7 +2989,8 @@ class MultiComboBox(ctk.CTkScrollableFrame):
 
         self.res_entry = tkinter.Entry(self.frame_top_most, textvariable=self.res_tv_entry, justify="center")
         self.tv_btn_clear = tkinter.StringVar(self, value="x")
-        self.btn_clear = tkinter.Button(self.frame_top_most, textvariable=self.tv_btn_clear, command=self.click_btn_clear)
+        self.btn_clear = tkinter.Button(self.frame_top_most, textvariable=self.tv_btn_clear,
+                                        command=self.click_btn_clear)
         # self.res_canvas = tkinter.Canvas(self.frame_top_most, width=20, height=20, background=rgb_to_hex("GRAY_62"))
         # self.res_canvas.create_line(11, 6, 11, 19, arrow=tkinter.LAST, arrowshape=(12, 12, 9))
 
@@ -3056,7 +3061,8 @@ class MultiComboBox(ctk.CTkScrollableFrame):
             else:
                 if self.tv_tree_is_hidden.get():
                     self.click_canvas_dropdown_button(None)
-        print(f"{do_grid=}, {self.include_searching_widgets=}, {self.include_drop_down_arrow=}, {self.tv_tree_is_hidden.get()=}")
+        print(
+            f"{do_grid=}, {self.include_searching_widgets=}, {self.include_drop_down_arrow=}, {self.tv_tree_is_hidden.get()=}")
 
     def click_btn_clear(self):
         self.res_tv_entry.set("")
@@ -3645,6 +3651,708 @@ class MultiComboBox(ctk.CTkScrollableFrame):
         return self.res_tv_entry.get() and self.tree_treeview.get_children()
 
 
+class PrioritySelection(ctk.CTkCanvas):
+
+    def __init__(
+            self,
+            master,
+            values: list,
+            variable: ctk.Variable = None,
+            orientation: Literal["vertical", "horizontal"] = "vertical",
+            width: Optional[int] = None,
+            height: Optional[int] = None,
+            *args,
+            **kwargs
+    ):
+        super().__init__(master, width=width, height=height, *args, **kwargs)
+
+        self.values_og = values.copy()
+        self.variable = variable if isinstance(variable, ctk.Variable) else ctk.Variable(self, value=list())
+        self.orientation = orientation
+
+        if width is None:
+            width = 80 if self.orientation == "vertical" else 400
+            self.configure(width=width)
+        if height is None:
+            height = 80 if self.orientation == "horizontal" else 400
+            self.configure(height=height)
+        self.width = width
+        self.height = height
+
+        self.colour_bg_btns = Colour("#193988")
+        self.colour_fg_btns = Colour("#CCCCCC")
+        self.colour_separator = Colour("#000000")
+        self.font_btn_text = ("Helvetica", 14, "bold")
+
+        self.n_rows = len(values)
+        self.n_cols = 1
+
+        if self.orientation == "horizontal":
+            self.n_rows, self.n_cols = self.n_cols, self.n_rows
+
+        self.gc_xpad = max(20, int(round(self.width * 0.15, 0)))
+        self.gc_ypad = max(20, int(round(self.height * 0.15, 0)))
+        self.gc = grid_cells(
+            self.width,
+            self.n_cols,
+            self.height,
+            self.n_rows,
+            x_pad=self.gc_xpad,
+            y_pad=self.gc_ypad
+        )
+
+        self.width_btn = abs(self.gc[0][0][2] - self.gc[0][0][0])
+        self.height_btn = abs(self.gc[0][0][3] - self.gc[0][0][1])
+        # print(f"{self.gc[0][0]=}\n{self.width_btn=}\n{self.height_btn=}\n{self.gc_xpad=}\n{self.gc_ypad=}")
+
+        self.tags = dict()
+        self.dragging = ctk.Variable(self, value=list())
+
+        for i, row in enumerate(self.gc):
+            for j, bbox in enumerate(row):
+                idx = i if self.orientation == "vertical" else j
+                txt = self.values_og[]
+                x0, y0, x1, y1 = bbox
+                w, h = x1 - x0, y1 - y0
+                fill = self.colour_bg_btns
+                fill_fg = self.colour_fg_btns
+                self.tags[(i, j)] = {
+                    "rect": self.create_rectangle(
+                        *bbox,
+                        fill=fill.hex_code
+                    ),
+                    "text": self.create_text(
+                        x0 + ((x1 - x0) / 2),
+                        y0 + ((y1 - y0) / 2),
+                        text=txt,
+                        fill=fill_fg.hex_code,
+                        font=self.font_btn_text
+                    ),
+                    "idx": idx 
+                }
+
+                if (j > 0) and (self.orientation == "horizontal"):
+                    # x0, y0, x1, y1 = row[0]
+                    self.tags[j] = {
+                        "line": self.create_line(
+                            x0 - (self.gc_xpad / 2),
+                            y0 - 5,
+                            x0 - (self.gc_xpad / 2),
+                            y0 + h + 5,
+                            fill=self.colour_separator.hex_code
+                        )
+                    }
+
+            if (i > 0) and (self.orientation == "vertical"):
+                x0, y0, x1, y1 = row[0]
+                w, h = x1 - x0, y1 - y0
+                self.tags[i] = {
+                    "line": self.create_line(
+                        x0 - 5,
+                        y0 - (self.gc_ypad / 2),
+                        x0 + w + 5,
+                        y0 - (self.gc_ypad / 2),
+                        fill=self.colour_separator.hex_code
+                    )
+                }
+
+        self.bind("<Button-1>", self.click_canvas)
+        self.bind("<Button1-Motion>", self.motion_canvas)
+
+    def click_canvas(self, event):
+        x, y = event.x, event.y
+        dg_str = self.dragging.get()
+        print(f"CLICK {x=}, {y=}, {dg_str=}")
+        dg = list() if not dg_str else list(dg_str)
+        print(f"CLICK {x=}, {y=}, {dg=}")
+
+        # if self.orientation == "vertical":
+        found = False
+        for i in range(self.n_rows):
+            for j in range(self.n_cols):
+                tag_rect = self.tags[(i, j)]["rect"]
+                bbox = self.bbox(tag_rect)
+                if (bbox[0] <= x <= bbox[2]) and (bbox[1] <= y <= bbox[3]):
+                    if (i, j) not in dg:
+                        dg.append((i, j))
+                        found = True
+                if found:
+                    break
+            if found:
+                break
+
+        self.dragging.set(dg)
+
+    def motion_canvas(self, event):
+        x, y = event.x, event.y
+        # dg_str = self.dragging.get()
+        dg = self.dragging.get()
+        ori = self.orientation
+        # print(f"MOTION {x=}, {y=}, {dg_str=}")
+        # dg = list() if not dg_str else list(dg_str)
+        # print(f"MOTION {x=}, {y=}, {dg=}")
+
+        bw, bh = self.width_btn, self.height_btn
+        bwh, bhh = bw / 2, bh / 2
+        # bbox_c = self.bbox("all")
+        bbox_c = (0, 0, self.width, self.height)
+        xc0, yc0, xc1, yc1 = bbox_c
+        xp0, yp0, xp1, yp1 = (
+            x - bwh,
+            y - bhh,
+            x + bwh,
+            y + bhh
+        )
+        # print(f"{bbox_c=}, {bw=}, {bh=}")
+
+        for i, key in enumerate(dg):
+            i_, j_ = key
+            tag_rect = self.tags[key]["rect"]
+            tag_text = self.tags[key]["text"]
+            opt_idx = self.tags[key]["idx"]
+            bbox = self.bbox(tag_rect)
+            x0, y0, x1, y1 = bbox
+            w, h = x1 - x0, y1 - y0
+
+            # bbox_n = (
+            #     clamp(xc0, xp1, xc1 - bw),
+            #     clamp(yc0, yp1, yc1 - bh),
+            #     clamp(xc0 + bw, xp0, xc1),
+            #     clamp(yc0 + bh, yp0, yc1),
+            # )
+
+            bbox_n = [
+                clamp(xc0, xp0, xc1 - bw),
+                clamp(yc0, yp0, yc1 - bh),
+                clamp(xc0, xp0, xc1 - bw) + bw,
+                clamp(yc0, yp0, yc1 - bh) + bh
+            ]
+            # print(f"\t{bbox=}\n\t{bbox_n=}")
+
+            self.tag_raise(tag_rect)
+            self.tag_raise(tag_text)
+            self.coords(tag_rect, *bbox_n)
+            self.coords(
+                tag_text,
+                bbox_n[0] + bwh,
+                bbox_n[1] + bhh
+            )
+            self.gc[i_][j_] = bbox_n.copy()
+            
+            if opt_idx > 0:
+                tag_left_div = self.tags[opt_idx - 1]["line"]
+                bbox_left = self.bbox(tag_left_div)
+                if ori == "horizontal":
+                    if x < bbox_left[0]:
+                        # crossed into other box
+                        
+                                      
+            if opt_idx < len(self.values_og):
+                tag_right_div = self.tags[opt_idx + 1]["line"]
+                bbox_right = self.bbox(tag_left_div)
+
+
+
+class FontSelectFrame(ctk.CTkFrame):
+    """
+    A frame to use in your own application to let the user choose a font.
+
+    For :class:`~font.Font` object, use :obj:`font` property.
+    """
+
+    def __init__(self, master=None, callback=None, **kwargs):
+        """
+        :param master: master widget
+        :type master: widget
+        :param callback: callback passed argument
+                         (`str` family, `int` size, `bool` bold, `bool` italic, `bool` underline)
+        :type callback: function
+        :param kwargs: keyword arguments passed on to the :class:`ttk.Frame` initializer
+        """
+        super().__init__(master, **kwargs)
+        self.__callback = callback
+        self._family = None
+        self._size = 11
+        self._bold = False
+        self._italic = False
+        self._underline = False
+        self._overstrike = False
+
+        self.colour_bg_canvas = Colour("#EEEEFE")
+        self.colour_fg_canvas = Colour("#000000")
+
+        self.colour_line_can_family_sel = Colour("#882222")
+
+        self.lbl_sample = label_factory(
+            self,
+            tv_label="Sample Text 123!"
+        )
+
+        font_: ctk.CTkFont = self.lbl_sample[1].cget("font")
+        family_ = font_.cget("family")
+        size_ = font_.cget("size")
+        # print(f"{font_=}, {family_=}, {size_=}")
+
+        self.font_families = sorted(set(font.families()))
+        self.entry_w = 200
+        self.can_w, self.can_h = 300, 7500
+        self.can_w_pf, self.can_h_pf = 120, 30
+        self.frame_family = ctk.CTkFrame(self)
+        self.entry_family = entry_factory(
+            self.frame_family,
+            tv_entry=family_,
+            kwargs_entry={
+                "width": self.entry_w,
+                "state": ctk.DISABLED,
+                "justify": ctk.CENTER,
+                "height": self.can_h_pf
+            }
+        )
+        self.btn_dd_family = button_factory(
+            self.frame_family,
+            tv_btn="v",
+            command=self.click_btn_dd_family,
+            kwargs_btn={
+                "width": 10,
+                "height": 10
+            }
+        )
+        self._family = family_
+        self.tl_family = None
+        self.tag_text_families = None
+        self.canvas_family = None
+        self.sc_frame_family = None
+        self.can_family_pointer_l = None
+
+        self.int_values = [8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72]
+        self.size_values = list(map(str, self.int_values))
+        self._size_dropdown = combo_factory(
+            self,
+            tv_combo=size_,
+            kwargs_combo={
+                "command": self._on_size,
+                "justify": ctk.CENTER,
+                "width": 75
+            },
+            values=self.size_values
+        )
+
+        # self._properties_frame = FontPropertiesFrame(self, callback=self._on_properties, label=False)
+        self.colour_fg_btn_can_prop_sel = Colour("#FFFFFF")
+        self.colour_bg_btn_can_prop = Colour("#949494")
+        self.colour_bg_can_prop = Colour("#444444")
+        self.colour_bg_btn_can_prop_sel = Colour("#1624CC")
+        self._properties_frame = ctk.CTkFrame(
+            self,
+            bg_color=self.colour_bg_can_prop.hex_code
+        )
+        self.canvas_properties = ctk.CTkCanvas(
+            self._properties_frame,
+            width=self.can_w_pf,
+            height=self.can_h_pf,
+            background=self.colour_bg_can_prop.hex_code
+        )
+
+        fs = 12
+        self.tags_can_prop = dict()
+        self.btns_text_can_prop = [
+            {"t": "B", "c": self.click_prop_weight, "v": ctk.StringVar(self, value="normal"), "f": ("Helvetica", fs, "bold")},
+            {"t": "I", "c": self.click_prop_itialic, "v": ctk.StringVar(self, value="roman"), "f": ("Helvetica", fs, "italic")},
+            {"t": "U", "c": self.click_prop_underline, "v": ctk.BooleanVar(self, value=False), "f": ("Helvetica", fs, "underline")},
+            {"t": "O", "c": self.click_prop_overstrike, "v": ctk.BooleanVar(self, value=False), "f": ("Helvetica", fs, "overstrike")}
+        ]
+        gc = grid_cells(
+            self.can_w_pf,
+            4,
+            self.can_h_pf,
+            1,
+            x_pad=2,
+            y_pad=2,
+            x_0=1,
+            y_0=1
+        )
+
+        for i, row in enumerate(gc):
+            for j, bbox in enumerate(row):
+                command = self.btns_text_can_prop[j]["c"]
+                font_ = self.btns_text_can_prop[j]["f"]
+                self.tags_can_prop[(i, j)] = dict()
+                self.tags_can_prop[(i, j)]["tag_rect"] = self.canvas_properties.create_rectangle(
+                    bbox,
+                    fill=self.colour_bg_btn_can_prop.hex_code
+                )
+                self.tags_can_prop[(i, j)]["tag_text"] = self.canvas_properties.create_text(
+                    bbox[0] + ((bbox[2] - bbox[0]) / 2),
+                    bbox[1] + ((bbox[3] - bbox[1]) / 2),
+                    text=self.btns_text_can_prop[j]["t"],
+                    fill=self.colour_fg_btn_can_prop_sel.hex_code,
+                    font=font_
+                )
+                self.canvas_properties.tag_bind(
+                    self.tags_can_prop[(i, j)]["tag_rect"],
+                    "<Button-1>",
+                    command
+                )
+                self.canvas_properties.tag_bind(
+                    self.tags_can_prop[(i, j)]["tag_text"],
+                    "<Button-1>",
+                    command
+                )
+
+        self._size = size_
+        self._family = family_
+        self._grid_widgets()
+        # print(f"NEW FontSelectFrame {self._family=}, {self._size=}")
+
+    def _grid_widgets(self):
+        """
+        Puts all the widgets in the correct place.
+        """
+        # self._family_dropdown.grid(row=0, column=0, sticky="nswe")
+
+        # self
+        self.lbl_sample[1].grid(row=0, column=0, columnspan=3, sticky=ctk.NSEW, padx=20, pady=10)
+        self.frame_family.grid(row=1, column=0, sticky=ctk.NSEW)
+        self._size_dropdown[3].grid(row=1, column=1, sticky=ctk.NSEW)
+        self._properties_frame.grid(row=1, column=2, sticky=ctk.NSEW)
+
+        # frame_family
+        self.entry_family[3].grid(row=0, column=0, sticky=ctk.NSEW)
+        self.btn_dd_family[1].grid(row=0, column=1, sticky=ctk.NSEW)
+
+        # _properties_frame
+        self.canvas_properties.grid(row=0, column=0, sticky=ctk.NSEW)
+
+    def _on_family(self, name):
+        """
+        Callback if family is changed.
+
+        :param name: font family name
+        """
+        self._family = name
+        self._on_change()
+
+    def _on_size(self, size):
+        """
+        Callback if size is changed.
+
+        :param size: font size int
+        """
+        if size not in self.size_values:
+            size = "12"
+        self._size = size
+        self._on_change()
+
+    def _on_change(self):
+        """Call callback if any property is changed."""
+        if callable(self.__callback):
+            self.__callback((self._family, self._size, self._bold, self._italic, self._underline, self._overstrike))
+
+            # print(f"_on_change {self._family=}, {self._size=}")
+        self.update_sample()
+
+    def update_sample(self):
+        family = self._family
+        size = int(self._size)
+        weight = self.btns_text_can_prop[0]["v"].get()
+        slant = self.btns_text_can_prop[1]["v"].get()
+        underline = self.btns_text_can_prop[2]["v"].get()
+        overstrike = self.btns_text_can_prop[3]["v"].get()
+        # print(f"{family=}, {size=}, {weight=}, {slant=}, {underline=}, {overstrike=}")
+        font_ = ctk.CTkFont(
+            family=family,
+            size=size,
+            weight=weight,
+            slant=slant,
+            underline=underline,
+            overstrike=overstrike
+        )
+        self.entry_family[2].set(family)
+        self.lbl_sample[1].configure(
+            font=font_
+        )
+
+    def __generate_font_tuple(self):
+        """
+        Generate a font tuple for tkinter widgets based on the user's entries.
+
+        :return: font tuple (family_name, size, *options)
+        """
+        if not self._family:
+            return None
+        font = [self._family, self._size]
+        if self._bold:
+            font.append("bold")
+        if self._italic:
+            font.append("italic")
+        if self._underline:
+            font.append("underline")
+        if self._overstrike:
+            font.append("overstrike")
+        return tuple(font)
+
+    def click_prop_weight(self, event):
+        btn_idx = 0
+        is_sel = self.btns_text_can_prop[btn_idx]["v"].get() == "bold"
+        self.btns_text_can_prop[btn_idx]["v"].set("normal" if is_sel else "bold")
+        self._bold = self.btns_text_can_prop[btn_idx]["v"].get()
+        t_rect = self.tags_can_prop[(0, btn_idx)]["tag_rect"]
+        # t_text = self.tags_can_prop[(0, btn_idx)]["tag_text"]
+
+        # now flipped
+        self.canvas_properties.itemconfigure(
+            t_rect,
+            fill=(self.colour_bg_btn_can_prop if is_sel else self.colour_bg_btn_can_prop_sel).hex_code
+        )
+        # if is_sel:
+        # else:
+        self._on_change()
+
+    def click_prop_itialic(self, event):
+        btn_idx = 1
+        is_sel = self.btns_text_can_prop[btn_idx]["v"].get() == "italic"
+        self.btns_text_can_prop[btn_idx]["v"].set("roman" if is_sel else "italic")
+        self._italic = self.btns_text_can_prop[btn_idx]["v"].get()
+        t_rect = self.tags_can_prop[(0, btn_idx)]["tag_rect"]
+        # t_text = self.tags_can_prop[(0, btn_idx)]["tag_text"]
+
+        # now flipped
+        self.canvas_properties.itemconfigure(
+            t_rect,
+            fill=(self.colour_bg_btn_can_prop if is_sel else self.colour_bg_btn_can_prop_sel).hex_code
+        )
+
+        self._on_change()
+
+    def click_prop_underline(self, event):
+        btn_idx = 2
+        is_sel = self.btns_text_can_prop[btn_idx]["v"].get()
+        self.btns_text_can_prop[btn_idx]["v"].set(not is_sel)
+        self._underline = self.btns_text_can_prop[btn_idx]["v"].get()
+        t_rect = self.tags_can_prop[(0, btn_idx)]["tag_rect"]
+        # t_text = self.tags_can_prop[(0, btn_idx)]["tag_text"]
+
+        # now flipped
+        self.canvas_properties.itemconfigure(
+            t_rect,
+            fill=(self.colour_bg_btn_can_prop if is_sel else self.colour_bg_btn_can_prop_sel).hex_code
+        )
+
+        self._on_change()
+
+    def click_prop_overstrike(self, event):
+        btn_idx = 3
+        is_sel = self.btns_text_can_prop[btn_idx]["v"].get()
+        self.btns_text_can_prop[btn_idx]["v"].set(not is_sel)
+        self._overstrike = self.btns_text_can_prop[btn_idx]["v"].get()
+        t_rect = self.tags_can_prop[(0, btn_idx)]["tag_rect"]
+        # t_text = self.tags_can_prop[(0, btn_idx)]["tag_text"]
+
+        # now flipped
+        self.canvas_properties.itemconfigure(
+            t_rect,
+            fill=(self.colour_bg_btn_can_prop if is_sel else self.colour_bg_btn_can_prop_sel).hex_code
+        )
+
+        self._on_change()
+
+    def click_btn_dd_family(self):
+        dd = self.btn_dd_family[0].get()
+        if dd == "v":
+            self.btn_dd_family[0].set("^")
+            self.show_dd_family()
+
+        else:
+            self.btn_dd_family[0].set("v")
+            if self.tl_family is not None:
+                self.tl_family.destroy()
+            # self.sc_frame_family.grid_forget()
+
+    def calc_left_pointer_pos(self, center):
+        c_tl = lambda pt: (pt[0] -3, pt[1] - 3)
+        c_ct = lambda pt: (pt[0] -8, pt[1])
+        c_br = lambda pt: (pt[0] -3, pt[1] + 3)
+
+        return [
+            (*c_tl(center), *center),
+            (*c_ct(center), *center),
+            (*c_br(center), *center)
+        ]
+
+    def show_dd_family(self):
+        self.tl_family = ctk.CTkToplevel(self)
+        self.tl_family.overrideredirect(True)
+        self.tl_family.geometry(
+            f"{self.can_w + 50}x{self.entry_w}+{self.winfo_rootx()}+{self.winfo_rooty() + self.winfo_height()}")
+
+        self.sc_frame_family = ctk.CTkScrollableFrame(
+            self.tl_family,
+            width=self.can_w,
+            height=self.entry_w
+        )
+        self.canvas_family = ctk.CTkCanvas(
+            self.sc_frame_family,
+            background=self.colour_bg_canvas.hex_code,
+            width=self.can_w,
+            height=self.can_h
+        )
+
+        self.can_family_pointer_l = list()
+        point = (5, 10)
+        points = self.calc_left_pointer_pos(point)
+        for i in range(3):
+            pt = points[i]
+            self.can_family_pointer_l.append(
+                self.canvas_family.create_line(
+                    *pt,
+                    fill=self.colour_line_can_family_sel.hex_code
+                )
+            )
+
+        f_w, f_h = self.can_w, self.can_h / len(self.font_families)
+        self.tag_text_families = list()
+        # self.tag_rect_families = list()
+        for i, family in enumerate(self.font_families):
+            self.tag_text_families.append(
+                self.canvas_family.create_text(
+                    f_w / 2,
+                    i * f_h,
+                    text=family
+                    # ,font=(family, 12)
+                )
+            )
+            self.canvas_family.tag_bind(
+                self.tag_text_families[-1],
+                "<Button-1>",
+                lambda event, i_=i: self.click_family(event, i_)
+            )
+
+        self.canvas_family.bind("<Motion>", self.motion_canvas_family)
+
+        # sc_frame_family
+        self.canvas_family.grid(row=0, column=0)
+
+        # self.tl_family
+        self.sc_frame_family.grid(row=0, column=0, sticky=ctk.NSEW)
+
+        self.tl_family.grab_set()
+        self.tl_family.bind("<Enter>", self.wm_enter_tl_family)
+        self.tl_family.bind("<Motion>", self.motion_tl_family)
+        self.tl_family.protocol("WM_DELETE_WINDOW", self.wm_close_tl_family)
+        self.tl_family.focus_force()
+        self.wait_window(self.tl_family)
+
+    def motion_tl_family(self, event):
+        # x, y = event.x, event.y
+        # x = self.canvas_properties.canvasx(event.x)
+        # y = self.canvas_properties.canvasx(event.y)
+        bbox = (
+            self.tl_family.winfo_rootx(),
+            self.tl_family.winfo_rooty(),
+            self.tl_family.winfo_rootx() + self.tl_family.winfo_width(),
+            self.tl_family.winfo_rooty() + self.tl_family.winfo_height()
+        )
+        # x += bbox[0]
+        # y += bbox[1]
+
+        # tl: ctk.CTkToplevel = self.tl_family
+        # tl.winfo_pointerx()
+        x = self.tl_family.winfo_pointerx()
+        y = self.tl_family.winfo_pointery()
+
+        # print(f"({x=}, {y=}), {bbox=}")
+        if not ((bbox[0] <= x <= bbox[2]) and (bbox[1] <= y <= bbox[3])):
+            if self.tl_family.bind("<FocusOut>"):
+                # has entered the toplevel canvas already
+                # print(f"KILL")
+                self.wm_close_tl_family()
+
+    def wm_enter_tl_family(self, *args):
+        # print(f"ENTER")
+        self.tl_family.bind("<FocusOut>", self.wm_close_tl_family)
+        self.tl_family.unbind("<Enter>")
+
+    def wm_close_tl_family(self, *args):
+        # print(f"LEAVE")
+        if self.tl_family is not None:
+            self.tl_family.destroy()
+            self.btn_dd_family[0].set("v")
+
+    def click_family(self, event, idx):
+        family = self.font_families[idx]
+        self._family = family
+        self._on_change()
+
+        if self.tl_family is not None:
+            self.tl_family.destroy()
+            self.btn_dd_family[0].set("v")
+
+    def motion_canvas_family(self, event):
+        x, y = event.x, event.y
+        col_fg_def = self.colour_fg_canvas
+        # col_bg_def = self.colour_bg_canvas
+        for i, tag_t in enumerate(self.tag_text_families):
+            # tag_r = self.tag_rect_families[i]
+            bbox_t = self.canvas_family.bbox(tag_t)
+            # bbox_r = self.canvas_family.bbox()
+            col_fg = self.canvas_family.itemcget(tag_t, "fill")
+            # col_bg = self.canvas_family.itemcget(tag_r, "fill")
+            if not col_fg:
+                col_fg = col_fg_def
+            # if not col_bg:
+            #     col_bg = col_bg_def
+            col_fg = Colour(col_fg)
+            # col_bg = Colour(col_bg)
+            if (bbox_t[0] <= x <= bbox_t[2]) and (bbox_t[1] <= y <= bbox_t[3]):
+                self.canvas_family.itemconfigure(
+                    tag_t,
+                    fill=col_fg.bluer_c(0.2).hex_code
+                )
+                x0 = bbox_t[0] - 20
+                y0 = bbox_t[1] + ((bbox_t[3] - bbox_t[1]) / 2)
+                left_positions = self.calc_left_pointer_pos((x0, y0))
+                for i, pos in enumerate(left_positions):
+                    # item_id = self.canvas_family.find_withtag(self.can_family_pointer_l[i])
+                    # item_type = self.canvas_family.type(item_id[0])
+                    # print(f"{pos=}, {item_id=}, {item_type=}")
+                    self.canvas_family.coords(
+                        self.can_family_pointer_l[i],
+                        *pos
+                    )
+                # self.canvas_family.itemconfigure(
+                #     tag_r,
+                #     fill=col_bg.inverted().hex_code
+                # )
+            else:
+                self.canvas_family.itemconfigure(
+                    tag_t,
+                    fill=col_fg_def.hex_code
+                )
+                # self.canvas_family.itemconfigure(
+                #     tag_r,
+                #     fill=col_bg_def.hex_code
+                # )
+
+    @property
+    def font(self):
+        """
+        Font property.
+
+        :return: a :class:`~font.Font` object if family is set, else None
+        :rtype: :class:`~font.Font` or None
+        """
+        if not self._family:
+            return None, None
+        font_obj = ctk.CTkFont(family=self._family, size=self._size,
+                               weight=font.BOLD if self._bold else font.NORMAL,
+                               slant=font.ITALIC if self._italic else font.ROMAN,
+                               underline=bool(1 if self._underline else 0),
+                               overstrike=bool(1 if self._overstrike else 0)
+                               )
+        font_tuple = self.__generate_font_tuple()
+        return font_tuple, font_obj
+
+
 def demo_1():
     def select_cols():
         col = int(round(var_n_cols.get()))
@@ -3896,6 +4604,7 @@ def demo_3():
     # calendar.disable_date(datetime.datetime(2024, 12, 25))  # holiday
     # calendar.disable_date(datetime.datetime(2024, 1, 25))
     calendar.disable_day(1, 25)
+
     def random_date(year_range=(1995, datetime.datetime.now().year), month_range=(1, 12), day_range=(1, 31)):
         l_year, t_year = year_range
         l_month, t_month = month_range
@@ -3932,14 +4641,51 @@ def demo_4():
     win.geometry(f"600x350")
     start_colour = "#560000"
     can = ctk.CTkCanvas(win, width=100, height=100, bg=start_colour)
-    btn = ctk.CTkButton(win, text="brighten 12%", command=lambda : can.configure(bg=Colour(can.cget("bg")).brightened(0.12, safe=True).hex_code))
+    btn = ctk.CTkButton(win, text="brighten 12%",
+                        command=lambda: can.configure(bg=Colour(can.cget("bg")).brightened(0.12, safe=True).hex_code))
     can.pack()
     btn.pack()
+    win.mainloop()
+
+
+def demo_5():
+    win = ctk.CTk()
+    win.geometry(f"600x350")
+
+    ff = FontSelectFrame(win)
+    ff.pack()
+
+    btn_gf = button_factory(
+        win,
+        tv_btn="get_tuple",
+        command=lambda: print(f"{ff.font=}")
+    )
+
+    btn_gf[1].pack()
+    win.mainloop()
+
+
+def demo_6():
+    win = ctk.CTk()
+    win.geometry(f"600x500")
+
+    ps = PrioritySelection(
+        win,
+        # values=["A", "B", "C"],
+        values=list(range(10)),
+        orientation="horizontal"
+    )
+
+    # win
+    ps.pack()
+
     win.mainloop()
 
 
 if __name__ == '__main__':
     # demo_1()
     # demo_2()
-    demo_3()
+    # demo_3()
     # demo_4()
+    # demo_5()
+    demo_6()
