@@ -27,8 +27,8 @@ VERSION = \
     """	
     General Utility Functions
     ans class for customtkinter
-    Version................1.09
-    Date.............2024-08-08
+    Version................1.10
+    Date.............2024-08-13
     Author(s)......Avery Briggs
     """
 
@@ -2270,6 +2270,16 @@ def radio_factory(master, buttons, default_value=None, kwargs_buttons=None):
         # rb_sdd = Radiobutton(frame_rb_group_3, variable=tv_sort_direction, value="descending", textvariable=tv_sort_dir_d)
 
 
+def checkbox_factory(master, tv_label=None, tv_checkbox=None, kwargs_checkbox=None):
+    var_lbl = tv_label if isinstance(tv_label, ctk.Variable) else (ctk.StringVar(master, value=tv_label) if isinstance(tv_label, str) else ctk.StringVar(master))
+    var_ckb = tv_checkbox if isinstance(tv_checkbox, ctk.Variable) else (ctk.BooleanVar(master, value=tv_checkbox) if isinstance(tv_checkbox, (int, bool)) else ctk.BooleanVar(master))
+    if kwargs_checkbox is None:
+        kwargs_checkbox = dict()
+
+    ckb = ctk.CTkCheckBox(master, variable=var_ckb, **kwargs_checkbox, textvariable=var_lbl)
+
+    return var_lbl, var_ckb, ckb
+
 # class TreeviewExt(ttk.Treeview):
 #     def __init__(self, master, *args, **kwargs):
 #         super().__init__(master, *args, **kwargs)
@@ -4066,6 +4076,8 @@ class FontSelectFrame(ctk.CTkFrame):
         self.can_family_pointer_l = None
 
         self.int_values = [8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72]
+        self.min_font_size = self.int_values[0]
+        self.max_font_size = self.int_values[-1]
         self.size_values = list(map(str, self.int_values))
         self._size_dropdown = combo_factory(
             self,
@@ -4181,7 +4193,7 @@ class FontSelectFrame(ctk.CTkFrame):
         """
         if size not in self.size_values:
             size = "12"
-        self._size = size
+        self._size = int(size)
         self._on_change()
 
     def _on_change(self):
@@ -4192,9 +4204,47 @@ class FontSelectFrame(ctk.CTkFrame):
             # print(f"_on_change {self._family=}, {self._size=}")
         self.update_sample()
 
+    def set_min_size(self, size_in: int):
+        int_values_og = [8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72]
+        int_values = [v for v in int_values_og]
+        to_rem = list()
+        for val in int_values:
+            # print(f"{val=}, {type(val)=}")
+            # print(f"{self.max_font_size=}, {type(self.max_font_size)=}")
+            # print(f"{size_in=}, {type(size_in)=}")
+            if not (size_in <= val <= self.max_font_size):
+                to_rem.append(val)
+        for val in to_rem:
+            int_values.remove(val)
+        if not int_values:
+            int_values = [v for v in int_values_og]
+
+        self.size_values = list(map(str, int_values))
+        self.min_font_size = self.int_values[0]
+        self._size_dropdown[3].configure(values=self.size_values)
+
+    def set_max_size(self, size_in: int):
+        int_values_og = [8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72]
+        int_values = [v for v in int_values_og]
+        to_rem = list()
+        for val in int_values:
+            # print(f"{val=}, {type(val)=}")
+            # print(f"{self.min_font_size=}, {type(self.min_font_size)=}")
+            # print(f"{size_in=}, {type(size_in)=}")
+            if not (self.min_font_size <= val <= size_in):
+                to_rem.append(val)
+        for val in to_rem:
+            int_values.remove(val)
+        if not int_values:
+            int_values = [v for v in int_values_og]
+
+        self.size_values = list(map(str, int_values))
+        self.max_font_size = self.int_values[-1]
+        self._size_dropdown[3].configure(values=self.size_values)
+
     def update_sample(self):
         family = self._family
-        size = int(self._size)
+        size = self._size
         weight = self.btns_text_can_prop[0]["v"].get()
         slant = self.btns_text_can_prop[1]["v"].get()
         underline = self.btns_text_can_prop[2]["v"].get()
@@ -4823,10 +4873,36 @@ def demo_6():
     win.mainloop()
 
 
+def demo_7():
+    win = ctk.CTk()
+    win.geometry(f"600x500")
+
+    cb0 = checkbox_factory(
+        win,
+        tv_label="A"
+    )
+    cb1 = checkbox_factory(
+        win,
+        tv_label="B"
+    )
+    cb2 = checkbox_factory(
+        win,
+        tv_label="C"
+    )
+
+    # win
+    cb0[2].grid()
+    cb1[2].grid()
+    cb2[2].grid()
+
+    win.mainloop()
+
+
 if __name__ == '__main__':
     # demo_1()
     # demo_2()
     # demo_3()
     # demo_4()
     # demo_5()
-    demo_6()
+    # demo_6()
+    demo_7()
