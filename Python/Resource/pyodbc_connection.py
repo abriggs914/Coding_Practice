@@ -8,8 +8,8 @@ VERSION = \
     """
     General Pyodbc connection handler.
     Geared towards BWS connections.
-    Version...............2.1
-    Date...........2024-06-08
+    Version...............2.2
+    Date...........2024-08-16
     Author(s)....Avery Briggs
     """
 
@@ -115,14 +115,15 @@ def connect(
 
     distinct_queries = [stmt for stmt in f"{sql};".split(";") if stmt.strip()]
     n_distinct_queries = len(distinct_queries)
-    has_insert = all([(stmt in sql.upper()) for stmt in ["INSERT INTO", "VALUES"]])
-    has_update = all([(stmt in sql.upper()) for stmt in ["UPDATE", "SET"]])
+    has_insert = all([(stmt in sql.upper()) for stmt in ["INSERT INTO ", "VALUES "]])
+    has_update = all([(stmt in sql.upper()) for stmt in ["UPDATE ", "SET "]])
+    has_exec = all([(stmt in sql.upper()) for stmt in ["EXEC "]])
 
     if all([
         n_distinct_queries == 1,
         "SELECT" not in sql.upper(),
         "FROM" not in sql.upper(),
-        not any([has_update, has_insert])
+        not any([has_update, has_insert, has_exec])
     ]):
         # single table name passed
         tbl = sql.removeprefix("[").removesuffix("]")
