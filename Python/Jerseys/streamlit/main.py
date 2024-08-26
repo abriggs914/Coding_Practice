@@ -267,3 +267,67 @@ if __name__ == '__main__':
         n = st.session_state.njp_img_idx + 1
         m = st.session_state.njp_img_max_idx + 1
         st.markdown(f"{n} / {m} image" + ("" if m == 1 else "s"))
+
+    expander = st.expander(
+        label=f"General Stats"
+    )
+
+    # most popular number
+    list_player_numbers = df_nhl_jerseys["Number"].values.tolist()
+    count_occurrences = [(k, list_player_numbers.count(k)) for k in list_player_numbers if not pd.isna(k)]
+    count_occurrences.sort(key=lambda tup: tup[1], reverse=True)
+    with expander:
+        card(
+            "Most popular number:",
+            f"# {int(count_occurrences[0][0])}"
+        )
+
+    # most popular first name
+    list_player_first_name = df_nhl_jerseys["PlayerFirst"].values.tolist()
+    count_occurrences_first_name = [(k, list_player_first_name.count(k)) for k in list_player_first_name if not pd.isna(k)]
+    count_occurrences_first_name.sort(key=lambda tup: tup[1], reverse=True)
+    with expander:
+        card(
+            "Most popular first name:",
+            f"{count_occurrences_first_name[0][0]}"
+        )
+
+    # most popular last name
+    list_player_last_name = df_nhl_jerseys["PlayerLast"].values.tolist()
+    count_occurrences_last_name = [(k, list_player_last_name.count(k)) for k in list_player_last_name if not pd.isna(k)]
+    count_occurrences_last_name.sort(key=lambda tup: tup[1], reverse=True)
+    with expander:
+        card(
+            "Most popular last name:",
+            f"{count_occurrences_last_name[0][0]}"
+        )
+
+    # most popular country
+    list_player_country = df_nhl_jerseys["Nationality"].values.tolist()
+    count_occurrences_country = [(k, list_player_country.count(k)) for k in list_player_country if not pd.isna(k)]
+    count_occurrences_country.sort(key=lambda tup: tup[1], reverse=True)
+    with expander:
+        card(
+            "Most popular country:",
+            f"{count_occurrences_country[0][0]}"
+        )
+
+    # most popular position
+    list_player_position = df_nhl_jerseys["Position"].values.tolist()
+    count_occurrences_position = [(k, list_player_position.count(k)) for k in list_player_position if not pd.isna(k)]
+    count_occurrences_position.sort(key=lambda tup: tup[1], reverse=True)
+    with expander:
+        card(
+            "Most popular position:",
+            f"{count_occurrences_position[0][0]}"
+        )
+
+    # most popular team
+    list_player_team = df_nhl_jerseys["Team"].values.tolist()
+    count_occurrences_team = [(k, list_player_team.count(k)) for k in list_player_team if not pd.isna(k)]
+    count_occurrences_team.sort(key=lambda tup: tup[1], reverse=True)
+    with expander:
+        card(
+            "Most popular team:",
+            f"{count_occurrences_team[0][0]}"
+        )
