@@ -1,22 +1,67 @@
+import asyncio
+import datetime
 import random
 
+import requests
 from PIL import Image
 from streamlit_extras.card import card
 import streamlit as st
 import pandas as pd
 
 
-def new_jersey_preview():
+# @st.cache_data
+def query_player(pid: int) -> str:
+    if not len(str(pid)) == 7:
+        raise ValueError(f"param 'pid' must be an integer of length 7, got '{pid}'.")
+    try:
+        result = requests.get(f"https://api-web.nhle.com/v1/player/{pid}/landing")
+        # print(f"{result=}")
+        # print(f"{result.text=}")
+        # print(f"{result.content=}")
+        # print(f"{result.json()=}")
+        result = result.json()
+    except requests.RequestException as req_e:
+        result = {"None": "none"}
+        print(f"{req_e=}")
+    return result
 
+
+# Caching the fetched data
+# @st.cache_data(show_spinner=False)
+async def fetch_data(url):
+    response = requests.get(url)
+    return response.json()
+
+
+async def load_all_data():
+    tasks = []
+    for i, pid in enumerate(df_nhl_jerseys["NHL_API_PlayerID"].dropna().unique()):
+        url = f"https://api-web.nhle.com/v1/player/{int(pid)}/landing"
+        print(f"url_{i}: {url}")
+        tasks.append(fetch_data(url))
+    results = await asyncio.gather(*tasks)
+    return dict(zip(df_nhl_jerseys['NHL_API_PlayerID'].dropna().unique(), results))
+
+
+@st.cache_data(show_spinner=False)
+def load_all_nhl_player_data():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    data = loop.run_until_complete(load_all_data())
+    loop.close()
+    return data
+
+
+def new_jersey_preview():
     # opened_only = st.session_state.njp_tog_image_only
     # images_only = st.session_state.njp_tog_image_only
     opened_only = tog_njp_opened_only
     images_only = tog_njp_images_only
-    print(f"{opened_only=}\n{images_only=}")
-    print(f"{st.session_state.njp_tog_image_only=}")
-    print(f"{st.session_state.njp_tog_open_only=}")
-    print(f"{tog_njp_opened_only=}")
-    print(f"{tog_njp_images_only=}")
+    # print(f"{opened_only=}\n{images_only=}")
+    # print(f"{st.session_state.njp_tog_image_only=}")
+    # print(f"{st.session_state.njp_tog_open_only=}")
+    # print(f"{tog_njp_opened_only=}")
+    # print(f"{tog_njp_images_only=}")
 
     if images_only:
         df = df_nhl_jerseys_images
@@ -38,7 +83,7 @@ def new_jersey_preview():
 
     print(f"{n=}, {rnd_id=}")
 
-    df_njp = df.loc[df["JerseyID"] == rnd_id]
+    df_njp = df.loc[df["JerseyID"] == rnd_id].iloc[0]
     # j_id = df_njp["JerseyID"]
     brand = df_njp["BrandName"]
     make = df_njp["Colours"]
@@ -46,6 +91,7 @@ def new_jersey_preview():
     pl_num = f"{int(df_njp['Number'])}"
     pl_first = df_njp["PlayerFirst"]
     pl_last = df_njp["PlayerLast"]
+    nhl_api_pid = df_njp["NHL_API_PlayerID"]
 
     print(f"{brand=}, {make=}, {team=}, {pl_num=}, {pl_first=}, {pl_last=}")
 
@@ -56,6 +102,30 @@ def new_jersey_preview():
     st.session_state.njp_pl_first = pl_first
     st.session_state.njp_pl_last = pl_last
     st.session_state.njp_pl_num = pl_num
+
+    if not pd.isna(nhl_api_pid):
+        with njp_gc[6]:
+            # json_result = query_player(int(nhl_api_pid))
+            if nhl_api_pid not in loaded_nhl_player_data:
+                print(f"SLOW RETRIEVAL")
+                json_result = query_player(int(nhl_api_pid))
+            else:
+                print(f"FAST RETRIEVAL")
+                json_result = loaded_nhl_player_data[nhl_api_pid]
+            # print(f"{json_result=}")
+
+            path_team = json_result.get("teamLogo")
+            path_headshot = json_result.get("headshot")
+            path_hero_shot = json_result.get("heroImage")
+            if path_headshot:
+                image_cols = st.columns(3)
+                with image_cols[0]:
+                    st.image(path_team, caption=f"{pl_first} {pl_last}")
+                with image_cols[1]:
+                    st.image(path_hero_shot, caption=f"{pl_first} {pl_last}")
+                with image_cols[2]:
+                    st.image(path_headshot, caption=f"{pl_first} {pl_last}")
+            st.json(json_result)
 
     update_njp_image()
 
@@ -108,22 +178,27 @@ def random_jersey():
 
 if __name__ == '__main__':
 
+    st.set_page_config(
+        page_title="Avery's Jerseys",
+        layout="wide"
+    )
+
     for k, v in (
-        ("njp_last_id", None),
+            ("njp_last_id", None),
 
-        ("njp_brand", None),
-        ("njp_make", None),
-        ("njp_team", None),
-        ("njp_pl_num", None),
-        ("njp_pl_first", None),
-        ("njp_pl_last", None),
+            ("njp_brand", None),
+            ("njp_make", None),
+            ("njp_team", None),
+            ("njp_pl_num", None),
+            ("njp_pl_first", None),
+            ("njp_pl_last", None),
 
-        ("njp_img_idx", 0),
-        ("njp_img_max_idx", 0),
-        ("njp_img_path", None),
-        ("njp_tog_open_only", False),
-        ("njp_tog_image_only", False),
-        ("njp_img_cap", "Select a jersey to check if images exist")
+            ("njp_img_idx", 0),
+            ("njp_img_max_idx", 0),
+            ("njp_img_path", None),
+            ("njp_tog_open_only", False),
+            ("njp_tog_image_only", False),
+            ("njp_img_cap", "Select a jersey to check if images exist")
     ):
         if k not in st.session_state:
             st.session_state.setdefault(k, v)
@@ -144,23 +219,26 @@ if __name__ == '__main__':
     df_nhl_divisions = excel_dfs[excel_dfs_keys[6]]
     df_nhl_conferences = excel_dfs[excel_dfs_keys[7]]
 
-    df_nhl_jerseys_owned = df_nhl_jerseys[
+    df_nhl_jerseys_owned = df_nhl_jerseys.loc[
         (df_nhl_jerseys["OpenDate"] is not None)
         & (df_nhl_jerseys["CancelledOrder"] == 0)
         & (df_nhl_jerseys["Team"] != "")
         & (df_nhl_jerseys["Team"] is not None)
-    ]
-    df_nhl_jerseys_opened = df_nhl_jerseys_owned[
+        ]
+    df_nhl_jerseys_opened = df_nhl_jerseys_owned.loc[
         (df_nhl_jerseys_owned["OpenDate"] is not None)
         & (df_nhl_jerseys["Team"] != "")
         & (df_nhl_jerseys["Team"] is not None)
-    ]
+        ]
     df_nhl_jerseys_images = df_nhl_jerseys_opened.merge(
         df_jersey_images,
         how="left",
         on="JerseyID"
     )
 
+    loaded_nhl_player_data = load_all_nhl_player_data()
+
+    # Begin Widgets
     st.dataframe(df_nhl_jerseys_owned)
     st.dataframe(df_nhl_jerseys_images)
 
@@ -188,7 +266,9 @@ if __name__ == '__main__':
         st.divider(),
         st.columns(3),
         st.columns(3),
-        st.columns(2)
+        st.columns(2),
+        st.divider(),
+        st.expander(label="NHL Data", expanded=False)
     ]
 
     with njp_gc[0][0]:
@@ -244,7 +324,6 @@ if __name__ == '__main__':
         )
 
     if st.session_state.njp_img_path is not None:
-
         with njp_gc[4][0]:
             btn_njp_img_l = st.button(
                 label=f"prev",
@@ -268,6 +347,11 @@ if __name__ == '__main__':
         m = st.session_state.njp_img_max_idx + 1
         st.markdown(f"{n} / {m} image" + ("" if m == 1 else "s"))
 
+    else:
+        with njp_gc[6]:
+            # st.json({"VALUE": f"Nothing Yet {datetime.datetime.now():%x %X}"})
+            st.json({"VALUE": f"Nothing Yet"})
+
     expander = st.expander(
         label=f"General Stats"
     )
@@ -284,7 +368,8 @@ if __name__ == '__main__':
 
     # most popular first name
     list_player_first_name = df_nhl_jerseys["PlayerFirst"].values.tolist()
-    count_occurrences_first_name = [(k, list_player_first_name.count(k)) for k in list_player_first_name if not pd.isna(k)]
+    count_occurrences_first_name = [(k, list_player_first_name.count(k)) for k in list_player_first_name if
+                                    not pd.isna(k)]
     count_occurrences_first_name.sort(key=lambda tup: tup[1], reverse=True)
     with expander:
         card(
