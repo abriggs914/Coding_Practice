@@ -1,0 +1,1162 @@
+Option Compare Database
+
+Public Function DisplayImage(ctlImageControl As Control, strImagePath As Variant) As String
+    On Error GoTo Err_DisplayImage
+    
+    Dim strResult As String
+    Dim strDatabasePath As String
+    Dim intSlashLocation As Integer
+    Dim msg As String
+    
+    strDatabasePath = CurrentProject.fullName
+    intSlashLocation = InStrRev(strDatabasePath, "\", Len(strDatabasePath))
+    strDatabasePath = Left(strDatabasePath, intSlashLocation)
+    
+    With ctlImageControl
+        If IsNull(strImagePath) Then
+            .visible = False
+            strResult = "No image name specified."
+            msg = msg & "-A"
+        Else
+            msg = msg & "-B"
+            Dim idx As Long
+            idx = InStr(1, strImagePath, "\")
+            'Printf "HERE 1, idx=(" & idx & ")"
+            'If idx <> 0 Then
+            If Left(strImagePath, Len(strDatabasePath)) <> strsatabasepath Then
+                msg = msg & "-C"
+                ' Path is relative
+                
+                strImagePath = strDatabasePath & strImagePath
+            End If
+            'Printf "HERE 2"
+            .visible = True
+            'Printf "HERE 3"
+            .Picture = strImagePath
+            'Printf "HERE 4"
+            strResult = "Image found and displayed."
+        End If
+    End With
+    
+Exit_DisplayImage:
+    'Printf vbNewLine & "strImagePath(" & strImagePath & ")"
+    'Printf "msg <" & msg & ">"
+    DisplayImage = strResult
+    Exit Function
+    
+Err_DisplayImage:
+    msg = msg & "-D"
+    Select Case Err.Number
+        Case 2220       ' Can't find the picture.
+            msg = msg & "-E"
+            ctlImageControl.visible = False
+            strResult = "Can't find image in the specified name."
+            Resume Exit_DisplayImage:
+        Case Else       ' Some other error.
+            msg = msg & "-F"
+            MsgBox Err.Number & " " & Err.Description
+            strResult = "An error occurred displaying image."
+            Resume Exit_DisplayImage:
+    End Select
+End Function
+
+
+Function getFiles(ByVal folderspec As String, Optional ByVal suffix As String = "", Optional ByVal filesOrDirectories As String = "All", Optional ByVal maxdepth As Integer = -1) As String()
+
+    ' return a list of files in a directory
+    ' matches optional suffixes
+    ' stops at max depth when doing dfs search
+    ' returns a list of directories
+    
+    Dim validFoD As Variant
+    validFoD = Array("all", "both", "file", "files", "directory", "directories")
+    'If fileordirect validfod Then
+    
+
+End Function
+
+
+'Function GetFolderList(ByVal folderspec As String, Optional suffix As String = "jpeg;jpg;mp3;mp4;png;wav")
+Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As String = "") As String()
+    Dim res() As String
+    Dim toCheck() As String
+    Dim fs, f, f1, f2, fc, S, sFldr
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    Set f = fs.getfolder(folderspec)
+    Set fc = f.subFolders
+    
+    Dim ri As Integer
+    Dim idx As Integer
+    Dim i As Integer
+    Dim j As Integer
+    Dim C As Integer
+    Dim ub As Integer
+    Dim fn As String
+    'ReDim Preserve toCheck(0)
+    'toCheck(0) = folderspec
+    idx = 0
+    
+    For Each f1 In fc
+        ReDim Preserve toCheck(idx)
+        toCheck(idx) = folderspec & "\" & f1.Name
+        idx = idx + 1
+    Next
+    Printf vbNewLine & "==A==" & vbNewLine & Join(toCheck, vbNewLine)
+    ri = 0
+    i = 0
+    C = fc.Count
+    Printf "i= <" & i & ">, c= <" & C & ">"
+    'Do Until i = c
+    ub = UBound(toCheck)
+    Do Until i = ub
+    
+        Printf vbNewLine & "====" & vbNewLine & "i= <" & i & ">, c= <" & C & ">, idx= <" & idx & ">, ub= <" & ub & ">"
+        
+        ub = UBound(toCheck)
+        'For Each f1 In fc
+        For j = 0 To ub
+            Printf "j=<" & j & ">, TC=<" & toCheck(j) & ">"
+            Set f = fs.getfolder(toCheck(j))
+            Printf "f1= <" & CStr(f1) & ">"
+            Printf "f1= <" & IIf(IsInstance(f1, vbString), "Y", "N") & ">"
+            'f1 = fc.files(j)
+            If Right(toCheck(j), 1) <> "\" Then
+                'ShowFolderList f1 & "\"
+                Set fc = f.subFolders
+                For Each f2 In fc
+                    Printf "  A  " & f2 & "\"
+                    ReDim Preserve toCheck(idx)
+                    toCheck(idx) = f2 & "\"
+                    idx = idx + 1
+                Next
+            Else
+                'ShowFolderList f1
+                Printf "  B  " & f1
+            End If
+        Next j
+        Set fc = f.files
+        i = i + 1
+    Loop
+    
+    ReDim Preserve toCheck(idx)
+    toCheck(idx) = folderspec
+    
+    Dim suffixes() As String
+    suffixes = Split(suffix, ";")
+    
+    For i = LBound(toCheck) To UBound(toCheck)
+        fn = toCheck(i)
+        Set f = fs.getfolder(fn)
+        For Each f1 In f.files
+            Debug.Print "--" & fn & "\" & f1.Name
+            For j = LBound(suffixes) To UBound(suffixes)
+                suff = suffixes(j)
+                Printf "suff= <" & suff & ">"
+                If Len(suff) > 0 Then
+                    If Right(f1.Name, Len(suff)) = suff Then
+                        ReDim Preserve res(ri)
+                        res(ri) = fn & "\" & f1.Name
+                        ri = ri + 1
+                        Exit For
+                    End If
+                Else
+                    ReDim Preserve res(ri)
+                    res(ri) = fn & "\" & f1.Name
+                    ri = ri + 1
+                End If
+            Next j
+        Next
+    Next
+    
+    Printf vbNewLine & "==B==" & vbNewLine & Join(toCheck, vbNewLine)
+    
+    Printf Join(res, vbNewLine)
+    
+    GetFolderList = res
+    
+End Function
+
+
+Public Sub testStuff()
+
+    Dim arrA As Variant
+    Dim arrB As Variant
+    Dim Q As Variant
+    Dim r As Variant
+    Dim t As Variant
+    Dim p As Variant
+    Dim w As Variant
+    arrA = Array(1, 2, 3)
+    arrB = Array("A", "B", "C")
+    Q = Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7)
+    r = Map("cstr", Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7))
+    't = append(append(q, -1), "")
+    p = Array(-5, -6, -7)
+    w = Append(Q, p)
+    
+    answers = Array()
+    
+    Dim testAnyAll As Boolean
+    Dim testSlice As Boolean
+    Dim testMap As Boolean
+    Dim testReverse As Boolean
+    Dim testIsIn As Boolean
+    Dim testAO As Boolean
+    Dim testIsBlack As Boolean
+    Dim testZip As Boolean
+    Dim testRange As Boolean
+    Dim testInsert As Boolean
+    Dim testRemove As Boolean
+    Dim testIForI As Boolean
+    Dim testIndex As Boolean
+    
+    testAnyAll = False
+    testSlice = False
+    testMap = False
+    testReverse = False
+    testIsIn = False
+    testAO = False
+    testIsBlack = False
+    testZip = False
+    testRange = False
+    testInsert = False
+    testRemove = False
+    testIForI = False
+    testIndex = True
+    
+    If testSlice Then
+        Call Append(answers, Append(Array("[4:0:-1], ans=[9, 2, 7, 6]"), PrintArr(Slice(Q, 4, 0, -1), Name:="Slice Test1", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[0:4:2], [1, 7]"), PrintArr(Slice(Q, 0, 4, 2), Name:="Slice Test2", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[-1:14:3], []"), PrintArr(Slice(Q, -1, 14, 3), Name:="Slice Test3", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[1:14:3], [6, 9, 8, 1, 7]"), PrintArr(Slice(Q, 1, 14, 3), Name:="Slice Test4", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[::], [1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7, -5, -6, -7]"), PrintArr(Slice(Q), Name:="Slice Test5", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[:5:], [1, 6, 7, 2, 9]"), PrintArr(Slice(Q, , 5), Name:="Slice Test6", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[:15:3], [1, 2, 3, 6, 1]"), PrintArr(Slice(Q, , 15, 3), Name:="Slice Test7", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[::5], ans=[1, 4, 1, 4, 1, 7, 2, -5]"), PrintArr(Slice(Q, , , 5), Name:="Slice Test8", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[1::], ans=[1, 2, 3, 4]"), PrintArr(Slice(Range(5), 1), Name:="Slice Test9", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[:15:3], ans=[0, 3, 6, 9, 12]"), PrintArr(Slice(Range(15), , 15, 3), Name:="Slice Test10", doPrint:=False), False), False)
+        
+        'Call PrintArr(Slice(q, 0, 4, 2), name:="Slice Test2", inLine:=True)
+        'Call PrintArr(Slice(q, -1, 14, 3), name:="Slice Test3")
+        'Call PrintArr(Slice(q, 1, 14, 3), name:="Slice Test4")
+        'Call PrintArr(Slice(q), name:="Slice Test5")
+        'Call PrintArr(Slice(q), name:="Slice Test6")
+        'Call PrintArr(Slice(q, start_:=5), name:="Slice Test6")
+        'Call PrintArr(Slice(q, end_:=5), name:="Slice Test7")
+        'Call PrintArr(Slice(q, step_:=5), name:="Slice Test8")
+    End If
+    
+    If testMap Then
+        Call PrintArr(r, "mapped array")
+    End If
+    
+    If testReverse Then
+        Call PrintArr(Reverse("avery"), "reversed string")
+    End If
+    
+    If testAnyAll Then
+        Printf "ALL q => T <" & All(Q) & ">"
+        Printf "ANY q => T <" & Any_(Q) & ">"
+        Printf "ALL p => T <" & All(p) & ">"
+        Printf "ANY p => T <" & Any_(p) & ">"
+        Printf "ALL t => F <" & All(t) & ">"
+        Printf "ANY t => T <" & Any_(t) & ">"
+    End If
+    
+    If testIsIn Then
+        Call Append(answers, "isin(q, 5) <" & IsIn(Q, 5) & ">  => True")
+        Call Append(answers, "isin(q, 5, returnIndex:=True) <" & IsIn(Q, 5, returnIndex:=True) & ">  => 8")
+        
+        Printf IsIn(Q, 1)  ' True
+        Printf IsIn(Q, 7)  ' True
+        Printf IsIn(r, 1)  ' False
+        Printf IsIn(r, "1")  ' False
+        Printf IsIn(Q, 1)  ' True
+        
+        Printf IsIn(Range(-1, -5, -1), Range(6), everyTarget:=False)
+
+    End If
+    
+    'If testAO Then
+    '    Dim longVar As LongPtr
+    '    Dim funcName As String
+    '    Dim cBack As Variant
+    '    funcName = "iiisnull"
+    '    funcName = "sayHello"
+    '    Call testLambda(funcName, longVar)
+    '    printf "Address of '" & funcName & "': <" & longVar & ">"
+    'End If
+    
+    If testIsBlack Then
+        
+        o = 16
+        wh = "E0E0Ff"
+        Printf "iB: wh:<" & wh & ">, o:<" & o & ">, <" & IIf(IsBlack(wh, o), "T", "F") & ">"
+        Printf "iW: wh:<" & wh & ">, o:<" & o & ">, <" & IIf(IsWhite(wh, o), "T", "F") & ">"
+        
+    End If
+    
+    If testZip Then
+    
+        Call PrintArr(Zip(arrA, arrB))
+    
+    End If
+    
+    If testRange Then
+    
+        Call Append(answers, PrintArr(Range(15), "Range(15)", doPrint:=False))  ' [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        Call Append(answers, PrintArr(Range(-15), "Range(-15)", doPrint:=False))  ' []
+        Call Append(answers, PrintArr(Range(-15, 15, 1), "Range(-15, 15, 1)", doPrint:=False))  ' [-15,-14,-13,-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+        Call Append(answers, PrintArr(Range(-15, 15, -1), "Range(-15, 15, -1)", doPrint:=False))  ' []
+        Call Append(answers, PrintArr(Range(-15, -17, -1), "Range(-15, -17, -1)", doPrint:=False))  ' [-15, -16]
+        Call Append(answers, PrintArr(Range(-18, -20, -1), "Range(-18, -20, -1)", doPrint:=False))  ' [-18, -19]
+        Call Append(answers, PrintArr(Range(18, 10, -1), "Range(18, 10, -1)", doPrint:=False))  ' [18, 17, 16, 15, 14, 13, 12, 11]
+        Call Append(answers, PrintArr(Range(0, -18, -1), "Range(0, -18, -1)", doPrint:=False))  ' [0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17]
+        Call Append(answers, PrintArr(Range(1, 3), "Range(1, 3)", doPrint:=False))  ' [1, 2]
+        Call Append(answers, PrintArr(Range(4, 0, -1), "Range(4,0,-1)", doPrint:=False)) ' [4, 3, 2, 1]
+        Call Append(answers, PrintArr(Range(4, 1, -1), "Range(4,1,-1)", doPrint:=False))  ' [4, 3, 2]
+    
+    End If
+    
+    If testInsert Then
+        
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 0, unpackTarget:=True), False) ' [1, 2, 3] = > [True, False, True, 1, 2, 3]
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 0, unpackTarget:=False), False) ' [1, 2, 3] = > [[True, False, True], 1, 2, 3]
+        
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 1, unpackTarget:=True), False) ' [1, 2, 3] = > [1, True, False, True, 2, 3]
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 1, unpackTarget:=False), False) ' [1, 2, 3] = > [1, [True, False, True], 2, 3]
+        
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -1, unpackTarget:=True), False) ' [1, 2, 3] = > [1, 2, 3, True, False, True]
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -1, unpackTarget:=False), False) ' [1, 2, 3] = > [1, 2, 3, [True, False, True]]
+        
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -2, unpackTarget:=True), False) ' [1, 2, 3] = > [1, 2, True, False, True, 3]
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -2, unpackTarget:=False), False) ' [1, 2, 3] = > [1, 2, [True, False, True], 3]
+        
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -20, unpackTarget:=True), False) ' [1, 2, 3] = > [True, False, True, 1, 2, 3]
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -12, unpackTarget:=False), False) ' [1, 2, 3] = > [[True, False, True], 1, 2, 3]
+        
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 20, unpackTarget:=True), False) ' [1, 2, 3] = > [1, 2, 3,  True, False, True]
+        Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 12, unpackTarget:=False), False) ' [1, 2, 3] = > [1, 2, 3, [True, False, True]]
+    
+    End If
+
+    If testRemove Then
+        
+        Call Append(answers, Remove(Array(1, 2, 3), 1, failOnNotFound:=False), False) ' [2, 3]
+        Call Append(answers, Remove(Range(12), Range(0, 12, 2), failOnNotFound:=False), False) ' [1,3,5,7,9,11]
+        Call Append(answers, Remove(Range(12), Range(0, 12, 2), failOnNotFound:=False, unpackTarget:=False), False) ' [0,1,2,3,4,5,6,7,8,9,10,11]
+        Call Append(answers, Remove(IForI(Array(), 12), IForI(Array(), 11), failOnNotFound:=False), False) ' [[]]
+        
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 0, unPackTarget:=False), False) ' [1, 2, 3] = > [[True, False, True], 1, 2, 3]
+        
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 1, unPackTarget:=True), False) ' [1, 2, 3] = > [1, True, False, True, 2, 3]
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 1, unPackTarget:=False), False) ' [1, 2, 3] = > [1, [True, False, True], 2, 3]
+        
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -1, unPackTarget:=True), False) ' [1, 2, 3] = > [1, 2, 3, True, False, True]
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -1, unPackTarget:=False), False) ' [1, 2, 3] = > [1, 2, 3, [True, False, True]]
+        
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -2, unPackTarget:=True), False) ' [1, 2, 3] = > [1, 2, True, False, True, 3]
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -2, unPackTarget:=False), False) ' [1, 2, 3] = > [1, 2, [True, False, True], 3]
+        
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -20, unPackTarget:=True), False) ' [1, 2, 3] = > [True, False, True, 1, 2, 3]
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), -12, unPackTarget:=False), False) ' [1, 2, 3] = > [[True, False, True], 1, 2, 3]
+        
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 20, unPackTarget:=True), False) ' [1, 2, 3] = > [1, 2, 3,  True, False, True]
+        'Call Append(answers, Insert(Array(1, 2, 3), Array(True, False, True), 12, unPackTarget:=False), False) ' [1, 2, 3] = > [1, 2, 3, [True, False, True]]
+    
+    End If
+    
+    If testIForI Then
+        
+        'Printf Count(IForI(3, 10), 3)
+        'Printf IForI("printf(randomRGB(), doPrint:=False)", 5, True)
+        Printf IForI("printf(randomRGB(), False)", 5, True)  '  Rule violation => []
+        'PrintArr RandomRGB(), "rRGB()"
+        'Printf IForI("cstr(1)", 3, True)
+        
+        ' These either don't compile or are violations to the rules of the Eval function.
+        'Printf "--> " & Eval("IsArray(eval(randomRGB()))")
+        'Printf "--> " & Eval("IsArray(array(""Avery"", ""was"", ""here""))")
+        'Printf "--> " & Eval("printf(array("""Avery""", """was""", """here"""))")
+        
+    End If
+    
+    If testIndex Then
+        Call Append(answers, Append(Array("list(range(15)).index(0), ans=0"), "Index Test1: " & Printf(Index(Range(15), 0), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("list(range(15)).index(0), ans=[0]"), "Index Test2: " & Printf(Index(Range(15), 0, returnFirst:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(3), ans=[0, 1, 2]"), "Index Test3: " & Printf(Index(IForI(3, 3), 3, returnFirst:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(3), ans=[[0, 1, 2]]"), "Index Test4: " & Printf(Index(IForI(3, 3), Array(3), returnFirst:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(3), ans=[[0, 1, 2], [0, 1, 2]]"), "Index Test5: " & Printf(Index(IForI(3, 3), Array(3, 3), returnFirst:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(3), ans=[[0, 1, 2], [-1]]"), "Index Test6: " & Printf(Index(IForI(3, 3), Array(3, 2), returnFirst:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(2), ans=[-1]"), "Index Test7: " & Printf(Index(IForI(3, 3), 2, returnFirst:=False), doPrint:=False), False), False)
+        
+        
+        
+        Call Append(answers, Append(Array("list(range(15)).index(0), ans=0"), "IsIn Test1: " & Printf(IsIn(Range(15), 0, returnIndex:=True), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("list(range(15)).index(0), ans=[0]"), "IsIn Test2: " & Printf(IsIn(Range(15), 0, returnIndex:=True, unpackTarget:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(3), ans=[0, 1, 2]"), "IsIn Test3: " & Printf(IsIn(IForI(3, 3), 3, returnIndex:=True, unpackTarget:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(3), ans=[[0, 1, 2]]"), "IsIn Test4: " & Printf(IsIn(IForI(3, 3), Array(3), returnIndex:=True, unpackTarget:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(3), ans=[[0, 1, 2], [0, 1, 2]]"), "IsIn Test5: " & Printf(IsIn(IForI(3, 3), Array(3, 3), returnIndex:=True, unpackTarget:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(3), ans=[[0, 1, 2], [-1]]"), "IsIn Test6: " & Printf(IsIn(IForI(3, 3), Array(3, 2), returnIndex:=True, unpackTarget:=False), doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[3 for i in range(3)].index(2), ans=[-1]"), "IsIn Test7: " & Printf(IsIn(IForI(3, 3), 2, returnIndex:=True, unpackTarget:=False), doPrint:=False), False), False)
+        
+        'Call Append(answers, Append(Array("[0:4:2], [1, 7]"), PrintArr(Slice(q, 0, 4, 2), name:="Slice Test2", doPrint:=False), False), False)
+        'Call Append(answers, Append(Array("[-1:14:3], []"), PrintArr(Slice(q, -1, 14, 3), name:="Slice Test3", doPrint:=False), False), False)
+        'Call Append(answers, Append(Array("[1:14:3], [6, 9, 8, 1, 7]"), PrintArr(Slice(q, 1, 14, 3), name:="Slice Test4", doPrint:=False), False), False)
+        'Call Append(answers, Append(Array("[::], [1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7, -5, -6, -7]"), PrintArr(Slice(q), name:="Slice Test5", doPrint:=False), False), False)
+        'Call Append(answers, Append(Array("[:5:], [1, 6, 7, 2, 9]"), PrintArr(Slice(q, , 5), name:="Slice Test6", doPrint:=False), False), False)
+        'Call Append(answers, Append(Array("[:15:3], [1, 2, 3, 6, 1]"), PrintArr(Slice(q, , 15, 3), name:="Slice Test7", doPrint:=False), False), False)
+        'Call Append(answers, Append(Array("[::5], ans=[1, 4, 1, 4, 1, 7, 2, -5]"), PrintArr(Slice(q, , , 5), name:="Slice Test8", doPrint:=False), False), False)
+        'Call Append(answers, Append(Array("[1::], ans=[1, 2, 3, 4]"), PrintArr(Slice(Range(5), 1), name:="Slice Test9", doPrint:=False), False), False)
+        'Call Append(answers, Append(Array("[:15:3], ans=[0, 3, 6, 9, 12]"), PrintArr(Slice(Range(15), , 15, 3), name:="Slice Test10", doPrint:=False), False), False)
+        
+        'Call PrintArr(Slice(q, 0, 4, 2), name:="Slice Test2", inLine:=True)
+        'Call PrintArr(Slice(q, -1, 14, 3), name:="Slice Test3")
+        'Call PrintArr(Slice(q, 1, 14, 3), name:="Slice Test4")
+        'Call PrintArr(Slice(q), name:="Slice Test5")
+        'Call PrintArr(Slice(q), name:="Slice Test6")
+        'Call PrintArr(Slice(q, start_:=5), name:="Slice Test6")
+        'Call PrintArr(Slice(q, end_:=5), name:="Slice Test7")
+        'Call PrintArr(Slice(q, step_:=5), name:="Slice Test8")
+    End If
+
+    Printf vbNewLine & vbTab & "--"
+    'printf PrintArr(answers, "Answers", False)
+    Call PrintArr(answers, "Answers", False, incTypes:=False)
+    
+    'Call PrintArr(Append(Append(Array(Array(Array(Array()))), Range(9), False), Range(0, -6, -1), False), , False)
+    
+End Sub
+
+
+'Public Sub sayHello()
+'    printf "Hello World!"
+'End Sub
+'
+'Public Function iisnull(ByRef v As Variant) As Boolean
+'    iisnull = IsNull(v)
+'End Function
+'
+Public Sub iiisnull(ByRef V As Variant, ByRef result As Variant)
+    result = IsNull(V)
+End Sub
+'
+'Public Sub testLambda(ByVal funcName As String, ByRef result As Variant)
+'    printf "result bef: <" & result & ">"
+'    result = VarPtr(funcName)
+'    'result = addressof funcName
+'    printf "result aft: <" & result & ">"
+'End Sub
+    
+
+'Public Function range(ByVal start_ As Variant, Optional ByVal end_ As Variant, Optional ByVal step_ As Variant) As Variant
+'
+'    Dim endWasNull As Boolean
+'    Dim stepWasNull As Boolean
+'    Dim lb As Integer
+'    Dim ub As Integer
+'    Dim wArray As Variant
+'
+'    wArray = Array()
+'
+'    endWasNull = IsNull(end_) Or IsMissing(end_)
+'    stepWasNull = IsNull(step_) Or IsMissing(step_)
+'
+'    'If all(map("IsNull", Array(S))) Then
+'    '    printf "ALL"
+'    'Else
+'    '    printf "NOT ALL"
+'    'End If
+'
+'    start_ = IIf(isinstance(start_, vbInteger), start_, lb)  ' start must be an integer
+'    end_ = IIf(isinstance(end_, vbInteger), end_, ub)  ' end must be an integer
+'
+'    end_ = IIf(endWasNull, start_, end_) - 1  ' end cannot be null, iff it is, then return n elements
+'    start_ = IIf(endWasNull, 0, start_) ' default start_ of 0 if only one param is passed.
+'    step_ = IIf(stepWasNull, 1, step_)  ' Default step of 1
+'    step_ = IIf(step_ = 0, 1, step_)  ' Step cannot be 0
+'
+'    'start_ = IIf(start_ <= 0, start_, end_ + 1 - start_)  ' Invert start if negative
+'    'end_ = IIf(end_ <= 0, end_, start_ + 1 - end_)  ' Invert end if negative
+'
+'    If (start_ > end_) And (step_ < 0) Then
+'        'printf "Recurse"
+'        range = reverse(range(end_ + 2, start_ + 2, -step_))
+'        'range = reverse(range(end_ - 1, start_ - 1, -step_))
+'        Exit Function
+'    End If
+'
+'    If step_ < 1 Then
+'        'printf "FLIP STEP"
+'        'printf "EARLY EXIT"
+'        range = wArray
+'        Exit Function
+'        'step_ = -step_
+'    End If
+'
+'    Dim el As Variant
+'    Dim i As Integer
+'    Dim N As Integer
+'    Dim j As Integer
+'    j = -1
+'    N = ceiling(Abs(end_ - IIf(start_ = 0, -1, start_)) / (0# + step_))
+'    N = N - IIf(startWasNull And Not endWasNull, 1, 0)
+'    If (start_ < 0 And end_ > 0) Then
+'        'printf "PLUS 1"
+'        N = N + 1
+'    End If
+'    'printf "start_: <" & start_ & ">, end_: <" & end_ & ">, step_: <" & step_ & ">, n: <" & N & ">"
+'    For i = start_ To end_
+'        If Between(i, start_, end_) Then
+'            j = j + 1
+'            'printf "i <" & i & ">, j <" & j & ">, el: <" & el & ">, n: <" & N & ">, (i Mod step_): <" & (i Mod step_) & ">, Between(i, " & start_ & ", " & end_ & "): <" & Between(i, start_, end_) & ">"
+'            If ((j Mod step_) = 0) Then
+'                wArray = append(wArray, i)
+'            End If
+'        End If
+'        If UBound(wArray) >= (N - 1) Then
+'            Exit For
+'        End If
+'    Next i
+'
+'    range = wArray
+'
+'End Function
+
+
+'Public Function HexToRGBLong(ByVal hexColour As String) As Variant
+'    Dim red As Integer
+'    Dim green As Integer
+'    Dim blue As Integer
+'
+'    red = val("&H" & Mid(hexColour, 1, 2))
+'    green = val("&H" & Mid(hexColour, 3, 2))
+'    blue = val("&H" & Mid(hexColour, 5, 2))
+'
+'    HexToRGBLong = Array(red, green, blue)
+'    'printArr HexToRGBLong
+'End Function
+'
+'Public Function RGBBrightness(ByVal rgbColour As Variant) As Long
+'    Dim red As Integer
+'    Dim green As Integer
+'    Dim blue As Integer
+'
+'    red = rgbColour(0)
+'    green = rgbColour(1)
+'    blue = rgbColour(2)
+'
+'    'printf "r: <" & red & ">, g: <" & green & ">, b: <" & blue & ">"
+'
+'    RGBBrightness = (CLng(red) * 299& + CLng(green) * 587& + CLng(blue) * 114&) \ 1000&
+'End Function
+
+
+'Public Function isWhite(ByVal c As Variant, Optional ByVal offset As Integer = 0) As Boolean
+'
+'    If Not isRGBColour(c) Then
+'        If isHexColour(c) Then
+'            c = hex2RGB(c, rType:="Array")
+'        Else
+'            Err.Raise vbObjectError, "isBlack", "Error, cannot determine if this is colour is black or not."
+'        End If
+'    End If
+'
+''    If Not isRGBColour(c) Then
+''        If isHexColour(c) Then
+''            c = hex2RGB(c, rType:="Array")
+''        Else
+''            Err.Raise vbObjectError, "isWhite", "Error, cannot determine if this is a colour is white or not."
+''        End If
+''    End If
+''
+''    'On Error GoTo CannotDetermine
+''    offset = Clamp(offset, 0, 255)
+''
+''    Dim r As Integer
+''    Dim g As Integer
+''    Dim b As Integer
+''
+''    r = c(0)
+''    g = c(1)
+''    b = c(2)
+''
+''    isWhite = all(Array(Between(r, 255 - offset, 255), Between(g, 255 - offset, 255), Between(b, 255 - offset, 255)))
+''
+'''CannotDetermine:
+''    'Err.Raise vbObjectError, "isWhite", "Error, cannot determine if this is a colour or not."
+'
+'
+'
+'    'On Error GoTo CannotDetermine
+'    'offset = Clamp(offset, 0, 255) + (2 * 255)
+'    'offset = (255 - Clamp(offset, 0, 255)) * 3
+'    offset = (255 * 3) - ((Clamp(offset, 0, 254) + 1) * 3)
+'
+'    Dim r As Integer
+'    Dim g As Integer
+'    Dim b As Integer
+'
+'    r = c(0)
+'    g = c(1)
+'    b = c(2)
+'
+'    Call printArr(Array(r, g, b), "sum(" & Sum(Array(r, g, b)) & "), off(" & offset & ")")
+'
+'    'isBlack = ((255 * 3) - Sum(Array(r, g, b))) <= offset
+'    isWhite = Sum(Array(r, g, b)) >= offset
+'
+''CannotDetermine:
+'    'Err.Raise vbObjectError, "isWhite", "Error, cannot determine if this is a colour or not."
+'
+'End Function
+'
+'
+'Public Function isBlack(ByVal c As Variant, Optional ByVal offset As Integer = 0) As Boolean
+'
+'    If Not isRGBColour(c) Then
+'        If isHexColour(c) Then
+'            c = hex2RGB(c, rType:="Array")
+'        Else
+'            Err.Raise vbObjectError, "isBlack", "Error, cannot determine if this is colour is black or not."
+'        End If
+'    End If
+'
+'    'On Error GoTo CannotDetermine
+'    'offset = Clamp(offset, 0, 255) + (2 * 255)
+'    'offset = (255 - Clamp(offset, 0, 255)) * 3
+'    offset = (Clamp(offset, 0, 254) + 1) * 3
+'
+'    Dim r As Integer
+'    Dim g As Integer
+'    Dim b As Integer
+'
+'    r = c(0)
+'    g = c(1)
+'    b = c(2)
+'
+'    Call printArr(Array(r, g, b), "sum(" & Sum(Array(r, g, b)) & "), off(" & offset & ")")
+'
+'    'isBlack = ((255 * 3) - Sum(Array(r, g, b))) <= offset
+'    isBlack = Sum(Array(r, g, b)) <= offset
+'
+''CannotDetermine:
+'    'Err.Raise vbObjectError, "isWhite", "Error, cannot determine if this is a colour or not."
+'
+'End Function
+'
+'
+'Public Function isColour(ByVal c As Variant) As Boolean
+'
+'    isColour = isHexColour(c)
+'    If Not isColour Then
+'        isColour = isRGBColour(c)
+'    End If
+'
+'End Function
+'
+'
+'Public Function isRGBColour(ByVal c As Variant) As Boolean
+'
+''printf "-A"
+'    If IsArray(c) Then
+''printf "-B"
+'        If Not isArrayEmpty(c) Then
+''printf "-C"
+'            If UBound(c) = 2 Then
+''printf "-D"
+'
+'                Dim r As Integer
+'                Dim g As Integer
+'                Dim b As Integer
+'
+'                r = c(0)
+'                g = c(1)
+'                b = c(2)
+'
+'                'Call printArr(Array(r, g, b), "RGB")
+'
+'                isRGBColour = all(Array(Between(r, 0, 255), Between(g, 0, 255), Between(b, 0, 255)))
+'                Exit Function
+'
+'            End If
+'        End If
+'    End If
+'
+'    isRGBColour = False
+'
+'End Function
+'
+'
+'Public Function isHexColour(ByVal c As Variant) As Boolean
+'
+'    If isinstance(c, vbString) Then
+'        If Between(Len(c), 6, 8) Then
+'            If Len(c) <> 6 Then
+'                If Left(c, 1) = "#" Or UCase(Left(c, 1)) = "&H" Then
+'                    c = Right(c, 6)
+'                Else
+'                    'Err.Raise vbObjectError, "isHexColour", "Error, cannot determin if this value is a hex colour or not. <" & c & ">"
+'                    isHexColour = False
+'                    Exit Function
+'                End If
+'            End If
+'
+'            Dim lb1 As Integer
+'            Dim lb2 As Integer
+'            Dim ub1 As Integer
+'            Dim ub2 As Integer
+'
+'            Dim aC As Integer
+'            Dim bC As Integer
+'            Dim cC As Integer
+'            Dim dC As Integer
+'            Dim eC As Integer
+'            Dim fC As Integer
+'
+'            lb1 = Asc("0")
+'            ub1 = Asc("9")
+'            lb2 = Asc("a")
+'            ub2 = Asc("f")
+'
+'            aC = Asc(LCase(Mid(c, 1, 1)))
+'            bC = Asc(LCase(Mid(c, 2, 1)))
+'            cC = Asc(LCase(Mid(c, 3, 1)))
+'            dC = Asc(LCase(Mid(c, 4, 1)))
+'            eC = Asc(LCase(Mid(c, 5, 1)))
+'            fC = Asc(LCase(Mid(c, 6, 1)))
+'
+'            'Call printArr(Array(aC, bC, cC, dC, eC, fC), "here")
+'
+'            isHexColour = all(Array( _
+'                any_(Array(Between(aC, lb1, ub1), Between(aC, lb2, ub2))), _
+'                any_(Array(Between(bC, lb1, ub1), Between(bC, lb2, ub2))), _
+'                any_(Array(Between(cC, lb1, ub1), Between(cC, lb2, ub2))), _
+'                any_(Array(Between(dC, lb1, ub1), Between(dC, lb2, ub2))), _
+'                any_(Array(Between(eC, lb1, ub1), Between(eC, lb2, ub2))), _
+'                any_(Array(Between(fC, lb1, ub1), Between(fC, lb2, ub2)))))
+'            Exit Function
+'
+'        End If
+'    End If
+'
+'    isHexColour = False
+'
+'End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Equal
+' Author    : Avery Briggs
+' Purpose   : Acts as a safer way to verify array contents.
+'
+' Usage:
+' ~~~~~~
+' dim a as variant
+' a = array(1,8,6,4)
+' dim b as variant
+' b = array(1,8,array(6,13),array(-1,4,array(0,array(11))),45)  ' [1, 8, [6, 13], [-1, 4, [0, [11]]], 45]
+' printf equal(a, b)  ' False
+' printf equal(1, 0)  ' False
+' printf equal(10, 1.0)  ' False
+' printf equal(a, a)  ' True
+' printf equal(3, 3)  ' True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-08                  Initial Release
+' 2         2023-08-31                  Support for Dictonaries
+'---------------------------------------------------------------------------------------
+Public Function Equal(ByRef valA As Variant, ByRef valB As Variant) As Boolean
+
+    If IsArray(valA) Or IsArray(valB) Then
+        Equal = ArrayEqual(valA, valB)
+    ElseIf IsDict(valA) Or IsDict(valB) Then
+        Equal = DictEqual(valA, valB)
+    Else
+        Equal = valA = valB
+    End If
+
+End Function
+
+
+Public Function Range2(ByVal start_ As Long, Optional ByVal end_ As Variant, Optional ByVal step_ As Variant) As Variant
+
+    Dim endWasNull As Boolean
+    Dim stepWasNull As Boolean
+    
+    endWasNull = (IsMissing(end_) Or IsNull(end_))
+    stepWasNull = (IsMissing(step_) Or IsNull(step_))
+    
+    endWasNull = Not IsInstance(end_, Array(vbInteger, vbLong))
+    stepWasNull = Not IsInstance(step_, Array(vbInteger, vbLong))
+    
+    If endWasNull Then
+        end_ = start_
+        start_ = 0
+    End If
+    
+    If stepWasNull Then
+        step_ = 1
+    End If
+    
+    step_ = IIf(step_ = 0, 1, step_)
+    
+    end_ = end_ - IIf(end_ > 0, 1, -1)
+    'If step < 0 Then
+    '    end_ = end_ + 1
+    'Else
+    '    end_ = end_ - 1
+    'End If
+    
+    Printf Array(start_, end_, step_, endWasNull, stepWasNull)
+    
+    Dim wArray As Variant
+    Dim i As Long
+    wArray = Array()
+    For i = start_ To end_ Step step_
+        Call Append(wArray, i)
+    Next i
+    
+    Range2 = wArray
+
+End Function
+
+Public Function OldRange2023_07_06(ByVal start_ As Variant, Optional ByVal end_ As Variant, Optional ByVal step_ As Variant) As Variant
+      
+    Dim endWasNull As Boolean
+    Dim stepWasNull As Boolean
+    Dim zeroInRange As Boolean
+    Dim zeroIsBound As Boolean
+    Dim lb As Long
+    Dim ub As Long
+    Dim n As Long
+    Dim wArray As Variant
+    
+    wArray = Array()
+    
+    endWasNull = IsNull(end_) Or IsMissing(end_)
+    stepWasNull = IsNull(step_) Or IsMissing(step_)
+    
+    start_ = IIf(IsInstance(start_, Array(vbInteger, vbLong)), start_, lb)  ' start must be an integer
+    end_ = IIf(IsInstance(end_, Array(vbInteger, vbLong)), end_, ub)  ' end must be an integer
+    
+    'end_ = IIf(endWasNull, start_, end_) - 1  ' end cannot be null, iff it is, then return n elements
+    end_ = IIf(endWasNull, start_, end_)  ' end cannot be null, iff it is, then return n elements
+    start_ = IIf(endWasNull, 0, start_) ' default start_ of 0 if only one param is passed.
+    step_ = IIf(stepWasNull, 1, step_)  ' Default step of 1
+    step_ = IIf(step_ = 0, 1, step_)  ' Step cannot be 0
+    
+    zeroInRange = (start_ < 0 And end_ > 0)
+    zeroIsBound = (start_ = 0 Or end_ = 0)
+    'N = ceiling(Abs(end_ - IIf(start_ = 0, -1, start_)) / (0# + step_))
+    'N = N - IIf(startWasNull And Not endWasNull, 1, 0)
+    n = Ceiling(Abs(end_ - start_) / (0# + step_))
+    n = n - IIf(endWasNull, 1, 0)
+    'printf "A: zir<" & zeroInRange & ">, zib<" & zeroIsBound & ">, ewn<" & endWasNull & ">, swn<" & stepWasNull & ">"
+    If zeroInRange Or zeroIsBound Then
+        'printf "PLUS 1"
+        n = n + 1
+    End If
+    
+    If (start_ > end_) And (step_ < 0) Then
+        'printf "Recurse (" & (end_ + 1) & ", " & (start_ + 1) & ", " & (-step_) & ")"
+        OldRange2023_07_06 = Reverse(Range(end_ + 1, start_ + 1, -step_))
+        'Range = Reverse(Range(end_ + 1, IIf(zeroIsBound, 1, start_ + 2), -step_))
+        'range = reverse(slice(range(end_ + 2, start_ + 2, -step_), IIf(zeroInRange, 1, 0)))
+        'range = reverse(range(end_ + 2, start_ + IIf(zeroInRange, 1, 2), -step_))
+        'range = reverse(range(end_ - 1, start_ - 1, -step_))
+        Exit Function
+    End If
+    
+    If step_ < 1 Then
+        'printf "EARLY EXIT"
+        OldRange2023_07_06 = wArray
+        Exit Function
+        'step_ = -step_
+    End If
+    
+    Dim el As Variant
+    Dim i As Long
+    'printf "st: <" & start_ & ">, ed: <" & end_ & ">, sp: <" & step_ & ">, n: <" & N & ">, 0iR <" & zeroInRange & ">"
+    For i = start_ To end_ - 1
+        If Between(i, start_, end_) Then
+            j = j + 1
+            'printf "i <" & i & ">, j <" & j & ">, el: <" & el & ">, n: <" & N & ">, (i Mod step_): <" & (i Mod step_) & ">, Between(i, " & start_ & ", " & end_ & "): <" & Between(i, start_, end_) & ">"
+            If ((j Mod step_) = 0) Then
+                wArray = Append(wArray, i)
+            End If
+        End If
+        If UBound(wArray) >= (n - 1) Then
+            Exit For
+        End If
+    Next i
+        
+    OldRange2023_07_06 = wArray
+
+End Function
+
+
+Public Function ArrayMatchesTableDimensions(ByRef srcArray As Variant, ByVal rows As Long, ByVal cols As Long, Optional minRowMatch As Boolean = True, Optional minColMatch As Boolean = True) As Boolean
+
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "ArrayHasNDimensions", "Error, 'srcArray' is not an array"
+    End If
+    
+    If rows < 0 Then
+        Err.Raise vbObjectError, "ArrayMatchesTableDimensions", "Error param 'rows' cannot be negative"
+    End If
+    
+    If cols < 0 Then
+        Err.Raise vbObjectError, "ArrayMatchesTableDimensions", "Error param 'cols' cannot be negative"
+    End If
+    
+    If IsArrayEmpty(srcArray) Then
+        'Printf "-A"
+        ArrayMatchesTableDimensions = rows = 0
+        Exit Function
+    End If
+    
+    Dim SR As Long
+    Dim SC As Long
+    SR = Size(srcArray)
+    If SR <> rows Then
+        If minRowMatch Then
+            If SR < rows Then
+                'Printf "-B"
+                ArrayMatchesTableDimensions = False
+                Exit Function
+            End If
+        Else
+            'Printf "-C"
+            ArrayMatchesTableDimensions = False
+            Exit Function
+        End If
+    End If
+    
+    Dim el As Variant
+    For Each el In srcArray
+        If Not IsArray(el) Then
+            'Printf "-D"
+            ArrayMatchesTableDimensions = cols = 0
+            Exit Function
+        End If
+        If IsArrayEmpty(el) Then
+            'Printf "-E"
+            ArrayMatchesTableDimensions = cols = 0
+            Exit Function
+        End If
+        SC = Size(el)
+        If SC <> cols Then
+            If minColMatch Then
+                If SC < cols Then
+                    'Printf "-F"
+                    ArrayMatchesTableDimensions = False
+                    Exit Function
+                End If
+            Else
+                'Printf "-G"
+                ArrayMatchesTableDimensions = False
+                Exit Function
+            End If
+        End If
+    Next el
+    
+    ArrayMatchesTableDimensions = True
+
+End Function
+
+
+Public Function ArrayHas2Dimensions(ByRef srcArray As Variant) As Boolean
+
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "ArrayHasNDimensions", "Error, 'srcArray' is not an array"
+    End If
+    
+    If IsArrayEmpty(srcArray) Then
+        ArrayHas2Dimensions = False
+        Exit Function
+    End If
+    
+    Dim el As Variant
+    For Each el In srcArray
+        If Not IsArray(el) Then
+            ArrayHas2Dimensions = False
+            Exit Function
+        End If
+    Next el
+    
+    ArrayHas2Dimensions = True
+
+End Function
+
+
+Public Function NextAvailableFileName(ByVal path As String) As String
+    
+    If VarType(path) <> vbString Then
+        Err.Raise vbObjectError, "NextAvailableFileName", "Error cannot determine next file name for non-string path."
+    End If
+    If Size(path) = 0 Then
+        Err.Raise vbObjectError, "NextAvailableFileName", "Error cannot determine next file name for empty path."
+    End If
+    Dim suffix As String
+    Dim direc As String
+    Dim fName As String
+    Dim dotSplt As Variant
+    Dim slashSplt As Variant
+    dotSplt = Split(Replace(path, "/", "\"), ".")
+    If Size(dotSplt) <> 2 Then
+        Err.Raise vbObjectError, "NextAvailableFileName", "Error cannot determine next file name for invalid path '" & path & "'."
+    End If
+    suffix = dotSplt(1)
+    slashSplt = Split(dotSplt(0), "\")
+    
+    If Size(slashSplt) < 2 Then
+        Err.Raise vbObjectError, "NextAvailableFileName", "Error cannot determine next file name for invalid path '" & path & "'."
+    End If
+    
+    direc = Join(Slice(slashSplt, , UBound(slashSplt)), "\") & "\"
+    fName = slashSplt(UBound(slashSplt))
+    
+    Printf Dictionary("p", path, "s", suffix, "f", fName, "d", direc)
+    
+    If Len(Dir(direc, vbDirectory)) = 0 Then 'MkDir strCheckPath
+        Err.Raise "NextAvailableFileName", "Error, directory '" & direc & "' does not exist."
+    End If
+    
+    NextAvailableFileName = "UNFINISHED"
+    
+End Function
+
+
+
+Public Function WriteFile(ByVal Text As String, ByVal path As String, Optional ByVal allowOverwrites As Boolean = False) As Boolean
+
+    On Error GoTo FailedToWrite
+    Dim FSO As Object
+    Set FSO = CreateObject("Scripting.FileSystemObject")
+    Dim oFile As Object
+    If Not allowOverwrites Then
+        'path = NextAvailableFileName(path)
+    End If
+    Set oFile = FSO.CreateTextFile(path)
+    oFile.Writeline Text
+    oFile.Close
+    Set FSO = Nothing
+    Set oFile = Nothing
+    WriteFile = True
+    
+CleanExit:
+    Exit Function
+    
+FailedToWrite:
+    WriteFile = False
+    Printf "WriteFile failure:"
+    Printf vbTab & Err.Number
+    Printf vbTab & Err.Description
+    
+End Function
+
+
+Public Function Serialize(ByVal value As Variant) As String
+    
+    Dim vt As VbVarType
+    vt = VarType(value)
+    Dim res As String
+    
+    Dim arraySerialize As Boolean
+    arraySerialize = False
+    
+    
+    Select Case vt
+        Case vbInteger:
+            res = CStr(value)
+        Case vbLong:
+            res = CStr(value)
+        Case vbSingle:
+            res = CStr(value)
+        Case vbString:
+            res = """" & CStr(value) & """"
+        Case vbDouble:
+            res = CStr(value)
+        Case vbDate:
+            res = "#" & CStr(value) & "#"
+        Case vbArray:
+            arraySerialize = True
+            
+        Case vbArray + vbInteger:
+            arraySerialize = True
+        Case vbArray + vbLong:
+            arraySerialize = True
+        Case vbArray + vbSingle:
+            arraySerialize = True
+        Case vbArray + vbDouble:
+            arraySerialize = True
+        Case vbArray + vbString:
+            arraySerialize = True
+        Case vbArray + vbVariant:
+            arraySerialize = True
+        Case Else:
+            Err.Raise vbObjectError, "Serialize", "Error cannot serialize value of type '" & TypeName(value) & "'"
+    End Select
+    
+    If arraySerialize Then
+        res = "Array("
+        Dim el As Variant
+        For Each el In value
+            res = res & Serialize(el) & ", "
+        Next el
+        If UBound(value) <> -1 Then
+            res = Left(res, Len(res) - 2)
+        End If
+        res = res & ")"
+    End If
+    
+    Serialize = res
+
+End Function
+
+
+Public Function BrowseForFolder(Optional ByVal OpenAt As Variant = "C:\") As Variant
+    ' https://stackoverflow.com/questions/19372319/vba-folder-picker-set-where-to-start
+
+     'Function purpose:  To Browser for a user selected folder.
+     'If the "OpenAt" path is provided, open the browser at that directory
+     'NOTE:  If invalid, it will open at the Desktop level
+
+    Printf "OPENAT: <" & OpenAt & ">"
+
+    Dim ShellApp As Object
+
+     'Create a file browser window at the default folder
+    Set ShellApp = CreateObject("Shell.Application"). _
+    BrowseForFolder(0, "Please choose a folder", 0, OpenAt)
+
+     'Set the folder to that selected.  (On error in case cancelled)
+    On Error Resume Next
+    BrowseForFolder = ShellApp.self.path
+    On Error GoTo 0
+
+     'Destroy the Shell Application
+    Set ShellApp = Nothing
+
+     'Check for invalid or non-entries and send to the Invalid error
+     'handler if found
+     'Valid selections can begin L: (where L is a letter) or
+     '\\ (as in \\servername\sharename.  All others are invalid
+    Select Case Mid(BrowseForFolder, 2, 1)
+    Case Is = ":"
+        If Left(BrowseForFolder, 1) = ":" Then GoTo Invalid
+    Case Is = "\"
+        If Not Left(BrowseForFolder, 1) = "\" Then GoTo Invalid
+    Case Else
+        GoTo Invalid
+    End Select
+
+    Exit Function
+
+Invalid:
+     'If it was determined that the selection was invalid, set to False
+    BrowseForFolder = False
+End Function

@@ -1,0 +1,272 @@
+Option Compare Database
+
+
+' General Dictionary Utility Functions
+' Version....................1.04
+' Date.................2023-08-31
+' Author(s)..........Avery Briggs
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   PrintDict            -   Print and or obtain a string representation for a Dictionary.
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+' https://stackoverflow.com/questions/46013120/whats-a-very-simple-way-to-enter-key-value-pairs-in-vba
+' We then add items to the dictionary using the 'Add' method,
+'   where each item consists of a key-value pair.
+'   We can access the values by providing the corresponding keys.
+' The 'Exists' method is used to check if a specific key exists in the dictionary.
+'   We can loop through all the keys using the Keys property and access the
+'   corresponding values using the keys.
+' The 'Remove' method allows us to remove a specific item from the dictionary,
+'   and the 'Count' property gives us the number of items in the dictionary.
+' Finally, we can clear all items from the dictionary using the 'RemoveAll' method.
+' Remember to add a reference to the "Microsoft Scripting Runtime" library
+'   in your VBA project for the Scripting.Dictionary object to be available.
+Public Function Dictionary(ParamArray args()) As Object
+  Dim i As Long, arr()
+  Set Dictionary = CreateObject("Scripting.Dictionary")
+
+  If UBound(args) >= 0 Then   ' if has arguments '
+    If VBA.IsObject(args(0)) Then   ' if object then load a Range '
+      arr = args(0).Resize(args(0).End(xlDown).Row - args(0).Row + 1, 2).value
+
+      For i = 1 To UBound(arr)
+        Dictionary.Add arr(i, 1), arr(i, 2)
+      Next
+    Else                               ' else load an Array '
+      For i = 0 To UBound(args) Step 2
+        Dictionary.Add args(i), args(i + 1)
+      Next
+    End If
+  End If
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PrintDict
+' Author    : Avery Briggs
+' Purpose   : Take an array, print and return a string representation of it.
+'             Optionally print the array one element at a time, with its type
+'
+' Usage:
+' ~~~~~~
+' Set w = Dictionary()
+' w(0) = "Avery"
+' w(1) = "is"
+' w(2) = "cool"
+' w(3) = "!"
+' Set teams = Dictionary()
+' teams("A") = 1
+' teams("B") = Array(-2, -1)
+' teams("C") = Array(-2, "-1")
+' teams("D") = "15"
+' teams("E") = True
+' teams("F") = -9.992
+' teams("G") = &H12
+' ' teams("H") = w  ' failure, no nested dictionaries
+' Call PrintDict(teams, inLine:=False)
+' {
+'   'A': 1,
+'   'B': [-2, -1],
+'   'C': [-2, '-1'],
+'   'D': '15',
+'   'E': True,
+'   'F': -9.992,
+'   'G': 18
+' }
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+' 2         2023-08-05                  Corrected empty dict print outs
+'---------------------------------------------------------------------------------------
+Public Function PrintDict( _
+    ByRef dict As Variant _
+    , Optional ByVal doPrint As Boolean = True _
+    , Optional ByVal initOffset As Long = 0 _
+    , Optional ByVal inLine As Boolean = True _
+) As String
+
+    If Not TypeName(dict) = "Dictionary" Then
+        Err.Raise vbObjectError, "PrintDict", "Error, cannot call PrintDict on a non Dictionary object."
+        Exit Function
+    End If
+    
+    Dim key As Variant
+    Dim t As Long
+    Dim Size_ As Long
+    Dim sDict As String
+    Dim b11 As String
+    Dim b12 As String
+    Dim b21 As String
+    Dim b22 As String
+    Dim k As String
+    Dim V As String
+    Dim S As String
+    
+    Size_ = dict.Count
+    t = 2 + initOffset
+    sDict = "{"
+    
+    If Size(dict) = 0 Then
+        sDict = sDict & IIf(inLine, "}", vbNewLine & "}")
+        PrintDict = sDict
+        Exit Function
+    End If
+    
+    For Each key In dict
+        'Printf "key <" & key & ">"
+        b11 = IIf(VarType(key) = vbString, "'", "")
+        b12 = b11
+        k = Printf(key, doPrint:=False)
+        V = Printf(dict(key), doPrint:=False)
+        b21 = IIf(VarType(dict(key)) = vbString, "'", "")
+        b22 = b21
+        If inLine Then
+            sDict = sDict & b11 & k & b12 & ": " & b21 & V & b22 & ", "
+        Else
+            S = Space(t)
+            If IsArray(dict(key)) Then
+                b21 = ""
+                b22 = ""
+                V = PrintArr(dict(key), doPrint:=False, inLine:=False)
+            ' Cannot nest dictionaries
+            'ElseIf IsInstance(dict(key), "Dictionary") Then
+            '    b21 = "{"
+            '    b22 = "}"
+            '    v = PrintDict(dict(key), doPrint:=False, inLine:=False, initOffset:=t)
+            End If
+            
+            sDict = sDict & vbNewLine & S & b11 & k & b12 & ": " & b21 & V & b22 & ", "
+        End If
+    Next key
+    
+    sDict = Left(sDict, Len(sDict) - 2)
+    sDict = sDict & IIf(inLine, "", vbNewLine) & "}"
+    
+    If doPrint Then
+        Printf sDict
+    End If
+    
+    PrintDict = sDict
+
+End Function
+
+
+Public Function IsDict(ByVal dict As Variant) As Boolean
+
+    IsDict = IsInstance(dict, "Dictionary")
+
+End Function
+
+
+Public Function IsDictEmpty(ByVal dict As Variant) As Boolean
+
+    IsDictEmpty = Size(dict) = 0
+
+End Function
+
+
+Public Function DictKeys(ByVal dict As Variant) As Variant
+
+    If Not IsDict(dict) Then
+        Err.Raise vbObjectError, "DictKeys", "Error, cannot call function on non-Dictionary object."
+    End If
+    
+    If IsDictEmpty(dict) Then
+        DictKeys = Array()
+    Else
+        Dim key As Variant
+        Dim arr As Variant
+        arr = Array()
+        For Each key In dict
+            Call Append(arr, key, False)
+        Next key
+        DictKeys = arr
+    End If
+
+End Function
+
+
+Public Function DictValues(ByVal dict As Variant) As Variant
+
+    If Not IsDict(dict) Then
+        Err.Raise vbObjectError, "DictValues", "Error, cannot call function on non-Dictionary object."
+    End If
+    
+    If IsDictEmpty(dict) Then
+        DictValues = Array()
+    Else
+        Dim key As Variant
+        Dim arr As Variant
+        arr = Array()
+        For Each key In dict
+            Call Append(arr, dict(key), False)
+        Next key
+        DictValues = arr
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : DictEqual
+' Author    : Avery Briggs
+' Purpose   : Acts as a safer way to verify Dictionary contents.
+'
+' Usage:
+' ~~~~~~
+' dim a as variant
+' a = array(1,8,6,4)
+' dim b as variant
+' b = array(1,8,array(6,13),array(-1,4,array(0,array(11))),45)  ' [1, 8, [6, 13], [-1, 4, [0, [11]]], 45]
+' printf equal(a, b)  ' False
+' printf equal(1, 0)  ' False
+' printf equal(10, 1.0)  ' False
+' printf equal(a, a)  ' True
+' printf equal(3, 3)  ' True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-08                  Initial Release
+' 2         2023-08-31                  Support for Dictonaries
+'---------------------------------------------------------------------------------------
+Public Function DictEqual(ByRef valA As Variant, ByRef valB As Variant) As Boolean
+
+    If Not IsDict(valA) Then
+        Err.Raise vbObjectError, "DictEqual", "Error, param 'valA' must be an instance of a Dictionary, got '" & TypeName(valA) & "'"
+    End If
+    If Not IsDict(valB) Then
+        Err.Raise vbObjectError, "DictEqual", "Error, param 'valB' must be an instance of a Dictionary, got '" & TypeName(valB) & "'"
+    End If
+    
+    If Size(valA) <> Size(valB) Then
+        DictEqual = False
+    Else
+        Dim A As Variant
+        Dim b As Variant
+        For Each A In valA
+            If Not valB.exists(A) Then
+                DictEqual = False
+                Exit Function
+            End If
+            If valA(A) <> valB(A) Then
+                DictEqual = False
+                Exit Function
+            End If
+        Next A
+        DictEqual = True
+    End If
+    
+
+End Function

@@ -1,0 +1,174 @@
+Option Compare Database
+
+
+Public Function RemoveSuffix(ByVal str_ As String, ByVal suffix As String)
+
+    Dim ls As Long
+    Dim lu As Long
+    
+    ls = Len(str_)
+    lu = Len(suffix)
+            
+    RemoveSuffix = str_
+        
+    If (ls > 0) And (lu > 0) And (ls >= lu) Then
+        If Right(str_, lu) = suffix Then
+            RemoveSuffix = Left(str_, ls - lu)
+        End If
+    End If
+
+End Function
+
+
+Public Function RemovePrefix(ByVal str_ As String, ByVal Prefix As String)
+
+    Dim ls As Long
+    Dim lu As Long
+    
+    ls = Len(str_)
+    lu = Len(Prefix)
+            
+    RemovePrefix = str_
+        
+    If (ls > 0) And (lu > 0) And (ls >= lu) Then
+        If Left(str_, lu) = Prefix Then
+            RemovePrefix = Right(str_, ls - lu)
+        End If
+    End If
+
+End Function
+
+
+
+Public Function EndsWith(ByVal str_ As String, ByVal searchString As String) As Boolean
+
+    Dim len1 As Long
+    Dim len2 As Long
+    len1 = Len(str_)
+    len2 = Len(searchString)
+    
+    If len1 = len2 Then
+        If len1 = 0 Then
+            ' empty = empty
+            EndsWith = True
+        Else
+            ' must be the same string if same length
+            EndsWith = LCase(str_) = LCase(searchString)
+        End If
+    Else
+        If len2 > len1 Then
+            ' searchstring is too long
+            EndsWith = False
+        Else
+            ' check the right of str_
+            EndsWith = LCase(Right(str_, len2)) = LCase(searchString)
+        End If
+    End If
+    
+End Function
+
+
+Public Function StartsWith(ByVal str_ As String, ByVal searchString As String) As Boolean
+
+    Dim len1 As Long
+    Dim len2 As Long
+    len1 = Len(str_)
+    len2 = Len(searchString)
+    
+    If len1 = len2 Then
+        If len1 = 0 Then
+            ' empty = empty
+            StartsWith = True
+        Else
+            ' must be the same string if same length
+            StartsWith = LCase(str_) = LCase(searchString)
+        End If
+    Else
+        If len2 > len1 Then
+            ' searchstring is too long
+            StartsWith = False
+        Else
+            ' check the left of str_
+            StartsWith = LCase(Left(str_, len2)) = LCase(searchString)
+        End If
+    End If
+    
+End Function
+
+
+Public Function Title(ByVal phrase As String) As String
+
+    Dim i As Long
+    Dim j As Long
+    Dim C As String
+    Dim res As String
+    Dim LC As Boolean
+    j = Size(phrase)
+    LC = True
+    res = ""
+    
+    Do While i < j
+        C = Mid(phrase, i + 1, 1)
+        If C = " " Then
+            res = res & C
+            LC = True
+        Else
+            If LC Then
+                res = res & UCase(C)
+            Else
+                res = res & C
+            End If
+            LC = False
+        End If
+        i = i + 1
+    Loop
+    
+    Title = res
+
+End Function
+
+
+Function ReplaceSpecials(ByVal word As String, Optional ByVal AllSpecials As Boolean = True) As String
+    ' AllSpecials will include square brackets in replacements.
+
+    ReplaceSpecials = word
+
+    Dim C As Variant
+    Dim S As Variant
+    S = Array("/", "\", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "=", "+", "<", ">", ",", ".", "{", "}", "|", ":", ";", "'", "`", "~")
+    If AllSpecials Then
+        S = Append(S, Array("[", "]"), unPackNewVal:=True)
+    End If
+    For Each C In S
+        'Printf "c: <" & C & ">"
+        ReplaceSpecials = Replace(ReplaceSpecials, C, "")
+    Next C
+
+End Function
+
+
+Public Function RemoveIndividual(ByVal strIn As String) As String
+
+    Dim toRemoveP1 As Variant
+    Dim toRemoveP2 As Variant
+    Dim tr1 As Variant
+    Dim tr2 As Variant
+    Dim tr As String
+    Dim rs2 As String
+    
+    rs2 = "IT Team"
+    toRemoveP1 = Array("Hi", "Hello", "Good Morning", "Good Afternoon", "Good Evening", "Thanks", "Thank you")
+    toRemoveP2 = Array("Avery", "James")
+    
+    For Each tr1 In toRemoveP1
+        For Each tr2 In toRemoveP2
+            tr = tr1 & " " & tr2
+            If InStr(1, strIn, tr) > 0 Then
+                strIn = Replace(strIn, tr, tr1 & " " & rs2)
+            End If
+        Next tr2
+    Next tr1
+    
+    RemoveIndividual = strIn
+
+End Function

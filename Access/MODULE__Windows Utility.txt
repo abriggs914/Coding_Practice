@@ -1,0 +1,242 @@
+Option Compare Database
+
+
+' General Array Utility Functions
+' Version....................1.04
+' Date.................2023-08-11
+' Author(s)..........Avery Briggs
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   GetUserFullName           -   Return the full name of the current windows user based on domain account data.
+'   GetUserFullName2          -   Return the full name of the current windows user based on domain account data.
+'   GetWindowsUser            -   Return the username of the current windows user.
+'   ComputerName              -   Return the name of the current computer.
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+' Return the full name of the current windows user based on domain account data.
+' If the initial call fails using WScript, then a second attempt is made using WinMgmts.
+' GetUserFullName()  ' Avery Briggs
+Public Function GetUserFullName(Optional ByVal warnAlias As Boolean = False)
+
+    On Error GoTo FetchMethod2
+    'Get end user's full domain name
+    Dim sysInfo As Object
+    Dim UserName As String, UserDomain As String
+    Set sysInfo = CreateObject("ADSystemInfo")
+    Set WSHnet = CreateObject("WScript.Network")
+    UserName = WSHnet.UserName
+    If LCase(UserName) = "hclark" Or LCase(UserName) = "avadlamani" Then
+        UserDomain = WSHnet.UserDomain
+    Else
+        UserDomain = sysInfo.DomainDNSName 'WSHnet.UserDomain
+    End If
+    'Printf "userName: <" & UserName & ">"
+    Set objUser = GetObject("WinNT://" & UserDomain & "/" & UserName & ",user")
+    userfullname = objUser.fullName
+    GetUserFullName = userfullname
+    
+CheckTestAlias:
+    
+    ' 2023-12-08 James Crawford - Adjusted "rs.FindFirst" syntax to account for user full names to have single quotes (chr(39)) in them, causing the rs.FindFirst function to break
+    ' Check if this user name is a member of IT and is using an alias
+    Dim rs As DAO.Recordset
+    Set rs = CurrentDb.OpenRecordset("IT Personnel", dbOpenSnapshot)
+    rs.FindFirst "lcase([Name]) = '" & Replace(LCase(GetUserFullName), Chr(39), Chr(39) & Chr(39)) & "'"
+    
+    Dim useAccessAlias As Boolean
+    Dim accessAliasFullName As String
+    Dim accessAliasWindowsUser As String
+    
+    If Not rs.NoMatch Then
+        
+        useAccessAlias = RSFetch(rs, "UseAccessAlias", castType:=vbBoolean)
+        accessAliasFullName = RSFetch(rs, "AccessAliasFullName")
+        accessAliasWindowsUser = RSFetch(rs, "AccessAliasWindowsUser")
+        
+        If useAccessAlias Then
+            ' Use alias
+            Dim warnMsg As String
+            warnMsg = "'" & GetUserFullName & "' member of IT, alias as '" & accessAliasFullName & "'"
+            Printf warnMsg
+            If warnAlias Then
+                MsgBox warnMsg
+            End If
+            GetUserFullName = accessAliasFullName
+        End If
+        
+    Else
+    
+        useAccessAlias = False
+        accessAliasFullName = ""
+        accessAliasWindowsUser = ""
+        
+    End If
+    
+    rs.Close
+    Set rs = Nothing
+    
+CleanExit:
+    Exit Function
+FetchMethod2:
+    GetUserFullName = GetUserFullName2
+    Resume CheckTestAlias
+    
+End Function
+
+' Meant to be called as a backup to GetUserFullName.
+' GetUserFullName2()  ' Avery Briggs
+Public Function GetUserFullName2()
+
+    Dim MyOBJ As Object
+    On Error Resume Next
+    Set MyOBJ = GetObject("WinMgmts:").instancesOf("Win32_NetworkLoginProfile")
+    If Err.Number <> 0 Then
+      MsgBox "WMI has not been installed, code will be terminated...", vbExclamation, "Windows Management Instrumentation"
+      Exit Function
+    End If
+    Dim un As String
+    un = ""
+    For Each objitem In MyOBJ
+        un = objitem.fullName
+        'Printf vbTab & un
+    Next
+    'MsgBox MyMsg, vbInformation, "User Full Name ....   (Haluk ®)"
+    GetUserFullName2 = un
+    
+End Function
+
+
+' Return the username of the current windows user.
+' ?GetWindowsUser()  ' abriggs
+Public Function GetWindowsUser(Optional ByVal warnAlias As Boolean = False)
+
+    'Get end user's domain name
+    Set WSHnet = CreateObject("WScript.Network")
+    GetWindowsUser = WSHnet.UserName
+    
+    ' Check if this windows user is a member of IT and is using an alias
+    Dim rs As DAO.Recordset
+    Set rs = CurrentDb.OpenRecordset("SELECT [A].*, [B].[WindowsUser] FROM [IT Personnel] AS [A] INNER JOIN [ITR Customers] AS [B] ON CLNG([A].[ITRCustomerID]) = CLNG([B].[CustomerID])", dbOpenSnapshot)
+    rs.FindFirst "lcase([WindowsUser]) = '" & LCase(GetWindowsUser) & "'"
+    
+    Dim useAccessAlias As Boolean
+    Dim accessAliasFullName As String
+    Dim accessAliasWindowsUser As String
+    
+    If Not rs.NoMatch Then
+        
+        useAccessAlias = RSFetch(rs, "UseAccessAlias", castType:=vbBoolean)
+        accessAliasFullName = RSFetch(rs, "AccessAliasFullName")
+        accessAliasWindowsUser = RSFetch(rs, "AccessAliasWindowsUser")
+        
+        If useAccessAlias Then
+            ' Use alias
+            Dim warnMsg As String
+            warnMsg = "'" & GetWindowsUser & "' member of IT, alias as '" & accessAliasWindowsUser & "'"
+            Printf warnMsg
+            If warnAlias Then
+                MsgBox warnMsg
+            End If
+            GetWindowsUser = accessAliasWindowsUser
+        End If
+        
+    Else
+    
+        useAccessAlias = False
+        accessAliasFullName = ""
+        accessAliasWindowsUser = ""
+        
+    End If
+    
+    rs.Close
+    Set rs = Nothing
+    
+End Function
+
+
+' Return the name of the current computer.
+' ?ComputerName()  ' CADSTATION18
+Function ComputerName() As String
+
+    Dim sCompName As String
+    
+    sCompName = Environ$("computername")
+    ComputerName = sCompName
+
+End Function
+
+
+Public Function CheckITAliasing(Optional ByVal allowWarning As Boolean = True) As Boolean
+
+    AliasingWarnEveryNMinutes = 60  ' Re-Warn every 60 minutes
+    
+    Dim WindowsUser As String
+    Dim doWarn As Boolean
+    
+    Set WSHnet = CreateObject("WScript.Network")
+    WindowsUser = WSHnet.UserName
+    'windowsUser = "jwc"
+    doWarn = False
+    
+    If IIf(IsNull(AliasingBeingUsed), False, AliasingBeingUsed) Then
+    
+        ' This user has already been warned once,
+        ' check the time, then potentially warn again.
+        If IsNull(AliasingLastWarning) Then
+            Printf "Last aliasing warning is null"
+            doWarn = True
+        ElseIf DateDiff("n", AliasingLastWarning, Now) > AliasingWarnEveryNMinutes Then
+            Printf "Last aliasing warning was more than 60 minutes ago"
+            doWarn = True
+        End If
+        
+    End If
+    
+    Dim useAccessAlias As Boolean
+    Dim accessAliasWindowsUser As String
+    
+    Dim rs As DAO.Recordset
+    Set rs = CurrentDb.OpenRecordset("SELECT [A].*, [B].[WindowsUser] FROM [IT Personnel] AS [A] INNER JOIN [ITR Customers] AS [B] ON CLNG([A].[ITRCustomerID]) = CLNG([B].[CustomerID])", dbOpenSnapshot)
+    rs.FindFirst "lcase([WindowsUser]) = '" & LCase(WindowsUser) & "'"
+    
+    If Not rs.NoMatch Then
+        useAccessAlias = RSFetch(rs, "UseAccessAlias", castType:=vbBoolean)
+        accessAliasFullName = RSFetch(rs, "AccessAliasFullName")
+                
+        If useAccessAlias Then
+            doWarn = True
+        Else
+            Printf "Aliasing Turned Off for '" & WindowsUser & "'"
+            AliasingBeingUsed = False
+            AliasinghasBeenWarned = False
+            AliasingLastWarning = vbEmpty
+        End If
+    Else
+        AliasingBeingUsed = False
+        AliasinghasBeenWarned = False
+        AliasingLastWarning = vbEmpty
+    End If
+    
+    rs.Close
+    Set rs = Nothing
+    
+    If allowWarning And doWarn Then
+    
+        MsgBox "You are currently being aliased as '" & accessAliasFullName & "'"
+        AliasingBeingUsed = True
+        AliasinghasBeenWarned = True
+        AliasingLastWarning = Now
+        
+    End If
+    
+    CheckITAliasing = AliasingBeingUsed
+    
+End Function

@@ -1,0 +1,694 @@
+Option Compare Database
+
+
+' String utility
+' File utility
+' Random utility
+' Sql utility
+' Shell utility
+' Office utility
+
+
+' Needs to support Parameters, Fields, Collections
+Public Function Printf(ByRef Text As Variant, Optional ByVal doPrint As Boolean = True) As String
+    
+    Dim tName As String
+    tName = TypeName(Text)
+    
+    If IsArray(Text) Then
+        Printf = PrintArr(Text, doPrint:=False)
+    ElseIf tName = "Dictionary" Then
+        Printf = PrintDict(Text, doPrint:=False)
+    ElseIf tName = "Recordset2" Then
+        Printf = PrintRecordset(Text, doPrint:=False)
+    Else
+        If IsNull(Text) Then
+            Printf = "NULL"
+        Else
+            Printf = CStr(Text)
+        End If
+    End If
+    
+    If doPrint Then
+        Debug.Print Printf
+    End If
+
+End Function
+
+
+Public Function PrintRecordset(ByRef rs As Variant, Optional ByVal doPrint As Boolean = True) As String
+    
+    If Not IsRecordset(rs) Then
+        Err.Raise vbObjectError, "PrintRecordset", "Error, param 'rs' must be an instance of a recordset."
+    End If
+    
+    Dim CD As String  ' Column delimeter
+    CD = "|"
+    
+    Dim res As String
+    res = "FUNCTIONALITY FOR 'PrintRecordset' NOT COMPLETED YET - Avery 2023-10-11"
+    
+    PrintRecordset = res
+    
+End Function
+
+
+Public Sub ExecSQL(SQL As String, Optional ByVal doPrint As Boolean = True, Optional ByVal doExec As Boolean = True, Optional ByVal quitOnFail As Boolean = True, Optional ByVal trace As Variant = "")
+
+    On Error GoTo PrintTrace
+    
+    Dim msg As String
+
+    If doPrint Then
+        msg = "SQL <" & SQL & ">"
+    End If
+    If doExec Then
+        DoCmd.RunSQL SQL
+    Else
+        msg = "NO_EXEC__" & msg
+    End If
+    
+    If Not doPrint And Not doExec Then
+        'MsgBox "You must print, execute, or both." & vbNewLine & """" & sql & """"
+    End If
+    
+CleanExit:
+    If doPrint Then
+        Printf msg
+    End If
+    On Error GoTo 0
+    Exit Sub
+    
+PrintTrace:
+    Printf vbNewLine & "Error executing sql."
+    Printf "SQL: <" & SQL & ">"
+    Printf "Err.Number: <" & Err.Number & ">"
+    Printf "Err.Description: <" & Err.Description & ">"
+    If Len(trace) > 0 Then
+        Printf vbNewLine
+        Printf "StackTrace:"
+        Dim t As Variant
+        Dim spl As Variant
+        spl = Split(trace, ",")
+        For Each t In spl
+            Printf vbTab & "-" & t
+        Next t
+    End If
+    
+    If quitOnFail Then
+        Err.Raise Err.Number, "Utility.execSQL", Err.Description
+    End If
+    
+    Resume CleanExit
+    
+End Sub
+
+
+Public Sub ExecShell(shellCmd As String, Optional ByVal doPrint As Boolean = True, Optional ByVal doExec As Boolean = True)
+    
+    If doPrint Then
+        Call Printf("execShell <" & shellCmd & ">")
+    End If
+    If doExec Then
+        shell shellCmd
+    End If
+    
+    If Not doPrint And Not doExec Then
+        MsgBox "You must print, execute, or both." & vbNewLine & """" & shellCmd & """"
+    End If
+    
+End Sub
+
+
+Public Sub OpenWordDoc(filePath As String)
+    ' https://stackoverflow.com/questions/17973041/opening-word-document-using-vba-in-access-2013
+    Call Printf("Trying to open word doc: '" & filePath & "'")
+    If IsNull(filePath) Or Len(CStr(filePath)) = 0 Then
+        MsgBox "Error, please select a valid word document to open."
+        Exit Sub
+    End If
+    'Dim wrdApp As Word.Application
+    'Dim wrdDoc As Word.Document
+
+
+    'Set wrdApp = CreateObject("Word.Application")
+    'wrdApp.Visible = True
+
+    'Set wrdDoc = wrdApp.Documents.Open(filePath)
+    Dim shellCmd As String
+    shellCmd = "winword """ & filePath & """"
+    Call ExecShell(shellCmd)
+End Sub
+
+
+Function LogError(ByVal lngErrNumber As Long, ByVal strErrDescription As String, _
+    strCallingProc As String, Optional vParameters, Optional bShowUser As Boolean = True) As Boolean
+'On Error GoTo Err_LogError
+    ' Purpose: Generic error handler.
+    ' Logs errors to table "tLogErrors".
+    ' Arguments: lngErrNumber - value of Err.Number
+    ' strErrDescription - value of Err.Description
+    ' strCallingProc - name of sub|function that generated the error.
+    ' vParameters - optional string: List of parameters to record.
+    ' bShowUser - optional boolean: If False, suppresses display.
+    ' Author: Allen Browne, allen@allenbrowne.com
+
+    Dim strMsg As String      ' String for display in MsgBox
+    Dim rst As DAO.Recordset  ' The tLogErrors table
+
+    Select Case lngErrNumber
+    Case 0
+        Debug.Print strCallingProc & " called error 0."
+    Case 2501                ' Cancelled
+        'Do nothing.
+    Case 3314, 2101, 2115    ' Can't save.
+        If bShowUser Then
+            strMsg = "Record cannot be saved at this time." & vbCrLf & _
+                "Complete the entry, or press <Esc> to undo."
+            MsgBox strMsg, vbExclamation, strCallingProc
+        End If
+    Case Else
+        If bShowUser Then
+            strMsg = "Error " & lngErrNumber & ": " & strErrDescription
+            MsgBox strMsg, vbExclamation, strCallingProc
+        End If
+        Set rst = CurrentDb.OpenRecordset("tLogError", , dbAppendOnly)
+        rst.AddNew
+            rst![ErrNumber] = lngErrNumber
+            rst![ErrDescription] = Left$(strErrDescription, 255)
+            rst![ErrDate] = Now()
+            rst![CallingProc] = strCallingProc
+            rst![UserName] = CurrentUser()
+            rst![ShowUser] = bShowUser
+            If Not IsMissing(vParameters) Then
+                rst![Parameters] = Left(vParameters, 255)
+            End If
+        rst.Update
+        rst.Close
+        LogError = True
+    End Select
+
+Exit_LogError:
+    Set rst = Nothing
+    Exit Function
+
+Err_LogError:
+    strMsg = "An unexpected situation arose in your program." & vbCrLf & _
+        "Please write down the following details:" & vbCrLf & vbCrLf & _
+        "Calling Proc: " & strCallingProc & vbCrLf & _
+        "Error Number " & lngErrNumber & vbCrLf & strErrDescription & vbCrLf & vbCrLf & _
+        "Unable to record because Error " & Err.Number & vbCrLf & Err.Description
+    MsgBox strMsg, vbCritical, "LogError()"
+    Resume Exit_LogError
+End Function
+
+
+Public Function NullPad(word As String) As String
+
+    If IsNull(word) Then
+        NullPad = "NULL"
+        Exit Function
+    End If
+    
+    If word = "NULL" Then
+        NullPad = "NULL"
+    Else
+        NullPad = "'" & word & "'"
+    End If
+    
+End Function
+
+
+Public Function Divmod(ByVal X As Integer, ByVal y As Integer) As Integer()
+
+    If y = 0 Then
+        Err.Raise "y cannot be 0"
+    End If
+
+    Dim res(0 To 1) As Integer
+    res(0) = CInt(X / y)
+    res(1) = X Mod y
+    If res(1) >= (0.5 * y) Then
+        res(0) = res(0) - 1
+    End If
+    Divmod = res
+
+End Function
+
+' 2023-10-11 - Avery - Modified for use with 'looser' string params.
+' Now supports ?isinstance(Range(3), "array")  -> True
+' Now supports ?isinstance(dictionary(1,2,3,4,5,6,7,8), "dictionary")  -> True
+Public Function IsInstance(ByVal var As Variant, ByVal vbType As Variant) As Boolean
+
+    'Printf "ISINTANCE vt <" & VarType(var) & ">, tn <" & TypeName(var) & "> vbType:<" & Printf(vbType, False) & ">"
+
+    If IsArray(vbType) Then
+        Dim wArray As Variant
+        Dim el As Variant
+        wArray = Array()
+        For Each el In vbType
+            wArray = Append(wArray, IsInstance(var, el))
+        Next el
+        'Call printArr(wArray, "BEFORE ANY")
+        IsInstance = Any_(wArray)
+    Else
+    
+        ' value
+        Dim ia As Boolean
+        Dim ir As Boolean
+        Dim vName As String
+        Dim vID As String
+        ' target
+        Dim tName As String
+        Dim tID As String
+        
+        ia = IsArray(var)
+        ir = IsRecordset(var)
+        vName = TypeName(var)
+        vID = VarType(var)
+        tName = TypeName(vbType)
+        tID = VarType(vbType)
+    
+        If vbType = vbArray Then
+            IsInstance = IsArray(var)
+        ElseIf tID = vbLong Or tID = vbInteger Then
+            IsInstance = IIf(vID = CLng(vbType), True, False)
+        Else
+            'IsInstance = IIf(TypeName(var) = vbType, True, False)
+            IsInstance = vName = vbType
+            
+            If Not IsInstance Then
+                If tID = vbString Then
+                    tName = LCase(vbType)
+                    If tName = "array" And ia Then
+                        IsInstance = True
+                    ElseIf LCase(Left(tName, 9)) = "recordset" And ir Then
+                        IsInstance = True
+                    End If
+                End If
+            End If
+        End If
+        'Debug.Print ia
+        'Debug.Print ir
+        'Debug.Print vName
+        'Debug.Print vID
+        'Debug.Print tName
+        'Debug.Print tID
+    End If
+
+End Function
+
+
+Public Function Ljust(ByVal word As String, ByVal Width As Integer, Optional ByVal fillChar As String = " ")
+
+    If Width < 0 Then
+        Err.Raise vbObjectError + 513, , "Width parameter must be greater then 0."
+    End If
+    If Len(fillChar) <> 1 Then
+        Err.Raise vbObjectError + 513, , "Length of parameter 'fillChar' must equal to 1."
+    End If
+
+    Dim result As String
+    Dim i As Integer
+    Dim C As Integer
+    For i = 0 To Width - 1
+        If i > ((Width - 1) - Len(word)) Then
+            C = (Len(word) + 1) - (i - (Width - Len(word))) - 1
+            'printf "i: <" & i & ">, c: <" & c & ">"
+            'printf vbTab & "width - Len(word): <" & (width - Len(word)) & ">"
+            result = Mid(word, C, 1) + result
+        Else
+            result = fillChar + result
+        End If
+    Next i
+    
+    'Ljust = "<" & result & ">"
+    Ljust = result
+
+End Function
+
+
+Public Function Rjust(ByVal word As String, ByVal Width As Integer, Optional ByVal fillChar As String = " ")
+
+    If Width < 0 Then
+        Err.Raise vbObjectError + 513, , "Width parameter must be greater then 0."
+    End If
+    If Len(fillChar) <> 1 Then
+        Err.Raise vbObjectError + 513, , "Length of parameter 'fillChar' must equal to 1."
+    End If
+
+    Dim result As String
+    Dim i As Integer
+    Dim C As Integer
+    For i = 0 To Width - 1
+        If i > ((Width - 1) - Len(word)) Then
+            C = (i - (Width - Len(word))) + 1
+            'printf "i: <" & i & ">, c: <" & c & ">"
+            'printf vbTab & "width - Len(word): <" & (width - Len(word)) & ">"
+            result = result + Mid(word, C, 1)
+        Else
+            result = result + fillChar
+        End If
+    Next i
+    
+    'Ljust = "<" & result & ">"
+    Rjust = result
+
+End Function
+
+
+Function IsFileOpen(fileName As String) As Integer
+    
+    Dim fileNum As Integer
+    Dim errNum As Integer
+    
+    'Allow all errors to happen
+    On Error Resume Next
+    fileNum = FreeFile()
+    
+    'Try to open and close the file for input.
+    'Errors mean the file is already open
+    Open fileName For Input Lock Read As #fileNum
+    Close fileNum
+    
+    'Get the error number
+    errNum = Err
+    
+    'Do not allow errors to happen
+    On Error GoTo 0
+    
+    'Check the Error Number
+    Select Case errNum
+    
+        'errNum = 0 means no errors, therefore file closed
+        Case 0
+        IsFileOpen = False
+     
+        'errNum = 70 means the file is already open
+        Case 70
+        IsFileOpen = True
+    
+        'Something else went wrong
+        Case Else
+        IsFileOpen = errNum
+    
+    End Select
+
+End Function
+
+' https://www.devhut.net/ms-access-vba-close-all-open-forms/
+'---------------------------------------------------------------------------------------
+' Procedure : CloseAllOpenFrms
+' Author    : Daniel Pineault, CARDA Consultants Inc.
+' Website   : http://www.cardaconsultants.com
+' Purpose   : Close all the currently open forms in the database
+' Copyright : The following may be altered and reused as you wish so long as the
+'             copyright notice is left unchanged (including Author, Website and
+'             Copyright).  It may not be sold/resold or reposted on other sites (links
+'             back to this site are allowed).
+'
+' Usage:
+' ~~~~~~
+' Call CloseAllOpenFrms
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)        Description
+' **************************************************************************************
+' 1         2015-02-17                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Sub CloseAllOpenFrms()
+    On Error GoTo Error_Handler
+    Dim DbF                   As Access.Form
+    Dim DbO                   As Object
+ 
+    Set DbO = Application.Forms    'Collection of all the open forms
+ 
+    For Each DbF In DbO    'Loop all the forms
+            DoCmd.Close acForm, DbF.Name, acSaveNo
+    Next DbF
+ 
+Error_Handler_Exit:
+    On Error Resume Next
+    Set DbF = Nothing
+    Set DbO = Nothing
+    Exit Sub
+ 
+Error_Handler:
+    MsgBox "The following error has occurred." & vbCrLf & vbCrLf & _
+           "Error Number: " & Err.Number & vbCrLf & _
+           "Error Source: CloseAllOpenFrms" & vbCrLf & _
+           "Error Description: " & Err.Description, _
+           vbCritical, "An Error has Occurred!"
+    Resume Error_Handler_Exit
+End Sub
+
+
+Public Function Clamp(ByVal value As Double, ByVal low As Double, ByVal high As Double) As Double
+
+    Clamp = IIf(value <= low, low, IIf(value >= high, high, value))
+
+End Function
+
+
+Public Function Ceiling(ByVal value As Double) As Integer
+
+    Ceiling = -Int(-value)
+    
+End Function
+
+
+Public Function Between(value As Variant, low As Variant, high As Variant) As Boolean
+
+    Between = IIf(value >= low And value <= high, True, False)
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Size
+' Author    : Avery Briggs
+' Purpose   : Return the length, ubound+1, or count of a string, array, or dictionary
+'
+' Usage:
+' ~~~~~~
+' dim a as variant
+' a = array(1,8,6,4)
+' dim s as string
+' s = Printarr(a)  ' => "[1, 8, 6, 4]"
+' Size(a)  ' 4
+' Size(s)  ' 12
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-08                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Size(ByVal value As Variant) As Long
+
+    If IsArray(value) Then
+        Size = IIf(IsArrayEmpty(value), 0, UBound(value) + 1)
+    ElseIf IsInstance(value, vbString) Then
+        Size = Len(value)
+    ElseIf IsInstance(value, "Dictionary") Then
+        Size = value.Count
+    Else
+        Err.Raise vbObjectError, "Size", "Error, cannot determine size of this value: <" & value & ">, type: <" & TypeName(value) & ">"
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Flatten
+' Author    : Avery Briggs
+' Purpose   : Given a one or multi-dimensional array, return a single demension
+'             array of all elements, unpacked and inserted in a DFS manner.
+'
+' Usage:
+' ~~~~~~
+' dim a as variant
+' a = array(1,8,6,4)
+' printf flatten(a)  ' [1, 8, 6, 4]
+' dim b as variant
+' b = array(1,8,array(6,13),array(-1,4,array(0,array(11))),45)  ' [1, 8, [6, 13], [-1, 4, [0, [11]]], 45]
+' printf flatten(b)  ' [1, 8, 6, 13, -1, 4, 0, 11, 45]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-08                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Flatten(ByVal arr As Variant) As Variant
+
+    If Not IsArray(arr) Then
+        Flatten = arr
+    Else
+        Dim res As Variant
+        Dim k As Variant
+        res = Array()
+        For Each k In arr
+            Call Append(res, Flatten(k))
+        Next k
+        Flatten = res
+    End If
+
+End Function
+
+
+' Determine if a form has a parent or not.
+Public Function HasParent(ByVal frm As Form) As Boolean
+
+    On Error GoTo NoParent
+    Dim parent As Form
+    Set parent = frm.parent
+    HasParent = True
+
+CleanExit:
+    Exit Function
+    
+NoParent:
+    HasParent = False
+    Resume CleanExit
+
+End Function
+
+
+Public Sub ExportModules(Optional ByVal printOnly As Boolean = True, Optional ByVal pathIn As String = "")
+    
+    'EXPORTING
+    
+    Dim fPath As String
+    Dim sPath As String
+    Dim Today As Date
+    Today = Now
+    If pathIn = "" Then
+        fPath = "C:\Access\Access Utility Exports\" & Format(Today, "yyyy-mm-dd") & "\"
+    Else
+        fPath = RemoveSuffix(pathIn, "\") & "\"
+    End If
+    If Len(Dir(fPath, vbDirectory)) = 0 Then
+        MkDir fPath
+    End If
+    Dim module As Variant
+    Dim modules As Variant
+    modules = Array( _
+        "Array Sort", "Array Utility", "Colour Utility", _
+        "Date Utility", "Dictionary Utility", "Random Utility", _
+        "Utility", "Helper Functions", "Recordset Utility", "String Utility", _
+        "Windows Utility", "Settings Utility" _
+    )
+    Printf "PrintOnly: <" & printOnly & ">"
+    For Each module In modules
+        sPath = fPath & "MODULE__" & module & ".txt"
+        'Printf "Saving file: '" & module & "' at '" & sPath & "'"
+        Printf "Application.SaveAsText acModule, """ & module & """, """ & sPath & """"
+        If Not printOnly Then
+            Application.SaveAsText acModule, module, sPath
+        End If
+    Next module
+
+End Sub
+
+
+Public Sub LoadModules(Optional ByVal printOnly As Boolean = True)
+
+    'LOADING
+    
+    Dim fPath As String
+    Dim sPath As String
+    Dim Today As Date
+    Today = Now
+    fPath = "C:\Access\Access Utility Exports\" & Format(Today, "yyyy-mm-dd") & "\"
+    Dim module As Variant
+    Dim modules As Variant
+    modules = Array( _
+        "Array Sort", "Array Utility", "Colour Utility", _
+        "Date Utility", "Dictionary Utility", "Random Utility", _
+        "Utility", "Helper Functions", "Recordset Utility", "String Utility", _
+        "Windows Utility", "Settings Utility" _
+    )
+    Printf "PrintOnly: <" & printOnly & ">"
+    For Each module In modules
+        sPath = fPath & "MODULE__" & module & ".txt"
+        'Printf "Loading file: '" & module & "' from '" & sPath & "'"
+        Printf "Application.LoadFromText acModule, """ & module & """, """ & sPath & """"
+        If Not printOnly Then
+            Application.LoadFromText acModule, module, sPath
+        End If
+    Next module
+    
+End Sub
+
+
+Public Function CheckBirthday(ByVal Name As String, Optional ByVal birthdayWindow As Integer = -7, Optional ByVal beforeAndAfter As Boolean = True, Optional ByVal timeIn As Date = 0) As Variant
+
+    Dim rs As DAO.Recordset
+    Set rs = CurrentDb.OpenRecordset("ITR Customers", dbOpenSnapshot)
+    
+    Dim ys As Variant
+    Dim ms As Variant
+    Dim ds As Variant
+    
+    Dim y As Integer
+    Dim m As Integer
+    Dim d As Integer
+    
+    rs.FindFirst "Name = '" & Name & "'"
+    
+    Printf "A: " & rs("Name")
+    Printf "B: " & rs("BirthYear")
+    Printf "C: " & rs("BirthMonth")
+    Printf "D: " & rs("BirthDay")
+    
+    ys = RSFetch(rs, "BirthYear", castType:=vbInteger)
+    ms = RSFetch(rs, "BirthMonth", castType:=vbInteger)
+    ds = RSFetch(rs, "BirthDay", castType:=vbInteger)
+    
+    Dim t As Date
+    Dim D1 As Date
+    Dim D2 As Date
+    Dim D3 As Date
+    
+    If timeIn = 0 Then
+        t = Now()
+    Else
+        t = timeIn
+    End If
+    
+    If IsInstance(ys, vbString) Or IsInstance(ms, vbString) Or IsInstance(ds, vbString) Then
+        ' Birthday cannot be determined
+        Printf "BIRTHDAY COULD NOT BE DETERMINED Y=[" & ys & "], M=[" & ms & "], D=[" & ds & "]"
+        D1 = DateAdd("yyyy", 1, t)
+        D2 = DateAdd("yyyy", 2, t)
+        D3 = DateAdd("yyyy", 3, t)
+    Else
+        y = CInt(ys)
+        m = CInt(ms)
+        d = CInt(ds)
+        
+        'Printf "y: {" & y & "} " & "m: {" & m & "} " & "d: {" & d & "}, M(t): {" & Month(t) & "}, Y(t): {" & Year(t) & "}"
+        
+        D3 = DateSerial(Year(t), m, d)
+        
+        If birthdayWindow >= 0 Then
+            D1 = IIf(Not beforeAndAfter, t, DateAdd("d", -birthdayWindow, t))
+            D2 = DateAdd("d", birthdayWindow, t)
+        Else
+            D1 = DateAdd("d", birthdayWindow, t)
+            D2 = IIf(Not beforeAndAfter, t, DateAdd("d", -birthdayWindow, t))
+        End If
+    End If
+    
+    rs.Close
+    Set rs = Nothing
+    Printf "Pre Start of Day Setting => d1: " & D1 & ", d3: " & D3 & ", d2: " & D2
+    D1 = DateSerial(Year(D1), Month(D1), Day(D1))
+    D2 = DateSerial(Year(D2), Month(D2), Day(D2))
+    D3 = DateSerial(Year(D3), Month(D3), Day(D3))
+    Printf "Post Start of Day Setting => d1: " & D1 & ", d3: " & D3 & ", d2: " & D2
+    
+    'CheckBirthday = (m = Month(t)) And (d = Day(t))
+    'CheckBirthday = (d1 <= d3) And (d3 <= d2)
+    CheckBirthday = Array(D1, D3, D2)
+
+End Function

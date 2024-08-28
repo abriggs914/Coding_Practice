@@ -1,0 +1,2293 @@
+Option Compare Database
+
+
+' General Array Utility Functions
+' Version....................1.05
+' Date.................2023-08-28
+' Author(s)..........Avery Briggs
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   All                     -   Returns True if all elements are condisdered true values.
+'   Any_                    -   Returns True if any element is condisdered a true value. Uses short-circuiting.
+'   Append                  -   Adds an element to an array in place, also returns the array.
+'   ArrayEqual              -   Determine if two arrays have matching elements in value, type, and order.
+'   Average                 -   Determine the average of numerical arrays.
+'   Copy                    -   Return a copy of an array.
+'   Count                   -   Count how many occurences of an element occur in an array, string or dictionary object.
+'   Enumerate               -   Return a 2D array of list elements with their indexes. Think Python's enumerate function.
+'   IForI                   -   Return a quick array of n elements of value v.
+'   Insert                  -   Insert an element into an array using an index.
+'   Index                   -   Return the index of element, or a list of elements in an array.
+'   IsArrayEmpty            -   Determine if array is empty, uses error block and ubound.
+'   IsIn                    -   Determine whether an element exists in an array. Optionally return it's index.
+'   Map                     -   Return an array after calling a function on each element using eval.
+'   Max                     -   Determine the maximum from an array or a list of arguments.
+'   Min                     -   Determine the minimum from an array or a list of arguments.
+'   Mode                    -   Determine the most common elements in an array.
+'   PrintArr                -   Print and or obtain a string representation for an array.
+'   Range                   -   Return an array of integers in sequence using bounds and a step.
+'   Remove                  -   Removes an element from an in array in place, also returns the array. Optionally fails if target not found.
+'   Reverse                 -   Return a copy of an array in reverse.
+'   Slice                   -   Return a slice of an array using indices and a step. Modeled after python's slicing approach.
+'   Sorted                  -   Return a sorted array or string. Modeled after python's sorted function.
+'   Str2Array               -   Convert a string to an array.
+'   Sum                     -   Determine the sum from an array or a list of arguments.
+'   Zip                     -   Take 2 arrays and return a zipped list of elements at the same indexes.
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+'---------------------------------------------------------------------------------------
+' Function : PrintArr
+' Author    : Avery Briggs
+' Purpose   : Take an array, print and return a string representation of it.
+'             Optionally print the array one element at a time, with its type
+'
+' Usage:
+' ~~~~~~
+' dim s as string
+' s = Printarr(array(1,8,6,4))  ' => [1, 8, 6, 4]
+' printf range2(2, 12, 2)  ' [2, 4, 6, 8, 10]
+' printarr range2(2, 12, 2), "Range"  ' => printArr: 'Range', [2, 4, 6, 8, 10]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PrintArr( _
+    ByVal srcArray As Variant, _
+    Optional ByVal Name As String = "", _
+    Optional ByVal inLine As Boolean = True, _
+    Optional ByVal arrayOnly As Boolean = False, _
+    Optional ByVal doPrint As Boolean = True, _
+    Optional ByVal incLabel As Boolean = True, _
+    Optional ByVal incName As Boolean = True, _
+    Optional ByVal incTypes As Boolean = True _
+) As String
+
+    'Dim arr() As String
+    'arr = Split(IIf(IsNull(Me.Text4), "", Me.Text4.Value), ";")
+    
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "printarr", "Error, cannot call PrintArr on a non array object."
+        Exit Function
+    End If
+    
+    Dim msg As String
+    Dim msgA As String
+    Dim wVals As Variant
+    Dim wTypes As Variant
+        
+    msg = IIf(incLabel, "printArr: ", "")
+    msg = msg & IIf(Name <> "" And incName, "'" & Name & "', ", "")
+    
+    'msgA = "[" & Join(srcArray, ", ") & "]"
+    
+    If IsArrayEmpty(srcArray) Then
+        'msg = msg & " EMPTY ARRAY"
+        msgA = "[]"
+        msg = msg & msgA
+    Else
+        
+        Dim typ As String
+        Dim val_ As Variant
+        Dim S As Variant
+        Dim lb As Long
+        Dim RB As Long
+        Dim i As Long
+        
+        If arrayOnly Then
+            msg = ""
+        End If
+        
+        lb = LBound(srcArray)
+        ub = UBound(srcArray)
+        wVals = Array()
+        wTypes = Array()
+        
+        msgA = "["
+        For i = lb To ub
+            If IsArray(srcArray(i)) Then
+                nName = IIf(Name <> "", Name & "_" & i, "")
+                Call Append(wTypes, "Array")
+                'Call Append(wVals, "Arr<" & PrintArr(srcArray(i), name:=nName, inLine:=inLine, arrayOnly:=arrayOnly, incLabel:=incLabel, incName:=incName, doPrint:=False) & ">")
+                Call Append(wVals, PrintArr(srcArray(i), arrayOnly:=True, doPrint:=False))
+                'msgA = msgA & PrintArr(srcArray(i), doPrint:=False) & ", "
+            Else
+                val_ = srcArray(i)
+                typ = TypeName(val_)
+                S = IIf(IsInstance(val_, vbString), "'", "")
+                Call Append(wVals, S & val_ & S)
+                Call Append(wTypes, typ)
+                'msgA = msgA & srcArray(i) & ", "
+            End If
+            msgA = msgA & wVals(i) & ", "
+        Next i
+        msgA = Left(msgA, Len(msgA) - 2) & "]"
+    
+        If inLine Then
+            msg = msg & msgA
+        Else
+            msg = Left(msg, Len(msg) - 1) & " {" & vbNewLine
+            For i = lb To ub
+                msg = msg & vbTab & i & vbTab & " = " & vbTab & wVals(i)
+                msg = msg & IIf(incTypes, vbTab & ", Type=(" & wTypes(i) & ")", "")
+                msg = msg & vbNewLine
+            Next i
+            msg = msg & "}"
+        End If
+    End If
+    
+    If doPrint Then
+        Printf msg
+    End If
+    If Not doPrint And incName And Not arrayOnly And Name <> "" Then
+        msgA = "'" & Name & "', " & msgA
+        'msgA = name & msgA
+    End If
+    PrintArr = msgA
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsArrayEmpty
+' Author    : Avery Briggs
+' Purpose   : Determine if an array is empty.
+'
+' Usage:
+' ~~~~~~
+'
+' dim a as variant
+' a = array(3, 2, 1, False)
+' printf IsArrayEmpty(a) ' => False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Function IsArrayEmpty(ByVal srcArray As Variant) As Boolean
+    ' https://stackoverflow.com/questions/4097021/handle-error-9-when-there-is-an-empty-array
+    On Error GoTo IS_EMPTY
+    If (UBound(srcArray) >= 0) Then Exit Function
+IS_EMPTY:
+        IsArrayEmpty = True
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Reverse
+' Author    : Avery Briggs
+' Purpose   : Returns a reversed array or string.
+'
+' Usage:
+' ~~~~~~
+' printf reverse(str2array("avery"))  ' => ['y', 'r', 'e', 'v', 'a']
+' printf reverse("avery")  ' => "yreva"
+' dim a as variant
+' a = array(3, 2, 1, False)
+' b = reverse(a)
+' a(0) = b(0)  ' => False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-06-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Reverse(ByVal srcArray As Variant) As Variant
+    
+    Dim handled As Boolean
+    Dim isStr As Boolean
+    handled = False
+    isStr = False
+    If Not IsArray(srcArray) Then
+        If IsInstance(srcArray, vbString) Then
+            srcArray = Str2Array(srcArray)
+            handled = True
+            isStr = True
+        End If
+    Else
+        handled = True
+    End If
+    
+    If Not handled Then
+        Err.Raise vbObjectError, "reverse", "Error, cannot reverse a non array or string type object."
+        Exit Function
+    End If
+    
+    Reverse = Array()
+    If IsArrayEmpty(srcArray) Then
+        'Printf "EARLY EXIT"
+        Exit Function
+    End If
+
+    Dim lb As Long
+    Dim ub As Long
+    Dim i As Long
+    
+    lb = LBound(srcArray)
+    ub = UBound(srcArray)
+    Dim res() As Variant
+    ReDim res(ub)
+    
+    For i = ub To lb Step -1
+        'printf "i <" & i & ">, lb <" & lb & ">, ub <" & ub & ">, ub-1 <" & (ub - i) & ">"
+        res(ub - i) = srcArray(i)
+    Next i
+    
+    'Call printArr(res, "res")
+    If isStr Then
+        Reverse = Join(res, "")
+    Else
+        Reverse = res
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Str2Array
+' Author    : Avery Briggs
+' Purpose   : Take a string and return each letter as its own array element.
+'             Think upacking a string in python. # a, b, c = "abc"
+'
+' Usage:
+' ~~~~~~
+' dim s as string
+' dim x as variant
+' s = "avery"
+' x = Str2Array(s)  ' => Array("a", "v", "e", "r", "y")
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Str2Array(ByVal srcString As String) As Variant
+
+    Dim wArray As Variant
+    Dim i As Long
+    Dim C As Long
+    Dim V As String
+    
+    wArray = Array()
+    C = Len(srcString)
+    
+    For i = 0 To C - 1
+        'printf "i <" & i & ">, c <" & c & ">"
+        wArray = Append(wArray, Mid(srcString, i + 1, 1))
+    Next i
+    
+    Str2Array = wArray
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : All
+' Author    : Avery Briggs
+' Purpose   : Given an array, return whether ALL values have a "truthy" value or not.
+'             Only looks at the level give, i.e if Array() is an element of srcArray then it will be intrepreted as False,
+'             depending on emptyArrayAsFalse.
+'             Modeled after python's all method
+'             Defaults:
+'               False   0, "", and Array() as False,
+'               True    some_on_zero_number, some_non_empty_string, some_date, any_non_empty_array
+'
+' Usage:
+' ~~~~~~
+' Dim q As Variant
+' Dim r As Variant
+' Dim t As Variant
+' q = Array(True, True, True)
+' r = Array(True, True, True, False)
+' t = Array(True, True, True, Array())
+' Call Append(q, r)
+' printf "ALL q => T <" & All(q) & ">"  ' True
+' printf "ALL r => F <" & All(r) & ">"  ' True
+' printf "ALL q => F <" & All(q) & ">"  ' False
+' printf "ALL t => F <" & All(t) & ">"  ' False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function All( _
+    ByVal srcArray As Variant, _
+    Optional ByVal emptyStringAsFalse As Boolean = True, _
+    Optional ByVal nonZeroAsTrue As Boolean = True, _
+    Optional ByVal zeroAsFalse As Boolean = True, _
+    Optional ByVal emptyArrayAsFalse As Boolean = True, _
+    Optional ByVal nonEmptyArrayAsTrue As Boolean = True _
+) As Boolean
+
+    Dim wAll As Boolean
+    wAll = True
+    If Not IsArray(srcArray) Then
+        wAll = False
+    Else
+        If IsArrayEmpty(srcArray) Then
+            wAll = False
+        Else
+            Dim el As Variant
+            For Each el In srcArray
+                If IsInstance(el, vbBoolean) Then
+                   wAll = wAll And el
+                Else
+                    If IsArray(el) And IsArrayEmpty(el) And emptyArrayAsFalse Then
+                        ' Array() should be False
+                        wAll = False
+                    ElseIf IsArray(el) And Not IsArrayEmpty(el) And nonEmptyArrayAsTrue Then
+                        ' Array(...) should be True
+                        wAll = wAll And True
+                    ElseIf IsInstance(el, vbString) And el = "" And emptyStringAsFalse Then
+                        ' Empty strings should be false
+                        wAll = False
+                    ElseIf IsInstance(el, vbInteger) And el = 0 And zeroAsFalse Then
+                        ' 0 should be false
+                        wAll = False
+                    ElseIf IsInstance(el, Array(vbInteger, vbLong, vbDouble)) And el <> 0 And nonZeroAsTrue Then
+                        ' non-zero numbers should be True
+                        wAll = wAll And True
+                    ElseIf IsInstance(el, vbDate) And dateAsTrue Then
+                        ' Any Date should be True
+                        wAll = wAll And True
+                    Else
+                        Err.Raise vbObjectError, "all", "Error, cannot determine boolean value for el <" & el & ">"
+                    End If
+                End If
+                
+                If Not wAll Then
+                    Exit For
+                End If
+            Next el
+        End If
+    End If
+    All = wAll
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Any_
+' Author    : Avery Briggs
+' Purpose   : Given an array, return whether ANY value has a "truthy" value or not.
+'             Only looks at the level give, i.e if Array() is an element of srcArray then it will be intrepreted as False,
+'             depending on emptyArrayAsFalse.
+'             Modeled after python's any method
+'             Defaults:
+'               False   0, "", and Array() as False,
+'               True    some_on_zero_number, some_non_empty_string, some_date, any_non_empty_array
+'
+' Usage:
+' ~~~~~~
+' Dim q As Variant
+' Dim r As Variant
+' Dim t As Variant
+' Dim p As Variant
+' Dim w As Variant
+' q = Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7)
+' r = map("cstr", Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7))
+' t = append(append(q, -1), "")
+' p = Array(-5, -6, -7)
+' w = append(q, p)
+' printf "ANY q => T <" & Any_(q) & ">"
+' printf "ANY p => T <" & Any_(p) & ">"
+' printf "ANY t => T <" & Any_(t) & ">"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Any_( _
+    ByVal srcArray As Variant, _
+    Optional ByVal emptyStringAsFalse As Boolean = True, _
+    Optional ByVal nonZeroAsTrue As Boolean = True, _
+    Optional ByVal zeroAsFalse As Boolean = True, _
+    Optional ByVal emptyArrayAsFalse As Boolean = True, _
+    Optional ByVal nonEmptyArrayAsTrue As Boolean = True _
+) As Boolean
+
+    Dim wAny As Boolean
+    wAny = False
+    If IsArray(srcArray) Then
+        wAny = False
+        If Not IsArrayEmpty(srcArray) Then
+            Dim el As Variant
+            For Each el In srcArray
+                If IsInstance(el, vbBoolean) Then
+                   wAny = wAny Or el
+                Else
+                    If IsArray(el) And IsArrayEmpty(el) And emptyArrayAsFalse Then
+                        ' Array() should be False
+                        wAny = wAny Or False
+                    ElseIf IsArray(el) And Not IsArrayEmpty(el) And nonEmptyArrayAsTrue Then
+                        ' Array(...) should be True
+                        wAny = True
+                    ElseIf IsInstance(el, vbString) And el = "" And emptyStringAsFalse Then
+                        ' Empty strings should be false
+                        wAny = wAny Or False
+                    ElseIf IsInstance(el, vbInteger) And el = 0 And zeroAsFalse Then
+                        ' 0 should be false
+                        wAny = wAny Or False
+                    ElseIf IsInstance(el, Array(vbInteger, vbLong, vbDouble)) And el <> 0 And nonZeroAsTrue Then
+                        ' non-zero numbers should be True
+                        wAny = True
+                    ElseIf IsInstance(el, vbDate) And dateAsTrue Then
+                        ' Any Date should be True
+                        wAny = True
+                    Else
+                        Err.Raise vbObjectError, "all", "Error, cannot determine boolean value for el <" & el & ">, vt <" & VarType(el) & ">"
+                    End If
+                End If
+                
+                If wAny Then
+                    Exit For
+                End If
+            Next el
+        End If
+    End If
+    Any_ = wAny
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Slice
+' Author    : Avery Briggs
+' Purpose   : Given an array, return a smaller slice using indices.
+'             Starting at start_, stepping by step_ to end_, boundaries inclusive.
+'             Modeled after python's list indexing syntax.  # list(range())[2:8:2]
+'
+' Usage:
+' ~~~~~~
+' Dim q As Variant
+' Dim r As Variant
+' Dim t As Variant
+' Dim p As Variant
+' Dim w As Variant
+' q = Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7)
+' r = map("cstr", Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7))
+' t = append(q, -1)
+' p = Array(-5, -6, -7)
+' w = append(q, p)
+' 'Call printArr(Slice(q, 4, 0, -1), name:="Slice Test1")  ' => [9, 2, 7, 6]
+' Call printArr(Slice(q, 0, 4, 2), name:="Slice Test2", inLine:=False)  ' => [1, 7, 9]
+' Call printArr(Slice(q, -1, 14, 3), name:="Slice Test3")  ' => []
+' Call printArr(Slice(q, 1, 14, 3), name:="Slice Test4")  ' => [6, 9, 8, 1, 7]
+' Call printArr(Slice(q), name:="Slice Test5")  ' => [1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7, -5, -6, -7]
+' Call printArr(Slice(q), name:="Slice Test6")  ' => [1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7, -5, -6, -7]
+' Call printArr(Slice(q, start_:=5), name:="Slice Test6")  ' => [1, 6, 7, 2, 9]
+' Call printArr(Slice(q, end_:=5), name:="Slice Test7")  ' => [4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7, -5, -6]
+' Call printArr(Slice(q, step_:=5), name:="Slice Test8")  ' => [1, 4, 1, 4, 1, 7, 2, -5]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+' 2         2023-07-11                  Fixed to include Range as the base for indices to count.
+'---------------------------------------------------------------------------------------
+Public Function Slice( _
+    ByRef srcArray As Variant, _
+    Optional ByVal start_ As Variant, _
+    Optional ByVal end_ As Variant, _
+    Optional ByVal step_ As Variant _
+) As Variant
+
+    'printf vbNewLine & "SLICING s<" & start_ & ">, e<" & end_ & "> s<" & step_ & ">"
+
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "slice", "Error, cannot perform slice operation on a non array object."
+    End If
+    
+    Dim startIdx As Long
+    Dim endIdx As Long
+    Dim stepValue As Long
+    Dim resultIdx As Long
+    Dim startWasNull As Boolean
+    Dim endWasNull As Boolean
+    Dim stepWasNull As Boolean
+    Dim lb As Long
+    Dim ub As Long
+    Dim i As Variant
+    Dim wArray As Variant
+    Dim szA As Long
+    
+    stepWasNull = IsNull(step_) Or IsMissing(step_)
+
+    ' Validate stepValue
+    If stepWasNull Then
+        step_ = 1
+    End If
+    If step_ = 0 Then
+        MsgBox "Invalid step value. Step value cannot be 0.", vbCritical
+        Exit Function
+    End If
+    
+    wArray = Array()
+    
+    If IsArrayEmpty(srcArray) Then
+        Slice = wArray
+        Exit Function
+    End If
+    
+    startWasNull = IsNull(start_) Or IsMissing(start_)
+    endWasNull = IsNull(end_) Or IsMissing(end_)
+    lb = LBound(srcArray)
+    ub = UBound(srcArray)
+    szA = ub + 1
+    If startWasNull Then
+        start_ = 0
+    End If
+    If endWasNull Then
+        end_ = szA
+    End If
+    
+    If start_ < 0 Then
+        start_ = IIf(Abs(start_) > ub, 0, szA + start_)
+    End If
+    
+    If end_ < 0 Then
+        end_ = IIf(Abs(end_) > ub, szA, szA + end_)
+    End If
+    
+    start_ = CLng(Clamp(start_, 0, szA))
+    end_ = CLng(Clamp(end_, 0, szA))
+    
+    If startWasNull Then
+        If endWasNull Then
+            If stepWasNull Then
+                wArray = Copy(srcArray)
+            Else
+                For Each i In Range(0, szA, step_)
+                    Call Append(wArray, srcArray(i))
+                Next i
+            End If
+        Else
+            If stepWasNull Then
+                For Each i In Range(0, end_, 1)
+                    Call Append(wArray, srcArray(i))
+                Next i
+            Else
+                For Each i In Range(0, end_, step_)
+                    Call Append(wArray, srcArray(i))
+                Next i
+            End If
+        End If
+    Else
+        If endWasNull Then
+            If stepWasNull Then
+                For Each i In Range(start_, szA, 1)
+                    Call Append(wArray, srcArray(i))
+                Next i
+            Else
+                For Each i In Range(start_, szA, step_)
+                    Call Append(wArray, srcArray(i))
+                Next i
+            End If
+        Else
+            If stepWasNull Then
+                For Each i In Range(start_, end_)
+                    Call Append(wArray, srcArray(i))
+                Next i
+            Else
+                For Each i In Range(start_, end_, step_)
+                    Call Append(wArray, srcArray(i))
+                Next i
+            End If
+        End If
+    End If
+   
+    Slice = wArray
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Copy
+' Author    : Avery Briggs
+' Purpose   : Copy a parameterized array or string.
+'             Takes advantage of the ByVal parameter value creating a copy of the variable when it is called.
+'
+' Usage:
+' ~~~~~~
+' Dim q As Variant
+' Dim r As Variant
+' Dim t As Variant
+' Dim p As Variant
+' Dim w As Variant
+' q = Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7)
+' r = map("cstr", Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7))
+' t = append(q, -1)
+' p = Array(-5, -6, -7)
+' t = Copy(q)
+' w = append(q, p)
+' 'Call printArr(q)
+' 'Call printArr(t)
+' 'Call printArr(w)
+
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Copy(ByVal srcArray As Variant) As Variant
+    
+    If Not IsArray(srcArray) Then
+        Copy = srcArray
+    Else
+        Dim wArray As Variant
+        wArray = Array()
+        For Each el In srcArray
+            wArray = Append(wArray, el, unPackNewVal:=False)
+        Next el
+    End If
+    
+    Copy = wArray
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : isIn
+' Author    : Avery Briggs
+' Purpose   : Determine if a particular value is an element of an array.
+'             Use 'unPackTarget' to handle arrays as the 'target' param.
+'             If true, then the function is called recursively on each element in target.
+'             Use 'everyTarget' to ensure that each of the values in 'target' are found in the srcArray
+'             otherwise it will be true if any of the the targets are found.
+'
+' Usage:
+' ~~~~~~
+' Dim q As Variant
+' Dim r As Variant
+' Dim t As Variant
+' Dim p As Variant
+' Dim w As Variant
+' q = Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7)
+' r = map("cstr", Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7))
+' t = append(q, -1)
+' p = Array(-5, -6, -7)
+' w = append(q, p)
+' printf IsIn(q, 1)  ' True
+' printf IsIn(q, 7)  ' True
+' printf IsIn(r, 1)  ' False
+' printf IsIn(r, "1")  ' True
+' printf IsIn(q, 1)  ' True
+' printf IsIn(Range(-1, -5, -1), Range(6), everyTarget:=False)  ' => False
+' printf IsIn(Range(0, -5, -1), Range(6), everyTarget:=False)  ' => True
+' printf IsIn(Range(0, -5, -1), Range(6))  ' => False
+' printf IsIn(Range(6), Range(0, 6, 3))  ' => True
+' printf IsIn(Str2Array("Hello World!"), Str2Array("Hello"))  ' True
+' printf IsIn(array(array("Hello World!")), array("Hello World!"), unpacktarget:=false)  ' => True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+' 2         2023-07-08                  New use cases and comments
+'---------------------------------------------------------------------------------------
+Public Function IsIn( _
+    ByVal srcArray As Variant, _
+    ByVal target As Variant, _
+    Optional ByVal caseIndependent As Boolean = False, _
+    Optional ByVal returnIndex As Boolean = False, _
+    Optional ByVal unpackTarget As Boolean = True, _
+    Optional ByVal everyTarget As Boolean = True _
+) As Variant
+
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "IsIn", "Error, cannot call IsIn on a non array object."
+        Exit Function
+    End If
+
+    IsIn = IIf(returnIndex, -1, False)
+    If IsArrayEmpty(srcArray) Then
+        Exit Function
+    End If
+
+    Dim wIsIn As Boolean
+    Dim targ As Variant
+    Dim el As Variant
+    Dim lb As Long
+    Dim ub As Long
+    Dim i As Long
+    
+    i = -1
+    lb = LBound(srcArray)
+    ub = UBound(srcArray)
+    
+    If caseIndependent And IsInstance(target, vbString) Then
+        target = LCase(target)
+    End If
+    
+    If IsArray(target) And unpackTarget Then
+        wIsIn = everyTarget
+        For Each targ In target
+            If everyTarget Then
+                wIsIn = wIsIn And IsIn(srcArray, targ, caseIndependent:=caseIndependent, returnIndex:=returnIndex, unpackTarget:=False)
+            Else
+                wIsIn = wIsIn Or IsIn(srcArray, targ, caseIndependent:=caseIndependent, returnIndex:=returnIndex, unpackTarget:=False)
+            End If
+            If Not wIsIn And everyTarget Then
+                Exit For
+            End If
+        Next targ
+        
+        IsIn = wIsIn
+        Exit Function
+    End If
+    
+    For Each el In srcArray
+        i = i + 1
+        If caseIndependent And IsInstance(el, vbString) Then
+            el = LCase(el)
+        End If
+        If Equal(el, target) Then
+            IsIn = IIf(returnIndex, i, True)
+            Exit For
+        End If
+    Next el
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Max
+' Author    : Avery Briggs
+' Purpose   : Return the maximum of a list of items, or pass a single array object and determine it's max.
+'
+' Usage:
+' ~~~~~~
+' dim a as double
+' dim b as double
+' a = max(3, 2, 1) =>  ' 3
+' b = max(array(3, 2, 1)) =>  ' 3
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Max(ParamArray var() As Variant) As Variant
+    
+    'On Error GoTo max_error
+    
+    Dim working() As Variant
+    Dim setWorking As Boolean
+    setWorking = False
+    
+    Dim i As Long
+    Dim lb As Long
+    Dim ub As Long
+    Dim tmp As Variant
+    Dim val_ As Variant
+    Dim isNumerical As Boolean
+    Dim vIsNumerical As Boolean
+    Dim vt As Long
+    lb = LBound(var)
+    ub = UBound(var)
+    
+    'printf "A vartype(var): '" & VarType(var) & "'"
+    'printf "A lbound(var): " & LB & ", ubound(var): " & UB
+
+    If ub = 0 Then
+        val_ = var(ub)
+        vt = VarType(val_)
+        If vt = vbArray Or vt = (vbArray + vbVariant) Or vt = (vbArray + vbString) Or vt = (vbArray + vbDouble) Or vt = (vbArray + vbInteger) Or vt = (vbArray + vbLong) Or vt = (vbArray + vbSingle) Or vt = (vbArray + vbDate) Or vt = (vbArray + vbCurrency) Then
+            'printf "val: '" & val & "', vartype(val): '" & VarType(val) & "'"
+            If VarType(val_) = vbEmpty Then
+                Err.Raise vbObjectError + 513, , "This array is empty."
+            End If
+            
+            lb = LBound(val_)
+            ub = UBound(val_)
+            
+            'printf "ABOUT TO SET A"
+            ReDim working(ub)
+            For i = lb To ub
+                'printf vbTab & "setting <" & i & "> working(i) = <" & working(i) & ">"
+                working(i) = val_(i)
+            Next i
+            setWorking = True
+            
+        End If
+    ElseIf ub = -1 Then
+        Err.Raise vbObjectError + 513, , "Must pass at least one argument to this function."
+    End If
+
+    If Not setWorking Then
+        'printf "ABOUT TO SET B"
+        ReDim working(ub)
+        For i = lb To ub
+            working(i) = var(i)
+            'printf vbTab & "setting <" & i & "> vartype(working(i)) = <" & VarType(working(i)) & ">"
+        Next i
+    End If
+    
+    'printf "B vartype(working): '" & VarType(working) & "'"
+    'printf "B lbound(working): " & LB & ", ubound(working): " & UB
+
+    Dim bba As Boolean
+    Dim bbb As Boolean
+    Dim bbc As Boolean
+    For i = lb To ub
+        val_ = working(i)
+        vIsNumerical = IIf(IsNumeric(val_), True, False)
+        If i = LBound(var) Then
+            isNumerical = vIsNumerical
+        End If
+        
+        If isNumerical And Not vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare string value '" & val_ & "' in an array with numerical values"
+        ElseIf Not isNumerical And vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare numerical value '" & val_ & "' in an array with string values"""
+        Else
+        
+            bba = IsNull(tmp)
+            bbb = IsEmpty(tmp)
+            bbc = IIf(VarType(tmp) = vbEmpty, True, False)
+            
+            'printf "HERE tmp=<" & VarType(tmp) & ">, val=<" & VarType(val) & ">"
+            'printf "a=<" & bba & ">"
+            'printf "b=<" & bbb & ">"
+            'printf "c=<" & bbc & ">"
+            If bba Or bbb Or bbc Then
+                tmp = val_
+            Else
+                If val_ > tmp Then
+                    tmp = val_
+                End If
+            End If
+        End If
+    Next
+    
+    Max = tmp
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Sum
+' Author    : Avery Briggs
+' Purpose   : Return the sum of a list of arguments, or a single array.
+'
+' Usage:
+' ~~~~~~
+' dim a as double
+' dim b as String
+' a = sum(3, 2, 1) =>  ' 6
+' b = sum(array("3", "2", "1")) =>  ' "321"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+' 2         2023-08-02                  Fix to isNumerical and vIsNumerical checks
+'---------------------------------------------------------------------------------------
+Public Function Sum(ParamArray var() As Variant) As Variant
+    
+    
+    'On Error GoTo max_error
+    
+    Dim working() As Variant
+    Dim setWorking As Boolean
+    setWorking = False
+    
+    Dim i As Long
+    Dim lb As Long
+    Dim ub As Long
+    Dim tmp As Variant
+    Dim val_ As Variant
+    Dim isNumerical As Variant
+    Dim vIsNumerical As Boolean
+    Dim vt As Long
+    lb = LBound(var)
+    ub = UBound(var)
+    isNumerical = -1
+    
+    'printf "A vartype(var): '" & VarType(var) & "'"
+    'printf "A lbound(var): " & LB & ", ubound(var): " & UB
+
+    If ub = 0 Then
+        val_ = var(ub)
+        vt = VarType(val_)
+        If vt = vbArray Or vt = (vbArray + vbVariant) Or vt = (vbArray + vbString) Or vt = (vbArray + vbDouble) Or vt = (vbArray + vbInteger) Or vt = (vbArray + vbLong) Or vt = (vbArray + vbSingle) Or vt = (vbArray + vbDate) Or vt = (vbArray + vbCurrency) Then
+            'printf "val: '" & val & "', vartype(val): '" & VarType(val) & "'"
+            If VarType(val_) = vbEmpty Then
+                Err.Raise vbObjectError + 513, , "This array is empty."
+            End If
+            
+            lb = LBound(val_)
+            ub = UBound(val_)
+            
+            'printf "ABOUT TO SET A"
+            ReDim working(ub)
+            For i = lb To ub
+                'printf vbTab & "setting <" & i & "> working(i) = <" & working(i) & ">"
+                working(i) = val_(i)
+            Next i
+            setWorking = True
+            
+        End If
+    ElseIf ub = -1 Then
+        Err.Raise vbObjectError + 513, , "Must pass at least one argument to this function."
+    End If
+
+    If Not setWorking Then
+        'printf "ABOUT TO SET B"
+        ReDim working(ub)
+        For i = lb To ub
+            working(i) = var(i)
+            'printf vbTab & "setting <" & i & "> vartype(working(i)) = <" & VarType(working(i)) & ">"
+        Next i
+    End If
+    
+    'printf "B vartype(working): '" & VarType(working) & "'"
+    'printf "B lbound(working): " & LB & ", ubound(working): " & UB
+
+    'printf Dictionary("T", 0, "isNumerical", isNumerical, "vIsNumerical", vIsNumerical)
+    Dim bba As Boolean
+    Dim bbb As Boolean
+    Dim bbc As Boolean
+    For i = lb To ub
+        val_ = working(i)
+        vIsNumerical = IIf(IsNumeric(val_), True, False)
+        If isNumerical = -1 Then
+            isNumerical = vIsNumerical
+        End If
+        If VarType(val_) = vbString Then
+            Printf "-A"
+            vIsNumerical = False
+        End If
+        
+        'If i = LBound(var) Then
+        '    printf "-B"
+        '    isNumerical = vIsNumerical
+        'End If
+        
+        'printf Dictionary("T", 1, "isNumerical", isNumerical, "vIsNumerical", vIsNumerical)
+        If isNumerical And Not vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare string value '" & val_ & "' in an array with numerical values"
+        ElseIf Not isNumerical And vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare numerical value '" & val_ & "' in an array with string values"""
+        Else
+        
+            bba = IsNull(tmp)
+            bbb = IsEmpty(tmp)
+            bbc = IIf(VarType(tmp) = vbEmpty, True, False)
+            
+            'printf "HERE tmp=<" & VarType(tmp) & ">, val=<" & VarType(val) & ">"
+            'printf "a=<" & bba & ">"
+            'printf "b=<" & bbb & ">"
+            'printf "c=<" & bbc & ">"
+            If bba Or bbb Or bbc Then
+                tmp = val_
+            Else
+                'If val > tmp Then
+                tmp = tmp + val_
+                'End If
+            End If
+        End If
+    Next
+    
+    Sum = tmp
+    
+    'Dim i As Integer
+    'Dim tmp As Double
+    'For i = LBound(var) To UBound(var)
+    '    If IsNumeric(var(i)) Then tmp = tmp + var(i)
+    'Next
+    'sum = tmp
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Min
+' Author    : Avery Briggs
+' Purpose   : Return the minimum of a list of items, or pass a single array object and determine it's min.
+'
+' Usage:
+' ~~~~~~
+' dim a as double
+' dim b as double
+' a = min(3, 2, 1)  ' => 1
+' b = min(array(1, 2, 3))  ' => 1
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Min(ParamArray var() As Variant) As Variant
+    
+    'On Error GoTo max_error
+    
+    Dim working() As Variant
+    Dim setWorking As Boolean
+    setWorking = False
+    
+    Dim i As Long
+    Dim lb As Long
+    Dim ub As Long
+    Dim tmp As Variant
+    Dim val_ As Variant
+    Dim isNumerical As Boolean
+    Dim vIsNumerical As Boolean
+    Dim vt As Long
+    lb = LBound(var)
+    ub = UBound(var)
+    
+    'printf "A vartype(var): '" & VarType(var) & "'"
+    'printf "A lbound(var): " & LB & ", ubound(var): " & UB
+
+    If ub = 0 Then
+        val_ = var(ub)
+        vt = VarType(val_)
+        If vt = vbArray Or vt = (vbArray + vbVariant) Or vt = (vbArray + vbString) Or vt = (vbArray + vbDouble) Or vt = (vbArray + vbInteger) Or vt = (vbArray + vbLong) Or vt = (vbArray + vbSingle) Or vt = (vbArray + vbDate) Or vt = (vbArray + vbCurrency) Then
+            'printf "val: '" & val & "', vartype(val): '" & VarType(val) & "'"
+            If VarType(val_) = vbEmpty Then
+                Err.Raise vbObjectError + 513, , "This array is empty."
+            End If
+            
+            lb = LBound(val_)
+            ub = UBound(val_)
+            
+            'printf "ABOUT TO SET A"
+            ReDim working(ub)
+            For i = lb To ub
+                'printf vbTab & "setting <" & i & "> working(i) = <" & working(i) & ">"
+                working(i) = val_(i)
+            Next i
+            setWorking = True
+            
+        End If
+    ElseIf ub = -1 Then
+        Err.Raise vbObjectError + 513, , "Must pass at least one argument to this function."
+    End If
+
+    If Not setWorking Then
+        'printf "ABOUT TO SET B"
+        ReDim working(ub)
+        For i = lb To ub
+            working(i) = var(i)
+            'printf vbTab & "setting <" & i & "> vartype(working(i)) = <" & VarType(working(i)) & ">"
+        Next i
+    End If
+    
+    'printf "B vartype(working): '" & VarType(working) & "'"
+    'printf "B lbound(working): " & LB & ", ubound(working): " & UB
+
+    Dim bba As Boolean
+    Dim bbb As Boolean
+    Dim bbc As Boolean
+    For i = lb To ub
+        val_ = working(i)
+        vIsNumerical = IIf(IsNumeric(val_), True, False)
+        If i = LBound(var) Then
+            isNumerical = vIsNumerical
+        End If
+        
+        If isNumerical And Not vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare string value '" & val_ & "' in an array with numerical values"
+        ElseIf Not isNumerical And vIsNumerical Then
+            Err.Raise vbObjectError + 513, , "Cannot compare numerical value '" & val_ & "' in an array with string values"""
+        Else
+        
+            bba = IsNull(tmp)
+            bbb = IsEmpty(tmp)
+            bbc = IIf(VarType(tmp) = vbEmpty, True, False)
+            
+            'printf "HERE tmp=<" & VarType(tmp) & ">, val=<" & VarType(val) & ">"
+            'printf "a=<" & bba & ">"
+            'printf "b=<" & bbb & ">"
+            'printf "c=<" & bbc & ">"
+            If bba Or bbb Or bbc Then
+                tmp = val_
+            Else
+                If val_ < tmp Then
+                    tmp = val_
+                End If
+            End If
+        End If
+    Next
+    
+    Min = tmp
+
+End Function
+    
+
+'---------------------------------------------------------------------------------------
+' Function : Range
+' Author    : Avery Briggs
+' Purpose   : Return an array of integers in sequence specified by start and end bounds and a step.
+'             Modeled after python's range() function. Start bound is inclusive, end is exclusive.
+'
+' Usage:
+' ~~~~~~
+' Call printArr(Range(15))  ' [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+' Call printArr(Range(-15))  ' []
+' Call printArr(Range(-15, 15, 1))  ' [-15,-14,-13,-12,-11,-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+' Call printArr(Range(-15, 15, -1))  ' []
+' Call printArr(Range(-15, -17, -1))  ' [-15, -16]
+' Call printArr(Range(-18, -20, -1))  ' [-18, -19]
+' Call printArr(Range(18, 10, -1))  ' [18, 17, 16, 15, 14, 13, 12, 11]
+' Call printArr(Range(0, -18, -1))  ' [0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+' 2         2023-07-11                  Corrected stepping boundaries. Range(2, 13, 2) was failing
+'---------------------------------------------------------------------------------------
+Public Function Range( _
+    ByVal start_ As Long, _
+    Optional ByVal end_ As Variant, _
+    Optional ByVal step_ As Variant _
+) As Variant
+    
+
+    Dim endWasNull As Boolean
+    Dim stepWasNull As Boolean
+    
+    endWasNull = (IsMissing(end_) Or IsNull(end_))
+    stepWasNull = (IsMissing(step_) Or IsNull(step_))
+    
+    If Not IsInstance(start_, Array(vbInteger, vbLong)) Then
+        Err.Raise vbObjectError, "Range", "Error, start_ value must be a long or integer value. Got, '" & TypeName(start_) & "'"
+    End If
+    
+    If endWasNull Then
+        end_ = start_
+        start_ = 0
+    End If
+    
+    If stepWasNull Then
+        step_ = 1
+    End If
+
+    If step_ = 0 Then
+        Err.Raise vbObjectError, "Range", "Error, step value cannot be 0."
+    End If
+    
+    If Not IsInstance(end_, Array(vbInteger, vbLong)) Then
+        Err.Raise vbObjectError, "Range", "Error, end_ value must be a long or integer value. Got, '" & TypeName(end_) & "'"
+    End If
+    
+    If Not IsInstance(step_, Array(vbInteger, vbLong)) Then
+        Err.Raise vbObjectError, "Range", "Error, step_ value must be a long or integer value. Got, '" & TypeName(step_) & "'"
+    End If
+    
+    Dim wArray As Variant
+    Dim i As Long
+    wArray = Array()
+    
+    If (start_ > end_ And step_ < 0) Or (start_ < end_) Then
+    
+        If step_ < 0 Then
+            end_ = end_ + 1
+        Else
+            end_ = end_ - 1
+        End If
+        
+        For i = start_ To end_ Step step_
+            Call Append(wArray, i)
+        Next i
+        
+    End If
+    
+    Range = wArray
+
+End Function
+    
+
+'---------------------------------------------------------------------------------------
+' Function : Index
+' Author    : Avery Briggs
+' Purpose   : Return the index of en element in an array. Uses IsIn.
+'             If target is a list, then the function searches for every targer.
+'
+' Usage:
+' ~~~~~~
+' Call printArr(Index(Range(15), Array(0, 1)))  ' [0, 1]
+' Call printArr(Index(Range(15), 1)))  ' [1]
+' Call printArr(Index(Range(15), 1)))  ' [1]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Index( _
+    ByRef srcArray As Variant, _
+    ByRef target As Variant, _
+    Optional ByVal caseIndependent As Boolean = False, _
+    Optional ByVal count_ As Variant, _
+    Optional ByVal unpackTarget As Boolean = True, _
+    Optional ByVal returnFirst As Boolean = True _
+) As Variant
+
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "index", "Error, cannot determine the index of an element in a non array object."
+        Exit Function
+    End If
+
+    If IsArrayEmpty(srcArray) Then
+        Index = -1
+        Exit Function
+    End If
+
+    'If count = 1 Then
+    '    Index = IsIn(srcArray, target, returnIndex:=True, caseIndependent:=caseIndependent)
+    'Else
+    
+        Dim wArray As Variant
+        wArray = Array()
+        'Dim i As Integer
+
+        Dim countIn As Long
+        Dim lbS As Long
+        Dim ubS As Long
+        Dim lbT As Long
+        Dim ubT As Long
+        Dim lb As Long
+        Dim ub As Long
+        Dim i As Long
+        Dim targ As Variant
+        Dim el As Variant
+        
+                
+    'If IsArray(target) And unpackTarget Then
+    '    For Each targ In target
+    '        Call Append(wArray, Index(srcArray, targ, caseIndependent:=caseIndependent, count_:=count_))
+    '    Next targ
+    '
+    'Else
+    
+    Dim arr As Variant
+    If Not IsArray(target) Then
+        arr = Array(target)
+    Else
+        arr = target
+    End If
+    
+        lbS = LBound(srcArray)
+        ubS = UBound(srcArray) + 1
+        lbT = LBound(arr)
+        ubT = UBound(arr) + 1
+        
+        If IsMissing(count_) Or IsNull(count_) Then
+            count_ = IIf(returnFirst, 1, ((ubS + 1) * (ubT + 1)) + 1)
+            'countIn = count_
+            Printf "COUNT A: <" & count_ & ">"
+        End If
+        
+        If Not IsInstance(count_, Array(vbInteger, vbLong)) Then
+            count_ = ubT
+            countIn = 1
+        Else
+            countIn = count_
+        End If
+        
+        'count_ = Clamp(count_, 1, ubT)
+        
+        'countIn = Clamp(countIn, 1, countIn) + 1
+        
+        i = 0
+        For Each targ In arr
+            For Each el In srcArray
+                
+            'Printf vbTab & "el: " & el
+                'Printf vbTab & "t: " & targ & ", eq <" & Equal(el, targ) & ">"
+                'PrintArr Array(lbT, ubT, count_, countIn), "A"
+                'If count_ >= lbT Then
+                '    'Call Append(wArray, IsIn(Slice(srcArray, lb, ub), target(lb), returnIndex:=True, caseIndependent:=caseIndependent))
+                '    Call Append(wArray, IsIn(Slice(srcArray, lbT, ubT), arr(lbT), returnIndex:=True, caseIndependent:=caseIndependent))
+                'Else
+                '    lbT = ubT
+                'End If
+                'lbT = lbT + 1
+                'If Equal(el, targ) Then
+                '    Call Append(wArray, i)
+                '    Exit For
+                'End If
+            Next el
+            'i = i + 1
+        Next targ
+        
+        PrintArr Array(lbT, ubT, lbS, ubS, count_, countIn, wArray), "A"
+        If returnFirst Then
+            Printf "-A"
+            If IsArrayEmpty(wArray) Then
+                Index = -1
+            Else
+                Index = wArray(0)
+            End If
+        Else
+            Printf "-B"
+            Index = Slice(wArray, , countIn)
+        End If
+        
+    'End If
+
+End Function
+    
+
+'---------------------------------------------------------------------------------------
+' Function : Append
+' Author    : Avery Briggs
+' Purpose   : Add an element to an array. Optionally add new element for each target if array.
+'             If target is a list, then the function searches for every targer.
+'
+' Usage:
+' ~~~~~~
+' dim w as variant
+' w = array
+' Call append(w, Range(6))  ' => [0,1,2,3,4,5]
+' Call append(w, Range(6,-1,-1))  ' => [0,1,2,3,4,5,5,4,3,2,1,0]
+' call append(array(), 1)  ' => [1]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Append(ByRef srcArray As Variant, ByRef newVal As Variant, Optional ByVal unPackNewVal As Boolean = True) As Variant
+
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "append", "Error, cannot call append on a non array object"
+    End If
+
+    Dim lb As Long
+    Dim ub As Long
+    
+    lb = LBound(srcArray)
+    ub = UBound(srcArray)
+    
+    If IsArray(newVal) And unPackNewVal Then
+        Dim el As Variant
+        For Each el In newVal
+            Call Append(srcArray, el)
+        Next el
+    Else
+        ReDim Preserve srcArray(ub + 1)
+        srcArray(ub + 1) = newVal
+    End If
+    
+    Append = srcArray
+    'srcArray = Append
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Remove
+' Author    : Avery Briggs
+' Purpose   : Remove an element from an array. Optionally remove every element in target if array.
+'             Use count to add a cap for maximum number of removals.
+'             Optionally fail if element not found in the srcArray.
+'
+' Usage:
+' ~~~~~~
+' dim w as variant
+' w = array
+' w = range(10)
+' Call remove(w, 6)  ' => [0,1,2,3,4,5,7,8,9]
+' Call remove(w, array(1,2))  ' => [0,3,4,5,7,8,9]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Remove(ByRef srcArray As Variant, ByRef target As Variant, Optional Count As Integer = 1, Optional ByVal failOnNotFound As Boolean = True, Optional ByVal unpackTarget As Boolean = True) As Variant
+
+    'Printf "REM TN:<" & TypeName(target) & ">, ARR: <" & PrintArr(srcArray, "SRC", doPrint:=False) & ">"
+    
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "remove", "Error, cannot call remove on a non array object"
+    End If
+    
+    Dim C As Long
+    Dim wArray As Variant
+    wArray = Array()
+    
+    If IsArray(target) And unpackTarget Then
+        'Printf "-A"
+        wArray = Copy(srcArray)
+        'Call PrintArr(wArray, "WARRAY")
+        For Each el In target
+            'Call Remove(wArray, el, count:=count - 1, failOnNotFound:=failOnNotFound, unPackTarget:=unPackTarget)
+            wArray = Remove(srcArray, el, Count:=Count - 1, failOnNotFound:=failOnNotFound, unpackTarget:=False)
+        Next el
+    Else
+        'Printf "-B"
+        C = 0
+        For Each el In srcArray
+            'Printf "c: <" & c & "> <" & Printf(el, doPrint:=False) & ">"
+            'Printf "el <" & Printf(el, False) & ">"
+            'Printf "target <" & Printf(target, False) & ">"
+            If Not Equal(el, target) Or (C > Count) Then
+                'Printf "APPEND el <" & Printf(el, False) & ">, c <" & c & ">, vt <" & TypeName(wArray) & ">"
+                Call Append(wArray, el, unPackNewVal:=False)
+            Else
+                'Printf "SKIP el <" & Printf(el, False) & ">, c <" & c & ">, vt <" & TypeName(wArray) & ">"
+                C = C + 1
+            End If
+        Next el
+    End If
+    
+    'Printf "-C"
+    
+    If UBound(srcArray) = UBound(wArray) Then
+        'Printf "-D"
+        If failOnNotFound Then
+            Err.Raise vbObjectError, "remove", "Error, cannot find element '" & Printf(target, doPrint:=False) & "' in the list."
+        End If
+    End If
+    
+    Remove = wArray
+    srcArray = Remove
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Insert
+' Author    : Avery Briggs
+' Purpose   : Add an element to an array with an index. Optionally add new element for each target if array.
+'
+' Usage:
+' ~~~~~~
+' printf Insert(Array(1, 2, 3), Array(True, False, True), 0, unpackTarget:=True) ' [1, 2, 3] = > [True, False, True, 1, 2, 3]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), 0, unpackTarget:=False) ' [1, 2, 3] = > [[True, False, True], 1, 2, 3]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), 1, unpackTarget:=True) ' [1, 2, 3] = > [1, True, False, True, 2, 3]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), 1, unpackTarget:=False) ' [1, 2, 3] = > [1, [True, False, True], 2, 3]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), -1, unpackTarget:=True) ' [1, 2, 3] = > [1, 2, 3, True, False, True]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), -1, unpackTarget:=False) ' [1, 2, 3] = > [1, 2, 3, [True, False, True]]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), -2, unpackTarget:=True) ' [1, 2, 3] = > [1, 2, True, False, True, 3]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), -2, unpackTarget:=False) ' [1, 2, 3] = > [1, 2, [True, False, True], 3]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), -20, unpackTarget:=True) ' [1, 2, 3] = > [True, False, True, 1, 2, 3]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), -12, unpackTarget:=False) ' [1, 2, 3] = > [[True, False, True], 1, 2, 3]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), 20, unpackTarget:=True) ' [1, 2, 3] = > [1, 2, 3,  True, False, True]
+' printf Insert(Array(1, 2, 3), Array(True, False, True), 12, unpackTarget:=False) ' [1, 2, 3] = > [1, 2, 3, [True, False, True]]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Insert(ByRef srcArray As Variant, ByRef target As Variant, Optional ByVal iIndex As Variant, Optional ByVal unpackTarget As Boolean = True) As Variant
+
+    'Printf vbNewLine & "iindex IN <" & iIndex & ">"
+    'Printf "VV"
+    'Printf iIndex
+
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "remove", "Error, cannot call remove on a non array object"
+    End If
+    
+    Dim wArray As Variant
+    Dim lb As Long
+    Dim ub As Long
+    Dim targetIsArr As Boolean
+    Dim iIdxIsNull As Boolean
+    Dim idxIsArr As Boolean
+    Dim wTarget As Variant
+    Dim wIndex As Variant
+    Dim isNeg As Boolean
+    Dim msgg As String
+    
+    iIdxIsNull = IsNull(iIndex) Or IsMissing(iIndex)
+    targetIsArr = IsArray(target)
+    idxIsArr = IsArray(iIndex)
+    
+    lb = LBound(srcArray)
+    ub = UBound(srcArray)
+    
+    'Dim ubT As Integer
+    'ubT = UBound(srcArray)
+    isNeg = iIndex < 0
+    
+    'printf "RESULT: <" & printf(Array(lb, iIndex, ub), doPrint:=False) & ">"
+    
+    If ub = 1 And iIndex = 1 Then
+        iIndex = 1
+        ub = 2
+    ElseIf Between(iIndex, -ub, ub + IIf(isNeg, 1, -1)) Then
+        'printf vbTab & "A MINUS 1 (" & iIndex & ") (" & isNeg & ")"
+        iIndex = IIf(isNeg, ub - (1 + (iIndex Mod ub)), iIndex Mod ub)
+        'printf vbTab & "B MINUS 1 (" & iIndex & ") (" & isNeg & ")"
+    End If
+    
+    'iIndex = IIf(isNeg, ub - (1 + iIndex), iIndex)
+    'iIndex = IIf(isNeg, 1 + ub - ((Abs(iIndex) Mod ub)), iIndex Mod ub)
+    'iIndex = IIf(isNeg, 1 + ub - (Abs(iIndex) Mod ub), iIndex Mod ub)
+    'iIndex = IIf(isNeg, ub - ((Abs(iIndex) Mod ub)), iIndex Mod ub)
+    'iIndex = IIf(isNeg, ub - ((Abs(iIndex) Mod ub) - 1), iIndex Mod ub)
+    'iIndex = IIf(isNeg, ub - ((Abs(iIndex) Mod ub) + 1), iIndex Mod ub)
+    'iIndex = IIf(iIndex > ub, iIndex - (0 + (iIndex Mod ub)), iIndex)
+    
+    
+    If (targetIsArr Or idxIsArr) And unpackTarget Then
+        msgg = msgg & "-A"
+        
+        'If targetIsArr Then
+        '    printf "-B"
+        '    wIndex = Array(iIndex)
+        '    wTarget = target
+        '    For i = 1 To UBound(target)
+        '        Call Append(wIndex, iIndex)
+        '    Next i
+        'Else
+        '    printf "-C"
+        '    wTarget = Array(target)
+        '    wIndex = iIndex
+        '    For i = 1 To UBound(iIndex)
+        '        Call Append(wTarget, target)
+        '    Next i
+        'End If
+        
+        
+        'Printf "index: <" & iIndex & ">"
+        wArray = Array()
+        
+        If targetIsArr Then
+            msgg = msgg & "-B"
+            ' insert this array at the index
+            If iIndex <= 0 Then
+                msgg = msgg & "-C"
+                wArray = Append(Append(wArray, target), srcArray)
+            ElseIf iIndex > ub Then
+                msgg = msgg & "-D"
+                wArray = Append(Slice(srcArray, , iIndex + 1), target)
+            Else
+                msgg = msgg & "-E"
+                wArray = Append(Append(Slice(srcArray, , iIndex), target), Slice(srcArray, iIndex))
+            End If
+        Else
+            msgg = msgg & "-F"
+            ' insert this target at each index
+            'Zip = Append(Append(Slice(srcArray, , iIndex), target), Slice(srcArray, iIndex + 1))
+        End If
+        
+        'Call PrintArr(wTarget, "wTarget")
+        'Call PrintArr(wIndex, "wIndex")
+        'wArray = Zip(wTarget, wIndex)
+        'printf "TN(z): <" & TypeName(z) & ">"
+        'printf "z: <" & z & ">"
+        'Call PrintArr(wArray, "wArray")
+    Else
+        msgg = msgg & "-G"
+        'Printf "index: <" & iIndex & ">"
+        'Call PrintArr(Slice(srcArray, , iIndex), "PA")
+        'Call PrintArr(Slice(srcArray, iIndex), "PB")
+        'printf "-D"
+        'Printf "Target: <" & target & ">"
+        
+        
+        If iIndex <= 0 Then
+            msgg = msgg & "-H"
+            wArray = Append(Append(Array(), target, unPackNewVal:=False), srcArray, unPackNewVal:=True)
+        ElseIf iIndex > ub Then
+            msgg = msgg & "-I"
+            wArray = Append(Slice(srcArray, , iIndex + 1), target, unPackNewVal:=False)
+        Else
+            msgg = msgg & "-J"
+            wArray = Append(Append(Slice(srcArray, , iIndex), target, unPackNewVal:=False), Slice(srcArray, iIndex))
+        End If
+    End If
+    
+    'printf vbTab & "msgg: <" & msgg & ">, index: <" & iIndex & ">, ub: <" & ub & ">, isneg: <" & isNeg & ">, A|B: <" & IIf((targetIsArr Or idxIsArr) And unpackTarget, "A", "B") & ">"
+    
+    srcArray = wArray
+    Insert = wArray
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Zip
+' Author    : Avery Briggs
+' Purpose   : Take 2 arrays and return a zipped list of elements at the same indexes.
+'             Modeled after python's zip function.
+'
+' Usage:
+' ~~~~~~
+' dim z as Variant
+' z = zip(range(26), map("chr", range(97, 97+26)))  ' => [[0, 'a'], [1, 'b'], [2, 'c'], [3, 'd'], [4, 'e'], [5, 'f'], [6, 'g'], [7, 'h'], [8, 'i'], [9, 'j'], [10, 'k'], [11, 'l'], [12, 'm'], [13, 'n'], [14, 'o'], [15, 'p'], [16, 'q'], [17, 'r'], [18, 's'], [19, 't'], [20, 'u'], [21, 'v'], [22, 'w'], [23, 'x'], [24, 'y'], [25, 'z']]
+' z = zip(array(1,2,3), array("Dog", "Cat", "Fish"))  ' => printArr: [[1, 'Dog'], [2, 'Cat'], [3, 'Fish']]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-05                  Initial Release
+' 2         2023-08-31                  Allowing for Dictionaries to be zipped
+'---------------------------------------------------------------------------------------
+Public Function Zip(ByVal arrA As Variant, ByVal arrB As Variant) As Variant
+
+    Dim aa As Boolean
+    Dim ab As Boolean
+    Dim da As Boolean
+    Dim DB As Boolean
+    Dim sa As Boolean
+    Dim sb As Boolean
+    aa = IsArray(arrA)
+    ab = IsArray(arrB)
+    da = IsDict(arrA)
+    DB = IsDict(arrB)
+    sa = IsInstance(arrA, vbString)
+    sb = IsInstance(arrB, vbString)
+
+    If Not aa And Not da And Not sa Then
+        Err.Raise vbObjectError, "zip", "Error, param 'arrA' cannot be a non-array, non-string, or non-dictionary object."
+    End If
+    If Not ab And Not DB And Not sb Then
+        Err.Raise vbObjectError, "zip", "Error, param 'arrB' cannot be a non-array, non-string, or non-dictionary object."
+    End If
+    
+    If aa And IsArrayEmpty(arrA) Then
+        Zip = Array()
+    ElseIf BA And IsArrayEmpty(arrB) Then
+        Zip = Array()
+    ElseIf da And IsDictEmpty(arrA) Then
+        Zip = Array()
+    ElseIf DB And IsDictEmpty(arrB) Then
+        Zip = Array()
+    ElseIf sa And Equal(arrA, "") Then
+        Zip = Array()
+    ElseIf sb And Equal(arrB, "") Then
+        Zip = Array()
+    Else
+        
+        If da Then
+            arrA = DictKeys(arrA)
+        ElseIf sa Then
+            arrA = DictKeys(arrA)
+        End If
+        
+        If DB Then
+            arrB = Str2Array(arrB)
+        ElseIf sb Then
+            arrB = Str2Array(arrB)
+        End If
+        
+        Dim lbA As Long
+        Dim ubA As Long
+        Dim lbB As Long
+        Dim ubB As Long
+        Dim mUb As Long
+        Dim i As Long
+        
+        lbA = LBound(arrA)
+        ubA = UBound(arrA)
+        lbB = LBound(arrB)
+        ubB = UBound(arrB)
+        mUb = Min(ubA, ubB)
+        
+        Dim wArray As Variant
+        wArray = Array()
+        
+        For i = 0 To mUb
+            Call Append(wArray, Array(arrA(i), arrB(i)), unPackNewVal:=False)
+            'Call PrintArr(wArray, "i: <" & i & ">")
+        Next i
+        
+        Zip = wArray
+        
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : ArrayEqual
+' Author    : Avery Briggs
+' Purpose   : Determine if two arrays have matching elements in value, type, and order.
+'
+' Usage:
+' ~~~~~~
+' printf arrayequal(range(26), range(97, 97+26))  ' => False
+' printf arrayequal(range(26), range(26))  ' => true
+' printf ArrayEqual(Str2Array("Hello World!"), Str2Array("Hello"))  ' False
+' printf ArrayEqual(Str2Array("Hello"), Str2Array("Hello"))  ' True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-05                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function ArrayEqual(ByRef arrA As Variant, ByRef arrB As Variant) As Boolean
+
+    Select Case Abs(CInt(IsArray(arrA)) + CInt(IsArray(arrB)))
+        Case 0:
+            Err.Raise vbObjectError, "ArrayEqual", "Error, cannot determine if these arrays are equal. Neither param 'arrA' or 'arrB' is a valid array."
+        Case 1:
+            ArrayEqual = False
+            Exit Function
+    End Select
+
+    Dim i As Long
+    
+    ' Check if arrays have the same length
+    If UBound(arrA) <> UBound(arrB) Then
+        ArrayEqual = False
+        Exit Function
+    End If
+    
+    ' Compare each element in the arrays
+    For i = LBound(arrA) To UBound(arrA)
+        If arrA(i) <> arrB(i) Then
+            ArrayEqual = False
+            Exit Function
+        End If
+    Next i
+    
+    ' All elements match
+    ArrayEqual = True
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IForI
+' Author    : Avery Briggs
+' Purpose   : Return a quick array of n elements of value v.
+'             Use the 'isFunc' param to instead treat the value like a callable expression with eval.
+'
+'             Rules for Eval:
+'               The EXPRESSION MUST BE ABLE TO CONVERT TO A STRING object.
+'               The expression being evaluated will be treated as generic VBA code - NO NESTED NON-NATIVE FUNCTION CALLING
+'               Eval does not work properly in the immediate window. You must test using Script.
+'
+' Usage:
+' ~~~~~~
+' printarr ifori("a", 10)  ' => ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a']
+' printarr ifori(array(), 10)  ' => [[], [], [], [], [], [], [], [], [], []]
+' printf ifori("randomhex()", 5, isfunc:=true)  ' ['#B48894', '#4A4DC6', '#04C2D0', '#B50C6A', '#DCCA5F']
+'
+' Violations:
+'   Printf IForI("printf(randomRGB(), False)", 5, True)  '
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-05                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IForI(ByVal val_ As Variant, ByVal S As Long, Optional ByVal isFunc As Boolean = False, Optional ByVal V As Boolean = True) As Variant
+
+    On Error GoTo FuncNotApplicable
+
+    Dim wArray As Variant
+    Dim res As String
+    Dim i As Long
+    wArray = Array()
+    For i = 1 To S
+        If isFunc Then
+            'Printf "i: <" & i & ">, val: <" & val_ & ">"
+            'Printf "HERE A"
+            res = Eval(val_)
+            'Printf "HERE B"
+            Call Append(wArray, res, False)
+        Else
+            Call Append(wArray, val_, False)
+        End If
+    Next i
+    
+    IForI = wArray
+    
+CleanExit:
+    Exit Function
+    
+FuncNotApplicable:
+    If printOnFailure Then
+        Printf "Error, cannot use '" & val_ & "' as the 'val_' param because it does not evaluate to a string expression."
+        Printf Err.Number
+        Printf Err.Source
+        Printf Err.Description
+    End If
+    IForI = Array()
+    Resume CleanExit
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Enumerate
+' Author    : Avery Briggs
+' Purpose   : Return a quick array of n elements of value v.
+'
+' Usage:
+' ~~~~~~
+' printarr(enumerate(range(-20,11,5)))  ' => [[0, -20], [1, -15], [2, -10], [3, -5], [4, 0], [5, 5], [6, 10]]
+' printarr(enumerate(array("Dog", "Cat", "Fish")))  ' => [[0, 'Dog'], [1, 'Cat'], [2, 'Fish']]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-05                  Initial Release
+' 2         2023-07-20                  Corrected ObjectError, and supported strings
+'---------------------------------------------------------------------------------------
+Public Function Enumerate(ByRef srcArray As Variant) As Variant
+
+    Dim wArray As Variant
+    wArray = Array()
+    
+    If IsInstance(srcArray, vbString) Then
+        Enumerate = Enumerate(Str2Array(srcArray))
+        Exit Function
+    End If
+
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "Enumerate", "Error, can not enumerate a non array object."
+    End If
+    
+    If IsArrayEmpty(srcArray) Then
+        Enumerate = wArray
+        Exit Function
+    End If
+
+    Dim lb As Long
+    Dim ub As Long
+    Dim i As Long
+    lb = LBound(srcArray)
+    ub = UBound(srcArray)
+    
+    For i = lb To ub
+        Call Append(wArray, Array(i, srcArray(i)), unPackNewVal:=False)
+    Next i
+    
+    Enumerate = wArray
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Sorted
+' Author    : Avery Briggs
+' Purpose   :
+'
+' Usage:
+' ~~~~~~
+' dim dates as variant
+' printf map("cstr", Array(1, 6, 7, 2, 9, 4))  ' => ['1', '6', '7', '2', '9', '4']
+' printf zip(range(26), map("chr", range(97, 97+26)))  ' => [[0, 'a'], [1, 'b'], [2, 'c'], [3, 'd'], [4, 'e'], [5, 'f'], [6, 'g'], [7, 'h'], [8, 'i'], [9, 'j'], [10, 'k'], [11, 'l'], [12, 'm'], [13, 'n'], [14, 'o'], [15, 'p'], [16, 'q'], [17, 'r'], [18, 's'], [19, 't'], [20, 'u'], [21, 'v'], [22, 'w'], [23, 'x'], [24, 'y'], [25, 'z']]
+' printf map("lambda x: x + 1", Array(1, 6, 7, 2, 9, 4))  ' => [2, 7, 8, 3, 10, 5]
+' dates = Array(datetime(1995,8,3), datetime(1996,9,8), datetime(1999,3,11), datetime(2000,10,8))
+' printf map("lambda x: cint(left(cstr(x), 4))", dates)  ' => [1995, 1996, 1999, 2000]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-05                  Initial Release
+' 2         2023-07-07                  Added reverse to strings
+'---------------------------------------------------------------------------------------
+Public Function Sorted(ByRef srcArray As Variant, Optional ByVal reverse_ As Boolean = False, Optional ByVal key As Variant) As Variant
+
+    If Not IsInstance(srcArray, Array(vbArray, vbString)) Then
+        Err.Raise vbObjectError, "Sorted", "Error, cannot sort a non array or non string object."
+    End If
+
+    Dim wArray As Variant
+    
+    If IsMissing(key) Or IsNull(key) Or key = "" Or (key Is Nothing) Or IsEmpty(key) Then
+        If IsArray(srcArray) Then
+            Call QSortInPlace(srcArray, Descending:=reverse_)
+            Sorted = srcArray
+        ElseIf IsInstance(srcArray, vbString) Then
+            wArray = Str2Array(srcArray)
+            Call QSortInPlace(wArray, Descending:=reverse_)
+            Sorted = Join(wArray, "")
+        End If
+    Else
+        On Error GoTo TryLambda
+        If IsInstance(key, Array(vbInteger, vbLong)) Then
+            If key < 0 Then
+                Err.Raise vbObjectError, "Sorted", "Error, cannot use a long (" & key & ") as a key if the array is not 2-dimensional and each rows sub-array has at least as many columns as specified by the key."
+            End If
+            If Not ArrayMatchesTableDimensions(srcArray, 1, key, True, True) Then
+                Err.Raise vbObjectError, "Sorted", "Error, cannot use a long (" & key & ") as a key if the array is not 2-dimensional and each rows sub-array has at least as many columns as specified by the key."
+            Else
+                
+            End If
+        End If
+    End If
+    
+CleanExit:
+    Exit Function
+TryLambda:
+    
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Map
+' Author    : Avery Briggs
+' Purpose   : Apply a function to each element in an array using Eval or attempting to parse a lambda expression.
+'             Anonymous functions must only accept the single parameter that is the array element.
+'             Lambda expressions must match the expeceted python syntax. (Req. "lambda", ":")
+'
+'             Rules for Eval:
+'               The EXPRESSION MUST BE ABLE TO CONVERT TO A STRING object.
+'               The expression being evaluated will be treated as generic VBA code - NO NESTED NON-NATIVE FUNCTION CALLING
+'               Eval does not work properly in the immediate window. You must test using Script.
+'
+' Usage:
+' ~~~~~~
+' dim dates as variant
+' printf map("cstr", Array(1, 6, 7, 2, 9, 4))  ' => ['1', '6', '7', '2', '9', '4']
+' printf zip(range(26), map("chr", range(97, 97+26)))  ' => [[0, 'a'], [1, 'b'], [2, 'c'], [3, 'd'], [4, 'e'], [5, 'f'], [6, 'g'], [7, 'h'], [8, 'i'], [9, 'j'], [10, 'k'], [11, 'l'], [12, 'm'], [13, 'n'], [14, 'o'], [15, 'p'], [16, 'q'], [17, 'r'], [18, 's'], [19, 't'], [20, 'u'], [21, 'v'], [22, 'w'], [23, 'x'], [24, 'y'], [25, 'z']]
+' printf map("lambda x: x + 1", Array(1, 6, 7, 2, 9, 4))  ' => [2, 7, 8, 3, 10, 5]
+' dates = Array(datetime(1995,8,3), datetime(1996,9,8), datetime(1999,3,11), datetime(2000,10,8))
+' printf map("lambda x: cint(left(cstr(x), 4))", dates)  ' => [1995, 1996, 1999, 2000]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-05                  Initial Release
+' 2         2023-08-11                  Isinstance branch
+'---------------------------------------------------------------------------------------
+Public Function Map(ByVal funcString As String, ByRef srcArray As Variant) As Variant
+
+    If Not IsArray(srcArray) Then
+        Err.Raise vbObjectError, "map", "Error, cannot call map on a non array object."
+        Exit Function
+    End If
+    
+    Printf "-A"
+    
+    Dim wArray As Variant
+    Dim el As Variant
+    Dim r As Variant
+    Dim Q As String
+    Dim i As Long
+    
+    Dim idxColon1 As Long
+    Dim idxLambda1 As Long
+    Dim idxColon2 As Long
+    Dim idxLambda2 As Long
+    
+    wArray = Array()
+    
+    If IsArrayEmpty(srcArray) Then
+        Map = Array()
+    Else
+        i = 0
+        On Error GoTo FuncNotApplicable
+        For Each el In srcArray
+            Q = IIf(IsInstance(el, vbString), "'", "")
+            wArray = Append(wArray, Eval(funcString & "(" & Q & el & Q & ")"))
+            i = i + 1
+        Next el
+        Map = wArray
+        srcArray = Map
+    End If
+    
+CleanExit:
+    Exit Function
+    
+FailedLambda:
+    'Printf "err2<" & Err.Number & ">"
+    Printf "Failed Lambda, #<" & Err.Number & ">, desc: " & Err.Description & ", src: " & Err.Source
+    Resume CleanExit
+
+TryLambda:
+
+    'printf "err1<" & Err.Number & ">"
+
+    On Error GoTo FailedLambda
+    
+    Dim lFunc As String
+    Dim aFunc As String
+    'lFunc = Mid(funcString, idxColon + 1, Len(funcString) - Len(Mid(funcString, 1, idxColon + 1)))
+    lFunc = Right(funcString, Len(funcString) - idxColon1 - 1)
+    Printf "lfunc: <" & Printf(lFunc, False) & ">"
+    aFunc = Mid(funcString, idxLambda1 + 7, Len(funcString) - Len(lFunc) - (idxLambda1 + 8))
+    
+    Printf "aFunc: <" & Printf(aFunc, False) & ">"
+    
+    If UBound(Split(aFunc, ",")) <> 0 Then
+        er.Raise vbObjectError, "Map", "Only 1 argument is supported in lambdas currently."
+    End If
+    
+    For Each el In srcArray
+        Printf "HERE -A"
+        Q = IIf(IsInstance(el, Array(vbString, vbDate)), """", "")
+        Printf "HERE -B"
+        'Printf vbTab & "q=(" & q & ")" & vbTab & "?" & Replace(lFunc, aFunc, q & el & q) & "  ' " & Printf(Eval(Replace(lFunc, aFunc, q & el & q)), False)
+        'Printf vbTab & lFunc & "  ' " & Printf(Eval(Replace(lFunc, aFunc, q & el & q)), False)
+        If Left(lFunc, 11) = "isinstance(" Then
+            ' Special condition for isinstance in order to maintain param types.
+            Printf "SPA"
+            Dim vbType As String
+            vbType = Replace(Replace(LTrim(RTrim(Split(Reverse(Split(Reverse(RTrim(lFunc)), ",")(0)), ")")(0))), "'", ""), """", "")
+            'vbType = LTrim(RTrim(Split(Reverse(Split(Reverse(RTrim(lFunc)), ",")(0)), ")")(0)))
+            vbType = IIf(Left(vbType, 2) = "vb", Right(vbType, Len(vbType) - 2), vbType)
+            'Printf "VBTYPE: {" & vbType & "} tn(el)=(" & TypeName(el) & ")"
+            wArray = Append(wArray, TypeName(el) = vbType) ' Replace(lFunc, aFunc, q & el & q))
+        Else
+            Printf "ELSE"
+            Printf "el <" & Printf(el, False) & ">, t=<" & TypeName(el) & ">"
+            Printf "<" & Printf(Q & Printf(el, False) & Q, False) & ">"
+            Printf "?eval(" & Replace(lFunc, aFunc, Q & Printf(el, False) & Q) & ")"
+            Dim w As Variant
+            'w = Eval("'" & Replace(lFunc, aFunc, q & el & q) & "'")
+            w = Eval(Replace(lFunc, aFunc, Q & el & Q))
+            wArray = Append(wArray, w)
+        End If
+    '        i = i + 1
+    Next el
+    'Printf "HERE 2"
+    Printf wArray
+    'Printf "HERE 3"
+    Map = wArray
+    GoTo CleanExit
+    
+FuncNotApplicable:
+    'On Error GoTo 0
+    idxLambda1 = InStr(1, funcString, "lambda")
+    idxColon1 = InStr(1, funcString, ":")
+    idxLambda2 = InStr(idxLambda1 + 1, funcString, "lambda")
+    idxColon2 = InStr(idxColon1 + 1, funcString, ":")
+    
+    funcString = LCase(funcString)
+    If idxLambda1 <> 0 And idxLambda1 < idxColon1 And ((idxLambda2 + idxColon2) = 0) Then
+        Resume TryLambda
+    End If
+    
+    Resume CleanExit
+    
+    'Dim msg As String
+    'msg = "Error, cannot apply function '" & funcString & "' to all elements in this list"
+    'Err.Raise Err.Number, Err.Source, Err.Description & vbNewLine & vbNewLine & vbTab & "Details:" & vbNewLine & vbNewLine & msg
+    'Resume CleanExit
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Count
+' Author    : Avery Briggs
+' Purpose   : Count how many occurences of an element occur in an array, string or dictionary object.
+'             Pass an array as the 'target' to sum the results after recursively counting all target's occurences.
+'
+' Usage:
+' ~~~~~~
+' printf count(range(3), array(-1, -4, -4, -5, -7))  ' => 0
+' printf count(range(3), array(1))  ' => 1
+' printf count(range(3), array(0, 1))  ' => 2
+' printf count(range(3), 1)  ' => 1
+' printf count(ifori(3, 10), 3)  ' => 10
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-05                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Count(ByVal srcArray As Variant, ByVal target As Variant, Optional ByVal unpackTarget As Boolean = True) As Long
+
+    If Not IsInstance(srcArray, Array(vbString, vbArray, "Dictionary")) Then
+        Err.Raise vbObjectError, "Count", "Error, cannot count elements in a non-String, non-Dictionary or non-Array Object"
+    End If
+    
+    Dim lb As Long
+    Dim ub As Long
+    Dim i As Long
+    Dim C As Long
+    C = 0
+    
+    If IsArray(target) And unpackTarget Then
+        
+        If IsArrayEmpty(target) Then
+            Err.Raise vbObjectError, "Count", "Error, cannot count elements without a target."
+        End If
+    
+        lb = LBound(target)
+        ub = UBound(target)
+        For i = lb To ub
+            C = C + Count(srcArray, target(i), unpackTarget:=False)
+        Next i
+        
+    Else
+        
+        If IsArray(srcArray) Then
+        
+            If UBound(srcArray) < 0 Then
+                C = 0
+            Else
+                
+                lb = LBound(srcArray)
+                ub = UBound(srcArray)
+                For i = lb To ub
+                    C = C + IIf(Equal(srcArray(i), target), 1, 0)
+                Next i
+            End If
+            
+        ElseIf IsInstance(srcArray, vbString) Then
+            If Len(srcArray) = 0 Then
+                C = 0
+            Else
+                lb = 0
+                ub = Len(srcArray)
+                For i = lb To ub
+                    C = C + IIf(Equal(Mid(srcArray, i, 1), target), 1, 0)
+                Next i
+            End If
+            
+        Else
+            Dim key As Variant
+            For Each key In srcArray.keys
+                C = C + IIf(Equal(key, target), 1, 0)
+            Next key
+        End If
+    End If
+    
+    Count = C
+
+End Function
+
+
+Public Function Average(ByVal arr As Variant) As Double
+
+    Dim i As Long
+    Dim lb As Long
+    Dim ub As Long
+    Dim val As Variant
+    Dim tot As Double
+
+    If IsArray(arr) Then
+        If IsArrayEmpty(arr) Then
+            Err.Raise vbObjectError, "Average", "Error, cannot compute the average of an empty array."
+        End If
+        
+        lb = LBound(arr)
+        ub = UBound(arr)
+        tot = 0
+        For i = lb To ub
+            val = arr(i)
+            If Not IsInstance(val, Array(vbSingle, vbInteger, vbLong, vbDouble, vbBoolean)) Then
+                Err.Raise vbObjectError, "Average", "Error, cannot compute the average of an array that has a value of type '" & TypeName(val) & "'."
+            End If
+            tot = tot + val
+            'printf "tot=(" & tot & "), val=(" & val & ")"
+        Next i
+        
+        Average = tot / (ub + 1)
+        Exit Function
+    Else
+        Err.Raise vbObjectError, "Average", "Error, cannot compute the average of an non-array object."
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Mode
+' Author    : Avery Briggs
+' Purpose   : Determine the most common elements in an array.
+'
+' Usage:
+' ~~~~~~
+' printf mode(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1))      ' => [1]
+' printf mode(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1,2,2))  ' => [1, 2]
+' printf mode(range(12))                                     ' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2024-08-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Mode(ByVal arr As Variant) As Variant
+
+    Dim dictCounts As Variant
+    Dim result As Variant
+    Dim val As Variant
+    Dim maxCount As Long
+    Set dictCounts = Dictionary()
+    result = Array()
+    maxCount = 0
+    
+    Dim i As Long
+    i = LBound(arr)
+    For Each val In arr
+        If IsNull(dictCounts(val)) Then
+            dictCounts(val) = 0
+        End If
+        dictCounts(val) = dictCounts(val) + 1
+        maxCount = Max(maxCount, dictCounts(val))
+    Next val
+    
+    For Each val In dictCounts
+        If dictCounts(val) = maxCount Then
+            result = Append(result, val)
+        End If
+    Next val
+    
+    Mode = result
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Median
+' Author    : Avery Briggs
+' Purpose   : Determine the most common elements in an array.
+'
+' Usage:
+' ~~~~~~
+' printf Median(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1))                       ' => [2]
+' printf Median(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1), sortArr:=False)       ' => [1]
+' printf Median(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1,2,2))                   ' => [2]
+' printf Median(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1,2,2), sortArr:=False)   ' => [1]
+' printf Median(range(12))                                                      ' => [5, 6]
+' printf median("avery")                                                        ' => ['r']
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2024-08-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Median( _
+    ByVal arr As Variant, _
+    Optional ByVal sortArr As Boolean = True _
+) As Variant
+
+    If VarType(arr) = vbString Then
+        arr = Str2Array(arr)
+    End If
+    
+    If Not IsArray(arr) Then
+        Err.Raise vbObjectError, "Median", "Param 'arr' must be a string or array."
+    End If
+
+    Dim temp As Variant
+    temp = Copy(arr)
+    
+    If sortArr Then
+        Call QSortInPlace(temp)
+    End If
+    
+    Dim n As Long
+    n = UBound(temp) + 1
+    'Printf "n: <" & n & ">"
+    
+    If n Mod 2 = 1 Then
+        Median = Array(temp(CInt(n / 2)))
+    Else
+        Median = Slice(temp, CInt(n / 2) - 1, CInt(n / 2) + 1)
+    End If
+
+End Function

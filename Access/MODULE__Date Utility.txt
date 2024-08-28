@@ -1,0 +1,290 @@
+Option Compare Database
+
+
+' General Date Utility Functions
+' Version...................1.02
+' Date................2024-03-14
+' Author(s).........Avery Briggs
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   Am_Pm                   -   return "AM"/"PM" for a time
+'   DateSuffix              -   return the appropriate suffix for a date's day. (1st, 2nd, 3rd)
+'   Datetime                -   return a date object with time, think python's datetime.datetime method
+'   Hourify                 -   return a times hour in 12-H format
+'   Round2Nearest5Minutes   -   round time to nearest 5 min increment
+'   DateFormat              -   return a neater date string
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+'---------------------------------------------------------------------------------------
+' Function : Am_Pm
+' Author    : Avery Briggs
+' Purpose   : Return "AM"/"PM" for a time
+'
+' Usage:
+' ~~~~~~
+' dim d as date
+' d = TimeSerial(15,6,6)
+' am_pm(d)  ' => "PM"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Am_Pm(ByVal dateIn As Date) As String
+
+    Am_Pm = IIf(DatePart("h", dateIn) >= 12, "PM", "AM")
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Round2Nearest5Minutes
+' Author    : Avery Briggs
+' Purpose   : round time to nearest a 5 minute increment.
+'
+' Usage:
+' ~~~~~~
+' dim d as date
+' d = timeserial(3,6,6)
+' round2Nearest5Minutes(d)  ' => 3:05:00 AM
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Round2Nearest5Minutes(ByVal dateIn As Date) As Date
+
+    Dim m As Integer
+    Dim h As Integer
+    Dim p As Integer
+    Dim Q As Integer
+    Dim X() As Integer
+    h = DatePart("h", dateIn)
+    m = DatePart("n", dateIn)
+    X = Divmod(m, 5)
+    p = X(0) * 5
+    Q = IIf(X(1) > 2, 5, 0)
+    p = p + Q
+    Round2Nearest5Minutes = Format(CStr(h) & ":" & Right("00" & CStr(p), 2), "Medium Time")
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Hourify
+' Author    : Avery Briggs
+' Purpose   : return a times hour in 12-H format.
+'
+' Usage:
+' ~~~~~~
+' dim d as date
+' d = dateserial(2023,6,6)
+' hourify(d)  ' => 12
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Hourify(ByVal timeIn As Date) As Integer
+
+    Dim X As Double
+    X = DatePart("h", timeIn)
+    If X > 12 Then
+        X = X Mod 12
+    End If
+    If X = 0 Then
+        X = 12
+    End If
+    
+    Hourify = X
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Datetime
+' Author    : Avery Briggs
+' Purpose   : return a time variable equal to parameterized year, month, day, hour, minute, and second values.
+'             Requires Year, Month, and Day at minimum.
+'             Think python's datetime.datetime method.
+'
+' Usage:
+' ~~~~~~
+' datetime(2023, 6, 6, 12, 35)  ' => 2023-06-22 12:35:00 PM
+' datetime(2023, 6, 31, 12, 35, 0, false)  ' => 2023-07-01 12:35:00 PM
+' datetime(2023, 6, 31, 12, 35, 0, true)  ' => ERROR
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+' 2         2024-03-14                  Added AssertValid as an optional parameter.
+'---------------------------------------------------------------------------------------
+Public Function Datetime( _
+    ByVal Year_ As Integer, _
+    ByVal Month_ As Integer, _
+    ByVal day_ As Integer, _
+    Optional ByVal Hour_ As Integer = 0, _
+    Optional ByVal Minute_ As Integer = 0, _
+    Optional ByVal Second_ As Integer = 0, _
+    Optional ByVal AssertValid As Boolean = False _
+    ) As Date
+    
+    ' When assertValid is set to false, you can take advantage of dateserial's rounding ability
+    ' i.e. dateserial(1995,2,31) => "1995-03-03"
+    ' Turn this off to assert that inavlid dates dont round.
+    
+    Datetime = DateSerial(Year_, Month_, day_) + TimeSerial(Hour_, Minute_, Second_)
+    
+    If AssertValid Then
+        If Not All(Array(Year_ = Year(Datetime), Month_ = Month(Datetime), day_ = Day(Datetime), Hour_ = Hour(Datetime), Minute_ = Minute(Datetime), Second_ = Second(Datetime))) Then
+            Err.Raise vbObjectError, "Datetime", "Parameters y=" & Year_ & ", m=" & Month_ & ", d=" & day_ & ", h=" & Hour_ & ", m=" & Minute_ & ", s=" & Second_ & " Do not represent a valid date."
+        End If
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : DateSuffix
+' Author    : Avery Briggs
+' Purpose   : Return a string can be used as a suffix when formatting dates.
+'             Can be used as a generic number formatter as well.
+'
+' Usage:
+' ~~~~~~
+' datesuffix(#2023-08-01#)  ' => "st"
+' datesuffix(#2023-08-02#)  ' => "nd"
+' datesuffix(#2023-08-03#)  ' => "rd"
+' datesuffix(#2023-08-04#)  ' => "th"
+' datesuffix(#2023-08-11#)  ' => "th"
+' datesuffix(#2023-08-21#)  ' => "st"
+' datesuffix(#2023-08-22#)  ' => "nd"
+' datesuffix(#2023-08-31#)  ' => "st"
+' datesuffix(1)             ' => "st"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-24                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function DateSuffix(ByVal date_ As Date) As String
+    
+    Dim day_ As Long
+    If Not IsInstance(date_, Array(vbDate, vbInteger, vbLong)) Then
+        Err.Raise vbObjectError, "DateSuffix", "Error not a valid date or day value."
+    Else:
+        If IsInstance(date_, vbDate) Then
+            day_ = Day(date_)
+        Else
+            day_ = date_
+        End If
+        
+        Dim s_day As String
+        Dim right_ As String
+        Dim secondLast As String
+        Dim lsd As Long
+        
+        s_day = Right("00" & CStr(day_), 2)
+        right_ = Right(s_day, 1)
+        lsd = Len(s_day)
+        secondLast = Mid(s_day, lsd - 1, 1)
+        
+        If right_ = "1" Then
+            res = "st"
+            If lsd > 1 Then
+                If secondLast = "1" Then
+                    res = "th"
+                End If
+            End If
+        ElseIf right_ = "2" Then
+            res = "nd"
+            If lsd > 1 Then
+                If secondLast = "1" Then
+                    res = "th"
+                End If
+            End If
+        ElseIf right_ = "3" Then
+            res = "rd"
+            If lsd > 1 Then
+                If secondLast = "1" Then
+                    res = "th"
+                End If
+            End If
+        Else:
+            res = "th"
+        End If
+        
+        DateSuffix = res
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : DateFormat
+' Author    : Avery Briggs
+' Purpose   : Return a string of a formatted date.
+'             Can also just return a list of values.
+'
+' Usage:
+' ~~~~~~
+' dateformat(#2024-06-12#)              ' => "Wednesday June 12th 2024"
+' dateformat(#2024-06-12#, 1)           ' => "Wednesday, June 12th, 2024"
+' dateformat(#2024-06-12#, 2)           ' => "Wednesday, June 12th"
+' dateformat(#2024-06-12#, 3)           ' => "Wednesday June 12th"
+' printf(dateformat(#2024-06-12#, -1))  ' => "['Wednesday', 'June', '12th', 2024]"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2024-06-12                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function DateFormat(ByVal dateIn As Date, Optional ByVal Mode As Integer = 0) As Variant
+
+    Dim y As Long
+    Dim d As Long
+    
+    Dim mN As String
+    Dim dN As String
+    Dim wN As String
+    
+    y = Year(dateIn)
+    d = Day(dateIn)
+    mN = MonthName(Month(dateIn))
+    dN = d & DateSuffix(dateIn)
+    wN = WeekdayName(Weekday(dateIn))
+    
+    Dim values As Variant
+    values = Array(wN, mN, dN, y)
+    
+    If Mode = -1 Then
+        ' Return list of string values
+        DateFormat = values
+    ElseIf Mode = 1 Then
+        ' Comma delimitted a little nicer
+        DateFormat = wN & ", " & mN & " " & dN & ", " & y
+    ElseIf Mode = 2 Then
+        ' No year, with comma
+        DateFormat = wN & ", " & mN & " " & dN
+    ElseIf Mode = 3 Then
+        ' No year, withOUT comma
+        values = Remove(values, y)
+        DateFormat = Join(values, " ")
+    Else
+        ' Base case (0)
+        DateFormat = Join(values, " ")
+    End If
+
+End Function
