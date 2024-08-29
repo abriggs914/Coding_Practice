@@ -8,6 +8,8 @@ from streamlit_extras.card import card
 import streamlit as st
 import pandas as pd
 
+from utility import number_suffix
+
 
 # @st.cache_data
 def query_player(pid: int) -> str:
@@ -104,27 +106,94 @@ def new_jersey_preview():
     st.session_state.njp_pl_num = pl_num
 
     if not pd.isna(nhl_api_pid):
-        with njp_gc[6]:
-            # json_result = query_player(int(nhl_api_pid))
-            if nhl_api_pid not in loaded_nhl_player_data:
-                print(f"SLOW RETRIEVAL")
-                json_result = query_player(int(nhl_api_pid))
-            else:
-                print(f"FAST RETRIEVAL")
-                json_result = loaded_nhl_player_data[nhl_api_pid]
-            # print(f"{json_result=}")
+        # json_result = query_player(int(nhl_api_pid))
+        if nhl_api_pid not in loaded_nhl_player_data:
+            print(f"SLOW RETRIEVAL")
+            json_result = query_player(int(nhl_api_pid))
+        else:
+            print(f"FAST RETRIEVAL")
+            json_result = loaded_nhl_player_data[nhl_api_pid]
+        # print(f"{json_result=}")
 
-            path_team = json_result.get("teamLogo")
-            path_headshot = json_result.get("headshot")
-            path_hero_shot = json_result.get("heroImage")
-            if path_headshot:
-                image_cols = st.columns(3)
-                with image_cols[0]:
-                    st.image(path_team, caption=f"{pl_first} {pl_last}")
-                with image_cols[1]:
-                    st.image(path_hero_shot, caption=f"{pl_first} {pl_last}")
-                with image_cols[2]:
-                    st.image(path_headshot, caption=f"{pl_first} {pl_last}")
+        path_team_logo = json_result.get("teamLogo")
+        path_headshot_logo = json_result.get("headshot")
+        path_hero_shot_logo = json_result.get("heroImage")
+
+        pl_name_first = json_result.get("firstName", dict()).get("default", pl_first)
+        pl_name_last = json_result.get("lastName", dict()).get("default", pl_last)
+        pl_number = json_result.get("sweaterNumber", pl_num)
+        pl_position = json_result.get("position")
+        pl_shoots_catches = json_result.get("shootsCatches")
+        pl_height_inch = json_result.get("heightInInches")
+        pl_height_cent = json_result.get("heightInCentimeters")
+        pl_weight_lb = json_result.get("weightInPounds")
+        pl_weight_kg = json_result.get("weightInKilograms")
+        pl_is_active = json_result.get("isActive")
+        pl_dob = json_result.get("birthDate")
+        pl_birth_city = json_result.get("birthCity", dict()).get("default")
+        pl_birth_province = json_result.get("birthStateProvince", dict()).get("default")
+        pl_birth_country = json_result.get("birthCountry")
+        pl_in_HHOF = json_result.get("inHHOF")
+
+        draft_year = json_result.get("draftDetails", dict()).get("year")
+        draft_team_abbrev = json_result.get("draftDetails", dict()).get("teamAbbrev")
+        draft_round = json_result.get("draftDetails", dict()).get("round")
+        draft_pick_in_round = json_result.get("draftDetails", dict()).get("pickInRound")
+        draft_overall_pick = json_result.get("draftDetails", dict()).get("overallPick")
+
+        team_id = json_result.get("currentTeamId")
+        team_abbrev = json_result.get("currentTeamAbbrev")
+        team_name = json_result.get("fullTeamName", dict()).get("default")
+        team_name_fr = json_result.get("fullTeamName", dict()).get("fr", team_name)
+        team_common_name = json_result.get("teamCommonName", dict()).get("default")
+        team_place_name = json_result.get("teamPlaceNameWithPreposition", dict()).get("default")
+        team_place_name_fr = json_result.get("teamPlaceNameWithPreposition", dict()).get("fr", team_place_name)
+
+        with njp_gc[7]:
+            njp_gc_cols = st.columns(2)
+            with njp_gc_cols[0]:
+                if path_headshot_logo:
+                    st.image(
+                        path_headshot_logo,
+                        caption=f"{pl_first} {pl_last}"
+                    )
+                njp_gc_cols_0 = st.columns(2)
+                with njp_gc_cols_0[0]:
+                    st.write(f"#{pl_number}")
+                with njp_gc_cols_0[1]:
+                    st.write(f"Active: {pl_is_active}")
+                st.write(f"{pl_name_first} {pl_name_last}")
+
+            with njp_gc_cols[1]:
+                njp_gc_cols_1 = st.columns(3)
+                if path_team_logo:
+                    with njp_gc_cols_1[0]:
+                        st.image(
+                            path_team_logo,
+                            caption=team_name
+                        )
+                    with njp_gc_cols_1[1]:
+                        st.write(f"Position: {pl_position}")
+                    with njp_gc_cols_1[2]:
+                        if pl_position == "G":
+                            st.write(f"catches: {pl_shoots_catches}")
+                        else:
+                            st.write(f"shoots: {pl_shoots_catches}")
+
+                njp_gc_cols_2 = st.columns(2)
+                with njp_gc_cols_2[0]:
+                    # st.write(f"{pl_height_inch}\"")
+                    st.write(f"{pl_height_inch // 12}' {pl_height_inch - (12 * (pl_height_inch // 12))}\"")
+                with njp_gc_cols_2[1]:
+                    st.write(f"{pl_weight_lb} lbs")
+                st.write(f"{pl_dob}")
+                st.write(f"{pl_birth_city}, {pl_birth_province}, {pl_birth_country}")
+                st.write(f"In Hockey HOF: {bool(pl_in_HHOF)}")
+                st.write(f"Drafted in {draft_year}")
+                st.write(f"{draft_overall_pick}{number_suffix(draft_overall_pick)} Overall ({draft_pick_in_round}{number_suffix(draft_pick_in_round)} pick {draft_round}{number_suffix(draft_round)} Round)")
+
+            if path_hero_shot_logo:
+                st.image(path_hero_shot_logo, caption=f"{pl_first} {pl_last}")
             st.json(json_result)
 
     update_njp_image()
@@ -176,6 +245,14 @@ def random_jersey():
     print(f"{rj}")
 
 
+@st.cache_data
+def load_excel_dfs():
+    return pd.read_excel(
+        r"D:\NHL Jerseys.xlsm",
+        sheet_name=list(range(8))
+    )
+
+
 if __name__ == '__main__':
 
     st.set_page_config(
@@ -203,10 +280,7 @@ if __name__ == '__main__':
         if k not in st.session_state:
             st.session_state.setdefault(k, v)
 
-    excel_dfs = pd.read_excel(
-        r"D:\NHL Jerseys.xlsm",
-        sheet_name=list(range(8))
-    )
+    excel_dfs = load_excel_dfs()
 
     excel_dfs_keys = list(excel_dfs.keys())
 
@@ -267,6 +341,7 @@ if __name__ == '__main__':
         st.columns(3),
         st.columns(3),
         st.columns(2),
+        st.columns(1),
         st.divider(),
         st.expander(label="NHL Data", expanded=False)
     ]
@@ -338,19 +413,21 @@ if __name__ == '__main__':
             )
 
         img = Image.open(st.session_state.njp_img_path).rotate(-90)
-        njp_img = st.image(
-            image=img,
-            caption=st.session_state.njp_img_cap
-        )
-
         n = st.session_state.njp_img_idx + 1
         m = st.session_state.njp_img_max_idx + 1
-        st.markdown(f"{n} / {m} image" + ("" if m == 1 else "s"))
+        with njp_gc[5][0]:
+            njp_img = st.image(
+                image=img,
+                caption=st.session_state.njp_img_cap
+            )
+
+            st.markdown(f"{n} / {m} image" + ("" if m == 1 else "s"))
 
     else:
-        with njp_gc[6]:
-            # st.json({"VALUE": f"Nothing Yet {datetime.datetime.now():%x %X}"})
-            st.json({"VALUE": f"Nothing Yet"})
+        if st.session_state.njp_last_id is None:
+            with njp_gc[7]:
+                # st.json({"VALUE": f"Nothing Yet {datetime.datetime.now():%x %X}"})
+                st.json({"VALUE": f"Nothing Yet"})
 
     expander = st.expander(
         label=f"General Stats"
