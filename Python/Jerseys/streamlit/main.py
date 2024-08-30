@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import os.path
 import random
 
 import requests
@@ -9,10 +10,25 @@ import streamlit as st
 import pandas as pd
 
 from colour_utility import Colour
+from location_utility import address_to_coords
 from utility import number_suffix
 
 def_colour_text = Colour("#FFFFFF")
 
+
+def decode_position(position_code: str) -> str:
+    match position_code.lower():
+        case "g": return "Goalie"
+        case "c": return "Center"
+        case "l": return "Left_wing"
+        case "r": return "Right_wing"
+        case "d": return "Defence"
+        case _: return position_code
+
+
+@st.cache_data(show_spinner=False)
+def query_lat_long(address):
+    return address_to_coords(pl_address)
 
 # @st.cache_data
 def query_player(pid: int) -> str:
@@ -121,6 +137,8 @@ def new_jersey_preview():
     st.session_state.njp_pl_last = pl_last
     st.session_state.njp_pl_num = pl_num
 
+    st.toast(f"#{pl_num} {pl_first} {pl_last}")
+
     if not pd.isna(nhl_api_pid):
         # json_result = query_player(int(nhl_api_pid))
         if nhl_api_pid not in loaded_nhl_player_data:
@@ -149,6 +167,7 @@ def new_jersey_preview():
         pl_birth_city = json_result.get("birthCity", dict()).get("default")
         pl_birth_province = json_result.get("birthStateProvince", dict()).get("default")
         pl_birth_country = json_result.get("birthCountry")
+
         pl_in_HHOF = json_result.get("inHHOF")
 
         draft_year = json_result.get("draftDetails", dict()).get("year")
@@ -165,17 +184,77 @@ def new_jersey_preview():
         team_place_name = json_result.get("teamPlaceNameWithPreposition", dict()).get("default")
         team_place_name_fr = json_result.get("teamPlaceNameWithPreposition", dict()).get("fr", team_place_name)
 
+        featured_stats = json_result.get("featuredStats", dict())
+        career_totals = json_result.get("careerTotals", dict())
+        last_5_games = json_result.get("last5Games", list())
+        season_totals = json_result.get("seasonTotals", list())
+        current_team_roster = json_result.get("currentTeamRoster", list())
+
+        cols_season_totals = [
+            "season",
+            "leagueAbbrev",
+            "teamName"
+            "gamesTypeId",
+            "goals",
+            "assists",
+            "points",
+            "gamesPlayed",
+            "plusMinus",
+            "powerPlayGoals",
+            "shortHandedGoals",
+            "pim"
+        ]
+        data_season_totals = list()
+        data_playoff_totals = list()
+        data_unknown_totals = list()
+        for i, data in enumerate(season_totals):
+            if data["gameTypeId"] == 2:
+                # season
+                data_totals = data_season_totals
+            elif data["gameTypeId"] == 3:
+                # playoffs
+                data_totals = data_playoff_totals
+            else:
+                # figure these ones out
+                data_totals = data_unknown_totals
+            data_totals.append({
+                "Season": data["season"],
+                "League": data["leagueAbbrev"],
+                "Team": data["teamName"]["default"],
+                "G": data["goals"],
+                "A": data["assists"],
+                "PTS": data["points"],
+                "GP": data["gamesPlayed"],
+                "+/-": data.get("plusMinus", "-"),
+                "PPG": data.get("powerPlayGoals", "-"),
+                "SHG": data.get("shortHandedGoals", "-"),
+                "PIM": data.get("pim", "-")
+            })
+
+        data_season_totals.sort(key=lambda d: d["Season"])
+        data_playoff_totals.sort(key=lambda d: d["Season"])
+        data_unknown_totals.sort(key=lambda d: d["Season"])
+
+        df_season_totals = pd.DataFrame(data_season_totals)
+        df_playoff_totals = pd.DataFrame(data_playoff_totals)
+        df_unknown_totals = pd.DataFrame(data_unknown_totals)
+
+        st.dataframe(df_season_totals)
+        st.dataframe(df_playoff_totals)
+        st.dataframe(df_unknown_totals)
+
         with njp_gc[7]:
             st.dataframe(df_team)
 
             if team_colours:
                 cols_team_colours = st.columns(len(team_colours))
                 for i, colour in enumerate(team_colours):
+                    fg = Colour(colour).font_foreground(rgb=False)
                     with cols_team_colours[i]:
                         st.markdown(
                             f"""
                             <div style='background-color: {colour}; padding: 10px; border-radius: 5px;'>
-                                This is a container with a light gray background.
+                                <h3 style='color: {fg}'>{colour}</h3>
                             </div>
                             """,
                             unsafe_allow_html=True
@@ -185,33 +264,44 @@ def new_jersey_preview():
 
             njp_gc_cols = st.columns(2)
             with njp_gc_cols[0]:
-                if path_headshot_logo:
-                    st.image(
-                        path_headshot_logo,
-                        caption=f"{pl_first} {pl_last}"
-                    )
-                njp_gc_cols_0 = st.columns(2)
+                njp_gc_cols_a = st.columns(2)
+                with njp_gc_cols_a[0]:
+                    if path_headshot_logo:
+                        st.image(
+                            path_headshot_logo,
+                            caption=f"{pl_first} {pl_last}"
+                        )
+                with njp_gc_cols_a[1]:
+                    if path_hero_shot_logo:
+                        st.image(
+                            path_hero_shot_logo
+                            # ,
+                            # caption=f"{pl_first} {pl_last}"
+                        )
+                njp_gc_cols_0 = st.columns(4)
                 with njp_gc_cols_0[0]:
                     st.write(f"#{pl_number}")
                 with njp_gc_cols_0[1]:
+                    st.write(f"{decode_position(pl_position)}")
+                with njp_gc_cols_0[2]:
+                    if pl_position == "G":
+                        st.write(f"catches: {pl_shoots_catches}")
+                    else:
+                        st.write(f"shoots: {pl_shoots_catches}")
+                with njp_gc_cols_0[3]:
                     st.write(f"Active: {pl_is_active}")
                 st.write(f"{pl_name_first} {pl_name_last}")
 
             with njp_gc_cols[1]:
-                njp_gc_cols_1 = st.columns(3)
+                # njp_gc_cols_1 = st.columns(3)
                 if path_team_logo:
-                    with njp_gc_cols_1[0]:
-                        st.image(
-                            path_team_logo,
-                            caption=team_name
-                        )
-                    with njp_gc_cols_1[1]:
-                        st.write(f"Position: {pl_position}")
-                    with njp_gc_cols_1[2]:
-                        if pl_position == "G":
-                            st.write(f"catches: {pl_shoots_catches}")
-                        else:
-                            st.write(f"shoots: {pl_shoots_catches}")
+                    # with njp_gc_cols_1[0]:
+                    st.image(
+                        path_team_logo,
+                        caption=team_name
+                    )
+                    # with njp_gc_cols_1[1]:
+
 
                 njp_gc_cols_2 = st.columns(2)
                 with njp_gc_cols_2[0]:
@@ -223,11 +313,14 @@ def new_jersey_preview():
                 st.write(f"{pl_birth_city}, {pl_birth_province}, {pl_birth_country}")
                 st.write(f"In Hockey HOF: {bool(pl_in_HHOF)}")
                 st.write(f"Drafted in {draft_year}")
-                st.write(
-                    f"{draft_overall_pick}{number_suffix(draft_overall_pick)} Overall ({draft_pick_in_round}{number_suffix(draft_pick_in_round)} pick {draft_round}{number_suffix(draft_round)} Round)")
+                if draft_overall_pick:
+                    st.write(
+                        f"{draft_overall_pick}{number_suffix(draft_overall_pick)} Overall ({draft_pick_in_round}{number_suffix(draft_pick_in_round)} pick {draft_round}{number_suffix(draft_round)} Round)")
+                else:
+                    st.write("Undrafted")
 
-            if path_hero_shot_logo:
-                st.image(path_hero_shot_logo, caption=f"{pl_first} {pl_last}")
+            # if path_hero_shot_logo:
+            #     st.image(path_hero_shot_logo, caption=f"{pl_first} {pl_last}")
             st.json(json_result)
 
     update_njp_image()
@@ -243,6 +336,8 @@ def update_njp_image():
     if not df_njp_img.empty:
         img_idx = st.session_state.njp_img_idx
         path = df_njp_img.iloc[img_idx]["Path"]
+        if not os.path.exists(path):
+            path = None
         cap = df_njp_img.iloc[img_idx]["NoImageText"]
         st.session_state.njp_img_path = path
         st.session_state.njp_img_cap = cap
@@ -281,10 +376,22 @@ def random_jersey():
 
 @st.cache_data
 def load_excel_dfs():
-    return pd.read_excel(
-        r"D:\NHL Jerseys.xlsm",
-        sheet_name=list(range(8))
-    )
+    if os.path.exists(r"D:\NHL Jerseys.xlsm"):
+        return pd.read_excel(
+            r"D:\NHL Jerseys.xlsm",
+            sheet_name=list(range(8))
+        )
+    else:
+        if os.path.exists(r"C:\Users\abriggs\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202408280337.xlsm"):
+            return pd.read_excel(
+                r"C:\Users\abriggs\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202408280337.xlsm",
+                sheet_name=list(range(8))
+            )
+        else:
+            return pd.read_excel(
+                r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202408280337.xlsm",
+                sheet_name=list(range(8))
+            )
 
 
 if __name__ == '__main__':
@@ -345,8 +452,40 @@ if __name__ == '__main__':
     )
 
     loaded_nhl_player_data = load_all_nhl_player_data()
+    for nhl_api_key, json_data in loaded_nhl_player_data.items():
+
+        pl_name_first = json_data.get("firstName", dict()).get("default")
+        pl_name_last = json_data.get("lastName", dict()).get("default")
+
+        if pl_name_first and pl_name_last:
+            pl_birth_city = json_data.get("birthCity", dict()).get("default", "")
+            pl_birth_province = json_data.get("birthStateProvince", dict()).get("default", "")
+            pl_birth_country = json_data.get("birthCountry", "")
+
+            for sn, ln in (
+                    ("CAN", "Canada"),
+                    ("SLO", "Slovakia"),
+                    ("SWE", "Sweden"),
+                    ("FIN", "Finland"),
+                    ("SUI", "Switzerland"),
+                    ("GER", "Germany"),
+                    ("RUS", "Russia")
+            ):
+                pl_birth_country = pl_birth_country.replace(sn, ln)
+            pl_address = f"{pl_birth_city}, {pl_birth_province}, {pl_birth_country}"
+            pl_address = pl_address.replace(", , ", ", ")
+
+            if pl_address.strip().removeprefix(",").removesuffix(",").strip():
+                pl_coords = query_lat_long(pl_address)
+                # set all rows that match 'PlayerFirst' and 'PlayerLast' in 'df_nhl_jerseys' with the new address
+                df_nhl_jerseys.loc[
+                    (df_nhl_jerseys["PlayerFirst"] == pl_name_first)
+                    & (df_nhl_jerseys["PlayerLast"] == pl_name_last),
+                    ["latitude", "longitude", "birthCity", "birthStateProvince", "birthCountry", "address"]
+                ] = (*pl_coords, pl_birth_city, pl_birth_province, pl_birth_country, pl_address)
 
     # Begin Widgets
+    st.dataframe(df_nhl_jerseys)
     st.dataframe(df_nhl_jerseys_owned)
     st.dataframe(df_nhl_jerseys_images)
 
@@ -370,14 +509,20 @@ if __name__ == '__main__':
     )
 
     njp_gc = [
+
+        # 0
         st.columns(3),
         st.divider(),
         st.columns(3),
         st.columns(3),
         st.columns(2),
+
+        # 5
         st.columns(1),
         st.divider(),
-        st.expander(label="NHL Data", expanded=False)
+        st.expander(label="NHL Data", expanded=False),
+        st.divider(),
+        st.columns(1)
     ]
 
     with njp_gc[0][0]:
@@ -462,6 +607,12 @@ if __name__ == '__main__':
             with njp_gc[7]:
                 # st.json({"VALUE": f"Nothing Yet {datetime.datetime.now():%x %X}"})
                 st.json({"VALUE": f"Nothing Yet"})
+
+    with njp_gc[9][0]:
+        lat_long_cols = ["latitude", "longitude"]
+        df_lat_long: pd.DataFrame = df_nhl_jerseys[lat_long_cols].dropna(subset=lat_long_cols)
+        df_lat_long.drop_duplicates(subset=lat_long_cols)
+        st.map(df_lat_long)
 
     expander = st.expander(
         label=f"General Stats"
