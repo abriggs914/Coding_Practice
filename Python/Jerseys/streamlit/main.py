@@ -8,7 +8,10 @@ from streamlit_extras.card import card
 import streamlit as st
 import pandas as pd
 
+from colour_utility import Colour
 from utility import number_suffix
+
+def_colour_text = Colour("#FFFFFF")
 
 
 # @st.cache_data
@@ -94,6 +97,19 @@ def new_jersey_preview():
     pl_first = df_njp["PlayerFirst"]
     pl_last = df_njp["PlayerLast"]
     nhl_api_pid = df_njp["NHL_API_PlayerID"]
+    df_team = df_nhl_teams.loc[df_nhl_teams["FullTeamName"] == team]
+    team_colours = list()
+    if not df_team.empty:
+        columns = ["Colour_1", "Colour_2", "Colour_3", "Colour_4", "Colour_5", "Colour_6"]
+        df_cols = df_team[columns]
+        print(f"df_cols:\n{df_cols}")
+        for col in columns:
+            lst = df_cols[col].dropna().values.tolist()
+            print(f"{col=}, {lst=}")
+            if lst:
+                team_colours.append(lst[0])
+    else:
+        print(f"df_teams is empty")
 
     print(f"{brand=}, {make=}, {team=}, {pl_num=}, {pl_first=}, {pl_last=}")
 
@@ -150,6 +166,23 @@ def new_jersey_preview():
         team_place_name_fr = json_result.get("teamPlaceNameWithPreposition", dict()).get("fr", team_place_name)
 
         with njp_gc[7]:
+            st.dataframe(df_team)
+
+            if team_colours:
+                cols_team_colours = st.columns(len(team_colours))
+                for i, colour in enumerate(team_colours):
+                    with cols_team_colours[i]:
+                        st.markdown(
+                            f"""
+                            <div style='background-color: {colour}; padding: 10px; border-radius: 5px;'>
+                                This is a container with a light gray background.
+                            </div>
+                            """,
+                            unsafe_allow_html=True
+                        )
+            else:
+                st.write(f"Could not fetch team colours.")
+
             njp_gc_cols = st.columns(2)
             with njp_gc_cols[0]:
                 if path_headshot_logo:
@@ -190,7 +223,8 @@ def new_jersey_preview():
                 st.write(f"{pl_birth_city}, {pl_birth_province}, {pl_birth_country}")
                 st.write(f"In Hockey HOF: {bool(pl_in_HHOF)}")
                 st.write(f"Drafted in {draft_year}")
-                st.write(f"{draft_overall_pick}{number_suffix(draft_overall_pick)} Overall ({draft_pick_in_round}{number_suffix(draft_pick_in_round)} pick {draft_round}{number_suffix(draft_round)} Round)")
+                st.write(
+                    f"{draft_overall_pick}{number_suffix(draft_overall_pick)} Overall ({draft_pick_in_round}{number_suffix(draft_pick_in_round)} pick {draft_round}{number_suffix(draft_round)} Round)")
 
             if path_hero_shot_logo:
                 st.image(path_hero_shot_logo, caption=f"{pl_first} {pl_last}")
