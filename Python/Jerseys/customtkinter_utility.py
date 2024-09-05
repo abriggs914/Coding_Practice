@@ -84,7 +84,7 @@ def calc_geometry_tl(
     monitors = get_largest_monitors()
 
     if dims is None:
-        # monitors_lr = sorted(list(monitors), key=lambda m: m.x)
+        # monitors_lr = sorted(list(monitors), ss_key=lambda m: m.x)
         if isinstance(largest, bool) and largest:
             monitor = monitors[0]
             largest = 1
@@ -1323,7 +1323,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
 
         for k, scheme_data in colour_scheme_month.items():
             if not isinstance(k, int):
-                raise ValueError(f"Param 'colour_scheme_month' must only have integer key. Got '{k}'")
+                raise ValueError(f"Param 'colour_scheme_month' must only have integer ss_key. Got '{k}'")
             if not (0 <= k < 12):
                 raise ValueError(f"Param 'colour_scheme_month' must only have integer keys between 0 and 11. Got '{k}'")
             if not isinstance(scheme_data, dict):
@@ -1332,7 +1332,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
             for k_style, v in scheme_data.items():
                 if k_style not in valid_style_keys:
                     raise ValueError(
-                        f"Style key '{k_style}' is not recognized. Must be an one of: {', '.join(valid_style_keys)}")
+                        f"Style ss_key '{k_style}' is not recognized. Must be an one of: {', '.join(valid_style_keys)}")
                 try:
                     col = Colour(v)
                 except Colour.ColourCreationError:
@@ -1647,7 +1647,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
 
         if key not in valid_style_keys:
             if key_n not in valid_style_keys:
-                raise ValueError(f"Key '{key}' is not recognized as a valid colour key.")
+                raise ValueError(f"Key '{key}' is not recognized as a valid colour ss_key.")
 
         val = ds.get(key)
 
@@ -1661,7 +1661,7 @@ class CalendarCanvas2(ctk.CTkCanvas):
         if not val:
             try:
                 val_b = None
-                # print(f"{key=}, {key_b=}, {key_n=}")
+                # print(f"{ss_key=}, {key_b=}, {key_n=}")
                 if key != key_b:
                     print(f'O -- {val=}')
                     val_b = ds.get(key_b)
@@ -2094,7 +2094,7 @@ def button_factory(master, tv_btn=None, kwargs_btn=None, command=None):
                           dict), f"Error param 'kwargs_btn' must be a dict if not None. Got: '{kwargs_btn}'."
         if "command" in kwargs_btn and command is not None:
             raise KeyError(
-                f"Error, command key has already been passed in param 'kwargs_btn'. Please pass only one command.")
+                f"Error, command ss_key has already been passed in param 'kwargs_btn'. Please pass only one command.")
         elif command is not None:
             assert callable(command), "Error, param 'command' is not callable."
             kwargs_btn.update({"command": command})
@@ -2538,23 +2538,23 @@ class TreeviewController(ctk.CTkScrollableFrame):
                 key = k
             idx = order.index(key)
             checked.add(key)
-            # print(f"HERE {k=}, {key=}, {idx=}, {order_a=}")
-            # order_a.insert(idx, (key, k))
+            # print(f"HERE {k=}, {ss_key=}, {idx=}, {order_a=}")
+            # order_a.insert(idx, (ss_key, k))
             order_a[idx + 1] = (key, k)
 
         # print(f'B {order_a=}')
 
         for key in order_a:
-            # print(f"Analyzing COLUMN '{key}'")
+            # print(f"Analyzing COLUMN '{ss_key}'")
             key, k = key
-            # col_data = self.treeview.column(key)
+            # col_data = self.treeview.column(ss_key)
             # width = col_data.get("width_canvas")
             # width = int(width * self.p_width) if width is not None else 10
             width = 60
             x1, x2 = self.column_x(key)
             if k in self.aggregate_data:
                 # v = self.aggregate_data[k]
-                # tv = tkinter.StringVar(self, value=f"{key=}, {v=}")
+                # tv = tkinter.StringVar(self, value=f"{ss_key=}, {v=}")
                 tv = ctk.StringVar(self, value=self.calc_aggregate_value(key))
                 entry = ctk.CTkEntry(
                     self.frame_aggregate_row,
@@ -2564,7 +2564,7 @@ class TreeviewController(ctk.CTkScrollableFrame):
                     justify=tkinter.CENTER
                 )
             else:
-                # tv = tkinter.StringVar(self, value=f"{key=}, {v=}")
+                # tv = tkinter.StringVar(self, value=f"{ss_key=}, {v=}")
                 tv = tkinter.StringVar(self, value="")
                 entry = ctk.CTkEntry(
                     self.frame_aggregate_row,
@@ -2578,10 +2578,10 @@ class TreeviewController(ctk.CTkScrollableFrame):
                 (tv, entry, (x1, x2))
             )
 
-            # print(f"{key=}, {key=}, {v=}")
-            # # print(f"{self.treeview.bbox(column=key)=}, {type(self.treeview.bbox(key))=}")
-            # print(f"{self.treeview.column(key)=}, {type(self.treeview.column(key))=}")
-            # print(f"{self.treeview.heading(key)=}, {type(self.treeview.heading(key))=}")
+            # print(f"{ss_key=}, {ss_key=}, {v=}")
+            # # print(f"{self.treeview.bbox(column=ss_key)=}, {type(self.treeview.bbox(ss_key))=}")
+            # print(f"{self.treeview.column(ss_key)=}, {type(self.treeview.column(ss_key))=}")
+            # print(f"{self.treeview.heading(ss_key)=}, {type(self.treeview.heading(ss_key))=}")
 
         self.binding_treeview_b1_motion = self.treeview.bind("<B1-Motion>", self.check_column_width_update)
         self.binding_treeview_b1 = self.treeview.bind("<Button-1>", self.stop_row_idx_resize)

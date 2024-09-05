@@ -217,7 +217,7 @@ def text_size(txt):
 # l					-	Minimum number of chars in the content line.
 # 						Spaces between keys and values are populated by marker.
 # sep				-	Additional separation between keys and values.
-# marker			-	Char that separates the key and value of a content line.
+# marker			-	Char that separates the ss_key and value of a content line.
 # sort_header		-	Will alphabetically sort the header line if any value is a
 #						dictionary. Only one level of nesting supported.
 # min_encapsulation	-	If a table is necessary because of a value that is a
@@ -266,10 +266,10 @@ def dict_print(d, n="Untitled", number=False, l=15, sep=5, marker=".", sort_head
     for k1, v in has_dict:
         for k2 in v:
             key = str(k2)
-            # print("key: {k}".format(k=key))
+            # print("ss_key: {k}".format(k=ss_key))
             if key not in header:
                 if type(v) == dict:
-                    # print("\t\tNew key: {k}".format(k=key))
+                    # print("\t\tNew ss_key: {k}".format(k=ss_key))
                     header.append(key)
                     max_cell = max(max_cell, max(len(key), max([lenstr(value) for value in v.values()])))
                 # print("max_cell: {mc}".format(mc=max_cell))
@@ -1990,7 +1990,7 @@ def get_windows_user(EXTENDED_NAME_FORMAT: int = 3):
     print("NameDnsDomain          : ", get_data(12)) -> BWSDOMAIN.LOCAL\abriggs
 
     Use "all" or -1 to return a dictionary of all of the values.
-    Use an explicit key to return a single value, number or string (9, "NameCanonicalEx").
+    Use an explicit ss_key to return a single value, number or string (9, "NameCanonicalEx").
 
     https://stackoverflow.com/questions/21766954/how-to-get-windows-users-full-name-in-python
     """
@@ -2074,7 +2074,7 @@ def number_suffix(n):
 
 
 class Dict2Class:
-    """Sets a class attribute for every key in every dictionary recursively in a given dictionary."""
+    """Sets a class attribute for every ss_key in every dictionary recursively in a given dictionary."""
 
     def __init__(self, dictionary: dict):
 
@@ -2083,7 +2083,7 @@ class Dict2Class:
                 for key, value in d_.items():
                     new_key = f"{pref}_{key}".removeprefix("_")
                     if isinstance(value, dict):
-                        # print(f"{pref=}, {key=}")
+                        # print(f"{pref=}, {ss_key=}")
                         process(value, new_key)
                     else:
                         setattr(self, new_key, value)

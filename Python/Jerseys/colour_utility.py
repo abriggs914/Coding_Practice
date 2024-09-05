@@ -4035,7 +4035,7 @@ def get_colour_name(hx, name_only=True, r_type=dict, rgb=False, certainty_as_per
                         v = a * a + b * b + c * c  # simple measure for distance between colors
 
                         # v = (r1 - r2)^2 + (g1 - g2)^2 + (b1 - b2)^2
-                        # print(f"{key=}, {k=}, {v=}, {m=}")
+                        # print(f"{ss_key=}, {k=}, {v=}, {m=}")
 
                         if v < m:
                             m = v

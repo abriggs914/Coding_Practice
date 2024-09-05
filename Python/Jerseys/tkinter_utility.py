@@ -224,7 +224,7 @@ def button_factory(master, tv_btn=None, kwargs_btn=None, command=None):
                           dict), f"Error param 'kwargs_btn' must be a dict if not None. Got: '{kwargs_btn}'."
         if "command" in kwargs_btn and command is not None:
             raise KeyError(
-                f"Error, command key has already been passed in param 'kwargs_btn'. Please pass only one command.")
+                f"Error, command ss_key has already been passed in param 'kwargs_btn'. Please pass only one command.")
         elif command is not None:
             assert callable(command), "Error, param 'command' is not callable."
             kwargs_btn.update({"command": command})
@@ -480,9 +480,9 @@ class TreeviewExt(ttk.Treeview):
     #         if not isinstance(options, dict):
     #             raise TypeError(f"Error, 'options' must either be none or a dictionary, got '{type(options)}'.")
     #
-    #         key = self.keyify(item, column)
+    #         ss_key = self.keyify(item, column)
     #         self.colours.update({
-    #             key: {k: options[k] for k in self.col_keys if k in options}
+    #             ss_key: {k: options[k] for k in self.col_keys if k in options}
     #         })
     #
     #     print(f"{self.colours=}")
@@ -718,14 +718,14 @@ class TreeviewController(tkinter.Frame):
                 key = k
             idx = order.index(key)
             checked.add(key)
-            # print(f"HERE {k=}, {key=}, {idx=}, {order_a=}")
-            # order_a.insert(idx, (key, k))
+            # print(f"HERE {k=}, {ss_key=}, {idx=}, {order_a=}")
+            # order_a.insert(idx, (ss_key, k))
             order_a[idx + 1] = (key, k)
 
         # print(f'B {order_a=}')
 
         for key in order_a:
-            # print(f"Analyzing COLUMN '{key}'")
+            # print(f"Analyzing COLUMN '{ss_key}'")
             key, k = key
             col_data = self.treeview.column(key)
             width = col_data.get("width_canvas")
@@ -733,7 +733,7 @@ class TreeviewController(tkinter.Frame):
             x1, x2 = self.column_x(key)
             if k in self.aggregate_data:
                 # v = self.aggregate_data[k]
-                # tv = tkinter.StringVar(self, value=f"{key=}, {v=}")
+                # tv = tkinter.StringVar(self, value=f"{ss_key=}, {v=}")
                 tv = tkinter.StringVar(self, value=self.calc_aggregate_value(key))
                 entry = tkinter.Entry(
                     self.frame_aggregate_row,
@@ -743,7 +743,7 @@ class TreeviewController(tkinter.Frame):
                     justify=tkinter.CENTER
                 )
             else:
-                # tv = tkinter.StringVar(self, value=f"{key=}, {v=}")
+                # tv = tkinter.StringVar(self, value=f"{ss_key=}, {v=}")
                 tv = tkinter.StringVar(self, value="")
                 entry = tkinter.Entry(
                     self.frame_aggregate_row,
@@ -757,10 +757,10 @@ class TreeviewController(tkinter.Frame):
                 (tv, entry, (x1, x2))
             )
 
-            # print(f"{key=}, {key=}, {v=}")
-            # # print(f"{self.treeview.bbox(column=key)=}, {type(self.treeview.bbox(key))=}")
-            # print(f"{self.treeview.column(key)=}, {type(self.treeview.column(key))=}")
-            # print(f"{self.treeview.heading(key)=}, {type(self.treeview.heading(key))=}")
+            # print(f"{ss_key=}, {ss_key=}, {v=}")
+            # # print(f"{self.treeview.bbox(column=ss_key)=}, {type(self.treeview.bbox(ss_key))=}")
+            # print(f"{self.treeview.column(ss_key)=}, {type(self.treeview.column(ss_key))=}")
+            # print(f"{self.treeview.heading(ss_key)=}, {type(self.treeview.heading(ss_key))=}")
 
         self.binding_treeview_b1_motion = self.treeview.bind("<B1-Motion>", self.check_column_width_update)
         self.binding_treeview_b1 = self.treeview.bind("<Button-1>", self.stop_row_idx_resize)
@@ -1945,7 +1945,7 @@ class CustomMessageBox(tkinter.Toplevel):
         if isinstance(idx, str):
             idx = lstindex(self.btn_texts, idx)
             if idx is None:
-                raise ValueError(f"Error, key '{idx}' not found in this list.")
+                raise ValueError(f"Error, ss_key '{idx}' not found in this list.")
         lframe = eval(f"self.f{idx + 1}")
         # print(f"selecting {idx=}, {eval('self.B' + str(idx + 1))['text']=}, {lframe=}")
         lframe.configure(bg=self.btn_border_sel_colour)
@@ -2148,7 +2148,7 @@ class ScannableEntry(tkinter.Entry):
 
     def set_scan_pass_through(self):
         print(
-            f"WARNING, this forces all generic keyPress and Return key events through this widget.\nDo not use on a single form with multiple text / cell_is_entry input widgets.")
+            f"WARNING, this forces all generic keyPress and Return ss_key events through this widget.\nDo not use on a single form with multiple text / cell_is_entry input widgets.")
         self.passing_through.set(True)
         self.has_passed_through.set(True)
         self.top_level_keypress.set(self.top_most.bind("<KeyPress>"))
@@ -3959,7 +3959,7 @@ class InfoFrame(tkinter.Frame):
                 if k in self.labels_in:
                     self.formats.update({k: v})
                 else:
-                    raise KeyError(f"Error key '{k}' is not a valid label for this infoframe.")
+                    raise KeyError(f"Error ss_key '{k}' is not a valid label for this infoframe.")
         elif isinstance(formats, (list, tuple)):
             for lbl, v in zip(self.labels_in, formats):
                 self.formats.update({lbl: v})
@@ -4017,7 +4017,7 @@ class InfoFrame(tkinter.Frame):
             "k_label": {r: ri, c: 0},
             "v_label": {r: ri, c: 1}
         }
-        print(f"({i}) finished making key {k=}, {v=}")
+        print(f"({i}) finished making ss_key {k=}, {v=}")
 
     def check_border(self):
         if "highlightthickness" not in self.key_label_kwargs and "highlightbackground" not in self.key_label_kwargs and "borderwidth" not in self.key_label_kwargs:
@@ -4090,7 +4090,7 @@ class InfoFrame(tkinter.Frame):
     #     if not alike:
     #         print(f"not alike")
     #         if not self.allow_inserts:
-    #             raise KeyError(f"Error cannot find any keys that are alike the given key '{key_in}'")
+    #             raise KeyError(f"Error cannot find any keys that are alike the given ss_key '{key_in}'")
     #         else:
     #             if isinstance(self.labels_in, dict):
     #                 print(f"adding new item")
@@ -4157,16 +4157,16 @@ class InfoFrame(tkinter.Frame):
             if k not in self.info_labels:
                 # print(f"de-keying")
                 if not self.allow_inserts:
-                    raise KeyError(f"Error cannot find any keys that are alike the given key '{k}'")
+                    raise KeyError(f"Error cannot find any keys that are alike the given ss_key '{k}'")
                 else:
                     self.create_key(len(self.info_labels), k, v)
                     if self.auto_grid is not None:
                         self.info_labels[k]["k_label"].grid(**self.grid_args[k]["k_label"])
                         self.info_labels[k]["v_label"].grid(**self.grid_args[k]["v_label"])
-            #         ke = key
-            #     # ke = self.de_keyify(key, new_value=value)
+            #         ke = ss_key
+            #     # ke = self.de_keyify(ss_key, new_value=value)
             # else:
-            # ke = key
+            # ke = ss_key
 
             # val = value
             if k in self.formats:
@@ -4174,7 +4174,7 @@ class InfoFrame(tkinter.Frame):
                 try:
                     v = fmt(v)
                 except Exception as e:
-                    print(f"FAILED TO FORMAT key='{k}'.")
+                    print(f"FAILED TO FORMAT ss_key='{k}'.")
                     # v = v
 
             self.info_labels[k]["v_tv"].set(v)
@@ -4182,7 +4182,7 @@ class InfoFrame(tkinter.Frame):
     def get_value(self, key, default=None):
         if key not in self.info_labels:
             if not self.allow_inserts:
-                raise KeyError(f"Error cannot find any keys that are alike the given key '{key_in}'")
+                raise KeyError(f"Error cannot find any keys that are alike the given ss_key '{key_in}'")
             else:
                 self.create_key(len(self.info_labels), key, default)
                 self.change_value(key, default)
@@ -4191,11 +4191,11 @@ class InfoFrame(tkinter.Frame):
                     self.info_labels[key]["v_label"].grid(**self.grid_args[key]["v_label"])
             # print(f"de-keying")
             # try:
-            #     ke = self.de_keyify(key)
+            #     ke = self.de_keyify(ss_key)
             # except KeyError:
             #     return default
         # else:
-        #     ke = key
+        #     ke = ss_key
         return self.info_labels[key]["v_tv"].get()
 
 
@@ -4216,7 +4216,7 @@ def calc_geometry_tl(
     monitors = utility.get_largest_monitors()
 
     if dims is None:
-        # monitors_lr = sorted(list(monitors), key=lambda m: m.x)
+        # monitors_lr = sorted(list(monitors), ss_key=lambda m: m.x)
         if isinstance(largest, bool) and largest:
             monitor = monitors[0]
             largest = 1
