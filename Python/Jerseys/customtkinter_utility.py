@@ -1868,13 +1868,13 @@ class CalendarCanvas2(ctk.CTkCanvas):
         #
         # n = datetime.datetime(datetime.datetime.now().year, 1, 1) + datetime.timedelta(days=n-1)
         # print(f"{n=}")
-        # df = self.ctk_.df.loc[(self.ctk_.df["DOB"].dt.month == n.month) & (self.ctk_.df["DOB"].dt.day == n.day)]
-        # df = df.sort_values(by=["Team", "PlayerLast", "PlayerFirst"])
+        # df_timeline_order_receive = self.ctk_.df_timeline_order_receive.loc[(self.ctk_.df_timeline_order_receive["DOB"].dt.month == n.month) & (self.ctk_.df_timeline_order_receive["DOB"].dt.day == n.day)]
+        # df_timeline_order_receive = df_timeline_order_receive.sort_values(by=["Team", "PlayerLast", "PlayerFirst"])
         # text = ""
-        # for k, row in df.iterrows():
+        # for k, row in df_timeline_order_receive.iterrows():
         #     # text += f"{row['Team'].center(22)} - {row['PlayerFirst'].rjust(11)} {row['PlayerLast'].ljust(18)}\n"
         #     text += f"{row['Team'].center(22)} - {row['PlayerLast']}, {row['PlayerFirst']}\n"
-        # if df.shape[0] == 0:
+        # if df_timeline_order_receive.shape[0] == 0:
         #     text = "No Data"
         # self.tb_canvas_click_data.insert("0.0", text)
 
@@ -2358,7 +2358,7 @@ class TreeviewController(ctk.CTkScrollableFrame):
 
         # self.iid_namer = (i for i in range(1000000))
 
-        # print(f"--CC {self.viewable_column_names=}\n{self.df=}")
+        # print(f"--CC {self.viewable_column_names=}\n{self.df_timeline_order_receive=}")
         cn = list(self.df.columns)
         if self.viewable_column_names is None:
             self.viewable_column_names = list(df.columns)
@@ -2373,7 +2373,7 @@ class TreeviewController(ctk.CTkScrollableFrame):
                     vcn.append(col_a)
             self.viewable_column_names = vcn
 
-        # print(f"--AA {self.viewable_column_names=}\n{self.df=}")
+        # print(f"--AA {self.viewable_column_names=}\n{self.df_timeline_order_receive=}")
 
         if not isinstance(self.tv_label, ctk.Variable):
             self.tv_label = ctk.StringVar(self, value="")
@@ -2435,7 +2435,7 @@ class TreeviewController(ctk.CTkScrollableFrame):
         # #     # , **kwargs
         # # )
         #
-        # # print(f"==TC\n{self.df=}\n{viewable_column_names=}")
+        # # print(f"==TC\n{self.df_timeline_order_receive=}\n{viewable_column_names=}")
         #
         # # for i, col in enumerate(self.viewable_column_names_indexable):
         # for i, col in enumerate(self.viewable_column_names):
@@ -2454,16 +2454,16 @@ class TreeviewController(ctk.CTkScrollableFrame):
         #     self.treeview.column("#0", width=self.idx_width, stretch=False)
         #     self.treeview.heading("#0", text="#", anchor=tkinter.CENTER)
         #
-        # # print(f"--BB {df.shape=}\n{self.df}")
-        # # print(f"{list(df.itertuples())=}\n{len(list(df.itertuples()))}")
-        # # for i, row in df.itertuples():
+        # # print(f"--BB {df_timeline_order_receive.shape=}\n{self.df_timeline_order_receive}")
+        # # print(f"{list(df_timeline_order_receive.itertuples())=}\n{len(list(df_timeline_order_receive.itertuples()))}")
+        # # for i, row in df_timeline_order_receive.itertuples():
         # # f = list(range(1015))
 
         values = [self.viewable_column_names]
         for i, row in self.df.iterrows():
             values.append([row[c_name] for c_name in self.viewable_column_names])
 
-        # for i, row in self.df.iterrows():
+        # for i, row in self.df_timeline_order_receive.iterrows():
         #     # next(self.iid_namer)
         #     # print(f"{i=}, {row=}, {type(row)=}")
         #     dat = [row[c_name] for c_name in self.viewable_column_names]
@@ -2472,8 +2472,8 @@ class TreeviewController(ctk.CTkScrollableFrame):
         #     # print(f"{tags=}")
         #     # f.remove(i)
         # # print(f"{f=}")
-        # # print(f"B {df.shape=}")
-        # # print(f"{len(list(df.iterrows()))=}")
+        # # print(f"B {df_timeline_order_receive.shape=}")
+        # # print(f"{len(list(df_timeline_order_receive.iterrows()))=}")
 
         # # treeview.bind("<<TreeviewSelect>>", CALLBACK_HERE)
         # self.scrollbar_x, self.scrollbar_y = None, None
@@ -2937,10 +2937,10 @@ class MultiComboBox(ctk.CTkScrollableFrame):
             (self.tree_tv_button_delete_item, self.tree_button_delete_item), \
             self.tree_aggregate_objects = self.tree_controller.get_objects()
 
-        # print(f"PRE {self.tree_controller.df=}")
+        # print(f"PRE {self.tree_controller.df_timeline_order_receive=}")
         if self.nan_repr is not None:
             self.tree_controller.df = self.tree_controller.df.fillna(self.nan_repr)
-        # print(f"POST {self.tree_controller.df=}")
+        # print(f"POST {self.tree_controller.df_timeline_order_receive=}")
 
         cn = self.tree_controller.viewable_column_names
         assert "All" not in cn, "Error, cannot use column name 'All'. This is reserved as a column filtering label."
@@ -3035,7 +3035,7 @@ class MultiComboBox(ctk.CTkScrollableFrame):
         # print(f"Multicombobox created with dimensions (r x c)=({self.data.shape[0]} x {self.data.shape[1]})")
 
         # print(f"END SETUP {self.data=}")
-        # print(f"END SETUP {self.tree_controller.df=}")
+        # print(f"END SETUP {self.tree_controller.df_timeline_order_receive=}")
 
     def grid_widget(self, do_grid: bool = True):
         """Use this to appropriately place self and all sub widgets."""
@@ -3416,7 +3416,7 @@ class MultiComboBox(ctk.CTkScrollableFrame):
                         self.res_entry.config(foreground="black")
 
                         # i = self.data.shape[0]
-                        # for df, vals, tags in new_dfs:
+                        # for df_timeline_order_receive, vals, tags in new_dfs:
                         #     self.tree_treeview.insert("", "end", iid=i, text=str(i + 1), values=vals, tags=tuple(tags))
                         #     i += 1
                         # self.data = pd.concat(new_dfs, ignore_index=True)
@@ -3440,7 +3440,7 @@ class MultiComboBox(ctk.CTkScrollableFrame):
             for i, row in df.iterrows():
                 vals_ = vals[i]
                 tags_ = tags[i]
-                # # for df_, vals_, tags_ in zip(df.iterrows(), vals, tags):
+                # # for df_, vals_, tags_ in zip(df_timeline_order_receive.iterrows(), vals, tags):
                 #     print(f"INSERTING {vals_=}, {k+i=}, {tags_=}, {i=}")
                 self.tree_treeview.insert("", "end", iid=k + i, text=str(k + i + 1), values=vals_, tags=tuple(tags_))
             k += df.shape[0]

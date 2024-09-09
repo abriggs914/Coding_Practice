@@ -425,8 +425,8 @@ with columns["games_data"][0]:
                             disabled=my_choice_lock_disabled or my_choice_locked,
                             on_change=lambda g_=game_id, kc=k_chx: click_choice(g_, kc)
                         )
-                        # st.write(f"")
-                        if game_is_over:
+                        # # st.write(f"")
+                        # if game_is_over:
 
                     if game_neutral_site:
                         cols_site_info = st.columns(2)

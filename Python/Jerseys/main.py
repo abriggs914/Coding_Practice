@@ -183,7 +183,7 @@ class FrameNumbersView(ctk.CTkScrollableFrame):
                 number = int(number)
                 self.owned_numbers[number] += 1
 
-        # self.count_distinct_jerseys = self.ctk_.df.shape[0]
+        # self.count_distinct_jerseys = self.ctk_.df_timeline_order_receive.shape[0]
         self.count_distinct_jerseys = self.ctk_.df["Number"].dropna().count()
         self.v_lbl_demo = ctk.StringVar(self, value=f"Total Jerseys ({self.count_distinct_jerseys})")
         self.lbl_demo = ctk.CTkLabel(self, textvariable=self.v_lbl_demo)
@@ -535,13 +535,13 @@ class CalendarCanvas(ctk.CTkCanvas):
         #
         # n = datetime.datetime(datetime.datetime.now().year, 1, 1) + datetime.timedelta(days=n-1)
         # print(f"{n=}")
-        # df = self.ctk_.df.loc[(self.ctk_.df["DOB"].dt.month == n.month) & (self.ctk_.df["DOB"].dt.day == n.day)]
-        # df = df.sort_values(by=["Team", "PlayerLast", "PlayerFirst"])
+        # df_timeline_order_receive = self.ctk_.df_timeline_order_receive.loc[(self.ctk_.df_timeline_order_receive["DOB"].dt.month == n.month) & (self.ctk_.df_timeline_order_receive["DOB"].dt.day == n.day)]
+        # df_timeline_order_receive = df_timeline_order_receive.sort_values(by=["Team", "PlayerLast", "PlayerFirst"])
         # text = ""
-        # for k, row in df.iterrows():
+        # for k, row in df_timeline_order_receive.iterrows():
         #     # text += f"{row['Team'].center(22)} - {row['PlayerFirst'].rjust(11)} {row['PlayerLast'].ljust(18)}\n"
         #     text += f"{row['Team'].center(22)} - {row['PlayerLast']}, {row['PlayerFirst']}\n"
-        # if df.shape[0] == 0:
+        # if df_timeline_order_receive.shape[0] == 0:
         #     text = "No Data"
         # self.tb_canvas_click_data.insert("0.0", text)
 
@@ -563,7 +563,7 @@ class FrameBirthdaysView(ctk.CTkScrollableFrame):
                 number = int(number)
                 self.owned_numbers[number] += 1
 
-        # self.count_distinct_jerseys = self.ctk_.df.shape[0]
+        # self.count_distinct_jerseys = self.ctk_.df_timeline_order_receive.shape[0]
         self.count_distinct_jerseys = self.ctk_.df["Number"].dropna().count()
         self.v_lbl_demo = ctk.StringVar(self, value=f"Total Jerseys ({self.count_distinct_jerseys})")
         self.lbl_demo = ctk.CTkLabel(self, textvariable=self.v_lbl_demo)

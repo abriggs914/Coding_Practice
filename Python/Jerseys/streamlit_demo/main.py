@@ -9,28 +9,59 @@ from matplotlib import pyplot as plt
 import plotly.express as px
 from streamlit_extras.card import card
 import streamlit as st
+from streamlit_agraph import agraph, Node, Edge, Config
 import pandas as pd
 
 from colour_utility import Colour
 from location_utility import address_to_coords
 from utility import number_suffix
 
+
+ROOT_IMAGE_RESOURCES = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags"
 def_colour_text = Colour("#FFFFFF")
 
 
 def decode_position(position_code: str) -> str:
     match position_code.lower():
-        case "g": return "Goalie"
-        case "c": return "Center"
-        case "l": return "Left Wing"
-        case "r": return "Right Wing"
-        case "d": return "Defence"
-        case _: return position_code
+        case "g":
+            return "Goalie"
+        case "c":
+            return "Center"
+        case "l":
+            return "Left Wing"
+        case "r":
+            return "Right Wing"
+        case "d":
+            return "Defence"
+        case _:
+            return position_code
 
 
 @st.cache_data(show_spinner=False)
 def query_lat_long(address):
     return address_to_coords(pl_address)
+
+
+@st.cache_data(show_spinner=False)
+def search_image_resources(term: str):
+    sterm = term.lower().removesuffix(".png").replace(" ", "-")
+    if sterm == "russia":
+        sterm = "russian-federation"
+    if os.path.exists(ROOT_IMAGE_RESOURCES) and sterm:
+        for path in os.listdir(ROOT_IMAGE_RESOURCES):
+            st_path = "".join(path.removeprefix("icons8-").split("-")[:2]).removesuffix("flag").removesuffix(".png").replace(" ", "-")
+            # print(f"{sterm=}, {st_path=}")
+            if sterm == st_path.lower():
+                return os.path.join(ROOT_IMAGE_RESOURCES, path)
+    print(f"\t\tNO PATH FOUND for '{term}'")
+
+
+def get_state_flag(province):
+    return search_image_resources(province)
+
+
+def get_country_flag(country):
+    return search_image_resources(country)
 
 
 # @st.cache_data
@@ -108,6 +139,9 @@ def new_jersey_preview():
     print(f"{n=}, {rnd_id=}")
 
     df_njp = df.loc[df["JerseyID"] == rnd_id].iloc[0]
+    # print(f"df_njp\t{df_njp}")
+    # st.write("HERE V")
+    st.dataframe(df_njp)
     # j_id = df_njp["JerseyID"]
     brand = df_njp["BrandName"]
     make = df_njp["Colours"]
@@ -116,6 +150,7 @@ def new_jersey_preview():
     pl_first = df_njp["PlayerFirst"]
     pl_last = df_njp["PlayerLast"]
     nhl_api_pid = df_njp["NHL_API_PlayerID"]
+    pl_address = df_njp["address"]
     df_team = df_nhl_teams.loc[df_nhl_teams["FullTeamName"] == team]
     team_colours = list()
     if not df_team.empty:
@@ -260,13 +295,24 @@ def new_jersey_preview():
         df_playoff_totals = pd.DataFrame(data_playoff_totals)
         df_unknown_totals = pd.DataFrame(data_unknown_totals)
 
+        df_totals = df_season_totals.merge(
+            df_playoff_totals,
+            how="left",
+            on=["Season", "League", "Team"]
+        )
+
+        birthStateProvinceImage = df_njp["birthStateProvinceImage"]
+        birthCountryImage = df_njp["birthCountryImage"]
+
         with njp_gc[7]:
 
-            st.dataframe(df_season_totals)
-            st.dataframe(df_playoff_totals)
-            st.dataframe(df_unknown_totals)
-
-            st.dataframe(df_team)
+            # st.dataframe(df_season_totals)
+            # st.dataframe(df_playoff_totals)
+            st.dataframe(df_totals)
+            if not df_unknown_totals.empty:
+                st.dataframe(df_unknown_totals)
+            if not df_team.empty:
+                st.dataframe(df_team)
 
             if team_colours:
                 cols_team_colours = st.columns(len(team_colours))
@@ -300,6 +346,19 @@ def new_jersey_preview():
                             # ,
                             # caption=f"{pl_first} {pl_last}"
                         )
+
+                cols_birth_state_country = st.columns(2)
+                if birthStateProvinceImage:
+                    with cols_birth_state_country[0]:
+                        st.image(
+                            Image.open(birthStateProvinceImage)
+                        )
+                if birthCountryImage:
+                    with cols_birth_state_country[1]:
+                        st.image(
+                            Image.open(birthCountryImage)
+                        )
+
                 njp_gc_cols_0 = st.columns(4)
                 with njp_gc_cols_0[0]:
                     st.write(f"#{pl_number}")
@@ -324,7 +383,6 @@ def new_jersey_preview():
                     )
                     # with njp_gc_cols_1[1]:
 
-
                 njp_gc_cols_2 = st.columns(2)
                 with njp_gc_cols_2[0]:
                     # st.write(f"{pl_height_inch}\"")
@@ -332,7 +390,8 @@ def new_jersey_preview():
                 with njp_gc_cols_2[1]:
                     st.write(f"{pl_weight_lb} lbs")
                 st.write(f"{pl_dob}")
-                st.write(f"{pl_birth_city}, {pl_birth_province}, {pl_birth_country}")
+                # st.write(f"{pl_birth_city}, {pl_birth_province}, {pl_birth_country}")
+                st.write(f"{pl_address}")
                 st.write(f"In Hockey HOF: {bool(pl_in_HHOF)}")
                 st.write(f"Drafted in {draft_year}")
                 if draft_overall_pick:
@@ -404,7 +463,8 @@ def load_excel_dfs():
             sheet_name=list(range(8))
         )
     else:
-        if os.path.exists(r"C:\Users\abriggs\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202408280337.xlsm"):
+        if os.path.exists(
+                r"C:\Users\abriggs\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202408280337.xlsm"):
             return pd.read_excel(
                 r"C:\Users\abriggs\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202408280337.xlsm",
                 sheet_name=list(range(8))
@@ -490,23 +550,6 @@ if __name__ == '__main__':
     st.write(f"C")
     st.dataframe(df_nhl_jerseys)
 
-    df_nhl_jerseys_owned = df_nhl_jerseys.loc[
-        (df_nhl_jerseys["OpenDate"] is not None)
-        & (df_nhl_jerseys["CancelledOrder"] == 0)
-        & (df_nhl_jerseys["Team"] != "")
-        & (df_nhl_jerseys["Team"] is not None)
-        ]
-    df_nhl_jerseys_opened = df_nhl_jerseys_owned.loc[
-        (df_nhl_jerseys_owned["OpenDate"] is not None)
-        & (df_nhl_jerseys["Team"] != "")
-        & (df_nhl_jerseys["Team"] is not None)
-        ]
-    df_nhl_jerseys_images = df_nhl_jerseys_opened.merge(
-        df_jersey_images,
-        how="left",
-        on="JerseyID"
-    )
-
     loaded_nhl_player_data = load_all_nhl_player_data()
     for nhl_api_key, json_data in loaded_nhl_player_data.items():
 
@@ -565,6 +608,10 @@ if __name__ == '__main__':
                 pl_birth_country = pl_birth_country.replace(sn, ln)
             pl_address = f"{pl_birth_city}, {pl_birth_province}, {pl_birth_country}"
             pl_address = pl_address.replace(", , ", ", ")
+            pl_birth_province_image = get_state_flag(pl_birth_province)
+            pl_birth_country_image = get_country_flag(pl_birth_country)
+            # pl_birth_province_image = pl_birth_province_image if not pl_birth_province_image else Image.open(pl_birth_province_image)
+            # pl_birth_country_image = pl_birth_country_image if not pl_birth_country_image else Image.open(pl_birth_country_image)
 
             if pl_address.strip().removeprefix(",").removesuffix(",").strip():
                 pl_coords = query_lat_long(pl_address)
@@ -577,7 +624,9 @@ if __name__ == '__main__':
                         "longitude",
                         "birthCity",
                         "birthStateProvince",
+                        "birthStateProvinceImage",
                         "birthCountry",
+                        "birthCountryImage",
                         "address",
                         "activePlayer"
                     ]
@@ -585,10 +634,29 @@ if __name__ == '__main__':
                     *pl_coords,
                     pl_birth_city,
                     pl_birth_province,
+                    pl_birth_province_image,
                     pl_birth_country,
+                    pl_birth_country_image,
                     pl_address,
                     pl_is_active
                 )
+
+    df_nhl_jerseys_owned = df_nhl_jerseys.loc[
+        (df_nhl_jerseys["OpenDate"] is not None)
+        & (df_nhl_jerseys["CancelledOrder"] == 0)
+        & (df_nhl_jerseys["Team"] != "")
+        & (df_nhl_jerseys["Team"] is not None)
+        ]
+    df_nhl_jerseys_opened = df_nhl_jerseys_owned.loc[
+        (df_nhl_jerseys_owned["OpenDate"] is not None)
+        & (df_nhl_jerseys["Team"] != "")
+        & (df_nhl_jerseys["Team"] is not None)
+        ]
+    df_nhl_jerseys_images = df_nhl_jerseys_opened.merge(
+        df_jersey_images,
+        how="left",
+        on="JerseyID"
+    )
 
     df_active_players: pd.DataFrame = df_nhl_jerseys.loc[
         (df_nhl_jerseys["activePlayer"] == 1)
@@ -602,7 +670,7 @@ if __name__ == '__main__':
 
     df_inactive_players: pd.DataFrame = df_nhl_jerseys.loc[
         df_nhl_jerseys["activePlayer"] == 0
-    ]
+        ]
     p_df_inactive_players = df_inactive_players[
         ['PlayerFirst', 'PlayerLast', 'birthCountry', 'address', 'activePlayer']
     ].drop_duplicates(
@@ -634,41 +702,153 @@ if __name__ == '__main__':
         st.plotly_chart(fig_ply_numbers)
 
     df_u_players_countries_ply = df_nhl_jerseys[["PlayerFirst", "PlayerLast", "Nationality"]].drop_duplicates()
-    df_countries_ply = df_u_players_countries_ply["Nationality"].value_counts().sort_values(ascending=False).reset_index()
+    df_countries_ply = df_u_players_countries_ply["Nationality"].value_counts().sort_values(
+        ascending=False).reset_index()
     # df_countries_ply = df_nhl_jerseys["Nationality"].value_counts().sort_values(ascending=False).reset_index()
     df_countries_ply.columns = ["Country", "Frequency"]
     # df_countries_ply["Country"] = df_countries_ply["Country"] + f"{100*df_countries_ply['Frequency']/df_countries_ply.shape[0]:.2f} %"
-    df_countries_ply["Country"] = df_countries_ply.apply(lambda row: f"{row['Country']}: {100*row['Frequency']/df_countries_ply['Frequency'].sum():.2f} %", axis=1)
+    df_countries_ply["Country"] = df_countries_ply.apply(
+        lambda row: f"{row['Country']}: {100 * row['Frequency'] / df_countries_ply['Frequency'].sum():.2f} %", axis=1)
     fig_ply_countries = px.bar(df_countries_ply, x="Country", y="Frequency", title="Player Number Frequency")
     with st.expander("Player Nationalities"):
         st.plotly_chart(fig_ply_countries)
-        st.write(f"{df_u_players_countries_ply.shape[0]} unique players from {df_countries_ply.shape[0]} unique countries")
+        st.write(
+            f"{df_u_players_countries_ply.shape[0]} unique players from {df_countries_ply.shape[0]} unique countries")
 
     df_u_players_sizes_ply = df_nhl_jerseys[["Size"]]
     df_sizes_ply = df_u_players_sizes_ply["Size"].value_counts().sort_values(ascending=False).reset_index()
     # df_countries_ply = df_nhl_jerseys["Nationality"].value_counts().sort_values(ascending=False).reset_index()
     df_sizes_ply.columns = ["Size", "Frequency"]
     # df_countries_ply["Country"] = df_countries_ply["Country"] + f"{100*df_countries_ply['Frequency']/df_countries_ply.shape[0]:.2f} %"
-    df_sizes_ply["Size"] = df_sizes_ply.apply(lambda row: f"{row['Size']}: {100*row['Frequency']/df_sizes_ply['Frequency'].sum():.2f} %", axis=1)
+    df_sizes_ply["Size"] = df_sizes_ply.apply(
+        lambda row: f"{row['Size']}: {100 * row['Frequency'] / df_sizes_ply['Frequency'].sum():.2f} %", axis=1)
     fig_ply_sizes = px.bar(df_sizes_ply, x="Size", y="Frequency", title="Jersey Size Frequency")
     with st.expander("Jersey Sizes"):
         st.plotly_chart(fig_ply_sizes)
+
+    df_u_players_brand_ply = df_nhl_jerseys[["BrandName"]]
+    df_brand_ply = df_u_players_brand_ply["BrandName"].value_counts().sort_values(ascending=False).reset_index()
+    # df_countries_ply = df_nhl_jerseys["Nationality"].value_counts().sort_values(ascending=False).reset_index()
+    df_brand_ply.columns = ["Brand Name", "Frequency"]
+    # df_countries_ply["Country"] = df_countries_ply["Country"] + f"{100*df_countries_ply['Frequency']/df_countries_ply.shape[0]:.2f} %"
+    df_brand_ply["Brand Name"] = df_brand_ply.apply(
+        lambda row: f"{row['Brand Name']}: {100 * row['Frequency'] / df_brand_ply['Frequency'].sum():.2f} %", axis=1)
+    fig_ply_brand = px.bar(df_brand_ply, x="Brand Name", y="Frequency", title="Jersey Brand Name Frequency")
+    with st.expander("Jersey Brand"):
+        st.plotly_chart(fig_ply_brand)
+
+    df_u_players_make_ply = df_nhl_jerseys[["JerseyMake"]]
+    df_make_ply = df_u_players_make_ply["JerseyMake"].value_counts().sort_values(ascending=False).reset_index()
+    # df_countries_ply = df_nhl_jerseys["Nationality"].value_counts().sort_values(ascending=False).reset_index()
+    df_make_ply.columns = ["Make", "Frequency"]
+    # df_countries_ply["Country"] = df_countries_ply["Country"] + f"{100*df_countries_ply['Frequency']/df_countries_ply.shape[0]:.2f} %"
+    df_make_ply["Make"] = df_make_ply.apply(
+        lambda row: f"{row['Make']}: {100 * row['Frequency'] / df_make_ply['Frequency'].sum():.2f} %", axis=1)
+    fig_ply_make = px.bar(df_make_ply, x="Make", y="Frequency", title="Jersey Brand Name Frequency")
+    with st.expander("Jersey Make"):
+        st.plotly_chart(fig_ply_make)
 
     df_u_players_teams_ply = df_nhl_jerseys[["Team"]]
     df_teams_ply = df_u_players_teams_ply["Team"].value_counts().sort_values(ascending=False).reset_index()
     # df_countries_ply = df_nhl_jerseys["Nationality"].value_counts().sort_values(ascending=False).reset_index()
     df_teams_ply.columns = ["Team", "Frequency"]
     # df_countries_ply["Country"] = df_countries_ply["Country"] + f"{100*df_countries_ply['Frequency']/df_countries_ply.shape[0]:.2f} %"
-    df_teams_ply["Team"] = df_teams_ply.apply(lambda row: f"{row['Team']}: {100*row['Frequency']/df_teams_ply['Frequency'].sum():.2f} %", axis=1)
+    df_teams_ply["Team"] = df_teams_ply.apply(
+        lambda row: f"{row['Team']}: {100 * row['Frequency'] / df_teams_ply['Frequency'].sum():.2f} %", axis=1)
     fig_ply_teams = px.bar(df_teams_ply, x="Team", y="Frequency", title="Jersey Team Frequency")
     with st.expander("Jersey Teams"):
         st.plotly_chart(fig_ply_teams)
 
+    df_u_players_divisions_ply = df_nhl_jerseys[["DivisionNameNHLConferences"]]
+    df_divisions_ply = df_u_players_divisions_ply["DivisionNameNHLConferences"].value_counts().sort_values(
+        ascending=False).reset_index()
+    # df_divisions_ply = df_u_players_divisions_ply["DivisionNameNHLConferences"].value_counts().sort_index(ascending=False).reset_index()
+    # df_countries_ply = df_nhl_jerseys["Nationality"].value_counts().sort_values(ascending=False).reset_index()
+    df_divisions_ply.columns = ["Division", "Frequency"]
+    # df_countries_ply["Country"] = df_countries_ply["Country"] + f"{100*df_countries_ply['Frequency']/df_countries_ply.shape[0]:.2f} %"
+    df_divisions_ply["Division"] = df_divisions_ply.apply(
+        lambda row: f"{row['Division']}: {100 * row['Frequency'] / df_divisions_ply['Frequency'].sum():.2f} %", axis=1)
+    fig_ply_divisions = px.bar(df_divisions_ply, x="Division", y="Frequency", title="Jersey Team Frequency")
+    with st.expander("Team Divisions"):
+        st.plotly_chart(fig_ply_divisions)
+
+    # df_u_players_conferences_ply = df_nhl_jerseys[["ConferenceName_x"]]
+    # df_conferences_ply = df_u_players_conferences_ply["ConferenceName_x"].value_counts().sort_values(ascending=False).reset_index()
+    # # df_divisions_ply = df_u_players_divisions_ply["DivisionNameNHLConferences"].value_counts().sort_index(ascending=False).reset_index()
+    # # df_countries_ply = df_nhl_jerseys["Nationality"].value_counts().sort_values(ascending=False).reset_index()
+    # df_conferences_ply.columns = ["Conference", "Frequency"]
+    # # df_countries_ply["Country"] = df_countries_ply["Country"] + f"{100*df_countries_ply['Frequency']/df_countries_ply.shape[0]:.2f} %"
+    # df_conferences_ply["Conference"] = df_conferences_ply.apply(lambda row: f"{row['Conference']}: {100*row['Frequency']/df_conferences_ply['Frequency'].sum():.2f} %", axis=1)
+    # fig_ply_conferences = px.bar(df_conferences_ply, x="Conference", y="Frequency", title="Jersey Team Conference Frequency")
+    # with st.gs_expander("Team Conferences"):
+    #     st.plotly_chart(fig_ply_conferences)
+
+    lst_data = [{
+        "expLbl": "Team Conferences",
+        "title": "Jersey Team Conference Frequency",
+        "NHLJerseyKey": ["ConferenceName_x"],
+        "newCols": {
+            "x": "Conference",
+            "y": "Frequency"
+        },
+        "df_u_vals": None,
+        "df_vals": None,
+        "fig": None,
+        "exp": None,
+        "s_asc": False
+    }]
+    for data in lst_data:
+        data.update({
+            "df_u_vals": df_nhl_jerseys[data["NHLJerseyKey"]]
+        })
+        data.update({
+            "df_vals": data["df_u_vals"][data["NHLJerseyKey"][0]].value_counts().sort_values(
+                ascending=data["s_asc"]).reset_index()
+        })
+        data["df_vals"].columns = list(data["newCols"].values())
+        data["df_vals"][data["newCols"]["x"]] = data["df_vals"].apply(
+            lambda row:
+                f"{row[data['newCols']['x']]}: {100 * row[data['newCols']['y']] / data['df_vals'][data['newCols']['y']].sum():.2f} %",
+            axis=1
+        )
+        data.update({
+            "fig": px.bar(
+                data["df_vals"],
+                x=data["newCols"]["x"],
+                y=data["newCols"]["y"],
+                title=data["title"]
+            )
+        })
+        data.update({
+            "exp": st.expander(data["expLbl"])
+        })
+
+        with data["exp"]:
+            st.plotly_chart(data["fig"])
+
     # TODO loop through some graphical stats
-    dict_
+    # dict_
+
+    # dict_dfs_team_stats = {
+    #     "Divi"
+    # }
 
     # Begin Widgets
+    st.write("HERE")
     st.dataframe(df_nhl_jerseys)
+    st.data_editor(
+        df_nhl_jerseys,
+        column_config={
+            "birthCountryImage": st.column_config.ImageColumn(
+                "Country Flag",
+                width="large"
+            ),
+            "birthStateProvinceImage": st.column_config.ImageColumn(
+                "State or Province Flag",
+                width="large"
+            )
+        }
+    )
     st.dataframe(df_nhl_jerseys_owned)
     st.dataframe(df_nhl_jerseys_images)
 
@@ -797,7 +977,7 @@ if __name__ == '__main__':
         df_lat_long.drop_duplicates(subset=lat_long_cols)
         st.map(df_lat_long)
 
-    expander = st.expander(
+    gs_expander = st.expander(
         label=f"General Stats"
     )
 
@@ -805,59 +985,306 @@ if __name__ == '__main__':
     list_player_numbers = df_nhl_jerseys["Number"].values.tolist()
     count_occurrences = [(k, list_player_numbers.count(k)) for k in list_player_numbers if not pd.isna(k)]
     count_occurrences.sort(key=lambda tup: tup[1], reverse=True)
-    with expander:
-        card(
-            "Most popular number:",
-            f"# {int(count_occurrences[0][0])}"
-        )
 
     # most popular first name
     list_player_first_name = df_nhl_jerseys["PlayerFirst"].values.tolist()
     count_occurrences_first_name = [(k, list_player_first_name.count(k)) for k in list_player_first_name if
                                     not pd.isna(k)]
     count_occurrences_first_name.sort(key=lambda tup: tup[1], reverse=True)
-    with expander:
-        card(
-            "Most popular first name:",
-            f"{count_occurrences_first_name[0][0]}"
-        )
 
     # most popular last name
     list_player_last_name = df_nhl_jerseys["PlayerLast"].values.tolist()
     count_occurrences_last_name = [(k, list_player_last_name.count(k)) for k in list_player_last_name if not pd.isna(k)]
     count_occurrences_last_name.sort(key=lambda tup: tup[1], reverse=True)
-    with expander:
-        card(
-            "Most popular last name:",
-            f"{count_occurrences_last_name[0][0]}"
-        )
 
     # most popular country
     list_player_country = df_nhl_jerseys["Nationality"].values.tolist()
     count_occurrences_country = [(k, list_player_country.count(k)) for k in list_player_country if not pd.isna(k)]
     count_occurrences_country.sort(key=lambda tup: tup[1], reverse=True)
-    with expander:
-        card(
-            "Most popular country:",
-            f"{count_occurrences_country[0][0]}"
-        )
 
     # most popular position
     list_player_position = df_nhl_jerseys["Position"].values.tolist()
     count_occurrences_position = [(k, list_player_position.count(k)) for k in list_player_position if not pd.isna(k)]
     count_occurrences_position.sort(key=lambda tup: tup[1], reverse=True)
-    with expander:
-        card(
-            "Most popular position:",
-            f"{count_occurrences_position[0][0]}"
-        )
 
     # most popular team
     list_player_team = df_nhl_jerseys["Team"].values.tolist()
     count_occurrences_team = [(k, list_player_team.count(k)) for k in list_player_team if not pd.isna(k)]
     count_occurrences_team.sort(key=lambda tup: tup[1], reverse=True)
-    with expander:
-        card(
-            "Most popular team:",
-            f"{count_occurrences_team[0][0]}"
-        )
+    with gs_expander:
+        stat_cols_0 = st.columns(3)
+        stat_cols_1 = st.columns(3)
+        with stat_cols_0[0]:
+            card(
+                "Most popular number:",
+                f"# {int(count_occurrences[0][0])}"
+            )
+        with stat_cols_0[1]:
+            card(
+                "Most popular first name:",
+                f"{count_occurrences_first_name[0][0]}"
+            )
+        with stat_cols_0[2]:
+            card(
+                "Most popular last name:",
+                f"{count_occurrences_last_name[0][0]}"
+            )
+        with stat_cols_1[0]:
+            card(
+                "Most popular country:",
+                f"{count_occurrences_country[0][0]}"
+            )
+        with stat_cols_1[1]:
+            card(
+                "Most popular position:",
+                f"{count_occurrences_position[0][0]}"
+            )
+        with stat_cols_1[2]:
+            card(
+                "Most popular team:",
+                f"{count_occurrences_team[0][0]}"
+            )
+    stat_cols_2 = st.columns(2)
+    with stat_cols_2[0]:
+        # gs_active_players_expander = st.expander("Active Players")
+        with st.expander("Active Players"):
+            card(
+                "Total Active Players:",
+                f"{total_active_players}"
+            )
+            st.dataframe(
+                p_df_active_players[p_df_active_players.columns[:-1]],
+                hide_index=True
+            )
+            # st.data_editor(
+            #     p_df_active_players,
+            #     column_config={
+            #         "PlayerLast": st.column_config.ListColumn(
+            #             "Player Last",
+            #             width="medium"
+            #         )
+            #     }
+            # )
+    with stat_cols_2[1]:
+        with st.expander("InActive Players"):
+            card(
+                "Total In-Active Players:",
+                f"{total_inactive_players}"
+            )
+            st.dataframe(
+                p_df_inactive_players[p_df_inactive_players.columns[:-1]],
+                hide_index=True
+            )
+
+# Define nodes (events in the timeline)
+nodes = [
+    Node(id="Start", label="2024-01-01", size=15),
+    Node(id="Milestone 1", label="2024-02-01", size=15),
+    Node(id="Milestone 2", label="2024-03-01", size=15),
+    Node(id="End", label="2024-04-01", size=15)
+]
+
+# Define edges (connections between events)
+edges = [
+    Edge(source="Start", target="Milestone 1", type="CURVE_SMOOTH"),
+    Edge(source="Milestone 1", target="Milestone 2", type="CURVE_SMOOTH"),
+    Edge(source="Milestone 2", target="End", type="CURVE_SMOOTH")
+]
+
+# Configure the timeline visualization
+config = Config(width=700, height=400, directed=True)
+
+# Display the timeline
+agraph(nodes=nodes, edges=edges, config=config)
+
+# data = {
+#
+# }
+#
+#
+# # Sample DataFrame with timelines
+# data = {
+#     'Event': ['Event A', 'Event B', 'Event C', 'Event D'],
+#     'Start Date': ['2024-01-01', '2024-02-01', '2024-03-01', '2024-04-01'],
+#     'End Date': ['2024-01-10', '2024-02-10', '2024-03-10', '2024-04-10']
+# }
+
+
+# df_timeline_order_receive = pd.DataFrame(data)
+cols_timeline_order_receive = ["OrderDate", "ReceiveDate", "JerseyID"]
+df_timeline_order_receive = df_nhl_jerseys.loc[df_nhl_jerseys["CancelledOrder"] != 1][cols_timeline_order_receive]
+st.dataframe(df_timeline_order_receive)
+# df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+# df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(
+    lambda row:
+        ", ".join(map(str, df_nhl_jerseys.loc[
+                df_nhl_jerseys["JerseyID"] == row["JerseyID"]][
+                    ["Number", "PlayerFirst", "PlayerLast", "Team", "BrandName", "JerseyMake"]
+        ].values)),
+    axis=1
+)
+del df_timeline_order_receive["JerseyID"]
+df_timeline_order_receive = df_timeline_order_receive.rename(
+    columns={"OrderDate": "Start Date", "ReceiveDate": "End Date"})
+
+df_timeline_order_receive['Start Date'] = pd.to_datetime(df_timeline_order_receive['Start Date'])
+df_timeline_order_receive['End Date'] = pd.to_datetime(df_timeline_order_receive['End Date'])
+
+# Create a Gantt-like timeline using Plotly
+fig_timeline_order_receive = px.timeline(
+    df_timeline_order_receive,
+    x_start='Start Date',
+    x_end='End Date',
+    y='Event',
+    title='Time Between Order to Receive date'
+)
+
+# Update layout to make it more readable
+fig_timeline_order_receive.update_layout(xaxis_title="Date", yaxis_title="Order Date to Receive Date")
+
+# Display in Streamlit
+st.plotly_chart(fig_timeline_order_receive)
+
+
+cols_timeline_order_open = ["OrderDate", "OpenDate", "JerseyID"]
+df_timeline_order_open = df_nhl_jerseys.loc[df_nhl_jerseys["CancelledOrder"] != 1][cols_timeline_order_open]
+st.dataframe(df_timeline_order_open)
+# df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+# df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+df_timeline_order_open = df_timeline_order_open.rename(
+    columns={"OrderDate": "Start Date", "OpenDate": "End Date"})
+
+df_timeline_order_open['Start Date'] = pd.to_datetime(df_timeline_order_open['Start Date'])
+df_timeline_order_open["Category"] = df_timeline_order_open.apply(lambda row: "Yet To Open" if pd.isna(row["End Date"]) else "Opened", axis=1)
+df_timeline_order_open['End Date'] = pd.to_datetime(df_timeline_order_open['End Date']).fillna(pd.Timestamp.now())
+df_timeline_order_open["DDiff"] = df_timeline_order_open.apply(lambda row: (row["End Date"] - row["Start Date"]).days, axis=1)
+df_timeline_order_open["Event"] = df_timeline_order_open.apply(
+    lambda row:
+        ", ".join(map(str, df_nhl_jerseys.loc[
+                df_nhl_jerseys["JerseyID"] == row["JerseyID"],
+            ["Number", "PlayerFirst", "PlayerLast", "Team", "BrandName", "JerseyMake", "Colours"]
+            ].iloc[0].values)) + " Dates between: " + str(row["DDiff"]),
+    axis=1
+)
+del df_timeline_order_open["JerseyID"]
+df_timeline_order_open.sort_values(
+    by=["End Date", "DDiff"],
+    inplace=True
+)
+
+# Create a Gantt-like timeline using Plotly
+fig_timeline_order_open = px.timeline(
+    df_timeline_order_open,
+    x_start='Start Date',
+    x_end='End Date',
+    y='Event',
+    title='Time Between Order to Open date',
+    color='Category',
+    color_discrete_map={
+        'Yet To Open': 'red',
+        'Medium': 'orange',
+        'Opened': 'green'
+    }
+)
+
+# Update layout to make it more readable
+fig_timeline_order_open.update_layout(xaxis_title="Date", yaxis_title="Order Date to Open Date", height=1500)
+
+# Display in Streamlit
+st.plotly_chart(fig_timeline_order_open)
+
+
+image_refs_htmls = [
+    """<a target="_blank" href="https://icons8.com/icon/nz6Zx2vJbzRG/switzerland">Switzerland</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/WpPbz1F98VUy/denmark">Denmark</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/Dum84gAXfBP6/canada">Canada</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/OyqucOGoByl9/germany">Germany</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/NDrD4CYtRBwQ/georgia-flag">Georgia Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/XTantlC-UA3q/texas-flag">Texas Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/Vos-tGVy-9iR/california-flag">California Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/vnYmQQ4X0JsA/colorado-flag">Colorado Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/kbSQX7XfBI5h/hawaii-flag">Hawaii Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/s1-q7JfG-sh7/florida-flag">Florida Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/s1-q7JfG-sh7/florida-flag">Florida Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/FXgk2XOgWT7M/alabama-flag">Alabama Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/FXgk2XOgWT7M/alabama-flag">Alabama Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/GAE6WZTPKYO1/virginia-flag">Virginia Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/J5GxnkQaXFtb/washington-flag">Washington Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/U-ALwM5OpR7S/massachusetts-flag">Massachusetts Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/TKorkvgkXnqa/nevada-flag">Nevada Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/44fY7vWjhjiH/ohio-flag">Ohio Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/X-lScXq7uV90/oregon-flag">Oregon Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/Aib05gDheyNf/alaska-flag">Alaska Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/jQPaxKFfArNp/arkansas-flag">Arkansas Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/Y23SDXCP-XCb/wisconsin-flag">Wisconsin Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/IyhPFm2AXnFh/kentucky-flag">Kentucky Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/AGO0jdY-bkmt/indiana-flag">Indiana Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/jZHsrwgZA1OV/minnesota-flag">Minnesota Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/VoWoTmq3C4SB/pennsylvania-flag">Pennsylvania Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/zpkl1Hbgzf7W/idaho-flag">Idaho Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/rw08FzGx83AK/mississippi-flag">Mississippi Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/l39NAYp3jpyq/michigan-flag">Michigan Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/hMYv_tfME4iE/missouri-flag">Missouri Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/5I0q-mn8NKdv/oklahoma-flag">Oklahoma Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/PiDPd3RIB-aI/montana-flag">Montana Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/fcpZguwMtVSs/delaware-flag">Delaware Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/HtXyBhiNrojW/iowa-flag">Iowa Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/drFlVZjrpy3u/maine-flag">Maine Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/hYXb8jExIHVj/connecticut-flag">Connecticut Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/0u4UrZ-kAH9O/kansas-flag">Kansas Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/INQZPwNNw3L8/sweden">Sweden</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/VLKK6MVJuoXO/slovenia">Slovenia</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/Halaubi1vvya/united-states-minor-outlying-islands">United States Minor Outlying Islands</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15532/usa">USA</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/c_e0JWgTsNNx/illinois-flag">Illinois Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/mxUcnMuNAOSp/lousiana-flag">Lousiana Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/9FKO1QSdmhdH/maryland-flag">Maryland Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/fVBKgBFYEsAS/nebraska-flag">Nebraska Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/ViZFYL8OnHoI/new-hampshire-flag">New Hampshire Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/6wBSXgD-30f4/new-jersey-flag">New Jersey Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/uKYT_MT6Af1M/new-mexico-flag">New Mexico Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/PHJN-9UdTYcq/new-york-flag">New York Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/h4spXYDZr-ez/north-carolina-flag">North Carolina Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/HG94AoyH021p/north-dakota-flag">North Dakota Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/bEdKRwxEQ3bR/rhode-island-flag">Rhode Island Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/lvMLadGC2uIq/south-carolina-flag">South Carolina Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/LGWMf_LvV35D/south-dakota-flag">South Dakota Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/DoreHlNCT-va/utah-flag">Utah Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/y1Sr8HgfqBOL/vermont-flag">Vermont Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/TKwBVwV4ffLU/west-virginia-flag">West Virginia Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/kZS0xbjHYerT/wyoming-flag">Wyoming Flag</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15526/switzerland">Switzerland</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15527/sweden">Sweden</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/17966/slovenia">Slovenia</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/17965/slovakia">Slovakia</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15544/norway">Norway</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15536/netherlands">Netherlands</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15524/latvia">Latvia</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15534/great-britain">Great Britain</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/22435/japan">Japan</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15511/finland">Finland</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15497/france">France</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15502/germany">Germany</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15513/czech-republic">Czech Republic</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15520/denmark">Denmark</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15512/canada">Canada</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15506/austria">Austria</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>""",
+    """<a target="_blank" href="https://icons8.com/icon/15528/russian-federation">Russian Federation</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>"""
+]
+
+with st.expander("References:"):
+    for link in image_refs_htmls:
+        st.write(link, unsafe_allow_html=True)
+
+shown_opened_group_change = False
+for i, row in df_nhl_jerseys.sort_values(by="OpenDate", ascending=False).iterrows():
+    if all([
+        i > 0,
+        pd.isna(row["OpenDate"]),
+        not shown_opened_group_change,
+        i < (df_nhl_jerseys.shape[0] - 1)
+    ]):
+        shown_opened_group_change = True
+        st.divider()
+    st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
