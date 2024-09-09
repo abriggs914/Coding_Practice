@@ -18,6 +18,8 @@ from utility import number_suffix
 
 
 ROOT_IMAGE_RESOURCES = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags"
+if not os.path.exists(ROOT_IMAGE_RESOURCES):
+    ROOT_IMAGE_RESOURCES = r"C:\Users\abriggs\Documents\Coding_Practice\Resources\Flags"
 def_colour_text = Colour("#FFFFFF")
 
 

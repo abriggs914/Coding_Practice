@@ -1,11 +1,11 @@
 import copy
 import datetime
 import json
+import os
 
 import requests
 import streamlit as st
 from json_utility import jsonify
-
 
 TEST_GAMES = [
     # 2024010001
@@ -47,6 +47,8 @@ dict_id_to_team_abbrev = dict()
 
 def load_games_history():
     in_f = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\streamlit_demo\game_results.json"
+    if not os.path.exists(in_f):
+        in_f = r"C:\Users\abriggs\Documents\Coding_Practice\Python\Jerseys\streamlit_demo\game_results.json"
     with open(in_f, "r") as f:
         data = json.load(f)
     return data
@@ -146,7 +148,6 @@ def click_choice(game: int, key: str):
         if gk.strip("_")[0] in map(str, TEST_GAMES):
             print(f"{gk=}, {gkv=}")
 
-
 data_games_history = load_games_history_start_up()
 data_games_history_og = copy.deepcopy(data_games_history)
 print(f"{data_games_history=}")
@@ -180,7 +181,6 @@ with columns["top_sub_row"][1]:
         on_click=click_goto_today,
         key="btn_goto_today"
     )
-
 
 now = datetime.datetime.now()
 
