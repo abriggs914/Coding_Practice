@@ -311,11 +311,11 @@ Where to watch:			Disney+
 Genre:				Comedy
 Run (1999 -> 2023):		24 years
 number seasons:			22
-number episodes:		414
-episodes per season:		18.818181818181817
+number episodes:		424
+episodes per season:		19.272727272727273
 average length of an episode:	24
-Total minutes:			9936
-Total hours:			165.6
+Total minutes:			10176
+Total hours:			169.6
 Where to watch:			Disney+
 
 	It's Always Sunny in Philadelphia
@@ -365,23 +365,23 @@ Where to watch:			Disney+
 	The Simpsons
 Genre:				Comedy
 Run (1989 -> 2023):		34 years
-number seasons:			35
-number episodes:		760
-episodes per season:		21.714285714285715
+number seasons:			36
+number episodes:		769
+episodes per season:		21.36111111111111
 average length of an episode:	24
-Total minutes:			18240
-Total hours:			304.0
+Total minutes:			18456
+Total hours:			307.6
 Where to watch:			Disney+
 
 	Solar Opposites
 Genre:				Comedy
 Run (2020 -> 2022):		2 years
-number seasons:			4
-number episodes:		41
-episodes per season:		10.25
+number seasons:			5
+number episodes:		53
+episodes per season:		10.6
 average length of an episode:	24
-Total minutes:			984
-Total hours:			16.4
+Total minutes:			1272
+Total hours:			21.2
 Where to watch:			Disney+
 
 	The Orville
@@ -409,12 +409,12 @@ Where to watch:			Prime TV
 	Criminal Minds
 Genre:				Thriller / Drama
 Run (2005 -> 2023):		18 years
-number seasons:			16
-number episodes:		334
-episodes per season:		20.875
+number seasons:			17
+number episodes:		344
+episodes per season:		20.235294117647058
 average length of an episode:	44
-Total minutes:			14696
-Total hours:			244.93333333333334
+Total minutes:			15136
+Total hours:			252.26666666666668
 Where to watch:			Disney+
 
 	Baskets
@@ -664,19 +664,19 @@ Where to watch:			Disney+
 
 Series:
 
-	Loki
-Genre:				Drama
-Run (2021 -> 2021):		1 year
-number seasons:			1
-number episodes:		6
-episodes per season:		6.0
-average length of an episode:	60
-Total minutes:			360
-Total hours:			6.0
-Where to watch:			Disney+
+	Sherlock
+Genre:				Mystery / Crime / Drama
+Run (2010 -> 2017):		7 years
+number seasons:			4
+number episodes:		13
+episodes per season:		3.25
+average length of an episode:	90
+Total minutes:			1170
+Total hours:			19.5
+Where to watch:			Prime TV
 
-Season: 1
-Episode: 1
+Season: 3
+Episode: 3
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1396,7 +1396,6 @@ sorting by least number of seasons...
 |Mr. Robot                        |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          4           |Mr. Robot                        |
 |The Last Man on Earth            |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |          4           |The Last Man on Earth            |
 |Baskets                          |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          4           |Baskets                          |
-|Solar Opposites                  |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          4           |Solar Opposites                  |
 |The Great North                  |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|          4           |The Great North                  |
 |Arrested Develpoment             |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          5           |Arrested Develpoment             |
 |Prison Break                     |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |          5           |Prison Break                     |
@@ -1408,6 +1407,7 @@ sorting by least number of seasons...
 |Better Call Saul                 |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          5           |Better Call Saul                 |
 |Misfits                          |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          5           |Misfits                          |
 |What We Do In The Shadows        |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|          5           |What We Do In The Shadows        |
+|Solar Opposites                  |          5           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          5           |Solar Opposites                  |
 |Community                        |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          6           |Community                        |
 |Silicon Valley                   |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |          6           |Silicon Valley                   |
 |Recess                           |          6           |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          6           |Recess                           |
@@ -1429,10 +1429,10 @@ sorting by least number of seasons...
 |Trailer Park Boys                |          12          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          12          |Trailer Park Boys                |
 |King of the Hill                 |          13          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          13          |King of the Hill                 |
 |It's Always Sunny in Philadelphia|          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          16          |It's Always Sunny in Philadelphia|
-|Criminal Minds                   |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          16          |Criminal Minds                   |
+|Criminal Minds                   |          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          17          |Criminal Minds                   |
 |American Dad                     |          19          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          19          |American Dad                     |
 |Family Guy                       |          22          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          22          |Family Guy                       |
-|The Simpsons                     |          35          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          35          |The Simpsons                     |
+|The Simpsons                     |          36          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          36          |The Simpsons                     |
 #######################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1477,7 +1477,6 @@ sorting by least number of seasons...
 |Mr. Robot                        |          4           |
 |The Last Man on Earth            |          4           |
 |Baskets                          |          4           |
-|Solar Opposites                  |          4           |
 |The Great North                  |          4           |
 |Arrested Develpoment             |          5           |
 |Prison Break                     |          5           |
@@ -1489,6 +1488,7 @@ sorting by least number of seasons...
 |Better Call Saul                 |          5           |
 |Misfits                          |          5           |
 |What We Do In The Shadows        |          5           |
+|Solar Opposites                  |          5           |
 |Community                        |          6           |
 |Silicon Valley                   |          6           |
 |Recess                           |          6           |
@@ -1510,18 +1510,18 @@ sorting by least number of seasons...
 |Trailer Park Boys                |          12          |
 |King of the Hill                 |          13          |
 |It's Always Sunny in Philadelphia|          16          |
-|Criminal Minds                   |          16          |
+|Criminal Minds                   |          17          |
 |American Dad                     |          19          |
 |Family Guy                       |          22          |
-|The Simpsons                     |          35          |
+|The Simpsons                     |          36          |
 ##########################################################
 
-Mean:		  6.55
+Mean:		  6.60
 Median:		  5.00
-Pstdev:		  5.83
-Pvariance:	 33.98
-Stdev:		  5.88
-Variance:	 34.56
+Pstdev:		  5.93
+Pvariance:	 35.21
+Stdev:		  5.98
+Variance:	 35.80
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1542,11 +1542,11 @@ sorting by most number of seasons...
 
 #####################################################################################################################################################################################################################################################################################################
 ##################################| most number seasons |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| most number seasons |##################################
-|The Simpsons                     |         35          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         35          |The Simpsons                     |
+|The Simpsons                     |         36          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         36          |The Simpsons                     |
 |Family Guy                       |         22          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         22          |Family Guy                       |
 |American Dad                     |         19          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         19          |American Dad                     |
+|Criminal Minds                   |         17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         17          |Criminal Minds                   |
 |It's Always Sunny in Philadelphia|         16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         16          |It's Always Sunny in Philadelphia|
-|Criminal Minds                   |         16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         16          |Criminal Minds                   |
 |King of the Hill                 |         13          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         13          |King of the Hill                 |
 |Trailer Park Boys                |         12          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         12          |Trailer Park Boys                |
 |The X-Files                      |         11          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         11          |The X-Files                      |
@@ -1577,13 +1577,13 @@ sorting by most number of seasons...
 |Better Call Saul                 |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          5          |Better Call Saul                 |
 |Misfits                          |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          5          |Misfits                          |
 |What We Do In The Shadows        |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|          5          |What We Do In The Shadows        |
+|Solar Opposites                  |          5          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          5          |Solar Opposites                  |
 |The IT Crowd                     |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          4          |The IT Crowd                     |
 |Sherlock                         |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |          4          |Sherlock                         |
 |My Name is Earl                  |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          4          |My Name is Earl                  |
 |Mr. Robot                        |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          4          |Mr. Robot                        |
 |The Last Man on Earth            |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |          4          |The Last Man on Earth            |
 |Baskets                          |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          4          |Baskets                          |
-|Solar Opposites                  |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          4          |Solar Opposites                  |
 |The Great North                  |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|          4          |The Great North                  |
 |The Orville                      |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |          3          |The Orville                      |
 |The Mandalorian                  |          3          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|          3          |The Mandalorian                  |
@@ -1623,11 +1623,11 @@ sorting by most number of seasons...
 
 #########################################################
 ##################################| most number seasons |
-|The Simpsons                     |         35          |
+|The Simpsons                     |         36          |
 |Family Guy                       |         22          |
 |American Dad                     |         19          |
+|Criminal Minds                   |         17          |
 |It's Always Sunny in Philadelphia|         16          |
-|Criminal Minds                   |         16          |
 |King of the Hill                 |         13          |
 |Trailer Park Boys                |         12          |
 |The X-Files                      |         11          |
@@ -1658,13 +1658,13 @@ sorting by most number of seasons...
 |Better Call Saul                 |          5          |
 |Misfits                          |          5          |
 |What We Do In The Shadows        |          5          |
+|Solar Opposites                  |          5          |
 |The IT Crowd                     |          4          |
 |Sherlock                         |          4          |
 |My Name is Earl                  |          4          |
 |Mr. Robot                        |          4          |
 |The Last Man on Earth            |          4          |
 |Baskets                          |          4          |
-|Solar Opposites                  |          4          |
 |The Great North                  |          4          |
 |The Orville                      |          3          |
 |The Mandalorian                  |          3          |
@@ -1685,12 +1685,12 @@ sorting by most number of seasons...
 |Hawkeye                          |          1          |
 #########################################################
 
-Mean:		  6.55
+Mean:		  6.60
 Median:		  5.00
-Pstdev:		  5.83
-Pvariance:	 33.98
-Stdev:		  5.88
-Variance:	 34.56
+Pstdev:		  5.93
+Pvariance:	 35.21
+Stdev:		  5.98
+Variance:	 35.80
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1732,12 +1732,12 @@ sorting by least number of episodes...
 |The Mick                         |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |          37           |The Mick                         |
 |Baskets                          |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          40           |Baskets                          |
 |Gravity Falls                    |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          40           |Gravity Falls                    |
-|Solar Opposites                  |          41           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          41           |Solar Opposites                  |
 |Mr. Robot                        |          45           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          45           |Mr. Robot                        |
 |Better Call Saul                 |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          50           |Better Call Saul                 |
 |What We Do In The Shadows        |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|          50           |What We Do In The Shadows        |
 |The Proud Family                 |          52           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52           |The Proud Family                 |
 |Silicon Valley                   |          53           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |          53           |Silicon Valley                   |
+|Solar Opposites                  |          53           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          53           |Solar Opposites                  |
 |The Great North                  |          60           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|          60           |The Great North                  |
 |Avatar, the Last Airbender       |          61           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          61           |Avatar, the Last Airbender       |
 |Breaking Bad                     |          62           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          62           |Breaking Bad                     |
@@ -1767,10 +1767,10 @@ sorting by least number of episodes...
 |Smallville                       |          217          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          217          |Smallville                       |
 |Yu-Gi-Oh!                        |          236          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          236          |Yu-Gi-Oh!                        |
 |King of the Hill                 |          259          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          259          |King of the Hill                 |
-|Criminal Minds                   |          334          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          334          |Criminal Minds                   |
+|Criminal Minds                   |          344          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          344          |Criminal Minds                   |
 |American Dad                     |          351          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |          351          |American Dad                     |
-|Family Guy                       |          414          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          414          |Family Guy                       |
-|The Simpsons                     |          760          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          760          |The Simpsons                     |
+|Family Guy                       |          424          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          424          |Family Guy                       |
+|The Simpsons                     |          769          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          769          |The Simpsons                     |
 #########################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1813,12 +1813,12 @@ sorting by least number of episodes...
 |The Mick                         |          37           |
 |Baskets                          |          40           |
 |Gravity Falls                    |          40           |
-|Solar Opposites                  |          41           |
 |Mr. Robot                        |          45           |
 |Better Call Saul                 |          50           |
 |What We Do In The Shadows        |          50           |
 |The Proud Family                 |          52           |
 |Silicon Valley                   |          53           |
+|Solar Opposites                  |          53           |
 |The Great North                  |          60           |
 |Avatar, the Last Airbender       |          61           |
 |Breaking Bad                     |          62           |
@@ -1848,18 +1848,18 @@ sorting by least number of episodes...
 |Smallville                       |          217          |
 |Yu-Gi-Oh!                        |          236          |
 |King of the Hill                 |          259          |
-|Criminal Minds                   |          334          |
+|Criminal Minds                   |          344          |
 |American Dad                     |          351          |
-|Family Guy                       |          414          |
-|The Simpsons                     |          760          |
+|Family Guy                       |          424          |
+|The Simpsons                     |          769          |
 ###########################################################
 
-Mean:		105.05
+Mean:		105.73
 Median:		 64.50
-Pstdev:		123.11
-Pvariance:	15156.08
-Stdev:		124.15
-Variance:	15412.96
+Pstdev:		124.55
+Pvariance:	15512.86
+Stdev:		125.60
+Variance:	15775.79
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1880,10 +1880,10 @@ sorting by most number of episodes...
 
 #######################################################################################################################################################################################################################################################################################################
 ##################################| most number episodes |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| most number episodes |##################################
-|The Simpsons                     |         760          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         760          |The Simpsons                     |
-|Family Guy                       |         414          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         414          |Family Guy                       |
+|The Simpsons                     |         769          |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         769          |The Simpsons                     |
+|Family Guy                       |         424          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         424          |Family Guy                       |
 |American Dad                     |         351          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         351          |American Dad                     |
-|Criminal Minds                   |         334          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         334          |Criminal Minds                   |
+|Criminal Minds                   |         344          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         344          |Criminal Minds                   |
 |King of the Hill                 |         259          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         259          |King of the Hill                 |
 |Yu-Gi-Oh!                        |         236          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         236          |Yu-Gi-Oh!                        |
 |The X-Files                      |         217          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         217          |The X-Files                      |
@@ -1914,11 +1914,11 @@ sorting by most number of episodes...
 |Avatar, the Last Airbender       |          61          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          61          |Avatar, the Last Airbender       |
 |The Great North                  |          60          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|          60          |The Great North                  |
 |Silicon Valley                   |          53          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |          53          |Silicon Valley                   |
+|Solar Opposites                  |          53          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          53          |Solar Opposites                  |
 |The Proud Family                 |          52          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52          |The Proud Family                 |
 |Better Call Saul                 |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          50          |Better Call Saul                 |
 |What We Do In The Shadows        |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|          50          |What We Do In The Shadows        |
 |Mr. Robot                        |          45          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |          45          |Mr. Robot                        |
-|Solar Opposites                  |          41          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |          41          |Solar Opposites                  |
 |Baskets                          |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |          40          |Baskets                          |
 |Gravity Falls                    |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |          40          |Gravity Falls                    |
 |Misfits                          |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          37          |Misfits                          |
@@ -1961,10 +1961,10 @@ sorting by most number of episodes...
 
 ##########################################################
 ##################################| most number episodes |
-|The Simpsons                     |         760          |
-|Family Guy                       |         414          |
+|The Simpsons                     |         769          |
+|Family Guy                       |         424          |
 |American Dad                     |         351          |
-|Criminal Minds                   |         334          |
+|Criminal Minds                   |         344          |
 |King of the Hill                 |         259          |
 |Yu-Gi-Oh!                        |         236          |
 |The X-Files                      |         217          |
@@ -1995,11 +1995,11 @@ sorting by most number of episodes...
 |Avatar, the Last Airbender       |          61          |
 |The Great North                  |          60          |
 |Silicon Valley                   |          53          |
+|Solar Opposites                  |          53          |
 |The Proud Family                 |          52          |
 |Better Call Saul                 |          50          |
 |What We Do In The Shadows        |          50          |
 |Mr. Robot                        |          45          |
-|Solar Opposites                  |          41          |
 |Baskets                          |          40          |
 |Gravity Falls                    |          40          |
 |Misfits                          |          37          |
@@ -2023,12 +2023,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		105.05
+Mean:		105.73
 Median:		 64.50
-Pstdev:		123.11
-Pvariance:	15156.08
-Stdev:		124.15
-Variance:	15412.96
+Pstdev:		124.55
+Pvariance:	15512.86
+Stdev:		125.60
+Variance:	15775.79
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2064,13 +2064,13 @@ sorting by shortest time...
 |The Mick                         |   13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |   13.566667   |The Mick                         |
 |Baskets                          |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |   14.666667   |Baskets                          |
 |Gravity Falls                    |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |   14.666667   |Gravity Falls                    |
-|Solar Opposites                  |   16.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   16.400000   |Solar Opposites                  |
 |The Mandalorian                  |   17.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|   17.600000   |The Mandalorian                  |
 |What We Do In The Shadows        |   19.166667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|   19.166667   |What We Do In The Shadows        |
 |Silicon Valley                   |   19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |   19.433333   |Silicon Valley                   |
 |Sherlock                         |   19.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |   19.500000   |Sherlock                         |
 |The Proud Family                 |   19.933333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   19.933333   |The Proud Family                 |
 |Black Mirror                     |     21.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |     21.0      |Black Mirror                     |
+|Solar Opposites                  |   21.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |   21.200000   |Solar Opposites                  |
 |Avatar, the Last Airbender       |   22.366667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   22.366667   |Avatar, the Last Airbender       |
 |The Great North                  |     23.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|     23.0      |The Great North                  |
 |The Last Man on Earth            |   24.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |   24.566667   |The Last Man on Earth            |
@@ -2106,9 +2106,9 @@ sorting by shortest time...
 |American Dad                     |  134.550000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  134.550000   |American Dad                     |
 |Smallville                       |  159.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |  159.133333   |Smallville                       |
 |The X-Files                      |  162.750000   |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |  162.750000   |The X-Files                      |
-|Family Guy                       |  165.600000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  165.600000   |Family Guy                       |
-|Criminal Minds                   |  244.933333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  244.933333   |Criminal Minds                   |
-|The Simpsons                     |     304.0     |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|     304.0     |The Simpsons                     |
+|Family Guy                       |  169.600000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  169.600000   |Family Guy                       |
+|Criminal Minds                   |  252.266667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  252.266667   |Criminal Minds                   |
+|The Simpsons                     |  307.600000   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  307.600000   |The Simpsons                     |
 #########################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -2145,13 +2145,13 @@ sorting by shortest time...
 |The Mick                         |   13.566667   |
 |Baskets                          |   14.666667   |
 |Gravity Falls                    |   14.666667   |
-|Solar Opposites                  |   16.400000   |
 |The Mandalorian                  |   17.600000   |
 |What We Do In The Shadows        |   19.166667   |
 |Silicon Valley                   |   19.433333   |
 |Sherlock                         |   19.500000   |
 |The Proud Family                 |   19.933333   |
 |Black Mirror                     |     21.0      |
+|Solar Opposites                  |   21.200000   |
 |Avatar, the Last Airbender       |   22.366667   |
 |The Great North                  |     23.0      |
 |The Last Man on Earth            |   24.566667   |
@@ -2187,17 +2187,17 @@ sorting by shortest time...
 |American Dad                     |  134.550000   |
 |Smallville                       |  159.133333   |
 |The X-Files                      |  162.750000   |
-|Family Guy                       |  165.600000   |
-|Criminal Minds                   |  244.933333   |
-|The Simpsons                     |     304.0     |
+|Family Guy                       |  169.600000   |
+|Criminal Minds                   |  252.266667   |
+|The Simpsons                     |  307.600000   |
 ###################################################
 
-Mean:		 51.24
+Mean:		 51.57
 Median:		 28.97
-Pstdev:		 57.40
-Pvariance:	3294.56
-Stdev:		 57.88
-Variance:	3350.40
+Pstdev:		 58.17
+Pvariance:	3383.57
+Stdev:		 58.66
+Variance:	3440.91
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2218,9 +2218,9 @@ sorting by longest time...
 
 #######################################################################################################################################################################################################################################################################################
 ##################################| longest time |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| longest time |##################################
-|The Simpsons                     |    304.0     |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    304.0     |The Simpsons                     |
-|Criminal Minds                   |  244.933333  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  244.933333  |Criminal Minds                   |
-|Family Guy                       |  165.600000  |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  165.600000  |Family Guy                       |
+|The Simpsons                     |  307.600000  |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  307.600000  |The Simpsons                     |
+|Criminal Minds                   |  252.266667  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  252.266667  |Criminal Minds                   |
+|Family Guy                       |  169.600000  |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  169.600000  |Family Guy                       |
 |The X-Files                      |  162.750000  |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |  162.750000  |The X-Files                      |
 |Smallville                       |  159.133333  |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |  159.133333  |Smallville                       |
 |American Dad                     |  134.550000  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |  134.550000  |American Dad                     |
@@ -2256,13 +2256,13 @@ sorting by longest time...
 |The Last Man on Earth            |  24.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |  24.566667   |The Last Man on Earth            |
 |The Great North                  |     23.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|     23.0     |The Great North                  |
 |Avatar, the Last Airbender       |  22.366667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  22.366667   |Avatar, the Last Airbender       |
+|Solar Opposites                  |  21.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |  21.200000   |Solar Opposites                  |
 |Black Mirror                     |     21.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |     21.0     |Black Mirror                     |
 |The Proud Family                 |  19.933333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  19.933333   |The Proud Family                 |
 |Sherlock                         |  19.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |  19.500000   |Sherlock                         |
 |Silicon Valley                   |  19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |  19.433333   |Silicon Valley                   |
 |What We Do In The Shadows        |  19.166667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|  19.166667   |What We Do In The Shadows        |
 |The Mandalorian                  |  17.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|  17.600000   |The Mandalorian                  |
-|Solar Opposites                  |  16.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |  16.400000   |Solar Opposites                  |
 |Baskets                          |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |  14.666667   |Baskets                          |
 |Gravity Falls                    |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |  14.666667   |Gravity Falls                    |
 |The Mick                         |  13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |  13.566667   |The Mick                         |
@@ -2299,9 +2299,9 @@ sorting by longest time...
 
 ##################################################
 ##################################| longest time |
-|The Simpsons                     |    304.0     |
-|Criminal Minds                   |  244.933333  |
-|Family Guy                       |  165.600000  |
+|The Simpsons                     |  307.600000  |
+|Criminal Minds                   |  252.266667  |
+|Family Guy                       |  169.600000  |
 |The X-Files                      |  162.750000  |
 |Smallville                       |  159.133333  |
 |American Dad                     |  134.550000  |
@@ -2337,13 +2337,13 @@ sorting by longest time...
 |The Last Man on Earth            |  24.566667   |
 |The Great North                  |     23.0     |
 |Avatar, the Last Airbender       |  22.366667   |
+|Solar Opposites                  |  21.200000   |
 |Black Mirror                     |     21.0     |
 |The Proud Family                 |  19.933333   |
 |Sherlock                         |  19.500000   |
 |Silicon Valley                   |  19.433333   |
 |What We Do In The Shadows        |  19.166667   |
 |The Mandalorian                  |  17.600000   |
-|Solar Opposites                  |  16.400000   |
 |Baskets                          |  14.666667   |
 |Gravity Falls                    |  14.666667   |
 |The Mick                         |  13.566667   |
@@ -2361,12 +2361,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 51.24
+Mean:		 51.57
 Median:		 28.97
-Pstdev:		 57.40
-Pvariance:	3294.56
-Stdev:		 57.88
-Variance:	3350.40
+Pstdev:		 58.17
+Pvariance:	3383.57
+Stdev:		 58.66
+Variance:	3440.91
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2392,20 +2392,20 @@ sorting by most episodes per season...
 |My Name is Earl                  |           24.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0           |My Name is Earl                  |
 |The Office                       |        22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |        22.333333         |The Office                       |
 |Angel                            |           22.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0           |Angel                            |
-|The Simpsons                     |        21.714286         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        21.714286         |The Simpsons                     |
 |Smallville                       |        21.700000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |        21.700000         |Smallville                       |
 |Malcolm in the Middle            |        21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        21.571429         |Malcolm in the Middle            |
+|The Simpsons                     |        21.361111         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        21.361111         |The Simpsons                     |
 |The Replacements                 |           21.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0           |The Replacements                 |
-|Criminal Minds                   |        20.875000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        20.875000         |Criminal Minds                   |
 |Buffy The Vampire Slayer         |        20.571429         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        20.571429         |Buffy The Vampire Slayer         |
 |Avatar, the Last Airbender       |        20.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        20.333333         |Avatar, the Last Airbender       |
+|Criminal Minds                   |        20.235294         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        20.235294         |Criminal Minds                   |
 |Scrubs                           |        20.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |        20.222222         |Scrubs                           |
 |Gravity Falls                    |           20.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |           20.0           |Gravity Falls                    |
 |King of the Hill                 |        19.923077         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |        19.923077         |King of the Hill                 |
 |The X-Files                      |        19.727273         |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |        19.727273         |The X-Files                      |
+|Family Guy                       |        19.272727         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        19.272727         |Family Guy                       |
 |Brooklyn Nine-Nine               |        19.125000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |        19.125000         |Brooklyn Nine-Nine               |
 |Star Wars the Clone Wars         |           19.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           19.0           |Star Wars the Clone Wars         |
-|Family Guy                       |        18.818182         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        18.818182         |Family Guy                       |
 |The Mick                         |        18.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |        18.500000         |The Mick                         |
 |American Dad                     |        18.473684         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |        18.473684         |American Dad                     |
 |Community                        |        18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |        18.333333         |Community                        |
@@ -2426,7 +2426,7 @@ sorting by most episodes per season...
 |Recess                           |        11.333333         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        11.333333         |Recess                           |
 |Mr. Robot                        |        11.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |        11.250000         |Mr. Robot                        |
 |It's Always Sunny in Philadelphia|        10.625000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        10.625000         |It's Always Sunny in Philadelphia|
-|Solar Opposites                  |        10.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |        10.250000         |Solar Opposites                  |
+|Solar Opposites                  |        10.600000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |        10.600000         |Solar Opposites                  |
 |Curb your Enthusiasm             |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |           10.0           |Curb your Enthusiasm             |
 |Better Call Saul                 |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0           |Better Call Saul                 |
 |What We Do In The Shadows        |           10.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|           10.0           |What We Do In The Shadows        |
@@ -2473,20 +2473,20 @@ sorting by most episodes per season...
 |My Name is Earl                  |           24.0           |
 |The Office                       |        22.333333         |
 |Angel                            |           22.0           |
-|The Simpsons                     |        21.714286         |
 |Smallville                       |        21.700000         |
 |Malcolm in the Middle            |        21.571429         |
+|The Simpsons                     |        21.361111         |
 |The Replacements                 |           21.0           |
-|Criminal Minds                   |        20.875000         |
 |Buffy The Vampire Slayer         |        20.571429         |
 |Avatar, the Last Airbender       |        20.333333         |
+|Criminal Minds                   |        20.235294         |
 |Scrubs                           |        20.222222         |
 |Gravity Falls                    |           20.0           |
 |King of the Hill                 |        19.923077         |
 |The X-Files                      |        19.727273         |
+|Family Guy                       |        19.272727         |
 |Brooklyn Nine-Nine               |        19.125000         |
 |Star Wars the Clone Wars         |           19.0           |
-|Family Guy                       |        18.818182         |
 |The Mick                         |        18.500000         |
 |American Dad                     |        18.473684         |
 |Community                        |        18.333333         |
@@ -2507,7 +2507,7 @@ sorting by most episodes per season...
 |Recess                           |        11.333333         |
 |Mr. Robot                        |        11.250000         |
 |It's Always Sunny in Philadelphia|        10.625000         |
-|Solar Opposites                  |        10.250000         |
+|Solar Opposites                  |        10.600000         |
 |Curb your Enthusiasm             |           10.0           |
 |Better Call Saul                 |           10.0           |
 |What We Do In The Shadows        |           10.0           |
@@ -2530,12 +2530,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.65
+Mean:		 14.64
 Median:		 13.39
-Pstdev:		  7.25
-Pvariance:	 52.51
-Stdev:		  7.31
-Variance:	 53.40
+Pstdev:		  7.23
+Pvariance:	 52.32
+Stdev:		  7.29
+Variance:	 53.21
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2576,7 +2576,7 @@ sorting by least episodes per season...
 |Better Call Saul                 |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |           10.0            |Better Call Saul                 |
 |What We Do In The Shadows        |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|           10.0            |What We Do In The Shadows        |
 |Baskets                          |           10.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |           10.0            |Baskets                          |
-|Solar Opposites                  |         10.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |         10.250000         |Solar Opposites                  |
+|Solar Opposites                  |         10.600000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |         10.600000         |Solar Opposites                  |
 |It's Always Sunny in Philadelphia|         10.625000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         10.625000         |It's Always Sunny in Philadelphia|
 |Mr. Robot                        |         11.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |         11.250000         |Mr. Robot                        |
 |Recess                           |         11.333333         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         11.333333         |Recess                           |
@@ -2597,20 +2597,20 @@ sorting by least episodes per season...
 |Community                        |         18.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |         18.333333         |Community                        |
 |American Dad                     |         18.473684         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |         18.473684         |American Dad                     |
 |The Mick                         |         18.500000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |         18.500000         |The Mick                         |
-|Family Guy                       |         18.818182         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         18.818182         |Family Guy                       |
 |Star Wars the Clone Wars         |           19.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |           19.0            |Star Wars the Clone Wars         |
 |Brooklyn Nine-Nine               |         19.125000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |         19.125000         |Brooklyn Nine-Nine               |
+|Family Guy                       |         19.272727         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         19.272727         |Family Guy                       |
 |The X-Files                      |         19.727273         |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         19.727273         |The X-Files                      |
 |King of the Hill                 |         19.923077         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         19.923077         |King of the Hill                 |
 |Gravity Falls                    |           20.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |           20.0            |Gravity Falls                    |
 |Scrubs                           |         20.222222         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         20.222222         |Scrubs                           |
+|Criminal Minds                   |         20.235294         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         20.235294         |Criminal Minds                   |
 |Avatar, the Last Airbender       |         20.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         20.333333         |Avatar, the Last Airbender       |
 |Buffy The Vampire Slayer         |         20.571429         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         20.571429         |Buffy The Vampire Slayer         |
-|Criminal Minds                   |         20.875000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         20.875000         |Criminal Minds                   |
 |The Replacements                 |           21.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           21.0            |The Replacements                 |
+|The Simpsons                     |         21.361111         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         21.361111         |The Simpsons                     |
 |Malcolm in the Middle            |         21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         21.571429         |Malcolm in the Middle            |
 |Smallville                       |         21.700000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         21.700000         |Smallville                       |
-|The Simpsons                     |         21.714286         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         21.714286         |The Simpsons                     |
 |Angel                            |           22.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0            |Angel                            |
 |The Office                       |         22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |         22.333333         |The Office                       |
 |My Name is Earl                  |           24.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0            |My Name is Earl                  |
@@ -2657,7 +2657,7 @@ sorting by least episodes per season...
 |Better Call Saul                 |           10.0            |
 |What We Do In The Shadows        |           10.0            |
 |Baskets                          |           10.0            |
-|Solar Opposites                  |         10.250000         |
+|Solar Opposites                  |         10.600000         |
 |It's Always Sunny in Philadelphia|         10.625000         |
 |Mr. Robot                        |         11.250000         |
 |Recess                           |         11.333333         |
@@ -2678,20 +2678,20 @@ sorting by least episodes per season...
 |Community                        |         18.333333         |
 |American Dad                     |         18.473684         |
 |The Mick                         |         18.500000         |
-|Family Guy                       |         18.818182         |
 |Star Wars the Clone Wars         |           19.0            |
 |Brooklyn Nine-Nine               |         19.125000         |
+|Family Guy                       |         19.272727         |
 |The X-Files                      |         19.727273         |
 |King of the Hill                 |         19.923077         |
 |Gravity Falls                    |           20.0            |
 |Scrubs                           |         20.222222         |
+|Criminal Minds                   |         20.235294         |
 |Avatar, the Last Airbender       |         20.333333         |
 |Buffy The Vampire Slayer         |         20.571429         |
-|Criminal Minds                   |         20.875000         |
 |The Replacements                 |           21.0            |
+|The Simpsons                     |         21.361111         |
 |Malcolm in the Middle            |         21.571429         |
 |Smallville                       |         21.700000         |
-|The Simpsons                     |         21.714286         |
 |Angel                            |           22.0            |
 |The Office                       |         22.333333         |
 |My Name is Earl                  |           24.0            |
@@ -2699,12 +2699,12 @@ sorting by least episodes per season...
 |Yu-Gi-Oh!                        |         47.200000         |
 ###############################################################
 
-Mean:		 14.65
+Mean:		 14.64
 Median:		 13.39
-Pstdev:		  7.25
-Pvariance:	 52.51
-Stdev:		  7.31
-Variance:	 53.40
+Pstdev:		  7.23
+Pvariance:	 52.32
+Stdev:		  7.29
+Variance:	 53.21
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
@@ -2713,5 +2713,5 @@ Variance:	 53.40
 
 ###################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023| start year |##################################
-|End Year                         | start year | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 1  | 0  | 1  | 1  | 1  | 2  | 1  | 1  | 2  | 1  | 1  | 1  | 4  | 2  | 3  | 1  | 3  | 4  | 7  | 4  | 7  | 5  | 7  | start year |Concurrent                       |
+|End Year Count                   | start year | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 1  | 0  | 1  | 1  | 1  | 2  | 1  | 1  | 2  | 1  | 1  | 1  | 4  | 2  | 3  | 1  | 3  | 4  | 7  | 4  | 7  | 5  | 7  | start year |End Year Count                   |
 ###################################################################################################################################################################################################################################################################################
