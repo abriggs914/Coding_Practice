@@ -17,10 +17,38 @@ from location_utility import address_to_coords
 from utility import number_suffix
 
 
+# https://github.com/Zmalski/NHL-API-Reference?tab=readme-ov-file#get-team-information
+# https://gitlab.com/dword4/nhlapi
+# https://pypi.org/project/nhl-api-py/
+# https://kaslemr.github.io/NHL-API-Vignette/
+
+
 ROOT_IMAGE_RESOURCES = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags"
 if not os.path.exists(ROOT_IMAGE_RESOURCES):
     ROOT_IMAGE_RESOURCES = r"C:\Users\abriggs\Documents\Coding_Practice\Resources\Flags"
 def_colour_text = Colour("#FFFFFF")
+
+
+@st.cache_data(show_spinner=False)
+def get_league_team_data():
+    return requests.get("https://api.nhle.com/stats/rest/en/team").json()
+
+
+@st.cache_data(show_spinner=False)
+def get_country_data():
+    return requests.get("https://api.nhle.com/stats/rest/en/country").json()
+
+
+@st.cache_data(show_spinner=False)
+def get_glossary_data():
+    return requests.get("https://api.nhle.com/stats/rest/en/glossary").json()
+    
+    
+@st.cache_data(show_spinner=False):
+def get_asset(end_path: str):
+    """https://assets.nhle.com/images/country/48/CAN.png"""
+    url = f"https://assets.nhle.com{end_path}"
+    return requests.get(url).json()
 
 
 def decode_position(position_code: str) -> str:
@@ -504,6 +532,10 @@ if __name__ == '__main__':
     ):
         if k not in st.session_state:
             st.session_state.setdefault(k, v)
+
+    df_country_data = get_country_data()
+    df_league_team_data = get_league_team_data()
+    df_glossary_data = get_glossary_data()
 
     excel_dfs = load_excel_dfs()
 
