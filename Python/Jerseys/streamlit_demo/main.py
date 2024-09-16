@@ -44,7 +44,7 @@ def get_glossary_data():
     return requests.get("https://api.nhle.com/stats/rest/en/glossary").json()
     
     
-@st.cache_data(show_spinner=False):
+@st.cache_data(show_spinner=False)
 def get_asset(end_path: str):
     """https://assets.nhle.com/images/country/48/CAN.png"""
     url = f"https://assets.nhle.com{end_path}"
@@ -75,6 +75,15 @@ def query_lat_long(address):
 @st.cache_data(show_spinner=False)
 def search_image_resources(term: str):
     sterm = term.lower().removesuffix(".png").replace(" ", "-")
+    translations = (
+        ("CAN", "Canada"),
+        ("SLO", "Slovakia"),
+        ("SWE", "Sweden"),
+        ("FIN", "Finland"),
+        ("SUI", "Switzerland"),
+        ("GER", "Germany"),
+        ("RUS", "Russia")
+    )
     if sterm == "russia":
         sterm = "russian-federation"
     if os.path.exists(ROOT_IMAGE_RESOURCES) and sterm:
@@ -528,7 +537,9 @@ if __name__ == '__main__':
             ("njp_img_path", None),
             ("njp_tog_open_only", False),
             ("njp_tog_image_only", False),
-            ("njp_img_cap", "Select a jersey to check if images exist")
+            ("njp_img_cap", "Select a jersey to check if images exist"),
+
+            ("radio_print_jersey_order", None)
     ):
         if k not in st.session_state:
             st.session_state.setdefault(k, v)
@@ -781,6 +792,69 @@ if __name__ == '__main__':
     fig_ply_make = px.bar(df_make_ply, x="Make", y="Frequency", title="Jersey Brand Name Frequency")
     with st.expander("Jersey Make"):
         st.plotly_chart(fig_ply_make)
+
+
+
+
+
+    df_players_digit_freq_ply = df_nhl_jerseys[["Number"]]
+    digits = {
+        "Digit": list(range(10)),
+        "Count": [0 for v in range(10)]
+    }
+    # df_numbers_ply.values.tolist()
+    for i, row in df_players_digit_freq_ply.iterrows():
+        if not pd.isna(row["Number"]):
+            num = str(int(row["Number"]))
+            print(f"{num=}")
+            for dig in num:
+                print(f"\t{dig=}")
+                digits["Count"][int(dig)] = digits["Count"][int(dig)] + 1
+    print(f"{digits=}")
+    df_digit_freq_ply = pd.DataFrame(data=digits, columns=["Digit", "Count"])
+    df_digit_freq_ply.columns = ["Digit", "Frequency"]
+    df_digit_freq_ply["Digit"] = df_digit_freq_ply.apply(
+        lambda row: f"{row['Digit']}: {100 * row['Frequency'] / df_digit_freq_ply['Frequency'].sum():.2f} %", axis=1)
+    fig_ply_digit_freq = px.bar(df_digit_freq_ply, x="Digit", y="Frequency", title="Jersey Digit Frequency")
+    with st.expander("Digit Frequency"):
+        # st.dataframe(df_digit_freq_ply)
+        st.plotly_chart(fig_ply_digit_freq)
+
+
+
+    idx_a = ord("a")
+    df_players_letter_freq_ply = df_nhl_jerseys[["PlayerLast"]]
+    letters = {
+        "Letter": list(map(chr, (range(idx_a, idx_a + 26)))),
+        "Count": [0 for v in range(26)]
+    }
+    for i, row in df_players_letter_freq_ply.iterrows():
+        ln = row["PlayerLast"]
+        if not pd.isna(ln):
+            print(f"{ln=}")
+            for let in ln:
+                llet: str = let.lower()
+                idx_l = ord(llet)
+                if llet.isalpha():
+                    print(f"{llet=}")
+                    letters["Count"][idx_l - idx_a] = letters["Count"][idx_l - idx_a] + 1
+                else:
+                    if llet not in letters["Letter"]:
+                        letters["Letter"].append(llet)
+                        letters["Count"].append(0)
+                    idx_l = letters["Letter"].index(llet)
+                    letters["Count"][idx_l] = letters["Count"][idx_l] + 1
+    df_letter_freq_ply = pd.DataFrame(data=letters, columns=["Letter", "Count"])
+    df_letter_freq_ply.columns = ["Letter", "Frequency"]
+    df_letter_freq_ply["Letter"] = df_letter_freq_ply.apply(
+        lambda row: f"{row['Letter']}: {100 * row['Frequency'] / df_letter_freq_ply['Frequency'].sum():.2f} %", axis=1)
+    fig_ply_letter_freq = px.bar(df_letter_freq_ply, x="Letter", y="Frequency", title="Jersey Letter Frequency")
+    with st.expander("Letter Frequency"):
+        # st.dataframe(df_letter_freq_ply)
+        st.plotly_chart(fig_ply_letter_freq)
+
+
+
 
     df_u_players_teams_ply = df_nhl_jerseys[["Team"]]
     df_teams_ply = df_u_players_teams_ply["Team"].value_counts().sort_values(ascending=False).reset_index()
@@ -1311,14 +1385,155 @@ with st.expander("References:"):
     for link in image_refs_htmls:
         st.write(link, unsafe_allow_html=True)
 
-shown_opened_group_change = False
-for i, row in df_nhl_jerseys.sort_values(by="OpenDate", ascending=False).iterrows():
-    if all([
-        i > 0,
-        pd.isna(row["OpenDate"]),
-        not shown_opened_group_change,
-        i < (df_nhl_jerseys.shape[0] - 1)
-    ]):
-        shown_opened_group_change = True
+options_radio_print_jersey_order = [
+    "Open Date",
+    "Team Name - ASC",
+    "Team Name - DESC",
+    "Conference - Team - ASC",
+    "Conference - Team - DESC",
+    "Division - Team - ASC",
+    "Division - Team - DESC"
+]
+radio_print_jersey_order = st.radio(
+    label="Jersey Order",
+    options=options_radio_print_jersey_order,
+    key="radio_print_jersey_order"
+)
+# df_gb = df_nhl_jerseys.groupby(
+#     by=["Team", "OpenDate"]
+# ).apply(lambda x: x)
+# print(f"{df_gb=}")
+# df_gb
+#
+# df_gb = df_nhl_jerseys.groupby(
+#     by=["OpenDate", "Team"]
+# )[["OpenDate", "Team"]].apply(lambda x: x)
+# print(f"{df_gb=}")
+# df_gb
+#
+# df_gb = df_nhl_jerseys.groupby(
+#     by=["OpenDate", "Team"]
+# ).sort_values(
+#     by=["Team", "OpenDate"],
+#     ascending=False
+# )
+# print(f"{df_gb=}")
+# df_gb
+
+if st.session_state.radio_print_jersey_order == options_radio_print_jersey_order[0]:
+    # "Open Date"
+    shown_opened_group_change = False
+    for i, row in df_nhl_jerseys.sort_values(by="OpenDate", ascending=False).iterrows():
+        if all([
+            i > 0,
+            pd.isna(row["OpenDate"]),
+            not shown_opened_group_change,
+            i < (df_nhl_jerseys.shape[0] - 1)
+        ]):
+            shown_opened_group_change = True
+            st.divider()
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+elif st.session_state.radio_print_jersey_order == "Team Name ASC":
+    # "Team Name ASC"
+    for i, row in df_nhl_jerseys.loc[df_nhl_jerseys["OpenDate"] != ""].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+    st.divider()
+    for i, row in df_nhl_jerseys.loc[pd.isna(df_nhl_jerseys["OpenDate"])].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+elif st.session_state.radio_print_jersey_order == "Team Name DESC":
+    # "Team Name DESC"
+    for i, row in df_nhl_jerseys.loc[df_nhl_jerseys["OpenDate"] != ""].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+    st.divider()
+    for i, row in df_nhl_jerseys.loc[pd.isna(df_nhl_jerseys["OpenDate"])].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+elif st.session_state.radio_print_jersey_order == "Conference - Team - ASC":
+    # "Conference - Team - ASC"
+    st.write(f"# Opened")
+    for div in sorted(df_nhl_jerseys["ConferenceName_x"].unique()):
+        st.write(f"### {div}")
+        for i, row in df_nhl_jerseys.loc[
+            (~pd.isna(df_nhl_jerseys["OpenDate"]))
+            & (df_nhl_jerseys["ConferenceName_x"] == div)
+        ].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+            st.write(
+                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
-    st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+    st.write(f"# Un-Opened")
+    for div in sorted(df_nhl_jerseys["ConferenceName_x"].unique()):
+        st.write(f"### {div}")
+        for i, row in df_nhl_jerseys.loc[
+            (pd.isna(df_nhl_jerseys["OpenDate"]))
+            & (df_nhl_jerseys["ConferenceName_x"] == div)
+        ].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+            st.write(
+                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+        st.divider()
+elif st.session_state.radio_print_jersey_order == "Conference - Team - DESC":
+    # "Conference - Team - DESC"
+    st.write(f"# Opened")
+    for div in sorted(df_nhl_jerseys["ConferenceName_x"].unique()):
+        st.write(f"### {div}")
+        for i, row in df_nhl_jerseys.loc[
+            (~pd.isna(df_nhl_jerseys["OpenDate"]))
+            & (df_nhl_jerseys["ConferenceName_x"] == div)
+        ].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+            st.write(
+                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+        st.divider()
+    st.write(f"# Un-Opened")
+    for div in sorted(df_nhl_jerseys["ConferenceName_x"].unique()):
+        st.write(f"### {div}")
+        for i, row in df_nhl_jerseys.loc[
+            (pd.isna(df_nhl_jerseys["OpenDate"]))
+            & (df_nhl_jerseys["ConferenceName_x"] == div)
+        ].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+            st.write(
+                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+        st.divider()
+elif st.session_state.radio_print_jersey_order == "Division - Team - ASC":
+    # "Division - Team - ASC"
+    st.write(f"# Opened")
+    for div in sorted(df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"].unique()):
+        st.write(f"### {div}")
+        for i, row in df_nhl_jerseys.loc[
+            (~pd.isna(df_nhl_jerseys["OpenDate"]))
+            & (df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"] == div)
+        ].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+            st.write(
+                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+        st.divider()
+    st.write(f"# Un-Opened")
+    for div in sorted(df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"].unique()):
+        st.write(f"### {div}")
+        for i, row in df_nhl_jerseys.loc[
+            (pd.isna(df_nhl_jerseys["OpenDate"]))
+            & (df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"] == div)
+        ].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+            st.write(
+                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+        st.divider()
+elif st.session_state.radio_print_jersey_order == "Division - Team - DESC":
+    # "Division - Team - DESC"
+    st.write(f"# Opened")
+    for div in sorted(df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"].unique()):
+        st.write(f"### {div}")
+        for i, row in df_nhl_jerseys.loc[
+            (~pd.isna(df_nhl_jerseys["OpenDate"]))
+            & (df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"] == div)
+        ].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+            st.write(
+                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+        st.divider()
+    st.write(f"# Un-Opened")
+    for div in sorted(df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"].unique()):
+        st.write(f"### {div}")
+        for i, row in df_nhl_jerseys.loc[
+            (pd.isna(df_nhl_jerseys["OpenDate"]))
+            & (df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"] == div)
+        ].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+            st.write(
+                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+        st.divider()
+else:
+    print(f"{st.session_state.radio_print_jersey_order=}")

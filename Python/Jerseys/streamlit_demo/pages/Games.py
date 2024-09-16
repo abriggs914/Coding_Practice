@@ -325,13 +325,13 @@ with columns["games_data"][0]:
                         "gameType": game_type,
                         "myChoice": None,
                         "myChoiceDate": None,
-                        "myChoiceLocked": None,
+                        "myChoiceLocked": False,
                         "myChoiceLockDate": None,
                         "myChoiceCorrect": False
                     }
                     vals[k_chx] = None
                     vals[k_chx_d] = None
-                    vals[k_chx_lock] = None
+                    vals[k_chx_lock] = False
                     vals[k_chx_lock_d] = game_start_time <= now
                     vals[k_chx_correct] = False
                 else:
@@ -358,8 +358,10 @@ with columns["games_data"][0]:
 
                 for ss_key, dgh_key in ss_dgh.items():
                     func = funcs.get(ss_key)
-                    if ss_key not in st.session_state:
+                    # if ss_key not in st.session_state:
+                    if st.session_state.get(ss_key) is None:
                         st.session_state[ss_key] = vals[ss_key]
+                        print(f"NEW {ss_key=}, {vals[ss_key]=}")
                     else:
                         if f"v_{ss_key}" in st.session_state:
                             if func is not None and callable(func):
@@ -373,6 +375,8 @@ with columns["games_data"][0]:
                             data_games_history["games"][sgid][dgh_key] = vals[ss_key]
                         else:
                             print(f"FTR\t{ss_key=}, {dgh_key=}")
+
+                print(f"{ss_dgh=}")
 
                 my_choice = vals[k_chx]
                 my_choice_d = vals[k_chx_d]
@@ -408,7 +412,8 @@ with columns["games_data"][0]:
                         else:
                             st.write(f"could not load image for {home_team_abbrev}")
                     with cols_team_vs[3]:
-                        # print(f"{k_chx_lock=}, {k_chx=}")
+                        print(f"{k_chx_lock=}, {k_chx=}, {my_choice_lock_disabled=}")
+                        print(f"{st.session_state.get(k_chx_lock)=}, {st.session_state.get(k_chx)=}, {my_choice_lock_disabled=}")
                         st.toggle(
                             label="Choice Locked",
                             key=k_chx_lock,
