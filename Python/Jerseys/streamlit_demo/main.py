@@ -745,6 +745,7 @@ if __name__ == '__main__':
     fig_ply_numbers = px.bar(df_numbers_ply, x="Number", y="Frequency", title="Player Number Frequency")
     with st.expander("Jersey Numbers Plotly"):
         st.plotly_chart(fig_ply_numbers)
+        # print(f"XX {fig_ply_numbers['points']}")
 
     df_u_players_countries_ply = df_nhl_jerseys[["PlayerFirst", "PlayerLast", "Nationality"]].drop_duplicates()
     df_countries_ply = df_u_players_countries_ply["Nationality"].value_counts().sort_values(
