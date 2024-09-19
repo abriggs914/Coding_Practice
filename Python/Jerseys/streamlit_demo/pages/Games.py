@@ -12,6 +12,9 @@ TEST_GAMES = [
 ]
 
 
+# https://github.com/Zmalski/NHL-API-Reference?tab=readme-ov-file
+# https://api-web.nhle.com/v1/gamecenter/2023020121/landing
+
 if TEST_GAMES:
     print(f"\n\nJerseys Start!")
     sst = sorted(((k, v) for k, v in st.session_state.items()), key=lambda tup: str(tup[1]))
