@@ -1,4 +1,5 @@
 import asyncio
+import calendar
 import datetime
 import os.path
 import random
@@ -822,6 +823,79 @@ if __name__ == '__main__':
         st.plotly_chart(fig_ply_digit_freq)
 
 
+    min_year = df_nhl_jerseys["DOB"].min().year
+    max_year = df_nhl_jerseys["DOB"].max().year
+    print(f"{min_year=}, {max_year=}")
+    df_players_birth_year_digit_freq_ply = df_nhl_jerseys[["DOB"]]
+    digits_birth_year = {
+        "Year": list(range(min_year - 1, max_year + 2)),
+        "Count": [0 for v in range(min_year - 1, max_year + 2)]
+    }
+    # df_numbers_ply.values.tolist()
+    print(f"{digits_birth_year=}")
+    for i, row in df_players_birth_year_digit_freq_ply.iterrows():
+        if not pd.isna(row["DOB"]):
+            num = row["DOB"].year
+            num -= min_year - 1
+            print(f"{num=}")
+            digits_birth_year["Count"][num] = digits_birth_year["Count"][num] + 1
+    print(f"{digits_birth_year=}")
+    df_digit_birth_year_freq_ply = pd.DataFrame(data=digits_birth_year, columns=["Year", "Count"])
+    df_digit_birth_year_freq_ply.columns = ["DOB", "Frequency"]
+    df_digit_birth_year_freq_ply["DOB"] = df_digit_birth_year_freq_ply.apply(
+        lambda row: f"{row['DOB']}: {100 * row['Frequency'] / df_digit_birth_year_freq_ply['Frequency'].sum():.2f} %", axis=1)
+    fig_ply_digit_birth_year_freq = px.bar(df_digit_birth_year_freq_ply, x="DOB", y="Frequency", title="Jersey Player Birth Year Frequency")
+    with st.expander("Player Birth Year Frequency"):
+        # st.dataframe(df_digit_freq_ply)
+        st.plotly_chart(fig_ply_digit_birth_year_freq)
+
+
+    df_players_birth_month_digit_freq_ply = df_nhl_jerseys[["DOB"]]
+    digits_birth_month = {
+        "Month": [calendar.month_name[i + 1] for i in range(12)],
+        "Count": [0 for v in range(12)]
+    }
+    # df_numbers_ply.values.tolist()
+    print(f"{digits_birth_month=}")
+    for i, row in df_players_birth_year_digit_freq_ply.iterrows():
+        if not pd.isna(row["DOB"]):
+            num = row["DOB"].month - 1
+            print(f"{num=}")
+            digits_birth_month["Count"][num] = digits_birth_month["Count"][num] + 1
+    print(f"{digits_birth_month=}")
+    df_digit_birth_month_freq_ply = pd.DataFrame(data=digits_birth_month, columns=["Month", "Count"])
+    df_digit_birth_month_freq_ply.columns = ["Birth Month", "Frequency"]
+    df_digit_birth_month_freq_ply["Birth Month"] = df_digit_birth_month_freq_ply.apply(
+        lambda row: f"{row['Birth Month']}: {100 * row['Frequency'] / df_digit_birth_month_freq_ply['Frequency'].sum():.2f} %", axis=1)
+    fig_ply_digit_birth_month_freq = px.bar(df_digit_birth_month_freq_ply, x="Birth Month", y="Frequency", title="Jersey Player Birth Month Frequency")
+    with st.expander("Player Birth Month Frequency"):
+        # st.dataframe(df_digit_freq_ply)
+        st.plotly_chart(fig_ply_digit_birth_month_freq)
+
+
+    df_players_birth_day_digit_freq_ply = df_nhl_jerseys[["DOB"]]
+    digits_birth_day = {
+        "Day": [i + 1 for i in range(31)],
+        "Count": [0 for v in range(31)]
+    }
+    # df_numbers_ply.values.tolist()
+    print(f"{digits_birth_day=}")
+    for i, row in df_players_birth_day_digit_freq_ply.iterrows():
+        if not pd.isna(row["DOB"]):
+            num = row["DOB"].day - 1
+            print(f"{num=}")
+            digits_birth_day["Count"][num] = digits_birth_day["Count"][num] + 1
+    print(f"{digits_birth_day=}")
+    df_digit_birth_day_freq_ply = pd.DataFrame(data=digits_birth_day, columns=["Day", "Count"])
+    df_digit_birth_day_freq_ply.columns = ["Birth Day", "Frequency"]
+    df_digit_birth_day_freq_ply["Birth Day"] = df_digit_birth_day_freq_ply.apply(
+        lambda row: f"{row['Birth Day']}: {100 * row['Frequency'] / df_digit_birth_day_freq_ply['Frequency'].sum():.2f} %", axis=1)
+    fig_ply_digit_birth_day_freq = px.bar(df_digit_birth_day_freq_ply, x="Birth Day", y="Frequency", title="Jersey Player Birth Day Frequency")
+    with st.expander("Player Birth Day Frequency"):
+        # st.dataframe(df_digit_freq_ply)
+        st.plotly_chart(fig_ply_digit_birth_day_freq)
+
+
 
     idx_a = ord("a")
     df_players_letter_freq_ply = df_nhl_jerseys[["PlayerLast"]]
@@ -1393,7 +1467,8 @@ options_radio_print_jersey_order = [
     "Conference - Team - ASC",
     "Conference - Team - DESC",
     "Division - Team - ASC",
-    "Division - Team - DESC"
+    "Division - Team - DESC",
+    "Jersey Make Date - ASC"
 ]
 radio_print_jersey_order = st.radio(
     label="Jersey Order",
@@ -1536,5 +1611,13 @@ elif st.session_state.radio_print_jersey_order == "Division - Team - DESC":
             st.write(
                 f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
+elif st.session_state.radio_print_jersey_order == "Jersey Make Date - ASC":
+    # "Jersey Make Date - ASC"
+    # for i, row in df_nhl_jerseys.loc[~df_nhl_jerseys["MadeDate"].isin(["", "-"])].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+    for i, row in df_nhl_jerseys.loc[~df_nhl_jerseys["MadeDate"].isin(["", "-"])].iterrows():
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+    # st.divider()
+    # for i, row in df_nhl_jerseys.loc[pd.isna(df_nhl_jerseys["OpenDate"])].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+    #     st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
 else:
     print(f"{st.session_state.radio_print_jersey_order=}")

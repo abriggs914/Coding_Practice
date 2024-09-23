@@ -330,16 +330,16 @@ class App(ctk.CTk):
 			for key in self.keys_pressed:
 				if key == "Left":
 					self.move_left(None)
-					self.gen_new_positions()
+					#self.gen_new_positions()
 				elif key == "Right":
 					self.move_right(None)
-					self.gen_new_positions()
+					#self.gen_new_positions()
 				elif key == "Up":
 					self.move_up(None)
-					self.gen_new_positions()
+					#self.gen_new_positions()
 				elif key == "Down":
 					self.move_down(None)
-					self.gen_new_positions()
+					#self.gen_new_positions()
 				elif key == "p":
 					self.click_pause()
 				else:
