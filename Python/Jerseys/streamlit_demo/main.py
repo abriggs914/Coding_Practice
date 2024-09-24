@@ -1468,7 +1468,10 @@ options_radio_print_jersey_order = [
     "Conference - Team - DESC",
     "Division - Team - ASC",
     "Division - Team - DESC",
-    "Jersey Make Date - ASC"
+    "Jersey Make Date - ASC",
+    "Jersey Make Date - DESC",
+    "Jersey Make Birthday - ASC",
+    "Jersey Make Birthday - DESC"
 ]
 radio_print_jersey_order = st.radio(
     label="Jersey Order",
@@ -1614,10 +1617,65 @@ elif st.session_state.radio_print_jersey_order == "Division - Team - DESC":
 elif st.session_state.radio_print_jersey_order == "Jersey Make Date - ASC":
     # "Jersey Make Date - ASC"
     # for i, row in df_nhl_jerseys.loc[~df_nhl_jerseys["MadeDate"].isin(["", "-"])].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
-    for i, row in df_nhl_jerseys.loc[~df_nhl_jerseys["MadeDate"].isin(["", "-"])].iterrows():
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
-    # st.divider()
-    # for i, row in df_nhl_jerseys.loc[pd.isna(df_nhl_jerseys["OpenDate"])].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
-    #     st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+    # for i, row in df_nhl_jerseys.loc[~df_nhl_jerseys["MadeDate"].isin(["", "-"])].iterrows():
+    # for i, row in df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))].sort_values(by="MadeDate", key=lambda md: print(f"{md=}")).iterrows():
+    # for i, row in df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))].sort_values(by="MadeDate", key=lambda md: print(f"{md=}")).iterrows():
+    # for i, row in df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))].sort_values(by="MadeDate", key=lambda md: datetime.datetime.strptime(md["MadeDate"], "%m/%y")).iterrows():
+    df = df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))]
+    df["MadeDate"] = pd.to_datetime(df["MadeDate"], format="%m/%y")
+    df.sort_values(by="MadeDate", inplace=True)
+    now = datetime.datetime.now()
+    now = datetime.datetime(now.year, now.month, now.day)
+    spy = 60*60*24*365.25
+    for i, row in df.iterrows():
+        age = (now - row["MadeDate"]).total_seconds()
+        age /= spy
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
+elif st.session_state.radio_print_jersey_order == "Jersey Make Date - DESC":
+    # "Jersey Make Date - DESC"
+    df = df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))]
+    df["MadeDate"] = pd.to_datetime(df["MadeDate"], format="%m/%y")
+    df.sort_values(by="MadeDate", inplace=True, ascending=False)
+    now = datetime.datetime.now()
+    now = datetime.datetime(now.year, now.month, now.day)
+    spy = 60*60*24*365.25
+    for i, row in df.iterrows():
+        age = (now - row["MadeDate"]).total_seconds()
+        age /= spy
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
+elif st.session_state.radio_print_jersey_order == "Jersey Make Birthday - ASC":
+    # "Jersey Make Date - DESC"
+    df = df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))]
+    df["MadeDate"] = pd.to_datetime(df["MadeDate"], format="%m/%y")
+    df["MadeDate_YEAR"] = df["MadeDate"].dt.year
+    df["MadeDate_MONTH"] = df["MadeDate"].dt.month
+    df["MadeDate_DAY"] = df["MadeDate"].dt.day
+
+    df.sort_values(by=["MadeDate_MONTH", "MadeDate_DAY"], inplace=True, ascending=True)
+
+    now = datetime.datetime.now()
+    now = datetime.datetime(now.year, now.month, now.day)
+    spy = 60*60*24*365.25
+    for i, row in df.iterrows():
+        age = (now - row["MadeDate"]).total_seconds()
+        age /= spy
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
+elif st.session_state.radio_print_jersey_order == "Jersey Make Birthday - DESC":
+    # "Jersey Make Date - DESC"
+    df = df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))]
+    df["MadeDate"] = pd.to_datetime(df["MadeDate"], format="%m/%y")
+    df["MadeDate_YEAR"] = df["MadeDate"].dt.year
+    df["MadeDate_MONTH"] = df["MadeDate"].dt.month
+    df["MadeDate_DAY"] = df["MadeDate"].dt.day
+
+    df.sort_values(by=["MadeDate_MONTH", "MadeDate_DAY"], inplace=True, ascending=False)
+
+    now = datetime.datetime.now()
+    now = datetime.datetime(now.year, now.month, now.day)
+    spy = 60*60*24*365.25
+    for i, row in df.iterrows():
+        age = (now - row["MadeDate"]).total_seconds()
+        age /= spy
+        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
 else:
     print(f"{st.session_state.radio_print_jersey_order=}")
