@@ -4,6 +4,8 @@ from typing import Optional, Any
 import requests
 import streamlit as st
 from streamlit.components import v1
+from streamlit_javascript import st_javascript
+import hydralit_components as hc
 
 
 @st.cache_data(show_spinner=False)
@@ -39,13 +41,17 @@ def streamlitImageClick(*args):
     print(f"streamlitImageClick {args=}")
 
 
-nhl_seasons_list: list[int] = load_league_seasons()
-playoff_bracket_data: dict[int: dict[str: Any]] = load_all_playoff_brackets()
+with hc.HyLoader("Loading...", hc.Loaders.pulse_bars,):
+    nhl_seasons_list: list[int] = load_league_seasons()
+    playoff_bracket_data: dict[int: dict[str: Any]] = load_all_playoff_brackets()
 
 
 top_bar = st.columns(1)
-winners: dict[int: dict[str: int]] = {}
-teams: dict[int: Any] = {}
+winners: dict[int: dict[str: int]] = st.session_state.setdefault("dict_winners", {})
+teams: dict[int: Any] = st.session_state.setdefault("dict_teams", {})
+
+not_winners = not bool(winners)
+not_teams = not bool(teams)
 
 
 for y in nhl_seasons_list:
@@ -136,19 +142,21 @@ for y in nhl_seasons_list:
 
                 # tst_won_series = tst_wins > lst_wins
                 tst_won_series = tst_id == winning_team_id
-                winners[y] = {
-                    "winner_id": winning_team_id,
-                    "loser_id": losing_team_id,
-                    "round": pr,
-                    "series_idx": series_idx,
-                    "top_seed_won": tst_won_series,
-                    "top_seed_id": tst_id,
-                    "bottom_seed_id": lst_id
-                }
-                if winning_team_id not in teams:
-                    teams[winning_team_id] = tst_data if tst_won_series else lst_data
-                if losing_team_id not in teams:
-                    teams[losing_team_id] = tst_data if not tst_won_series else lst_data
+                if not_winners:
+                    winners[y] = {
+                        "winner_id": winning_team_id,
+                        "loser_id": losing_team_id,
+                        "round": pr,
+                        "series_idx": series_idx,
+                        "top_seed_won": tst_won_series,
+                        "top_seed_id": tst_id,
+                        "bottom_seed_id": lst_id
+                    }
+                if not_teams:
+                    if winning_team_id not in teams:
+                        teams[winning_team_id] = tst_data if tst_won_series else lst_data
+                    if losing_team_id not in teams:
+                        teams[losing_team_id] = tst_data if not tst_won_series else lst_data
 
                 with exp_round:
                     cols = st.columns(3)
@@ -202,6 +210,30 @@ with top_bar[0]:
     #     <div style="display: flex; overflow-x: auto; white-space: nowrap;">
     # """
 
+    # images_html = """
+    #     <script>
+    #         function imageClick(index) {
+    #             // Send the clicked image index to Streamlit
+    #             return index;
+    #         }
+    #     </script>
+    #     <div style="display: flex; overflow-x: auto; white-space: nowrap;">
+    # """
+
+    images_html = """
+        <script>
+            function imageClick(index) {
+                // Send the clicked image index to Streamlit
+                window.imageIndex = index;
+                console.log(index);
+                console.log(window);
+                
+                document.querySelector('button[type="submit"]').click();
+            }
+        </script>
+        <div style="display: flex; overflow-x: auto; white-space: nowrap;">
+    """
+
     for y, winner_data in winners.items():
         winner_id = winner_data.get("winner_id")
         loser_id = winner_data.get("loser_id")
@@ -219,22 +251,49 @@ with top_bar[0]:
         caption_y = divmod(y, 10000)[1]
         fs = 18
         fg = "#FFFFFF"
+        w_img, h_img = 100, 100
 
         # images_html += f'<img src="{image_url}" style="width:150px; height:150px; margin-right:10px;">'
         images_html += f'''
             <div style="text-align: center; margin-right: 15px;">
-                <div style="font-size: {fs}px; margin-top: 5px; color: {fg};" onClick="imageClick({y})";>{caption_y}</div>
-                <img src="{image_url}" style="width:150px; height:150px;" onClick="imageClick({y})";>
-                <div style="font-size: {fs}px; margin-bottom: 5px; color: {fg};" onClick="imageClick({y})";>{caption_tn}</div>
+                <div onClick="imageClick({y})">
+                    <div style="font-size: {fs}px; margin-top: 5px; color: {fg};">{caption_y}</div>
+                    <img src="{image_url}" style="width:{w_img}px; height:{h_img}px;">
+                    <div style="font-size: {fs}px; margin-bottom: 5px; color: {fg};">{caption_tn}</div>
+                </div>
             </div>
         '''
+        # images_html += f'''
+        #     <div style="text-align: center; margin-right: 15px;">
+        #         <div style="font-size: {fs}px; margin-top: 5px; color: {fg};" onClick="imageClick({y})";>{caption_y}</div>
+        #         <img src="{image_url}" style="width:150px; height:150px;" onClick="window.imageIndex = {y};">
+        #         <div style="font-size: {fs}px; margin-bottom: 5px; color: {fg};" onClick="imageClick({y})";>{caption_tn}</div>
+        #     </div>
+        # '''
 
     images_html += "</div>"
 
     print(f"{images_html=}")
 
-    st.components.v1.html(images_html, height=280, scrolling=True)
+    with st.form(key='rerun_form'):
+        rerun_button = st.form_submit_button(label="Click me to rerun")
 
-    clicked_image_index = st.query_params.get("image_index", [None])[0]
+    hyperlink_bar = st.components.v1.html(images_html, height=280, scrolling=True)
+
+    # clicked_image_index = st.query_params.get("image_index", [None])[0]
+    clicked_image_index = st.query_params.get("window.imageIndex", [None])[0]
+    print(f"A {clicked_image_index=}")
     if clicked_image_index is not None:
         st.write(f"Clicked on image index: {clicked_image_index}")
+
+    clicked_image_index = st_javascript("window.imageIndex", key="000")
+    print(f"B {clicked_image_index=}")
+    clicked_image_index = st_javascript("window.imageIndex", key="001")
+    print(f"C {clicked_image_index=}")
+    clicked_image_index = st_javascript("window.imageIndex || -1", key="002")
+    print(f"D {clicked_image_index=}")
+    if clicked_image_index != -1:
+        st.write(f"Clicked on image index: {clicked_image_index}")
+
+st.session_state.setdefault("dict_winners", winners)
+st.session_state.setdefault("dict_teams", teams)
