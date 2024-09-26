@@ -244,12 +244,18 @@ with top_bar[0]:
         bottom_seed_id = winner_data.get("bottom_seed_id")
 
         series_data = playoff_bracket_data.get(y, {}).get("series", [])[series_idx]
-        seed_key = "topSeedTeam" if top_seed_won else "bottomSeedTeam"
+        seed_key_w = "topSeedTeam" if top_seed_won else "bottomSeedTeam"
+        seed_key_l = "topSeedTeam" if not top_seed_won else "bottomSeedTeam"
 
-        image_url = series_data[seed_key]["logo"]
-        caption_tn = series_data[seed_key].get("name", {}).get("default", "?")
+        image_url_w = series_data[seed_key_w]["logo"]
+        caption_tn_w = series_data[seed_key_w].get("name", {}).get("default", "?")
+
+        image_url_l = series_data[seed_key_l]["logo"]
+        caption_tn_l = series_data[seed_key_l].get("name", {}).get("default", "?")
+
         caption_y = divmod(y, 10000)[1]
         fs = 18
+        fs_l = fs - 2
         fg = "#FFFFFF"
         w_img, h_img = 100, 100
 
@@ -258,8 +264,10 @@ with top_bar[0]:
             <div style="text-align: center; margin-right: 15px;">
                 <div onClick="imageClick({y})">
                     <div style="font-size: {fs}px; margin-top: 5px; color: {fg};">{caption_y}</div>
-                    <img src="{image_url}" style="width:{w_img}px; height:{h_img}px;">
-                    <div style="font-size: {fs}px; margin-bottom: 5px; color: {fg};">{caption_tn}</div>
+                    <div style="font-size: {fs}px; margin-top: 5px; color: {fg};">{caption_tn_w}</div>
+                    <img src="{image_url_w}" style="width:{w_img}px; height:{h_img}px;">
+                    <img src="{image_url_l}" style="width:{w_img}px; height:{h_img}px;">
+                    <div style="font-size: {fs_l}px; margin-bottom: 5px; color: {fg};">{caption_tn_l}</div>
                 </div>
             </div>
         '''
