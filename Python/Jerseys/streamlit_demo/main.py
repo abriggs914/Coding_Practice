@@ -373,6 +373,10 @@ def show_njp(jersey_id: Optional[int] = None, get_new: bool = True):
         print(f"BEGIN")
 
         with njp_gc[7]:
+            nhl_player_landing_url = f"https://www.nhl.com/{team_common_name.lower()}/player/{pl_first.lower()}-{pl_last.lower()}-{int(nhl_api_pid)}"
+            # print(f"NEW LANDING URL: {nhl_player_landing_url=}")
+            # st.write(f'''<a href="{nhl_player_landing_url}">{nhl_player_landing_url}</a>''', unsafe_allow_html=True)
+            st.write(f'''<a href="{nhl_player_landing_url}">NHL.com player page</a>''', unsafe_allow_html=True)
 
             # st.dataframe(df_season_totals)
             # st.dataframe(df_playoff_totals)
@@ -1542,7 +1546,7 @@ radio_print_jersey_order = st.radio(
 if st.session_state.radio_print_jersey_order == options_radio_print_jersey_order[0]:
     # "Open Date"
     shown_opened_group_change = False
-    for i, row in df_nhl_jerseys.sort_values(by="OpenDate", ascending=False).iterrows():
+    for i, row in df_nhl_jerseys.loc[~pd.isna(df_nhl_jerseys["OpenDate"])].sort_values(by="OpenDate", ascending=False, ignore_index=True).iterrows():
         if all([
             i > 0,
             pd.isna(row["OpenDate"]),
@@ -1551,21 +1555,21 @@ if st.session_state.radio_print_jersey_order == options_radio_print_jersey_order
         ]):
             shown_opened_group_change = True
             st.divider()
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
-elif st.session_state.radio_print_jersey_order == "Team Name ASC":
+        st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+elif st.session_state.radio_print_jersey_order == "Team Name - ASC":
     # "Team Name ASC"
-    for i, row in df_nhl_jerseys.loc[df_nhl_jerseys["OpenDate"] != ""].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+    for i, row in df_nhl_jerseys.loc[df_nhl_jerseys["OpenDate"] != ""].sort_values(by=["Team", "PlayerLast"], ascending=True, ignore_index=True).iterrows():
+        st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
     st.divider()
-    for i, row in df_nhl_jerseys.loc[pd.isna(df_nhl_jerseys["OpenDate"])].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
-elif st.session_state.radio_print_jersey_order == "Team Name DESC":
+    for i, row in df_nhl_jerseys.loc[pd.isna(df_nhl_jerseys["OpenDate"])].sort_values(by=["Team", "PlayerLast"], ascending=True, ignore_index=True).iterrows():
+        st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+elif st.session_state.radio_print_jersey_order == "Team Name - DESC":
     # "Team Name DESC"
-    for i, row in df_nhl_jerseys.loc[df_nhl_jerseys["OpenDate"] != ""].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+    for i, row in df_nhl_jerseys.loc[df_nhl_jerseys["OpenDate"] != ""].sort_values(by=["Team", "PlayerLast"], ascending=False, ignore_index=True).iterrows():
+        st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
     st.divider()
-    for i, row in df_nhl_jerseys.loc[pd.isna(df_nhl_jerseys["OpenDate"])].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+    for i, row in df_nhl_jerseys.loc[pd.isna(df_nhl_jerseys["OpenDate"])].sort_values(by=["Team", "PlayerLast"], ascending=False, ignore_index=True).iterrows():
+        st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
 elif st.session_state.radio_print_jersey_order == "Conference - Team - ASC":
     # "Conference - Team - ASC"
     st.write(f"# Opened")
@@ -1574,9 +1578,9 @@ elif st.session_state.radio_print_jersey_order == "Conference - Team - ASC":
         for i, row in df_nhl_jerseys.loc[
             (~pd.isna(df_nhl_jerseys["OpenDate"]))
             & (df_nhl_jerseys["ConferenceName_x"] == div)
-        ].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+        ].sort_values(by=["Team", "PlayerLast"], ascending=True, ignore_index=True).iterrows():
             st.write(
-                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+                f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
     st.write(f"# Un-Opened")
     for div in sorted(df_nhl_jerseys["ConferenceName_x"].unique()):
@@ -1584,9 +1588,9 @@ elif st.session_state.radio_print_jersey_order == "Conference - Team - ASC":
         for i, row in df_nhl_jerseys.loc[
             (pd.isna(df_nhl_jerseys["OpenDate"]))
             & (df_nhl_jerseys["ConferenceName_x"] == div)
-        ].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+        ].sort_values(by=["Team", "PlayerLast"], ascending=True, ignore_index=True).iterrows():
             st.write(
-                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+                f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
 elif st.session_state.radio_print_jersey_order == "Conference - Team - DESC":
     # "Conference - Team - DESC"
@@ -1596,9 +1600,9 @@ elif st.session_state.radio_print_jersey_order == "Conference - Team - DESC":
         for i, row in df_nhl_jerseys.loc[
             (~pd.isna(df_nhl_jerseys["OpenDate"]))
             & (df_nhl_jerseys["ConferenceName_x"] == div)
-        ].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+        ].sort_values(by=["Team", "PlayerLast"], ascending=False, ignore_index=True).iterrows():
             st.write(
-                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+                f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
     st.write(f"# Un-Opened")
     for div in sorted(df_nhl_jerseys["ConferenceName_x"].unique()):
@@ -1606,9 +1610,9 @@ elif st.session_state.radio_print_jersey_order == "Conference - Team - DESC":
         for i, row in df_nhl_jerseys.loc[
             (pd.isna(df_nhl_jerseys["OpenDate"]))
             & (df_nhl_jerseys["ConferenceName_x"] == div)
-        ].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+        ].sort_values(by=["Team", "PlayerLast"], ascending=False, ignore_index=True).iterrows():
             st.write(
-                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+                f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
 elif st.session_state.radio_print_jersey_order == "Division - Team - ASC":
     # "Division - Team - ASC"
@@ -1618,9 +1622,9 @@ elif st.session_state.radio_print_jersey_order == "Division - Team - ASC":
         for i, row in df_nhl_jerseys.loc[
             (~pd.isna(df_nhl_jerseys["OpenDate"]))
             & (df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"] == div)
-        ].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+        ].sort_values(by=["Team", "PlayerLast"], ascending=True, ignore_index=True).iterrows():
             st.write(
-                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+                f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
     st.write(f"# Un-Opened")
     for div in sorted(df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"].unique()):
@@ -1628,9 +1632,9 @@ elif st.session_state.radio_print_jersey_order == "Division - Team - ASC":
         for i, row in df_nhl_jerseys.loc[
             (pd.isna(df_nhl_jerseys["OpenDate"]))
             & (df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"] == div)
-        ].sort_values(by=["Team", "PlayerLast"], ascending=True).iterrows():
+        ].sort_values(by=["Team", "PlayerLast"], ascending=True, ignore_index=True).iterrows():
             st.write(
-                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+                f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
 elif st.session_state.radio_print_jersey_order == "Division - Team - DESC":
     # "Division - Team - DESC"
@@ -1640,9 +1644,9 @@ elif st.session_state.radio_print_jersey_order == "Division - Team - DESC":
         for i, row in df_nhl_jerseys.loc[
             (~pd.isna(df_nhl_jerseys["OpenDate"]))
             & (df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"] == div)
-        ].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+        ].sort_values(by=["Team", "PlayerLast"], ascending=False, ignore_index=True).iterrows():
             st.write(
-                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+                f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
     st.write(f"# Un-Opened")
     for div in sorted(df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"].unique()):
@@ -1650,9 +1654,9 @@ elif st.session_state.radio_print_jersey_order == "Division - Team - DESC":
         for i, row in df_nhl_jerseys.loc[
             (pd.isna(df_nhl_jerseys["OpenDate"]))
             & (df_nhl_jerseys["DivisionNameNHLJerseyData__x__NHLDivision"] == div)
-        ].sort_values(by=["Team", "PlayerLast"], ascending=False).iterrows():
+        ].sort_values(by=["Team", "PlayerLast"], ascending=False, ignore_index=True).iterrows():
             st.write(
-                f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
+                f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}")
         st.divider()
 elif st.session_state.radio_print_jersey_order == "Jersey Make Date - ASC":
     # "Jersey Make Date - ASC"
@@ -1663,26 +1667,26 @@ elif st.session_state.radio_print_jersey_order == "Jersey Make Date - ASC":
     # for i, row in df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))].sort_values(by="MadeDate", key=lambda md: datetime.datetime.strptime(md["MadeDate"], "%m/%y")).iterrows():
     df = df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))]
     df["MadeDate"] = pd.to_datetime(df["MadeDate"], format="%m/%y")
-    df.sort_values(by="MadeDate", inplace=True)
+    df.sort_values(by="MadeDate", inplace=True, ignore_index=True)
     now = datetime.datetime.now()
     now = datetime.datetime(now.year, now.month, now.day)
     spy = 60*60*24*365.25
     for i, row in df.iterrows():
         age = (now - row["MadeDate"]).total_seconds()
         age /= spy
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
+        st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
 elif st.session_state.radio_print_jersey_order == "Jersey Make Date - DESC":
     # "Jersey Make Date - DESC"
     df = df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))]
     df["MadeDate"] = pd.to_datetime(df["MadeDate"], format="%m/%y")
-    df.sort_values(by="MadeDate", inplace=True, ascending=False)
+    df.sort_values(by="MadeDate", inplace=True, ascending=False, ignore_index=True)
     now = datetime.datetime.now()
     now = datetime.datetime(now.year, now.month, now.day)
     spy = 60*60*24*365.25
     for i, row in df.iterrows():
         age = (now - row["MadeDate"]).total_seconds()
         age /= spy
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
+        st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
 elif st.session_state.radio_print_jersey_order == "Jersey Make Birthday - ASC":
     # "Jersey Make Date - DESC"
     df = df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))]
@@ -1691,7 +1695,7 @@ elif st.session_state.radio_print_jersey_order == "Jersey Make Birthday - ASC":
     df["MadeDate_MONTH"] = df["MadeDate"].dt.month
     df["MadeDate_DAY"] = df["MadeDate"].dt.day
 
-    df.sort_values(by=["MadeDate_MONTH", "MadeDate_DAY"], inplace=True, ascending=True)
+    df.sort_values(by=["MadeDate_MONTH", "MadeDate_DAY"], inplace=True, ascending=True, ignore_index=True)
 
     now = datetime.datetime.now()
     now = datetime.datetime(now.year, now.month, now.day)
@@ -1699,7 +1703,7 @@ elif st.session_state.radio_print_jersey_order == "Jersey Make Birthday - ASC":
     for i, row in df.iterrows():
         age = (now - row["MadeDate"]).total_seconds()
         age /= spy
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
+        st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
 elif st.session_state.radio_print_jersey_order == "Jersey Make Birthday - DESC":
     # "Jersey Make Date - DESC"
     df = df_nhl_jerseys.loc[~(df_nhl_jerseys["MadeDate"].isin(["", "-"]) | pd.isna(df_nhl_jerseys["MadeDate"]))]
@@ -1708,7 +1712,7 @@ elif st.session_state.radio_print_jersey_order == "Jersey Make Birthday - DESC":
     df["MadeDate_MONTH"] = df["MadeDate"].dt.month
     df["MadeDate_DAY"] = df["MadeDate"].dt.day
 
-    df.sort_values(by=["MadeDate_MONTH", "MadeDate_DAY"], inplace=True, ascending=False)
+    df.sort_values(by=["MadeDate_MONTH", "MadeDate_DAY"], inplace=True, ascending=False, ignore_index=True)
 
     now = datetime.datetime.now()
     now = datetime.datetime(now.year, now.month, now.day)
@@ -1716,6 +1720,6 @@ elif st.session_state.radio_print_jersey_order == "Jersey Make Birthday - DESC":
     for i, row in df.iterrows():
         age = (now - row["MadeDate"]).total_seconds()
         age /= spy
-        st.write(f"{row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
+        st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
 else:
     print(f"{st.session_state.radio_print_jersey_order=}")
