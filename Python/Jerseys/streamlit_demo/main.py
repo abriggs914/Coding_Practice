@@ -284,7 +284,7 @@ def show_njp(jersey_id: Optional[int] = None, get_new: bool = True):
         team_abbrev = json_result.get("currentTeamAbbrev")
         team_name = json_result.get("fullTeamName", dict()).get("default")
         team_name_fr = json_result.get("fullTeamName", dict()).get("fr", team_name)
-        team_common_name = json_result.get("teamCommonName", dict()).get("default")
+        team_common_name = json_result.get("teamCommonName", dict()).get("default", team_name)
         team_place_name = json_result.get("teamPlaceNameWithPreposition", dict()).get("default")
         team_place_name_fr = json_result.get("teamPlaceNameWithPreposition", dict()).get("fr", team_place_name)
 
@@ -373,10 +373,24 @@ def show_njp(jersey_id: Optional[int] = None, get_new: bool = True):
         print(f"BEGIN")
 
         with njp_gc[7]:
-            nhl_player_landing_url = f"https://www.nhl.com/{team_common_name.lower()}/player/{pl_first.lower()}-{pl_last.lower()}-{int(nhl_api_pid)}"
-            # print(f"NEW LANDING URL: {nhl_player_landing_url=}")
-            # st.write(f'''<a href="{nhl_player_landing_url}">{nhl_player_landing_url}</a>''', unsafe_allow_html=True)
-            st.write(f'''<a href="{nhl_player_landing_url}">NHL.com player page</a>''', unsafe_allow_html=True)
+            # print(f"{team_common_name=}")
+            # print(f"{team_abbrev=}")
+            # print(f"{draft_team_abbrev=}")
+            # print(f"{team_name=}")
+            # print(f"{json_data=}")
+            # print(f"{json_result=}")
+            if team_common_name is None:
+                st.write(f"NO TEAM COMMON NAME")
+                st.write(f"{team_common_name=}")
+                st.write(f"{team_abbrev=}")
+                st.write(f"{draft_team_abbrev=}")
+                st.write(f"{team_name=}")
+                st.write(f'{json_result.get("fullTeamName")=}')
+            else:
+                nhl_player_landing_url = f"https://www.nhl.com/{team_common_name.lower()}/player/{pl_first.lower()}-{pl_last.lower()}-{int(nhl_api_pid)}"
+                # print(f"NEW LANDING URL: {nhl_player_landing_url=}")
+                # st.write(f'''<a href="{nhl_player_landing_url}">{nhl_player_landing_url}</a>''', unsafe_allow_html=True)
+                st.write(f'''<a href="{nhl_player_landing_url}">NHL.com player page</a>''', unsafe_allow_html=True)
 
             # st.dataframe(df_season_totals)
             # st.dataframe(df_playoff_totals)
@@ -1723,3 +1737,9 @@ elif st.session_state.radio_print_jersey_order == "Jersey Make Birthday - DESC":
         st.write(f"{i+1}:  {row['PlayerLast']}, {row['PlayerFirst']}, {row['Team']}, {row['BrandName']}, {row['JerseyMake']}, {row['Colours']}, {row['MadeDate']}, {age=}")
 else:
     print(f"{st.session_state.radio_print_jersey_order=}")
+
+
+total_spent_on_jerseys = df_nhl_jerseys["PriceC"].sum()
+
+st.write("#### Total Spent on Jerseys:")
+st.write(f"###### $ {total_spent_on_jerseys}")
