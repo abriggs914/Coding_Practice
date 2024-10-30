@@ -2,6 +2,7 @@ from typing import Literal
 import streamlit as st
 import datetime
 
+from colour_utility import Colour
 
 #######################################################################################################################
 #######################################################################################################################
@@ -10,8 +11,8 @@ import datetime
 VERSION = \
     """	
     Streamlit utility functions
-    Version..............1.01
-    Date...........2024-01-09
+    Version..............1.02
+    Date...........2024-10-30
     Author(s)....Avery Briggs
     """
 
@@ -39,10 +40,17 @@ def VERSION_AUTHORS():
 #######################################################################################################################
 
 
-def aligned_text(txt: str, tag_style: Literal["h1", "h2", "h3", "h4", "h5", "h6", "p"] = "h1", h_align: Literal["left", "center", "right"] = "center", colour: str = "#FFFFFF", line_height: int = 1) -> str:
+def aligned_text(
+        txt: str,
+        tag_style: Literal["h1", "h2", "h3", "h4", "h5", "h6", "p", "span"] = "h1",
+        h_align: Literal["left", "center", "right"] = "center",
+        colour: str = "#FFFFFF",
+        line_height: int = 1
+) -> str:
     """
     Return formatted HTML, and in-line CSS to h_align a given text in a container.
     Use with streamlit's markdown function and with 'unsafe_allow_html' set to True.
+    See coloured_text() for streamlined-colour-only functionality.
     """
     return f"<{tag_style} style='line-height: {line_height}; text-align: {h_align}; color: {colour};'>{txt}</{tag_style}>"
 
@@ -81,6 +89,33 @@ def center_fullscreen_images():
         </style>
         """, unsafe_allow_html=True
     )
+
+
+def coloured_text(
+        text: str,
+        colour: str | Colour = "#000000",
+        html_tags: str = "span",
+        call: bool = False,
+        style_only: bool = False
+) -> str:
+    """
+    Return an HTML string of text styled with a colour.
+    See aligned_text() for more functionality
+
+    :param text: Text to be rendered.
+    :param colour: Text foreground colour.
+    :param html_tags: The HTML text tag you want to display the text with. Wide-open and not fully tested. stick to common text elements (headers, paragraphs, etc...)
+    :param call: If True the result will immediately be displayed by calling st.markdown. Not recommended if you want to place your text within another element or container.
+    :param style_only: If True return the formatted HTML style string.
+    :return: Formatted HTML string.
+    """
+    style = f"style='color:{Colour(colour).hex_code};'"
+    html = f"<{html_tags}{' ' + style}'>{text}</{html_tags}>"
+    if call:
+        st.markdown(html, unsafe_allow_html=True)
+    if style_only:
+        return style
+    return html
 
 
 if __name__ == '__main__':
