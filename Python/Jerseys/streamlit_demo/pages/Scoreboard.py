@@ -1,11 +1,39 @@
 import datetime
-from typing import Any
+from typing import Any, Literal
 
 import requests
 import streamlit as st
 
-from streamlit_demo.streamlit_utility import aligned_text
+# from streamlit_demo.streamlit_utility import aligned_text
 from utility import Dict2Class
+
+
+
+
+
+# Replace this
+
+def aligned_text(
+        txt: str,
+        tag_style: Literal["h1", "h2", "h3", "h4", "h5", "h6", "p", "span"] = "h1",
+        h_align: Literal["left", "center", "right"] = "center",
+        colour: str = "#FFFFFF",
+        line_height: int | float = 1,
+        font_size: int = 12
+) -> str:
+    """
+    Return formatted HTML, and in-line CSS to h_align a given text in a container.
+    Use with streamlit's markdown function and with 'unsafe_allow_html' set to True.
+    See coloured_text() for streamlined-colour-only functionality.
+    """
+    if isinstance(line_height, float):
+        line_height = f"{line_height}%"
+    return f"<{tag_style} style='line-height: {line_height}; text-align: {h_align}; color: {colour}; font-size: {font_size}px'>{txt}</{tag_style}>"
+
+
+
+
+
 
 SCOREBOARD_HOLD_TIME: int = 1000 * 90
 SHOW_SPINNERS: bool = True
