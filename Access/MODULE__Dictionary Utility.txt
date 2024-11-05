@@ -36,7 +36,7 @@ Public Function Dictionary(ParamArray args()) As Object
 
   If UBound(args) >= 0 Then   ' if has arguments '
     If VBA.IsObject(args(0)) Then   ' if object then load a Range '
-      arr = args(0).Resize(args(0).End(xlDown).Row - args(0).Row + 1, 2).value
+      arr = args(0).Resize(args(0).End(xlDown).row - args(0).row + 1, 2).Value
 
       For i = 1 To UBound(arr)
         Dictionary.Add arr(i, 1), arr(i, 2)

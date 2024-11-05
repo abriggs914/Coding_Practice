@@ -1,0 +1,147 @@
+Option Compare Database
+
+
+
+Public Sub SendEmail( _
+    ByVal recipient As Variant, _
+    ByVal subject As String, _
+    ByVal msgBody As String, _
+    Optional ByVal attachments As Variant = Null, _
+    Optional ByVal autoSend As Boolean = False _
+)
+
+    'Send report as PDF
+    'Referenced email as pdf functions from Sales V4
+    'Code Origin: Trevor G (http://www.access-programmers.co.uk/forums/showthread.php?t=200015) - March 6, 2013
+    
+    Dim objOutlook As Outlook.Application
+    Dim objEmail As Outlook.MailItem
+    Dim strAttach1 As String
+    Dim sMsgBody As String
+    
+    Dim sNUN As String
+    sNUN = NetworkUserName()
+    
+    'Set objOutlook = CreateObject("Outlook.application")
+    'On Error Resume Next
+    'Get Outlook if it's running
+    Set objOutlook = GetObject(, "Outlook.Application")
+    If Err <> 0 Then
+        'Outlook wasn't running, start it in code
+        Set objOutlook = CreateObject("Outlook.Application")
+    End If
+    
+    Set objEmail = objOutlook.CreateItem(olMailItem)
+    
+    'DoCmd.RunCommand acCmdSaveRecord
+    
+    'Set Attachment
+    'strAttach1 = "C:\Users\" & sNUN & "\Desktop\MRP Material Detail Requirements Check.pdf"
+    
+    'Output report
+    'DoCmd.OutputTo acOutputReport, "MRP Material Detail Requirements PDF Export", acFormatPDF, strAttach1, False
+    
+    'Create body of email message
+    'sMsgBody = "Whatever Jamie wants for details here..."
+    
+    
+    Dim recipients As String
+    Dim reci As Variant
+    If IsArray(recipient) Then
+        For Each reci In recipient
+            If InStr(1, ";", CStr(reci)) <> 0 Then
+                Err.Raise vbObjectError, "SendEmail", "Param 'recipient' must be a non-empty array or string, that do not include ';'."
+            End If
+            recipients = recipients & ";" & CStr(reci)
+        Next reci
+    Else
+        recipients = CStr(recipient)
+    End If
+    
+    If Len(recipients) < 1 Then
+        Err.Raise vbObjectError, "SendEmail", "Param 'recipient' must be a non-empty array or string"
+    Else
+        recipients = Right(recipients, Len(recipients))
+    End If
+    
+    
+    
+    Dim attachment As String
+    Dim attach As Variant
+    If IsNull(attachments) Then
+        attachment = ""
+    Else
+        If IsArray(attachments) Then
+            For Each attach In attachments
+                If InStr(1, ";", CStr(attach)) <> 0 Then
+                    Err.Raise vbObjectError, "SendEmail", "Param 'attachment' must be a non-empty array or string, that do not include ';'."
+                End If
+                attachments = attachments & ";" & CStr(attach)
+            Next attach
+        Else
+            attachment = CStr(attachments)
+        End If
+    End If
+    
+    'If Len(attachments) < 1 Then
+    '    Err.Raise vbObjectError, "SendEmail", "Param 'attachment' must be a non-empty array or string"
+    'Else
+    If Len(attachment) > 0 Then
+        attachment = Right(attachment, Len(attachment))
+    End If
+    
+    
+    Printf "RECIPIENT = " & recipients
+    Printf "subject = " & subject
+    Printf "msgBody = " & msgBody
+    Printf "attachment = " & attachment
+    
+    If Len(attachment) > 0 Then
+        If Not autoSend Then
+            'Generate email
+            With objEmail
+                .To = recipients
+                .subject = subject
+                .Body = msgBody
+                .Display
+                .attachments.Add attachment
+            End With
+        Else
+            'Generate email
+            With objEmail
+                .To = recipients
+                .subject = subject
+                .Body = msgBody
+                .attachments.Add attachment
+            End With
+        End If
+    
+'    'Bring email to front
+'    'Code reference: http://stackoverflow.com/questions/5663961/how-do-i-bring-an-ms-outlook-2007-dialog-to-the-front-from-ms-access-2007
+'    If Not (objOutlook.ActiveWindow Is Nothing) Then  'only if there's a window
+'                objOutlook.ActiveWindow.Activate  'make sure outlook comes to foreground first
+'    End If
+    
+    'Remove attachments from drive
+        Kill strAttach1
+    Else
+        If Not autoSend Then
+            'Generate email
+            With objEmail
+                .To = recipients
+                .subject = subject
+                .Body = msgBody
+                .Display
+            End With
+        Else
+            'Generate email
+            With objEmail
+                .To = recipients
+                .subject = subject
+                .Body = msgBody
+            End With
+        End If
+    
+    End If
+    
+End Sub

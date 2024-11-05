@@ -1,0 +1,181 @@
+Option Compare Database
+
+'Private Type STARTUPINFO
+'cb As Long
+'lpReserved As String
+'lpDesktop As String
+'lpTitle As String
+'dwX As Long
+'dwY As Long
+'dwXSize As Long
+'dwYSize As Long
+'dwXCountChars As Long
+'dwYCountChars As Long
+'dwFillAttribute As Long
+'dwFlags As Long
+'wShowWindow As Integer
+'cbReserved2 As Integer
+'lpReserved2 As Long
+'hStdInput As Long
+'hStdOutput As Long
+'hStdError As Long
+'End Type
+
+'Private Type PROCESS_INFORMATION
+'hProcess As Long
+'hThread As Long
+'dwProcessID As Long
+'dwThreadID As Long
+'End Type
+
+'Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal _
+'hHandle As Long, ByVal dwMilliseconds As Long) As Long
+
+'Private Declare Function CreateProcessA Lib "kernel32" (ByVal _
+'lpApplicationName As Long, ByVal lpCommandLine As String, ByVal _
+'lpProcessAttributes As Long, ByVal lpThreadAttributes As Long, _
+'ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, _
+'ByVal lpEnvironment As Long, ByVal lpCurrentDirectory As Long, _
+'lpStartupInfo As STARTUPINFO, lpProcessInformation As _
+'PROCESS_INFORMATION) As Long
+
+'Private Declare Function CloseHandle Lib "kernel32" (ByVal _
+'hObject As Long) As Long
+
+'Private Const NORMAL_PRIORITY_CLASS = &H20&
+'Private Const INFINITE = -1&
+
+
+
+' Python Utility
+
+
+Public Function FindPythonPath() As Variant
+
+    Dim lngLen As Long
+    Dim lngX As Long
+    Dim strUserName As String
+
+    On Error GoTo UserNameError
+    un = "Unknown"
+
+    'Get end user's domain name
+    Set WSHnet = CreateObject("WScript.Network")
+    un = WSHnet.UserName
+    If un = "Unknown" Then
+        Resume UserNameError
+    End If
+    
+    On Error GoTo InvalidPythonPath
+    
+    Dim validVersions As Variant
+    Dim versionNumber As Integer
+    Dim versionSubNumber As Variant
+    Dim versionString As String
+    Dim templatePath_311 As String
+    versionNumber = 3
+    validVersions = Range(9, 13)
+    
+    For Each versionSubNumber In validVersions
+        versionString = versionNumber & versionSubNumber
+        templatePath_311 = "C:\Users\" & un & "\AppData\Local\Programs\Python\Python" & versionString & "\python.exe"
+        
+        If Dir(templatePath_311) <> "" Then
+            FindPythonPath = templatePath_311
+            Exit For
+        Else
+            templatePath_311 = ""
+        End If
+    Next versionSubNumber
+    
+    If templatePath_311 = "" Then
+        Resume InvalidPythonPath
+    Else
+        FindPythonPath = templatePath_311
+    End If
+    
+CleanExit:
+    Exit Function
+    
+UserNameError:
+    ' user name not found.
+    FindPythonPath = False
+    Resume CleanExit
+
+InvalidPythonPath:
+    ' python exe not found.
+    FindPythonPath = False
+    Resume CleanExit
+
+End Function
+
+
+Public Function ExecPython(ByVal scriptPath As String, Optional ByVal pythonPath As Variant = Nothing, Optional ByVal windowStyle As Long = vbNormalFocus) As Variant
+
+    ' !! WARNING !!
+    
+    ' Use absolute paths for parameters
+    ' Ensure all paths in python script are using absolute pathing.
+    
+    If Dir(scriptPath) = "" Then
+        Err.Raise vbObjectError, "ExecPython", "Path to python script '" & scriptPath & "' could not be found."
+    End If
+    
+    If Right(scriptPath, 3) <> ".py" Then
+        Err.Raise vbObjectError, "ExecPython", "Path supplied must be to a python script."
+    End If
+
+    If pythonPath Is Nothing Then
+        pythonPath = FindPythonPath()
+    End If
+    
+    If (pythonPath = False) Or (Dir(pythonPath) = "") Then
+        Err.Raise vbObjectError, "ExecPython", "Path to python executable could not be found."
+    End If
+    
+    On Error GoTo ExecuatbleError
+    Dim retVal As Long
+    Dim cmd As String
+    'cmd = pythonPath & " " & scriptPath
+    cmd = pythonPath & " """ & scriptPath & """"
+    'cmd = """" & pythonPath & """ """ & scriptPath & """"
+    Printf "CMD <" & cmd & ">"
+    retVal = shell(cmd, windowStyle)
+    'Call ShellRun(cmd)
+    'Call waitforsingleobject(retVal, INFINITE)
+    ExecPython = True
+    
+CleanExit:
+    Exit Function
+    
+ExecuatbleError:
+    ExecPython = False
+    Resume CleanExit
+
+End Function
+
+
+Public Function ShellRun(ByVal sCmd As String) As String
+
+    'Run a shell command, returning the output as a string
+
+    Dim oShell As Object
+    Set oShell = CreateObject("WScript.Shell")
+
+    'run command
+    Dim oExec As Object
+    Dim oOutput As Object
+    Set oExec = oShell.Exec(sCmd)
+    Set oOutput = oExec.StdOut
+
+    'handle the results as they are written to and read from the StdOut object
+    Dim S As String
+    Dim sLine As String
+    While Not oOutput.AtEndOfStream
+        sLine = oOutput.ReadLine
+        If sLine <> "" Then S = S & sLine & vbCrLf
+    Wend
+
+    ShellRun = S
+
+End Function

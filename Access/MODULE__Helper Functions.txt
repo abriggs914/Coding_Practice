@@ -1,5 +1,22 @@
 Option Compare Database
 
+
+' 2024-11-04 2021
+
+' DisplayImage
+' getFiles
+' GetFolderList
+' Equal
+' ArrayMatchesTableDimensions
+' ArrayHas2Dimensions
+' NextAvailableFileName
+' WriteFile
+' ReadFile
+' Serialize
+' BrowseForFolder
+
+
+
 Public Function DisplayImage(ctlImageControl As Control, strImagePath As Variant) As String
     On Error GoTo Err_DisplayImage
     
@@ -919,7 +936,7 @@ Public Function ArrayMatchesTableDimensions(ByRef srcArray As Variant, ByVal row
     End If
     
     Dim SR As Long
-    Dim SC As Long
+    Dim sc As Long
     SR = Size(srcArray)
     If SR <> rows Then
         If minRowMatch Then
@@ -947,10 +964,10 @@ Public Function ArrayMatchesTableDimensions(ByRef srcArray As Variant, ByVal row
             ArrayMatchesTableDimensions = cols = 0
             Exit Function
         End If
-        SC = Size(el)
-        If SC <> cols Then
+        sc = Size(el)
+        If sc <> cols Then
             If minColMatch Then
-                If SC < cols Then
+                If sc < cols Then
                     'Printf "-F"
                     ArrayMatchesTableDimensions = False
                     Exit Function
@@ -1034,18 +1051,18 @@ End Function
 Public Function WriteFile(ByVal Text As String, ByVal path As String, Optional ByVal allowOverwrites As Boolean = False) As Boolean
 
     On Error GoTo FailedToWrite
-    Dim FSO As Object
-    Set FSO = CreateObject("Scripting.FileSystemObject")
-    Dim oFile As Object
-    If Not allowOverwrites Then
-        'path = NextAvailableFileName(path)
-    End If
-    Set oFile = FSO.CreateTextFile(path)
-    oFile.Writeline Text
-    oFile.Close
-    Set FSO = Nothing
-    Set oFile = Nothing
-    WriteFile = True
+        Dim fso As Object
+        Set fso = CreateObject("Scripting.FileSystemObject")
+        Dim oFile As Object
+        If Not allowOverwrites Then
+            'path = NextAvailableFileName(path)
+        End If
+        Set oFile = fso.CreateTextFile(path)
+        oFile.WriteLine Text
+        oFile.Close
+        Set fso = Nothing
+        Set oFile = Nothing
+        WriteFile = True
     
 CleanExit:
     Exit Function
@@ -1059,10 +1076,33 @@ FailedToWrite:
 End Function
 
 
-Public Function Serialize(ByVal value As Variant) As String
+Public Function ReadFile(ByVal path As String, Optional ByVal ErrorOnFileNotFound As Boolean = True) As String
+
+    If Dir(path) = "" Then
+        ' File does not exist
+        If ErrorOnFileNotFound Then
+            Err.Raise vbObjectError, "ReadFile", "Could not locate path='" & path & "'"
+        End If
+        ReadFile = ""
+        Exit Function
+    End If
+
+    Dim iFile As Integer
+    Dim sFileContents As String
+    sFileContents = ""
+    iFile = FreeFile
+    Open path For Input As iFile
+        sFileContents = Input(LOF(iFile), iFile)
+    Close iFile
+    ReadFile = sFileContents
+
+End Function
+
+
+Public Function Serialize(ByVal Value As Variant) As String
     
     Dim vt As VbVarType
-    vt = VarType(value)
+    vt = VarType(Value)
     Dim res As String
     
     Dim arraySerialize As Boolean
@@ -1071,17 +1111,17 @@ Public Function Serialize(ByVal value As Variant) As String
     
     Select Case vt
         Case vbInteger:
-            res = CStr(value)
+            res = CStr(Value)
         Case vbLong:
-            res = CStr(value)
+            res = CStr(Value)
         Case vbSingle:
-            res = CStr(value)
+            res = CStr(Value)
         Case vbString:
-            res = """" & CStr(value) & """"
+            res = """" & CStr(Value) & """"
         Case vbDouble:
-            res = CStr(value)
+            res = CStr(Value)
         Case vbDate:
-            res = "#" & CStr(value) & "#"
+            res = "#" & CStr(Value) & "#"
         Case vbArray:
             arraySerialize = True
             
@@ -1098,16 +1138,16 @@ Public Function Serialize(ByVal value As Variant) As String
         Case vbArray + vbVariant:
             arraySerialize = True
         Case Else:
-            Err.Raise vbObjectError, "Serialize", "Error cannot serialize value of type '" & TypeName(value) & "'"
+            Err.Raise vbObjectError, "Serialize", "Error cannot serialize value of type '" & TypeName(Value) & "'"
     End Select
     
     If arraySerialize Then
         res = "Array("
         Dim el As Variant
-        For Each el In value
+        For Each el In Value
             res = res & Serialize(el) & ", "
         Next el
-        If UBound(value) <> -1 Then
+        If UBound(Value) <> -1 Then
             res = Left(res, Len(res) - 2)
         End If
         res = res & ")"

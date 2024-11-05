@@ -53,17 +53,17 @@ Public Function PrintRecordset(ByRef rs As Variant, Optional ByVal doPrint As Bo
 End Function
 
 
-Public Sub ExecSQL(SQL As String, Optional ByVal doPrint As Boolean = True, Optional ByVal doExec As Boolean = True, Optional ByVal quitOnFail As Boolean = True, Optional ByVal trace As Variant = "")
+Public Sub ExecSQL(sql As String, Optional ByVal doPrint As Boolean = True, Optional ByVal doExec As Boolean = True, Optional ByVal quitOnFail As Boolean = True, Optional ByVal trace As Variant = "")
 
     On Error GoTo PrintTrace
     
     Dim msg As String
 
     If doPrint Then
-        msg = "SQL <" & SQL & ">"
+        msg = "SQL <" & sql & ">"
     End If
     If doExec Then
-        DoCmd.RunSQL SQL
+        DoCmd.RunSQL sql
     Else
         msg = "NO_EXEC__" & msg
     End If
@@ -81,7 +81,7 @@ CleanExit:
     
 PrintTrace:
     Printf vbNewLine & "Error executing sql."
-    Printf "SQL: <" & SQL & ">"
+    Printf "SQL: <" & sql & ">"
     Printf "Err.Number: <" & Err.Number & ">"
     Printf "Err.Description: <" & Err.Description & ">"
     If Len(trace) > 0 Then
@@ -443,23 +443,23 @@ Error_Handler:
 End Sub
 
 
-Public Function Clamp(ByVal value As Double, ByVal low As Double, ByVal high As Double) As Double
+Public Function Clamp(ByVal Value As Double, ByVal low As Double, ByVal high As Double) As Double
 
-    Clamp = IIf(value <= low, low, IIf(value >= high, high, value))
+    Clamp = IIf(Value <= low, low, IIf(Value >= high, high, Value))
 
 End Function
 
 
-Public Function Ceiling(ByVal value As Double) As Integer
+Public Function Ceiling(ByVal Value As Double) As Integer
 
-    Ceiling = -Int(-value)
+    Ceiling = -Int(-Value)
     
 End Function
 
 
-Public Function Between(value As Variant, low As Variant, high As Variant) As Boolean
+Public Function Between(Value As Variant, low As Variant, high As Variant) As Boolean
 
-    Between = IIf(value >= low And value <= high, True, False)
+    Between = IIf(Value >= low And Value <= high, True, False)
     
 End Function
 
@@ -483,16 +483,16 @@ End Function
 ' **************************************************************************************
 ' 1         2023-08-08                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function Size(ByVal value As Variant) As Long
+Public Function Size(ByVal Value As Variant) As Long
 
-    If IsArray(value) Then
-        Size = IIf(IsArrayEmpty(value), 0, UBound(value) + 1)
-    ElseIf IsInstance(value, vbString) Then
-        Size = Len(value)
-    ElseIf IsInstance(value, "Dictionary") Then
-        Size = value.Count
+    If IsArray(Value) Then
+        Size = IIf(IsArrayEmpty(Value), 0, UBound(Value) + 1)
+    ElseIf IsInstance(Value, vbString) Then
+        Size = Len(Value)
+    ElseIf IsInstance(Value, "Dictionary") Then
+        Size = Value.Count
     Else
-        Err.Raise vbObjectError, "Size", "Error, cannot determine size of this value: <" & value & ">, type: <" & TypeName(value) & ">"
+        Err.Raise vbObjectError, "Size", "Error, cannot determine size of this value: <" & Value & ">, type: <" & TypeName(Value) & ">"
     End If
 
 End Function
@@ -574,8 +574,9 @@ Public Sub ExportModules(Optional ByVal printOnly As Boolean = True, Optional By
     modules = Array( _
         "Array Sort", "Array Utility", "Colour Utility", _
         "Date Utility", "Dictionary Utility", "Random Utility", _
-        "Utility", "Helper Functions", "Recordset Utility", "String Utility", _
-        "Windows Utility", "Settings Utility" _
+        "Utility", "Helper Functions", "Recordset Utility", _
+        "String Utility", "Windows Utility", "Settings Utility", _
+        "Sleep Func", "Python Utility", "Email Utility" _
     )
     Printf "PrintOnly: <" & printOnly & ">"
     For Each module In modules

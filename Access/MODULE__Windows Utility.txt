@@ -29,17 +29,17 @@ Public Function GetUserFullName(Optional ByVal warnAlias As Boolean = False)
     On Error GoTo FetchMethod2
     'Get end user's full domain name
     Dim sysInfo As Object
-    Dim UserName As String, UserDomain As String
+    Dim UserName As String, userDomain As String
     Set sysInfo = CreateObject("ADSystemInfo")
     Set WSHnet = CreateObject("WScript.Network")
     UserName = WSHnet.UserName
     If LCase(UserName) = "hclark" Or LCase(UserName) = "avadlamani" Then
-        UserDomain = WSHnet.UserDomain
+        userDomain = WSHnet.userDomain
     Else
-        UserDomain = sysInfo.DomainDNSName 'WSHnet.UserDomain
+        userDomain = sysInfo.DomainDNSName 'WSHnet.UserDomain
     End If
     'Printf "userName: <" & UserName & ">"
-    Set objUser = GetObject("WinNT://" & UserDomain & "/" & UserName & ",user")
+    Set objUser = GetObject("WinNT://" & userDomain & "/" & UserName & ",user")
     userfullname = objUser.fullName
     GetUserFullName = userfullname
     
@@ -58,8 +58,8 @@ CheckTestAlias:
     If Not rs.NoMatch Then
         
         useAccessAlias = RSFetch(rs, "UseAccessAlias", castType:=vbBoolean)
-        accessAliasFullName = RSFetch(rs, "AccessAliasFullName")
-        accessAliasWindowsUser = RSFetch(rs, "AccessAliasWindowsUser")
+        accessAliasFullName = RSFetch(rs, "AccessAliasFullName", wrapStrings:=False)
+        accessAliasWindowsUser = RSFetch(rs, "AccessAliasWindowsUser", wrapStrings:=False)
         
         If useAccessAlias Then
             ' Use alias
@@ -134,8 +134,8 @@ Public Function GetWindowsUser(Optional ByVal warnAlias As Boolean = False)
     If Not rs.NoMatch Then
         
         useAccessAlias = RSFetch(rs, "UseAccessAlias", castType:=vbBoolean)
-        accessAliasFullName = RSFetch(rs, "AccessAliasFullName")
-        accessAliasWindowsUser = RSFetch(rs, "AccessAliasWindowsUser")
+        accessAliasFullName = RSFetch(rs, "AccessAliasFullName", wrapStrings:=False)
+        accessAliasWindowsUser = RSFetch(rs, "AccessAliasWindowsUser", wrapStrings:=False)
         
         If useAccessAlias Then
             ' Use alias

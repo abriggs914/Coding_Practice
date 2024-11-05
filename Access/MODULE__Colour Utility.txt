@@ -1445,7 +1445,7 @@ Public Function IsHexColour(ByVal C As Variant) As Boolean
             Dim aC As Integer
             Dim BC As Integer
             Dim CC As Integer
-            Dim dc As Integer
+            Dim dC As Integer
             Dim eC As Integer
             Dim fc As Integer
             
@@ -1457,7 +1457,7 @@ Public Function IsHexColour(ByVal C As Variant) As Boolean
             aC = Asc(LCase(Mid(C, 1, 1)))
             BC = Asc(LCase(Mid(C, 2, 1)))
             CC = Asc(LCase(Mid(C, 3, 1)))
-            dc = Asc(LCase(Mid(C, 4, 1)))
+            dC = Asc(LCase(Mid(C, 4, 1)))
             eC = Asc(LCase(Mid(C, 5, 1)))
             fc = Asc(LCase(Mid(C, 6, 1)))
             
@@ -1467,7 +1467,7 @@ Public Function IsHexColour(ByVal C As Variant) As Boolean
                 Any_(Array(Between(aC, lb1, ub1), Between(aC, lb2, ub2))), _
                 Any_(Array(Between(BC, lb1, ub1), Between(BC, lb2, ub2))), _
                 Any_(Array(Between(CC, lb1, ub1), Between(CC, lb2, ub2))), _
-                Any_(Array(Between(dc, lb1, ub1), Between(dc, lb2, ub2))), _
+                Any_(Array(Between(dC, lb1, ub1), Between(dC, lb2, ub2))), _
                 Any_(Array(Between(eC, lb1, ub1), Between(eC, lb2, ub2))), _
                 Any_(Array(Between(fc, lb1, ub1), Between(fc, lb2, ub2)))))
             Exit Function

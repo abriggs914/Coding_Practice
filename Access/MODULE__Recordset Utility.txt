@@ -383,7 +383,7 @@ Public Function RSValues( _
     
     On Error GoTo ColNotFound
 
-    Dim value As Variant
+    Dim Value As Variant
     Dim result As Variant
     result = Array()
     
@@ -413,13 +413,13 @@ Public Function RSValues( _
             If Not errOnNotFound Then
                 msg = msg & "-B"
                 'RSFetch = nullReplace
-                value = nullReplace
+                Value = nullReplace
                 errC = False
             End If
         Else
             msg = msg & "-C"
             'RSFetch = rs(ColName)
-            value = rs(ColName)
+            Value = rs(ColName)
             vIsNull = False
             errC = False
         End If
@@ -437,27 +437,27 @@ Public Function RSValues( _
             msg = msg & " CastType: <" & castType & ">"
             If IsIn(Array(vbInteger, "integer", "int", "cint"), castType) Then
                 ' int
-                value = CInt(value)
+                Value = CInt(Value)
             ElseIf IsIn(Array(vbLong, "long", "lng", "clng"), castType) Then
                 ' long
-                value = CLng(value)
+                Value = CLng(Value)
             ElseIf IsIn(Array(vbDouble, "double", "dbl", "cdbl"), castType) Then
                 ' double
-                value = CDbl(value)
+                Value = CDbl(Value)
             ElseIf IsIn(Array(vbBoolean, "bool", "boolean", "cbool"), castType) Then
                 ' boolean
-                value = CBool(value)
+                Value = CBool(Value)
             ElseIf IsIn(Array(vbDate, "date", "cdate"), castType) Then
                 ' double
-                value = CDate(value)
+                Value = CDate(Value)
                 If wrapStrings Then
-                    value = "'" & value & "'"
+                    Value = "'" & Value & "'"
                 End If
             ElseIf IsIn(Array(vbString, "string", "str", "cstr"), castType) Then
                 ' string
-                value = CStr(value)
+                Value = CStr(Value)
                 If wrapStrings Then
-                    value = "'" & value & "'"
+                    Value = "'" & Value & "'"
                 End If
             Else
                 Printf "Error, unsure what to do with castType '" & castType & "'"
@@ -467,20 +467,20 @@ Public Function RSValues( _
         
         msg = msg & "-E"
         
-        If VarType(value) = vbString Then
-            If emptyStringIsNull And Len(value) = 0 Then
-                value = nullReplace
+        If VarType(Value) = vbString Then
+            If emptyStringIsNull And Len(Value) = 0 Then
+                Value = nullReplace
                 'If VarType(value) = vbString And wrapStrings Then
                 '    value = "'" & value & "'"
                 'End If
             Else
                 If wrapStrings Then
-                    value = "'" & value & "'"
+                    Value = "'" & Value & "'"
                 End If
             End If
         End If
         
-        Call Append(result, value)
+        Call Append(result, Value)
         rs.MoveNext
     Loop
     

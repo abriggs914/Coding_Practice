@@ -256,28 +256,28 @@ Public Function DateFormat(ByVal dateIn As Date, Optional ByVal Mode As Integer 
     Dim y As Long
     Dim d As Long
     
-    Dim mN As String
+    Dim mn As String
     Dim dN As String
     Dim wN As String
     
     y = Year(dateIn)
     d = Day(dateIn)
-    mN = MonthName(Month(dateIn))
+    mn = MonthName(Month(dateIn))
     dN = d & DateSuffix(dateIn)
     wN = WeekdayName(Weekday(dateIn))
     
     Dim values As Variant
-    values = Array(wN, mN, dN, y)
+    values = Array(wN, mn, dN, y)
     
     If Mode = -1 Then
         ' Return list of string values
         DateFormat = values
     ElseIf Mode = 1 Then
         ' Comma delimitted a little nicer
-        DateFormat = wN & ", " & mN & " " & dN & ", " & y
+        DateFormat = wN & ", " & mn & " " & dN & ", " & y
     ElseIf Mode = 2 Then
         ' No year, with comma
-        DateFormat = wN & ", " & mN & " " & dN
+        DateFormat = wN & ", " & mn & " " & dN
     ElseIf Mode = 3 Then
         ' No year, withOUT comma
         values = Remove(values, y)
