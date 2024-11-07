@@ -37,8 +37,8 @@ from utility import Dict2Class
 
 SCOREBOARD_HOLD_TIME: int = 1000 * 90
 SHOW_SPINNERS: bool = True
-TIMEZONE_OFFSET = -60 * 60 * 4
-width_image_logo: int = 42
+TIMEZONE_OFFSET: int = -60 * 60 * 4
+width_image_logo: int = 64
 
 
 st.set_page_config(layout="wide")
@@ -57,20 +57,25 @@ json_scoreboard = load_scoreboard()
 st.write(json_scoreboard)
 # st.write(class_scoreboard.__dict__)
 
-today = (datetime.datetime.now() + datetime.timedelta(seconds=TIMEZONE_OFFSET)).date()
+today: datetime.date = (datetime.datetime.now() + datetime.timedelta(seconds=TIMEZONE_OFFSET)).date()
+yesterday: datetime.date = (datetime.datetime.now() + datetime.timedelta(seconds=TIMEZONE_OFFSET) + datetime.timedelta(days=-1)).date()
 
 st.write(today)
 
 days_this_week: list[dict] = json_scoreboard.get("gamesByDate", [])
-grid = {
-    "content_0": st.columns(len(days_this_week))
-}
+# grid = {
+#     "content_0": st.columns(len(days_this_week))
+# }
 
 for i, week_game_data in enumerate(days_this_week):
 
-    week_date = week_game_data.get("date")
-    with grid["content_0"][i]:
-        st.write(week_date)
+    week_date: datetime.date = datetime.datetime.strptime(week_game_data.get("date"), "%Y-%m-%d").date()
+    if week_date != yesterday:
+        # print(f"SKIP {week_date=}, {yesterday=}, {today=}")
+        continue
+
+    # with grid["content_0"][i]:
+    st.write(week_date)
 
     for j, game_data in enumerate(week_game_data.get("games", [])):
         game_id: int = game_data.get("id")
@@ -116,34 +121,77 @@ for i, week_game_data in enumerate(days_this_week):
         game_three_min_recap_fr: str = game_data.get("threeMinRecapFr")
 
         key_toggle: str = f"toggle_show_game_{game_id}"
+        show_game: bool = st.session_state.get(key_toggle)
 
-        with grid["content_0"][i]:
-            show_cols = st.columns([0.05, 0.125, 0.1, 0.025, 0.125, 0.125, 0.45])
-            with show_cols[0]:
-                st.toggle(
-                    label=f"Show",
-                    key=key_toggle,
-                    label_visibility="hidden"
-                )
-            with show_cols[2]:
-                st.image(
-                    image=away_team_logo
-                    # ,
-                    # caption=away_team_name_full
-                    ,
-                    width=width_image_logo
-                )
-            with show_cols[4]:
-                # st.write(aligned_text("@", h_align="right", line_height=0.05, font_size=12))
-                st.markdown(aligned_text("@", h_align="right", line_height=0.05, font_size=12), unsafe_allow_html=True)
-            with show_cols[5]:
-                st.image(
-                    image=home_team_logo
-                    # ,
-                    # caption=home_team_name_full
-                    ,
-                    width=width_image_logo
-                )
+        # with grid["content_0"][i]:
+        # show_cols = st.columns([0.05, 0.125, 0.1, 0.025, 0.125, 0.125, 0.45])
 
-            if st.session_state.get(key_toggle):
-                st.write(f"{away_team_score} {home_team_score} {game_state}")
+        cols_row_0 = st.columns([0.15, 0.45, 0.25, 0.15], vertical_alignment="center")
+        with cols_row_0[0]:
+            st.write(f"{game_state=}")
+        with cols_row_0[1]:
+            st.write(f"{game_period_desc_number=} {game_period_desc_type=}")
+        with cols_row_0[3]:
+            st.toggle(
+                label=f"Show",
+                key=key_toggle,
+                label_visibility="hidden"
+            )
+
+        cols_row_1 = st.columns([0.15, 0.15, 0.55, 0.15], vertical_alignment="center")
+        with cols_row_1[0]:
+            st.image(
+                image=away_team_logo,
+                width=width_image_logo
+            )
+        with cols_row_1[1]:
+            st.write(f"{away_team_name_short}")
+            st.write(f"{{SOG}} {{PP_STATUS}}")
+
+        with cols_row_1[3]:
+            if show_game:
+                st.write(f"{away_team_score}")
+            else:
+                st.write(f"?")
+
+        cols_row_2 = st.columns([0.15, 0.15, 0.55, 0.15], vertical_alignment="center")
+        with cols_row_2[0]:
+            st.image(
+                image=home_team_logo,
+                width=width_image_logo
+            )
+        with cols_row_2[1]:
+            st.write(f"{home_team_name_short}")
+            st.write(f"{{SOG}} {{PP_STATUS}}")
+
+        with cols_row_2[3]:
+            if show_game:
+                st.write(f"{home_team_score}")
+            else:
+                st.write(f"?")
+
+        # with show_cols[0]:
+        #     st.toggle(
+        #         label=f"Show",
+        #         key=key_toggle,
+        #         label_visibility="hidden"
+        #     )
+        # with show_cols[2]:
+        #     st.image(
+        #         image=away_team_logo
+        #         # ,
+        #         # caption=away_team_name_full
+        #         ,
+        #         width=width_image_logo
+        #     )
+        # with show_cols[4]:
+        #     # st.write(aligned_text("@", h_align="right", line_height=0.05, font_size=12))
+        #     st.markdown(aligned_text("@", h_align="right", line_height=0.05, font_size=12), unsafe_allow_html=True)
+        # with show_cols[5]:
+        #     st.image(
+        #         image=home_team_logo
+        #         # ,
+        #         # caption=home_team_name_full
+        #         ,
+        #         width=width_image_logo
+        #     )
