@@ -70,7 +70,8 @@ days_this_week: list[dict] = json_scoreboard.get("gamesByDate", [])
 for i, week_game_data in enumerate(days_this_week):
 
     week_date: datetime.date = datetime.datetime.strptime(week_game_data.get("date"), "%Y-%m-%d").date()
-    if week_date != yesterday:
+    # if week_date != yesterday:
+    if week_date != today:
         # print(f"SKIP {week_date=}, {yesterday=}, {today=}")
         continue
 
