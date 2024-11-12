@@ -1,11 +1,17 @@
 import datetime
-from typing import Any, Literal
 
+import dateutil.tz
+import pytz
+from typing import Any, Literal, List
+
+import pandas as pd
 import requests
 import streamlit as st
+from streamlit_extras.let_it_rain import rain
 
-from colour_utility import Colour
+from colour_utility import Colour, gradient
 from utility import number_suffix
+from streamlit_autorefresh import st_autorefresh
 
 # from streamlit_demo.streamlit_utility import aligned_text
 # from utility import Dict2Class
@@ -34,9 +40,12 @@ from utility import number_suffix
 # the 3rd digit specifies the matchup,
 # and the 4th digit specifies the game (out of 7).
 
-
+# d = not True
+# e = False
+# d==e
 
 # Hold times in seconds
+TIME_APP_REFRESH: float = 1000 * 60
 SCOREBOARD_HOLD_TIME: float = 60 * 90
 GAME_HOLD_TIME: float = 60 * 1.5
 SHOW_SPINNERS: bool = True
@@ -73,11 +82,22 @@ st.set_page_config(layout="wide")
 st.title("Scoreboard")
 
 
+@st.cache_data(show_spinner=SHOW_SPINNERS)
+def load_team_excel() -> dict[str: pd.DataFrame]:
+    return pd.read_excel(r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202411101523.xlsm", sheet_name=["NHLTeams", "Conferences", "Divisions"])
+
+
 @st.cache_data(show_spinner=SHOW_SPINNERS, ttl=GAME_HOLD_TIME)
-def load_game(game_id: int):
+def load_game_boxscore(game_id: int) -> dict[str: Any]:
     # return requests.get(f"https://statsapi.web.nhl.com/api/v1/game/{game_id}/boxscore").json()
-    print(f"New Game Data {game_id=}, {datetime.datetime.now():%Y-%m-%d %H:%M:%S}")
+    print(f"New Game Boxscore {game_id=}, {datetime.datetime.now():%Y-%m-%d %H:%M:%S}")
     return requests.get(f"https://api-web.nhle.com/v1/gamecenter/{game_id}/boxscore").json()
+
+
+@st.cache_data(show_spinner=SHOW_SPINNERS, ttl=GAME_HOLD_TIME)
+def load_game_landing(game_id: int) -> dict[str: Any]:
+    print(f"New Game Landing {game_id=}, {datetime.datetime.now():%Y-%m-%d %H:%M:%S}")
+    return requests.get(f"https://api-web.nhle.com/v1/gamecenter/{game_id}/landing").json()
 
 
 @st.cache_data(show_spinner=SHOW_SPINNERS, ttl=SCOREBOARD_HOLD_TIME)
@@ -116,24 +136,89 @@ def seconds_to_clock(seconds_left: int) -> str:
         ("1200", "&#128347"),
         ("1230", "&#128359")
     ]
-    if p_sec == 0:
-        # default show 1200
-        return clocks[-2][1]
     # 24 segments
     p_sec: int = int(round(p_sec * len(clocks)))
-    # print(f"sl={seconds_left}, ts={t_sec}, ps={p_sec}")
+    print(f"sl={seconds_left}, ts={t_sec}, ps={p_sec}, lc={len(clocks)}")
+    if (p_sec == 0) or (p_sec == len(clocks)):
+        # default show 1200
+        return clocks[-2][1]
     return clocks[p_sec][1]
 
 
 def game_state_translate(game_state: str) -> str:
     match game_state:
         case "FUT": return "Upcoming"
+        case "OFF": return "FINAL"
         case _: return game_state
+
+
+def team_colour(team_id: int, style: str = "bg", dark_mode: bool = True) -> Colour:
+    # return Colour(gradient(team_id, 42, "#343434", "#676767", rgb=False))
+    df_team = df_nhl_teams.loc[df_nhl_teams["NHL_ID"] == team_id].reset_index()
+    if df_team.empty:
+        return Colour("#FF0000")
+    df_team = df_team.iloc[0]
+    colours = [df_team[f"Colour_{i}"] for i in range(1, 7)]
+    colours = [Colour(v) for v in colours if not pd.isna(v)]
+    # colours_v = sorted([(c.hex_code, c) for c in colours], reverse=dark_mode, key=lambda tup: tup[0])
+    colours_v = [(c, c) for c in colours]
+    bg_idx, fg_idx = 0, 1  # len(colours_v) - 1
+    # if dark_mode:
+    #     bg_idx, fg_idx = fg_idx, bg_idx
+    # # print(f"{df_team['ShortTeamName']} {team_id=}")
+    # # return Colour(df_team["Colour_1"])
+    if style == "fg":
+        return colours_v[fg_idx][1].brighten(0.15)
+    else:
+        return colours_v[bg_idx][1]
+
+
+# def game_summary_card():
+
+
+def game_team_card(game_data: dict[str: Any], game_box_score: dict[str: Any], game_landing: dict[str: Any], team_id: int) -> str:
+    bg: Colour = team_colour(team_id)
+    fg: Colour = team_colour(team_id, "fg")
+
+    away_team_id: int = game_data.get("awayTeam", {}).get("id")
+    home_team_id: int = game_data.get("homeTeam", {}).get("id")
+    team_key = "awayTeam" if away_team_id == team_id else "homeTeam"
+    bs_game_team: dict[str: Any] = game_box_score.get(team_key, {})
+    bs_game_team_id: int = bs_game_team.get("id")
+    bs_game_team_name: str = bs_game_team.get("name", {}).get("default")
+    bs_game_team_name_fr: str = bs_game_team.get("name", {}).get("fr")
+    bs_game_team_abbrev: str = bs_game_team.get("abbrev")
+    bs_game_team_logo: str = bs_game_team.get("logo")
+    bs_game_team_dark_logo: str = bs_game_team.get("darkLogo")
+    bs_game_team_place_name: str = bs_game_team.get("placeName", {}).get("default")
+    bs_game_team_place_name_fr: str = bs_game_team.get("placeName", {}).get("fr")
+    bs_game_team_place_name_prep: str = bs_game_team.get("placeNameWithPreposition", {}).get("default")
+    bs_game_team_place_name_prep_fr: str = bs_game_team.get("placeNameWithPreposition", {}).get("fr")
+    bs_game_team_score: int = bs_game_team.get("score", 0)
+
+    bs_shots_on_goal: int = game_landing.get(team_key, {}).get("sog", 0)
+
+    font_size: int = 24
+    key_toggle: str = f"toggle_show_game_{game_id}"
+    show_game: bool = st.session_state.get(key_toggle)
+    bs_shots_on_goal: str = str(bs_shots_on_goal) if show_game else "?"
+    score: str = str(bs_game_team_score) if show_game else "?"
+    logo: str = bs_game_team_dark_logo
+    team_name_abbrev: str = bs_game_team_abbrev
+    html = ""
+    html += f"<div id='team_{team_id}', style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
+    html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    html += f"<img src='{logo}', alt='{team_name_abbrev}', width='{width_image_logo}', height='{width_image_logo}'>"
+    html += aligned_text(team_name_abbrev, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
+    html += f"</div>"
+    return html
 
 
 def game_card(game_data: dict[str: Any]) -> str:
 
     colour_bg_div0: Colour = Colour("#424242")
+    font_size: int = 24
 
     game_id: int = game_data.get("id")
     game_season: int = game_data.get("season")
@@ -177,7 +262,7 @@ def game_card(game_data: dict[str: Any]) -> str:
     game_three_min_recap: str = game_data.get("threeMinRecap")
     game_three_min_recap_fr: str = game_data.get("threeMinRecapFr")
 
-    game_box_score: dict[str: Any] = load_game(game_id)
+    game_box_score: dict[str: Any] = load_game_boxscore(game_id)
     bs_game_id: int = game_box_score.get("id")
     bs_game_season: int = game_box_score.get("season")
     bs_game_type: int = game_box_score.get("gameType")
@@ -194,6 +279,7 @@ def game_card(game_data: dict[str: Any]) -> str:
 
     bs_game_away_team: dict[str: Any] = game_box_score.get("awayTeam", {})
     bs_game_away_team_id: int = bs_game_away_team.get("id")
+    bs_game_away_team_score: int = bs_game_away_team.get("score", 0)
     bs_game_away_team_name: str = bs_game_away_team.get("name", {}).get("default")
     bs_game_away_team_name_fr: str = bs_game_away_team.get("name", {}).get("fr")
     bs_game_away_team_abbrev: str = bs_game_away_team.get("abbrev")
@@ -206,6 +292,7 @@ def game_card(game_data: dict[str: Any]) -> str:
 
     bs_game_home_team: dict[str: Any] = game_box_score.get("homeTeam", {})
     bs_game_home_team_id: int = bs_game_home_team.get("id")
+    bs_game_home_team_score: int = bs_game_home_team.get("score", 0)
     bs_game_home_team_name: str = bs_game_home_team.get("name", {}).get("default")
     bs_game_home_team_name_fr: str = bs_game_home_team.get("name", {}).get("fr")
     bs_game_home_team_abbrev: str = bs_game_home_team.get("abbrev")
@@ -221,44 +308,249 @@ def game_card(game_data: dict[str: Any]) -> str:
     bs_game_clock_seconds_remaining: int = int(bs_game_clock.get("secondsRemaining"))
     bs_game_clock_running: str = bs_game_clock.get("running")
     bs_game_clock_in_intermission: str = bs_game_clock.get("inIntermission")
+    bs_game_period_num: int = game_box_score.get("periodDescriptor", {}).get("number", 1)
+    bs_game_period_type: int = game_box_score.get("periodDescriptor", {}).get("periodType", 1)
 
     bs_game_state: str = game_box_score.get("gameState")
     bs_game_schedule_state: str = game_box_score.get("gameScheduleState")
     bs_game_reg_periods: int = game_box_score.get("regPeriods")
 
+    game_landing: dict[str: Any] = load_game_landing(game_id)
+    away_shots_on_goal: int = game_landing.get("awayTeam", {}).get("sog", 0)
+    home_shots_on_goal: int = game_landing.get("homeTeam", {}).get("sog", 0)
+
+    game_start_time_atl = datetime.datetime.strptime(game_start_time_utc, "%Y-%m-%dT%H:%M:%SZ")
+    game_start_time_atl = game_start_time_atl.replace(tzinfo=pytz.UTC)
+    game_start_time_atl = game_start_time_atl.astimezone(tz)
+    # st.write(f"{game_start_time_atl}, {game_start_time_atl.tzinfo=}")
+
+    key_toggle: str = f"toggle_show_game_{game_id}"
+    key_toggle_scoring: str = f"toggle_show_game_{game_id}_s"
+    key_toggle_penalties: str = f"toggle_show_game_{game_id}_p"
+    show_game: bool = st.session_state.get(key_toggle)
+    show_game_scoring: bool = st.session_state.get(key_toggle_scoring)
+    show_game_penalties: bool = st.session_state.get(key_toggle_penalties)
+
     game_state_fmt: str = game_state_translate(bs_game_state)
-    if game_state_fmt != game_state_translate("FUT"):
+    if show_game and (game_state_fmt != game_state_translate("FUT")):
         game_state_fmt += f" {seconds_to_clock(bs_game_clock_seconds_remaining)}"
         if bs_game_clock_running:
             game_state_fmt += f" {E_html_STOPPAGE}"
         else:
             game_state_fmt += f" {E_html_PLAYING}"
         game_state_fmt += f" {bs_game_clock_time_remaining}"
-        game_state_fmt += f" {game_period_desc_number}{number_suffix(game_period_desc_number)}"
+        game_state_fmt += f" {bs_game_period_num}{number_suffix(bs_game_period_num)}"
         if bs_game_clock_in_intermission:
             game_state_fmt += f" intermission"
         else:
             game_state_fmt += f" period"
         #     game_state_fmt += f" {E_strl_RUNNING}"
+    elif game_state_fmt == game_state_translate("FUT"):
+        starts_in_h, starts_in_m = divmod((game_start_time_atl - now).total_seconds(), 3600)
+        a__, b__ = starts_in_h, starts_in_m
+        starts_in_h = int(round(starts_in_h, 0))
+        starts_in_m = int(round(starts_in_m / 60, 0))
+        # game_state_fmt += f" {game_start_time_atl=} {now=}, {game_start_time_atl.tzinfo=} {now.tzinfo=}, {starts_in_h=}, {starts_in_m=}, {a__=}, {b__=}"
+        # game_state_fmt += f" {game_start_time_atl:%Y-%m-%d %H:%M} -- "
+        if starts_in_h:
+            game_state_fmt += f" -- {starts_in_h} hour{'' if starts_in_h == 1 else 's'},"
+        else:
+            game_state_fmt += f" --"
+        game_state_fmt += f" {starts_in_m} minute{'' if starts_in_m == 1 else 's'}"
+
+    print(f"{away_team_name_abbrev} @ {home_team_name_abbrev}")
+    # colour_bg_div1: Colour = team_colour(away_team_id, "bg")
+    # colour_bg_div2: Colour = team_colour(home_team_id, "bg")
 
     html = f"<div id='div0', style='background-color: {colour_bg_div0.hex_code};'>"
     html += f"<H5>{game_state_fmt}</H5>"
-    html += f"<img src='{away_team_logo}', alt='{away_team_name_abbrev}', width='{width_image_logo}', height='{width_image_logo}'>"
-    html += f"<img src='{home_team_logo}', alt='{home_team_name_abbrev}', width='{width_image_logo}', height='{width_image_logo}'>"
+    html += game_team_card(game_data, game_box_score, game_landing, away_team_id)
+    # html += f"<div id='div1', style='background-color: {colour_bg_div1.hex_code}'>"
+    # html += f"<img src='{away_team_logo}', alt='{away_team_name_abbrev}', width='{width_image_logo}', height='{width_image_logo}'>"
+    # html += f"</div>"
+
+    # html += f"<div id='div2', style='background-color: {colour_bg_div2.hex_code}'>"
+    # html += f"<img src='{home_team_logo}', alt='{home_team_name_abbrev}', width='{width_image_logo}', height='{width_image_logo}'>"
+    # html += f"</div>"
+    html += game_team_card(game_data, game_box_score, game_landing, home_team_id)
     html += f"</div>"
+
+    scoring: list[dict[str: Any]] = game_landing.get("summary", {}).get("scoring", [])
+    penalties: list[dict[str: Any]] = game_landing.get("summary", {}).get("penalties", [])
+    # print(f"{scoring=}")
+    if show_game_scoring:
+        html_s: str = f"<div>"
+        html_s += aligned_text(
+            f"Scoring:",
+            "h3",
+            font_size=font_size,
+            h_align="left"
+        )
+        for i, period_data in enumerate(scoring):
+            # print(f"{i=}, {period_data=}")
+            html_s += f"<div id='G_{game_id}_{i}'>"
+            html_s += aligned_text(
+                f"{i+1}{number_suffix(i+1)} period",
+                "h3",
+                font_size=font_size
+            )
+            for j, goal_data in enumerate(scoring[i].get("goals", [])):
+                # print(f"{j=}")
+
+                strength: str = goal_data.get("strength")
+                scorer_player_id: int = goal_data.get("playerID")
+                scorer_player_name_first: str = goal_data.get("firstName", {}).get("default")
+                scorer_player_name_last: str = goal_data.get("lastName", {}).get("default")
+                scorer_player_name_short: str = goal_data.get("name", {}).get("default")
+                scorer_team_name_short: str = goal_data.get("teamAbbrev", {}).get("default")
+                scorer_head_shot: str = goal_data.get("headshot")
+                scorer_highlight_clip: str = goal_data.get("highlightClipSharingUrl")
+                scorer_goals_to_date: int = goal_data.get("goalsToDate", 0)
+                curr_away_score: int = goal_data.get("awayScore", 0)
+                curr_home_score: int = goal_data.get("homeScore", 0)
+                leading_team_abbrev: str = goal_data.get("leadingTeamAbbrev")
+                time_in_period: str = goal_data.get("timeInPeriod")
+                shot_type: str = goal_data.get("shotType")
+                goal_modifier: str = goal_data.get("goalModifier")
+                goal_modifier_fmt: str = f", {goal_modifier}" if goal_modifier != "none" else ""
+                df_team: pd.DataFrame = df_nhl_teams.loc[df_nhl_teams["ShortTeamName"] == scorer_team_name_short].reset_index()
+                bg: Colour = Colour("#464646")
+                fg: Colour = Colour("#FFFFFF")
+                if not df_team.empty:
+                    bg: Colour = team_colour(df_team["NHL_ID"].iloc[0], "bg")
+                    fg: Colour = team_colour(df_team["NHL_ID"].iloc[0], "fg")
+                assists: list[dict[str: Any]] = goal_data.get("assists", [])
+                html_s += f"<div style='background-color: {bg.hex_code};'>"
+                html_s += f"<img src='{scorer_head_shot}', alt='{scorer_player_name_short}', width='{width_image_logo}', height='{width_image_logo}'>"
+                html_s += aligned_text(
+                    f"{time_in_period} {scorer_player_name_short}({scorer_goals_to_date}), {curr_away_score}-{curr_home_score}, {strength}, {shot_type}{goal_modifier_fmt}, ",
+                    "span",
+                    font_size=font_size,
+                    colour=fg.hex_code
+                )
+                for k, assist_data in enumerate(assists):
+                    assist_player_id: int = assists[k]["playerId"]
+                    assist_player_name_first: str = assists[k].get("firstName", {}).get("default")
+                    assist_player_name_first: str = assists[k].get("lastName", {}).get("default")
+                    assist_player_name_short: str = assists[k].get("lastName", {}).get("default")
+                    assist_player_assists_to_date: int = assists[k].get("assistsToDate", 0)
+                    html_s += aligned_text(
+                        (", " * (1 if k > 0 else 0)) + f"{assist_player_name_short}({assist_player_assists_to_date})",
+                        "span",
+                        font_size=font_size,
+                        colour=fg.hex_code
+                    )
+                if not assists:
+                    html_s += aligned_text(
+                        f"Un-assisted",
+                        "span",
+                        font_size=font_size,
+                        colour=fg.hex_code
+                    )
+                html_s += "</div>"
+            if not scoring[i].get("goals", []):
+                html_s += aligned_text(
+                    f"None",
+                    "h3",
+                    font_size=font_size
+                )
+
+            html_s += "</div>"
+        html_s += "</div>"
+        html += f"<br>{html_s}"
+
+    if show_game_penalties:
+
+        html_p: str = f"<div>"
+        html_p += aligned_text(
+            f"Penalties:",
+            "h3",
+            font_size=font_size,
+            h_align="left"
+        )
+        for i, period_data in enumerate(penalties):
+            html_p += f"<div id='G_{game_id}_{i}'>"
+            html_p += aligned_text(
+                f"{i+1}{number_suffix(i+1)} period",
+                "h3",
+                font_size=font_size
+            )
+            for j, penalty_data in enumerate(penalties[i].get("penalties", [])):
+                p_time_in_period: str = penalty_data.get("timeInPeriod")
+                p_type: str = penalty_data.get("type")
+                p_duration: int = penalty_data.get("duration", 2)
+                p_committed_by_player: str = penalty_data.get("committedByPlayer", "None")
+                p_team_abbrev: str = penalty_data.get("teamAbbrev", {}).get("default")
+                p_drawn_by: str = penalty_data.get("drawnBy", "None")
+                p_desc_key: str = penalty_data.get("descKey")
+                df_team: pd.DataFrame = df_nhl_teams.loc[
+                    df_nhl_teams["ShortTeamName"] == p_team_abbrev].reset_index()
+                bg: Colour = Colour("#464646")
+                fg: Colour = Colour("#FFFFFF")
+                if not df_team.empty:
+                    bg: Colour = team_colour(df_team["NHL_ID"].iloc[0], "bg")
+                    fg: Colour = team_colour(df_team["NHL_ID"].iloc[0], "fg")
+                html_p += f"<div style='background-color: {bg.hex_code};'>"
+                p_txt1: str = f" {p_committed_by_player}"
+                p_txt2: str = f"{p_desc_key} on {p_drawn_by}"
+                if p_desc_key == "fighting":
+                    p_txt2 = f"{p_desc_key} with {p_drawn_by}"
+                elif p_drawn_by == "None":
+                    p_txt2 = f"{p_desc_key}"
+
+                if p_committed_by_player == "None":
+                    p_txt1 = f""
+
+                html_p += aligned_text(
+                    f"{p_time_in_period} {p_team_abbrev}{p_txt1} {p_duration} min {p_txt2}",
+                    "h3",
+                    font_size=font_size,
+                    colour=fg.hex_code
+                )
+                html_p += "</div>"
+            if not penalties[i].get("penalties", []):
+                html_p += aligned_text(
+                    f"None",
+                    "h3",
+                    font_size=font_size
+                )
+
+        html_p += "</div>"
+        html += f"<br>{html_p}"
+
+    html += f"</div>"
+
+    # st.write(html)
     return html
 
 
-st.write(":streamlit:")
+def show_goal(str_id: str):
+    print(f"SG {str_id}")
+    # rain(
+    #     emoji=E_strl_RUNNING,
+    #     font_size=54,
+    #     falling_speed=5,
+    #     animation_length=5,
+    # )
+    st.session_state.update({str_id: True})
 
+
+# tz: pytz.timezone = pytz.timezone("Canada/Atlantic") # "-04:14" ..? wtf
+tz: pytz.timezone = dateutil.tz.gettz("Canada/Atlantic")
+now: datetime.datetime = datetime.datetime.now().replace(tzinfo=tz)
+today: datetime.date = (now + datetime.timedelta(seconds=TIMEZONE_OFFSET)).date()
+yesterday: datetime.date = (now + datetime.timedelta(seconds=TIMEZONE_OFFSET) + datetime.timedelta(days=-1)).date()
+st.write(f"as of :red[{now}]")
 json_scoreboard = load_scoreboard()
+excel_team_data: dict[str: pd.DataFrame] = load_team_excel()
+df_nhl_teams: pd.DataFrame = excel_team_data["NHLTeams"]
+df_nhl_confs: pd.DataFrame = excel_team_data["Conferences"]
+df_nhl_divs: pd.DataFrame = excel_team_data["Divisions"]
 # class_scoreboard = Dict2Class(json_scoreboard)
 
 st.write(json_scoreboard)
 # st.write(class_scoreboard.__dict__)
 
-today: datetime.date = (datetime.datetime.now() + datetime.timedelta(seconds=TIMEZONE_OFFSET)).date()
-yesterday: datetime.date = (datetime.datetime.now() + datetime.timedelta(seconds=TIMEZONE_OFFSET) + datetime.timedelta(days=-1)).date()
 
 st.write(today)
 
@@ -322,56 +614,91 @@ for i, week_game_data in enumerate(days_this_week):
         game_three_min_recap_fr: str = game_data.get("threeMinRecapFr")
 
         key_toggle: str = f"toggle_show_game_{game_id}"
+        key_toggle_scoring: str = f"toggle_show_game_{game_id}_s"
+        key_toggle_penalties: str = f"toggle_show_game_{game_id}_p"
+        key_away_goal_score: str = f"{game_id}_{away_team_id}_score"
+        key_home_goal_score: str = f"{game_id}_{home_team_id}_score"
+        key_away_goal_shown: str = f"{game_id}_{away_team_id}_shown"
+        key_home_goal_shown: str = f"{game_id}_{home_team_id}_shown"
         show_game: bool = st.session_state.get(key_toggle)
+
+        old_away_score: int = st.session_state.setdefault(key_away_goal_score, 0)
+        old_home_score: int = st.session_state.setdefault(key_home_goal_score, 0)
+        if old_away_score != away_team_score:
+            st.write(f"{away_team_name_abbrev} GOAL! {away_team_name_abbrev} {away_team_score}-{home_team_score} {home_team_name_abbrev}")
+            # st.session_state.set
+            show_goal(key_away_goal_shown)
+            st.session_state.update({key_away_goal_score: away_team_score})
+        if old_home_score != home_team_score:
+            st.write(f"{home_team_name_abbrev} GOAL! {away_team_name_abbrev} {away_team_score}-{home_team_score} {home_team_name_abbrev}")
+            # st.session_state.set
+            show_goal(key_home_goal_shown)
+            st.session_state.update({key_home_goal_score: home_team_score})
 
         # with grid["content_0"][i]:
         # show_cols = st.columns([0.05, 0.125, 0.1, 0.025, 0.125, 0.125, 0.45])
 
-        cols_row_0 = st.columns([0.15, 0.45, 0.25, 0.15], vertical_alignment="center")
+        cols_row_0 = st.columns([0.05, 0.95], vertical_alignment="center")
+        st.markdown("<br>", unsafe_allow_html=True)
+        # with cols_row_0[0]:
+        #     st.write(f"{game_state=}")
+        # with cols_row_0[1]:
+        #     st.write(f"{game_period_desc_number=} {game_period_desc_type=}")
         with cols_row_0[0]:
-            st.write(f"{game_state=}")
-        with cols_row_0[1]:
-            st.write(f"{game_period_desc_number=} {game_period_desc_type=}")
-        with cols_row_0[3]:
             st.toggle(
                 label=f"Show",
                 key=key_toggle,
                 label_visibility="hidden"
             )
 
-        cols_row_1 = st.columns([0.15, 0.15, 0.55, 0.15], vertical_alignment="center")
-        with cols_row_1[0]:
-            st.image(
-                image=away_team_logo,
-                width=width_image_logo
-            )
-        with cols_row_1[1]:
-            st.write(f"{away_team_name_short}")
-            st.write(f"{{SOG}} {{PP_STATUS}}")
+            if st.session_state.get(key_toggle):
+                st.toggle(
+                    label=f"Scoring",
+                    key=key_toggle_scoring
+                    # ,
+                    # label_visibility="hidden"
+                )
+                st.toggle(
+                    label=f"Penalties",
+                    key=key_toggle_penalties
+                    # ,
+                    # label_visibility="hidden"
+                )
 
-        with cols_row_1[3]:
-            if show_game:
-                st.write(f"{away_team_score}")
-            else:
-                st.write(f"?")
+        # cols_row_1 = st.columns([0.15, 0.15, 0.55, 0.15], vertical_alignment="center")
+        # with cols_row_1[0]:
+        #     st.image(
+        #         image=away_team_logo,
+        #         width=width_image_logo
+        #     )
+        # with cols_row_1[1]:
+        #     st.write(f"{away_team_name_short}")
+        #     st.write(f"{{SOG}} {{PP_STATUS}}")
+        #
+        # with cols_row_1[3]:
+        #     if show_game:
+        #         st.write(f"{away_team_score}")
+        #     else:
+        #         st.write(f"?")
+        #
+        # cols_row_2 = st.columns([0.15, 0.15, 0.55, 0.15], vertical_alignment="center")
+        # with cols_row_2[0]:
+        #     st.image(
+        #         image=home_team_logo,
+        #         width=width_image_logo
+        #     )
+        # with cols_row_2[1]:
+        #     st.write(f"{home_team_name_short}")
+        #     st.write(f"{{SOG}} {{PP_STATUS}}")
+        #
+        # with cols_row_2[3]:
+        #     if show_game:
+        #         st.write(f"{home_team_score}")
+        #     else:
+        #         st.write(f"?")
 
-        cols_row_2 = st.columns([0.15, 0.15, 0.55, 0.15], vertical_alignment="center")
-        with cols_row_2[0]:
-            st.image(
-                image=home_team_logo,
-                width=width_image_logo
-            )
-        with cols_row_2[1]:
-            st.write(f"{home_team_name_short}")
-            st.write(f"{{SOG}} {{PP_STATUS}}")
-
-        with cols_row_2[3]:
-            if show_game:
-                st.write(f"{home_team_score}")
-            else:
-                st.write(f"?")
-
-        st.markdown(game_card(game_data), unsafe_allow_html=True)
+        with cols_row_0[1]:
+            st.markdown(game_card(game_data), unsafe_allow_html=True)
 
         # with show_cols[0]:
         #     st.toggle(
@@ -398,3 +725,5 @@ for i, week_game_data in enumerate(days_this_week):
         #         ,
         #         width=width_image_logo
         #     )
+
+count = st_autorefresh(interval=TIME_APP_REFRESH, limit=None, key="ProductionOverview")
