@@ -1,8 +1,9 @@
 import datetime
+import os.path
 
 import dateutil.tz
 import pytz
-from typing import Any, Literal, List
+from typing import Any, Literal, List, Optional
 
 import pandas as pd
 import requests
@@ -84,7 +85,10 @@ st.title("Scoreboard")
 
 @st.cache_data(show_spinner=SHOW_SPINNERS)
 def load_team_excel() -> dict[str: pd.DataFrame]:
-    return pd.read_excel(r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202411101523.xlsm", sheet_name=["NHLTeams", "Conferences", "Divisions"])
+    path = r"C:\Users\abriggs\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202411101523.xlsm"
+    if not os.path.exists(path):
+        path = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\NHL Jerseys as of 202411101523.xlsm"
+    return pd.read_excel(path, sheet_name=["NHLTeams", "Conferences", "Divisions"])
 
 
 @st.cache_data(show_spinner=SHOW_SPINNERS, ttl=GAME_HOLD_TIME)
@@ -101,9 +105,12 @@ def load_game_landing(game_id: int) -> dict[str: Any]:
 
 
 @st.cache_data(show_spinner=SHOW_SPINNERS, ttl=SCOREBOARD_HOLD_TIME)
-def load_scoreboard():
+def load_scoreboard(date_str: Optional[str] = None):
     print(f"New Scoreboard data")
-    return requests.get("https://api-web.nhle.com/v1/scoreboard/now").json()
+    if date_str is None:
+        return requests.get(f"https://api-web.nhle.com/v1/scoreboard/now").json()
+    else:
+        return requests.get(f"https://api-web.nhle.com/v1/score/{date_str}").json()
 
 
 def seconds_to_clock(seconds_left: int) -> str:
@@ -535,12 +542,16 @@ def show_goal(str_id: str):
     st.session_state.update({str_id: True})
 
 
+font_size: int = 24
+
+
 # tz: pytz.timezone = pytz.timezone("Canada/Atlantic") # "-04:14" ..? wtf
 tz: pytz.timezone = dateutil.tz.gettz("Canada/Atlantic")
 now: datetime.datetime = datetime.datetime.now().replace(tzinfo=tz)
 today: datetime.date = (now + datetime.timedelta(seconds=TIMEZONE_OFFSET)).date()
 yesterday: datetime.date = (now + datetime.timedelta(seconds=TIMEZONE_OFFSET) + datetime.timedelta(days=-1)).date()
 st.write(f"as of :red[{now}]")
+
 json_scoreboard = load_scoreboard()
 excel_team_data: dict[str: pd.DataFrame] = load_team_excel()
 df_nhl_teams: pd.DataFrame = excel_team_data["NHLTeams"]
@@ -548,27 +559,72 @@ df_nhl_confs: pd.DataFrame = excel_team_data["Conferences"]
 df_nhl_divs: pd.DataFrame = excel_team_data["Divisions"]
 # class_scoreboard = Dict2Class(json_scoreboard)
 
-st.write(json_scoreboard)
 # st.write(class_scoreboard.__dict__)
 
 
-st.write(today)
+# st.write(today)
+date_in = st.date_input(
+    "Date",
+    key="date_input",
+    label_visibility="hidden"
+)
 
-days_this_week: list[dict] = json_scoreboard.get("gamesByDate", [])
-# grid = {
-#     "content_0": st.columns(len(days_this_week))
-# }
+toggle_show_all = st.toggle(
+    label="Show All:",
+    key="toggle_show_all_games"
+)
+
+# st.write(f"today= {today}")
+# st.write(f"date_in= {date_in}")
+
+games_key: str = "gamesByDate"
+game_date_key: str = "date"
+days_this_week: list[dict] = json_scoreboard.get(games_key, [])
+# st.write("days_this_week BEGIN")
+# st.write(days_this_week)
+week_dates_in: list[datetime.date] = [datetime.datetime.strptime(wgd.get(game_date_key), "%Y-%m-%d").date() for wgd in days_this_week]
+if date_in not in week_dates_in:
+    json_scoreboard = load_scoreboard(f"{date_in:%Y-%m-%d}")
+    # st.write("json_scoreboard BEGIN AGAIN")
+    # st.write(json_scoreboard)
+    games_key = "games"
+    game_date_key = "gameDate"
+    days_this_week: list[dict] = [{
+        "games": json_scoreboard[games_key],
+        game_date_key: json_scoreboard["currentDate"]
+    }]
+    # st.write("days_this_week")
+    # st.write(days_this_week)
+    # # week_dates_in: list[datetime.date] = [
+    # #     datetime.datetime.strptime(
+    # #         wgd.get(game_date_key),
+    # #         "%Y-%m-%d"
+    # #     ).date() for wgd in days_this_week
+    # # ]
+    # # # days_this_week = [days_this_week]
+
+# st.write(days_this_week)
+# st.write("days_this_week FINAL")
+# st.write(json_scoreboard)
+# # grid = {
+# #     "content_0": st.columns(len(days_this_week))
+# # }
 
 for i, week_game_data in enumerate(days_this_week):
 
-    week_date: datetime.date = datetime.datetime.strptime(week_game_data.get("date"), "%Y-%m-%d").date()
+    week_date: datetime.date = datetime.datetime.strptime(week_game_data.get(game_date_key), "%Y-%m-%d").date()
     # if week_date != yesterday:
-    if week_date != today:
+    # if week_date != today:
+    if week_date != date_in:
         # print(f"SKIP {week_date=}, {yesterday=}, {today=}")
+        # st.write(f"SKIP {week_date=}, {yesterday=}, {today=}")
         continue
 
     # with grid["content_0"][i]:
-    st.write(week_date)
+    st.write(f"{i=}, week_date => {week_date}")
+    # if i == 0:
+    #     st.write("week_game_date")
+    #     st.write(week_game_data)
 
     for j, game_data in enumerate(week_game_data.get("games", [])):
         game_id: int = game_data.get("id")
@@ -725,5 +781,13 @@ for i, week_game_data in enumerate(days_this_week):
         #         ,
         #         width=width_image_logo
         #     )
+    if not week_game_data.get("games", []):
+        st.markdown(
+            aligned_text(
+                "No Games",
+                font_size=font_size
+            ),
+            unsafe_allow_html=True
+        )
 
 count = st_autorefresh(interval=TIME_APP_REFRESH, limit=None, key="ProductionOverview")
