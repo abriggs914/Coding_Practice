@@ -47,8 +47,8 @@ from streamlit_autorefresh import st_autorefresh
 
 # Hold times in seconds
 TIME_APP_REFRESH: float = 1000 * 60
-SCOREBOARD_HOLD_TIME: float = 60 * 90
-GAME_HOLD_TIME: float = 60 * 1.5
+SCOREBOARD_HOLD_TIME: float = 60 * 30  # hold scoreboard data for 30 min
+GAME_HOLD_TIME: float = 60 * 1.5  # recheck game data every 1.5 min
 SHOW_SPINNERS: bool = True
 TIMEZONE_OFFSET: int = -60 * 60 * 4
 width_image_logo: int = 64
@@ -81,6 +81,7 @@ def aligned_text(
 
 st.set_page_config(layout="wide")
 st.title("Scoreboard")
+st.session_state.setdefault("affected_games", {})
 
 
 @st.cache_data(show_spinner=SHOW_SPINNERS)
@@ -111,6 +112,15 @@ def load_scoreboard(date_str: Optional[str] = None):
         return requests.get(f"https://api-web.nhle.com/v1/scoreboard/now").json()
     else:
         return requests.get(f"https://api-web.nhle.com/v1/score/{date_str}").json()
+
+
+@st.cache_data(show_spinner=SHOW_SPINNERS, ttl=SCOREBOARD_HOLD_TIME)
+def load_standings(date_str: Optional[str] = None):
+    print(f"New Standings data")
+    url: str = "https://api-web.nhle.com/v1/standings/now"
+    if date_str is not None:
+        url += f"/{date_str}"
+    return requests.get(url).json()
 
 
 def seconds_to_clock(seconds_left: int) -> str:
@@ -212,12 +222,23 @@ def game_team_card(game_data: dict[str: Any], game_box_score: dict[str: Any], ga
     score: str = str(bs_game_team_score) if show_game else "?"
     logo: str = bs_game_team_dark_logo
     team_name_abbrev: str = bs_game_team_abbrev
+
+    data_team: dict[str: Any] = json_standings.get("standings", [])[standings_indexer[team_name_abbrev]]
+    team_wins: int = data_team.get("wins", 0)
+    team_losses: int = data_team.get("losses", 0)
+    team_otl: int = data_team.get("otLosses", 0)
+    team_sol: int = data_team.get("shootoutLosses", 0)
+    team_otl_sol: int = team_otl + team_sol
+    team_record: str = f"({team_wins}-{team_losses}-{team_otl_sol})"
+
     html = ""
     html += f"<div id='team_{team_id}', style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
     html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
     html += f"<img src='{logo}', alt='{team_name_abbrev}', width='{width_image_logo}', height='{width_image_logo}'>"
     html += aligned_text(team_name_abbrev, tag_style="span", colour=fg.hex_code, font_size=font_size)
-    html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
+    html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    if show_game:
+        html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
     html += f"</div>"
     return html
 
@@ -340,17 +361,20 @@ def game_card(game_data: dict[str: Any]) -> str:
 
     game_state_fmt: str = game_state_translate(bs_game_state)
     if show_game and (game_state_fmt != game_state_translate("FUT")):
-        game_state_fmt += f" {seconds_to_clock(bs_game_clock_seconds_remaining)}"
-        if bs_game_clock_running:
-            game_state_fmt += f" {E_html_STOPPAGE}"
+        if game_state_translate(bs_game_state) != "FINAL":
+            game_state_fmt += f" {seconds_to_clock(bs_game_clock_seconds_remaining)}"
+            if bs_game_clock_running:
+                game_state_fmt += f" {E_html_STOPPAGE}"
+            else:
+                game_state_fmt += f" {E_html_PLAYING}"
+            game_state_fmt += f" {bs_game_clock_time_remaining}"
+            game_state_fmt += f" {bs_game_period_num}{number_suffix(bs_game_period_num)}"
+            if bs_game_clock_in_intermission:
+                game_state_fmt += f" intermission"
+            else:
+                game_state_fmt += f" period"
         else:
-            game_state_fmt += f" {E_html_PLAYING}"
-        game_state_fmt += f" {bs_game_clock_time_remaining}"
-        game_state_fmt += f" {bs_game_period_num}{number_suffix(bs_game_period_num)}"
-        if bs_game_clock_in_intermission:
-            game_state_fmt += f" intermission"
-        else:
-            game_state_fmt += f" period"
+            game_state_fmt += f" - {bs_game_period_type}"
         #     game_state_fmt += f" {E_strl_RUNNING}"
     elif game_state_fmt == game_state_translate("FUT"):
         starts_in_h, starts_in_m = divmod((game_start_time_atl - now).total_seconds(), 3600)
@@ -542,8 +566,31 @@ def show_goal(str_id: str):
     st.session_state.update({str_id: True})
 
 
-font_size: int = 24
+def change_show_toggle(game_id, val: Optional[bool] = None):
+    print(f"change_show_toggle({game_id}, {val})")
+    key_toggle: str = f"toggle_show_game_{game_id}"
+    key_toggle_scoring: str = f"toggle_show_game_{game_id}_s"
+    key_toggle_penalties: str = f"toggle_show_game_{game_id}_p"
 
+    if not st.session_state.get(key_toggle) or (isinstance(val, bool) and not val):
+        st.session_state.update({
+            key_toggle_scoring: False,
+            key_toggle_penalties: False
+        })
+    if val is not None:
+        st.session_state.update({key_toggle: val})
+
+
+def change_toggle_show_all():
+    show_all: bool = st.session_state.get("toggle_show_all_games")
+    print(f"change_toggle_show_all {show_all=}")
+    if not show_all:
+        for game_id in st.session_state.get("affected_games", {}).get(date_in, []):
+            change_show_toggle(game_id, False)
+        # st.rerun()
+
+
+font_size: int = 24
 
 # tz: pytz.timezone = pytz.timezone("Canada/Atlantic") # "-04:14" ..? wtf
 tz: pytz.timezone = dateutil.tz.gettz("Canada/Atlantic")
@@ -553,10 +600,12 @@ yesterday: datetime.date = (now + datetime.timedelta(seconds=TIMEZONE_OFFSET) + 
 st.write(f"as of :red[{now}]")
 
 json_scoreboard = load_scoreboard()
+json_standings = load_standings()
 excel_team_data: dict[str: pd.DataFrame] = load_team_excel()
 df_nhl_teams: pd.DataFrame = excel_team_data["NHLTeams"]
 df_nhl_confs: pd.DataFrame = excel_team_data["Conferences"]
 df_nhl_divs: pd.DataFrame = excel_team_data["Divisions"]
+standings_indexer: dict[str: int] = {s_dat.get("teamAbbrev", {}).get("default"): i for i, s_dat in enumerate(json_standings.get("standings", []))}
 # class_scoreboard = Dict2Class(json_scoreboard)
 
 # st.write(class_scoreboard.__dict__)
@@ -571,7 +620,8 @@ date_in = st.date_input(
 
 toggle_show_all = st.toggle(
     label="Show All:",
-    key="toggle_show_all_games"
+    key="toggle_show_all_games",
+    on_change=change_toggle_show_all
 )
 
 # st.write(f"today= {today}")
@@ -628,6 +678,10 @@ for i, week_game_data in enumerate(days_this_week):
 
     for j, game_data in enumerate(week_game_data.get("games", [])):
         game_id: int = game_data.get("id")
+        if date_in not in st.session_state.get("affected_games"):
+            st.session_state["affected_games"].update({date_in: []})
+        if game_id not in st.session_state["affected_games"][date_in]:
+            st.session_state["affected_games"][date_in].append(game_id)
         game_season: int = game_data.get("season")
         game_type: int = game_data.get("gameType")
         game_date: str = game_data.get("gameDate")
@@ -676,17 +730,20 @@ for i, week_game_data in enumerate(days_this_week):
         key_home_goal_score: str = f"{game_id}_{home_team_id}_score"
         key_away_goal_shown: str = f"{game_id}_{away_team_id}_shown"
         key_home_goal_shown: str = f"{game_id}_{home_team_id}_shown"
+        if st.session_state.get("toggle_show_all_games", False):
+            st.write(f"SHOW ALL {game_id=}")
+            st.session_state.update({key_toggle: True})
         show_game: bool = st.session_state.get(key_toggle)
 
         old_away_score: int = st.session_state.setdefault(key_away_goal_score, 0)
         old_home_score: int = st.session_state.setdefault(key_home_goal_score, 0)
         if old_away_score != away_team_score:
-            st.write(f"{away_team_name_abbrev} GOAL! {away_team_name_abbrev} {away_team_score}-{home_team_score} {home_team_name_abbrev}")
+            st.write(f"{away_team_name_abbrev} GOAL! {away_team_name_abbrev} {old_away_score}-{old_home_score} => {away_team_score}-{home_team_score} {home_team_name_abbrev}")
             # st.session_state.set
             show_goal(key_away_goal_shown)
             st.session_state.update({key_away_goal_score: away_team_score})
         if old_home_score != home_team_score:
-            st.write(f"{home_team_name_abbrev} GOAL! {away_team_name_abbrev} {away_team_score}-{home_team_score} {home_team_name_abbrev}")
+            st.write(f"{home_team_name_abbrev} GOAL! {away_team_name_abbrev} {old_away_score}-{old_home_score} => {away_team_score}-{home_team_score} {home_team_name_abbrev}")
             # st.session_state.set
             show_goal(key_home_goal_shown)
             st.session_state.update({key_home_goal_score: home_team_score})
@@ -696,6 +753,8 @@ for i, week_game_data in enumerate(days_this_week):
 
         cols_row_0 = st.columns([0.05, 0.95], vertical_alignment="center")
         st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("---")
+        st.markdown("<br>", unsafe_allow_html=True)
         # with cols_row_0[0]:
         #     st.write(f"{game_state=}")
         # with cols_row_0[1]:
@@ -704,11 +763,12 @@ for i, week_game_data in enumerate(days_this_week):
             st.toggle(
                 label=f"Show",
                 key=key_toggle,
-                label_visibility="hidden"
+                label_visibility="hidden",
+                on_change=lambda gi=game_id: change_show_toggle(gi)
             )
 
             if st.session_state.get(key_toggle):
-                st.toggle(
+                toggle_324 = st.toggle(
                     label=f"Scoring",
                     key=key_toggle_scoring
                     # ,
