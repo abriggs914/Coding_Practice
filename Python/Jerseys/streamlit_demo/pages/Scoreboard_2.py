@@ -850,4 +850,21 @@ for i, week_game_data in enumerate(days_this_week):
             unsafe_allow_html=True
         )
 
+
+division_cols = st.columns(4)
+standings = json_standings.get("standings", [])
+standings_atl = [team_data for team_data in standings if team_data.get("divisionAbbrev") == "A"]
+standings_met = [team_data for team_data in standings if team_data.get("divisionAbbrev") == "M"]
+standings_cen = [team_data for team_data in standings if team_data.get("divisionAbbrev") == "C"]
+standings_pac = [team_data for team_data in standings if team_data.get("divisionAbbrev") == "P"]
+tops = [standings_atl[0], standings_met[0], standings_cen[0], standings_pac[0]]
+tops.sort(key=lambda data: data.get("points", 0), reverse=True)
+top_conf = standings[0].get("conferenceAbbrev")
+top_div = standings[0].get("divisionAbbrev")
+
+for i, top in enumerate(tops):
+    with division_cols[i]:
+        st.write(f"{tops[i].get('divisionName')}")
+
+
 count = st_autorefresh(interval=TIME_APP_REFRESH, limit=None, key="ProductionOverview")
