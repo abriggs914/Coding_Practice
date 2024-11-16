@@ -13,6 +13,7 @@ from streamlit_extras.let_it_rain import rain
 from colour_utility import Colour, gradient
 from utility import number_suffix
 from streamlit_autorefresh import st_autorefresh
+import streamlit.components.v1 as components
 
 # from streamlit_demo.streamlit_utility import aligned_text
 # from utility import Dict2Class
@@ -189,6 +190,85 @@ def team_colour(team_id: int, style: str = "bg", dark_mode: bool = True) -> Colo
     else:
         return colours_v[bg_idx][1]
 
+
+def handle_button_click():
+    print(f"handle_button_click")
+    query_params = st.experimental_get_query_params()
+    if 'clicked_button' in query_params:
+        clicked = query_params['clicked_button'][0]
+        st.session_state['clicked_button'] = clicked
+        st.write(f"Button clicked: {clicked}")
+        # Update the interface or logic based on the clicked button
+        if clicked == "team1":
+            st.write("You clicked on Team 1!")
+        elif clicked == "team2":
+            st.write("You clicked on Team 2!")
+
+
+def team_info_card(team_data: dict[str:Any], left_to_right: bool = True, show_points: bool = True) -> str:
+    
+    name_short: str = team_data.get('teamAbbrev', {}).get('default')
+    team_logo: str = team_data.get("teamLogo")
+    team_points: int = None
+    if show_points:
+        team_points = team_data.get("points")
+    # st.write(f"{name_short}")
+    # st.write(f"{team_logo}")
+    #if team_logo:
+    #    st.image(team_logo, width=40)
+    df_team: pd.DataFrame = df_nhl_teams.loc[df_nhl_teams["ShortTeamName"] == name_short].reset_index()
+    team_id: int = -1
+    if not df_team.empty:
+        df_team: pd.DataFrame = df_team.iloc[0]
+        team_id = df_team["NHL_ID"]
+   
+    fg: Colour = team_colour(team_id, "fg")
+    bg: Colour = team_colour(team_id, "bg")
+    #flt = "left" if left_to_right else "right"
+    jc = "flex-start" if left_to_right else "flex-end"
+    #jc = "center"
+   
+    html = ""
+    # html += f"<div id='team_{team_id}', style='display: flex; justify-content: space-around; background-color: {bg.hex_code}; foreground-color: {fg.hex_code}';>"
+    html += f"""<div id='team_{team_id}', style='display: flex; justify-content: {jc}; align-items: center; background-color: {bg.hex_code}; foreground-color: {fg.hex_code};', onclick="sendToStreamlit('{name_short}')">"""
+    # html += f"<div id='team_{team_id}'; style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}';>"
+    # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    x = """
+    html_lines = [
+        aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size) if team_points is not None else "",
+        f"<img src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>",
+        aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    ]
+    """
+    html_lines = [
+        aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size) if team_points is not None else "",
+        f"""<input type='image' src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>""",
+        aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    ]
+    
+    if not left_to_right:
+        html_lines = html_lines[::-1]
+    
+    w = """
+    if left_to_right:
+        if points is not None:
+            html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += f"<img src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>"
+        html += aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    else:
+        html += aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += f"<img src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>"
+        if points is not None:
+            html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    # html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    # if show_game:
+    #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
+    """
+    html += "".join(html_lines).strip()
+    html += f"</div>"
+    return html
+    
 
 # def game_summary_card():
 
@@ -851,20 +931,298 @@ for i, week_game_data in enumerate(days_this_week):
         )
 
 
-division_cols = st.columns(4)
+conference_cols = st.columns(2, vertical_alignment="center")
+division_cols = st.columns(4, vertical_alignment="center")
 standings = json_standings.get("standings", [])
-standings_atl = [team_data for team_data in standings if team_data.get("divisionAbbrev") == "A"]
-standings_met = [team_data for team_data in standings if team_data.get("divisionAbbrev") == "M"]
-standings_cen = [team_data for team_data in standings if team_data.get("divisionAbbrev") == "C"]
-standings_pac = [team_data for team_data in standings if team_data.get("divisionAbbrev") == "P"]
-tops = [standings_atl[0], standings_met[0], standings_cen[0], standings_pac[0]]
-tops.sort(key=lambda data: data.get("points", 0), reverse=True)
+list_divs: list[str] = ["P", "C", "M", "A"]
+standings_by_div = {d: sorted([team_data for team_data in standings if team_data.get("divisionAbbrev") == d], key=lambda data: data.get("leagueSequencer", 0), reverse=False) for d in list_divs}
+#standings_atl = sorted([team_data for team_data in standings if team_data.get("divisionAbbrev") == "A"], key=lambda data: data.get("points", 0), reverse=True)
+#standings_met = sorted([team_data for team_data in standings if team_data.get("divisionAbbrev") == "M"], key=lambda data: data.get("points", 0), reverse=True)
+#standings_cen = sorted([team_data for team_data in standings if team_data.get("divisionAbbrev") == "C"], key=lambda data: data.get("points", 0), reverse=True)
+#standings_pac = sorted([team_data for team_data in standings if team_data.get("divisionAbbrev") == "P"], key=lambda data: data.get("points", 0), reverse=True)
+tops = [standings_by_div["P"][0], standings_by_div["C"][0], standings_by_div["M"][0], standings_by_div["A"][0]]
+# tops.sort(key=lambda data: data.get("points", 0), reverse=True)
 top_conf = standings[0].get("conferenceAbbrev")
 top_div = standings[0].get("divisionAbbrev")
+st.write(standings[0])
+div_order = [top_div]
+if top_conf == "E":
+    div_order.append("A" if top_div == "M" else "M")
+    div_order.extend(["C", "P"] if standings_by_div["C"][0].get("leagueSequence") < standings_by_div["P"][0].get("leagueSequence") else ["P", "C"])
+else:
+    div_order.append("C" if top_div == "P" else "P")
+    div_order.extend(["A", "M"] if standings_by_div["A"][0].get("leagueSequence") < standings_by_div["M"][0].get("leagueSequence") else ["M", "A"])
+   
+# st.write(div_order)
+tops.sort(key=lambda data: div_order.index(data.get("divisionAbbrev")))
 
 for i, top in enumerate(tops):
+    conf_name: str = tops[i].get('conferenceName')
+    div_name: str = tops[i].get('divisionName')
+    conf: str = tops[i].get('conferenceAbbrev')
+    div: str = tops[i].get('divisionAbbrev')
+    if i % 2 == 0:
+        with conference_cols[i // 2]:
+            # st.write(f"{tops[i].get('conferenceName')}")
+            st.markdown(aligned_text(
+                    f"{conf_name}"
+                ),
+                unsafe_allow_html=True
+            )
     with division_cols[i]:
-        st.write(f"{tops[i].get('divisionName')}")
+        #st.write(f"{tops[i].get('divisionName')}")
+        st.markdown(aligned_text(
+                f"{div_name}"
+            ),
+            unsafe_allow_html=True
+        )
+        
+        for j, team_data in enumerate(standings_by_div[div]):
+            name_short: str = team_data.get('teamAbbrev', {}).get('default')
+            team_logo: str = team_data.get("teamLogo")
+            team_points: int = team_data.get("points")
+            # st.write(f"{name_short}")
+            # st.write(f"{team_logo}")
+            #if team_logo:
+            #    st.image(team_logo, width=40)
+            df_team: pd.DataFrame = df_nhl_teams.loc[df_nhl_teams["ShortTeamName"] == name_short].reset_index()
+            team_id: int = -1
+            if not df_team.empty:
+                df_team: pd.DataFrame = df_team.iloc[0]
+                team_id = df_team["NHL_ID"]
+           
+            fg: Colour = team_colour(team_id, "fg")
+            bg: Colour = team_colour(team_id, "bg")
+           
+            html = ""
+            html += f"<div id='team_{team_id}', style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
+            html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
+            # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
+            html += f"<img src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>"
+            html += aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
+            # html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
+            # if show_game:
+            #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
+            html += f"</div>"
+            st.markdown(html, unsafe_allow_html=True)
+            if j == 2:
+                st.markdown("---")
+     
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown(aligned_text(f"Playoff Bracket {now:%Y-%m-%d}", font_size=font_size), unsafe_allow_html=True)
+
+#top_west = sorted(standings_by_div["P"] + standings_by_div["C"], key=lambda t_data: t_data.get("conferenceSequence"))[:8]
+#top_east = sorted(standings_by_div["M"] + standings_by_div["A"], key=lambda t_data: t_data.get("conferenceSequence"))[:8]
+#second_wc_west = top_west.pop(-1)
+#second_wc_east = top_east.pop(-1)
+#top_west.insert(0, second_wc_west)
+#top_east.insert(0, second_wc_east)
+#teams_l, teams_r = [top_west, top_east] if top_conf == "W" else [top_east, top_west]
+top_l = standings_by_div[div_order[0]][:3] + standings_by_div[div_order[1]][:3][::-1]
+top_r = standings_by_div[div_order[2]][:3] + standings_by_div[div_order[3]][:3][::-1]
+bottom_l = sorted([*standings_by_div[div_order[0]][3:5], *standings_by_div[div_order[1]][3:5]], key=lambda t_data: t_data.get("conferenceSequence"))[:2]
+bottom_r = sorted([*standings_by_div[div_order[2]][3:5], *standings_by_div[div_order[3]][3:5]], key=lambda t_data: t_data.get("conferenceSequence"))[:2]
+# teams_l = bottom_l[-1:] + top_l + 
+teams_l = bottom_l[-1:] + top_l + bottom_l[:1]
+teams_r = bottom_r[-1:] + top_r + bottom_r[:1]
+
+w = """
+st.write(top_l)
+st.write(top_r)
+st.write(bottom_l)
+st.write(bottom_r)
+st.write(teams_l)
+st.write(teams_r)
+"""
+
+
+po_grid = [st.columns(12) for _ in range(9)]
+
+with po_grid[0][0]:
+    st.markdown(aligned_text(f"{top_conf}"), unsafe_allow_html=True)
+with po_grid[0][-1]:
+    st.markdown(aligned_text(f"{'E' if top_conf == 'W' else 'W'}"), unsafe_allow_html=True)
+    
+for i in range(1, 9):
+    with po_grid[i][0]:
+        st.markdown(aligned_text(f"{i}"), unsafe_allow_html=True)
+    with po_grid[i][-1]:
+        st.markdown(aligned_text(f"{i}"), unsafe_allow_html=True)
+        
+
+wewwe = """
+<script>
+    function sendToStreamlit(buttonId) {
+        // Post the buttonId to Streamlit
+        console.log(buttonId)
+        //window.parent.postMessage(
+        //    {isStreamlitMessage: true, type: "streamlit:setState", key: "clicked_button", value: buttonId},
+        //    "*"
+        //);
+    }
+    //function sendToStreamlit(buttonId) {
+    //    // Set the query parameter to communicate with Streamlit
+    //    const currentUrl = new URL(window.location.href);
+    //    currentUrl.searchParams.set('clicked_button', buttonId);
+    //    window.location.href = currentUrl; // Reload the page with updated query params
+    //    console.log(buttonId)
+    //}
+</script>
+"""
+
+components.html("""
+<script>
+    function sendToStreamlit(buttonId) {
+        // Post the buttonId to Streamlit
+        console.log('Button clicked:', buttonId);
+        //window.parent.postMessage(
+        //    {isStreamlitMessage: true, type: "streamlit:setState", key: "clicked_button", value: buttonId},
+        //    "*"
+        //);
+    }
+    //function sendToStreamlit(buttonId) {
+    //    // Set the query parameter to communicate with Streamlit
+    //    const currentUrl = new URL(window.location.href);
+    //    currentUrl.searchParams.set('clicked_button', buttonId);
+    //    window.location.href = currentUrl; // Reload the page with updated query params
+    //    console.log(buttonId)
+    //}
+</script>
+""")
+
+
+for i in range(1, 9):
+    with po_grid[i][1]:
+        team_data = teams_l[i - 1]
+        w = """
+        name_short: str = team_data.get('teamAbbrev', {}).get('default')
+        team_logo: str = team_data.get("teamLogo")
+        team_points: int = team_data.get("points")
+        # st.write(f"{name_short}")
+        # st.write(f"{team_logo}")
+        #if team_logo:
+        #    st.image(team_logo, width=40)
+        df_team: pd.DataFrame = df_nhl_teams.loc[df_nhl_teams["ShortTeamName"] == name_short].reset_index()
+        team_id: int = -1
+        if not df_team.empty:
+            df_team: pd.DataFrame = df_team.iloc[0]
+            team_id = df_team["NHL_ID"]
+       
+        fg: Colour = team_colour(team_id, "fg")
+        bg: Colour = team_colour(team_id, "bg")
+       
+        html = ""
+        html += f"<div id='team_{team_id}', style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
+        # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += f"<img src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>"
+        html += aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        # html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        # if show_game:
+        #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += f"</div>"
+        """
+        html = team_info_card(team_data, show_points=False)
+        st.markdown(html, unsafe_allow_html=True)
+    
+    with po_grid[i][-2]:
+        team_data = teams_r[i - 1]
+        w = """
+        name_short: str = team_data.get('teamAbbrev', {}).get('default')
+        team_logo: str = team_data.get("teamLogo")
+        team_points: int = team_data.get("points")
+        # st.write(f"{name_short}")
+        # st.write(f"{team_logo}")
+        #if team_logo:
+        #    st.image(team_logo, width=40)
+        df_team: pd.DataFrame = df_nhl_teams.loc[df_nhl_teams["ShortTeamName"] == name_short].reset_index()
+        team_id: int = -1
+        if not df_team.empty:
+            df_team: pd.DataFrame = df_team.iloc[0]
+            team_id = df_team["NHL_ID"]
+       
+        fg: Colour = team_colour(team_id, "fg")
+        bg: Colour = team_colour(team_id, "bg")
+       
+        html = ""
+        html += f"<div id='team_{team_id}', style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
+        # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += f"<img src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>"
+        # html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        # if show_game:
+        #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += f"</div>"
+        """
+        html = team_info_card(team_data, left_to_right=False, show_points=False)
+        if i == 1:
+            st.write(html)
+        st.markdown(html, unsafe_allow_html=True)
+
+
+for i in range(1, 9, 2):
+    with po_grid[i + 1][2]:
+        team_data_0 = teams_l[i - 1]
+        team_data_1 = teams_l[i]
+        
+        w = """
+        name_short_0: str = team_data_0.get('teamAbbrev', {}).get('default')
+        team_logo_0: str = team_data_0.get("teamLogo")
+        team_points_0: int = team_data_0.get("points")
+        # st.write(f"{name_short}")
+        # st.write(f"{team_logo}")
+        #if team_logo:
+        #    st.image(team_logo, width=40)
+        df_team_0: pd.DataFrame = df_nhl_teams.loc[df_nhl_teams["ShortTeamName"] == name_short_0].reset_index()
+        team_id_0: int = -1
+        if not df_team_0.empty:
+            df_team_0: pd.DataFrame = df_team_0.iloc[0]
+            team_id_0 = df_team_0["NHL_ID"]
+       
+        fg_0: Colour = team_colour(team_id_0, "fg")
+        bg_0: Colour = team_colour(team_id_0, "bg")
+        
+        html = ""
+        html += f"<div id='team_{team_id_0}', style='background-color: {bg_0.hex_code}; foreground-color: {fg_0.hex_code}'>"
+        # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += aligned_text(name_short_0, tag_style="span", colour=fg_0.hex_code, font_size=font_size)
+        html += f"<img src='{team_logo_0}', alt='{name_short_0}', width='{width_image_logo}', height='{width_image_logo}'>"
+        # html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        # if show_game:
+        #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
+        #html += f"</div>"
+        
+        name_short_1: str = team_data_1.get('teamAbbrev', {}).get('default')
+        team_logo_1: str = team_data_1.get("teamLogo")
+        team_points_1: int = team_data_1.get("points")
+        # st.write(f"{name_short}")
+        # st.write(f"{team_logo}")
+        #if team_logo:
+        #    st.image(team_logo, width=40)
+        df_team_1: pd.DataFrame = df_nhl_teams.loc[df_nhl_teams["ShortTeamName"] == name_short_1].reset_index()
+        team_id_1: int = -1
+        if not df_team_1.empty:
+            df_team_1: pd.DataFrame = df_team_1.iloc[0]
+            team_id_1 = df_team_1["NHL_ID"]
+       
+        fg_1: Colour = team_colour(team_id_1, "fg")
+        bg_1: Colour = team_colour(team_id_1, "bg")
+        
+        #html += f"<div id='team_{team_id_0}', style='background-color: {bg_0.hex_code}; foreground-color: {fg_0.hex_code}'>"
+        # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += aligned_text(name_short_1, tag_style="span", colour=fg_1.hex_code, font_size=font_size)
+        html += f"<img src='{team_logo_1}', alt='{name_short_1}', width='{width_image_logo}', height='{width_image_logo}'>"
+        # html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        # if show_game:
+        #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
+        html += f"</div>"
+        """
+        
+        st.markdown(team_info_card(team_data_0), unsafe_allow_html=True)
+        st.markdown(team_info_card(team_data_1), unsafe_allow_html=True)
 
 
 count = st_autorefresh(interval=TIME_APP_REFRESH, limit=None, key="ProductionOverview")
