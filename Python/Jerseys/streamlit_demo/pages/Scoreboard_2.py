@@ -8,6 +8,7 @@ from typing import Any, Literal, List, Optional
 import pandas as pd
 import requests
 import streamlit as st
+from st_click_detector import click_detector
 from streamlit_extras.let_it_rain import rain
 
 from colour_utility import Colour, gradient
@@ -68,7 +69,8 @@ def aligned_text(
         h_align: Literal["left", "center", "right"] = "center",
         colour: str = "#FFFFFF",
         line_height: int | float = 1,
-        font_size: int = 12
+        font_size: int = 12,
+        id_: str = None
 ) -> str:
     """
     Return formatted HTML, and in-line CSS to h_align a given text in a container.
@@ -77,11 +79,15 @@ def aligned_text(
     """
     if isinstance(line_height, float):
         line_height = f"{line_height}%"
-    return f"<{tag_style} style='line-height: {line_height}; text-align: {h_align}; color: {colour}; font-size: {font_size}px'>{txt}</{tag_style}>"
+    if id_:
+        id_ = f" id='{id_}',"
+    else:
+        id_ = ""
+    return f"<{tag_style}{id_} style='line-height: {line_height}; text-align: {h_align}; color: {colour}; font-size: {font_size}px'>{txt}</{tag_style}>"
 
 
-st.set_page_config(layout="wide")
-st.title("Scoreboard")
+st.set_page_config(layout="wide", page_title="NHL Scoreboard")
+st.title("NHL Scoreboard")
 st.session_state.setdefault("affected_games", {})
 
 
@@ -230,7 +236,8 @@ def team_info_card(team_data: dict[str:Any], left_to_right: bool = True, show_po
    
     html = ""
     # html += f"<div id='team_{team_id}', style='display: flex; justify-content: space-around; background-color: {bg.hex_code}; foreground-color: {fg.hex_code}';>"
-    html += f"""<div id='team_{team_id}', style='display: flex; justify-content: {jc}; align-items: center; background-color: {bg.hex_code}; foreground-color: {fg.hex_code};', onclick="sendToStreamlit('{name_short}')">"""
+    # html += f"""<div id='team_{team_id}', style='display: flex; justify-content: {jc}; align-items: center; background-color: {bg.hex_code}; foreground-color: {fg.hex_code};', onclick="sendToStreamlit('{name_short}')">"""
+    html += f"""<div id='div_team_{team_id}', style='display: flex; justify-content: {jc}; align-items: center; background-color: {bg.hex_code}; foreground-color: {fg.hex_code};'>"""
     # html += f"<div id='team_{team_id}'; style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}';>"
     # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
     # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
@@ -242,9 +249,12 @@ def team_info_card(team_data: dict[str:Any], left_to_right: bool = True, show_po
     ]
     """
     html_lines = [
-        aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size) if team_points is not None else "",
-        f"""<input type='image' src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>""",
-        aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
+        aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size, id_=f"pts_team_{team_id}") if team_points is not None else "",
+        # f"""<input type='image' src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}', onclick="sendToStreamlit('{name_short}')">""",
+        # f"""<input id='img_team_{team_id}', type='image' src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>""",
+        # f"""<button id='btn_team_{team_id}', width='{width_image_logo}', height='{width_image_logo}'><img src='{team_logo}', alt='{name_short}'/></button>""",
+        f"""<a href='#' id='img_team_{team_id}'><img width='{width_image_logo}', height='{width_image_logo}' src='{team_logo}'></a>""",
+        aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size, id_=f"name_team_{team_id}")
     ]
     
     if not left_to_right:
@@ -978,32 +988,33 @@ for i, top in enumerate(tops):
         )
         
         for j, team_data in enumerate(standings_by_div[div]):
-            name_short: str = team_data.get('teamAbbrev', {}).get('default')
-            team_logo: str = team_data.get("teamLogo")
-            team_points: int = team_data.get("points")
-            # st.write(f"{name_short}")
-            # st.write(f"{team_logo}")
-            #if team_logo:
-            #    st.image(team_logo, width=40)
-            df_team: pd.DataFrame = df_nhl_teams.loc[df_nhl_teams["ShortTeamName"] == name_short].reset_index()
-            team_id: int = -1
-            if not df_team.empty:
-                df_team: pd.DataFrame = df_team.iloc[0]
-                team_id = df_team["NHL_ID"]
-           
-            fg: Colour = team_colour(team_id, "fg")
-            bg: Colour = team_colour(team_id, "bg")
-           
-            html = ""
-            html += f"<div id='team_{team_id}', style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
-            html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
-            # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
-            html += f"<img src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>"
-            html += aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
-            # html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
-            # if show_game:
-            #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
-            html += f"</div>"
+            # name_short: str = team_data.get('teamAbbrev', {}).get('default')
+            # team_logo: str = team_data.get("teamLogo")
+            # team_points: int = team_data.get("points")
+            # # st.write(f"{name_short}")
+            # # st.write(f"{team_logo}")
+            # #if team_logo:
+            # #    st.image(team_logo, width=40)
+            # df_team: pd.DataFrame = df_nhl_teams.loc[df_nhl_teams["ShortTeamName"] == name_short].reset_index()
+            # team_id: int = -1
+            # if not df_team.empty:
+            #     df_team: pd.DataFrame = df_team.iloc[0]
+            #     team_id = df_team["NHL_ID"]
+            #
+            # fg: Colour = team_colour(team_id, "fg")
+            # bg: Colour = team_colour(team_id, "bg")
+            #
+            # html = ""
+            # html += f"<div id='team_{team_id}', style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
+            # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
+            # # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
+            # html += f"<img src='{team_logo}', alt='{name_short}', width='{width_image_logo}', height='{width_image_logo}'>"
+            # html += aligned_text(name_short, tag_style="span", colour=fg.hex_code, font_size=font_size)
+            # # html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
+            # # if show_game:
+            # #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
+            # html += f"</div>"
+            html = team_info_card(team_data)
             st.markdown(html, unsafe_allow_html=True)
             if j == 2:
                 st.markdown("---")
@@ -1050,48 +1061,59 @@ for i in range(1, 9):
         st.markdown(aligned_text(f"{i}"), unsafe_allow_html=True)
         
 
-wewwe = """
-<script>
-    function sendToStreamlit(buttonId) {
-        // Post the buttonId to Streamlit
-        console.log(buttonId)
-        //window.parent.postMessage(
-        //    {isStreamlitMessage: true, type: "streamlit:setState", key: "clicked_button", value: buttonId},
-        //    "*"
-        //);
-    }
-    //function sendToStreamlit(buttonId) {
-    //    // Set the query parameter to communicate with Streamlit
-    //    const currentUrl = new URL(window.location.href);
-    //    currentUrl.searchParams.set('clicked_button', buttonId);
-    //    window.location.href = currentUrl; // Reload the page with updated query params
-    //    console.log(buttonId)
-    //}
-</script>
-"""
+# wewwe = """
+# <script>
+#     function sendToStreamlit(buttonId) {
+#         // Post the buttonId to Streamlit
+#         console.log(buttonId)
+#         //window.parent.postMessage(
+#         //    {isStreamlitMessage: true, type: "streamlit:setState", key: "clicked_button", value: buttonId},
+#         //    "*"
+#         //);
+#     }
+#     //function sendToStreamlit(buttonId) {
+#     //    // Set the query parameter to communicate with Streamlit
+#     //    const currentUrl = new URL(window.location.href);
+#     //    currentUrl.searchParams.set('clicked_button', buttonId);
+#     //    window.location.href = currentUrl; // Reload the page with updated query params
+#     //    console.log(buttonId)
+#     //}
+# </script>
+# """
+#
+# components.html("""
+# <script>
+#     function sendToStreamlit(buttonId) {
+#         // Post the buttonId to Streamlit
+#         console.log('Button clicked:', buttonId);
+#         //window.parent.postMessage(
+#         //    {isStreamlitMessage: true, type: "streamlit:setState", key: "clicked_button", value: buttonId},
+#         //    "*"
+#         //);
+#     }
+#     //function sendToStreamlit(buttonId) {
+#     //    // Set the query parameter to communicate with Streamlit
+#     //    const currentUrl = new URL(window.location.href);
+#     //    currentUrl.searchParams.set('clicked_button', buttonId);
+#     //    window.location.href = currentUrl; // Reload the page with updated query params
+#     //    console.log(buttonId)
+#     //}
+# </script>
+# """)
 
-components.html("""
-<script>
-    function sendToStreamlit(buttonId) {
-        // Post the buttonId to Streamlit
-        console.log('Button clicked:', buttonId);
-        //window.parent.postMessage(
-        //    {isStreamlitMessage: true, type: "streamlit:setState", key: "clicked_button", value: buttonId},
-        //    "*"
-        //);
-    }
-    //function sendToStreamlit(buttonId) {
-    //    // Set the query parameter to communicate with Streamlit
-    //    const currentUrl = new URL(window.location.href);
-    //    currentUrl.searchParams.set('clicked_button', buttonId);
-    //    window.location.href = currentUrl; // Reload the page with updated query params
-    //    console.log(buttonId)
-    //}
-</script>
-""")
+# components.html("""
+# <script>
+#     function sendToStreamlit(buttonId) {
+#         // Post the buttonId to Streamlit
+#         console.log('Button clicked:', buttonId);
+# }
+# </script>
+# """)
 
-
+clicked = {}
 for i in range(1, 9):
+    j = 1
+    # st.write(f"{i=} {j=}")
     with po_grid[i][1]:
         team_data = teams_l[i - 1]
         w = """
@@ -1123,8 +1145,18 @@ for i in range(1, 9):
         html += f"</div>"
         """
         html = team_info_card(team_data, show_points=False)
-        st.markdown(html, unsafe_allow_html=True)
-    
+        # st.write(html)
+        k_clicked = f"clicked_ps_{(i, j)}"
+        is_clicked = st.session_state.get(k_clicked, False)
+        if not is_clicked:
+            clicked[(i, j)] = click_detector(html, key=f"({i}, {j})")
+        else:
+            st.markdown(html, unsafe_allow_html=True)
+            clicked[(i, j)] = "1"
+        # st.markdown(html, unsafe_allow_html=True)
+
+    j = len(po_grid[0]) - 2
+    # st.write(f"{i=} {j=}")
     with po_grid[i][-2]:
         team_data = teams_r[i - 1]
         w = """
@@ -1140,10 +1172,10 @@ for i in range(1, 9):
         if not df_team.empty:
             df_team: pd.DataFrame = df_team.iloc[0]
             team_id = df_team["NHL_ID"]
-       
+
         fg: Colour = team_colour(team_id, "fg")
         bg: Colour = team_colour(team_id, "bg")
-       
+
         html = ""
         html += f"<div id='team_{team_id}', style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
         # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
@@ -1156,16 +1188,44 @@ for i in range(1, 9):
         html += f"</div>"
         """
         html = team_info_card(team_data, left_to_right=False, show_points=False)
-        if i == 1:
-            st.write(html)
-        st.markdown(html, unsafe_allow_html=True)
+        # if i == 1:
+        #     st.write(html)
+        k_clicked = f"clicked_ps_{(i, j)}"
+        is_clicked = st.session_state.get(k_clicked, False)
+        if not is_clicked:
+            clicked[(i, j)] = click_detector(html, key=f"({i}, {j})")
+        else:
+            st.markdown(html, unsafe_allow_html=True)
+            clicked[(i, j)] = "1"
+        # st.markdown(html, unsafe_allow_html=True)
 
 
 for i in range(1, 9, 2):
-    with po_grid[i + 1][2]:
+    j = 2
+    # st.write(f"{i=} {j=}")
+    with po_grid[i + 1][j]:
         team_data_0 = teams_l[i - 1]
         team_data_1 = teams_l[i]
-        
+
+        k0 = i, j - 1
+        k1 = i + 1, j - 1
+        k_0 = f"clicked_ps_{k0}"
+        k_1 = f"clicked_ps_{k1}"
+        clicked_0 = clicked[k0] not in ("", "1")
+        clicked_1 = clicked[k1] not in ("", "1")
+        clicked_0_prev = clicked[k0] == "1"
+        clicked_1_prev = clicked[k1] == "1"
+        # clicked_0_prev = st.session_state.get(k_0, False)
+        # clicked_1_prev = st.session_state.get(k_1, False)
+        # if clicked_0_prev and clicked_1_prev:
+        #     # only 1 can be on
+        #     clicked[k1] = ""
+        #     clicked_1_prev = False
+        #     st.session_state.update({k_1: False})
+        # else:
+        #     if clicked_0_prev:
+        #         st.session_state.update({})
+
         w = """
         name_short_0: str = team_data_0.get('teamAbbrev', {}).get('default')
         team_logo_0: str = team_data_0.get("teamLogo")
@@ -1179,10 +1239,10 @@ for i in range(1, 9, 2):
         if not df_team_0.empty:
             df_team_0: pd.DataFrame = df_team_0.iloc[0]
             team_id_0 = df_team_0["NHL_ID"]
-       
+
         fg_0: Colour = team_colour(team_id_0, "fg")
         bg_0: Colour = team_colour(team_id_0, "bg")
-        
+
         html = ""
         html += f"<div id='team_{team_id_0}', style='background-color: {bg_0.hex_code}; foreground-color: {fg_0.hex_code}'>"
         # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
@@ -1193,7 +1253,7 @@ for i in range(1, 9, 2):
         # if show_game:
         #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
         #html += f"</div>"
-        
+
         name_short_1: str = team_data_1.get('teamAbbrev', {}).get('default')
         team_logo_1: str = team_data_1.get("teamLogo")
         team_points_1: int = team_data_1.get("points")
@@ -1206,10 +1266,10 @@ for i in range(1, 9, 2):
         if not df_team_1.empty:
             df_team_1: pd.DataFrame = df_team_1.iloc[0]
             team_id_1 = df_team_1["NHL_ID"]
-       
+
         fg_1: Colour = team_colour(team_id_1, "fg")
         bg_1: Colour = team_colour(team_id_1, "bg")
-        
+
         #html += f"<div id='team_{team_id_0}', style='background-color: {bg_0.hex_code}; foreground-color: {fg_0.hex_code}'>"
         # html += aligned_text(team_points, tag_style="span", colour=fg.hex_code, font_size=font_size)
         # html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
@@ -1220,9 +1280,37 @@ for i in range(1, 9, 2):
         #     html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
         html += f"</div>"
         """
-        
-        st.markdown(team_info_card(team_data_0), unsafe_allow_html=True)
-        st.markdown(team_info_card(team_data_1), unsafe_allow_html=True)
+
+        if not clicked_0 and not clicked_1:
+            if not clicked_0_prev and not clicked_1_prev:
+                st.markdown(f"{team_data_0.get('teamAbbrev', {}).get('default')} vs {team_data_1.get('teamAbbrev', {}).get('default')}")
+            elif clicked_0_prev:
+                st.markdown(team_info_card(team_data_0), unsafe_allow_html=True)
+                st.session_state.update({k_1: False})
+            else:
+                st.markdown(team_info_card(team_data_1), unsafe_allow_html=True)
+                st.session_state.update({k_0: False})
+        elif clicked_0:
+            st.markdown(team_info_card(team_data_0), unsafe_allow_html=True)
+            st.session_state.update({k_1: False})
+        else:
+            st.markdown(team_info_card(team_data_1), unsafe_allow_html=True)
+            st.session_state.update({k_0: False})
+
+
+# st.write(list(clicked.keys()))
+for k, clk in clicked.items():
+    st.markdown(f"'{k}' clicked '{clk}'" if clk != "" else f"'{k}' No click '{clk}'")
+    st.session_state.update({f"clicked_ps_{k}": clk != ""})
 
 
 count = st_autorefresh(interval=TIME_APP_REFRESH, limit=None, key="ProductionOverview")
+
+# content = """<p><a href='#' id='Link 1'>First link</a></p>
+#     <p><a href='#' id='Link 2'>Second link</a></p>
+#     <a href='#' id='Image 1'><img width='20%' src='https://images.unsplash.com/photo-1565130838609-c3a86655db61?w=200'></a>
+#     <a href='#' id='Image 2'><img width='20%' src='https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=200'></a>
+#     """
+# clicked = click_detector(content)
+#
+# st.markdown(f"**{clicked} clicked**" if clicked != "" else "**No click**")
