@@ -122,12 +122,6 @@ class App(ctk.CTk):
                 monthly=366.69*2,
                 day0=datetime.datetime(2023, 11, 3),
                 day1=datetime.datetime(2029, 10, 15)
-            ),
-            "cnb": Row(
-                self.frame_rows,
-                name="CNB:",
-                monthly=425,
-                day0=datetime.datetime(2021, 1, 1)
             )
         }
         self.today = datetime.datetime(2021, 1, 1)
