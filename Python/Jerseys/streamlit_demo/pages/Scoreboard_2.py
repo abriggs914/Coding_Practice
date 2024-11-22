@@ -88,7 +88,12 @@ def aligned_text(
 
 st.set_page_config(layout="wide", page_title="NHL Scoreboard")
 st.title("NHL Scoreboard")
-st.session_state.setdefault("affected_games", {})
+
+for k, v in {
+    "affected_games": {},
+    "show_todays_standings": False
+}.items():
+    st.session_state.setdefault(k, v)
 
 
 @st.cache_data(show_spinner=SHOW_SPINNERS)
@@ -126,7 +131,7 @@ def load_standings(date_str: Optional[str] = None):
     print(f"New Standings data")
     url: str = "https://api-web.nhle.com/v1/standings/now"
     if date_str is not None:
-        url += f"/{date_str}"
+        url = url.removesuffix("now") + f"{date_str}"
     return requests.get(url).json()
 
 
@@ -313,7 +318,11 @@ def game_team_card(game_data: dict[str: Any], game_box_score: dict[str: Any], ga
     logo: str = bs_game_team_dark_logo
     team_name_abbrev: str = bs_game_team_abbrev
 
-    data_team: dict[str: Any] = json_standings.get("standings", [])[standings_indexer[team_name_abbrev]]
+    if st.session_state.get("show_todays_standings", False):
+        js = json_standings
+    else:
+        js = json_standings_yesterday
+    data_team: dict[str: Any] = js.get("standings", [])[standings_indexer[team_name_abbrev]]
     team_wins: int = data_team.get("wins", 0)
     team_losses: int = data_team.get("losses", 0)
     team_otl: int = data_team.get("otLosses", 0)
@@ -321,12 +330,14 @@ def game_team_card(game_data: dict[str: Any], game_box_score: dict[str: Any], ga
     team_otl_sol: int = team_otl + team_sol
     team_record: str = f"({team_wins}-{team_losses}-{team_otl_sol})"
 
+    left_to_right = True
+    jc = "flex-start" if left_to_right else "flex-end"
     html = ""
-    html += f"<div id='team_{team_id}', style='background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
+    html += f"<div id='team_{team_id}', style='display: flex; justify-content: {jc}; align-items: center; background-color: {bg.hex_code}; foreground-color: {fg.hex_code}'>"
     html += aligned_text(score, tag_style="span", colour=fg.hex_code, font_size=font_size)
     html += f"<img src='{logo}', alt='{team_name_abbrev}', width='{width_image_logo}', height='{width_image_logo}'>"
     html += aligned_text(team_name_abbrev, tag_style="span", colour=fg.hex_code, font_size=font_size)
-    html += f" " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
+    html += f" -- " + aligned_text(team_record, tag_style="span", colour=fg.hex_code, font_size=font_size)
     if show_game:
         html += aligned_text(f" SOG: {bs_shots_on_goal}", tag_style="span", colour=fg.hex_code, font_size=font_size)
     html += f"</div>"
@@ -691,11 +702,13 @@ st.write(f"as of :red[{now}]")
 
 json_scoreboard = load_scoreboard()
 json_standings = load_standings()
+json_standings_yesterday = load_standings(f"{yesterday:%Y-%m-%d}")
 excel_team_data: dict[str: pd.DataFrame] = load_team_excel()
 df_nhl_teams: pd.DataFrame = excel_team_data["NHLTeams"]
 df_nhl_confs: pd.DataFrame = excel_team_data["Conferences"]
 df_nhl_divs: pd.DataFrame = excel_team_data["Divisions"]
-standings_indexer: dict[str: int] = {s_dat.get("teamAbbrev", {}).get("default"): i for i, s_dat in enumerate(json_standings.get("standings", []))}
+
+standings_indexer: dict[str: int] = {s_dat.get("teamAbbrev", {}).get("default"): i for i, s_dat in enumerate((json_standings if st.session_state.get("show_todays_standings", False) else json_standings_yesterday).get("standings", []))}
 # class_scoreboard = Dict2Class(json_scoreboard)
 
 # st.write(class_scoreboard.__dict__)
@@ -712,6 +725,11 @@ toggle_show_all = st.toggle(
     label="Show All:",
     key="toggle_show_all_games",
     on_change=change_toggle_show_all
+)
+
+toggle_show_todays_standings = st.toggle(
+    label="Show Today's Standings",
+    key="show_todays_standings"
 )
 
 # st.write(f"today= {today}")
@@ -943,7 +961,12 @@ for i, week_game_data in enumerate(days_this_week):
 
 conference_cols = st.columns(2, vertical_alignment="center")
 division_cols = st.columns(4, vertical_alignment="center")
-standings = json_standings.get("standings", [])
+
+if st.session_state.get("show_todays_standings", False):
+    js = json_standings
+else:
+    js = json_standings_yesterday
+standings = js.get("standings", [])
 list_divs: list[str] = ["P", "C", "M", "A"]
 standings_by_div = {d: sorted([team_data for team_data in standings if team_data.get("divisionAbbrev") == d], key=lambda data: data.get("leagueSequencer", 0), reverse=False) for d in list_divs}
 #standings_atl = sorted([team_data for team_data in standings if team_data.get("divisionAbbrev") == "A"], key=lambda data: data.get("points", 0), reverse=True)
