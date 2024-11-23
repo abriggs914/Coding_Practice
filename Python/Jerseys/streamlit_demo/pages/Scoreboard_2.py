@@ -698,7 +698,13 @@ tz: pytz.timezone = dateutil.tz.gettz("Canada/Atlantic")
 now: datetime.datetime = datetime.datetime.now().replace(tzinfo=tz)
 today: datetime.date = (now + datetime.timedelta(seconds=TIMEZONE_OFFSET)).date()
 yesterday: datetime.date = (now + datetime.timedelta(seconds=TIMEZONE_OFFSET) + datetime.timedelta(days=-1)).date()
-st.write(f"as of :red[{now}]")
+yesterday_standings: datetime.date = yesterday
+if (now.hour < 16) and (now.minute < 45):
+    # if its before 4:30 PM at runtime, offset yesterday by one more day in case I am still catching up until then. 
+    yesterday_standings = yesterday + datetime.timedelta(days=-1)
+    
+st.write(f"Scores as of :red[{now:%Y-%m-%d %I:%M %p}]")
+st.write(f"Standings as of: :red[{yesterday_standings:%Y-%m-%d}]")
 
 json_scoreboard = load_scoreboard()
 json_standings = load_standings()
