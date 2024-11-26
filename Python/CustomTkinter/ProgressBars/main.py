@@ -28,6 +28,7 @@ class Row(ctk.CTkFrame):
         self.mode: str = "determinate" if isinstance(self.day1, datetime.datetime) else "continuous"
         self.auto_grid: bool = auto_grid
         self.days_per_month: float = days_per_month
+        self.daily = self.monthly / self.days_per_month
 
         self.total_month_diff: float = ((datetime.datetime.now() if (self.mode == "continuous") else self.day1) - self.day0).days / self.days_per_month
         self.total_dollars: float = self.monthly * self.total_month_diff
@@ -116,17 +117,84 @@ class App(ctk.CTk):
                 day0=datetime.datetime(2021, 4, 1),
                 day1=datetime.datetime(2029, 4, 30)
             ),
+            "cdp": Row(
+                self.frame_rows,
+                name="Honda Down Payment:",
+                monthly=8000,
+                day0=datetime.datetime(2023, 10, 17),
+                day1=datetime.datetime(2023, 10, 18)
+            ),
             "cp": Row(
                 self.frame_rows,
                 name="Honda Payments:",
                 monthly=366.69*2,
                 day0=datetime.datetime(2023, 11, 3),
                 day1=datetime.datetime(2029, 10, 15)
+            ),
+            "i1": Row(
+                self.frame_rows,
+                name="Insurance Payments Y1:",
+                monthly=134.31,
+                day0=datetime.datetime(2023, 11, 17),
+                day1=datetime.datetime(2024, 10, 16)
+            ),
+            "i2": Row(
+                self.frame_rows,
+                name="Insurance Payments Y2:",
+                monthly=118.97,
+                day0=datetime.datetime(2024, 10, 17),
+                day1=datetime.datetime(2029, 10, 15)
+            ),
+            "gv": Row(
+                self.frame_rows,
+                name="Gas Van:",
+                monthly=185,
+                day0=datetime.datetime(2021, 1, 1),
+                day1=datetime.datetime(2023, 10, 16)
+            ),
+            "gh": Row(
+                self.frame_rows,
+                name="Gas Honda:",
+                monthly=130,
+                day0=datetime.datetime(2023, 10, 17),
+                day1=datetime.datetime(2029, 10, 15)
+            ),
+            "leisure": Row(
+                self.frame_rows,
+                name="Leisure:",
+                monthly=500,
+                day0=datetime.datetime(2021, 1, 1),
+                day1=datetime.datetime(2029, 10, 15)
+            ),
+            "sn": Row(
+                self.frame_rows,
+                name="Sportsnet:",
+                monthly=249.99*1.15/12,
+                day0=datetime.datetime(2023, 9, 1),
+                day1=datetime.datetime(2029, 10, 15)
+            ),
+            "xb": Row(
+                self.frame_rows,
+                name="Xbox:",
+                monthly=89.99*1.15/12,
+                day0=datetime.datetime(2021, 1, 1),
+                day1=datetime.datetime(2029, 10, 15)
+            ),
+            "nt": Row(
+                self.frame_rows,
+                name="Nintendo:",
+                monthly=89.99*1.15/12,
+                day0=datetime.datetime(2021, 1, 1),
+                day1=datetime.datetime(2029, 10, 15)
             )
         }
+        self.yesterday = None
+        self.overall_total = ctk.DoubleVar(self, value=0)
         self.today = datetime.datetime(2021, 1, 1)
         self.today_og = self.today
         self.end_day = datetime.datetime.now() + datetime.timedelta(days=1)
+        self.payment_installments = {}
+        self.payment_installments[self.today] = {}
 
         self.days_per_sec = 1
 
@@ -152,11 +220,29 @@ class App(ctk.CTk):
             to=10,
             command=self.update_slider_speed
         )
+        
+        self.lbl_days_past = label_factory(
+            self,
+            tv_label=f"Days Past: {0}"
+        )
+        
+        self.lbl_total = label_factory(
+            self,
+            tv_label=f"Total: {money(0)}"
+        )
+        
+        self.lbl_total_dpd = label_factory(
+            self,
+            tv_label=f"Total $/Day: {money(0)}"
+        )
 
         # self
         self.frame_today.grid(row=0, column=0, rowspan=1, columnspan=1)
         self.frame_controls.grid(row=1, column=0, rowspan=1, columnspan=1)
         self.frame_rows.grid(row=2, column=0, rowspan=1, columnspan=1)
+        self.lbl_days_past[1].grid(row=3, column=0, rowspan=1, columnspan=1)
+        self.lbl_total[1].grid(row=4, column=0, rowspan=1, columnspan=1)
+        self.lbl_total_dpd[1].grid(row=5, column=0, rowspan=1, columnspan=1)
 
         # self.frame_today
         self.lbl_today[1].grid(row=0, column=0, rowspan=1, columnspan=1)
@@ -171,10 +257,14 @@ class App(ctk.CTk):
         day_p_sec = self.days_per_sec
         anim_speed = day_p_sec * speed
         # print(f" {anim_speed=}")
+        self.yesterday = None
         self.today = self.today_og
+        self.overall_total.set(0)
         self.var_today.set(f"{self.today:%Y-%m-%d}")
         self.btn_start[1].configure(state=ctk.DISABLED)
         self.slider_speed.configure(state=ctk.DISABLED)
+        self.payment_installments = {}
+        self.payment_installments[self.today] = {}
 
         for k, row in self.rows.items():
             row.reset()
@@ -188,18 +278,40 @@ class App(ctk.CTk):
         pass
 
     def animate(self):
+        
+        oal_total = self.overall_total.get()
 
-        if self.today < self.end_day:
+        if 1:  #self.today < self.end_day:
             speed = self.var_slider_speed.get()
             day_p_sec = self.days_per_sec
             anim_speed = day_p_sec * speed
 
+            total = 0
             for k, row in self.rows.items():
-                if self.today >= row.day0:
+                cont = 0
+                if self.today not in self.payment_installments:
+                    self.payment_installments[self.today] = {}
+                if (self.today >= row.day0) and (self.today <= row.day1):
                     row.set_progress(self.today)
+                    cont = row.daily * speed
+                # cont = row.var_progress.get() * row.total_dollars
+                # y_cont = self.payment_installments.get(self.yesterday, {}).get(k, 0)
+                self.payment_installments[self.today][k] = cont
+                total += cont
 
+            #c_today = self.payment_installments[self.today].values()
+            #n_today = len(c_today)
+            #t_today = sum(c_today)
+            #n_today = (n_today if n_today != 0 else 1) * speed
+            self.yesterday = self.today
             self.today += datetime.timedelta(days=anim_speed)
             self.var_today.set(f"{self.today:%Y-%m-%d}")
+            self.overall_total.set(total + oal_total)
+            self.lbl_total[0].set(f"Total: {money(self.overall_total.get())}")
+            #self.lbl_total_dpd[0].set(f"Total $/Day: {money(t_today / n_today)}")
+            #self.lbl_total_dpd[0].set(f"$/Day: {t_today=}, {n_today=}, money={money(t_today / n_today)}")
+            self.lbl_total_dpd[0].set(f"$/Day: {money(total)}")
+            self.lbl_days_past[0].set(f"Days Past: {(self.today - self.today_og).total_seconds() / (24*3600)}")
             self.after(1000, self.animate)
         else:
             self.btn_start[1].configure(state=ctk.NORMAL)
