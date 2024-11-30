@@ -11,8 +11,8 @@ from colour_utility import Colour
 VERSION = \
     """	
     Streamlit utility functions
-    Version..............1.02
-    Date...........2024-10-30
+    Version..............1.03
+    Date...........2024-11-29
     Author(s)....Avery Briggs
     """
 
@@ -116,6 +116,11 @@ def coloured_text(
     if style_only:
         return style
     return html
+
+
+def rerun():
+    # https://discuss.streamlit.io/t/is-it-possible-to-create-a-button-to-reset-relaod-the-whole-dashboard/6615/3
+    pyautogui.hotkey("ctrl", "F5")
 
 
 if __name__ == '__main__':

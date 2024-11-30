@@ -8,8 +8,8 @@ VERSION = \
     """
     General Pyodbc connection handler.
     Geared towards BWS connections.
-    Version...............2.2
-    Date...........2024-08-16
+    Version...............2.3
+    Date...........2024-09-10
     Author(s)....Avery Briggs
     """
 
@@ -115,9 +115,30 @@ def connect(
 
     distinct_queries = [stmt for stmt in f"{sql};".split(";") if stmt.strip()]
     n_distinct_queries = len(distinct_queries)
-    has_insert = all([(stmt in sql.upper()) for stmt in ["INSERT INTO ", "VALUES "]])
-    has_update = all([(stmt in sql.upper()) for stmt in ["UPDATE ", "SET "]])
-    has_exec = all([(stmt in sql.upper()) for stmt in ["EXEC "]])
+    has_insert = all([
+        any([
+            stmt in sql.upper(),
+            f"{stmt.rstrip()}\n" in sql.upper(),
+            f"{stmt.rstrip()}\t" in sql.upper()
+        ])
+        for stmt in ["INSERT INTO ", "VALUES "]
+    ])
+    has_update = all([
+        any([
+            stmt in sql.upper(),
+            f"{stmt.rstrip()}\n" in sql.upper(),
+            f"{stmt.rstrip()}\t" in sql.upper()
+        ])
+        for stmt in ["UPDATE ", "SET "]
+    ])
+    has_exec = all([
+        any([
+            stmt in sql.upper(),
+            f"{stmt.rstrip()}\n" in sql.upper(),
+            f"{stmt.rstrip()}\t" in sql.upper()
+        ])
+        for stmt in ["EXEC "]
+    ])
 
     if all([
         n_distinct_queries == 1,
