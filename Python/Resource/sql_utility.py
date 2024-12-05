@@ -13,8 +13,8 @@ import datetime
 VERSION = \
     """	
     General SQL Utility Functions
-    Version..............1.02
-    Date...........2024-12-03
+    Version..............1.03
+    Date...........2024-12-04
     Author(s)....Avery Briggs
     """
 
@@ -90,6 +90,8 @@ def wrap(val: Any, is_col: bool = True, sanitize: bool = True) -> str:
 
         see tests below in test_create_sql_parse_where_wrap()
     """
+    if not str(val).strip():
+        return ""
     # print(f"wrap: {val}")
     if is_col:
         v: str = f"[{str(val).removeprefix('[').removesuffix(']')}]"
@@ -310,7 +312,8 @@ def create_sql(
         ignore_no_where: bool = False,
         include_no_lock: bool = False,
         in_line: bool = False,
-        transaction_wrap: bool = False
+        transaction_wrap: bool = False,
+        fetch_cols: bool = False
 ):
     """
         Generates SQL for a given table with optionally parameters to group, order, filter, and style output statement.
@@ -345,7 +348,17 @@ def create_sql(
         if not isinstance(data, dict):
             raise ValueError(f"When updating, data must be a dictionary where keys are table column names.")
 
+    # if table.lower().count(".dbo.") == 1:
+    #     table = table.split(".dbo.")[-1]
+    # elif table.lower().count(".[dbo].") == 1:
+    #     table = table.split(".[dbo].")[-1]
+    spl = schema_parse(table)
+    table = spl[-1]
+    table_str = table
     table = wrap(table)
+    if spl[0]:
+        database = spl[0]
+    # print(f"-> {table=}, {database=}")
     if include_no_lock:
         if mode != "select":
             raise ValueError("Cannot include 'WITH (NOLOCK)' when not performing a generic select.")
@@ -357,7 +370,7 @@ def create_sql(
     if isinstance(where, str):
         where = where.replace("==", "=")
     else:
-        print(f"{where=}")
+        # print(f"{where=}")
         where = parse_where(where, in_line=in_line)
     if database:
         table = f"{wrap(database)}.[dbo].{table}"
@@ -383,7 +396,27 @@ def create_sql(
             raise ValueError(f"You must specify columns for the select statement when addind a 'GROUP BY' clause.")
         if mode not in ("select", "delete"):
             raise ValueError(f"You must specify columns when not performing a generic select or delete.")
-        cols: str = "*"
+
+        if fetch_cols:
+
+            try:
+                # print(f"""SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{table_str}'""")
+                cd = {"database": database}
+                cd = parse_connection_data(cd)
+                df = connect(f"""SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{table_str}'""", **cd)
+                # print(f"{df=}")
+                col_names = df["COLUMN_NAME"].values.tolist()
+                # print(f"{col_names=}")
+                if col_names:
+                    cols: str = (", " if in_line else ",\n\t").join(map(wrap, col_names))
+                else:
+                    # cols: str = "*FAIL"
+                    raise Exception()
+            except Exception as e:
+                # print(f"FAILURE")
+                cols: str = "*"
+        else:
+            cols: str = "*"
 
     if mode == "select":
         # sql = f"SELECT {cols} FROM {table}"
@@ -770,7 +803,23 @@ def select_with_alias(
         if re_connect:
             connection_data = parse_connection_data(cd)
 
-        df = connect(f"""SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{tn}'""", **connection_data)
+        spl = schema_parse(tn)
+        db = spl[0]
+        if db:
+            connection_data["database"] = db
+            connection_data = parse_connection_data(connection_data)
+        tn_ = schema_parse(tn)[-1]
+        # if tn.lower().count(".dbo.") == 1:
+        #     tn_ = tn.split(".dbo.")[-1].removeprefix("]").removeprefix(".").removeprefix("[").removesuffix("]")
+        # elif tn.lower().count(".[dbo].") == 1:
+        #     tn_ = tn.split(".[dbo].")[-1].removeprefix("]").removeprefix(".").removeprefix("[").removesuffix("]")
+        # # if (tn.count(".dbo.") == 1) or (tn.count(".[dbo].") == 1):
+        # #     tn_ = tn.split("dbo")[-1]
+        # else:
+        #     tn_ = tn
+
+        # print(f"{tn=}, {tn_=}")
+        df = connect(f"""SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{tn_}'""", **connection_data)
         # print(df)
 
         col_names = df["COLUMN_NAME"].values.tolist()
@@ -834,7 +883,7 @@ def select_with_alias(
     for i, lsts in enumerate(zip(l_table_names, l_table_alias, l_alias, l_cds, l_keys)):
         tn, ta, a, cd, l_key = lsts
         # print(f"<< {tn=}, {ta=}, {a=}, {cd=}, {l_key=}")
-        msg = f"\t[{tn}] AS [{ta}]" + (" WITH (NOLOCK)" if with_no_locks else "")
+        msg = f"\t{wrap(tn)} AS {wrap(ta)}" + (" WITH (NOLOCK)" if with_no_locks else "")
         if join_msg:
             msg += join_msg.format(OTHERTABLE=ta)
             msg = msg.replace(placeholder, l_key[1])
@@ -856,7 +905,7 @@ def select_with_alias(
                     raise KeyError(f"Invalid join column name '{l1}'")
                 select_statement = select_statement.removesuffix(",\n") + "\n"
                 msg = f"{j_style.upper()} JOIN"
-                join_msg = f"\nON\n\t[{table}].[{l1}] = [{{OTHERTABLE}}].[{l2}]"
+                join_msg = f"\nON\n\t{wrap(table)}.[{l1}] = [{{OTHERTABLE}}].[{l2}]"
                 # print(f"{i=}, {msg=}, {j_style=}, {l1=}, {l2=}")
                 if i < (len(l_table_names) - 1):
                     # select_statement = select_statement.removesuffix("\n\n") + msg + "\n"
@@ -1575,6 +1624,163 @@ GO
         warnings.resetwarnings()
 
     return all_sql
+
+
+def get_database_tables(database: str) -> pd.DataFrame:
+    sel_col_names = {
+        "TABLE_CATALOG": "CA_0",
+        "TABLE_NAME": "CA_1",
+        "COLUMN_NAME": "CA_2",
+        "PRIMARY_KEY": "CA_3",
+        "DATA_TYPE": "CA_4",
+        "CHARACTER_MAXIMUM_LENGTH": "CA_5"
+    }
+    sql_table_template = """
+                            SELECT
+                    	        [{CA_0}]
+                                ,[{CA_1}]
+                                ,[{CA_2}]
+                                ,(CASE WHEN [IS_NULLABLE] = 'NO' THEN 1 ELSE 0 END) AS [{CA_3}]
+                                ,[{CA_4}]
+                                ,[{CA_5}]
+                            FROM
+                                INFORMATION_SCHEMA.COLUMNS
+                            ORDER BY
+                                [TABLE_NAME],
+                                [COLUMN_NAME]
+                            ;
+                            """
+    sql_table_template = sql_table_template.format(**{v: k for k, v in sel_col_names.items()})
+    cd = {
+        "database": database
+    }
+    cd = parse_connection_data(cd)
+    try:
+        df = connect(
+            sql=sql_table_template,
+            **cd
+        )
+    except Exception as e:
+        df = pd.DataFrame(columns=list(sel_col_names))
+
+    return df
+
+
+def get_table_cols(table: str, database: str = "BWSdb", use_streamlit_cache: bool = False):
+    if not use_streamlit_cache:
+        spt = schema_parse(table)
+        spd = schema_parse(database)
+        spd = spd[0 if spd[0] else 1]
+        tbl = spt[1].lower()
+        df = get_database_tables(spd)
+        return df.loc[df["TABLE_NAME"].str.lower() == tbl]
+    else:
+        spt = schema_parse(table)
+        spd = schema_parse(database)
+        sel_col_names = {
+            "TABLE_CATALOG": "CA_0",
+            "TABLE_NAME": "CA_1",
+            "COLUMN_NAME": "CA_2",
+            "PRIMARY_KEY": "CA_3",
+            "DATA_TYPE": "CA_4",
+            "CHARACTER_MAXIMUM_LENGTH": "CA_5",
+            spt[1]: "table_str"
+        }
+
+        sql_table_template = """
+                                SELECT
+                        	        [{CA_0}]
+                                    ,[{CA_1}]
+                                    ,[{CA_2}]
+                                    ,(CASE WHEN [IS_NULLABLE] = 'NO' THEN 1 ELSE 0 END) AS [{CA_3}]
+                                    ,[{CA_4}]
+                                    ,[{CA_5}]
+                                FROM
+                                    INFORMATION_SCHEMA.COLUMNS
+                                WHERE
+                                    [TABLE_NAME] = N'{table_str}'
+                                ORDER BY
+                                    [TABLE_NAME],
+                                    [COLUMN_NAME]
+                                ;
+                                """
+        # print(f"{df=}")
+        # col_names = df["COLUMN_NAME"].values.tolist()
+        sql_table_template = sql_table_template.format(**{v: k for k, v in sel_col_names.items()})
+        cd = {
+            "database": spd[0 if spd[0] else 1]
+        }
+        cd = parse_connection_data(cd)
+        try:
+            df = connect(
+                sql=sql_table_template,
+                **cd
+            )
+        except Exception as e:
+            df = pd.DataFrame(columns=list(sel_col_names))
+
+        return df
+
+
+def schema_parse(table: str, wrapped: bool = False) -> tuple[str, str]:
+    t_og = table
+    table = table.lower()
+    r = "0"
+    spl = "", ""
+    if table.lower().count(".dbo.") == 1:
+        r = "1"
+        spl = table.split(".dbo.")
+        table = spl[-1]
+        db = spl[0]
+    elif (table.lower().count("dbo.") == 1) and (table.lstrip()[0] == ""):
+        r = "2"
+        spl = table.split(".dbo.")
+        table = spl[-1]
+        db = spl[0]
+    elif table.lower().count("[dbo].") == 1:
+        r = "3"
+        spl = table.split("[dbo].")
+        table = spl[-1]
+        db = spl[0].removesuffix("]").removesuffix(".")
+    elif table:
+        r = "4"
+        db = ""
+        table = table.removeprefix(".").removeprefix("dbo").removeprefix("]").removeprefix(".").removeprefix("[")
+    else:
+        r = "5"
+        db, table = spl
+
+    t_idx = t_og.lower().index(table)
+    d_idx = t_og.lower().index(db)
+    table = t_og[t_idx: t_idx + len(table)]
+    db = t_og[d_idx: d_idx + len(db)]
+
+    # if is_title:
+    #     r += "a"
+    #     f = str.title
+    # elif is_lower:
+    #     r += "b"
+    #     f = str.lower
+    # elif is_upper:
+    #     r += "e"
+    #     f = str.upper
+    # else:
+    #     r += "d"
+    #     f = lambda x: x
+    #
+    # table = f(table)
+    # database = f(database)
+
+    if not wrapped:
+        r += "x"
+        table = table.removeprefix("[").removesuffix("]")
+        db = db.removeprefix("[").removesuffix("]")
+    else:
+        r += "y"
+        table = wrap(table)
+        db = wrap(db)
+    # return t_og, r, database, table
+    return db, table
 
 
 if __name__ == '__main__':
