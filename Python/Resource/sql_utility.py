@@ -13,8 +13,8 @@ import datetime
 VERSION = \
     """	
     General SQL Utility Functions
-    Version..............1.03
-    Date...........2024-12-04
+    Version..............1.04
+    Date...........2024-12-05
     Author(s)....Avery Briggs
     """
 
@@ -102,6 +102,8 @@ def wrap(val: Any, is_col: bool = True, sanitize: bool = True) -> str:
             v: str = f"'{val:%Y-%m-%d %H:%M:%S}'"
         elif isinstance(val, datetime.date):
             v: str = f"'{val:%Y-%m-%d}'"
+        elif val is None:
+            v: str = "NULL"
         else:
             v: str = str(val)
     if sanitize:
