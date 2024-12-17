@@ -1,0 +1,443 @@
+{
+  "teams": [
+    {
+      "id": 0,
+      "name_long": "Slovakia",
+      "name": "SVK",
+      "group": "B",
+      "colours": {
+        "home": [
+          "#0113DD",
+          "#DD0101",
+          "#FFFFFF"
+        ],
+        "away": [
+          "#FFFFFF",
+          "#0113DD",
+          "#DD0101"
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "name_long": "Sweden",
+      "name": "SWE",
+      "group": "B",
+      "colours": {
+        "home": [
+          "#1695D1",
+          "#FFE922"
+        ],
+        "away": [
+          "#FFE922",
+          "#1695D1"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name_long": "United States of America",
+      "name": "USA",
+      "group": "A",
+      "colours": {
+        "home": [
+          "#3945CF",
+          "#E03B3B",
+          "#FFFFFF"
+        ],
+        "away": [
+          "#FFFFFF",
+          "#3945CF",
+          "#E03B3B"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "name_long": "Germany",
+      "name": "GER",
+      "group": "A",
+      "colours": {
+        "home": [
+          "#000000",
+          "#E92323",
+          "#F7D22E",
+          "#FFFFFF"
+        ],
+        "away": [
+          "#FFFFFF",
+          "#E92323",
+          "#F7D22E",
+          "#000000"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "name_long": "Czechia",
+      "name": "CZE",
+      "group": "B",
+      "colours": {
+        "home": [
+          "#DD0101",
+          "#0113DD",
+          "#FFFFFF"
+        ],
+        "away": [
+          "#FFFFFF",
+          "#DD0101",
+          "#0113DD"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "name_long": "Switzerland",
+      "name": "SUI",
+      "group": "B",
+      "colours": {
+        "home": [
+          "#E21010",
+          "#FFFFFF"
+        ],
+        "away": [
+          "#FFFFFF",
+          "#E21010"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "name_long": "Finland",
+      "name": "FIN",
+      "group": "A",
+      "colours": {
+        "home": [
+          "#097AD1",
+          "#FFFFFF"
+        ],
+        "away": [
+          "#FFFFFF",
+          "#097AD1"
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "name_long": "Canada",
+      "name": "CAN",
+      "group": "A",
+      "colours": {
+        "home": [
+          "#AD0C0E",
+          "#FFFFFF"
+        ],
+        "away": [
+          "#FFFFFF",
+          "#AD0C0E"
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "name_long": "Kazakhstan",
+      "name": "KAZ",
+      "group": "B",
+      "colours": {
+        "home": [
+          "#69DCF0",
+          "#FAF02D",
+          "#FFFFFF"
+        ],
+        "away": [
+          "#FFFFFF",
+          "#69DCF0",
+          "#FAF02D"
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "name_long": "Latvia",
+      "name": "LAT",
+      "group": "A",
+      "colours": {
+        "home": [
+          "#610505",
+          "#FFFFFF"
+        ],
+        "away": [
+          "#FFFFFF",
+          "#610505"
+        ]
+      }
+    }
+  ],
+  "rounds": [
+    "Preliminary Round",
+    "Relegation Round",
+    "Quarterfinals",
+    "Semifinals",
+    "Bronze",
+    "Gold"
+  ],
+  "schedule": {
+    "games": [
+      {
+        "game_id": 0,
+        "round": 0,
+        "date": "2024-12-26 13:00",
+        "location": "TD Place",
+        "away": 0,
+        "home": 1
+      },
+      {
+        "game_id": 1,
+        "round": 0,
+        "date": "2024-12-26 15:30",
+        "location": "Canadian Tire Centre",
+        "away": 2,
+        "home": 3
+      },
+      {
+        "game_id": 2,
+        "round": 0,
+        "date": "2024-12-26 18:00",
+        "location": "TD Place",
+        "away": 4,
+        "home": 5
+      },
+      {
+        "game_id": 3,
+        "round": 0,
+        "date": "2024-12-26 20:30",
+        "location": "Canadian Tire Centre",
+        "away": 6,
+        "home": 7
+      },
+      {
+        "game_id": 4,
+        "round": 0,
+        "date": "2024-12-27 14:00",
+        "location": "TD Place",
+        "away": 5,
+        "home": 0
+      },
+      {
+        "game_id": 5,
+        "round": 0,
+        "date": "2024-12-27 16:30",
+        "location": "Canadian Tire Centre",
+        "away": 3,
+        "home": 6
+      },
+      {
+        "game_id": 6,
+        "round": 0,
+        "date": "2024-12-27 14:00",
+        "location": "TD Place",
+        "away": 1,
+        "home": 8
+      },
+      {
+        "game_id": 7,
+        "round": 0,
+        "date": "2024-12-27 20:30",
+        "location": "Canadian Tire Centre",
+        "away": 9,
+        "home": 7
+      },
+      {
+        "game_id": 8,
+        "round": 0,
+        "date": "2024-12-28 14:00",
+        "location": "TD Place",
+        "away": 8,
+        "home": 4
+      },
+      {
+        "game_id": 9,
+        "round": 0,
+        "date": "2024-12-28 16:30",
+        "location": "Canadian Tire Centre",
+        "away": 9,
+        "home": 2
+      },
+      {
+        "game_id": 10,
+        "round": 0,
+        "date": "2024-12-29 13:00",
+        "location": "TD Place",
+        "away": 5,
+        "home": 1
+      },
+      {
+        "game_id": 11,
+        "round": 0,
+        "date": "2024-12-29 15:30",
+        "location": "Canadian Tire Centre",
+        "away": 2,
+        "home": 6
+      },
+      {
+        "game_id": 12,
+        "round": 0,
+        "date": "2024-12-29 18:00",
+        "location": "TD Place",
+        "away": 4,
+        "home": 0
+      },
+      {
+        "game_id": 13,
+        "round": 0,
+        "date": "2024-12-29 20:30",
+        "location": "Canadian Tire Centre",
+        "away": 7,
+        "home": 3
+      },
+      {
+        "game_id": 14,
+        "round": 0,
+        "date": "2024-12-30 14:00",
+        "location": "TD Place",
+        "away": 0,
+        "home": 8
+      },
+      {
+        "game_id": 15,
+        "round": 0,
+        "date": "2024-12-30 16:30",
+        "location": "Canadian Tire Centre",
+        "away": 3,
+        "home": 9
+      },
+      {
+        "game_id": 16,
+        "round": 0,
+        "date": "2024-12-31 13:00",
+        "location": "TD Place",
+        "away": 8,
+        "home": 5
+      },
+      {
+        "game_id": 17,
+        "round": 0,
+        "date": "2024-12-31 15:30",
+        "location": "Canadian Tire Centre",
+        "away": 6,
+        "home": 9
+      },
+      {
+        "game_id": 18,
+        "round": 0,
+        "date": "2024-12-31 18:00",
+        "location": "TD Place",
+        "away": 1,
+        "home": 4
+      },
+      {
+        "game_id": 19,
+        "round": 0,
+        "date": "2024-12-31 21:00",
+        "location": "Canadian Tire Centre",
+        "away": 7,
+        "home": 2
+      },
+
+      {
+        "game_id": 20,
+        "round": 1,
+        "date": "2025-01-02 12:00",
+        "location": "Canadian Tire Centre",
+        "away_code": "A5",
+        "home_code": "B5",
+        "away": null,
+        "home": null
+      },
+
+      {
+        "game_id": 21,
+        "round": 2,
+        "date": "2025-01-02 13:00",
+        "location": "TD Place",
+        "away_code": "QF",
+        "home_code": "QF",
+        "away": null,
+        "home": null
+      },
+      {
+        "game_id": 22,
+        "round": 2,
+        "date": "2025-01-02 15:30",
+        "location": "Canadian Tire Centre",
+        "away_code": "QF",
+        "home_code": "QF",
+        "away": null,
+        "home": null
+      },
+      {
+        "game_id": 23,
+        "round": 2,
+        "date": "2025-01-02 18:00",
+        "location": "TD Place",
+        "away_code": "QF",
+        "home_code": "QF",
+        "away": null,
+        "home": null
+      },
+      {
+        "game_id": 24,
+        "round": 2,
+        "date": "2025-01-02 20:30",
+        "location": "Canadian Tire Centre",
+        "away_code": "QF",
+        "home_code": "QF",
+        "away": null,
+        "home": null
+      },
+
+      {
+        "game_id": 25,
+        "round": 3,
+        "date": "2025-01-04 16:30",
+        "location": "Canadian Tire Centre",
+        "away_code": "SF",
+        "home_code": "SF",
+        "away": null,
+        "home": null
+      },
+      {
+        "game_id": 26,
+        "round": 3,
+        "date": "2025-01-04 20:30",
+        "location": "Canadian Tire Centre",
+        "away_code": "SF",
+        "home_code": "SF",
+        "away": null,
+        "home": null
+      },
+
+      {
+        "game_id": 27,
+        "round": 4,
+        "date": "2025-01-05 16:30",
+        "location": "Canadian Tire Centre",
+        "away_code": "L(SF)",
+        "home_code": "L(SF)",
+        "away": null,
+        "home": null
+      },
+
+      {
+        "game_id": 28,
+        "round": 5,
+        "date": "2025-01-05 20:30",
+        "location": "Canadian Tire Centre",
+        "away_code": "W(SF)",
+        "home_code": "W(SF)",
+        "away": null,
+        "home": null
+      }
+    ]
+  }
+}
