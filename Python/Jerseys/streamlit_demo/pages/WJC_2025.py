@@ -1,4 +1,5 @@
 import json
+import os.path
 from typing import Any, Optional
 
 import streamlit as st
@@ -10,11 +11,46 @@ def load_data_file():
         return json.load(f)
 
 
+@st.cache_data(show_spinner=True)
+def load_flags():
+    folder = r"C:\Users\abriggs\Documents\Coding_Practice\Resources\Flags"
+    if not os.path.exists(folder):
+        folder = r"C:\Users\abrig\Documents\Coding_Practice\Coding_Practice\Resources\Flags"
+    pictures = os.listdir(folder)
+    flags = {}
+    for i, team_data in enumerate(teams):
+        team_id: int = team_data.get("id")
+        name_long: str = team_data.get("name_long")
+        name: str = team_data.get("name")
+        n: str = name_long.lower()
+        match n:
+            case "united states of america": n = "usa"
+            case "czechia": n = "czech-republic"
+            case _: pass
+        j: int = 0
+        found: bool = False
+        for j, picture in enumerate(pictures):
+            p: str = picture.lower().replace("icons8-", "").replace("-flag-96", "").strip()
+            # print(f"\t{p=}")
+            if picture.endswith(".png") and (n in p):
+                flags[i] = os.path.join(folder, picture)
+                found = True
+                break
+        if found:
+            pictures.pop(j)
+        else:
+            print(f"No image found for '{n}'")
+
+    return flags
+
+
 initial_data: dict[str: Any] = load_data_file()
 teams: list[dict] = initial_data["teams"]
 rounds: list[str] = initial_data["rounds"]
 games: list[dict] = initial_data["schedule"]["games"]
+flags = load_flags()
 
+st.write(flags)
 st.json(initial_data)
 
 cols_per_row: int = 2
@@ -39,6 +75,7 @@ for i, rnd in enumerate(rounds):
 st.write(list(grid.keys()))
 
 last_round: Optional[str] = None
+shown_dates: dict[str: set] = {}
 shown_groups: dict[str: set] = {}
 
 for i, game_data in enumerate(games):
@@ -62,14 +99,18 @@ for i, game_data in enumerate(games):
     away_name: str = game_away_code
     away_group: Optional[str] = None
     home_group: Optional[str] = None
+    away_flag_id: Optional[int] = None
+    home_flag_id: Optional[int] = None
     if away_team_data:
         a_data = away_team_data[0]
         away_name = a_data.get("name")
         away_group = a_data.get("group")
+        away_flag_id = a_data.get("id")
     if home_team_data:
         h_data = home_team_data[0]
         home_name = h_data.get("name")
         home_group = h_data.get("group")
+        home_flag_id = h_data.get("id")
 
     group: Optional[str] = None
     t_key: str = f"{round_name}_title"
@@ -87,7 +128,9 @@ for i, game_data in enumerate(games):
         if group not in shown_groups[round_name]:
             grid[g_key][group].write(f"Group {group} - {game_location}")
             shown_groups[round_name].add(group)
-        grid[g_key][group].write(f"{away_name} VS {home_name}, {home_group=}, {away_group=}")
+        # grid[g_key][group].write(f"{away_name} VS {home_name}, {home_group=}, {away_group=}")
+        grid[g_key][group].image(flags[away_flag_id])
+        grid[g_key][group].image(flags[home_flag_id])
     else:
         grid[g_key].write(f"{game_location}")
         grid[g_key].write(f"{away_name} VS {home_name}, {home_group=}, {away_group=}")
@@ -98,3 +141,9 @@ for i, game_data in enumerate(games):
 
     # grid.append(st.columns(cols_per_row))
     # grid[r_idx][c_idx].write(f"{away_name} VS {home_name}")
+
+
+for i, html_ in enumerate([
+    """<a target="_blank" href="https://icons8.com/icon/37274/kazakhstan">Kazakhstan</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>"""
+]):
+    st.markdown(html_, unsafe_allow_html=True)
