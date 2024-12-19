@@ -1,6 +1,7 @@
 import json
 import os.path
 from typing import Any, Optional
+from icons_8_refs import image_refs_htmls
 
 import streamlit as st
 
@@ -13,10 +14,7 @@ def load_data_file():
 
 @st.cache_data(show_spinner=True)
 def load_flags():
-    folder = r"C:\Users\abriggs\Documents\Coding_Practice\Resources\Flags"
-    if not os.path.exists(folder):
-        folder = r"C:\Users\abrig\Documents\Coding_Practice\Coding_Practice\Resources\Flags"
-    pictures = os.listdir(folder)
+    pictures = os.listdir(root_image_folder)
     flags = {}
     for i, team_data in enumerate(teams):
         team_id: int = team_data.get("id")
@@ -30,10 +28,10 @@ def load_flags():
         j: int = 0
         found: bool = False
         for j, picture in enumerate(pictures):
-            p: str = picture.lower().replace("icons8-", "").replace("-flag-96", "").strip()
-            # print(f"\t{p=}")
+            p: str = picture.lower().replace("icons8-", "").replace("-flag-96", "").replace("-96.png", ".png").strip()
+            print(f"\t{p=}, {n=}")
             if picture.endswith(".png") and (n in p):
-                flags[i] = os.path.join(folder, picture)
+                flags[i] = os.path.join(root_image_folder, picture)
                 found = True
                 break
         if found:
@@ -41,19 +39,35 @@ def load_flags():
         else:
             print(f"No image found for '{n}'")
 
+    flags[None] = os.path.join(root_image_folder, "unknown_flag.png")
+
     return flags
+
+
+root_image_folder = r"C:\Users\abriggs\Documents\Coding_Practice\Resources\Flags"
+if not os.path.exists(root_image_folder):
+    root_image_folder = r"C:\Users\abrig\Documents\Coding_Practice\Coding_Practice\Resources\Flags"
 
 
 initial_data: dict[str: Any] = load_data_file()
 teams: list[dict] = initial_data["teams"]
 rounds: list[str] = initial_data["rounds"]
 games: list[dict] = initial_data["schedule"]["games"]
+games_per_round: dict[int: int] = {}
 flags = load_flags()
+flag_w, flag_h = 100, 50
+list_groups = ["A", "B"]
 
 st.write(flags)
 st.json(initial_data)
 
 cols_per_row: int = 2
+
+for i, g in enumerate(games):
+    rnd: int = g["round"]
+    if rnd not in games_per_round:
+        games_per_round[rnd] = 0
+    games_per_round[rnd] += 1
 
 n_rows = int(round(len(games) / cols_per_row))
 grid = {
@@ -66,13 +80,33 @@ for i, rnd in enumerate(rounds):
     g_key: str = f"{rnd}_groups"
     if i == 0:
         grid[t_key] = st.container()
-        grid[g_key_par] = st.container()
-        grid[g_key] = dict(zip(["A", "B"], grid[g_key_par].columns(2)))
+        # grid[g_key_par] = st.container()
+        grid[g_key] = dict(zip(list_groups, [{}, {}]))
+        for j, group in enumerate(list_groups):
+            for k in range(games_per_round[i]):
+                grid[g_key][group][None] = st.container()
+                grid[g_key][group][k] = st.columns([0.4, 0.2, 0.4])
+
+        # grid[g_key_par] = st.container()
+        # grid[g_key] = dict(zip(["A", "B"], grid[g_key_par].columns(2)))
+        # # grid[g_key] = {}
+        # grid[f"{g_key}_{t_key}_A"] = grid[g_key]["A"].container()
+        # grid[f"{g_key}_{t_key}_B"] = grid[g_key]["B"].container()
+        # grid[f"{g_key}_A"] = grid[g_key]["A"].columns([0.4, 0.2, 0.4])
+        # grid[f"{g_key}_B"] = grid[g_key]["B"].columns([0.4, 0.2, 0.4])
     else:
         grid[t_key] = st.container()
-        grid[g_key] = st.container()
+        grid[g_key] = {}
+        # grid[g_key] = st.container()
+        # grid[g_key] = st.columns([0.4, 0.2, 0.4])
+        for j in range(games_per_round[i]):
+            # jk: int = j + sum([gpr for r, gpr in games_per_round.items() if r < i])
+            jk = j
+            grid[g_key][None] = st.container()
+            grid[g_key][jk] = st.columns([0.4, 0.2, 0.4])
 
 st.write(list(grid.keys()))
+st.write(grid)
 
 last_round: Optional[str] = None
 shown_dates: dict[str: set] = {}
@@ -116,24 +150,49 @@ for i, game_data in enumerate(games):
     t_key: str = f"{round_name}_title"
     g_key_par: str = f"{round_name}_groups_parent"
     g_key: str = f"{round_name}_groups"
+    g_num: int = i - sum([gpr for r, gpr in games_per_round.items() if r < game_round])
 
     if away_group or home_group:
         group = "".join(list({away_group, home_group}))
     # st.write(f"{away_name} VS {home_name}, {home_group=}, {away_group=}, {group=}, {game_round=}, {round_name=}")
     if (last_round is None) or (round_name != last_round):
+        grid[t_key].write(f"---")
         grid[t_key].write(f"{round_name}")
         last_round = round_name
+
+    st.write(f"{i=}, {g_num=}, {g_key=}")
     if game_round == 0:
+        gpr: int = games_per_round[game_round]
         shown_groups.setdefault(round_name, set())
         if group not in shown_groups[round_name]:
-            grid[g_key][group].write(f"Group {group} - {game_location}")
+            # # grid[g_key][group].write(f"Group {group} - {game_location}")
+            # # grid[f"{g_key}_{group}"][1 if group == "B" else 0].write(f"Group {group} - {game_location}")
+            # grid[f"{g_key}_{t_key}_{group}"].write(f"Group {group} - {game_location}")
             shown_groups[round_name].add(group)
-        # grid[g_key][group].write(f"{away_name} VS {home_name}, {home_group=}, {away_group=}")
-        grid[g_key][group].image(flags[away_flag_id])
-        grid[g_key][group].image(flags[home_flag_id])
+            # for j in range(gpr):
+            # grid[g_key][group][j].write(f"{away_name} VS {home_name}, {home_group=}, {away_group=}")
+        grid[g_key][group][g_num][0].image(flags[away_flag_id], width=flag_w)
+        grid[g_key][group][g_num][1].write(f"{game_date_s}")
+        grid[g_key][group][g_num][2].image(flags[home_flag_id], width=flag_w)
+
+        # # grid[g_key][group].write(f"{away_name} VS {home_name}, {home_group=}, {away_group=}")
+        # # grid[g_key][group].image(flags[away_flag_id])
+        # # grid[g_key][group].image(flags[home_flag_id])
+        # grid[f"{g_key}_{group}"][0].image(flags[away_flag_id], width=flag_w)
+        # grid[f"{g_key}_{group}"][1].write(f"{game_date_s}")
+        # grid[f"{g_key}_{group}"][2].image(flags[home_flag_id], width=flag_w)
+        # # grid[f"{g_key_par}"].write("---")
+        # # grid[g_key][group].write("---")
+        # grid[f"{g_key}_{t_key}_{group}"].write("---")
     else:
-        grid[g_key].write(f"{game_location}")
-        grid[g_key].write(f"{away_name} VS {home_name}, {home_group=}, {away_group=}")
+        # # grid[g_key].write(f"{game_location}")
+        # # grid[g_key].write(f"{away_name} VS {home_name}, {home_group=}, {away_group=}")
+        # grid[g_key][0].image(flags[away_flag_id], width=flag_w)
+        # grid[g_key][1].write(f"{game_date_s}")
+        # grid[g_key][2].image(flags[away_flag_id], width=flag_w)
+        grid[g_key][g_num][0].image(flags[away_flag_id], width=flag_w)
+        grid[g_key][g_num][1].write(f"{game_date_s}")
+        grid[g_key][g_num][2].image(flags[home_flag_id], width=flag_w)
 
     # container = grid[round_name]
     # if game_round < 2:
@@ -143,7 +202,17 @@ for i, game_data in enumerate(games):
     # grid[r_idx][c_idx].write(f"{away_name} VS {home_name}")
 
 
-for i, html_ in enumerate([
-    """<a target="_blank" href="https://icons8.com/icon/37274/kazakhstan">Kazakhstan</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>"""
-]):
-    st.markdown(html_, unsafe_allow_html=True)
+for i, flag_key in enumerate(flags):
+    if flag_key:
+        flag_path: str = flags[flag_key]
+        flag_path: str = os.path.basename(flag_path)
+        if flag_path in image_refs_htmls:
+            html_ = image_refs_htmls[flag_path]
+            st.markdown(html_, unsafe_allow_html=True)
+        else:
+            st.write(f"skip {flag_path=}")
+
+# for i, html_ in enumerate([
+#     """<a target="_blank" href="https://icons8.com/icon/37274/kazakhstan">Kazakhstan</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>"""
+# ]):
+#     st.markdown(html_, unsafe_allow_html=True)
