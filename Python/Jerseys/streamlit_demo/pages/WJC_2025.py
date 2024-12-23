@@ -9,6 +9,7 @@ from typing import Any, Optional
 import pandas as pd
 from streamlit_sortables import sort_items
 from streamlit_pills import pills
+from streamlit_float import *
 
 import streamlit as st
 
@@ -16,17 +17,24 @@ from colour_utility import Colour
 from icons_8_refs import image_refs_htmls
 
 
+import streamlit_nested_layout
+
+
 st.set_page_config(layout="wide")
+
+# # initialize float feature/capability
+# float_init()
 
 
 def create_html_table(
     df: pd.DataFrame,
-    column_config: Optional[dict[str: Any]] = None
+    column_config: Optional[dict[str: Any]] = None,
+    table_id: Optional[str] = None
 ) -> str:
     """
     Create a custom HTML table with alternate row backgrounds.
 
-    LAST UPDATED 2024-12-19 20:41
+    LAST UPDATED 2024-12-22 15:57
 
     Args:
         df (pd.DataFrame): The DataFrame to render as an HTML table.
@@ -35,7 +43,8 @@ def create_html_table(
         str: The HTML string representing the table.
     """
     # Initialize the HTML table with styles
-    html = '<table style="border-collapse: collapse; width: 100%;">'
+    t_id: str = "" if table_id is None else f'id="{table_id}" '
+    html = f'<table {t_id}style="border-collapse: collapse; width: 100%;">'
 
     valid_configs = {
         "image": {
@@ -178,8 +187,8 @@ default_bg_team_col: Colour = Colour("#151530")
 initial_data: dict[str: Any] = load_data_file()
 teams: list[dict] = initial_data["teams"]
 rounds: list[str] = initial_data["rounds"]
-rounds_pills: list[str] = initial_data["rounds"]
-# rounds_pills: list[str] = rounds[:-2] + ["Medal"]
+# rounds_pills: list[str] = initial_data["rounds"]
+rounds_pills: list[str] = rounds[:-2] + ["Medal"]
 games: list[dict] = initial_data["schedule"]["games"]
 games_per_round: dict[int: int] = {}
 list_groups: list[str] = ["A", "B"]
@@ -227,12 +236,30 @@ def select_team(team_id: int, toggle_key: str, toggle_key_d: str):
     st.session_state.update({"team_records": tr})
 
 
-def game_points(game_id: int | list[int], team_id: int) -> int:
+def game_points(game_id: int | list[int], team_id: int, stats: Optional[list[str]] = None) -> dict[str: int]:
 
     # print(f"GAMEPOINTS -> {game_id=}, {team_id=}")
 
     if isinstance(game_id, list):
-        return sum([game_points(gid, team_id) for gid in game_id])
+        # return sum([game_points(gid, team_id) for gid in game_id])
+        st.write(f"{game_id=}")
+        res = {}
+        for gid in game_id:
+            g_res = game_points(gid, team_id=team_id, stats=stats)
+            st.write(f'{g_res=}')
+            if not res:
+                res.update(g_res)
+            else:
+                for k in g_res:
+                    res.setdefault(k, g_res[k])
+                for k in res:
+                    res[k] = res[k] + g_res[k]
+        st.write(f'{res=}')
+        return res
+
+    valid_stats = ["pts", "w", "l", "otl/sol"]
+    if stats is None:
+        stats = ["pts"]
 
     idx: int = game_id_to_idx[game_id]
     game_data = games[idx]
@@ -279,8 +306,28 @@ def game_points(game_id: int | list[int], team_id: int) -> int:
 
     if (sel_away and (game_away_id != team_id)) or (sel_home and (game_home_id != team_id)):
         # choose the losing team
-        return 1 if ot_or_so else 0
-    return 2 if ot_or_so else 3
+        res = {
+            "pts": 1 if ot_or_so else 0,
+            "w": 0,
+            "l": 0 if ot_or_so else 1,
+            "otl/sol": 1 if ot_or_so else 0
+        }
+        # return 1 if ot_or_so else 0
+    else:
+        res = {
+            "pts": 2 if ot_or_so else 3,
+            "w": 1,
+            "l": 0,
+            "otl/sol": 0
+        }
+
+    for k in res:
+        if k not in stats:
+            st.write(f"pop {k}")
+            res.pop(k)
+
+    return res
+    # return 2 if ot_or_so else 3
 
 
 for i, rnd in enumerate(rounds):
@@ -324,6 +371,16 @@ for i, game_data in enumerate(games):
     t_key_home = f"toggle_{game_id}_{group}_Home"
     t_key_away_d = f"{t_key_away}_d"
     t_key_home_d = f"{t_key_home}_d"
+
+    # for k in [
+    #     t_key_ot,
+    #     t_key_away,
+    #     t_key_home,
+    #     t_key_away_d,
+    #     t_key_home_d
+    # ]:
+    #     st.write(f"AA {k=}, {st.session_state.get(k)=}")
+
     sel_away: bool = st.session_state.get(t_key_away, False)
     sel_home: bool = st.session_state.get(t_key_home, False)
     sel_date_away: Optional[datetime.datetime.now()] = st.session_state.get(t_key_away_d, datetime.datetime.now())
@@ -358,142 +415,362 @@ for i, game_data in enumerate(games):
         games_chosen[game_round][game_id] = sel_away or sel_home
 
 
-df_top_a: pd.DataFrame = pd.DataFrame()
-df_top_b: pd.DataFrame = pd.DataFrame()
+top_df_cols: list[str] = ["Team", "Name", "id", "tc", "pts", "w", "l", "otl/sol"]
+top_df_cols_show: list[str] = ["Team", "Name", "pts", "w", "l", "otl/sol"]
+df_calc_cols: list[str] = ["pts", "w", "l", "otl/sol"]
+empty_data_a = [{"Team": flags_64[t["id"]], "Name": t["name"]} for t in sorted(teams_by_group[list_groups[0]], key=lambda t: t["name"])]
+empty_data_b = [{"Team": flags_64[t["id"]], "Name": t["name"]} for t in sorted(teams_by_group[list_groups[1]], key=lambda t: t["name"])]
+
+for empty_data in [empty_data_a, empty_data_b]:
+    for i, ej in enumerate(empty_data):
+        ej.update({col: 0 for col in top_df_cols[2:]})
+
+df_top_a: pd.DataFrame = pd.DataFrame(data=empty_data_a, columns=top_df_cols)
+df_top_b: pd.DataFrame = pd.DataFrame(data=empty_data_b, columns=top_df_cols)
 relegation_a: list[int] = []
 relegation_b: list[int] = []
 prelim_games_chosen: bool = all(games_chosen[0].values())
-if prelim_games_chosen:
-    # all preliminary round games picked
-    tr = st.session_state.get("team_records", {})
-    game_ids_first_round: list[int] = [g["game_id"] for g in games if g["round"] == 0]
-    st.write("teams_by_group")
-    st.write(teams_by_group)
-    st.write("teams_by_group[list_groups[0]]")
-    st.write([t_["id"] for t_ in teams_by_group[list_groups[0]]])
-    st.write("games[game_id_to_idx[gid]]['away']['id']")
-    st.write(games[game_id_to_idx[0]]["away"])
-    tops = {
-        g: [
-            {
-                "id": t["id"],
-                "tc": tr[t["id"]]["times_chosen"],
-                "pts": game_points(
-                    game_id=[
-                        gid for gid in game_ids_first_round
-                        if t["id"] in [
-                            games[game_id_to_idx[gid]]["away"],
-                            games[game_id_to_idx[gid]]["home"]
-                        ]
-                    ],
-                    team_id=t["id"])
+# if prelim_games_chosen:
+#     # all preliminary round games picked
+tr = st.session_state.get("team_records", {})
+game_ids_first_round: list[int] = [g["game_id"] for g in games if g["round"] == 0]
+st.write("game_ids_first_round")
+st.write(game_ids_first_round)
+st.write("teams_by_group")
+st.write(teams_by_group)
+st.write("teams_by_group[list_groups[0]]")
+st.write([t_["id"] for t_ in teams_by_group[list_groups[0]]])
+st.write("games[game_id_to_idx[gid]]['away']['id']")
+st.write(games[game_id_to_idx[0]]["away"])
+tops = {
+    g: [
+        {
+            "id": t["id"],
+            "tc": tr[t["id"]]["times_chosen"],
+            **game_points(
+                game_id=[
+                    gid for gid in game_ids_first_round
+                    if (games_chosen[0][gid]) and (t["id"] in [
+                        games[game_id_to_idx[gid]]["away"],
+                        games[game_id_to_idx[gid]]["home"]
+                    ])
+                ],
+                team_id=t["id"],
+                stats=df_calc_cols
+            )
+        }
+        for t in teams if t["id"] in [t_["id"] for t_ in teams_by_group[list_groups[i]]]
+    ]
+    for i, g in enumerate(list_groups)
+}
+top_a = tops["A"]
+top_b = tops["B"]
+st.write("top_a")
+st.write(top_a)
+st.write("top_b")
+st.write(top_b)
+top_a.sort(key=lambda t: t.get("pts", 0), reverse=True)
+top_b.sort(key=lambda t: t.get("pts", 0), reverse=True)
+lowest_pts_a: int = top_a[-1].get("pts", 0)
+lowest_pts_b: int = top_b[-1].get("pts", 0)
+
+relegation_a: list[int] = [t["id"] for t in top_a if t.get("pts", 0) == lowest_pts_a]
+relegation_b: list[int] = [t["id"] for t in top_b if t.get("pts", 0) == lowest_pts_b]
+
+st.write(f"Top {list_groups[0]}")
+st.write(top_a)
+st.write(f"Top {list_groups[1]}")
+st.write(top_b)
+st.write(f"{top_a[0]['id']}")
+df_top_a = pd.DataFrame(top_a, columns=top_df_cols)
+df_top_b = pd.DataFrame(top_b, columns=top_df_cols)
+# df_top_a = pd.DataFrame(top_a, columns=["id"] + top_df_cols)
+# df_top_b = pd.DataFrame(top_b, columns=["id"] + top_df_cols)
+# df_top_a.columns = ["id", "tc", "Team", "Name", "pts", "w", "l", "otl/sol"]
+# df_top_b.columns = ["id", "tc", "Team", "Name", "pts", "w", "l", "otl/sol"]
+for col in top_df_cols:
+    if col not in df_top_a:
+        df_top_a[col] = 0
+    if col not in df_top_b:
+        df_top_b[col] = 0
+
+df_top_a.fillna(0, inplace=True)
+df_top_b.fillna(0, inplace=True)
+
+for df in [df_top_a, df_top_b]:
+    for col in df_calc_cols:
+        df[col] = df[col].apply(lambda v: int(v))
+
+st.write("df_top_a")
+st.write(df_top_a)
+st.write("df_top_b")
+st.write(df_top_b)
+
+for i in range(df_top_a.shape[0]):
+    st.write(f"{i=}, {df_top_a.iloc[i]['id']=}")
+
+print(f"{df_top_a}")
+
+# df_top_a["Team"] = df_top_a.apply(lambda row: Path(flags[row["id"]]).resolve().as_uri(), axis=1)
+# df_top_a["Team"] = df_top_a.apply(lambda row: flags[row["id"]], axis=1)
+df_top_a["Team"] = df_top_a.apply(lambda row: flags_64[int(row["id"])], axis=1)
+df_top_a["Name"] = df_top_a.apply(lambda row: teams[int(row["id"])]["name"], axis=1)
+# df_top_b["Team"] = df_top_b.apply(lambda row: Path(flags[row["id"]]).resolve().as_uri(), axis=1)
+# df_top_b["Team"] = df_top_b.apply(lambda row: flags[row["id"]], axis=1)
+df_top_b["Team"] = df_top_b.apply(lambda row: flags_64[int(row["id"])], axis=1)
+df_top_b["Name"] = df_top_b.apply(lambda row: teams[int(row["id"])]["name"], axis=1)
+
+df_top_a.sort_values(by="Name", ascending=True, inplace=True, ignore_index=True)
+df_top_a.sort_values(by="pts", ascending=False, inplace=True, ignore_index=True)
+df_top_b.sort_values(by="Name", ascending=True, inplace=True, ignore_index=True)
+df_top_b.sort_values(by="pts", ascending=False, inplace=True, ignore_index=True)
+
+st.write("relegation_a")
+st.write(relegation_a)
+st.write("relegation_b")
+st.write(relegation_b)
+
+# st.write(f"All {rounds[0]} games chosen!")
+st.write([f"{t['name']}" for t in teams])
+st.write(tr)
+# else:
+#     st.write(f"Still need to select all {rounds[0]} games first")
+#     st.write(games_chosen[0])
+
+
+float_container = st.container(height=2000)
+nav_container = st.container()
+
+
+with nav_container:
+    nav_tabs = st.tabs(
+        tabs=rounds_pills
+    )
+    # nav_pills = pills(
+    #     label="Rounds",
+    #     options=rounds_pills
+    # )
+
+# with float_container:
+html_table_a: str = create_html_table(
+    df_top_a[top_df_cols_show],
+    column_config={
+        "Team": {
+            "config_type": "image",
+            "args": {
+                "img_width": "50",
+                "img_height": "40"
             }
-            for t in teams if t["id"] in [t_["id"] for t_ in teams_by_group[list_groups[i]]]
-        ]
-        for i, g in enumerate(list_groups)
+        }
     }
-    top_a = tops["A"]
-    top_b = tops["B"]
-    top_a.sort(key=lambda t: t["pts"], reverse=True)
-    top_b.sort(key=lambda t: t["pts"], reverse=True)
-    lowest_pts_a: int = top_a[-1]["pts"]
-    lowest_pts_b: int = top_b[-1]["pts"]
-
-    relegation_a: list[int] = [t["id"] for t in top_a if t["pts"] == lowest_pts_a]
-    relegation_b: list[int] = [t["id"] for t in top_b if t["pts"] == lowest_pts_b]
-
-    st.write(f"Top {list_groups[0]}")
-    st.write(top_a)
-    st.write(f"Top {list_groups[1]}")
-    st.write(top_b)
-    df_top_a = pd.DataFrame(top_a)
-    df_top_b = pd.DataFrame(top_b)
-    # df_top_a["Team"] = df_top_a.apply(lambda row: Path(flags[row["id"]]).resolve().as_uri(), axis=1)
-    # df_top_a["Team"] = df_top_a.apply(lambda row: flags[row["id"]], axis=1)
-    df_top_a["Team"] = df_top_a.apply(lambda row: flags_64[row["id"]], axis=1)
-    df_top_a["Name"] = df_top_a.apply(lambda row: teams[row["id"]]["name"], axis=1)
-    # df_top_b["Team"] = df_top_b.apply(lambda row: Path(flags[row["id"]]).resolve().as_uri(), axis=1)
-    # df_top_b["Team"] = df_top_b.apply(lambda row: flags[row["id"]], axis=1)
-    df_top_b["Team"] = df_top_b.apply(lambda row: flags_64[row["id"]], axis=1)
-    df_top_b["Name"] = df_top_b.apply(lambda row: teams[row["id"]]["name"], axis=1)
-
-    st.write("relegation_a")
-    st.write(relegation_a)
-    st.write("relegation_b")
-    st.write(relegation_b)
-
-    st.write(f"All {rounds[0]} games chosen!")
-    st.write([f"{t['name']}" for t in teams])
-    st.write(tr)
-else:
-    st.write(f"Still need to select all {rounds[0]} games first")
-    st.write(games_chosen[0])
-
-
-nav_pills = pills(
-    label="Rounds",
-    options=rounds_pills
 )
+# st.markdown(html_table_a, unsafe_allow_html=True)
+# st.write("Group B")
+html_table_b: str = create_html_table(
+    df_top_b[top_df_cols_show],
+    column_config={
+        "Team": {
+            "config_type": "image",
+            "args": {
+                "img_width": "50",
+                "img_height": "40"
+            }
+        }
+    }
+)
+# html = f'<div id="floating_standings_parent" style="position: relative;">'
+# html = f'<div id="floating_standings_child" style="position: absolute; right: 5px; top: 5px;">'
+html = f'<div id="floating_standings_child">'
+html += f'<h3>Group A</h3>'
+html += html_table_a
+html += f'</div>'
+html += f'</div>'
+html += f'<h3>Group B</h3>'
+html += html_table_b
+html += f'</div>'
+html += f'</div>'
+html += f'</div>'
+# st.markdown(html, unsafe_allow_html=True)
 
-if nav_pills == rounds_pills[0]:
-    # Preliminary
-    rnd_games = [g for g in games if g["round"] == 0]
-    rnd_games.sort(key=lambda gd: (gd["date"]))
-    rnd_games_a = [g for g in rnd_games if (teams[g["away"]]["group"] == "A") and (teams[g["home"]]["group"] == "A")]
-    rnd_games_b = [g for g in rnd_games if (teams[g["away"]]["group"] == "B") and (teams[g["home"]]["group"] == "B")]
-    cols_groups = st.columns(2)
-    # games_a = [g for g in rnd_games if ]
-    for i in range(max(len(rnd_games_a), len(rnd_games_b))):
-        # game_a, game_b = None, None
-        rnd_games_lsts = [rnd_games_a, rnd_games_b]
-        for j, group in enumerate(list_groups):
-            if i < len(rnd_games_lsts[j]):
-                game_data = rnd_games_lsts[j][i]
-                game_id = game_data["game_id"]
-                away_id = game_data["away"]
-                home_id = game_data["home"]
-                date = game_data["date"]
-                cols_group_game = cols_groups[j].columns([0.4, 0.2, 0.4])
+vid_y_pos = "2rem"
+float_box(
+    html,
+    width="29rem",
+    right="2rem",
+    bottom=vid_y_pos,
+    css="padding: 0;transition-property: all;transition-duration: .5s;transition-timing-function: cubic-bezier(0, 1, 0.5, 1);",
+    shadow=12
+)
+    # float_parent()
 
-                t_key_ot = f"toggle_{game_id}_{group}_OT"
-                t_key_away = f"toggle_{game_id}_{group}_Away"
-                t_key_home = f"toggle_{game_id}_{group}_Home"
-                t_key_away_d = f"{t_key_away}_d"
-                t_key_home_d = f"{t_key_home}_d"
 
-                cols_group_game[0].image(flags[away_id], width=flag_w)
-                cols_group_game[0].toggle(
-                    label="toggle",
-                    key=t_key_away,
-                    label_visibility="hidden",
-                    on_change=lambda
-                        t_=away_id,
-                        tka_=t_key_away,
-                        tkad=t_key_away_d:
-                    select_team(t_, tka_, tkad)
-                )
+# tables_css = float_css_helper(width="2.2rem", right="2rem", bottom=button_b_pos, transition=0)
+# float_container.float(tables_css)
 
-                cols_group_game[1].write(f"{group} - {date}")
-                cols_group_game[1].toggle(
-                    label="OT / SO",
-                    key=t_key_ot
-                )
 
-                cols_group_game[2].image(flags[home_id], width=flag_w)
-                cols_group_game[2].toggle(
-                    label="toggle",
-                    key=t_key_home,
-                    label_visibility="hidden",
-                    on_change=lambda
-                        t_=home_id,
-                        tkh_=t_key_home,
-                        tkhd=t_key_home_d:
-                    select_team(t_, tkh_, tkhd)
-                )
-        if i < len(rnd_games_b):
-            game_b = rnd_games_b[i]
-else:
-    st.write("coming soon")
+with nav_container:
+    with nav_tabs[0]:
+        # Preliminary
+        rnd_games = [g for g in games if g["round"] == 0]
+        rnd_games.sort(key=lambda gd: (gd["date"]))
+        rnd_games_a = [g for g in rnd_games if (teams[g["away"]]["group"] == "A") and (teams[g["home"]]["group"] == "A")]
+        rnd_games_b = [g for g in rnd_games if (teams[g["away"]]["group"] == "B") and (teams[g["home"]]["group"] == "B")]
+        cols_groups = st.columns(2)
+        # games_a = [g for g in rnd_games if ]
+        for i in range(max(len(rnd_games_a), len(rnd_games_b))):
+            # game_a, game_b = None, None
+            rnd_games_lsts = [rnd_games_a, rnd_games_b]
+            for j, group in enumerate(list_groups):
+                if i < len(rnd_games_lsts[j]):
+                    game_data = rnd_games_lsts[j][i]
+                    game_id = game_data["game_id"]
+                    away_id = game_data["away"]
+                    home_id = game_data["home"]
+                    date = game_data["date"]
+                    cols_group_game = cols_groups[j].columns([0.4, 0.2, 0.4])
+
+                    t_key_ot = f"toggle_{game_id}_{group}_OT"
+                    t_key_away = f"toggle_{game_id}_{group}_Away"
+                    t_key_home = f"toggle_{game_id}_{group}_Home"
+                    t_key_away_d = f"{t_key_away}_d"
+                    t_key_home_d = f"{t_key_home}_d"
+
+                    # for k in [
+                    #     t_key_ot,
+                    #     t_key_away,
+                    #     t_key_home,
+                    #     t_key_away_d,
+                    #     t_key_home_d
+                    # ]:
+                    #     st.write(f"BB {k=}, {st.session_state.get(k)=}")
+
+                    cols_group_game[0].image(flags[away_id], width=flag_w)
+                    # val = st.session_state.get(t_key_away, False)
+                    # del st.session_state[t_key_away]
+                    cols_group_game[0].toggle(
+                        label="toggle",
+                        # value=val,
+                        # key=t_key_away,
+                        key=t_key_away,
+                        label_visibility="hidden",
+                        on_change=lambda
+                            t_=away_id,
+                            tka_=t_key_away,
+                            tkad=t_key_away_d:
+                        select_team(t_, tka_, tkad)
+                    )
+
+                    cols_group_game[1].write(f"{group} - {date}")
+                    # val = st.session_state.get(t_key_ot, False)
+                    # del st.session_state[t_key_ot]
+                    cols_group_game[1].toggle(
+                        label="OT / SO",
+                        # value=val,
+                        key=t_key_ot
+                        # key=f"{t_key_ot}_t"
+                    )
+
+                    cols_group_game[2].image(flags[home_id], width=flag_w)
+                    # val = st.session_state.get(t_key_home, False)
+                    # del st.session_state[t_key_home]
+                    cols_group_game[2].toggle(
+                        label="toggle",
+                        # value=val,
+                        key=t_key_home,
+                        label_visibility="hidden",
+                        on_change=lambda
+                            t_=home_id,
+                            tkh_=t_key_home,
+                            tkhd=t_key_home_d:
+                        select_team(t_, tkh_, tkhd)
+                    )
+            if i < len(rnd_games_b):
+                game_b = rnd_games_b[i]
+
+    with nav_tabs[1]:
+        # Relegation
+        if prelim_games_chosen:
+            # st.write("Need to make relegation picks")
+            relegation_cols = st.columns(2)
+            with relegation_cols[0]:
+                st.subheader("Group A")
+                if len(relegation_a) > 1:
+                    items = [
+                        {"header": "save", "items": [t["name"] for t in teams if t["id"] in relegation_a]},
+                        {"header": "relegate", "items": []}
+                    ]
+                    st.write("Please choose a team to relegate:")
+                    relegation_a_sort = sort_items(
+                        items,
+                        key=f"sortable_relegation_a",
+                        multi_containers=True
+                    )
+
+                    saved_a: list[int] = [t["id"] for t in teams if t["name"] in relegation_a_sort[0]["items"][:-1]]
+                    if len(relegation_a_sort[0]["items"]) == 0:
+                        saved_a = [teams[relegation_a_sort[0]["items"][0]]["id"]]
+                    relegated_a: list[int] = [t["id"] for t in teams if t["name"] in relegation_a_sort[-1]["items"]]
+                    if not relegated_a:
+                        relegated_a = [t["id"] for t in teams if t["name"] in relegation_a_sort[0]["items"][-1:]]
+                        # relegation_cols[0].info(f"You must select a team for the relegation game, {' '.join([t['name'] for t in teams if t["id"] in relegated_a])} chosen.")
+                        st.info(f"You must select a team for the relegation game, {' '.join([t['name'] for t in teams if t['id'] in relegated_a])} chosen.")
+                    if not saved_a:
+                        saved_a = relegated_a[1:]
+                        relegated_a = relegated_a[:1]
+                        # relegation_cols[0].info(f"You can only relegate one team, {' '.join([t['name'] for t in teams if t["id"] in saved_a])} saved.")
+                        st.info(f"You can only relegate one team, {' '.join([t['name'] for t in teams if t['id'] in saved_a])} saved.")
+                else:
+                    saved_a = []
+                    relegated_a = relegation_a[-1:]
+                    st.write(f"{teams[relegated_a[0]]['name']} chosen by record in preliminary round")
+
+            with relegation_cols[1]:
+                st.subheader("Group B")
+                if len(relegation_b) > 1:
+                    items = [
+                        {"header": "save", "items": [t["name"] for t in teams if t["id"] in relegation_b]},
+                        {"header": "relegate", "items": []}
+                    ]
+                    # with relegation_cols[0]:
+                    st.write("Please choose a team to relegate:")
+                    relegation_b_sort = sort_items(
+                        items,
+                        key=f"sortable_relegation_b",
+                        multi_containers=True
+                    )
+
+                    saved_b: list[int] = [t["id"] for t in teams if t["name"] in relegation_b_sort[0]["items"][:-1]]
+                    if len(relegation_b_sort[0]["items"]) == 0:
+                        saved_b = [teams[relegation_b_sort[0]["items"][0]]["id"]]
+                    relegated_b: list[int] = [t["id"] for t in teams if t["name"] in relegation_b_sort[-1]["items"]]
+                    if not relegated_b:
+                        relegated_b = [t["id"] for t in teams if t["name"] in relegation_b_sort[0]["items"][-1:]]
+                        # relegation_cols[0].info(f"You must select a team for the relegation game, {' '.join([t['name'] for t in teams if t["id"] in relegated_a])} chosen.")
+                        st.info(f"You must select a team for the relegation game, {' '.join([t['name'] for t in teams if t['id'] in relegated_b])} chosen.")
+                    if not saved_b:
+                        saved_b = relegated_b[1:]
+                        relegated_b = relegated_b[:1]
+                        # relegation_cols[0].info(f"You can only relegate one team, {' '.join([t['name'] for t in teams if t["id"] in saved_a])} saved.")
+                        st.info(f"You can only relegate one team, {' '.join([t['name'] for t in teams if t['id'] in saved_b])} saved.")
+                else:
+                    saved_b = []
+                    relegated_b = relegation_b[-1:]
+                    st.write(f"{teams[relegated_b[0]]['name']} chosen by record in preliminary round")
+
+        else:
+            st.write(f"Please choose all games in the preliminary round first.")
+
+    with nav_tabs[2]:
+        # Quarters
+        st.write("coming soon")
+
+    with nav_tabs[3]:
+        # Semis
+        st.write("coming soon")
+
+    with nav_tabs[4]:
+        # Medal
+        st.write("coming soon")
 
 #
 #
