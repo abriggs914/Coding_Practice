@@ -20,10 +20,24 @@ from icons_8_refs import image_refs_htmls
 import streamlit_nested_layout
 
 
+from streamlit_javascript import st_javascript
+from user_agents import parse
+
+
 st.set_page_config(layout="wide")
 
-# # initialize float feature/capability
-# float_init()
+# initialize float feature/capability
+float_init()
+
+
+ua_string = str(st_javascript("""window.navigator.userAgent;"""))
+st.write(f"{ua_string=}")
+print(f"{ua_string=}")
+user_agent = parse(ua_string)
+st.write(f"{user_agent=}")
+print(f"{user_agent=}")
+st.session_state.update({"is_session_pc": user_agent.is_pc})
+st.info(f"PC? = {st.session_state.is_session_pc}")
 
 
 def create_html_table(
@@ -183,6 +197,7 @@ if not os.path.exists(root_image_folder):
 
 default_bg_team_col: Colour = Colour("#151530")
 
+t_print: bool = False
 
 initial_data: dict[str: Any] = load_data_file()
 teams: list[dict] = initial_data["teams"]
@@ -196,10 +211,21 @@ teams_by_group: dict[str: list[int]] = {g: [t for t in teams if t["group"] == g]
 game_id_to_idx: dict[int: int] = {g["game_id"]: i for i, g in enumerate(games)}
 flags = load_flags()
 flags_64 = load_flags_64(flags)
-flag_w, flag_h = 100, 50
 
-st.write(flags)
-st.json(initial_data)
+if st.session_state.get("is_session_pc", True):
+    width_standings_img: int = 50
+    height_standings_img: int = 40
+    flag_w: int = 100
+    flag_h: int = 50
+else:
+    width_standings_img: int = 30
+    height_standings_img: int = 22
+    flag_w: int = 30
+    flag_h: int = 22
+
+if t_print:
+    st.write(flags)
+    st.json(initial_data)
 
 cols_per_row: int = 2
 
@@ -227,6 +253,7 @@ def select_team(team_id: int, toggle_key: str, toggle_key_d: str):
         toggle_key_d: datetime.datetime.now()
     })
     is_sel = st.session_state.get(toggle_key)
+    is_sel = 0 if is_sel is None else is_sel
     tr = st.session_state.get("team_records", {})
     if team_id not in tr:
         tr.update({team_id: {"times_chosen": int(is_sel)}})
@@ -434,14 +461,19 @@ prelim_games_chosen: bool = all(games_chosen[0].values())
 #     # all preliminary round games picked
 tr = st.session_state.get("team_records", {})
 game_ids_first_round: list[int] = [g["game_id"] for g in games if g["round"] == 0]
-st.write("game_ids_first_round")
-st.write(game_ids_first_round)
-st.write("teams_by_group")
-st.write(teams_by_group)
-st.write("teams_by_group[list_groups[0]]")
-st.write([t_["id"] for t_ in teams_by_group[list_groups[0]]])
-st.write("games[game_id_to_idx[gid]]['away']['id']")
-st.write(games[game_id_to_idx[0]]["away"])
+game_ids_first_round_group_a: list[int] = [gid for gid in game_ids_first_round if teams[games[game_id_to_idx[gid]]["home"]]["group"] == list_groups[0]]
+game_ids_first_round_group_b: list[int] = [gid for gid in game_ids_first_round if teams[games[game_id_to_idx[gid]]["home"]]["group"] == list_groups[1]]
+
+if t_print:
+    st.write("game_ids_first_round")
+    st.write(game_ids_first_round)
+    st.write("teams_by_group")
+    st.write(teams_by_group)
+    st.write("teams_by_group[list_groups[0]]")
+    st.write([t_["id"] for t_ in teams_by_group[list_groups[0]]])
+    st.write("games[game_id_to_idx[gid]]['away']['id']")
+    st.write(games[game_id_to_idx[0]]["away"])
+
 tops = {
     g: [
         {
@@ -465,10 +497,13 @@ tops = {
 }
 top_a = tops["A"]
 top_b = tops["B"]
-st.write("top_a")
-st.write(top_a)
-st.write("top_b")
-st.write(top_b)
+
+if t_print:
+    st.write("top_a")
+    st.write(top_a)
+    st.write("top_b")
+    st.write(top_b)
+
 top_a.sort(key=lambda t: t.get("pts", 0), reverse=True)
 top_b.sort(key=lambda t: t.get("pts", 0), reverse=True)
 lowest_pts_a: int = top_a[-1].get("pts", 0)
@@ -477,11 +512,13 @@ lowest_pts_b: int = top_b[-1].get("pts", 0)
 relegation_a: list[int] = [t["id"] for t in top_a if t.get("pts", 0) == lowest_pts_a]
 relegation_b: list[int] = [t["id"] for t in top_b if t.get("pts", 0) == lowest_pts_b]
 
-st.write(f"Top {list_groups[0]}")
-st.write(top_a)
-st.write(f"Top {list_groups[1]}")
-st.write(top_b)
-st.write(f"{top_a[0]['id']}")
+if t_print:
+    st.write(f"Top {list_groups[0]}")
+    st.write(top_a)
+    st.write(f"Top {list_groups[1]}")
+    st.write(top_b)
+    st.write(f"{top_a[0]['id']}")
+
 df_top_a = pd.DataFrame(top_a, columns=top_df_cols)
 df_top_b = pd.DataFrame(top_b, columns=top_df_cols)
 # df_top_a = pd.DataFrame(top_a, columns=["id"] + top_df_cols)
@@ -501,13 +538,14 @@ for df in [df_top_a, df_top_b]:
     for col in df_calc_cols:
         df[col] = df[col].apply(lambda v: int(v))
 
-st.write("df_top_a")
-st.write(df_top_a)
-st.write("df_top_b")
-st.write(df_top_b)
+if t_print:
+    st.write("df_top_a")
+    st.write(df_top_a)
+    st.write("df_top_b")
+    st.write(df_top_b)
 
-for i in range(df_top_a.shape[0]):
-    st.write(f"{i=}, {df_top_a.iloc[i]['id']=}")
+    for i in range(df_top_a.shape[0]):
+        st.write(f"{i=}, {df_top_a.iloc[i]['id']=}")
 
 print(f"{df_top_a}")
 
@@ -525,24 +563,25 @@ df_top_a.sort_values(by="pts", ascending=False, inplace=True, ignore_index=True)
 df_top_b.sort_values(by="Name", ascending=True, inplace=True, ignore_index=True)
 df_top_b.sort_values(by="pts", ascending=False, inplace=True, ignore_index=True)
 
-st.write("relegation_a")
-st.write(relegation_a)
-st.write("relegation_b")
-st.write(relegation_b)
+if t_print:
+    st.write("relegation_a")
+    st.write(relegation_a)
+    st.write("relegation_b")
+    st.write(relegation_b)
 
-# st.write(f"All {rounds[0]} games chosen!")
-st.write([f"{t['name']}" for t in teams])
-st.write(tr)
+    # st.write(f"All {rounds[0]} games chosen!")
+    st.write([f"{t['name']}" for t in teams])
+    st.write(tr)
 # else:
 #     st.write(f"Still need to select all {rounds[0]} games first")
 #     st.write(games_chosen[0])
 
 
-float_container = st.container(height=2000)
-nav_container = st.container()
+# float_container = st.container(height=2000)
+nav_columns = st.columns([0.6, 0.4])
 
 
-with nav_container:
+with nav_columns[0]:
     nav_tabs = st.tabs(
         tabs=rounds_pills
     )
@@ -558,8 +597,8 @@ html_table_a: str = create_html_table(
         "Team": {
             "config_type": "image",
             "args": {
-                "img_width": "50",
-                "img_height": "40"
+                "img_width": width_standings_img,
+                "img_height": height_standings_img
             }
         }
     }
@@ -572,43 +611,65 @@ html_table_b: str = create_html_table(
         "Team": {
             "config_type": "image",
             "args": {
-                "img_width": "50",
-                "img_height": "40"
+                "img_width": width_standings_img,
+                "img_height": height_standings_img
             }
         }
     }
 )
 # html = f'<div id="floating_standings_parent" style="position: relative;">'
 # html = f'<div id="floating_standings_child" style="position: absolute; right: 5px; top: 5px;">'
-html = f'<div id="floating_standings_child">'
+
+n_games_chosen_grp_a_prelim: int = sum([games_chosen[0][gid] for gid in game_ids_first_round_group_a])
+n_games_chosen_grp_b_prelim: int = sum([games_chosen[0][gid] for gid in game_ids_first_round_group_b])
+n_games_to_choose_grp_a_prelim: int = len(game_ids_first_round_group_a) - n_games_chosen_grp_a_prelim
+n_games_to_choose_grp_b_prelim: int = len(game_ids_first_round_group_b) - n_games_chosen_grp_b_prelim
+# n_games_chosen_grp_b_prelim: int = sum(games_chosen[0].values())
+
+html = f'<div id="floating_standings_parent">'
+html += f'<div id="floating_standings_child">'
+html += f'<span>'
 html += f'<h3>Group A</h3>'
+if n_games_to_choose_grp_a_prelim:
+    html += f'<p>{n_games_to_choose_grp_a_prelim} game{"" if n_games_to_choose_grp_a_prelim == 1 else "s"} left to choose</p>'
+html += f'</span>'
 html += html_table_a
 html += f'</div>'
-html += f'</div>'
+html += f'<div>'
+html += f'<span>'
 html += f'<h3>Group B</h3>'
+if n_games_to_choose_grp_b_prelim:
+    html += f'<p>{n_games_to_choose_grp_b_prelim} game{"" if n_games_to_choose_grp_b_prelim == 1 else "s"} left to choose</p>'
+html += f'</span>'
 html += html_table_b
-html += f'</div>'
 html += f'</div>'
 html += f'</div>'
 # st.markdown(html, unsafe_allow_html=True)
 
-vid_y_pos = "2rem"
-float_box(
-    html,
-    width="29rem",
-    right="2rem",
-    bottom=vid_y_pos,
-    css="padding: 0;transition-property: all;transition-duration: .5s;transition-timing-function: cubic-bezier(0, 1, 0.5, 1);",
-    shadow=12
-)
-    # float_parent()
+# vid_y_pos = "2rem"
+
+if st.session_state.get("is_session_pc"):
+
+    float_box(
+        html,
+        width="29rem",
+        right="2rem",
+        bottom="35rem",
+        css="padding: 0;transition-property: all;transition-duration: .5s;transition-timing-function: cubic-bezier(0, 1, 0.5, 1);",
+        shadow=12
+        # ,
+        # sticky=True
+    )
+        # float_parent()
+else:
+    st.markdown(html, unsafe_allow_html=True)
 
 
 # tables_css = float_css_helper(width="2.2rem", right="2rem", bottom=button_b_pos, transition=0)
 # float_container.float(tables_css)
 
 
-with nav_container:
+with nav_columns[0]:
     with nav_tabs[0]:
         # Preliminary
         rnd_games = [g for g in games if g["round"] == 0]
