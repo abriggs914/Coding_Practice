@@ -189,7 +189,12 @@
         "date": "2024-12-26 13:00",
         "location": "TD Place",
         "away": 0,
-        "home": 1
+        "home": 1,
+        "result": {
+          "away": 2,
+          "home": 5,
+          "end": "REG"
+        }
       },
       {
         "game_id": 1,
@@ -197,7 +202,12 @@
         "date": "2024-12-26 15:30",
         "location": "Canadian Tire Centre",
         "away": 2,
-        "home": 3
+        "home": 3,
+        "result": {
+          "away": 10,
+          "home": 4,
+          "end": "REG"
+        }
       },
       {
         "game_id": 2,
@@ -205,7 +215,12 @@
         "date": "2024-12-26 18:00",
         "location": "TD Place",
         "away": 4,
-        "home": 5
+        "home": 5,
+        "result": {
+          "away": 5,
+          "home": 1,
+          "end": "REG"
+        }
       },
       {
         "game_id": 3,
@@ -213,7 +228,12 @@
         "date": "2024-12-26 20:30",
         "location": "Canadian Tire Centre",
         "away": 6,
-        "home": 7
+        "home": 7,
+        "result": {
+          "away": 0,
+          "home": 4,
+          "end": "REG"
+        }
       },
       {
         "game_id": 4,
@@ -221,7 +241,12 @@
         "date": "2024-12-27 14:00",
         "location": "TD Place",
         "away": 5,
-        "home": 0
+        "home": 0,
+        "result": {
+          "away": 1,
+          "home": 2,
+          "end": "REG"
+        }
       },
       {
         "game_id": 5,
@@ -229,7 +254,12 @@
         "date": "2024-12-27 16:30",
         "location": "Canadian Tire Centre",
         "away": 3,
-        "home": 6
+        "home": 6,
+        "result": {
+          "away": 1,
+          "home": 3,
+          "end": "REG"
+        }
       },
       {
         "game_id": 6,
@@ -237,7 +267,12 @@
         "date": "2024-12-27 14:00",
         "location": "TD Place",
         "away": 1,
-        "home": 8
+        "home": 8,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 7,
@@ -245,7 +280,12 @@
         "date": "2024-12-27 20:30",
         "location": "Canadian Tire Centre",
         "away": 9,
-        "home": 7
+        "home": 7,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 8,
@@ -253,7 +293,12 @@
         "date": "2024-12-28 14:00",
         "location": "TD Place",
         "away": 8,
-        "home": 4
+        "home": 4,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 9,
@@ -261,7 +306,12 @@
         "date": "2024-12-28 16:30",
         "location": "Canadian Tire Centre",
         "away": 9,
-        "home": 2
+        "home": 2,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 10,
@@ -269,7 +319,12 @@
         "date": "2024-12-29 13:00",
         "location": "TD Place",
         "away": 5,
-        "home": 1
+        "home": 1,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 11,
@@ -277,7 +332,12 @@
         "date": "2024-12-29 15:30",
         "location": "Canadian Tire Centre",
         "away": 2,
-        "home": 6
+        "home": 6,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 12,
@@ -285,7 +345,12 @@
         "date": "2024-12-29 18:00",
         "location": "TD Place",
         "away": 4,
-        "home": 0
+        "home": 0,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 13,
@@ -293,7 +358,12 @@
         "date": "2024-12-29 20:30",
         "location": "Canadian Tire Centre",
         "away": 7,
-        "home": 3
+        "home": 3,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 14,
@@ -301,7 +371,12 @@
         "date": "2024-12-30 14:00",
         "location": "TD Place",
         "away": 0,
-        "home": 8
+        "home": 8,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 15,
@@ -309,7 +384,12 @@
         "date": "2024-12-30 16:30",
         "location": "Canadian Tire Centre",
         "away": 3,
-        "home": 9
+        "home": 9,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 16,
@@ -317,7 +397,12 @@
         "date": "2024-12-31 13:00",
         "location": "TD Place",
         "away": 8,
-        "home": 5
+        "home": 5,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 17,
@@ -325,7 +410,12 @@
         "date": "2024-12-31 15:30",
         "location": "Canadian Tire Centre",
         "away": 6,
-        "home": 9
+        "home": 9,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 18,
@@ -333,7 +423,12 @@
         "date": "2024-12-31 18:00",
         "location": "TD Place",
         "away": 1,
-        "home": 4
+        "home": 4,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 19,
@@ -341,7 +436,12 @@
         "date": "2024-12-31 21:00",
         "location": "Canadian Tire Centre",
         "away": 7,
-        "home": 2
+        "home": 2,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
 
       {
@@ -352,7 +452,12 @@
         "away_code": "A5",
         "home_code": "B5",
         "away": null,
-        "home": null
+        "home": null,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
 
       {
@@ -363,7 +468,12 @@
         "away_code": "QF",
         "home_code": "QF",
         "away": null,
-        "home": null
+        "home": null,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 22,
@@ -373,7 +483,12 @@
         "away_code": "QF",
         "home_code": "QF",
         "away": null,
-        "home": null
+        "home": null,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 23,
@@ -383,7 +498,12 @@
         "away_code": "QF",
         "home_code": "QF",
         "away": null,
-        "home": null
+        "home": null,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 24,
@@ -393,7 +513,12 @@
         "away_code": "QF",
         "home_code": "QF",
         "away": null,
-        "home": null
+        "home": null,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
 
       {
@@ -404,7 +529,12 @@
         "away_code": "SF",
         "home_code": "SF",
         "away": null,
-        "home": null
+        "home": null,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
       {
         "game_id": 26,
@@ -414,7 +544,12 @@
         "away_code": "SF",
         "home_code": "SF",
         "away": null,
-        "home": null
+        "home": null,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
 
       {
@@ -425,7 +560,12 @@
         "away_code": "L(SF)",
         "home_code": "L(SF)",
         "away": null,
-        "home": null
+        "home": null,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       },
 
       {
@@ -436,7 +576,12 @@
         "away_code": "W(SF)",
         "home_code": "W(SF)",
         "away": null,
-        "home": null
+        "home": null,
+        "result": {
+          "away": null,
+          "home": null,
+          "end": null
+        }
       }
     ]
   }
