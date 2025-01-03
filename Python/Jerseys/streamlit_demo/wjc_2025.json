@@ -188,6 +188,7 @@
         "round": 0,
         "date": "2024-12-26 13:00",
         "location": "TD Place",
+        "description": "Prelims -- SVK vs SWE",
         "away": 0,
         "home": 1,
         "result": {
@@ -201,6 +202,7 @@
         "round": 0,
         "date": "2024-12-26 15:30",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- USA vs GER",
         "away": 2,
         "home": 3,
         "result": {
@@ -214,6 +216,7 @@
         "round": 0,
         "date": "2024-12-26 18:00",
         "location": "TD Place",
+        "description": "Prelims -- CZE vs SUI",
         "away": 4,
         "home": 5,
         "result": {
@@ -227,6 +230,7 @@
         "round": 0,
         "date": "2024-12-26 20:30",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- FIN vs CAN",
         "away": 6,
         "home": 7,
         "result": {
@@ -240,6 +244,7 @@
         "round": 0,
         "date": "2024-12-27 14:00",
         "location": "TD Place",
+        "description": "Prelims -- SUI vs SVK",
         "away": 5,
         "home": 0,
         "result": {
@@ -253,6 +258,7 @@
         "round": 0,
         "date": "2024-12-27 16:30",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- GER vs FIN",
         "away": 3,
         "home": 6,
         "result": {
@@ -266,12 +272,13 @@
         "round": 0,
         "date": "2024-12-27 14:00",
         "location": "TD Place",
+        "description": "Prelims -- SWE vs KAZ",
         "away": 1,
         "home": 8,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 8,
+          "home": 1,
+          "end": "REG"
         }
       },
       {
@@ -279,12 +286,13 @@
         "round": 0,
         "date": "2024-12-27 20:30",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- LAT vs CAN",
         "away": 9,
         "home": 7,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 3,
+          "home": 2,
+          "end": "SO"
         }
       },
       {
@@ -292,12 +300,13 @@
         "round": 0,
         "date": "2024-12-28 14:00",
         "location": "TD Place",
+        "description": "Prelims -- KAZ vs CZE",
         "away": 8,
         "home": 4,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 2,
+          "home": 14,
+          "end": "REG"
         }
       },
       {
@@ -305,12 +314,13 @@
         "round": 0,
         "date": "2024-12-28 16:30",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- LAT vs USA",
         "away": 9,
         "home": 2,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 1,
+          "home": 5,
+          "end": "REG"
         }
       },
       {
@@ -318,12 +328,13 @@
         "round": 0,
         "date": "2024-12-29 13:00",
         "location": "TD Place",
+        "description": "Prelims -- SUI vs SWE",
         "away": 5,
         "home": 1,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 5,
+          "home": 7,
+          "end": "REG"
         }
       },
       {
@@ -331,12 +342,13 @@
         "round": 0,
         "date": "2024-12-29 15:30",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- USA vs FIN",
         "away": 2,
         "home": 6,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 3,
+          "home": 4,
+          "end": "OT"
         }
       },
       {
@@ -344,12 +356,13 @@
         "round": 0,
         "date": "2024-12-29 18:00",
         "location": "TD Place",
+        "description": "Prelims -- CZE vs SVK",
         "away": 4,
         "home": 0,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 4,
+          "home": 2,
+          "end": "REG"
         }
       },
       {
@@ -357,12 +370,13 @@
         "round": 0,
         "date": "2024-12-29 20:30",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- CAN vs GER",
         "away": 7,
         "home": 3,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 3,
+          "home": 0,
+          "end": "REG"
         }
       },
       {
@@ -370,12 +384,13 @@
         "round": 0,
         "date": "2024-12-30 14:00",
         "location": "TD Place",
+        "description": "Prelims -- SVK VS KAZ",
         "away": 0,
         "home": 8,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 5,
+          "home": 4,
+          "end": "OT"
         }
       },
       {
@@ -383,12 +398,13 @@
         "round": 0,
         "date": "2024-12-30 16:30",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- GER vs LAT",
         "away": 3,
         "home": 9,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 3,
+          "home": 4,
+          "end": "OT"
         }
       },
       {
@@ -396,12 +412,13 @@
         "round": 0,
         "date": "2024-12-31 13:00",
         "location": "TD Place",
+        "description": "Prelims -- KAZ vs SUI",
         "away": 8,
         "home": 5,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 1,
+          "home": 3,
+          "end": "REG"
         }
       },
       {
@@ -409,12 +426,13 @@
         "round": 0,
         "date": "2024-12-31 15:30",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- FIN vs LAT",
         "away": 6,
         "home": 9,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 3,
+          "home": 0,
+          "end": "REG"
         }
       },
       {
@@ -422,12 +440,13 @@
         "round": 0,
         "date": "2024-12-31 18:00",
         "location": "TD Place",
+        "description": "Prelims -- SWE vs CZE",
         "away": 1,
         "home": 4,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 4,
+          "home": 2,
+          "end": "REG"
         }
       },
       {
@@ -435,12 +454,13 @@
         "round": 0,
         "date": "2024-12-31 21:00",
         "location": "Canadian Tire Centre",
+        "description": "Prelims -- CAN vs USA",
         "away": 7,
         "home": 2,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 1,
+          "home": 4,
+          "end": "REG"
         }
       },
 
@@ -449,10 +469,11 @@
         "round": 1,
         "date": "2025-01-02 12:00",
         "location": "Canadian Tire Centre",
+        "description": "Relegation -- GER vs KAZ",
         "away_code": "A5",
         "home_code": "B5",
-        "away": null,
-        "home": null,
+        "away": 3,
+        "home": 8,
         "result": {
           "away": null,
           "home": null,
@@ -465,14 +486,15 @@
         "round": 2,
         "date": "2025-01-02 13:00",
         "location": "TD Place",
-        "away_code": "QF",
-        "home_code": "QF",
-        "away": null,
-        "home": null,
+        "description": "Quarters -- LAT vs SWE",
+        "away_code": "A4",
+        "home_code": "B1",
+        "away": 9,
+        "home": 1,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 2,
+          "home": 3,
+          "end": "REG"
         }
       },
       {
@@ -480,25 +502,27 @@
         "round": 2,
         "date": "2025-01-02 15:30",
         "location": "Canadian Tire Centre",
-        "away_code": "QF",
-        "home_code": "QF",
-        "away": null,
-        "home": null,
+        "description": "Quarters -- SUI vs USA",
+        "away_code": "B4",
+        "home_code": "A1",
+        "away": 5,
+        "home": 2,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 2,
+          "home": 7,
+          "end": "REG"
         }
       },
       {
         "game_id": 23,
         "round": 2,
         "date": "2025-01-02 18:00",
+        "description": "Quarters -- SVK vs FIN",
         "location": "TD Place",
-        "away_code": "QF",
-        "home_code": "QF",
-        "away": null,
-        "home": null,
+        "away_code": "B3",
+        "home_code": "A2",
+        "away": 0,
+        "home": 6,
         "result": {
           "away": null,
           "home": null,
@@ -510,10 +534,11 @@
         "round": 2,
         "date": "2025-01-02 20:30",
         "location": "Canadian Tire Centre",
-        "away_code": "QF",
-        "home_code": "QF",
-        "away": null,
-        "home": null,
+        "description": "Quarters -- CAN vs CZE",
+        "away_code": "A3",
+        "home_code": "B2",
+        "away": 7,
+        "home": 4,
         "result": {
           "away": null,
           "home": null,
@@ -526,6 +551,7 @@
         "round": 3,
         "date": "2025-01-04 16:30",
         "location": "Canadian Tire Centre",
+        "description": "Semis -- ",
         "away_code": "SF",
         "home_code": "SF",
         "away": null,
@@ -541,6 +567,7 @@
         "round": 3,
         "date": "2025-01-04 20:30",
         "location": "Canadian Tire Centre",
+        "description": "Semis -- ",
         "away_code": "SF",
         "home_code": "SF",
         "away": null,
@@ -557,6 +584,7 @@
         "round": 4,
         "date": "2025-01-05 16:30",
         "location": "Canadian Tire Centre",
+        "description": "Bronze -- ",
         "away_code": "L(SF)",
         "home_code": "L(SF)",
         "away": null,
@@ -573,6 +601,7 @@
         "round": 5,
         "date": "2025-01-05 20:30",
         "location": "Canadian Tire Centre",
+        "description": "Gold -- ",
         "away_code": "W(SF)",
         "home_code": "W(SF)",
         "away": null,

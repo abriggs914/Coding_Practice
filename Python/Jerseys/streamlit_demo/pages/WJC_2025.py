@@ -223,6 +223,11 @@ else:
     flag_w: int = 30
     flag_h: int = 22
 
+toggle_use_results = st.toggle(
+    label="Use stored game results?",
+    key=f"toggle_use_results"
+)
+
 if t_print:
     st.write(flags)
     st.json(initial_data)
@@ -284,7 +289,7 @@ def game_points(game_id: int | list[int], team_id: int, stats: Optional[list[str
         st.write(f'{res=}')
         return res
 
-    valid_stats = ["pts", "w", "l", "otl/sol"]
+    valid_stats = ["pts", "w", "l", "otl/sol", "gf", "ga", "gd"]
     if stats is None:
         stats = ["pts"]
 
@@ -292,6 +297,10 @@ def game_points(game_id: int | list[int], team_id: int, stats: Optional[list[str
     game_data = games[idx]
     game_away_id: int = game_data.get("away")
     game_home_id: int = game_data.get("home")
+    game_results: dict = game_data.get("result", {})
+    game_result: str = game_results.get("end", "")
+    away_score: int = game_results.get("away", 0)
+    home_score: int = game_results.get("home", 0)
     v_teams: list[int] = [game_away_id, game_home_id]
 
     if team_id not in v_teams:
@@ -335,17 +344,27 @@ def game_points(game_id: int | list[int], team_id: int, stats: Optional[list[str
         # choose the losing team
         res = {
             "pts": 1 if ot_or_so else 0,
+            "gp": 1,
             "w": 0,
             "l": 0 if ot_or_so else 1,
-            "otl/sol": 1 if ot_or_so else 0
+            "otl/sol": 1 if ot_or_so else 0,
+            "otw/sow": 0,
+            "gf": min(away_score, home_score),
+            "ga": max(away_score, home_score),
+            "gd": -abs(away_score - home_score)
         }
         # return 1 if ot_or_so else 0
     else:
         res = {
             "pts": 2 if ot_or_so else 3,
-            "w": 1,
+            "gp": 1,
+            "w": 0 if ot_or_so else 1,
             "l": 0,
-            "otl/sol": 0
+            "otl/sol": 0,
+            "otw/sow": 1 if ot_or_so else 0,
+            "gf": max(away_score, home_score),
+            "ga": min(away_score, home_score),
+            "gd": abs(away_score - home_score)
         }
 
     for k in res:
@@ -364,6 +383,8 @@ for i, rnd in enumerate(rounds):
         games_chosen[i][game_id] = False
 
 
+# check the session_state for previously set values
+# Prelims
 for i, game_data in enumerate(games):
     game_id: int = game_data.get("game_id")
     game_round: int = game_data.get("round")
@@ -375,16 +396,24 @@ for i, game_data in enumerate(games):
     group: Optional[str] = None
     away_team_data: list[dict] = [t for t in teams if t["id"] == game_away_id]
     home_team_data: list[dict] = [t for t in teams if t["id"] == game_home_id]
+    results = game_data.get("result", {})
+    game_result = results.get("end")
+    if not st.session_state.get("toggle_use_results", True):
+        # ignore the stored result
+        game_result = None
+    away_score, home_score = 0, 0
     if away_team_data:
         a_data = away_team_data[0]
         away_name = a_data.get("name")
         away_group = a_data.get("group")
         away_flag_id = a_data.get("id")
+        away_score = results.get("away", 0)
     if home_team_data:
         h_data = home_team_data[0]
         home_name = h_data.get("name")
         home_group = h_data.get("group")
         home_flag_id = h_data.get("id")
+        home_score = results.get("home", 0)
     t_key: str = f"{round_name}_title"
     g_key_par: str = f"{round_name}_groups_parent"
     g_key: str = f"{round_name}_groups"
@@ -398,6 +427,12 @@ for i, game_data in enumerate(games):
     t_key_home = f"toggle_{game_id}_{group}_Home"
     t_key_away_d = f"{t_key_away}_d"
     t_key_home_d = f"{t_key_home}_d"
+
+    st.write(f"{i=}, {game_result=}, {away_score=}, {home_score=}")
+
+    if game_result is not None:
+        st.session_state.update({t_key_away: away_score > home_score, t_key_home: away_score < home_score})
+        st.session_state.update({t_key_ot: game_result in ["OT", "SO"]})
 
     # for k in [
     #     t_key_ot,
@@ -442,9 +477,9 @@ for i, game_data in enumerate(games):
         games_chosen[game_round][game_id] = sel_away or sel_home
 
 
-top_df_cols: list[str] = ["Team", "Name", "id", "tc", "pts", "w", "l", "otl/sol"]
-top_df_cols_show: list[str] = ["Team", "Name", "pts", "w", "l", "otl/sol"]
-df_calc_cols: list[str] = ["pts", "w", "l", "otl/sol"]
+top_df_cols: list[str] = ["Team", "Name", "id", "tc", "pts", "gp", "w", "l", "otl/sol", "otw/sow", "gf", "ga", "gd"]
+top_df_cols_show: list[str] = ["Team", "Name", "pts", "gp", "w", "l", "otl/sol", "otw/sow", "gf", "ga", "gd"]
+df_calc_cols: list[str] = ["pts", "gp", "w", "l", "otl/sol", "otw/sow", "gf", "ga", "gd"]
 empty_data_a = [{"Team": flags_64[t["id"]], "Name": t["name"]} for t in sorted(teams_by_group[list_groups[0]], key=lambda t: t["name"])]
 empty_data_b = [{"Team": flags_64[t["id"]], "Name": t["name"]} for t in sorted(teams_by_group[list_groups[1]], key=lambda t: t["name"])]
 
@@ -504,8 +539,8 @@ if t_print:
     st.write("top_b")
     st.write(top_b)
 
-top_a.sort(key=lambda t: t.get("pts", 0), reverse=True)
-top_b.sort(key=lambda t: t.get("pts", 0), reverse=True)
+top_a.sort(key=lambda t: (t.get("pts", 0), t.get("gd", 0)), reverse=True)
+top_b.sort(key=lambda t: (t.get("pts", 0), t.get("gd", 0)), reverse=True)
 lowest_pts_a: int = top_a[-1].get("pts", 0)
 lowest_pts_b: int = top_b[-1].get("pts", 0)
 
@@ -559,7 +594,9 @@ df_top_b["Team"] = df_top_b.apply(lambda row: flags_64[int(row["id"])], axis=1)
 df_top_b["Name"] = df_top_b.apply(lambda row: teams[int(row["id"])]["name"], axis=1)
 
 df_top_a.sort_values(by="Name", ascending=True, inplace=True, ignore_index=True)
+df_top_a.sort_values(by="gd", ascending=True, inplace=True, ignore_index=True)
 df_top_a.sort_values(by="pts", ascending=False, inplace=True, ignore_index=True)
+df_top_b.sort_values(by="gd", ascending=True, inplace=True, ignore_index=True)
 df_top_b.sort_values(by="Name", ascending=True, inplace=True, ignore_index=True)
 df_top_b.sort_values(by="pts", ascending=False, inplace=True, ignore_index=True)
 
@@ -688,6 +725,13 @@ with nav_columns[0]:
                     away_id = game_data["away"]
                     home_id = game_data["home"]
                     date = game_data["date"]
+                    result = game_data.get("result", {})
+                    game_result = result.get("end")
+                    if not st.session_state.get("toggle_use_results", True):
+                        # ignore the stored result
+                        game_result = None
+                    away_score = result.get("away", 0)
+                    home_score = result.get("home", 0)
                     cols_group_game = cols_groups[j].columns([0.4, 0.2, 0.4])
 
                     t_key_ot = f"toggle_{game_id}_{group}_OT"
@@ -718,7 +762,8 @@ with nav_columns[0]:
                             t_=away_id,
                             tka_=t_key_away,
                             tkad=t_key_away_d:
-                        select_team(t_, tka_, tkad)
+                        select_team(t_, tka_, tkad),
+                        disabled=game_result is not None
                     )
 
                     cols_group_game[1].write(f"{group} - {date}")
@@ -729,6 +774,8 @@ with nav_columns[0]:
                         # value=val,
                         key=t_key_ot
                         # key=f"{t_key_ot}_t"
+                        ,
+                        disabled=game_result is not None
                     )
 
                     cols_group_game[2].image(flags[home_id], width=flag_w)
@@ -743,7 +790,8 @@ with nav_columns[0]:
                             t_=home_id,
                             tkh_=t_key_home,
                             tkhd=t_key_home_d:
-                        select_team(t_, tkh_, tkhd)
+                        select_team(t_, tkh_, tkhd),
+                        disabled=game_result is not None
                     )
             if i < len(rnd_games_b):
                 game_b = rnd_games_b[i]
@@ -824,6 +872,117 @@ with nav_columns[0]:
     with nav_tabs[2]:
         # Quarters
         st.write("coming soon")
+        st.write("top_a")
+        st.write(top_a)
+        st.write("top_b")
+        st.write(top_b)
+
+        if (not top_a) or (not top_b):
+            st.write(f"Please finish selecting the preliminary games first.")
+        else:
+
+            rnd_games = [g for g in games if g["round"] == 2]
+            rnd_games.sort(key=lambda gd: (gd["date"]))
+            st.write("rnd_games")
+            st.write(rnd_games)
+            # games_a = [g for g in rnd_games if ]
+            for i, game_data in enumerate(rnd_games):
+                # game_data = rnd_games_lsts[j][i]
+                game_id = game_data["game_id"]
+                away_id = game_data["away"]
+                home_id = game_data["home"]
+                away_code = game_data.get("away_code")
+                home_code = game_data.get("home_code")
+                if not st.session_state.get("toggle_use_results", True):
+                    away_id = None
+                    home__id = None
+                if away_id is None:
+                    if away_code is None:
+                        st.warning(f"The source file needs to include 'away_code' for QuarterFinal #{i+1} (gameid={game_id}).")
+                        st.stop()
+                    else:
+                        # QF codes are of format f'{GROUP}{POSITION}' ex: ('A1', 'B3')
+                        try:
+                            pos = int(away_code[1])
+                            group_lst = top_b if away_code[0].upper() == "B" else top_a
+                            team_data = group_lst[pos]
+                            away_id = team_data["id"]
+                        except:
+                            st.warning(f"Error parsing the 'away_code' for QuarterFinal #{i+1} (gameid={game_id}).")
+                            st.stop()
+
+                if home_id is None:
+                    if home_code is None:
+                        st.warning(f"The source file needs to include 'home_code' for QuarterFinal #{i+1} (gameid={game_id}).")
+                        st.stop()
+                    else:
+                        # QF codes are of format f'{GROUP}{POSITION}' ex: ('A1', 'B3')
+                        try:
+                            pos = int(home_code[1])
+                            group_lst = top_b if home_code[0].upper() == "B" else top_a
+                            team_data = group_lst[pos]
+                            home_id = team_data["id"]
+                        except:
+                            st.warning(f"Error parsing the 'home_code' for QuarterFinal #{i+1} (gameid={game_id}).")
+                            st.stop()
+
+                date = game_data["date"]
+                result = game_data.get("result", {})
+                game_result = result.get("end")
+                away_score = result.get("away", 0)
+                home_score = result.get("home", 0)
+                cols_group_game = st.columns([0.4, 0.2, 0.4])
+
+                t_key_ot = f"toggle_{game_id}_QF_{i}_OT"
+                t_key_away = f"toggle_{game_id}_QF_{i}_Away"
+                t_key_home = f"toggle_{game_id}_QF_{i}_Home"
+                t_key_away_d = f"{t_key_away}_d"
+                t_key_home_d = f"{t_key_home}_d"
+
+                cols_group_game[0].image(flags[away_id], width=flag_w)
+                # val = st.session_state.get(t_key_away, False)
+                # del st.session_state[t_key_away]
+                cols_group_game[0].toggle(
+                    label="toggle",
+                    # value=val,
+                    # key=t_key_away,
+                    key=t_key_away,
+                    label_visibility="hidden",
+                    on_change=lambda
+                        t_=away_id,
+                        tka_=t_key_away,
+                        tkad=t_key_away_d:
+                    select_team(t_, tka_, tkad),
+                    disabled=game_result is not None
+                )
+
+                cols_group_game[1].write(f"{group} - {date}")
+                # val = st.session_state.get(t_key_ot, False)
+                # del st.session_state[t_key_ot]
+                cols_group_game[1].toggle(
+                    label="OT / SO",
+                    # value=val,
+                    key=t_key_ot
+                    # key=f"{t_key_ot}_t"
+                    ,
+                    disabled=game_result is not None
+                )
+
+                cols_group_game[2].image(flags[home_id], width=flag_w)
+                # val = st.session_state.get(t_key_home, False)
+                # del st.session_state[t_key_home]
+                cols_group_game[2].toggle(
+                    label="toggle",
+                    # value=val,
+                    key=t_key_home,
+                    label_visibility="hidden",
+                    on_change=lambda
+                        t_=home_id,
+                        tkh_=t_key_home,
+                        tkhd=t_key_home_d:
+                    select_team(t_, tkh_, tkhd),
+                    disabled=game_result is not None
+                )
 
     with nav_tabs[3]:
         # Semis

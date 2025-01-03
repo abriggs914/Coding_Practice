@@ -68,7 +68,7 @@ class App(ctk.CTk):
         self.options_new_val = [2, 4]
         self.n_rows, self.n_cols = 10, 10
         self.positions = dict()
-        self.empty_positions = list()
+        # self.empty_positions = list()
 
         self.keys_pressed = list()
         self.n_cycles = 0
@@ -100,7 +100,7 @@ class App(ctk.CTk):
                             font=("Arial", 18)
                         )
                 }
-                self.empty_positions.append((i * self.n_cols) + j)
+                # self.empty_positions.append((i * self.n_cols) + j)
 
         self.bind("<KeyPress>", self.key_down)
         self.bind("<KeyRelease>", self.key_up)
@@ -215,17 +215,26 @@ class App(ctk.CTk):
             self.n_cycles += 1
             self.af_id_loop = self.after(self.ms_loop, self.loop)
 
+    def get_empty_positions(self):
+        empty = list()
+        for i in range(self.n_rows):
+            for j in range(self.n_cols):
+                if self.positions[i][j].get("val") is None:
+                    empty.append((i, j))
+        return empty
+
     def gen_new_positions(self):
 
         def new_empty_position(n: int = 1):
-            if len(self.empty_positions) < n:
+            empty_positions = self.get_empty_positions()
+            if len(empty_positions) < n:
                 return None
             result = list()
             i = 0
             while i < n:
-                chx = random.choice(self.empty_positions)
+                chx = random.choice(empty_positions)
                 if chx not in result:
-                    self.empty_positions.remove(chx)
+                    empty_positions.remove(chx)
                     result.append(chx)
                     i += 1
             return result
@@ -237,8 +246,9 @@ class App(ctk.CTk):
         print(f"{new_positions=}")
         if new_positions:
             for idx in new_positions:
-                i = int(idx / self.n_cols)
-                j = idx - (i * self.n_cols)
+                # i = int(idx / self.n_cols)
+                # j = idx - (i * self.n_cols)
+                i, j = idx
                 tile = self.positions[i][j]["tile"]
                 text = self.positions[i][j]["text"]
                 val = self.positions[i][j]["val"]
@@ -319,7 +329,7 @@ class App(ctk.CTk):
             text="",
             state=ctk.HIDDEN
         )
-        self.empty_positions.append(j + (i * self.n_cols))
+        # self.empty_positions.append(j + (i * self.n_cols))
 
     def set_cell(self, i: int, j: int, val: int):
         print(f"{i=}, {j=}, {val=}")
@@ -329,6 +339,7 @@ class App(ctk.CTk):
             text=str(val),
             state=ctk.NORMAL
         )
+        # self.empty_positions.remove(j + (i * self.n_cols))
 
     def move_up(self, event):
         print(f"move_up {event}")
@@ -350,19 +361,21 @@ class App(ctk.CTk):
                         data_u = self.positions[k][j]
                         val_u = data_u["val"]
                         if val_u is not None:
+                            k += 1
                             break
                     new_val = None
                     if k >= 0:
                         if val_u == val:
                             # combine
+                            k -= 1
                             new_val = val * 2
                         else:
                             # move val at [i][j] to [k][j]
                             new_val = val
 
-                        self.set_cell(k + 1, j, new_val)
+                        self.set_cell(k, j, new_val)
                         self.clear_cell(i, j)
-                    print(f"{j=}, {i=}, {k+1=}, {val=}, {val_u=}, {new_val=}")
+                    print(f"{j=}, {i=}, {k=}, {val=}, {val_u=}, {new_val=}")
 
 
 
