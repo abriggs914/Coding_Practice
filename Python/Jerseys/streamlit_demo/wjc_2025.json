@@ -475,9 +475,9 @@
         "away": 3,
         "home": 8,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 4,
+          "home": 3,
+          "end": "REG"
         }
       },
 
@@ -524,9 +524,9 @@
         "away": 0,
         "home": 6,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 3,
+          "home": 5,
+          "end": "REG"
         }
       },
       {
@@ -540,9 +540,9 @@
         "away": 7,
         "home": 4,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 3,
+          "home": 4,
+          "end": "REG"
         }
       },
 
@@ -551,15 +551,15 @@
         "round": 3,
         "date": "2025-01-04 16:30",
         "location": "Canadian Tire Centre",
-        "description": "Semis -- ",
-        "away_code": "SF",
-        "home_code": "SF",
-        "away": null,
-        "home": null,
+        "description": "Semis -- FIN vs SWE",
+        "away_code": "A2",
+        "home_code": "B1",
+        "away": 6,
+        "home": 1,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 4,
+          "home": 3,
+          "end": "OT"
         }
       },
       {
@@ -567,15 +567,15 @@
         "round": 3,
         "date": "2025-01-04 20:30",
         "location": "Canadian Tire Centre",
-        "description": "Semis -- ",
-        "away_code": "SF",
-        "home_code": "SF",
-        "away": null,
-        "home": null,
+        "description": "Semis -- USA cs CZE",
+        "away_code": "B2",
+        "home_code": "A1",
+        "away": 2,
+        "home": 4,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 4,
+          "home": 1,
+          "end": "REG"
         }
       },
 
@@ -584,11 +584,11 @@
         "round": 4,
         "date": "2025-01-05 16:30",
         "location": "Canadian Tire Centre",
-        "description": "Bronze -- ",
+        "description": "Bronze -- CZE vs SWE",
         "away_code": "L(SF)",
         "home_code": "L(SF)",
-        "away": null,
-        "home": null,
+        "away": 4,
+        "home": 1,
         "result": {
           "away": null,
           "home": null,
@@ -601,11 +601,11 @@
         "round": 5,
         "date": "2025-01-05 20:30",
         "location": "Canadian Tire Centre",
-        "description": "Gold -- ",
+        "description": "Gold -- FIN vs USA",
         "away_code": "W(SF)",
         "home_code": "W(SF)",
-        "away": null,
-        "home": null,
+        "away": 6,
+        "home": 2,
         "result": {
           "away": null,
           "home": null,
