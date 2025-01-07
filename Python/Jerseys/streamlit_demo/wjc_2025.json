@@ -590,9 +590,9 @@
         "away": 4,
         "home": 1,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 3,
+          "home": 2,
+          "end": "SO"
         }
       },
 
@@ -607,9 +607,9 @@
         "away": 6,
         "home": 2,
         "result": {
-          "away": null,
-          "home": null,
-          "end": null
+          "away": 3,
+          "home": 4,
+          "end": "OT"
         }
       }
     ]
