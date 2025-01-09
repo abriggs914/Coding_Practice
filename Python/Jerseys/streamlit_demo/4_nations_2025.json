@@ -1,0 +1,244 @@
+
+{
+    "meta": {
+        "lastmodified": "2024-12-04"
+    },
+    "teams": {
+        "CANADA": {
+            "roster": {
+                "forwards":[
+                    ["Sam Bennett", "Florida Panthers"],
+                    ["Anthony Cirelli", "Tampa Bay Lightning"],
+                    ["Sidney Crosby", "Pittsburgh Penguins", "*"],
+                    ["Brandon Hagel", "Tampa Bay Lightning"],
+                    ["Seth Jarvis", "Carolina Hurricanes"],
+                    ["Travis Konecny", "Philadelphia Flyers"],
+                    ["Nathan MacKinnon", "Colorado Avalanche*"],
+                    ["Brad Marchand", "Boston Bruins", "*"],
+                    ["Mitch Marner", "Toronto Maple Leafs"],
+                    ["Connor McDavid", "Edmonton Oilers", "*"],
+                    ["Brayden Point", "Tampa Bay Lightning", "*"],
+                    ["Sam Reinhart", "Florida Panthers"],
+                    ["Mark Stone", "Vegas Golden Knights"]
+                ],
+                "defensemen": [
+                    ["Cale Makar", "Colorado Avalanche", "*"],
+                    ["Josh Morrissey", "Winnipeg Jets"],
+                    ["Colton Parayko", "St. Louis Blues"],
+                    ["Alex Pietrangelo", "Vegas Golden Knights"],
+                    ["Travis Sanheim", "Philadelphia Flyers"],
+                    ["Shea Theodore", "Vegas Golden Knights"],
+                    ["Devon Toews", "Colorado Avalanche"]
+                ],
+                "goalies": [
+                    ["Jordan Binnington", "St. Louis Blues"],
+                    ["Adin Hill", "Vegas Golden Knights"],
+                    ["Sam Montembeault", "Montreal Canadiens"]
+                ]
+            },
+            "staff": [
+                ["President/CEO", "Katherine Henderson", "Hockey Canada"],
+                ["COO/EVP of Strategy", "Pat McLaughlin", "Hockey Canada"],
+                ["Management Group Lead", "Doug Armstrong", "St. Louis Blues"],
+                ["SVP, High Performance & Hockey Ops", "Scott Salmond", "Hockey Canada"],
+                ["General Manager", "Don Sweeney", "Boston Bruins"],
+                ["Associate GM", "Jim Nill", "Dallas Stars"],
+                ["Assistant GM", "Julien BriseBois", "Tampa Bay Lightning"],
+                ["Director Player Personnel", "Kyle Dubas", "Pittsburgh Penguins"],
+                ["Player Relations Advisor", "Ryan Getzlaf", "Hockey Canada"],
+                ["Head Coach", "Jon Cooper", "Tampa Bay Lightning"],
+                ["Assistant Coach", "Bruce Cassidy", "Vegas Golden Knights"],
+                ["Assistant Coach", "Peter DeBoer", "Dallas Stars"],
+                ["Assistant Coach", "Rick Tocchet", "Vancouver Canucks"],
+                ["Assistant Coach", "Misha Donskov", "Dallas Stars"],
+                ["Goalie Consultant", "David Alexander", "St. Louis Blues"],
+                ["Video Coach", "James Emery", "Dallas Stars"],
+                ["Video Coach", "Elliott Mondou", "St. Louis Blues"],
+                ["Physiotherapist", "Kent Kobelka", "Calgary Flames"],
+                ["Athletic Therapist", "Domenic Nicoletta", "Ottawa Senators"],
+                ["Equipment Manager", "Darren Granger", "Los Angeles Kings"],
+                ["Equipment Manager", "John Forget", "Ottawa Senators"],
+                ["Massage Therapist", "Andy Huppi", "Hockey Canada"],
+                ["Team Physician", "Dr. Ian Auld", "Calgary Flames"],
+                ["Manager, Hockey Ops", "Kurt Keats", "Hockey Canada"],
+                ["Manager, Hockey Ops", "Mitchell Furlotte", "Hockey Canada"],
+                ["Mental Performance Consultant", "Dr. Ryan Hamilton", "Tampa Bay Lightning"],
+                ["Coordinator, Hockey Ops", "Miah Armitage", "Hockey Canada"],
+                ["Media Relations", "Sean Kelso", "Calgary Flames"],
+                ["Media Relations", "Spencer Sharkey", "Hockey Canada"]
+            ]
+        },
+        "UNITED STATES": {
+            "roster": {
+                "forwards": [
+                    ["Matt Boldy", "Minnesota Wild"],
+                    ["Kyle Connor", "Winnipeg Jets"],
+                    ["Jack Eichel", "Vegas Golden Knights", "*"],
+                    ["Jake Guentzel", "Tampa Bay Lightning"],
+                    ["Jack Hughes", "New Jersey Devils"],
+                    ["Chris Kreider", "New York Rangers"],
+                    ["Dylan Larkin", "Detroit Red Wings"],
+                    ["Auston Matthews", "Toronto Maple Leafs", "*"],
+                    ["J.T. Miller", "Vancouver Canucks"],
+                    ["Brock Nelson", "New York Islanders"],
+                    ["Brady Tkachuk", "Ottawa Senators"],
+                    ["Matthew Tkachuk", "Florida Panthers"],
+                    ["Vincent Trocheck", "New York Rangers"]
+                ],
+                "defensemen": [
+                    ["Brock Faber", "Minnesota Wild"],
+                    ["Adam Fox", "New York Rangers", "*"],
+                    ["Noah Hanifin", "Vegas Golden Knights"],
+                    ["Quinn Hughes", "Vancouver Canucks", "*"],
+                    ["Charlie McAvoy", "Boston Bruins", "*"],
+                    ["Jaccob Slavin", "Carolina Hurricanes"],
+                    ["Zach Werenski", "Columbus Blue Jackets"]
+                ],
+                "goalies": [
+                    ["Connor Hellebuyck", "Winnipeg Jets"],
+                    ["Jake Oettinger", "Dallas Stars"],
+                    ["Jeremy Swayman", "Boston Bruins"]
+                ]
+            },
+            "staff": [
+                ["USAH Manager", "John Vanbiesbrouck", "USA Hockey"],
+                ["General Manager", "Bill Guerin", "Minnesota Wild"],
+                ["Assistant GM", "Tom Fitzgerald", "New Jersey Devils"],
+                ["Assistant GM", "Chris Drury", "New York Rangers"],
+                ["Assistant GM", "Bill Zito", "Florida Panthers"],
+                ["Player Personnel", "Chris Kelleher", "Minnesota Wild"],
+                ["Head Coach", "Mike Sullivan", "Pittsburgh Penguins"],
+                ["Assistant Coach", "John Hynes", "Minnesota Wild"],
+                ["Assistant Coach", "John Tortorella", "Philadelphia Flyers"],
+                ["Assistant Coach", "David Quinn", "Pittsburgh Penguins"],
+                ["Goaltending Coach", "Mike Buckley", "Los Angeles Kings"],
+                ["Video Coach", "Madison Nikkel", "Pittsburgh Penguins"],
+                ["Video Coach", "Mike King", "Ottawa Senators"],
+                ["Team Services", "Brij Singh", "Boston Bruins"],
+                ["Equipment Manager", "Chris Scoppetto", "New Jersey Devils"],
+                ["Equipment Manager", "Teddy Richards", "Florida Panthers"],
+                ["Equipment Manager", "Scott Aldrich", "USA Hockey"],
+                ["Athletic Trainer", "John Worley", "Minnesota Wild"],
+                ["Athletic Trainer", "Kevin Morely", "Nashville Predators"],
+                ["Athletic Trainer", "Travis Green", "Minnesota Wild"],
+                ["Team Physician", "Dr. Joel Boyd", "Minnesota Wild"],
+                ["Media Officer", "Dave Fischer", "USA Hockey"],
+                ["Media Officer", "Todd Beam", "Detroit Red Wings"],
+                ["Content", "Taylor Swierc", "USA Hockey"]
+            ]
+        },
+        "FINLAND": {
+            "roster": {
+                "forwards": [
+                    ["Sebastian Aho", "Carolina Hurricanes*"],
+                    ["Joel Armia", "Montreal Canadiens"],
+                    ["Aleksander Barkov", "Florida Panthers", "*"],
+                    ["Mikael Granlund", "San Jose Sharks"],
+                    ["Erik Haula", "New Jersey Devils"],
+                    ["Roope Hintz", "Dallas Stars"],
+                    ["Kaapo Kakko", "New York Rangers"],
+                    ["Patrik Laine", "Montreal Canadiens"],
+                    ["Artturi Lehkonen", "Colorado Avalanche"],
+                    ["Anton Lundell", "Florida Panthers"],
+                    ["Eetu Luostarinen", "Florida Panthers"],
+                    ["Mikko Rantanen", "Colorado Avalanche", "*"],
+                    ["Teuvo Teravainen", "Chicago Blackhawks"]
+                ],
+                "defensemen": [
+                    ["Jani Hakanpaa", "Toronto Maple Leafs"],
+                    ["Miro Heiskanen", "Dallas Stars", "*"],
+                    ["Esa Lindell", "Dallas Stars", "*"],
+                    ["Olli Maatta", "Utah Hockey Club"],
+                    ["Niko Mikkola", "Florida Panthers"],
+                    ["Rasmus Ristolainen", "Philadelphia Flyers"],
+                    ["Juuso Valimaki", "Utah Hockey Club"]
+                ],
+                "goalies": [
+                    ["Kevin Lankinen", "Vancouver Canucks"],
+                    ["Ukko-Pekka Luukkonen", "Buffalo Sabres"],
+                    ["Juuse Saros", "Nashville Predators", "*"]
+                ]
+            },
+            "staff": [
+                ["General Manager", "Jere Lehtinen", "FIHA"],
+                ["Assistant GM", "Jarmo Kekäläinen", "FIHA"],
+                ["Assistant GM", "Mikko Koivu", "FIHA"],
+                ["Team Manager", "Mika Kortelainen", "HIFK"],
+                ["Head Coach", "Antti Pennanen", "FIHA"],
+                ["Assistant Coach", "Tuomo Ruutu", "Florida Panthers"],
+                ["Assistant Coach", "Mikko Manner", "Hämeenlinnan Pallokerho"],
+                ["Video Coach", "Jukka Varmanen", "SC Langnau Tigers"],
+                ["Video Coach", "Lauri Merikivi", "Tampereen Ilves"],
+                ["Goalie Coach", "Aki Näykki", "Tappara"],
+                ["Team Doctor", "Dr. Matti Lehtovirta", "FIHA"],
+                ["Physiotherapist", "Tero Tolvanen", "HIFK"],
+                ["Physiotherapist", "Sami Hämäläinen", "HIFK"],
+                ["Equipment Manager", "Riku Koivunen", "FIHA"],
+                ["Equipment Manager", "Aki Berg", "Turun Palloseura"],
+                ["Equipment Manager", "Antti Muurila", "Tappara"],
+                ["Masseur", "Juha Sulin", "Hämeenlinnan Pallokerho"],
+                ["Media Manager", "Martti Jylhä", "FIHA"],
+                ["CEO", "Sami Kauhanen", "FIHA"],
+                ["President", "Heikki Hietanen", "FIHA"]
+            ]
+        },
+        "SWEDEN": {
+            "roster": {
+                "forwards": [
+                    ["Viktor Arvidsson", "Edmonton Oilers"],
+                    ["Jesper Bratt", "New Jersey Devils"],
+                    ["Leo Carlsson", "Anaheim Ducks"],
+                    ["Joel Eriksson Ek", "Minnesota Wild"],
+                    ["Filip Forsberg", "Nashville Predators", "*"],
+                    ["William Karlsson", "Vegas Golden Knights"],
+                    ["Adrian Kempe", "Los Angeles Kings"],
+                    ["Elias Lindholm", "Boston Bruins"],
+                    ["William Nylander", "Toronto Maple Leafs", "*"],
+                    ["Gustav Nyqvist", "Nashville Predators"],
+                    ["Elias Pettersson", "Vancouver Canucks"],
+                    ["Lucas Raymond", "Detroit Red Wings"],
+                    ["Mika Zibanejad", "New York Rangers", "*"]
+                ],
+                "defensemen": [
+                    ["Rasmus Andersson", "Calgary Flames"],
+                    ["Jonas Brodin", "Minnesota Wild"],
+                    ["Rasmus Dahlin", "Buffalo Sabres"],
+                    ["Mattias Ekholm", "Edmonton Oilers"],
+                    ["Gustav Forsling", "Florida Panthers", "*"],
+                    ["Victor Hedman", "Tampa Bay Lightning", "*"],
+                    ["Erik Karlsson", "Pittsburgh Penguins", "*"]
+                ],
+                "goalies": [
+                    ["Filip Gustavsson", "Minnesota Wild"],
+                    ["Jacob Markstrom", "New Jersey Devils"],
+                    ["Linus Ullmark", "Ottawa Senators"]
+                ]
+            },
+            "staff": [            
+                ["General Manager", "Josef Boumedienne", "SIHA"],
+                ["Assistant GM", "Patric Hörnqvist", "SIHA"],
+                ["Team Manager", "Martin Lundby", "SIHA"],
+                ["Head Coach", "Sam Hallam", "SIHA"],
+                ["Assistant Coach", "Stefan Klockare", "SIHA"],
+                ["Assistant Coach", "Nicklas Rahm", "SIHA"],
+                ["Assistant Coach", "Daniel Alfredsson", "Ottawa Senators"],
+                ["Goalie Coach", "Anthon Hansson", "Brynäs IF"],
+                ["Scouting Coach", "Myles Fee", "Florida Panthers"],
+                ["Team Doctor", "Dr. Jonas Kalman", "HV 71"],
+                ["Physiotherapist", "Dennis Schirmer", "SIHA"],
+                ["Physiotherapist", "Mark Scappaticci", "SIHA"],
+                ["Equipment Manager", "Anders Kellerstam", "SIHAv"],
+                ["Equipment Manager", "Mikael Lundström", "Skellefteå AIK"],
+                ["Equipment Manager", "Troy Parchman", "Chicago Blackhawks"],
+                ["Media Manager", "Brian Morris", "SIHA"],
+                ["Media Manager", "Linus Hugosson", "SIHA"],
+                ["President", "Anders Larsson", "SIHA"],
+                ["Vice President", "Peter Forsberg", "SIHA"],
+                ["General Secretary", "Christer Plars", "SIHA"],
+                ["National Team Director", "Anders Lundberg", "SIHA"],
+                ["Director of Hockey Operations", "Mike Helber", "SIHA"]
+            ]
+        }
+    },
+    "info": "Each 4 Nations Face-Off team is comprised of 23 NHL Players (20 skaters, 3 goalies), who are under an NHL contract for the 2024-25 season and were on an NHL roster as of Dec. 2, 2024.\nFor a complete listing of each team’s 4 Nations Face-Off personnel, please click here.\nThe 4 Nations Face-Off is an international tournament staged by the National Hockey League (NHL) and National Hockey League Players’ Association (NHLPA), featuring NHL players representing Canada, Finland, Sweden and the United States facing off in a total of seven games played from Feb. 12 to 20, 2025. Four games will be played at the Bell Centre in Montreal and three games, including the championship game, at TD Garden in Boston. Tickets for all 4 Nations Face-Off games are available for purchase via Ticketmaster.com, the official ticketing partner of the 4 Nations Face-Off, on a first-come, first-served basis, while supplies last. Ticketmaster is the only official marketplace of the 4 Nations Face-Off, providing fans with the peace of mind in knowing the seats they buy on Ticketmaster.com and the Ticketmaster app are the seats they’ll get. The 4 Nations Face-Off will be broadcast exclusively in North America by The Walt Disney Company (ESPN/ABC), TNT Sports, Sportsnet and TVA Sports.\nAll games in the 4 Nations Face-Off will be played in accordance with NHL rules. Each team will play three tournament games in a traditional Round Robin format, under the following points system: 3 points for a win in regulation time; 2 points for a win in overtime/shootout; 1 point for a loss in overtime/shootout; and 0 points for a loss in regulation time. The two teams with the best tournament record will then advance to a one-game Final. For more information, visit https://nhl.com/4nations."
+}
