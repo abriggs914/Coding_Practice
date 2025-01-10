@@ -2,6 +2,7 @@ import streamlit as st
 import json
 
 from html_utility import list_to_html
+from nhl_utility import *
 
 
 data_file = "./4_nations_2025.json"
@@ -59,3 +60,5 @@ for i, keys in enumerate([
 			st.markdown(defn_fmt, unsafe_allow_html=True)
 			st.write("###### Goalies")
 			st.markdown(goal_fmt, unsafe_allow_html=True)
+
+st.write(league)

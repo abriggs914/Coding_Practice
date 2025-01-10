@@ -2,7 +2,7 @@ import pandas as pd
 from typing import Literal
 import json_utility
 
-# 2025-01-09
+# 2025-01-09 2245
 
 
 metropolitan = {
@@ -50,6 +50,56 @@ pacific = {
 }
 
 
+def reverse_lookup(val, attribute: Literal["acr", "mascot", "masc_short", "div", "conf"]):
+    hier = {
+        "acr": 0,
+        "mascot": 0,
+        "masc_short": 0,
+        "div": 1,
+        "conf": 2
+    }
+    l_val = str(val).lower()
+    if l_val in list(league):
+        raise ValueError(f"cannot lookup anything specific knowing only conference.")
+    if l_val in divisions_list:
+        v_hier = hier["div"]
+        if attribute == "div":
+            # raise ValueError(f"redundant lookup on '{attribute}'.")
+            return val
+        elif hier[attribute] < v_hier:
+            raise ValueError(f"cannot look up '{attribute}' knowing only division.")
+        try:
+            return [c for c in league if l_val in league[c]][0]
+        except IndexError:
+            raise ValueError(f"could not use {val=} to lookup {attribute=}.")
+    # for c_name, list_divs in [("eastern", eastern), ("western", western)]:
+    for c_name, divs_data in league.items():
+        for d_name in divs_data:
+            teams_data = divisions_list[d_name]
+            for t_name, t_data in teams_data.items():
+                for k in ["acr", "mascot", "masc_short"]:
+                    if l_val == str(t_data[k]).lower():
+                        if attribute == "conf":
+                            return c_name
+                        if attribute == "div":
+                            return d_name
+                        try:
+                            # res = t_data[attribute]
+                            # if str(res).lower() == l_val:
+                            #     raise ValueError(f"redundant lookup on '{attribute}'")
+                            return t_data[attribute]
+                        except KeyError:
+                            raise ValueError(f"cannot find {attribute=} from {val=}.")
+
+    raise ValueError(f"cannot find {attribute=} from {val=}.")
+
+    # for i, conf in enumerate(league):
+    #     for j, team_acr in enumerate(league[conf]):
+    #         if l_val == team_acr.lower():
+    #             # v_hier = hier["acr"]
+
+
+
 def team_attribute(team, attribute: Literal["acr", "mascot", "masc_short"] = "acr"):
     if team in metropolitan:
         return metropolitan[team][attribute]
@@ -66,7 +116,7 @@ def name_from_mascot(mascot: str) -> str:
     if not l_masc:
         raise ValueError(f"mascot param must not be empty.")
     for div in [atlantic, metropolitan, central, pacific]:
-        for k, dat in div.items( ):
+        for k, dat in div.items():
             if l_masc == dat.get("mascot", "").lower():
                 return k
     raise ValueError(f"mascot '{mascot}' could not be found")
@@ -85,7 +135,12 @@ eastern = [atlantic, metropolitan]
 western = [pacific, central]
 
 
-divisions_list = ["metropolitan", "central", "atlantic", "pacific"]
+divisions_list = {
+    "metropolitan": metropolitan,
+    "central": central,
+    "atlantic": atlantic,
+    "pacific": pacific
+}
 
 
 league = {
@@ -102,9 +157,15 @@ league = {
 
 
 if __name__ == '__main__':
+    #
+    # excel = r"D:\NHL Jerseys.xlsm"
+    # df = pd.read_excel(excel, sheet_name="NHLTeams")
+    # # print(df)
+    # # print(json_utility.jsonify(df))
+    # print(df.to_dict())
 
-    excel = r"D:\NHL Jerseys.xlsm"
-    df = pd.read_excel(excel, sheet_name="NHLTeams")
-    # print(df)
-    # print(json_utility.jsonify(df))
-    print(df.to_dict())
+    print(reverse_lookup("pacific", "div"))
+    print(reverse_lookup("pacific", "conf"))
+    print(reverse_lookup("atlantic", "conf"))
+    print(reverse_lookup("sharks", "conf"))
+    print(reverse_lookup("sharks", "masc_short"))
