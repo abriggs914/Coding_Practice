@@ -700,12 +700,14 @@ for nhl_api_key, json_data in loaded_nhl_player_data.items():
 
         for sn, ln in (
                 ("CAN", "Canada"),
-                ("SLO", "Slovakia"),
+                ("SLO", "Slovenia"),
+                ("SVK", "Slovakia"),
                 ("SWE", "Sweden"),
                 ("FIN", "Finland"),
                 ("SUI", "Switzerland"),
                 ("GER", "Germany"),
-                ("RUS", "Russia")
+                ("RUS", "Russia"),
+                ("CZE", "Czechia")
         ):
             pl_birth_country = pl_birth_country.replace(sn, ln)
         pl_address = f"{pl_birth_city}, {pl_birth_province}, {pl_birth_country}"
@@ -715,7 +717,8 @@ for nhl_api_key, json_data in loaded_nhl_player_data.items():
         # pl_birth_province_image = pl_birth_province_image if not pl_birth_province_image else Image.open(pl_birth_province_image)
         # pl_birth_country_image = pl_birth_country_image if not pl_birth_country_image else Image.open(pl_birth_country_image)
 
-        if pl_address.strip().removeprefix(",").removesuffix(",").strip():
+        stp_pl_address = pl_address.strip().removeprefix(",").removesuffix(",").strip()
+        if stp_pl_address:
             pl_coords = query_lat_long(pl_address)
             # set all rows that match 'PlayerFirst' and 'PlayerLast' in 'df_nhl_jerseys' with the new address
             df_nhl_jerseys.loc[
@@ -742,6 +745,8 @@ for nhl_api_key, json_data in loaded_nhl_player_data.items():
                 pl_address,
                 pl_is_active
             )
+        else:
+            print(f"No Address for {pl_name_first} {pl_name_last}.")
 
 df_nhl_jerseys_owned = df_nhl_jerseys.loc[
     (df_nhl_jerseys["OpenDate"] is not None)
