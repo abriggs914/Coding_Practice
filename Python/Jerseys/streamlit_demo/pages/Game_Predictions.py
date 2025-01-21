@@ -11,6 +11,9 @@ import streamlit as st
 from ydata_profiling import ProfileReport
 
 
+st.set_page_config(layout="wide")
+
+
 @st.cache_data(ttl=None, show_spinner=True)
 def load_game_predictions() -> pd.DataFrame:
 	return pd.read_excel(
@@ -50,8 +53,7 @@ for i, team in enumerate(list_teams):
 		(df_game_predictions["HomeTeam"] == team)
 		| (df_game_predictions["AwayTeam"] == team)
 	]
-	df_t: pd.DataFrame = pd.DataFrame(
-		columns=[
+	list_columns = [
 			"parent_idx",
 			"date",
 			"id",
@@ -66,8 +68,8 @@ for i, team in enumerate(list_teams):
 			"inter_div",
 			"watch_order",
 			"watch_date"
-		]
-	)
+	]
+	# df_t: pd.DataFrame = pd.DataFrame()
 	row_dfs = []
 	for j, row in df_t_occ.iterrows():
 		nhl_game_id = row["GameID"]
@@ -88,27 +90,29 @@ for i, team in enumerate(list_teams):
 		my_score = act_score_home if is_home else act_score_away
 		opp_score = act_score_away if is_home else act_score_home
 
-		row_dfs.append(pd.DataFrame(data=[{
-			"parent_idx": j,
-			"date": game_date,
-			"id": nhl_game_id,
-			"is_home": is_home,
-			"opponent": team_away if is_home else team_home,
-			"my_score": my_score,
-			"opp_score": opp_score,
-			"result": act_result,
-			"won": my_score > opp_score,
-			"watched": watched,
-			"inter_conf": inter_conf,
-			"inter_div": inter_div,
-			"watch_order": watch_order,
-			"watch_date": watch_date
-		}]))
+		row_dfs.append(
+			pd.DataFrame(
+				data=[{
+					"parent_idx": j,
+					"date": game_date,
+					"id": nhl_game_id,
+					"is_home": is_home,
+					"opponent": team_away if is_home else team_home,
+					"my_score": my_score,
+					"opp_score": opp_score,
+					"result": act_result,
+					"won": my_score > opp_score,
+					"watched": watched,
+					"inter_conf": inter_conf,
+					"inter_div": inter_div,
+					"watch_order": watch_order,
+					"watch_date": watch_date
+				}],
+				columns=list_columns
+			)
+		)
 
-	df_t = pd.concat([
-		df_t,
-		*row_dfs
-	]).reset_index(drop=True)
+	df_t: pd.DataFrame = pd.concat(row_dfs).reset_index(drop=True)
 
 	df_t["game_points"] = df_t.apply(lambda row:
 		2 if row["won"] else (1 if row ["result"] in ("OT", "SO") else 0)
@@ -216,6 +220,13 @@ if selectbox_team:
 	st.dataframe(
 		team_dfs[select_team]["describe"]
 	)
-	with open(report_name(select_team), "r") as f:
-		st.html(f.read())
-
+	# with open(report_name(select_team), "r") as f:
+	# 	st.html(f.read())
+	# 	# st.markdown(f.read(), unsafe_allow_html=True)
+	path_html_file = os.path.join(os.getcwd(), report_name(select_team))
+	st.link_button(label=f"{select_team} Report", url=path_html_file)
+	st.code(path_html_file)
+	import pathlib
+	p1 = pathlib.Path(path_html_file).as_uri()
+	st.code(p1)
+	st.link_button(label="P1", url=p1)
