@@ -2,6 +2,7 @@ import datetime
 import os.path
 from typing import Any
 
+import matplotlib.colors
 import pandas as pd
 import requests
 import streamlit as st
@@ -10,6 +11,8 @@ import streamlit as st
 # import pandas_profiling
 from ydata_profiling import ProfileReport
 
+from colour_utility import gradient, GREEN, RED, WHITE, YELLOW
+from streamlit_utility import aligned_text
 
 st.set_page_config(layout="wide")
 
@@ -18,7 +21,16 @@ st.set_page_config(layout="wide")
 def load_game_predictions() -> pd.DataFrame:
 	return pd.read_excel(
 		path_excel,
-		skiprows=1
+		skiprows=1,
+		sheet_name="DataRegularSeason20242025"
+	)
+
+
+@st.cache_data(ttl=None, show_spinner=True)
+def load_rest_sheets_game_predictions() -> dict:
+	return pd.read_excel(
+		path_excel,
+		sheet_name=None
 	)
 
 
@@ -41,6 +53,7 @@ if not os.path.exists(path_excel):
 	if not os.path.exists(path_excel):
 		raise FileNotFoundError(f"Could not find Game Predictions Excel file '{path_excel}'.")
 
+rest_sheets: dict[str: pd.DataFrame] = load_rest_sheets_game_predictions()
 df_game_predictions: pd.DataFrame = load_game_predictions()
 df_game_predictions = df_game_predictions[[col for col in df_game_predictions.columns if "unnamed" not in col.lower()]]
 df_game_predictions = df_game_predictions.loc[df_game_predictions["GameIsOver"] == 1].reset_index(drop=True)
@@ -230,3 +243,35 @@ if selectbox_team:
 	p1 = pathlib.Path(path_html_file).as_uri()
 	st.code(p1)
 	st.link_button(label="P1", url=p1)
+
+
+def pts_colour(record: str) -> str:
+	try:
+		w, l, otl = map(int, record.split("-"))
+
+		return rg_grads[(2 * w) + otl]
+	except (ValueError, AttributeError) as e:
+		return WHITE
+
+
+# rg_grads: list[str] = [gradient(i, 8, RED, GREEN, rgb=False) for i in range(8 + 1)]
+rg_grads: list[str] = [gradient(i, 4, RED, YELLOW, rgb=False) for i in range(4)]
+rg_grads += [gradient(i, 4, YELLOW, GREEN, rgb=False) for i in range(5)]
+ordered_teams = [
+	"ANA", "CGY", "EDM", "LAK", "SEA", "SJS", "VAN", "VGK",
+	"CHI", "COL", "DAL", "MIN", "NSH", "STL", "UTA", "WPG",
+	"CAR", "CBJ", "NJD", "NYI", "NYR", "PHI", "PIT", "WSH",
+	"BOS", "BUF", "DET", "FLA", "MTL", "OTT", "TBL", "TOR"
+]
+grid = [st.columns(33) for _ in range(33)]
+st.write(ordered_teams)
+st.write(rest_sheets["Sheet5"])
+for i, row in rest_sheets["Sheet5"].iterrows():
+	for j, col in enumerate(row):
+		grid[i][j].markdown(
+			aligned_text(
+				col,
+				colour=pts_colour(col)
+			),
+			unsafe_allow_html=True
+		)
