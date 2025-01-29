@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 import pandas as pd
 import pyodbc
@@ -8,8 +9,8 @@ VERSION = \
     """
     General Pyodbc connection handler.
     Geared towards BWS connections.
-    Version...............2.3
-    Date...........2024-09-10
+    Version...............2.5
+    Date...........2025-01-28
     Author(s)....Avery Briggs
     """
 
@@ -74,7 +75,8 @@ def connect(
         do_print: bool = False,
         do_show: bool = False,
         do_exec: bool = True,
-        timeout: int = 0
+        timeout: int = 0,
+        returns_records: Optional[bool] = None
 ) -> pd.DataFrame:
     """
     A wrapper function for pyodbc.connect function.
@@ -139,12 +141,23 @@ def connect(
         ])
         for stmt in ["EXEC "]
     ])
+    has_delete = all([
+        any([
+            stmt in sql.upper(),
+            f"{stmt.rstrip()}\n" in sql.upper(),
+            f"{stmt.rstrip()}\t" in sql.upper()
+        ])
+        for stmt in ["DELETE ", "FROM "]
+    ])
+
+    if returns_records is None:
+        returns_records = not any([has_insert, has_exec, has_update, has_delete])
 
     if all([
         n_distinct_queries == 1,
         "SELECT" not in sql.upper(),
         "FROM" not in sql.upper(),
-        not any([has_update, has_insert, has_exec])
+        not any([has_update, has_insert, has_exec, has_delete])
     ]):
         # single table name passed
         tbl = sql.removeprefix("[").removesuffix("]")
@@ -170,7 +183,7 @@ def connect(
                 print(f"NO-EXEC SQL: ", end="")
             print(sql)
 
-        if has_insert or has_update:
+        if (not returns_records) and (has_insert or has_update or has_delete):
             # no return value
             if do_exec:
                 crsr.execute(sql)
