@@ -112,8 +112,12 @@ def process_pdf(team_name: str, pdf_file_path: str) -> dict:
             # st.image(image_puzzle_zoom, caption=f"{team_name} Puzzle")
             # st.image(image_text, caption=f"{team_name} Puzzle Text")
             data["texts"].update({
-                "puzzle_text": pytesseract.image_to_data(image_text, output_type=Output.DATAFRAME),
-                "puzzle": pytesseract.image_to_data(image_puzzle_zoom, output_type=Output.DATAFRAME)
+                "puzzle_text": pytesseract.image_to_data(image_text, output_type=Output.DATAFRAME).sort_values(
+                    by=["top", "left"]
+                ),
+                "puzzle": pytesseract.image_to_data(image_puzzle_zoom, output_type=Output.DATAFRAME).sort_values(
+                    by=["top", "left"]
+                )
             })
             data["images"].update({
                 "puzzle_text": image_text,
