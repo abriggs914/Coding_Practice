@@ -9,7 +9,7 @@ from nhl_utility import *
 
 @st.cache_data()
 def load_flags():
-	image_root = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags"
+	image_root = r"C:\Users\abriggs\Documents\Coding_Practice\Resources\Flags"
 	to_find_og = [t[0] for t in teams_lu]
 	to_find = to_find_og.copy()
 	found = []
@@ -222,8 +222,79 @@ for i, game_data in enumerate(data["schedule"]["games"]):
 					loaded_flags[chx_i][1],
 					caption=loaded_flags[chx_i][0]
 				)
+				
+
+# if not st.experimental_user.get("is_logged_in", False):
+#     if st.button("Log in"):
+#         st.login("Microsoft")
+# else:
+#     if st.button("Log out"):
+#         st.logout()
+#     st.write(f"Hello, {st.experimental_user.name}!")
+
+import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
+
+with open('./config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+# Pre-hashing all plain text passwords once
+# stauth.Hasher.hash_passwords(config['credentials'])
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days']
+)
+
+# try:
+# 	tabs = st.tabs(["Login", "Create Account"])
+
+# 	if tabs == "Login":
+# 		authenticator.login()
+# 	else:
+# 		authenticator.experimental_guest_login(
+# 			'Login with Microsoft',
+# 			provider='microsoft',
+# 			oauth2=config['oauth2']
+# 		)
+# except Exception as e:
+#     st.error(e)
+
+# Creating a login widget
+cont = st.container(border=1)
+try:
+	with cont:
+		authenticator.login(
+			max_login_attempts=3
+		)
+except authenticator.LoginError as e:
+	cont.error(e)
+
+# st.write(authenticator)
+# st.write(authenticator.__dict__)
+# st.write(type(authenticator))
+# st.write("config")
+# st.write(config)
+# st.write("st.session_state")
+# st.write(st.session_state)
+
+
+if st.session_state['authentication_status']:
+    authenticator.logout()
+    st.write(f'Welcome *{st.session_state["name"]}*')
+    st.title('Some content')
+elif st.session_state['authentication_status'] is False:
+    st.error('Username/password is incorrect')
+elif st.session_state['authentication_status'] is None:
+    st.warning('Please enter your username and password')
 
 if st.session_state.get("need_rerun", False):
 	st.session_state.update({"need_rerun": False})
 	st.rerun()
 
+
+with open('./config.yaml', 'w') as file:
+    yaml.dump(config, file, default_flow_style=False)

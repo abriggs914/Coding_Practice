@@ -1,0 +1,15 @@
+cookie:
+  expiry_days: 30
+  key: key_config_yaml
+  name: streamlit_bws_auth_cookie
+credentials:
+  usernames:
+    abriggs:
+      email: avery.briggs@bwstrailers.com
+      failed_login_attempts: 9
+      first_name: Avery
+      last_name: Briggs
+      logged_in: false
+      password: $2b$12$Nsk8LrJ7vKQs1D0MKBr74O0Jajns7vT7fXoMB89V826oH3wMUp/N.
+      roles:
+      - admin
