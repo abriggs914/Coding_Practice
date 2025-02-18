@@ -1,0 +1,135 @@
+{
+    "teams": [
+        {
+            "name": "United States",
+            "players": [
+                "#,Player,Position,Team",
+                "12,Matt Boldy,F,Wild",
+                "81,Kyle Connor,F,Jets",
+                "9,Jack Eichel,F,Golden Knights",
+                "59,Jake Guentzel,F,Lightning",
+                "86,Jack Hughes,F,Devils",
+                "20,Chris Kreider,F,Rangers",
+                "21,Dylan Larkin,F,Red Wings",
+                "34,Auston Matthews,F,Maple Leafs",
+                "10,J.T. Miller,F,Rangers",
+                "29,Brock Nelson,F,Islanders",
+                "7,Brady Tkachuk,F,Senators",
+                "19,Matthew Tkachuk,F,Panthers",
+                "16,Vincent Trocheck,F,Rangers",
+                "14,Brock Faber,D,Wild",
+                "23,Adam Fox,D,Rangers",
+                "15,Noah Hanifin,D,Golden Knights",
+                "25,Charlie McAvoy,D,Bruins",
+                "85,Jake Sanderson,D,Senators",
+                "74,Jaccob Slavin,D,Hurricanes",
+                "8,Zach Werenski,D,Blue Jackets",
+                "37,Connor Hellebuyck,G,Jets",
+                "30,Jake Oettinger,F,Stars",
+                "1,Jeremy Swayman,F,Bruins"
+            ],
+            "roster_notes": [
+                "*= injury replacement for Quinn Hughes, Canucks"
+            ]
+        },
+        {
+            "name": "Canada",
+            "players": [
+                "#,Player,Position,Team",
+                "9,Sam Bennett,F,Panthers",
+                "71,Anthony Cirelli,F,Lightning",
+                "87,Sidney Crosby,F,Penguins",
+                "38,Brandon Hagel,F,Lightning",
+                "24,Seth Jarvis,F,Hurricanes",
+                "11,Travis Konecny,F,Flyers",
+                "29,Nathan MacKinnon,F,Avalanche",
+                "63,Brad Marchand,F,Bruins",
+                "16,Mitch Marner,F,Maple Leafs",
+                "97,Connor McDavid,F,Oilers",
+                "21,Brayden Point,F,Lightning",
+                "13,Sam Reinhart,F,Panthers",
+                "61,Mark Stone,F,Golden Knights",
+                "89,Drew Doughty*,D,Kings",
+                "8,Cale Makar,D,Avalanche",
+                "44,Josh Morrissey,D,Jets",
+                "55,Colton Parayko,D,Blues",
+                "6,Travis Sanheim,D,Flyers",
+                "27,Shea Theodore,D,Golden Knights",
+                "5,Devon Toews,D,Avalanche",
+                "50,Jordan Binnington,G,Blues",
+                "33,Adin Hill,G,Golden Knights",
+                "35,Sam Montembeault,G,Canadiens"
+            ],
+            "roster_notes": [
+                "*= injury replacement for Alex Pietrangelo, Golden Knights"
+            ]
+        },
+        {
+            "name": "Finland",
+            "players": [
+                "#,Player,Position,Team",
+                "20,Sebastian Aho,F,Hurricanes",
+                "40,Joel Armia,F,Canadiens",
+                "16,Aleksander Barkov,F,Panthers",
+                "64,Mikael Granlund,F,Stars",
+                "56,Erik Haula,F,Devils",
+                "24,Roope Hintz,F,Stars",
+                "84,Kaapo Kakko,F,Kraken",
+                "92,Patrik Laine,F,Canadiens",
+                "62,Artturi Lehkonen,F,Avalanche",
+                "15,Anton Lundell,F,Panthers",
+                "27,Eetu Luostarinen,F,Panthers",
+                "96,Mikko Rantanen,F,Hurricanes",
+                "86,Teuvo Teravainen,F,Blackhawks",
+                "10,Henri Jokiharju*,D,Sabres",
+                "23,Esa Lindell,D,Stars",
+                "3,Olli Maatta,D,Utah",
+                "77,Niko Mikkola,D,Panthers",
+                "33,Nikolas Mantipalo**,D,Senators",
+                "18,Urho Vaakanainen***,D,Rangers",
+                "6,Juuso Valimaki,D,Utah",
+                "32,Kevin Lankinen,G,Canucks",
+                "1,Ukko-Pekka Luukkonen,G,Sabres",
+                "74,Juuse Saros,G,Predators"
+            ],
+            "roster_notes": [
+                "*= injury replacement for Rasmus Ristolainen, Flyers",
+                "**= injury replacement for Jani Hakanpaa, Maple Leafs",
+                "***= injury replacement for Miro Heiskanen, Stars"
+            ]
+        },
+        {
+            "name": "Sweden",
+            "players": [
+                "#,Player,Position,Team",
+                "33,Viktor Arvidsson,F,Predators",
+                "63,Jesper Bratt,D,Devils",
+                "91,Leo Carlsson,D,Ducks",
+                "20,Joel Eriksson Ek,F,Wild",
+                "9,Filip Forsberg,D,Predators",
+                "10,Adrian Kempe,F,Kings",
+                "28,Elias Lindholm,F,Bruins",
+                "88,William Nylander,F,Maple Leafs",
+                "12,Gustav Nyquist,F,Predators",
+                "28,Elias Pettersson,F,Canucks",
+                "23,Lucas Raymond,F,Red Wings",
+                "67,Rickard Rakell*,F,Penguins",
+                "93,Mika Zibanejad,F,Rangers",
+                "4,Rasmus Andersson,D,Flames",
+                "25,Jonas Brodin,D,Wild",
+                "26,Rasmus Dahlin,D,Sabres",
+                "14,Mattias Ekholm,D,Oilers",
+                "42,Gustav Forsling,D,Panthers",
+                "77,Victor Hedman,D,Lightning",
+                "65,Erik Karlsson,D,Penguins",
+                "30,Samuel Ersson**,G,Flyers",
+                "32,Filip Gustavsson,G,Wild",
+                "35,Linus Ullmark,G,Senators"
+            ],
+            "roster_notes": [
+                "*= injury replacement for William Karlsson, Golden Knights",
+                "**= injury replacement for Jacob Markstrom, Devils"
+            ]
+        }
+    ]
+}
