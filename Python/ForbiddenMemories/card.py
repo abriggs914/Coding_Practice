@@ -43,7 +43,8 @@ class Card:
         self.planet_0 = planet_0
         self.planet_1 = planet_1
         self.planet = None
-        self.face_up = None
+        self.face_down = None
+        self.attack_mode = None
 
     def data(self):
         return [

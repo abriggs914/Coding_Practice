@@ -1,23 +1,29 @@
+import os
 import datetime
 import random
 from typing import Optional
 
-from card import Card
-
 import streamlit as st
 
-from match import Match
-from player import Player
+from match import *
+from player import *
 
 
 
-"""["#241 - Dark Assailant 1200/1200","#197 - Mech Mole Zombie 500/400","#50 - Basic Insect 500/700","#609 - Bladefly 600/700","#547 - Griggle 350/300","#410 - Mechanical Spider 400/500","#156 - Hard Armor 300/1200","#387 - Mystic Lamp 400/300","#102 - Mask of Darkness 900/400","#283 - Holograh 1100/700","#190 - Akakieisu 1000/800","#137 - Mystery Hand 500/500","#579 - Abyss Flower 750/400","#402 - Monster Eye 250/350","#398 - Ooguchi 300/250","#214 - Kagemusha of the Blue Flame 800/400","#475 - Sinister Serpent 300/250","#475 - Sinister Serpent 300/250","#336 - Dark Hole 0/0","#148 - The Shadow Who Controls the Dark 800/700","#276 - Ray & Temperature 1000/1000","#586 - Greenkappa 650/900","#524 - Star Boy 550/500","#335 - Yami 0/0","#101 - Wings of Wicked Flame 700/600","#421 - Cyber Commander 750/700","#202 - Air Marmot of Nefariousness 400/600","#202 - Air Marmot of Nefariousness 400/600","#226 - Skull Stalker 900/800","#134 - Mystical Capture Chain 700/700","#240 - The Drdek 700/800","#191 - LaLa Li-oon 600/600","#105 - Tomozaurus 500/400","#135 - Fiend's Hand 600/600","#547 - Griggle 350/300"]"""
+deck_output = """["#241 - Dark Assailant 1200/1200","#197 - Mech Mole Zombie 500/400","#50 - Basic Insect 500/700","#609 - Bladefly 600/700","#547 - Griggle 350/300","#410 - Mechanical Spider 400/500","#156 - Hard Armor 300/1200","#387 - Mystic Lamp 400/300","#102 - Mask of Darkness 900/400","#283 - Holograh 1100/700","#190 - Akakieisu 1000/800","#137 - Mystery Hand 500/500","#579 - Abyss Flower 750/400","#402 - Monster Eye 250/350","#398 - Ooguchi 300/250","#214 - Kagemusha of the Blue Flame 800/400","#475 - Sinister Serpent 300/250","#475 - Sinister Serpent 300/250","#336 - Dark Hole M","#148 - The Shadow Who Controls the Dark 800/700","#276 - Ray & Temperature 1000/1000","#586 - Greenkappa 650/900","#524 - Star Boy 550/500","#335 - Yami 0/0","#101 - Wings of Wicked Flame 700/600","#421 - Cyber Commander 750/700","#202 - Air Marmot of Nefariousness 400/600","#202 - Air Marmot of Nefariousness 400/600","#226 - Skull Stalker 900/800","#134 - Mystical Capture Chain 700/700","#240 - The Drdek 700/800","#191 - LaLa Li-oon 600/600","#105 - Tomozaurus 500/400","#135 - Fiend's Hand 600/600","#547 - Griggle 350/300"]"""
 
 
 
 app_title = "YU-GI-OH! Forbidden Memories"
 unknown_card = Card(0)
+
+
+st.set_page_config(page_title=app_title, layout="wide")
+
+
 combinations_file = r"C:\Users\abrig\Documents\Coding_Practice\Java\ForbiddenMemories\combinations.txt"
+if not os.path.exists(combinations_file):
+    combinations_file = r"C:\Users\abriggs\Documents\Coding_Practice\Java\ForbiddenMemories\combinations.txt"
 known_cards = st.session_state.setdefault("known_cards", [unknown_card])
 
 
@@ -55,15 +61,15 @@ def parse_card_line(line):
             " ".join(s_line[1: -1]),
             s_line[-1]
         ]
-        print(f"{data=}")
+        # print(f"{data=}")
     else:
         # print(f"COULD NOT MAKE CARD:")
         # print(f"UNKNOWN CARD {line=}")
         data = []
 
     c = Card(*data)
-    if c.type_simple != "Monster":
-        print(f"AA {c}")
+    # if c.type_simple != "Monster":
+    #     print(f"AA {c}")
     num = c.num
     kc = st.session_state.get("known_cards")
     d = max(0, (1 + num - len(kc)))
@@ -161,7 +167,7 @@ def process_reverse_combinations():
 def select_hand(size: int = 5, fresh: bool = True, deck_in: list[Card] = None):
 
     if deck_in is None:
-        deck = (known_cards[1:] if fresh else st.session_state.get(k_my_deck)).copy()
+        deck = [c for c in (known_cards[1:] if fresh else st.session_state.get(k_my_deck))]
     else:
         deck = deck_in
     curr_hand = [] if fresh else st.session_state.get(k_my_hand, [])
@@ -197,7 +203,7 @@ def select_hand(size: int = 5, fresh: bool = True, deck_in: list[Card] = None):
         key="kd_btn_save"
     ):
         st.session_state.update({
-            k_my_hand: st.session_state.get(f"kd_{k_multiselect_cards}", []).copy()
+            k_my_hand: [c for c in st.session_state.get(f"kd_{k_multiselect_cards}", [])]
         })
         st.rerun()
 
@@ -220,7 +226,7 @@ def draw_hand(size: int = 5, clear: bool = True):
 
 def reset_deck():
     st.session_state.update({
-        k_my_deck: known_cards.copy(),
+        k_my_deck: [c for c in known_cards],
         k_my_hand: []
     })
 
@@ -233,13 +239,13 @@ def process_possible_combos(hand: list[Card]):
             return []
         # print(f"{nest=}")
         new_combos = []
-        hand_c = hand_.copy()
+        hand_c = [c for c in hand_]
         for i, card_0_str in enumerate(hand_):
-            # print(f"\t{card_0}")
-            card_0 = known_cards[int(card_0_str.split(" ")[0].removeprefix("#"))]
+            print(f"{card_0_str=}, {type(card_0_str)=}")
+            card_0 = str_to_card(card_0_str)
             p_combos = data_parsed_combinations[card_0.num]["combos"]
             for j, card_1_str in enumerate(hand_c):
-                card_1 = known_cards[int(card_1_str.split(" ")[0].removeprefix("#"))]
+                card_1 = str_to_card(card_1_str)
                 if i != j:
                     # print(f"\t--{card_1}")
                     if card_1.num in p_combos:
@@ -259,7 +265,8 @@ def process_possible_combos(hand: list[Card]):
         for nest_, cr_, pr_ in new_combos:
             # new_hand = [c for c in hand_ if c not in pr_] + [cr_]
             new_hand = [c for c in hand_]
-            # print(f"\t\t\t{new_hand=}, {pr_=}, {cr_=}")
+            print(f"\t\t{new_hand=}, {pr_=}, {cr_=}, {type(new_hand)}, {type(pr_)}, {type(cr_)}")
+            print(f"\t\t{list(map(type, new_hand))}, {list(map(type, pr_))}, {type(cr_)}")
             new_hand.remove(pr_[0])
             new_hand.remove(pr_[1])
             new_hand.append(cr_)
@@ -299,7 +306,10 @@ def update_merge_list(idx):
 
 @st.dialog(title=app_title, width="large")
 def ask_deck(selected: Optional[list[Card]] = None):
+
     k_multiselect_deck_input = "multiselect_deck_input"
+    k_list_in_deck_input = "list_in_deck_input"
+    k_toggle_combine_ms_ta = "toggle_combine_ms_ta"
     options = list(map(str, sorted(known_cards[1:]*3, key=lambda c: str(c))))
     selected = [] if selected is None else selected
     stored = st.session_state.get(f"kd_{k_multiselect_deck_input}", [])
@@ -318,6 +328,17 @@ def ask_deck(selected: Optional[list[Card]] = None):
     #         print(f"{c} => {c2} == {c == c2}, {type(c)}, {type(c2)}")
     #         if c == c2:
     #             raise ValueError(f"FOUND {c}, {c2}")
+
+    if st.button(
+        label="START WITH DEMO DECK 2025-02-18",
+        key="kd_btn_start_with_demo_deck_20250215"
+    ):
+        st.session_state.update({
+            f"kd_{k_list_in_deck_input}": deck_output,
+            f"kd_{k_multiselect_deck_input}": list(map(str, [known_cards[326], known_cards[635], known_cards[544]])),
+            f"kd_{k_toggle_combine_ms_ta}": True
+        })        
+
     multiselect_deck_input = st.multiselect(
         label="Select your deck:",
         key=f"kd_{k_multiselect_deck_input}",
@@ -325,13 +346,11 @@ def ask_deck(selected: Optional[list[Card]] = None):
         max_selections=40
     )
 
-    k_list_in_deck_input = "list_in_deck_input"
     list_in_deck_input = st.text_area(
         label="Paste a list:",
         key=f"kd_{k_list_in_deck_input}"
     )
 
-    k_toggle_combine_ms_ta = "toggle_combine_ms_ta"
     toggle_combine_ms_ta = st.toggle(
         label="Combine multi-select input with text-area input?",
         key=f"kd_{k_toggle_combine_ms_ta}"
@@ -376,13 +395,56 @@ def ask_deck(selected: Optional[list[Card]] = None):
             key=f"k_btn_save_deck_input"
         ):
             st.session_state.update({
-                k_my_deck: parsed.copy()
+                k_my_deck: [c for c in parsed]
             })
             st.rerun()
 
 
 def random_deck(size: int = 40):
     return random.sample(known_cards[1:]*3, size)
+
+
+def str_to_card(card_str: str) -> Card:
+
+    if not isinstance(card_str, str):
+        # msg = [
+        #     f"{card_str=}",
+        #     f"{card_str.__class__=}",
+        #     f"{type(card_str)=}",
+        #     f"{isinstance(card_str, Card)=}",
+        #     f"{type(unknown_card)=}",
+        #     f"{(type(card_str) == type(unknown_card))=}",
+        #     f"{(type(card_str) == Card)=}",
+        #     f"{(Card)=}",
+        #     f"{(Card.__class__)=}",
+        #     f"{id(card_str)=}",
+        #     f"{id(Card)=}"
+        # ]
+        # st.write(msg)
+        # print(msg)
+
+        # if isinstance(card_str, Card):
+        # This doesnt work due to streamlit?
+
+        # st.write(f"{str(card_str.__class__)=}")
+        # st.write(f"{str(Card)=}")
+        if str(card_str.__class__) == str(Card):
+            # print(f"\t\tAAA")
+            return card_str
+        else:
+            raise ValueError(f"A ERROR CONVERTING '{card_str}' to card, {type(card_str)=}.")
+            st.stop()
+
+    try:
+        # Card __repr__ pattern: "#XXX - CardName Atk/Def"
+        spl = card_str.split(" ")
+        # print(f"{card_str=}, {spl=}")
+        num = int(spl[0].removeprefix("#"))
+        return known_cards[num]
+    except Exception as e:
+        st.write(f"B ERROR CONVERTING '{card_str}' to card.")
+        st.error(e)
+        st.stop()
 
 
 
@@ -453,14 +515,16 @@ if k_opp_deck not in st.session_state:
     st.session_state.update({k_opp_deck: random_deck()})
 
 
-if st.button(
+if st.sidebar.button(
     label="Edit Deck",
     key="btn_edit_deck"
 ):
     ask_deck(selected=st.session_state.get(k_my_deck, []))
 
+me, cpu, match = [None] * 3
+my_deck = list(map(str_to_card, st.session_state.get(k_my_deck, [])))
 
-if st.session_state.get(k_my_deck, []):
+if my_deck:
 
 
     # st.session_state.setdefault(k_my_deck, random_deck())
@@ -468,22 +532,252 @@ if st.session_state.get(k_my_deck, []):
     # n_cards_in_deck = len(st.session_state.get(k_my_deck, []))
     draw_size = 5
 
-    if k_player_0 not in st.session_state:
-        me = Player("Me", deck=st.session_state.get(k_my_deck))
-        me = st.session_state.setdefault(k_player_0, me)
-    if k_player_1 not in st.session_state:
-        cpu = Player("CPU", deck=st.session_state.get(k_opp_deck))
-        cpu = st.session_state.setdefault(k_player_1, cpu)
+    if not st.session_state.get(k_player_0):
+        me = Player("ME", deck=st.session_state.get(k_my_deck), card_parser=str_to_card)
+        print(f"1 create k_player_0, {me}")
+        me = st.session_state.update({k_player_0: me})
+        print(f"2 create k_player_0, {me}")
+    if not st.session_state.get(k_player_1):
+        cpu = Player("CPU", deck=st.session_state.get(k_opp_deck), card_parser=str_to_card)
+        print(f"1 create k_player_1, {cpu}")
+        cpu = st.session_state.update({k_player_1: cpu})
+        print(f"create k_player_1, {cpu}")
 
     me = st.session_state[k_player_0]
     cpu = st.session_state[k_player_1]
 
-    if k_match not in st.session_state:
-        match_0 = Match(me, cpu)
-        match_0 = st.session_state.setdefault(k_match, match_0)
+    if not st.session_state.get(k_match):
+        print(f"create match")
+        match = Match(me, cpu)
+        match = st.session_state.update({k_match: match})
 
     match = st.session_state[k_match]
 
+    st.write("me")
+    st.write(me)
+    st.write("cpu")
+    st.write(cpu)
+    st.write("match")
+    st.write(match)
+
+    if not match.started:
+        if st.button(
+            label="start new match",
+            key="k_btn_new_game"
+        ):
+            st.session_state.pop(k_match)
+
+    is_my_turn = match.turn == me
+    turn_phase = match.turn_phase
+    cpu_hand = cpu.hand
+    my_hand = me.hand
+    my_monsters = me.monsters
+    my_magic = me.magic
+    my_deck = me.deck
+
+    
+    # Draw Board
+    header_columns = st.columns([0.8, 0.05, 0.15])
+    col_scoreboard = header_columns[2]
+    col_turn_info = header_columns[1]
+    cont_score_cpu = col_scoreboard.container(border=1)
+    cont_score_me = col_scoreboard.container(border=1)
+
+    cols_score_details_cpu = cont_score_cpu.columns([0.35, 0.65])
+    cols_score_details_me = cont_score_me.columns([0.35, 0.65])
+
+    col_turn_info.write(f"Match #{match.id_num}")
+    col_turn_info.write(f"Turn #{match.turn_num + 1}")
+    col_turn_info.write(f"{turn_phase}")
+    pref_me = f"{' * ' if is_my_turn else ''}"
+    pref_cpu = f"{' * ' if not is_my_turn else ''}"
+    cols_score_details_cpu[0].write(f"{pref_cpu}{cpu.name}")
+    cols_score_details_cpu[1].write(cpu.hp)
+    cols_score_details_me[0].write(f"{pref_me}{me.name}")
+    cols_score_details_me[1].write(me.hp)
+
+    grid_opp_hand = st.columns(5, border=1)
+    grid_columns = st.columns(5)
+    grid_field = [[col.container(border=1) for col in grid_columns] for i in range(4)]
+    grid_my_hand = st.columns(5, border=1)
+
+    # my_hand = st.session_state.get(k_my_hand)
+    # st.write(my_hand)
+
+    k_btn_end_turn = "btn_end_turn"
+    btn_end_turn = st.button(
+        label="end turn",
+        key=f"k_{k_btn_end_turn}",
+        on_click=match.next_turn
+    )
+
+    st.write(my_deck)
+
+    k_btn_set_my_hand = "btn_set_my_hand"
+    btn_set_my_hand = st.sidebar.button(
+        label="set my hand",
+        key=f"k_{k_btn_set_my_hand}",
+        on_click=set_my_hand
+    )
+
+    for i, card in enumerate(cpu_hand):
+        grid_opp_hand[i].write(card)
+
+    for i in range(5):
+        if (len(cpu.magic) > i) and (cpu.magic[i] is not None):
+            card = cpu.magic[i]
+            grid_field[0][i].write(card)
+        else:
+            grid_field[0][i].write(f"{i=}")
+
+    for i in range(5):
+        if (len(cpu.monsters) > i) and (cpu.monsters[i] is not None):
+            card = cpu.monsters[i]
+            grid_field[1][i].write(card)
+        else:
+            grid_field[1][i].write(f"{i=}")
+
+    for i in range(5):
+        if (len(me.monsters) > i) and (me.monsters[i] is not None):
+            card = me.monsters[i]
+            grid_field[2][i].write(card)
+            k_btn_shift_mode = "btn_shift_mode"
+            btn_shift_mode = grid_field[2][i].button(
+                label="flip",
+                key=f"k_{k_btn_shift_mode}",
+                on_click=flip_card
+            )
+        else:
+            grid_field[2][i].write(f"{i=}")
+
+    for i in range(5):
+        if (len(me.magic) > i) and (me.magic[i] is not None):
+            card = me.magic[i]
+            grid_field[3][i].write(card)
+        else:
+            grid_field[3][i].write(f"{i=}")
+
+    # for i in range(4):
+    #     for j in range(5):
+    #         grid_field[i][j].write(f"{i=}, {j=}")
+
+    cm = sum([st.session_state.get(f"k_toggle_merge_{i}", False) for i in range(len(my_hand))])
+    for i, card in enumerate(my_hand):
+        grid_my_hand[i].write(card)
+        btn_play_card = grid_my_hand[i].button(
+            label="play",
+            key=f"k_btn_play_card_{i}",
+            on_click=lambda c=card: me.play_card(str_to_card(c))
+        )
+        # if st.session_state.get(f"k_toggle_merge_{i}", False):
+        #     st.write()
+        # toggle_merge_card = grid_my_hand[i].toggle(
+        #     label=f"merge {cm + 1}",
+        #     key=f"k_toggle_merge_{i}",
+        #     on_change=lambda: update_merge_list(i)
+        # )
+
+    st.write("Hand & Monsters:")
+    avail_combo_cards = list(map(str_to_card, my_hand + me.monsters))
+    st.write(my_hand + me.monsters)
+    
+    st.write("avail_combo_cards")
+    st.write(avail_combo_cards)
+    st.write(list(map(type, avail_combo_cards)))
+    possible_combos = process_possible_combos(avail_combo_cards)
+    st.write("possible_combos")
+    st.write(possible_combos)
+
+
+    cards_available = st.multiselect(
+        label="Cards",
+        key="k_multiselect_cards_available",
+        options=known_cards[1:],
+        max_selections=10
+    )
+
+    if cards_available:
+        st.write("Combos available:")
+        st.write(process_possible_combos(cards_available))
+
+    selectbox_investigate_card = st.selectbox(
+        label="investigate card",
+        key="k_selectbox_investigate_card",
+        options=known_cards[1:]
+    )
+    if selectbox_investigate_card:
+        cl = [[known_cards[k], known_cards[v]] for k, v in data_parsed_combinations[selectbox_investigate_card.num]["combos"].items()]
+        cl.sort(key=lambda tup: tup[1].atk_points, reverse=True)
+        cl = [[str(c0), str(c1)] for c0, c1 in cl]
+        st.write(cl)
+
+
+    # Handle Moves
+
+    if not is_my_turn:
+        if turn_phase == turn_phases[0]:
+            # START
+            # do nothing
+            pass
+        elif turn_phase == turn_phases[1]:
+            # DRAW
+            # draw up to 5 cards
+            n_to_draw = draw_size - len(cpu_hand)
+            cpu.draw(n=n_to_draw)
+        elif turn_phase == turn_phases[2]:
+            # PLAY1
+            # by default force a random play, then skip 'ATTACK' & 'PLAY2'
+            cpu.play_random_card()
+        elif turn_phase == turn_phases[3]:
+            # Attack
+            pass
+        elif turn_phase == turn_phases[4]:
+            # PLAY2
+            pass
+        elif turn_phase == turn_phases[5]:
+            # END
+            match.next_turn()
+        else:
+            st.error(f"Unkown turn phase {turn_phase}")
+            st.stop()
+
+        match.advance_phase()
+        st.rerun()
+
+    else:
+        do_rerun = True
+        if turn_phase == turn_phases[0]:
+            # START
+            # do nothing
+            pass
+        if turn_phase == turn_phases[1]:
+            # DRAW
+            # draw up to 5 cards
+            n_to_draw = draw_size - len(my_hand)
+            me.draw(n=n_to_draw)
+        elif turn_phase == turn_phases[2]:
+            # PLAY1
+            # by default force a random play, then skip 'ATTACK' & 'PLAY2'
+            # wait for input
+            do_rerun = False
+        elif turn_phase == turn_phases[3]:
+            # Attack
+            # wait for input
+            do_rerun = False
+        elif turn_phase == turn_phases[4]:
+            # PLAY2
+            # wait for input
+            do_rerun = False
+        elif turn_phase == turn_phases[5]:
+            # END
+            match.next_turn()
+        else:
+            st.error(f"Unkown turn phase {turn_phase}")
+            st.stop()
+        
+        if do_rerun:
+            match.advance_phase()
+            st.rerun()
 
     # cont_deck = st.container(border=1)
     # cont_deck.write(f"{n_cards_in_deck} card(s) left")
@@ -511,110 +805,16 @@ if st.session_state.get(k_my_deck, []):
 
     # st.write(list(set([c.type_ for c in known_cards])))
 
-    st.write(f"Match #{match.id_num}")
-
-    grid_opp_hand = st.columns(5, border=1)
-    grid_columns = st.columns(5)
-    grid_field = [[col.container(border=1) for col in grid_columns] for i in range(4)]
-    grid_my_hand = st.columns(5, border=1)
-
-    cpu_hand = cpu.hand
-    my_hand = me.hand
-    my_monsters = me.monsters
-    my_magic = me.magic
-    my_deck = me.deck
-    # my_hand = st.session_state.get(k_my_hand)
-    # st.write(my_hand)
-
-    st.write(my_deck)
-
-    k_btn_set_my_hand = "btn_set_my_hand"
-    btn_set_my_hand = st.button(
-        label="set my hand",
-        key=f"k_{k_btn_set_my_hand}",
-        on_click=set_my_hand
-    )
-
-    for i, card in enumerate(cpu_hand):
-        grid_opp_hand[i].write(card)
-
-    for i in range(5):
-        if (len(cpu.magic) > i) and (cpu.magic[i] is not None):
-            card = cpu.magic[i]
-            grid_field[0][i].write(card)
-        else:
-            grid_field[0][i].write(f"{i=}")
-
-    for i in range(5):
-        if (len(cpu.monsters) > i) and (cpu.monsters[i] is not None):
-            card = cpu.monsters[i]
-            grid_field[1][i].write(card)
-        else:
-            grid_field[1][i].write(f"{i=}")
-
-    for i in range(5):
-        if (len(me.monsters) > i) and (me.monsters[i] is not None):
-            card = me.monsters[i]
-            grid_field[2][i].write(card)
-        else:
-            grid_field[2][i].write(f"{i=}")
-
-    for i in range(5):
-        if (len(me.magic) > i) and (me.magic[i] is not None):
-            card = me.magic[i]
-            grid_field[3][i].write(card)
-        else:
-            grid_field[3][i].write(f"{i=}")
-
-    # for i in range(4):
-    #     for j in range(5):
-    #         grid_field[i][j].write(f"{i=}, {j=}")
-
-    cm = sum([st.session_state.get(f"k_toggle_merge_{i}", False) for i in range(len(my_hand))])
-    for i, card in enumerate(my_hand):
-        grid_my_hand[i].write(card)
-        btn_play_card = grid_my_hand[i].button(
-            label="play",
-            key=f"k_btn_play_card_{i}",
-            on_click=lambda c=card: me.play_card(c)
-        )
-        # if st.session_state.get(f"k_toggle_merge_{i}", False):
-        #     st.write()
-        # toggle_merge_card = grid_my_hand[i].toggle(
-        #     label=f"merge {cm + 1}",
-        #     key=f"k_toggle_merge_{i}",
-        #     on_change=lambda: update_merge_list(i)
-        # )
-
-    possible_combos = process_possible_combos(my_hand + me.monsters)
-    st.write("possible_combos")
-    st.write(possible_combos)
-
-
-    cards_available = st.multiselect(
-        label="Cards",
-        key="k_multiselect_cards_available",
-        options=known_cards[1:],
-        max_selections=10
-    )
-
-    if cards_available:
-        st.write("Combos available:")
-        st.write(process_possible_combos(cards_available))
-
-    selectbox_investigate_card = st.selectbox(
-        label="investigate card",
-        key="k_selectbox_investigate_card",
-        options=known_cards[1:]
-    )
-    if selectbox_investigate_card:
-        cl = [[known_cards[k], known_cards[v]] for k, v in data_parsed_combinations[selectbox_investigate_card.num]["combos"].items()]
-        cl.sort(key=lambda tup: tup[1].atk_points, reverse=True)
-        cl = [[str(c0), str(c1)] for c0, c1 in cl]
-        st.write(cl)
+    
 
 else:
     st.write("?")
+
+st.session_state.update({
+    k_player_0: me,
+    k_player_1: cpu,
+    k_match: match
+})
 
 # # st.write("len(data_parsed_combinations)")
 # # st.write(len(data_parsed_combinations))
