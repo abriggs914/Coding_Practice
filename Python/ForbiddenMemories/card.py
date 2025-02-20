@@ -1,7 +1,7 @@
-from typing import Optional
+from typing import Optional, Generator
 
 
-gen_unknown_ids = (i for i in range(1000, 7001))
+gen_unknown_ids: Generator[int, None, None] = (i for i in range(1000, 7001))
 
 types_monster = ["A", "B", "BW", "Di", "Dr", "Fd", "Fh", "Fy", "I", "Mc", "Pl", "Py", "Re", "Ro", "SC", "SS", "Th", "W", "WB", "Z"]
 types_equip = ["E"]
@@ -45,6 +45,18 @@ class Card:
         self.planet = None
         self.face_down = None
         self.attack_mode = None
+
+    def flip_card(self, face_down_in: Optional[bool] = None):
+        if face_down_in is None:
+            self.face_down = not self.face_down
+        else:
+            self.face_down = face_down_in
+
+    def toggle_mode(self, mode_in: Optional[bool] = None):
+        if mode_in is None:
+            self.attack_mode = not self.attack_mode
+        else:
+            self.attack_mode = mode_in
 
     def data(self):
         return [

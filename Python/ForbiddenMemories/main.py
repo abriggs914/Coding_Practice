@@ -406,6 +406,9 @@ def random_deck(size: int = 40):
 
 def str_to_card(card_str: str) -> Card:
 
+    if card_str is None:
+        return None
+
     if not isinstance(card_str, str):
         # msg = [
         #     f"{card_str=}",
@@ -522,7 +525,11 @@ if st.sidebar.button(
     ask_deck(selected=st.session_state.get(k_my_deck, []))
 
 me, cpu, match = [None] * 3
+# st.write(f"--A {len(st.session_state.get(k_my_deck))=}")
+# print(f"--A {len(st.session_state.get(k_my_deck))=}")
 my_deck = list(map(str_to_card, st.session_state.get(k_my_deck, [])))
+# st.write(f"--B {len(st.session_state.get(k_my_deck))=}")
+# print(f"--B {len(st.session_state.get(k_my_deck))=}")
 
 if my_deck:
 
@@ -533,30 +540,37 @@ if my_deck:
     draw_size = 5
 
     if not st.session_state.get(k_player_0):
-        me = Player("ME", deck=st.session_state.get(k_my_deck), card_parser=str_to_card)
-        print(f"1 create k_player_0, {me}")
-        me = st.session_state.update({k_player_0: me})
-        print(f"2 create k_player_0, {me}")
+        me = Player("ME", deck=my_deck, card_parser=str_to_card)
+        print(f"1 create k_player_0, {me}, {len(my_deck)=}")
+        st.session_state.update({k_player_0: me})
     if not st.session_state.get(k_player_1):
-        cpu = Player("CPU", deck=st.session_state.get(k_opp_deck), card_parser=str_to_card)
+        cpu_deck = st.session_state.get(k_opp_deck)
+        cpu = Player("CPU", deck=cpu_deck, card_parser=str_to_card, place_order="rtl")
         print(f"1 create k_player_1, {cpu}")
-        cpu = st.session_state.update({k_player_1: cpu})
-        print(f"create k_player_1, {cpu}")
+        st.session_state.update({k_player_1: cpu})
 
     me = st.session_state[k_player_0]
     cpu = st.session_state[k_player_1]
+    st.write(f"-A {len(me.deck)=}")
+    print(f"-A {len(me.deck)=}")
+    st.write(f"-B {len(st.session_state.get(k_my_deck))=}")
+    print(f"-B {len(st.session_state.get(k_my_deck))=}")
 
     if not st.session_state.get(k_match):
         print(f"create match")
         match = Match(me, cpu)
-        match = st.session_state.update({k_match: match})
+        st.session_state.update({k_match: match})
 
-    match = st.session_state[k_match]
+    match: Match = st.session_state[k_match]
+    if not match.started:
+        match.start(player_turn_in=cpu)
 
     st.write("me")
     st.write(me)
+    st.write(me.__dict__)
     st.write("cpu")
     st.write(cpu)
+    st.write(cpu.__dict__)
     st.write("match")
     st.write(match)
 
@@ -573,7 +587,11 @@ if my_deck:
     my_hand = me.hand
     my_monsters = me.monsters
     my_magic = me.magic
+    st.write(f"A {len(me.deck)=}")
+    print(f"A {len(me.deck)=}")
     my_deck = me.deck
+    st.write(f"B {len(my_deck)=}")
+    print(f"B {len(my_deck)=}")
 
     
     # Draw Board
@@ -611,6 +629,8 @@ if my_deck:
         on_click=match.next_turn
     )
 
+    st.write("my_deck")
+    st.write(f"FF {len(my_deck)=}")
     st.write(my_deck)
 
     k_btn_set_my_hand = "btn_set_my_hand"
@@ -620,39 +640,59 @@ if my_deck:
         on_click=set_my_hand
     )
 
+    # CPU HAND
     for i, card in enumerate(cpu_hand):
         grid_opp_hand[i].write(card)
 
+    # CPU MAGIC & TRAPS
     for i in range(5):
         if (len(cpu.magic) > i) and (cpu.magic[i] is not None):
-            card = cpu.magic[i]
+            card: Card = cpu.magic[i]["card"]
             grid_field[0][i].write(card)
         else:
             grid_field[0][i].write(f"{i=}")
 
+    # CPU MONSTERS
     for i in range(5):
         if (len(cpu.monsters) > i) and (cpu.monsters[i] is not None):
-            card = cpu.monsters[i]
-            grid_field[1][i].write(card)
+            card: Card = cpu.monsters[i]["card"]
+            atk_mode = card.attack_mode
+            if card.face_down:
+                grid_field[1][i].write(f"? {'D' if not atk_mode else 'A'}")
+            else:
+                grid_field[1][i].write(card)
         else:
             grid_field[1][i].write(f"{i=}")
 
+    # MY MONSTERS
     for i in range(5):
         if (len(me.monsters) > i) and (me.monsters[i] is not None):
-            card = me.monsters[i]
+            card: Card = me.monsters[i]["card"]
+            atk_mode = card.attack_mode
+            if card.face_down:
+                grid_field[2][i].write("?")
             grid_field[2][i].write(card)
+
+            k_btn_flip_card = "btn_flip_card"
+            btn_flip_card = grid_field[2][i].button(
+                label="flip",
+                key=f"k_{k_btn_flip_card}",
+                on_click=card.flip_card
+            )
+
             k_btn_shift_mode = "btn_shift_mode"
             btn_shift_mode = grid_field[2][i].button(
-                label="flip",
+                label="DEF" if atk_mode else "ATK",
                 key=f"k_{k_btn_shift_mode}",
-                on_click=flip_card
+                on_click=card.toggle_mode
             )
         else:
             grid_field[2][i].write(f"{i=}")
 
+    # MY MAGIC & TRAPS
     for i in range(5):
         if (len(me.magic) > i) and (me.magic[i] is not None):
-            card = me.magic[i]
+            card: Card = me.magic[i]["card"]
             grid_field[3][i].write(card)
         else:
             grid_field[3][i].write(f"{i=}")
@@ -678,15 +718,29 @@ if my_deck:
         # )
 
     st.write("Hand & Monsters:")
-    avail_combo_cards = list(map(str_to_card, my_hand + me.monsters))
-    st.write(my_hand + me.monsters)
     
-    st.write("avail_combo_cards")
-    st.write(avail_combo_cards)
-    st.write(list(map(type, avail_combo_cards)))
-    possible_combos = process_possible_combos(avail_combo_cards)
-    st.write("possible_combos")
-    st.write(possible_combos)
+    my_avail_combo_cards = [c for c in list(map(str_to_card, [
+        (cd["card"] if isinstance(cd, dict) else cd)
+          for cd in my_hand + me.monsters
+    ])) if c is not None]
+    st.write("my_avail_combo_cards")
+    st.write(my_avail_combo_cards)
+
+    # st.write(list(map(type, my_avail_combo_cards)))
+    my_possible_combos = process_possible_combos(my_avail_combo_cards)
+    st.write("MY possible_combos")
+    st.write(my_possible_combos)
+
+    cpu_avail_combo_cards = [c for c in list(map(str_to_card, [
+        (cd["card"] if isinstance(cd, dict) else cd)
+          for cd in cpu_hand + cpu.monsters
+    ])) if c is not None]
+    st.write("cpu_avail_combo_cards")
+    st.write(cpu_avail_combo_cards)
+    
+    cpu_possible_combos = process_possible_combos(cpu_avail_combo_cards)
+    st.write("CPU possible_combos")
+    st.write(cpu_possible_combos)
 
 
     cards_available = st.multiselect(
@@ -703,7 +757,7 @@ if my_deck:
     selectbox_investigate_card = st.selectbox(
         label="investigate card",
         key="k_selectbox_investigate_card",
-        options=known_cards[1:]
+        options=known_cards[1:]*3
     )
     if selectbox_investigate_card:
         cl = [[known_cards[k], known_cards[v]] for k, v in data_parsed_combinations[selectbox_investigate_card.num]["combos"].items()]
