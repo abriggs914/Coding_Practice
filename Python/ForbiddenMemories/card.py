@@ -12,6 +12,9 @@ types_ritual = ["Ri"]
 star_sign_ring_0 = ["Su", "Mo", "V", "Me"]
 star_sign_ring_1 = ["Ma", "J", "Sa", "U", "P", "N"]
 
+star_sign_ring_0_sym = ["☉", "☾", "♀", "☿"]
+star_sign_ring_1_sym = ["♂", "♃", "♄", "Ꙩ", "♆", "♇"]
+
 
 class Card:
     def __init__(
@@ -42,6 +45,8 @@ class Card:
         self.def_points = def_points
         self.planet_0 = planet_0
         self.planet_1 = planet_1
+        self.ring = star_sign_ring_0 if self.planet_0 in star_sign_ring_0 else star_sign_ring_1
+        self.ring_sym = star_sign_ring_0_sym if self.ring == star_sign_ring_0 else star_sign_ring_1_sym
         self.planet = None
         self.face_down = None
         self.attack_mode = None

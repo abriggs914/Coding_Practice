@@ -1,16 +1,13 @@
 import os
-import datetime
 import random
-from typing import Optional
-
-import streamlit as st
 
 from match import *
 from player import *
 
 
 
-deck_output = """["#241 - Dark Assailant 1200/1200","#197 - Mech Mole Zombie 500/400","#50 - Basic Insect 500/700","#609 - Bladefly 600/700","#547 - Griggle 350/300","#410 - Mechanical Spider 400/500","#156 - Hard Armor 300/1200","#387 - Mystic Lamp 400/300","#102 - Mask of Darkness 900/400","#283 - Holograh 1100/700","#190 - Akakieisu 1000/800","#137 - Mystery Hand 500/500","#579 - Abyss Flower 750/400","#402 - Monster Eye 250/350","#398 - Ooguchi 300/250","#214 - Kagemusha of the Blue Flame 800/400","#475 - Sinister Serpent 300/250","#475 - Sinister Serpent 300/250","#336 - Dark Hole M","#148 - The Shadow Who Controls the Dark 800/700","#276 - Ray & Temperature 1000/1000","#586 - Greenkappa 650/900","#524 - Star Boy 550/500","#335 - Yami 0/0","#101 - Wings of Wicked Flame 700/600","#421 - Cyber Commander 750/700","#202 - Air Marmot of Nefariousness 400/600","#202 - Air Marmot of Nefariousness 400/600","#226 - Skull Stalker 900/800","#134 - Mystical Capture Chain 700/700","#240 - The Drdek 700/800","#191 - LaLa Li-oon 600/600","#105 - Tomozaurus 500/400","#135 - Fiend's Hand 600/600","#547 - Griggle 350/300"]"""
+deck_output_20250218 = """["#241 - Dark Assailant 1200/1200","#197 - Mech Mole Zombie 500/400","#50 - Basic Insect 500/700","#609 - Bladefly 600/700","#547 - Griggle 350/300","#410 - Mechanical Spider 400/500","#156 - Hard Armor 300/1200","#387 - Mystic Lamp 400/300","#102 - Mask of Darkness 900/400","#283 - Holograh 1100/700","#190 - Akakieisu 1000/800","#137 - Mystery Hand 500/500","#579 - Abyss Flower 750/400","#402 - Monster Eye 250/350","#398 - Ooguchi 300/250","#214 - Kagemusha of the Blue Flame 800/400","#475 - Sinister Serpent 300/250","#475 - Sinister Serpent 300/250","#336 - Dark Hole M","#148 - The Shadow Who Controls the Dark 800/700","#276 - Ray & Temperature 1000/1000","#586 - Greenkappa 650/900","#524 - Star Boy 550/500","#335 - Yami 0/0","#101 - Wings of Wicked Flame 700/600","#421 - Cyber Commander 750/700","#202 - Air Marmot of Nefariousness 400/600","#202 - Air Marmot of Nefariousness 400/600","#226 - Skull Stalker 900/800","#134 - Mystical Capture Chain 700/700","#240 - The Drdek 700/800","#191 - LaLa Li-oon 600/600","#105 - Tomozaurus 500/400","#135 - Fiend's Hand 600/600","#547 - Griggle 350/300"]"""
+deck_output_20250220 = """["#579 - Abyss Flower 750/400","#202 - Air Marmot of Nefariousness 400/600","#411 - Bat 300/350","#609 - Bladefly 600/700","#548 - Bone Mouse 400/300","#178 - Claw Reacher 1000/800","#539 - Corroding Shark 1100/700","#395 - Dancing Elf 300/200","#336 - Dark Hole M","#120 - Dream Clown 1200/900","#154 - Fire Reaper 700/500","#154 - Fire Reaper 700/500","#644 - Flame Viper 400/450","#210 - Hinotama Soul 600/500","#227 - Hitodenchak 600/700","#306 - Insect Armor with Laser Cannon E","#107 - Kageningen 800/600","#58 - Kuriboh 300/200","#58 - Kuriboh 300/200","#158 - Man Eater 800/600","#501 - Man-eater Bug 450/600","#501 - Man-eater Bug 450/600","#102 - Mask of Darkness 900/400","#197 - Mech Mole Zombie 500/400","#245 - Meda Bat 800/400","#212 - Meotoko 700/600","#222 - Midnight Fiend 800/600","#516 - Muka Muka 600/300","#8 - Mushroom Man 800/600","#143 - Necrolancer the Timelord 800/900","#604 - Obese Marmot of Nefariousness 750/800","#398 - Ooguchi 300/250","#398 - Ooguchi 300/250","#333 - Sogen M","#444 - Turu-Purun 450/500","#606 - Twin Long Rods #2 850/700","#231 - Wood Clown 800/1200","#563 - Wretched Ghost of the Attic 550/400","#452 - Zarigun 600/700","#395 - Dancing Elf 300/200"]"""
 
 
 
@@ -198,14 +195,18 @@ def select_hand(size: int = 5, fresh: bool = True, deck_in: list[Card] = None):
         placeholder=f"select {size} card(s)"
     )
 
-    if st.button(
-        label="save",
-        key="kd_btn_save"
-    ):
-        st.session_state.update({
-            k_my_hand: [c for c in st.session_state.get(f"kd_{k_multiselect_cards}", [])]
-        })
-        st.rerun()
+    n_cards = len(st.session_state.get(f"kd_{k_multiselect_cards}", []))
+    if n_cards == size:
+        if st.button(
+            label="save",
+            key="kd_btn_save"
+        ):
+            st.session_state.update({
+                k_my_hand: [c for c in st.session_state.get(f"kd_{k_multiselect_cards}", [])]
+            })
+            st.rerun()
+    else:
+        st.write(f"{size - n_cards} card(s) left to choose.")
 
 
 def draw_hand(size: int = 5, clear: bool = True):
@@ -231,7 +232,7 @@ def reset_deck():
     })
 
 
-def process_possible_combos(hand: list[Card]):
+def process_possible_combos(hand: list[Card], do_test: bool = False):
     # print(f"\n{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n\n")
 
     def helper(nest, hand_):
@@ -241,7 +242,8 @@ def process_possible_combos(hand: list[Card]):
         new_combos = []
         hand_c = [c for c in hand_]
         for i, card_0_str in enumerate(hand_):
-            print(f"{card_0_str=}, {type(card_0_str)=}")
+            if do_test:
+                print(f"{card_0_str=}, {type(card_0_str)=}")
             card_0 = str_to_card(card_0_str)
             p_combos = data_parsed_combinations[card_0.num]["combos"]
             for j, card_1_str in enumerate(hand_c):
@@ -265,8 +267,9 @@ def process_possible_combos(hand: list[Card]):
         for nest_, cr_, pr_ in new_combos:
             # new_hand = [c for c in hand_ if c not in pr_] + [cr_]
             new_hand = [c for c in hand_]
-            print(f"\t\t{new_hand=}, {pr_=}, {cr_=}, {type(new_hand)}, {type(pr_)}, {type(cr_)}")
-            print(f"\t\t{list(map(type, new_hand))}, {list(map(type, pr_))}, {type(cr_)}")
+            if do_test:
+                print(f"\t\t{new_hand=}, {pr_=}, {cr_=}, {type(new_hand)}, {type(pr_)}, {type(cr_)}")
+                print(f"\t\t{list(map(type, new_hand))}, {list(map(type, pr_))}, {type(cr_)}")
             new_hand.remove(pr_[0])
             new_hand.remove(pr_[1])
             new_hand.append(cr_)
@@ -329,15 +332,27 @@ def ask_deck(selected: Optional[list[Card]] = None):
     #         if c == c2:
     #             raise ValueError(f"FOUND {c}, {c2}")
 
-    if st.button(
-        label="START WITH DEMO DECK 2025-02-18",
-        key="kd_btn_start_with_demo_deck_20250215"
-    ):
-        st.session_state.update({
-            f"kd_{k_list_in_deck_input}": deck_output,
-            f"kd_{k_multiselect_deck_input}": list(map(str, [known_cards[326], known_cards[635], known_cards[544]])),
-            f"kd_{k_toggle_combine_ms_ta}": True
-        })        
+    cols_demo_decks = st.columns(2)
+    with cols_demo_decks[0]:
+        if st.button(
+            label="START WITH DEMO DECK 2025-02-18",
+            key="kd_btn_start_with_demo_deck_20250215"
+        ):
+            st.session_state.update({
+                f"kd_{k_list_in_deck_input}": deck_output_20250218,
+                f"kd_{k_multiselect_deck_input}": list(map(str, [known_cards[326], known_cards[635], known_cards[544]])),
+                f"kd_{k_toggle_combine_ms_ta}": True
+            })
+    with cols_demo_decks[1]:
+        if st.button(
+            label="START WITH DEMO DECK 2025-02-20",
+            key="kd_btn_start_with_demo_deck_20250220"
+        ):
+            st.session_state.update({
+                f"kd_{k_list_in_deck_input}": deck_output_20250220,
+                f"kd_{k_multiselect_deck_input}": [],
+                f"kd_{k_toggle_combine_ms_ta}": True
+            })
 
     multiselect_deck_input = st.multiselect(
         label="Select your deck:",
@@ -401,7 +416,59 @@ def ask_deck(selected: Optional[list[Card]] = None):
 
 
 def random_deck(size: int = 40):
-    return random.sample(known_cards[1:]*3, size)
+    """
+    The player starts with a Deck of 40 cards, which are randomly selected from seven pools.
+
+    The 40 cards will be made up of:
+
+    16 monsters with ATK + DEF < 1100           # Grp 0
+    16 monsters with 1100 ≤ ATK + DEF < 1600    # grp 1
+    4 monsters with 1600 ≤ ATK + DEF < 2100     # grp 2
+    1 monster with 2100 ≤ ATK + DEF             # grp 3
+    1 pure Magic Card                           # grp 4
+    1 Field Magic Card                          # grp 5
+    1 Equip Card                                # grp 6
+    """
+    # return random.sample(known_cards[1:]*3, size)
+    print(f"random deck")
+    deck = []
+    groups = [[] for i in range(7)]
+    grp_sizes = [16, 16, 4, 1, 1, 1, 1]
+    for i, card in enumerate(known_cards[1:]):
+
+        if (card == known_cards[336]) or (card == known_cards[337]):
+            # dark hole and raigeki
+            continue
+        elif card in [known_cards[17], known_cards[18], known_cards[19], known_cards[20], known_cards[21]]:
+            # exodia pieces
+            groups[0].append(card)
+        else:
+
+            if card.type_simple == "Monster":
+                ttl = card.atk_points + card.def_points
+                print(f"{ttl=}, {card=}")
+                if ttl < 1100:
+                    groups[0].extend([card]*3)
+                elif 1100 <= ttl < 1600:
+                    groups[1].extend([card]*3)
+                elif 1600 <= ttl < 2100:
+                    groups[2].extend([card]*3)
+                else:
+                    groups[3].extend([card]*3)
+            elif (card.type_simple == "Magic") or (card.type_simple == "Trap"):
+                groups[5].extend([card]*3)
+            elif card.type_simple == "Equip":
+                groups[6].extend([card]*3)
+
+    groups[4].extend([known_cards[336], known_cards[337]])
+    for i, g_size in enumerate(grp_sizes):
+        deck += random.sample(groups[i], g_size)
+
+    # st.write(deck)
+    # print(deck)
+    # print(f"{list(map(len, groups))=}")
+
+    return deck
 
 
 def str_to_card(card_str: str) -> Card:
@@ -565,14 +632,14 @@ if my_deck:
     if not match.started:
         match.start(player_turn_in=cpu)
 
-    st.write("me")
-    st.write(me)
-    st.write(me.__dict__)
-    st.write("cpu")
-    st.write(cpu)
-    st.write(cpu.__dict__)
-    st.write("match")
-    st.write(match)
+    # st.write("me")
+    # st.write(me)
+    # st.write(me.__dict__)
+    # st.write("cpu")
+    # st.write(cpu)
+    # st.write(cpu.__dict__)
+    # st.write("match")
+    # st.write(match)
 
     if not match.started:
         if st.button(
@@ -583,6 +650,7 @@ if my_deck:
 
     is_my_turn = match.turn == me
     turn_phase = match.turn_phase
+    cpu_deck = cpu.deck
     cpu_hand = cpu.hand
     my_hand = me.hand
     my_monsters = me.monsters
@@ -639,6 +707,7 @@ if my_deck:
         key=f"k_{k_btn_set_my_hand}",
         on_click=set_my_hand
     )
+    my_hand = me.hand
 
     # CPU HAND
     for i, card in enumerate(cpu_hand):
@@ -648,7 +717,10 @@ if my_deck:
     for i in range(5):
         if (len(cpu.magic) > i) and (cpu.magic[i] is not None):
             card: Card = cpu.magic[i]["card"]
-            grid_field[0][i].write(card)
+            if card.face_down:
+                grid_field[0][i].write(f"?")
+            else:
+                grid_field[0][i].write(card)
         else:
             grid_field[0][i].write(f"{i=}")
 
@@ -658,7 +730,10 @@ if my_deck:
             card: Card = cpu.monsters[i]["card"]
             atk_mode = card.attack_mode
             if card.face_down:
-                grid_field[1][i].write(f"? {'D' if not atk_mode else 'A'}")
+                planet = card.planet
+                p_idx = card.ring.index(planet)
+                planet_sym = card.ring_sym[p_idx]
+                grid_field[1][i].write(f"? {'D' if not atk_mode else 'A'}, {planet}, {planet_sym}")
             else:
                 grid_field[1][i].write(card)
         else:
@@ -741,7 +816,8 @@ if my_deck:
     cpu_possible_combos = process_possible_combos(cpu_avail_combo_cards)
     st.write("CPU possible_combos")
     st.write(cpu_possible_combos)
-
+    st.write("cpu.deck_og")
+    st.write(cpu.deck_og)
 
     cards_available = st.multiselect(
         label="Cards",
@@ -753,6 +829,11 @@ if my_deck:
     if cards_available:
         st.write("Combos available:")
         st.write(process_possible_combos(cards_available))
+
+    # with st.container(border=1):
+    #     # DON'T!
+    #     st.write("All possible deck combos available:")
+    #     st.write(process_possible_combos(me.deck_og))
 
     selectbox_investigate_card = st.selectbox(
         label="investigate card",

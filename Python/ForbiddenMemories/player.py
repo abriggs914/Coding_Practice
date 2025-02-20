@@ -1,9 +1,9 @@
 import random
-from typing import Literal, Optional, Generator
+from typing import Literal
 
 import streamlit as st
 
-from card import Card
+from card import *
 
 
 app_title: str = "YU-GI-OH! Forbidden Memories"
@@ -142,6 +142,16 @@ class Player:
         if do_test:
             print(f"Player.play_random_card")
         card = random.choice(self.hand)
+        card.planet = random.choice([card.planet_0, card.planet_1])
+        card.atk_mode = random.choice([0, 1]) == 0
+
+        # completely random - if the selected card happens to be a non-monster, then it may try to play it automatically
+        if card.type_simple == "Trap":
+            # by default trap cards must be set before they can be activated.
+            card.face_down = True
+        else:
+            card.face_down = random.choice([0, 1]) == 0
+
         self.play_card(card)
 
     def play_card(self, card: Card):
