@@ -415,6 +415,17 @@ def ask_deck(selected: Optional[list[Card]] = None):
             st.rerun()
 
 
+@st.dialog(title=app_title, width="large")
+def battle(card: Card):
+    # choose a card to battle against
+    st.write("BATTLE!")
+    if st.button(
+        label="DONE BATTLING",
+        key=f"kd_btn_done_battle"
+    ):
+        st.rerun()
+
+
 def random_deck(size: int = 40):
     """
     The player starts with a Deck of 40 cards, which are randomly selected from seven pools.
@@ -471,7 +482,7 @@ def random_deck(size: int = 40):
     return deck
 
 
-def str_to_card(card_str: str) -> Card:
+def str_to_card(card_str: str) -> Card | None:
 
     if card_str is None:
         return None
@@ -564,6 +575,7 @@ def str_to_card(card_str: str) -> Card:
 #     st.write(known_cards[:10])
 #
 
+img_w_planet = 36
 
 data_parsed_combinations = parse_combinations_file()
 reverse_combos = process_reverse_combinations()
@@ -683,8 +695,17 @@ if my_deck:
     cols_score_details_me[1].write(me.hp)
 
     grid_opp_hand = st.columns(5, border=1)
-    grid_columns = st.columns(5)
-    grid_field = [[col.container(border=1) for col in grid_columns] for i in range(4)]
+    grid_columns_opp = st.columns(5)
+    grid_field = [
+        [col.container(border=1) for col in grid_columns_opp]
+        for i in range(2)
+    ]
+    st.divider()
+    grid_columns_me = st.columns(5)
+    grid_field += [
+        [col.container(border=1) for col in grid_columns_me]
+        for i in range(2)
+    ]
     grid_my_hand = st.columns(5, border=1)
 
     # my_hand = st.session_state.get(k_my_hand)
@@ -729,11 +750,17 @@ if my_deck:
         if (len(cpu.monsters) > i) and (cpu.monsters[i] is not None):
             card: Card = cpu.monsters[i]["card"]
             atk_mode = card.attack_mode
+            planet = card.planet
+            p_idx = card.ring.index(planet)
+            planet_sym = card.ring_sym[p_idx]
+            planet_path = card.ring_path[p_idx]
             if card.face_down:
-                planet = card.planet
-                p_idx = card.ring.index(planet)
-                planet_sym = card.ring_sym[p_idx]
                 grid_field[1][i].write(f"? {'D' if not atk_mode else 'A'}, {planet}, {planet_sym}")
+                grid_field[1][i].image(
+                    image=planet_path,
+                    caption=planet,
+                    width=img_w_planet
+                )
             else:
                 grid_field[1][i].write(card)
         else:
@@ -744,23 +771,41 @@ if my_deck:
         if (len(me.monsters) > i) and (me.monsters[i] is not None):
             card: Card = me.monsters[i]["card"]
             atk_mode = card.attack_mode
+            planet = card.planet
+            p_idx = card.ring.index(planet)
+            planet_sym = card.ring_sym[p_idx]
+            planet_path = card.ring_path[p_idx]
             if card.face_down:
                 grid_field[2][i].write("?")
             grid_field[2][i].write(card)
-
-            k_btn_flip_card = "btn_flip_card"
-            btn_flip_card = grid_field[2][i].button(
-                label="flip",
-                key=f"k_{k_btn_flip_card}",
-                on_click=card.flip_card
+            grid_field[2][i].image(
+                image=planet_path,
+                caption=planet,
+                width=img_w_planet
             )
 
-            k_btn_shift_mode = "btn_shift_mode"
-            btn_shift_mode = grid_field[2][i].button(
-                label="DEF" if atk_mode else "ATK",
-                key=f"k_{k_btn_shift_mode}",
-                on_click=card.toggle_mode
-            )
+            if is_my_turn:
+                if card.face_down:
+                    k_btn_flip_card = "btn_flip_card"
+                    btn_flip_card = grid_field[2][i].button(
+                        label="flip",
+                        key=f"k_{k_btn_flip_card}_{i}",
+                        on_click=card.flip_card
+                    )
+
+                k_btn_shift_mode = "btn_shift_mode"
+                btn_shift_mode = grid_field[2][i].button(
+                    label="DEF" if atk_mode else "ATK",
+                    key=f"k_{k_btn_shift_mode}_{i}",
+                    on_click=card.toggle_mode
+                )
+                if (match.turn_num > 0) and cpu.monsters:
+                    k_btn_attack = "btn_attack"
+                    btn_attack = grid_field[2][i].button(
+                        label="Attack",
+                        key=f"k_{k_btn_attack}_{i}",
+                        on_click=lambda c_=card: battle(c_)
+                    )
         else:
             grid_field[2][i].write(f"{i=}")
 

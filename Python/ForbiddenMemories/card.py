@@ -15,6 +15,21 @@ star_sign_ring_1 = ["Ma", "J", "Sa", "U", "P", "N"]
 star_sign_ring_0_sym = ["☉", "☾", "♀", "☿"]
 star_sign_ring_1_sym = ["♂", "♃", "♄", "Ꙩ", "♆", "♇"]
 
+star_sign_ring_0_paths = [
+    r"images/sun.png",
+    r"images/moon.png",
+    r"images/venus.png",
+    r"images/mercury.png"
+]
+star_sign_ring_1_paths = [
+    r"images/mars.png",
+    r"images/jupiter.png",
+    r"images/saturn.png",
+    r"images/uranus.png",
+    r"images/pluto.png",
+    r"images/neptune.png"
+]
+
 
 class Card:
     def __init__(
@@ -45,11 +60,13 @@ class Card:
         self.def_points = def_points
         self.planet_0 = planet_0
         self.planet_1 = planet_1
-        self.ring = star_sign_ring_0 if self.planet_0 in star_sign_ring_0 else star_sign_ring_1
-        self.ring_sym = star_sign_ring_0_sym if self.ring == star_sign_ring_0 else star_sign_ring_1_sym
-        self.planet = None
+        self._planet = None
         self.face_down = None
         self.attack_mode = None
+
+        self.ring = star_sign_ring_0 if self.planet in star_sign_ring_0 else star_sign_ring_1
+        self.ring_sym = star_sign_ring_0_sym if self.ring == star_sign_ring_0 else star_sign_ring_1_sym
+        self.ring_path = star_sign_ring_0_paths if self.ring == star_sign_ring_0 else star_sign_ring_1_paths
 
     def flip_card(self, face_down_in: Optional[bool] = None):
         if face_down_in is None:
@@ -76,6 +93,19 @@ class Card:
             self.planet_1
         ]
 
+    def get_planet(self):
+        return self._planet
+
+    def set_planet(self, planet_in):
+        self._planet = planet_in
+
+        self.ring = star_sign_ring_0 if self.planet in star_sign_ring_0 else star_sign_ring_1
+        self.ring_sym = star_sign_ring_0_sym if self.ring == star_sign_ring_0 else star_sign_ring_1_sym
+        self.ring_path = star_sign_ring_0_paths if self.ring == star_sign_ring_0 else star_sign_ring_1_paths
+
+    def del_planet(self):
+        del self._planet
+
     def to_string(self):
         if self.type_simple == "Monster":
             return f"#{self.num} - {self.name} {self.atk_points}/{self.def_points}"
@@ -96,3 +126,5 @@ class Card:
 
     def __repr__(self):
         return self.to_string()
+
+    planet = property(get_planet, set_planet, del_planet)
