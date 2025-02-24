@@ -33,10 +33,10 @@ class Player:
 
         self.hp = default_hp
         self.in_match = False
-        self.hand = [None] * 5
+        self.hand = [None for i in range(5)]
         self.graveyard = []
-        self.monsters = [None] * 5
-        self.magic = [None] * 5
+        self.monsters = [None for i in range(5)]
+        self.magic = [None for i in range(5)]
 
         self.wins = 0
         self.losses = 0
@@ -135,94 +135,16 @@ class Player:
     def next_monster_idx(self):
         return self.next_avail_idx(self.monsters)
 
+    def get_hand(self):
+        lst = [None if (c is None) else self.card_parser(c) for c in self.hand]
+        self.hand = lst
+        return self.hand
+
+    def __eq__(self, other):
+        return isinstance(other, Player) and (self.id_num == other.id_num)
+
     def next_magic_idx(self):
         return self.next_avail_idx(self.magic)
-
-    def play_random_card(self):
-        if do_test:
-            print(f"Player.play_random_card")
-        card = random.choice(self.hand)
-        card.planet = random.choice([card.planet_0, card.planet_1])
-        card.atk_mode = random.choice([0, 1]) == 0
-
-        # completely random - if the selected card happens to be a non-monster, then it may try to play it automatically
-        if card.type_simple == "Trap":
-            # by default trap cards must be set before they can be activated.
-            card.face_down = True
-        else:
-            card.face_down = random.choice([0, 1]) == 0
-
-        self.play_card(card)
-
-    def play_card(self, card: Card):
-        if do_test:
-            print(f"Player.play_card")
-            st.write("me.hand")
-            st.write(self.hand)
-            st.write(list(map(type, self.hand)))
-        self.hand.remove(card)
-        card_type = card.type_
-        if card.type_simple == "Monster":
-            self.ask_sign(card)
-            k_slider = f"slider_sign_{card.num}"
-            k_toggle_facedown = f"toggle_facedown_{card.num}"
-            k_toggle_attack_mode = f"toggle_attack_mode_{card.num}"
-            idx = self.next_monster_idx()
-            self.monsters.insert(idx, {
-                "card": card,
-                "planet": st.session_state.get(k_slider, card.planet_0),
-                "face_down": st.session_state.get(k_toggle_facedown, False),
-                "attack_mode": st.session_state.get(k_toggle_attack_mode, True)
-            })
-        else:
-            idx = self.next_magic_idx()
-            self.magic.insert(idx, {
-                "card": card,
-                "face_down": False
-            })
-
-    @st.dialog(title=f"Select Sign")
-    def ask_sign(self, card: Card):
-        if do_test:
-            print(f"Player.ask_sign")
-        st.write(f"Select a sign for {card}:")
-        options = [card.planet_0, card.planet_1]
-        card.planet = card.planet_0
-        cols = st.columns([0.75, 0.25])
-        k_slider = f"slider_sign_{card.num}"
-        cols[0].select_slider(
-            label="Signs",
-            options=options,
-            key=f"k_{k_slider}"
-        )
-
-        k_toggle_facedown = "toggle_facedown"
-        k_toggle_attack_mode = f"toggle_attack_mode_{card.num}"
-        st.session_state.setdefault(k_toggle_facedown, False)
-        st.session_state.setdefault(k_toggle_attack_mode, True)
-        toggle_facedown = st.toggle(
-            label="Facedown:",
-            key=f"k_{k_toggle_facedown}"
-        )
-        toggle_attack_mode = st.toggle(
-            label="Attack Mode:",
-            key=f"k_{k_toggle_attack_mode}"
-        )
-
-        st.session_state.update({
-            k_toggle_facedown: f"k_{k_toggle_facedown}",
-            k_toggle_attack_mode: f"k_{k_toggle_attack_mode}",
-            k_slider: f"k_{k_slider}"
-        })
-
-        if cols[1].button(
-            label="save",
-            key=f"k_btn_save_sign_{card.num}"
-        ):
-            card.planet = st.session_state.get(f"k_{k_slider}", card.planet_0)
-            card.face_down = st.session_state.get(f"k_{k_toggle_facedown}", card.face_down)
-            card.attack_mode = st.session_state.get(f"k_{k_toggle_attack_mode}", card.attack_mode)
-            st.rerun()
 
     def get_deck(self):
         return getattr(self, "_deck", [])

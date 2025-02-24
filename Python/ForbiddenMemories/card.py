@@ -60,6 +60,8 @@ class Card:
         self.def_points = def_points
         self.planet_0 = planet_0
         self.planet_1 = planet_1
+
+        self.in_play = False
         self._planet = None
         self.face_down = None
         self.attack_mode = None
@@ -114,9 +116,9 @@ class Card:
 
     def __eq__(self, other):
         return str(self.num) == str(other)
-
-    def __cmp__(self, other):
-        return -1 if self.num < other.num else (1 if other.num > self.num else 0)
+    #
+    # def __cmp__(self, other):
+    #     return -1 if self.num < other.num else (1 if other.num > self.num else 0)
 
     def __hash__(self):
         return self.num
