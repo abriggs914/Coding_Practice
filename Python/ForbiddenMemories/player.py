@@ -18,15 +18,17 @@ class Player:
             name: str,
             deck: list[Card],
             card_parser: callable,
+            gen_chest_id: callable,
             chest: Optional[list[Card]] = None,
             default_hp: int = 8000,
             place_order: Literal["ltr", "rtl"] = "ltr"
     ):
         self.id_num = next(gen_player_ids)
         self.name = name
-        self.deck = deck
         self.deck_og = [c for c in deck]
         self.card_parser = card_parser
+        self.gen_chest_id = gen_chest_id
+        self.deck = deck
         self.chest = chest if chest is not None else []
         self.default_hp = default_hp
         self.place_order = place_order
@@ -70,7 +72,7 @@ class Player:
         random.shuffle(self.deck)
         if do_test:
             print(f"B {len(self.deck)=}, {self.deck[0]=}")
-        self.deck = [self.card_parser(c) for c in self.deck] 
+        # self.deck = [self.card_parser(c) for c in self.deck]
         if do_test:
             print(f"C {len(self.deck)=}, {self.deck[0]=}")       
         self.draw(n=5)
@@ -100,9 +102,15 @@ class Player:
             print(f"Player.draw")
             print(f"A D {len(self.deck)=}")
         chxs = random.sample(self.deck, n)
-        chxs = [self.card_parser(c) for c in chxs]
+        # chxs = [self.card_parser(c) for c in chxs]
         for chx in chxs:
             self.deck.remove(chx)
+        i = 0
+        while i < len(self.hand):
+            if self.hand[i] is None:
+                self.hand.pop(i)
+            else:
+                i += 1
         self.hand.extend(chxs)
         if do_test:
             print(f"B D {len(self.deck)=}")
@@ -136,7 +144,8 @@ class Player:
         return self.next_avail_idx(self.monsters)
 
     def get_hand(self):
-        lst = [None if (c is None) else self.card_parser(c) for c in self.hand]
+        # lst = [None if (c is None) else self.card_parser(c) for c in self.hand]
+        lst = [None if (c is None) else c for c in self.hand]
         self.hand = lst
         return self.hand
 
@@ -154,6 +163,8 @@ class Player:
             print(f"Player.set_deck")
             print(f"A SD {len(self.deck)=}", end=f", {self.deck[0]=}\n" if self.deck else "\n")
         self._deck = deck_in
+        for c in self.deck:
+            c.into_play(chest_id=next(self.gen_chest_id))
         if do_test:
             print(f"B SD {len(self.deck)=}, {self.deck[0]=}")
         self.deck_og = [c for c in deck_in]

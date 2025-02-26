@@ -62,6 +62,7 @@ class Card:
         self.planet_1 = planet_1
 
         self.in_play = False
+        self.chest_id = None
         self._planet = None
         self.face_down = None
         self.attack_mode = None
@@ -71,12 +72,16 @@ class Card:
         self.ring_path = star_sign_ring_0_paths if self.ring == star_sign_ring_0 else star_sign_ring_1_paths
 
     def flip_card(self, face_down_in: Optional[bool] = None):
+        if not self.in_play:
+            self.in_play = True
         if face_down_in is None:
             self.face_down = not self.face_down
         else:
             self.face_down = face_down_in
 
     def toggle_mode(self, mode_in: Optional[bool] = None):
+        if not self.in_play:
+            self.in_play = True
         if mode_in is None:
             self.attack_mode = not self.attack_mode
         else:
@@ -95,12 +100,21 @@ class Card:
             self.planet_1
         ]
 
+    def into_play(self, chest_id: Optional[int] = None, into_play: bool = True):
+
+        if into_play and (chest_id is None):
+            raise ValueError(f"Need to declare 'chest_id' to add proper checking for hashing and equals operations.")
+
+        self.in_play = into_play
+        self.chest_id = chest_id if into_play else None
+
     def get_planet(self):
         return self._planet
 
     def set_planet(self, planet_in):
         self._planet = planet_in
 
+        self.in_play = True
         self.ring = star_sign_ring_0 if self.planet in star_sign_ring_0 else star_sign_ring_1
         self.ring_sym = star_sign_ring_0_sym if self.ring == star_sign_ring_0 else star_sign_ring_1_sym
         self.ring_path = star_sign_ring_0_paths if self.ring == star_sign_ring_0 else star_sign_ring_1_paths
@@ -109,18 +123,35 @@ class Card:
         del self._planet
 
     def to_string(self):
+        to_str = f"#{self.num} - {self.name}"
         if self.type_simple == "Monster":
-            return f"#{self.num} - {self.name} {self.atk_points}/{self.def_points}"
+            to_str = f"{to_str} {self.atk_points}/{self.def_points}"
+            if self.in_play:
+                return f"{to_str} - {self.planet} - {str(self.chest_id).rjust(7, '0')}"
+            return to_str
         else:
-            return f"#{self.num} - {self.name} {self.type_simple[0].upper()}"
+            to_str = f"{to_str} {self.type_simple[0].upper()}"
+            if self.in_play:
+                return f"{to_str} - {str(self.chest_id).rjust(7, '0')}"
+            return to_str
 
     def __eq__(self, other):
-        return str(self.num) == str(other)
+        # print(f"Card.__eq__ {other} -", end="")
+        if str(type(other)) != str(Card):
+            # print(f"A {str(type(other))=}, {str(Card)=}")
+            return False
+        if self.in_play:
+            # print(f"B")
+            return (self.num == other.num) and (self.chest_id == other.chest_id)
+        else:
+            # print(f"C")
+            return self.num == other.num
     #
     # def __cmp__(self, other):
     #     return -1 if self.num < other.num else (1 if other.num > self.num else 0)
 
     def __hash__(self):
+        # print(f"Card.__hash__ => {self.num}")
         return self.num
 
     def __str__(self):

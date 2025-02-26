@@ -1,8 +1,12 @@
 import os
 import random
 
+import streamlit
+
 from match import *
 from player import *
+
+from streamlit_agraph import Node, Config, Edge, agraph
 
 
 
@@ -15,6 +19,8 @@ deck_output_memory_card_original = """["#35 - Dark Magician 2500/2100","#35 - Da
 
 app_title = "YU-GI-OH! Forbidden Memories"
 unknown_card = Card(0)
+
+gen_card_ids = (i for i in range(1000000))
 
 
 st.set_page_config(page_title=app_title, layout="wide")
@@ -119,7 +125,7 @@ def parse_combinations_file():
                         if section_card not in cards_2:
                             cards_2[section_card] = {}
                         cards[section_card.num]["combos"][a.num] = b.num
-                        cards_2[section_card][a.num] = b.num
+                        cards_2[section_card][a] = b
                         a = None
                         b = None
 
@@ -525,10 +531,18 @@ def ask_deck2(selected: Optional[list[Card]] = None):
     #         })
 
     if st.button(
-            label="START FROM ORIGINAL MEMORY CARD"
+        label="START FROM ORIGINAL MEMORY CARD"
     ):
         st.session_state.update({
             k_my_deck2: list(map(str_to_card, eval(deck_output_memory_card_original)))
+        })
+        st.rerun()
+
+    if st.button(
+        label="START WITH DEMO DECK 2025-02-22",
+    ):
+        st.session_state.update({
+            k_my_deck2: list(map(str_to_card, eval(deck_output_20250222)))
         })
         st.rerun()
 
@@ -891,6 +905,7 @@ def str_to_card(card_str: str | Card) -> Card | None:
 #
 
 img_w_planet = 36
+size_node = 15
 
 data_parsed_combinations, data_parsed_combinations_2 = parse_combinations_file()
 reverse_combos = process_reverse_combinations()
@@ -916,6 +931,7 @@ selectbox_operation_mode = st.selectbox(
 )
 
 k_my_deck2 = f"my_deck_2"
+k_my_hand2 = f"my_hand_2"
 
 if selectbox_operation_mode == options_operation_mode[0]:
     # Build
@@ -925,6 +941,7 @@ if selectbox_operation_mode == options_operation_mode[0]:
     deck = st.session_state.setdefault(k_my_deck2, [])
     st.write("deck")
     st.write(deck)
+    st.write(list(map(id, deck)))
 
     lst_monsters = [c for c in deck if c.type_simple == "Monster"]
     n_monsters = len(lst_monsters)
@@ -987,10 +1004,17 @@ if selectbox_operation_mode == options_operation_mode[0]:
 
     p_combos = []
     p_combo_txts = {}
+
+    for i, card in enumerate(data_parsed_combinations_2):
+        if str(card).startswith("#35"):
+            print(f"{i=}, {card=}, {deck[0]=}, {type(card)=}, {type(deck[0])=}, eq={card==deck[0]}")
+
+    st.write(list(map(str, data_parsed_combinations_2)))
+    # st.write({str(k): c for k, c in data_parsed_combinations_2.items()})
     print(f"{len(data_parsed_combinations_2)=}")
     print(f"{list(map(type, list(data_parsed_combinations_2.keys())[:10]))=}")
     for i, card in enumerate(deck):
-        print(f"{i=}, {card=}, {type(card)=}")
+        print(f"{i=}, {card=}, {type(card)=}, {id(card)=}, {card.in_play=}, {card in data_parsed_combinations_2=}")
         c_combos = data_parsed_combinations_2[card]
         # c_combos = [c for c in c_combos if (c in deck) and (c != card)]
         c_combos = [c for c in c_combos if (c in deck)]
@@ -1001,6 +1025,82 @@ if selectbox_operation_mode == options_operation_mode[0]:
     st.write(p_combos)
     st.write("p_combo_txts")
     st.write(p_combo_txts)
+
+    player_me = st.session_state.setdefault(k_player_0, Player("Me", deck, str_to_card, gen_card_ids))
+    if not any(player_me.get_hand()):
+        player_me.draw(5)
+    hand = player_me.get_hand()
+
+    # hand = st.session_state.setdefault(k_my_hand2, random.sample(deck, 5))
+
+    st.write("hand")
+    st.write(hand)
+
+    # Define nodes (events in the timeline)
+    card_node_ids = {card: f"0_hand_{i}" for i, card in enumerate(hand)}
+    st.write("card_node_ids")
+    st.write({str(c): v for c, v in card_node_ids.items()})
+    nodes = [
+        Node(
+            id=card_node_ids[card],
+            label=str(card),
+            size=size_node
+        )
+        for card in hand
+
+        # Node(id="Start", label="2024-01-01", size=15),
+        # Node(id="Milestone 1", label="2024-02-01", size=15),
+        # Node(id="Milestone 2", label="2024-03-01", size=15),
+        # Node(id="End", label="2024-04-01", size=15)
+    ]
+    st.write("nodes")
+    st.write(nodes)
+
+    edges = []
+    new_nodes = []
+    new_card_node_ids = {}
+    for i, card in enumerate(hand):
+        c_combos = {k: v for k, v in data_parsed_combinations_2[card].items() if k.num in [c_.num for c_ in hand]}
+        st.write(f"{i=}, {card=}, {c_combos=}")
+        for j, c in enumerate(c_combos):
+            if c_combos[c] not in new_card_node_ids:
+                id_target = f"1_combo_{len(new_nodes)}"
+                new_nodes.append(Node(
+                    id=id_target,
+                    label=str(c_combos[c]),
+                    size=size_node
+                ))
+                card_node_ids[c_combos[c]] = id_target
+                new_card_node_ids[c_combos[c]] = id_target
+            else:
+                id_target = card_node_ids[c_combos[c]]
+            edges.append(Edge(
+                source=f"0_hand_{i}",
+                target=id_target,
+                type="CURVE_SMOOTH"
+            ))
+            # edges.append(Edge(
+            #     source=card_node_ids[c],
+            #     target=id_target,
+            #     type="CURVE_SMOOTH"
+            # ))
+
+    st.write("new_nodes")
+    st.write(new_nodes)
+    nodes += new_nodes
+
+    # # Define edges (connections between events)
+    # edges = [
+    #     Edge(source="Start", target="Milestone 1", type="CURVE_SMOOTH"),
+    #     Edge(source="Milestone 1", target="Milestone 2", type="CURVE_SMOOTH"),
+    #     Edge(source="Milestone 2", target="End", type="CURVE_SMOOTH")
+    # ]
+
+    # Configure the timeline visualization
+    config = Config(width=1500, height=900, directed=True)
+
+    # Display the timeline
+    agraph(nodes=nodes, edges=edges, config=config)
 
 elif selectbox_operation_mode == options_operation_mode[1]:
     # Play
