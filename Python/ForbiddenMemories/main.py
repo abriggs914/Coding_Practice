@@ -1,10 +1,9 @@
 import os
 import random
 
-import streamlit
-
 from match import *
 from player import *
+from colour_utility import *
 
 from streamlit_agraph import Node, Config, Edge, agraph
 
@@ -21,6 +20,11 @@ app_title = "YU-GI-OH! Forbidden Memories"
 unknown_card = Card(0)
 
 gen_card_ids = (i for i in range(1000000))
+
+colour_node_card_hand = Colour("#56AECC")
+colour_node_combo_lvl_0 = Colour("#264E8C")
+colour_node_combo_lvl_1 = Colour("#162E6C")
+colour_node_combo_lvl_2 = Colour("#00204C")
 
 
 st.set_page_config(page_title=app_title, layout="wide")
@@ -243,6 +247,69 @@ def reset_deck():
         k_my_deck: [c for c in known_cards],
         k_my_hand: []
     })
+
+
+def process_possible_combos_2(hand: list[Card], do_test: bool = False):
+    # print(f"\n{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n\n")
+
+    def helper(nest, hand_):
+        if nest >= 30:
+            return []
+        # print(f"{nest=}")
+        new_combos = []
+        hand_c = [c for c in hand_]
+        for i, card_0_str in enumerate(hand_):
+            if do_test:
+                print(f"{card_0_str=}, {type(card_0_str)=}")
+            # card_0 = str_to_card(card_0_str)
+            card_0 = card_0_str
+            p_combos = data_parsed_combinations_2[card_0]
+            for j, card_1_str in enumerate(hand_c):
+                # card_1 = str_to_card(card_1_str)
+                card_1 = card_1_str
+                if i != j:
+                    # print(f"\t--{card_1}")
+                    if card_1 in p_combos:
+                        # combo_res = data_parsed_combinations[card_0][card_1]
+                        combo_res = p_combos[card_1]
+                        # print(f"\t\t{card_1} => {combo_res}")
+                        pair_0 = [nest, combo_res, [card_0, card_1]]
+                        pair_1 = [nest, combo_res, [card_1, card_0]]
+                        # print(f"{pair_0=}\n{pair_1=}\n=>", end="")
+                        if (pair_0 not in new_combos) and (pair_1 not in new_combos):
+                            # print("AAA")
+                            new_combos.append(pair_0)
+                        # else:
+                        #     print("BBB")
+        # # if new_combos:
+        # print(f"{new_combos=}, {hand_=}")
+        new_new_combos = []
+        for nest_, cr_, pr_ in new_combos:
+            # new_hand = [c for c in hand_ if c not in pr_] + [cr_]
+            new_hand = [c for c in hand_]
+            if do_test:
+                print(f"\t\t{new_hand=}, {pr_=}, {cr_=}, {type(new_hand)}, {type(pr_)}, {type(cr_)}")
+                print(f"\t\t{list(map(type, new_hand))}, {list(map(type, pr_))}, {type(cr_)}")
+            new_hand.remove(pr_[0])
+            new_hand.remove(pr_[1])
+            new_hand.append(cr_)
+            # print(f"{new_hand=}")
+            new_new_combos += helper(nest_ + 1, new_hand)
+        return new_combos + new_new_combos
+
+    combos = helper(0, hand)
+
+    filtered_combos = []
+    for nest_, cr_, pr_ in combos:
+        pair_0 = [cr_, [pr_[0], pr_[1]]]
+        pair_1 = [cr_, [pr_[1], pr_[0]]]
+        if (pair_0 not in filtered_combos) and (pair_1 not in filtered_combos):
+            filtered_combos.append(pair_0)
+    combos = filtered_combos
+
+    combos.sort(key=lambda tup: tup[0].atk_points, reverse=True)
+
+    return combos
 
 
 def process_possible_combos(hand: list[Card], do_test: bool = False):
@@ -1019,7 +1086,7 @@ if selectbox_operation_mode == options_operation_mode[0]:
         # c_combos = [c for c in c_combos if (c in deck) and (c != card)]
         c_combos = [c for c in c_combos if (c in deck)]
         p_combos.append(c_combos)
-        p_combo_txts[f"{card}"] = [f"{known_cards[c]} => {known_cards[data_parsed_combinations_2[card][c]]}" for c in c_combos]
+        p_combo_txts[f"{card}"] = [f"{c} => {data_parsed_combinations_2[card][c]}" for c in c_combos]
 
     st.write("p_combos")
     st.write(p_combos)
@@ -1044,7 +1111,8 @@ if selectbox_operation_mode == options_operation_mode[0]:
         Node(
             id=card_node_ids[card],
             label=str(card),
-            size=size_node
+            size=size_node,
+            color=colour_node_card_hand.hex_code
         )
         for card in hand
 
@@ -1059,7 +1127,16 @@ if selectbox_operation_mode == options_operation_mode[0]:
     edges = []
     new_nodes = []
     new_card_node_ids = {}
-    for i, card in enumerate(hand):
+    p_cmbo_cards = process_possible_combos_2(hand)
+    to_pop = []
+    for i, data in enumerate(p_cmbo_cards):
+        res_card, combo_cards = data
+        if res_card in hand:
+            to_pop.append(i)
+    for i in to_pop[::-1]:
+        p_cmbo_cards.pop(i)
+    
+    for i, card in enumerate(hand + [tup[0] for tup in p_cmbo_cards]):
         c_combos = {k: v for k, v in data_parsed_combinations_2[card].items() if k.num in [c_.num for c_ in hand]}
         st.write(f"{i=}, {card=}, {c_combos=}")
         for j, c in enumerate(c_combos):
@@ -1068,12 +1145,14 @@ if selectbox_operation_mode == options_operation_mode[0]:
                 new_nodes.append(Node(
                     id=id_target,
                     label=str(c_combos[c]),
-                    size=size_node
+                    size=size_node,
+                    color=colour_node_combo_lvl_0.hex_code
                 ))
                 card_node_ids[c_combos[c]] = id_target
                 new_card_node_ids[c_combos[c]] = id_target
             else:
                 id_target = card_node_ids[c_combos[c]]
+            st.write(f"EDGE: '0_hand_{i}', => {id_target} ({card} => {c})")
             edges.append(Edge(
                 source=f"0_hand_{i}",
                 target=id_target,
@@ -1097,10 +1176,14 @@ if selectbox_operation_mode == options_operation_mode[0]:
     # ]
 
     # Configure the timeline visualization
-    config = Config(width=1500, height=900, directed=True)
+    config = Config(width=1500, height=900, directed=True, physics=False)
 
     # Display the timeline
-    agraph(nodes=nodes, edges=edges, config=config)
+    with st.container(border=1, height=500):
+        agraph(nodes=nodes, edges=edges, config=config)
+
+
+    st.write(process_possible_combos_2(hand))
 
 elif selectbox_operation_mode == options_operation_mode[1]:
     # Play
