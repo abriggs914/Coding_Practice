@@ -301,8 +301,8 @@ def process_possible_combos_2(hand: list[Card], do_test: bool = False):
 
     filtered_combos = []
     for nest_, cr_, pr_ in combos:
-        pair_0 = [cr_, [pr_[0], pr_[1]]]
-        pair_1 = [cr_, [pr_[1], pr_[0]]]
+        pair_0 = [cr_, [pr_[0], pr_[1]], nest_]
+        pair_1 = [cr_, [pr_[1], pr_[0]], nest_]
         if (pair_0 not in filtered_combos) and (pair_1 not in filtered_combos):
             filtered_combos.append(pair_0)
     combos = filtered_combos
@@ -1110,9 +1110,11 @@ if selectbox_operation_mode == options_operation_mode[0]:
     nodes = [
         Node(
             id=card_node_ids[card],
+            title=card.name,
             label=str(card),
             size=size_node,
-            color=colour_node_card_hand.hex_code
+            color=colour_node_card_hand.hex_code,
+            level=0
         )
         for card in hand
 
@@ -1129,24 +1131,35 @@ if selectbox_operation_mode == options_operation_mode[0]:
     new_card_node_ids = {}
     p_cmbo_cards = process_possible_combos_2(hand)
     to_pop = []
+    combo_levels = {}
     for i, data in enumerate(p_cmbo_cards):
-        res_card, combo_cards = data
+        res_card, combo_cards, nest = data
         if res_card in hand:
             to_pop.append(i)
+        combo_levels[res_card] = max(nest, combo_levels.get(res_card, 1))
     for i in to_pop[::-1]:
         p_cmbo_cards.pop(i)
-    
-    for i, card in enumerate(hand + [tup[0] for tup in p_cmbo_cards]):
+
+    st.write("p_cmbo_cards")
+    st.write(p_cmbo_cards)
+
+    hand_ext = hand + [tup[0] for tup in p_cmbo_cards]
+    for i, card in enumerate(hand_ext):
+    # for i, card in enumerate(hand):
         c_combos = {k: v for k, v in data_parsed_combinations_2[card].items() if k.num in [c_.num for c_ in hand]}
-        st.write(f"{i=}, {card=}, {c_combos=}")
+        if (card in c_combos) and (hand_ext.count(card) < 2):
+            c_combos.pop(card)
+        st.write(f"{i=}, {card=}, {c_combos=}, c_combos2={[c.num for c in c_combos]}, ids={[c_.num for c_ in hand]}")
         for j, c in enumerate(c_combos):
             if c_combos[c] not in new_card_node_ids:
                 id_target = f"1_combo_{len(new_nodes)}"
                 new_nodes.append(Node(
                     id=id_target,
+                    title=c_combos[c].name,
                     label=str(c_combos[c]),
                     size=size_node,
-                    color=colour_node_combo_lvl_0.hex_code
+                    color=colour_node_combo_lvl_0.hex_code,
+                    level=combo_levels[c_combos[c]]
                 ))
                 card_node_ids[c_combos[c]] = id_target
                 new_card_node_ids[c_combos[c]] = id_target
@@ -1156,16 +1169,22 @@ if selectbox_operation_mode == options_operation_mode[0]:
             edges.append(Edge(
                 source=f"0_hand_{i}",
                 target=id_target,
-                type="CURVE_SMOOTH"
+                type="CURVE_SMOOTH",
+                color="#CE7952"
             ))
-            # edges.append(Edge(
-            #     source=card_node_ids[c],
-            #     target=id_target,
-            #     type="CURVE_SMOOTH"
-            # ))
+            edges.append(Edge(
+                source=card_node_ids[card],
+                target=id_target,
+                type="CURVE_SMOOTH",
+                color="#7952CE"
+            ))
 
     st.write("new_nodes")
     st.write(new_nodes)
+    st.write("card_node_ids")
+    st.write({str(k): v for k, v in card_node_ids.items()})
+    st.write("new_card_node_ids")
+    st.write({str(k): v for k, v in new_card_node_ids.items()})
     nodes += new_nodes
 
     # # Define edges (connections between events)
@@ -1176,14 +1195,21 @@ if selectbox_operation_mode == options_operation_mode[0]:
     # ]
 
     # Configure the timeline visualization
-    config = Config(width=1500, height=900, directed=True, physics=False)
+    config = Config(
+        width=1500,
+        height=900,
+        directed=True,
+        physics=False,
+        hierarchical=True,
+        direction="LR"
+    )
 
     # Display the timeline
     with st.container(border=1, height=500):
         agraph(nodes=nodes, edges=edges, config=config)
 
 
-    st.write(process_possible_combos_2(hand))
+    # st.write(process_possible_combos_2(hand))
 
 elif selectbox_operation_mode == options_operation_mode[1]:
     # Play
