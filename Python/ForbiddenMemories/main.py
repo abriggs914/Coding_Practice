@@ -12,6 +12,7 @@ from streamlit_agraph import Node, Config, Edge, agraph
 deck_output_20250218 = """["#241 - Dark Assailant 1200/1200","#197 - Mech Mole Zombie 500/400","#50 - Basic Insect 500/700","#609 - Bladefly 600/700","#547 - Griggle 350/300","#410 - Mechanical Spider 400/500","#156 - Hard Armor 300/1200","#387 - Mystic Lamp 400/300","#102 - Mask of Darkness 900/400","#283 - Holograh 1100/700","#190 - Akakieisu 1000/800","#137 - Mystery Hand 500/500","#579 - Abyss Flower 750/400","#402 - Monster Eye 250/350","#398 - Ooguchi 300/250","#214 - Kagemusha of the Blue Flame 800/400","#475 - Sinister Serpent 300/250","#475 - Sinister Serpent 300/250","#336 - Dark Hole M","#148 - The Shadow Who Controls the Dark 800/700","#276 - Ray & Temperature 1000/1000","#586 - Greenkappa 650/900","#524 - Star Boy 550/500","#335 - Yami 0/0","#101 - Wings of Wicked Flame 700/600","#421 - Cyber Commander 750/700","#202 - Air Marmot of Nefariousness 400/600","#202 - Air Marmot of Nefariousness 400/600","#226 - Skull Stalker 900/800","#134 - Mystical Capture Chain 700/700","#240 - The Drdek 700/800","#191 - LaLa Li-oon 600/600","#105 - Tomozaurus 500/400","#135 - Fiend's Hand 600/600","#547 - Griggle 350/300"]"""
 deck_output_20250220 = """["#579 - Abyss Flower 750/400","#202 - Air Marmot of Nefariousness 400/600","#411 - Bat 300/350","#609 - Bladefly 600/700","#548 - Bone Mouse 400/300","#178 - Claw Reacher 1000/800","#539 - Corroding Shark 1100/700","#395 - Dancing Elf 300/200","#336 - Dark Hole M","#120 - Dream Clown 1200/900","#154 - Fire Reaper 700/500","#154 - Fire Reaper 700/500","#644 - Flame Viper 400/450","#210 - Hinotama Soul 600/500","#227 - Hitodenchak 600/700","#306 - Insect Armor with Laser Cannon E","#107 - Kageningen 800/600","#58 - Kuriboh 300/200","#58 - Kuriboh 300/200","#158 - Man Eater 800/600","#501 - Man-eater Bug 450/600","#501 - Man-eater Bug 450/600","#102 - Mask of Darkness 900/400","#197 - Mech Mole Zombie 500/400","#245 - Meda Bat 800/400","#212 - Meotoko 700/600","#222 - Midnight Fiend 800/600","#516 - Muka Muka 600/300","#8 - Mushroom Man 800/600","#143 - Necrolancer the Timelord 800/900","#604 - Obese Marmot of Nefariousness 750/800","#398 - Ooguchi 300/250","#398 - Ooguchi 300/250","#333 - Sogen M","#444 - Turu-Purun 450/500","#606 - Twin Long Rods #2 850/700","#231 - Wood Clown 800/1200","#563 - Wretched Ghost of the Attic 550/400","#452 - Zarigun 600/700","#395 - Dancing Elf 300/200"]"""
 deck_output_20250222 = """["#202 - Air Marmot of Nefariousness 400/600","#167 - Ancient Jar 400/200","#289 - Change Slime 400/300","#421 - Cyber Commander 750/700","#395 - Dancing Elf 300/200","#336 - Dark Hole M","#123 - Dark Plant 300/400","#109 - Goddess with the Third Eye 1200/1000","#547 - Griggle 350/300","#422 - Jinzo #7 500/400","#214 - Kagemusha of the Blue Flame 800/400","#107 - Kageningen 800/600","#211 - Kaminarikozou 700/600","#192 - Key Mace 400/300","#485 - Korogashi 550/400","#58 - Kuriboh 300/200","#191 - LaLa Li-oon 600/600","#397 - Leghul 300/350","#397 - Leghul 300/350","#158 - Man Eater 800/600","#182 - Masked Clown 500/700","#212 - Meotoko 700/600","#222 - Midnight Fiend 800/600","#402 - Monster Eye 250/350","#282 - Mystical Sheep #2 800/1000","#129 - Nemuriko 800/700","#208 - Petit Angel 600/900","#208 - Petit Angel 600/900","#203 - Phantom Ghost 600/800","#9 - Shadow Specter 500/200","#524 - Star Boy 550/500","#309 - Steel Shell E","#257 - Stone Armadiller 800/1200","#257 - Stone Armadiller 800/1200","#265 - The Furious Sea King 800/700","#152 - The Melting Red Shadow 500/700","#224 - Trap Master 500/1100","#606 - Twin Long Rods #2 850/700","#334 - Umi M","#130 - Weather Control 600/400"]"""
+deck_output_20250228 = """["#484 - Ameba 300/350 - None - 0000000","#304 - Axe of Despair E - 0000001","#50 - Basic Insect 500/700 - None - 0000002","#139 - Blue-eyed Silver Zombie 900/700 - None - 0000003","#548 - Bone Mouse 400/300 - None - 0000004","#336 - Dark Hole M - 0000005","#123 - Dark Plant 300/400 - None - 0000006","#159 - Dig Beak 500/800 - None - 0000007","#154 - Fire Reaper 700/500 - None - 000008","#154 - Fire Reaper 700/500 - None - 0000009","#154 - Fire Reaper 700/500 - None - 0000010","#547 - Griggle 350/300 - None - 0000011","#237 - Haniwa 500/500 - None - 0000012","#174 - Hurricail 900/200 - None - 0000013","#422 - Jinzo #7 500/400 - None - 0000014","#192 - Key Mace 400/300 - None - 0000015","#397 - Leghul 300/350 - None - 0000016","#501 - Man-eater Bug 450/600 - None - 0000017","#197 - Mech Mole Zombie 500/400 - None - 0000018","#8 - Mushroom Man 800/600 - None - 0000019","#137 - Mystery Hand 500/500 - None - 0000020","#129 - Nemuriko 800/700 - None - 0000021","#208 - Petit Angel 600/900 - None - 0000022","#292 - Psychic Kappa 400/1000 - None - 0000023","#488 - Rainbow Flower 400/500 - None - 0000024","#24 - Skull Servant 300/200 - None - 0000026","#24 - Skull Servant 300/200 - None - 0000026","#333 - Sogen M - 0000027","#118 - Supporter in the Shadows 1000/1000 - None - 0000028","#399 - Swordsman from a Foreign Land 250/250 - None - 0000029","#556 - The Wandering Doomed 800/600 - None - 0000033","#105 - Tomozaurus 500/400 - None - 0000031","#122 - Yamatano Dragon Scroll 900/300 - None - 0000032","#556 - The Wandering Doomed 800/600 - None - 0000033","#140 - Toad Master 1000/1000 - None - 0000034"]"""
 deck_output_memory_card_original = """["#35 - Dark Magician 2500/2100","#35 - Dark Magician 2500/2100","#35 - Dark Magician 2500/2100","#308 - Beast Fangs E","#385 - Bickuribox 2300/2000","#39 - Curse of Dragon 2000/1500","#463 - Electric Snake 800/900","#690 - Fake Trap T","#690 - Fake Trap T","#38 - Gaia the Fierce Knight 2300/2100","#38 - Gaia the Fierce Knight 2300/2100","#38 - Gaia the Fierce Knight 2300/2100","#427 - Kaiser Dragon 2300/2000","#458 - Kaminari Attack 1900/1400","#458 - Kaminari Attack 1900/1400","#458 - Kaminari Attack 1900/1400","#211 - Kaminarikozou 700/600","#366 - Labyrinth Wall 0/3000","#652 - Magical Labyrinth E","#409 - Metal Dragon 1850/1700","#713 - Meteor B. Dragon 3500/2000","#713 - Meteor B. Dragon 3500/2000","#713 - Meteor B. Dragon 3500/2000","#712 - Meteor Dragon 1800/2000","#332 - Mountain M","#332 - Mountain M","#45 - Oscillo Hero #2 1000/500","#45 - Oscillo Hero #2 1000/500","#45 - Oscillo Hero #2 1000/500","#337 - Raigeki M","#337 - Raigeki M","#82 - Red-eyes B. Dragon 2400/2000","#82 - Red-eyes B. Dragon 2400/2000","#82 - Red-eyes B. Dragon 2400/2000","#358 - Seiyaryu 2500/2300","#358 - Seiyaryu 2500/2300","#707 - Skull Knight 2650/2250","#707 - Skull Knight 2650/2250","#707 - Skull Knight 2650/2250","#335 - Yami M"]"""
 
 
@@ -1006,9 +1007,6 @@ if selectbox_operation_mode == options_operation_mode[0]:
     if st.session_state.get(k_my_deck2) is None:
         ask_deck2()
     deck = st.session_state.setdefault(k_my_deck2, [])
-    st.write("deck")
-    st.write(deck)
-    st.write(list(map(id, deck)))
 
     lst_monsters = [c for c in deck if c.type_simple == "Monster"]
     n_monsters = len(lst_monsters)
@@ -1094,6 +1092,9 @@ if selectbox_operation_mode == options_operation_mode[0]:
     st.write(p_combo_txts)
 
     player_me = st.session_state.setdefault(k_player_0, Player("Me", deck, str_to_card, gen_card_ids))
+    st.write("deck")
+    st.write(deck)
+    st.write(list(map(id, deck)))
     if not any(player_me.get_hand()):
         player_me.draw(5)
     hand = player_me.get_hand()
@@ -1206,6 +1207,10 @@ if selectbox_operation_mode == options_operation_mode[0]:
 
     # Display the timeline
     with st.container(border=1, height=500):
+        if st.button(
+            label="draw"
+        ):
+            player_me.draw()
         agraph(nodes=nodes, edges=edges, config=config)
 
 
