@@ -558,7 +558,7 @@ def load_excel_dfs():
     if os.path.exists(r"D:\NHL Jerseys.xlsm"):
         return pd.read_excel(
             r"D:\NHL Jerseys.xlsm",
-            sheet_name=list(range(8))
+            sheet_name=list(range(9))
         )
     else:
         if os.path.exists(
@@ -610,13 +610,14 @@ excel_dfs = load_excel_dfs()
 excel_dfs_keys = list(excel_dfs.keys())
 
 df_nhl_jerseys = excel_dfs[excel_dfs_keys[0]]
-df_jersey_images = excel_dfs[excel_dfs_keys[1]]
-df_nike_jerseys = excel_dfs[excel_dfs_keys[2]]
-df_jersey_wishlist = excel_dfs[excel_dfs_keys[3]]
-df_jersey_reporting = excel_dfs[excel_dfs_keys[4]]
-df_nhl_teams = excel_dfs[excel_dfs_keys[5]]
-df_nhl_divisions = excel_dfs[excel_dfs_keys[6]]
-df_nhl_conferences = excel_dfs[excel_dfs_keys[7]]
+df_nhl_jerseys_sheet1 = excel_dfs[excel_dfs_keys[1]]
+df_jersey_images = excel_dfs[excel_dfs_keys[2]]
+df_nike_jerseys = excel_dfs[excel_dfs_keys[3]]
+df_jersey_wishlist = excel_dfs[excel_dfs_keys[4]]
+df_jersey_reporting = excel_dfs[excel_dfs_keys[5]]
+df_nhl_teams = excel_dfs[excel_dfs_keys[6]]
+df_nhl_divisions = excel_dfs[excel_dfs_keys[7]]
+df_nhl_conferences = excel_dfs[excel_dfs_keys[8]]
 
 df_nhl_jerseys = df_nhl_jerseys.rename(
     columns={
