@@ -138,7 +138,21 @@ def parse_combinations_file():
 
 def parse_rituals_file():
     with open(rituals_file, "r") as f:
-        return pd.read_json(f)
+        df = pd.read_json(f)
+        df["n_Ritual_Monster"] = None
+        df["n_Ritual_Card"] = None
+        df["n_Sacrifices"] = None
+        for i, row in df.iterrows():
+            ritual_monster = row["Ritual Monster"]
+            ritual_card = row["Ritual Card"]
+            sacrifices = row["Sacrifices"]
+            num_rm = int(ritual_monster.split(" ")[0].removeprefix("#"))
+            num_rc = int(ritual_card.split(" ")[0].removeprefix("#"))
+            nums_sac = [int(c.split(" ")[0].removeprefix("#")) for c in sacrifices]
+            df.loc[i, "n_Ritual_Monster"] = num_rm
+            df.loc[i, "n_Ritual_Card"] = num_rc
+            df.loc[i, "n_Sacrifices"] = ";".join(map(str, nums_sac))
+        return df
 
 
 class MasterChest:
@@ -172,7 +186,12 @@ class MasterChest:
                 "p1_strong_against": None,
                 "p1_weak_against": None,
                 "in_ring_0": None,
-                "in_ring_1": None
+                "in_ring_1": None,
+
+                "RitualIdx": None,
+                "RitualMonster": None,
+                "RitualCard": None,
+                "RitualSacrificeCard": None
             }
             if card.type_simple == "Monster":
                 data.update({
@@ -188,6 +207,20 @@ class MasterChest:
 
             return data
 
+        def set_ritual_data(df, card):
+            df_ritual_monster: pd.DataFrame = self.data_rituals.loc[self.data_rituals["n_Ritual_Monster"] == card.num]
+            df_ritual_card: pd.DataFrame = self.data_rituals.loc[self.data_rituals["n_Ritual_Card"] == card.num]
+            # df_sacrifices: pd.DataFrame = self.data_rituals.loc[f"{card.num}" in self.data_rituals["n_Sacrifices"].str.split(";")]
+            df_sacrifices: pd.DataFrame = pd.DataFrame()
+            is_rm = not df_ritual_monster.empty
+            is_rc = not df_ritual_card.empty
+            is_s = not df_sacrifices.empty
+            df.loc[0, "RitualIdx"] = (df_ritual_monster.index.item() if is_rm else (
+                df_ritual_card.index.item() if is_rc else (df_sacrifices.index.item() if is_s else None)))
+            df.loc[0, "RitualMonster"] = is_rm
+            df.loc[0, "RitualCard"] = is_rc
+            df.loc[0, "RitualSacrificeCard"] = is_s
+
         dfs = []
         checked_cards = []
         for i, card in enumerate(self.data_combinations):
@@ -195,19 +228,34 @@ class MasterChest:
             if card.num not in checked_cards:
                 data = compile_card_data(card)
                 dfs.append(pd.DataFrame([data]))
+
+                # # df_ritual_monster: pd.DataFrame = self.data_rituals.loc[self.data_rituals["n_Ritual_Monster"] == card.num]
+                # # df_ritual_card: pd.DataFrame = self.data_rituals.loc[self.data_rituals["n_Ritual_Card"] == card.num]
+                # # # df_sacrifices: pd.DataFrame = self.data_rituals.loc[f"{card.num}" in self.data_rituals["n_Sacrifices"].str.split(";")]
+                # # df_sacrifices: pd.DataFrame = pd.DataFrame()
+                # # is_rm = not df_ritual_monster.empty
+                # # is_rc = not df_ritual_card.empty
+                # # is_s = not df_sacrifices.empty
+                # # dfs[-1].loc[i, "RitualIdx"] = (df_ritual_monster.index.item() if is_rm else (df_ritual_card.index.item() if is_rc else (df_sacrifices.index.item() if is_s else None)))
+                # # dfs[-1].loc[i, "RitualMonster"] = is_rm
+                # # dfs[-1].loc[i, "RitualCard"] = is_rc
+                # # dfs[-1].loc[i, "RitualSacrificeCard"] = is_s
+                set_ritual_data(dfs[-1], card)
+
                 checked_cards.append(card.num)
             for j, c_card in enumerate(c_combos):
                 if c_card.num not in checked_cards:
                     c_data = compile_card_data(c_card)
                     dfs.append(pd.DataFrame([c_data]))
+                    set_ritual_data(dfs[-1], c_card)
                     checked_cards.append(c_card.num)
                 r_card = c_combos[c_card]
                 if r_card.num not in checked_cards:
                     r_data = compile_card_data(r_card)
                     dfs.append(pd.DataFrame([r_data]))
+                    set_ritual_data(dfs[-1], r_card)
                     checked_cards.append(r_card.num)
-
-        self.df_card_data = pd.concat(dfs, ignore_index=True).reset_index()
+        self.df_card_data = pd.concat(dfs, ignore_index=True)
 
     #     if not os.path.exists(self.path_data):
     #         self.initialize_data_file()
