@@ -61,25 +61,62 @@ st.write(chest.df_card_data)
 st.write(chest.data_rituals)
 
 
-nodes = [
-    Node(
-        id=f"node_card_{card_row['num']}",
-        title=card_row["name"],
-        size=len(chest.data_combinations[chest.num_2_card(card_row["num"])]) + 10
-    )
-    for i, card_row in chest.df_card_data.iterrows()
-]
-
+card_sel = st.session_state.get("sel_graph")
+card_sel = card_sel if card_sel is None else chest.num_2_card(int(card_sel.split("_")[-1]))
+max_combos_all_cards = int(chest.df_card_data["n_combos"].max())
+nodes = []
 edges = []
+ww = 30
+for i, card_row in chest.df_card_data.iterrows():
+
+    # if ww <= 0:
+    #     break
+
+    card_a = chest.num_2_card(card_row["num"])
+    c_combos = chest.data_combinations[card_a]
+    n_combos = len(c_combos)
+    # l0 = card_a == card_sel
+    # l1 = card_r == card_sel
+    id_a = f"node_card_{card_row['num']}"
+    nodes.append(Node(
+        id=id_a,
+        title=card_row["name"],
+        size=n_combos + 10,
+        color=gradient(n_combos, max_combos_all_cards + 1, "#770000", "#007700", rgb=False)
+        # ,
+        # level=0 if l0 else (1 if l1 else 2)
+    ))
+    for j, card_b in enumerate(c_combos):
+        card_r = c_combos[card_b]
+        id_b = f"node_card_{card_b.num}"
+        id_r = f"node_card_{card_r.num}"
+        # if (card_a.num == card_sel.num) or (card_r.num == card_sel.num):
+        #     st.write(f"{card_a=}, {card_r=}, {card_sel=}, a=s=={card_a==card_sel}, r=s=={card_r==card_sel}")
+        if l0 or l1:
+            edges.append(Edge(
+                source=id_a,
+                target=id_r
+            ))
+        # if (card_b.num == card_sel.num) or (card_r.num == card_sel.num):
+        #     st.write(f"{card_b=}, {card_r=}, {card_sel=}, a=s=={card_b==card_sel}, r=s=={card_r==card_sel}")
+        if (card_b == card_sel) or (card_r == card_sel):
+            edges.append(Edge(
+                source=id_b,
+                target=id_r
+            ))
+    ww -= 1
 
 config = Config(
     width=1500,
     height=900,
     directed=True,
     physics=True,
-    hierarchical=True,
+    # hierarchical=True,
     direction="UD"
 )
+
+st.write(f"{len(nodes)=}")
+st.write(f"{len(edges)=}")
 
 with st.container(border=1):
     graph = agraph(
@@ -87,6 +124,8 @@ with st.container(border=1):
         edges=edges,
         config=config
     )
+st.write(f"{graph=}")
+st.session_state.update({"sel_graph": graph})
 
 
 #

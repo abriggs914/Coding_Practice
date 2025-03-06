@@ -274,7 +274,12 @@ class MasterChest:
         self.df_card_data = pd.concat(dfs, ignore_index=True)
 
     def num_2_card(self, num) -> Card:
-        return list[self.data_combinations][num]
+        """
+        num is expected to be the card.num attr, and therefor needs offset by 1
+        :param num: Card.num attr
+        :return: Card
+        """
+        return list(self.data_combinations)[num - 1]
 
     #     if not os.path.exists(self.path_data):
     #         self.initialize_data_file()
