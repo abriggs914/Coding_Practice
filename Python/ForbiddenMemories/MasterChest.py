@@ -1,7 +1,7 @@
 import os
 
 import pandas as pd
-
+from collections import OrderedDict
 from card import *
 
 
@@ -92,7 +92,7 @@ def parse_card_line(line):
 
 
 def parse_combinations_file():
-    cards_2 = {}
+    cards_2 = OrderedDict()
     with open(combinations_file, "r") as f:
         in_section = True
         section_card: Optional[Card] = None
@@ -211,10 +211,26 @@ class MasterChest:
             df_ritual_monster: pd.DataFrame = self.data_rituals.loc[self.data_rituals["n_Ritual_Monster"] == card.num]
             df_ritual_card: pd.DataFrame = self.data_rituals.loc[self.data_rituals["n_Ritual_Card"] == card.num]
             # df_sacrifices: pd.DataFrame = self.data_rituals.loc[f"{card.num}" in self.data_rituals["n_Sacrifices"].str.split(";")]
-            df_sacrifices: pd.DataFrame = pd.DataFrame()
+            # df_sacrifices: pd.DataFrame = pd.DataFrame()
+            df_sacrifices: pd.DataFrame = self.data_rituals.loc[self.data_rituals["n_Sacrifices"].map(lambda lst: card.num in map(int, lst.split(";")))]
             is_rm = not df_ritual_monster.empty
             is_rc = not df_ritual_card.empty
             is_s = not df_sacrifices.empty
+            if card.num == 1:
+                print(f"card {card.num=}")
+                print(f"{card}")
+                print(f"df_ritual_monster")
+                print(df_ritual_monster)
+                print(f"df_ritual_card")
+                print(df_ritual_card)
+                print(f"df_sacrifices")
+                print(df_sacrifices)
+                print(f"{df_ritual_monster.index=}, {type(df_ritual_monster.index)=}")
+                print(f"{df_ritual_card.index=}, {type(df_ritual_card.index)=}")
+                print(f"{df_sacrifices.index=}, {type(df_sacrifices.index)=}")
+                # print(f"{df_ritual_monster.index.item()=}, {type(df_ritual_monster.index.item())=}")
+                # print(f"{df_ritual_card.index.item()=}, {type(df_ritual_card.index.item())=}")
+                # print(f"{df_sacrifices.index.item()=}, {type(df_sacrifices.index.item())=}")
             df.loc[0, "RitualIdx"] = (df_ritual_monster.index.item() if is_rm else (
                 df_ritual_card.index.item() if is_rc else (df_sacrifices.index.item() if is_s else None)))
             df.loc[0, "RitualMonster"] = is_rm
@@ -256,6 +272,9 @@ class MasterChest:
                     set_ritual_data(dfs[-1], r_card)
                     checked_cards.append(r_card.num)
         self.df_card_data = pd.concat(dfs, ignore_index=True)
+
+    def num_2_card(self, num) -> Card:
+        return list[self.data_combinations][num]
 
     #     if not os.path.exists(self.path_data):
     #         self.initialize_data_file()

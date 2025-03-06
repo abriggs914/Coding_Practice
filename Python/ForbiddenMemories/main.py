@@ -2,7 +2,7 @@ import os
 import random
 
 
-from images.MasterChest import MasterChest
+from MasterChest import MasterChest
 from match import *
 from player import *
 from colour_utility import *
@@ -59,6 +59,35 @@ for i, card in enumerate(unique_cards):
 
 st.write(chest.df_card_data)
 st.write(chest.data_rituals)
+
+
+nodes = [
+    Node(
+        id=f"node_card_{card_row['num']}",
+        title=card_row["name"],
+        size=len(chest.data_combinations[chest.num_2_card(card_row["num"])]) + 10
+    )
+    for i, card_row in chest.df_card_data.iterrows()
+]
+
+edges = []
+
+config = Config(
+    width=1500,
+    height=900,
+    directed=True,
+    physics=True,
+    hierarchical=True,
+    direction="UD"
+)
+
+with st.container(border=1):
+    graph = agraph(
+        nodes=nodes,
+        edges=edges,
+        config=config
+    )
+
 
 #
 # @st.cache_data()

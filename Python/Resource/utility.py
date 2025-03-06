@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.84
-    Date...........2024-08-07
+    Version..............1.85
+    Date...........2025-03-05
     Author(s)....Avery Briggs
     """
 
@@ -1941,6 +1941,18 @@ def alpha_seq(n_digits=1, prefix="", suffix="", numbers_instead=False, pad_0=Fal
         # else:
         # print(f"VAL='{val}'")
         yield f"{prefix}{val}{suffix}"
+
+
+def excel_column_name(n: int, up_to: bool = True):
+    if n < 0:
+        return ""
+    if n == 0:
+        return "A"
+    if not up_to:
+        nd, nm = divmod(n, 26)
+        return excel_column_name(nd - 1, up_to=False) + chr(ord("A") + (n % 26))
+    else:
+        return [excel_column_name(i, up_to=False) for i in range(n + 1)]
 
 
 def sort_2_lists(list_1, list_2, reverse=False):
