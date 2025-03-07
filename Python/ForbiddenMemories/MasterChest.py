@@ -1,8 +1,9 @@
+import json
 import os
 
 import pandas as pd
 from collections import OrderedDict
-from card import *
+from player import *
 
 
 root_path_master_chests = r"C:\Users\abrig\Documents\Coding_Practice\Python\ForbiddenMemories"
@@ -160,11 +161,69 @@ class MasterChest:
     def __init__(self, id_num: Optional[int] = None):
 
         self.id_num = next_id()
-        self.path_data = os.path.join(root_path_master_chests, f"master_chest_{self.id_num}.json")
+        self.path_data = os.path.join(root_path_master_chests, f"master_chest_{str(self.id_num).rjust(3, '0')}.json")
 
         self.data_combinations = parse_combinations_file()
         self.data_rituals = parse_rituals_file()
+        self.df_card_data = self.init_card_df()
 
+        self.player_chests = self.load_master_chest_data()
+
+    def load_master_chest_data(self):
+        """
+        file contents are expected to follow format:
+
+        player_chests: dict of player ids and deck_type keys
+        {
+            "player_chests": {
+                "0": {
+                    "deck": [1, 2, 3, ... 122, 122, 371, 612, 612]  # total of 40 cards, duplicates allowed
+                    "chest": [1, 18, 18, 19, 19, ....] all cards not in the deck - AS A LIST.
+                    ### ALSO ACCEPTED:
+                    "chest": {1: 1, 18: 2, 19: 2, ....} all cards not in the deck - AS A DICT.
+                }
+            }
+        }
+
+        :return:
+        """
+        loaded_data = {}
+        if os.path.exists(self.path_data):
+            with open(self.path_data, "r") as f:
+                loaded_data = json.load(f)
+
+        player_datas = loaded_data.get("player_data", {})
+        list_players = list(player_datas)
+        for i, player_id in enumerate(list_players):
+            player_data = player_datas.get(player_id, {})
+            player_name = player_data.get("name", "UNKNOWN")
+            player_deck = player_data.get("deck", [])
+            player_chest = player_data.get("chest", {})
+
+            if isinstance(player_deck, dict):
+                deck = []
+                for j, c_id in enumerate(player_deck):
+                    c_qty = player_deck.get(c_id, 1)
+                    for k in range(c_qty):
+                        deck.append(self.num_2_card(c_id))
+                player_deck = deck
+
+            if not isinstance(player_deck, list):
+
+            if pl
+
+            if isinstance(player_chest, list):
+                player_chest = {c: player_chest.count(c.num) for c in self.data_combinations}
+
+            p = Player(
+                name=player_name,
+                deck=player_deck
+            )
+
+
+
+
+    def init_card_df(self):
         def compile_card_data(card: Card):
             ring_0 = star_sign_ring_0 if (card.planet_0 in star_sign_ring_0) else star_sign_ring_1
             ring_1 = star_sign_ring_0 if (card.planet_1 in star_sign_ring_0) else star_sign_ring_1
@@ -271,7 +330,7 @@ class MasterChest:
                     dfs.append(pd.DataFrame([r_data]))
                     set_ritual_data(dfs[-1], r_card)
                     checked_cards.append(r_card.num)
-        self.df_card_data = pd.concat(dfs, ignore_index=True)
+        return pd.concat(dfs, ignore_index=True)
 
     def num_2_card(self, num) -> Card:
         """
