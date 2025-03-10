@@ -156,6 +156,61 @@ def parse_rituals_file():
         return df
 
 
+# def random_deck(size: int = 40):
+#     """
+#     The player starts with a Deck of 40 cards, which are randomly selected from seven pools.
+#
+#     The 40 cards will be made up of:
+#
+#     16 monsters with ATK + DEF < 1100           # Grp 0
+#     16 monsters with 1100 ≤ ATK + DEF < 1600    # grp 1
+#     4 monsters with 1600 ≤ ATK + DEF < 2100     # grp 2
+#     1 monster with 2100 ≤ ATK + DEF             # grp 3
+#     1 pure Magic Card                           # grp 4
+#     1 Field Magic Card                          # grp 5
+#     1 Equip Card                                # grp 6
+#     """
+#     # return random.sample(known_cards[1:]*3, size)
+#     print(f"random deck")
+#     deck = []
+#     groups = [[] for i in range(7)]
+#     grp_sizes = [16, 16, 4, 1, 1, 1, 1]
+#     for i, card in enumerate(known_cards[1:]):
+#
+#         if (card == known_cards[336]) or (card == known_cards[337]):
+#             # dark hole and raigeki
+#             continue
+#         elif card in [known_cards[17], known_cards[18], known_cards[19], known_cards[20], known_cards[21]]:
+#             # exodia pieces
+#             groups[0].append(card)
+#         else:
+#
+#             if card.type_simple == "Monster":
+#                 ttl = card.atk_points + card.def_points
+#                 print(f"{ttl=}, {card=}")
+#                 if ttl < 1100:
+#                     groups[0].extend([card]*3)
+#                 elif 1100 <= ttl < 1600:
+#                     groups[1].extend([card]*3)
+#                 elif 1600 <= ttl < 2100:
+#                     groups[2].extend([card]*3)
+#                 else:
+#                     groups[3].extend([card]*3)
+#             elif (card.type_simple == "Magic") or (card.type_simple == "Trap"):
+#                 groups[5].extend([card]*3)
+#             elif card.type_simple == "Equip":
+#                 groups[6].extend([card]*3)
+#
+#     groups[4].extend([known_cards[336], known_cards[337]])
+#     for i, g_size in enumerate(grp_sizes):
+#         deck += random.sample(groups[i], g_size)
+#
+#     # st.write(deck)
+#     # print(deck)
+#     # print(f"{list(map(len, groups))=}")
+#
+#     return deck
+
 class MasterChest:
 
     def __init__(self, id_num: Optional[int] = None):
@@ -163,11 +218,14 @@ class MasterChest:
         self.id_num = next_id()
         self.path_data = os.path.join(root_path_master_chests, f"master_chest_{str(self.id_num).rjust(3, '0')}.json")
 
+        self.list_players = list()
+        self.gener_card_ids = (i for i in range(1000000))
+
         self.data_combinations = parse_combinations_file()
         self.data_rituals = parse_rituals_file()
         self.df_card_data = self.init_card_df()
 
-        self.player_chests = self.load_master_chest_data()
+        self.load_master_chest_data()
 
     def load_master_chest_data(self):
         """
@@ -194,11 +252,17 @@ class MasterChest:
 
         player_datas = loaded_data.get("player_data", {})
         list_players = list(player_datas)
+        print(f"{list_players=}")
         for i, player_id in enumerate(list_players):
             player_data = player_datas.get(player_id, {})
             player_name = player_data.get("name", "UNKNOWN")
+            player_description = player_data.get("description", "")
             player_deck = player_data.get("deck", [])
             player_chest = player_data.get("chest", {})
+
+            print(f"{player_name=}")
+            print(f"{player_deck=}")
+            print(f"{player_chest=}")
 
             if isinstance(player_deck, dict):
                 deck = []
@@ -208,20 +272,20 @@ class MasterChest:
                         deck.append(self.num_2_card(c_id))
                 player_deck = deck
 
-            if not isinstance(player_deck, list):
-
-            if pl
+            if isinstance(player_deck, list):
+                player_deck = [self.num_2_card(n) for n in player_deck]
 
             if isinstance(player_chest, list):
                 player_chest = {c: player_chest.count(c.num) for c in self.data_combinations}
 
             p = Player(
                 name=player_name,
-                deck=player_deck
+                deck=player_deck,
+                chest=player_chest
             )
-
-
-
+            self.list_players.append(p)
+            # print(f"{p=}")
+            # print(f"{self.list_players=}")
 
     def init_card_df(self):
         def compile_card_data(card: Card):
@@ -338,7 +402,10 @@ class MasterChest:
         :param num: Card.num attr
         :return: Card
         """
-        return list(self.data_combinations)[num - 1]
+        c = list(self.data_combinations)[num - 1]
+        c = c.new_copy()
+        c.master_chest_card_id = next(self.gener_card_ids)
+        return c
 
     #     if not os.path.exists(self.path_data):
     #         self.initialize_data_file()

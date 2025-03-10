@@ -61,8 +61,9 @@ class Card:
         self.planet_0 = planet_0
         self.planet_1 = planet_1
 
-        self.in_play = False
-        self.chest_id = None
+        self.master_chest_card_id = None
+        # self.in_play = False
+        # self.chest_id = None
         self._planet = None
         self.face_down = None
         self.attack_mode = None
@@ -87,26 +88,45 @@ class Card:
         else:
             self.attack_mode = mode_in
 
-    def data(self):
-        return [
-            self.num,
-            self.name,
-            self.type_,
-            self.attribute,
-            self.cost,
-            self.atk_points,
-            self.def_points,
-            self.planet_0,
-            self.planet_1
-        ]
+    def data(self, rtype=list):
+        if rtype == list:
+            return [
+                self.num,
+                self.name,
+                self.type_,
+                self.attribute,
+                self.cost,
+                self.atk_points,
+                self.def_points,
+                self.planet_0,
+                self.planet_1
+            ]
+        else:
+            return dict(zip(
+                [
+                    "num",
+                    "name",
+                    "type_",
+                    "attribute",
+                    "cost",
+                    "atk_points",
+                    "def_points",
+                    "planet_0",
+                    "planet_1"
+                ],
+                self.data(rtype=list)
+            ))
 
-    def into_play(self, chest_id: Optional[int] = None, into_play: bool = True):
+    # def into_play(self, chest_id: Optional[int] = None, into_play: bool = True):
+    #
+    #     if into_play and (chest_id is None):
+    #         raise ValueError(f"Need to declare 'chest_id' to add proper checking for hashing and equals operations.")
+    #
+    #     self.in_play = into_play
+    #     self.chest_id = chest_id if into_play else None
 
-        if into_play and (chest_id is None):
-            raise ValueError(f"Need to declare 'chest_id' to add proper checking for hashing and equals operations.")
-
-        self.in_play = into_play
-        self.chest_id = chest_id if into_play else None
+    def new_copy(self):
+        return Card(**self.data(rtype=dict))
 
     def get_planet(self):
         return self._planet
@@ -126,13 +146,13 @@ class Card:
         to_str = f"#{self.num} - {self.name}"
         if self.type_simple == "Monster":
             to_str = f"{to_str} {self.atk_points}/{self.def_points}"
-            if self.in_play:
-                return f"{to_str} - {self.planet} - {str(self.chest_id).rjust(7, '0')}"
+            if self.master_chest_card_id is not None:
+                return f"{to_str} - {self.planet} - {str(self.master_chest_card_id).rjust(7, '0')}"
             return to_str
         else:
             to_str = f"{to_str} {self.type_simple[0].upper()}"
-            if self.in_play:
-                return f"{to_str} - {str(self.chest_id).rjust(7, '0')}"
+            if self.master_chest_card_id is not None:
+                return f"{to_str} - {str(self.master_chest_card_id).rjust(7, '0')}"
             return to_str
 
     def __eq__(self, other):
@@ -140,9 +160,9 @@ class Card:
         if str(type(other)) != str(Card):
             # print(f"A {str(type(other))=}, {str(Card)=}")
             return False
-        if self.in_play:
+        if self.master_chest_card_id is not None:
             # print(f"B")
-            return (self.num == other.num) and (self.chest_id == other.chest_id)
+            return (self.num == other.num) and (self.master_chest_card_id == other.master_chest_card_id)
         else:
             # print(f"C")
             return self.num == other.num

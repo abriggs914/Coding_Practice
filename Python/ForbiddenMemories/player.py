@@ -1,3 +1,4 @@
+import datetime
 import random
 from typing import Literal
 
@@ -17,19 +18,19 @@ class Player:
             self,
             name: str,
             deck: list[Card],
-            card_parser: callable,
-            gen_chest_id: callable,
-            chest: Optional[list[Card]] = None,
+            # card_parser: callable,
+            # gen_chest_id: callable,
+            chest: Optional[dict[Card: int]] = None,
             default_hp: int = 8000,
             place_order: Literal["ltr", "rtl"] = "ltr"
     ):
         self.id_num = next(gen_player_ids)
         self.name = name
         self.deck_og = [c for c in deck]
-        self.card_parser = card_parser
-        self.gen_chest_id = gen_chest_id
+        # self.card_parser = card_parser
+        # self.gen_chest_id = gen_chest_id
         self.deck = deck
-        self.chest = chest if chest is not None else []
+        self.chest = chest if chest is not None else {}
         self.default_hp = default_hp
         self.place_order = place_order
 
@@ -143,11 +144,11 @@ class Player:
     def next_monster_idx(self):
         return self.next_avail_idx(self.monsters)
 
-    def get_hand(self):
-        # lst = [None if (c is None) else self.card_parser(c) for c in self.hand]
-        lst = [None if (c is None) else c for c in self.hand]
-        self.hand = lst
-        return self.hand
+    # def get_hand(self):
+    #     # lst = [None if (c is None) else self.card_parser(c) for c in self.hand]
+    #     lst = [None if (c is None) else c for c in self.hand]
+    #     self.hand = lst
+    #     return self.hand
 
     def __eq__(self, other):
         return isinstance(other, Player) and (self.id_num == other.id_num)
@@ -159,15 +160,18 @@ class Player:
         return getattr(self, "_deck", [])
 
     def set_deck(self, deck_in: list[Card]):
-        if do_test:
-            print(f"Player.set_deck")
-            print(f"A SD {len(self.deck)=}", end=f", {self.deck[0]=}\n" if self.deck else "\n")
         self._deck = deck_in
-        for c in self.deck:
-            c.into_play(chest_id=next(self.gen_chest_id))
-        if do_test:
-            print(f"B SD {len(self.deck)=}, {self.deck[0]=}")
         self.deck_og = [c for c in deck_in]
+        # pass
+        # if do_test:
+        #     print(f"Player.set_deck")
+        #     print(f"A SD {len(self.deck)=}", end=f", {self.deck[0]=}\n" if self.deck else "\n")
+        # self._deck = deck_in
+        # for c in self.deck:
+        #     c.into_play(chest_id=next(self.gen_chest_id))
+        # if do_test:
+        #     print(f"B SD {len(self.deck)=}, {self.deck[0]=}")
+        # self.deck_og = [c for c in deck_in]
 
     def del_deck(self):
         del self._deck
