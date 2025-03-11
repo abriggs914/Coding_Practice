@@ -1,5 +1,6 @@
 import json
 import os
+import random
 
 import pandas as pd
 from collections import OrderedDict
@@ -92,7 +93,7 @@ def parse_card_line(line):
     return c
 
 
-def parse_combinations_file():
+def parse_combinations_file(max_cards: Optional[int] = None):
     cards_2 = OrderedDict()
     with open(combinations_file, "r") as f:
         in_section = True
@@ -133,6 +134,11 @@ def parse_combinations_file():
                 # print(f"SEP {i=}, {line=}")
                 in_section = False
                 section_card = None
+            if (max_cards is not None) and (len(cards_2) >= max_cards):
+                break
+
+    if (max_cards is not None) and (len(cards_2) != max_cards):
+        cards_2 = {c: cards_2[c] for i, c in enumerate(cards_2) if i <= max_cards}
 
     return cards_2
 
@@ -213,15 +219,17 @@ def parse_rituals_file():
 
 class MasterChest:
 
-    def __init__(self, id_num: Optional[int] = None):
+    def __init__(self, id_num: Optional[int] = None, load_max_cards: Optional[int] = None):
 
         self.id_num = next_id()
         self.path_data = os.path.join(root_path_master_chests, f"master_chest_{str(self.id_num).rjust(3, '0')}.json")
+        
+        self.load_max_cards = load_max_cards
 
         self.list_players = list()
         self.gener_card_ids = (i for i in range(1000000))
 
-        self.data_combinations = parse_combinations_file()
+        self.data_combinations = parse_combinations_file(max_cards=self.load_max_cards)
         self.data_rituals = parse_rituals_file()
         self.df_card_data = self.init_card_df()
 
@@ -269,11 +277,21 @@ class MasterChest:
                 for j, c_id in enumerate(player_deck):
                     c_qty = player_deck.get(c_id, 1)
                     for k in range(c_qty):
-                        deck.append(self.num_2_card(c_id))
+                        # deck.append(self.num_2_card(c_id))
+                        try:
+                            deck.append(self.num_2_card(c_id))
+                        except Exception:
+                            pass
                 player_deck = deck
 
             if isinstance(player_deck, list):
-                player_deck = [self.num_2_card(n) for n in player_deck]
+                player_deck_ = []
+                for n in player_deck:
+                    try:
+                        player_deck_.append(self.num_2_card(n))
+                    except Exception:
+                        pass
+                player_deck = player_deck_
 
             if isinstance(player_chest, list):
                 player_chest = {c: player_chest.count(c.num) for c in self.data_combinations}
@@ -407,6 +425,70 @@ class MasterChest:
         c.master_chest_card_id = next(self.gener_card_ids)
         return c
 
+    def process_possible_combos(self, hand: list[Card], do_test: bool = False):
+        # print(f"\n{datetime.datetime.now():%Y-%m-%d %H:%M:%S}\n\n")
+
+        def helper(nest, hand_):
+            if nest >= 30:
+                return []
+            # print(f"{nest=}")
+            new_combos = []
+            hand_c = [c for c in hand_]
+            for i, card_0_str in enumerate(hand_):
+                if card_0_str is not None:
+                    if do_test:
+                        print(f"{card_0_str=}, {type(card_0_str)=}")
+                    # card_0 = str_to_card(card_0_str)
+                    card_0 = card_0_str
+                    # p_combos = data_parsed_combinations_2[card_0]
+                    p_combos = self.data_combinations[card_0]
+                    for j, card_1_str in enumerate(hand_c):
+                        # card_1 = str_to_card(card_1_str)
+                        card_1 = card_1_str
+                        if i != j:
+                            # print(f"\t--{card_1}")
+                            if card_1 in p_combos:
+                                # combo_res = data_parsed_combinations[card_0][card_1]
+                                combo_res = p_combos[card_1]
+                                # print(f"\t\t{card_1} => {combo_res}")
+                                pair_0 = [nest, combo_res, [card_0, card_1]]
+                                pair_1 = [nest, combo_res, [card_1, card_0]]
+                                # print(f"{pair_0=}\n{pair_1=}\n=>", end="")
+                                if (pair_0 not in new_combos) and (pair_1 not in new_combos):
+                                    # print("AAA")
+                                    new_combos.append(pair_0)
+                                # else:
+                                #     print("BBB")
+            # # if new_combos:
+            # print(f"{new_combos=}, {hand_=}")
+            new_new_combos = []
+            for nest_, cr_, pr_ in new_combos:
+                # new_hand = [c for c in hand_ if c not in pr_] + [cr_]
+                new_hand = [c for c in hand_]
+                if do_test:
+                    print(f"\t\t{new_hand=}, {pr_=}, {cr_=}, {type(new_hand)}, {type(pr_)}, {type(cr_)}")
+                    print(f"\t\t{list(map(type, new_hand))}, {list(map(type, pr_))}, {type(cr_)}")
+                new_hand.remove(pr_[0])
+                new_hand.remove(pr_[1])
+                new_hand.append(cr_)
+                # print(f"{new_hand=}")
+                new_new_combos += helper(nest_ + 1, new_hand)
+            return new_combos + new_new_combos
+
+        combos = helper(0, hand)
+
+        filtered_combos = []
+        for nest_, cr_, pr_ in combos:
+            pair_0 = [cr_, [pr_[0], pr_[1]], nest_]
+            pair_1 = [cr_, [pr_[1], pr_[0]], nest_]
+            if (pair_0 not in filtered_combos) and (pair_1 not in filtered_combos):
+                filtered_combos.append(pair_0)
+        combos = filtered_combos
+
+        combos.sort(key=lambda tup: tup[0].atk_points, reverse=True)
+
+        return combos
+
     #     if not os.path.exists(self.path_data):
     #         self.initialize_data_file()
     #
@@ -417,3 +499,17 @@ class MasterChest:
     # def get_avail_cards(self, min_of_each: int = 1):
     #
     #
+
+
+if __name__ == '__main__':
+    chest = MasterChest(load_max_cards=None)
+    p0, p1 = chest.list_players[-1], chest.list_players[0]
+    print("p0.deck")
+    print(p0.deck)
+
+    p0.draw(5)
+    print("p0.hand")
+    print(p0.hand)
+
+    print("combos")
+    print(chest.process_possible_combos(p0.hand))
