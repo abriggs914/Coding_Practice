@@ -1,4 +1,4 @@
-
+import os
 import datetime
 import requests
 import pandas as pd
@@ -27,6 +27,8 @@ class APIHandler:
         self,
         show_query_strings: bool = False
     ):
+        
+        self.addr_stats_old: str = "https://statsapi.web.nhl.com/api/v1"
         self.addr_api: str = "https://api-web.nhle.com/v1"
         self.addr_stats: str = "https://api.nhle.com/stats"
         self.addr_assets: str = "https://assets.nhle.com"
@@ -36,9 +38,13 @@ class APIHandler:
         self.min_date: datetime.date = datetime.date(self.min_year, 1, 1)
         self.max_date: datetime.date = datetime.date(self.max_year, 12, 31)
         
+        self.save_file_name = "./nhl_utility_query_records.txt"
+        self.save_file_delim = "|;;|"
         self.max_query_hold_time: int = 2 * 60 * 60  # 2 hours
         self.held_queries: dict[str: dict] = {}
         self.show_query_strings: bool = show_query_strings
+
+        self.load_held_queries()
         
         self.list_season_ids: list[int] = self.load_season_ids(as_df=False)
         self.country_data: dict[str: Any] = self.load_country_data(as_df=False)
@@ -54,6 +60,27 @@ class APIHandler:
                 print(f"{lst_name}={lst}")
                 raise APIHandler.InvalidInit(f"Could not initialize properly.")
         
+    def load_held_queries(self):
+        if not os.path.exists(self.save_file_name):
+            with open(self.save_file_name, "w") as f:
+                f.write("")
+            return
+        else:
+            with open(self.save_file_name, "r") as f:
+                lines = f.readlines()
+                for i, line in enumerate(lines):
+                    spl = line.split(self.save_file_delim)
+                    if not (len(spl) == 3):
+                        raise ValueError(f"{line=} is not the right format.")
+                    when_s, url, data_s = spl
+                    when = datetime.datetime.strptime(when_s, "%x %X")
+                    data = eval(data_s)
+                    self.held_queries[url] = {
+                        "when": when,
+                        "data": data,
+                        "idx": i
+                    }
+
     def validate_year(
         self,
         year: int
@@ -217,17 +244,38 @@ class APIHandler:
         url = f"{self.addr_stats}/rest/en/franchise/"
         return self.query(url, as_df=as_df)
         
+    def search_for_player(
+        self,
+        search_str: str,
+        limit: int = 20,
+        as_df: bool = True
+    ) -> pd.DataFrame | dict | None:
+        # Searches for a string. Culture is the locale, and active=0|1 may be specified.
+        if not search_str.strip():
+            raise ValueError(f"Must pass a valid search string to search for a player.")
+        limit = max(1, min(1000, limit))
+        url = f"https://search.d3.nhle.com/api/v1/search/player?culture=en-us&limit={limit}&q={search_str}"
+        return self.query(url, as_df=as_df)
+
     def query(
         self,
         url: str,
         as_df: bool = True,
         current: bool = False
     ) -> pd.DataFrame | dict | None:
+        
+        url = url.lower()
+        
+        if self.addr_stats_old in url:
+            url = url.replace(self.addr_stats_old, self.addr_stats)
+
+        idx_new_query = len(self.held_queries)
         now = datetime.datetime.now()
         q_data = self.held_queries.get(url, {}) 
         q_time = q_data.get("when", now)
         q_diff = (now - q_time).total_seconds()
         q_result = q_data.get("data")
+        hq_idx = q_data.get("idx", idx_new_query)
         if any([current, not any([q_data, q_result]), q_diff > self.max_query_hold_time]):            
             try:
                 if self.show_query_strings:
@@ -239,8 +287,22 @@ class APIHandler:
                 df = pd.DataFrame(data=data) if as_df else None
                 self.held_queries[url] = {
                     "when": now,
-                    "data": data
+                    "data": data,
+                    "idx": hq_idx
                 }
+                
+                if hq_idx == idx_new_query:
+                    # new query, put it at the end
+                    with open(self.save_file_name, "a") as f:
+                        f.write(f"{now:%x %X}{self.save_file_delim}{url}{self.save_file_delim}{data}\n")
+                else:
+                    with open(self.save_file_name, "r") as f:
+                        lines = f.readlines()
+                    with open(self.save_file_name, "w") as f:
+                        f.writelines(lines[:hq_idx])
+                        f.write(f"{now:%x %X}{self.save_file_delim}{url}{self.save_file_delim}{data}\n")
+                        f.writelines(lines[hq_idx + 1:])
+
                 return df if as_df else data
             except Exception as e:
                 print(e)
@@ -251,8 +313,8 @@ class APIHandler:
     
 if __name__ == "__main__":
     
-    handler = APIHandler()
-    handler.show_query_strings = True
+    handler = APIHandler(show_query_strings=True)
+    # handler.show_query_strings = True
     
     def test_brackets():
         # playoff bracket
@@ -285,6 +347,10 @@ if __name__ == "__main__":
     # test_gamecenter_landing()
     # test_week_schedule()
     
-    print(handler.list_season_ids)
-    print(handler.country_data)
-    print(handler.franchise_data)
+    # print(handler.list_season_ids)
+    # print(handler.country_data)
+    # print(handler.franchise_data)
+
+    print(handler.search_for_player("Avery"))
+    print(handler.search_for_player("Briggs"))
+    print(handler.search_for_player("avery"))
