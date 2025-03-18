@@ -71,3 +71,6 @@ class Match:
         if do_test:
             print("Match.has_drawn_turn")
         return turn_phases.index(self.turn_phase) > turn_phases.index["DRAW"]
+
+    def __repr__(self):
+        return f"{{M#{self.id_num} {self.player_0} VS {self.player_1}}}"

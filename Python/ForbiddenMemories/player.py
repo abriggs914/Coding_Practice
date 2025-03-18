@@ -84,6 +84,8 @@ class Player:
         if do_test:
             print(f"Player.end_match")
         self.in_match = False
+        self.hand.clear()
+        self.deck = self.deck_og.copy()
         if not self.game_history:
             raise ValueError("Not in a game currently")
 
@@ -176,5 +178,8 @@ class Player:
     def del_deck(self):
         del self._deck
         del self.deck_og
+
+    def __repr__(self):
+        return f"{{P#{self.id_num} - {self.name}}}"
     
     deck = property(get_deck, set_deck, del_deck)

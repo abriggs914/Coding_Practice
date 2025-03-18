@@ -95,6 +95,7 @@ def parse_card_line(line):
 
 def parse_combinations_file(max_cards: Optional[int] = None):
     cards_2 = OrderedDict()
+    cards_3 = OrderedDict()
     with open(combinations_file, "r") as f:
         in_section = True
         section_card: Optional[Card] = None
@@ -115,6 +116,7 @@ def parse_combinations_file(max_cards: Optional[int] = None):
                      section_card = card
                      # print(f"SEC {i=}, {line=}")
                      cards_2[section_card] = {}
+                     cards_3[section_card.num] = {}
                 else:
                     if line.startswith("+"):
                         a = card
@@ -124,6 +126,7 @@ def parse_combinations_file(max_cards: Optional[int] = None):
                         # if section_card not in cards_2:
                         #     cards_2[section_card] = {}
                         cards_2[section_card][a] = b
+                        cards_3[section_card.num][a.num] = b.num
                         a = None
                         b = None
                     # else:
@@ -140,7 +143,7 @@ def parse_combinations_file(max_cards: Optional[int] = None):
     if (max_cards is not None) and (len(cards_2) != max_cards):
         cards_2 = {c: cards_2[c] for i, c in enumerate(cards_2) if i <= max_cards}
 
-    return cards_2
+    return cards_2, cards_3
 
 
 def parse_rituals_file():
@@ -229,7 +232,7 @@ class MasterChest:
         self.list_players = list()
         self.gener_card_ids = (i for i in range(1000000))
 
-        self.data_combinations = parse_combinations_file(max_cards=self.load_max_cards)
+        self.data_combinations, self.data_combinations_i = parse_combinations_file(max_cards=self.load_max_cards)
         self.data_rituals = parse_rituals_file()
         self.df_card_data = self.init_card_df()
 

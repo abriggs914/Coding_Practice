@@ -87,13 +87,13 @@ def process_possible_combos(hand: list[Card], do_test: bool = False):
                 # card_0 = str_to_card(card_0_str)
                 card_0 = card_0_str
                 # p_combos = data_parsed_combinations_2[card_0]
-                p_combos = chest.data_combinations[card_0]
+                p_combos = chest.data_combinations_i[card_0]
                 for j, card_1_str in enumerate(hand_c):
                     # card_1 = str_to_card(card_1_str)
                     card_1 = card_1_str
                     if i != j:
                         # print(f"\t--{card_1}")
-                        if card_1 in p_combos:
+                        if card_1 and (card_1 in p_combos):
                             # combo_res = data_parsed_combinations[card_0][card_1]
                             combo_res = p_combos[card_1]
                             # print(f"\t\t{card_1} => {combo_res}")
@@ -121,19 +121,51 @@ def process_possible_combos(hand: list[Card], do_test: bool = False):
             new_new_combos += helper(nest_ + 1, new_hand)
         return new_combos + new_new_combos
 
-    combos = helper(0, hand)
+    combos = helper(0, [c.num for c in hand if c])
 
     filtered_combos = []
+    hand_c = [c for c in hand if c]
     for nest_, cr_, pr_ in combos:
-        pair_0 = [cr_, [pr_[0], pr_[1]], nest_]
-        pair_1 = [cr_, [pr_[1], pr_[0]], nest_]
+        cr_c = chest.num_2_card(cr_)
+        pr_c0, pr_c1 = pr_
+        # st.write(f"{cr_c}, {pr_=}")
+        pr_c0 = [c for c in hand_c if c and c.num == pr_c0][0]
+        hand_c.remove(pr_c0)
+        pr_c1 = [c for c in hand_c if c and c.num == pr_c1][0]
+        hand_c.append(pr_c0)
+        hand_c.append(cr_c)
+        pair_0 = [cr_c, [pr_c0, pr_c1], nest_]
+        pair_1 = [cr_c, [pr_c1, pr_c0], nest_]
+        # pair_0 = [cr_, [pr_[0], pr_[1]], nest_]
+        # pair_1 = [cr_, [pr_[1], pr_[0]], nest_]
         if (pair_0 not in filtered_combos) and (pair_1 not in filtered_combos):
             filtered_combos.append(pair_0)
     combos = filtered_combos
 
-    combos.sort(key=lambda tup: tup[0].atk_points, reverse=True)
+    combos.sort(key=lambda tup: [tup[-1], -tup[0].atk_points])
 
     return combos
+
+
+if st.button(
+    label="RESTART"
+):
+    match = None
+    if st.session_state.get(k_match) is not None:
+        match = st.session_state.get(k_match)
+    if st.session_state.get(k_player_0) is not None:
+        p0 = st.session_state.get(k_player_0)
+        if p0.in_match:
+            p0.end_match(match.id_num if match else match)
+    if st.session_state.get(k_player_1) is not None:
+        p1 = st.session_state.get(k_player_1)
+        if p1.in_match:
+            p1.end_match(match.id_num if match else match)
+    st.session_state.update({
+        k_player_0: None,
+        k_player_1: None,
+        k_match: None
+    })
 
 
 st.write("unique_cards")
@@ -157,7 +189,8 @@ if len(chest.list_players) > 2:
         })
 
     if st.session_state.get(k_match) is None:
-        match: Match = st.session_state.setdefault(k_match, Match(player_0, player_1))
+        st.session_state.update({k_match: Match(player_0, player_1)})
+        match: Match = st.session_state.get(k_match)
     else:
         match: Match = st.session_state.get(k_match)
     # my_deck = player_0.deck
@@ -451,14 +484,21 @@ if len(chest.list_players) > 2:
 
         st.write("Hand & Monsters:")
 
+        if not len(player_0.hand) >= 10:
+            player_0.draw(10 - len(player_0.hand))
+
         my_avail_combo_cards = player_0.hand + player_0.monsters
         st.write("my_avail_combo_cards")
         st.write(my_avail_combo_cards)
 
         # st.write(list(map(type, my_avail_combo_cards)))
         my_possible_combos = process_possible_combos(my_avail_combo_cards, do_test=True)
+        # my_possible_combos.sort(key=lambda tup: [tup[2], -tup[0].atk_points])
         st.write("MY possible_combos")
         st.write(my_possible_combos)
+
+
+
         #
         # cpu_avail_combo_cards = [c for c in list(map(str_to_card, [
         #     (cd["card"] if isinstance(cd, dict) else cd)
