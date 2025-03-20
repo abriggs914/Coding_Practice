@@ -142,7 +142,7 @@ def process_possible_combos(hand: list[Card], do_test: bool = False):
             filtered_combos.append(pair_0)
     combos = filtered_combos
 
-    combos.sort(key=lambda tup: [tup[-1], -tup[0].atk_points])
+    # combos.sort(key=lambda tup: [tup[-1], -tup[0].atk_points])
 
     return combos
 
@@ -484,8 +484,8 @@ if len(chest.list_players) > 2:
 
         st.write("Hand & Monsters:")
 
-        if not len(player_0.hand) >= 10:
-            player_0.draw(10 - len(player_0.hand))
+        # if not len(player_0.hand) >= 10:
+        #     player_0.draw(10 - len(player_0.hand))
 
         my_avail_combo_cards = player_0.hand + player_0.monsters
         st.write("my_avail_combo_cards")
@@ -497,7 +497,107 @@ if len(chest.list_players) > 2:
         st.write("MY possible_combos")
         st.write(my_possible_combos)
 
+        edges = []
+        nodes_cards = []
+        nodes_card_ids = []
+        min_card_level = {}
+        node_edge_count = {}
 
+        for i, combo_data in enumerate(my_possible_combos):
+
+            c_r, ingredients, level = combo_data
+            c_a, c_b = ingredients
+
+            # if c_a not in min_card_level:
+            #     ml_a = min([cd[-1] for cd in my_possible_combos if (c_a == cd[0]) or (c_a in cd[1])])
+            #     min_card_level[c_a] = ml_a
+            #
+            # if c_b not in min_card_level:
+            #     ml_b = min([cd[-1] for cd in my_possible_combos if (c_b == cd[0]) or (c_b in cd[1])])
+            #     min_card_level[c_b] = ml_b
+            #
+            # if c_r not in min_card_level:
+            #     ml_r = min([cd[-1] for cd in my_possible_combos if (c_r == cd[0]) or (c_r in cd[1])])
+            #     min_card_level[c_r] = ml_r
+            #
+            # # if c_r.num
+            #
+            # # nci_a = f"card_node_{level}_{c_a.num}"
+            # # nci_b = f"card_node_{level}_{c_b.num}"
+            # # nci_r = f"card_node_{level+1}_{c_r.num}"
+            nci_a = f"card_node_{c_a.num}"
+            nci_b = f"card_node_{c_b.num}"
+            nci_r = f"card_node_{c_r.num}"
+            if nci_a not in nodes_card_ids:
+                nodes_card_ids.append(nci_a)
+                nodes_cards.append(Node(
+                    id=nci_a,
+                    title=f"{c_a} {level}",
+                    label=c_a.num,
+                    # level=min_card_level[c_a]
+                    level=level
+                    # level=c_a.atk_points/100
+                ))
+            if nci_b not in nodes_card_ids:
+                nodes_card_ids.append(nci_b)
+                nodes_cards.append(Node(
+                    id=nci_b,
+                    title=f"{c_b} {level}",
+                    label=c_b.num,
+                    # level=min_card_level[c_b]
+                    level=level
+                    # level=c_b.atk_points/100
+                ))
+            if nci_r not in nodes_card_ids:
+                nodes_card_ids.append(nci_r)
+                nodes_cards.append(Node(
+                    id=nci_r,
+                    title=f"{c_r} {level}",
+                    label=c_r.num,
+                    level=level+1
+                    # level=min_card_level[c_r]
+                    # level=c_r.atk_points/100
+                ))
+            edges.append(Edge(
+                source=nci_a,
+                target=nci_r
+            ))
+            edges.append(Edge(
+                source=nci_b,
+                target=nci_r
+            ))
+            node_edge_count.setdefault(nci_a, {"src": 0, "tgt": 0})
+            node_edge_count.setdefault(nci_b, {"src": 0, "tgt": 0})
+            node_edge_count.setdefault(nci_r, {"src": 0, "tgt": 0})
+            node_edge_count[nci_a]["src"] += 1
+            node_edge_count[nci_b]["src"] += 1
+            node_edge_count[nci_r]["tgt"] += 2
+
+        for node in nodes_cards:
+            id_ = node.id
+            n_src = node_edge_count[id_]["src"]
+            n_tgt = node_edge_count[id_]["tgt"]
+            # score = n_src + (5 + n_tgt)
+            # score = n_src + (1 * n_tgt)
+            score = n_src + (2 * n_tgt)
+            # score = n_src + (5 * n_tgt)
+            node.level = score
+            node.size = score**1.4
+            node.label = f"{n_src=}, {n_tgt=}, {score=}"
+
+        config = Config(
+            hierarchical=True,
+            physics=False,
+            width=1200,
+            height=675
+        )
+
+        with st.container(border=1):
+            graph = agraph(
+                nodes=nodes_cards,
+                edges=edges,
+                config=config
+            )
 
         #
         # cpu_avail_combo_cards = [c for c in list(map(str_to_card, [

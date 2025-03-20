@@ -61,6 +61,7 @@ class Card:
         self.planet_0 = planet_0
         self.planet_1 = planet_1
 
+        self.claimed_by = None
         self.master_chest_card_id = None
         # self.in_play = False
         # self.chest_id = None

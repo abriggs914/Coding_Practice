@@ -9,7 +9,7 @@ from card import *
 
 app_title: str = "YU-GI-OH! Forbidden Memories"
 gen_player_ids: Generator[int, None, None] = (i for i in range(1000))
-do_test: bool = False
+do_test: bool = True
 
 
 class Player:
@@ -20,7 +20,7 @@ class Player:
             deck: list[Card],
             # card_parser: callable,
             # gen_chest_id: callable,
-            chest: Optional[dict[Card: int]] = None,
+            chest: Optional[dict[Card: list]] = None,
             default_hp: int = 8000,
             place_order: Literal["ltr", "rtl"] = "ltr"
     ):

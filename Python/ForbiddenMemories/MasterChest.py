@@ -28,143 +28,6 @@ if not os.path.exists(rituals_file):
     raise FileNotFoundError(f"Couldn't find the combinations file 'ritual_details.json'.")
 
 
-def next_id():
-    return len([
-        f for f in os.listdir(root_path_master_chests)
-        if f.lower().endswith(".json") and f.lower().startswith("master_chest_")
-    ])
-
-
-def parse_card_line(line):
-    # raw example
-    # "= 031  Koumori Dragon                        Dr  D    4  1500  1200  Mo  J\n"
-    w_line = line.removeprefix("+").removeprefix("=").strip()
-    s_line = [word for word in w_line.split(" ") if word]
-
-    if len(s_line) >= 9:
-        num = int(s_line[0])
-        name = " ".join(s_line[1: -7])
-        type_ = s_line[-7]
-        attribute = s_line[-6]
-        cost = s_line[-5]
-        atk_points = int(s_line[-4])
-        def_points = int(s_line[-3])
-        planet_1 = s_line[-2]
-        planet_2 = s_line[-1]
-        data = [
-            num,
-            name,
-            type_,
-            attribute,
-            cost,
-            atk_points,
-            def_points,
-            planet_1,
-            planet_2
-        ]
-    elif len(s_line) > 2:
-        data = [
-            int(s_line[0]),
-            " ".join(s_line[1: -1]),
-            s_line[-1]
-        ]
-        # print(f"{data=}")
-    else:
-        # print(f"COULD NOT MAKE CARD:")
-        # print(f"UNKNOWN CARD {line=}")
-        data = []
-
-    c = Card(*data)
-    # # if c.type_simple != "Monster":
-    # #     print(f"AA {c}")
-    # num = c.num
-    # # kc = st.session_state.get("known_cards")
-    # d = max(0, (1 + num - len(kc)))
-    # while d > 0:
-    #     # kc.append(None)
-    #     d -= 1
-    # # print(f"{d=}, {num=}, {len(kc)=}, {line=}")
-    # # if kc[num] is None:
-    # #     kc[num] = c
-    # #     st.session_state.update({"known_cards": kc})
-    # # print(f"NEW CARD MADE:")
-    # # print(f"{c=}")
-    # # return c.num
-    return c
-
-
-def parse_combinations_file(max_cards: Optional[int] = None):
-    cards_2 = OrderedDict()
-    cards_3 = OrderedDict()
-    with open(combinations_file, "r") as f:
-        in_section = True
-        section_card: Optional[Card] = None
-        a: Optional[Card] = None
-        b: Optional[Card] = None
-        for i, line in enumerate(f.readlines()):
-            # check line is not separator '----'
-            line_sep = line.strip()
-            # st.write(f"A {i=}, {line_sep=}")
-            while line_sep.startswith("-"):
-                line_sep = line_sep.removeprefix("-")
-
-            if line_sep:
-                # this is not a separator line
-                card = parse_card_line(line)
-
-                if section_card is None:
-                     section_card = card
-                     # print(f"SEC {i=}, {line=}")
-                     cards_2[section_card] = {}
-                     cards_3[section_card.num] = {}
-                else:
-                    if line.startswith("+"):
-                        a = card
-                    if line.startswith("="):
-                        b = card
-                    if (a is not None) and (b is not None):
-                        # if section_card not in cards_2:
-                        #     cards_2[section_card] = {}
-                        cards_2[section_card][a] = b
-                        cards_3[section_card.num][a.num] = b.num
-                        a = None
-                        b = None
-                    # else:
-                    #     print(f"{i=}, {line=}, {a=}, {b=}")
-
-                # print(f"{card=}")
-            else:
-                # print(f"SEP {i=}, {line=}")
-                in_section = False
-                section_card = None
-            if (max_cards is not None) and (len(cards_2) >= max_cards):
-                break
-
-    if (max_cards is not None) and (len(cards_2) != max_cards):
-        cards_2 = {c: cards_2[c] for i, c in enumerate(cards_2) if i <= max_cards}
-
-    return cards_2, cards_3
-
-
-def parse_rituals_file():
-    with open(rituals_file, "r") as f:
-        df = pd.read_json(f)
-        df["n_Ritual_Monster"] = None
-        df["n_Ritual_Card"] = None
-        df["n_Sacrifices"] = None
-        for i, row in df.iterrows():
-            ritual_monster = row["Ritual Monster"]
-            ritual_card = row["Ritual Card"]
-            sacrifices = row["Sacrifices"]
-            num_rm = int(ritual_monster.split(" ")[0].removeprefix("#"))
-            num_rc = int(ritual_card.split(" ")[0].removeprefix("#"))
-            nums_sac = [int(c.split(" ")[0].removeprefix("#")) for c in sacrifices]
-            df.loc[i, "n_Ritual_Monster"] = num_rm
-            df.loc[i, "n_Ritual_Card"] = num_rc
-            df.loc[i, "n_Sacrifices"] = ";".join(map(str, nums_sac))
-        return df
-
-
 # def random_deck(size: int = 40):
 #     """
 #     The player starts with a Deck of 40 cards, which are randomly selected from seven pools.
@@ -224,19 +87,160 @@ class MasterChest:
 
     def __init__(self, id_num: Optional[int] = None, load_max_cards: Optional[int] = None):
 
-        self.id_num = next_id()
+        self.iii=0
+
+        self.id_num = self.next_id()
         self.path_data = os.path.join(root_path_master_chests, f"master_chest_{str(self.id_num).rjust(3, '0')}.json")
         
         self.load_max_cards = load_max_cards
 
+        self.known_cards = {}
+        self.free_cards = {}
         self.list_players = list()
         self.gener_card_ids = (i for i in range(1000000))
 
-        self.data_combinations, self.data_combinations_i = parse_combinations_file(max_cards=self.load_max_cards)
-        self.data_rituals = parse_rituals_file()
+        self.data_combinations, self.data_combinations_i = self.parse_combinations_file(max_cards=self.load_max_cards)
+        self.data_rituals = self.parse_rituals_file()
         self.df_card_data = self.init_card_df()
 
         self.load_master_chest_data()
+
+    def next_id(self):
+        return len([
+            f for f in os.listdir(root_path_master_chests)
+            if f.lower().endswith(".json") and f.lower().startswith("master_chest_")
+        ])
+
+    def parse_card_line(self, line):
+        # raw example
+        # "= 031  Koumori Dragon                        Dr  D    4  1500  1200  Mo  J\n"
+        w_line = line.removeprefix("+").removeprefix("=").strip()
+        s_line = [word for word in w_line.split(" ") if word]
+
+        if len(s_line) >= 9:
+            num = int(s_line[0])
+            name = " ".join(s_line[1: -7])
+            type_ = s_line[-7]
+            attribute = s_line[-6]
+            cost = s_line[-5]
+            atk_points = int(s_line[-4])
+            def_points = int(s_line[-3])
+            planet_1 = s_line[-2]
+            planet_2 = s_line[-1]
+            data = [
+                num,
+                name,
+                type_,
+                attribute,
+                cost,
+                atk_points,
+                def_points,
+                planet_1,
+                planet_2
+            ]
+        elif len(s_line) > 2:
+            data = [
+                int(s_line[0]),
+                " ".join(s_line[1: -1]),
+                s_line[-1]
+            ]
+            # print(f"{data=}")
+        else:
+            # print(f"COULD NOT MAKE CARD:")
+            # print(f"UNKNOWN CARD {line=}")
+            data = []
+
+        c = Card(*data)
+        self.known_cards.setdefault(c.num, [])
+        self.free_cards.setdefault(c.num, [])
+        self.known_cards[c.num].append(c)
+        # self.free_cards[c.num].append(c)
+        # # if c.type_simple != "Monster":
+        # #     print(f"AA {c}")
+        # num = c.num
+        # # kc = st.session_state.get("known_cards")
+        # d = max(0, (1 + num - len(kc)))
+        # while d > 0:
+        #     # kc.append(None)
+        #     d -= 1
+        # # print(f"{d=}, {num=}, {len(kc)=}, {line=}")
+        # # if kc[num] is None:
+        # #     kc[num] = c
+        # #     st.session_state.update({"known_cards": kc})
+        # # print(f"NEW CARD MADE:")
+        # # print(f"{c=}")
+        # # return c.num
+        return c
+
+    def parse_combinations_file(self, max_cards: Optional[int] = None):
+        cards_2 = OrderedDict()
+        cards_3 = OrderedDict()
+        with open(combinations_file, "r") as f:
+            in_section = True
+            section_card: Optional[Card] = None
+            a: Optional[Card] = None
+            b: Optional[Card] = None
+            for i, line in enumerate(f.readlines()):
+                # check line is not separator '----'
+                line_sep = line.strip()
+                # st.write(f"A {i=}, {line_sep=}")
+                while line_sep.startswith("-"):
+                    line_sep = line_sep.removeprefix("-")
+
+                if line_sep:
+                    # this is not a separator line
+                    card = self.parse_card_line(line)
+
+                    if section_card is None:
+                        section_card = card
+                        # print(f"SEC {i=}, {line=}")
+                        cards_2[section_card] = {}
+                        cards_3[section_card.num] = {}
+                    else:
+                        if line.startswith("+"):
+                            a = card
+                        if line.startswith("="):
+                            b = card
+                        if (a is not None) and (b is not None):
+                            # if section_card not in cards_2:
+                            #     cards_2[section_card] = {}
+                            cards_2[section_card][a] = b
+                            cards_3[section_card.num][a.num] = b.num
+                            a = None
+                            b = None
+                        # else:
+                        #     print(f"{i=}, {line=}, {a=}, {b=}")
+
+                    # print(f"{card=}")
+                else:
+                    # print(f"SEP {i=}, {line=}")
+                    in_section = False
+                    section_card = None
+                if (max_cards is not None) and (len(cards_2) >= max_cards):
+                    break
+
+        if (max_cards is not None) and (len(cards_2) != max_cards):
+            cards_2 = {c: cards_2[c] for i, c in enumerate(cards_2) if i <= max_cards}
+
+        return cards_2, cards_3
+
+    def parse_rituals_file(self):
+        with open(rituals_file, "r") as f:
+            df = pd.read_json(f)
+            df["n_Ritual_Monster"] = None
+            df["n_Ritual_Card"] = None
+            df["n_Sacrifices"] = None
+            for i, row in df.iterrows():
+                ritual_monster = row["Ritual Monster"]
+                ritual_card = row["Ritual Card"]
+                sacrifices = row["Sacrifices"]
+                num_rm = int(ritual_monster.split(" ")[0].removeprefix("#"))
+                num_rc = int(ritual_card.split(" ")[0].removeprefix("#"))
+                nums_sac = [int(c.split(" ")[0].removeprefix("#")) for c in sacrifices]
+                df.loc[i, "n_Ritual_Monster"] = num_rm
+                df.loc[i, "n_Ritual_Card"] = num_rc
+                df.loc[i, "n_Sacrifices"] = ";".join(map(str, nums_sac))
+            return df
 
     def load_master_chest_data(self):
         """
@@ -283,6 +287,7 @@ class MasterChest:
                         # deck.append(self.num_2_card(c_id))
                         try:
                             deck.append(self.num_2_card(c_id))
+                            self.claim_card(deck[-1])
                         except Exception:
                             pass
                 player_deck = deck
@@ -290,23 +295,46 @@ class MasterChest:
             if isinstance(player_deck, list):
                 player_deck_ = []
                 for n in player_deck:
+                    # print(f"--B {n=}")
                     try:
+                        # print("--D")
                         player_deck_.append(self.num_2_card(n))
-                    except Exception:
+                        # print("--E")
+                        self.claim_card(player_deck[-1])
+                    except AttributeError:
                         pass
                 player_deck = player_deck_
 
             if isinstance(player_chest, list):
-                player_chest = {c: player_chest.count(c.num) for c in self.data_combinations}
+                # player_chest = {c: player_chest.count(c.num) for c in self.data_combinations}
+                # TODO needs attention
+                player_chest = {c: [] for c in self.data_combinations}
 
             p = Player(
                 name=player_name,
                 deck=player_deck,
                 chest=player_chest
             )
+
+            # print(f"{p=}")
+            # print(f"{len(p.deck)=}")
+
+            # if len(player_deck)==0:
+            #     raise ValueError("AAAGHGG")
+
+            # for c in p.deck:
+            #     self.claim_card(p, c)
+            # for c_n, cards in p.chest.items():
+            #     for c in cards:
+            #         self.claim_card(p, c)
             self.list_players.append(p)
             # print(f"{p=}")
             # print(f"{self.list_players=}")
+
+    def next_card_id(self):
+        # self.iii+=1
+        # print(f"NEXT ID {self.iii}")
+        return next(self.gener_card_ids)
 
     def init_card_df(self):
         def compile_card_data(card: Card):
@@ -416,6 +444,11 @@ class MasterChest:
                     set_ritual_data(dfs[-1], r_card)
                     checked_cards.append(r_card.num)
         return pd.concat(dfs, ignore_index=True)
+    
+    def claim_card(self, c: Card):
+        # c.claimed_by = p
+        # print(f"Claimed {c=}")
+        self.free_cards[c.num].remove(c)
 
     def num_2_card(self, num) -> Card:
         """
@@ -423,9 +456,17 @@ class MasterChest:
         :param num: Card.num attr
         :return: Card
         """
-        c = list(self.data_combinations)[num - 1]
-        c = c.new_copy()
-        c.master_chest_card_id = next(self.gener_card_ids)
+        fc = self.free_cards.get(num, [])
+        if not fc:
+            # c = list(self.data_combinations)[num - 1]
+            c = self.known_cards[num][0]
+            c = c.new_copy()
+            c.master_chest_card_id = self.next_card_id()
+            self.known_cards[c.num].append(c)
+            self.free_cards[c.num].append(c)
+        else:
+            c = fc[0]
+            print(f"FREE {c=}")
         return c
 
     def process_possible_combos(self, hand: list[Card], do_test: bool = False):
