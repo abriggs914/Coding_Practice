@@ -492,7 +492,8 @@ if len(chest.list_players) > 2:
         st.write(my_avail_combo_cards)
 
         # st.write(list(map(type, my_avail_combo_cards)))
-        my_possible_combos = process_possible_combos(my_avail_combo_cards, do_test=True)
+        # my_possible_combos = process_possible_combos(my_avail_combo_cards, do_test=True)
+        my_possible_combos = chest.process_possible_combos(my_avail_combo_cards, do_test=True)
         # my_possible_combos.sort(key=lambda tup: [tup[2], -tup[0].atk_points])
         st.write("MY possible_combos")
         st.write(my_possible_combos)
@@ -503,10 +504,34 @@ if len(chest.list_players) > 2:
         min_card_level = {}
         node_edge_count = {}
 
+        for i, card in enumerate(player_0.hand):
+            nci = f"card_node_{card.num}"
+            nodes_cards.append(Node(
+                id=nci,
+                title=f"{card} HAND",
+                label=card.num,
+                # level=min_card_level[c_a]
+                level=0,
+                color=colour_node_card_hand.hex_code
+                # level=c_a.atk_points/100
+            ))
+            nodes_card_ids.append(nci)
+            node_edge_count.setdefault(nci, {"src": 0, "tgt": 0})
+
+        max_card_levels = {}
+        for i in range(len(my_possible_combos)):
+            r_card: Card = my_possible_combos[i][0]
+            if r_card not in my_possible_combos:
+                max_card_levels[r_card] = 1
+            if (my_possible_combos[i][2] + 1) > max_card_levels[r_card]:
+                max_card_levels[r_card] = (my_possible_combos[i][2] + 1)
+
         for i, combo_data in enumerate(my_possible_combos):
 
             c_r, ingredients, level = combo_data
             c_a, c_b = ingredients
+
+            level += 1
 
             # if c_a not in min_card_level:
             #     ml_a = min([cd[-1] for cd in my_possible_combos if (c_a == cd[0]) or (c_a in cd[1])])
@@ -528,33 +553,35 @@ if len(chest.list_players) > 2:
             nci_a = f"card_node_{c_a.num}"
             nci_b = f"card_node_{c_b.num}"
             nci_r = f"card_node_{c_r.num}"
-            if nci_a not in nodes_card_ids:
-                nodes_card_ids.append(nci_a)
-                nodes_cards.append(Node(
-                    id=nci_a,
-                    title=f"{c_a} {level}",
-                    label=c_a.num,
-                    # level=min_card_level[c_a]
-                    level=level
-                    # level=c_a.atk_points/100
-                ))
-            if nci_b not in nodes_card_ids:
-                nodes_card_ids.append(nci_b)
-                nodes_cards.append(Node(
-                    id=nci_b,
-                    title=f"{c_b} {level}",
-                    label=c_b.num,
-                    # level=min_card_level[c_b]
-                    level=level
-                    # level=c_b.atk_points/100
-                ))
+            # if nci_a not in nodes_card_ids:
+            #     nodes_card_ids.append(nci_a)
+            #     nodes_cards.append(Node(
+            #         id=nci_a,
+            #         title=f"{c_a} {level=}",
+            #         label=c_a.num,
+            #         # level=min_card_level[c_a]
+            #         level=level
+            #         # level=c_a.atk_points/100
+            #     ))
+            # if nci_b not in nodes_card_ids:
+            #     nodes_card_ids.append(nci_b)
+            #     nodes_cards.append(Node(
+            #         id=nci_b,
+            #         title=f"{c_b} {level=}",
+            #         label=c_b.num,
+            #         # level=min_card_level[c_b]
+            #         level=level
+            #         # level=c_b.atk_points/100
+            #     ))
             if nci_r not in nodes_card_ids:
                 nodes_card_ids.append(nci_r)
                 nodes_cards.append(Node(
                     id=nci_r,
-                    title=f"{c_r} {level}",
+                    title=f"{c_r} {max_card_levels[c_r]=}",
                     label=c_r.num,
-                    level=level+1
+                    # level=level,
+                    level=max_card_levels[c_r],
+                    color=colour_node_combo_lvl_0.hex_code
                     # level=min_card_level[c_r]
                     # level=c_r.atk_points/100
                 ))
@@ -580,16 +607,19 @@ if len(chest.list_players) > 2:
             # score = n_src + (5 + n_tgt)
             # score = n_src + (1 * n_tgt)
             score = n_src + (2 * n_tgt)
+            if node.level == 0:
+                score += 5
             # score = n_src + (5 * n_tgt)
-            node.level = score
+            # node.level = score
             node.size = score**1.4
-            node.label = f"{n_src=}, {n_tgt=}, {score=}"
+            node.label = f"{n_src=}, {n_tgt=}, {score=}, {level=}"
 
         config = Config(
             hierarchical=True,
             physics=False,
             width=1200,
-            height=675
+            height=675,
+            direction="UD"
         )
 
         with st.container(border=1):

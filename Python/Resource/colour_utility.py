@@ -1,5 +1,4 @@
 import ctypes
-import struct
 import winreg
 import datetime
 from random import randint, choice
@@ -13,8 +12,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.40
-    Date...........2024-08-01
+    Version..............1.41
+    Date...........2025-03-22
     Author(s)....Avery Briggs
     """
 
@@ -252,7 +251,7 @@ GRAY_56 = (143, 143, 143)
 GRAY_57 = (145, 145, 145)
 GRAY_58 = (148, 148, 148)
 GRAY_59 = (150, 150, 150)
-GRAY_6 = (15, 15, 15)
+GRAY_6 = (15, 15, 16)
 GRAY_60 = (153, 153, 153)
 GRAY_61 = (156, 156, 156)
 GRAY_62 = (158, 158, 158)
@@ -3513,6 +3512,8 @@ def iscolour(c, g=None, b=None):
         return True
     elif is_hex_colour(c):
         return True
+    elif isinstance(c, (list, tuple)) and (len(c) == 3):
+        return iscolour(*c)
     elif isinstance(c, str) and g is None and b is None:
         c = c.replace("-", "_").upper()
         c = c.replace("GREY", "GRAY")
@@ -3744,6 +3745,7 @@ class Colour:
         if not iscolour(c, g, b):
             raise Colour.ColourCreationError(f"Error params {c=}, {g=}, {b=} do not represent a valid or known colour.")
         else:
+            r = None
             if isinstance(c, Colour):
                 r, g, b = c.rgb_code
             elif is_rgb_colour(c, g, b):
@@ -3755,6 +3757,9 @@ class Colour:
                 if not c.startswith("#"):
                     c = f"#{c}"
                 r, g, b = hex_to_rgb(c)
+            elif isinstance(c, (list, tuple)) and (len(c) == 3):
+                self.set_colour_values(*c)
+                return
             elif isinstance(c, str):
                 col = c.replace("-", "_").upper()
                 col = col.replace("GREY", "GRAY")
@@ -3771,6 +3776,9 @@ class Colour:
             # print(f"{self.hex_code=}, {self.rgb_code=}")
             # self.hex_code = rgb_to_hex(self.rgb_code)
 
+        if r is None:
+            raise Colour.ColourCreationError(f"Error params {c=}, {g=}, {b=} do not represent a valid or known colour.")
+
         self.rgb_code = r, g, b
         # print(f"PTA {self.hex_code=}, {self.rgb_code=}")
         self.hex_code = rgb_to_hex(self.rgb_code)
@@ -3779,6 +3787,41 @@ class Colour:
         if self.colour_name is None:
             if self.hex_code in COLOURS_INVERSE:
                 self.colour_name = COLOURS_INVERSE[self.hex_code]
+            else:
+
+                try:
+                    self.colour_name = get_colour_name(self.hex_code)
+                except (ValueError, TypeError):
+                    pass
+
+                if self.colour_name is None:
+
+                    r, g, b = self.rgb_code
+                    avg = (r + g + b) // 3
+
+                    # Thresholds for brightness
+                    if avg < 64:
+                        brightness = "dark"
+                    elif avg > 192:
+                        brightness = "light"
+                    else:
+                        brightness = ""
+
+                    # Sort channels to determine dominant hues
+                    channels = [('red', r), ('green', g), ('blue', b)]
+                    sorted_channels = sorted(channels, key=lambda x: x[1], reverse=True)
+
+                    # Handle grayish colours
+                    if abs(r - g) < 10 and abs(g - b) < 10:
+                        base_name = "gray"
+                    else:
+                        base_name = "-".join([sorted_channels[0][0], sorted_channels[1][0]])
+
+                    # Combine brightness and base
+                    if brightness:
+                        self.colour_name = f"{brightness}-{base_name}"
+                    else:
+                        self.colour_name = base_name
 
     def __iter__(self):
         rgb = self.rgb_code
@@ -3853,7 +3896,7 @@ class Colour:
     hex_code = property(get_hex_code, set_hex_code, del_hex_code)
 
 
-def gradient(x, n, c1, c2, rgb=True):
+def gradient(x, n, c1, c2, rgb=True, as_colour: bool = False):
     """Using increments, calculate a colour between two colours.
     ex. gradient(5, 10, BLACK, WHITE) -> A colour 5/10 te way between c1 & c2.
                                       -> .
@@ -3878,10 +3921,49 @@ def gradient(x, n, c1, c2, rgb=True):
     if b1 >= b2:
         b_diff *= -1
 
-    new_colour = r1 + r_diff, g1 + g_diff, b1 + b_diff
-    if rgb:
+    new_colour = Colour(
+        int(round(r1 + r_diff, 2)),
+        int(round(g1 + g_diff, 2)),
+        int(round(b1 + b_diff, 2))
+    )
+    if as_colour:
         return new_colour
-    return rgb_to_hex(new_colour)
+    if rgb:
+        return new_colour.rgb_code
+    return new_colour.hex_code
+
+
+def gradient_list(n: int, c1: Colour, c2: Colour, as_hex: bool = False) -> list[Colour]:
+    if n <= 0:
+        return []
+    elif n == 1:
+        lst = [gradient(1, 2, c1, c2, as_colour=True)]
+        return [lst[0].hex_code] if as_hex else lst
+
+    # lst = [c1] + [gradient(i+1, n-1, c1, c2, as_colour=True) for i in range(n-2)] + [c2]
+    lst = []
+    for i in range(n):
+        if i == 0:
+            c = c1
+        elif i == (n - 1):
+            c = c2
+        else:
+            c = gradient(i, n-1, c1, c2, as_colour=True)
+
+        if not isinstance(c, Colour):
+            c = Colour(c)
+        if as_hex:
+            c = c.hex_code
+        lst.append(c)
+
+    return lst
+
+
+def gradient_merge(list_colours: list[Colour], steps: int = 3, as_hex: bool = False) -> list[Colour]:
+    colours = []
+    for i in range(len(list_colours) - 1):
+        colours.extend(gradient_list(steps+2, list_colours[i], list_colours[i+1], as_hex=as_hex)[int(bool(i)):])
+    return colours
 
 
 # Darken an RGB color using a proportion p (0-1)
@@ -4051,7 +4133,10 @@ def get_colour_name(hx, name_only=True, r_type=dict, rgb=False, certainty_as_per
             # print(f"B")
 
             try:
-                c = Colour(hx)
+                if not is_hex_colour(hx):
+                    c = Colour(hx)
+                else:
+                    c = hx
             except Colour.ColourCreationError as cce1:
                 if default_colour is not None:
                     try:
@@ -4068,7 +4153,8 @@ def get_colour_name(hx, name_only=True, r_type=dict, rgb=False, certainty_as_per
                     raise TypeError(f"Error cannot determine colour name from input '{hx}'. Perhaps try passing a default colour using the param 'default_colour'.")
 
             if c is not None:
-                hx = c.hex_code
+                if not is_hex_colour(hx):
+                    hx = c.hex_code
 
                 if not hx.startswith("#"):
                     hx = f"#{hx}"
@@ -4228,7 +4314,7 @@ if __name__ == '__main__':
     print(f"{get_colour_name('blue-indigo', default_colour='blue')=}")
     print(f"{get_colour_name('banana-yellow')=}")
     print(f"{get_colour_name('banana_yellow')=}")
-    print(f"{get_colour_name('blue-indigo')=}")
+    # TypeError(f"{get_colour_name('blue-indigo')=}")  # error, no default
 
     len_a, len_b = len(COLOURS), len(COLOURS_INVERSE)
     d = abs(len_a - len_b)
@@ -4263,3 +4349,33 @@ if __name__ == '__main__':
     print("Window color:", get_system_color(COLOR_WINDOW))
     print("Highlight color:", get_system_color(COLOR_HIGHLIGHT))
     print("Button face color:", get_system_color(COLOR_BTNFACE))
+
+    print(f"{get_colour_name('FF0000')=}")
+    print(f"{get_colour_name('FE0000')=}")
+    print(f"{get_colour_name('FD0000')=}")
+    print(f"{get_colour_name('FC0000')=}")
+    print(f"{get_colour_name('FB0000')=}")
+    print(f"{get_colour_name('FA0000')=}")
+    print(f"{get_colour_name('9E0000')=}")
+
+    print(f"{Colour((183, 54, 0))}")
+
+    print(f"{gradient_list(-1, 'orange', 'teal')}")
+    print(f"{gradient_list(0, 'orange', 'teal')}")
+    print(f"{gradient_list(1, 'orange', 'teal')}")
+    print(f"{gradient_list(2, 'orange', 'teal')}")
+    print(f"{gradient_list(3, 'orange', 'teal')}")
+    print(f"{gradient_list(4, 'orange', 'teal')}")
+    print(f"{gradient_list(8, 'orange', 'teal', as_hex=1)}")
+
+    gm0 = gradient_merge(["orange", "teal", "pink"], as_hex=True)
+    print(f"{gm0}")
+
+    gm1 = gradient_merge(["orange", "teal", "pink", "gold"], as_hex=True)
+    print(f"{gm1}")
+
+    gm2 = gradient_merge(["orange"], as_hex=True)
+    print(f"{gm2}")
+
+    gm3 = gradient_merge(["green", "yellow", "red"], steps=20, as_hex=True)
+    print(f"{gm3}")

@@ -16,8 +16,8 @@ from utility import excel_column_name
 VERSION = \
     """	
     General Utility file for Dataframe operations
-    Version..............1.03
-    Date...........2025-03-11
+    Version..............1.04
+    Date...........2025-03-21
     Author(s)....Avery Briggs
     """
 
@@ -292,6 +292,56 @@ def random_df(
     return pd.DataFrame(data)
 
 
+def top_n_with_other_bin(
+        df: pd.DataFrame,
+        column: str | list[str] | Any,
+        top_n: int,
+        other_label: str = "other"
+) -> pd.DataFrame:
+    """
+    Returns a DataFrame with the top N most frequent values in a column and groups the rest into an 'other' bin.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+        column (str): Column name to analyze.
+        top_n (int): Number of top values to keep.
+        other_label (str): Label for the aggregated 'other' bin.
+
+    Returns:
+        pd.DataFrame: A DataFrame with 'Value', 'Count', and 'Proportion' columns.
+    """
+    # Calculate counts and proportions
+    counts = df[column].value_counts()
+    proportions = df[column].value_counts(normalize=True)
+
+    # Get top N values
+    top_values = counts.head(top_n).index
+
+    # Create result DataFrame
+    top_df = pd.DataFrame({
+        "Value": top_values,
+        "Count": counts.loc[top_values].values,
+        "Proportion": proportions.loc[top_values].values
+    })
+
+    # Handle 'other' values
+    if len(counts) > top_n:
+        other_count = counts.loc[~counts.index.isin(top_values)].sum()
+        other_prop = proportions.loc[~proportions.index.isin(top_values)].sum()
+
+        other_row = pd.DataFrame([{
+            "Value": other_label,
+            "Count": other_count,
+            "Proportion": other_prop
+        }])
+
+        top_df = pd.concat([top_df, other_row], ignore_index=True)
+
+    top_df["Value"] = top_df["Value"].apply(lambda v: list(v) if isinstance(v, tuple) else v)
+
+    return top_df
+
+
 if __name__ == '__main__':
     df = random_df(5, 3, match_sub_list_dtypes=True, dtypes=("list", "int"))
     print(df)
@@ -397,3 +447,25 @@ if __name__ == '__main__':
             "match_sub_list_lens": False,
             "match_sub_list_dtypes": True
         }))
+
+    print(random_df(
+        16,
+        {
+            "Model": "str",
+            "Group": "str",
+            "Section": "str",
+            "Desc": "str",
+            "Freq": "int",
+            "SortG": "int",
+            "SortSe": "int"
+        },
+        allow_sub_lists=False,
+        defaults={
+            "Model": ["A", "B", "C", "D", "E", "G", "H", "I", "J", "K", "L", "M", "N"],
+            "Group": ["Axle", "Deck", "GNK"],
+            "Freq": list(range(100)),
+            "Section": ["A", "B", "C", "D", "E", "F", "G"]
+        },
+        min_random_int=0,
+        max_random_int=9)
+    )
