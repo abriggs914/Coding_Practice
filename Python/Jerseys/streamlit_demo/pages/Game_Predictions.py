@@ -11,7 +11,7 @@ import streamlit as st
 # import pandas_profiling
 from ydata_profiling import ProfileReport
 
-from colour_utility import gradient, GREEN, RED, WHITE, YELLOW
+from colour_utility import gradient, gradient_merge, GREEN, RED, WHITE, YELLOW, Colour
 from streamlit_utility import aligned_text
 
 st.set_page_config(layout="wide")
@@ -245,18 +245,27 @@ if selectbox_team:
 	st.link_button(label="P1", url=p1)
 
 
+def score_to_points(record: str) -> int:
+	try:
+		w, l, otl = map(int, record.split("-"))
+		return (2 * w) + otl
+	except (ValueError, AttributeError) as e:
+		return 0
+
+
 def pts_colour(record: str) -> str:
 	try:
 		w, l, otl = map(int, record.split("-"))
 
-		return rg_grads[(2 * w) + otl]
+		return rg_grads[(2 * w) + otl].hex_code
 	except (ValueError, AttributeError) as e:
 		return WHITE
 
 
 # rg_grads: list[str] = [gradient(i, 8, RED, GREEN, rgb=False) for i in range(8 + 1)]
-rg_grads: list[str] = [gradient(i, 4, RED, YELLOW, rgb=False) for i in range(4)]
-rg_grads += [gradient(i, 4, YELLOW, GREEN, rgb=False) for i in range(5)]
+# rg_grads: list[str] = [gradient(i, 4, RED, YELLOW, rgb=False) for i in range(4)]
+# rg_grads += [gradient(i, 4, YELLOW, GREEN, rgb=False) for i in range(5)]
+rg_grads = gradient_merge([GREEN, YELLOW, RED], 14, as_hex=True)
 ordered_teams = [
 	"ANA", "CGY", "EDM", "LAK", "SEA", "SJS", "VAN", "VGK",
 	"CHI", "COL", "DAL", "MIN", "NSH", "STL", "UTA", "WPG",
@@ -265,13 +274,61 @@ ordered_teams = [
 ]
 grid = [st.columns(33) for _ in range(33)]
 st.write(ordered_teams)
-st.write(rest_sheets["Sheet5"])
-for i, row in rest_sheets["Sheet5"].iterrows():
-	for j, col in enumerate(row):
-		grid[i][j].markdown(
-			aligned_text(
-				col,
-				colour=pts_colour(col)
-			),
-			unsafe_allow_html=True
-		)
+df_team_records: pd.DataFrame = rest_sheets["Sheet5"].iloc[:32, :33]
+
+records = [v for v in pd.unique(df_team_records.iloc[1:, 1:].values.ravel()) if not pd.isna(v)]
+records.sort(key=lambda r: (-score_to_points(r), -int(r[0]), sum(map(int, r.split("-")))))
+record_colours = dict(zip(records, rg_grads))
+record_colours["0-0-0"] = Colour("#CFAFAF").hex_code
+record_colours["1-1-0"] = Colour("#4F4F4F").hex_code
+record_colours["2-2-0"] = Colour("#7F7F7F").hex_code
+
+st.write("rest_sheets['Sheet5']")
+st.write(rest_sheets['Sheet5'])
+st.write("df_team_records")
+st.write(df_team_records)
+st.write("rg_grads")
+st.write(rg_grads)
+st.write("records")
+st.write(records)
+st.write("record_colours")
+st.write(record_colours)
+
+for i, row in df_team_records.iterrows():
+	if i == 0:
+		for j, col in enumerate(df_team_records.columns):
+			grid[i + 1][j].markdown(
+				aligned_text(
+					col,
+					colour=pts_colour(col),
+					tag_style="h6"
+				),
+				unsafe_allow_html=True
+			)
+	for j, val in enumerate(row):
+		if not pd.isna(val):
+			if j == 0:
+				colour = None
+			else:
+				colour = record_colours[val]
+			grid[i + 1][j].markdown(
+				aligned_text(
+					val,
+					colour=colour,
+					tag_style="h6"
+				),
+				unsafe_allow_html=True
+			)
+
+	if i == (df_team_records.shape[0] - 1):
+		for j, col in enumerate(df_team_records.columns):
+			if j == (len(df_team_records.columns) - 1):
+				grid[i + 1][j].empty()
+			grid[i + 1][j].markdown(
+				aligned_text(
+					col,
+					colour=pts_colour(col),
+					tag_style="h6"
+				),
+				unsafe_allow_html=True
+			)
