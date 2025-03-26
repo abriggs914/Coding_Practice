@@ -3,6 +3,7 @@ from typing import Literal
 import json_utility
 
 # 2025-01-09 2245
+# 2025-03-26 1753
 
 
 metropolitan = {
@@ -50,8 +51,9 @@ pacific = {
 }
 
 
-def reverse_lookup(val, attribute: Literal["acr", "mascot", "masc_short", "div", "conf"]):
+def reverse_lookup(val, attribute: Literal["team", "acr", "mascot", "masc_short", "div", "conf"]):
     hier = {
+        "team": 0,
         "acr": 0,
         "mascot": 0,
         "masc_short": 0,
@@ -77,12 +79,25 @@ def reverse_lookup(val, attribute: Literal["acr", "mascot", "masc_short", "div",
         for d_name in divs_data:
             teams_data = divisions_list[d_name]
             for t_name, t_data in teams_data.items():
+                if t_name.replace(".", "").lower().strip() ==l_val.replace(".", "").lower().strip():
+                    if attribute == "conf":
+                        return c_name
+                    if attribute == "div":
+                        return d_name
+                    if attribute == "team":
+                        return t_name
+                    try:
+                        return t_data[attribute]
+                    except KeyError:
+                        raise ValueError(f"cannot find {attribute=} from {val=}.")
                 for k in ["acr", "mascot", "masc_short"]:
                     if l_val == str(t_data[k]).lower():
                         if attribute == "conf":
                             return c_name
                         if attribute == "div":
                             return d_name
+                        if attribute == "team":
+                            return t_name
                         try:
                             # res = t_data[attribute]
                             # if str(res).lower() == l_val:
@@ -164,8 +179,14 @@ if __name__ == '__main__':
     # # print(json_utility.jsonify(df))
     # print(df.to_dict())
 
-    print(reverse_lookup("pacific", "div"))
-    print(reverse_lookup("pacific", "conf"))
-    print(reverse_lookup("atlantic", "conf"))
-    print(reverse_lookup("sharks", "conf"))
-    print(reverse_lookup("sharks", "masc_short"))
+    print(f"{reverse_lookup('pacific', 'div')=}")
+    print(f"{reverse_lookup('pacific', 'conf')=}")
+    print(f"{reverse_lookup('atlantic', 'conf')=}")
+    print(f"{reverse_lookup('sharks', 'conf')=}")
+    print(f"{reverse_lookup('sharks', 'masc_short')=}")
+    print(f"{reverse_lookup('anaheim', 'mascot')=}")
+    print(f"{reverse_lookup('ducks', 'mascot')=}")
+    print(f"{reverse_lookup('ducks', 'masc_short')=}")
+    print(f"{reverse_lookup('ducks', 'team')=}")
+    print(f"{reverse_lookup('anaheim', 'team')=}")
+    print(f"{reverse_lookup('anaheim', 'conf')=}")
