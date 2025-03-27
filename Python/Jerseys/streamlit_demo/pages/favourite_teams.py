@@ -1,6 +1,8 @@
 import json
 import os
+import random
 
+import pandas as pd
 import streamlit as st
 
 from PIL import Image
@@ -124,6 +126,28 @@ def validate_confs_divs(conf: Optional[str] = None, div: Optional[str] = None):
         print(f"")
 
 
+def get_teams() -> List[str]:
+    question_teams = []
+    if st.session_state.get(k_checkbox_div_p, False):
+        question_teams.extend(nhu.league["western"]["pacific"])
+    if st.session_state.get(k_checkbox_div_c, False):
+        question_teams.extend(nhu.league["western"]["central"])
+    if st.session_state.get(k_checkbox_div_m, False):
+        question_teams.extend(nhu.league["eastern"]["metropolitan"])
+    if st.session_state.get(k_checkbox_div_a, False):
+        question_teams.extend(nhu.league["eastern"]["atlantic"])
+    return question_teams
+
+
+def new_question() -> List[str]:
+    # snq: int = st.session_state.get(k_slider_n_questions)
+    sntpq: int = st.session_state.get(k_slider_n_teams_per_question)
+    t: List[str] = get_teams()
+    rs = random.sample(t, k=sntpq)
+    print(f"New Question: {sntpq=}, {rs=}")
+    return rs
+
+print(f"TOP")
 states = ["idle", "playing", "reviewing"]
 state_idle, state_playing, state_reviewing = states
 
@@ -142,6 +166,25 @@ st.write(list(team_images))
 #     with cols[1]:
 #         st.image(team_images[team]["btn_img"], caption=team)
 
+
+k_slider_n_questions: str = "slider_n_questions"
+k_slider_n_teams_per_question: str = "slider_n_teams_per_question"
+k_checkbox_conf_e: str = "checkbox_conf_e"
+k_checkbox_conf_w: str = "checkbox_conf_w"
+k_checkbox_div_p: str = "checkbox_div_p"
+k_checkbox_div_c: str = "checkbox_div_c"
+k_checkbox_div_m: str = "checkbox_div_m"
+k_checkbox_div_a: str = "checkbox_div_a"
+
+k_question_num: str = "question_num"
+k_num_questions: str = "num_questions"
+k_question_history: str = "question_history"
+
+question_history = st.session_state.setdefault(k_question_history, {"questions": [], "answers": []})
+question_num = st.session_state.setdefault(k_question_num, 1)
+num_questions = st.session_state.setdefault(k_num_questions, min_n_questions)
+
+
 if state == state_idle:
     with st.container(border=True):
         cols_input_controls_0 = st.columns(3)
@@ -149,7 +192,6 @@ if state == state_idle:
 
     with cols_input_controls_0[0]:
         with st.container(border=True):
-            k_slider_n_questions: str = "slider_n_questions"
             slider_n_questions = st.slider(
                 key=f"k_{k_slider_n_questions}",
                 label="Total Questions:",
@@ -157,7 +199,6 @@ if state == state_idle:
                 max_value=max_n_questions,
                 value=25
             )
-            k_slider_n_teams_per_question: str = "slider_n_teams_per_question"
             slider_n_teams_per_question = st.slider(
                 key=f"k_{k_slider_n_teams_per_question}",
                 label="Teams per Question:",
@@ -166,12 +207,6 @@ if state == state_idle:
                 value=2
             )
 
-    k_checkbox_conf_e: str = "checkbox_conf_e"
-    k_checkbox_conf_w: str = "checkbox_conf_w"
-    k_checkbox_div_p: str = "checkbox_div_p"
-    k_checkbox_div_c: str = "checkbox_div_c"
-    k_checkbox_div_m: str = "checkbox_div_m"
-    k_checkbox_div_a: str = "checkbox_div_a"
     checkbox_conf_ids = {
         "e": "checkbox_conf_e",
         "w": "checkbox_conf_w"
@@ -214,23 +249,92 @@ if state == state_idle:
                 on_change=lambda conf_=c_, div_=d_: validate_confs_divs(conf=conf_, div=div_)
             ))
 
+    vd_teams: bool = bool(get_teams())
     vd_slider_n_questions: bool = min_n_questions <= slider_n_questions <= max_n_questions
     vd_slider_n_teams_per_question: bool = min_n_teams_per_question <= slider_n_teams_per_question <= max_n_teams_per_question
-    st.checkbox(label="vd_slider_n_questions", value=vd_slider_n_questions, disabled=True)
-    st.checkbox(label="vd_slider_n_teams_per_question", value=vd_slider_n_teams_per_question, disabled=True)
+    # st.checkbox(label="vd_slider_n_questions", value=vd_slider_n_questions, disabled=True)
+    # st.checkbox(label="vd_slider_n_teams_per_question", value=vd_slider_n_teams_per_question, disabled=True)
+    # st.checkbox(label="vd_teams", value=vd_teams, disabled=True)
+    # st.write(f"question_teams")
+    # st.write(question_teams)
 
-    st.write("nhu.league")
-    st.write(nhu.league)
-    st.write(f"{nhu.reverse_lookup('anaheim', 'mascot')=}")
+    if all([
+        vd_teams,
+        vd_slider_n_questions,
+        vd_slider_n_teams_per_question
+    ]):
+        with cols_input_controls_1[1]:
+            if st.button(
+                label="submit"
+            ):
+                st.session_state.update({
+                    k_state: state_playing,
+                    k_num_questions: slider_n_questions,
+                    k_slider_n_teams_per_question: slider_n_teams_per_question
+                })
+                st.rerun()
+    else:
+        with cols_input_controls_1[0]:
+            st.warning("Invalid inputs")
 
-    # vd_teams: List[str] = 
-    # if all([
-    #     vd_slider_n_questions,
-    #     vd_slider_n_teams_per_question
-    # ]):
-    #     with
-    #     btn_submit = st.button(
-    #         label="submit"
-    #     )
+    st.session_state.update({
+        k_slider_n_questions: slider_n_questions,
+        k_slider_n_teams_per_question: slider_n_teams_per_question
+    })
+    st.session_state.update(dict(zip(checkbox_data, checkboxes)))
+elif state == state_playing:
+    if len(question_history["questions"]) < question_num:
+        question_history["questions"].append(new_question())
+    elif len(question_history["questions"]) >= num_questions:
+        st.session_state.update({
+            k_state: state_reviewing
+        })
+        st.rerun()
 
-st.session_state.update(dict(zip(checkbox_data, checkboxes)))
+    st.subheader(f"Question {question_num} / {num_questions}")
+    st.divider()
+    sntpq: int = st.session_state.get(k_slider_n_teams_per_question)
+    # t: List[str] = get_teams()
+    cols_q_options = st.columns(sntpq, gap="small")
+    for i, t in enumerate(question_history["questions"][-1]):
+        print(f"{i=}, {t=}")
+        with cols_q_options[i]:
+            # st.write(t)
+            k_team = f'{nhu.reverse_lookup(t, "team").lower()}'
+            if k_team not in ("new york rangers", "new york islanders"):
+                k_team += f' {nhu.reverse_lookup(t, "mascot").lower()}'
+            k_team = k_team.replace(".", "").strip()
+            st.image(
+                team_images[k_team]["btn_img"],
+                caption=t
+            )
+            if st.button(
+                label=t,
+                key=f"btn_select_t_{i}"
+            ):
+                question_history["answers"].append(t)
+                print(f"APPEND ANS {t=}")
+                st.session_state.update({
+                    k_question_num: question_num + 1,
+                    k_question_history: question_history
+                })
+                st.rerun()
+            # st.image(team_images[team]["btn_img"], caption=team)
+else:
+    st.header("Reviewing")
+    st.write("question_history")
+    st.write(question_history)
+    st.write(pd.DataFrame(question_history["questions"]))
+    st.write(
+        pd.DataFrame(question_history["questions"]).rename(columns={
+            i: f"Q_opt_{i}" for i in range(max_n_teams_per_question)
+        }).join(
+            pd.DataFrame(question_history["answers"]).rename(columns={
+                0: "A_0"
+            })
+        )
+    )
+
+st.write("nhu.league")
+st.write(nhu.league)
+st.write(f"{nhu.reverse_lookup('anaheim', 'mascot')=}")

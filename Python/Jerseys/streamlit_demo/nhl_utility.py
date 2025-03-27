@@ -9,9 +9,9 @@ import json_utility
 metropolitan = {
     "Carolina": {"acr": "CAR", "mascot": "Hurricanes", "masc_short": "Canes"},
     "New Jersey": {"acr": "NJD", "mascot": "Devils", "masc_short": "Devils"},
-    "NY Rangers": {"acr": "NYR", "mascot": "Rangers", "masc_short": "Rangers"},
+    "New York Rangers": {"acr": "NYR", "mascot": "Rangers", "masc_short": "Rangers"},
     "Washington": {"acr": "WSH", "mascot": "Capitals", "masc_short": "Caps"},
-    "NY Islanders": {"acr": "NYI", "mascot": "Islanders", "masc_short": "Iles"},
+    "New York Islanders": {"acr": "NYI", "mascot": "Islanders", "masc_short": "Iles"},
     "Pittsburgh": {"acr": "PIT", "mascot": "Penguins", "masc_short": "Pens"},
     "Philadelphia": {"acr": "PHI", "mascot": "Flyers", "masc_short": "Flyers"},
     "Columbus": {"acr": "CBJ", "mascot": "Blue Jackets", "masc_short": "Jackets"}
