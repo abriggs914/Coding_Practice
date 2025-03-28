@@ -283,21 +283,32 @@ if state == state_idle:
     })
     st.session_state.update(dict(zip(checkbox_data, checkboxes)))
 elif state == state_playing:
-    if len(question_history["questions"]) < question_num:
-        question_history["questions"].append(new_question())
-    elif len(question_history["questions"]) >= num_questions:
-        st.session_state.update({
-            k_state: state_reviewing
-        })
-        st.rerun()
 
     st.subheader(f"Question {question_num} / {num_questions}")
+    print(f"Question {question_num} / {num_questions}")
     st.divider()
     sntpq: int = st.session_state.get(k_slider_n_teams_per_question)
     # t: List[str] = get_teams()
+
+    def click_team(t_: str, btn_key: str):
+        question_history["answers"].append(t_)
+        print(f"APPEND ANS {t=}")
+        st.session_state.update({
+            k_question_num: question_num + 1,
+            k_question_history: question_history
+        })
+
+        if len(question_history["questions"]) < question_num:
+            question_history["questions"].append(new_question())
+        elif len(question_history["questions"]) >= num_questions:
+            st.session_state.update({
+                k_state: state_reviewing
+            })
+            st.rerun()
+
     cols_q_options = st.columns(sntpq, gap="small")
     for i, t in enumerate(question_history["questions"][-1]):
-        print(f"{i=}, {t=}")
+        # print(f"{i=}, {t=}")
         with cols_q_options[i]:
             # st.write(t)
             k_team = f'{nhu.reverse_lookup(t, "team").lower()}'
@@ -308,17 +319,20 @@ elif state == state_playing:
                 team_images[k_team]["btn_img"],
                 caption=t
             )
-            if st.button(
+            btn_key = f"btn_select_t_{i}"
+            btn_select_t = st.button(
                 label=t,
-                key=f"btn_select_t_{i}"
-            ):
-                question_history["answers"].append(t)
-                print(f"APPEND ANS {t=}")
-                st.session_state.update({
-                    k_question_num: question_num + 1,
-                    k_question_history: question_history
-                })
-                st.rerun()
+                key=btn_key,
+                on_click=lambda t_=t, bk=btn_key: click_team(t_, bk)
+            )
+                # question_history["answers"].append(t)
+                # print(f"APPEND ANS {t=}")
+                # st.session_state.update({
+                #     k_question_num: question_num + 1,
+                #     k_question_history: question_history
+                # })
+                # print(f"RERUN")
+                # st.rerun()
             # st.image(team_images[team]["btn_img"], caption=team)
 else:
     st.header("Reviewing")
