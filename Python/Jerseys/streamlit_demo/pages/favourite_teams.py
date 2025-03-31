@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import random
@@ -9,7 +10,9 @@ from PIL import Image
 from typing import Optional, List
 
 import nhl_utility as nhu
+from streamlit_utility import display_df
 
+from utility import percent
 
 st.set_page_config(
     layout="wide",
@@ -37,8 +40,8 @@ def load_save_data():
     if not os.path.exists(save_file):
         with open(save_file, "w") as f:
             json.dump({}, f)
-        with open(save_file, "r") as f:
-            return json.load(f)
+    with open(save_file, "r") as f:
+        return json.load(f)
 
 
 @st.cache_data()
@@ -147,6 +150,7 @@ def new_question() -> List[str]:
     print(f"New Question: {sntpq=}, {rs=}")
     return rs
 
+
 print(f"TOP")
 states = ["idle", "playing", "reviewing"]
 state_idle, state_playing, state_reviewing = states
@@ -155,16 +159,17 @@ k_state: str = "state"
 state = st.session_state.setdefault(k_state, state_idle)
 
 team_images = load_image_data()
-save_data = load_save_data()
-st.write(save_data)
-st.write(list(team_images))
-
-# cols = st.columns(2)
-# for i, team in enumerate(team_images):
-#     with cols[0]:
-#         st.write(team)
-#     with cols[1]:
-#         st.image(team_images[team]["btn_img"], caption=team)
+save_file_data = load_save_data()
+st.write("save_file_data")
+st.write(save_file_data)
+# st.write(list(team_images))
+#
+# # cols = st.columns(2)
+# # for i, team in enumerate(team_images):
+# #     with cols[0]:
+# #         st.write(team)
+# #     with cols[1]:
+# #         st.image(team_images[team]["btn_img"], caption=team)
 
 
 k_slider_n_questions: str = "slider_n_questions"
@@ -277,6 +282,15 @@ if state == state_idle:
         with cols_input_controls_1[0]:
             st.warning("Invalid inputs")
 
+    with cols_input_controls_1[0]:
+        if st.button(
+            label="Review"
+        ):
+            st.session_state.update({
+                k_state: state_reviewing
+            })
+            st.rerun()
+
     st.session_state.update({
         k_slider_n_questions: slider_n_questions,
         k_slider_n_teams_per_question: slider_n_teams_per_question
@@ -290,6 +304,20 @@ elif state == state_playing:
     sntpq: int = st.session_state.get(k_slider_n_teams_per_question)
     # t: List[str] = get_teams()
 
+    def check_question_len():
+        print(f"CQL: lqs={len(question_history['questions'])}, qn={question_num}, nq={num_questions}", end=" ")
+        if len(question_history["questions"]) < question_num:
+            print(f"NQ")
+            question_history["questions"].append(new_question())
+            st.rerun()
+        elif len(question_history["questions"]) > num_questions:
+            question_history["questions"].pop(-1)
+            st.session_state.update({
+                k_state: state_reviewing
+            })
+            print(f"RV")
+            st.rerun()
+
     def click_team(t_: str, btn_key: str):
         question_history["answers"].append(t_)
         print(f"APPEND ANS {t=}")
@@ -298,13 +326,7 @@ elif state == state_playing:
             k_question_history: question_history
         })
 
-        if len(question_history["questions"]) < question_num:
-            question_history["questions"].append(new_question())
-        elif len(question_history["questions"]) >= num_questions:
-            st.session_state.update({
-                k_state: state_reviewing
-            })
-            st.rerun()
+    check_question_len()
 
     cols_q_options = st.columns(sntpq, gap="small")
     for i, t in enumerate(question_history["questions"][-1]):
@@ -325,6 +347,8 @@ elif state == state_playing:
                 key=btn_key,
                 on_click=lambda t_=t, bk=btn_key: click_team(t_, bk)
             )
+            if btn_select_t:
+                check_question_len()
                 # question_history["answers"].append(t)
                 # print(f"APPEND ANS {t=}")
                 # st.session_state.update({
@@ -334,21 +358,137 @@ elif state == state_playing:
                 # print(f"RERUN")
                 # st.rerun()
             # st.image(team_images[team]["btn_img"], caption=team)
-else:
-    st.header("Reviewing")
+
     st.write("question_history")
     st.write(question_history)
-    st.write(pd.DataFrame(question_history["questions"]))
-    st.write(
-        pd.DataFrame(question_history["questions"]).rename(columns={
+else:
+    st.header("Reviewing")
+
+    if question_num > 1:
+        st.write("question_history")
+        cols_dfs = st.columns(2)
+        # st.write(question_history)
+        # st.write(pd.DataFrame(question_history["questions"]))
+        df_hist = pd.DataFrame(question_history["questions"]).rename(columns={
             i: f"Q_opt_{i}" for i in range(max_n_teams_per_question)
         }).join(
             pd.DataFrame(question_history["answers"]).rename(columns={
                 0: "A_0"
             })
         )
-    )
+        with cols_dfs[0]:
+            stdf_hist = display_df(
+                df_hist
+            )
 
-st.write("nhu.league")
-st.write(nhu.league)
-st.write(f"{nhu.reverse_lookup('anaheim', 'mascot')=}")
+        df_columns = df_hist.columns
+        list_teams = []
+        for i, col in enumerate(df_columns):
+            list_teams.extend(df_hist[col].unique().tolist())
+        list_teams = list(set(list_teams))
+        df_data = [
+            {
+                "team": t,
+                "xOption": 0,
+                "xChosen": 0
+            }
+            for i, t in enumerate(list_teams)
+        ]
+        for i, row in df_hist.iterrows():
+            for j, col in enumerate(df_columns):
+                team = df_hist.loc[i, col]
+                t_idx = list_teams.index(team)
+                if j < (len(df_columns) - 1):
+                    # question
+                    df_data[t_idx]["xOption"] += 1
+                else:
+                    # answer
+                    df_data[t_idx]["xChosen"] += 1
+
+        df_stats = pd.DataFrame(df_data)
+        df_stats["pctChosen"] = df_stats["xChosen"] / df_stats["xOption"]
+        df_stats_0 = df_stats.loc[df_stats["xChosen"] > 0].sort_values(
+            by=["pctChosen", "xOption"],
+            ascending=[False, False]
+        )
+        df_stats_1 = df_stats.loc[df_stats["xChosen"] == 0].sort_values(
+            by=["pctChosen", "xOption"],
+            ascending=[False, True]
+        )
+        df_stats = pd.concat([df_stats_0, df_stats_1], ignore_index=True)
+        df_stats["pctChosen"] = df_stats["pctChosen"].apply(lambda p: percent(p))
+        with cols_dfs[1]:
+            display_df(df_stats)
+
+    # TODO report on each 'Game', not just the team selections.
+    dfs_overall_data = {}
+    dfs_team_data = {}
+    for save_date_key, save_data in save_file_data.items():
+        results = save_data.get("results", {})
+        df_results = pd.DataFrame(results)
+        # display_df(
+        #     df_results,
+        #     title=f"{save_date_key}"
+        # )
+        for i, row in df_results.iterrows():
+            team = row["team"]
+            if team not in dfs_team_data:
+                dfs_team_data[team] = {
+                    "xOption": row["xOption"],
+                    "xChosen": row["xChosen"]
+                }
+            else:
+                dfs_team_data[team]["xOption"] += row["xOption"]
+                dfs_team_data[team]["xChosen"] += row["xChosen"]
+
+    df_all_teams_results = pd.DataFrame(dfs_team_data).transpose().reset_index().rename(columns={"index": "team"})
+    df_all_teams_results["pctChosen"] = df_all_teams_results["xChosen"] / df_all_teams_results["xOption"]
+    df_all_teams_results_0 = df_all_teams_results.loc[df_all_teams_results["xChosen"] > 0].sort_values(
+        by=["pctChosen", "xOption"],
+        ascending=[False, False]
+    )
+    df_all_teams_results_1 = df_all_teams_results.loc[df_all_teams_results["xChosen"] == 0].sort_values(
+        by=["pctChosen", "xOption"],
+        ascending=[False, True]
+    )
+    df_all_teams_results = pd.concat([df_all_teams_results_0, df_all_teams_results_1], ignore_index=True)
+    df_all_teams_results["pctChosen"] = df_all_teams_results["pctChosen"].apply(lambda p: percent(p))
+    display_df(df_all_teams_results, "df_all_teams_results")
+
+    if st.button(
+        label="Play again?" if question_num > 1 else "Play?"
+    ):
+        if question_num > 1:
+            save_data = {}
+            for key, do_pop in {
+                k_state: True,
+                k_question_num: True,
+                k_num_questions: True,
+                k_question_history: True,
+
+                k_slider_n_teams_per_question: False,
+                k_slider_n_questions: False,
+                k_checkbox_conf_e: False,
+                k_checkbox_conf_w: False,
+                k_checkbox_div_p: False,
+                k_checkbox_div_c: False,
+                k_checkbox_div_m: False,
+                k_checkbox_div_a: False
+            }.items():
+                save_data.setdefault(key, st.session_state.get(key))
+                if do_pop:
+                    st.session_state.pop(key)
+
+            save_data["results"] = json.loads(df_stats.to_json())
+
+            save_file_data[f"{datetime.datetime.now():%Y-%m-%d %X}"] = save_data
+
+            with open(save_file, "w") as f:
+                json.dump(save_file_data, f)
+
+            load_save_data.clear()
+        st.rerun()
+
+# st.write("nhu.league")
+# st.write(nhu.league)
+# st.write(f"{nhu.reverse_lookup('anaheim', 'mascot')=}")
