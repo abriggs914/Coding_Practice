@@ -354,3 +354,4 @@ if __name__ == "__main__":
     print(handler.search_for_player("Avery"))
     print(handler.search_for_player("Briggs"))
     print(handler.search_for_player("avery"))
+    print(handler.fetch_team_logo_address("UTA"))
