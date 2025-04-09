@@ -10,6 +10,7 @@ import streamlit as st
 # from pandas_profiling import ProfileReport
 # import pandas_profiling
 from ydata_profiling import ProfileReport
+import plotly.express as px
 
 from colour_utility import gradient, gradient_merge, GREEN, RED, WHITE, YELLOW, Colour
 from streamlit_utility import aligned_text
@@ -246,11 +247,16 @@ if selectbox_team:
 
 
 def score_to_points(record: str) -> int:
-	try:
-		w, l, otl = map(int, record.split("-"))
-		return (2 * w) + otl
-	except (ValueError, AttributeError) as e:
-		return 0
+    try:
+        w, l, otl = map(int, record.split("-"))
+        pts = (2 * w) + otl
+        gms = sum([w, l, otl])
+        if toggle_normalize:
+            return pts / (gms if gms != 0 else 1)
+        else:
+            return pts
+    except (ValueError, AttributeError) as e:
+        return 0
 
 
 def pts_colour(record: str) -> str:
@@ -260,6 +266,42 @@ def pts_colour(record: str) -> str:
 		return rg_grads[(2 * w) + otl].hex_code
 	except (ValueError, AttributeError) as e:
 		return WHITE
+        
+
+def records_to_points_df(df: pd.DataFrame) -> pd.DataFrame:
+    df_numeric = df.copy()
+    for i in range(df.shape[0]):
+        for j in range(0, df.shape[1]):  # skip label column
+            if i == j:
+                # same team
+                df_numeric.iloc[i, j] = -1
+            else:
+                val = df.iloc[i, j]
+                if pd.isna(val):
+                    df_numeric.iloc[i, j] = 0
+                else:
+                    df_numeric.iloc[i, j] = score_to_points(val)
+    
+    # Convert to numeric dtype (in case it's still object)
+    df_numeric.iloc[:, :] = df_numeric.iloc[:, :].apply(pd.to_numeric)
+
+    # Sort rows by total points across columns
+    df_numeric["RowSum"] = df_numeric.iloc[:, :].sum(axis=1)
+    df_numeric = df_numeric.sort_values(by="RowSum", ascending=False)
+    df_numeric = df_numeric.drop(columns=["RowSum"])
+
+    # Sort columns (excluding label col) by total points across rows
+    col_sums = df_numeric.iloc[:, :].sum(axis=0).sort_values(ascending=False)
+    # sorted_cols = [df_numeric.columns[0]] + col_sums.index.tolist()
+    sorted_cols = col_sums.index.tolist()
+
+    df_numeric = df_numeric[sorted_cols]
+    
+    print(f"df_numeric")
+    print(df_numeric)
+                
+    return df_numeric
+
 
 
 # rg_grads: list[str] = [gradient(i, 8, RED, GREEN, rgb=False) for i in range(8 + 1)]
@@ -276,12 +318,29 @@ grid = [st.columns(33) for _ in range(33)]
 st.write(ordered_teams)
 df_team_records: pd.DataFrame = rest_sheets["Sheet5"].iloc[:32, :33]
 
+
+cont_heatmap = st.container(border=True)
+
+with cont_heatmap:
+    toggle_normalize = st.toggle(
+        label="Normalize by PPG?",
+        value=False
+    )
+
+
 records = [v for v in pd.unique(df_team_records.iloc[1:, 1:].values.ravel()) if not pd.isna(v)]
 records.sort(key=lambda r: (-score_to_points(r), -int(r[0]), sum(map(int, r.split("-")))))
 record_colours = dict(zip(records, rg_grads))
 record_colours["0-0-0"] = Colour("#CFAFAF").hex_code
 record_colours["1-1-0"] = Colour("#4F4F4F").hex_code
 record_colours["2-2-0"] = Colour("#7F7F7F").hex_code
+
+df_team_records.rename(
+    columns={
+        df_team_records.columns[0]: "Team"
+    },
+    inplace=True
+)
 
 st.write("rest_sheets['Sheet5']")
 st.write(rest_sheets['Sheet5'])
@@ -332,3 +391,24 @@ for i, row in df_team_records.iterrows():
 				),
 				unsafe_allow_html=True
 			)
+
+
+df_numeric = records_to_points_df(df_team_records.iloc[0:, 1:])
+st.write("df_numeric")
+st.write(df_numeric)
+ys = [df_team_records.loc[i, "Team"] for i in df_numeric.index.tolist()]  # team names
+st.write(f"ys: {ys}")
+with cont_heatmap:
+    fig = px.imshow(
+        df_numeric,
+        labels=dict(y="Team", x="Opponent", color="Points"),
+        x=df_numeric.columns.tolist(),
+        y=ys,
+        color_continuous_scale=px.colors.sequential.Turbo,  # or custom
+        width=800,
+        height=800
+    )
+
+
+
+    st.plotly_chart(fig, use_container_width=True)
