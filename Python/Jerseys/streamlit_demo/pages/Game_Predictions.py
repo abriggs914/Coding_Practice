@@ -14,6 +14,7 @@ import plotly.express as px
 
 from colour_utility import gradient, gradient_merge, GREEN, RED, WHITE, YELLOW, Colour
 from streamlit_utility import aligned_text
+from nhl_utility import reverse_lookup
 
 st.set_page_config(layout="wide")
 
