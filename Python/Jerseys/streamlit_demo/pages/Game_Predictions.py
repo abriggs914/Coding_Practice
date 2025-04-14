@@ -16,10 +16,12 @@ from colour_utility import gradient, gradient_merge, GREEN, RED, WHITE, YELLOW, 
 from streamlit_utility import aligned_text
 from nhl_utility import reverse_lookup
 
+cache_hold_time = 2*60*60
+
 st.set_page_config(layout="wide")
 
 
-@st.cache_data(ttl=None, show_spinner=True)
+@st.cache_data(ttl=cache_hold_time, show_spinner=True)
 def load_game_predictions() -> pd.DataFrame:
 	return pd.read_excel(
 		path_excel,
@@ -28,7 +30,7 @@ def load_game_predictions() -> pd.DataFrame:
 	)
 
 
-@st.cache_data(ttl=None, show_spinner=True)
+@st.cache_data(ttl=cache_hold_time, show_spinner=True)
 def load_rest_sheets_game_predictions() -> dict:
 	return pd.read_excel(
 		path_excel,
@@ -413,3 +415,47 @@ with cont_heatmap:
 
 
     st.plotly_chart(fig, use_container_width=True)
+
+
+df_team_points: pd.DataFrame = rest_sheets["Sheet2"].iloc[:32, :-70]
+
+st.write("df_team_points1")
+st.dataframe(df_team_points)
+st.write("df_c")
+
+date_cols = df_team_points.columns.tolist()[3:]
+df_c = df_team_points.copy()[["Team"] + date_cols]
+df_c = df_c.transpose().reset_index().rename(columns={"index": "Date"})
+team_col_names = df_c.iloc[0][1:].values.tolist()
+df_c = df_c.drop(0)
+df_c.rename(columns=dict(zip(range(32), team_col_names)), inplace=True)
+df_c.reset_index(inplace=True, drop=True)
+df_c["Points"] = df_c.apply(lambda row: min(row[1:].values), axis=1)
+st.dataframe(df_c)
+
+df_team_points = df_team_points.melt(
+	id_vars="Team",
+	value_vars=df_team_points.columns.tolist()[3:],
+	value_name="Points"
+).rename(columns={"variable": "Date"})
+st.write("df_team_points2")
+st.dataframe(df_team_points)
+
+chart = px.line(
+	df_c,
+	x="Date",
+	# y="Points",
+	y=df_c.columns.tolist()[1:],
+	# color="Team",
+	width=1500,
+	height=865,
+	animation_group="Points",
+	animation_frame="Date",
+	range_x=[df_team_points["Date"].min(), df_team_points["Date"].max()],
+	range_y=[df_team_points["Points"].min(), df_team_points["Points"].max()]
+)
+
+st.plotly_chart(
+	chart,
+	use_container_width=True
+)
