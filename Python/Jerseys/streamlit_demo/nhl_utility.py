@@ -36,6 +36,7 @@ central = {
     "St. Louis": {"acr": "STL", "mascot": "Blues", "masc_short": "Blues"},
     "Nashville": {"acr": "NSH", "mascot": "Predators", "masc_short": "Preds"},
     "Arizona": {"acr": "ARI", "mascot": "Coyotes", "masc_short": "Coyotes"},
+    "Utah": {"acr": "UTA", "mascot": "Hockey Club", "masc_short": "Utah"},
     "Chicago": {"acr": "CHI", "mascot": "Blackhawks", "masc_short": "Hawks"}
 }
 
