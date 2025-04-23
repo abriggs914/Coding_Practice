@@ -1,8 +1,18 @@
+from typing import Any
+
+import pandas as pd
 import pdfplumber
 import streamlit as st
+from pandas import DataFrame
 
+from streamlit_pdf_viewer import pdf_viewer
+
+from colour_utility import gradient_list
+from streamlit_utility import aligned_text
 
 file_pick_counts = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\2025\pick_counts.pdf"
+file_pick_sheet = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\2025\boxpool-BWSPlayoffs2025.pdf"
+excel_pick_counts = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\2025\pick_counts.xlsx"
 
 @st.cache_data(show_spinner=True)
 def load_pick_counts():
@@ -32,17 +42,17 @@ def load_pick_counts():
     # return extracted
     all_tables = []
 
-    with pdfplumber.open(file_pick_counts) as pdf:
+    with pdfplumber.open(file_pick_sheet) as pdf:
         for page in pdf.pages:
             # Crop the central area of the page where your tables live
             width = page.width
             height = page.height
 
-            # Focus on central vertical band
-            cropped = page.within_bbox((width * 0.1, 0, width * 0.9, height))
+            # # Focus on central vertical band
+            # cropped = page.within_bbox((width * 0.1, 0, width * 0.9, height))
 
             # Try lattice mode (looks like proper lines are used)
-            tables = cropped.extract_tables({
+            tables = page.extract_tables({
                 "vertical_strategy": "lines",
                 "horizontal_strategy": "lines",
                 "snap_tolerance": 3,
@@ -58,11 +68,80 @@ def load_pick_counts():
             for table in tables:
                 # Filter empty tables (all rows empty)
                 if any(any(cell.strip() for cell in row if cell) for row in table):
-                    all_tables.append(table)
+                    all_tables.extend(table)
 
-    return all_tables
+    header_data = all_tables[0][0].split("\n")
+    boxes_data = []
+    boxes_row_data = all_tables[1:4] + all_tables[5:8]
+    for i, row_data in enumerate(boxes_row_data):
+        for j, box_data in enumerate(row_data):
+            boxes_data.append(box_data.split("\n"))
+    # return all_tables
 
+    return {
+        "header_data": header_data,
+        "boxes_data": boxes_data
+    }
+
+
+@st.cache_data(show_spinner=True)
+def load_excel_pick_counts() -> dict[Any, DataFrame]:
+    return pd.read_excel(
+        excel_pick_counts,
+        sheet_name=None
+    )
+
+
+def translate_player_text(p: str):
+    """
+    'Tomas Hertl (C) VGK'  => 'Hertl, T (VGK)'
+    'Los Angeles Kings (T) LAK' => 'Los Angeles (LAK)'
+    :param p:
+    :return:
+    """
+    spl = p.strip().split(" ")
+    team = f"({spl[-1]})"
+    box_type = spl[-2]
+    name_full = " ".join(spl[:-2])
+    name_0 = spl[0]
+    name_1 = spl[1]
+    name_2 = spl[2]
+
+    if box_type.removeprefix("(").removesuffix(")").lower() == "t":
+        if name_1.lower() not in ["angeles", "louis"]:
+            return f"{name_0} {team}"
+        else:
+            return f"{name_0} {name_1} {team}"
+    else:
+        if name_2.lower().startswith("("):
+            return f"{name_1}, {name_0[0]} {team}"
+        else:
+            return f"{name_1} {name_2}, {name_0[0]} {team}"
 
 
 data_pick_counts = load_pick_counts()
 st.write(data_pick_counts)
+
+dfs_pick_counts: dict = load_excel_pick_counts()
+df_pick_counts_20250422: pd.DataFrame = dfs_pick_counts["20250422"]
+
+max_picks = int(df_pick_counts_20250422["Count"].max())
+colour_grads = gradient_list(max_picks, "#FFCCCC", "#CCFFCC", as_hex=True)
+
+df_pick_counts_20250422["colour"] = df_pick_counts_20250422["Count"].apply(lambda c: colour_grads[c - 1])
+df_pick_counts_20250422["boxText"] = df_pick_counts_20250422["Player"].apply(lambda p: translate_player_text(p))
+
+st.write("df_pick_counts_20250422")
+st.write(df_pick_counts_20250422)
+
+for i, cg in enumerate(colour_grads):
+    st.markdown(aligned_text(
+        f"Sample Text {i}",
+        colour=cg
+    ), unsafe_allow_html=True)
+
+pdf_viewer_pick_sheet = pdf_viewer(
+    file_pick_sheet,
+    width=900,
+    height=1200
+)
