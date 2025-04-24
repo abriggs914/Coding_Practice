@@ -3,7 +3,6 @@ from typing import Any
 import pandas as pd
 import pdfplumber
 import streamlit as st
-from pandas import DataFrame
 
 from streamlit_pdf_viewer import pdf_viewer
 
@@ -85,7 +84,7 @@ def load_pick_counts():
 
 
 @st.cache_data(show_spinner=True)
-def load_excel_pick_counts() -> dict[Any, DataFrame]:
+def load_excel_pick_counts() -> dict[Any, pd.DataFrame]:
     return pd.read_excel(
         excel_pick_counts,
         sheet_name=None
@@ -119,6 +118,50 @@ def translate_player_text(p: str):
             return f"{name_1} {name_2}, {name_0[0]} {team}"
 
 
+@st.cache_data(show_spinner=True)
+def load_annotations(df_picks: pd.DataFrame) -> list:
+    annotations = []
+    with pdfplumber.open(file_pick_sheet) as pdf:
+        p0 = pdf.pages[0]
+        for i, row in df_picks.iterrows():
+            p_txt = row["boxText"]
+            p0_search = p0.search(p_txt, regex=False, return_chars=False)
+            st.write(f"{i=}, {p_txt=}, {p0_search=}")
+            if p0_search:
+                p0_search_data = p0_search[0]
+                x0 = p0_search_data["x0"]
+                x1 = p0_search_data["x1"]
+                top = p0_search_data["top"]
+                bottom = p0_search_data["bottom"]
+                # bbox = [x0, top, x1, bottom]
+                # # annotations.append({
+                # #     "text": p_txt,
+                # #     "i": i,
+                # #     "bbox": bbox
+                # # })
+                # X and Y points are calculated from the bottom left of the page????
+                # x_r = p0_search_data.get("x0")
+                # y_r = p0_search_data.get("y1")
+                # w_r = p0_search_data.get("width")
+                # h_r = p0_search_data.get("height")
+                # x_r_c, y_r_c = p0.point2coord((x_r, y_r))
+                # x_r_c, y_r_c = p0.point2coord((x0, top))
+                annotations.append({
+                    "page": 0,
+                    "x": x0,
+                    "y": top,
+                    "height": bottom - top,
+                    "width": x1 - x0,
+                    # "x": x_r_c,
+                    # "y": y_r_c,
+                    # "height": h_r,
+                    # "width": w_r,
+                    "color": "#AA1111",
+                    "text": p_txt
+                })
+    return annotations
+
+
 data_pick_counts = load_pick_counts()
 st.write(data_pick_counts)
 
@@ -140,8 +183,20 @@ for i, cg in enumerate(colour_grads):
         colour=cg
     ), unsafe_allow_html=True)
 
+
+annotations_20250422 = load_annotations(df_pick_counts_20250422)
+st.write("annotations_20250422")
+st.write(annotations_20250422)
+
 pdf_viewer_pick_sheet = pdf_viewer(
     file_pick_sheet,
-    width=900,
-    height=1200
+    width=1800,
+    height=3000,
+    annotations=annotations_20250422,
+    annotation_outline_size=2
 )
+
+office_pools_standings = """
+<iframe marginheight="0" marginwidth="0"style="border: none;" frameborder="0"src="https://www.officepools.com/nhl/classic/widget/LK33HLQ"width="500"height="500"></iframe>
+"""
+st.markdown(office_pools_standings, unsafe_allow_html=True)
