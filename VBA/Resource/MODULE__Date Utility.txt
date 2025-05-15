@@ -2,8 +2,8 @@ Option Compare Database
 
 
 ' General Date Utility Functions
-' Version...................1.01
-' Date................2023-07-11
+' Version...................1.03
+' Date................2025-03-27
 ' Author(s).........Avery Briggs
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -12,9 +12,17 @@ Option Compare Database
 '                   Contents
 '
 '   Am_Pm                   -   return "AM"/"PM" for a time
+'   DateSuffix              -   return the appropriate suffix for a date's day. (1st, 2nd, 3rd)
 '   Datetime                -   return a date object with time, think python's datetime.datetime method
 '   Hourify                 -   return a times hour in 12-H format
 '   Round2Nearest5Minutes   -   round time to nearest 5 min increment
+'   DateFormat              -   return a neater date string
+'   StartOfDay              -   Retrieve this date at midnight
+'   MidDay                  -   Retrieve this date at noon
+'   EndOfDay                -   Retrieve this date at the end of the day right before midnight of the next day
+'   StartOfMonth            -   Retrieve this date at the beginning of the month
+'   EndOfMonth              -   Retrieve this date at the end of the month
+'   IsLeapYear              -   Determine if this year is a leap year
 '
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -65,14 +73,14 @@ Public Function Round2Nearest5Minutes(ByVal dateIn As Date) As Date
     Dim m As Integer
     Dim h As Integer
     Dim p As Integer
-    Dim q As Integer
+    Dim Q As Integer
     Dim x() As Integer
     h = DatePart("h", dateIn)
     m = DatePart("n", dateIn)
     x = Divmod(m, 5)
     p = x(0) * 5
-    q = IIf(x(1) > 2, 5, 0)
-    p = p + q
+    Q = IIf(x(1) > 2, 5, 0)
+    p = p + Q
     Round2Nearest5Minutes = Format(CStr(h) & ":" & Right("00" & CStr(p), 2), "Medium Time")
     
 End Function
@@ -119,15 +127,390 @@ End Function
 '
 ' Usage:
 ' ~~~~~~
-' datetime(2023,6,6, 12, 35)  ' => 2023-06-22 12:35:00 PM
+' datetime(2023, 6, 6, 12, 35)  ' => 2023-06-22 12:35:00 PM
+' datetime(2023, 6, 31, 12, 35, 0, false)  ' => 2023-07-01 12:35:00 PM
+' datetime(2023, 6, 31, 12, 35, 0, true)  ' => ERROR
 '
 ' Revision History:
 ' Rev       Date(yyyy/mm/dd)            Description
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
+' 2         2024-03-14                  Added AssertValid as an optional parameter.
 '---------------------------------------------------------------------------------------
-Public Function Datetime(ByVal Year_ As Integer, ByVal Month_ As Integer, ByVal Day_ As Integer, Optional ByVal Hour_ As Integer = 0, Optional ByVal Minute_ As Integer = 0, Optional ByVal Second_ As Integer = 0) As Date
+Public Function Datetime( _
+    ByVal Year_ As Integer, _
+    ByVal Month_ As Integer, _
+    ByVal day_ As Integer, _
+    Optional ByVal Hour_ As Integer = 0, _
+    Optional ByVal Minute_ As Integer = 0, _
+    Optional ByVal Second_ As Integer = 0, _
+    Optional ByVal AssertValid As Boolean = False _
+    ) As Date
+    
+    ' When assertValid is set to false, you can take advantage of dateserial's rounding ability
+    ' i.e. dateserial(1995,2,31) => "1995-03-03"
+    ' Turn this off to assert that inavlid dates dont round.
+    
+    Datetime = DateSerial(Year_, Month_, day_) + TimeSerial(Hour_, Minute_, Second_)
+    
+    If AssertValid Then
+        If Not All(Array(Year_ = Year(Datetime), Month_ = Month(Datetime), day_ = Day(Datetime), Hour_ = Hour(Datetime), Minute_ = Minute(Datetime), Second_ = Second(Datetime))) Then
+            Err.Raise vbObjectError, "Datetime", "Parameters y=" & Year_ & ", m=" & Month_ & ", d=" & day_ & ", h=" & Hour_ & ", m=" & Minute_ & ", s=" & Second_ & " Do not represent a valid date."
+        End If
+    End If
 
-    Datetime = DateSerial(Year_, Month_, Day_) + TimeSerial(Hour_, Minute_, Second_)
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : DateSuffix
+' Author    : Avery Briggs
+' Purpose   : Return a string can be used as a suffix when formatting dates.
+'             Can be used as a generic number formatter as well.
+'
+' Usage:
+' ~~~~~~
+' datesuffix(#2023-08-01#)  ' => "st"
+' datesuffix(#2023-08-02#)  ' => "nd"
+' datesuffix(#2023-08-03#)  ' => "rd"
+' datesuffix(#2023-08-04#)  ' => "th"
+' datesuffix(#2023-08-11#)  ' => "th"
+' datesuffix(#2023-08-21#)  ' => "st"
+' datesuffix(#2023-08-22#)  ' => "nd"
+' datesuffix(#2023-08-31#)  ' => "st"
+' datesuffix(1)             ' => "st"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-24                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function DateSuffix(ByVal date_ As Date) As String
+    
+    Dim day_ As Long
+    If Not IsInstance(date_, Array(vbDate, vbInteger, vbLong)) Then
+        Err.Raise vbObjectError, "DateSuffix", "Error not a valid date or day value."
+    Else:
+        If IsInstance(date_, vbDate) Then
+            day_ = Day(date_)
+        Else
+            day_ = date_
+        End If
+        
+        Dim s_day As String
+        Dim right_ As String
+        Dim secondLast As String
+        Dim lsd As Long
+        
+        s_day = Right("00" & CStr(day_), 2)
+        right_ = Right(s_day, 1)
+        lsd = Len(s_day)
+        secondLast = Mid(s_day, lsd - 1, 1)
+        
+        If right_ = "1" Then
+            res = "st"
+            If lsd > 1 Then
+                If secondLast = "1" Then
+                    res = "th"
+                End If
+            End If
+        ElseIf right_ = "2" Then
+            res = "nd"
+            If lsd > 1 Then
+                If secondLast = "1" Then
+                    res = "th"
+                End If
+            End If
+        ElseIf right_ = "3" Then
+            res = "rd"
+            If lsd > 1 Then
+                If secondLast = "1" Then
+                    res = "th"
+                End If
+            End If
+        Else:
+            res = "th"
+        End If
+        
+        DateSuffix = res
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : DateFormat
+' Author    : Avery Briggs
+' Purpose   : Return a string of a formatted date.
+'             Can also just return a list of values.
+'
+' Usage:
+' ~~~~~~
+' dateformat(#2024-06-12#)                                      ' => "Wednesday June 12th 2024"
+' dateformat(#2024-06-12#, 1)                                   ' => "Wednesday, June 12th, 2024"
+' dateformat(#2024-06-12#, 2)                                   ' => "Wednesday, June 12th"
+' dateformat(#2024-06-12#, 3)                                   ' => "Wednesday June 12th"
+' printf(dateformat(#2024-06-12#, -1))                          ' => "['Wednesday', 'June', '12th', 2024]"
+' printf(dateformat(#2025-03-27 20:49 #, 4))                    ' => "March 27th 2025"
+' printf(dateformat(#2025-03-27 20:49 #, 5))                    ' => "March 27 2025"
+' printf(dateformat(#2025-03-27 20:49 #, 6))                    ' => "March 27th"
+' printf(dateformat(#2025-03-27 20:49 #, 7))                    ' => "March 27"
+' printf(dateformat(#2025-03-27 20:49 #, 3, shortNames:=True))  ' => "Thu Mar 27th"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2024-06-12                  Initial Release
+' 2         2025-03-27                  Added cases 4 - 7 and param 'shortNames'
+'---------------------------------------------------------------------------------------
+Public Function DateFormat(ByVal dateIn As Date, Optional ByVal mode As Integer = 0, Optional ByVal shortNames As Boolean = False) As Variant
+
+    Dim y As Long
+    Dim d As Long
+    
+    Dim mn As String
+    Dim dN As String
+    Dim wN As String
+    
+    y = Year(dateIn)
+    d = Day(dateIn)
+    mn = MonthName(Month(dateIn))
+    dN = d & DateSuffix(dateIn)
+    wN = WeekdayName(Weekday(dateIn))
+    
+    If shortNames Then
+        mn = Title(Left(mn, 3))
+        wN = Title(Left(wN, 3))
+    End If
+    
+    Dim values As Variant
+    values = Array(wN, mn, dN, y)
+    
+    If mode = -1 Then
+        ' Return list of string values
+        DateFormat = values
+    ElseIf mode = 1 Then
+        ' Comma delimitted a little nicer
+        DateFormat = wN & ", " & mn & " " & dN & ", " & y
+    ElseIf mode = 2 Then
+        ' No year, with comma
+        DateFormat = wN & ", " & mn & " " & dN
+    ElseIf mode = 3 Then
+        ' No year, withOUT comma
+        values = Remove(values, y)
+        DateFormat = Join(values, " ")
+    ElseIf mode = 4 Then
+        ' No weekday with year
+        DateFormat = mn & " " & dN & " " & y
+    ElseIf mode = 5 Then
+        ' No weekday with year no day suffix
+        DateFormat = mn & " " & d & " " & y
+    ElseIf mode = 6 Then
+        ' No weekday withOUT year
+        DateFormat = mn & " " & dN
+    ElseIf mode = 7 Then
+        ' No weekday withOUT year no day suffix
+        DateFormat = mn & " " & d
+    Else
+        ' Base case (0)
+        DateFormat = Join(values, " ")
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : StartOfDay
+' Author    : Avery Briggs
+' Purpose   : Retrieve this date at midnight.
+'
+' Usage:
+' ~~~~~~
+' printf(StartOfDay(#2025-03-27 5:39 PM#))  ' => 2025-03-27
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-03-27                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function StartOfDay(ByVal dateIn As Date) As Date
+
+    Dim y As Long
+    Dim m As Long
+    Dim d As Long
+    
+    y = Year(dateIn)
+    m = Month(dateIn)
+    d = Day(dateIn)
+    
+    StartOfDay = Datetime(y, m, d, AssertValid:=True)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : MidDay
+' Author    : Avery Briggs
+' Purpose   : Retrieve this date at noon.
+'
+' Usage:
+' ~~~~~~
+' printf(MidDay(#2025-03-27 5:39 PM#))  ' => 2025-03-27 12:00:00 PM
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-03-27                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function MidDay(ByVal dateIn As Date) As Date
+
+    Dim y As Long
+    Dim m As Long
+    Dim d As Long
+    
+    y = Year(dateIn)
+    m = Month(dateIn)
+    d = Day(dateIn)
+    
+    MidDay = Datetime(y, m, d, 12, AssertValid:=True)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : EndOfDay
+' Author    : Avery Briggs
+' Purpose   : Retrieve this date at the end of the day right before midnight of the next day.
+'
+' Usage:
+' ~~~~~~
+' printf(EndOfDay(#2025-03-27 5:39 PM#))  ' => 2025-03-27 11:59:59 PM
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-03-27                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function EndOfDay(ByVal dateIn As Date) As Date
+
+    Dim y As Long
+    Dim m As Long
+    Dim d As Long
+    
+    y = Year(dateIn)
+    m = Month(dateIn)
+    d = Day(dateIn)
+    
+    EndOfDay = Datetime(y, m, d, 23, 59, 59, AssertValid:=True)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : StartOfMonth
+' Author    : Avery Briggs
+' Purpose   : Retrieve this date at the beginning of the month.
+'
+' Usage:
+' ~~~~~~
+' printf(StartOfMonth(#2025-03-27 5:39 PM#))  ' => 2025-03-01 5:39:00 PM
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-03-27                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function StartOfMonth(ByVal dateIn As Date) As Date
+
+    Dim y As Long
+    Dim m As Long
+    Dim d As Long
+    
+    Dim h As Long
+    Dim mi As Long
+    Dim S As Long
+    
+    y = Year(dateIn)
+    m = Month(dateIn)
+    d = Day(dateIn)
+    
+    h = Hour(dateIn)
+    mi = Minute(dateIn)
+    S = Second(dateIn)
+    
+    StartOfMonth = Datetime(y, m, 1, h, mi, S, AssertValid:=True)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : EndOfMonth
+' Author    : Avery Briggs
+' Purpose   : Retrieve this date at the end of the month.
+'
+' Usage:
+' ~~~~~~
+' printf(EndOfMonth(#2025-03-27 5:39 PM#))  ' => 2025-03-31 5:39:00 PM
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-03-27                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function EndOfMonth(ByVal dateIn As Date) As Date
+
+    Dim y As Long
+    Dim m As Long
+    Dim d As Long
+    
+    Dim h As Long
+    Dim mi As Long
+    Dim S As Long
+    
+    y = Year(dateIn)
+    m = Month(dateIn)
+    d = Day(dateIn)
+    
+    h = Hour(dateIn)
+    mi = Minute(dateIn)
+    S = Second(dateIn)
+    
+    If (m = 1) Or (m = 3) Or (m = 5) Or (m = 7) Or (m = 8) Or (m = 10) Or (m = 12) Then
+        d = 31
+    ElseIf (m = 4) Or (m = 6) Or (m = 9) Or (m = 11) Then
+        d = 30
+    Else
+        If IsLeapYear(y) Then
+            d = 29
+        Else
+            d = 28
+        End If
+    End If
+    
+    EndOfMonth = Datetime(y, m, d, h, mi, S, AssertValid:=True)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsLeapYear
+' Author    : Avery Briggs
+' Purpose   : Determine if this year is a leap year.
+'
+' Usage:
+' ~~~~~~
+' printf(IsLeapYear(2024))  ' => True
+' printf(IsLeapYear(2025))  ' => False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-03-27                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IsLeapYear(ByVal y As Integer) As Boolean
+
+    ' copied from python's calendar.isleap
+    ' year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    IsLeapYear = (y Mod 4 = 0) And ((y Mod 100 <> 0) Or (y Mod 400 = 0))
 
 End Function

@@ -2,8 +2,8 @@ Option Compare Database
 
 
 ' General Array Utility Functions
-' Version....................1.04
-' Date.................2023-08-11
+' Version....................1.06
+' Date.................2025-04-04
 ' Author(s)..........Avery Briggs
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -27,6 +27,7 @@ Option Compare Database
 '   Map                     -   Return an array after calling a function on each element using eval.
 '   Max                     -   Determine the maximum from an array or a list of arguments.
 '   Min                     -   Determine the minimum from an array or a list of arguments.
+'   Mode                    -   Determine the most common elements in an array.
 '   PrintArr                -   Print and or obtain a string representation for an array.
 '   Range                   -   Return an array of integers in sequence using bounds and a step.
 '   Remove                  -   Removes an element from an in array in place, also returns the array. Optionally fails if target not found.
@@ -1411,7 +1412,7 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-06                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function Remove(ByRef srcArray As Variant, ByRef target As Variant, Optional Count As Integer = 1, Optional ByVal failOnNotFound As Boolean = True, Optional ByVal unpackTarget As Boolean = True) As Variant
+Public Function Remove(ByRef srcArray As Variant, ByRef target As Variant, Optional count As Integer = 1, Optional ByVal failOnNotFound As Boolean = True, Optional ByVal unpackTarget As Boolean = True) As Variant
 
     'Printf "REM TN:<" & TypeName(target) & ">, ARR: <" & PrintArr(srcArray, "SRC", doPrint:=False) & ">"
     
@@ -1429,7 +1430,7 @@ Public Function Remove(ByRef srcArray As Variant, ByRef target As Variant, Optio
         'Call PrintArr(wArray, "WARRAY")
         For Each el In target
             'Call Remove(wArray, el, count:=count - 1, failOnNotFound:=failOnNotFound, unPackTarget:=unPackTarget)
-            wArray = Remove(srcArray, el, Count:=Count - 1, failOnNotFound:=failOnNotFound, unpackTarget:=False)
+            wArray = Remove(srcArray, el, count:=count - 1, failOnNotFound:=failOnNotFound, unpackTarget:=False)
         Next el
     Else
         'Printf "-B"
@@ -1438,7 +1439,7 @@ Public Function Remove(ByRef srcArray As Variant, ByRef target As Variant, Optio
             'Printf "c: <" & c & "> <" & Printf(el, doPrint:=False) & ">"
             'Printf "el <" & Printf(el, False) & ">"
             'Printf "target <" & Printf(target, False) & ">"
-            If Not Equal(el, target) Or (C > Count) Then
+            If Not Equal(el, target) Or (C > count) Then
                 'Printf "APPEND el <" & Printf(el, False) & ">, c <" & c & ">, vt <" & TypeName(wArray) & ">"
                 Call Append(wArray, el, unPackNewVal:=False)
             Else
@@ -1633,19 +1634,55 @@ End Function
 ' Rev       Date(yyyy/mm/dd)            Description
 ' **************************************************************************************
 ' 1         2023-07-05                  Initial Release
+' 2         2023-08-31                  Allowing for Dictionaries to be zipped
 '---------------------------------------------------------------------------------------
 Public Function Zip(ByVal arrA As Variant, ByVal arrB As Variant) As Variant
 
-    If Not IsArray(arrA) Then
-        Err.Raise vbObjectError, "zip", "Error, param 'arrA' cannot be a non-array object."
+    Dim aa As Boolean
+    Dim ab As Boolean
+    Dim da As Boolean
+    Dim DB As Boolean
+    Dim sA As Boolean
+    Dim sb As Boolean
+    aa = IsArray(arrA)
+    ab = IsArray(arrB)
+    da = IsDict(arrA)
+    DB = IsDict(arrB)
+    sA = IsInstance(arrA, vbString)
+    sb = IsInstance(arrB, vbString)
+
+    If Not aa And Not da And Not sA Then
+        Err.Raise vbObjectError, "zip", "Error, param 'arrA' cannot be a non-array, non-string, or non-dictionary object."
     End If
-    If Not IsArray(arrB) Then
-        Err.Raise vbObjectError, "zip", "Error, param 'arrB' cannot be a non-array object."
+    If Not ab And Not DB And Not sb Then
+        Err.Raise vbObjectError, "zip", "Error, param 'arrB' cannot be a non-array, non-string, or non-dictionary object."
     End If
     
-    If IsArrayEmpty(arrA) Or IsArrayEmpty(arrB) Then
+    If aa And IsArrayEmpty(arrA) Then
+        Zip = Array()
+    ElseIf BA And IsArrayEmpty(arrB) Then
+        Zip = Array()
+    ElseIf da And IsDictEmpty(arrA) Then
+        Zip = Array()
+    ElseIf DB And IsDictEmpty(arrB) Then
+        Zip = Array()
+    ElseIf sA And Equal(arrA, "") Then
+        Zip = Array()
+    ElseIf sb And Equal(arrB, "") Then
         Zip = Array()
     Else
+        
+        If da Then
+            arrA = DictKeys(arrA)
+        ElseIf sA Then
+            arrA = DictKeys(arrA)
+        End If
+        
+        If DB Then
+            arrB = Str2Array(arrB)
+        ElseIf sb Then
+            arrB = Str2Array(arrB)
+        End If
         
         Dim lbA As Long
         Dim ubA As Long
@@ -1922,6 +1959,7 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-05                  Initial Release
 ' 2         2023-08-11                  Isinstance branch
+' 3         2025-04-04                  Cleaned up some prints
 '---------------------------------------------------------------------------------------
 Public Function Map(ByVal funcString As String, ByRef srcArray As Variant) As Variant
 
@@ -1930,12 +1968,12 @@ Public Function Map(ByVal funcString As String, ByRef srcArray As Variant) As Va
         Exit Function
     End If
     
-    Printf "-A"
+    'Printf "-A function='" & funcString & "'"
     
     Dim wArray As Variant
     Dim el As Variant
     Dim r As Variant
-    Dim q As String
+    Dim Q As String
     Dim i As Long
     
     Dim idxColon1 As Long
@@ -1947,16 +1985,19 @@ Public Function Map(ByVal funcString As String, ByRef srcArray As Variant) As Va
     
     If IsArrayEmpty(srcArray) Then
         Map = Array()
+        'Printf "-EMP"
     Else
         i = 0
         On Error GoTo FuncNotApplicable
         For Each el In srcArray
-            q = IIf(IsInstance(el, vbString), "'", "")
-            wArray = Append(wArray, Eval(funcString & "(" & q & el & q & ")"))
+            Q = IIf(IsInstance(el, vbString), "'", "")
+            wArray = Append(wArray, Eval(funcString & "(" & Q & el & Q & ")"))
             i = i + 1
         Next el
         Map = wArray
         srcArray = Map
+        'Printf "wArray:"
+        'Printf wArray
     End If
     
 CleanExit:
@@ -1977,24 +2018,24 @@ TryLambda:
     Dim aFunc As String
     'lFunc = Mid(funcString, idxColon + 1, Len(funcString) - Len(Mid(funcString, 1, idxColon + 1)))
     lFunc = Right(funcString, Len(funcString) - idxColon1 - 1)
-    Printf "lfunc: <" & lFunc & ">"
+    Printf "lfunc: <" & Printf(lFunc, False) & ">"
     aFunc = Mid(funcString, idxLambda1 + 7, Len(funcString) - Len(lFunc) - (idxLambda1 + 8))
     
-    'Printf aFunc
+    Printf "aFunc: <" & Printf(aFunc, False) & ">"
     
     If UBound(Split(aFunc, ",")) <> 0 Then
-        ER.Raise vbObjectError, "Map", "Only 1 argument is supported in lambdas currently."
+        er.Raise vbObjectError, "Map", "Only 1 argument is supported in lambdas currently."
     End If
     
     For Each el In srcArray
-        'Printf "HERE -A"
-        q = IIf(IsInstance(el, Array(vbString, vbDate)), """", "")
-        'Printf "HERE -B"
+        Printf "HERE -map A"
+        Q = IIf(IsInstance(el, Array(vbString, vbDate)), """", "")
+        Printf "HERE -map B"
         'Printf vbTab & "q=(" & q & ")" & vbTab & "?" & Replace(lFunc, aFunc, q & el & q) & "  ' " & Printf(Eval(Replace(lFunc, aFunc, q & el & q)), False)
         'Printf vbTab & lFunc & "  ' " & Printf(Eval(Replace(lFunc, aFunc, q & el & q)), False)
         If Left(lFunc, 11) = "isinstance(" Then
             ' Special condition for isinstance in order to maintain param types.
-            'Printf "SPA"
+            Printf "SPA"
             Dim vbType As String
             vbType = Replace(Replace(LTrim(RTrim(Split(Reverse(Split(Reverse(RTrim(lFunc)), ",")(0)), ")")(0))), "'", ""), """", "")
             'vbType = LTrim(RTrim(Split(Reverse(Split(Reverse(RTrim(lFunc)), ",")(0)), ")")(0)))
@@ -2002,10 +2043,13 @@ TryLambda:
             'Printf "VBTYPE: {" & vbType & "} tn(el)=(" & TypeName(el) & ")"
             wArray = Append(wArray, TypeName(el) = vbType) ' Replace(lFunc, aFunc, q & el & q))
         Else
-            'Printf "?eval(" & Replace(lFunc, aFunc, q & el & q) & ")"
+            Printf "ELSE"
+            Printf "el <" & Printf(el, False) & ">, t=<" & TypeName(el) & ">"
+            Printf "<" & Printf(Q & Printf(el, False) & Q, False) & ">"
+            Printf "?eval(" & Replace(lFunc, aFunc, Q & Printf(el, False) & Q) & ")"
             Dim w As Variant
             'w = Eval("'" & Replace(lFunc, aFunc, q & el & q) & "'")
-            w = Eval(Replace(lFunc, aFunc, q & el & q))
+            w = Eval(Replace(lFunc, aFunc, Q & el & Q))
             wArray = Append(wArray, w)
         End If
     '        i = i + 1
@@ -2057,7 +2101,7 @@ End Function
 ' **************************************************************************************
 ' 1         2023-07-05                  Initial Release
 '---------------------------------------------------------------------------------------
-Public Function Count(ByVal srcArray As Variant, ByVal target As Variant, Optional ByVal unpackTarget As Boolean = True) As Long
+Public Function count(ByVal srcArray As Variant, ByVal target As Variant, Optional ByVal unpackTarget As Boolean = True) As Long
 
     If Not IsInstance(srcArray, Array(vbString, vbArray, "Dictionary")) Then
         Err.Raise vbObjectError, "Count", "Error, cannot count elements in a non-String, non-Dictionary or non-Array Object"
@@ -2078,7 +2122,7 @@ Public Function Count(ByVal srcArray As Variant, ByVal target As Variant, Option
         lb = LBound(target)
         ub = UBound(target)
         For i = lb To ub
-            C = C + Count(srcArray, target(i), unpackTarget:=False)
+            C = C + count(srcArray, target(i), unpackTarget:=False)
         Next i
         
     Else
@@ -2115,12 +2159,12 @@ Public Function Count(ByVal srcArray As Variant, ByVal target As Variant, Option
         End If
     End If
     
-    Count = C
+    count = C
 
 End Function
 
 
-Public Function Average(ByRef arr As Variant) As Double
+Public Function Average(ByVal arr As Variant) As Double
 
     Dim i As Long
     Dim lb As Long
@@ -2149,6 +2193,105 @@ Public Function Average(ByRef arr As Variant) As Double
         Exit Function
     Else
         Err.Raise vbObjectError, "Average", "Error, cannot compute the average of an non-array object."
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Mode
+' Author    : Avery Briggs
+' Purpose   : Determine the most common elements in an array.
+'
+' Usage:
+' ~~~~~~
+' printf mode(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1))      ' => [1]
+' printf mode(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1,2,2))  ' => [1, 2]
+' printf mode(range(12))                                     ' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2024-08-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function mode(ByVal arr As Variant) As Variant
+
+    Dim dictCounts As Variant
+    Dim result As Variant
+    Dim val As Variant
+    Dim maxCount As Long
+    Set dictCounts = Dictionary()
+    result = Array()
+    maxCount = 0
+    
+    Dim i As Long
+    i = LBound(arr)
+    For Each val In arr
+        If IsNull(dictCounts(val)) Then
+            dictCounts(val) = 0
+        End If
+        dictCounts(val) = dictCounts(val) + 1
+        maxCount = Max(maxCount, dictCounts(val))
+    Next val
+    
+    For Each val In dictCounts
+        If dictCounts(val) = maxCount Then
+            result = Append(result, val)
+        End If
+    Next val
+    
+    mode = result
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Median
+' Author    : Avery Briggs
+' Purpose   : Determine the most common elements in an array.
+'
+' Usage:
+' ~~~~~~
+' printf Median(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1))                       ' => [2]
+' printf Median(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1), sortArr:=False)       ' => [1]
+' printf Median(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1,2,2))                   ' => [2]
+' printf Median(array(1,2,3,4,5,1,2,4,1,2,1,3,1,2,1,2,1,2,2), sortArr:=False)   ' => [1]
+' printf Median(range(12))                                                      ' => [5, 6]
+' printf median("avery")                                                        ' => ['r']
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2024-08-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Median( _
+    ByVal arr As Variant, _
+    Optional ByVal sortArr As Boolean = True _
+) As Variant
+
+    If VarType(arr) = vbString Then
+        arr = Str2Array(arr)
+    End If
+    
+    If Not IsArray(arr) Then
+        Err.Raise vbObjectError, "Median", "Param 'arr' must be a string or array."
+    End If
+
+    Dim temp As Variant
+    temp = Copy(arr)
+    
+    If sortArr Then
+        Call QSortInPlace(temp)
+    End If
+    
+    Dim n As Long
+    n = UBound(temp) + 1
+    'Printf "n: <" & n & ">"
+    
+    If n Mod 2 = 1 Then
+        Median = Array(temp(CInt(n / 2)))
+    Else
+        Median = Slice(temp, CInt(n / 2) - 1, CInt(n / 2) + 1)
     End If
 
 End Function

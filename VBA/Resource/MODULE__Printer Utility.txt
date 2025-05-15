@@ -1,0 +1,199 @@
+Option Compare Database
+
+
+' General Printer Utility Functions
+' Version......................1.01
+' Date...................2025-04-01
+' Author(s)..........James Crawford
+'......................Avery Briggs
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   SetPrinter          -   Returns True if Application was successful setting a printer via Name.
+'   ClearPrinter        -   Remove the application's printer.
+'   TrySetPrinter       -   Attempt to set a printer with it's name.
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+'---------------------------------------------------------------------------------------
+' Function : setprinter
+' Author    : James Crawford
+' Purpose   : Returns True if Application was successful setting a printer via Name.
+'             A little out-of-date due to the migration of printers from server1 -> bwsfp01
+'
+' Usage:
+' ~~~~~~
+' printf setprinter("\\server1\Xerox WorkCentre 7830 74:1F", false)  ' d
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-01                  Initial Release
+'---------------------------------------------------------------------------------------
+Function SetPrinter(requiredprinter As String, preview As Boolean) As Boolean
+    'Code provied from gemma-the-husky's post on my forum question: http://www.access-programmers.co.uk/forums/showthread.php?t=261814 - JWC (SkyCraw)
+    'requiredprinter is the name of the printer you want to use
+    'preview is a setting to determine whether to preview or not
+    'this sub selects the printer and returns control to the calling app, ready for the print to start
+        
+    SetPrinter = False
+    
+    Dim ptrname As String
+    Dim ptr As Printer
+    Dim useprinter As Printer
+    
+    Dim WC1 As String
+    Dim WC2 As String
+    Dim WC3 As String
+    
+    WC1 = "\\SERVER1\Xerox VersaLink C7030 AB:52"
+    WC2 = "\\server1\Xerox WorkCentre 7830i A5:E9"
+    WC3 = "\\server1\Xerox WorkCentre 7830 74:1F"
+    
+    'try and find this printer
+    For Each ptr In Application.Printers
+        If ptr.DeviceName = requiredprinter Then
+            Set useprinter = ptr
+            GoTo gotit
+        ElseIf ptr.DeviceName = WC1 Then
+            Set useprinter = ptr
+            GoTo gotit
+        ElseIf ptr.DeviceName = WC2 Then
+            Set useprinter = ptr
+            GoTo gotit
+        ElseIf ptr.DeviceName = WC3 Then
+            Set useprinter = ptr
+            GoTo gotit
+        End If
+    Next
+     
+noprinter:
+        MsgBox ("The expected printer: " & requiredprinter & " was not found. The " & rep & " will be set to print to your default printer. ")
+        Exit Function
+    
+    
+gotit:
+        On Error GoTo badPrinter
+        Set Application.Printer = useprinter
+        useprinter.PaperBin = acPRBNAuto
+        useprinter.PaperSize = acPRPSTabloid
+        SetPrinter = True
+    
+    'i (gemma-the-husky) added this bit as a generic bit of information about the print.
+    'this can be commented out if not required
+    
+    'If preview Then
+        'MsgBox ("The printer selected for this report has been set to printer " & ptrname & ". " & vbCrLf & vbCrLf & _
+                '"The print preview will now open. You can select a different printer if you require. ")
+    'Else
+        'MsgBox ("The printer selected for this report has been set to printer " & ptrname & ". " & vbCrLf & vbCrLf & _
+                '"The print will now start automatically on this printer. ")
+    'End If
+    Exit Function
+    
+badPrinter:
+        MsgBox ("There was an error setting the printer to " & ptrname & vbCrLf & _
+                "The report will print on your default printer. " & vbCrLf & vbCrLf & _
+                "Error: " & Err & " Desc: " & Err.Description)
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : clearprinter
+' Author    : James Crawford
+' Purpose   : Remove the application's printer
+'
+' Usage:
+' ~~~~~~
+' call clearprinter()
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-01                  Initial Release
+'---------------------------------------------------------------------------------------
+Function ClearPrinter() As Boolean
+    'reassign the printer to the default
+    Set Application.Printer = Nothing
+    ClearPrinter = True
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : TrySetPrinter
+' Author    : Avery Briggs
+' Purpose   : Attempt to set a printer with it's name.
+'             See Constants Module for printer names.
+'
+' Usage:
+' ~~~~~~
+' Printf TrySetPrinter(PRINTER_ADMIN)  ' True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-01                  Initial Release
+'---------------------------------------------------------------------------------------
+Function TrySetPrinter(ByVal printerName As String, Optional ByVal doTest As Boolean = False) As Boolean
+
+    ' Written by ChatGPT MS Access Copilot
+    
+    If doTest Then
+        Printf "TrySetPrinter('" & printerName & "')"
+    End If
+    
+    Dim prt As Printer
+    Dim printerExists As Boolean
+    printerExists = False
+
+    ' Check if printer is already installed
+    For Each prt In Application.Printers
+        If doTest Then
+            Printf vbTab & "'" & prt.DeviceName & "'"
+        End If
+        If prt.DeviceName Like "*" & printerName & "*" Then
+            printerExists = True
+            If doTest Then
+                Printf "Found Printer By Name 1 '" & prt.DeviceName & "'"
+            End If
+            Exit For
+        End If
+    Next
+
+    ' If found, set as current printer and return
+    If printerExists Then
+        Set Application.Printer = prt
+        TrySetPrinter = True
+        Exit Function
+    End If
+
+    ' Attempt to add the printer (assumes it's a shared network printer like \\server\printer)
+    On Error Resume Next
+    Dim wshNetwork As Object
+    Set wshNetwork = CreateObject("WScript.Network")
+    wshNetwork.AddWindowsPrinterConnection printerName
+    On Error GoTo 0
+
+    ' Recheck if printer was added
+    For Each prt In Application.Printers
+        If prt.DeviceName Like "*" & printerName & "*" Then
+            Set Application.Printer = prt
+            TrySetPrinter = True
+            If doTest Then
+                Printf "Found Printer By Name 2 '" & prt.DeviceName & "'"
+            End If
+            Exit Function
+        End If
+    Next
+
+    ' If still not found
+    TrySetPrinter = False
+    
+End Function

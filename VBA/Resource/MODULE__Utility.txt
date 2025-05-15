@@ -9,43 +9,169 @@ Option Compare Database
 ' Office utility
 
 
-Public Function Printf(ByRef text As Variant, Optional ByVal doPrint As Boolean = True) As String
+' Needs to support Parameters, Fields, Collections
+Public Function Printf(ByRef Text As Variant, Optional ByVal doPrint As Boolean = True, Optional ByVal defaultString As String = "'_?_'") As String
     
-    If IsArray(text) Then
-        Printf = PrintArr(text, doPrint:=False)
-    ElseIf TypeName(text) = "Dictionary" Then
-        Printf = PrintDict(text, doPrint:=False)
+    Dim tName As String
+    tName = TypeName(Text)
+    
+    If IsArray(Text) Then
+        Printf = PrintArr(Text, doPrint:=False)
+    ElseIf tName = "Dictionary" Then
+        Printf = PrintDict(Text, doPrint:=False)
+    ElseIf tName = "Recordset2" Then
+        Printf = PrintRecordset(Text, doPrint:=False)
     Else
-        If IsNull(text) Then
+        If IsNull(Text) Then
             Printf = "NULL"
         Else
-            Printf = CStr(text)
+        
+            On Error GoTo CouldNotCStr
+            Printf = CStr(Text)
+            GoTo CleanExit
+            
+CouldNotCStr:
+            Printf = defaultString
         End If
     End If
     
+CleanExit:
     If doPrint Then
         Debug.Print Printf
     End If
 
 End Function
 
+Public Function PrintRecordset( _
+    ByVal rs As dao.Recordset, _
+    Optional ByVal maxRows As Long = 5, _
+    Optional ByVal maxColWidth As Long = 12, _
+    Optional ByVal maxCols As Long = -1, _
+    Optional ByVal doPrint As Boolean = False _
+) As String
+
+    Dim out As String
+    Dim fld As dao.Field
+    Dim row As Long, col As Long
+    Dim headers() As String
+    Dim data() As String
+    Dim widths() As Long
+    Dim rowData() As String
+    Dim fieldVal As String
+    Dim displayCols As Long
+
+    If rs Is Nothing Then
+        ReprRecordset = "(null Recordset)"
+        Exit Function
+    End If
+
+    If rs.EOF And rs.BOF Then
+        ReprRecordset = "(empty Recordset)"
+        Exit Function
+    End If
+
+    ' Determine number of columns to display
+    displayCols = rs.Fields.count
+    If maxCols > -1 Then
+        displayCols = WorksheetFunction.Min(displayCols, maxCols)
+    End If
+
+    ReDim headers(0 To displayCols - 1)
+    ReDim widths(0 To displayCols - 1)
+
+    For col = 0 To displayCols - 1
+        headers(col) = rs.Fields(col).Name
+        widths(col) = Len(headers(col))
+    Next col
+
+    ' Preview first N rows
+    rs.MoveFirst
+    row = 0
+    Dim preview As Collection
+    Set preview = New Collection
+
+    Do While Not rs.EOF And row < maxRows
+        ReDim rowData(0 To displayCols - 1)
+        For col = 0 To displayCols - 1
+            fieldVal = Nz(rs.Fields(col).Value, "")
+            If IsDate(fieldVal) Then
+                fieldVal = Format(fieldVal, "yyyy-mm-dd")
+            End If
+            fieldVal = CStr(fieldVal)
+            If Len(fieldVal) > maxColWidth Then fieldVal = Left(fieldVal, maxColWidth - 1) & "…"
+            rowData(col) = fieldVal
+            If Len(fieldVal) > widths(col) Then widths(col) = Len(fieldVal)
+        Next col
+        preview.Add rowData
+        row = row + 1
+        rs.MoveNext
+    Loop
+
+    ' Build header line
+    For col = 0 To UBound(headers)
+        out = out & Pad(headers(col), widths(col)) & "  "
+    Next col
+    out = RTrim(out) & vbCrLf
+
+    ' Build row lines
+    Dim r As Variant
+    For Each r In preview
+        For col = 0 To UBound(r)
+            out = out & Pad(r(col), widths(col)) & "  "
+        Next col
+        out = RTrim(out) & vbCrLf
+    Next r
+
+    PrintRecordset = out
+    
+    If doPrint Then
+        Printf out
+    End If
+    
+End Function
+
+
+
+'Public Function PrintRecordset(ByRef rs As Variant, Optional ByVal doPrint As Boolean = True) As String
+'
+'    If Not IsRecordset(rs) Then
+'        Err.Raise vbObjectError, "PrintRecordset", "Error, param 'rs' must be an instance of a recordset."
+'    End If
+'
+'    Dim CD As String  ' Column delimeter
+'    CD = "|"
+'
+'    Dim res As String
+'    res = "FUNCTIONALITY FOR 'PrintRecordset' NOT COMPLETED YET - Avery 2023-10-11"
+'
+'    PrintRecordset = res
+'
+'End Function
+
 
 Public Sub ExecSQL(sql As String, Optional ByVal doPrint As Boolean = True, Optional ByVal doExec As Boolean = True, Optional ByVal quitOnFail As Boolean = True, Optional ByVal trace As Variant = "")
 
     On Error GoTo PrintTrace
+    
+    Dim msg As String
 
     If doPrint Then
-        Debug.Print "SQL <" & sql & ">"
+        msg = "SQL <" & sql & ">"
     End If
     If doExec Then
         DoCmd.RunSQL sql
+    Else
+        msg = "NO_EXEC__" & msg
     End If
     
     If Not doPrint And Not doExec Then
-        MsgBox "You must print, execute, or both." & vbNewLine & """" & sql & """"
+        'MsgBox "You must print, execute, or both." & vbNewLine & """" & sql & """"
     End If
     
 CleanExit:
+    If doPrint Then
+        Printf msg
+    End If
     On Error GoTo 0
     Exit Sub
     
@@ -80,7 +206,7 @@ Public Sub ExecShell(shellCmd As String, Optional ByVal doPrint As Boolean = Tru
         Call Printf("execShell <" & shellCmd & ">")
     End If
     If doExec Then
-        Shell shellCmd
+        shell shellCmd
     End If
     
     If Not doPrint And Not doExec Then
@@ -124,7 +250,7 @@ Function LogError(ByVal lngErrNumber As Long, ByVal strErrDescription As String,
     ' Author: Allen Browne, allen@allenbrowne.com
 
     Dim strMsg As String      ' String for display in MsgBox
-    Dim rst As DAO.Recordset  ' The tLogErrors table
+    Dim rst As dao.Recordset  ' The tLogErrors table
 
     Select Case lngErrNumber
     Case 0
@@ -205,7 +331,9 @@ Public Function Divmod(ByVal x As Integer, ByVal y As Integer) As Integer()
 
 End Function
 
-
+' 2023-10-11 - Avery - Modified for use with 'looser' string params.
+' Now supports ?isinstance(Range(3), "array")  -> True
+' Now supports ?isinstance(dictionary(1,2,3,4,5,6,7,8), "dictionary")  -> True
 Public Function IsInstance(ByVal var As Variant, ByVal vbType As Variant) As Boolean
 
     'Printf "ISINTANCE vt <" & VarType(var) & ">, tn <" & TypeName(var) & "> vbType:<" & Printf(vbType, False) & ">"
@@ -220,13 +348,48 @@ Public Function IsInstance(ByVal var As Variant, ByVal vbType As Variant) As Boo
         'Call printArr(wArray, "BEFORE ANY")
         IsInstance = Any_(wArray)
     Else
+    
+        ' value
+        Dim ia As Boolean
+        Dim ir As Boolean
+        Dim vName As String
+        Dim vID As String
+        ' target
+        Dim tName As String
+        Dim tID As String
+        
+        ia = IsArray(var)
+        ir = IsRecordset(var)
+        vName = TypeName(var)
+        vID = VarType(var)
+        tName = TypeName(vbType)
+        tID = VarType(vbType)
+    
         If vbType = vbArray Then
             IsInstance = IsArray(var)
-        ElseIf VarType(vbType) = vbLong Or VarType(vbType) = vbInteger Then
-            IsInstance = IIf(VarType(var) = CLng(vbType), True, False)
+        ElseIf tID = vbLong Or tID = vbInteger Then
+            IsInstance = IIf(vID = CLng(vbType), True, False)
         Else
-            IsInstance = IIf(TypeName(var) = vbType, True, False)
+            'IsInstance = IIf(TypeName(var) = vbType, True, False)
+            IsInstance = vName = vbType
+            
+            If Not IsInstance Then
+                If tID = vbString Then
+                    tName = LCase(vbType)
+                    If tName = "array" And ia Then
+                        IsInstance = True
+                    ElseIf LCase(Left(tName, 9)) = "recordset" And ir Then
+                        IsInstance = True
+                    End If
+                End If
+            End If
         End If
+        'Debug.Print ia
+        'Debug.Print ir
+        'Debug.Print vName
+        'Debug.Print vID
+        'Debug.Print tName
+        'Debug.Print tID
     End If
 
 End Function
@@ -415,6 +578,7 @@ End Function
 ' Rev       Date(yyyy/mm/dd)            Description
 ' **************************************************************************************
 ' 1         2023-08-08                  Initial Release
+' 2         2025-04-30                  Added RecordSet Support
 '---------------------------------------------------------------------------------------
 Public Function Size(ByVal Value As Variant) As Long
 
@@ -423,11 +587,35 @@ Public Function Size(ByVal Value As Variant) As Long
     ElseIf IsInstance(Value, vbString) Then
         Size = Len(Value)
     ElseIf IsInstance(Value, "Dictionary") Then
-        Size = Value.Count
+        Size = Value.count
+    ElseIf IsRecordset(Value) Then
+        Dim rs As dao.Recordset
+        Set rs = Value
+
+        If (rs.BOF And rs.EOF) Then
+            Size = 0
+        ElseIf rs.Bookmarkable Then
+            ' Watch out for ADO vs DAO recordsets
+            Dim bmk As Variant
+            bmk = rs.Bookmark  ' Save current position
+            rs.MoveLast
+            Size = rs.RecordCount
+            rs.Bookmark = bmk  ' Restore original position
+        Else
+            ' No bookmarks available, must estimate by counting manually
+            ' CAN BE SLOW!!
+            Dim count As Long
+            rs.MoveFirst
+            Do While Not rs.EOF
+                count = count + 1
+                rs.MoveNext
+            Loop
+            Size = count
+        End If
     Else
         Err.Raise vbObjectError, "Size", "Error, cannot determine size of this value: <" & Value & ">, type: <" & TypeName(Value) & ">"
     End If
-
+    
 End Function
 
 
@@ -465,4 +653,228 @@ Public Function Flatten(ByVal arr As Variant) As Variant
         Flatten = res
     End If
 
+End Function
+
+
+' Determine if a form has a parent or not.
+Public Function HasParent(ByVal frm As Form) As Boolean
+
+    On Error GoTo NoParent
+    Dim parent As Form
+    Set parent = frm.parent
+    HasParent = True
+
+CleanExit:
+    Exit Function
+    
+NoParent:
+    HasParent = False
+    Resume CleanExit
+
+End Function
+
+
+Public Sub ExportModules(Optional ByVal printOnly As Boolean = True, Optional ByVal pathIn As String = "")
+    
+    'EXPORTING
+    
+    Dim fPath As String
+    Dim sPath As String
+    Dim Today As Date
+    Today = Now
+    If pathIn = "" Then
+        fPath = "C:\Access\Access Utility Exports\" & Format(Today, "yyyy-mm-dd") & "\"
+    Else
+        fPath = RemoveSuffix(pathIn, "\") & "\"
+    End If
+    If Len(Dir(fPath, vbDirectory)) = 0 Then
+        MkDir fPath
+    End If
+    Dim module As Variant
+    Dim modules As Variant
+    modules = Array( _
+        "Array Sort", "Array Utility", "Colour Utility", _
+        "Date Utility", "Dictionary Utility", "Random Utility", _
+        "Utility", "Helper Functions", "Recordset Utility", _
+        "String Utility", "Windows Utility", "Settings Utility", _
+        "Sleep Func", "Python Utility", "Email Utility", _
+        "Printer Utility", "Constants", "File Utility" _
+    )
+    Printf "PrintOnly: <" & printOnly & ">"
+    For Each module In modules
+        sPath = fPath & "MODULE__" & module & ".txt"
+        'Printf "Saving file: '" & module & "' at '" & sPath & "'"
+        Printf "Application.SaveAsText acModule, """ & module & """, """ & sPath & """"
+        If Not printOnly Then
+            Application.SaveAsText acModule, module, sPath
+        End If
+    Next module
+
+End Sub
+
+
+Public Sub LoadModules(Optional ByVal printOnly As Boolean = True)
+
+    'LOADING
+    
+    Dim fPath As String
+    Dim sPath As String
+    Dim Today As Date
+    Today = Now
+    fPath = "C:\Access\Access Utility Exports\" & Format(Today, "yyyy-mm-dd") & "\"
+    Dim module As Variant
+    Dim modules As Variant
+    modules = Array( _
+        "Array Sort", "Array Utility", "Colour Utility", _
+        "Date Utility", "Dictionary Utility", "Random Utility", _
+        "Utility", "Helper Functions", "Recordset Utility", "String Utility", _
+        "Windows Utility", "Settings Utility" _
+    )
+    Printf "PrintOnly: <" & printOnly & ">"
+    For Each module In modules
+        sPath = fPath & "MODULE__" & module & ".txt"
+        'Printf "Loading file: '" & module & "' from '" & sPath & "'"
+        Printf "Application.LoadFromText acModule, """ & module & """, """ & sPath & """"
+        If Not printOnly Then
+            Application.LoadFromText acModule, module, sPath
+        End If
+    Next module
+    
+End Sub
+
+
+Public Function CheckBirthday(ByVal Name As String, Optional ByVal birthdayWindow As Integer = -7, Optional ByVal beforeAndAfter As Boolean = True, Optional ByVal timeIn As Date = 0) As Variant
+
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset("ITR Customers", dbOpenSnapshot)
+    
+    Dim ys As Variant
+    Dim ms As Variant
+    Dim ds As Variant
+    
+    Dim y As Integer
+    Dim m As Integer
+    Dim d As Integer
+    
+    rs.FindFirst "Name = '" & Name & "'"
+    
+    Printf "A: " & rs("Name")
+    Printf "B: " & rs("BirthYear")
+    Printf "C: " & rs("BirthMonth")
+    Printf "D: " & rs("BirthDay")
+    
+    ys = RSFetch(rs, "BirthYear", castType:=vbInteger)
+    ms = RSFetch(rs, "BirthMonth", castType:=vbInteger)
+    ds = RSFetch(rs, "BirthDay", castType:=vbInteger)
+    
+    Dim t As Date
+    Dim D1 As Date
+    Dim D2 As Date
+    Dim D3 As Date
+    
+    If timeIn = 0 Then
+        t = Now()
+    Else
+        t = timeIn
+    End If
+    
+    If IsInstance(ys, vbString) Or IsInstance(ms, vbString) Or IsInstance(ds, vbString) Then
+        ' Birthday cannot be determined
+        Printf "BIRTHDAY COULD NOT BE DETERMINED Y=[" & ys & "], M=[" & ms & "], D=[" & ds & "]"
+        D1 = DateAdd("yyyy", 1, t)
+        D2 = DateAdd("yyyy", 2, t)
+        D3 = DateAdd("yyyy", 3, t)
+    Else
+        y = CInt(ys)
+        m = CInt(ms)
+        d = CInt(ds)
+        
+        'Printf "y: {" & y & "} " & "m: {" & m & "} " & "d: {" & d & "}, M(t): {" & Month(t) & "}, Y(t): {" & Year(t) & "}"
+        
+        D3 = DateSerial(Year(t), m, d)
+        
+        If birthdayWindow >= 0 Then
+            D1 = IIf(Not beforeAndAfter, t, DateAdd("d", -birthdayWindow, t))
+            D2 = DateAdd("d", birthdayWindow, t)
+        Else
+            D1 = DateAdd("d", birthdayWindow, t)
+            D2 = IIf(Not beforeAndAfter, t, DateAdd("d", -birthdayWindow, t))
+        End If
+    End If
+    
+    rs.Close
+    Set rs = Nothing
+    Printf "Pre Start of Day Setting => d1: " & D1 & ", d3: " & D3 & ", d2: " & D2
+    D1 = DateSerial(Year(D1), Month(D1), Day(D1))
+    D2 = DateSerial(Year(D2), Month(D2), Day(D2))
+    D3 = DateSerial(Year(D3), Month(D3), Day(D3))
+    Printf "Post Start of Day Setting => d1: " & D1 & ", d3: " & D3 & ", d2: " & D2
+    
+    'CheckBirthday = (m = Month(t)) And (d = Day(t))
+    'CheckBirthday = (d1 <= d3) And (d3 <= d2)
+    CheckBirthday = Array(D1, D3, D2)
+
+End Function
+
+
+Public Function Help() As String
+    Dim tName As String
+    tName = "ModuleHelpTable"
+    
+    Dim fName As String
+    fName = "\\bwsfp01.bwsdomain.local\public\IT\Access\Objects\Modules\help"
+    
+    Dim sql As String
+    sql = "SELECT"
+    
+    Dim cols As Variant
+    cols = Array()
+    cols = Append(cols, "'' AS [Module]")
+    cols = Append(cols, "'' AS [Function]")
+    
+    ' TODO link the Python generated table, with a local table.
+    ' Then this function should return the comment of the given function name.
+    
+    Help = "HELP!"
+End Function
+
+
+Public Function Bool(ByVal inVal As Variant) As Boolean
+    ' Python-style truthiness evaluation
+    If IsNull(inVal) Then
+        Bool = False
+    ElseIf IsEmpty(inVal) Then
+        Bool = False
+    ElseIf VarType(inVal) = vbBoolean Then
+        Bool = inVal
+    ElseIf IsNumeric(inVal) And (Not IsInstance(inVal, vbString)) Then
+        Bool = (val(inVal) <> 0)
+    ElseIf VarType(inVal) = vbString Then
+        Bool = Len(inVal) > 0
+    Else
+        If IsArray(inVal) Then
+            Bool = (Not IsArrayEmpty(inVal))
+        ElseIf IsDict(inVal) Then
+            Bool = (Not IsDictEmpty(inVal))
+        Else
+            ' Assume other objects are truthy unless explicitly handled
+            Bool = True
+        End If
+    End If
+End Function
+
+
+Public Function Not_(ByVal inVal As Variant) As Boolean
+    
+    Not_ = Not Bool(inVal)
+    
+End Function
+
+
+Public Function Pad(ByVal val As String, ByVal Width As Long) As String
+    If Len(val) < Width Then
+        Pad = val & Space(Width - Len(val))
+    Else
+        Pad = val
+    End If
 End Function

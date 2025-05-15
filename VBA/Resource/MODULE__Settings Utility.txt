@@ -1,0 +1,153 @@
+Option Compare Database
+
+' Settings Utility
+
+
+Public Function ApplyFormColourScheme(ByVal formName As String) As Integer
+
+    If Not CurrentProject.allForms(formName).IsLoaded Then
+        Err.Raise vbObjectError, "ApplyFormColourScheme", "Form '" & formName & "' is not currently open."
+    End If
+    
+    Dim frm As Form
+    Set frm = Forms(formName)
+
+    Dim CustomerID As Integer
+    Dim ThemeID As Integer
+    Dim Style As String
+    Dim fontName As String
+    Dim foreColour As String
+    Dim BackColour As String
+    
+    'Style = "Default Theme"
+    'Style = "Dark Theme"
+    Dim rs1 As dao.Recordset
+    Set rs1 = CurrentDb.OpenRecordset("ITR Customers", dbOpenDynaset, dbSeeChanges)
+    
+    rs1.FindFirst "LCASE([Name]) = LCASE('" & GetUserFullName() & "')"
+    
+    If rs1.NoMatch Then
+        ' this user is not an existing IT Customer, use default customer
+        CustomerID = 1
+    Else
+        CustomerID = rs1("CustomerID")
+    End If
+    
+    Dim rs2 As dao.Recordset
+    Set rs2 = CurrentDb.OpenRecordset("ITR Settings", dbOpenDynaset, dbSeeChanges)
+    
+    rs2.FindFirst "[ITRCustomerID] = " & CustomerID
+    
+    If rs2.NoMatch Then
+        ' this customer has no default settings, use default settings
+        ThemeID = 1
+    Else
+        ThemeID = rs2("[Theme]")
+    End If
+    
+    rs2.Close
+    Set rs2 = Nothing
+    
+    rs1.Close
+    Set rs1 = Nothing
+    
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset("ITR ColourSchemes", dbOpenDynaset, dbSeeChanges)
+    
+    rs.FindFirst "[ID] = " & ThemeID
+    
+    'MsgBox "User: <" & GetUserFullName() & "> using theme: <" & rs("Name") & ">"
+    
+    Dim skipFontName As Boolean
+    Dim skipForeColour As Boolean
+    Dim skipBackColour As Boolean
+    
+    For Each ctl In frm.controls
+        fontName = ""
+        foreColour = ""
+        BackColour = ""
+        skipFontName = False
+        skipForeColour = False
+        skipBackColour = False
+        If TypeName(ctl) = "CheckBox" Then
+            fontName = rs("Font_CheckBox")
+            foreColour = rs("Font_Colour_CheckBox")
+            BackColour = rs("Back_Colour_CheckBox")
+            skipFontName = True
+            skipForeColour = True
+            skipBackColour = True
+        ElseIf TypeName(ctl) = "OptionButton" Then
+            fontName = rs("Font_CheckBox")
+            foreColour = rs("Font_Colour_CheckBox")
+            BackColour = rs("Back_Colour_CheckBox")
+            skipFontName = True
+            skipForeColour = True
+            skipBackColour = True
+        ElseIf TypeName(ctl) = "TextBox" Then
+            If ctl.IsHyperlink Or ctl.Name = "Directory" Then
+                fontName = rs("Font_HyperLink")
+                foreColour = rs("Font_Colour_HyperLink")
+                BackColour = rs("Back_Colour_HyperLink")
+            Else
+                fontName = rs("Font_TextField")
+                foreColour = rs("Font_Colour_TextField")
+                BackColour = rs("Back_Colour_TextField")
+                'skipBackColour = True
+            End If
+        ElseIf TypeName(ctl) = "CommandButton" Then
+            fontName = rs("Font_Button")
+            foreColour = rs("Font_Colour_Button")
+            BackColour = rs("Back_Colour_Button")
+            skipBackColour = True ' Can't colour buttons in access 2007
+        ElseIf TypeName(ctl) = "Label" Then
+            fontName = rs("Font_Label")
+            foreColour = rs("Font_Colour_Label")
+            BackColour = rs("Back_Colour_Label")
+            'skipBackColour = True
+        ElseIf TypeName(ctl) = "ComboBox" Then
+            fontName = rs("Font_ComboBox")
+            foreColour = rs("Font_Colour_ComboBox")
+            BackColour = rs("Back_Colour_ComboBox")
+            'skipBackColour = True
+        ElseIf TypeName(ctl) = "ListBox" Then
+            fontName = rs("Font_ListBox")
+            foreColour = rs("Font_Colour_ListBox")
+            BackColour = rs("Back_Colour_ListBox")
+            'skipBackColour = True
+        'ElseIf TypeName(ctl) = "HyperLink" Then
+        '    fontName = rs("Font_HyperLink")
+        '    foreColour = rs("Font_Colour_HyperLink")
+        '    BackColour = rs("Back_Colour_HyperLink")
+        End If
+        
+        
+        'Debug.Print "Ctl: <" & ctl.Name & ">, type: <" & TypeName(ctl) & ">, fontName: <" & fontName & ">, foreColour: <" & foreColour & ">, backColour: <" & BackColour & ">"
+        
+        
+        If Len(fontName) <> 0 And Not skipFontName Then
+            ctl.fontName = fontName
+        End If
+        If Len(foreColour) <> 0 And Not skipForeColour Then
+            ctl.ForeColor = Hex2VBAHex(foreColour)
+        End If
+        If Len(BackColour) <> 0 And Not skipBackColour Then
+            ctl.BackColor = Hex2VBAHex(BackColour)
+        End If
+    
+    Next ctl
+    
+    ' Special Form Colouring
+    If InStr(1, formName, "itr_edit_") > 0 Then
+        ' ITR Edit Menu
+        Printf "COLOURING " & rs("Form_ITR_Edit_Label_Admin")
+        frm.Detail.BackColor = Hex2VBAHex(rs("Colour_Detail"))
+        frm.Label84.ForeColor = Hex2VBAHex(rs("Form_ITR_Edit_Label_Admin"))
+        frm.Label19.ForeColor = Hex2VBAHex(rs("Form_ITR_Edit_Label_Title"))
+        'Me.Label79.BackColor = hex2VBAHex(rs("Form_ITR_Edit_Label_Title"))
+        'Me.Combo14.ForeColor = "&H000000"
+    End If
+    
+    rs.Close
+    Set rs = Nothing
+
+End Function

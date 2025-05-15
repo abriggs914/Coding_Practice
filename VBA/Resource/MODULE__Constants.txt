@@ -5,3 +5,10 @@ Public Const ONE_CM_TWIP As Integer = 567
 Public Const SWATCH_BOX_HEIGHT As Double = 0.8 * ONE_CM_TWIP
 Public Const SWATCH_BOX_SPACE_HEIGHT As Double = ONE_CM_TWIP - SWATCH_BOX_HEIGHT
 Public Const SWATCH_BOX6_HEIGHT As Integer = 6.4 * ONE_CM_TWIP
+
+
+Public Const SERVER_BWSFP01 As String = "\\BWSFP01.BWSDOMAIN.local\"
+Public Const PRINTER_ADMIN As String = SERVER_BWSFP01 & "Xerox WorkCentre 7830i A5:E9"  ' 2nd Floor Offices Admin Printer
+Public Const PRINTER_FOREMAN As String = SERVER_BWSFP01 & "Xerox VersaLink C7030 AB:52"  ' 1st Floor Foreman's Office Printer
+Public Const PRINTER_ENGINEERING As String = SERVER_BWSFP01 & "Xerox VersaLink C7030 E0:30"  ' 2nd Floor Engineering Printer
+Public Const PRINTER_IT As String = SERVER_BWSFP01 & "Xerox Phaser 3330 95:EF"  ' Spare printer in the double office in the IT area

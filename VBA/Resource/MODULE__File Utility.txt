@@ -1,0 +1,379 @@
+Option Compare Database
+Option Explicit
+
+
+' Python os.path-style helpers for Access VBA
+' Version................................1.01
+' Date.............................2025-04-29
+' Author(s)......................Avery Briggs
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   GetFSO                     -   Retrieve an initialized File-System-Object to process files.
+'   PathAbs                    -   Return the absolute path from a relative one.
+'   PathBaseName               -   Return the basename (file or folder name) from a path.
+'   PathDirName                -   Return the dirname (folder path) from a path.
+'   PathExists                 -   Check if a path exists (file or folder).
+'   PathGetSize                -   Return the size of a file (in bytes).
+'   PathIsDir                  -   Check if a path is a folder.
+'   PathIsFile                 -   Check if a path is a file.
+'   PathJoin                   -   Join parts of a path together.
+'   PathSplitExt               -   Split a path by all 'dots' or 'back-slashes'.
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+Private fso As Object
+
+
+'---------------------------------------------------------------------------------------
+' Function : GetFSO
+' Author    : Avery Briggs
+' Purpose   : Initialize FSO if needed.
+'             Maintains the local fso variable so it can be re-used.
+'
+' Usage:
+' ~~~~~~
+' Retrieve an initialized File-System-Object to process files.
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Private Function GetFSO() As Object
+    If fso Is Nothing Then
+        Set fso = CreateObject("Scripting.FileSystemObject")
+    End If
+    Set GetFSO = fso
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PathJoin
+' Author    : Avery Briggs
+' Purpose   : Join parts of a path together.
+'
+' Usage:
+' ~~~~~~
+' printf PathJoin("C:\Users", "Documents")  '  "C:\Users\Documents"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PathJoin( _
+    ByVal path1 As String, _
+    ByVal path2 As String _
+) As String
+    PathJoin = GetFSO.BuildPath(path1, path2)
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PathBaseName
+' Author    : Avery Briggs
+' Purpose   : Return the basename (file or folder name) from a path.
+'
+' Usage:
+' ~~~~~~
+' printf PathBasename("C:\Access\sysprocompanya.accdb")          ' "SysproCompanyA.accdb"
+' printf PathBasename("C:\Access\THIS FILE DOES NOT EXIST.txt")  ' ERROR
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PathBasename( _
+    ByVal path As String, _
+    Optional ByVal errorOnNotFound As Boolean = True _
+) As String
+    
+    If errorOnNotFound Then
+        If Not PathExists(path) Then
+            Err.Raise vbObjectError, "PathBaseName", "Path '" & path & "' could not be found."
+        End If
+    End If
+
+    PathBasename = Dir(path)
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PathDirname
+' Author    : Avery Briggs
+' Purpose   : Return the dirname (folder path) from a path.
+'
+' Usage:
+' ~~~~~~
+' printf PathDirname("C:\Access\sysprocompanya.accdb")          ' "C:\Access"
+' printf PathDirname("C:\Access\THIS FILE DOES NOT EXIST.txt")  ' ERROR
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PathDirname( _
+    ByVal path As String, _
+    Optional ByVal errorOnNotFound As Boolean = True _
+) As String
+    If Not PathExists(path) Then
+        If errorOnNotFound Then
+            Err.Raise vbObjectError, "PathDirName", "Path '" & path & "' could not be found."
+        Else
+            PathDirname = ""
+            Exit Function
+        End If
+    End If
+
+    Dim idx As Long
+    idx = InStrRev(path, "\")
+    If idx > 0 Then
+        PathDirname = Left(path, idx - 1)
+    Else
+        PathDirname = ""
+    End If
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PathExists
+' Author    : Avery Briggs
+' Purpose   : Check if a path exists (file or folder).
+'             Basically just a wrapper for Dir.
+'
+' Usage:
+' ~~~~~~
+' printf PathExists("C:\Access\sysprocompanya.accdb")          ' True
+' printf PathExists("C:\Access\THIS FILE DOES NOT EXIST.txt")  ' False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PathExists( _
+    ByVal path As String _
+) As Boolean
+    PathExists = (Dir(path) <> "")
+    If Not PathExists Then
+        ' did not find as a file, check if directory
+        PathExists = GetFSO.FolderExists(path)
+    End If
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PathSplitExt
+' Author    : Avery Briggs
+' Purpose   : Split a path by all 'dots' or 'back-slashes'.
+'             Should ideally return an array of len=2; Base and Extension.
+'
+' Usage:
+' ~~~~~~
+' PrintF PathSplitExt("C:\Access\sysprocompanya.accdb")                             ' "['C:\Access\sysprocompanya', 'accdb']"
+' PrintF PathSplitExt("C:\Access\sysprocompanya.accdb.")                             ' "['C:\Access\sysprocompanya', 'accdb', '']"
+' PrintF PathSplitExt("C:\Access\THIS FILE DOES NOT EXIST.txt")                     ' "['C:\Access\THIS FILE DOES NOT EXIST', 'txt']"
+' PrintF PathSplitExt("\\server3\production\sysprocompanyA.accdb")                  ' "['\\server3\production\sysprocompanyA', 'accdb']"
+' PrintF PathSplitExt("\\server3\\production\\sysprocompanyA.accdb\\\", "complex")  ' "['server3', 'production', 'sysprocompanyA.accdb']"
+' PrintF PathSplitExt("//server3/production\\sysprocompanyA.accdb/\\", "complex")   ' "['server3', 'production', 'sysprocompanyA.accdb']"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PathSplitExt( _
+    ByVal path As String, _
+    Optional ByVal mode As String = "simple", _
+    Optional ByVal clean As Boolean = True _
+) As Variant
+    
+    Dim res As Variant
+    If mode = "simple" Then
+        res = Split(path, ".")
+    ElseIf mode = "complex" Then
+        path = Replace(path, "//", "\")
+        path = Replace(path, "/", "\")
+        path = Replace(path, "\\", "\")
+        res = Split(path, "\")
+    Else
+        Err.Raise vbObjectError, "PathSplitExt", "Unrecognized mode '" & mode & "'. Expected one of ['simple', 'complex']."
+    End If
+    
+    Dim sIdx As Long
+    Dim eIdx As Long
+    Dim i As Long
+    Dim C As Long
+    i = 0
+    C = Size(res)
+    sIdx = 0
+    eIdx = C
+    
+    If clean Then
+        
+        ' Find last index of leading empty strings
+        Do While i < C
+            If res(i) = "" Then
+                sIdx = i + 1
+            Else
+                i = C
+            End If
+            i = i + 1
+        Loop
+        
+        ' Find first index of trailing empty strings
+        i = C - 1
+        Do While i >= 0
+            If res(i) = "" Then
+                eIdx = i
+            Else
+                i = 0
+            End If
+            i = i - 1
+        Loop
+        
+    End If
+    
+    ' Slice the split result using bounded indexes
+    PathSplitExt = Slice(res, sIdx, eIdx)
+    
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PathAbs
+' Author    : Avery Briggs
+' Purpose   : Return the absolute path from a relative one.
+'
+' Usage:
+' ~~~~~~
+' PrintF PathAbs("C:\Access\sysprocompanya.accdb")                      ' "C:\Access\SysproCompanyA.accdb"
+' PrintF PathAbs("C:\Access\sysprocompanya.accdb.")                     ' "C:\Access\SysproCompanyA.accdb"
+' PrintF PathAbs("C:\Access\THIS FILE DOES NOT EXIST.txt")              ' "C:\Access\THIS FILE DOES NOT EXIST.txt"
+' PrintF PathAbs("\\server3\\  production\\  sysprocompanyA.accdb\\\")  ' "\\server3\  production\  sysprocompanyA.accdb"
+' PrintF PathAbs("//server3/production\\sysprocompanyA.accdb/\\")       ' "\\server3\production\SysproCompanyA.accdb"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PathAbs( _
+    ByVal path As String, _
+    Optional ByVal errorOnNotFound As Boolean = True _
+) As String
+    
+    If errorOnNotFound Then
+        If Not PathExists(path) Then
+            Err.Raise vbObjectError, "PathAbs", "Path '" & path & "' could not be found."
+        End If
+    End If
+    
+    PathAbs = GetFSO.GetAbsolutePathName(path)
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PathGetSize
+' Author    : Avery Briggs
+' Purpose   : Return the size of a file (in bytes).
+'
+' Usage:
+' ~~~~~~
+' PrintF PathGetSize("C:\Access\sysprocompanya.accdb")          ' 578715648
+' PrintF PathGetSize("C:\Access\THIS FILE DOES NOT EXIST.txt")  ' -1
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PathGetSize( _
+    ByVal path As String, _
+    Optional ByVal errorOnNotFound As Boolean = True _
+) As Long
+    
+    If errorOnNotFound Then
+        If Not PathExists(path) Then
+            Err.Raise vbObjectError, "PathGetSize", "Path '" & path & "' could not be found."
+        End If
+    End If
+
+    On Error GoTo ErrHandler
+    PathGetSize = FileLen(path)
+    Exit Function
+ErrHandler:
+    PathGetSize = -1 ' Return -1 if file not found or invalid
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PathIsDir
+' Author    : Avery Briggs
+' Purpose   : Check if a path is a folder.
+'
+' Usage:
+' ~~~~~~
+' PrintF PathIsDir("C:\Access\sysprocompanya.accdb")          ' False
+' PrintF PathIsDir("C:\Access\THIS FILE DOES NOT EXIST.txt")  ' False
+' PrintF PathIsDir("C:\Access\")                              ' True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PathIsDir( _
+    ByVal path As String, _
+    Optional ByVal errorOnNotFound As Boolean = True _
+) As Boolean
+
+    If errorOnNotFound Then
+        If Not PathExists(path) Then
+            Err.Raise vbObjectError, "PathIsDir", "Path '" & path & "' could not be found."
+        End If
+    End If
+    
+    PathIsDir = GetFSO.FolderExists(path)
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : PathIsFile
+' Author    : Avery Briggs
+' Purpose   : Check if a path is a file.
+'
+' Usage:
+' ~~~~~~
+' PrintF PathIsFile("C:\Access\sysprocompanya.accdb")          ' True
+' PrintF PathIsFile("C:\Access\THIS FILE DOES NOT EXIST.txt")  ' False
+' PrintF PathIsFile("C:\Access\")                              ' False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-29                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function PathIsFile( _
+    ByVal path As String, _
+    Optional ByVal errorOnNotFound As Boolean = True _
+) As Boolean
+    
+    If errorOnNotFound Then
+        If Not PathExists(path) Then
+            Err.Raise vbObjectError, "PathIsFile", "Path '" & path & "' could not be found."
+        End If
+    End If
+
+    PathIsFile = GetFSO.FileExists(path)
+End Function

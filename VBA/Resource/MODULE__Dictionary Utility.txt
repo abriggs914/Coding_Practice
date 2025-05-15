@@ -2,8 +2,8 @@ Option Compare Database
 
 
 ' General Dictionary Utility Functions
-' Version....................1.03
-' Date.................2023-08-08
+' Version....................1.05
+' Date.................2025-04-14
 ' Author(s)..........Avery Briggs
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -11,7 +11,14 @@ Option Compare Database
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '                   Contents
 '
-'   PrintDict            -   Print and or obtain a string representation for a Dictionary.
+'   Dictionary          -   Data Structure to hold Key-Value Pairs
+'   DictEquals          -   Determine whether two variables are Dictionaries, and contain identical key and value pairs.
+'   DictKeys            -   Return an array of Keys in a given Dictionary.
+'   DictValues          -   Return an array of Values in a given Dictionary.
+'   IsDict              -   Return a boolean whether a value is a Dictionary object.
+'   IsDictEmpty         -   Return a boolean indicating whether the Dictionary is empty or not.
+'   PrintDict           -   Print and or obtain a string representation for a Dictionary.
+'
 '
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -36,7 +43,7 @@ Public Function Dictionary(ParamArray args()) As Object
 
   If UBound(args) >= 0 Then   ' if has arguments '
     If VBA.IsObject(args(0)) Then   ' if object then load a Range '
-      arr = args(0).Resize(args(0).End(xlDown).Row - args(0).Row + 1, 2).Value
+      arr = args(0).Resize(args(0).End(xlDown).row - args(0).row + 1, 2).Value
 
       For i = 1 To UBound(arr)
         Dictionary.Add arr(i, 1), arr(i, 2)
@@ -113,7 +120,7 @@ Public Function PrintDict( _
     Dim V As String
     Dim S As String
     
-    Size_ = dict.Count
+    Size_ = dict.count
     t = 2 + initOffset
     sDict = "{"
     
@@ -214,5 +221,66 @@ Public Function DictValues(ByVal dict As Variant) As Variant
         Next key
         DictValues = arr
     End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : DictEqual
+' Author    : Avery Briggs
+' Purpose   : Acts as a safer way to verify Dictionary contents.
+'
+' Usage:
+' ~~~~~~
+' dim a as variant
+' a = array(1,8,6,4)
+' dim b as variant
+' b = array(1,8,array(6,13),array(-1,4,array(0,array(11))),45)  ' [1, 8, [6, 13], [-1, 4, [0, [11]]], 45]
+' printf equal(a, b)  ' False
+' printf equal(1, 0)  ' False
+' printf equal(10, 1.0)  ' False
+' printf equal(a, a)  ' True
+' printf equal(3, 3)  ' True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-08-08                  Initial Release
+' 2         2023-08-31                  Support for Dictonaries
+' 2         2025-04-14                  Broadened the ability to support only 1 param as a Dictionary. It will be False
+'---------------------------------------------------------------------------------------
+Public Function DictEqual(ByRef valA As Variant, ByRef valB As Variant) As Boolean
+
+    Dim isDA As Boolean
+    Dim isDB As Boolean
+    
+    isDA = IsDict(valA)
+    isDB = IsDict(valB)
+
+    If (isDA + isDB) = 0 Then
+        Err.Raise vbObjectError, "DictEqual", "Error, param 'valA' or 'valB' must be an instance of a Dictionary, got TypeName(A)='" & TypeName(valA) & "' , TypeName(B)='" & TypeName(valB) & "'"
+    ElseIf Abs(isDA + isDB) = 1 Then
+        DictEqual = False
+        Exit Function
+    End If
+    
+    If Size(valA) <> Size(valB) Then
+        DictEqual = False
+    Else
+        Dim A As Variant
+        Dim b As Variant
+        For Each A In valA
+            If Not valB.exists(A) Then
+                DictEqual = False
+                Exit Function
+            End If
+            If valA(A) <> valB(A) Then
+                DictEqual = False
+                Exit Function
+            End If
+        Next A
+        DictEqual = True
+    End If
+    
 
 End Function

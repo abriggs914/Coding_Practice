@@ -1,0 +1,2821 @@
+IT request Edit form
+
+Option Compare Database
+
+' Status update
+Private Sub Combo14_AfterUpdate()
+
+    Debug.Print "OLD: "; Me.Combo14.OldValue & ", NEW: "; Me.Combo14.Value
+    Dim newV As String, oldV As String
+    newV = Me.Combo14.Value
+    oldV = Me.Combo14.OldValue
+    If newV = "Complete" Or newV = "Incomplete" Or newV = "Declined" Then
+        If IsNull(Me.Text89) Then
+            Me.Text89.Value = Now
+        End If
+    End If
+    
+    If Me.Combo14.Value <> "Queued" Then
+        
+        If IsNull(Me.Combo82) Or Len(Me.Combo82) = 0 Then
+            Debug.Print "You must assign an IT person to this request before you can begin the project."
+            'MsgBox "You must assign an IT person to this request before you can begin the project."
+            'Me.Combo82.SetFocus
+            Me.Combo82.Value = "Unassigned"
+            'Exit Sub
+        End If
+        
+        If IsNull(Me.Text75) Then
+            Me.StartDate.Value = Now
+            Me.Text75.Value = Now
+        ElseIf Len(Me.Text75) = 0 Then
+            Me.Text75.Value = Now
+        End If
+        
+    End If
+    
+    ''TODO replace this with the RGB colours stored in [ITR Status] -- 2022-04-06 10AM
+    'If newV = "Complete" Then
+    '    ' Colour complete as green
+    '    Me.Combo14.BackColor = "&H3E5F00"
+    '    Me.Combo14.ForeColor = "&HFFFFFF"
+    'ElseIf newV = "InComplete" Or newV = "Declined" Then
+    '    ' Colour incomplete / declined as red
+    '    Me.Combo14.BackColor = "&H0000FF"
+    '    Me.Combo14.ForeColor = "&H000000"
+    'ElseIf newV = "In Progress" Then
+    '    ' Colour in progress as yellow
+    '    Me.Combo14.BackColor = "&H00edde"
+    '    Me.Combo14.ForeColor = "&H000000"
+    'ElseIf newV = "Debugging" Then
+    '    ' Colour in progress as yellow
+    '    'Me.Combo14.BackColor = "&H4b1daa" ' purple
+    '    Me.Combo14.BackColor = RGB(75, 29, 170) ' purple
+    '    'Me.Combo14.ForeColor = "&he4f204" ' gold
+    '    Me.Combo14.ForeColor = RGB(228, 242, 4) ' gold
+    'ElseIf newV = "Waiting" Then
+    '    ' Colour in progress as yellow
+    '    'Me.Combo14.BackColor = "&H4b1daa" ' purple
+    '    Me.Combo14.BackColor = RGB(64, 164, 344) ' purple
+    '    'Me.Combo14.ForeColor = "&he4f204" ' gold
+    '    Me.Combo14.ForeColor = RGB(255, 255, 255) ' gold
+    'Else
+    '    Me.Combo14.BackColor = "&HFFFFFF"
+    '    Me.Combo14.ForeColor = "&H000000"
+    'End If
+    Call updateStatusFont
+    DoCmd.RunSQL "UPDATE ITRequests SET [STATUS] = '" & Me.Combo14.Value & "', StartDate = #" & Me.StartDate & "# WHERE [ITRequestID#] = " & Me.[ITRequestID#]
+
+    'Me.Text119.Value = Me.Combo14.Value
+    
+End Sub
+
+' Update Priority Level Status table after changing the priority level
+Private Sub Combo16_AfterUpdate()
+
+    If Not validate(False, False, True, False, False, False, False, False) Then
+        Exit Sub
+    End If
+    Dim UserName As String
+    UserName = GetUserFullName()
+    Dim priorityLevel As Integer
+    priorityLevel = Me.Priority
+    
+    Dim rs As dao.Recordset
+    'Debug.Print "SQL" & vbNewLine & " SELECT * FROM [ITRequests] WHERE LCASE([RequestedBy]) = LCASE('" & userName & "') AND [Priority] = " & priorityLevel
+    Set rs = CurrentDb.OpenRecordset("SELECT COUNT(*) AS [# Queued] FROM [ITRequests] WHERE LCASE([RequestedBy]) = LCASE('" & UserName & "') AND [Priority] = " & priorityLevel & " AND LCASE([Status]) = 'queued'", dbOpenSnapshot)
+    'Set rs = CurrentDb.OpenRecordset("SELECT * FROM [ITRequests] WHERE LCASE([RequestedBy]) = LCASE('" & userName & "') AND [Priority] = " & priorityLevel, dbOpenSnapshot)
+    
+    If Not rs.EOF Then
+        Me.Text44 = rs(0)
+    Else
+        Me.Text44 = Null
+    End If
+    
+    Set rs = CurrentDb.OpenRecordset("SELECT COUNT(*) AS [# In Progress] FROM [ITRequests] WHERE LCASE([RequestedBy]) = LCASE('" & UserName & "') AND [Priority] = " & priorityLevel & " AND LCASE([Status]) = 'in progress'")
+    'Set rs = CurrentDb.OpenRecordset("SELECT * FROM [ITRequests] WHERE LCASE([RequestedBy]) = LCASE('" & userName & "') AND [Priority] = " & priorityLevel, dbOpenSnapshot)
+    
+    If Not rs.EOF Then
+        Me.Text46 = rs(0)
+    Else
+        Me.Text46 = Null
+    End If
+    
+    rs.Close
+    Set rs = Nothing
+    
+End Sub
+
+' Change the subRequestType combobox contents when the main requestType is changed
+Private Sub Combo28_AfterUpdate()
+
+    If Me.Combo28.OldValue <> Me.Combo28.Value Then
+        Me.Combo30.Value = ""
+    End If
+
+    Dim val As String
+    If Me.Combo28.Value = "Hardware" Then
+        Me.Combo30.rowSource = "ITR Hardware"
+    ElseIf Me.Combo28.Value = "Software" Then
+        Me.Combo30.rowSource = "ITR Software"
+    Else
+        Me.Combo30.rowSource = "ITR Training"
+    End If
+
+End Sub
+
+Private Sub Combo82_AfterUpdate()
+    'If Me.Combo82.Value <> 1 Then
+        If IsNull(Me.Combo14) Or Me.Combo14.Value = "Queued" Then
+            Me.Combo14.Value = "In Progress"
+            If IsNull(Me.Text75) Or Me.Text75.Value = "" Then
+                Me.Text75.Value = Now
+            End If
+        End If
+    'End If
+    
+    Call Command15_Click
+    Call updateStatusFont
+End Sub
+
+Private Sub Command118_Click()
+
+    Call emailPersonnel(force:=True)
+    'Call emailPersonnel
+    
+End Sub
+
+Private Sub Command128_Click()
+
+    DoCmd.OpenForm "ITR New Customer"
+
+End Sub
+
+Private Sub Command130_Click()
+
+    If Not IsNull(Me.Label85) And Me.Label85.caption = "ITR Admin AubForm" Then
+        
+        If CurrentProject.allForms("ITR Admin SubForm").IsLoaded Then
+            DoCmd.Close acForm, "ITR Admin SubForm"
+        End If
+    End If
+    If CurrentProject.allForms("ITR Edit Params").IsLoaded Then
+        DoCmd.Close acForm, "ITR Edit Params"
+    End If
+    
+    DoCmd.Close acForm, Me.Name
+    DoCmd.OpenForm "ITR Input"
+    
+End Sub
+
+'Private Sub Command134_Click()
+'
+'    ' -1 H
+'    Me.LabourActual = IIf(IsNull(Me.LabourActual), 0, IIf(Me.LabourActual - 1 < 0, 0, Me.LabourActual - 1))
+'    Call Command15_Click
+'
+'End Sub
+
+'Private Sub Command135_Click()
+'
+'    ' -0.5 H
+'    Me.LabourActual = IIf(IsNull(Me.LabourActual), 0, IIf(Me.LabourActual - 0.5 < 0, 0, Me.LabourActual - 0.5))
+'    Call Command15_Click
+'
+'End Sub
+
+Private Sub Command149_Click()
+
+    ' 0.01 H
+    Call addHours(0.01)
+
+End Sub
+
+Private Sub Command137_Click()
+
+    ' 0.05 H
+    Call addHours(0.05)
+    
+End Sub
+
+Private Sub Command138_Click()
+
+    ' 0.1 H
+    Call addHours(0.1)
+
+End Sub
+
+Private Sub Command133_Click()
+
+    ' 0.5 H
+    Call addHours(0.5)
+
+End Sub
+
+Private Sub Command136_Click()
+
+    ' 1 H
+    Call addHours(1)
+
+End Sub
+
+Private Sub addHours(ByVal Amount As Double)
+
+    Amount = Abs(Amount)
+    If Me.Command148.caption = "Add" Then
+        Me.LabourActual = IIf(IsNull(Me.LabourActual), 0, IIf(Me.LabourActual - Amount < 0, 0, Me.LabourActual - Amount))
+    Else
+        Me.LabourActual = IIf(IsNull(Me.LabourActual), Amount, Me.LabourActual + Amount)
+    End If
+    Call Command15_Click
+    
+End Sub
+
+Private Sub Command148_Click()
+
+    Dim sym As String
+    
+    If Me.Command148.caption = "Add" Then
+        sym = "+"
+        Me.Command148.caption = "Subtract"
+    Else
+        sym = "-"
+        Me.Command148.caption = "Add"
+    End If
+    
+    Me.Command149.caption = sym & "0.01"
+    Me.Command137.caption = sym & "0.05"
+    Me.Command138.caption = sym & "0.1"
+    Me.Command133.caption = sym & "0.5"
+    Me.Command136.caption = sym & "1"
+    
+End Sub
+
+' Go Back
+Private Sub Command14_Click()
+
+    If Not IsNull(Me.Label85) And Me.Label85.caption = "ITR Admin AubForm" Then
+        
+        If CurrentProject.allForms("ITR Admin SubForm").IsLoaded Then
+            DoCmd.Close acForm, "ITR Admin SubForm"
+        End If
+    End If
+    DoCmd.Close acForm, Me.Name
+    
+End Sub
+
+' Submit
+Private Sub Command15_Click()
+
+    'Me.RequestDate.Value = now
+    
+    ' Ensure user who changed the request, wants to accept responsibility for the update.
+    ' Defaults to the original requester.
+    Dim un As String
+    Dim r As Integer
+    un = GetUserFullName()
+    Debug.Print "un """ & un & """"
+    Debug.Print "RB """ & Me.RequestedBy.Value & """"
+    Debug.Print "Me.RequesterLocked: " & Me.RequesterLocked
+    If Me.Command151.visible Then
+        If Me.RequestedBy.Value <> un Then
+            r = MsgBox("This request was originally created by """ & Me.RequestedBy.Value & """." & vbNewLine & "Are you sure you want to set """ & un & """ as the principle requester?", vbYesNo)
+            If r = vbNo Then
+                un = Me.RequestedBy.Value
+            End If
+        End If
+    Else
+        un = Me.RequestedBy.Value
+    End If
+    Me.RequestedBy.Value = un
+    'TODO this is not right
+    Me.SubPriority.Value = 0
+    
+    If IsNull(Me.Comments) Or Len(Me.Comments) = 0 Then
+       Me.Comments.Value = ""
+    End If
+    
+    If Not validate() Then
+        Debug.Print "Failed Command15_Click"
+        Exit Sub
+    End If
+
+    Debug.Print "Request Date: " & Me.RequestDate
+    Debug.Print "Due Date: " & Me.DueDate
+    Debug.Print "Request: " & Me.Request
+    Debug.Print "Priority: " & Me.Priority
+    Debug.Print "Sub Priority: " & Me.SubPriority
+    Debug.Print "Requested By: " & Me.RequestedBy
+    Debug.Print "Department: " & Me.Department
+    Debug.Print "Request Follow-up Personnel: " & Me.Text97.Value
+    Debug.Print "Request Type: " & Me.RequestType
+    Debug.Print "Request Sub Type: " & Me.RequestSubType
+    Debug.Print "Comments: " & Me.Comments
+    Debug.Print "Company: " & Me.Company
+    Debug.Print "Status: " & Me.Status
+    Debug.Print "Directory: " & Me.Directory
+    Debug.Print "LinkPrev: " & Me.Text124.Value
+    Debug.Print "LinkNext: " & Me.Text124.Value
+    
+    Dim le As Double, la As Double
+    le = IIf(IsNull(Me.LabourEstimate.Value), 0, Me.LabourEstimate.Value)
+    la = IIf(IsNull(Me.LabourActual.Value), 0, Me.LabourActual.Value)
+    Dim d As String, S As String, commentsTxt As String, requestTxt As String, dateVal As String
+    d = Me.Directory.Value
+    S = Me.Status.Value
+    If Not IsNull(Me.Text89) Then
+        dateVal = "#" & Me.Text89.Value & "#"
+    Else
+        dateVal = "NULL"
+    End If
+    'requestTxt = Replace(Replace(Me.Request, "'", "''"), """", """""")
+    'commentsTxt = Replace(Replace(Me.Comments, "'", "''"), """", """""")
+    requestTxt = Replace(Me.Request, "'", """")
+    commentsTxt = Replace(Me.Comments, "'", """")
+    
+    Debug.Print "requestTxt: <" & requestTxt & ">"
+    Debug.Print "Comments: <" & commentsTxt & ">"
+    
+    ' Stop timer and save
+    Me.TimerStop = Now
+    Dim tst As String
+    Dim tsp As String
+    Dim tmr As Double
+    tst = IIf(IsNull(Me.TimerStart), "NULL", Me.TimerStart)
+    tsp = IIf(IsNull(Me.TimerStop), "NULL", Me.TimerStop)
+    If tst <> "NULL" And tsp <> "NULL" Then
+        tmr = DateDiff("h", tst, tsp)
+    ElseIf Not IsNull(Me.Timer) Then
+        tmr = Me.Timer
+    Else
+        tmr = 0
+    End If
+    
+    Dim LinkPrev As String
+    Dim LinkNext As String
+    LinkPrev = IIf(IsNull(Me.Text122) Or Len(Me.Text122.Value) = 0, "NULL", Me.Text122.Value)
+    LinkNext = IIf(IsNull(Me.Text124) Or Len(Me.Text124.Value) = 0, "NULL", Me.Text124.Value)
+    
+    ' 2022-11-04 James Crawford - Adjusted [CompletionDate] syntax in sql string to use the "dateVal" string variable in lieu of "Me.Text89.Value"
+    Dim sql As String
+    sql = "UPDATE [ITRequests]" & _
+                " SET [RequestDate] = #" & Me.RequestDate.Value & "#" & _
+                ", [DueDate] = #" & Me.DueDate.Value & "#" & _
+                ", [Request] = '" & requestTxt & "'" & _
+                ", [Priority] = " & Me.Priority.Value & "" & _
+                ", [SubPriority] = " & Me.SubPriority.Value & "" & _
+                ", [RequestedBy] = '" & Me.RequestedBy.Value & "'" & _
+                ", [Department] = " & Me.Department.Value & "" & _
+                ", [RequestFollowUpPersonnel] = '" & Me.Text97.Value & "'" & _
+                ", [RequestType] = '" & Me.RequestType.Value & "'" & _
+                ", [RequestSubType] = '" & Me.RequestSubType.Value & "'" & _
+                ", [Comments] = '" & commentsTxt & "'" & _
+                ", [Company] = '" & Me.Company.Value & "'" & _
+                ", [Status] = '" & S & "'" & _
+                ", [Directory] = '" & d & "'" & _
+                ", [ITPersonAssignedID] = " & Me.Combo82.Value & _
+                ", [CompletionDate] = " & dateVal & _
+                ", [LabourEstimate] = " & le & _
+                ", [LabourActual] = " & la & _
+                ", [TimerStart] = " & IIf(tst = "NULL", "NULL", "'" & tst & "'") & _
+                ", [TimerStop] = " & IIf(tsp = "NULL", "NULL", "'" & tsp & "'") & _
+                ", [Timer] = " & tmr & ", [LinkNext] = " & LinkNext & ", [LinkPrev] = " & LinkPrev & _
+                ", [LastStatusUpdater] = '" & Left(GetUserFullName(), 255) & "'" & _
+                " WHERE [ITRequestID#] = " & Me.[ITRequestID#].Value
+    
+    ' Run Update query
+    Debug.Print "SQL=<" & sql & ">"
+    
+    'Debug.Print "EARLY EXIT!!!"
+    'Exit Sub
+    
+    DoCmd.SetWarnings False
+    
+    DoCmd.RunSQL sql
+    
+    ' Get RequestID to create unique folder
+    Dim reqID As Integer
+    reqID = Me.[ITRequestID#].Value
+    
+    ' Create Request Directory
+    Call createRequestDir(reqID, False)
+    
+    
+    If CurrentProject.allForms("ITR Admin SubForm").IsLoaded Then
+        [Forms]![ITR Admin SubForm].Form.Requery
+    End If
+    
+    MsgBox "Changes saved successfully"
+    
+End Sub
+
+Private Sub Command150_Click()
+    ' lock icon button
+    If validITRViewer(isDev:=True) Then
+        Me.Combo14.SetFocus
+        Me.Command150.visible = Not Me.Command150.visible
+        Me.Command151.visible = Not Me.Command150.visible
+        Call updateLockRequester
+    Else
+        MsgBox "Error, you do not have permission to change the original requester." & vbNewLine & "Please contact IT for further assistance.", vbExclamation
+    End If
+End Sub
+
+Private Sub Command151_Click()
+    ' unlock clicked
+    If validITRViewer(isDev:=True) Then
+        Me.Combo14.SetFocus
+        Me.Command151.visible = Not Me.Command151.visible
+        Me.Command150.visible = Not Me.Command151.visible
+        Call updateLockRequester
+    Else
+        MsgBox "Error, you do not have permission to change the original requester." & vbNewLine & "Please contact IT for further assistance.", vbExclamation
+    End If
+End Sub
+
+Private Sub Command157_Click()
+            
+    Dim requests() As String
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset("SELECT [ITRequestID#] FROM [ITRequests] WHERE [SeenByIT] IS NULL", dbOpenSnapshot)
+    If rs.EOF Or rs.BOF Then
+        rs.Close
+        Set rs = Nothing
+        Exit Sub
+    End If
+    
+    Dim i As Integer
+    Dim C As Integer
+    i = 0
+    C = rs.RecordCount
+    rs.MoveFirst
+    'For i = 0 To c
+    Do Until rs.EOF
+        ReDim Preserve requests(i)
+        requests(i) = rs(0)
+        rs.MoveNext
+        i = i + 1
+    Loop
+    
+    Dim m As Integer
+    m = Min(requests)
+    
+    rs.Close
+    Set rs = Nothing
+    Dim where As String
+    where = "[ITRequestID#] IN (" & Join(requests, ", ") & ")"
+    Printf "i: <" & i & ">"
+    Printf "c: <" & C & ">"
+    Printf "WHERE <" & where & ">"
+    DoCmd.Close acForm, Me.Name
+    DoCmd.OpenForm "ITR Edit", acNormal, , where
+    'DoCmd.GoToRecord , , , newreq
+    [Forms]![ITR Edit].Recordset.FindFirst "[ITRequestID#] = " & m
+
+End Sub
+
+Private Sub Command167_Click()
+
+    DoCmd.OpenForm "ITF_TEST", acNormal
+    [Forms]![ITF_TEST].Text6.Value = Me.[ITRequestID#]
+    Call Forms("ITF_TEST").Text6_AfterUpdate
+
+End Sub
+
+Private Sub Command168_Click()
+
+    ' How to open MSTeams using windows run command
+    ' https://dave.clements.uk/2020/05/29/create-direct-link-to-chat-in-microsoft-teams-without-going-through-browser/
+    
+    Dim teamsURI As String
+    Dim recipient As String
+    
+    ' Specify the recipient's name or email address
+    'recipient = "James Crawford,"
+    'recipient = "james.crawford@bwstrailers.com"
+    'recipient = Replace(recipient, " ", "%20")
+    
+    recipient = LTrim(RTrim(IIf(IsNull(Me.RequestFollowUpPersonnel), "", Me.RequestFollowUpPersonnel)))
+    recipient = Replace(recipient, ";", ",")
+    
+    Printf recipient & "<="
+    
+    If recipient <> "" Then
+        
+        ' Construct the Microsoft Teams URI to open in desktop app if available
+        'teamsURI = "msteams://l/chat/0/0?users=" & recipient
+        teamsURI = "msteams://teams.microsoft.com/l/chat/0/0?users=" & recipient
+        
+        Printf "Starting a chat with '" & recipient & "' using '" & teamsURI & "'"
+        
+        ' Open the Teams chat
+        Application.FollowHyperlink teamsURI
+        
+    Else
+        
+        MsgBox "No follow up personnel indicated." & vbNewLine & "If you have just selected someone, try saving the record first, then retry this feature."
+        Me.List23.SetFocus
+        
+    End If
+    
+End Sub
+
+Private Sub Command169_Click()
+
+    Dim where As String
+    
+    reqID = Me.[ITRequestID#]
+    
+    where = "[ITRequestID] = " & reqID
+
+    DoCmd.OpenForm "ITR Request Reminder Editor", acNormal, , where
+
+End Sub
+
+' Time Stamp comments section
+Private Sub Command55_Click()
+    
+    Dim d As Date
+    d = Now
+    Dim u As String
+    Set WSHnet = CreateObject("WScript.Network")
+    u = WSHnet.UserName
+    If Not IsNull(Me.Comments) Then
+        If Len(Me.Comments) > 0 Then
+            Me.Comments = Me.Comments & vbNewLine & d & " - " & u & ": "
+        Else
+            Me.Comments = d & " - " & u & ": "
+        End If
+    Else
+        Me.Comments = d & " - " & u & ": "
+    End If
+    
+End Sub
+
+' Browse
+Private Sub createRequestDir(ByVal reqID As Integer, Optional notify As Boolean = True)
+
+    Dim i As Integer
+    Dim u As String
+    Set WSHnet = CreateObject("WScript.Network")
+    u = WSHnet.UserName
+    Dim exists As String, parent As String, aDir As String, bDir As String, cDir As String, requestDir As String
+    
+    Dim dirs() As String
+    ReDim dirs(0)
+    requestDir = "\\bwsfp01.bwsdomain.local\Public\IT\Requests\REQID#" & Right("000000" & reqID, 6)
+    dirs(0) = requestDir
+    
+
+    If Not IsNull(Me.Check63) And Me.Check63 Then
+        ReDim Preserve dirs(1) As String
+        dirs(1) = "\\bwsfp01.bwsdomain.local\Public\IT\Requests\REQID#" & Right("000000" & reqID, 6) & "\Attachments"
+    End If
+    
+    Dim fso
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    For i = 0 To UBound(dirs)
+        Dim pth As String
+        pth = dirs(i)
+        'exists = Dir(pth)
+        If Not fso.FolderExists(pth) Then
+            MkDir pth
+            requestDir = "C:\Windows\explorer.exe """ & pth & ""
+            Debug.Print "Created dir " & "C:\Windows\explorer.exe """ & pth & ""
+        End If
+        If IsNull(Me.Check80) Or Me.Check80 Then
+            shell "C:\Windows\explorer.exe """ & pth & "", vbNormalFocus
+        End If
+    Next i
+    
+    If notify Then
+        If UBound(dirs) = 1 Then
+            MsgBox "Folder: """ & requestDir & """" & vbNewLine & "Updated successfully!" & vbNewLine & "Please place any additional files pertaining to your request in this folder"
+        Else
+            MsgBox "Folder: """ & requestDir & """" & vbNewLine & "Updated successfully!" & vbNewLine & "Updates and documentation for your request will be placed here."
+        End If
+    End If
+    
+End Sub
+
+' Prioirty Help
+Private Sub Command70_Click()
+
+    DoCmd.OpenForm "ITR Priority Help"
+
+End Sub
+
+' Manually refresh the employee email list
+Private Sub Command72_Click()
+
+    DoCmd.RunSQL "DELETE FROM EmailList WHERE 1=1"
+    DoCmd.RunSQL "INSERT INTO EmailList SELECT * FROM EmployeeEmailList"
+    Me.Text59.Value = ""
+    Me.List23.Requery
+    
+End Sub
+
+' Set complete
+Private Sub Command94_Click()
+
+    Call autoComplete
+    
+End Sub
+
+' Set complete and notify
+Private Sub Command95_Click()
+
+    Call autoComplete(True)
+    
+End Sub
+
+Private Sub Comments_BeforeUpdate(Cancel As Integer)
+
+    ' if you are not the requester, OR in IT OR listed in the followupsection, then you should not be allowed to alter these fields.
+    Debug.Print "BEFORE UPDATE" & vbNewLine & vbTab & Me.Comments.Value
+    Debug.Print "BEFORE OLDVALUE UPDATE" & vbNewLine & vbTab & Me.Comments.OldValue
+    Dim un As String
+    un = GetUserFullName()
+    If Not Me.Label84.visible Then
+        ' not Admin
+        Dim found As Boolean
+        found = False
+        
+        If un = Me.RequestedBy Then
+            found = True
+        End If
+        
+        If Not found Then
+            Dim rs As dao.Recordset
+            Set rs = CurrentDb.OpenRecordset("ITR Customers", dbOpenDynaset, dbSeeChanges)
+            If rs.RecordCount > 0 Then
+                Dim followUps() As String
+                Dim i As Integer
+                followUps = Split(Me.RequestFollowUpPersonnel.Value, ";")
+                rs.MoveFirst
+                For i = 0 To UBound(followUps)
+                    rs.FindFirst "[Email] = '" & followUps(i) & "'"
+                    If Not rs.NoMatch Then
+                        If rs("Name") = un Then
+                            ' Found current user in followups
+                            found = True
+                            Exit For
+                        End If
+                    End If
+                Next i
+            End If
+            rs.Close
+            Set rs = Nothing
+        End If
+                
+        If Not found Then
+            MsgBox "You do not have permission to alter the comments of this request."
+            Me.Comments.Value = Me.Comments.OldValue
+        End If
+    End If
+
+End Sub
+
+'Private Sub Directory_Click()
+'
+'    If Not IsNull(Me.Directory) Then
+'        Dim pth As String
+'        pth = Me.Directory
+'        Debug.Print "opening: <<" & "C:\Windows\explorer.exe """ & pth & "" & ">>"
+'        Shell "C:\Windows\explorer.exe """ & pth & "", vbNormalFocus
+'    End If
+'
+'End Sub
+
+' Open Directory if populated and double clicked
+Private Sub Directory_DblClick(Cancel As Integer)
+
+    If Not IsNull(Me.Directory) Then
+        Dim pth As String
+        pth = Me.Directory
+        Debug.Print "opening: <<" & "C:\Windows\explorer.exe """ & pth & "" & ">>"
+        shell "C:\Windows\explorer.exe """ & pth & "", vbNormalFocus
+    End If
+
+End Sub
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    Printf "BEFORE UPDATE!!"
+    
+    If Form_ITR_Edit_Timer > 0 And Form_ITR_Edit_Mark_Seen Then
+        Call askMarkSeen
+        Form_ITR_Edit_Mark_Seen = False
+        Form_ITR_Edit_Timer = 0
+    End If
+
+End Sub
+
+Private Sub Form_Close()
+
+    If CurrentProject.allForms("ITR Edit Params").IsLoaded Then
+        [Forms]![ITR Edit Params].visible = True
+    End If
+    
+End Sub
+
+' Lock Input Fields for Non-IT Staff
+' Note: Admin will have FULL control. Be careful when modifying fields!
+' Admin input is not sanitized the same as user input.
+Private Sub Form_Current()
+
+    Call updateColourScheme
+    Call checkFirstSeenByIT
+    Call checkSeenByRequester
+    Call checkReminderExists
+    Printf "DONE UPDATING COLOUR SCHEME"
+
+    DoCmd.RunSQL "DELETE FROM EmailList WHERE 1=1"
+    DoCmd.RunSQL "INSERT INTO EmailList SELECT * FROM EmployeeEmailList"
+    Me.List23.Requery
+
+    Me.Label79.caption = "Request #" & Right("000000" & Me.[ITRequestID#].Value, 6)
+    Me.Check63.Value = False
+    Dim i As Integer
+    Dim j As Integer
+    Dim isAdmin As Boolean
+    isAdmin = False
+    'Dim u As String
+    'Set WSHnet = CreateObject("WScript.Network")
+    'u = LCase(WSHnet.userName)
+        
+    Me.Text44.Enabled = False
+    Me.Text46.Enabled = False
+    Me.Text59.Value = ""
+    
+    'u = ""
+    
+    ' ITR_PERMISSION_ADMIN
+    'If u <> "abriggs" And u <> "jwc" And u <> "jam" And u <> "crobinson" Then
+    If Not validITRViewer(isDev:=True) Then
+        Debug.Print "Viewing in User Mode"
+    Else
+        'If MsgBox("Do you want to continue in admin mode?", vbYesNo) = 6 Then
+            Debug.Print "Viewing in Admin Mode"
+            isAdmin = True
+        'End If
+    End If
+    
+    'LOOK HERE 2022-10-19
+    'isAdmin = False
+    
+    'Debug.Print "IsAdmin: " & IIf(isAdmin, "Yes", "No")
+    
+    ' This request is either in progress / complete / or handled (Declined, Incomplete)
+    ' Therefore not all fields can be modified.
+    If Me.Status <> "Queued" Then
+        If Not isAdmin Then
+            Me.DueDate.Enabled = False
+            Me.Combo18.Enabled = False
+            Me.Combo27.Enabled = False
+            Me.Combo28.Enabled = False
+            Me.Combo30.Enabled = False
+            Me.Combo16.Enabled = False
+            Me.Request.Enabled = False
+            Me.List23.Enabled = False
+            Me.Text59.Enabled = False
+            Me.Combo14.Enabled = False
+            Me.Option34.Enabled = False
+            Me.Option36.Enabled = False
+        End If
+    Else
+        Me.DueDate.Enabled = True
+        Me.Combo18.Enabled = True
+        Me.Combo27.Enabled = True
+        Me.Combo28.Enabled = True
+        Me.Combo30.Enabled = True
+        Me.Combo16.Enabled = True
+        Me.Request.Enabled = True
+        Me.List23.Enabled = True
+        Me.Text59.Enabled = True
+        Me.Option34.Enabled = True
+        Me.Option36.Enabled = True
+    End If
+    
+    If isAdmin Then
+        Me.Label84.visible = True
+        Me.Text87.Enabled = True
+        Me.Combo14.Enabled = True
+        Me.Text77.Enabled = True
+        Me.Text75.Enabled = True
+        Me.Combo82.Enabled = True
+        Me.Check80.Value = False
+        Me.Text89.Enabled = True
+        Me.Text89.visible = True
+        
+        Me.Command148.visible = True
+        Me.Command149.visible = True
+        Me.Command137.visible = True
+        Me.Command138.visible = True
+        Me.Command133.visible = True
+        Me.Command136.visible = True
+        Me.Text126.Locked = True
+    Else
+        Me.Label84.visible = False
+        Me.Text87.Enabled = False
+        Me.Combo14.Enabled = False
+        Me.Directory.Locked = True
+        Me.Text77.Enabled = False
+        Me.Text75.Enabled = False
+        Me.Combo82.Enabled = False
+        Me.Check80.Value = True
+        Me.LabourEstimate.Enabled = False
+        Me.LabourActual.Enabled = False
+        
+        Me.Command148.visible = False
+        Me.Command149.visible = False
+        Me.Command137.visible = False
+        Me.Command138.visible = False
+        Me.Command133.visible = False
+        Me.Command136.visible = False
+        Me.Text126.Locked = False
+        
+        If Not IsNull(Me.Status) And (Me.Status = "Complete" Or Me.Status = "Incomplete" Or Me.Status = "Declined") Then
+            Me.Text89.visible = True
+        Else
+            Me.Text89.visible = False
+        End If
+        Me.Text89.Enabled = False
+    End If
+    
+    Dim handled As Boolean
+    handled = False
+    Me.LabourActual.ForeColor = "&HFFFFFF"
+    If Not IsNull(Me.LabourEstimate) Then
+        If Not IsNull(Me.LabourActual) Then
+            Me.LabourActual.FontWeight = 700
+            If Me.LabourActual > Me.LabourEstimate Then
+                ' Red over budget
+                Me.LabourActual.BackColor = "&H020268"
+            Else
+                ' Green under budget
+                Me.LabourActual.BackColor = "&H3E5F00"
+            End If
+            handled = True
+        End If
+    End If
+    
+    If Not handled Then
+        ' Black non-calculable budget usage.
+        Me.LabourActual.ForeColor = "&Hffffff"
+        Me.LabourActual.BackColor = "&Hffffff"
+    End If
+    
+    Call updateStatusFont
+    
+    'If newV = "Complete" Then
+    '    ' Colour complete as green
+    '    Me.Combo14.BackColor = "&H3E5F00"
+    '    Me.Combo14.ForeColor = "&Hffffff"
+    'ElseIf newV = "InComplete" Or newV = "Declined" Then
+    '    ' Colour incomplete / declined as red
+    '    Me.Combo14.BackColor = "&H020268"
+    '    Me.Combo14.ForeColor = "&Hffffff"
+    'ElseIf newV = "In Progress" Then
+    '    ' Colour in progress as yellow
+    '    Me.Combo14.BackColor = "&H00edde"
+    '    Me.Combo14.ForeColor = "&H000000"
+    'Else
+    '    Me.Combo14.BackColor = "&HFFFFFF"
+    '    Me.Combo14.ForeColor = "&H000000"
+    'End If
+    
+    'Debug.Print ""
+    
+    'Dim i As Integer
+    ' Populate email list.
+    'If Not IsNull(Me.RequestFollowUpPersonnel) Then
+    '    Debug.Print "EMAIL INPUT FORMAT: <" & Me.RequestFollowUpPersonnel & ">"
+    '    Dim emailSplit() As String
+    '    Dim emailS As String
+    '    Dim emailStr As String
+    '    Dim rs1 As DAO.Recordset
+    '    Dim rs2 As DAO.Recordset
+    '    Set rs1 = CurrentDb.TableDefs("EmailList").OpenRecordset(dbOpenDynaset)
+    '    Set rs2 = CurrentDb.OpenRecordset("Email Drop Down PickList")
+    '    emailSplit = Split(Me.RequestFollowUpPersonnel.Value, ";")
+    '    For i = LBound(emailSplit) To UBound(emailSplit)
+    '        emailS = emailSplit(i)
+    '        Debug.Print "EMAILS: <" & emailS & ">"
+    '        If Len(emailS) > 0 Then
+    '            rs1.MoveFirst
+    '            Debug.Print "FINDING: " & "[Email] = '" & emailS & "'"
+    '            rs1.FindFirst "[Email] = '" & emailS & "'"
+    '            If Not rs1.NoMatch Then
+     '               rs2.MoveFirst
+     '               Debug.Print "SUBFINDING: " & "[Row#] = '" & rs1("[Row#]") & "'"
+    '                rs2.FindFirst "[Name] = '" & rs1("[NameConcat]") & "'"
+    '                Debug.Print "A: " & rs1("[Row#]") & ", B: " & rs2("[Row#]")
+    '                If Not rs2.NoMatch Then
+    '                    Debug.Print "SELECTING <" & rs2("[Row#]") & ">"
+    '                    Me.List23.selected(rs2("[Row#]")) = True
+    '                    'Me.List23.selected(rs2("[Email]")) = True
+     '                   Debug.Print "SELECTING: ITEM: <" & Me.List23.ItemData(i) & ">"
+     '                   emailStr = emailStr & rs1("[NameConcat]") & vbNewLine
+     '               End If
+     '           End If
+     '       End If
+     '   Next i
+     '   Me.Text59.Value = emailStr
+     '
+     '   rs1.Close
+     '   Set rs1 = Nothing
+     '   rs2.Close
+     '   Set rs2 = Nothing
+    'Else
+    '    Me.Text59.Value = ""
+    '    For i = 0 To Me.List23.ListCount
+    '        Me.List23.selected(i) = False
+    '    Next i
+    'End If
+    
+    'Debug.Print "ME.TEXT25=<" & Me.Text25.Value & ">"
+    If Not IsNull(Me.Text25) And Len(Me.Text25.Value) > 0 Then
+        Debug.Print "#A"
+        Dim rs As dao.Recordset
+        Set rs = CurrentDb.OpenRecordset("SELECT * FROM [EmailList]")
+        If Not rs.EOF And Not rs.BOF Then
+            Debug.Print "#B"
+            Dim people() As String
+            people = Split(Me.Text25.Value, ";")
+            For i = LBound(people) To UBound(people)
+                Debug.Print "#C: <" & i & ">"
+                rs.MoveFirst
+                rs.FindFirst "[Email] = '" & people(i) & "'"
+                If Not rs.NoMatch Then
+                    Debug.Print "FOUND: <" & rs("NameConcat") & ">, ID=" & rs("Row#")
+                    Me.List23.selected(rs("Row#") - 1) = True
+                    'Me.Text59.Value = IIf(Not IsNull(Me.Text59), rs("NameConcat"), IIf(Len(Me.Text59.Value) = 0, rs("NameConcat"), Me.Text59.Value & vbNewLine & rs("NameConcat")))
+                    Me.Text59.Value = LTrim(RTrim(IIf(IsNull(Me.Text59), "", Me.Text59.Value) & IIf(i = 0, "", vbNewLine) & rs("NameConcat")))
+                End If
+            Next i
+            rs.Close
+            Set rs = Nothing
+        End If
+    Else
+        Me.Text59.Value = ""
+        For j = 0 To Me.List23.ListCount - 1
+            Me.List23.selected(j) = False
+        Next j
+    End If
+    
+    ' Setup timer
+    Dim startT As Date
+    Dim stopT As Date
+    Dim timerT As Double
+    'Me.Text102.Value = millisToTime(1648252100000#)' Some random day in 2013
+    Dim x As Double
+    If Not IsNull(Me.TimerStart) And Not IsNull(Me.TimerStop) Then
+        x = DateDiff("s", Me.TimerStart, Me.TimerStop)
+        'debug.Print(
+        Me.TimerStart = DateAdd("s", -x, Now)
+        Me.TimerStop = Now
+    End If
+    
+    Me.Text119.Value = Me.Combo14.Value
+    
+    '
+    'Call Combo16_AfterUpdate
+    '
+    'Dim rs As DAO.Recordset
+    'Set rs = CurrentDb.OpenRecordset("SELECT [NameConcat] FROM EmailList WHERE [Row#] = " & 1)
+    'Dim j As Integer
+    'Dim idStr As String
+    'Dim EmpName As String
+    'Dim ids() As String
+    '
+    'If IsNull(Me.RequestFollowUpPersonnel) Then
+    '    idStr = ""
+    'Else
+    '    idStr = Me.RequestFollowUpPersonnel
+    'End If
+    '
+    'For j = 0 To Me.List23.ListCount - 1
+    '    Me.List23.Selected(j) = False
+    'Next j
+    '
+    'Debug.Print vbTab & "- <" & idStr & ">"
+    'ids = Split(idStr, ";")
+    'Me.Text59.Value = ""
+    'For j = 0 To UBound(ids)
+    '    Debug.Print "SELECT [NameConcat] FROM EmailList WHERE [Row#] = " & ids(j)
+    '    Set rs = CurrentDb.OpenRecordset("SELECT [NameConcat] FROM EmailList WHERE [Row#] = " & ids(j))
+    '    If rs.BOF Then
+    '        EmpName = "UNPARSABLE"
+    '    Else
+    '        EmpName = rs("NameConcat").Value
+    '        Me.List23.Selected(ids(j) - 1) = True
+    '        'Me.List23.ItemsSelected (ids(j))
+    '    End If
+    '    Me.Text59.Value = Me.Text59.Value & EmpName & vbNewLine
+    '    'Me.FollowUpParsed = Me.FollowUpParsed & empName & vbNewLine
+    'Next j
+    '
+    'rs.Close
+    'Set rs = Nothing
+    '
+    
+    'Call updateLockRequester
+    
+
+    'Me.Text77.Enabled = Not Me.Command150.Visible
+    Dim notLocked As Boolean
+    isLocked = IIf(IsNull(Me.RequesterLocked), False, Me.RequesterLocked = -1)
+    'Debug.Print "IsNull(Me.RequesterLocked)=" & IsNull(Me.RequesterLocked)
+    'Debug.Print "islocked=" & isLocked & ", me.requesterlocked: " & Me.RequesterLocked
+    Me.Text77.Enabled = Not isLocked
+    Me.Command150.visible = isLocked
+    Me.Command151.visible = Not isLocked
+    
+    Call checkNewRequests
+    
+End Sub
+
+Private Sub Form_Dirty(Cancel As Integer)
+
+    ' Admin Mode
+    If Me.Label84.visible = True Then
+        DoCmd.Save
+        Call Command15_Click
+        If CurrentProject.allForms("ITR Admin SubForm").IsLoaded Then
+            [Forms]![ITR Admin SubForm].Form.Requery
+        End If
+    Else
+        Me.Label85.visible = True
+    End If
+
+End Sub
+
+Private Sub Form_Load()
+
+    Me.Command148.caption = "Subtract"
+    Form_ITR_Edit_Timer = 0
+    Form_ITR_Edit_Mark_Seen = False
+
+End Sub
+
+' Populate dtITR Edit with all request data from ITRequests
+Private Sub Form_Open(Cancel As Integer)
+    Printf "ITR Edit form open"
+
+    If CurrentProject.allForms("ITR Edit Params").IsLoaded Then
+        [Forms]![ITR Edit Params].visible = False
+    End If
+
+    ExecSQL "DELETE * FROM [dtITR Edit]"
+    ExecSQL "INSERT INTO [dtITR Edit] SELECT * FROM ITRequests"
+    
+    'TODO review here, I think this is causing theForm_onCurrent event to fired twice on form open.
+    DoCmd.Requery
+On Error GoTo NoLastRecord
+    DoCmd.RunCommand acCmdRecordsGoToLast
+NoLastRecord:
+    Debug.Print "No last record to go to."
+
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+
+    Printf "on unload"
+
+    If Form_ITR_Edit_Timer > 0 And Form_ITR_Edit_Mark_Seen Then
+        Call askMarkSeen
+        Form_ITR_Edit_Mark_Seen = False
+        Form_ITR_Edit_Timer = 0
+    End If
+
+On Error GoTo noTime
+    Dim un As String
+    un = GetUserFullName()
+    Debug.Print "SQL <" & "UPDATE [ITRequests] SET [TimerStart] = '" & Me.TimerStart & "', [TimerStop] = '" & Me.TimerStop & "', [Timer] = " & IIf(IsNull(Me.Timer), 0, Me.Timer) & ", [LastStatusUpdater] = '" & Left(un, 255) & "'" & " WHERE [ITRequestID#] = " & Me.[ITRequestID#] & ">"
+    DoCmd.RunSQL "UPDATE [ITRequests] SET [TimerStart] = '" & Me.TimerStart & "', [TimerStop] = '" & Me.TimerStop & "', [Timer] = " & IIf(IsNull(Me.Timer), 0, Me.Timer) & ", [LastStatusUpdater] = '" & Left(un, 255) & "'" & " WHERE [ITRequestID#] = " & Me.[ITRequestID#]
+noTime:
+    Debug.Print "NO TIME"
+    
+End Sub
+
+' Change subpriority when an ordering is selected
+Private Sub Frame31_AfterUpdate()
+    If Not validate(False, False, True, False, False, False, False, False) Then
+        Exit Sub
+    End If
+    Dim p As Integer
+    If Me.Frame31 = 1 Then
+        p = 0
+    Else
+        Dim UserName As String
+        UserName = GetUserFullName()
+        Dim priorityLevel As Integer
+        priorityLevel = Me.Priority
+        Dim rs As dao.Recordset
+        Set rs = CurrentDb.OpenRecordset("SELECT COUNT(*) AS [# Queued] FROM [ITRequests] WHERE LCASE([RequestedBy]) = LCASE('" & UserName & "') AND [Priority] = " & priorityLevel & " AND LCASE([Status]) = 'queued'", dbOpenSnapshot)
+        Dim n As Integer
+        If Not rs.EOF Then
+            n = rs(0) + 1
+        Else
+            n = 0
+        End If
+        p = n
+        rs.Close
+        Set rs = Nothing
+    End If
+    Me.SubPriority = p
+End Sub
+
+Private Sub LabourActual_AfterUpdate()
+    
+    Dim handled As Boolean
+    handled = False
+    Me.LabourActual.ForeColor = "&HFFFFFF"
+    If Not IsNull(Me.LabourEstimate) Then
+        If Not IsNull(Me.LabourActual) Then
+            Me.LabourActual.FontWeight = 700
+            If Me.LabourActual > Me.LabourEstimate Then
+                ' Red over budget
+                Me.LabourActual.BackColor = "&H020268"
+            Else
+                ' Green under budget
+                Me.LabourActual.BackColor = "&H3E5F00"
+            End If
+            handled = True
+        End If
+    End If
+    
+    If Not handled Then
+        ' Black non-calculable budget usage.
+        Me.LabourActual.ForeColor = "&Hffffff"
+        Me.LabourActual.BackColor = "&Hffffff"
+    End If
+
+    Call Command15_Click
+
+End Sub
+
+Private Sub LabourEstimate_AfterUpdate()
+
+    Call Command15_Click
+
+End Sub
+
+' Update Me.RequestFollowUpPersonnel with list selections
+Private Sub List23_AfterUpdate()
+    Dim i As Long
+    Dim p As String
+    Dim E As String
+    Dim rs As dao.Recordset
+    p = ""
+    E = ""
+    Set rs = CurrentDb.OpenRecordset("ITR Customers", dbOpenDynaset)
+    rs.MoveFirst
+    Debug.Print "rs.recordcount: " & rs.RecordCount
+    Debug.Print "rs(0): " & rs(0)
+    For i = 0 To Me.List23.ListCount - 1
+        If Me.List23.selected(i) Then
+            Debug.Print "A: Me.List23.ItemData(i)): <" & Me.List23.ItemData(i) & ">, p: <" & p & ">"
+            Debug.Print "finding: " & "[Email] = " & Me.List23.ItemData(i)
+            Debug.Print "[CustomerID] = " & Me.List23.ItemData(i)
+            rs.FindFirst "cint([CustomerID]) = " & CInt(Me.List23.ItemData(i))
+            If rs.NoMatch Then
+                MsgBox "no records found"
+            Else
+                E = E & rs("Name") & vbNewLine
+                p = p & rs("Email") & ";"
+            End If
+            Debug.Print "B: Me.List23.ItemData(i)): <" & Me.List23.ItemData(i) & ">, p: <" & p & ">"
+            rs.MoveFirst
+        End If
+    Next i
+    rs.Close
+    Set rs = Nothing
+    If Len(p) > 0 Then
+        p = Left(p, Len(p) - 1)
+    End If
+    Me.RequestFollowUpPersonnel.Value = p
+    Me.Text97.Value = p
+    Me.Text59 = E
+    Debug.Print "AFTER UPDATE FUP: <" & Me.RequestFollowUpPersonnel.Value & ">"
+End Sub
+
+' Optional validation params:
+' Pass any one these as false to ignore the valition check for that input field
+' DEFAULT - Check all fields
+' a - Me.DueDate
+' b - Me.Request
+' c - Me.Priority
+' d - Me.SubPriority
+' e - Me.Department
+' f - Me.RequestType
+' g - Me.RequestSubType
+' h - Me.Company
+' i - Me.LinkPrev
+' j - Me.LinkNext
+Public Function validate(Optional A As Boolean = True, Optional b As Boolean = True, Optional C As Boolean = True, Optional d As Boolean = True, Optional E As Boolean = True, Optional f As Boolean = True, Optional g As Boolean = True, Optional h As Boolean = True, Optional i As Boolean = True, Optional j As Boolean = True)
+
+    Dim valid As Boolean
+    valid = True
+    
+    If A Then
+        If IsNull(Me.DueDate) And valid Then
+            MsgBox "Select a Due Date"
+            Me.DueDate.SetFocus
+            valid = False
+        End If
+    End If
+
+    If h Then
+        If IsNull(Me.Company) And valid Then
+            MsgBox "Select a the company making this request"
+            Me.Combo18.SetFocus
+            valid = False
+        End If
+    End If
+    
+    If E Then
+        If IsNull(Me.Department) And valid Then
+            MsgBox "Select the department making this request"
+            Me.Combo27.SetFocus
+            valid = False
+        End If
+    End If
+    
+    If f Then
+        If IsNull(Me.RequestType) And valid Then
+            MsgBox "Select the type of request from the drop down menu"
+            Me.Combo28.SetFocus
+            valid = False
+        End If
+    End If
+
+    If g Then
+        If IsNull(Me.RequestSubType) And valid Then
+            MsgBox "Select a more specific request from the dropdown menu"
+            Me.Combo30.SetFocus
+            valid = False
+        End If
+    End If
+    
+    If b Then
+        If IsNull(Me.Request) And valid Then
+            MsgBox "Please describe your request"
+            Me.Request.SetFocus
+            valid = False
+        End If
+    End If
+    
+    If C Then
+        If IsNull(Me.Priority) And valid Then
+            MsgBox "Select the priority level for your request"
+            Me.Combo16.SetFocus
+            valid = False
+        End If
+    End If
+    
+    If d Then
+        If IsNull(Me.SubPriority) And valid Then
+            MsgBox "Select the priority level ordering for your request"
+            Me.Frame31.SetFocus
+            valid = False
+        End If
+    End If
+    
+    Dim count As Integer
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset("SELECT MAX([ITRequestID#]) AS [Count] FROM [ITRequests]")
+    count = IIf(Not rs.BOF And Not rs.EOF, rs("[Count]"), 0)
+    rs.Close
+    Set rs = Nothing
+    Debug.Print "COUNT: <" & count & ">"
+    
+    If i Then
+        If Not IsNull(Me.Text122) And Len(Me.Text122.Value) > 0 And (Not IsNumeric(Me.Text122.Value) Or Me.Text122.Value > count) And valid Then
+            MsgBox "Error the previous link must be a request number", vbError
+            Me.Text122.SetFocus
+            valid = False
+        End If
+    End If
+    
+    If j Then
+        If Not IsNull(Me.Text124) And Len(Me.Text124.Value) > 0 And (Not IsNumeric(Me.Text124.Value) Or Me.Text124.Value > count) And valid Then
+            MsgBox "Error the next link must be a request number", vbError
+            Me.Text124.SetFocus
+            valid = False
+        End If
+    End If
+    
+    validate = valid
+
+End Function
+
+' Reset input fields and recordsource fields
+Private Sub ClearFields()
+
+    Me.DueDate = Null
+    Me.Company = Null
+    Me.Combo18.Value = ""
+    Me.Department = Null
+    Me.Combo27.Value = ""
+    Me.RequestType = Null
+    Me.Combo28.Value = ""
+    Me.RequestSubType = Null
+    Me.Combo30.Value = ""
+    Me.Priority = Null
+    Me.Combo16.Value = ""
+    Me.RequestFollowUpPersonnel = Null
+    Me.Text59 = ""
+    Me.Text44 = ""
+    Me.Text46 = ""
+    Me.Comments = Null
+    Me.Request = ""
+    
+End Sub
+
+Private Sub Text122_AfterUpdate()
+
+    If Not validate(A = False, b = False, C = False, d = False, E = False, f = False, g = False, h = False, i = True, j = False) Then
+        Debug.Print "Failed 122"
+        'MsgBox "Error invalid link."
+        'Me.Text122.SetFocus
+        Exit Sub
+    End If
+
+    Dim answer As Integer
+    If Not IsNull(Me.Text122) Then
+        If Len(Me.Text122.Value) > 0 Then
+            ' already a linked request
+            Dim oldVal As String
+            oldVal = IIf(IsNull(Me.Text122), "", IIf(IsNull(Me.Text122.OldValue), "", Me.Text122.OldValue))
+            If Me.Text122.Value <> oldVal Then
+                answer = MsgBox("There is already a request linked to this request." & vbNewLine & "Are you sure you want to overwrite it?" & vbNewLine & vbNewLine & vbTab & "Req#" & ReqNumFmt(oldVal) & " -> Req#" & ReqNumFmt(Me.Text122.Value), vbYesNoCancel)
+                Select Case answer
+                    Case vbYes
+                        ' do nothing
+                        DoCmd.Save
+                        Me.Refresh
+                    Case Else
+                        Me.Text122.Value = oldVal
+                        Exit Sub
+                End Select
+            End If
+        End If
+    End If
+    
+    ' otherwise set linked request
+    Call Command15_Click
+    
+End Sub
+
+Private Sub Text124_AfterUpdate()
+
+    If Not validate(A = False, b = False, C = False, d = False, E = False, f = False, g = False, h = False, i = False, j = True) Then
+        Debug.Print "Failed 124"
+        'MsgBox "Error invalid link."
+        'Me.Text124.SetFocus
+        Exit Sub
+    End If
+
+    Dim answer As Integer
+    If Not IsNull(Me.Text124) Then
+        If Len(Me.Text124.Value) > 0 Then
+            ' already a linked request
+            Dim oldVal As String
+            oldVal = IIf(IsNull(Me.Text124), "", IIf(IsNull(Me.Text124.OldValue), "", Me.Text124.OldValue))
+            If Me.Text124.Value <> oldVal Then
+                If oldVal = "" Then
+                    answer = vbYes
+                Else
+                    answer = MsgBox("There is already a request linked to this request." & vbNewLine & "Are you sure you want to overwrite it?" & vbNewLine & vbNewLine & vbTab & "Req#" & ReqNumFmt(oldVal) & " -> Req#" & ReqNumFmt(Me.Text124.Value), vbYesNoCancel)
+                End If
+                Select Case answer
+                    Case vbYes
+                        ' do nothing
+                        DoCmd.Save
+                        Me.Refresh
+                    Case Else
+                        Me.Text124.Value = oldVal
+                        Exit Sub
+                End Select
+            End If
+        End If
+    End If
+    
+    ' otherwise set linked request
+    Call Command15_Click
+    
+End Sub
+
+Private Sub Text122_DblClick(Cancel As Integer)
+
+    If Not IsNull(Me.Text122) Then
+        If Len(Me.Text122.Value) > 0 Then
+            Debug.Print "Go Prev"
+            Dim reqNum As Integer
+            Dim currNum As Integer
+            reqNum = Me.Text122.Value
+            currNum = Me.Text68.Value
+            DoCmd.Close acForm, Me.Name
+            DoCmd.OpenForm "ITR Edit", acNormal, , "[ITRequestID#] IN (" & currNum & ", " & reqNum & ")"
+            'DoCmd.GoToRecord , , , newreq
+            [Forms]![ITR Edit].Recordset.FindFirst "[ITRequestID#] = " & reqNum
+            Exit Sub
+        End If
+    End If
+    
+    MsgBox "You must add a link first."
+
+End Sub
+
+Private Sub Text124_DblClick(Cancel As Integer)
+
+    If Not IsNull(Me.Text124) Then
+        If Len(Me.Text124.Value) > 0 Then
+            Debug.Print "Go Next"
+            Dim reqNum As Integer
+            Dim currNum As Integer
+            reqNum = Me.Text124.Value
+            currNum = Me.Text68.Value
+            DoCmd.Close acForm, Me.Name
+            DoCmd.OpenForm "ITR Edit", acNormal, , "[ITRequestID#] IN (" & currNum & ", " & reqNum & ")"
+            'DoCmd.GoToRecord , , , newreq
+            [Forms]![ITR Edit].Recordset.FindFirst "[ITRequestID#] = " & reqNum
+            Exit Sub
+        End If
+    End If
+    
+    MsgBox "You must add a link first."
+
+End Sub
+
+Private Sub Command132_Click()
+    Debug.Print "close previous loops"
+    
+    If IsNull(Me.Text122) Or Len(Me.Text122.Value) = 0 Then
+        MsgBox "You must link a request before you can close a loop."
+        Me.Text122.SetFocus
+        Exit Sub
+    End If
+    
+    Dim un As String
+    un = GetUserFullName()
+    
+    Dim tmpl As String
+    Dim sql As String
+    Dim currR As Integer
+    Dim prevR As Integer
+    Dim nextR As Integer
+    currR = Me.Text68.Value
+    prevR = Me.Text122.Value
+    tmpl = "SELECT * FROM [ITRequests] "
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset(tmpl & "WHERE [ITRequestID#] = " & prevR, dbOpenDynaset, dbSeeChanges)
+    
+    Debug.Print "A"
+    If Not rs.EOF And Not rs.BOF Then
+        Debug.Print "B"
+        nextR = IIf(IsNull(rs("[LinkNext]")), -1, rs("[LinkNext]"))
+        If nextR < 0 Then
+            Debug.Print "C"
+            sql = "UPDATE [ITRequests] SET [LinkNext] = " & currR & ", [LastStatusUpdater] = '" & Left(un, 255) & "'" & " WHERE [ITRequestID#] = " & prevR
+            Debug.Print "SQL <" & sql & ">"
+            DoCmd.RunSQL sql
+            MsgBox "Successfully closed loop."
+        ElseIf rs("[LinkNext]") = currR Then
+            ' Already set to this request. - Do nothing
+            MsgBox "This loop has already been closed"
+        Else
+            ' Recurse
+            Debug.Print "prevR: <" & prevR & ">, rs('[LinkNext]'): <" & rs("[LinkNext]") & ">"
+            MsgBox "Cannot close this loop in 1 iteration."
+        End If
+    End If
+    
+    rs.Close
+    Set rs = Nothing
+    Debug.Print "D"
+
+End Sub
+
+Private Sub Command131_Click()
+    Debug.Print "close next loops"
+    
+    If IsNull(Me.Text124) Or Len(Me.Text124.Value) = 0 Then
+        MsgBox "You must link a request before you can close a loop."
+        Me.Text124.SetFocus
+        Exit Sub
+    End If
+    
+    Dim un As String
+    un = GetUserFullName()
+    
+    Dim tmpl As String
+    Dim sql As String
+    Dim currR As Integer
+    Dim prevR As Integer
+    Dim nextR As Integer
+    currR = Me.Text68.Value
+    nextR = Me.Text124.Value
+    tmpl = "SELECT * FROM [ITRequests] "
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset(tmpl & "WHERE [ITRequestID#] = " & nextR, dbOpenDynaset, dbSeeChanges)
+    
+    Debug.Print "A"
+    If Not rs.EOF And Not rs.BOF Then
+        Debug.Print "B"
+        prevR = IIf(IsNull(rs("[LinkPrev]")), -1, rs("[LinkPrev]"))
+        If prevR < 0 Then
+            Debug.Print "C"
+            sql = "UPDATE [ITRequests] SET [LinkPrev] = " & currR & ", [LastStatusUpdater] = '" & Left(un, 255) & "'" & " WHERE [ITRequestID#] = " & nextR
+            Debug.Print "SQL <" & sql & ">"
+            DoCmd.RunSQL sql
+            MsgBox "Successfully closed loop."
+        ElseIf rs("[LinkPrev]") = currR Then
+            ' Already set to this request. - Do nothing
+            MsgBox "This loop has already been closed"
+        Else
+            ' Recurse
+            Debug.Print "currR: <" & currR & ">, rs('[LinkPrev]'): <" & rs("[LinkPrev]") & ">"
+            MsgBox "Cannot close this loop in 1 iteration."
+        End If
+    End If
+    
+    rs.Close
+    Set rs = Nothing
+    Debug.Print "D"
+
+End Sub
+
+Private Sub Text89_AfterUpdate()
+    If Not IsNull(Me.Text89) Or Me.Text89.Value <> "" Then
+        If Me.Combo14.Value <> "Complete" And Me.Combo14.Value <> "Incomplete" And Me.Combo14.Value <> "Declined" Then
+            If MsgBox("Are you sure you want to mark this request as complete?", vbYesNo) = 6 Then
+                Me.Combo14.Value = "Complete"
+            End If
+        End If
+    End If
+    
+    Call Command15_Click
+End Sub
+
+
+Private Sub autoComplete(Optional ByVal doNotify As Boolean)
+
+    Dim valid As Boolean
+    Dim notify As Boolean
+    Dim UserName As String
+    Dim rs As dao.Recordset
+    valid = True
+    notify = IIf(IsMissing(doNotify), False, doNotify)
+    
+    If IsNull(Me.Combo82) Then
+        valid = False
+    ElseIf Len(Me.Combo82.Value) = 0 Then
+        valid = False
+    End If
+    
+    Debug.Print "valid: " & valid
+    If Not valid Then
+        Debug.Print "A"
+        UserName = GetUserFullName
+        Set rs = CurrentDb.OpenRecordset("ITR Personnel")
+        rs.MoveFirst
+        rs.FindFirst "[Name] = '" & UserName & "'"
+        If Not rs.NoMatch Then
+            Debug.Print "B"
+            Me.Combo82.Value = rs("ITPersonID#")
+            rs.Close
+            Set rs = Nothing
+            valid = True
+        Else
+            Debug.Print "C"
+            MsgBox "You must assign someone to this request before it can be auto-completed."
+            rs.Close
+            Set rs = Nothing
+            Exit Sub
+        End If
+    End If
+    
+    Dim sts As String
+    sts = Me.Combo14.Value
+    If sts = "Queued" Then
+        UserName = GetUserFullName
+        Set rs = CurrentDb.OpenRecordset("ITR Personnel", dbOpenDynaset, dbSeeChanges)
+        rs.MoveFirst
+        rs.FindFirst "[Name] = '" & UserName & "'"
+        If Not rs.NoMatch Then
+            Debug.Print "B"
+            Me.Combo82.Value = rs("ITPersonID#")
+            rs.Close
+            Set rs = Nothing
+            valid = True
+        'Else
+        '    Debug.Print "C"
+        '    MsgBox "You must assign someone to this request before it can be auto-completed."
+        '    rs.Close
+        '    Set rs = Nothing
+        '    Exit Sub
+        End If
+    End If
+    If sts = "Complete" Or sts = "Inomplete" Or sts = "Declined" Then
+        MsgBox "This request has already been completed."
+        Exit Sub
+    Else
+        ' valid inputs
+        If IsNull(Me.Text75) Then
+            Me.Text75 = Now
+        ElseIf Len(Me.Text75.Value) = 0 Then
+            Me.Text75 = Now
+        End If
+        Me.Combo14.Value = "Complete"
+        Me.Text89.Value = Now
+    End If
+    
+    If notify Then
+        Debug.Print "Email!!!"
+        Call emailPersonnel
+        'MsgBox "An email notification has been sent to all employees listed in the follow-up section."
+    Else
+        Debug.Print "No email"
+    End If
+    
+    Call Command15_Click
+    Call updateStatusFont
+
+End Sub
+
+Private Sub emailPersonnel(Optional ByVal force As Boolean = False)
+    
+    DoCmd.SetWarnings False
+
+    Dim objOutlook As Object
+    Set objOutlook = CreateObject("Outlook.Application")
+ 
+    Dim objEmail As Object
+    Set objEmail = objOutlook.CreateItem(Outlook.olMailItem)
+    
+    Dim sSubject As String
+    Dim sMsgBody As String
+    sSubject = "ITR Status Update Req#" & ReqNumFmt(Me.Text68.Value)
+    
+    Dim qd As QueryDef
+    Set qd = CurrentDb.QueryDefs("qd_ITRequestUpdateHTML")
+    qd.sql = "EXEC [dbo].[sp_ITRSendEmailUpdatedITRequestColoured]"
+    qd.sql = qd.sql & " @reqID=" & Me.Text68.Value & ","
+    qd.sql = qd.sql & " @oldStatus='" & IIf(IsNull(Me.Combo14), "Queued", Me.Text119.Value) & "',"
+    qd.sql = qd.sql & " @newStatus='" & IIf(IsNull(Me.Combo14), "Queued", Me.Combo14.Value) & "',"
+    qd.sql = qd.sql & " @didUpdate=1,"
+    qd.sql = qd.sql & " @doSend=0,"
+    qd.sql = qd.sql & " @force=" & IIf(force, 1, 0)
+    
+    Debug.Print "Force: <" & force & ">"
+    Debug.Print "SQL: <" & qd.sql & ">"
+    
+    qd.Close
+    Set qd = Nothing
+    
+    Dim rs As Recordset
+    Set rs = CurrentDb.OpenRecordset("qd_ITRequestUpdateHTML")
+    sMsgBody = rs("@body")
+    
+    rs.Close
+    Set rs = Nothing
+   
+    'Generate Email
+    With objEmail
+        .To = IIf(Not IsNull(Me.RequestFollowUpPersonnel), Me.RequestFollowUpPersonnel.Value, "")
+        .subject = sSubject
+        '.Body = sMsgBody
+        .HTMLBody = sMsgBody
+        .Display
+    End With
+   
+    'Bring email to front
+    'Code reference: http://stackoverflow.com/questions/5663961/how-do-i-bring-an-ms-outlook-2007-dialog-to-the-front-from-ms-access-2007
+    If Not (objOutlook.ActiveWindow Is Nothing) Then  'only if there's a window
+                objOutlook.ActiveWindow.Activate  'make sure outlook comes to foreground first
+    End If
+
+End Sub
+
+
+' TESTING SPACE
+Private Sub Command96_Click_OLD()
+
+    'Call emailPersonnel
+    Dim fup As String
+    fup = IIf(IsNull(Me.RequestFollowUpPersonnel), "", Me.RequestFollowUpPersonnel)
+    Debug.Print "B Email Follow up: '" & Me.Text97.Value & "'"
+    
+    Dim oOutlookApp As Object
+    'Dim objOutlook As Outlook.Application
+    Dim objEmail As Outlook.MailItem
+    Dim sMsgBody As String
+    
+    Dim sNUN As String
+    sNUN = NetworkUserName()
+    
+    Dim bStarted As Boolean
+    On Error Resume Next
+    Set oOutlookApp = GetObject(, "Outlook.Application")
+    If Err <> 0 Then
+        Set oOutlookApp = CreateObject("Outlook.Application")
+        bStarted = True
+    End If
+    
+    'Set objOutlook = CreateObject("Outlook.application")
+    'On Error Resume Next
+    'Get Outlook if it's running
+    'Set objOutlook = GetObject(, "Outlook.Application")
+    'If Err <> 0 Then
+        'Outlook wasn't running, start it in code
+        'Set objOutlook = CreateObject("Outlook.Application")
+    'End If
+    
+    Set objEmail = oOutlookApp.CreateItem(olMailItem)
+    sMsgBody = "Whatever Jamie wants for details here..."
+
+    'Generate email
+    With objEmail
+        .To = "avery.briggs@bwstrailers.com"
+        .subject = "IT Request Update #" & Right("000000" & Me.Text68.Value, 6)
+        .Body = sMsgBody
+        .Display
+    End With
+    
+    Set oOutlookApp = Nothing
+    '  Close Outlook if it was started by this macro.
+    If bStarted = True Then
+        oOutlookApp.Quit
+    End If
+End Sub
+
+Private Sub Command96_Click()
+
+   Debug.Print "testing command96"
+   
+End Sub
+
+Private Sub Command98_Click()
+
+    If IsNull(Me.TimerStart) Then
+        Me.TimerStart = Now
+    ElseIf Not IsNull(Me.TimerStop) Then
+        Me.TimerStop = Null
+    End If
+
+End Sub
+
+Private Sub Command99_Click()
+
+    Me.TimerStop = Now
+
+End Sub
+
+Private Sub Command100_Click()
+
+    Me.TimerStop = Now
+    Me.Box114.visible = True
+
+End Sub
+
+Private Sub Command101_Click()
+
+    Me.Timer = 0
+    Me.TimerStart = Now
+    Me.TimerStop = Null
+    Me.Box115.visible = True
+    
+End Sub
+
+Private Sub Form_Timer()
+
+    Form_ITR_Edit_Timer = Form_ITR_Edit_Timer - Me.TimerInterval
+    If (Form_ITR_Edit_Mark_Seen) And (Form_ITR_Edit_Timer <= 0) Then
+        Call askMarkSeen
+        Form_ITR_Edit_Mark_Seen = False
+    Else
+        Form_ITR_Edit_Timer = 0
+    End If
+
+    Me.Box111.visible = False
+    Me.Box113.visible = False
+    Me.Box114.visible = False
+    Me.Box115.visible = False
+
+    'Debug.Print "A -> TimerStart: " & Me.TimerStart & ", TimerStop: " & Me.TimerStop
+    
+    Dim message As String
+    Dim secs As Double
+    
+    If Not Me.Recordset.EOF And Not Me.Recordset.BOF Then
+        
+        If Not IsNull(Me.TimerStart) And Not IsNull(Me.TimerStop) Then
+            Dim tv As String
+            tv = TimeValue(IIf(IsNull(Me.TimerStart), Now, Me.TimerStart))
+            secs = DateDiff("s", IIf(IsNull(Me.TimerStart), Now, Me.TimerStart), Me.TimerStop)
+            Me.Box113.visible = True
+        ElseIf Not IsNull(Me.TimerStart) Then
+            secs = DateDiff("s", IIf(IsNull(Me.TimerStart), Now, Me.TimerStart), Now)
+            Me.Box111.visible = True
+        End If
+        
+        If Not IsNull(Me.TimerStop) Then
+            Me.TimerStart = DateAdd("s", 1, Me.TimerStart)
+            Me.TimerStop = DateAdd("s", 1, Me.TimerStop)
+        End If
+        
+        'Debug.Print "secs: " & secs
+        If Me.Combo109.Value = "Hours" Then
+            Me.Text108.Value = secs / 60 / 60 & " hour" & IIf(secs / 60 / 60 = 1, "", "s")
+        ElseIf Me.Combo109.Value = "Minutes" Then
+            Me.Text108.Value = secs / 60 & " minute" & IIf(secs / 60 = 1, "", "s")
+        ElseIf Me.Combo109.Value = "Seconds" Then
+            Me.Text108.Value = secs & " second" & IIf(secs = 1, "", "s")
+        Else
+            Me.Text108.Value = secs / 60 / 60 / 24 & " day" & IIf(secs / 60 / 60 / 24 = 1, "", "s")
+        End If
+        Me.Timer = secs
+        
+        Dim mins As Double
+        Dim hours As Double
+        Dim Days As Double
+        If secs > 60 Then
+            mins = secs / 60#
+            If mins > 60 Then
+                hours = mins / 60#
+                If hours > 24 Then
+                    Days = hours / 24#
+                End If
+            End If
+        End If
+        hours = hours Mod 24
+        mins = mins Mod 60
+        secs = secs Mod 60
+        message = Days & " day" & IIf(Days = 1, "", "s") & " + " & hours & " hour" & IIf(hours = 1, "", "s") & " + " & mins & " minute" & IIf(mins = 1, "", "s") & " + " & secs & " second" & IIf(secs = 1, "", "s")
+        'Debug.Print "----------message: " & message
+        'Debug.Print "days: " & days
+        'Debug.Print "hours: " & hours
+        'Debug.Print "mins: " & mins
+        'Debug.Print "secs: " & secs
+        Me.Text102.Value = message
+        'Debug.Print "B -> TimerStart: " & Me.TimerStart & ", TimerStop: " & Me.TimerStop
+     Else
+        MsgBox "No Records Found."
+        Me.TimerInterval = 0
+     End If
+End Sub
+
+Private Function millisToTime(ByVal millis As Double)
+
+    Dim x As Double
+    x = 86400000
+    'millisToTime = DateAdd("s", (millis / x) * 1000, CDate((millis / x) * 1000) + 25567)
+    Debug.Print ("NUMBER: " & CDbl(CDate(43843)))
+    millisToTime = CDate(43843)
+
+End Function
+
+Private Function ReqNumFmt(Optional ByVal reqID As String = "-1") As String
+    
+    If reqif = "-1" Then
+        ReqNumFmt = Right("000000" & Me.Text68.Value, 6)
+    Else
+        ReqNumFmt = Right("000000" & reqID, 6)
+    End If
+    
+End Function
+
+Private Sub updateStatusFont()
+
+    Dim newV As String
+    newV = IIf(IsNull(Me.Combo14), "", Me.Combo14.Value)
+    Dim redB As Integer
+    Dim greenB As Integer
+    Dim blueB As Integer
+    Dim redF As Integer
+    Dim greenF As Integer
+    Dim blueF As Integer
+    Dim rs1 As dao.Recordset
+    Set rs1 = CurrentDb.OpenRecordset("ITR Status", dbOpenDynaset, dbSeeChanges)
+    rs1.FindFirst "[Status] = '" & newV & "'"
+    redB = rs1("R")
+    greenB = rs1("G")
+    blueB = rs1("B")
+    redF = rs1("FR")
+    greenF = rs1("FG")
+    blueF = rs1("FB")
+    Me.Combo14.BackColor = RGB(redB, greenB, blueB)
+    Me.Combo14.ForeColor = RGB(redF, greenF, blueF)
+    'Me.Combo14.ForeColor = "&H000000"
+    rs1.Close
+    Set rs1 = Nothing
+    
+End Sub
+
+Private Sub updateLockRequester()
+
+    Dim un As String
+    un = GetUserFullName()
+
+    Me.Text77.Enabled = Not Me.Command150.visible
+    Dim sql As String
+    sql = "UPDATE [ITRequests] SET [RequesterLocked] = " & IIf(Me.Command150.visible, 1, 0) & ", [LastStatusUpdater] = '" & Left(un, 255) & "'" & " WHERE [ITRequestID#] = " & Me.[ITRequestID#]
+    Debug.Print "SQL: <" & sql & ">"
+    DoCmd.RunSQL sql
+    MsgBox "Update saved successfully!"
+    Me.Refresh
+    
+End Sub
+
+Public Sub updateColourScheme()
+
+    Dim CustomerID As Integer
+    Dim ThemeID As Integer
+    Dim Style As String
+    Dim fontName As String
+    Dim foreColour As String
+    Dim BackColour As String
+    
+    'Style = "Default Theme"
+    'Style = "Dark Theme"
+    Dim rs1 As dao.Recordset
+    Set rs1 = CurrentDb.OpenRecordset("ITR Customers", dbOpenDynaset, dbSeeChanges)
+    
+    rs1.FindFirst "LCASE([Name]) = LCASE('" & GetUserFullName() & "')"
+    
+    If rs1.NoMatch Then
+        ' this user is not an existing IT Customer, use default customer
+        CustomerID = 1
+    Else
+        CustomerID = rs1("CustomerID")
+    End If
+    
+    Dim rs2 As dao.Recordset
+    Set rs2 = CurrentDb.OpenRecordset("ITR Settings", dbOpenDynaset, dbSeeChanges)
+    
+    rs2.FindFirst "[ITRCustomerID] = " & CustomerID
+    
+    If rs2.NoMatch Then
+        ' this customer has no default settings, use default settings
+        ThemeID = 1
+    Else
+        ThemeID = rs2("[Theme]")
+    End If
+    
+    rs2.Close
+    Set rs2 = Nothing
+    
+    
+    rs1.Close
+    Set rs1 = Nothing
+    
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset("ITR ColourSchemes", dbOpenDynaset, dbSeeChanges)
+    
+    rs.FindFirst "[ID] = " & ThemeID
+    
+    'MsgBox "User: <" & GetUserFullName() & "> using theme: <" & rs("Name") & ">"
+    
+    Dim skipFontName As Boolean
+    Dim skipForeColour As Boolean
+    Dim skipBackColour As Boolean
+    
+    For Each ctl In Me.controls
+        fontName = ""
+        foreColour = ""
+        BackColour = ""
+        skipFontName = False
+        skipForeColour = False
+        skipBackColour = False
+        If TypeName(ctl) = "CheckBox" Then
+            fontName = rs("Font_CheckBox")
+            foreColour = rs("Font_Colour_CheckBox")
+            BackColour = rs("Back_Colour_CheckBox")
+            skipFontName = True
+            skipForeColour = True
+            skipBackColour = True
+        ElseIf TypeName(ctl) = "OptionButton" Then
+            fontName = rs("Font_CheckBox")
+            foreColour = rs("Font_Colour_CheckBox")
+            BackColour = rs("Back_Colour_CheckBox")
+            skipFontName = True
+            skipForeColour = True
+            skipBackColour = True
+        ElseIf TypeName(ctl) = "TextBox" Then
+            If ctl.IsHyperlink Or ctl.Name = "Directory" Then
+                fontName = rs("Font_HyperLink")
+                foreColour = rs("Font_Colour_HyperLink")
+                BackColour = rs("Back_Colour_HyperLink")
+            Else
+                fontName = rs("Font_TextField")
+                foreColour = rs("Font_Colour_TextField")
+                BackColour = rs("Back_Colour_TextField")
+                'skipBackColour = True
+            End If
+        ElseIf TypeName(ctl) = "CommandButton" Then
+            fontName = rs("Font_Button")
+            foreColour = rs("Font_Colour_Button")
+            BackColour = rs("Back_Colour_Button")
+            skipBackColour = True ' Can't colour buttons in access 2007
+        ElseIf TypeName(ctl) = "Label" Then
+            fontName = rs("Font_Label")
+            foreColour = rs("Font_Colour_Label")
+            BackColour = rs("Back_Colour_Label")
+            'skipBackColour = True
+        ElseIf TypeName(ctl) = "ComboBox" Then
+            fontName = rs("Font_ComboBox")
+            foreColour = rs("Font_Colour_ComboBox")
+            BackColour = rs("Back_Colour_ComboBox")
+            'skipBackColour = True
+        ElseIf TypeName(ctl) = "ListBox" Then
+            fontName = rs("Font_ListBox")
+            foreColour = rs("Font_Colour_ListBox")
+            BackColour = rs("Back_Colour_ListBox")
+            'skipBackColour = True
+        'ElseIf TypeName(ctl) = "HyperLink" Then
+        '    fontName = rs("Font_HyperLink")
+        '    foreColour = rs("Font_Colour_HyperLink")
+        '    BackColour = rs("Back_Colour_HyperLink")
+        End If
+        
+        
+        'Debug.Print "Ctl: <" & ctl.Name & ">, type: <" & TypeName(ctl) & ">, fontName: <" & fontName & ">, foreColour: <" & foreColour & ">, backColour: <" & BackColour & ">"
+        
+        
+        If Len(fontName) <> 0 And Not skipFontName Then
+            ctl.fontName = fontName
+        End If
+        If Len(foreColour) <> 0 And Not skipForeColour Then
+            ctl.ForeColor = Hex2VBAHex(foreColour)
+        End If
+        If Len(BackColour) <> 0 And Not skipBackColour Then
+            ctl.BackColor = Hex2VBAHex(BackColour)
+        End If
+    
+    Next ctl
+    
+    Me.Detail.BackColor = Hex2VBAHex(rs("Colour_Detail"))
+    Me.Label84.BackColor = Hex2VBAHex(rs("Form_ITR_Edit_Label_Admin"))
+    Me.Label19.BackColor = Hex2VBAHex(rs("Form_ITR_Edit_Label_Title"))
+    Me.Label79.BackColor = Hex2VBAHex(rs("Form_ITR_Edit_Label_Title"))
+    'Me.Combo14.ForeColor = "&H000000"
+    
+    rs.Close
+    Set rs = Nothing
+
+End Sub
+
+Private Sub checkFirstSeenByIT()
+
+    Form_ITR_Edit_Mark_Seen = False
+
+    Dim vis As Boolean
+    Dim isIT As Boolean
+    vis = False
+    isIT = validITRViewer(isDev:=True)
+    If IsNull(Me.[SeenByIT].Value) And isIT Then
+        Me.Check158.Value = -1
+        Form_ITR_Edit_Timer = 3000
+        Form_ITR_Edit_Mark_Seen = True
+        vis = True
+    End If
+    
+    Me.Label162.visible = vis
+    Me.Label163.visible = vis
+    
+    Me.Label162.ForeColor = RGB(208, 45, 38)
+    Me.Label163.ForeColor = RGB(208, 45, 38)
+
+End Sub
+
+Private Sub askMarkSeen()
+
+    Dim ans As Long
+    ans = MsgBox("Mark this request as seen?", vbYesNoCancel)
+    If ans = vbYes Then
+        Dim sql As String
+        sql = "UPDATE [ITRequests] SET [SeenByIT] = '" & Now() & "' WHERE [ITRequestID#] = " & Me.[ITRequestID#]
+        'printf "sql <" & sql & ">"
+        ExecSQL sql
+        
+        Me.Label162.visible = False
+        Me.Label163.visible = False
+    End If
+
+End Sub
+
+Private Sub checkNewRequests()
+
+    If Not validITRViewer(isDev:=True) Then
+        Me.Command157.visible = False
+        Printf "EARLY EXIT"
+        Exit Sub
+    End If
+    
+    Dim sql As String
+    sql = "SELECT COUNT(*) FROM [ITRequests] WHERE [SeenByIT] IS NULL;"
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset(sql)
+    Dim newCount As Integer
+    newCount = rs(0)
+    Me.Command157.visible = IIf(newCount > 0, True, False)
+    If newCount > 0 Then
+        Me.Command157.caption = newCount & " New Request" & IIf(newCount = 1, "", "s")
+        Me.Command157.BackColor = "&H1212FF"
+        Me.Command157.ForeColor = "&HCCCCCC"
+        Me.Command157.HoverColor = "&H5555FF"
+        Me.Command157.PressedColor = "&H0000CC"
+        Printf "UPDATE NEW REQUESTS"
+    End If
+    rs.Close
+    Set rs = Nothing
+    
+End Sub
+
+Private Sub checkSeenByRequester()
+
+    Dim doUpdate As Boolean
+    Dim ID As Long
+    ID = Me.[ITRequestID#]
+    If IsNull(Me.SeenByRequester) Then
+       doUpdate = True
+    Else
+        doUpdate = Me.LastStatusUpdate < Me.SeenByRequester
+    End If
+    
+    If doUpdate Then
+        ExecSQL "UPDATE [ITRequests] SET [SeenByRequester] = '" & Now() & "' WHERE [ITRequestID#] = " & ID
+    End If
+
+End Sub
+
+
+Public Sub checkReminderExists()
+
+    Dim reqID As Long
+    Dim reminderExists As Boolean
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset("ITR Request Reminders", dbOpenSnapshot)
+    
+    reqID = Me.[ITRequestID#]
+    
+    rs.FindFirst "[ITRequestID] = " & reqID
+    reminderExists = IIf(rs.NoMatch, False, True)
+    If Not rs.NoMatch Then
+    
+    End If
+    
+    Me.Check170.Value = IIf(reminderExists, vbTrue, vbFalse)
+    
+    rs.Close
+    Set rs = Nothing
+
+End Sub
+
+========================================================================================================================================================
+========================================================================================================================================================
+========================================================================================================================================================
+========================================================================================================================================================
+========================================================================================================================================================
+
+Load Access Objects from file
+
+Option Compare Database
+
+Private Sub Command4_Click()
+
+    If IsNull(Me.Model_No) Then
+        MsgBox "Please select a Class and Model No to continue."
+        Exit Sub
+    Else
+        DoCmd.OpenForm "QRF_Main Form", acNormal
+    End If
+    
+End Sub
+
+Private Sub Class_AfterUpdate()
+
+    Me.Model_No.Value = ""
+    Call Form_Current
+
+End Sub
+
+Private Sub Command5_Click()
+
+    'Ensure a class and model is selected
+    DoCmd.SetWarnings False
+    If IsNull(Me.Model_No) Then
+        MsgBox "Please select an existing Class and Model No to continue."
+        Exit Sub
+    End If
+    
+    'Dump data locally and open form
+    CloseForm ("EME Budget Standards")
+    DoCmd.OpenQuery "dtEditModelBudgetInfo Dump", acViewNormal
+    DoCmd.OpenForm "EME Budget Standards", acNormal, "", "", , acNormal
+
+End Sub
+
+Private Sub Command51_Click()
+    
+    'Ensure a class and model is selected
+    DoCmd.SetWarnings False
+    If IsNull(Me.Model_No) Then
+        MsgBox "Please select an existing Class and Model No to continue."
+        Exit Sub
+    End If
+        
+    'Dump data locally and open form
+    CloseForm ("EME Standards")
+    DoCmd.OpenQuery "dtEMEStandards Dump", acViewNormal
+    DoCmd.OpenForm "EME Standards", acNormal
+    
+End Sub
+
+Private Sub Command6_Click()
+    
+    '2024-06-18 James Crawford - Refactored "EME Budget Options" forms/subforms to use local dump tables and VBA to pass updates to live SQL tables
+    'IT Request #2851
+    'Declare stuff
+    DoCmd.SetWarnings False
+    Dim sSQL As String
+    Dim sql As String
+    Dim Q As QueryDef
+    Set Q = CurrentDb.QueryDefs("qd_eme_getoptions")
+    Dim conn As New ADODB.Connection
+    conn.Open "BWSdb", "user5", "M@gic456", -1
+    Dim cCmd As New ADODB.command
+    cCmd.ActiveConnection = conn
+    Dim localRS As dao.Recordset
+    Dim sMN As String
+    
+    'Ensure a class and model is selected
+    If IsNull(Me.Model_No) Then
+        MsgBox "Please select an existing Class and Model No to continue."
+        Exit Sub
+    End If
+    
+    'Ensure forms are closed
+    CloseForm ("EME Budget Options")
+    
+    'Generate SQL to dump data locally for master edit form, based on Company option selection
+    Select Case Me.Frame41
+        Case 0 'Generate SQL for model in BWS Quoting System
+            sSQL = "SELECT [Budget Options].[ID#] AS BOID "
+            sSQL = sSQL & "    , Options.[ID#] AS OID "
+            sSQL = sSQL & "    , [Budget Options].[Model No] "
+            sSQL = sSQL & "    , [Budget Options].[Option No] "
+            sSQL = sSQL & "    , [Budget Options].Sections "
+            sSQL = sSQL & "    , [Budget Options].SortSe "
+            sSQL = sSQL & "    , [Budget Options].Description "
+            sSQL = sSQL & "    , Options.Obsolete "
+            sSQL = sSQL & "    , Options.Weight "
+            sSQL = sSQL & "    , Options.Width "
+            sSQL = sSQL & "    , Options.[Deck Length] "
+            sSQL = sSQL & "    , Options.Spread "
+            sSQL = sSQL & "    , Options.Price "
+            sSQL = sSQL & "    , Options.[US Price] "
+            sSQL = sSQL & "    , [Budget Options].Cost "
+            sSQL = sSQL & "    , [Budget Options].[Labour Cost] "
+            sSQL = sSQL & "    , [Budget Options].[Made In Material] "
+            sSQL = sSQL & "    , [Budget Options].[Bought Out Material] "
+            sSQL = sSQL & "    , [Budget Options].[Steel Kit] "
+            sSQL = sSQL & "    , [Budget Options].Axles "
+            sSQL = sSQL & "    , [Budget Options].[Step 1] "
+            sSQL = sSQL & "    , [Budget Options].[Step 2] "
+            sSQL = sSQL & "    , [Budget Options].Blast "
+            sSQL = sSQL & "    , [Budget Options].Paint AS Pnt "
+            sSQL = sSQL & "    , [Budget Options].[Finish - GNK] "
+            sSQL = sSQL & "    , [Budget Options].[Final Assembly] "
+            sSQL = sSQL & "    , [Budget Options].[Tire Assembly] "
+            sSQL = sSQL & "    , [Budget Options].Shipping "
+            sSQL = sSQL & "    , ( "
+            sSQL = sSQL & "        [Steel Kit]+[Axles]+[Step 1]+[Step 2]+[Blast]+[Budget Options].Paint+[Finish - GNK]+[Final Assembly]+[Tire Assembly]+[Shipping] "
+            sSQL = sSQL & "     ) AS [Ttl Bud Hrs] "
+            sSQL = sSQL & "     , Options.[Draw/Part#] "
+            sSQL = sSQL & "     , Options.[Start Date] "
+            sSQL = sSQL & "     , Options.[End Date] "
+            sSQL = sSQL & "     , Options.OptionInfo "
+            sSQL = sSQL & "     , Options.OptionPromptFlag "
+            sSQL = sSQL & "     , Options.OptionPrompt "
+            sSQL = sSQL & "     , Options.OptionConfigInfo "
+            sSQL = sSQL & "     , 0 as [CompanyID] "
+            sSQL = sSQL & "     , 0 as [Tarp] "
+            sSQL = sSQL & "FROM "
+            sSQL = sSQL & "    [Budget Options] "
+            sSQL = sSQL & "INNER JOIN "
+            sSQL = sSQL & "    Options "
+            sSQL = sSQL & "ON "
+            sSQL = sSQL & "    [Budget Options].[Model No] = Options.[Model No] "
+            sSQL = sSQL & "    AND [Budget Options].[Option No] = Options.[Option No] "
+            sSQL = sSQL & "WHERE "
+            sSQL = sSQL & "    [Budget Options].[Model No]='" & Replace(Me.Model_No, "'", "' + char(39) + '") & "' "
+            sSQL = sSQL & "ORDER BY "
+            sSQL = sSQL & "    [Budget Options].[Model No] "
+            sSQL = sSQL & "    , [Budget Options].Sections "
+            sSQL = sSQL & "    , [Budget Options].SortSe "
+            sSQL = sSQL & "    , [Budget Options].Description;"
+        Case 1 'Generate SQL for model in Stargate Quoting System
+            sSQL = "SELECT [Budget Options V2].[ID#] AS BOID "
+            sSQL = sSQL & "    , OptionsV2.[ID#] AS OID "
+            sSQL = sSQL & "    , [Budget Options V2].[Model No] "
+            sSQL = sSQL & "    , [Budget Options V2].[Option No] "
+            sSQL = sSQL & "    , [Budget Options V2].Sections "
+            sSQL = sSQL & "    , [Budget Options V2].SortSe "
+            sSQL = sSQL & "    , [Budget Options V2].Description "
+            sSQL = sSQL & "    , OptionsV2.Obsolete "
+            sSQL = sSQL & "    , OptionsV2.Weight "
+            sSQL = sSQL & "    , OptionsV2.Width "
+            sSQL = sSQL & "    , OptionsV2.[Deck Length] "
+            sSQL = sSQL & "    , OptionsV2.Spread "
+            sSQL = sSQL & "    , OptionsV2.Price "
+            sSQL = sSQL & "    , OptionsV2.[US Price] "
+            sSQL = sSQL & "    , [Budget Options V2].Cost "
+            sSQL = sSQL & "    , [Budget Options V2].[Labour Cost] "
+            sSQL = sSQL & "    , [Budget Options V2].[Made In Material] "
+            sSQL = sSQL & "    , [Budget Options V2].[Bought Out Material] "
+            sSQL = sSQL & "    , [Budget Options V2].[Steel Kit] "
+            sSQL = sSQL & "    , [Budget Options V2].Axles "
+            sSQL = sSQL & "    , [Budget Options V2].[Step 1] "
+            sSQL = sSQL & "    , [Budget Options V2].[Step 2] "
+            sSQL = sSQL & "    , [Budget Options V2].Blast "
+            sSQL = sSQL & "    , [Budget Options V2].Paint AS Pnt "
+            sSQL = sSQL & "    , [Budget Options V2].[Finish - GNK] "
+            sSQL = sSQL & "    , [Budget Options V2].[Final Assembly] "
+            sSQL = sSQL & "    , [Budget Options V2].[Tire Assembly] "
+            sSQL = sSQL & "    , [Budget Options V2].Shipping "
+            sSQL = sSQL & "    , ( "
+            sSQL = sSQL & "        [Steel Kit]+[Axles]+[Step 1]+[Step 2]+[Blast]+[Budget Options V2].Paint+[Finish - GNK]+[Final Assembly]+[Tire Assembly]+[Shipping] "
+            sSQL = sSQL & "     ) AS [Ttl Bud Hrs] "
+            sSQL = sSQL & "     , OptionsV2.[Draw/Part#] "
+            sSQL = sSQL & "     , OptionsV2.[Start Date] "
+            sSQL = sSQL & "     , OptionsV2.[End Date] "
+            sSQL = sSQL & "     , OptionsV2.OptionInfo "
+            sSQL = sSQL & "     , OptionsV2.OptionPromptFlag "
+            sSQL = sSQL & "     , OptionsV2.OptionPrompt "
+            sSQL = sSQL & "     , OptionsV2.OptionConfigInfo "
+            sSQL = sSQL & "     , OptionsV2.CompanyID "
+            sSQL = sSQL & "     , OptionsV2.Tarp "
+            sSQL = sSQL & "FROM "
+            sSQL = sSQL & "    [Budget Options V2] "
+            sSQL = sSQL & "INNER JOIN "
+            sSQL = sSQL & "    OptionsV2 "
+            sSQL = sSQL & "ON "
+            sSQL = sSQL & "    [Budget Options V2].[Model No] = OptionsV2.[Model No] "
+            sSQL = sSQL & "    AND [Budget Options V2].[Option No] = OptionsV2.[Option No] "
+            sSQL = sSQL & "WHERE "
+            sSQL = sSQL & "    [Budget Options V2].[Model No]='" & Replace(Me.Model_No, "'", "' + char(39) + '") & "' "
+            sSQL = sSQL & "    and OptionsV2.CompanyID = 1 "
+            sSQL = sSQL & "ORDER BY "
+            sSQL = sSQL & "    [Budget Options V2].[Model No] "
+            sSQL = sSQL & "    , [Budget Options V2].Sections "
+            sSQL = sSQL & "    , [Budget Options V2].SortSe "
+            sSQL = sSQL & "    , [Budget Options V2].Description;"
+    End Select
+    Debug.Print "Master Form Select SQL Statement <" & vbCr & sSQL & vbCr & ">"
+    Q.sql = sSQL
+
+    'Dump master form data locally
+    DoCmd.OpenQuery "qd_EME_Budget Options MT", acViewNormal
+
+    'Do the same for the spec line subform\
+    sMN = Me.Model_No.Value
+    Select Case Me.Frame41
+        Case 0 'Pull down data for model in BWS Quoting System
+            Set localRS = CurrentDb.OpenRecordset("SELECT Max(Options_SpecLines.[ID#]) AS [LastID] FROM Options_SpecLines;")
+            DoCmd.SetParameter "Model No", """" & sMN & """"
+            DoCmd.SetParameter "LastID", localRS(0).Value
+            DoCmd.OpenQuery "qd_eme_bws_budget options sub2 mt", acViewNormal
+            localRS.Close
+            Set localRS = Nothing
+        Case 1 'Pull down data for model in Stargate Quoting System
+            Set localRS = CurrentDb.OpenRecordset("SELECT Max(BWSdb_Options_SpecLinesV2.[ID#]) AS [LastID] FROM BWSdb_Options_SpecLinesV2;")
+            DoCmd.SetParameter "Model No", """" & sMN & """"
+            DoCmd.SetParameter "LastID", localRS(0).Value
+            DoCmd.OpenQuery "qd_eme_stg_budget options sub2 mt", acViewNormal
+            localRS.Close
+            Set localRS = Nothing
+    End Select
+    
+    
+
+'    'Do the same for the spec line subform
+'    Set Q = CurrentDb.QueryDefs("qd_eme_getoptions_speclines")
+'    ssql = "SELECT [ID#] " 'Set up spec line SQL
+'    ssql = ssql & "    , [Model No] "
+'    ssql = ssql & "    , [Option No] "
+'    ssql = ssql & "    , [Description] "
+'    ssql = ssql & "    , [Line#] "
+'    ssql = ssql & "    , [SpecGroup] "
+'    ssql = ssql & "    , [SpecSortG] "
+'    ssql = ssql & "    , [SpecSection] "
+'    ssql = ssql & "    , [SpecSortSe] "
+'    ssql = ssql & "    , [SpecDescription] "
+'    ssql = ssql & "    , [SpecDescriptionBold] "
+'    ssql = ssql & "    , [SpecDescriptionItalic] "
+'    ssql = ssql & "    , [SpecDescriptionUnderline] "
+'    ssql = ssql & "    , [SpecDescriptionBackColour] "
+'    ssql = ssql & "    , [SpecDescriptionFontColour] "
+'    ssql = ssql & "    , [SpecSortSeLine] "
+'    Select Case Me.Frame41
+'        Case 0 'Generate spec line SQL for model in BWS Quoting System
+'            'Ensure all model options have spec lines in the BWS Quoting System
+'            SQL = "insert into Options_SpecLines with (tablock) ([Model No], [Option No], Description, Line#) "
+'            SQL = SQL & "select Options.[Model No], Options.[Option No], Options.Description, 1 "
+'            SQL = SQL & "from Options with (nolock) "
+'            SQL = SQL & "left outer join Options_SpecLines with (nolock) on Options.[Model No] = Options_SpecLines.[Model No] "
+'            SQL = SQL & "                                                     and Options.[Option No] = Options_SpecLines.[Option No] "
+'            SQL = SQL & "                                                     and Options.Description = Options_SpecLines.Description "
+'            SQL = SQL & "where Options.[Model No] = ? "
+'            SQL = SQL & "and Options_SpecLines.[Model No] is null"
+'            cCmd.CommandType = adCmdText
+'            cCmd.CommandText = SQL
+'            cCmd.Parameters.Append cCmd.CreateParameter("[Model No]", adVarChar, adParamInput, 50, [Forms]![EME_Edit Existing Model Parameters]![Model No])
+'            'Q.SQL = "SELECT * FROM [Options_SpecLines]" 'Set up spec line SQL
+'            ssql = ssql & "    , 0 as [CompanyID] "
+'            ssql = ssql & "FROM "
+'            ssql = ssql & "    [Options_SpecLines] "
+'            Set localRS = CurrentDb.OpenRecordset("SELECT Max(Options_SpecLines.[ID#]) AS [LastID] FROM Options_SpecLines;")
+'        Case 1 'Generate spec line SQL for model in Stargate Quoting System
+'            'Ensure all model options have spec lines in the Stargate Quoting System
+'            SQL = "insert into Options_SpecLinesV2 with (tablock) (CompanyID, [Model No], [Option No], Description, Line#) "
+'            SQL = SQL & "select OptionsV2.CompanyID, OptionsV2.[Model No], OptionsV2.[Option No], OptionsV2.Description, 1 "
+'            SQL = SQL & "from OptionsV2 with (nolock) "
+'            SQL = SQL & "left outer join Options_SpecLinesV2 with (nolock) on OptionsV2.CompanyID = Options_SpecLinesV2.CompanyID "
+'            SQL = SQL & "                                                     and OptionsV2.[Model No] = Options_SpecLinesV2.[Model No] "
+'            SQL = SQL & "                                                     and OptionsV2.[Option No] = Options_SpecLinesV2.[Option No] "
+'            SQL = SQL & "                                                     and OptionsV2.Description = Options_SpecLinesV2.Description "
+'            SQL = SQL & "where OptionsV2.CompanyID = ? "
+'            SQL = SQL & "and OptionsV2.[Model No] = ? "
+'            SQL = SQL & "and Options_SpecLinesV2.[Model No] is null"
+'            cCmd.CommandType = adCmdText
+'            cCmd.CommandText = SQL
+'            cCmd.Parameters.Append cCmd.CreateParameter("CompanyID", adInteger, adParamInput, , [Forms]![EME_Edit Existing Model Parameters]![Frame41])
+'            cCmd.Parameters.Append cCmd.CreateParameter("[Model No]", adVarChar, adParamInput, 50, [Forms]![EME_Edit Existing Model Parameters]![Model No])
+'            'Q.SQL = "SELECT * FROM [Options_SpecLinesV2]" 'Set up spec line SQL
+'            ssql = ssql & "    , [CompanyID] "
+'            ssql = ssql & "FROM "
+'            ssql = ssql & "    [Options_SpecLinesV2] "
+'            Set localRS = CurrentDb.OpenRecordset("SELECT Max(BWSdb_Options_SpecLinesV2.[ID#]) AS [LastID] FROM BWSdb_Options_SpecLinesV2;")
+'    End Select
+'    ssql = ssql & "WHERE "
+'    ssql = ssql & "    [Model No] = '" & Replace(Me.Model_No, "'", "' + char(39) + '") & "' "
+'    ssql = ssql & "    OR [ID#] = " & localRS(0).Value & ""
+'    Printf ("Options_SpecLines insert statement <" & vbCr & ssql & vbCr & ">")
+'    Q.SQL = ssql
+'
+'    'Run ADODB command and close SQL connection
+'    cCmd.Execute
+'    Conn.Close
+'    localRS.Close
+'    Set Conn = Nothing
+'    Set cCmd = Nothing
+'    Set localRS = Nothing
+'
+'    'Dump spec line sub form data locally
+'    DoCmd.OpenQuery "qd_EME_Budget Options Sub2 MT", acViewNormal
+    
+    'Open form
+    DoCmd.OpenForm "EME Budget Options", acNormal
+    
+End Sub
+
+Private Sub Command7_Click()
+
+    '2024-11-26 0945 - James Crawford - Added "qd_dtEMESNInput_mt" for editing "EME SN Input" locally and pushing changes to the live SQL tables.
+    'Ensure a class and model is selected
+    DoCmd.SetWarnings False
+    If IsNull(Me.Model_No) Then
+        MsgBox "Please select an existing Class and Model No to continue."
+        Exit Sub
+    End If
+        
+    'Ensure form is closed, dump data locally, and open the form
+    CloseForm ("EME SN Input")
+    DoCmd.OpenQuery "qd_dtEMESNInput_mt", acViewNormal
+    DoCmd.OpenForm "EME SN Input", acNormal
+
+End Sub
+
+Private Sub Command8_Click()
+
+    'Ensure a class and model is selected
+    If IsNull(Me.Model_No) Then
+        MsgBox "Please select an existing Class and Model No to continue."
+        Exit Sub
+    End If
+    
+    Dim mn As String
+    mn = Me.Model_No.Value
+    
+    Dim NC As Boolean  ' Non-current
+    NC = IIf(IsNull(Me.ExNCM), True, Me.ExNCM.Value = -1)
+
+    Dim PD As Boolean  ' Proposed Unit
+    PD = IIf(IsNull(Me.ExPM), True, Me.ExPM.Value = -1)
+    
+    Dim cm As Boolean  ' Customer Unit
+    cm = IIf(IsNull(Me.ExCM), True, Me.ExCM.Value = -1)
+    
+    'Open certain reports based on Company ID (BWS, Stargate, etc.)
+    Dim sCompID As String
+    sCompID = IIf(IsNull(Me.Frame41), 0, Me.Frame41.Value)
+        
+    Dim rs As dao.Recordset
+    Set rs = CurrentDb.OpenRecordset(IIf(compID = 1, "BWSdb_ProductsV2", "Products"), dbOpenSnapshot)
+    rs.FindFirst "[Model No] = '" & mn & "'"
+    PD = RSFetch(rs, "[Proposed]", castType:="boolean", nullReplace:=False)
+    NC = RSFetch(rs, "[Non-Current]", castType:="boolean", nullReplace:=False)
+    cm = RSFetch(rs, "[Customer]", castType:="boolean", nullReplace:=False)
+    rs.Close
+    Set rs = Nothing
+        
+    'Open reports
+    Select Case sCompID
+        Case 0
+            ' BWS
+            CloseReport ("EME Bud Std Input - Edit Existing Model")
+            CloseReport ("EME Bud Std$ Input - Edit Existing Model")
+            CloseReport ("Standards Rpt - Edit Existing Model")
+            CloseReport ("Options Rpt - Edit Existing Model")
+            DoCmd.OpenReport "EME Bud Std Input - Edit Existing Model", acViewPreview
+            DoCmd.OpenReport "EME Bud Std$ Input - Edit Existing Model", acViewPreview
+            DoCmd.OpenReport "Standards Rpt - Edit Existing Model", acViewPreview
+            DoCmd.OpenReport "Options Rpt - Edit Existing Model", acViewPreview
+            If PD Then
+                DoCmd.OpenReport "NME Standards Rpt", acViewPreview
+            End If
+        Case 1
+            ' STG
+            CloseReport ("EME Bud Std Input - Edit Existing Model")
+            CloseReport ("EME Bud Std$ Input - Edit Existing Model")
+            CloseReport ("Standards Rpt - Edit Existing Model - Stargate")
+            CloseReport ("Options Rpt - Edit Existing Model - Stargate")
+            DoCmd.OpenReport "EME Bud Std Input - Edit Existing Model", acViewPreview
+            DoCmd.OpenReport "EME Bud Std$ Input - Edit Existing Model", acViewPreview
+            DoCmd.OpenReport "Standards Rpt - Edit Existing Model - Stargate", acViewPreview
+            DoCmd.OpenReport "Options Rpt - Edit Existing Model - Stargate", acViewPreview
+            If PD Then
+                DoCmd.OpenReport "NME Standards Rpt_STG", acViewPreview
+            End If
+    End Select
+    
+    
+End Sub
+
+Private Sub Command9_Click()
+
+    'Ensure a class and model is selected
+    If IsNull(Me.Model_No) Then
+        MsgBox "Please select an existing Class and Model No to continue."
+        Exit Sub
+    End If
+    
+    'Open report
+    CloseReport ("Options Configuration")
+    DoCmd.OpenReport "Options Configuration", acViewPreview
+    
+End Sub
+
+Private Sub ExCM_AfterUpdate()
+
+    Call Form_Current
+
+End Sub
+
+Private Sub ExNCM_AfterUpdate()
+
+    Call Form_Current
+
+End Sub
+
+Private Sub ExPM_AfterUpdate()
+
+    Call Form_Current
+
+End Sub
+
+Private Sub Form_Current()
+
+    Dim compID As String
+    compID = IIf(IsNull(Me.Frame41), 0, Me.Frame41.Value)
+    
+    Dim pTable As String
+    pTable = IIf(compID = 0, "[Products]", "[BWSdb_ProductsV2]")
+    
+    Dim class_ As String
+    class_ = IIf(IsNull(Me.Class), 0, Me.Class)
+    
+    Dim NC As Boolean  ' Non-current
+    NC = IIf(IsNull(Me.ExNCM), True, Me.ExNCM.Value = -1)
+
+    Dim PD As Boolean  ' Proposed Unit
+    PD = IIf(IsNull(Me.ExPM), True, Me.ExPM.Value = -1)
+    
+    Dim cm As Boolean  ' Customer Unit
+    cm = IIf(IsNull(Me.ExCM), True, Me.ExCM.Value = -1)
+
+    Dim sqlC As String
+    sqlC = "SELECT " & pTable & ".[Class]"
+    sqlC = sqlC & " FROM " & pTable & ""
+    sqlC = sqlC & " WHERE (((" & pTable & ".[CompanyID]) = " & compID & "))"
+    sqlC = sqlC & " GROUP BY " & pTable & ".[Class]"
+    sqlC = sqlC & " ORDER BY " & pTable & ".[Class];"
+    
+    Dim sqlM As String
+    
+    
+    If Class = "" Or Class = "0" Then
+    
+        sqlM = "SELECT " & pTable & ".[Class], " & pTable & ".[Model No]"
+        sqlM = sqlM & " FROM " & pTable & ""
+        sqlM = sqlM & " WHERE (" & pTable & ".[CompanyID] = " & compID & ")"
+        sqlM = sqlM & " ORDER BY " & pTable & ".[Model No];"
+    Else
+    
+        sqlM = "SELECT " & pTable & ".[Class], " & pTable & ".[Model No]"
+        sqlM = sqlM & " FROM " & pTable & ""
+        sqlM = sqlM & " WHERE (((" & pTable & ".[Class]) = '" & class_ & "')"
+        sqlM = sqlM & " AND ((" & pTable & ".[CompanyID]) = " & compID & ")"
+        
+        'Dim where As String
+        'where = ""
+        'If Any_(Array(NC, PD, cm)) Then
+        '    where = " WHERE "
+        'End If
+        
+        If NC Then
+            sqlM = sqlM & " AND ((" & pTable & ".[Non-Current]) <> True)"
+        End If
+        If PD Then
+            sqlM = sqlM & " AND ((" & pTable & ".[Proposed]) <> True)"
+        End If
+        If cm Then
+            sqlM = sqlM & " AND ((" & pTable & ".[Customer]) <> True)"
+        End If
+        
+        sqlM = sqlM & ") ORDER BY " & pTable & ".[Model No];"
+    End If
+        
+    'ExecSQL sqlM, , False
+    'ExecSQL sqlC, , False
+    
+    Me.Class.rowSource = sqlC
+    Me.Model_No.rowSource = sqlM
+    Me.Class.Requery
+    Me.Model_No.Requery
+
+End Sub
+
+Private Sub Form_Open(Cancel As Integer)
+
+    Me.ExNCM.Value = True
+    Me.ExPM.Value = True
+    Me.ExCM.Value = True
+'    Me.Class.rowSource = "SELECT BWSdb_ProductsV2.Class FROM BWSdb_ProductsV2 WHERE (((BWSdb_ProductsV2.CompanyID)=0)) GROUP BY BWSdb_ProductsV2.Class ORDER BY BWSdb_ProductsV2.Class; "
+'    Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = 0 AND [Non-Current]=No AND [Proposed]=No AND Customer=No ORDER BY [Model No];"
+
+End Sub
+
+'Private Function UpdateModelNoList()
+'
+'    Dim sCompID As String
+'    sCompID = Me.Frame41.Value
+'
+'    If Me.ExNCM.Value = False And Me.ExPM.Value = False And Me.ExCM.Value = False Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = True And Me.ExPM.Value = True And Me.ExCM.Value = True Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND [Non-Current]=No AND [Proposed]=No AND Customer=No ORDER BY [Model No];"
+'    ElseIf Me.ExNCM.Value = False And Me.ExPM.Value = True And Me.ExCM.Value = True Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND Proposed=No AND Customer=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = True And Me.ExPM.Value = False And Me.ExCM.Value = True Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND [Non-Current]=No AND Customer=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = True And Me.ExPM.Value = True And Me.ExCM.Value = False Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND [Non-Current]=No AND Proposed=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = True And Me.ExPM.Value = False And Me.ExCM.Value = False Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND [Non-Current]=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = False And Me.ExPM.Value = True And Me.ExCM.Value = False Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND Proposed=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = False And Me.ExPM.Value = False And Me.ExCM.Value = True Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND Customer=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    End If
+'
+'End Function
+
+'Private Sub Option44_GotFocus()
+'
+'    Me.Class.rowSource = "SELECT BWSdb_ProductsV2.Class FROM BWSdb_ProductsV2 WHERE (((BWSdb_ProductsV2.CompanyID)=0)) GROUP BY BWSdb_ProductsV2.Class ORDER BY BWSdb_ProductsV2.Class; "
+'    Call UpdateModelNoList_Manual(0)
+'
+'End Sub
+
+'Private Sub Option46_GotFocus()
+'
+'    Me.Class.rowSource = "SELECT BWSdb_ProductsV2.Class FROM BWSdb_ProductsV2 WHERE (((BWSdb_ProductsV2.CompanyID)=1)) GROUP BY BWSdb_ProductsV2.Class ORDER BY BWSdb_ProductsV2.Class; "
+'    Call UpdateModelNoList_Manual(1)
+'
+'End Sub
+
+'Private Function UpdateModelNoList_Manual(sCompID As String)
+'
+'    If Me.ExNCM.Value = False And Me.ExPM.Value = False And Me.ExCM.Value = False Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = True And Me.ExPM.Value = True And Me.ExCM.Value = True Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND [Non-Current]=No AND [Proposed]=No AND Customer=No ORDER BY [Model No];"
+'    ElseIf Me.ExNCM.Value = False And Me.ExPM.Value = True And Me.ExCM.Value = True Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND Proposed=No AND Customer=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = True And Me.ExPM.Value = False And Me.ExCM.Value = True Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND [Non-Current]=No AND Customer=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = True And Me.ExPM.Value = True And Me.ExCM.Value = False Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND [Non-Current]=No AND Proposed=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = True And Me.ExPM.Value = False And Me.ExCM.Value = False Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND [Non-Current]=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = False And Me.ExPM.Value = True And Me.ExCM.Value = False Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND Proposed=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    ElseIf Me.ExNCM.Value = False And Me.ExPM.Value = False And Me.ExCM.Value = True Then
+'        Me.Model_No.rowSource = "SELECT Class, [Model No] FROM [BWSdb_ProductsV2] WHERE [Class]=[Forms]![EME_Edit Existing Model Parameters]![Class] AND CompanyID = " & sCompID & " AND Customer=No ORDER BY [BWSdb_ProductsV2].[Model No];"
+'    End If
+'
+'End Function
+'------------------------------------------------------------
+' Class_Click
+'
+'------------------------------------------------------------
+Private Sub Class_Click()
+
+    Call Form_Current
+'On Error GoTo Class_Click_Err
+'
+'    DoCmd.Requery "class"
+'    DoCmd.Requery "model no"
+'
+'
+'Class_Click_Exit:
+'    Exit Sub
+'
+'Class_Click_Err:
+'    MsgBox Error$
+'    Resume Class_Click_Exit
+'
+End Sub
+
+
+Private Sub Frame41_Click()
+
+    Me.Class.Value = ""
+    Me.Model_No.Value = ""
+    Call Form_Current
+
+End Sub
+
+'------------------------------------------------------------
+' Model_No_Click
+'
+'------------------------------------------------------------
+Private Sub Model_No_Click()
+'On Error GoTo Model_No_Click_Err
+
+    Call Form_Current
+
+    '' _AXL:<?xml version="1.0" encoding="UTF-16" standalone="no"?>
+    '' <UserInterfaceMacro MinimumClientDesignVersion="14.0.0000.0000" xmlns="http://schemas.microsoft.com/office/accessservices/2009/11/application" xmlns:a="http://schemas.microsoft.com/office/acc
+    '' _AXL:essservices/2009/11/forms"><Statements><Action Name="Requery"><Argument Name="ControlName">class</Argument></Action><Action Name="Requery"><Argument Name="ControlName">model no</Argument></Action></Statements></UserInterfaceMacro>
+    'DoCmd.Requery "class"
+    'DoCmd.Requery "model no"
+'
+'
+'Model_No_Click_Exit:
+'    Exit Sub
+'
+'Model_No_Click_Err:
+'    MsgBox Error$
+'    Resume Model_No_Click_Exit
+
+End Sub
+
+
+'------------------------------------------------------------
+' Command10_Click
+'
+'------------------------------------------------------------
+Private Sub Command10_Click()
+On Error GoTo Command10_Click_Err
+
+    ' _AXL:<?xml version="1.0" encoding="UTF-16" standalone="no"?>
+    ' <UserInterfaceMacro MinimumClientDesignVersion="14.0.0000.0000" xmlns="http://schemas.microsoft.com/office/accessservices/2009/11/application" xmlns:a="http://schemas.microsoft.com/office/acc
+    ' _AXL:essservices/2009/11/forms"><Statements><Action Name="Requery"><Argument Name="ControlName">class</Argument></Action><Action Name="Requery"><Argument Name="ControlName">model no</Argument></Action></Statements></UserInterfaceMacro>
+    DoCmd.Close , ""
+
+
+Command10_Click_Exit:
+    Exit Sub
+
+Command10_Click_Err:
+    MsgBox Error$
+    Resume Command10_Click_Exit
+
+End Sub

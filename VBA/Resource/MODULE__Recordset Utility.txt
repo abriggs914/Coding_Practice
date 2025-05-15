@@ -1,0 +1,574 @@
+Option Compare Database
+
+' General Recordset Utility Functions
+' Version....................1.06
+' Date.................2024-08-28
+' Author(s)..........Avery Briggs
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   IsRecordsetEmpty        -   Determine if a Dao.Recordset is empty or not.
+'   IsRecordset             -   Determine if a variant is an instance of a Dao.Recordset or not.
+'   GetRecordsetType        -   Determine whether a Recordset Object is an ADO or DAO recordset.
+'   RSFetch                 -   Return record value for a Dao.Recordset for a specific column.
+'   RSValues                -   Return a list of values from a Dao.Recordset, for a specific column.
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+'---------------------------------------------------------------------------------------
+' Function : RSFetch
+' Author    : Avery Briggs
+' Purpose   : Return the value for a given column in a recordset.
+'             Similar in function to using native DAO.Recordset(0) or DAO.Recordset(COLUMN_NAME)
+'             Optionally supports indexed positional lookup if an integer is passed as 'ColName' param.
+'             Optional features:
+'               Value-casting,
+'               Null-value replacement,
+'               String-wrapping,
+'               Empty string considered Null
+'               Errors when values not found
+'
+'
+' Usage:
+' ~~~~~~
+'
+' set rs = currentdb.OpenRecordset("SELECT * FROM [ITRequests]", dbopensnapshot, dbseechanges)
+' printf rsfetch(rs, "RequestedBy")  ' => Avery Briggs
+' printf rsfetch(rs, "RequestedBy", wrapStrings:=True)  ' => 'Avery Briggs'
+'
+' rs.Move 5  ' the fifth record is a record with a float in the desired column.
+' printf rsfetch(rs, "LabourActual", castType:=vbdouble)  ' => 0.5
+' printf rsfetch(rs, "LabourActual", castType:=vbinteger)  ' => 0
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-10-20                  Initial Release
+' 2         2024-08-28                  Corrected wrapStrings param
+'---------------------------------------------------------------------------------------
+Public Function RSFetch( _
+    ByVal rs As dao.Recordset, _
+    ByVal ColName As String, _
+    Optional ByVal castType As Variant = Null, _
+    Optional ByVal errOnNotFound As Boolean = False, _
+    Optional ByVal nullReplace As String = "NULL", _
+    Optional ByVal printWork As Boolean = False, _
+    Optional ByVal wrapStrings As Boolean = True, _
+    Optional ByVal emptyStringIsNull As Boolean = True, _
+    Optional ByVal allowPositional As Boolean = True _
+) As Variant
+
+    If Not IsRecordset(rs) Then
+        Err.Raise vbObjectError, "RSFetch", "Param 'rs', must be an instance of a Recordset."
+    End If
+
+    Dim errMsg As String
+    'Printf "VT " & TypeName(ColName)
+
+    If allowPositional Then
+    
+        If Not IsNumeric(ColName) Then
+            errMsg = "Positional colname '" & ColName & "' is not numeric."
+        Else
+            
+            If ColName < 0 Then
+                errMsg = "Positional colname '" & ColName & "' cannot be negative."
+            End If
+            
+            If errMsg <> "" Then
+                Err.Raise vbObjectError, "RSFetch", errMsg
+            End If
+            
+            Dim colN As Long
+            colN = CLng(ColName)
+        
+            Dim rsCols As Variant
+            rsCols = Array()
+            Dim fld As Field
+            For Each fld In rs.Fields
+                Call Append(rsCols, fld.Name)
+            Next fld
+            
+            'Printf rsCols
+            ColName = rsCols(colN)
+        
+            'MsgBox "Feature for positional rsfetching currently not supported.", vbCritical
+            'Exit Function
+            
+        End If
+    End If
+    
+    On Error GoTo ColNotFound
+
+    Dim msg As String
+    msg = "RSFetch!"
+
+    Dim errA As Boolean
+    Dim errB As Boolean
+    Dim errC As Boolean
+    Dim errD As Boolean
+    Dim vIsNull As Boolean
+    vIsNull = True
+    errA = True  ' empty recordset
+    errB = True  ' col not found
+    errC = True  ' rs value is null, errOnNotFound is True, Therefore, Error
+    errD = True  ' could not be cast
+    
+    If Not_(rs.EOF Or rs.BOF) Then
+        errA = False
+        
+        If IsNull(rs(ColName)) Then
+            msg = msg & "-A"
+            If Not errOnNotFound Then
+                msg = msg & "-B"
+                RSFetch = nullReplace
+                errC = False
+            End If
+        Else
+            msg = msg & "-C"
+            RSFetch = rs(ColName)
+            vIsNull = False
+            errC = False
+        End If
+        errB = False
+        
+        If errC Then
+            Err.Raise vbObjectError
+        End If
+        
+        If Not vIsNull And Not IsNull(castType) Then
+            If VarType(castType) = vbString Then
+                castType = LCase(castType)
+            End If
+            msg = msg & "-D"
+            msg = msg & " CastType: <" & castType & ">"
+            If IsIn(Array(vbInteger, "integer", "int", "cint"), castType) Then
+                ' int
+                RSFetch = CInt(RSFetch)
+            ElseIf IsIn(Array(vbLong, "long", "lng", "clng"), castType) Then
+                ' long
+                RSFetch = CLng(RSFetch)
+            ElseIf IsIn(Array(vbDouble, "double", "dbl", "cdbl"), castType) Then
+                ' double
+                RSFetch = CDbl(RSFetch)
+            ElseIf IsIn(Array(vbBoolean, "bool", "boolean", "cbool"), castType) Then
+                ' boolean
+                RSFetch = CBool(RSFetch)
+            ElseIf IsIn(Array(vbDate, "date", "cdate"), castType) Then
+                ' double
+                RSFetch = CDate(RSFetch)
+                If wrapStrings Then
+                    RSFetch = "'" & RSFetch & "'"
+                End If
+            ElseIf IsIn(Array(vbString, "string", "str", "cstr"), castType) Then
+                ' string
+                RSFetch = CStr(RSFetch)
+            Else
+                Printf "Error, unsure what to do with castType '" & castType & "'"
+            End If
+        End If
+        errD = False
+        
+        If VarType(RSFetch) = vbString Then
+            If emptyStringIsNull And Len(RSFetch) = 0 Then
+                RSFetch = nullReplace
+                'If VarType(RSFetch) = vbString And wrapStrings Then
+                '    RSFetch = "'" & RSFetch & "'"
+                'End If
+            Else
+                If wrapStrings Then
+                    RSFetch = "'" & RSFetch & "'"
+                End If
+            End If
+        End If
+        
+        msg = msg & "-E"
+    Else
+        If Not errOnNotFound Then
+            msg = msg & " EMPTY RS FOR RSFETCH!"
+        End If
+        Err.Raise vbObjectError
+    End If
+    
+CleanExit:
+    If printWork Then
+        Printf msg
+    End If
+    Exit Function
+    
+ColNotFound:
+    msg = msg & " COLNOTFOUND : " & Printf(Array(errA, errB, errC, errD), False)
+    If errOnNotFound Then
+        If errA Then
+            Err.Raise vbObjectError, "RSFetch", "Error, col '" & ColName & "', cannot be found in an empty recordset."
+        End If
+        If errB Then
+            Err.Raise vbObjectError, "RSFetch", "Error, col '" & ColName & "', not found in recordset."
+        End If
+        If errC Then
+            Err.Raise vbObjectError, "RSFetch", "Error, value for col '" & ColName & "' is null, param 'errOnNotFound' is True, therefore error here."
+        End If
+        If errD Then
+            Err.Raise vbObjectError, "RSFetch", "Error, could not cast col '" & ColName & "'s value to type '" & castType & "'"
+        End If
+    End If
+    Resume CleanExit
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsRecordsetEmpty
+' Author    : Avery Briggs
+' Purpose   : Determine if a Recordset is empty.
+'
+' Usage:
+' ~~~~~~
+'
+' set rs1 = currentdb.OpenRecordset("ITR Customers", dbopensnapshot)
+' set rs2 = currentdb.OpenRecordset("SELECT * FROM [ITR Customers] WHERE 2 = 1", dbopensnapshot)
+' ?isrecordsetempty(rs1)  ' => False
+' ?isrecordsetempty(rs2)  ' => True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2023-07-06                  Initial Release
+'---------------------------------------------------------------------------------------
+Function IsRecordsetEmpty(ByVal srcRS As Variant) As Boolean
+
+    If Not IsRecordset(srcRS) Then
+        Err.Raise vbObjectError, "IsRecordsetEmpty", "Param 'srcRS' is not a valid DAO.Recordset."
+    End If
+    
+    IsRecordsetEmpty = True
+    
+    If Not srcRS.EOF And Not srcRS.BOF Then
+    
+        srcRS.MoveLast
+        srcRS.MoveFirst
+        IsRecordsetEmpty = srcRS.RecordCount = 0
+        
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : IsRecordset
+' Author    : Avery Briggs
+' Purpose   : Determine if variable is a Recordset.
+'
+' Usage:
+' ~~~~~~
+'
+' set rs1 = currentdb.OpenRecordset("ITR Customers", dbopensnapshot)
+' set rs2 = currentdb.OpenRecordset("SELECT * FROM [ITR Customers] WHERE 2 = 1", dbopensnapshot)
+' ?IsRecordset(rs1)  ' => True
+' ?IsRecordset(rs2)  ' => True
+' ?IsRecordset(15)   ' => False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2024-08-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IsRecordset(ByRef rs As Variant) As Boolean
+
+    ' Do Not use IsIn here!!
+    Dim tName As String
+    Dim arr As Variant
+    Dim i As Long
+    
+    tName = LCase(TypeName(rs))
+    ' Add new 'Definitions' here.
+    ' Use Lower Case!!
+    arr = Array("recordset2")
+    
+    For i = LBound(arr) To UBound(arr)
+        If arr(i) = tName Then
+            IsRecordset = True
+            Exit Function
+        End If
+    Next i
+    
+    IsRecordset = False
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : RSValues
+' Author    : Avery Briggs
+' Purpose   : Return an array of values for a given column.
+'             Optionally supports indexed positional lookup if an integer is passed as 'ColName' param.
+'             Optional features:
+'               Value-casting,
+'               Null-value replacement,
+'               String-wrapping,
+'               Empty string considered Null
+'               Errors when values not found,
+'               And resetting recordset before or after interation.
+'
+'
+' Usage:
+' ~~~~~~
+'
+' printf "Act: " & sum(rsvalues(rs, "LabourActual", nullreplace:=0, casttype:=vbinteger)) & " as of " & now()    ' => Act: 2220 as of 2024-08-28 4:50:35 PM
+' printf "Est: " & sum(rsvalues(rs, "LabourEstimate", nullreplace:=0, casttype:=vbinteger)) & " as of " & now()  ' => Est: 2985 as of 2024-08-28 4:51:03 PM
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2024-08-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function RSValues( _
+    ByVal rs As Recordset, _
+    ByVal ColName As String, _
+    Optional ByVal castType As Variant = Null, _
+    Optional ByVal errOnNotFound As Boolean = False, _
+    Optional ByVal nullReplace As String = "NULL", _
+    Optional ByVal printWork As Boolean = False, _
+    Optional ByVal wrapStrings As Boolean = True, _
+    Optional ByVal emptyStringIsNull As Boolean = True, _
+    Optional ByVal allowPositional As Boolean = True, _
+    Optional ByVal moveFirstOnStart As Boolean = True, _
+    Optional ByVal moveFirstOnEnd As Boolean = True _
+) As Variant
+
+    If Not IsRecordset(rs) Then
+        Err.Raise vbObjectError, "RSValues", "Param 'rs', must be an instance of a Recordset."
+    End If
+
+    Dim errMsg As String
+    'Printf "VT " & TypeName(ColName)
+
+    If allowPositional Then
+    
+        If Not IsNumeric(ColName) Then
+            errMsg = "Positional colname '" & ColName & "' is not numeric."
+        Else
+            
+            If ColName < 0 Then
+                errMsg = "Positional colname '" & ColName & "' cannot be negative."
+            End If
+            
+            If errMsg <> "" Then
+                Err.Raise vbObjectError, "RSFetch", errMsg
+            End If
+            
+            Dim colN As Long
+            colN = CLng(ColName)
+        
+            Dim rsCols As Variant
+            rsCols = Array()
+            Dim fld As Field
+            For Each fld In rs.Fields
+                Call Append(rsCols, fld.Name)
+            Next fld
+            
+            'Printf rsCols
+            ColName = rsCols(colN)
+        
+            'MsgBox "Feature for positional rsfetching currently not supported.", vbCritical
+            'Exit Function
+            
+        End If
+    End If
+    
+    On Error GoTo ColNotFound
+
+    Dim Value As Variant
+    Dim result As Variant
+    result = Array()
+    
+    Dim msg As String
+    msg = "RSValues!"
+
+    Dim errA As Boolean
+    Dim errB As Boolean
+    Dim errC As Boolean
+    Dim errD As Boolean
+    Dim vIsNull As Boolean
+    vIsNull = True
+    errA = True  ' empty recordset
+    errB = True  ' col not found
+    errC = True  ' rs value is null, errOnNotFound is True, Therefore, Error
+    errD = True  ' could not be cast
+    
+    If moveFirstOnStart Then
+        rs.MoveFirst
+    End If
+    
+    Do While (Not rs.EOF) And (Not rs.BOF)
+        errA = False
+        
+        If IsNull(rs(ColName)) Then
+            msg = msg & "-A"
+            If Not errOnNotFound Then
+                msg = msg & "-B"
+                'RSFetch = nullReplace
+                Value = nullReplace
+                errC = False
+            End If
+        Else
+            msg = msg & "-C"
+            'RSFetch = rs(ColName)
+            Value = rs(ColName)
+            vIsNull = False
+            errC = False
+        End If
+        errB = False
+        
+        If errC Then
+            Err.Raise vbObjectError
+        End If
+        
+        If Not vIsNull And Not IsNull(castType) Then
+            If VarType(castType) = vbString Then
+                castType = LCase(castType)
+            End If
+            msg = msg & "-D"
+            msg = msg & " CastType: <" & castType & ">"
+            If IsIn(Array(vbInteger, "integer", "int", "cint"), castType) Then
+                ' int
+                Value = CInt(Value)
+            ElseIf IsIn(Array(vbLong, "long", "lng", "clng"), castType) Then
+                ' long
+                Value = CLng(Value)
+            ElseIf IsIn(Array(vbDouble, "double", "dbl", "cdbl"), castType) Then
+                ' double
+                Value = CDbl(Value)
+            ElseIf IsIn(Array(vbBoolean, "bool", "boolean", "cbool"), castType) Then
+                ' boolean
+                Value = CBool(Value)
+            ElseIf IsIn(Array(vbDate, "date", "cdate"), castType) Then
+                ' double
+                Value = CDate(Value)
+                If wrapStrings Then
+                    Value = "'" & Value & "'"
+                End If
+            ElseIf IsIn(Array(vbString, "string", "str", "cstr"), castType) Then
+                ' string
+                Value = CStr(Value)
+                If wrapStrings Then
+                    Value = "'" & Value & "'"
+                End If
+            Else
+                Printf "Error, unsure what to do with castType '" & castType & "'"
+            End If
+        End If
+        errD = False
+        
+        msg = msg & "-E"
+        
+        If VarType(Value) = vbString Then
+            If emptyStringIsNull And Len(Value) = 0 Then
+                Value = nullReplace
+                'If VarType(value) = vbString And wrapStrings Then
+                '    value = "'" & value & "'"
+                'End If
+            Else
+                If wrapStrings Then
+                    Value = "'" & Value & "'"
+                End If
+            End If
+        End If
+        
+        Call Append(result, Value)
+        rs.MoveNext
+    Loop
+    
+    If UBound(result) = 0 Then
+        If Not errOnNotFound Then
+            msg = msg & " EMPTY RS FOR RSFETCH!"
+        End If
+        Err.Raise vbObjectError
+    End If
+    
+    RSValues = result
+    
+CleanExit:
+    If printWork Then
+        Printf msg
+    End If
+    If moveFirstOnEnd Then
+        rs.MoveFirst
+    End If
+    Exit Function
+    
+ColNotFound:
+    msg = msg & " COLNOTFOUND : " & Printf(Array(errA, errB, errC, errD), False)
+    If errOnNotFound Then
+        If errA Then
+            Err.Raise vbObjectError, "RSValues", "Error, col '" & ColName & "', cannot be found in an empty recordset."
+        End If
+        If errB Then
+            Err.Raise vbObjectError, "RSValues", "Error, col '" & ColName & "', not found in recordset."
+        End If
+        If errC Then
+            Err.Raise vbObjectError, "RSValues", "Error, value for col '" & ColName & "' is null, param 'errOnNotFound' is True, therefore error here."
+        End If
+        If errD Then
+            Err.Raise vbObjectError, "RSValues", "Error, could not cast col '" & ColName & "'s value to type '" & castType & "'"
+        End If
+    End If
+    Resume CleanExit
+    
+End Function
+
+
+
+'---------------------------------------------------------------------------------------
+' Function : GetRecordsetType
+' Author    : Avery Briggs
+' Purpose   : Determine whether a Recordset Object is an ADO or DAO recordset.
+'             Written in part by ChatGPT MS Access CoPilot
+'             "DAO is the default and native recordset library for Access"
+'
+' Usage:
+' ~~~~~~
+'
+' Dim rs1 as dao.recordset
+' Dim rs2 as ado.recordset
+' printf getrecordsettype(rs1)  ' "DAO"
+' printf getrecordsettype(rs2)  ' "ADO"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-30                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function GetRecordsetType(ByVal rs As Object) As String
+    On Error GoTo ErrHandler
+
+    If rs Is Nothing Then
+        GetRecordsetType = ""
+        Exit Function
+    End If
+
+    ' Try DAO-specific property
+    If rs.Properties("Updatable").Value Or True Then
+        GetRecordsetType = "DAO"
+        Exit Function
+    End If
+
+ErrHandler:
+    Err.Clear
+    On Error GoTo NextCheck
+
+NextCheck:
+    ' Try ADO-specific property
+    If rs.state >= 0 Then
+        GetRecordsetType = "ADO"
+        Exit Function
+    End If
+
+    GetRecordsetType = ""
+End Function

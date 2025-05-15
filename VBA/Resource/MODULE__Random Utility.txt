@@ -33,7 +33,7 @@ Option Compare Database
 ' dim s2 as string
 ' s1 = "Avery"
 ' s2 = shuffle(s1)
-' printf (s1 = s2)  ' True
+' printf (s1 = s2)  ' False
 ' printf shuffle(range(6))  ' some list of 0 -> 6 shuffled ex: [4, 1, 3, 0, 2, 5]
 '
 '
@@ -81,7 +81,7 @@ Public Function Shuffle(ByRef srcArray As Variant) As Variant
         Shuffle = Join(Shuffle(Str2Array(srcArray)), "")
     End If
     
-    srcArray = Shuffle
+    'Shuffle = srcArray
 
 End Function
 

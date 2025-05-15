@@ -1,5 +1,33 @@
 Option Compare Database
 
+
+' 2025-01-28 1338
+
+' DisplayImage
+' getFiles
+' GetFolderList
+' Equal
+' ArrayMatchesTableDimensions
+' ArrayHas2Dimensions
+' NextAvailableFileName
+' WriteFile
+' ReadFile
+' Serialize
+' BrowseForFolder
+' FileExists
+' FolderExists
+' TrailingSlash
+' CopyFile
+
+
+Public Enum TestEnum
+    TestEnum_A = 4
+    TestEnum_B = 6
+    TestEnum_C = 10
+End Enum
+
+
+
 Public Function DisplayImage(ctlImageControl As Control, strImagePath As Variant) As String
     On Error GoTo Err_DisplayImage
     
@@ -8,7 +36,7 @@ Public Function DisplayImage(ctlImageControl As Control, strImagePath As Variant
     Dim intSlashLocation As Integer
     Dim msg As String
     
-    strDatabasePath = CurrentProject.FullName
+    strDatabasePath = CurrentProject.fullName
     intSlashLocation = InStrRev(strDatabasePath, "\", Len(strDatabasePath))
     strDatabasePath = Left(strDatabasePath, intSlashLocation)
     
@@ -80,10 +108,10 @@ End Function
 Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As String = "") As String()
     Dim res() As String
     Dim toCheck() As String
-    Dim fs, f, f1, f2, fC, S, sFldr
+    Dim fs, f, f1, f2, fc, S, sFldr
     Set fs = CreateObject("Scripting.FileSystemObject")
     Set f = fs.getfolder(folderspec)
-    Set fC = f.subFolders
+    Set fc = f.subFolders
     
     Dim ri As Integer
     Dim idx As Integer
@@ -96,7 +124,7 @@ Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As Stri
     'toCheck(0) = folderspec
     idx = 0
     
-    For Each f1 In fC
+    For Each f1 In fc
         ReDim Preserve toCheck(idx)
         toCheck(idx) = folderspec & "\" & f1.Name
         idx = idx + 1
@@ -104,7 +132,7 @@ Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As Stri
     Printf vbNewLine & "==A==" & vbNewLine & Join(toCheck, vbNewLine)
     ri = 0
     i = 0
-    C = fC.Count
+    C = fc.count
     Printf "i= <" & i & ">, c= <" & C & ">"
     'Do Until i = c
     ub = UBound(toCheck)
@@ -122,8 +150,8 @@ Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As Stri
             'f1 = fc.files(j)
             If Right(toCheck(j), 1) <> "\" Then
                 'ShowFolderList f1 & "\"
-                Set fC = f.subFolders
-                For Each f2 In fC
+                Set fc = f.subFolders
+                For Each f2 In fc
                     Printf "  A  " & f2 & "\"
                     ReDim Preserve toCheck(idx)
                     toCheck(idx) = f2 & "\"
@@ -134,7 +162,7 @@ Function GetFolderList(ByVal folderspec As String, Optional ByVal suffix As Stri
                 Printf "  B  " & f1
             End If
         Next j
-        Set fC = f.files
+        Set fc = f.files
         i = i + 1
     Loop
     
@@ -181,18 +209,18 @@ Public Sub testStuff()
 
     Dim arrA As Variant
     Dim arrB As Variant
-    Dim q As Variant
+    Dim Q As Variant
     Dim r As Variant
     Dim t As Variant
     Dim p As Variant
     Dim w As Variant
     arrA = Array(1, 2, 3)
     arrB = Array("A", "B", "C")
-    q = Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7)
+    Q = Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7)
     r = Map("cstr", Array(1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7))
     't = append(append(q, -1), "")
     p = Array(-5, -6, -7)
-    w = Append(q, p)
+    w = Append(Q, p)
     
     answers = Array()
     
@@ -225,14 +253,14 @@ Public Sub testStuff()
     testIndex = True
     
     If testSlice Then
-        Call Append(answers, Append(Array("[4:0:-1], ans=[9, 2, 7, 6]"), PrintArr(Slice(q, 4, 0, -1), Name:="Slice Test1", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[0:4:2], [1, 7]"), PrintArr(Slice(q, 0, 4, 2), Name:="Slice Test2", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[-1:14:3], []"), PrintArr(Slice(q, -1, 14, 3), Name:="Slice Test3", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[1:14:3], [6, 9, 8, 1, 7]"), PrintArr(Slice(q, 1, 14, 3), Name:="Slice Test4", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[::], [1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7, -5, -6, -7]"), PrintArr(Slice(q), Name:="Slice Test5", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[:5:], [1, 6, 7, 2, 9]"), PrintArr(Slice(q, , 5), Name:="Slice Test6", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[:15:3], [1, 2, 3, 6, 1]"), PrintArr(Slice(q, , 15, 3), Name:="Slice Test7", doPrint:=False), False), False)
-        Call Append(answers, Append(Array("[::5], ans=[1, 4, 1, 4, 1, 7, 2, -5]"), PrintArr(Slice(q, , , 5), Name:="Slice Test8", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[4:0:-1], ans=[9, 2, 7, 6]"), PrintArr(Slice(Q, 4, 0, -1), Name:="Slice Test1", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[0:4:2], [1, 7]"), PrintArr(Slice(Q, 0, 4, 2), Name:="Slice Test2", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[-1:14:3], []"), PrintArr(Slice(Q, -1, 14, 3), Name:="Slice Test3", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[1:14:3], [6, 9, 8, 1, 7]"), PrintArr(Slice(Q, 1, 14, 3), Name:="Slice Test4", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[::], [1, 6, 7, 2, 9, 4, 3, 8, 5, 6, 1, 2, 1, 7, 8, 4, 6, 5, 3, 2, 1, 5, 4, 6, 9, 7, 8, 4, 5, 1, 2, 5, 4, 6, 7, -5, -6, -7]"), PrintArr(Slice(Q), Name:="Slice Test5", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[:5:], [1, 6, 7, 2, 9]"), PrintArr(Slice(Q, , 5), Name:="Slice Test6", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[:15:3], [1, 2, 3, 6, 1]"), PrintArr(Slice(Q, , 15, 3), Name:="Slice Test7", doPrint:=False), False), False)
+        Call Append(answers, Append(Array("[::5], ans=[1, 4, 1, 4, 1, 7, 2, -5]"), PrintArr(Slice(Q, , , 5), Name:="Slice Test8", doPrint:=False), False), False)
         Call Append(answers, Append(Array("[1::], ans=[1, 2, 3, 4]"), PrintArr(Slice(Range(5), 1), Name:="Slice Test9", doPrint:=False), False), False)
         Call Append(answers, Append(Array("[:15:3], ans=[0, 3, 6, 9, 12]"), PrintArr(Slice(Range(15), , 15, 3), Name:="Slice Test10", doPrint:=False), False), False)
         
@@ -255,8 +283,8 @@ Public Sub testStuff()
     End If
     
     If testAnyAll Then
-        Printf "ALL q => T <" & All(q) & ">"
-        Printf "ANY q => T <" & Any_(q) & ">"
+        Printf "ALL q => T <" & All(Q) & ">"
+        Printf "ANY q => T <" & Any_(Q) & ">"
         Printf "ALL p => T <" & All(p) & ">"
         Printf "ANY p => T <" & Any_(p) & ">"
         Printf "ALL t => F <" & All(t) & ">"
@@ -264,14 +292,14 @@ Public Sub testStuff()
     End If
     
     If testIsIn Then
-        Call Append(answers, "isin(q, 5) <" & IsIn(q, 5) & ">  => True")
-        Call Append(answers, "isin(q, 5, returnIndex:=True) <" & IsIn(q, 5, returnIndex:=True) & ">  => 8")
+        Call Append(answers, "isin(q, 5) <" & IsIn(Q, 5) & ">  => True")
+        Call Append(answers, "isin(q, 5, returnIndex:=True) <" & IsIn(Q, 5, returnIndex:=True) & ">  => 8")
         
-        Printf IsIn(q, 1)  ' True
-        Printf IsIn(q, 7)  ' True
+        Printf IsIn(Q, 1)  ' True
+        Printf IsIn(Q, 7)  ' True
         Printf IsIn(r, 1)  ' False
         Printf IsIn(r, "1")  ' False
-        Printf IsIn(q, 1)  ' True
+        Printf IsIn(Q, 1)  ' True
         
         Printf IsIn(Range(-1, -5, -1), Range(6), everyTarget:=False)
 
@@ -766,11 +794,14 @@ End Sub
 ' Rev       Date(yyyy/mm/dd)            Description
 ' **************************************************************************************
 ' 1         2023-08-08                  Initial Release
+' 2         2023-08-31                  Support for Dictonaries
 '---------------------------------------------------------------------------------------
 Public Function Equal(ByRef valA As Variant, ByRef valB As Variant) As Boolean
 
     If IsArray(valA) Or IsArray(valB) Then
         Equal = ArrayEqual(valA, valB)
+    ElseIf IsDict(valA) Or IsDict(valB) Then
+        Equal = DictEqual(valA, valB)
     Else
         Equal = valA = valB
     End If
@@ -915,12 +946,12 @@ Public Function ArrayMatchesTableDimensions(ByRef srcArray As Variant, ByVal row
         Exit Function
     End If
     
-    Dim sR As Long
+    Dim SR As Long
     Dim SC As Long
-    sR = Size(srcArray)
-    If sR <> rows Then
+    SR = Size(srcArray)
+    If SR <> rows Then
         If minRowMatch Then
-            If sR < rows Then
+            If SR < rows Then
                 'Printf "-B"
                 ArrayMatchesTableDimensions = False
                 Exit Function
@@ -1028,21 +1059,21 @@ End Function
 
 
 
-Public Function WriteFile(ByVal text As String, ByVal path As String, Optional ByVal allowOverwrites As Boolean = False) As Boolean
+Public Function WriteFile(ByVal Text As String, ByVal path As String, Optional ByVal allowOverwrites As Boolean = False) As Boolean
 
     On Error GoTo FailedToWrite
-    Dim fso As Object
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Dim oFile As Object
-    If Not allowOverwrites Then
-        'path = NextAvailableFileName(path)
-    End If
-    Set oFile = fso.CreateTextFile(path)
-    oFile.Writeline text
-    oFile.Close
-    Set fso = Nothing
-    Set oFile = Nothing
-    WriteFile = True
+        Dim fso As Object
+        Set fso = CreateObject("Scripting.FileSystemObject")
+        Dim oFile As Object
+        If Not allowOverwrites Then
+            'path = NextAvailableFileName(path)
+        End If
+        Set oFile = fso.CreateTextFile(path)
+        oFile.WriteLine Text
+        oFile.Close
+        Set fso = Nothing
+        Set oFile = Nothing
+        WriteFile = True
     
 CleanExit:
     Exit Function
@@ -1052,5 +1083,232 @@ FailedToWrite:
     Printf "WriteFile failure:"
     Printf vbTab & Err.Number
     Printf vbTab & Err.Description
+    
+End Function
+
+
+Public Function ReadFile(ByVal path As String, Optional ByVal ErrorOnFileNotFound As Boolean = True) As String
+
+    If Dir(path) = "" Then
+        ' File does not exist
+        If ErrorOnFileNotFound Then
+            Err.Raise vbObjectError, "ReadFile", "Could not locate path='" & path & "'"
+        End If
+        ReadFile = ""
+        Exit Function
+    End If
+
+    Dim iFile As Integer
+    Dim sFileContents As String
+    sFileContents = ""
+    iFile = FreeFile
+    Open path For Input As iFile
+        sFileContents = Input(LOF(iFile), iFile)
+    Close iFile
+    ReadFile = sFileContents
+
+End Function
+
+
+Public Function Serialize(ByVal Value As Variant) As String
+    
+    Dim vt As VbVarType
+    vt = VarType(Value)
+    Dim res As String
+    
+    Dim arraySerialize As Boolean
+    arraySerialize = False
+    
+    
+    Select Case vt
+        Case vbInteger:
+            res = CStr(Value)
+        Case vbLong:
+            res = CStr(Value)
+        Case vbSingle:
+            res = CStr(Value)
+        Case vbString:
+            res = """" & CStr(Value) & """"
+        Case vbDouble:
+            res = CStr(Value)
+        Case vbDate:
+            res = "#" & CStr(Value) & "#"
+        Case vbArray:
+            arraySerialize = True
+            
+        Case vbArray + vbInteger:
+            arraySerialize = True
+        Case vbArray + vbLong:
+            arraySerialize = True
+        Case vbArray + vbSingle:
+            arraySerialize = True
+        Case vbArray + vbDouble:
+            arraySerialize = True
+        Case vbArray + vbString:
+            arraySerialize = True
+        Case vbArray + vbVariant:
+            arraySerialize = True
+        Case Else:
+            Err.Raise vbObjectError, "Serialize", "Error cannot serialize value of type '" & TypeName(Value) & "'"
+    End Select
+    
+    If arraySerialize Then
+        res = "Array("
+        Dim el As Variant
+        For Each el In Value
+            res = res & Serialize(el) & ", "
+        Next el
+        If UBound(Value) <> -1 Then
+            res = Left(res, Len(res) - 2)
+        End If
+        res = res & ")"
+    End If
+    
+    Serialize = res
+
+End Function
+
+
+Public Function BrowseForFolder(Optional ByVal OpenAt As Variant = "C:\") As Variant
+    ' https://stackoverflow.com/questions/19372319/vba-folder-picker-set-where-to-start
+    ' http://allenbrowne.com/func-11.html
+
+     'Function purpose:  To Browser for a user selected folder.
+     'If the "OpenAt" path is provided, open the browser at that directory
+     'NOTE:  If invalid, it will open at the Desktop level
+
+    Printf "OPENAT: <" & OpenAt & ">"
+
+    Dim ShellApp As Object
+
+     'Create a file browser window at the default folder
+    Set ShellApp = CreateObject("Shell.Application"). _
+    BrowseForFolder(0, "Please choose a folder", 0, OpenAt)
+
+     'Set the folder to that selected.  (On error in case cancelled)
+    On Error Resume Next
+    BrowseForFolder = ShellApp.self.path
+    On Error GoTo 0
+
+     'Destroy the Shell Application
+    Set ShellApp = Nothing
+
+     'Check for invalid or non-entries and send to the Invalid error
+     'handler if found
+     'Valid selections can begin L: (where L is a letter) or
+     '\\ (as in \\servername\sharename.  All others are invalid
+    Select Case Mid(BrowseForFolder, 2, 1)
+    Case Is = ":"
+        If Left(BrowseForFolder, 1) = ":" Then GoTo Invalid
+    Case Is = "\"
+        If Not Left(BrowseForFolder, 1) = "\" Then GoTo Invalid
+    Case Else
+        GoTo Invalid
+    End Select
+
+    Exit Function
+
+Invalid:
+     'If it was determined that the selection was invalid, set to False
+    BrowseForFolder = False
+End Function
+
+
+Function FileExists(ByVal strFile As String, Optional bFindFolders As Boolean) As Boolean
+    ' https://stackoverflow.com/questions/19372319/vba-folder-picker-set-where-to-start
+    ' http://allenbrowne.com/func-11.html
+    'Purpose:   Return True if the file exists, even if it is hidden.
+    'Arguments: strFile: File name to look for. Current directory searched if no path included.
+    '           bFindFolders. If strFile is a folder, FileExists() returns False unless this argument is True.
+    'Note:      Does not look inside subdirectories for the file.
+    'Author:    Allen Browne. http://allenbrowne.com June, 2006.
+    Dim lngAttributes As Long
+
+    'Include read-only files, hidden files, system files.
+    lngAttributes = (vbReadOnly Or vbHidden Or vbSystem)
+
+    If bFindFolders Then
+        lngAttributes = (lngAttributes Or vbDirectory) 'Include folders as well.
+    Else
+        'Strip any trailing slash, so Dir does not look inside the folder.
+        Do While Right$(strFile, 1) = "\"
+            strFile = Left$(strFile, Len(strFile) - 1)
+        Loop
+    End If
+
+    'If Dir() returns something, the file exists.
+    On Error Resume Next
+    FileExists = (Len(Dir(strFile, lngAttributes)) > 0)
+End Function
+
+
+Function FolderExists(ByVal strPath As String) As Boolean
+    ' https://stackoverflow.com/questions/19372319/vba-folder-picker-set-where-to-start
+    ' http://allenbrowne.com/func-11.html
+    On Error Resume Next
+    FolderExists = ((GetAttr(strPath) And vbDirectory) = vbDirectory)
+End Function
+
+
+Function TrailingSlash(ByVal varIn As Variant) As String
+    ' https://stackoverflow.com/questions/19372319/vba-folder-picker-set-where-to-start
+    ' http://allenbrowne.com/func-11.html
+    If Len(varIn) > 0 Then
+        If Right(varIn, 1) = "\" Then
+            TrailingSlash = varIn
+        Else
+            TrailingSlash = varIn & "\"
+        End If
+    End If
+End Function
+
+'---------------------------------------------------------------------------------------
+' Function : CopyFile
+' Author    : James Crawford (assisted by Microsoft Copilot)
+' Purpose   : Copies file specified in SourceFilePath string to the location specified in the DestinationFolder string.
+'
+' Usage:
+' ~~~~~~
+' dim sfile as string
+' sfile = "C:\Access\thingIwant.txt"
+' dim sdestination as string
+' sdestination = "C:\Access\subfolder\putithere"
+' call CopyFile(SourceFilePath:=sfile, DestinationFolder:=sdestination)
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-01-28                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function CopyFile(SourceFilePath As String, DestinationFolder As String) As Boolean
+    Dim fso As Object
+    Dim SourceFile As Object
+    
+    ' Create FileSystemObject
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    ' Check if source file exists
+    If Not fso.FileExists(SourceFilePath) Then
+        'MsgBox "Source file does not exist.", vbExclamation
+        Printf "Source file (" & SourceFilePath & ") does not exist."
+        CopyFile = False
+        Exit Function
+    End If
+    
+    ' Check if destination folder exists, if not, create it
+    If Not fso.FolderExists(DestinationFolder) Then
+        fso.CreateFolder (DestinationFolder)
+    End If
+    
+    ' Get the source file
+    Set SourceFile = fso.GetFile(SourceFilePath)
+    
+    ' Copy file to destination folder
+    SourceFile.Copy DestinationFolder & "\" & SourceFile.Name
+    
+    ' Return True if the file was copied successfully
+    CopyFile = True
+    'MsgBox "File copied successfully!", vbInformation
+    Printf "File copied successfully!"
     
 End Function

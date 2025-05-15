@@ -1,0 +1,12 @@
+Option Compare Database
+
+' 2022-10-12
+' https://stackoverflow.com/questions/469347/is-there-an-equivalent-to-thread-sleep-in-vba
+
+#If VBA7 Then
+    Declare PtrSafe Sub Sleep Lib "kernel32" _
+    (ByVal dwMilliseconds As Long)
+#Else
+    Declare Sub Sleep Lib "kernel32" _
+    (ByVal dwMilliseconds As Long)
+#End If
