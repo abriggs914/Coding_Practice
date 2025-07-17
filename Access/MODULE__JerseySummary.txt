@@ -1,0 +1,314 @@
+Option Compare Database
+
+Private Sub QueryJerseys()
+
+    DoCmd.SetWarnings False
+
+    Dim sql As String
+    Dim totalOwnedJerseys As Long
+    totalOwnedJerseys = DCount("ID", "Jerseys")
+    sql = "UPDATE [dtJerseySummary] SET [TotalJerseysOwned] = " & totalOwnedJerseys
+    Call ExecSQL(sql, trace:="queryJerseys")
+    
+    DoEvents
+    
+    DoCmd.SetWarnings True
+    
+    'Dim rs As Recordset
+    '
+    'Dim ttlJerseysOwned As Long
+    'Dim ttlSpentOnJerseys As Double
+    '
+    '' This method counts all jerseys, even if the price is not known
+    ''sql = "SELECT COUNT([ID]) AS [TotalJerseysOwned] FROM [Jerseys]"
+    ''Set rs = CurrentDb.OpenRecordset(sql)
+    ''ttlJerseysOwned = RSFetch(rs, "TotalJerseysOwned")
+    ''Me.TextTotalJerseysOwned.Value = ttlJerseysOwned
+    '
+    'sql = "SELECT COUNT([PriceCalc]) AS [TotalOwnedJerseysKnownPrice], SUM([PriceCalc]) AS [TotalSpentOnJerseys] FROM [qd_JerseyPricingDetails]"
+    'Set rs = CurrentDb.OpenRecordset(sql)
+    'ttlSpentOnJerseys = RSFetch(rs, "TotalSpentOnJerseys")
+    'Me.TextTotalSpentOnJerseys.Value = ttlSpentOnJerseys
+    'ttlJerseysOwned = RSFetch(rs, "TotalOwnedJerseysKnownPrice")
+    'Me.TextTotalJerseysOwned.Value = ttlJerseysOwned
+    '
+    'rs.Close
+    'Set rs = Nothing
+    '
+    'Dim avgSpentPerJersey As Double
+    'avgSpentPerJersey = ttlSpentOnJerseys / ttlJerseysOwned
+    'Me.TextAverageSpentPerJersey.Value = avgSpentPerJersey
+
+End Sub
+
+Private Sub QueryJerseyPriceDetails()
+
+    DoCmd.SetWarnings False
+    
+    Dim sql As String
+    Dim rs As Recordset
+    
+    Dim ttlJerseysOwned As Long
+    Dim ttlSpentOnJerseys As Double
+    
+    ' This method counts all jerseys, even if the price is not known
+    'sql = "SELECT COUNT([ID]) AS [TotalJerseysOwned] FROM [Jerseys]"
+    'Set rs = CurrentDb.OpenRecordset(sql)
+    'ttlJerseysOwned = RSFetch(rs, "TotalJerseysOwned")
+    'Me.TextTotalJerseysOwned.Value = ttlJerseysOwned
+    
+    sql = "SELECT COUNT([PriceCalc]) AS [TotalOwnedJerseysKnownPrice], SUM([PriceCalc]) AS [TotalSpentOnJerseys] FROM [qd_JerseyPricingDetails]"
+    Set rs = CurrentDb.OpenRecordset(sql)
+    ttlSpentOnJerseys = RSFetch(rs, "TotalSpentOnJerseys")
+    'Me.TextTotalSpentOnJerseys.Value = ttlSpentOnJerseys
+    sql = "UPDATE [dtJerseySummary] SET [TotalSpentOnJerseys] = " & ttlSpentOnJerseys
+    ttlJerseysOwned = RSFetch(rs, "TotalOwnedJerseysKnownPrice")
+    Call ExecSQL(sql, trace:="queryJerseyPriceDetails")
+    
+    Dim avgSpentPerJersey As Double
+    avgSpentPerJersey = ttlSpentOnJerseys / ttlJerseysOwned
+    sql = "UPDATE [dtJerseySummary] SET [AverageSpentPerJerseys] = " & avgSpentPerJersey
+    Call ExecSQL(sql, trace:="queryJerseyPriceDetails")
+    
+    rs.Close
+    Set rs = Nothing
+    
+    DoCmd.SetWarnings True
+    
+    DoEvents
+
+End Sub
+
+
+Public Function GetTotalOwnedJerseys() As Long
+
+    Dim toj As Variant
+    toj = DLookup("TotalJerseysOwned", "dtJerseySummary", "[ID] = 1")
+    If IsNull(toj) Then
+        Call QueryJerseys
+        toj = DLookup("TotalJerseysOwned", "dtJerseySummary", "[ID] = 1")
+    End If
+    
+    GetTotalOwnedJerseys = toj
+
+End Function
+
+
+Public Function GetTotalSpentOnJerseys() As Double
+
+    Dim tsoj As Variant
+    tsoj = DLookup("TotalSpentOnJerseys", "dtJerseySummary", "[ID] = 1")
+    If IsNull(tsoj) Then
+        Call QueryJerseyPriceDetails
+        tsoj = DLookup("TotalSpentOnJerseys", "dtJerseySummary", "[ID] = 1")
+    End If
+    
+    GetTotalSpentOnJerseys = tsoj
+
+End Function
+
+
+Public Function GetAverageSpentPerJerseys() As Double
+
+    Dim aspj As Variant
+    aspj = DLookup("AverageSpentPerJerseys", "dtJerseySummary", "[ID] = 1")
+    If IsNull(aspj) Then
+        Call QueryJerseyPriceDetails
+        aspj = DLookup("AverageSpentPerJerseys", "dtJerseySummary", "[ID] = 1")
+    End If
+    
+    GetAverageSpentPerJerseys = aspj
+
+End Function
+
+
+Public Function GetNumJerseysNoPrice() As Double
+
+    GetNumJerseysNoPrice = DCount("ID", "qd_JerseysMissingPrices")
+
+End Function
+
+
+Public Function GetEstimatedMissingPrice() As Double
+
+    GetEstimatedMissingPrice = GetNumJerseysNoPrice() * GetAverageSpentPerJerseys()
+
+End Function
+
+
+Public Function GetEstimatedMissingPriceTotal() As Double
+
+    GetEstimatedMissingPriceTotal = GetTotalSpentOnJerseys() + GetEstimatedMissingPrice()
+
+End Function
+
+
+
+
+
+Public Sub CreateDatesTable()
+
+    Dim d1 As Date
+    d1 = #1/1/2023#
+    Dim d2 As Date
+    d2 = DateAdd("yyyy", 10, d1)
+    
+    Dim sql As String
+    Dim tName As String
+    tName = "Dates"
+    
+    Do Until d1 > d2
+        'CurrentDb.TableDefs(tName).Addrow #d1#
+        sql = "SELECT (#" & d1 & "#) INTO [" & tName & "]"
+        ExecSQL sql
+        
+        ' early exit
+        d1 = d2
+        d1 = DateAdd("d", 1, d1)
+    Loop
+    
+End Sub
+
+
+Public Sub AddToDatesTable()
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim d1 As Date
+    Dim d2 As Date
+    Dim tName As String
+    Dim sql As String
+    
+    Set db = CurrentDb
+    tName = "Dates"
+    d1 = #1/1/2023#
+    d2 = DateAdd("yyyy", 10, d1)
+    
+    ' Step 1: Create table if it doesn't exist
+    On Error Resume Next
+    sql = "SELECT * FROM [" & tName & "]"
+    Set rs = db.OpenRecordset(sql, dbOpenTable)
+    If Err.Number <> 0 Then
+        Err.Clear
+        On Error GoTo 0
+        sql = "CREATE TABLE [" & tName & "] ([DateVal] DATE PRIMARY KEY, [DayName] TEXT(10), [IsWeekend] YESNO, [HolidayName] TEXT(50))"
+        db.Execute sql, dbFailOnError
+    Else
+        rs.Close
+    End If
+    On Error GoTo 0
+
+    ' Step 2: Insert dates
+    Do While d1 <= d2
+        sql = "INSERT INTO [" & tName & "] ([DateVal], [DayName], [IsWeekend], [HolidayName]) " & _
+              "VALUES (#" & Format(d1, "yyyy-mm-dd") & "#, " & _
+              "'" & Format(d1, "dddd") & "', " & _
+              IIf(Weekday(d1, vbMonday) > 5, "True", "False") & ", " & _
+              "'" & Nz(GetHoliday(d1), "") & "')"
+        db.Execute sql, dbFailOnError
+        d1 = DateAdd("d", 1, d1)
+    Loop
+
+    MsgBox "Dates added to [" & tName & "] table.", vbInformation
+End Sub
+
+
+Public Function GetHoliday(d As Date) As String
+    Select Case Format(d, "mm-dd")
+        Case "01-01": GetHoliday = "New Year's Day"
+        Case "02-14": GetHoliday = "Valentine's Day"
+        Case "03-17": GetHoliday = "St. Patrick's Day"
+        Case "07-01": GetHoliday = "Canada Day"
+        Case "10-31": GetHoliday = "Halloween"
+        Case "11-11": GetHoliday = "Rememberance Day"
+        Case "12-25": GetHoliday = "Christmas Day"
+        Case Else: GetHoliday = Null
+    End Select
+End Function
+
+
+Public Sub CumPricePerDay()
+
+    ' 2025-07-13
+    ' Used to calculate the running total of prices for ordered Jerseys
+
+    Printf "Begin 'CumPricePerDay'"
+    Printf Now()
+
+    Dim qName As String
+    qName = "qd_CumPricePerDay"
+    Dim tName As String
+    tName = "dtCumPricePerDay"
+    
+    Dim sql As String
+    sql = "UPDATE [" & tName & "] set [SumOfPriceCalc] = 0, [RunningTotal] = 0 WHERE [SumOfPriceCalc] <= 0"
+    
+    Call ExecSQL(sql, False, trace:="CumPricePerDay")
+    
+    Dim rs As DAO.Recordset
+    Set rs = CurrentDb.OpenRecordset("SELECT * FROM " & tName & " ORDER BY [CalendarDate]")
+    
+    Dim date_ As Date
+    Dim tPrice As Double
+    tPrice = 0#
+    
+    Do Until rs.EOF Or rs.BOF
+        date_ = RSFetch(rs, "CalendarDate")
+        tPrice = tPrice + RSFetch(rs, "SumOfPriceCalc", castType:="cdbl")
+        sql = "UPDATE [" & tName & "] set [RunningTotal] = " & tPrice & " WHERE [CalendarDate] = #" & date_ & "#"
+        Call ExecSQL(sql, False, trace:="CumPricePerDay")
+        rs.MoveNext
+    Loop
+    
+    Printf "End 'CumPricePerDay'"
+    Printf Now()
+    
+End Sub
+
+
+Public Function AvgDaysBetweenOrder() As Double
+
+    ' 2025-07-14
+    ' Used to calculate the average number of days between Jersey order date
+
+    'Printf "Begin 'AvgDaysBetweenOrder'"
+    'Printf Now()
+    
+    DoCmd.SetWarnings False
+    Dim qName As String
+    qName = "qd_UniqueOrderDates"
+    DoCmd.OpenQuery qName
+
+    Dim tName As String
+    tName = "dtUniqueOrderDates"
+    
+    Dim fd As Date
+    Dim ld As Date
+    Dim d1 As Date
+    Dim d2 As Date
+    Dim dd As Long
+    Dim sql As String
+    
+    fd = DMin("OrderDate", "Jerseys")
+    ld = DMax("OrderDate", "Jerseys")
+    d1 = fd
+    d2 = fd
+    
+    Do Until d1 >= ld
+        d2 = DMin("OrderDate", "Jerseys", "[OrderDate] > #" & d1 & "#")
+        dd = DateDiff("d", d1, d2)
+        If d1 <> d2 Then
+            sql = "UPDATE [" & tName & "] SET [NextOrderDate] = #" & d2 & "#, [DatesBetween] = " & dd & " WHERE [OrderDate] = #" & d1 & "#"
+        Else
+            sql = "UPDATE [" & tName & "] SET [NextOrderDate] = NULL, [DatesBetween] = NULL WHERE [OrderDate] = #" & d1 & "#"
+        End If
+        Call ExecSQL(sql)
+        d1 = d2
+    Loop
+    
+    'Printf "End 'AvgDaysBetweenOrder'"
+    'Printf Now()
+    
+    AvgDaysBetweenOrder = DAvg("DatesBetween", "dtUniqueOrderDates", "[DatesBetween] <> 0")
+    DoCmd.SetWarnings True
+    
+End Function
