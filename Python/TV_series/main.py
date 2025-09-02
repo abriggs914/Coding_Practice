@@ -398,10 +398,11 @@ futurama = TVSeries("Futurama", {
 	8 : 13,
 	9 : 13,
 	10 : 13,
-	11 : 10},
-	22,
+	11 : 10,
+	12 : 10},
+	24,
 	1999,
-	2013,
+	2014,
 	False,
 	"Comedy",
 	"Disney+")
@@ -428,11 +429,11 @@ family_guy = TVSeries("Family Guy", {
 	19 : 20,
 	20 : 20,
 	21 : 20,
-	22 : 15
-	23 : 1},
+	22 : 15,
+	23 : 18},
 	24,
 	1999,
-	2023,
+	2025,
 	True,
 	"Comedy",
 	"Disney+")
@@ -454,10 +455,11 @@ its_always_sunny_in_philadelphia = TVSeries("It's Always Sunny in Philadelphia",
 	13 : 10,
 	14 : 10,
 	15 : 8,
-	16 : 8},
-	22,
+	16 : 8,
+	17 : 8},
+	24,
 	2005,
-	2023,
+	2025,
 	True,
 	"Comedy",
 	"Disney+")
@@ -535,10 +537,10 @@ the_simpsons = TVSeries("The Simpsons", {
 	33: 22,
 	34: 22,
 	35: 18,
-    36: 1},
+    36: 18},
 	24,
 	1989,
-	2023,
+	2025,
 	True,
 	"Comedy",
 	"Disney+")
@@ -600,10 +602,11 @@ criminal_minds = TVSeries("Criminal Minds", {
 	14: 15,
 	15: 10,
 	16: 10,
-    17: 10},
+    17: 10,
+	18: 10},
 	44,
 	2005,
-	2023,
+	2025,
 	True,
 	"Thriller / Drama",
 	"Disney+")
@@ -693,10 +696,11 @@ gravity_falls = TVSeries("Gravity Falls", {
 	
 	
 what_if = TVSeries("What If?", {
-	1: 9},
+	1: 9,
+	2: 9},
 	44,
 	2021,
-	2021,
+	2024,
 	True,
 	"Drama",
 	"Disney+")
@@ -790,10 +794,11 @@ king_of_the_hill = TVSeries("King of the Hill", {
 	10: 15,
 	11: 12,
 	12: 22,
-	13: 24},
+	13: 24,
+	14: 10},
 	23,
 	1997,
-	2009,
+	2025,
 	True,
 	"Comedy / Cartoon",
 	"Disney+")
@@ -875,10 +880,11 @@ american_dad = TVSeries("American Dad", {
 	16: 22,
 	17: 22,
 	18: 22,
-	19: 22},
+	19: 22,
+	20: 22},
 	23,
 	2005,
-	2022,
+	2025,
 	True,
 	"Comedy",
 	"Disney+")
@@ -1254,7 +1260,7 @@ if __name__ == "__main__" :
     
     
     for i in range(len(metric_possibilities)) :
-        print(print_time_line_horizontal(series_list, 1988, 2023))
+        print(print_time_line_horizontal(series_list, 1988, 2025))
         print(print_series_stats(series_list))
-    print("\n" + print_time_line_horizontal_ongoing(series_list, 1988, 2023))
-    print("\n" + print_time_line_horizontal_ongoing2(series_list, 1988, 2023))
+    print("\n" + print_time_line_horizontal_ongoing(series_list, 1988, 2025))
+    print("\n" + print_time_line_horizontal_ongoing2(series_list, 1988, 2025))
