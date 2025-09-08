@@ -2,8 +2,8 @@ Option Compare Database
 
 
 ' General Date Utility Functions
-' Version...................1.03
-' Date................2025-03-27
+' Version...................1.05
+' Date................2025-09-08
 ' Author(s).........Avery Briggs
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -13,16 +13,17 @@ Option Compare Database
 '
 '   Am_Pm                   -   return "AM"/"PM" for a time
 '   DateSuffix              -   return the appropriate suffix for a date's day. (1st, 2nd, 3rd)
-'   Datetime                -   return a date object with time, think python's datetime.datetime method
-'   Hourify                 -   return a times hour in 12-H format
-'   Round2Nearest5Minutes   -   round time to nearest 5 min increment
 '   DateFormat              -   return a neater date string
-'   StartOfDay              -   Retrieve this date at midnight
-'   MidDay                  -   Retrieve this date at noon
+'   Datetime                -   return a date object with time, think python's datetime.datetime method
 '   EndOfDay                -   Retrieve this date at the end of the day right before midnight of the next day
-'   StartOfMonth            -   Retrieve this date at the beginning of the month
 '   EndOfMonth              -   Retrieve this date at the end of the month
+'   Hourify                 -   return a times hour in 12-H format
 '   IsLeapYear              -   Determine if this year is a leap year
+'   MidDay                  -   Retrieve this date at noon
+'   Round2Nearest5Minutes   -   round time to nearest 5 min increment
+'   StartOfDay              -   Retrieve this date at midnight
+'   StartOfMonth            -   Retrieve this date at the beginning of the month
+'   TimeString              -   Return a string representing a quantity of time.
 '
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -154,7 +155,7 @@ Public Function Datetime( _
     Datetime = DateSerial(Year_, Month_, day_) + TimeSerial(Hour_, Minute_, Second_)
     
     If AssertValid Then
-        If Not All(Array(Year_ = Year(Datetime), Month_ = Month(Datetime), day_ = Day(Datetime), Hour_ = Hour(Datetime), Minute_ = Minute(Datetime), Second_ = Second(Datetime))) Then
+        If Not All(Array(Year_ = Year(Datetime), Month_ = month(Datetime), day_ = Day(Datetime), Hour_ = Hour(Datetime), Minute_ = Minute(Datetime), Second_ = Second(Datetime))) Then
             Err.Raise vbObjectError, "Datetime", "Parameters y=" & Year_ & ", m=" & Month_ & ", d=" & day_ & ", h=" & Hour_ & ", m=" & Minute_ & ", s=" & Second_ & " Do not represent a valid date."
         End If
     End If
@@ -250,33 +251,62 @@ End Function
 ' dateformat(#2024-06-12#, 1)                                   ' => "Wednesday, June 12th, 2024"
 ' dateformat(#2024-06-12#, 2)                                   ' => "Wednesday, June 12th"
 ' dateformat(#2024-06-12#, 3)                                   ' => "Wednesday June 12th"
-' printf(dateformat(#2024-06-12#, -1))                          ' => "['Wednesday', 'June', '12th', 2024]"
+' printf(dateformat(#2024-06-12#, -1))                          ' => "['Wednesday', 'June', '12th', 2024, 0, 0, 0]"
 ' printf(dateformat(#2025-03-27 20:49 #, 4))                    ' => "March 27th 2025"
 ' printf(dateformat(#2025-03-27 20:49 #, 5))                    ' => "March 27 2025"
 ' printf(dateformat(#2025-03-27 20:49 #, 6))                    ' => "March 27th"
 ' printf(dateformat(#2025-03-27 20:49 #, 7))                    ' => "March 27"
 ' printf(dateformat(#2025-03-27 20:49 #, 3, shortNames:=True))  ' => "Thu Mar 27th"
+' printf(dateformat(#2025-03-27 20:49 #, 8))                    ' => "20250327204900"
+' printf(dateformat(#2025-03-27 20:49 #, 9))                    ' => "2025-03-27 20:49:00"
+' printf(dateformat(#2025-03-27 20:49 #, 10))                   ' => "2025-03-27 09:49:00 PM"
+' printf(dateformat(#2025-03-27 20:49 #, 11))                   ' => "09:49:00 PM"
+' printf(dateformat(#2025-03-27 20:49 #, 12))                   ' => "09:49 PM"
+' printf(dateformat(#2025-03-27 20:49 #, 13))                   ' => "9 PM"
+' printf(dateformat(#2025-03-27 20:49 #, 14))                   ' => "27-MAR-25"
+' printf(dateformat(#2025-03-27 20:49 #, 15))                   ' => "27-MAR-25 09:49 PM"
 '
 ' Revision History:
 ' Rev       Date(yyyy/mm/dd)            Description
 ' **************************************************************************************
 ' 1         2024-06-12                  Initial Release
 ' 2         2025-03-27                  Added cases 4 - 7 and param 'shortNames'
+' 3         2025-07-22                  Added case 8
+' 4         2025-09-08                  Added case 9 - 15 supporting times better
 '---------------------------------------------------------------------------------------
 Public Function DateFormat(ByVal dateIn As Date, Optional ByVal mode As Integer = 0, Optional ByVal shortNames As Boolean = False) As Variant
 
     Dim y As Long
     Dim d As Long
+    Dim h As Long
+    Dim m As Long
+    Dim s As Long
     
     Dim mn As String
     Dim dN As String
     Dim wN As String
+    Dim dS As String
+    Dim hS As String
+    Dim hsS As String
+    Dim mS As String
+    Dim sS As String
     
     y = Year(dateIn)
     d = Day(dateIn)
-    mn = MonthName(Month(dateIn))
+    h = Hour(dateIn)
+    m = Minute(dateIn)
+    s = Second(dateIn)
+    mn = MonthName(month(dateIn))
     dN = d & DateSuffix(dateIn)
     wN = WeekdayName(Weekday(dateIn))
+    dS = Right("00" & d, 2)
+    hS = Right("00" & h, 2)
+    hsS = Right("00" & (h Mod 12), 2)
+    If hsS = "00" Then
+        hsS = "12"
+    End If
+    mS = Right("00" & m, 2)
+    sS = Right("00" & s, 2)
     
     If shortNames Then
         mn = Title(Left(mn, 3))
@@ -284,7 +314,7 @@ Public Function DateFormat(ByVal dateIn As Date, Optional ByVal mode As Integer 
     End If
     
     Dim values As Variant
-    values = Array(wN, mn, dN, y)
+    values = Array(wN, mn, dN, y, h, m, s)
     
     If mode = -1 Then
         ' Return list of string values
@@ -311,9 +341,38 @@ Public Function DateFormat(ByVal dateIn As Date, Optional ByVal mode As Integer 
     ElseIf mode = 7 Then
         ' No weekday withOUT year no day suffix
         DateFormat = mn & " " & d
+    ElseIf mode = 8 Then
+        ' Date-time stamp 20250722180116
+        DateFormat = Right("0000" & y, 4)
+        DateFormat = DateFormat & Right("00" & month(dateIn), 2)
+        DateFormat = DateFormat & dS
+        DateFormat = DateFormat & hS
+        DateFormat = DateFormat & mS
+        DateFormat = DateFormat & sS
+    ElseIf mode = 9 Then
+        ' Date-time stamp 2025-07-22 18:01:16
+        DateFormat = Format(dateIn, "yyyy-mm-dd") & " " & Join(Array(hS, mS, sS), ":")
+    ElseIf mode = 10 Then
+        ' Date-time stamp 2025-07-22 6:01:16 PM
+        DateFormat = Format(dateIn, "yyyy-mm-dd") & " " & Join(Array(hsS, mS, sS), ":") & " " & Am_Pm(dateIn)
+    ElseIf mode = 11 Then
+        ' 6:01:16 PM
+        DateFormat = Join(Array(hsS, mS, sS), ":") & " " & Am_Pm(dateIn)
+    ElseIf mode = 12 Then
+        ' 6:01 PM
+        DateFormat = Join(Array(hsS, mS), ":") & " " & Am_Pm(dateIn)
+    ElseIf mode = 13 Then
+        ' 6 PM
+        DateFormat = RemovePrefix(hsS, "0") & " " & Am_Pm(dateIn)
+    ElseIf mode = 14 Then
+        ' 17-Mar-25
+        DateFormat = Join(Array(dS, Left(UCase(mn), 3), Right(y, 2)), "-")
+    ElseIf mode = 15 Then
+        ' 17-Mar-25
+        DateFormat = DateFormat(dateIn, 14) & " " & DateFormat(dateIn, 12)
     Else
         ' Base case (0)
-        DateFormat = Join(values, " ")
+        DateFormat = values
     End If
 
 End Function
@@ -340,7 +399,7 @@ Public Function StartOfDay(ByVal dateIn As Date) As Date
     Dim d As Long
     
     y = Year(dateIn)
-    m = Month(dateIn)
+    m = month(dateIn)
     d = Day(dateIn)
     
     StartOfDay = Datetime(y, m, d, AssertValid:=True)
@@ -369,7 +428,7 @@ Public Function MidDay(ByVal dateIn As Date) As Date
     Dim d As Long
     
     y = Year(dateIn)
-    m = Month(dateIn)
+    m = month(dateIn)
     d = Day(dateIn)
     
     MidDay = Datetime(y, m, d, 12, AssertValid:=True)
@@ -398,7 +457,7 @@ Public Function EndOfDay(ByVal dateIn As Date) As Date
     Dim d As Long
     
     y = Year(dateIn)
-    m = Month(dateIn)
+    m = month(dateIn)
     d = Day(dateIn)
     
     EndOfDay = Datetime(y, m, d, 23, 59, 59, AssertValid:=True)
@@ -428,17 +487,17 @@ Public Function StartOfMonth(ByVal dateIn As Date) As Date
     
     Dim h As Long
     Dim mi As Long
-    Dim S As Long
+    Dim s As Long
     
     y = Year(dateIn)
-    m = Month(dateIn)
+    m = month(dateIn)
     d = Day(dateIn)
     
     h = Hour(dateIn)
     mi = Minute(dateIn)
-    S = Second(dateIn)
+    s = Second(dateIn)
     
-    StartOfMonth = Datetime(y, m, 1, h, mi, S, AssertValid:=True)
+    StartOfMonth = Datetime(y, m, 1, h, mi, s, AssertValid:=True)
 
 End Function
 
@@ -465,15 +524,15 @@ Public Function EndOfMonth(ByVal dateIn As Date) As Date
     
     Dim h As Long
     Dim mi As Long
-    Dim S As Long
+    Dim s As Long
     
     y = Year(dateIn)
-    m = Month(dateIn)
+    m = month(dateIn)
     d = Day(dateIn)
     
     h = Hour(dateIn)
     mi = Minute(dateIn)
-    S = Second(dateIn)
+    s = Second(dateIn)
     
     If (m = 1) Or (m = 3) Or (m = 5) Or (m = 7) Or (m = 8) Or (m = 10) Or (m = 12) Then
         d = 31
@@ -487,7 +546,7 @@ Public Function EndOfMonth(ByVal dateIn As Date) As Date
         End If
     End If
     
-    EndOfMonth = Datetime(y, m, d, h, mi, S, AssertValid:=True)
+    EndOfMonth = Datetime(y, m, d, h, mi, s, AssertValid:=True)
 
 End Function
 
@@ -512,5 +571,101 @@ Public Function IsLeapYear(ByVal y As Integer) As Boolean
     ' copied from python's calendar.isleap
     ' year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
     IsLeapYear = (y Mod 4 = 0) And ((y Mod 100 <> 0) Or (y Mod 400 = 0))
+
+End Function
+
+
+Public Function TimeString(ByVal timeInMillis As Variant, Optional ByVal date2 As Variant = Null) As String
+
+    '' ASSUMING:
+    '   1 year = 31,556,952 s
+    '   1 year = 31,556,952,000 ms
+    '   1 day  = 31556952 / 365.2425 => 86,400,000
+
+    If IsInstance(timeInMillis, vbDouble) Then
+    
+        Dim msPerYear As Double
+        Dim msPerCentury As Double
+        Dim msPerDecade As Double
+        Dim msPerDay As Double
+        Dim msPerHour As Double
+        Dim msPerMinute As Double
+        msPerYear = 31556952000#
+        msPerCentury = msPerYear * 100
+        msPerDecade = msPerYear * 10
+        msPerDay = msPerYear / 365.2425
+        msPerHour = msPerDay / 24
+        msPerMinute = msPerHour / 60
+        
+        Dim centuries As Double
+        Dim decades As Double
+        Dim years As Double
+        Dim days As Double
+        Dim hours As Double
+        Dim minutes As Double
+        Dim seconds As Double
+        Dim milliSeconds As Double
+        
+        centuries = CLng(timeInMillis / msPerCentury)
+        timeInMillis = timeInMillis - (centuries * msPerCentury)
+        decades = timeInMillis / msPerDecade
+        timeInMillis = timeInMillis - (decades * msPerDecade)
+        years = timeInMillis / msPerYear
+        timeInMillis = timeInMillis - (years * msPerYear)
+        days = timeInMillis / msPerDay
+        timeInMillis = timeInMillis - (days * msPerDay)
+        hours = timeInMillis / msPerHour
+        timeInMillis = timeInMillis - (hours * msPerHour)
+        minutes = timeInMillis / msPerMinute
+        timeInMillis = timeInMillis - (minutes * 1000)
+        seconds = timeInMillis / 1000
+        timeInMillis = timeInMillis - seconds
+        milliSeconds = timeInMillis
+        
+        Dim result As String
+        Printf "resultA: [" & result & "]"
+        If centuries > 0 Then
+            Printf "resultB: [" & result & "]"
+            result = result & centuries & " Centuries"
+        End If
+        If decades > 0 Then
+            Printf "resultC: [" & result & "]"
+            result = result & IIf(Bool(Len(result)), ", ", "") & decades & " Decades"
+        End If
+        If years > 0 Then
+            Printf "resultD: [" & result & "]"
+            result = result & IIf(Bool(Len(result)), ", ", "") & years & " Years"
+        End If
+        If days > 0 Then
+            Printf "resultE: [" & result & "]"
+            result = result & IIf(Bool(Len(result)), ", ", "") & days & " Days"
+        End If
+        If hours > 0 Then
+            Printf "resultB: [" & result & "]"
+            result = result & IIf(Bool(Len(result)), ", ", "") & hours & " Hours"
+        End If
+        If minutes > 0 Then
+            Printf "resultF: [" & result & "]"
+            result = result & IIf(Bool(Len(result)), ", ", "") & minutes & " Minutes"
+        End If
+        If seconds > 0 Then
+            Printf "resultG: [" & result & "]"
+            result = result & IIf(Bool(Len(result)), ", ", "") & seconds & " Seconds"
+        End If
+        If milliSeconds > 0 Then
+            Printf "resultH: [" & result & "]"
+            result = result & IIf(Bool(Len(result)), ", ", "") & milliSeconds & " Milliseconds"
+        End If
+        
+        TimeString = result
+        
+    ElseIf IsInstance(timeInMillis, vbDate) Then
+    
+        If date2 Is Null Then
+            date2 = Now()
+        End If
+        TimeString = TimeString(DateDiff("s", timeInMillis, date2) * 1000)
+        
+    End If
 
 End Function
