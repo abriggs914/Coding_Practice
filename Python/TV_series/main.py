@@ -399,10 +399,11 @@ futurama = TVSeries("Futurama", {
 	9 : 13,
 	10 : 13,
 	11 : 10,
-	12 : 10},
+	12 : 10,
+	13 : 10},
 	24,
 	1999,
-	2014,
+	2015,
 	False,
 	"Comedy",
 	"Disney+")
@@ -554,7 +555,7 @@ solar_opposites = TVSeries("Solar Opposites", {
     5: 12},
 	24,
 	2020,
-	2022,
+	2025,
 	True,
 	"Comedy",
 	"Disney+")
@@ -927,6 +928,16 @@ the_x_files = TVSeries("The X-Files", {
 	True,
 	"Drama / Crime / Mystery",
 	"Disney+")
+	
+
+fillmore = TVSeries("Fillmore", {
+    1 : 26},
+    23,
+    2002,
+    2002,
+    False,
+    "Comedy, Cartoon",
+    "Disney+")
 
 
 series_list = [
@@ -989,7 +1000,8 @@ series_list = [
 	what_we_do_in_the_shadows,
 	american_dad,
 	smallville,
-	the_x_files
+	the_x_files,
+	fillmore
 ]
 
    
