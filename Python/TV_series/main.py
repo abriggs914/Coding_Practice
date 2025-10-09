@@ -680,7 +680,7 @@ loki = TVSeries("Loki", {
 	60,
 	2021,
 	2021,
-	True,
+	False,
 	"Drama",
 	"Disney+")
 	
@@ -828,7 +828,7 @@ buffy_the_vampire_slayer = TVSeries("Buffy The Vampire Slayer", {
 	45,
 	1997,
 	2003,
-	True,
+	False,
 	"Drama / Action",
 	"Disney+")
 	
@@ -842,7 +842,7 @@ angel = TVSeries("Angel", {
 	45,
 	1999,
 	2004,
-	True,
+	False,
 	"Drama / Action",
 	"Disney+")
 	
@@ -905,7 +905,7 @@ smallville = TVSeries("Smallville", {
 	44,
 	2001,
 	2011,
-	True,
+	False,
 	"Drama",
 	"Prime TV")
 	
@@ -925,7 +925,7 @@ the_x_files = TVSeries("The X-Files", {
 	45,
 	1993,
 	2018,
-	True,
+	False,
 	"Drama / Crime / Mystery",
 	"Disney+")
 	
