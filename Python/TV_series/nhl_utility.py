@@ -421,6 +421,11 @@ class NHLJerseyCollection:
             self.df_jc_data["Cancelled"]
         ]
 
+        int_cols = ["ID", "NHLID"]
+        for col in int_cols:
+            self.df_jerseys[col] = self.df_jerseys[col]
+            self.df_jerseys[col] = self.df_jerseys[col].apply(lambda x: int(x) if x else None)
+
         self.first_date: datetime.date = self.df_jerseys["OrderDate"].min().date()
         self.last_date: datetime.date = self.df_jerseys["OrderDate"].max().date()
 
@@ -940,7 +945,7 @@ class NHLAPIHandler:
 
         self.df_games_boxscore = pd.concat([
             self.df_games_boxscore,
-            pd.DataFrame([g_data.to_df_row()])
+            pd.DataFrame([boxscore.to_df_row()])
         ])
 
         return data
@@ -1170,7 +1175,17 @@ display_df(teams, "Teams")
 display_df(nhl.get_country_data(), "Countries")
 display_df(nhl.get_glossary_data(), "Glossary:")
 
-pl_id = 8478864
+k_pl_id: str = "key_pl_id"
+display_df(
+    nhl_jc.df_jerseys,
+    "nhl_jc.df_jerseys"
+)
+st.session_state.setdefault(k_pl_id, random.choice(nhl_jc.df_jerseys["NHLID"].dropna().unique().tolist()))
+pl_id = st.selectbox(
+    label="Select a player",
+    key=k_pl_id,
+    options=nhl_jc.df_jerseys["NHLID"].dropna().unique().tolist()
+)
 pl_obj: NHLPlayer = nhl.get_player_data(pl_id)
 pl_team: NHLTeam = pl_obj.team
 st.write(f"Player ID# {pl_id}")
