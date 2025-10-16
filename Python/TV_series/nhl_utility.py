@@ -26,6 +26,8 @@ PATH_FOLDER_JERSEY_COLLECTION: str = r"D:\NHL jerseys\Jerseys 20250927"
 
 UTC_FMT: str = "%Y-%m-%dT%H:%M:%SZ"
 
+DEFAULT_SEASON_END_DATE: datetime.date = datetime.date(datetime.datetime.now().year + (1 if 8 < datetime.datetime.now().month else 0), 4, 16)
+
 
 def utc_offset_to_seconds(offset_str: str) -> float:
     spl = offset_str.split(":")
@@ -34,7 +36,7 @@ def utc_offset_to_seconds(offset_str: str) -> float:
     return (hours * 60 * 60) + (mins + 60)
 
 
-def get_this_season() -> str:
+def get_this_season_str() -> str:
     now = datetime.datetime.now()
     year = now.year
     month = now.month
@@ -118,6 +120,9 @@ class Jersey:
         self.nhl_uniform_link: str = j_data.get("NHLUniformLink")
         self.notes: str = j_data.get("Notes")
 
+        if self.j_id is None:
+            raise ValueError(f"{self.j_id} cannot be None")
+
     def is_blank(self) -> bool:
         return (self.number is None) and (self.player_last is None)
 
@@ -169,6 +174,9 @@ class Jersey:
         if inc_size and bool(self.size):
             res.append(self.size)
         return " ".join(map(str, res))
+
+    def __repr__(self) -> str:
+        return self.to_string()
 
 
 class NHLJersey(Jersey):
@@ -404,6 +412,7 @@ class NHLScoreboard:
 class NHLJerseyCollection:
     def __init__(self, excel_path: str):
         self.df_jc_data: pd.DataFrame = pd.read_excel(excel_path)
+        self.df_jc_data = self.df_jc_data.loc[~pd.isna(self.df_jc_data["ID"])]
 
         date_cols = [
             "OrderDate",
@@ -423,8 +432,7 @@ class NHLJerseyCollection:
 
         int_cols = ["ID", "NHLID"]
         for col in int_cols:
-            self.df_jerseys[col] = self.df_jerseys[col]
-            self.df_jerseys[col] = self.df_jerseys[col].apply(lambda x: int(x) if x else None)
+            self.df_jerseys[col] = self.df_jerseys[col].apply(lambda x: f"{int(x):.0f}" if not pd.isna(x) else None)
 
         self.first_date: datetime.date = self.df_jerseys["OrderDate"].min().date()
         self.last_date: datetime.date = self.df_jerseys["OrderDate"].max().date()
@@ -525,6 +533,34 @@ class NHLTeam:
 
     def __repr__(self):
         return f"{self.tri_code}"
+
+
+class NHLSeason:
+    def __init__(self, s_data: dict | pd.Series):
+        self.s_data: dict = s_data if isinstance(s_data, dict) else s_data.to_dict()
+        self.s_id: int = self.s_data.get("id")
+        self.conferences_in_use: bool = self.s_data.get("conferencesInUse")
+        self.divisions_in_use: bool = self.s_data.get("divisionsInUse")
+        self.point_for_ot_loss_in_use: bool = self.s_data.get("pointForOTlossInUse")
+        self.regulation_wins_in_use: bool = self.s_data.get("regulationWinsInUse")
+        self.row_in_use: bool = self.s_data.get("rowInUse")
+        # self.standings_end: datetime.date = datetime.datetime.strptime(self.s_data.get("standingsEnd"), "%Y-%m-%d").date()
+        # self.standings_start: datetime.date = datetime.datetime.strptime(self.s_data.get("standingsStart"), "%Y-%m-%d").date()
+        self.standings_end: datetime.date = self.s_data.get("standingsEnd")
+        self.standings_start: datetime.date = self.s_data.get("standingsStart")
+        self.ties_in_use: bool = self.s_data.get("tiesInUse")
+        self.wild_card_in_use: bool = self.s_data.get("wildcardInUse")
+
+        self.df_season: pd.DataFrame = None
+
+    def get_season_dates(self) -> pd.DatetimeIndex:
+        return pd.date_range(self.standings_start, self.standings_end)
+
+    def __eq__(self, other):
+        return self.s_id == other.s_id
+
+    def __repr__(self):
+        return f"NHL Season {self.s_id}"
 
 
 class NHLCountry:
@@ -698,8 +734,9 @@ class NHLAPIHandler:
         self.max_secs_get_teams: int = 60 * 60 * 24          # every day
         self.max_secs_get_glossary: int = 60 * 60 * 24       # every day
         self.max_secs_get_player_landing: int = 60 * 60 * 4  # every 4 hours
-        self.max_secs_get_country: int = 60 * 60 * 24        # every day
-        self.max_secs_get_roster = 60 * 60 * 12              # every 12 hours
+        self.max_secs_get_country: int = 60 * 60 * 24 * 7    # every week
+        self.max_secs_get_roster: int = 60 * 60 * 12         # every 12 hours
+        self.max_secs_get_seasons: int = 60 * 60 * 24 * 7    # every week
 
         self.save_file_df_columns = ["url", "date", "result"]
 
@@ -723,6 +760,7 @@ class NHLAPIHandler:
         self.df_glossary: pd.DataFrame = pd.DataFrame()
         self.df_countries: pd.DataFrame = pd.DataFrame(columns=["c_id"])
         self.df_players: pd.DataFrame = pd.DataFrame(columns=["p_id"])
+        self.df_seasons: pd.DataFrame = pd.DataFrame(columns=["s_id"])
 
     def _flush_to_disk(self):
         # Serialize datetimes as ISO strings
@@ -773,7 +811,10 @@ class NHLAPIHandler:
             self.df_saved_data.loc[idx, ["date", "result"]] = [now, results]
         else:
             new_row = pd.DataFrame([{"url": url, "date": now, "result": results}])
-            self.df_saved_data = pd.concat([self.df_saved_data, new_row], ignore_index=True)
+            if self.df_saved_data.empty:
+                self.df_saved_data = new_row.copy()
+            else:
+                self.df_saved_data = pd.concat([self.df_saved_data, new_row], ignore_index=True)
 
         # Persist to disk
         self._flush_to_disk()
@@ -804,7 +845,10 @@ class NHLAPIHandler:
         player.team = self.lookup_team(player.team_id)
         self.df_players = self.df_players[~(self.df_players["p_id"] == pid)]
         df_new_player = pd.DataFrame([{k: v for k, v in player.__dict__.items() if type(v) not in (list, tuple, dict, pd.DataFrame)}])
-        self.df_players = pd.concat([self.df_players, df_new_player], ignore_index=True)
+        if self.df_players.empty:
+            self.df_players = df_new_player.copy()
+        else:
+            self.df_players = pd.concat([self.df_players, df_new_player], ignore_index=True)
         return player
 
     def get_country_data(self) -> pd.DataFrame:
@@ -814,9 +858,30 @@ class NHLAPIHandler:
         self.df_countries = pd.DataFrame(results.get("data", []))
         return self.df_countries.copy()
 
+    def get_seasons_data(self) -> pd.DataFrame:
+        url = "{0}v1/standings-season".format(NHL_API_URL)
+        max_t = self.max_secs_get_seasons
+        results = self.query(url, max_t)
+        current_date: datetime.date = datetime.datetime.strptime(results.get("currentDate", datetime.datetime.now().strftime("%Y-%m-%d")), "%Y-%m-%d").date()
+        self.df_seasons = pd.DataFrame(results.get("seasons", []))
+        self.df_seasons = self.df_seasons.rename(columns={"id": "s_id"})
+        self.df_seasons["standingsEnd"] = self.df_seasons["standingsEnd"].apply(lambda dv: datetime.datetime.strptime(dv, "%Y-%m-%d").date())
+        self.df_seasons["standingsStart"] = self.df_seasons["standingsStart"].apply(lambda dv: datetime.datetime.strptime(dv, "%Y-%m-%d").date())
+        self.df_seasons["playoffsStart"] = self.df_seasons["standingsEnd"] + datetime.timedelta(days=1)
+        self.df_seasons["playoffsEnd"] = self.df_seasons["standingsEnd"] + datetime.timedelta(days=7*14)
+        before_christmas = current_date.month > 8
+        if current_date < datetime.datetime(current_date.year + (1 if before_christmas else 0), DEFAULT_SEASON_END_DATE.month, DEFAULT_SEASON_END_DATE.day).date():
+            # this season is ongoing
+            l_idx: int = self.df_seasons.index.tolist()[-1]
+            print(f"{l_idx=}")
+            self.df_seasons.loc[l_idx, "standingsEnd"] = datetime.date(current_date.year + (1 if before_christmas else 0), DEFAULT_SEASON_END_DATE.month, DEFAULT_SEASON_END_DATE.day + 1)
+            self.df_seasons.loc[l_idx, "playoffsStart"] = self.df_seasons.loc[l_idx, "standingsEnd"] + datetime.timedelta(days=1)
+            self.df_seasons.loc[l_idx, "playoffsEnd"] = self.df_seasons.loc[l_idx, "standingsEnd"] + datetime.timedelta(days=7*14)
+        return self.df_seasons.copy()
+
     def get_team_roster(self, team_tri_code, season=None) -> pd.DataFrame:
         if season is None:
-            season = get_this_season()
+            season = get_this_season_str()
         # return requests.get(f"https://api-web.nhle.com/v1/roster/{team_tri_code}/{season}").json()
         results = self.query("{0}/v1/roster/{1}/{2}".format(NHL_API_URL, team_tri_code, season), self.max_secs_get_roster)
         data = []
@@ -846,6 +911,33 @@ class NHLAPIHandler:
                 "t_id"
             ] = row["id"]
         return standings
+
+    # def get_season_dates(self, date_in: datetime.date) -> tuple[Any, Any]:
+
+    def get_season(self, date_in: datetime.date = None) -> NHLSeason | None:
+        if date_in is None:
+            date_in = datetime.datetime.now().date()
+        df_season = self.df_seasons.loc[
+            (self.df_seasons["standingsStart"] <= date_in)
+            & (date_in <= self.df_seasons["playoffsEnd"])
+        ]
+        if not df_season.empty:
+            ser_season = df_season.iloc[0]
+            season = NHLSeason(ser_season)
+            season.df_season = df_season.copy()
+            return season
+        return None
+
+    def standings_by_day(self, dates):
+        teams_data = []
+        # for i, date in enumerate(dates):
+        #     if date <= datetime.date.today():
+        #         df_standings: pd.DataFrame = self.get_standings(date).df_standings
+        #         if i == 0:
+        #             teams_data.append({})
+        #         "team_name": df_standings["team_name"].iloc[0],
+        return teams_data
+
 
     def get_country(self) -> dict | None:
         url = f"{NHL_API_URL}/v1/location"
@@ -1155,9 +1247,7 @@ st.set_page_config(layout="wide")
 
 k_nhl_jersey_collection: str = "key_nhl_jersey_collection"
 path_jersey_collection_data: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251011.xlsx"
-if k_nhl_jersey_collection not in st.session_state:
-    st.session_state[k_nhl_jersey_collection] = NHLJerseyCollection(path_jersey_collection_data)
-nhl_jc: NHLJerseyCollection = st.session_state[k_nhl_jersey_collection]
+nhl_jc: NHLJerseyCollection = st.session_state.setdefault(k_nhl_jersey_collection, NHLJerseyCollection(path_jersey_collection_data))
 
 k_nhl_api_handler: str = "key_nhl_api_handler"
 if k_nhl_api_handler not in st.session_state:
@@ -1169,11 +1259,64 @@ display_df(
 "nhl.df_saved_data"
 )
 
-teams = nhl.get_team_data()
+teams: pd.DataFrame = nhl.get_team_data()
+seasons: pd.DataFrame = nhl.get_seasons_data()
+seasons.sort_values(by="standingsEnd", ascending=False, inplace=True)
 
 display_df(teams, "Teams")
+display_df(seasons, "Seasons")
 display_df(nhl.get_country_data(), "Countries")
-display_df(nhl.get_glossary_data(), "Glossary:")
+# display_df(nhl.get_glossary_data(), "Glossary:")
+
+nhl_season_now: NHLSeason = nhl.get_season()
+st.write(nhl_season_now.df_season)
+st.write(nhl_season_now.get_season_dates())
+st.write(nhl.standings_by_day(nhl_season_now.get_season_dates()))
+
+with st.container(border=True):
+    df_nhl_glossary: pd.DataFrame = nhl.get_glossary_data()
+    lst_nhl_glossary_abbrevs: list[str] = df_nhl_glossary["abbreviation"].tolist()
+    k_selectbox_nhl_glossary: str = "key_selectbox_nhl_glossary"
+    st.session_state.setdefault(k_selectbox_nhl_glossary, random.choice(lst_nhl_glossary_abbrevs))
+    selectbox_nhl_glossary = st.selectbox(
+        label="Glossary:",
+        options=lst_nhl_glossary_abbrevs,
+        key=k_selectbox_nhl_glossary
+    )
+    if selectbox_nhl_glossary:
+        df_sel_glossary: pd.Series= df_nhl_glossary.loc[df_nhl_glossary["abbreviation"] == selectbox_nhl_glossary].iloc[0]
+        id_ = df_sel_glossary["id"]
+        full_name = df_sel_glossary["fullName"]
+        definition = df_sel_glossary["definition"]
+        first_season_for_stat = df_sel_glossary["firstSeasonForStat"]
+        last_updated = df_sel_glossary["lastUpdated"]
+        cols_glossary_info = st.columns([0.25, 0.5, 0.25])
+        cols_glossary_info[0].text_input(
+            label="ID:",
+            value=id_,
+            disabled=True
+        )
+        cols_glossary_info[0].text_input(
+            label="Full Name:",
+            value=full_name,
+            disabled=True
+        )
+        cols_glossary_info[2].text_input(
+            label="First Season For Stat",
+            value=first_season_for_stat,
+            disabled=True
+        )
+        cols_glossary_info[2].text_input(
+            label="Last Updated:",
+            value=last_updated,
+            disabled=True
+        )
+        st.text_area(
+            label="Definition:",
+            value=definition,
+            disabled=True
+        )
+
 
 k_pl_id: str = "key_pl_id"
 display_df(
@@ -1187,9 +1330,11 @@ pl_id = st.selectbox(
     options=nhl_jc.df_jerseys["NHLID"].dropna().unique().tolist()
 )
 pl_obj: NHLPlayer = nhl.get_player_data(pl_id)
+st.write(pl_obj)
 pl_team: NHLTeam = pl_obj.team
 st.write(f"Player ID# {pl_id}")
 st.write(pl_obj)
+st.write(pl_team)
 image_cols = st.columns(4)
 image_cols[0].image(pl_obj.path_team_logo, width=300)
 image_cols[1].image(pl_obj.birth_country.image_url, width=300)
@@ -1209,7 +1354,7 @@ display_df(
 st.write(pl_team.full_name)
 display_df(
     nhl.get_team_roster(pl_team.tri_code),
-    f"{pl_team.full_name} {f_season(get_this_season())} Team Roster"
+    f"{pl_team.full_name} {f_season(get_this_season_str())} Team Roster"
 )
 
 st.write(nhl.get_country())
@@ -1359,6 +1504,7 @@ for i, k_df in enumerate(df_standings_to_show):
 
 
 st.write(nhl_jc)
+st.write(nhl_jc.jerseys)
 lst_jerseys = sorted(list(nhl_jc.jerseys))
 k_selectbox_jersey = "key_selectbox_jersey"
 st.session_state.setdefault(k_selectbox_jersey, random.choice(lst_jerseys))
@@ -1386,24 +1532,24 @@ if str(selectbox_jersey):
                 st.image(os.path.join(sel_jersey.image_folder, path))
 
 
-for i, j_id in enumerate(nhl_jc.jerseys):
-    j = nhl_jc.jerseys[j_id]
-    st.write(f"#{j_id} {j.to_string()}")
-
-
-# k_selectbox_team: str = "key_selectbox_team"
-# selectbox_team = st.selectbox(
-#     label="Select a Team:",
-#     key=k_selectbox_team,
-#     options=nhl.df_teams["triCode"]
-# )
-# if selectbox_team:
-#     ser_team: pd.Series = nhl.df_teams.loc[nhl.df_teams["triCode"] == selectbox_team].iloc[0]
-#     t_id = ser_team["id"]
-#     sel_team: NHLTeam = nhl.lookup_team(t_id)
-#     st.write(sel_team)
-#     # cgs = nhl.check_game_status(sel_team.t_id, date=datetime.date.today())
-#     st.write(cgs)
+# for i, j_id in enumerate(nhl_jc.jerseys):
+#     j = nhl_jc.jerseys[j_id]
+#     st.write(f"#{j_id} {j.to_string()}")
+#
+#
+# # k_selectbox_team: str = "key_selectbox_team"
+# # selectbox_team = st.selectbox(
+# #     label="Select a Team:",
+# #     key=k_selectbox_team,
+# #     options=nhl.df_teams["triCode"]
+# # )
+# # if selectbox_team:
+# #     ser_team: pd.Series = nhl.df_teams.loc[nhl.df_teams["triCode"] == selectbox_team].iloc[0]
+# #     t_id = ser_team["id"]
+# #     sel_team: NHLTeam = nhl.lookup_team(t_id)
+# #     st.write(sel_team)
+# #     # cgs = nhl.check_game_status(sel_team.t_id, date=datetime.date.today())
+# #     st.write(cgs)
 
 scoreboard_now: NHLScoreboard = nhl.load_scoreboard()
 boxscore_now = nhl.load_game_boxscore(2025020048)
