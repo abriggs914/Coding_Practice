@@ -12,8 +12,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.41
-    Date...........2025-03-22
+    Version..............1.42
+    Date...........2025-10-20
     Author(s)....Avery Briggs
     """
 

@@ -12,8 +12,8 @@ from utility import clamp, flatten, reduce
 VERSION = \
     """	
     General Utility file of RGB colour values
-    Version..............1.41
-    Date...........2025-03-22
+    Version..............1.42
+    Date...........2025-10-20
     Author(s)....Avery Briggs
     """
 
@@ -23,11 +23,11 @@ def VERSION_DETAILS():
 
 
 def VERSION_NUMBER():
-    return float(".".join(VERSION.lower().split("version")[-1].split("date")[0].split(".")[-2:]).strip())
+    return float(".".join(VERSION.lower().split("version")[-1].split("today")[0].split(".")[-2:]).strip())
 
 
 def VERSION_DATE():
-    return datetime.datetime.strptime(VERSION.lower().split("date")[-1].split("author")[0].split(".")[-1].strip(),
+    return datetime.datetime.strptime(VERSION.lower().split("today")[-1].split("author")[0].split(".")[-1].strip(),
                                       "%Y-%m-%dictionary")
 
 
@@ -3517,10 +3517,14 @@ def iscolour(c, g=None, b=None):
     elif isinstance(c, str) and g is None and b is None:
         c = c.replace("-", "_").upper()
         c = c.replace("GREY", "GRAY")
+        c = c.replace("BURGANDY", "BURGUNDY")
         if ("_" not in c) and ("GRAY" in c):
             c = c.removeprefix("GRAY")
             c = f"GRAY_{c}"
+            c = c.removesuffix("_")
         if c.upper() in COLOURS:
+            return True
+        if c.replace("_", "").replace("-", "").replace(" ", "").strip().upper() in COLOURS:
             return True
     elif all([
             hasattr(c, "hex_code"),
@@ -3763,10 +3767,15 @@ class Colour:
             elif isinstance(c, str):
                 col = c.replace("-", "_").upper()
                 col = col.replace("GREY", "GRAY")
+                col = col.replace("BURGANDY", "BURGUNDY")
                 if ("_" not in col) and ("GRAY" in col):
                     col = col.removeprefix("GRAY")
                     col = f"GRAY_{col}"
+                    col = col.removesuffix("_")
                 if col in COLOURS:
+                    r, g, b = COLOURS[col]["R"], COLOURS[col]["G"], COLOURS[col]["B"]
+                elif col.replace("_", "").replace("-", "").replace(" ", "").strip().upper() in COLOURS:
+                    col = col.replace("_", "").replace("-", "").replace(" ", "").strip().upper()
                     r, g, b = COLOURS[col]["R"], COLOURS[col]["G"], COLOURS[col]["B"]
             else:
                 # r, g, b = None, None, None

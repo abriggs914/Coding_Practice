@@ -15,8 +15,8 @@ from colour_utility import Colour
 VERSION = \
 	"""	
     Streamlit utility functions
-    Version..............1.05
-    Date...........2025-05-21
+    Version..............1.06
+    Date...........2025-10-20
     Author(s)....Avery Briggs
     """
 
