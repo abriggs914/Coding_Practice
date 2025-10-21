@@ -29,8 +29,10 @@ from utility import percent, number_suffix
 
 NHL_ASSET_API_URL: str = "https://assets.nhle.com/"
 NHL_STATS_API_URL: str = "https://api.nhle.com/stats/rest/en/"
+NHL_URL: str = "https://www.nhl.com/"
 NHL_API_URL: str = "https://api-web.nhle.com/"
-NHL_PLAYER_API_URL: str = "{0}v1/player/".format(NHL_API_URL)
+NHL_API_URL_V1: str = "{0}v1/".format(NHL_API_URL)
+NHL_PLAYER_API_URL: str = "{0}player/".format(NHL_API_URL_V1)
 PATH_UNKNOWN_IMAGE: str = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags\unknown_flag.png"
 PATH_FOLDER_JERSEY_COLLECTION: str = r"D:\NHL jerseys\Jerseys 20250927"
 PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251017.xlsx"
@@ -431,7 +433,7 @@ class NHLGame:
         self.start_time_utc: datetime.datetime = datetime.datetime.strptime(g_data.get("startTimeUTC"), UTC_FMT)
         self.game_eastern_utc_offset: str = g_data.get("easternUTCOffset", "00:00")
         self.game_eastern_utc_offset_sec: datetime.timedelta = datetime.timedelta(seconds=utc_offset_to_seconds(self.game_eastern_utc_offset))
-        self.start_time_atl: datetime.datetime = self.start_time_utc + self.game_eastern_utc_offset_sec + datetime.timedelta(hours=1)
+        self.start_time_atl: datetime.datetime = (self.start_time_utc + self.game_eastern_utc_offset_sec + datetime.timedelta(hours=1)).replace(minute=0, second=0, microsecond=0)
         self.game_venue_utc_offset: str = g_data.get("venueUTCOffset")
         self.game_tv_broadcasts: list[dict[str: Any]] = g_data.get("tvBroadcasts")
 
@@ -601,7 +603,7 @@ class NHLBoxScore(NHLGame):
         self.game_start_time_utc: datetime.datetime = datetime.datetime.strptime(self.bx_data.get("startTimeUTC"), UTC_FMT)
         self.game_eastern_utc_offset: str = self.bx_data.get("easternUTCOffset")
         self.game_eastern_utc_offset_sec: datetime.timedelta = datetime.timedelta(seconds=utc_offset_to_seconds(self.game_eastern_utc_offset))
-        self.start_time_atl: datetime.datetime = self.game_start_time_utc + self.game_eastern_utc_offset_sec + datetime.timedelta(hours=1)
+        self.start_time_atl: datetime.datetime = (self.game_start_time_utc + self.game_eastern_utc_offset_sec + datetime.timedelta(hours=1)).replace(minute=0, second=0, microsecond=0)
         self.game_venue_utc_offset: int = self.bx_data.get("venueUTCOffset")
         self.game_broadcasts: list[dict[str: Any]] = self.bx_data.get("tvBroadcasts", [])
 
@@ -633,7 +635,7 @@ class NHLBoxScore(NHLGame):
 
         self.game_clock: dict[str: Any] = self.bx_data.get("clock", {})
         self.game_clock_time_remaining: str = self.game_clock.get("timeRemaining")
-        self.game_clock_seconds_remaining: int = int(self.game_clock.get("secondsRemaining"))
+        self.game_clock_seconds_remaining: int = int(self.game_clock.get("secondsRemaining", 1200))
         self.game_clock_running: str = self.game_clock.get("running")
         self.game_clock_in_intermission: str = self.game_clock.get("inIntermission")
         self.game_period_num: int = self.bx_data.get("periodDescriptor", {}).get("number", 1)
@@ -642,6 +644,16 @@ class NHLBoxScore(NHLGame):
         self.game_state: str = self.bx_data.get("gameState")
         self.game_schedule_state: str = self.bx_data.get("gameScheduleState")
         self.game_reg_periods: int = self.bx_data.get("regPeriods")
+
+        self.game_last_period_type: str = self.bx_data.get("gameOutcome", {}).get("lastPeriodType")
+        self.winning_goalie_p_id: str = self.bx_data.get("winningGoalie", {}).get("playerId")
+        self.winning_goalie_first_initial: str = self.bx_data.get("winningGoalie", {}).get("firstInitial", {}).get("default")
+        self.winning_goalie_last_name: str = self.bx_data.get("winningGoalie", {}).get("lastName", {}).get("default")
+
+        self.winning_goal_scorer_p_id: str = self.bx_data.get("winningGoalScorer", {}).get("playerId")
+        self.winning_goal_scorer_first_initial: str = self.bx_data.get("winningGoalScorer", {}).get("firstInitial", {}).get("default")
+        self.winning_goal_scorer_last_name: str = self.bx_data.get("winningGoalScorer", {}).get("lastName", {}).get("default")
+
 
     def to_df_row(self) -> dict:
         return {k: v for k, v in self.__dict__.items() if type(v) not in (list, tuple, dict, pd.DataFrame)}
@@ -711,6 +723,46 @@ class NHLScoreboard:
                 # for data in g_data:
                 #     print(f"{date=}, {data=}")
                 self.game_dates[date].append(NHLGame(g_data))
+
+
+class NHLGameDate:
+    def __init__(self, gd_date: dict):
+        self.gd_date: dict = gd_date
+
+        self.date: str = self.gd_date.get("date")
+        self.date: datetime.date = datetime.datetime.strptime(self.date, DATE_FMT).date() if self.date else None
+        self.dayAbbrev: str = self.gd_date.get("dayAbbrev")
+        self.number_of_games: int = self.gd_date.get("numberOfGames", 0)
+        self.date_promo: str = self.gd_date.get("datePromo")
+        self.games: list[NHLBoxScore] = [NHLBoxScore(bx) for bx in self.gd_date.get("games", [])]
+
+
+class NHLSchedule:
+    def __init__(self, sc_data: dict | pd.Series):
+        self.sc_data: dict = sc_data if isinstance(sc_data, dict) else sc_data.to_dict()
+
+        self.next_start_date: str = self.sc_data.get("nextStartDate")
+        self.next_start_date: datetime.date = datetime.datetime.strptime(self.next_start_date, DATE_FMT).date() if self.next_start_date else None
+
+        self.previous_start_date: str = self.sc_data.get("previousStartDate")
+        self.previous_start_date: datetime.date = datetime.datetime.strptime(self.previous_start_date, DATE_FMT).date() if self.next_start_date else None
+
+        self.pre_season_start_date: str = self.sc_data.get("preSeasonStartDate")
+        self.pre_season_start_date: datetime.date = datetime.datetime.strptime(self.pre_season_start_date, DATE_FMT).date() if self.pre_season_start_date else None
+
+        self.regular_season_start_date: str = self.sc_data.get("regularSeasonStartDate")
+        self.regular_season_start_date: datetime.date = datetime.datetime.strptime(self.regular_season_start_date, DATE_FMT).date() if self.pre_season_start_date else None
+
+        self.regular_season_end_date: str = self.sc_data.get("regularSeasonEndDate")
+        self.regular_season_end_date: datetime.date = datetime.datetime.strptime(self.regular_season_end_date, DATE_FMT).date() if self.pre_season_start_date else None
+
+        self.playoff_end_date: str = self.sc_data.get("playoffEndDate")
+        self.playoff_end_date: datetime.date = datetime.datetime.strptime(self.playoff_end_date, DATE_FMT).date() if self.pre_season_start_date else None
+
+        self.game_week: list[NHLGameDate] = [NHLGameDate(gd) for gd in sc_data.get("gameWeek", [])]
+
+    def __repr__(self):
+        return f"NHLSchedule {self.next_start_date:{DATE_FMT}}, {self.previous_start_date:{DATE_FMT}}"
 
 
 class NHLJerseyCollection:
@@ -1054,9 +1106,10 @@ class NHLPlayer:
 
 class NHLAPIHandler:
 
-    def __init__(self):
+    def __init__(self, init: bool = False):
         print("NHLAPIHandler")
         # self.NHL_API_URL: str = "http://statsapi.web.nhl.com/api/v1/"
+        self.init: bool = init
         self.save_file = "nhl_api_handler_save.json"
 
         self.max_secs_get_teams: int = 60 * 60 * 24          # every day
@@ -1066,6 +1119,7 @@ class NHLAPIHandler:
         self.max_secs_get_roster: int = 60 * 60 * 12         # every 12 hours
         self.max_secs_get_seasons: int = 60 * 60 * 24 * 7    # every week
         self.max_secs_get_standings: int = 60 * 5            # every 5 minutes
+        self.max_secs_get_schedule: int = 60 * 60 * 24       # every day
         self.max_secs_get_game_box_score: int = 60           # every minute
 
         self.save_file_df_columns = ["url", "date", "result"]
@@ -1091,6 +1145,22 @@ class NHLAPIHandler:
         self.df_countries: pd.DataFrame = pd.DataFrame(columns=["c_id"])
         self.df_players: pd.DataFrame = pd.DataFrame(columns=["p_id"])
         self.df_seasons: pd.DataFrame = pd.DataFrame(columns=["s_id"])
+        # self.df_schedule: pd.DataFrame = pd.DataFrame(columns=["g_id"])
+
+        if self.init:
+            self.get_team_data()
+            self.get_seasons_data()
+            self.get_standings()
+            schedule: NHLSchedule = self.get_schedule()
+            d1: datetime.date = schedule.regular_season_start_date
+            d2: datetime.date = d1
+            ed: datetime.date = schedule.regular_season_end_date
+            while d1 <= ed:
+                d2 = d1
+                schedule: NHLSchedule = self.get_schedule(d1)
+                d1 = schedule.next_start_date
+                if d2 == d1:
+                    break
 
     def _flush_to_disk(self):
         # Serialize datetimes as ISO strings
@@ -1233,14 +1303,14 @@ class NHLAPIHandler:
 
         return pd.DataFrame(data)
 
-    def get_standings(self, date: datetime.date = None) -> NHLStandings:
+    def get_standings(self, date_in: datetime.date = None) -> NHLStandings:
         """Get df_standings up to a particular date"""
         print("self.get_standings")
         # df_standings keys:
         # ['wildCardIndicator', 'df_standings']
-        if date is None:
-            date = datetime.date.today()
-        url = f"{NHL_API_URL}v1/standings/{date:%Y-%m-%d}"
+        if date_in is None:
+            date_in = datetime.date.today()
+        url = f"{NHL_API_URL}v1/standings/{date_in:%Y-%m-%d}"
         max_t = self.max_secs_get_standings
         standings = NHLStandings(self.query(url, hold_time_secs=max_t))
         # st.write(standings.s_data)
@@ -1251,6 +1321,28 @@ class NHLAPIHandler:
                 "t_id"
             ] = row["id"]
         return standings
+
+    def get_schedule(self, date_in: datetime.date = None) -> NHLSchedule:
+        print("self.get_schedule")
+        # df_standings keys:
+        # ['wildCardIndicator', 'df_standings']
+        if date_in is None:
+            date_in = datetime.date.today()
+        url = f"{NHL_API_URL}v1/schedule/{date_in:%Y-%m-%d}"
+        max_t = self.max_secs_get_schedule
+        schedule = NHLSchedule(self.query(url, hold_time_secs=max_t))
+        for game_week in schedule.game_week:
+            assert isinstance(game_week, NHLGameDate), f"game_week must be an instance of NHLBoxScore, got '{type(game_week)}'"
+            for game_box_score in game_week.games:
+                df_games = self.df_games_boxscore.loc[self.df_games_boxscore["g_id"] == game_box_score.g_id]
+                if df_games.empty:
+                    self.df_games_boxscore = pd.concat([
+                        self.df_games_boxscore,
+                        pd.DataFrame([game_box_score.to_df_row()])
+                    ], ignore_index=True)
+                else:
+                    self.df_games_boxscore.loc[df_games.index] = game_box_score.to_df_row()
+        return schedule
 
     # def get_season_dates(self, date_in: datetime.date) -> tuple[Any, Any]:
 
@@ -1586,6 +1678,9 @@ class NHLAPIHandler:
 #     return local_game_time
 
 
+#  https://api-web.nhle.com/v1/gamecenter/2024020735/play-by-play
+
+
 st.set_page_config(layout="wide")
 
 k_nhl_jersey_collection: str = "key_nhl_jersey_collection"
@@ -1593,7 +1688,7 @@ nhl_jc: NHLJerseyCollection = st.session_state.setdefault(k_nhl_jersey_collectio
 
 k_nhl_api_handler: str = "key_nhl_api_handler"
 if k_nhl_api_handler not in st.session_state:
-    st.session_state[k_nhl_api_handler] = NHLAPIHandler()
+    st.session_state[k_nhl_api_handler] = NHLAPIHandler(True)
 nhl: NHLAPIHandler = st.session_state[k_nhl_api_handler]
 
 teams: pd.DataFrame = nhl.get_team_data()
@@ -1710,14 +1805,36 @@ elif pills_mode == options_pills_mode[1]:
         options=lst_teams
     )
     if selectbox_team_calendar:
+        team_events = []
+        team_tri_code: str = nhl.df_teams.loc[nhl.df_teams["fullName"].str.lower() == selectbox_team_calendar.lower()].iloc[0]["triCode"]
+        df_team_games: pd.DataFrame = nhl.df_games_boxscore.loc[
+            (nhl.df_games_boxscore["home_team_name_abbrev"] == team_tri_code)
+            | (nhl.df_games_boxscore["away_team_name_abbrev"] == team_tri_code)
+        ]
+        display_df(
+            df_team_games,
+            f"{selectbox_team_calendar} Games:"
+        )
+        for i, row in df_team_games.iterrows():
+            is_home: bool = row["home_team_name_abbrev"] == team_tri_code
+            opp: str = row['away_team_name_abbrev'] if is_home else row['home_team_name_abbrev']
+            team_events.append({
+                "id": row["g_id"],
+                "title": f"{'vs' if is_home else '@'} {opp}",
+                "start": row["start_time_atl"].strftime(UTC_FMT).removesuffix("Z"),
+                "end": (row["start_time_atl"] + datetime.timedelta(minutes=60)).strftime(UTC_FMT).removesuffix("Z")
+                # ,
+                # "url": NHL_URL.removesuffix("/") + row["game_center_link"]
+            })
+
+        print(team_events)
+        st.write(team_events)
+
         calendar(
-            events=[
-                {
-                    "id": 'a',
-                    "title": 'my event',
-                    "start": '2018-09-01'
-                }
-            ]
+            events=team_events,
+            options={
+                "height": 500
+            }
         )
 
     display_df(
@@ -1924,6 +2041,10 @@ elif pills_mode == options_pills_mode[1]:
                 cols_scoreboard_table[1].markdown(game_box.st_boxscore_card(), unsafe_allow_html=True)
             else:
                 cols_scoreboard_table[1].markdown(game.st_scoreboard_card(), unsafe_allow_html=True)
+
+    schedule = nhl.get_schedule()
+    st.write(schedule)
+    st.write(nhl.df_games_boxscore)
 
 
 elif pills_mode == options_pills_mode[0]:
@@ -2192,12 +2313,12 @@ else:
             ax.axis('equal')
             st.pyplot(fig)
     else:
-        known_endpoints = [
-            NHL_PLAYER_API_URL,
-            NHL_ASSET_API_URL,
-            NHL_STATS_API_URL,
-            NHL_API_URL
-        ]
+        known_endpoints = {
+            NHL_PLAYER_API_URL: "",
+            NHL_ASSET_API_URL: "",
+            NHL_STATS_API_URL: "",
+            NHL_API_URL: ""
+        }
 
         df_known_urls: pd.DataFrame = nhl.df_saved_data.copy()
         display_df(
@@ -2215,6 +2336,7 @@ else:
                     key=f"key_known_endpoint_{i}"
                 ):
                     st.session_state.update({k_text_url: ke})
+                st.write(known_endpoints[ke])
 
         text_url_v: str = st.session_state.setdefault(k_text_url, "")
         text_url = st.text_input(
