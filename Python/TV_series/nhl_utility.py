@@ -5,11 +5,11 @@ import random
 import pandas as pd
 import streamlit
 from decorator import append
-import streamlit.components.v1 as components
 from streamlit.delta_generator import DeltaGenerator
 from streamlit_pills import pills
 from streamlit_calendar import calendar
 
+from datetime_utility import is_leap_year
 from streamlit_utility import *
 
 import numpy as np
@@ -263,39 +263,16 @@ def seconds_to_clock(seconds_left: int) -> str:
     return clocks[p_sec][1]
 
 
-def show_timer(seconds=60, count_down:bool = True, label:str = None, finish_label:str = None):
-    if label is None:
-        label = "Time Left" if count_down else "Time Elapsed"
-    if finish_label is None:
-        finish_label = "⏰ Time's up!"
+def date_to_this_year(date_in: datetime.date | datetime.datetime, to_year: Optional[int] = None) -> datetime.date | datetime.datetime:
+    date_now = datetime.datetime.now() if to_year is None else datetime.datetime(to_year, 1, 1)
+    leap_in = is_leap_year(date_in)
+    leap_now = is_leap_year(date_now)
+    if leap_in and not leap_now:
+        if date_in.month == 2 and date_in.day == 29:
+            date_in = date_in - datetime.timedelta(days=1)
 
-    op = "-=" if count_down else "+="
-    seconds_i = f"{seconds}" if count_down else "0"
-
-    html_code = f"""
-    <div id="timer" style="font-size: 24px; font-weight: bold; color: #f00;">
-      {label}: {seconds_i} seconds
-    </div>
-    <script>
-    let seconds = {seconds_i};
-    let timer = document.getElementById("timer");
-    let countdown = setInterval(() => {{
-        seconds {op} 1;
-        if (seconds >= 0) {{
-            if (seconds <= {seconds}) {{
-                timer.innerHTML = "{label}: " + seconds + " seconds";
-            }} else {{
-                clearInterval(countdown);
-                timer.innerHTML = "{finish_label}";
-            }}
-        }} else {{
-            clearInterval(countdown);
-            timer.innerHTML = "{finish_label}";
-        }}
-    }}, 1000);
-    </script>
-    """
-    components.html(html_code, height=50)
+    date_in = date_in.replace(year=date_now.year)
+    return date_in
 
 
 class Jersey:
@@ -323,9 +300,9 @@ class Jersey:
         self.colour_1: str = j_data.get("Colour1")
         self.colour_2: str = j_data.get("Colour2")
         self.colour_3: str = j_data.get("Colour3")
-        self.order_date: datetime.date = j_data.get("OrderDate")
-        self.receive_date: datetime.date = j_data.get("ReceiveDate")
-        self.open_date: datetime.date = j_data.get("OpenDate")
+        self.order_date: datetime.date = j_data.get("OrderDate").date()
+        self.receive_date: datetime.date = j_data.get("ReceiveDate").date()
+        self.open_date: datetime.date = j_data.get("OpenDate").date()
         self.manufacture_date: str = j_data.get("ManufactureDate")
         self.brand: str = None if pd.isna(j_data.get("Brand")) else j_data.get("Brand")
         self.make: str = None if pd.isna(j_data.get("Make")) else j_data.get("Make")
@@ -1155,11 +1132,13 @@ class NHLAPIHandler:
             d1: datetime.date = schedule.regular_season_start_date
             d2: datetime.date = d1
             ed: datetime.date = schedule.regular_season_end_date
+            st.write(f"{d1=}, {d2=}, {ed=}")
             while d1 <= ed:
                 d2 = d1
+                st.write(f"{d1=}, {d2=}")
                 schedule: NHLSchedule = self.get_schedule(d1)
                 d1 = schedule.next_start_date
-                if d2 == d1:
+                if d2 == d1 or d1 is None:
                     break
 
     def _flush_to_disk(self):
@@ -1341,7 +1320,15 @@ class NHLAPIHandler:
                         pd.DataFrame([game_box_score.to_df_row()])
                     ], ignore_index=True)
                 else:
-                    self.df_games_boxscore.loc[df_games.index] = game_box_score.to_df_row()
+                    # st.write("df_games")
+                    # st.write(df_games)
+                    # st.write("df_games.index")
+                    # st.write(df_games.index)
+                    # st.write("self.df_games_boxscore")
+                    # st.write(self.df_games_boxscore)
+                    # st.write("game_box_score.to_df_row()")
+                    # st.write(game_box_score.to_df_row())
+                    self.df_games_boxscore.loc[self.df_games_boxscore["g_id"] == game_box_score.g_id] = game_box_score.to_df_row().values()
         return schedule
 
     # def get_season_dates(self, date_in: datetime.date) -> tuple[Any, Any]:
@@ -1703,11 +1690,12 @@ options_pills_mode: list[str] = [
     "Test"
 ]
 k_pills_mode: str = "key_pills_mode"
-st.session_state.setdefault(k_pills_mode, 0)
+st.session_state.setdefault(k_pills_mode, 1)
 pills_mode = pills(
     label="Mode",
     options=options_pills_mode,
-    key=k_pills_mode
+    key=k_pills_mode,
+    index=1
 )
 
 if pills_mode == options_pills_mode[2]:
@@ -1905,20 +1893,35 @@ elif pills_mode == options_pills_mode[1]:
         "Wildcard"
     ]
     k_pills_standings: str = "key_pills_standings"
+    st.session_state.setdefault(k_pills_standings, 2)
     pills_standings = pills(
         label="Standings",
         key=k_pills_standings,
-        options=options_standings
+        options=options_standings,
+        index=2
     )
     standings_heights = {
         1: 1160,
         2: 600,
-        4: 315
+        4: 315,
+        6: 140
     }
+
+    cont_0 = st.container()
+    cont_1 = st.container()
+    use_cont_1: bool = False
 
     if pills_standings == options_standings[3]:
         # Wildcard
-        df_standings_to_show: dict[str: pd.DataFrame] = {"League": df_standings_now_league.copy()}
+        df_standings_to_show: dict[str: pd.DataFrame] = {
+            "Atlantic": df_standings_now_atl.head(3).copy(),
+            "Metropolitan": df_standings_now_met.head(3).copy(),
+            "Central": df_standings_now_cen.head(3).copy(),
+            "Pacific": df_standings_now_pac.head(3).copy(),
+            "East WC": df_standings_now_east.loc[(1 <= df_standings_now_east["wildcardSequence"]) & (df_standings_now_east["wildcardSequence"] < 3)].copy(),
+            "West WC": df_standings_now_west.loc[(1 <= df_standings_now_west["wildcardSequence"]) & (df_standings_now_west["wildcardSequence"] < 3)].copy()
+        }
+        use_cont_1 = True
     elif pills_standings == options_standings[2]:
         # Division
         df_standings_to_show: dict[str: pd.DataFrame] = {
@@ -1938,13 +1941,11 @@ elif pills_mode == options_pills_mode[1]:
 
     k_toggle_horizontal: str = "key_toggle_horizontal"
     st.session_state.setdefault(k_toggle_horizontal, True)
-    toggle_horizontal = st.toggle(
+    toggle_horizontal = cont_0.toggle(
         label="Horizontal?",
         key=k_toggle_horizontal,
     )
-    cols_dfs_to_show = st.columns(len(df_standings_to_show)) if toggle_horizontal else [st.container(border=True) for i
-                                                                                        in range(
-            len(df_standings_to_show))]
+    cols_dfs_to_show = cont_0.columns(len(df_standings_to_show)) if toggle_horizontal else [st.container(border=True) for i in range(len(df_standings_to_show))]
     for i, k_df in enumerate(df_standings_to_show):
         df: pd.DataFrame = df_standings_to_show[k_df]
         with cols_dfs_to_show[i]:
@@ -2002,11 +2003,12 @@ elif pills_mode == options_pills_mode[1]:
 
     options_pills_scoreboard_dates = list(scoreboard_now.game_dates)
     k_pills_scoreboard_dates: str = "key_pills_scoreboard_dates"
-    st.session_state.setdefault(k_pills_scoreboard_dates, options_pills_scoreboard_dates.index(datetime.date.today().strftime(DATE_FMT)))
+    st.session_state.setdefault(k_pills_scoreboard_dates)
     pills_scoreboard_dates = pills(
         label="Standings by Date:",
         key=k_pills_scoreboard_dates,
-        options=options_pills_scoreboard_dates
+        options=options_pills_scoreboard_dates,
+        index=options_pills_scoreboard_dates.index(datetime.date.today().strftime(DATE_FMT))
     )
 
     cols_commands = st.container(border=True).columns(2)
@@ -2019,6 +2021,8 @@ elif pills_mode == options_pills_mode[1]:
             key = f"key_toggle_show_{scoreboard_now.game_dates.index(list(pills_scoreboard_dates.keys()))}_{i}"
             st.session_state.update({key: True})
         st.rerun()
+
+    show_timer(seconds="indefinite", count_down=False)
 
     for i, date in enumerate(scoreboard_now.game_dates):
         if date != pills_scoreboard_dates:
@@ -2044,7 +2048,9 @@ elif pills_mode == options_pills_mode[1]:
 
     schedule = nhl.get_schedule()
     st.write(schedule)
-    st.write(nhl.df_games_boxscore)
+    display_df(
+        nhl.df_games_boxscore
+    )
 
 
 elif pills_mode == options_pills_mode[0]:
@@ -2135,7 +2141,8 @@ elif pills_mode == options_pills_mode[0]:
             label="Sub-mode",
             key=k_pills_jersey_mode,
             options=options_pills_jersey_mode,
-            label_visibility="hidden"
+            label_visibility="hidden",
+            index=0
         )
 
         if pills_jersey_mode == options_pills_jersey_mode[1]:
@@ -2266,6 +2273,101 @@ elif pills_mode == options_pills_mode[0]:
                 gradient_img = generate_color_gradient(colours, width=600, height=50)
                 st.image(gradient_img, caption="Dominant Colour Gradient")
 
+    jc_events = []
+    colour_order_tile: Colour = Colour("#451212")
+    colour_receive_tile: Colour = Colour("#124512")
+    colour_open_tile: Colour = Colour("#121245")
+    colour_birthday_tile: Colour = Colour("#124545")
+    k_check_combine: str = "key_check_combine"
+    st.session_state.setdefault(k_check_combine, False)
+    check_combine = st.checkbox(
+        label="combine all years",
+        key=k_check_combine
+    )
+    with st.columns([0.8, 0.2])[1]:
+        for k, c in {
+            "Ordered": colour_order_tile,
+            "Received": colour_receive_tile,
+            "Opened": colour_open_tile,
+            "Birthday": colour_birthday_tile
+        }.items():
+            st.markdown(coloured_block(
+                label=f"{k}: {c.hex_code}",
+                bg=c
+            ), unsafe_allow_html=True)
+    covered_player_birthdays = []
+    for i, row in nhl_jc.df_jerseys.iterrows():
+        j_obj: Jersey = nhl_jc.jerseys[row["ID"]]
+        order_date_og: datetime.date = j_obj.order_date
+        receive_date_og: datetime.date = j_obj.receive_date
+        open_date_og: datetime.date = j_obj.open_date
+        dob_og: datetime.date = j_obj.dob
+        order_date = date_to_this_year(order_date_og) if check_combine else order_date_og
+        receive_date = date_to_this_year(receive_date_og) if check_combine else receive_date_og
+        open_date = date_to_this_year(open_date_og) if check_combine else open_date_og
+        dob = date_to_this_year(dob_og) if check_combine else dob_og
+        if not pd.isna(j_obj.order_date):
+            jc_events.append({
+                "id": f"jc_event_order_date_{i}",
+                "groupId": f"order_date",
+                "title": f"{j_obj.to_string()}" + (f" - {order_date_og.year}" if check_combine else ""),
+                "backgroundColor": colour_order_tile.hex_code,
+                "start": order_date.strftime(DATE_FMT)
+            })
+        if not pd.isna(j_obj.receive_date):
+            jc_events.append({
+                "id": f"jc_event_receive_date_{i}",
+                "groupId": f"receive_date",
+                "title": f"{j_obj.to_string()}" + (f" - {receive_date_og.year}" if check_combine else ""),
+                "backgroundColor": colour_receive_tile.hex_code,
+                "start": receive_date.strftime(DATE_FMT)
+            })
+        if not pd.isna(j_obj.open_date):
+            jc_events.append({
+                "id": f"jc_event_open_date_{i}",
+                "groupId": f"open_date",
+                "title": f"{j_obj.to_string()}" + (f" - {open_date_og.year}" if check_combine else ""),
+                "backgroundColor": colour_open_tile.hex_code,
+                "start": open_date.strftime(DATE_FMT)
+            })
+        if not pd.isna(j_obj.dob):
+            cpb = f"{j_obj.player_first} {j_obj.player_last}".lower()
+            if cpb not in covered_player_birthdays:
+                jc_events.append({
+                    "id": f"jc_event_dob_{i}",
+                    "groupId": f"dob",
+                    "title": f"Birthday! {j_obj.player_first} {j_obj.player_last} - {dob_og.year}",
+                    "backgroundColor": colour_birthday_tile.hex_code,
+                    "start": dob.strftime(DATE_FMT)
+                })
+                covered_player_birthdays.append(cpb)
+
+    if check_combine:
+        jc_events.sort(key=lambda event: (event["title"][-4:], event["start"]))
+    else:
+        jc_events.sort(key=lambda event: event["start"])
+
+    cal = calendar(
+        events=jc_events,
+        options={
+            "initialView": "multiMonthYear",
+            "multiMonthMaxColumns": 3,
+            "height": 1800,
+            "contentHeight": 500,
+            "expandRows": True,
+            "dayMaxEventRows": 10,  # unlimited rows per day (or set an int)
+            "eventDisplay": "block",
+            "displayEventTime": False
+            # ,
+            # "moreLinkClick": "popover",  # still works without callbacks
+        }
+        # ,
+        # custom_css=custom_css,
+    )
+
+    st.write(cal)
+
+
 else:
     options_pills_testing_mode = ["Jersey Colour Analyzer", "NHL API Probe"]
     k_pills_testing_mode: str = "key_pills_testing_mode"
@@ -2369,20 +2471,20 @@ else:
 
 
 
-show_timer(10, count_down=True)
-show_timer(10, count_down=False)
-
-# # k_selectbox_team: str = "key_selectbox_team"
-# # selectbox_team = st.selectbox(
-# #     label="Select a Team:",
-# #     key=k_selectbox_team,
-# #     options=nhl.df_teams["triCode"]
-# # )
-# # if selectbox_team:
-# #     ser_team: pd.Series = nhl.df_teams.loc[nhl.df_teams["triCode"] == selectbox_team].iloc[0]
-# #     t_id = ser_team["id"]
-# #     sel_team: NHLTeam = nhl.lookup_team(t_id)
-# #     st.write(sel_team)
-# #     # cgs = nhl.check_game_status(sel_team.t_id, date=datetime.date.today())
-# #     st.write(cgs)
+# show_timer(10, count_down=True)
+# show_timer(10, count_down=False)
+#
+# # # k_selectbox_team: str = "key_selectbox_team"
+# # # selectbox_team = st.selectbox(
+# # #     label="Select a Team:",
+# # #     key=k_selectbox_team,
+# # #     options=nhl.df_teams["triCode"]
+# # # )
+# # # if selectbox_team:
+# # #     ser_team: pd.Series = nhl.df_teams.loc[nhl.df_teams["triCode"] == selectbox_team].iloc[0]
+# # #     t_id = ser_team["id"]
+# # #     sel_team: NHLTeam = nhl.lookup_team(t_id)
+# # #     st.write(sel_team)
+# # #     # cgs = nhl.check_game_status(sel_team.t_id, date=datetime.date.today())
+# # #     st.write(cgs)
 

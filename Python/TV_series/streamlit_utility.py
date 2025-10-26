@@ -1,8 +1,8 @@
 from typing import Literal, Optional, Iterable, Any
-
-import pandas as pd
+import streamlit.components.v1 as components
 from streamlit_js_eval import streamlit_js_eval
 
+import pandas as pd
 import streamlit as st
 import datetime
 
@@ -14,11 +14,11 @@ from colour_utility import Colour
 
 VERSION = \
 	"""	
-    Streamlit utility functions
-    Version..............1.06
-    Date...........2025-10-20
-    Author(s)....Avery Briggs
-    """
+	Streamlit utility functions
+	Version..............1.07
+	Date...........2025-10-24
+	Author(s)....Avery Briggs
+	"""
 
 
 def VERSION_DETAILS():
@@ -52,24 +52,24 @@ def aligned_text(
 		line_height: int = 1
 ) -> str:
 	"""
-    Return formatted HTML, and in-line CSS to h_align a given text in a container.
-    Use with streamlit's markdown function and with 'unsafe_allow_html' set to True.
-    See coloured_text() for streamlined-colour-only functionality.
-    """
+	Return formatted HTML, and in-line CSS to h_align a given text in a container.
+	Use with streamlit's markdown function and with 'unsafe_allow_html' set to True.
+	See coloured_text() for streamlined-colour-only functionality.
+	"""
 	return f"<{tag_style} style='line-height: {line_height}; text-align: {h_align}; color: {colour};'>{txt}</{tag_style}>"
 
 
 def hide_image_fullscreen_buttons():
 	"""
-    Remove ALL fullscreen buttons for images created using streamlit's image function.
-    https://discuss.streamlit.io/t/hide-fullscreen-option-when-displaying-images-using-st-image/19792
-    """
+	Remove ALL fullscreen buttons for images created using streamlit's image function.
+	https://discuss.streamlit.io/t/hide-fullscreen-option-when-displaying-images-using-st-image/19792
+	"""
 	hide_img_fs = '''
-    <style>
-    button[title="View fullscreen"]{
-        visibility: hidden;}
-    </style>
-    '''
+	<style>
+	button[title="View fullscreen"]{
+		visibility: hidden;}
+	</style>
+	'''
 	st.markdown(hide_img_fs, unsafe_allow_html=True)
 
 	hide_img_fs
@@ -77,21 +77,21 @@ def hide_image_fullscreen_buttons():
 
 def center_fullscreen_images():
 	"""
-    Center an image when in fullscreen browsing mode
-    https://discuss.streamlit.io/t/how-can-i-center-a-picture/30995/3
-    """
+	Center an image when in fullscreen browsing mode
+	https://discuss.streamlit.io/t/how-can-i-center-a-picture/30995/3
+	"""
 	st.markdown(
 		"""
-        <style>
-            button[title^=Exit]+div [path_data-testid=stImage]{
-                text-align: center;
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 100%;
-            }
-        </style>
-        """, unsafe_allow_html=True
+		<style>
+			button[title^=Exit]+div [path_data-testid=stImage]{
+				text-align: center;
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+				width: 100%;
+			}
+		</style>
+		""", unsafe_allow_html=True
 	)
 
 
@@ -103,16 +103,16 @@ def coloured_text(
 		style_only: bool = False
 ) -> str:
 	"""
-    Return an HTML string of text styled with a colour.
-    See aligned_text() for more functionality
+	Return an HTML string of text styled with a colour.
+	See aligned_text() for more functionality
 
-    :param text: Text to be rendered.
-    :param colour: Text foreground colour.
-    :param html_tags: The HTML text tag you want to display the text with. Wide-open and not fully tested. stick to common text elements (headers, paragraphs, etc...)
-    :param call: If True the result will immediately be displayed by calling st.markdown. Not recommended if you want to place your text within another element or container.
-    :param style_only: If True return the formatted HTML style string.
-    :return: Formatted HTML string.
-    """
+	:param text: Text to be rendered.
+	:param colour: Text foreground colour.
+	:param html_tags: The HTML text tag you want to display the text with. Wide-open and not fully tested. stick to common text elements (headers, paragraphs, etc...)
+	:param call: If True the result will immediately be displayed by calling st.markdown. Not recommended if you want to place your text within another element or container.
+	:param style_only: If True return the formatted HTML style string.
+	:return: Formatted HTML string.
+	"""
 	style = f"style='color:{Colour(colour).hex_code};'"
 	html = f"<{html_tags}{' ' + style}'>{text}</{html_tags}>"
 	if call:
@@ -130,9 +130,9 @@ def rerun():
 
 def screen_dimensions() -> tuple[Optional[int], Optional[int]]:
 	"""
-    Use JavaScript to retrieve the screen's Width and Height as integers.
-    :return: (Width, Height) as an integer tuple. May return None.
-    """
+	Use JavaScript to retrieve the screen's Width and Height as integers.
+	:return: (Width, Height) as an integer tuple. May return None.
+	"""
 	return (
 		streamlit_js_eval(js_expressions='parent.innerWidth', key='SCR_W'),
 		streamlit_js_eval(js_expressions='parent.innerHeight', key='SCR_H')
@@ -148,7 +148,6 @@ def display_df(
 		# params for st.dataframe 20250325
 		width: int | None = None,
 		height: int | None = None,
-		use_container_width: bool = False,
 		column_order: Iterable[str] | None = None,
 		column_config: Any | None = None,
 		key: Any | None = None,
@@ -170,13 +169,15 @@ def display_df(
 	if height is None:
 		height = "auto"
 
+	if width is None:
+		width = "stretch"
+
 	# st.write(f"{title=}, {hide_index=}")
 	stdf = st.dataframe(
 		data=df,
 		hide_index=hide_index,
 		width=width,
 		height=height,
-		use_container_width=use_container_width,
 		column_order=column_order,
 		column_config=column_config,
 		key=key,
@@ -190,6 +191,71 @@ def display_df(
 def load_pdf_binary(pdf_file):
 	with open(pdf_file, "rb") as f:
 		return f.read()
+
+
+def coloured_block(
+		label: Optional[str] = None,
+		bg: Optional[Colour | str] = None,
+		width: int | str = 40,
+		height: int | str = 20,
+		border: bool = True,
+		border_width: int | str = 1,
+		border_colour: Optional[Colour | str] = None,
+		contents: Optional[str] = None
+) -> str:
+	bg = Colour(bg if bg is not None else "#000000")
+	border_colour = Colour(border_colour if border_colour is not None else "#FFFFFF")
+	width = width if isinstance(width, int) else int(str(width).lower().removesuffix("px"))
+	height = height if isinstance(height, int) else int(str(height).lower().removesuffix("px"))
+	border_width = border_width if isinstance(border_width, int) else int(str(border_width).lower().removesuffix("px"))
+	contents = contents if contents is not None else ""
+	html = f"<div style='display: flex; align-items: center;'>"
+	html += f"<div style='width: {width}px; height: {height}px; background-color: {bg.hex_code}; "
+	if border:
+		html += f"border: {border_width}px solid {border_colour.hex_code}; margin-right: 10px;'"
+	html += f">{contents}</div>"
+	if label:
+		html += f"{label}"
+	html += f"</div>"
+	return html
+
+
+def show_timer(seconds: Literal["indefinite"] | int = 60, count_down:bool = True, label:str = None, finish_label:str = None):
+	if label is None:
+		label = "Time Left" if count_down else "Time Elapsed"
+	if finish_label is None:
+		finish_label = "⏰ Time's up!"
+
+	op = "-" if count_down else "+"
+	if seconds == "indefinite":
+		seconds = 60*60*24*365  # 1 year is good enough
+	seconds_i = f"{seconds}" if count_down else "0"
+
+	html_code = f"""
+	<div id="timer" style="font-size: 24px; font-weight: bold; color: #f00;">
+	  {label}: {seconds_i} seconds
+	</div>
+	<script>
+	let seconds = {seconds_i};
+	let timer = document.getElementById("timer");
+	let countdown = setInterval(() => {{
+		seconds {op}= 1;
+		if (seconds >= 0) {{
+			if (seconds <= {seconds}) {{
+				timer.innerHTML = "{label}: " + seconds + " seconds";
+			}} else {{
+				clearInterval(countdown);
+				timer.innerHTML = "{finish_label}";
+			}}
+		}} else {{
+			clearInterval(countdown);
+			timer.innerHTML = "{finish_label}";
+		}}
+	}}, 1000);
+	</script>
+	"""
+	components.html(html_code, height=50)
+
 
 
 if __name__ == '__main__':
