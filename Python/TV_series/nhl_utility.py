@@ -8,6 +8,7 @@ from decorator import append
 from streamlit.delta_generator import DeltaGenerator
 from streamlit_pills import pills
 from streamlit_calendar import calendar
+import plotly.express as px
 
 from datetime_utility import is_leap_year
 from streamlit_utility import *
@@ -35,13 +36,14 @@ NHL_API_URL_V1: str = "{0}v1/".format(NHL_API_URL)
 NHL_PLAYER_API_URL: str = "{0}player/".format(NHL_API_URL_V1)
 PATH_UNKNOWN_IMAGE: str = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags\unknown_flag.png"
 PATH_FOLDER_JERSEY_COLLECTION: str = r"D:\NHL jerseys\Jerseys 20250927"
-PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251017.xlsx"
+PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251026.xlsx"
 JERSEY_COLOUR_SAVE_FILE: str = "new_colours_save.json"
 
 UTC_FMT: str = "%Y-%m-%dT%H:%M:%SZ"
 DATE_FMT: str = "%Y-%m-%d"
 
 DEFAULT_SEASON_END_DATE: datetime.date = datetime.date(datetime.datetime.now().year + (1 if 8 < datetime.datetime.now().month else 0), 4, 16)
+DEFAULT_TEAM: str = "Calgary Flames"
 
 E_strl_RUNNING: str = f":ice_hockey_stick_and_puck:"
 E_strl_STOPWATCH: str = f":stopwatch:"
@@ -1787,9 +1789,10 @@ elif pills_mode == options_pills_mode[1]:
     lst_teams: list[str] = df_current_teams["fullName"].unique().tolist()
 
     k_selectbox_team_calendar: str = "key_selectbox_team_calendar"
+    st.session_state.setdefault(k_selectbox_team_calendar, DEFAULT_TEAM)
     selectbox_team_calendar = st.selectbox(
         label="Select a Team",
-        key="k_selectbox_team_calendar",
+        key=k_selectbox_team_calendar,
         options=lst_teams
     )
     if selectbox_team_calendar:
@@ -2366,6 +2369,59 @@ elif pills_mode == options_pills_mode[0]:
     )
 
     st.write(cal)
+
+    df_nhl_jerseys_w = nhl_jc.df_jerseys.copy()
+    df_nhl_jerseys_w['Colours'] = df_nhl_jerseys_w.apply(lambda row: f"{row['Colour1']} {row['Colour2']} {row['Colour3']}", axis=1)
+    cols_timeline_order_open = ["OrderDate", "OpenDate", "ID", "Colours", "JerseyToString"]
+    df_timeline_order_open = df_nhl_jerseys_w.loc[df_nhl_jerseys_w["Cancelled"] != 1][cols_timeline_order_open]
+    st.dataframe(df_timeline_order_open)
+    # df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+    # df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+    df_timeline_order_open = df_timeline_order_open.rename(
+        columns={"OrderDate": "Start Date", "OpenDate": "End Date"})
+
+    df_timeline_order_open['Start Date'] = pd.to_datetime(df_timeline_order_open['Start Date'])
+    df_timeline_order_open["Category"] = df_timeline_order_open.apply(
+        lambda row: "Yet To Open" if pd.isna(row["End Date"]) else "Opened", axis=1)
+    df_timeline_order_open['End Date'] = pd.to_datetime(df_timeline_order_open['End Date']).fillna(pd.Timestamp.now())
+    df_timeline_order_open['End Date'] = df_timeline_order_open['End Date'].apply(lambda ed: ed + pd.Timedelta(days=1))
+    df_timeline_order_open["DDiff"] = df_timeline_order_open.apply(
+        lambda row: (row["End Date"] - row["Start Date"]).days, axis=1)
+    # df_timeline_order_open["Event"] = df_timeline_order_open.apply(
+    #     lambda row:
+    #     ", ".join(map(str, df_nhl_jerseys_w.loc[
+    #         df_nhl_jerseys_w["ID"] == row["ID"],
+    #         ["Number", "PlayerFirst", "PlayerLast", "Team", "Brand", "Make", "Colours"]
+    #     ].iloc[0].values)) + " Dates between: " + str(row["DDiff"]),
+    #     axis=1
+    # )
+    df_timeline_order_open["Event"] = df_timeline_order_open["JerseyToString"]
+    del df_timeline_order_open["ID"]
+    df_timeline_order_open.sort_values(
+        by=["End Date", "DDiff"],
+        inplace=True
+    )
+
+    # Create a Gantt-like timeline using Plotly
+    fig_timeline_order_open = px.timeline(
+        df_timeline_order_open,
+        x_start='Start Date',
+        x_end='End Date',
+        y='Event',
+        title='Time Between Order to Open date',
+        color='Category',
+        color_discrete_map={
+            'Yet To Open': 'red',
+            'Medium': 'orange',
+            'Opened': 'green'
+        }
+    )
+
+    # Update layout to make it more readable
+    fig_timeline_order_open.update_layout(xaxis_title="Date", yaxis_title="Order Date to Open Date", height=2000)
+
+    # Display in Streamlit
+    st.plotly_chart(fig_timeline_order_open)
 
 
 else:
