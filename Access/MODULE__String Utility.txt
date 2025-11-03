@@ -1,45 +1,144 @@
 Option Compare Database
 
 
-Public Function RemoveSuffix(ByVal str_ As String, ByVal suffix As String)
+' General String Utility Functions
+' Version.....................1.07
+' Date..................2025-11-03
+' Author(s)...........Avery Briggs
 
-    Dim ls As Long
-    Dim lu As Long
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'                   Contents
+'
+'   CollectNumbers          -   Gather all numbers in a string into an array.
+'   EndsWith                -   Determine if a string ends with a given string.
+'   IsAlpha                 -   Return True if the string is an alphabetic string, False otherwise.
+'   RemoveIndividual        -   Attempt to remove an individual's name from an phrase.
+'   RemovePrefix            -   Remove a prefix, if it exists, from a string.
+'   RemoveSpecials          -   Naively remove any character that are not a space, alphabetical, or numerical.
+'   RemoveSuffix            -   Remove a suffix, if it exists, from a string.
+'   StartsWith              -   Determine if a string starts with a given string.
+'   Strip                   -   Remove All leading and trailing whitespace characters.
+'   Title                   -   Return a given string where each character following a space will be capitialized.
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+'---------------------------------------------------------------------------------------
+' Function : RemoveSuffix
+' Author    : Avery Briggs
+' Purpose   : Remove a suffix, if it exists, from a string.
+'
+' Usage:
+' ~~~~~~
+' dim s as string
+' s = "'Avery'"
+' printf removesuffix(s, "'")  ' "'Avery"
+' printf removeprefix(removesuffix("0001020304000000", "0"), "0")  ' "1020304"
+' printf removeprefix(removesuffix("0001020304000000", "0", 2), "0", 2)  ' "010203040000"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-15                  Initial Release
+' 2         2025-10-29                  Support for recursively purging the str_ of suffix.
+'---------------------------------------------------------------------------------------
+Public Function RemoveSuffix(ByVal str_ As String, ByVal suffix As String, Optional ByVal limit As Variant = Null)
+
+    'Dim ls As Long
+    'Dim lu As Long
+    '
+    'ls = Len(str_)
+    'lu = Len(suffix)
+    '
+    'RemoveSuffix = str_
     
-    ls = Len(str_)
-    lu = Len(suffix)
-            
-    RemoveSuffix = str_
-        
-    If (ls > 0) And (lu > 0) And (ls >= lu) Then
-        If Right(str_, lu) = suffix Then
-            RemoveSuffix = Left(str_, ls - lu)
+    If (Len(suffix) > 0) And EndsWith(str_, suffix) Then
+        Dim p As Variant
+        p = Nz(limit, Len(str_)) - 1
+        If p < 0 Then
+            RemoveSuffix = str_
+        Else
+            RemoveSuffix = RemoveSuffix(Mid(str_, 1, Len(str_) - 1), suffix, p)
         End If
+    Else
+        RemoveSuffix = str_
     End If
 
 End Function
 
 
-Public Function RemovePrefix(ByVal str_ As String, ByVal Prefix As String)
+'---------------------------------------------------------------------------------------
+' Function : RemovePrefix
+' Author    : Avery Briggs
+' Purpose   : Remove a prefix, if it exists, from a string.
+'
+' Usage:
+' ~~~~~~
+' dim s as string
+' s = "'Avery'"
+' printf removesuffix(s, "'")  ' "Avery'"
+' printf removeprefix(removesuffix("0001020304000000", "0"), "0")  ' "1020304"
+' printf removeprefix(removesuffix("0001020304000000", "0", 2), "0", 2)  ' "010203040000"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-15                  Initial Release
+' 2         2025-10-29                  Support for recursively purging the str_ of prefix.
+'---------------------------------------------------------------------------------------
+Public Function RemovePrefix(ByVal str_ As String, ByVal Prefix As String, Optional ByVal limit As Variant = Null)
 
-    Dim ls As Long
-    Dim lu As Long
+    'Dim ls As Long
+    'Dim lu As Long
+    '
+    'ls = Len(str_)
+    'lu = Len(Prefix)
+    '
+    'RemovePrefix = str_
+    '
+    'If (ls > 0) And (lu > 0) And (ls >= lu) Then
+    '    If Left(str_, lu) = Prefix Then
+    '        RemovePrefix = Right(str_, ls - lu)
+    '    End If
+    'End If
     
-    ls = Len(str_)
-    lu = Len(Prefix)
-            
-    RemovePrefix = str_
-        
-    If (ls > 0) And (lu > 0) And (ls >= lu) Then
-        If Left(str_, lu) = Prefix Then
-            RemovePrefix = Right(str_, ls - lu)
+    If (Len(Prefix) > 0) And StartsWith(str_, Prefix) Then
+        Dim p As Variant
+        p = Nz(limit, Len(str_)) - 1
+        If p < 0 Then
+            RemovePrefix = str_
+        Else
+            RemovePrefix = RemovePrefix(Mid(str_, 2, Len(str_) - 1), Prefix, p)
         End If
+    Else
+        RemovePrefix = str_
     End If
 
 End Function
 
 
-
+'---------------------------------------------------------------------------------------
+' Function : EndsWith
+' Author    : Avery Briggs
+' Purpose   : Determine if a string ends with a given string.
+'
+' Usage:
+' ~~~~~~
+' dim s as string
+' s = "'Avery'"
+' printf EndsWith(s, "'")  ' True
+' printf EndsWith(s, "s")  ' False
+' printf EndsWith(RemoveSuffix(s, "'"), "s")  ' True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-15                  Initial Release
+'---------------------------------------------------------------------------------------
 Public Function EndsWith(ByVal str_ As String, ByVal searchString As String) As Boolean
 
     Dim len1 As Long
@@ -68,6 +167,24 @@ Public Function EndsWith(ByVal str_ As String, ByVal searchString As String) As 
 End Function
 
 
+'---------------------------------------------------------------------------------------
+' Function : StartsWith
+' Author    : Avery Briggs
+' Purpose   : Determine if a string starts with a given string.
+'
+' Usage:
+' ~~~~~~
+' dim s as string
+' s = "'Avery'"
+' printf StartsWith(s, "'")  ' True
+' printf StartsWith(s, "A")  ' False
+' printf StartsWith(RemovePrefix(s, "'"), "A")  ' True
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-15                  Initial Release
+'---------------------------------------------------------------------------------------
 Public Function StartsWith(ByVal str_ As String, ByVal searchString As String) As Boolean
 
     Dim len1 As Long
@@ -96,49 +213,183 @@ Public Function StartsWith(ByVal str_ As String, ByVal searchString As String) A
 End Function
 
 
+'---------------------------------------------------------------------------------------
+' Function : Title
+' Author    : Avery Briggs
+' Purpose   : Return a given string where each character following a space will be capitialized.
+'               The remaining characters are left unchanged.
+'
+' Usage:
+' ~~~~~~
+' printf title("avery briggs")  ' "Avery Briggs"
+' printf title("'this is a sentence." & vbnewline & "this is another one" & vbtab & "sa!'")
+'   > 'This Is A Sentence.
+'     This Is Another One Sa!'
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-15                  Initial Release
+'---------------------------------------------------------------------------------------
 Public Function Title(ByVal phrase As String) As String
 
     Dim i As Long
     Dim j As Long
-    Dim C As String
     Dim res As String
-    Dim LC As Boolean
-    j = Size(phrase)
-    LC = True
+    Dim ca As String
+    Dim cB As String
+    Dim cIA As Long
+    Dim fc As Boolean
+    j = Len(phrase)
+    fc = False
     res = ""
     
-    Do While i < j
-        C = Mid(phrase, i + 1, 1)
-        If C = " " Then
-            res = res & C
-            LC = True
-        Else
-            If LC Then
-                res = res & UCase(C)
-            Else
-                res = res & C
-            End If
-            LC = False
+    Dim sA As Variant
+    Dim cons As Variant
+    cons = Array(" ", vbCr, vbLf, vbCrLf, vbNewLine, vbTab, vbBack, vbFormFeed, vbVerticalTab, vbNullChar)
+    Dim LC As Long
+    LC = Size(cons)
+    For i = 0 To LC - 1
+        cons = Append(cons, Asc(cons(i)))
+    Next i
+    cons = Slice(cons, start_:=LC, end_:=Size(cons))
+    'Printf "cons:"
+    'Printf cons
+    
+    For i = 1 To j - 1
+        ca = Mid(phrase, i, 1)
+        cB = Mid(phrase, i + 1, 1)
+        If i = 1 Then
+            ca = UCase(ca)
+            res = res & ca
+            fc = IsAlpha(ca)
         End If
-        i = i + 1
-    Loop
+        cIA = Asc(ca)
+        If IsIn(cons, cIA) Then
+            cB = UCase(cB)
+        End If
+        If (Not fc) And IsAlpha(cB) Then
+            cB = UCase(cB)
+            fc = True
+        End If
+        'Printf "ASC('" & cB & "')='" & Asc(cB) & "'"
+        res = res & cB
+    Next i
+    
+    If j = 1 Then
+        res = UCase(phrase)
+    End If
+    
+    'Do While i < j
+    '    c = Mid(phrase, i + 1, 1)
+    '    If (c = " ") Or (c = vbNewLine) Or (c = vbTab) Or (c = vbCr) Then
+    '        res = res & c
+    '        LC = True
+    '    Else
+    '        If LC Then
+    '            res = res & UCase(c)
+    '        Else
+    '            res = res & c
+    '        End If
+    '        LC = False
+    '    End If
+    '    i = i + 1
+    'Loop
+    '
+    'Title = res
     
     Title = res
 
 End Function
 
 
-Function ReplaceSpecials(ByVal word As String, Optional ByVal AllSpecials As Boolean = True) As String
+'---------------------------------------------------------------------------------------
+' Function : IsAlpha
+' Author    : Avery Briggs
+' Purpose   : Return True if the string is an alphabetic string, False otherwise.
+'               A string is alphabetic if all characters in the string are alphabetic
+'               and there is at least one character in the string.
+'
+' Usage:
+' ~~~~~~
+' printf IsAlpha("Avery")  ' True
+' printf IsAlpha("Avery;")  ' False
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-15                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function IsAlpha(ByVal str_ As String) As Boolean
+
+    IsAlpha = False
+    Dim j As Long
+    j = Len(str_)
+    
+    If j > 0 Then
+        
+        Dim i As Long
+        Dim C As String
+        For i = 0 To j - 1
+            C = Asc(UCase(Mid(str_, i + 1, 1)))
+            If Not ((65 <= C) And (C <= 90)) Then
+                Exit Function
+            End If
+        Next i
+        
+        IsAlpha = True
+        
+    End If
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : ReplaceSpecials
+' Author    : Avery Briggs
+' Purpose   : Naively remove any character that are not a space, alphabetical, or numerical.
+'             Optionally pass a string or array containing any specials you want to keep.
+'             **Special consideration was made for '[' and ']', the default 'AllSpecials' will purge them.
+'
+'
+' Usage:
+' ~~~~~~
+' printf replacespecials("avery was here!")                                 ' "avery was here"
+' printf replacespecials("avery was here!", keep:="!")                      ' "avery was here!"
+' printf replacespecials("avery was here! - and there!", keep:="!")         ' "avery was here!  and there!"
+' printf replacespecials("avery was here! - and there!", keep:=array("!"))  ' "avery was here!  and there!"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-15                  Initial Release
+'---------------------------------------------------------------------------------------
+Function ReplaceSpecials(ByVal word As String, Optional ByVal AllSpecials As Boolean = True, Optional ByVal keep As Variant) As String
     ' AllSpecials will include square brackets in replacements.
 
     ReplaceSpecials = word
 
     Dim C As Variant
     Dim S As Variant
-    S = Array("/", "\", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "=", "+", "<", ">", ",", ".", "{", "}", "|", ":", ";", "'", "`", "~")
+    S = Array("/", "\", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "=", "+", "<", ">", ",", ".", "{", "}", "|", ":", ";", "'", "`", "~", "-")
     If AllSpecials Then
         S = Append(S, Array("[", "]"), unPackNewVal:=True)
     End If
+    
+    If Not IsNull(keep) Then
+        If IsInstance(keep, vbString) Then
+            Dim i As Long
+            For i = 0 To Len(keep) - 1
+                S = Remove(S, Mid(keep, i + 1, 1), failOnNotFound:=False)
+            Next i
+        ElseIf IsArray(keep) Then
+            Dim A As Variant
+            For Each A In keep
+                S = Remove(S, A, unpackTarget:=False, failOnNotFound:=False)
+            Next A
+        End If
+    End If
+    
     For Each C In S
         'Printf "c: <" & C & ">"
         ReplaceSpecials = Replace(ReplaceSpecials, C, "")
@@ -147,6 +398,22 @@ Function ReplaceSpecials(ByVal word As String, Optional ByVal AllSpecials As Boo
 End Function
 
 
+'---------------------------------------------------------------------------------------
+' Function : RemoveIndividual
+' Author    : Avery Briggs
+' Purpose   : Attempt to remove an individual's name from an phrase.
+'             Meant to de-specify someone when making an IT request.
+'             The request is to the department not the individual.
+'
+' Usage:
+' ~~~~~~
+' printf RemoveIndividual("Hello James, Can you please ...")  ' "Hello IT Team, Can you please ..."
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-15                  Initial Release
+'---------------------------------------------------------------------------------------
 Public Function RemoveIndividual(ByVal strIn As String) As String
 
     Dim toRemoveP1 As Variant
@@ -170,5 +437,102 @@ Public Function RemoveIndividual(ByVal strIn As String) As String
     Next tr1
     
     RemoveIndividual = strIn
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : Strip
+' Author    : Avery Briggs
+' Purpose   : Remove All leading and trailing whitespace characters.
+'             Trim, LTrim, and RTrim functions only handle space characters, not tabs, carriage-returns or new-lines.  - why?
+'
+'
+' Usage:
+' ~~~~~~
+' printf Strip(" avery was here!")                                 ' "avery was here!"
+' printf strip(replacespecials(title("'this is a sentence." & vbnewline & "this is another one" & vbtab & "sa!'"), false))
+'  >   "This Is A Sentence
+'       This Is Another One Sa"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-04-15                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function Strip(ByVal str_ As String) As String
+    
+    ' Written with the help of ChatGPT
+    ' Trim, LTrim, and RTrim functions only handle space characters, not tabs, carriage-returns or new-lines.
+
+    Dim pattern As String
+    Dim regex As Object
+
+    ' Create a RegExp object
+    Set regex = CreateObject("VBScript.RegExp")
+    regex.IgnoreCase = True
+    regex.Global = True
+    regex.pattern = "^\s+|\s+$"
+
+    ' Replace leading/trailing whitespace
+    Strip = regex.Replace(str_, "")
+
+End Function
+
+
+'---------------------------------------------------------------------------------------
+' Function : CollectNumbers
+' Author    : Avery Briggs
+' Purpose   : Gather all numbers in a string into an array.
+'             Optionally limit the count, or enforce longs or doubles if available?
+'
+' Usage:
+' ~~~~~~
+' printf CollectNumbers("1 apple, 2 oranges, 3 potatoes")              ' "[1, 2, 3]"
+' printf CollectNumbers("1 apple, 2.12 oranges, 3 potatoes")           ' "[1, 2.12, 3]"
+' printf CollectNumbers("1 apple, 2.12 oranges, 3 potatoes", 2, false) ' "[1, 2]"
+'
+' Revision History:
+' Rev       Date(yyyy/mm/dd)            Description
+' **************************************************************************************
+' 1         2025-09-26                  Initial Release
+'---------------------------------------------------------------------------------------
+Public Function CollectNumbers( _
+    ByVal stringIn As String, _
+    Optional ByVal limit As Long = -1, _
+    Optional ByVal hasDoubles As Boolean = True _
+) As Variant
+
+    Dim arr As Variant
+    arr = Array()
+    
+    Dim i As Long
+    Dim C As Long
+    Dim V As String
+    Dim num As String
+    i = 0
+    C = Size(stringIn)
+    num = ""
+    
+    Do While i <= C
+        'PrintArr Array(i, c, v, num)
+        V = Mid(stringIn, i + 1, 1)
+        If IsNumeric(V) Then
+            num = num & V
+        Else
+            If hasDoubles And (V = ".") And (InStr(1, num, ".") = 0) Then
+                num = num & V
+            ElseIf Bool(num) Then
+                Call Append(arr, CDbl(num))
+                num = ""
+                If (limit >= 0) And (Size(arr) >= limit) Then
+                    i = C
+                End If
+            End If
+        End If
+        i = i + 1
+    Loop
+    
+    CollectNumbers = arr
 
 End Function
