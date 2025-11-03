@@ -1,4 +1,5 @@
 import enum
+import math
 import os.path
 import random
 
@@ -9,8 +10,9 @@ from streamlit.delta_generator import DeltaGenerator
 from streamlit_pills import pills
 from streamlit_calendar import calendar
 import plotly.express as px
+import plotly.graph_objects as go
 
-from datetime_utility import is_leap_year
+from datetime_utility import is_leap_year, date_str_format
 from streamlit_utility import *
 
 import numpy as np
@@ -26,7 +28,9 @@ from scipy.spatial.distance import cdist
 from collections import Counter
 import matplotlib.pyplot as plt
 
-from utility import percent, number_suffix
+from utility import percent, number_suffix, money
+
+# https://www.nhl.com/gamecenter/cgy-vs-phi/2025/11/02/2025020196
 
 NHL_ASSET_API_URL: str = "https://assets.nhle.com/"
 NHL_STATS_API_URL: str = "https://api.nhle.com/stats/rest/en/"
@@ -562,8 +566,11 @@ class NHLGame:
     #
     #     html += "</div>"
 
+    def short_repr(self):
+        return f"{date_str_format(self.start_time_atl, include_time=True, include_weekday=True, short_weekday=True, short_month=True, short_time=True)} {self.away_team} @ {self.home_team}"
+
     def __repr__(self):
-        return f"NHLGAME#{self.g_id} {self.start_time_utc:{UTC_FMT}} {self.away_team} @ {self.home_team}"
+        return f"NHLGAME#{self.g_id} {self.start_time_atl:{UTC_FMT}} {self.away_team} @ {self.home_team}"
 
 
 class NHLBoxScore(NHLGame):
@@ -574,7 +581,7 @@ class NHLBoxScore(NHLGame):
         self.game_season: int = self.bx_data.get("season")
         self.game_type: int = self.bx_data.get("gameType")
         self.game_limited_scoring: bool = self.bx_data.get("limitedScoring")
-        self.game_date: int = self.bx_data.get("gameDate")
+        self.game_date: datetime.date = datetime.datetime.strptime(self.bx_data.get("gameDate"), DATE_FMT).date() if self.bx_data.get("gameDate") else None
         self.game_venue: str = self.bx_data.get("venue", {}).get("default")
         self.game_venue_fr: str = self.bx_data.get("venue", {}).get("fr")
         self.game_venue_location: str = self.bx_data.get("venueLocation", {}).get("default")
@@ -763,6 +770,45 @@ class NHLJerseyCollection:
         int_cols = ["ID", "NHLID"]
         for col in int_cols:
             self.df_jc_data[col] = self.df_jc_data[col].apply(lambda x: f"{int(x):.0f}" if not pd.isna(x) else None)
+
+        def nz(val, default=None):
+            if pd.isnull(val):
+                return default
+            if pd.isna(val):
+                return default
+            return val
+
+        self.df_jc_data["PriceCalc"] = self.df_jc_data.apply(
+            lambda row:
+                ((nz(row["ExchangeRate"], 1) * (row["StickerPriceUS"] + nz(row["Shipping"], 0) + nz(row["Tax"], 0)))
+                + nz(row["Duty"], 0) - nz(row["Discount"], 0)) if not pd.isna(row["StickerPriceUS"]) else (
+                    ((row["StickerPriceCDN"] + nz(row["Duty"], 0) + nz(row["Shipping"], 0) + nz(row["Tax"], 0)) - nz(row["Discount"], 0)) if not pd.isna(row["StickerPriceCDN"]) else None
+                ), axis=1)
+            # iif(
+                # not isnull(jerseys.stickerpriceus),
+                # (
+                #         (
+                #                 jerseys.exchangerate * (
+                #                 Jerseys.StickerPriceus + iif(isnull(Jerseys.Shipping), 0, Jerseys.Shipping) + iif(
+                #             isnull(jerseys.tax), 0, jerseys.tax)
+                #         )
+                #         ) + iif(isnull(Jerseys.Duty), 0, Jerseys.Duty) - iif(isnull(jerseys.discount), 0,
+                #                                                              jerseys.discount)
+                # ),
+                # iif(
+                #     not isnull(jerseys.stickerpricecdn),
+                #     (
+                #             (
+                #                     Jerseys.StickerPriceCDN + iif(isnull(Jerseys.Duty), 0, Jerseys.Duty) + iif(
+                #                 isnull(Jerseys.Shipping), 0, Jerseys.Shipping) + iif(isnull(jerseys.tax), 0,
+                #                                                                      jerseys.tax)
+                #             ) - iif(isnull(jerseys.discount), 0, jerseys.discount)
+                #     ),
+                #     -1
+                # )
+        #     )
+        #     axis=1
+        # )
 
         if colour_edits_save_file is not None:
             self.correct_colours(colour_edits_save_file)
@@ -1126,8 +1172,9 @@ class NHLAPIHandler:
         self.df_seasons: pd.DataFrame = pd.DataFrame(columns=["s_id"])
         # self.df_schedule: pd.DataFrame = pd.DataFrame(columns=["g_id"])
 
+        self.get_team_data()
+
         if self.init:
-            self.get_team_data()
             self.get_seasons_data()
             self.get_standings()
             schedule: NHLSchedule = self.get_schedule()
@@ -1670,888 +1717,1375 @@ class NHLAPIHandler:
 #  https://api-web.nhle.com/v1/gamecenter/2024020735/play-by-play
 
 
-st.set_page_config(layout="wide")
+if __name__ == "__main__":
 
-k_nhl_jersey_collection: str = "key_nhl_jersey_collection"
-nhl_jc: NHLJerseyCollection = st.session_state.setdefault(k_nhl_jersey_collection, NHLJerseyCollection(PATH_JERSEY_COLLECTION_DATA, JERSEY_COLOUR_SAVE_FILE))
+    st.set_page_config(layout="wide")
 
-k_nhl_api_handler: str = "key_nhl_api_handler"
-if k_nhl_api_handler not in st.session_state:
-    st.session_state[k_nhl_api_handler] = NHLAPIHandler(True)
-nhl: NHLAPIHandler = st.session_state[k_nhl_api_handler]
+    k_nhl_jersey_collection: str = "key_nhl_jersey_collection"
+    nhl_jc: NHLJerseyCollection = st.session_state.setdefault(k_nhl_jersey_collection, NHLJerseyCollection(PATH_JERSEY_COLLECTION_DATA, JERSEY_COLOUR_SAVE_FILE))
 
-teams: pd.DataFrame = nhl.get_team_data()
-seasons: pd.DataFrame = nhl.get_seasons_data()
-seasons.sort_values(by="standingsEnd", ascending=False, inplace=True)
-nhl_season_now: NHLSeason = nhl.get_season()
+    k_nhl_api_handler: str = "key_nhl_api_handler"
+    if k_nhl_api_handler not in st.session_state:
+        st.session_state[k_nhl_api_handler] = NHLAPIHandler(True)
+    nhl: NHLAPIHandler = st.session_state[k_nhl_api_handler]
 
-options_pills_mode: list[str] = [
-    "Jerseys",
-    "Scores",
-    "League Data",
-    "Test"
-]
-k_pills_mode: str = "key_pills_mode"
-st.session_state.setdefault(k_pills_mode, 1)
-pills_mode = pills(
-    label="Mode",
-    options=options_pills_mode,
-    key=k_pills_mode,
-    index=1
-)
+    teams: pd.DataFrame = nhl.get_team_data()
+    seasons: pd.DataFrame = nhl.get_seasons_data()
+    seasons.sort_values(by="standingsEnd", ascending=False, inplace=True)
+    nhl_season_now: NHLSeason = nhl.get_season()
 
-if pills_mode == options_pills_mode[2]:
-    # League Data
-    st.write(nhl.get_country())
-    st.write(nhl.get_geolocation())
-    display_df(
-        nhl.df_saved_data,
-    "nhl.df_saved_data"
-    )
-    display_df(
-        teams,
-        "Teams"
-    )
-    display_df(
-        seasons,
-        "Seasons"
-    )
-    display_df(
-        nhl.get_country_data(),
-        "Countries"
-    )
-    display_df(
-        nhl.df_players,
-        "Known NHL Players"
-    )
-    with st.container(border=True):
-        df_nhl_glossary: pd.DataFrame = nhl.get_glossary_data()
-        lst_nhl_glossary_abbrevs: list[str] = df_nhl_glossary["abbreviation"].tolist()
-        k_selectbox_nhl_glossary: str = "key_selectbox_nhl_glossary"
-        st.session_state.setdefault(k_selectbox_nhl_glossary, random.choice(lst_nhl_glossary_abbrevs))
-        selectbox_nhl_glossary = st.selectbox(
-            label="Glossary:",
-            options=lst_nhl_glossary_abbrevs,
-            key=k_selectbox_nhl_glossary
-        )
-        if selectbox_nhl_glossary:
-            df_sel_glossary: pd.Series = \
-            df_nhl_glossary.loc[df_nhl_glossary["abbreviation"] == selectbox_nhl_glossary].iloc[0]
-            id_ = df_sel_glossary["id"]
-            full_name = df_sel_glossary["fullName"]
-            definition = df_sel_glossary["definition"]
-            first_season_for_stat = df_sel_glossary["firstSeasonForStat"]
-            last_updated = df_sel_glossary["lastUpdated"]
-            cols_glossary_info = st.columns([0.25, 0.5, 0.25])
-            cols_glossary_info[0].text_input(
-                label="ID:",
-                value=id_,
-                disabled=True
-            )
-            cols_glossary_info[0].text_input(
-                label="Full Name:",
-                value=full_name,
-                disabled=True
-            )
-            cols_glossary_info[2].text_input(
-                label="First Season For Stat",
-                value=first_season_for_stat,
-                disabled=True
-            )
-            cols_glossary_info[2].text_input(
-                label="Last Updated:",
-                value=last_updated,
-                disabled=True
-            )
-            st.text_area(
-                label="Definition:",
-                value=definition,
-                disabled=True
-            )
-
-elif pills_mode == options_pills_mode[1]:
-    # Scores
-    # st.write(nhl_season_now.df_season)
-    # st.write(nhl_season_now.get_season_dates())
-    # st.write(nhl.standings_by_day(nhl_season_now.get_season_dates()))
-
-    standings_now = nhl.get_standings()
-    df_standings_now: pd.DataFrame = standings_now.df_standings
-
-    df_standings_now = df_standings_now.merge(
-        nhl.df_teams,
-        left_on="t_id",
-        right_on="id",
-        suffixes=["", "_df_teams"]
-    )
-
-    df_current_teams: pd.DataFrame = df_standings_now[["fullName", "t_id"]].dropna(axis=0, how="any")
-    lst_teams: list[str] = df_current_teams["fullName"].unique().tolist()
-
-    k_selectbox_team_calendar: str = "key_selectbox_team_calendar"
-    st.session_state.setdefault(k_selectbox_team_calendar, DEFAULT_TEAM)
-    selectbox_team_calendar = st.selectbox(
-        label="Select a Team",
-        key=k_selectbox_team_calendar,
-        options=lst_teams
-    )
-    if selectbox_team_calendar:
-        team_events = []
-        team_tri_code: str = nhl.df_teams.loc[nhl.df_teams["fullName"].str.lower() == selectbox_team_calendar.lower()].iloc[0]["triCode"]
-        df_team_games: pd.DataFrame = nhl.df_games_boxscore.loc[
-            (nhl.df_games_boxscore["home_team_name_abbrev"] == team_tri_code)
-            | (nhl.df_games_boxscore["away_team_name_abbrev"] == team_tri_code)
-        ]
-        display_df(
-            df_team_games,
-            f"{selectbox_team_calendar} Games:"
-        )
-        for i, row in df_team_games.iterrows():
-            is_home: bool = row["home_team_name_abbrev"] == team_tri_code
-            opp: str = row['away_team_name_abbrev'] if is_home else row['home_team_name_abbrev']
-            team_events.append({
-                "id": row["g_id"],
-                "title": f"{'vs' if is_home else '@'} {opp}",
-                "start": row["start_time_atl"].strftime(UTC_FMT).removesuffix("Z"),
-                "end": (row["start_time_atl"] + datetime.timedelta(minutes=60)).strftime(UTC_FMT).removesuffix("Z")
-                # ,
-                # "url": NHL_URL.removesuffix("/") + row["game_center_link"]
-            })
-
-        print(team_events)
-        st.write(team_events)
-
-        calendar(
-            events=team_events,
-            options={
-                "height": 500
-            }
-        )
-
-    display_df(
-        df_standings_now,
-        "Standings as of now:"
-    )
-
-    # cols_standings: dict = {
-    #     "triCode": "Team"
-    # }
-    # cols_standings.update(standings_now.show_cols())
-    cols_standings = standings_now.show_cols()
-    df_standings_now.rename(columns=cols_standings, inplace=True)
-    df_standings_now["STRK"] = df_standings_now["STRKC"].astype(str) + df_standings_now["STRKN"].astype(str)
-    df_standings_now["GPP"] = df_standings_now[NHLStandings.Abbr.GP.value]
-    df_standings_now["REC"] = df_standings_now.apply(
-        lambda row:
-        f_standing_record(
-            row[NHLStandings.Abbr.W.value],
-            row[NHLStandings.Abbr.L.value],
-            row[NHLStandings.Abbr.OTL.value] + row[NHLStandings.Abbr.SOL.value]
-        ),
-        axis=1
-    )
-
-    delta = df_standings_now[NHLStandings.Abbr.GD.value]
-    symbols = np.where(delta > 0, "▲", np.where(delta < 0, "▼", "—"))
-    df_standings_now["Δ"] = symbols
-
-    df_standings_now_league: pd.DataFrame = df_standings_now.copy()
-    df_standings_now_west = df_standings_now_league.loc[
-        df_standings_now_league["conferenceAbbrev"] == "W"
-        ].sort_values(by="conferenceSequence", ascending=True)
-    df_standings_now_east = df_standings_now_league.loc[
-        df_standings_now_league["conferenceAbbrev"] == "E"
-        ].sort_values(by="conferenceSequence", ascending=True)
-    df_standings_now_pac = df_standings_now_west.loc[
-        df_standings_now_west["divisionAbbrev"] == "P"
-        ].sort_values(by="divisionSequence", ascending=True)
-    df_standings_now_cen = df_standings_now_west.loc[
-        df_standings_now_west["divisionAbbrev"] == "C"
-        ].sort_values(by="divisionSequence", ascending=True)
-    df_standings_now_atl = df_standings_now_east.loc[
-        df_standings_now_east["divisionAbbrev"] == "A"
-        ].sort_values(by="divisionSequence", ascending=True)
-    df_standings_now_met = df_standings_now_east.loc[
-        df_standings_now_east["divisionAbbrev"] == "M"
-        ].sort_values(by="divisionSequence", ascending=True)
-
-    cols_standings.update({
-        "STRK": "STRK",
-        "GPP": "GPP",
-        "REC": "REC",
-        "Δ": "Δ"
-    })
-    cols_standings = {
-        k: v
-        for k, v in cols_standings.items()
-        if v not in (
-            "STRKC", "STRKN"
-        )
-    }
-
-    options_standings = [
-        "League",
-        "Conference",
-        "Division",
-        "Wildcard"
+    options_pills_mode: list[str] = [
+        "Jerseys",
+        "Scores",
+        "League Data",
+        "Test"
     ]
-    k_pills_standings: str = "key_pills_standings"
-    st.session_state.setdefault(k_pills_standings, 2)
-    pills_standings = pills(
-        label="Standings",
-        key=k_pills_standings,
-        options=options_standings,
-        index=2
+    k_pills_mode: str = "key_pills_mode"
+    st.session_state.setdefault(k_pills_mode, 1)
+    pills_mode = pills(
+        label="Mode",
+        options=options_pills_mode,
+        key=k_pills_mode,
+        index=1
     )
-    standings_heights = {
-        1: 1160,
-        2: 600,
-        4: 315,
-        6: 140
-    }
 
-    cont_0 = st.container()
-    cont_1 = st.container()
-    use_cont_1: bool = False
+    if pills_mode == options_pills_mode[2]:
+        # League Data
+        st.write(nhl.get_country())
+        st.write(nhl.get_geolocation())
+        display_df(
+            nhl.df_saved_data,
+        "nhl.df_saved_data"
+        )
+        display_df(
+            teams,
+            "Teams"
+        )
+        display_df(
+            seasons,
+            "Seasons"
+        )
+        display_df(
+            nhl.get_country_data(),
+            "Countries"
+        )
+        display_df(
+            nhl.df_players,
+            "Known NHL Players"
+        )
+        with st.container(border=True):
+            df_nhl_glossary: pd.DataFrame = nhl.get_glossary_data()
+            lst_nhl_glossary_abbrevs: list[str] = df_nhl_glossary["abbreviation"].tolist()
+            k_selectbox_nhl_glossary: str = "key_selectbox_nhl_glossary"
+            st.session_state.setdefault(k_selectbox_nhl_glossary, random.choice(lst_nhl_glossary_abbrevs))
+            selectbox_nhl_glossary = st.selectbox(
+                label="Glossary:",
+                options=lst_nhl_glossary_abbrevs,
+                key=k_selectbox_nhl_glossary
+            )
+            if selectbox_nhl_glossary:
+                df_sel_glossary: pd.Series = \
+                df_nhl_glossary.loc[df_nhl_glossary["abbreviation"] == selectbox_nhl_glossary].iloc[0]
+                id_ = df_sel_glossary["id"]
+                full_name = df_sel_glossary["fullName"]
+                definition = df_sel_glossary["definition"]
+                first_season_for_stat = df_sel_glossary["firstSeasonForStat"]
+                last_updated = df_sel_glossary["lastUpdated"]
+                cols_glossary_info = st.columns([0.25, 0.5, 0.25])
+                cols_glossary_info[0].text_input(
+                    label="ID:",
+                    value=id_,
+                    disabled=True
+                )
+                cols_glossary_info[0].text_input(
+                    label="Full Name:",
+                    value=full_name,
+                    disabled=True
+                )
+                cols_glossary_info[2].text_input(
+                    label="First Season For Stat",
+                    value=first_season_for_stat,
+                    disabled=True
+                )
+                cols_glossary_info[2].text_input(
+                    label="Last Updated:",
+                    value=last_updated,
+                    disabled=True
+                )
+                st.text_area(
+                    label="Definition:",
+                    value=definition,
+                    disabled=True
+                )
 
-    if pills_standings == options_standings[3]:
-        # Wildcard
-        df_standings_to_show: dict[str: pd.DataFrame] = {
-            "Atlantic": df_standings_now_atl.head(3).copy(),
-            "Metropolitan": df_standings_now_met.head(3).copy(),
-            "Central": df_standings_now_cen.head(3).copy(),
-            "Pacific": df_standings_now_pac.head(3).copy(),
-            "East WC": df_standings_now_east.loc[(1 <= df_standings_now_east["wildcardSequence"]) & (df_standings_now_east["wildcardSequence"] < 3)].copy(),
-            "West WC": df_standings_now_west.loc[(1 <= df_standings_now_west["wildcardSequence"]) & (df_standings_now_west["wildcardSequence"] < 3)].copy()
-        }
-        use_cont_1 = True
-    elif pills_standings == options_standings[2]:
-        # Division
-        df_standings_to_show: dict[str: pd.DataFrame] = {
-            "Atlantic": df_standings_now_atl.copy(),
-            "Metropolitan": df_standings_now_met.copy(),
-            "Central": df_standings_now_cen.copy(),
-            "Pacific": df_standings_now_pac.copy()
-        }
-    elif pills_standings == options_standings[1]:
-        # Conference
-        df_standings_to_show: dict[str: pd.DataFrame] = {
-            "Eastern": df_standings_now_east.copy(),
-            "Western": df_standings_now_west.copy()
-        }
-    else:
-        df_standings_to_show: dict[str: pd.DataFrame] = {"League": df_standings_now_league.copy()}
 
-    k_toggle_horizontal: str = "key_toggle_horizontal"
-    st.session_state.setdefault(k_toggle_horizontal, True)
-    toggle_horizontal = cont_0.toggle(
-        label="Horizontal?",
-        key=k_toggle_horizontal,
-    )
-    cols_dfs_to_show = cont_0.columns(len(df_standings_to_show)) if toggle_horizontal else [st.container(border=True) for i in range(len(df_standings_to_show))]
-    for i, k_df in enumerate(df_standings_to_show):
-        df: pd.DataFrame = df_standings_to_show[k_df]
-        with cols_dfs_to_show[i]:
+    elif pills_mode == options_pills_mode[1]:
+        # Scores
+        # st.write(nhl_season_now.df_season)
+        # st.write(nhl_season_now.get_season_dates())
+        # st.write(nhl.standings_by_day(nhl_season_now.get_season_dates()))
+
+        standings_now = nhl.get_standings()
+        df_standings_now: pd.DataFrame = standings_now.df_standings
+
+        df_standings_now = df_standings_now.merge(
+            nhl.df_teams,
+            left_on="t_id",
+            right_on="id",
+            suffixes=["", "_df_teams"]
+        )
+
+        df_current_teams: pd.DataFrame = df_standings_now[["fullName", "t_id"]].dropna(axis=0, how="any")
+        lst_teams: list[str] = df_current_teams["fullName"].unique().tolist()
+
+        k_selectbox_team_calendar: str = "key_selectbox_team_calendar"
+        st.session_state.setdefault(k_selectbox_team_calendar, DEFAULT_TEAM)
+        selectbox_team_calendar = st.selectbox(
+            label="Select a Team",
+            key=k_selectbox_team_calendar,
+            options=lst_teams
+        )
+        if selectbox_team_calendar:
+            team_events = []
+            team_tri_code: str = nhl.df_teams.loc[nhl.df_teams["fullName"].str.lower() == selectbox_team_calendar.lower()].iloc[0]["triCode"]
+            df_team_games: pd.DataFrame = nhl.df_games_boxscore.loc[
+                (nhl.df_games_boxscore["home_team_name_abbrev"] == team_tri_code)
+                | (nhl.df_games_boxscore["away_team_name_abbrev"] == team_tri_code)
+            ]
             display_df(
-                df=df[list(cols_standings.values())],
-                title=f"{k_df} Standings as of now:",
-                column_config={
-                    NHLStandings.Abbr.LURL.value: st.column_config.ImageColumn(
-                        label="Team",
-                        width="small"
-                    ),
-                    "GPP": st.column_config.ProgressColumn(
-                        label="Season %",
-                        min_value=0,
-                        max_value=82,
-                        width=100
-                    ),
-                    "Δ": st.column_config.TextColumn(
-                        "Δ",
-                        help="▲ up, ▼ down, — no change",
-                        width="small"
-                    )
-                },
-                height=standings_heights[len(df_standings_to_show)],
+                df_team_games,
+                f"{selectbox_team_calendar} Games:"
+            )
+            for i, row in df_team_games.iterrows():
+                is_home: bool = row["home_team_name_abbrev"] == team_tri_code
+                opp: str = row['away_team_name_abbrev'] if is_home else row['home_team_name_abbrev']
+                team_events.append({
+                    "id": row["g_id"],
+                    "title": f"{'vs' if is_home else '@'} {opp}",
+                    "start": row["start_time_atl"].strftime(UTC_FMT).removesuffix("Z"),
+                    "end": (row["start_time_atl"] + datetime.timedelta(minutes=60)).strftime(UTC_FMT).removesuffix("Z")
+                    # ,
+                    # "url": NHL_URL.removesuffix("/") + row["game_center_link"]
+                })
+
+            print(team_events)
+            st.write(team_events)
+
+            calendar(
+                events=team_events,
+                options={
+                    "height": 500
+                }
             )
 
-    scoreboard_now: NHLScoreboard = nhl.load_scoreboard()
-    boxscore_now = nhl.load_game_boxscore(2025020048)
-    # st.write(boxscore_now)
-    scoreboard_now_game_dates = scoreboard_now.game_dates
-    scoreboard_now_games = {}
-    for date, games in scoreboard_now_game_dates.items():
-        for game in games:
-            scoreboard_now_games[str(game)] = date
-    # st.write(scoreboard_now.sc_data)
-    # st.write("game_dates")
-    # st.write(scoreboard_now.game_dates)
+        display_df(
+            df_standings_now,
+            "Standings as of now:"
+        )
 
-    st.write(nhl.df_games_scoreboard)
+        # cols_standings: dict = {
+        #     "triCode": "Team"
+        # }
+        # cols_standings.update(standings_now.show_cols())
+        cols_standings = standings_now.show_cols()
+        df_standings_now.rename(columns=cols_standings, inplace=True)
+        df_standings_now["STRK"] = df_standings_now["STRKC"].astype(str) + df_standings_now["STRKN"].astype(str)
+        df_standings_now["GPP"] = df_standings_now[NHLStandings.Abbr.GP.value]
+        df_standings_now["REC"] = df_standings_now.apply(
+            lambda row:
+            f_standing_record(
+                row[NHLStandings.Abbr.W.value],
+                row[NHLStandings.Abbr.L.value],
+                row[NHLStandings.Abbr.OTL.value] + row[NHLStandings.Abbr.SOL.value]
+            ),
+            axis=1
+        )
 
-    k_selectbox_investigate_game: str = "key_selectbox_investigate_game"
-    selectbox_investigate_game = st.selectbox(
-        label="Investigate a game:",
-        key=k_selectbox_investigate_game,
-        options=list(scoreboard_now_games.keys())
-    )
-    if selectbox_investigate_game:
-        date = scoreboard_now_games[selectbox_investigate_game]
-        st.write(selectbox_investigate_game)
-        st.write(date)
-        df_game: pd.DataFrame = nhl.df_games_scoreboard.loc[
-            nhl.df_games_scoreboard["str"] == selectbox_investigate_game
-            ]
-        st.write(df_game)
+        delta = df_standings_now[NHLStandings.Abbr.GD.value]
+        symbols = np.where(delta > 0, "▲", np.where(delta < 0, "▼", "—"))
+        df_standings_now["Δ"] = symbols
 
-    options_pills_scoreboard_dates = list(scoreboard_now.game_dates)
-    k_pills_scoreboard_dates: str = "key_pills_scoreboard_dates"
-    st.session_state.setdefault(k_pills_scoreboard_dates)
-    pills_scoreboard_dates = pills(
-        label="Standings by Date:",
-        key=k_pills_scoreboard_dates,
-        options=options_pills_scoreboard_dates,
-        index=options_pills_scoreboard_dates.index(datetime.date.today().strftime(DATE_FMT))
-    )
+        df_standings_now_league: pd.DataFrame = df_standings_now.copy()
+        df_standings_now_west = df_standings_now_league.loc[
+            df_standings_now_league["conferenceAbbrev"] == "W"
+            ].sort_values(by="conferenceSequence", ascending=True)
+        df_standings_now_east = df_standings_now_league.loc[
+            df_standings_now_league["conferenceAbbrev"] == "E"
+            ].sort_values(by="conferenceSequence", ascending=True)
+        df_standings_now_pac = df_standings_now_west.loc[
+            df_standings_now_west["divisionAbbrev"] == "P"
+            ].sort_values(by="divisionSequence", ascending=True)
+        df_standings_now_cen = df_standings_now_west.loc[
+            df_standings_now_west["divisionAbbrev"] == "C"
+            ].sort_values(by="divisionSequence", ascending=True)
+        df_standings_now_atl = df_standings_now_east.loc[
+            df_standings_now_east["divisionAbbrev"] == "A"
+            ].sort_values(by="divisionSequence", ascending=True)
+        df_standings_now_met = df_standings_now_east.loc[
+            df_standings_now_east["divisionAbbrev"] == "M"
+            ].sort_values(by="divisionSequence", ascending=True)
 
-    cols_commands = st.container(border=True).columns(2)
-    if cols_commands[0].button(
-        label="show all live games",
-        key="key_button_show_all_live_games"
-    ):
-        lst_games = scoreboard_now.game_dates[scoreboard_now.game_dates.index(list(pills_scoreboard_dates.keys()))]
-        for i, game in enumerate(lst_games):
-            key = f"key_toggle_show_{scoreboard_now.game_dates.index(list(pills_scoreboard_dates.keys()))}_{i}"
-            st.session_state.update({key: True})
-        st.rerun()
+        cols_standings.update({
+            "STRK": "STRK",
+            "GPP": "GPP",
+            "REC": "REC",
+            "Δ": "Δ"
+        })
+        cols_standings = {
+            k: v
+            for k, v in cols_standings.items()
+            if v not in (
+                "STRKC", "STRKN"
+            )
+        }
 
-    show_timer(seconds="indefinite", count_down=False)
+        options_standings = [
+            "League",
+            "Conference",
+            "Division",
+            "Wildcard"
+        ]
+        k_pills_standings: str = "key_pills_standings"
+        st.session_state.setdefault(k_pills_standings, 2)
+        pills_standings = pills(
+            label="Standings",
+            key=k_pills_standings,
+            options=options_standings,
+            index=2
+        )
+        standings_heights = {
+            1: 1160,
+            2: 600,
+            4: 315,
+            6: 140
+        }
 
-    for i, date in enumerate(scoreboard_now.game_dates):
-        if date != pills_scoreboard_dates:
-            continue
-        for j, game in enumerate(scoreboard_now.game_dates[date]):
-            cols_scoreboard_table = st.columns([0.18, 0.82])
-            k_toggle_show: str = f"key_toggle_show_{i}_{j}"
-            show_game: bool = st.session_state.setdefault(k_toggle_show, False)
-            game.show_game = show_game
-            with cols_scoreboard_table[0].container(height=50, gap=None):
-                st.toggle(
-                    "Show?",
-                    key=k_toggle_show
+        cont_0 = st.container()
+        cont_1 = st.container()
+        use_cont_1: bool = False
+
+        if pills_standings == options_standings[3]:
+            # Wildcard
+            df_standings_to_show: dict[str: pd.DataFrame] = {
+                "Atlantic": df_standings_now_atl.head(3).copy(),
+                "Metropolitan": df_standings_now_met.head(3).copy(),
+                "Central": df_standings_now_cen.head(3).copy(),
+                "Pacific": df_standings_now_pac.head(3).copy(),
+                "East WC": df_standings_now_east.loc[(1 <= df_standings_now_east["wildcardSequence"]) & (df_standings_now_east["wildcardSequence"] < 3)].copy(),
+                "West WC": df_standings_now_west.loc[(1 <= df_standings_now_west["wildcardSequence"]) & (df_standings_now_west["wildcardSequence"] < 3)].copy()
+            }
+            use_cont_1 = True
+        elif pills_standings == options_standings[2]:
+            # Division
+            df_standings_to_show: dict[str: pd.DataFrame] = {
+                "Atlantic": df_standings_now_atl.copy(),
+                "Metropolitan": df_standings_now_met.copy(),
+                "Central": df_standings_now_cen.copy(),
+                "Pacific": df_standings_now_pac.copy()
+            }
+        elif pills_standings == options_standings[1]:
+            # Conference
+            df_standings_to_show: dict[str: pd.DataFrame] = {
+                "Eastern": df_standings_now_east.copy(),
+                "Western": df_standings_now_west.copy()
+            }
+        else:
+            df_standings_to_show: dict[str: pd.DataFrame] = {"League": df_standings_now_league.copy()}
+
+        k_toggle_horizontal: str = "key_toggle_horizontal"
+        st.session_state.setdefault(k_toggle_horizontal, True)
+        toggle_horizontal = cont_0.toggle(
+            label="Horizontal?",
+            key=k_toggle_horizontal,
+        )
+        cols_dfs_to_show = cont_0.columns(len(df_standings_to_show)) if toggle_horizontal else [st.container(border=True) for i in range(len(df_standings_to_show))]
+        for i, k_df in enumerate(df_standings_to_show):
+            df: pd.DataFrame = df_standings_to_show[k_df]
+            with cols_dfs_to_show[i]:
+                display_df(
+                    df=df[list(cols_standings.values())],
+                    title=f"{k_df} Standings as of now:",
+                    column_config={
+                        NHLStandings.Abbr.LURL.value: st.column_config.ImageColumn(
+                            label="Team",
+                            width="small"
+                        ),
+                        "GPP": st.column_config.ProgressColumn(
+                            label="Season %",
+                            min_value=0,
+                            max_value=82,
+                            width=100
+                        ),
+                        "Δ": st.column_config.TextColumn(
+                            "Δ",
+                            help="▲ up, ▼ down, — no change",
+                            width="small"
+                        )
+                    },
+                    height=standings_heights[len(df_standings_to_show)],
                 )
-            if show_game:
-                game_box: NHLBoxScore = nhl.load_game_boxscore(game.g_id)
-                game_box.show_game = game.show_game
-                game_box.away_team = game.away_team
-                game_box.home_team = game.home_team
-                cols_scoreboard_table[1].markdown(game_box.st_boxscore_card(), unsafe_allow_html=True)
+
+        scoreboard_now: NHLScoreboard = nhl.load_scoreboard()
+        boxscore_now = nhl.load_game_boxscore(2025020048)
+        # st.write(boxscore_now)
+        scoreboard_now_game_dates = scoreboard_now.game_dates
+        scoreboard_now_games = {}
+        for date, games in scoreboard_now_game_dates.items():
+            for game in games:
+                scoreboard_now_games[str(game)] = date
+        # st.write(scoreboard_now.sc_data)
+        # st.write("game_dates")
+        # st.write(scoreboard_now.game_dates)
+
+        st.write(nhl.df_games_scoreboard)
+
+        k_selectbox_investigate_game: str = "key_selectbox_investigate_game"
+        selectbox_investigate_game = st.selectbox(
+            label="Investigate a game:",
+            key=k_selectbox_investigate_game,
+            options=list(scoreboard_now_games.keys())
+        )
+        if selectbox_investigate_game:
+            date = scoreboard_now_games[selectbox_investigate_game]
+            st.write(selectbox_investigate_game)
+            st.write(date)
+            ser_game: pd.Series = nhl.df_games_scoreboard.loc[
+                nhl.df_games_scoreboard["str"] == selectbox_investigate_game
+            ].iloc[0]
+            display_df(
+                ser_game,
+                "ser_game"
+            )
+
+            url_game_center: str = ser_game["game_center_link"]
+            if url_game_center:
+                url_game_center = f"{NHL_URL}{url_game_center.removeprefix("/")}"
+                btn = st.link_button(
+                    label=f"gamecenter",
+                    url=url_game_center
+                )
             else:
-                cols_scoreboard_table[1].markdown(game.st_scoreboard_card(), unsafe_allow_html=True)
+                st.write("no recap video found")
 
-    schedule = nhl.get_schedule()
-    st.write(schedule)
-    display_df(
-        nhl.df_games_boxscore
-    )
+            url_3_min_recap: str = ser_game["game_three_min_recap"]
+            if url_3_min_recap:
+                url_3_min_recap = f"{NHL_URL}{url_3_min_recap.removeprefix("/")}"
+                btn = st.link_button(
+                    label=f"recap",
+                    url=url_3_min_recap
+                )
+            else:
+                st.write("no recap video found")
+
+        options_pills_scoreboard_dates = list(scoreboard_now.game_dates)
+        k_pills_scoreboard_dates: str = "key_pills_scoreboard_dates"
+        st.session_state.setdefault(k_pills_scoreboard_dates)
+        pills_scoreboard_dates = pills(
+            label="Standings by Date:",
+            key=k_pills_scoreboard_dates,
+            options=options_pills_scoreboard_dates,
+            index=options_pills_scoreboard_dates.index(datetime.date.today().strftime(DATE_FMT))
+        )
+
+        cols_commands = st.container(border=True).columns(2)
+        if cols_commands[0].button(
+            label="show all live games",
+            key="key_button_show_all_live_games"
+        ):
+            lst_games = scoreboard_now.game_dates[scoreboard_now.game_dates.index(list(pills_scoreboard_dates.keys()))]
+            for i, game in enumerate(lst_games):
+                key = f"key_toggle_show_{scoreboard_now.game_dates.index(list(pills_scoreboard_dates.keys()))}_{i}"
+                st.session_state.update({key: True})
+            st.rerun()
+
+        show_timer(seconds="indefinite", count_down=False)
+
+        for i, date in enumerate(scoreboard_now.game_dates):
+            if date != pills_scoreboard_dates:
+                continue
+            timeline_events = []
+            for j, game in enumerate(scoreboard_now.game_dates[date]):
+                # assert isinstance(game, NHLGame), f"game must be a NHLGame, got '{type(game)=}'"
+                cols_scoreboard_table = st.columns([0.18, 0.82])
+                k_toggle_show: str = f"key_toggle_show_{i}_{j}"
+                show_game: bool = st.session_state.setdefault(k_toggle_show, False)
+                game.show_game = show_game
+                with cols_scoreboard_table[0].container(height=50, gap=None):
+                    st.toggle(
+                        "Show?",
+                        key=k_toggle_show
+                    )
+                if show_game:
+                    game_box: NHLBoxScore = nhl.load_game_boxscore(game.g_id)
+                    game_box.show_game = game.show_game
+                    game_box.away_team = game.away_team
+                    game_box.home_team = game.home_team
+                    cols_scoreboard_table[1].markdown(game_box.st_boxscore_card(), unsafe_allow_html=True)
+                else:
+                    cols_scoreboard_table[1].markdown(game.st_scoreboard_card(), unsafe_allow_html=True)
+
+                timeline_events.append({
+                    # "start": game.start_time_atl.strftime(UTC_FMT).removesuffix("Z"),
+                    "Start Date": game.start_time_atl,
+                    # "end": (game.start_time_atl + datetime.timedelta(minutes=165)).strftime(UTC_FMT).removesuffix("Z"),
+                    "End Date": game.start_time_atl + datetime.timedelta(minutes=165),
+                    "Event": game.short_repr(),
+                    "State": game.game_state.lower()
+                })
+
+            # def cc_game_state(row: pd.Series):
+            #     # now = datetime.datetime.now()
+            #     # sd = row["Start Date"]
+            #     # ed = row["End Date"]
+            #     # if now > ed:
+            #     #     "Over"
+            #     # ["Start Date"] <= datetime.datetime.now() <= row["End Date"]
+            #     return row[""]
 
 
-elif pills_mode == options_pills_mode[0]:
+            df_timeline_games = pd.DataFrame(timeline_events)
+            # df_timeline_games["State"] = df_timeline_games.apply(
+            #     lambda row: cc_game_state(row), axis=1)
 
-    # Jerseys
-    k_pl_id: str = "key_pl_id"
-    display_df(
-        nhl_jc.df_jerseys,
-        "nhl_jc.df_jerseys"
-    )
-    # lst_selectbox_player = nhl_jc.df_jerseys.loc[~pd.isna(nhl_jc.df_jerseys["PlayerLast"]), "JerseyToString"].dropna().unique().tolist()
-    lst_selectbox_player = nhl_jc.df_jerseys["JerseyToString"].dropna().unique().tolist()
-    st.session_state.setdefault(k_pl_id, random.choice(lst_selectbox_player))
+            # Create a Gantt-like timeline using Plotly
+            fig_timeline_games = px.timeline(
+                df_timeline_games,
+                x_start='Start Date',
+                x_end='End Date',
+                y='Event',
+                title='Games today:',
+                color='State',
+                color_discrete_map={
+                    'crit': Colour('red').hex_code,
+                    'fut': Colour('#ECC868').hex_code,
+                    'off': Colour('dark-green').hex_code,
+                    'live': Colour('green').hex_code,
+                    'final': Colour('dark-green').hex_code,
+                    'pre': Colour('light-blue').hex_code
+                }
+            )
 
-    pl_to_string = st.selectbox(
-        label="Select a player",
-        key=k_pl_id,
-        options=lst_selectbox_player
-    )
-    df_selected_jersey_orig: pd.DataFrame = nhl_jc.df_jerseys.loc[nhl_jc.df_jerseys["JerseyToString"] == pl_to_string]
-    df_selected_jersey: pd.DataFrame = df_selected_jersey_orig.copy()
-    j_idx = df_selected_jersey_orig.index.tolist()[0]
-    display_df(
-        df_selected_jersey,
-        "A df_selected_jersey"
-    )
-    # df_selected_jersey = df_selected_jersey.merge(
-    #     nhl.df_players,
-    #     left_on="NHLID",
-    #     right_on="p_id",
-    #     how="inner"
-    # )
-    # if df_selected_jersey.empty:
-    #     # pla
-    #
-    # display_df(
-    #     df_selected_jersey,
-    #     "B df_selected_jersey"
-    # )
-    df_selected_jersey = df_selected_jersey.merge(
-        nhl.df_teams.rename(columns={"id": "t_id"}),
-        left_on="Team",
-        right_on="fullName",
-        how="inner"
-    )
-    st.write(nhl_jc)
-    st.write(nhl_jc.jerseys)
-    lst_jerseys = sorted(list(nhl_jc.jerseys))
-    j_id = df_selected_jersey_orig.loc[j_idx, "ID"]
-    if not df_selected_jersey.empty:
+            # Update layout to make it more readable
+            fig_timeline_games.update_layout(xaxis_title="Date", yaxis_title="Concurrent Games")
+
+            # Display in Streamlit
+            st.plotly_chart(fig_timeline_games)
+
+        schedule = nhl.get_schedule()
+        st.write(schedule)
+        display_df(
+            nhl.df_games_boxscore
+        )
+
+        df_games_yet_to_play: pd.DataFrame = nhl.df_games_boxscore[nhl.df_games_boxscore["game_state"] != "OFF"]
+
+        df_games_yet_to_play = df_games_yet_to_play.merge(
+            df_standings_now,
+            left_on="game_home_team_id",
+            right_on="t_id",
+            how="left",
+            suffixes=("", "_HT")
+        ).merge(
+            df_standings_now,
+            left_on="game_away_team_id",
+            right_on="t_id",
+            how="left",
+            suffixes=("", "_AT")
+        )
+
+        df_games_yet_to_play.sort_values(
+            by="start_time_atl",
+            inplace=True
+        )
+
+        display_df(
+            df_games_yet_to_play,
+            "df_games_yet_to_play"
+        )
+
+        if selectbox_team_calendar:
+            team_events = []
+            df_sel_team: pd.DataFrame = nhl.df_teams.merge(
+                df_standings_now,
+                left_on="id",
+                right_on="t_id",
+                suffixes=("", "_Standings")
+            )
+            ser_sel_team: pd.Series = df_sel_team.loc[df_sel_team["fullName"].str.lower() == selectbox_team_calendar.lower()].iloc[0]
+            st.write(ser_sel_team)
+            sel_team_id: int = ser_sel_team["id"]
+            df_sel_team_games_left = df_games_yet_to_play[
+                (df_games_yet_to_play["game_home_team_id"] == sel_team_id)
+                | (df_games_yet_to_play["game_away_team_id"] == sel_team_id)
+            ].reset_index(drop=True)
+
+            display_df(
+                df_sel_team_games_left,
+                f"Games left for {selectbox_team_calendar}:",
+                hide_index=False
+            )
+
+            def calc_leg(df: pd.DataFrame, t_id: Optional[int] = None) -> pd.DataFrame:
+                if t_id is None:
+                    t_id: bool = df.loc[0, "game_home_team_id"]
+                    at_home = True
+                else:
+                    at_home: bool = df.loc[0, "game_home_team_id"] == t_id
+                g_count: int = 0
+                df["Leg"] = None
+                df["LegCount"] = 0
+                for i, row in df.iterrows():
+                    if at_home:
+                        if row["game_home_team_id"] == t_id:
+                            g_count += 1
+                        else:
+                            g_count = 1
+                            at_home = False
+                    else:
+                        if row["game_away_team_id"] == t_id:
+                            g_count += 1
+                        else:
+                            g_count = 1
+                            at_home = True
+                    df.loc[i, ["Leg", "LegCount"]] = ["H" if at_home else "A", g_count]
+
+                return df
+
+
+            display_df(
+                calc_leg(df_sel_team_games_left),
+                "df_sel_team_games_left_legs",
+                hide_index=False
+            )
+
+            df_sel_team_games_left_same_conf: pd.DataFrame = df_sel_team_games_left[
+                df_sel_team_games_left["conferenceAbbrev"] == df_sel_team_games_left["conferenceAbbrev_AT"]
+            ]
+
+            display_df(
+                df_sel_team_games_left_same_conf,
+                "df_sel_team_games_left_same_conf"
+            )
+
+            df_sel_team_games_left_same_div: pd.DataFrame = df_sel_team_games_left_same_conf[
+                df_sel_team_games_left_same_conf["divisionAbbrev"] == df_sel_team_games_left_same_conf["divisionAbbrev_AT"]
+            ]
+
+            display_df(
+                df_sel_team_games_left_same_div,
+                "df_sel_team_games_left_same_div"
+            )
+
+            df_sel_team_games_left_adj_div: pd.DataFrame = df_sel_team_games_left_same_conf[~df_sel_team_games_left_same_conf.index.isin(df_sel_team_games_left_same_div.index.tolist())]
+
+            display_df(
+                df_sel_team_games_left_adj_div,
+                "df_sel_team_games_left_adj_div"
+            )
+
+            sel_team_conf = ser_sel_team["conferenceAbbrev"]
+            df_sel_team_games_left_opp_conf: pd.DataFrame = df_sel_team_games_left[
+                (df_sel_team_games_left["conferenceAbbrev"] != sel_team_conf)
+                | (df_sel_team_games_left["conferenceAbbrev_AT"] != sel_team_conf)
+            ]
+
+            display_df(
+                df_sel_team_games_left_opp_conf,
+                "df_sel_team_games_left_opp_conf"
+            )
+
+
+    elif pills_mode == options_pills_mode[0]:
+
+        # Jerseys
+        k_pl_id: str = "key_pl_id"
+        display_df(
+            nhl_jc.df_jerseys,
+            "nhl_jc.df_jerseys"
+        )
+        # lst_selectbox_player = nhl_jc.df_jerseys.loc[~pd.isna(nhl_jc.df_jerseys["PlayerLast"]), "JerseyToString"].dropna().unique().tolist()
+        lst_selectbox_player = nhl_jc.df_jerseys["JerseyToString"].dropna().unique().tolist()
+        st.session_state.setdefault(k_pl_id, random.choice(lst_selectbox_player))
+
+        pl_to_string = st.selectbox(
+            label="Select a player",
+            key=k_pl_id,
+            options=lst_selectbox_player
+        )
+        df_selected_jersey_orig: pd.DataFrame = nhl_jc.df_jerseys.loc[nhl_jc.df_jerseys["JerseyToString"] == pl_to_string]
+        df_selected_jersey: pd.DataFrame = df_selected_jersey_orig.copy()
+        j_idx = df_selected_jersey_orig.index.tolist()[0]
         display_df(
             df_selected_jersey,
-            "C df_selected_jersey"
+            "A df_selected_jersey"
         )
-        ser_selected_jersey: pd.Series = df_selected_jersey.iloc[0]
-        pl_id = ser_selected_jersey["NHLID"]
-        pl_obj: NHLPlayer = nhl.get_player_data(pl_id)
-        st.write(pl_obj)
-        pl_team: NHLTeam = pl_obj.team
-        st.write(f"Player ID# {pl_id}")
-        st.write(pl_obj)
-        st.write(pl_team)
-
-        if pl_team is None:
-            display_df(ser_selected_jersey, "ser_selected_jersey")
-            pl_team = nhl.lookup_team(ser_selected_jersey["t_id"])
-            # pl_obj.team = pl_team
-
-        image_cols = st.columns(4)
-        image_cols[0].image(pl_obj.path_team_logo, width=300)
-        image_cols[1].image(pl_obj.birth_country.image_url, width=300)
-        image_cols[2].image(pl_obj.path_headshot_logo, width=300)
-        image_cols[3].image(pl_obj.path_hero_shot_logo, width=300)
-
-        pl_obj_featured_stats_season, df_pl_obj_featured_stats = pl_obj.featured_stats
-        display_df(df_pl_obj_featured_stats, f"Featured Stats {f_season(pl_obj_featured_stats_season)}")
-        display_df(pl_obj.career_totals, "Career Totals")
-        display_df(pl_obj.season_totals, "Season Totals")
-
-        options_pills_jersey_mode = [
-            "Landing",
-            "Team Stats",
-            "Colour Editing"
-        ]
-        k_pills_jersey_mode: str = "key_pills_jersey_mode"
-        st.session_state.setdefault(k_pills_jersey_mode, 0)
-        pills_jersey_mode = pills(
-            label="Sub-mode",
-            key=k_pills_jersey_mode,
-            options=options_pills_jersey_mode,
-            label_visibility="hidden",
-            index=0
-        )
-
-        if pills_jersey_mode == options_pills_jersey_mode[1]:
-            load_player_progress = st.progress(value=0, text=f"Loading {pl_team.full_name} Roster -- 0%")
-            display_df(
-                nhl.get_team_roster(pl_team.tri_code, pb=load_player_progress, pb_text=f"Loading {pl_team.full_name} Roster -- "),
-                f"{pl_team.full_name} {f_season(get_this_season_str())} Team Roster"
-            )
-
-        # k_selectbox_jersey = "key_selectbox_jersey"
-        # st.session_state.setdefault(k_selectbox_jersey, random.choice(lst_jerseys))
-        # selectbox_jersey = st.selectbox(
-        #     label="Select a Jersey:",
-        #     key=k_selectbox_jersey,
-        #     options=lst_jerseys
+        # df_selected_jersey = df_selected_jersey.merge(
+        #     nhl.df_players,
+        #     left_on="NHLID",
+        #     right_on="p_id",
+        #     how="inner"
         # )
+        # if df_selected_jersey.empty:
+        #     # pla
         #
-        # if str(selectbox_jersey):
-        elif pills_jersey_mode == options_pills_jersey_mode[2]:
-            with st.expander(label="Edit Jersey Colours", expanded=False):
-                k_j_editing: str = "key_j_editing"
-                j_editing: int = st.session_state.setdefault(k_j_editing, None)
-                for i, j_id in enumerate(nhl_jc.jerseys):
-                    j_c_cols = st.columns([0.7, 0.1, 0.1, 0.1])
-                    j_obj: Jersey = nhl_jc.jerseys[j_id]
-                    colours_lst = j_obj.get_colours()
-                    # j_c_cols[0].write(f"#{j_id} {j_obj.to_string()}")
-                    lst_images: list[str] = os.listdir(j_obj.image_folder)
-                    if lst_images:
-                        colours = extract_dominant_colours(
-                            os.path.join(j_obj.image_folder, lst_images[0]),
-                            num_colours=10
-                        )
-                        gradient_img = generate_color_gradient(colours, width=int(0.7 * 1600), height=50)
-                        j_c_cols[0].image(gradient_img, caption=j_obj.to_string())
-
-                        if j_c_cols[0].button(
-                                "edit",
-                                key=f"key_button_edit_jersey_colours_{i}"
-                        ):
-                            st.session_state.update({k_j_editing: i})
-                            st.rerun()
-
-                        if i == j_editing:
-                            num_selectors = j_c_cols[0].slider("How many colours to define?", 1, 5, 3)
-                            selected_positions = []
-                            selected_colours = []
-
-                            for i in range(num_selectors):
-                                pos = j_c_cols[0].slider(f"Position for Colour {i + 1}", 0.0, 1.0, step=0.01,
-                                                         key=f"slider_{i}")
-                                selected_positions.append(pos)
-                                sampled_hex = get_color_at_position(gradient_img, pos)
-                                selected_colours.append(sampled_hex)
-
-                                j_c_cols[i + 1].markdown(
-                                    f"<div style='display: flex; align-items: center;'>"
-                                    f"<div style='width: 40px; height: 20px; background-color: {sampled_hex}; "
-                                    f"border: 1px solid #000; margin-right: 10px;'></div>"
-                                    f"Selected Colour {i + 1}: {sampled_hex}"
-                                    f"</div>", unsafe_allow_html=True)
-                            if j_c_cols[0].button(
-                                    label="save",
-                                    key=f"key_button_save_jersey_colours_{i}"
-                            ):
-                                if os.path.exists(os.path.join(os.getcwd(), JERSEY_COLOUR_SAVE_FILE)):
-                                    with open(JERSEY_COLOUR_SAVE_FILE, "r") as f:
-                                        saved_data = json.load(f)
-                                else:
-                                    saved_data = {}
-                                saved_data[f"{j_id}"] = selected_colours
-                                with open(JERSEY_COLOUR_SAVE_FILE, "w") as f:
-                                    f.write(json.dumps(saved_data, indent=4))
-                                st.toast("Changes saved successfully!")
-                                st.session_state.update({k_j_editing: None})
-                                st.rerun()
-                            j_c_cols[0].divider()
-
-
-                    else:
-                        j_c_cols[0].write("No images on file.")
-                    # j_c_cols[1].write(colours_lst)
-                    for j, c in enumerate(colours_lst, start=1):
-                        k_cp: str = f"{j_id}_{j}_cp"
-                        st.session_state.update({k_cp: c.hex_code})
-                        j_c_cols[j].color_picker(
-                            label=f"Colour{i}",
-                            key=k_cp
-                        )
-                        # j_c_cols[j].markdown(f"""
-                        # <div style='background-color: {c.hex_code}'>
-                        #     <h3>{c.hex_code}</h3>
-                        # </div>
-                        # """.strip(), unsafe_allow_html=True)
-        else:
-            sel_jersey: Jersey = nhl_jc.jerseys[j_id]
-            # streamlit.write(sel_jersey.__dict__)
-            # st.write(sel_jersey.is_blank())
-            toggle_blank = st.toggle(
-                "Blank",
-                value=sel_jersey.is_blank(),
-                disabled=True
+        # display_df(
+        #     df_selected_jersey,
+        #     "B df_selected_jersey"
+        # )
+        df_selected_jersey = df_selected_jersey.merge(
+            nhl.df_teams.rename(columns={"id": "t_id"}),
+            left_on="Team",
+            right_on="fullName",
+            how="inner"
+        )
+        st.write(nhl_jc)
+        st.write(nhl_jc.jerseys)
+        lst_jerseys = sorted(list(nhl_jc.jerseys))
+        j_id = df_selected_jersey_orig.loc[j_idx, "ID"]
+        if not df_selected_jersey.empty:
+            display_df(
+                df_selected_jersey,
+                "C df_selected_jersey"
             )
-            if sel_jersey.n_images == 0:
-                st.info(f"No images found for this jersey.")
-            else:
-                cols_jersey_images = st.columns(sel_jersey.n_images)
-                lst_images: list[str] = os.listdir(sel_jersey.image_folder)
-                for i, path in enumerate(lst_images):
-                    with cols_jersey_images[i]:
-                        st.image(os.path.join(sel_jersey.image_folder, path))
+            ser_selected_jersey: pd.Series = df_selected_jersey.iloc[0]
+            pl_id = ser_selected_jersey["NHLID"]
+            pl_obj: NHLPlayer = nhl.get_player_data(pl_id)
+            st.write(pl_obj)
+            pl_team: NHLTeam = pl_obj.team
+            st.write(f"Player ID# {pl_id}")
+            st.write(pl_obj)
+            st.write(pl_team)
 
-                colours = extract_dominant_colours(
-                    os.path.join(sel_jersey.image_folder, lst_images[0]),
-                    num_colours=10
+            if pl_team is None:
+                display_df(ser_selected_jersey, "ser_selected_jersey")
+                pl_team = nhl.lookup_team(ser_selected_jersey["t_id"])
+                # pl_obj.team = pl_team
+
+            image_cols = st.columns(4)
+            image_cols[0].image(pl_obj.path_team_logo, width=300)
+            image_cols[1].image(pl_obj.birth_country.image_url, width=300)
+            image_cols[2].image(pl_obj.path_headshot_logo, width=300)
+            image_cols[3].image(pl_obj.path_hero_shot_logo, width=300)
+
+            pl_obj_featured_stats_season, df_pl_obj_featured_stats = pl_obj.featured_stats
+            display_df(df_pl_obj_featured_stats, f"Featured Stats {f_season(pl_obj_featured_stats_season)}")
+            display_df(pl_obj.career_totals, "Career Totals")
+            display_df(pl_obj.season_totals, "Season Totals")
+
+            options_pills_jersey_mode = [
+                "Landing",
+                "Team Stats",
+                "Colour Editing"
+            ]
+            k_pills_jersey_mode: str = "key_pills_jersey_mode"
+            st.session_state.setdefault(k_pills_jersey_mode, 0)
+            pills_jersey_mode = pills(
+                label="Sub-mode",
+                key=k_pills_jersey_mode,
+                options=options_pills_jersey_mode,
+                label_visibility="hidden",
+                index=0
+            )
+
+            if pills_jersey_mode == options_pills_jersey_mode[1]:
+                load_player_progress = st.progress(value=0, text=f"Loading {pl_team.full_name} Roster -- 0%")
+                display_df(
+                    nhl.get_team_roster(pl_team.tri_code, pb=load_player_progress, pb_text=f"Loading {pl_team.full_name} Roster -- "),
+                    f"{pl_team.full_name} {f_season(get_this_season_str())} Team Roster"
                 )
 
-                # for hex_colour, proportion in colours:
-                #     st.markdown(
-                #         f"<div style='display: flex; align-items: center;'>"
-                #         f"<div style='width: 40px; height: 20px; background-color: {hex_colour}; "
-                #         f"border: 1px solid #000; margin-right: 10px;'></div>"
-                #         f"{hex_colour} — {proportion * 100:.2f}%"
-                #         f"</div>", unsafe_allow_html=True)
-                #
-                # st.write(colours)
+            # k_selectbox_jersey = "key_selectbox_jersey"
+            # st.session_state.setdefault(k_selectbox_jersey, random.choice(lst_jerseys))
+            # selectbox_jersey = st.selectbox(
+            #     label="Select a Jersey:",
+            #     key=k_selectbox_jersey,
+            #     options=lst_jerseys
+            # )
+            #
+            # if str(selectbox_jersey):
+            elif pills_jersey_mode == options_pills_jersey_mode[2]:
+                with st.expander(label="Edit Jersey Colours", expanded=False):
+                    k_j_editing: str = "key_j_editing"
+                    j_editing: int = st.session_state.setdefault(k_j_editing, None)
+                    for i, j_id in enumerate(nhl_jc.jerseys):
+                        j_c_cols = st.columns([0.7, 0.1, 0.1, 0.1])
+                        j_obj: Jersey = nhl_jc.jerseys[j_id]
+                        colours_lst = j_obj.get_colours()
+                        # j_c_cols[0].write(f"#{j_id} {j_obj.to_string()}")
+                        lst_images: list[str] = os.listdir(j_obj.image_folder)
+                        if lst_images:
+                            colours = extract_dominant_colours(
+                                os.path.join(j_obj.image_folder, lst_images[0]),
+                                num_colours=10
+                            )
+                            gradient_img = generate_color_gradient(colours, width=int(0.7 * 1600), height=50)
+                            j_c_cols[0].image(gradient_img, caption=j_obj.to_string())
+
+                            if j_c_cols[0].button(
+                                    "edit",
+                                    key=f"key_button_edit_jersey_colours_{i}"
+                            ):
+                                st.session_state.update({k_j_editing: i})
+                                st.rerun()
+
+                            if i == j_editing:
+                                num_selectors = j_c_cols[0].slider("How many colours to define?", 1, 5, 3)
+                                selected_positions = []
+                                selected_colours = []
+
+                                for i in range(num_selectors):
+                                    pos = j_c_cols[0].slider(f"Position for Colour {i + 1}", 0.0, 1.0, step=0.01,
+                                                             key=f"slider_{i}")
+                                    selected_positions.append(pos)
+                                    sampled_hex = get_color_at_position(gradient_img, pos)
+                                    selected_colours.append(sampled_hex)
+
+                                    j_c_cols[i + 1].markdown(
+                                        f"<div style='display: flex; align-items: center;'>"
+                                        f"<div style='width: 40px; height: 20px; background-color: {sampled_hex}; "
+                                        f"border: 1px solid #000; margin-right: 10px;'></div>"
+                                        f"Selected Colour {i + 1}: {sampled_hex}"
+                                        f"</div>", unsafe_allow_html=True)
+                                if j_c_cols[0].button(
+                                        label="save",
+                                        key=f"key_button_save_jersey_colours_{i}"
+                                ):
+                                    if os.path.exists(os.path.join(os.getcwd(), JERSEY_COLOUR_SAVE_FILE)):
+                                        with open(JERSEY_COLOUR_SAVE_FILE, "r") as f:
+                                            saved_data = json.load(f)
+                                    else:
+                                        saved_data = {}
+                                    saved_data[f"{j_id}"] = selected_colours
+                                    with open(JERSEY_COLOUR_SAVE_FILE, "w") as f:
+                                        f.write(json.dumps(saved_data, indent=4))
+                                    st.toast("Changes saved successfully!")
+                                    st.session_state.update({k_j_editing: None})
+                                    st.rerun()
+                                j_c_cols[0].divider()
+
+
+                        else:
+                            j_c_cols[0].write("No images on file.")
+                        # j_c_cols[1].write(colours_lst)
+                        for j, c in enumerate(colours_lst, start=1):
+                            k_cp: str = f"{j_id}_{j}_cp"
+                            st.session_state.update({k_cp: c.hex_code})
+                            j_c_cols[j].color_picker(
+                                label=f"Colour{i}",
+                                key=k_cp
+                            )
+                            # j_c_cols[j].markdown(f"""
+                            # <div style='background-color: {c.hex_code}'>
+                            #     <h3>{c.hex_code}</h3>
+                            # </div>
+                            # """.strip(), unsafe_allow_html=True)
+            else:
+                sel_jersey: Jersey = nhl_jc.jerseys[j_id]
+                # streamlit.write(sel_jersey.__dict__)
+                # st.write(sel_jersey.is_blank())
+                toggle_blank = st.toggle(
+                    "Blank",
+                    value=sel_jersey.is_blank(),
+                    disabled=True
+                )
+                if sel_jersey.n_images == 0:
+                    st.info(f"No images found for this jersey.")
+                else:
+                    cols_jersey_images = st.columns(sel_jersey.n_images)
+                    lst_images: list[str] = os.listdir(sel_jersey.image_folder)
+                    for i, path in enumerate(lst_images):
+                        with cols_jersey_images[i]:
+                            st.image(os.path.join(sel_jersey.image_folder, path))
+
+                    colours = extract_dominant_colours(
+                        os.path.join(sel_jersey.image_folder, lst_images[0]),
+                        num_colours=10
+                    )
+
+                    # for hex_colour, proportion in colours:
+                    #     st.markdown(
+                    #         f"<div style='display: flex; align-items: center;'>"
+                    #         f"<div style='width: 40px; height: 20px; background-color: {hex_colour}; "
+                    #         f"border: 1px solid #000; margin-right: 10px;'></div>"
+                    #         f"{hex_colour} — {proportion * 100:.2f}%"
+                    #         f"</div>", unsafe_allow_html=True)
+                    #
+                    # st.write(colours)
+
+                    gradient_img = generate_color_gradient(colours, width=600, height=50)
+                    st.image(gradient_img, caption="Dominant Colour Gradient")
+
+        jc_events = []
+        colour_order_tile: Colour = Colour("#451212")
+        colour_receive_tile: Colour = Colour("#124512")
+        colour_open_tile: Colour = Colour("#121245")
+        colour_birthday_tile: Colour = Colour("#124545")
+        k_check_combine: str = "key_check_combine"
+        st.session_state.setdefault(k_check_combine, False)
+        check_combine = st.checkbox(
+            label="combine all years",
+            key=k_check_combine
+        )
+        with st.columns([0.8, 0.2])[1]:
+            for k, c in {
+                "Ordered": colour_order_tile,
+                "Received": colour_receive_tile,
+                "Opened": colour_open_tile,
+                "Birthday": colour_birthday_tile
+            }.items():
+                st.markdown(coloured_block(
+                    label=f"{k}: {c.hex_code}",
+                    bg=c
+                ), unsafe_allow_html=True)
+        covered_player_birthdays = []
+        for i, row in nhl_jc.df_jerseys.iterrows():
+            j_obj: Jersey = nhl_jc.jerseys[row["ID"]]
+            order_date_og: datetime.date = j_obj.order_date
+            receive_date_og: datetime.date = j_obj.receive_date
+            open_date_og: datetime.date = j_obj.open_date
+            dob_og: datetime.date = j_obj.dob
+            order_date = date_to_this_year(order_date_og) if check_combine else order_date_og
+            receive_date = date_to_this_year(receive_date_og) if check_combine else receive_date_og
+            open_date = date_to_this_year(open_date_og) if check_combine else open_date_og
+            dob = date_to_this_year(dob_og) if check_combine else dob_og
+            if not pd.isna(j_obj.order_date):
+                jc_events.append({
+                    "id": f"jc_event_order_date_{i}",
+                    "groupId": f"order_date",
+                    "title": f"{j_obj.to_string()}" + (f" - {order_date_og.year}" if check_combine else ""),
+                    "backgroundColor": colour_order_tile.hex_code,
+                    "start": order_date.strftime(DATE_FMT)
+                })
+            if not pd.isna(j_obj.receive_date):
+                jc_events.append({
+                    "id": f"jc_event_receive_date_{i}",
+                    "groupId": f"receive_date",
+                    "title": f"{j_obj.to_string()}" + (f" - {receive_date_og.year}" if check_combine else ""),
+                    "backgroundColor": colour_receive_tile.hex_code,
+                    "start": receive_date.strftime(DATE_FMT)
+                })
+            if not pd.isna(j_obj.open_date):
+                jc_events.append({
+                    "id": f"jc_event_open_date_{i}",
+                    "groupId": f"open_date",
+                    "title": f"{j_obj.to_string()}" + (f" - {open_date_og.year}" if check_combine else ""),
+                    "backgroundColor": colour_open_tile.hex_code,
+                    "start": open_date.strftime(DATE_FMT)
+                })
+            if not pd.isna(j_obj.dob):
+                cpb = f"{j_obj.player_first} {j_obj.player_last}".lower()
+                if cpb not in covered_player_birthdays:
+                    jc_events.append({
+                        "id": f"jc_event_dob_{i}",
+                        "groupId": f"dob",
+                        "title": f"Birthday! {j_obj.player_first} {j_obj.player_last} - {dob_og.year}",
+                        "backgroundColor": colour_birthday_tile.hex_code,
+                        "start": dob.strftime(DATE_FMT)
+                    })
+                    covered_player_birthdays.append(cpb)
+
+        if check_combine:
+            jc_events.sort(key=lambda event: (event["title"][-4:], event["start"]))
+        else:
+            jc_events.sort(key=lambda event: event["start"])
+
+        cal = calendar(
+            events=jc_events,
+            options={
+                "initialView": "multiMonthYear",
+                "multiMonthMaxColumns": 3,
+                "height": 1800,
+                "contentHeight": 500,
+                "expandRows": True,
+                "dayMaxEventRows": 10,  # unlimited rows per day (or set an int)
+                "eventDisplay": "block",
+                "displayEventTime": False
+                # ,
+                # "moreLinkClick": "popover",  # still works without callbacks
+            }
+            # ,
+            # custom_css=custom_css,
+        )
+
+        st.write(cal)
+
+        df_nhl_jerseys_w = nhl_jc.df_jerseys.copy()
+
+        avg_spent_per_jersey_est: float = df_nhl_jerseys_w["PriceCalc"].mean()
+
+        k_checkbox_use_avg_instead_actual: str = "key_checkbox_use_avg_instead_actual"
+        st.session_state.setdefault(k_checkbox_use_avg_instead_actual, False)
+        checkbox_use_avg_instead_actual = st.checkbox(
+            label=f"Use {money(avg_spent_per_jersey_est)} instead of {money(0)}?",
+            key=k_checkbox_use_avg_instead_actual
+        )
+
+        df_nhl_jerseys_w = df_nhl_jerseys_w.loc[df_nhl_jerseys_w["Cancelled"] != 1]
+        df_nhl_jerseys_w["PriceCalc"] = df_nhl_jerseys_w["PriceCalc"].fillna(0 if not checkbox_use_avg_instead_actual else avg_spent_per_jersey_est)
+        df_nhl_jerseys_w["PriceCalcSum"] = df_nhl_jerseys_w["PriceCalc"].cumsum()
+        df_nhl_jerseys_w['Colours'] = df_nhl_jerseys_w.apply(
+            lambda row: f"{row['Colour1']} {row['Colour2']} {row['Colour3']}", axis=1)
+        cols_timeline_order_open = ["OrderDate", "OpenDate", "ID", "Colours", "JerseyToString"]
+        df_timeline_order_open = df_nhl_jerseys_w[cols_timeline_order_open]
+        st.dataframe(df_timeline_order_open)
+        # df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+        # df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+        df_timeline_order_open = df_timeline_order_open.rename(
+            columns={"OrderDate": "Start Date", "OpenDate": "End Date"})
+
+        df_timeline_order_open['Start Date'] = pd.to_datetime(df_timeline_order_open['Start Date'])
+        df_timeline_order_open["Category"] = df_timeline_order_open.apply(
+            lambda row: "Yet To Open" if pd.isna(row["End Date"]) else "Opened", axis=1)
+        df_timeline_order_open['Not Open'] = pd.isna(df_timeline_order_open['End Date'])
+        df_timeline_order_open['End Date'] = pd.to_datetime(df_timeline_order_open['End Date']).fillna(pd.Timestamp.now())
+        df_timeline_order_open['End Date'] = df_timeline_order_open['End Date'].apply(lambda ed: ed + pd.Timedelta(days=1))
+        df_timeline_order_open["DDiff"] = df_timeline_order_open.apply(
+            lambda row: (row["End Date"] - row["Start Date"]).days, axis=1)
+
+        avg_ddiff = df_timeline_order_open.loc[df_timeline_order_open["Not Open"] == False, "DDiff"].mean()
+        st.metric(
+            label="Average Days Order to Open:",
+            value=avg_ddiff
+        )
+
+        st.divider()
+
+        k_check_opened_only: str = "key_check_opened_only"
+        st.session_state.setdefault(k_check_opened_only, True)
+        check_opened_only = st.checkbox(
+            label="Opened Only?",
+            key=k_check_opened_only
+        )
+        k_check_include_blanks: str = "key_check_include_blanks"
+        st.session_state.setdefault(k_check_include_blanks, True)
+        check_include_blanks = st.checkbox(
+            label="Include Blanks?",
+            key=k_check_include_blanks
+        )
+        lst_jersey_leagues = df_nhl_jerseys_w["League"].dropna().unique().tolist()
+        k_multiselect_leagues: str = "key_multiselect_leagues"
+        st.session_state.setdefault(k_multiselect_leagues, lst_jersey_leagues)
+        multiselect_leagues = st.multiselect(
+            label="Leagues:",
+            key=k_multiselect_leagues,
+            options=lst_jersey_leagues
+        )
+
+        df_jerseys_stats: pd.DataFrame = nhl_jc.df_jerseys.copy()
+        df_jerseys_stats["PriceCalc"] = df_jerseys_stats["PriceCalc"].fillna(0 if not checkbox_use_avg_instead_actual else avg_spent_per_jersey_est)
+        df_jerseys_stats["PriceCalcSum"] = df_jerseys_stats["PriceCalc"].cumsum()
+        df_jerseys_stats = df_jerseys_stats[df_jerseys_stats["League"].isin(multiselect_leagues)]
+        if check_opened_only:
+            df_jerseys_stats = df_jerseys_stats[~df_jerseys_stats["OpenDate"].isna()]
+        if not check_include_blanks:
+            df_jerseys_stats = df_jerseys_stats[~df_jerseys_stats["Number"].isna()]
+
+        cont_metrics = st.container(border=True)
+        with cont_metrics.expander("Data"):
+            display_df(
+                df_jerseys_stats,
+                "Jerseys:"
+            )
+        n_met_cols = 4
+        # cols_metrics_0 = cont_metrics.columns(5)
+        # cols_metrics_1 = cont_metrics.columns(5)
+
+        ttl_number_jerseys = df_jerseys_stats.shape[0]
+        ttl_number_blank_jerseys = df_jerseys_stats[df_jerseys_stats["Number"].isna()].shape[0]
+        ttl_number_jerseys_to_open = df_jerseys_stats[pd.isna(df_jerseys_stats["OpenDate"])].shape[0]
+        ttl_number_jerseys_ordered = df_jerseys_stats[pd.isna(df_jerseys_stats["ReceiveDate"])].shape[0]
+        ttl_number_jerseys_no_price = df_jerseys_stats[df_jerseys_stats["PriceCalc"].isna()].shape[0]
+        ttl_spent_on_jerseys = df_jerseys_stats["PriceCalc"].sum()
+        avg_spent_per_jersey = df_jerseys_stats["PriceCalc"].mean()
+        est_missing_price = ttl_number_jerseys_no_price * avg_spent_per_jersey
+        est_total_price = ttl_spent_on_jerseys + est_missing_price
+        first_order_date = df_jerseys_stats["OrderDate"].min()
+        last_order_date = df_jerseys_stats["OrderDate"].max()
+        ttl_days = (datetime.datetime.now() - first_order_date).days
+        days_since_last_order = (datetime.datetime.now() - last_order_date).days
+        est_spent_per_day = est_total_price / ttl_days
+        est_savings_since_last_order = days_since_last_order * est_spent_per_day
+        est_dollars_per_day_if_no_spending = -1
+        est_dollars_saved_if_no_spending_today = -1
+
+        metrics = [
+            {
+                "label": "Total # Jerseys",
+                "value": ttl_number_jerseys
+            },
+            {
+                "label": "Total # Blank Jerseys:",
+                "value": ttl_number_blank_jerseys
+            },
+            {
+                "label": "Total # Jerseys To Open:",
+                "value": ttl_number_jerseys_to_open
+            },
+            {
+                "label": "Total # Jerseys Ordered:",
+                "value": ttl_number_jerseys_ordered
+            },
+            {
+                "label": "Total # Jerseys No Price:",
+                "value": ttl_number_jerseys_no_price
+            },
+            {
+                "label": "Total Spent:",
+                "value": money(ttl_spent_on_jerseys)
+            },
+            {
+                "label": "Average Spent:",
+                "value": money(avg_spent_per_jersey)
+            },
+            {
+                "label": "Estimated Missing Price:",
+                "value": money(est_missing_price)
+            },
+            {
+                "label": "Estimated Total Price:",
+                "value": money(est_total_price)
+            },
+            {
+                "label": "First Order Date:",
+                "value": date_str_format(first_order_date)
+            },
+            {
+                "label": "Last Order Date:",
+                "value": date_str_format(last_order_date)
+            },
+            {
+                "label": "Total Days:",
+                "value": ttl_days
+            },
+            {
+                "label": "Days Since Last Order:",
+                "value": days_since_last_order
+            },
+            {
+                "label": "Estimated $ / Day:",
+                "value": money(est_spent_per_day)
+            },
+            {
+                "label": "Estimated Savings Since Last Order:",
+                "value": money(est_savings_since_last_order)
+            },
+            {
+                "label": "Estimated $ / Day If No Spending:",
+                "value": money(est_dollars_per_day_if_no_spending)
+            },
+            {
+                "label": "Estimated $ Saved If No Spending Today:",
+                "value": money(est_dollars_saved_if_no_spending_today)
+            }
+        ]
+
+        met_cols = [
+            cont_metrics.columns(n_met_cols)
+            for i in range(int(math.ceil(len(metrics) / n_met_cols)))
+        ]
+        for i, met_data in enumerate(metrics):
+            r_idx = i // n_met_cols
+            c_idx = i % n_met_cols
+            with met_cols[r_idx][c_idx]:
+                st.metric(
+                    **met_data,
+                    border=True
+                )
+
+        # with cols_metrics_0[0]:
+        #     st.metric(
+        #         label="Total # Jerseys:",
+        #         value=ttl_number_jerseys,
+        #         border=True
+        #     )
+        #
+        # with cols_metrics_0[1]:
+        #     st.metric(
+        #         label="Total # Blank Jerseys:",
+        #         value=ttl_number_blank_jerseys,
+        #         border=True
+        #     )
+        #
+        # with cols_metrics_0[2]:
+        #     st.metric(
+        #         label="Total # Jerseys No Price:",
+        #         value=ttl_number_jerseys_no_price,
+        #         border=True
+        #     )
+        #
+        # with cols_metrics_0[3]:
+        #     st.metric(
+        #         label="Total Spent:",
+        #         value=money(ttl_spent_on_jerseys),
+        #         border=True
+        #     )
+        #
+        # with cols_metrics_0[4]:
+        #     st.metric(
+        #         label="Average Spent:",
+        #         value=money(avg_spent_per_jersey),
+        #         border=True
+        #     )
+        #
+        # with cols_metrics_1[0]:
+        #     st.metric(
+        #         label="Estimated Missing Price:",
+        #         value=money(est_missing_price),
+        #         border=True
+        #     )
+        #
+        # with cols_metrics_1[1]:
+        #     st.metric(
+        #         label="Estimated Total Price:",
+        #         value=money(est_total_price),
+        #         border=True
+        #     )
+        #
+        # with cols_metrics_1[2]:
+        #     st.metric(
+        #         label="First Order Date:",
+        #         value=date_str_format(first_order_date),
+        #         border=True
+        #     )
+        #
+        # with cols_metrics_1[3]:
+        #     st.metric(
+        #         label="Last Order Date:",
+        #         value=date_str_format(last_order_date),
+        #         border=True
+        #     )
+        #
+        # with cols_metrics_1[4]:
+        #     st.metric(
+        #         label="Total Days:",
+        #         value=ttl_days,
+        #         border=True
+        #     )
+
+
+        with st.expander("Timeline of Jerseys"):
+            # df_timeline_order_open["Event"] = df_timeline_order_open.apply(
+            #     lambda row:
+            #     ", ".join(map(str, df_nhl_jerseys_w.loc[
+            #         df_nhl_jerseys_w["ID"] == row["ID"],
+            #         ["Number", "PlayerFirst", "PlayerLast", "Team", "Brand", "Make", "Colours"]
+            #     ].iloc[0].values)) + " Dates between: " + str(row["DDiff"]),
+            #     axis=1
+            # )
+            df_timeline_order_open["Event"] = df_timeline_order_open["JerseyToString"]
+            del df_timeline_order_open["ID"]
+            df_timeline_order_open.sort_values(
+                by=["End Date", "DDiff"],
+                inplace=True
+            )
+
+            # Create a Gantt-like timeline using Plotly
+            fig_timeline_order_open = px.timeline(
+                df_timeline_order_open,
+                x_start='Start Date',
+                x_end='End Date',
+                y='Event',
+                title='Time Between Order to Open date',
+                color='Category',
+                color_discrete_map={
+                    'Yet To Open': 'red',
+                    'Medium': 'orange',
+                    'Opened': 'green'
+                }
+            )
+
+            # Update layout to make it more readable
+            fig_timeline_order_open.update_layout(xaxis_title="Date", yaxis_title="Order Date to Open Date", height=2000)
+
+            # Display in Streamlit
+            st.plotly_chart(fig_timeline_order_open)
+
+
+        with st.expander("Total Spent By Day"):
+            df_nhl_jerseys_w["PriceCalcSum2"] = df_nhl_jerseys_w["PriceCalc"].fillna(0).replace(0, avg_spent_per_jersey_est).cumsum()
+            # chart1 = px.area(
+            #     df_nhl_jerseys_w,
+            #     x="OrderDate",
+            #     y="PriceCalcSum"
+            # )
+            # chart2 = px.area(
+            #     df_nhl_jerseys_w,
+            #     x="OrderDate",
+            #     y="PriceCalcSum2"
+            # )
+            # st.plotly_chart(chart1 + chart2)
+            x_vals = df_nhl_jerseys_w["OrderDate"]
+            y1 = df_nhl_jerseys_w["PriceCalcSum"]
+            y2 = df_nhl_jerseys_w["PriceCalcSum2"]
+
+            fig = go.Figure()
+            # Area 1
+            fig.add_trace(go.Scatter(
+                x=x_vals, y=y1,
+                mode='lines',
+                name='Actual Spend',
+                fill='tozeroy',
+                line=dict(color='royalblue')
+            ))
+
+            # Area 2
+            fig.add_trace(go.Scatter(
+                x=x_vals, y=y2,
+                mode='lines',
+                name='Estimated Spend',
+                fill='tozeroy',
+                line=dict(color='orange')
+            ))
+
+            # --- Trendlines ---
+            # Fit polynomials or linear trendlines (or use your own logic)
+            z1 = np.polyfit(pd.to_numeric(x_vals), y1, 1)
+            z2 = np.polyfit(pd.to_numeric(x_vals), y2, 1)
+
+            trendline1 = np.poly1d(z1)(pd.to_numeric(x_vals))
+            trendline2 = np.poly1d(z2)(pd.to_numeric(x_vals))
+
+            fig.add_trace(go.Scatter(
+                x=x_vals, y=trendline2,
+                mode='lines',
+                name='Trend (Estimated)',
+                line=dict(dash='dash', color='darkorange')
+            ))
+
+            fig.add_trace(go.Scatter(
+                x=x_vals, y=trendline1,
+                mode='lines',
+                name='Trend (Actual)',
+                line=dict(dash='dash', color='blue')
+            ))
+
+            fig.update_layout(
+                title="Total Spent Over Time",
+                xaxis_title="Order Date",
+                yaxis_title="Cumulative Spend",
+                hovermode="x unified",
+                template="plotly_dark"
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+
+    else:
+        options_pills_testing_mode = ["Jersey Colour Analyzer", "NHL API Probe"]
+        k_pills_testing_mode: str = "key_pills_testing_mode"
+        st.session_state.setdefault(k_pills_testing_mode, len(options_pills_testing_mode) - 1)
+        pills_testing_mode = pills(
+            label="Mode",
+            key=k_pills_testing_mode,
+            options=options_pills_testing_mode
+        )
+
+        if pills_testing_mode == options_pills_testing_mode[0]:
+
+            st.title("🏒 Hockey Jersey Colour Analyzer")
+
+            uploaded_file = st.file_uploader("Upload a jersey image", type=["jpg", "jpeg", "png"])
+
+            if uploaded_file:
+                st.image(uploaded_file, caption="Uploaded Jersey")
+
+                st.write("🎨 Extracting dominant colours...")
+
+                num_colours = st.slider("Number of dominant colours", 1, 10, 4)
+
+                colours = extract_dominant_colours(uploaded_file, num_colours=num_colours)
+
+                for hex_colour, proportion in colours:
+                    st.markdown(
+                        f"<div style='display: flex; align-items: center;'>"
+                        f"<div style='width: 40px; height: 20px; background-color: {hex_colour}; "
+                        f"border: 1px solid #000; margin-right: 10px;'></div>"
+                        f"{hex_colour} — {proportion * 100:.2f}%"
+                        f"</div>", unsafe_allow_html=True)
+
+                st.write(colours)
 
                 gradient_img = generate_color_gradient(colours, width=600, height=50)
                 st.image(gradient_img, caption="Dominant Colour Gradient")
 
-    jc_events = []
-    colour_order_tile: Colour = Colour("#451212")
-    colour_receive_tile: Colour = Colour("#124512")
-    colour_open_tile: Colour = Colour("#121245")
-    colour_birthday_tile: Colour = Colour("#124545")
-    k_check_combine: str = "key_check_combine"
-    st.session_state.setdefault(k_check_combine, False)
-    check_combine = st.checkbox(
-        label="combine all years",
-        key=k_check_combine
-    )
-    with st.columns([0.8, 0.2])[1]:
-        for k, c in {
-            "Ordered": colour_order_tile,
-            "Received": colour_receive_tile,
-            "Opened": colour_open_tile,
-            "Birthday": colour_birthday_tile
-        }.items():
-            st.markdown(coloured_block(
-                label=f"{k}: {c.hex_code}",
-                bg=c
-            ), unsafe_allow_html=True)
-    covered_player_birthdays = []
-    for i, row in nhl_jc.df_jerseys.iterrows():
-        j_obj: Jersey = nhl_jc.jerseys[row["ID"]]
-        order_date_og: datetime.date = j_obj.order_date
-        receive_date_og: datetime.date = j_obj.receive_date
-        open_date_og: datetime.date = j_obj.open_date
-        dob_og: datetime.date = j_obj.dob
-        order_date = date_to_this_year(order_date_og) if check_combine else order_date_og
-        receive_date = date_to_this_year(receive_date_og) if check_combine else receive_date_og
-        open_date = date_to_this_year(open_date_og) if check_combine else open_date_og
-        dob = date_to_this_year(dob_og) if check_combine else dob_og
-        if not pd.isna(j_obj.order_date):
-            jc_events.append({
-                "id": f"jc_event_order_date_{i}",
-                "groupId": f"order_date",
-                "title": f"{j_obj.to_string()}" + (f" - {order_date_og.year}" if check_combine else ""),
-                "backgroundColor": colour_order_tile.hex_code,
-                "start": order_date.strftime(DATE_FMT)
-            })
-        if not pd.isna(j_obj.receive_date):
-            jc_events.append({
-                "id": f"jc_event_receive_date_{i}",
-                "groupId": f"receive_date",
-                "title": f"{j_obj.to_string()}" + (f" - {receive_date_og.year}" if check_combine else ""),
-                "backgroundColor": colour_receive_tile.hex_code,
-                "start": receive_date.strftime(DATE_FMT)
-            })
-        if not pd.isna(j_obj.open_date):
-            jc_events.append({
-                "id": f"jc_event_open_date_{i}",
-                "groupId": f"open_date",
-                "title": f"{j_obj.to_string()}" + (f" - {open_date_og.year}" if check_combine else ""),
-                "backgroundColor": colour_open_tile.hex_code,
-                "start": open_date.strftime(DATE_FMT)
-            })
-        if not pd.isna(j_obj.dob):
-            cpb = f"{j_obj.player_first} {j_obj.player_last}".lower()
-            if cpb not in covered_player_birthdays:
-                jc_events.append({
-                    "id": f"jc_event_dob_{i}",
-                    "groupId": f"dob",
-                    "title": f"Birthday! {j_obj.player_first} {j_obj.player_last} - {dob_og.year}",
-                    "backgroundColor": colour_birthday_tile.hex_code,
-                    "start": dob.strftime(DATE_FMT)
-                })
-                covered_player_birthdays.append(cpb)
-
-    if check_combine:
-        jc_events.sort(key=lambda event: (event["title"][-4:], event["start"]))
-    else:
-        jc_events.sort(key=lambda event: event["start"])
-
-    cal = calendar(
-        events=jc_events,
-        options={
-            "initialView": "multiMonthYear",
-            "multiMonthMaxColumns": 3,
-            "height": 1800,
-            "contentHeight": 500,
-            "expandRows": True,
-            "dayMaxEventRows": 10,  # unlimited rows per day (or set an int)
-            "eventDisplay": "block",
-            "displayEventTime": False
-            # ,
-            # "moreLinkClick": "popover",  # still works without callbacks
-        }
-        # ,
-        # custom_css=custom_css,
-    )
-
-    st.write(cal)
-
-    df_nhl_jerseys_w = nhl_jc.df_jerseys.copy()
-    df_nhl_jerseys_w['Colours'] = df_nhl_jerseys_w.apply(
-        lambda row: f"{row['Colour1']} {row['Colour2']} {row['Colour3']}", axis=1)
-    cols_timeline_order_open = ["OrderDate", "OpenDate", "ID", "Colours", "JerseyToString"]
-    df_timeline_order_open = df_nhl_jerseys_w.loc[df_nhl_jerseys_w["Cancelled"] != 1][cols_timeline_order_open]
-    st.dataframe(df_timeline_order_open)
-    # df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
-    # df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
-    df_timeline_order_open = df_timeline_order_open.rename(
-        columns={"OrderDate": "Start Date", "OpenDate": "End Date"})
-
-    df_timeline_order_open['Start Date'] = pd.to_datetime(df_timeline_order_open['Start Date'])
-    df_timeline_order_open["Category"] = df_timeline_order_open.apply(
-        lambda row: "Yet To Open" if pd.isna(row["End Date"]) else "Opened", axis=1)
-    df_timeline_order_open['Not Open'] = pd.isna(df_timeline_order_open['End Date'])
-    df_timeline_order_open['End Date'] = pd.to_datetime(df_timeline_order_open['End Date']).fillna(pd.Timestamp.now())
-    df_timeline_order_open['End Date'] = df_timeline_order_open['End Date'].apply(lambda ed: ed + pd.Timedelta(days=1))
-    df_timeline_order_open["DDiff"] = df_timeline_order_open.apply(
-        lambda row: (row["End Date"] - row["Start Date"]).days, axis=1)
-
-    avg_ddiff = df_timeline_order_open.loc[df_timeline_order_open["Not Open"] == False, "DDiff"].mean()
-
-    st.metric(
-        label="Average Days Order to Open:",
-        value=avg_ddiff
-    )
-
-    with st.expander("Timeline of Jerseys"):
-        # df_timeline_order_open["Event"] = df_timeline_order_open.apply(
-        #     lambda row:
-        #     ", ".join(map(str, df_nhl_jerseys_w.loc[
-        #         df_nhl_jerseys_w["ID"] == row["ID"],
-        #         ["Number", "PlayerFirst", "PlayerLast", "Team", "Brand", "Make", "Colours"]
-        #     ].iloc[0].values)) + " Dates between: " + str(row["DDiff"]),
-        #     axis=1
-        # )
-        df_timeline_order_open["Event"] = df_timeline_order_open["JerseyToString"]
-        del df_timeline_order_open["ID"]
-        df_timeline_order_open.sort_values(
-            by=["End Date", "DDiff"],
-            inplace=True
-        )
-
-        # Create a Gantt-like timeline using Plotly
-        fig_timeline_order_open = px.timeline(
-            df_timeline_order_open,
-            x_start='Start Date',
-            x_end='End Date',
-            y='Event',
-            title='Time Between Order to Open date',
-            color='Category',
-            color_discrete_map={
-                'Yet To Open': 'red',
-                'Medium': 'orange',
-                'Opened': 'green'
+                # Extract hex colors and proportions
+                hex_colour_labels = [f"{color} - {percent(p)}" for color, p in colours]
+                hex_colours = [color for color, p in colours]
+                proportions = [p for _, p in colours]
+                fig, ax = plt.subplots()
+                ax.pie(proportions, labels=hex_colour_labels, colors=hex_colours, startangle=90, counterclock=False)
+                ax.axis('equal')
+                st.pyplot(fig)
+        else:
+            known_endpoints = {
+                NHL_PLAYER_API_URL: "",
+                NHL_ASSET_API_URL: "",
+                NHL_STATS_API_URL: "",
+                NHL_API_URL: ""
             }
-        )
 
-        # Update layout to make it more readable
-        fig_timeline_order_open.update_layout(xaxis_title="Date", yaxis_title="Order Date to Open Date", height=2000)
+            df_known_urls: pd.DataFrame = nhl.df_saved_data.copy()
+            display_df(
+                df_known_urls,
+                "df_known_urls"
+            )
 
-        # Display in Streamlit
-        st.plotly_chart(fig_timeline_order_open)
+            k_text_url: str = "key_text_url"
 
+            cols_known_endpoints = st.columns(len(known_endpoints))
+            for i, ke in enumerate(known_endpoints):
+                with cols_known_endpoints[i]:
+                    if st.button(
+                        ke,
+                        key=f"key_known_endpoint_{i}"
+                    ):
+                        st.session_state.update({k_text_url: ke})
+                    st.write(known_endpoints[ke])
 
-else:
-    options_pills_testing_mode = ["Jersey Colour Analyzer", "NHL API Probe"]
-    k_pills_testing_mode: str = "key_pills_testing_mode"
-    st.session_state.setdefault(k_pills_testing_mode, len(options_pills_testing_mode) - 1)
-    pills_testing_mode = pills(
-        label="Mode",
-        key=k_pills_testing_mode,
-        options=options_pills_testing_mode
-    )
-
-    if pills_testing_mode == options_pills_testing_mode[0]:
-
-        st.title("🏒 Hockey Jersey Colour Analyzer")
-
-        uploaded_file = st.file_uploader("Upload a jersey image", type=["jpg", "jpeg", "png"])
-
-        if uploaded_file:
-            st.image(uploaded_file, caption="Uploaded Jersey")
-
-            st.write("🎨 Extracting dominant colours...")
-
-            num_colours = st.slider("Number of dominant colours", 1, 10, 4)
-
-            colours = extract_dominant_colours(uploaded_file, num_colours=num_colours)
-
-            for hex_colour, proportion in colours:
-                st.markdown(
-                    f"<div style='display: flex; align-items: center;'>"
-                    f"<div style='width: 40px; height: 20px; background-color: {hex_colour}; "
-                    f"border: 1px solid #000; margin-right: 10px;'></div>"
-                    f"{hex_colour} — {proportion * 100:.2f}%"
-                    f"</div>", unsafe_allow_html=True)
-
-            st.write(colours)
-
-            gradient_img = generate_color_gradient(colours, width=600, height=50)
-            st.image(gradient_img, caption="Dominant Colour Gradient")
-
-            # Extract hex colors and proportions
-            hex_colour_labels = [f"{color} - {percent(p)}" for color, p in colours]
-            hex_colours = [color for color, p in colours]
-            proportions = [p for _, p in colours]
-            fig, ax = plt.subplots()
-            ax.pie(proportions, labels=hex_colour_labels, colors=hex_colours, startangle=90, counterclock=False)
-            ax.axis('equal')
-            st.pyplot(fig)
-    else:
-        known_endpoints = {
-            NHL_PLAYER_API_URL: "",
-            NHL_ASSET_API_URL: "",
-            NHL_STATS_API_URL: "",
-            NHL_API_URL: ""
-        }
-
-        df_known_urls: pd.DataFrame = nhl.df_saved_data.copy()
-        display_df(
-            df_known_urls,
-            "df_known_urls"
-        )
-
-        k_text_url: str = "key_text_url"
-
-        cols_known_endpoints = st.columns(len(known_endpoints))
-        for i, ke in enumerate(known_endpoints):
-            with cols_known_endpoints[i]:
+            text_url_v: str = st.session_state.setdefault(k_text_url, "")
+            text_url = st.text_input(
+                label="URL",
+                key=f"tu{k_text_url}",
+                value=text_url_v
+            )
+            cols_submission = st.columns(2)
+            with cols_submission[0]:
                 if st.button(
-                    ke,
-                    key=f"key_known_endpoint_{i}"
+                    label="clear",
+                    key=f"key_button_clear_text_url"
                 ):
-                    st.session_state.update({k_text_url: ke})
-                st.write(known_endpoints[ke])
+                    st.session_state.update({k_text_url: ""})
+                    text_url_v = ""
+            with cols_submission[1]:
+                if st.button(
+                    label="check",
+                    key=f"key_button_check_text_url",
+                    disabled=not bool(st.session_state.get(k_text_url))
+                ):
+                    url: str = st.session_state.get(k_text_url)
+                    st.session_state.update({k_text_url: url})
 
-        text_url_v: str = st.session_state.setdefault(k_text_url, "")
-        text_url = st.text_input(
-            label="URL",
-            key=f"tu{k_text_url}",
-            value=text_url_v
-        )
-        cols_submission = st.columns(2)
-        with cols_submission[0]:
-            if st.button(
-                label="clear",
-                key=f"key_button_clear_text_url"
-            ):
-                st.session_state.update({k_text_url: ""})
-                text_url_v = ""
-        with cols_submission[1]:
-            if st.button(
-                label="check",
-                key=f"key_button_check_text_url",
-                disabled=not bool(st.session_state.get(k_text_url))
-            ):
-                url: str = st.session_state.get(k_text_url)
-                st.session_state.update({k_text_url: url})
-
-        if text_url_v:
-            st.subheader("Results:")
-            st.code(text_url_v)
-            data = nhl.query(text_url_v)
-            st.write(data)
+            if text_url_v:
+                st.subheader("Results:")
+                st.code(text_url_v)
+                data = nhl.query(text_url_v)
+                st.write(data)
 
 
 
-# show_timer(10, count_down=True)
-# show_timer(10, count_down=False)
-#
-# # # k_selectbox_team: str = "key_selectbox_team"
-# # # selectbox_team = st.selectbox(
-# # #     label="Select a Team:",
-# # #     key=k_selectbox_team,
-# # #     options=nhl.df_teams["triCode"]
-# # # )
-# # # if selectbox_team:
-# # #     ser_team: pd.Series = nhl.df_teams.loc[nhl.df_teams["triCode"] == selectbox_team].iloc[0]
-# # #     t_id = ser_team["id"]
-# # #     sel_team: NHLTeam = nhl.lookup_team(t_id)
-# # #     st.write(sel_team)
-# # #     # cgs = nhl.check_game_status(sel_team.t_id, date=datetime.date.today())
-# # #     st.write(cgs)
+    # show_timer(10, count_down=True)
+    # show_timer(10, count_down=False)
+    #
+    # # # k_selectbox_team: str = "key_selectbox_team"
+    # # # selectbox_team = st.selectbox(
+    # # #     label="Select a Team:",
+    # # #     key=k_selectbox_team,
+    # # #     options=nhl.df_teams["triCode"]
+    # # # )
+    # # # if selectbox_team:
+    # # #     ser_team: pd.Series = nhl.df_teams.loc[nhl.df_teams["triCode"] == selectbox_team].iloc[0]
+    # # #     t_id = ser_team["id"]
+    # # #     sel_team: NHLTeam = nhl.lookup_team(t_id)
+    # # #     st.write(sel_team)
+    # # #     # cgs = nhl.check_game_status(sel_team.t_id, date=datetime.date.today())
+    # # #     st.write(cgs)
 
