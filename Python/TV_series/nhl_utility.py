@@ -40,7 +40,7 @@ NHL_API_URL_V1: str = "{0}v1/".format(NHL_API_URL)
 NHL_PLAYER_API_URL: str = "{0}player/".format(NHL_API_URL_V1)
 PATH_UNKNOWN_IMAGE: str = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags\unknown_flag.png"
 PATH_FOLDER_JERSEY_COLLECTION: str = r"D:\NHL jerseys\Jerseys 20250927"
-PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251027.xlsx"
+PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251109.xlsx"
 JERSEY_COLOUR_SAVE_FILE: str = "new_colours_save.json"
 
 UTC_FMT: str = "%Y-%m-%dT%H:%M:%SZ"
@@ -2968,6 +2968,29 @@ if __name__ == "__main__":
             )
 
             st.plotly_chart(fig, use_container_width=True)
+
+            df_nhl_jerseys_w_d: pd.DataFrame = df_nhl_jerseys_w.copy()
+            df_dates = pd.DataFrame({"date": pd.date_range(df_nhl_jerseys_w_d["OrderDate"].min(), datetime.datetime.now().date() + datetime.timedelta(days=1))})
+
+            df_nhl_jerseys_w_d = df_dates.merge(
+                df_nhl_jerseys_w_d.groupby(
+                    by="OrderDate"
+                ).agg({
+                    "PriceCalcSum": "max",
+                    "PriceCalcSum2": "max"
+                }),
+                left_on="date",
+                right_on="OrderDate",
+                how="left"
+            )
+
+            df_nhl_jerseys_w_d["PCS_1"] = df_nhl_jerseys_w_d["PriceCalcSum"].cumsum()
+            df_nhl_jerseys_w_d["PCS_2"] = df_nhl_jerseys_w_d["PriceCalcSum2"].cumsum()
+
+            display_df(
+                df_nhl_jerseys_w_d,
+                "df_nhl_jerseys_w_d"
+            )
 
     else:
         options_pills_testing_mode = ["Jersey Colour Analyzer", "NHL API Probe"]
