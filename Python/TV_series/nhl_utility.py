@@ -12,6 +12,7 @@ from streamlit_calendar import calendar
 import plotly.express as px
 import plotly.graph_objects as go
 
+from colour_utility import gradient_merge
 from datetime_utility import is_leap_year, date_str_format
 from streamlit_utility import *
 
@@ -2903,6 +2904,7 @@ if __name__ == "__main__":
 
         with st.expander("Total Spent By Day"):
             df_nhl_jerseys_w["PriceCalcSum2"] = df_nhl_jerseys_w["PriceCalc"].fillna(0).replace(0, avg_spent_per_jersey_est).cumsum()
+            df_nhl_jerseys_w["PriceCalcSum3"] = df_nhl_jerseys_w["PriceCalc"].fillna(0).replace(0, avg_spent_per_jersey_est)
             # chart1 = px.area(
             #     df_nhl_jerseys_w,
             #     x="OrderDate",
@@ -2969,6 +2971,15 @@ if __name__ == "__main__":
 
             st.plotly_chart(fig, use_container_width=True)
 
+            #############################
+
+            k_checkbox_center_rolling: str = "key_checkbox_center_rolling"
+            st.session_state.setdefault(k_checkbox_center_rolling, False)
+            checkbox_center_rolling = st.checkbox(
+                label="Center Rolling Averages?",
+                key=k_checkbox_center_rolling
+            )
+
             df_nhl_jerseys_w_d: pd.DataFrame = df_nhl_jerseys_w.copy()
             df_dates = pd.DataFrame({"date": pd.date_range(df_nhl_jerseys_w_d["OrderDate"].min(), datetime.datetime.now().date() + datetime.timedelta(days=1))})
 
@@ -2976,16 +2987,67 @@ if __name__ == "__main__":
                 df_nhl_jerseys_w_d.groupby(
                     by="OrderDate"
                 ).agg({
-                    "PriceCalcSum": "max",
-                    "PriceCalcSum2": "max"
+                    "PriceCalcSum3": "sum"
                 }),
                 left_on="date",
                 right_on="OrderDate",
                 how="left"
+            ).rename(columns={
+                "PriceCalcSum3": "SumPrice_Date",
+                "date": "Date"
+            })
+
+            df_nhl_jerseys_w_d["SumPrice_Date"] = df_nhl_jerseys_w_d["SumPrice_Date"].fillna(0)
+            df_nhl_jerseys_w_d["SumPrice"] = df_nhl_jerseys_w_d["SumPrice_Date"].cumsum()
+            df_nhl_jerseys_w_d = df_nhl_jerseys_w_d[["Date", "SumPrice_Date", "SumPrice"]]
+            ys = []
+            x_vals = df_nhl_jerseys_w_d["Date"]
+            fig = go.Figure()
+            # colours_grad = gradient_merge(["royalblue", "teal", "seafoam-green", "green"], as_hex=True)
+            windows = [3, 7, 28, 90, 180, 365, 730, 1100, 1460, 1825]
+            colours_to_use = ["orangered", "green", "royalblue"]
+            colours_grad = gradient_merge(colours_to_use, steps=-(-len(windows) // len(colours_to_use)), as_hex=True)
+            st.write("colours_grad")
+            st.write(colours_grad)
+            for i, wind in enumerate(windows):
+                n_col = f"RollAvg_{wind}"
+                df_nhl_jerseys_w_d[n_col] = df_nhl_jerseys_w_d["SumPrice_Date"].rolling(
+                    window=wind,
+                    center=checkbox_center_rolling
+                ).mean()
+                ys.append(df_nhl_jerseys_w_d[n_col])
+                fig.add_trace(go.Scatter(
+                    x=x_vals, y=ys[-1],
+                    mode='lines',
+                    name=f'Rolling Avg {wind} days',
+                    fill='tozeroy',
+                    line=dict(color=colours_grad[i])
+                ))
+
+                z1 = np.polyfit(pd.to_numeric(x_vals), ys[-1], 1)
+                trendline = np.poly1d(z1)(pd.to_numeric(x_vals))
+
+                fig.add_trace(go.Scatter(
+                    x=x_vals, y=trendline,
+                    mode='lines',
+                    name=f'Trend {wind} days',
+                    line=dict(dash='dash', color=Colour(colours_grad[i]).darken(0.25).hex_code)
+                ))
+
+            fig.update_layout(
+                title="Rolling Average Spent Over Time",
+                xaxis_title="Order Date",
+                yaxis_title="Average Spend",
+                hovermode="x unified",
+                template="plotly_dark"
             )
 
-            df_nhl_jerseys_w_d["PCS_1"] = df_nhl_jerseys_w_d["PriceCalcSum"].cumsum()
-            df_nhl_jerseys_w_d["PCS_2"] = df_nhl_jerseys_w_d["PriceCalcSum2"].cumsum()
+            # fig.show(
+            #     config={
+            #         "scrollZoom": True
+            #     }
+            # )
+            st.plotly_chart(fig, use_container_width=True)
 
             display_df(
                 df_nhl_jerseys_w_d,
