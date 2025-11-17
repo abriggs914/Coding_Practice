@@ -1742,12 +1742,13 @@ if __name__ == "__main__":
         "Test"
     ]
     k_pills_mode: str = "key_pills_mode"
-    st.session_state.setdefault(k_pills_mode, 1)
+    start_page = options_pills_mode.index("Scores")
+    st.session_state.setdefault(k_pills_mode, start_page)
     pills_mode = pills(
         label="Mode",
         options=options_pills_mode,
         key=k_pills_mode,
-        index=1
+        index=start_page
     )
 
     if pills_mode == options_pills_mode[2]:
@@ -3055,6 +3056,9 @@ if __name__ == "__main__":
             )
 
     else:
+
+        # Test
+
         options_pills_testing_mode = ["Jersey Colour Analyzer", "NHL API Probe"]
         k_pills_testing_mode: str = "key_pills_testing_mode"
         st.session_state.setdefault(k_pills_testing_mode, len(options_pills_testing_mode) - 1)
