@@ -1,5 +1,6 @@
 from typing import Any
 import pandas as pd
+import numpy as np
 import streamlit as st
 
 
@@ -42,6 +43,23 @@ class Nonogram:
                 for gi in range(len(grid[i])):
                     grid[gi][i] = Nonogram.NOTE
         return grid
+
+    def mark(row: list[str], hints: list[int], is_row: bool = True):
+        note_sep = Nonogram.note_separated(row)
+        st.write(f"{note_sep=}")
+        for i, sep_space in enumerate(note_sep):
+            for j, hint in enumerate(hints):
+                space = sep_space - (sum([v for jj, v in enumerate(hints) if jj != j]) + (len(hints) - 1))
+                buffer = space - hint
+                space_to_mark = hint - buffer
+                if space_to_mark > 0:
+                    start_pos = sum(hints[:j]) + len(hints[:j]) + buffer #+ int(bool(j))
+                    st.write(f"{i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}")
+                    for ii in range(start_pos, start_pos + space_to_mark):
+                        row[ii] = Nonogram.MARK
+                    if space_to_mark == hint:
+                        if (start_pos + space_to_mark) < (len(row) - 1):
+                            row[start_pos + space_to_mark] = Nonogram.NOTE
 
     def note_separated(lst: list[int]) -> list[int]:
         res = []
@@ -134,101 +152,217 @@ class Nonogram:
             passes += 1
             t_passes += 1
 
-            for i in range(len(grid_w)):
-                lst_r = grid_w[i]
-                lst_r_note_sep = Nonogram.note_separated(lst_r)
-                for j in range(len(grid_w[i])):
-                    lst_c = [grid_w[ii][j] for ii in range(len(grid_w))]
-                    lst_c_note_sep = Nonogram.note_separated(lst_c)
-                    hints_ri = self.r_hints[i]
-                    hints_cj = self.c_hints[j]
-                    # st.write(f"\n{i=}, {j=}\n{lst_r=}, {lst_r_note_sep=}, {hints_ri=}\n{lst_c=}, {lst_c_note_sep=}, {hints_cj=}")
+            for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
+                row, r_hint = row_r_hint
+                st.write(f"{i=}, {row=}, {r_hint=}")
+                Nonogram.mark(row, r_hint, is_row=True)
+                
+            t_grid_w = np.transpose(grid_w).tolist()
+            tt_grid_w = []
+            for j, col_c_hint in enumerate(zip(t_grid_w, c_hints)):
+                col, c_hint = col_c_hint
+                st.write(f"A {j=}, {col=}, {c_hint=}")
+                Nonogram.mark(col, c_hint, is_row=False)
+                st.write(f"B {j=}, {col=}, {c_hint=}")
+                tt_grid_w.append(col)
 
-                    for i in range(len(grid_w)):
-                        lst_r = grid_w[i]
-                        lst_r_note_sep = Nonogram.note_separated(lst_r)
-                        for j in range(len(grid_w[i])):
-                            lst_c = [grid_w[ii][j] for ii in range(len(grid_w))]
-                            lst_c_note_sep = Nonogram.note_separated(lst_c)
-                            hints_ri = self.r_hints[i]
-                            hints_cj = self.c_hints[j]
-                            st.write(f"\n{t_passes=}, {passes=}, {i=}, {j=}\n{lst_r=}, {lst_r_note_sep=}, {hints_ri=}\n{lst_c=}, {lst_c_note_sep=}, {hints_cj=}")
+            grid_w = np.transpose(tt_grid_w).tolist()
 
-                            for hi, hr in enumerate(hints_ri):
-                                for ns_i, ns_r in enumerate(lst_r_note_sep):
-                                    if (ns_r // 2) <= hr:
-                                        stp = ns_r - hr
-                                        stm = hr - stp
-                                        start = sum(lst_r_note_sep[:ns_i]) + len(lst_r_note_sep[:ns_i]) + stp
-                                        st.write(f"\t{stm=}, {stp=}, {start=}")
+            #     lst_r = grid_w[i]
+            #     lst_r_note_sep = Nonogram.note_separated(lst_r)
+            #     for j in range(len(grid_w[i])):
+            #         lst_c = [grid_w[ii][j] for ii in range(len(grid_w))]
+            #         lst_c_note_sep = Nonogram.note_separated(lst_c)
+            #         hints_ri = self.r_hints[i]
+            #         hints_cj = self.c_hints[j]
+            #         # st.write(f"\n{i=}, {j=}\n{lst_r=}, {lst_r_note_sep=}, {hints_ri=}\n{lst_c=}, {lst_c_note_sep=}, {hints_cj=}")
 
-                                        for gi in range(start, start + stm):
-                                            grid_w[i][gi] = Nonogram.MARK
+            #         for i in range(len(grid_w)):
+            #             lst_r = grid_w[i]
+            #             lst_r_note_sep = Nonogram.note_separated(lst_r)
+            #             for j in range(len(grid_w[i])):
+            #                 lst_c = [grid_w[ii][j] for ii in range(len(grid_w))]
+            #                 lst_c_note_sep = Nonogram.note_separated(lst_c)
+            #                 hints_ri = self.r_hints[i]
+            #                 hints_cj = self.c_hints[j]
+            #                 st.write(f"\n{t_passes=}, {passes=}, {i=}, {j=}\n{lst_r=}, {lst_r_note_sep=}, {hints_ri=}\n{lst_c=}, {lst_c_note_sep=}, {hints_cj=}")
 
-                            for hj, hc in enumerate(hints_cj):
-                                for ns_j, ns_c in enumerate(lst_c_note_sep):
-                                    if (ns_c // 2) <= hc:
-                                        stp = ns_c - hc
-                                        stm = hc - stp
-                                        start = sum(lst_c_note_sep[:ns_j]) + len(lst_c_note_sep[:ns_j]) + stp
-                                        st.write(f"\t{stm=}, {stp=}, {start=}")
+            #                 for hi, hr in enumerate(hints_ri):
+            #                     for ns_i, ns_r in enumerate(lst_r_note_sep):
+            #                         if (ns_r // 2) <= hr:
+            #                             stp = ns_r - hr
+            #                             stm = hr - stp
+            #                             start = sum(lst_r_note_sep[:ns_i]) + len(lst_r_note_sep[:ns_i]) + stp
+            #                             st.write(f"\t{stm=}, {stp=}, {start=}")
 
-                                        for gj in range(start, start + stm):
-                                            grid_w[gj][j] = Nonogram.MARK
+            #                             for gi in range(start, start + stm):
+            #                                 grid_w[i][gi] = Nonogram.MARK
 
-                    # # place middle of blocks
-                    # for hi, hr in enumerate(hints_ri):
-                    #     for ns_i, ns_r in enumerate(lst_r_note_sep):
-                    #         if (ns_r // 2) <= hr:
-                    #             stp = ns_r - hr
-                    #             stm = hr - stp
-                    #             start = sum(lst_r_note_sep[:ns_i]) + len(lst_r_note_sep[:ns_i]) + stp
-                    #             # print(f"\t{stm=}, {stp=}, {start=}")
-                    #
-                    #             for gi in range(start, start + stm):
-                    #                 grid_w[i][gi] = Nonogram.MARK
-                    #
-                    # for hj, hc in enumerate(hints_cj):
-                    #     for ns_j, ns_c in enumerate(lst_c_note_sep):
-                    #         if (ns_c // 2) <= hc:
-                    #             stp = ns_c - hc
-                    #             stm = hc - stp
-                    #             start = sum(lst_c_note_sep[:ns_i]) + len(lst_c_note_sep[:ns_i]) + stp
-                    #             # print(f"\t{stm=}, {stp=}, {start=}")
-                    #
-                    #             for gj in range(start, start + stm):
-                    #                 grid_w[gj][j] = Nonogram.MARK
-                    #
-                    #
-                    #
+            #                 for hj, hc in enumerate(hints_cj):
+            #                     for ns_j, ns_c in enumerate(lst_c_note_sep):
+            #                         if (ns_c // 2) <= hc:
+            #                             stp = ns_c - hc
+            #                             stm = hc - stp
+            #                             start = sum(lst_c_note_sep[:ns_j]) + len(lst_c_note_sep[:ns_j]) + stp
+            #                             st.write(f"\t{stm=}, {stp=}, {start=}")
 
-            st.write("A")
-            st.code(Nonogram.text_grid(grid_w))
+            #                             for gj in range(start, start + stm):
+            #                                 grid_w[gj][j] = Nonogram.MARK
 
-            for i in range(len(grid_w)):
-                r_hints = self.r_hints[i]
-                for j in range(len(grid_w[0])):
-                    c_hints = self.c_hints[j]
-                    val = grid_w[i][j]
-                    if val == Nonogram.MARK:
-                        if i == 0:
-                            c_hint_0 = c_hints[0]
-                            for k in range(c_hint_0):
-                                grid_w[i][k] = Nonogram.MARK
-                            grid_w[i][c_hint_0] = Nonogram.NOTE
-                        elif i == len(grid_w) - 1:
-                            c_hint_0 = c_hints[-1]
-                            for k in range(c_hint_0):
-                                grid_w[i][-(k+1)] = Nonogram.MARK
-                            grid_w[i][-(c_hint_0 + 1)] = Nonogram.NOTE
+            #         # # place middle of blocks
+            #         # for hi, hr in enumerate(hints_ri):
+            #         #     for ns_i, ns_r in enumerate(lst_r_note_sep):
+            #         #         if (ns_r // 2) <= hr:
+            #         #             stp = ns_r - hr
+            #         #             stm = hr - stp
+            #         #             start = sum(lst_r_note_sep[:ns_i]) + len(lst_r_note_sep[:ns_i]) + stp
+            #         #             # print(f"\t{stm=}, {stp=}, {start=}")
+            #         #
+            #         #             for gi in range(start, start + stm):
+            #         #                 grid_w[i][gi] = Nonogram.MARK
+            #         #
+            #         # for hj, hc in enumerate(hints_cj):
+            #         #     for ns_j, ns_c in enumerate(lst_c_note_sep):
+            #         #         if (ns_c // 2) <= hc:
+            #         #             stp = ns_c - hc
+            #         #             stm = hc - stp
+            #         #             start = sum(lst_c_note_sep[:ns_i]) + len(lst_c_note_sep[:ns_i]) + stp
+            #         #             # print(f"\t{stm=}, {stp=}, {start=}")
+            #         #
+            #         #             for gj in range(start, start + stm):
+            #         #                 grid_w[gj][j] = Nonogram.MARK
+            #         #
+            #         #
+            #         #
+
+            # st.write("A")
+            # st.code(Nonogram.text_grid(grid_w))
+
+            # for i in range(len(grid_w)):
+            #     r_hints = self.r_hints[i]
+            #     for j in range(len(grid_w[0])):
+            #         c_hints = self.c_hints[j]
+            #         val = grid_w[i][j]
+            #         if val == Nonogram.MARK:
+            #             if i == 0:
+            #                 c_hint_0 = c_hints[0]
+            #                 for k in range(c_hint_0):
+            #                     grid_w[i][k] = Nonogram.MARK
+            #                 grid_w[i][c_hint_0] = Nonogram.NOTE
+            #             elif i == len(grid_w) - 1:
+            #                 c_hint_0 = c_hints[-1]
+            #                 for k in range(c_hint_0):
+            #                     grid_w[i][-(k+1)] = Nonogram.MARK
+            #                 grid_w[i][-(c_hint_0 + 1)] = Nonogram.NOTE
 
 
-            st.write("B")
-            st.code(Nonogram.text_grid(grid_w))
+            # st.write("B")
+            # st.code(Nonogram.text_grid(grid_w))
 
             if grid_w != grid_t:
                 passes = 0
             grid_t = grid_w.copy()
+            break
+        # while passes <= 2:
+        #     passes += 1
+        #     t_passes += 1
+
+        #     for i in range(len(grid_w)):
+        #         lst_r = grid_w[i]
+        #         lst_r_note_sep = Nonogram.note_separated(lst_r)
+        #         for j in range(len(grid_w[i])):
+        #             lst_c = [grid_w[ii][j] for ii in range(len(grid_w))]
+        #             lst_c_note_sep = Nonogram.note_separated(lst_c)
+        #             hints_ri = self.r_hints[i]
+        #             hints_cj = self.c_hints[j]
+        #             # st.write(f"\n{i=}, {j=}\n{lst_r=}, {lst_r_note_sep=}, {hints_ri=}\n{lst_c=}, {lst_c_note_sep=}, {hints_cj=}")
+
+        #             for i in range(len(grid_w)):
+        #                 lst_r = grid_w[i]
+        #                 lst_r_note_sep = Nonogram.note_separated(lst_r)
+        #                 for j in range(len(grid_w[i])):
+        #                     lst_c = [grid_w[ii][j] for ii in range(len(grid_w))]
+        #                     lst_c_note_sep = Nonogram.note_separated(lst_c)
+        #                     hints_ri = self.r_hints[i]
+        #                     hints_cj = self.c_hints[j]
+        #                     st.write(f"\n{t_passes=}, {passes=}, {i=}, {j=}\n{lst_r=}, {lst_r_note_sep=}, {hints_ri=}\n{lst_c=}, {lst_c_note_sep=}, {hints_cj=}")
+
+        #                     for hi, hr in enumerate(hints_ri):
+        #                         for ns_i, ns_r in enumerate(lst_r_note_sep):
+        #                             if (ns_r // 2) <= hr:
+        #                                 stp = ns_r - hr
+        #                                 stm = hr - stp
+        #                                 start = sum(lst_r_note_sep[:ns_i]) + len(lst_r_note_sep[:ns_i]) + stp
+        #                                 st.write(f"\t{stm=}, {stp=}, {start=}")
+
+        #                                 for gi in range(start, start + stm):
+        #                                     grid_w[i][gi] = Nonogram.MARK
+
+        #                     for hj, hc in enumerate(hints_cj):
+        #                         for ns_j, ns_c in enumerate(lst_c_note_sep):
+        #                             if (ns_c // 2) <= hc:
+        #                                 stp = ns_c - hc
+        #                                 stm = hc - stp
+        #                                 start = sum(lst_c_note_sep[:ns_j]) + len(lst_c_note_sep[:ns_j]) + stp
+        #                                 st.write(f"\t{stm=}, {stp=}, {start=}")
+
+        #                                 for gj in range(start, start + stm):
+        #                                     grid_w[gj][j] = Nonogram.MARK
+
+        #             # # place middle of blocks
+        #             # for hi, hr in enumerate(hints_ri):
+        #             #     for ns_i, ns_r in enumerate(lst_r_note_sep):
+        #             #         if (ns_r // 2) <= hr:
+        #             #             stp = ns_r - hr
+        #             #             stm = hr - stp
+        #             #             start = sum(lst_r_note_sep[:ns_i]) + len(lst_r_note_sep[:ns_i]) + stp
+        #             #             # print(f"\t{stm=}, {stp=}, {start=}")
+        #             #
+        #             #             for gi in range(start, start + stm):
+        #             #                 grid_w[i][gi] = Nonogram.MARK
+        #             #
+        #             # for hj, hc in enumerate(hints_cj):
+        #             #     for ns_j, ns_c in enumerate(lst_c_note_sep):
+        #             #         if (ns_c // 2) <= hc:
+        #             #             stp = ns_c - hc
+        #             #             stm = hc - stp
+        #             #             start = sum(lst_c_note_sep[:ns_i]) + len(lst_c_note_sep[:ns_i]) + stp
+        #             #             # print(f"\t{stm=}, {stp=}, {start=}")
+        #             #
+        #             #             for gj in range(start, start + stm):
+        #             #                 grid_w[gj][j] = Nonogram.MARK
+        #             #
+        #             #
+        #             #
+
+        #     st.write("A")
+        #     st.code(Nonogram.text_grid(grid_w))
+
+        #     for i in range(len(grid_w)):
+        #         r_hints = self.r_hints[i]
+        #         for j in range(len(grid_w[0])):
+        #             c_hints = self.c_hints[j]
+        #             val = grid_w[i][j]
+        #             if val == Nonogram.MARK:
+        #                 if i == 0:
+        #                     c_hint_0 = c_hints[0]
+        #                     for k in range(c_hint_0):
+        #                         grid_w[i][k] = Nonogram.MARK
+        #                     grid_w[i][c_hint_0] = Nonogram.NOTE
+        #                 elif i == len(grid_w) - 1:
+        #                     c_hint_0 = c_hints[-1]
+        #                     for k in range(c_hint_0):
+        #                         grid_w[i][-(k+1)] = Nonogram.MARK
+        #                     grid_w[i][-(c_hint_0 + 1)] = Nonogram.NOTE
+
+
+        #     st.write("B")
+        #     st.code(Nonogram.text_grid(grid_w))
+
+        #     if grid_w != grid_t:
+        #         passes = 0
+        #     grid_t = grid_w.copy()
+        self.grid_working = grid_w
 
     def text_grid(self):
         return Nonogram.to_string(self.grid_working, self.r_hints, self.c_hints)
@@ -296,3 +430,4 @@ if __name__ == "__main__":
     df_gw = pd.DataFrame(n0.grid_working)
     st.write(df_gw)
     st.code(n0.text_grid())
+    st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
