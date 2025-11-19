@@ -76,9 +76,48 @@ class Nonogram:
         # while i < len(row):
         #     i += 1
 
+    def edge_in(row: list[str], hints: list[int]):
+        # forward to backward
+        found_hint = None
+        h0 = hints[0]
+        cnt_marks = 1
+        for i, val in enumerate(row):
+            if (found_hint is None) and (val == Nonogram.MARK):
+                found_hint = i
+            st.write(f"FtB {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+            if found_hint is not None:
+                if val == Nonogram.BLANK:
+                    if (h0 - (i + 1)) >= 0:
+                        row[i] = Nonogram.MARK
+                        st.write(f"-- {i=} MARK ftb")
+                        cnt_marks += 1
+                    elif ((h0 - i) == 0) and (cnt_marks == h0):
+                        row[i] = Nonogram.NOTE
+                        st.write(f"-- {i=} NOTE ftb")
+                        break
+            
+        # backward to forward
+        h_1 = hints[-1]
+        found_hint = None
+        cnt_marks = 1
+        for i, val in enumerate(row[::-1]):
+            if (found_hint is None) and (val == Nonogram.MARK):
+                found_hint = i
+            st.write(f"BtF {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
+            if found_hint is not None:
+                if val == Nonogram.BLANK:
+                    if (h_1 - (i + 1)) >= 0:
+                        row[len(row) - (i + 1)] = Nonogram.MARK
+                        st.write(f"-- {len(row) - (i + 1)=} MARK btf")
+                        cnt_marks += 1
+                    elif ((h_1 - i) == 0) and (cnt_marks == h_1):
+                        row[len(row) - (i + 1)] = Nonogram.NOTE
+                        st.write(f"-- {len(row) - (i + 1)=} NOTE btf")
+                        break
+
     def note_separated(lst: list[int]) -> list[int]:
         res = []
-        cnt = 0
+        cnt = 1
         for i, val in enumerate(lst):
             if val == Nonogram.NOTE:
                 res.append(cnt)
@@ -172,6 +211,9 @@ class Nonogram:
             passes += 1
             t_passes += 1
 
+            st.divider()
+            st.write(f"{passes=}, {t_passes=}")
+
             for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
                 row, r_hint = row_r_hint
                 st.write(f"{i=}, {row=}, {r_hint=}")
@@ -190,102 +232,113 @@ class Nonogram:
                 tt_grid_w.append(col)
 
             grid_w = np.transpose(tt_grid_w).tolist()
+            st.write("After Cols")
+            st.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
-            #     lst_r = grid_w[i]
-            #     lst_r_note_sep = Nonogram.note_separated(lst_r)
-            #     for j in range(len(grid_w[i])):
-            #         lst_c = [grid_w[ii][j] for ii in range(len(grid_w))]
-            #         lst_c_note_sep = Nonogram.note_separated(lst_c)
-            #         hints_ri = self.r_hints[i]
-            #         hints_cj = self.c_hints[j]
-            #         # st.write(f"\n{i=}, {j=}\n{lst_r=}, {lst_r_note_sep=}, {hints_ri=}\n{lst_c=}, {lst_c_note_sep=}, {hints_cj=}")
+            for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
+                row, r_hint = row_r_hint
+                Nonogram.edge_in(row, r_hint)
 
-            #         for i in range(len(grid_w)):
-            #             lst_r = grid_w[i]
-            #             lst_r_note_sep = Nonogram.note_separated(lst_r)
-            #             for j in range(len(grid_w[i])):
-            #                 lst_c = [grid_w[ii][j] for ii in range(len(grid_w))]
-            #                 lst_c_note_sep = Nonogram.note_separated(lst_c)
-            #                 hints_ri = self.r_hints[i]
-            #                 hints_cj = self.c_hints[j]
-            #                 st.write(f"\n{t_passes=}, {passes=}, {i=}, {j=}\n{lst_r=}, {lst_r_note_sep=}, {hints_ri=}\n{lst_c=}, {lst_c_note_sep=}, {hints_cj=}")
+            # for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
+            #     row, r_hint = row_r_hint
+            #     need_marks = sum(r_hint)
+            #     used_marks = row.count(Nonogram.MARK)
+            #     st.write(f"{i=}, {row=}, {r_hint=}")
+            #     if need_marks == used_marks:
+            #         for j, val in enumerate(row):
+            #             if val != Nonogram.MARK:
+            #                 grid_w[i][j] = Nonogram.NOTE
+            #     elif used_marks < need_marks:
+            #         # Left to Right
+            #         j = 0
+            #         hint_v = r_hints[i][0]
+            #         found_hint = False
+            #         while j < len(row):
+            #             if (row[j] == Nonogram.MARK) and (not found_hint):
+            #                 found_hint = True
+            #             if found_hint:
+            #                 if row[j] == Nonogram.BLANK:
+            #                     if j >= hint_v:
+            #                         grid_w[i][j] = Nonogram.NOTE
+            #                         break
+            #                     else:
+            #                         grid_w[i][j] = Nonogram.MARK
+            #             j += 1
 
-            #                 for hi, hr in enumerate(hints_ri):
-            #                     for ns_i, ns_r in enumerate(lst_r_note_sep):
-            #                         if (ns_r // 2) <= hr:
-            #                             stp = ns_r - hr
-            #                             stm = hr - stp
-            #                             start = sum(lst_r_note_sep[:ns_i]) + len(lst_r_note_sep[:ns_i]) + stp
-            #                             st.write(f"\t{stm=}, {stp=}, {start=}")
+            #         # Right to Left
+            #         j = len(row) - 1
+            #         hint_v = r_hints[i][-1]
+            #         found_hint = False
+            #         while j >= 0:
+            #             if (row[j] == Nonogram.MARK) and (not found_hint):
+            #                 found_hint = True
+            #             if found_hint:
+            #                 if row[j] == Nonogram.BLANK:
+            #                     if j >= hint_v:
+            #                         grid_w[i][j] = Nonogram.NOTE
+            #                         break
+            #                     else:
+            #                         grid_w[i][j] = Nonogram.MARK
+            #             j -= 1
+            #     # else:
+            #     #     raise ValueError(f"Too many marks placed!")
+            # st.write("After Row Edge Check")
+            # st.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
+            
+            # grid_w = np.transpose(grid_w).tolist()
+            # for i, row_r_hint in enumerate(zip(grid_w, c_hints)):
+            #     row, r_hint = row_r_hint
+            #     need_marks = sum(r_hint)
+            #     used_marks = row.count(Nonogram.MARK)
+            #     st.write(f"{i=}, {row=}, {r_hint=}")
+            #     if need_marks == used_marks:
+            #         for j, val in enumerate(row):
+            #             if val != Nonogram.MARK:
+            #                 grid_w[i][j] = Nonogram.NOTE
+            #     elif used_marks < need_marks:
+            #         # Top to Bottom
+            #         j = 0
+            #         hint_v = c_hints[i][0]
+            #         found_hint = False
+            #         while j < len(row):
+            #             if (row[j] == Nonogram.MARK) and (not found_hint):
+            #                 found_hint = True
+            #             if found_hint:
+            #                 if row[j] == Nonogram.BLANK:
+            #                     if j >= hint_v:
+            #                         grid_w[i][j] = Nonogram.NOTE
+            #                         break
+            #                     else:
+            #                         grid_w[i][j] = Nonogram.MARK
+            #             j += 1
 
-            #                             for gi in range(start, start + stm):
-            #                                 grid_w[i][gi] = Nonogram.MARK
+            #         # Bottom to Top
+            #         j = len(row) - 1
+            #         hint_v = c_hints[i][-1]
+            #         found_hint = False
+            #         while j >= 0:
+            #             if (row[j] == Nonogram.MARK) and (not found_hint):
+            #                 found_hint = True
+            #             if found_hint:
+            #                 if row[j] == Nonogram.BLANK:
+            #                     if j >= hint_v:
+            #                         grid_w[i][j] = Nonogram.NOTE
+            #                         break
+            #                     else:
+            #                         grid_w[i][j] = Nonogram.MARK
+            #             j -= 1
+            #     # else:
+            #     #     raise ValueError(f"Too many marks placed!")
+            
 
-            #                 for hj, hc in enumerate(hints_cj):
-            #                     for ns_j, ns_c in enumerate(lst_c_note_sep):
-            #                         if (ns_c // 2) <= hc:
-            #                             stp = ns_c - hc
-            #                             stm = hc - stp
-            #                             start = sum(lst_c_note_sep[:ns_j]) + len(lst_c_note_sep[:ns_j]) + stp
-            #                             st.write(f"\t{stm=}, {stp=}, {start=}")
-
-            #                             for gj in range(start, start + stm):
-            #                                 grid_w[gj][j] = Nonogram.MARK
-
-            #         # # place middle of blocks
-            #         # for hi, hr in enumerate(hints_ri):
-            #         #     for ns_i, ns_r in enumerate(lst_r_note_sep):
-            #         #         if (ns_r // 2) <= hr:
-            #         #             stp = ns_r - hr
-            #         #             stm = hr - stp
-            #         #             start = sum(lst_r_note_sep[:ns_i]) + len(lst_r_note_sep[:ns_i]) + stp
-            #         #             # print(f"\t{stm=}, {stp=}, {start=}")
-            #         #
-            #         #             for gi in range(start, start + stm):
-            #         #                 grid_w[i][gi] = Nonogram.MARK
-            #         #
-            #         # for hj, hc in enumerate(hints_cj):
-            #         #     for ns_j, ns_c in enumerate(lst_c_note_sep):
-            #         #         if (ns_c // 2) <= hc:
-            #         #             stp = ns_c - hc
-            #         #             stm = hc - stp
-            #         #             start = sum(lst_c_note_sep[:ns_i]) + len(lst_c_note_sep[:ns_i]) + stp
-            #         #             # print(f"\t{stm=}, {stp=}, {start=}")
-            #         #
-            #         #             for gj in range(start, start + stm):
-            #         #                 grid_w[gj][j] = Nonogram.MARK
-            #         #
-            #         #
-            #         #
-
-            # st.write("A")
-            # st.code(Nonogram.text_grid(grid_w))
-
-            # for i in range(len(grid_w)):
-            #     r_hints = self.r_hints[i]
-            #     for j in range(len(grid_w[0])):
-            #         c_hints = self.c_hints[j]
-            #         val = grid_w[i][j]
-            #         if val == Nonogram.MARK:
-            #             if i == 0:
-            #                 c_hint_0 = c_hints[0]
-            #                 for k in range(c_hint_0):
-            #                     grid_w[i][k] = Nonogram.MARK
-            #                 grid_w[i][c_hint_0] = Nonogram.NOTE
-            #             elif i == len(grid_w) - 1:
-            #                 c_hint_0 = c_hints[-1]
-            #                 for k in range(c_hint_0):
-            #                     grid_w[i][-(k+1)] = Nonogram.MARK
-            #                 grid_w[i][-(c_hint_0 + 1)] = Nonogram.NOTE
-
-
-            # st.write("B")
-            # st.code(Nonogram.text_grid(grid_w))
+            # grid_w = np.transpose(grid_w).tolist()
+            # st.write("After Row Edge Check")
+            # st.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
             if grid_w != grid_t:
                 passes = 0
             grid_t = grid_w.copy()
-            break
+            # break
         # while passes <= 2:
         #     passes += 1
         #     t_passes += 1
