@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 import pandas as pd
 import numpy as np
 import streamlit as st
@@ -22,11 +22,15 @@ class Nonogram:
         for rh in r_hints:
             if not isinstance(rh, list):
                 return ValueError(f"r_hints must be a list of integers, got {r_hints=}")
+            if not rh:
+                return ValueError(f"r_hints must be a list of integers, got {r_hints=}")
             for rh_v in rh:
                 if not isinstance(rh_v, int):
                     return ValueError(f"r_hints must be a list of integers, got {r_hints=}")
         for ch in c_hints:
             if not isinstance(ch, list):
+                return ValueError(f"c_hints must be a list of integers, got {c_hints=}")
+            if not ch:
                 return ValueError(f"c_hints must be a list of integers, got {c_hints=}")
             for ch_v in ch:
                 if not isinstance(ch_v, int):
@@ -46,20 +50,31 @@ class Nonogram:
 
     def mark(row: list[str], hints: list[int], is_row: bool = True):
         note_sep = Nonogram.note_separated(row)
+        hints_l = hints.copy()
         st.write(f"{note_sep=}")
         for i, sep_space in enumerate(note_sep):
-            for j, hint in enumerate(hints):
-                space = sep_space - (sum([v for jj, v in enumerate(hints) if jj != j]) + (len(hints) - 1))
+            hints_to_remove = []
+            for j, hint in enumerate(hints_l):
+                space = sep_space - (sum([v for jj, v in enumerate(hints_l) if jj != j]) + (len(hints_l) - 1))
                 buffer = space - hint
                 space_to_mark = hint - buffer
-                if space_to_mark > 0:
-                    start_pos = sum(hints[:j]) + len(hints[:j]) + buffer #+ int(bool(j))
+                if hint - space_to_mark >= 0:
+                    start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer #+ int(bool(j))
                     st.write(f"{i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}")
                     for ii in range(start_pos, start_pos + space_to_mark):
                         row[ii] = Nonogram.MARK
                     if space_to_mark == hint:
                         if (start_pos + space_to_mark) < (len(row) - 1):
                             row[start_pos + space_to_mark] = Nonogram.NOTE
+                    hints_to_remove.append(j)
+            for jj in hints_to_remove[::-1]:
+                del hints_l[jj]
+            if hints_to_remove:
+                break
+
+        # i = 0
+        # while i < len(row):
+        #     i += 1
 
     def note_separated(lst: list[int]) -> list[int]:
         res = []
@@ -76,32 +91,37 @@ class Nonogram:
 
         return res
 
-    def to_string(grid: list[list[int]], r_hints: list[list[int]], c_hints: list[list[int]]) -> str:
-        max_h_c_hints = max([len(hc) for hc in c_hints])
-        max_w_r_hints = max([len(hr) for hr in r_hints])
+    def to_string(grid: list[list[str]], r_hints: Optional[list[list[int]]] = None, c_hints: Optional[list[list[int]]] = None) -> str:
         n_rows = len(grid)
         n_cols = len(grid[0])
-        space_left = (max_h_c_hints * 2) + 1
-        res = " " * space_left
+        res = ""
+        max_w_r_hints = 0 if r_hints is None else max([len(hr) for hr in r_hints])
 
-        # column hints
-        for i in range(max_h_c_hints):
-            for hj, hc in enumerate(c_hints):
-                # st.write(f"{i=}, {hj=}, {hc=}, {max_h_c_hints=}")
-                if i >= (max_h_c_hints - len(hc)):
-                    idx = len(hc) - (max_h_c_hints - (i + 1)) - 1
-                    # st.write(f"{idx=}")
-                    res += str(hc[idx]).center(2, Nonogram.BLANK)
-                else:
-                    res += Nonogram.BLANK.center(2, Nonogram.BLANK)
-            res += "\n"
-            if i < (max_h_c_hints - 1):
-                res += (" " * space_left)
+        if c_hints is not None:
+            max_h_c_hints = max([len(hc) for hc in c_hints])
+            space_left = (max_w_r_hints * 2) + 1
+            res = " " * space_left
+            # column hints
+            for i in range(max_h_c_hints):
+                for hj, hc in enumerate(c_hints):
+                    # st.write(f"{i=}, {hj=}, {hc=}, {max_h_c_hints=}")
+                    if i >= (max_h_c_hints - len(hc)):
+                        idx = len(hc) - (max_h_c_hints - (i + 1)) - 1
+                        # st.write(f"{idx=}")
+                        res += str(hc[idx]).center(2, Nonogram.BLANK)
+                    else:
+                        res += Nonogram.BLANK.center(2, Nonogram.BLANK)
+                res += "\n"
+                if i < (max_h_c_hints - 1):
+                    res += (" " * space_left)
+        else:
+            max_h_c_hints = 0
 
         # row hints and grid 1 row at a time
         for i in range(n_rows):
-            r_hints_c = ([Nonogram.BLANK.center(2, Nonogram.BLANK) for _ in range(max_w_r_hints)] + r_hints[i])[-max_h_c_hints:]
-            res += "".join(list(map(lambda v: str(v).center(2, Nonogram.BLANK), r_hints_c)))
+            if r_hints is not None:
+                r_hints_c = ([Nonogram.BLANK.center(2, Nonogram.BLANK) for _ in range(max_w_r_hints)] + r_hints[i])[-max_w_r_hints:]
+                res += "".join(list(map(lambda v: str(v).center(2, Nonogram.BLANK), r_hints_c)))
             res += Nonogram.BLANK
             res += "".join(list(map(lambda v: str(v).center(2, Nonogram.BLANK), grid[i])))
             res += "\n"
@@ -156,6 +176,9 @@ class Nonogram:
                 row, r_hint = row_r_hint
                 st.write(f"{i=}, {row=}, {r_hint=}")
                 Nonogram.mark(row, r_hint, is_row=True)
+
+            st.write("After Rows")
+            st.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
                 
             t_grid_w = np.transpose(grid_w).tolist()
             tt_grid_w = []
@@ -422,6 +445,31 @@ if __name__ == "__main__":
         ]
     }
 
+    p1 = {
+        "r_hints": [
+            [1],
+            [2],
+            [1, 1],
+            [1, 1, 1],
+            [1, 1],
+            [2],
+            [2],
+            [2],
+            [1, 1]
+        ],
+        "c_hints": [
+            [1, 1],
+            [2, 2],
+            [2, 1],
+            [1, 2, 1],
+            [1, 1, 1],
+            [2, 2],
+            [2, 2],
+            [1, 1],
+            [1, 1]
+        ]
+    }
+
     n0 = Nonogram(p0)
     st.write(n0)
     st.write(n0.grid_working)
@@ -430,4 +478,11 @@ if __name__ == "__main__":
     df_gw = pd.DataFrame(n0.grid_working)
     st.write(df_gw)
     st.code(n0.text_grid())
-    st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
+    # st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
+    # st.code(Nonogram.to_string(n0.grid_working))
+    # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
+    # st.code(Nonogram.to_string(n0.grid_working, None, n0.c_hints))
+
+    n1 = Nonogram(p1)
+    st.write(n1)
+    st.code(n1.text_grid())
