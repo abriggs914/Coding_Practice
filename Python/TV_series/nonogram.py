@@ -51,7 +51,9 @@ class Nonogram:
     def mark(row: list[str], hints: list[int], is_row: bool = True):
         note_sep = Nonogram.note_separated(row)
         hints_l = hints.copy()
-        col_debug.write(f"{note_sep=}")
+        col_debug.write(f"IN  {note_sep=}, {row=}")
+        idx_first_mark = 0 + (row.index(Nonogram.MARK) if Nonogram.MARK in row else (row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0))
+        # idx_first_mark = min(row.index(Nonogram.MARK) if Nonogram.MARK in row else 0, row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0)
         for i, sep_space in enumerate(note_sep):
             hints_to_remove = []
             for j, hint in enumerate(hints_l):
@@ -59,9 +61,10 @@ class Nonogram:
                 buffer = space - hint
                 space_to_mark = hint - buffer
                 if hint - space_to_mark >= 0:
-                    start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer #+ int(bool(j))
+                    # start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer #+ int(bool(j))
+                    start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + idx_first_mark
                     # TODO startpos is off by left or right most notes.
-                    col_debug.write(f"{i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}")
+                    col_debug.write(f"{i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}, {idx_first_mark=}")
                     for ii in range(start_pos, start_pos + space_to_mark):
                         row[ii] = Nonogram.MARK
                     if space_to_mark == hint:
@@ -72,6 +75,7 @@ class Nonogram:
                 del hints_l[jj]
             if hints_to_remove:
                 break
+        col_debug.write(f"OUT {note_sep=}, {row=}")
 
         # i = 0
         # while i < len(row):
