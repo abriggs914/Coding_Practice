@@ -37,21 +37,21 @@ class Nonogram:
                     return ValueError(f"c_hints must be a list of integers, got {c_hints=}")
         return True
 
-    def fillna(grid: list[list[int]], r_hints: list[list[int]], c_hints: list[list[int]]) -> list[list[int]]:
+    def fillna(grid: list[list[str]], r_hints: list[list[int]], c_hints: list[list[int]]) -> list[list[int]]:
         for i, rh in enumerate(r_hints):
             if rh == [0]:
-                for gi in range(len(grid)):
+                for gi in range(len(c_hints)):
                     grid[i][gi] = Nonogram.NOTE
         for i, ch in enumerate(c_hints):
             if ch == [0]:
-                for gi in range(len(grid[i])):
+                for gi in range(len(r_hints)):
                     grid[gi][i] = Nonogram.NOTE
         return grid
 
     def mark(row: list[str], hints: list[int], is_row: bool = True):
         note_sep = Nonogram.note_separated(row)
         hints_l = hints.copy()
-        st.write(f"{note_sep=}")
+        col_debug.write(f"{note_sep=}")
         for i, sep_space in enumerate(note_sep):
             hints_to_remove = []
             for j, hint in enumerate(hints_l):
@@ -60,7 +60,8 @@ class Nonogram:
                 space_to_mark = hint - buffer
                 if hint - space_to_mark >= 0:
                     start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer #+ int(bool(j))
-                    st.write(f"{i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}")
+                    # TODO startpos is off by left or right most notes.
+                    col_debug.write(f"{i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}")
                     for ii in range(start_pos, start_pos + space_to_mark):
                         row[ii] = Nonogram.MARK
                     if space_to_mark == hint:
@@ -84,17 +85,21 @@ class Nonogram:
         for i, val in enumerate(row):
             if (found_hint is None) and (val == Nonogram.MARK):
                 found_hint = i
-            st.write(f"FtB {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+            # col_debug.write(f"FtB {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
             if found_hint is not None:
                 if val == Nonogram.BLANK:
                     if (h0 - (i + 1)) >= 0:
                         row[i] = Nonogram.MARK
-                        st.write(f"-- {i=} MARK ftb")
+                        col_debug.write(f"FtB {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+                        col_debug.write(f"-- {i=} MARK ftb")
                         cnt_marks += 1
                     elif ((h0 - i) == 0) and (cnt_marks == h0):
                         row[i] = Nonogram.NOTE
-                        st.write(f"-- {i=} NOTE ftb")
+                        col_debug.write(f"FtB {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+                        col_debug.write(f"-- {i=} NOTE ftb")
                         break
+                elif val == Nonogram.MARK:
+                    cnt_marks += 1
             
         # backward to forward
         h_1 = hints[-1]
@@ -103,24 +108,29 @@ class Nonogram:
         for i, val in enumerate(row[::-1]):
             if (found_hint is None) and (val == Nonogram.MARK):
                 found_hint = i
-            st.write(f"BtF {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
+            # st.write(f"BtF {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
             if found_hint is not None:
                 if val == Nonogram.BLANK:
                     if (h_1 - (i + 1)) >= 0:
                         row[len(row) - (i + 1)] = Nonogram.MARK
-                        st.write(f"-- {len(row) - (i + 1)=} MARK btf")
-                        cnt_marks += 1
+                        col_debug.write(f"BtF {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
+                        col_debug.write(f"-- i={len(row) - (i + 1)} MARK btf")
+                        # cnt_marks += 1
                     elif ((h_1 - i) == 0) and (cnt_marks == h_1):
                         row[len(row) - (i + 1)] = Nonogram.NOTE
-                        st.write(f"-- {len(row) - (i + 1)=} NOTE btf")
+                        col_debug.write(f"BtF {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
+                        col_debug.write(f"-- i={len(row) - (i + 1)} NOTE btf")
                         break
+                elif val == Nonogram.MARK:
+                    cnt_marks += 1
 
     def note_separated(lst: list[int]) -> list[int]:
         res = []
-        cnt = 1
+        cnt = 0
         for i, val in enumerate(lst):
             if val == Nonogram.NOTE:
-                res.append(cnt)
+                if not ((cnt == 0) and (len(res) == 0)):
+                    res.append(cnt)
                 cnt = 0
             else:
                 cnt += 1
@@ -128,6 +138,48 @@ class Nonogram:
         if cnt > 0:
             res.append(cnt)
 
+        if not res:
+            res = [0]
+
+        return res
+
+    def gen_horizontal_hints(grid: list[list[str]]) -> list[list[int]]:
+        rows = len(grid)
+        cols = len(grid[0])
+        res = [[] for i in range(rows)]
+        for r in range(rows):
+            for c in range(cols):
+                if (grid[r][c] == 1 and c == 0) or (grid[r][c] == 1 and grid[r][c - 1] == 0):
+                    count = 1
+                    temp = c
+                    while temp < cols - 1 and grid[r][temp + 1] == 1:
+                        count += 1
+                        temp += 1
+                    res[r].append(count)
+        for r in range(rows):
+            if len(res[r]) == 0:
+                res[r] = [0]
+        # print('h_hints', res)
+        return res
+
+    def gen_vertical_hints(grid: list[list[str]]) -> list[list[int]]:
+        rows = len(grid)
+        cols = len(grid[0])
+        res = [[] for i in range(cols)]
+        for r in range(rows):
+            for c in range(cols):
+                if (grid[r][c] == 1 and r == 0) or (grid[r][c] == 1 and grid[r - 1][c] == 0):
+                    temp = r
+                    count = 1
+                    while (r < rows - 1) and (grid[r + 1][c] == 1):
+                        count += 1
+                        r += 1
+                    r = temp
+                    res[c].append(count)
+        for c in range(cols):
+            if len(res[c]) == 0:
+                res[c] = [0]
+        # print('v_hints', res)
         return res
 
     def to_string(grid: list[list[str]], r_hints: Optional[list[list[int]]] = None, c_hints: Optional[list[list[int]]] = None) -> str:
@@ -211,32 +263,33 @@ class Nonogram:
             passes += 1
             t_passes += 1
 
-            st.divider()
-            st.write(f"{passes=}, {t_passes=}")
+            col_debug.divider()
+            col_debug.write(f"{passes=}, {t_passes=}")
 
             for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
                 row, r_hint = row_r_hint
-                st.write(f"{i=}, {row=}, {r_hint=}")
+                col_debug.write(f"{i=}, {row=}, {r_hint=}")
                 Nonogram.mark(row, r_hint, is_row=True)
 
-            st.write("After Rows")
-            st.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
+            col_debug.write("After Rows")
+            col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
                 
             t_grid_w = np.transpose(grid_w).tolist()
             tt_grid_w = []
             for j, col_c_hint in enumerate(zip(t_grid_w, c_hints)):
                 col, c_hint = col_c_hint
-                st.write(f"A {j=}, {col=}, {c_hint=}")
+                col_debug.write(f"A {j=}, {col=}, {c_hint=}")
                 Nonogram.mark(col, c_hint, is_row=False)
-                st.write(f"B {j=}, {col=}, {c_hint=}")
+                col_debug.write(f"B {j=}, {col=}, {c_hint=}")
                 tt_grid_w.append(col)
 
             grid_w = np.transpose(tt_grid_w).tolist()
-            st.write("After Cols")
-            st.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
+            col_debug.write("After Cols")
+            col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
             for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
                 row, r_hint = row_r_hint
+                col_debug.write(f"EI {i=}, {row=}, {r_hint=}")
                 Nonogram.edge_in(row, r_hint)
 
             # for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
@@ -460,6 +513,9 @@ class Nonogram:
 
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
+
+    col_debug, col_results = st.columns(2)
+
     # Nonogram
     p0 = {
         "c_hints": [
@@ -523,19 +579,60 @@ if __name__ == "__main__":
         ]
     }
 
-    n0 = Nonogram(p0)
-    st.write(n0)
-    st.write(n0.grid_working)
-    st.write(n0.r_hints)
-    st.write(n0.c_hints)
-    df_gw = pd.DataFrame(n0.grid_working)
-    st.write(df_gw)
-    st.code(n0.text_grid())
-    # st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
-    # st.code(Nonogram.to_string(n0.grid_working))
-    # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
-    # st.code(Nonogram.to_string(n0.grid_working, None, n0.c_hints))
+    sample_smiley = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                     [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+                     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+                     [0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0],
+                     [0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0],
+                     [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+                     [0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0],
+                     [0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0],
+                     [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+                     [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0]]
+    sample_smiley_r_hints = Nonogram.gen_horizontal_hints(sample_smiley)
+    sample_smiley_c_hints = Nonogram.gen_vertical_hints(sample_smiley)
+    sample_smiley = {
+        "c_hints": sample_smiley_c_hints,
+        "r_hints": sample_smiley_r_hints
+    }
 
-    n1 = Nonogram(p1)
-    st.write(n1)
-    st.code(n1.text_grid())
+    nonogram_puzzles = [
+        {
+            "title": "p0",
+            "nonogram_data": p0
+        },
+        {
+            "title": "p1",
+            "nonogram_data": p1
+        },
+        {
+            "title": "smiley",
+            "nonogram_data": sample_smiley
+        }
+    ]
+
+    k_selectbox_nonogram = "key_selectbox_nonogram"
+    st.session_state.setdefault(k_selectbox_nonogram, nonogram_puzzles[0]["title"])
+    selectbox_nonogram = col_results.selectbox(
+        label="Puzzle",
+        key=k_selectbox_nonogram,
+        options=[p["title"] for p in nonogram_puzzles]
+    )
+
+    if selectbox_nonogram:
+
+        puzzle_idx = [i for i in range(len(nonogram_puzzles)) if nonogram_puzzles[i]["title"] == selectbox_nonogram][0]
+        puzzle_data = nonogram_puzzles[puzzle_idx]
+        nonogram_data = puzzle_data["nonogram_data"]
+        nonogram = Nonogram(nonogram_data)
+        col_results.write(nonogram)
+        col_debug.write(nonogram.grid_working)
+        col_debug.write(nonogram.r_hints)
+        col_debug.write(nonogram.c_hints)
+        df_gw = pd.DataFrame(nonogram.grid_working)
+        col_debug.write(df_gw)
+        col_results.code(nonogram.text_grid())
+        # st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
+        # st.code(Nonogram.to_string(n0.grid_working))
+        # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
+        # st.code(Nonogram.to_string(n0.grid_working, None, n0.c_hints))
