@@ -2,6 +2,10 @@ from typing import Any, Optional
 import pandas as pd
 import numpy as np
 import streamlit as st
+import datetime
+import asyncio
+import time
+from utility import percent
 
 
 class Nonogram:
@@ -52,7 +56,10 @@ class Nonogram:
         note_sep = Nonogram.note_separated(row)
         hints_l = hints.copy()
         col_debug.write(f"IN  {note_sep=}, {row=}")
-        idx_first_mark = 0 + (row.index(Nonogram.MARK) if Nonogram.MARK in row else (row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0))
+        if len(note_sep) > 1:
+            idx_first_mark = 0 + (row.index(Nonogram.MARK) if Nonogram.MARK in row else (row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0))
+        else:
+            idx_first_mark = 0
         # idx_first_mark = min(row.index(Nonogram.MARK) if Nonogram.MARK in row else 0, row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0)
         for i, sep_space in enumerate(note_sep):
             hints_to_remove = []
@@ -85,21 +92,21 @@ class Nonogram:
         # forward to backward
         found_hint = None
         h0 = hints[0]
-        cnt_marks = 1
+        cnt_marks = 0
         for i, val in enumerate(row):
             if (found_hint is None) and (val == Nonogram.MARK):
                 found_hint = i
             # col_debug.write(f"FtB {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
             if found_hint is not None:
                 if val == Nonogram.BLANK:
-                    if (h0 - (i + 1)) >= 0:
+                    if (h0 - (i + 0)) > 0:
                         row[i] = Nonogram.MARK
-                        col_debug.write(f"FtB {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+                        col_debug.write(f"FtB_a {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
                         col_debug.write(f"-- {i=} MARK ftb")
                         cnt_marks += 1
                     elif ((h0 - i) == 0) and (cnt_marks == h0):
                         row[i] = Nonogram.NOTE
-                        col_debug.write(f"FtB {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+                        col_debug.write(f"FtB_b {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
                         col_debug.write(f"-- {i=} NOTE ftb")
                         break
                 elif val == Nonogram.MARK:
@@ -108,21 +115,21 @@ class Nonogram:
         # backward to forward
         h_1 = hints[-1]
         found_hint = None
-        cnt_marks = 1
+        cnt_marks = 0
         for i, val in enumerate(row[::-1]):
             if (found_hint is None) and (val == Nonogram.MARK):
                 found_hint = i
             # st.write(f"BtF {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
             if found_hint is not None:
                 if val == Nonogram.BLANK:
-                    if (h_1 - (i + 1)) >= 0:
+                    if (h_1 - (i + 0)) > 0:
                         row[len(row) - (i + 1)] = Nonogram.MARK
-                        col_debug.write(f"BtF {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
+                        col_debug.write(f"BtF_a {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
                         col_debug.write(f"-- i={len(row) - (i + 1)} MARK btf")
-                        # cnt_marks += 1
-                    elif ((h_1 - i) == 0) and (cnt_marks == h_1):
+                        cnt_marks += 1
+                    elif ((h_1 - (i + 0)) == 0) and (cnt_marks == h_1):
                         row[len(row) - (i + 1)] = Nonogram.NOTE
-                        col_debug.write(f"BtF {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
+                        col_debug.write(f"BtF_b {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
                         col_debug.write(f"-- i={len(row) - (i + 1)} NOTE btf")
                         break
                 elif val == Nonogram.MARK:
@@ -272,8 +279,9 @@ class Nonogram:
 
             for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
                 row, r_hint = row_r_hint
-                col_debug.write(f"{i=}, {row=}, {r_hint=}")
+                col_debug.write(f"ROWS A {i=}, {row=}, {r_hint=}")
                 Nonogram.mark(row, r_hint, is_row=True)
+                col_debug.write(f"ROWS B {i=}, {row=}, {r_hint=}")
 
             col_debug.write("After Rows")
             col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
@@ -282,9 +290,9 @@ class Nonogram:
             tt_grid_w = []
             for j, col_c_hint in enumerate(zip(t_grid_w, c_hints)):
                 col, c_hint = col_c_hint
-                col_debug.write(f"A {j=}, {col=}, {c_hint=}")
+                col_debug.write(f"COLS A {j=}, {col=}, {c_hint=}")
                 Nonogram.mark(col, c_hint, is_row=False)
-                col_debug.write(f"B {j=}, {col=}, {c_hint=}")
+                col_debug.write(f"COLS B {j=}, {col=}, {c_hint=}")
                 tt_grid_w.append(col)
 
             grid_w = np.transpose(tt_grid_w).tolist()
@@ -293,8 +301,9 @@ class Nonogram:
 
             for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
                 row, r_hint = row_r_hint
-                col_debug.write(f"EI {i=}, {row=}, {r_hint=}")
+                col_debug.write(f"EI IN  {i=}, {row=}, {r_hint=}")
                 Nonogram.edge_in(row, r_hint)
+                col_debug.write(f"EI OUT {i=}, {row=}, {r_hint=}")
 
             # for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
             #     row, r_hint = row_r_hint
@@ -395,7 +404,7 @@ class Nonogram:
             if grid_w != grid_t:
                 passes = 0
             grid_t = grid_w.copy()
-            # break
+            break
         # while passes <= 2:
         #     passes += 1
         #     t_passes += 1
@@ -515,8 +524,33 @@ class Nonogram:
     solved = property(get_solved, set_solved, del_solved)
 
 
+async def run_day():
+    now = datetime.datetime.now()
+    start = now.replace(hour=6, minute=0, second=0, microsecond=0)
+    end = datetime.datetime.now()
+    end = end.replace(hour=16, minute=30, second=0, microsecond=0)
+    t_sec = (end - start).total_seconds()
+    
+    now = now + datetime.timedelta(minutes=1)
+    p_sec = max((now - start).total_seconds(), 0)
+    v = p_sec / t_sec
+    pb_day.progress(v, text=f"{percent(v)} {int(round(t_sec - p_sec, 0))} second(s) left")
+    
+    while now < end:
+        now = datetime.datetime.now()
+        p_sec = max((now - start).total_seconds(), 0)
+        await asyncio.sleep(1)
+        v = p_sec / t_sec
+        pb_day.progress(v, text=f"{percent(v)} {int(round(t_sec - p_sec, 0))} second(s) left")
+        # st.write(f"{end}, {p_sec=}, {v=}")
+    # st.write(f"{start}")
+    # st.write(f"{end}")
+
+
 if __name__ == "__main__":
     st.set_page_config(layout="wide")
+
+    pb_day = st.progress(value=0)
 
     col_debug, col_results = st.columns(2)
 
@@ -640,3 +674,5 @@ if __name__ == "__main__":
         # st.code(Nonogram.to_string(n0.grid_working))
         # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
         # st.code(Nonogram.to_string(n0.grid_working, None, n0.c_hints))
+    
+    asyncio.run(run_day())
