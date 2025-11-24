@@ -41,7 +41,7 @@ NHL_API_URL_V1: str = "{0}v1/".format(NHL_API_URL)
 NHL_PLAYER_API_URL: str = "{0}player/".format(NHL_API_URL_V1)
 PATH_UNKNOWN_IMAGE: str = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags\unknown_flag.png"
 PATH_FOLDER_JERSEY_COLLECTION: str = r"D:\NHL jerseys\Jerseys 20250927"
-PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251109.xlsx"
+PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251120.xlsx"
 JERSEY_COLOUR_SAVE_FILE: str = "new_colours_save.json"
 
 UTC_FMT: str = "%Y-%m-%dT%H:%M:%SZ"

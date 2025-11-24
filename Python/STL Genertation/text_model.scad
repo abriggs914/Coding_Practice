@@ -1,3 +1,3 @@
-linear_extrude(height = 9) {
-	text(font = "Bauhaus 93", halign = "right", size = 60, text = "Avery", valign = "baseline");
+linear_extrude(height = 3) {
+	text(font = "Brush Script MT", halign = "center", size = 20, text = "Florence", valign = "baseline");
 }
