@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Optional, Literal
 import pandas as pd
 import numpy as np
 import streamlit as st
@@ -52,14 +52,16 @@ class Nonogram:
                     grid[gi][i] = Nonogram.NOTE
         return grid
 
-    def mark(row: list[str], hints: list[int], is_row: bool = True):
+    def mark(row: list[str], hints: list[int], is_row: bool = True, parent_cont = None):
         note_sep = Nonogram.note_separated(row)
         hints_l = hints.copy()
-        col_debug.write(f"IN  {note_sep=}, {row=}")
+        with parent_cont if parent_cont is not None else st.container():
+            st.write(f"IN  {note_sep=}, {row=}, {hints=}")
         if len(note_sep) > 1:
             idx_first_mark = 0 + (row.index(Nonogram.MARK) if Nonogram.MARK in row else (row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0))
         else:
             idx_first_mark = row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0
+
         # idx_first_mark = min(row.index(Nonogram.MARK) if Nonogram.MARK in row else 0, row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0)
         for i, sep_space in enumerate(note_sep):
             hints_to_remove = []
@@ -67,28 +69,46 @@ class Nonogram:
                 space = sep_space - (sum([v for jj, v in enumerate(hints_l) if jj != j]) + (len(hints_l) - 1))
                 buffer = space - hint
                 space_to_mark = hint - buffer
-                if hint - space_to_mark >= 0:
+                
+                if (hint != 0) and (row[:idx_first_mark].count(Nonogram.MARK) == hint):
+                    idx_first_mark += 1
+                    row[idx_first_mark] = Nonogram.BLANK
+
+                elif hint - space_to_mark > 0:
                     # start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer #+ int(bool(j))
                     start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + idx_first_mark
                     # TODO startpos is off by left or right most notes.
-                    col_debug.write(f"{i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}, {idx_first_mark=}")
+                    cc = Nonogram.count_continuous(row, idx=start_pos)
+                    with parent_cont if parent_cont is not None else st.container():
+                        st.write(f"MA {i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}, {idx_first_mark=}, {cc=}")
                     for ii in range(start_pos, start_pos + space_to_mark):
                         row[ii] = Nonogram.MARK
                     if space_to_mark == hint:
                         if (start_pos + space_to_mark) < (len(row) - 1):
                             row[start_pos + space_to_mark] = Nonogram.NOTE
                     hints_to_remove.append(j)
+                elif hint == space_to_mark:
+                    # start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + (idx_first_mark - hint)
+                    start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + (idx_first_mark - hint)
+                    cc = Nonogram.count_continuous(row, idx=start_pos)
+                    with parent_cont if parent_cont is not None else st.container():
+                        st.write(f"MB {i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}, {idx_first_mark=}, {cc=}")
+                    for ii in range(start_pos, start_pos + space_to_mark):
+                        row[ii] = Nonogram.MARK
+
             for jj in hints_to_remove[::-1]:
                 del hints_l[jj]
             if hints_to_remove:
                 break
-        col_debug.write(f"OUT {note_sep=}, {row=}")
+            
+        with parent_cont if parent_cont is not None else st.container():
+            st.write(f"OUT {note_sep=}, {row=}, {hints=}")
 
         # i = 0
         # while i < len(row):
         #     i += 1
 
-    def edge_in(row: list[str], hints: list[int]):
+    def edge_in(row: list[str], hints: list[int], parent_cont=None):
         # forward to backward
         found_hint = None
         h0 = hints[0]
@@ -101,13 +121,15 @@ class Nonogram:
                 if val == Nonogram.BLANK:
                     if (h0 - (i + 0)) > 0:
                         row[i] = Nonogram.MARK
-                        col_debug.write(f"FtB_a {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
-                        col_debug.write(f"-- {i=} MARK ftb")
+                        with parent_cont if parent_cont is not None else st.container():
+                            st.write(f"FtB_a {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+                            st.write(f"-- {i=} MARK ftb")
                         cnt_marks += 1
                     elif ((h0 - i) == 0) and (cnt_marks == h0):
                         row[i] = Nonogram.NOTE
-                        col_debug.write(f"FtB_b {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
-                        col_debug.write(f"-- {i=} NOTE ftb")
+                        with parent_cont if parent_cont is not None else st.container():
+                            st.write(f"FtB_b {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+                            st.write(f"-- {i=} NOTE ftb")
                         break
                 elif val == Nonogram.MARK:
                     cnt_marks += 1
@@ -124,13 +146,15 @@ class Nonogram:
                 if val == Nonogram.BLANK:
                     if (h_1 - (i + 0)) > 0:
                         row[len(row) - (i + 1)] = Nonogram.MARK
-                        col_debug.write(f"BtF_a {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
-                        col_debug.write(f"-- i={len(row) - (i + 1)} MARK btf")
+                        with parent_cont if parent_cont is not None else st.container():
+                            st.write(f"BtF_a {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
+                            st.write(f"-- i={len(row) - (i + 1)} MARK btf")
                         cnt_marks += 1
                     elif ((h_1 - (i + 0)) == 0) and (cnt_marks == h_1):
                         row[len(row) - (i + 1)] = Nonogram.NOTE
-                        col_debug.write(f"BtF_b {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
-                        col_debug.write(f"-- i={len(row) - (i + 1)} NOTE btf")
+                        with parent_cont if parent_cont is not None else st.container():
+                            st.write(f"BtF_b {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
+                            st.write(f"-- i={len(row) - (i + 1)} NOTE btf")
                         break
                 elif val == Nonogram.MARK:
                     cnt_marks += 1
@@ -153,6 +177,27 @@ class Nonogram:
             res = [0]
 
         return res
+
+    def count_continuous(row: list[int], m: Optional[str] = None, idx: Optional[int] = None, direction: Literal["left", "right"] = "right"):
+        st.write(f"CC {row=}, {m=}, {idx=}")
+        if m is None:
+            m = Nonogram.MARK
+        
+        if idx is None:
+            idx = 0
+
+        if idx < 0:
+            return 0
+        elif idx >= len(row):
+            return 0
+
+        if row[idx] != m:
+            return 0
+        
+        left = 0 if direction == "right" else Nonogram.count_continuous(row, m, idx - 1, "left")
+        right = 0 if direction == "left" else Nonogram.count_continuous(row, m, idx + 1, "right")
+
+        return left + 1 + right
 
     def gen_horizontal_hints(grid: list[list[str]]) -> list[list[int]]:
         rows = len(grid)
@@ -277,11 +322,12 @@ class Nonogram:
             col_debug.divider()
             col_debug.write(f"{passes=}, {t_passes=}")
 
-            with col_debug.expander(f"Mark Rows Pass# {t_passes}"):
+            exp_0 = col_debug.expander(f"Mark Rows Pass# {t_passes}")
+            with exp_0:
                 for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
                     row, r_hint = row_r_hint
                     st.write(f"ROWS A {i=}, {row=}, {r_hint=}")
-                    Nonogram.mark(row, r_hint, is_row=True)
+                    Nonogram.mark(row, r_hint, is_row=True, parent_cont=exp_0)
                     st.write(f"ROWS B {i=}, {row=}, {r_hint=}")
 
             col_debug.write("After Rows")
@@ -289,11 +335,12 @@ class Nonogram:
                 
             t_grid_w = np.transpose(grid_w).tolist()
             tt_grid_w = []
-            with col_debug.expander(f"Mark Cols Pass# {t_passes}"):
+            exp_1 = col_debug.expander(f"Mark Cols Pass# {t_passes}")
+            with exp_1:
                 for j, col_c_hint in enumerate(zip(t_grid_w, c_hints)):
                     col, c_hint = col_c_hint
                     st.write(f"COLS A {j=}, {col=}, {c_hint=}")
-                    Nonogram.mark(col, c_hint, is_row=False)
+                    Nonogram.mark(col, c_hint, is_row=False, parent_cont=exp_1)
                     st.write(f"COLS B {j=}, {col=}, {c_hint=}")
                     tt_grid_w.append(col)
 
@@ -301,12 +348,15 @@ class Nonogram:
             col_debug.write("After Cols")
             col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
-            with col_debug.expander(f"Edge In Rows Pass# {t_passes}"):
+            exp_2 = col_debug.expander(f"Edge In Rows Pass# {t_passes}")
+            with exp_2:
                 for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
                     row, r_hint = row_r_hint
                     st.write(f"EI ROW IN  {i=}, {row=}, {r_hint=}")
-                    Nonogram.edge_in(row, r_hint)
+                    Nonogram.edge_in(row, r_hint, parent_cont=exp_2)
                     st.write(f"EI ROW OUT {i=}, {row=}, {r_hint=}")
+            col_debug.write("After Edge In Rows")
+            col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
             grid_w = np.transpose(grid_w).tolist()
             with col_debug.expander(f"Edge In Columns Pass# {t_passes}"):
@@ -316,6 +366,8 @@ class Nonogram:
                     Nonogram.edge_in(row, c_hint)
                     st.write(f"EI COL OUT {i=}, {row=}, {c_hint=}")
             grid_w = np.transpose(grid_w).tolist()
+            col_debug.write("After Edge In Cols")
+            col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
             # for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
             #     row, r_hint = row_r_hint
@@ -675,10 +727,14 @@ if __name__ == "__main__":
         puzzle_data = nonogram_puzzles[puzzle_idx]
         nonogram_data = puzzle_data["nonogram_data"]
         nonogram = Nonogram(nonogram_data)
+        col_debug.divider()
         col_results.write(nonogram)
-        col_debug.write(nonogram.grid_working)
-        col_debug.write(nonogram.r_hints)
-        col_debug.write(nonogram.c_hints)
+        with col_debug.expander("Grid Working"):
+            st.write(nonogram.grid_working)
+        with col_debug.expander("Row Hints"):
+            st.write(nonogram.r_hints)
+        with col_debug.expander("Col Hints"):
+            st.write(nonogram.c_hints)
         df_gw = pd.DataFrame(nonogram.grid_working)
         col_debug.write(df_gw)
         col_results.code(nonogram.text_grid())
@@ -686,5 +742,12 @@ if __name__ == "__main__":
         # st.code(Nonogram.to_string(n0.grid_working))
         # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
         # st.code(Nonogram.to_string(n0.grid_working, None, n0.c_hints))
+
+        row = [Nonogram.BLANK for i in range(10)]
+        row[1] = Nonogram.MARK
+        row[2] = Nonogram.MARK
+        with col_results:
+            for i, val in enumerate(row):
+                st.write(f"{i=}, {val=}, {Nonogram.count_continuous(row, None, i)}")
     
     asyncio.run(run_day())
