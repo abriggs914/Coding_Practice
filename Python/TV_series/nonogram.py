@@ -59,7 +59,7 @@ class Nonogram:
         if len(note_sep) > 1:
             idx_first_mark = 0 + (row.index(Nonogram.MARK) if Nonogram.MARK in row else (row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0))
         else:
-            idx_first_mark = 0
+            idx_first_mark = row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0
         # idx_first_mark = min(row.index(Nonogram.MARK) if Nonogram.MARK in row else 0, row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0)
         for i, sep_space in enumerate(note_sep):
             hints_to_remove = []
@@ -277,33 +277,45 @@ class Nonogram:
             col_debug.divider()
             col_debug.write(f"{passes=}, {t_passes=}")
 
-            for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
-                row, r_hint = row_r_hint
-                col_debug.write(f"ROWS A {i=}, {row=}, {r_hint=}")
-                Nonogram.mark(row, r_hint, is_row=True)
-                col_debug.write(f"ROWS B {i=}, {row=}, {r_hint=}")
+            with col_debug.expander(f"Mark Rows Pass# {t_passes}"):
+                for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
+                    row, r_hint = row_r_hint
+                    st.write(f"ROWS A {i=}, {row=}, {r_hint=}")
+                    Nonogram.mark(row, r_hint, is_row=True)
+                    st.write(f"ROWS B {i=}, {row=}, {r_hint=}")
 
             col_debug.write("After Rows")
             col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
                 
             t_grid_w = np.transpose(grid_w).tolist()
             tt_grid_w = []
-            for j, col_c_hint in enumerate(zip(t_grid_w, c_hints)):
-                col, c_hint = col_c_hint
-                col_debug.write(f"COLS A {j=}, {col=}, {c_hint=}")
-                Nonogram.mark(col, c_hint, is_row=False)
-                col_debug.write(f"COLS B {j=}, {col=}, {c_hint=}")
-                tt_grid_w.append(col)
+            with col_debug.expander(f"Mark Cols Pass# {t_passes}"):
+                for j, col_c_hint in enumerate(zip(t_grid_w, c_hints)):
+                    col, c_hint = col_c_hint
+                    st.write(f"COLS A {j=}, {col=}, {c_hint=}")
+                    Nonogram.mark(col, c_hint, is_row=False)
+                    st.write(f"COLS B {j=}, {col=}, {c_hint=}")
+                    tt_grid_w.append(col)
 
             grid_w = np.transpose(tt_grid_w).tolist()
             col_debug.write("After Cols")
             col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
-            for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
-                row, r_hint = row_r_hint
-                col_debug.write(f"EI IN  {i=}, {row=}, {r_hint=}")
-                Nonogram.edge_in(row, r_hint)
-                col_debug.write(f"EI OUT {i=}, {row=}, {r_hint=}")
+            with col_debug.expander(f"Edge In Rows Pass# {t_passes}"):
+                for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
+                    row, r_hint = row_r_hint
+                    st.write(f"EI ROW IN  {i=}, {row=}, {r_hint=}")
+                    Nonogram.edge_in(row, r_hint)
+                    st.write(f"EI ROW OUT {i=}, {row=}, {r_hint=}")
+
+            grid_w = np.transpose(grid_w).tolist()
+            with col_debug.expander(f"Edge In Columns Pass# {t_passes}"):
+                for i, row_c_hint in enumerate(zip(grid_w, c_hints)):
+                    row, c_hint = row_c_hint
+                    st.write(f"EI COL IN  {i=}, {row=}, {c_hint=}")
+                    Nonogram.edge_in(row, c_hint)
+                    st.write(f"EI COL OUT {i=}, {row=}, {c_hint=}")
+            grid_w = np.transpose(grid_w).tolist()
 
             # for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
             #     row, r_hint = row_r_hint
@@ -533,14 +545,14 @@ async def run_day():
     
     now = now + datetime.timedelta(minutes=1)
     p_sec = max((now - start).total_seconds(), 0)
-    v = p_sec / t_sec
+    v = min(1.0, max(0.0, p_sec / t_sec))
     pb_day.progress(v, text=f"{percent(v)} {int(round(t_sec - p_sec, 0))} second(s) left")
     
     while now < end:
         now = datetime.datetime.now()
         p_sec = max((now - start).total_seconds(), 0)
         await asyncio.sleep(1)
-        v = p_sec / t_sec
+        v = min(1.0, max(0.0, p_sec / t_sec))
         pb_day.progress(v, text=f"{percent(v)} {int(round(t_sec - p_sec, 0))} second(s) left")
         # st.write(f"{end}, {p_sec=}, {v=}")
     # st.write(f"{start}")
