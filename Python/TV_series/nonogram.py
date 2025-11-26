@@ -13,6 +13,7 @@ class Nonogram:
     BLANK: str = " "
     MARK: str = "X"
     NOTE: str = "*"
+    WRONG: str = "%"
 
     def verify_grid(hints) -> bool | Exception:
         if not isinstance(hints, dict):
@@ -89,7 +90,7 @@ class Nonogram:
                     hints_to_remove.append(j)
                 elif hint == space_to_mark:
                     # start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + (idx_first_mark - hint)
-                    start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + (idx_first_mark - hint)
+                    start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + idx_first_mark
                     cc = Nonogram.count_continuous(row, idx=start_pos)
                     with parent_cont if parent_cont is not None else st.container():
                         st.write(f"MB {i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}, {idx_first_mark=}, {cc=}")
@@ -206,6 +207,7 @@ class Nonogram:
 
         # st.write(f"left={left}, right={right}, +1")
         return left_s + 1 + right_s, list(set(left_i).union(set(right_i)).union(set([idx])))
+    
     def gen_horizontal_hints(grid: list[list[str]]) -> list[list[int]]:
         rows = len(grid)
         cols = len(grid[0])
@@ -579,6 +581,22 @@ class Nonogram:
 
     def text_grid(self):
         return Nonogram.to_string(self.grid_working, self.r_hints, self.c_hints)
+    
+    def st_grid(self):
+        
+        max_w_r_hints = 0 if self.r_hints is None else max([len(hr) for hr in self.r_hints])
+        max_h_c_hints = max([len(hc) for hc in self.c_hints])
+        grid = [st.columns(self.n_cols + max_w_r_hints) for _ in range(self.n_rows + max_h_c_hints)]
+
+        for i in range(max_h_c_hints - 1, -1, -1):
+            for j, row in enumerate(self.c_hints):
+                st.write(f"{i=}, {j=}, {row=}")
+                if (len(row) - i) >= 0:
+                    st.write(f" -> {i=}, {j=}, {row=}")
+                    hint = self.c_hints[j][len(row) - i]
+                    with grid[max_h_c_hints - i][j]:
+                        st.write(f"{hint}")
+
 
     def __repr__(self):
         return f"Nonogram({self.n_rows}x{self.n_cols})"
@@ -660,6 +678,23 @@ if __name__ == "__main__":
             [1, 1],
             [1, 1],
             [13]
+        ],
+        "ans": [
+            [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1],
+            [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
         ]
     }
 
@@ -745,6 +780,7 @@ if __name__ == "__main__":
         df_gw = pd.DataFrame(nonogram.grid_working)
         col_debug.write(df_gw)
         col_results.code(nonogram.text_grid())
+        col_results.code(nonogram.st_grid())
         # st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
         # st.code(Nonogram.to_string(n0.grid_working))
         # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
