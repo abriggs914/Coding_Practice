@@ -178,8 +178,8 @@ class Nonogram:
 
         return res
 
-    def count_continuous(row: list[int], m: Optional[str] = None, idx: Optional[int] = None, direction: Literal["left", "right"] = "right"):
-        st.write(f"CC {row=}, {m=}, {idx=}")
+    def count_continuous(row: list[int], m: Optional[str] = None, idx: Optional[int] = None, direction: Literal["left", "right", None] = None):
+        # st.write(f"CC {row=}, {m=}, {idx=}, {direction=}")
         if m is None:
             m = Nonogram.MARK
         
@@ -187,18 +187,25 @@ class Nonogram:
             idx = 0
 
         if idx < 0:
-            return 0
+            # st.write(f"idx < 0")
+            return 0, []
         elif idx >= len(row):
-            return 0
+            # st.write(f"idx >= len(row)")
+            return 0, []
 
         if row[idx] != m:
-            return 0
-        
-        left = 0 if direction == "right" else Nonogram.count_continuous(row, m, idx - 1, "left")
-        right = 0 if direction == "left" else Nonogram.count_continuous(row, m, idx + 1, "right")
+            # st.write(f"row[idx] != m")
+            return 0, []
 
-        return left + 1 + right
+        if direction is None:
+            left_s, left_i = Nonogram.count_continuous(row, m, idx - 1, "left")
+            right_s, right_i = Nonogram.count_continuous(row, m, idx + 1, "right")
+        else:
+            left_s, left_i = (0, []) if direction == "right" else Nonogram.count_continuous(row, m, idx - 1, "left")
+            right_s, right_i = (0, []) if direction == "left" else Nonogram.count_continuous(row, m, idx + 1, "right")
 
+        # st.write(f"left={left}, right={right}, +1")
+        return left_s + 1 + right_s, list(set(left_i).union(set(right_i)).union(set([idx])))
     def gen_horizontal_hints(grid: list[list[str]]) -> list[list[int]]:
         rows = len(grid)
         cols = len(grid[0])
@@ -748,6 +755,6 @@ if __name__ == "__main__":
         row[2] = Nonogram.MARK
         with col_results:
             for i, val in enumerate(row):
-                st.write(f"{i=}, {val=}, {Nonogram.count_continuous(row, None, i)}")
+                st.write(f"{i=}, {val=}, {Nonogram.count_continuous(row, val, i)}")
     
     asyncio.run(run_day())
