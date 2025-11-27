@@ -6,6 +6,7 @@ import datetime
 import asyncio
 import time
 from utility import percent
+from datetime_utility import time_between
 
 
 class Nonogram:
@@ -14,12 +15,14 @@ class Nonogram:
     MARK: str = "X"
     NOTE: str = "*"
     WRONG: str = "%"
+    MISSING: str = "_"
 
     def verify_grid(hints) -> bool | Exception:
         if not isinstance(hints, dict):
             return ValueError(f"hints must be a dict, got {type(hints)=}")
         r_hints = hints.get("r_hints", [])
         c_hints = hints.get("c_hints", [])
+        answer = hints.get("answer", [])
         if not c_hints:
             return ValueError(f"hints must contain {c_hints=}")
         if not r_hints:
@@ -40,6 +43,27 @@ class Nonogram:
             for ch_v in ch:
                 if not isinstance(ch_v, int):
                     return ValueError(f"c_hints must be a list of integers, got {c_hints=}")
+        if answer:
+            if (len(answer) != len(r_hints)) or (len(answer[0]) != len(c_hints)):
+                return ValueError(f"answer does not match r_hints or c_hints dimensions, {len(answer)=}, {len(r_hints)=}")
+            clean_ans = []
+            for i, row in enumerate(answer):
+                clean_row = []
+                for j, val in enumerate(row):
+                    if val in [1, "1", Nonogram.MARK]:
+                        clean_row.append(Nonogram.MARK)
+                    elif val in [0, "0", " ", Nonogram.BLANK]:
+                        clean_row.append(Nonogram.BLANK)
+                    elif val in [Nonogram.NOTE]:
+                        clean_row.append(Nonogram.NOTE)
+                    else:
+                        return ValueError(f"invalid character in answer {i=}, {j=}, {val=}")
+                clean_ans.append(clean_row)
+            
+            hints["answer"] = clean_ans
+        else:
+            hints["answer"] = None
+                        
         return True
 
     def fillna(grid: list[list[str]], r_hints: list[list[int]], c_hints: list[list[int]]) -> list[list[int]]:
@@ -247,7 +271,12 @@ class Nonogram:
         # print('v_hints', res)
         return res
 
-    def to_string(grid: list[list[str]], r_hints: Optional[list[list[int]]] = None, c_hints: Optional[list[list[int]]] = None) -> str:
+    def to_string(
+        grid: list[list[str]],
+        r_hints: Optional[list[list[int]]] = None,
+        c_hints: Optional[list[list[int]]] = None,
+        answer: Optional[list[list[int]]] = None
+    ) -> str:
         n_rows = len(grid)
         n_cols = len(grid[0])
         res = ""
@@ -279,7 +308,20 @@ class Nonogram:
                 r_hints_c = ([Nonogram.BLANK.center(2, Nonogram.BLANK) for _ in range(max_w_r_hints)] + r_hints[i])[-max_w_r_hints:]
                 res += "".join(list(map(lambda v: str(v).center(2, Nonogram.BLANK), r_hints_c)))
             res += Nonogram.BLANK
-            res += "".join(list(map(lambda v: str(v).center(2, Nonogram.BLANK), grid[i])))
+            for j, val in enumerate(grid[i]):
+                if answer is not None:
+                    if val == answer[i][j]:
+                        res += val.center(2, Nonogram.BLANK)
+                    else:
+                        if val == Nonogram.MARK:
+                            res += Nonogram.WRONG.center(2, Nonogram.BLANK)
+                        elif answer[i][j] == Nonogram.MARK:
+                            res += Nonogram.MISSING.center(2, Nonogram.BLANK)
+                        else:
+                            res += val.center(2, Nonogram.BLANK)
+                else:
+                    res += val.center(2, Nonogram.BLANK)
+            # res += "".join(list(map(lambda v: str(v).center(2, Nonogram.BLANK), grid[i])))
             res += "\n"
 
         return res
@@ -297,6 +339,8 @@ class Nonogram:
         self.c_hints: list[list[int]] = hints.get("c_hints")
         self.n_rows = len(self.r_hints)
         self.n_cols = len(self.c_hints)
+        
+        self.answer: list[list[int]] = hints.get("answer")
 
         self.grid_blank = [[Nonogram.BLANK for _ in range(self.n_cols)] for _ in range(self.n_rows)]
         self.grid_solved = None
@@ -477,7 +521,7 @@ class Nonogram:
             if grid_w != grid_t:
                 passes = 0
             grid_t = grid_w.copy()
-            break
+            # break
         # while passes <= 2:
         #     passes += 1
         #     t_passes += 1
@@ -579,8 +623,8 @@ class Nonogram:
         #     grid_t = grid_w.copy()
         self.grid_working = grid_w
 
-    def text_grid(self):
-        return Nonogram.to_string(self.grid_working, self.r_hints, self.c_hints)
+    def text_grid(self, show_answer: bool = False):
+        return Nonogram.to_string(self.grid_working, self.r_hints, self.c_hints, answer=self.answer if show_answer and (self.answer is not None) else None)
     
     def st_grid(self):
         
@@ -643,14 +687,14 @@ async def run_day():
     now = now + datetime.timedelta(minutes=1)
     p_sec = max((now - start).total_seconds(), 0)
     v = min(1.0, max(0.0, p_sec / t_sec))
-    pb_day.progress(v, text=f"{percent(v)} {int(round(t_sec - p_sec, 0))} second(s) left")
+    pb_day.progress(v, text=f"{percent(v)} {int(round(t_sec - p_sec, 0))} second(s) left {time_between(datetime.datetime.now(), datetime.datetime.now() + datetime.timedelta(seconds=t_sec - p_sec))}")
     
     while now < end:
         now = datetime.datetime.now()
         p_sec = max((now - start).total_seconds(), 0)
         await asyncio.sleep(1)
         v = min(1.0, max(0.0, p_sec / t_sec))
-        pb_day.progress(v, text=f"{percent(v)} {int(round(t_sec - p_sec, 0))} second(s) left")
+        pb_day.progress(v, text=f"{percent(v)} {int(round(t_sec - p_sec, 0))} second(s) left {time_between(datetime.datetime.now(), datetime.datetime.now() + datetime.timedelta(seconds=t_sec - p_sec))}")
         # st.write(f"{end}, {p_sec=}, {v=}")
     # st.write(f"{start}")
     # st.write(f"{end}")
@@ -699,7 +743,7 @@ if __name__ == "__main__":
             [1, 1],
             [13]
         ],
-        "ans": [
+        "answer": [
             [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1],
             [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1],
@@ -799,12 +843,12 @@ if __name__ == "__main__":
             st.write(nonogram.c_hints)
         df_gw = pd.DataFrame(nonogram.grid_working)
         col_debug.write(df_gw)
-        col_results.code(nonogram.text_grid())
-        col_results.code(nonogram.st_grid())
-        # st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
-        # st.code(Nonogram.to_string(n0.grid_working))
-        # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
-        # st.code(Nonogram.to_string(n0.grid_working, None, n0.c_hints))
+        col_results.code(nonogram.text_grid(show_answer=True))
+        # col_results.code(nonogram.st_grid())  # clunky spacing
+        # # st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
+        # # st.code(Nonogram.to_string(n0.grid_working))
+        # # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
+        # # st.code(Nonogram.to_string(n0.grid_working, None, n0.c_hints))
 
         row = [Nonogram.BLANK for i in range(10)]
         row[1] = Nonogram.MARK
