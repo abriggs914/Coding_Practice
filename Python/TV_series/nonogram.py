@@ -586,16 +586,36 @@ class Nonogram:
         
         max_w_r_hints = 0 if self.r_hints is None else max([len(hr) for hr in self.r_hints])
         max_h_c_hints = max([len(hc) for hc in self.c_hints])
-        grid = [st.columns(self.n_cols + max_w_r_hints) for _ in range(self.n_rows + max_h_c_hints)]
+        grid = [st.columns(self.n_cols + max_w_r_hints) for _ in range(self.n_rows + max_h_c_hints + 1)]
 
         for i in range(max_h_c_hints - 1, -1, -1):
             for j, row in enumerate(self.c_hints):
                 st.write(f"{i=}, {j=}, {row=}")
                 if (len(row) - i) >= 0:
                     st.write(f" -> {i=}, {j=}, {row=}")
-                    hint = self.c_hints[j][len(row) - i]
-                    with grid[max_h_c_hints - i][j]:
-                        st.write(f"{hint}")
+                    hint = self.c_hints[j][len(row) - (i + 1)]
+                    with grid[max_h_c_hints - i][j + max_w_r_hints]:
+                        # st.write(f"{hint}")
+                        st.write(hint)
+
+        for i, row in enumerate(self.r_hints):
+            for j, hint in enumerate(row[::-1]):
+                with grid[max_h_c_hints + i + 1][max_w_r_hints - (j + 1)]:
+                    # st.write(f"{hint}")
+                    st.write(hint)
+
+        for i in range(self.n_rows):
+            for j in range(self.n_cols):
+                gi = i + max_h_c_hints + 1
+                gj = j + max_w_r_hints
+                with grid[gi][gj]:
+                    key_cb = f"check_{gi}_{gj}"
+                    st.session_state.setdefault(key_cb, False)
+                    cb = st.checkbox(
+                        label=key_cb,
+                        label_visibility="hidden",
+                        key=key_cb
+                    )
 
 
     def __repr__(self):
