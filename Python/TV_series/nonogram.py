@@ -52,13 +52,16 @@ class Nonogram:
                 for j, val in enumerate(row):
                     if val in [1, "1", Nonogram.MARK]:
                         clean_row.append(Nonogram.MARK)
-                    elif val in [0, "0", " ", Nonogram.BLANK]:
+                    elif val in [0, "0", " ", "", Nonogram.BLANK]:
                         clean_row.append(Nonogram.BLANK)
                     elif val in [Nonogram.NOTE]:
                         clean_row.append(Nonogram.NOTE)
                     else:
                         return ValueError(f"invalid character in answer {i=}, {j=}, {val=}")
                 clean_ans.append(clean_row)
+            
+            # st.write(f"clean_ans")
+            # st.write(clean_ans)
             
             hints["answer"] = clean_ans
         else:
@@ -162,12 +165,19 @@ class Nonogram:
                             st.write(f"FtB_a {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
                             st.write(f"-- {i=} MARK ftb")
                         cnt_marks += 1
-                    elif ((h0 - i) == 0) and (cnt_marks == h0):
-                        row[i] = Nonogram.NOTE
-                        with parent_cont if parent_cont is not None else st.container():
-                            st.write(f"FtB_b {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
-                            st.write(f"-- {i=} NOTE ftb")
-                        break
+                    # # else:
+                    # #     row[i] = Nonogram.NOTE
+                    # #     if ((h0 - i) == 0) and (cnt_marks == h0):
+                    # #         with parent_cont if parent_cont is not None else st.container():
+                    # #             st.write(f"FtB_b {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+                    # #             st.write(f"-- {i=} NOTE ftb")
+                    # #         break
+                    # elif ((h0 - i) == 0) and (cnt_marks == h0):
+                    #     row[i] = Nonogram.NOTE
+                    #     with parent_cont if parent_cont is not None else st.container():
+                    #         st.write(f"FtB_b {i=}, {val=}, {h0=}, {found_hint=}, {cnt_marks=}")
+                    #         st.write(f"-- {i=} NOTE ftb")
+                    #     break
                 elif val == Nonogram.MARK:
                     cnt_marks += 1
             
@@ -187,12 +197,12 @@ class Nonogram:
                             st.write(f"BtF_a {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
                             st.write(f"-- i={len(row) - (i + 1)} MARK btf")
                         cnt_marks += 1
-                    elif ((h_1 - (i + 0)) == 0) and (cnt_marks == h_1):
-                        row[len(row) - (i + 1)] = Nonogram.NOTE
-                        with parent_cont if parent_cont is not None else st.container():
-                            st.write(f"BtF_b {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
-                            st.write(f"-- i={len(row) - (i + 1)} NOTE btf")
-                        break
+                    # elif ((h_1 - (i + 0)) == 0) and (cnt_marks == h_1):
+                    #     row[len(row) - (i + 1)] = Nonogram.NOTE
+                    #     with parent_cont if parent_cont is not None else st.container():
+                    #         st.write(f"BtF_b {i=}, {val=}, {h_1=}, {found_hint=}, {cnt_marks=}")
+                    #         st.write(f"-- i={len(row) - (i + 1)} NOTE btf")
+                    #     break
                 elif val == Nonogram.MARK:
                     cnt_marks += 1
 
@@ -202,7 +212,7 @@ class Nonogram:
             val = row[i]
             c_val, val_idxs = Nonogram.count_continuous(row, m=val, idx=i)
             with parent_cont if parent_cont is not None else st.container():
-                st.write(f"{i=}, {val=}, {c_val=}, {val_idxs=}")
+                st.write(f"{i=}, {val=}, {c_val=}, {small_hint=}, {val_idxs=}")
             if c_val < small_hint:
                 for idx in val_idxs:
                     row[idx] = Nonogram.NOTE
@@ -212,7 +222,7 @@ class Nonogram:
         cnt = 0
         for i, val in enumerate(lst):
             if val == Nonogram.NOTE:
-                if not ((cnt == 0) and (len(res) == 0)):
+                if (cnt != 0) and (len(res) != 0):
                     res.append(cnt)
                 cnt = 0
             else:
@@ -369,6 +379,13 @@ class Nonogram:
         self.grid_solved = None
         self.grid_working = self.grid_blank.copy()
 
+        col_debug.write(f"-AA BK")
+        col_debug.write(self.grid_blank)
+        col_debug.write(f"-AA SV")
+        col_debug.write(self.grid_solved)
+        col_debug.write(f"-AA GW")
+        col_debug.write(self.grid_working)
+
         self.solve(resolve=True)
 
     # def count_marks(self) -> int:
@@ -400,6 +417,8 @@ class Nonogram:
 
             exp_0 = col_debug.expander(f"Mark Rows Pass# {t_passes}")
             with exp_0:
+                st.write(f"grid_w")
+                st.write(grid_w)
                 for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
                     row, r_hint = row_r_hint
                     st.write(f"ROWS A {i=}, {row=}, {r_hint=}")
@@ -408,6 +427,7 @@ class Nonogram:
 
             col_debug.write("After Rows")
             col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
+            col_debug.write(f"AA {grid_w[0]=}")
                 
             t_grid_w = np.transpose(grid_w).tolist()
             tt_grid_w = []
@@ -455,7 +475,7 @@ class Nonogram:
             col_debug.write("After Fill In Smalls Rows")
             col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
-            exp_4 = col_debug.expander(f"Fill In Smalls In Rows Pass# {t_passes}")
+            exp_4 = col_debug.expander(f"Fill In Smalls In Cols Pass# {t_passes}")
             grid_w = np.transpose(grid_w).tolist()
             with exp_4:
                 for i, row_c_hint in enumerate(zip(grid_w, c_hints)):
@@ -463,7 +483,7 @@ class Nonogram:
                     st.write(f"FS ROW IN  {i=}, {row=}, {c_hint=}")
                     Nonogram.fill_smalls(row, c_hint, parent_cont=exp_4)
                     st.write(f"FS ROW OUT {i=}, {row=}, {c_hint=}")
-            col_debug.write("After Fill In Smalls Rows")
+            col_debug.write("After Fill In Smalls Cols")
             grid_w = np.transpose(grid_w).tolist()
             col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
@@ -946,7 +966,11 @@ if __name__ == "__main__":
             st.write(nonogram.c_hints)
         df_gw = pd.DataFrame(nonogram.grid_working)
         col_debug.write(df_gw)
-        col_results.code(nonogram.text_grid(show_answer=True))
+
+        key_checkbox_show_answer: str = "k_checkbox_show_answer"
+        st.session_state.setdefault(key_checkbox_show_answer, True)
+        checkbox_show_answer = col_results.checkbox(label="Show Answer?", key=key_checkbox_show_answer)
+        col_results.code(nonogram.text_grid(show_answer=checkbox_show_answer))
         # # col_results.code(nonogram.st_grid())  # clunky spacing
         # # # st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
         # # # st.code(Nonogram.to_string(n0.grid_working))
