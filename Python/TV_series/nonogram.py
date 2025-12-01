@@ -78,53 +78,65 @@ class Nonogram:
         return grid
 
     def mark(row: list[str], hints: list[int], is_row: bool = True, parent_cont = None):
+
+        sum_hints = sum(hints)
+        sum_marks = row.count(Nonogram.MARK)
         note_sep = Nonogram.note_separated(row)
-        hints_l = hints.copy()
-        with parent_cont if parent_cont is not None else st.container():
-            st.write(f"IN  {note_sep=}, {row=}, {hints=}")
-        if len(note_sep) > 1:
-            idx_first_mark = 0 + (row.index(Nonogram.MARK) if Nonogram.MARK in row else (row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0))
+
+        if sum_marks < sum_hints:
+
+            hints_l = hints.copy()
+            with parent_cont if parent_cont is not None else st.container():
+                st.write(f"IN  {note_sep=}, {row=}, {hints=}")
+                st.code(Nonogram.to_string([row], r_hints=[hints]))
+            if len(note_sep) > 1:
+                idx_first_mark = 0 + (row.index(Nonogram.MARK) if Nonogram.MARK in row else (row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0))
+            else:
+                idx_first_mark = row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0
+
+            # idx_first_mark = min(row.index(Nonogram.MARK) if Nonogram.MARK in row else 0, row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0)
+            for i, sep_space in enumerate(note_sep):
+                hints_to_remove = []
+                for j, hint in enumerate(hints_l):
+                    space = sep_space - (sum([v for jj, v in enumerate(hints_l) if jj != j]) + (len(hints_l) - 1))
+                    buffer = space - hint
+                    space_to_mark = hint - buffer
+
+                    if (hint != 0) and (row[:idx_first_mark].count(Nonogram.MARK) == hint):
+                        idx_first_mark += 1
+                        row[idx_first_mark] = Nonogram.BLANK
+
+                    elif hint - space_to_mark > 0:
+                        # start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer #+ int(bool(j))
+                        start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + idx_first_mark
+                        # TODO startpos is off by left or right most notes.
+                        cc = Nonogram.count_continuous(row, idx=start_pos)
+                        with parent_cont if parent_cont is not None else st.container():
+                            st.write(f"MA {i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}, {idx_first_mark=}, {cc=}")
+                        for ii in range(start_pos, start_pos + space_to_mark):
+                            row[ii] = Nonogram.MARK
+                        if space_to_mark == hint:
+                            if (start_pos + space_to_mark) < (len(row) - 1):
+                                row[start_pos + space_to_mark] = Nonogram.NOTE
+                        hints_to_remove.append(j)
+                    elif hint == space_to_mark:
+                        # start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + (idx_first_mark - hint)
+                        start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + idx_first_mark
+                        cc = Nonogram.count_continuous(row, idx=start_pos)
+                        with parent_cont if parent_cont is not None else st.container():
+                            st.write(f"MB {i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}, {idx_first_mark=}, {cc=}")
+                        for ii in range(start_pos, start_pos + space_to_mark):
+                            row[ii] = Nonogram.MARK
+
+                for jj in hints_to_remove[::-1]:
+                    del hints_l[jj]
+                if hints_to_remove:
+                    break
         else:
-            idx_first_mark = row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0
-
-        # idx_first_mark = min(row.index(Nonogram.MARK) if Nonogram.MARK in row else 0, row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0)
-        for i, sep_space in enumerate(note_sep):
-            hints_to_remove = []
-            for j, hint in enumerate(hints_l):
-                space = sep_space - (sum([v for jj, v in enumerate(hints_l) if jj != j]) + (len(hints_l) - 1))
-                buffer = space - hint
-                space_to_mark = hint - buffer
-                
-                if (hint != 0) and (row[:idx_first_mark].count(Nonogram.MARK) == hint):
-                    idx_first_mark += 1
-                    row[idx_first_mark] = Nonogram.BLANK
-
-                elif hint - space_to_mark > 0:
-                    # start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer #+ int(bool(j))
-                    start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + idx_first_mark
-                    # TODO startpos is off by left or right most notes.
-                    cc = Nonogram.count_continuous(row, idx=start_pos)
-                    with parent_cont if parent_cont is not None else st.container():
-                        st.write(f"MA {i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}, {idx_first_mark=}, {cc=}")
-                    for ii in range(start_pos, start_pos + space_to_mark):
-                        row[ii] = Nonogram.MARK
-                    if space_to_mark == hint:
-                        if (start_pos + space_to_mark) < (len(row) - 1):
-                            row[start_pos + space_to_mark] = Nonogram.NOTE
-                    hints_to_remove.append(j)
-                elif hint == space_to_mark:
-                    # start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + (idx_first_mark - hint)
-                    start_pos = sum(hints_l[:j]) + len(hints_l[:j]) + buffer + idx_first_mark
-                    cc = Nonogram.count_continuous(row, idx=start_pos)
-                    with parent_cont if parent_cont is not None else st.container():
-                        st.write(f"MB {i=}, {j=}, {sep_space=}, {hint=}, {space=}, {buffer=}, {space_to_mark=}, {start_pos=}, {idx_first_mark=}, {cc=}")
-                    for ii in range(start_pos, start_pos + space_to_mark):
-                        row[ii] = Nonogram.MARK
-
-            for jj in hints_to_remove[::-1]:
-                del hints_l[jj]
-            if hints_to_remove:
-                break
+            for j in range(len(row)):
+                val = row[j]
+                if val != Nonogram.MARK:
+                    row[j] = Nonogram.NOTE
             
         with parent_cont if parent_cont is not None else st.container():
             st.write(f"OUT {note_sep=}, {row=}, {hints=}")
@@ -184,6 +196,17 @@ class Nonogram:
                 elif val == Nonogram.MARK:
                     cnt_marks += 1
 
+    def fill_smalls(row: list[str], hints: list[int], parent_cont=None):
+        small_hint = min(hints)
+        for i in range(len(row)):
+            val = row[i]
+            c_val, val_idxs = Nonogram.count_continuous(row, m=val, idx=i)
+            with parent_cont if parent_cont is not None else st.container():
+                st.write(f"{i=}, {val=}, {c_val=}, {val_idxs=}")
+            if c_val < small_hint:
+                for idx in val_idxs:
+                    row[idx] = Nonogram.NOTE
+
     def note_separated(lst: list[int]) -> list[int]:
         res = []
         cnt = 0
@@ -203,7 +226,7 @@ class Nonogram:
 
         return res
 
-    def count_continuous(row: list[int], m: Optional[str] = None, idx: Optional[int] = None, direction: Literal["left", "right", None] = None):
+    def count_continuous(row: list[int], m: Optional[str] = None, idx: Optional[int] = None, direction: Literal["left", "right", None] = None) -> tuple[int, list[int]]:
         # st.write(f"CC {row=}, {m=}, {idx=}, {direction=}")
         if m is None:
             m = Nonogram.MARK
@@ -420,6 +443,28 @@ class Nonogram:
                     st.write(f"EI COL OUT {i=}, {row=}, {c_hint=}")
             grid_w = np.transpose(grid_w).tolist()
             col_debug.write("After Edge In Cols")
+            col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
+
+            exp_3 = col_debug.expander(f"Fill In Smalls In Rows Pass# {t_passes}")
+            with exp_3:
+                for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
+                    row, r_hint = row_r_hint
+                    st.write(f"FS ROW IN  {i=}, {row=}, {r_hint=}")
+                    Nonogram.fill_smalls(row, r_hint, parent_cont=exp_3)
+                    st.write(f"FS ROW OUT {i=}, {row=}, {r_hint=}")
+            col_debug.write("After Fill In Smalls Rows")
+            col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
+
+            exp_4 = col_debug.expander(f"Fill In Smalls In Rows Pass# {t_passes}")
+            grid_w = np.transpose(grid_w).tolist()
+            with exp_4:
+                for i, row_c_hint in enumerate(zip(grid_w, c_hints)):
+                    row, c_hint = row_c_hint
+                    st.write(f"FS ROW IN  {i=}, {row=}, {c_hint=}")
+                    Nonogram.fill_smalls(row, c_hint, parent_cont=exp_4)
+                    st.write(f"FS ROW OUT {i=}, {row=}, {c_hint=}")
+            col_debug.write("After Fill In Smalls Rows")
+            grid_w = np.transpose(grid_w).tolist()
             col_debug.code(Nonogram.to_string(grid_w, r_hints=r_hints, c_hints=c_hints))
 
             # for i, row_r_hint in enumerate(zip(grid_w, r_hints)):
@@ -787,6 +832,60 @@ if __name__ == "__main__":
         ]
     }
 
+    p2 = {
+        "c_hints": [
+            [5],
+            [2, 2],
+            [2, 2],
+            [1, 6],
+            [1, 2],
+            [3, 2],
+            [1, 2],
+            [4, 1],
+            [3, 1],
+            [1, 1, 2],
+            [1, 1, 2],
+            [1, 1, 4],
+            [1, 1, 1, 2],
+            [1, 2, 2],
+            [6]
+        ],
+        "r_hints": [
+            [0],
+            [0],
+            [0],
+            [6],
+            [4, 2, 1],
+            [3, 10],
+            [1, 1, 1, 1, 2],
+            [1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1],
+            [2, 1, 1, 1],
+            [13],
+            [5, 5],
+            [0],
+            [0],
+            [0]
+        ],
+        "answer": [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0],
+            [0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1],
+            [1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
+            [1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+            [1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+            [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+            [0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+    }
+
     sample_smiley = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
                      [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
@@ -812,6 +911,10 @@ if __name__ == "__main__":
         {
             "title": "p1",
             "nonogram_data": p1
+        },
+        {
+            "title": "p2",
+            "nonogram_data": p2
         },
         {
             "title": "smiley",
@@ -844,11 +947,30 @@ if __name__ == "__main__":
         df_gw = pd.DataFrame(nonogram.grid_working)
         col_debug.write(df_gw)
         col_results.code(nonogram.text_grid(show_answer=True))
-        # col_results.code(nonogram.st_grid())  # clunky spacing
-        # # st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
-        # # st.code(Nonogram.to_string(n0.grid_working))
-        # # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
-        # # st.code(Nonogram.to_string(n0.grid_working, None, n0.c_hints))
+        # # col_results.code(nonogram.st_grid())  # clunky spacing
+        # # # st.code(Nonogram.to_string(np.transpose(n0.grid_working).tolist(), n0.r_hints, n0.c_hints))
+        # # # st.code(Nonogram.to_string(n0.grid_working))
+        # # # st.code(Nonogram.to_string(n0.grid_working, n0.r_hints))
+        # # # st.code(Nonogram.to_string(n0.grid_working, None, n0.c_hints))
+        # st.write(Nonogram.note_separated([
+        #     Nonogram.NOTE,
+        #     Nonogram.NOTE,
+        #     Nonogram.NOTE,
+        #     Nonogram.BLANK,
+        #     Nonogram.BLANK,
+        #     Nonogram.BLANK,
+        #     Nonogram.BLANK,
+        #     Nonogram.BLANK,
+        #     Nonogram.BLANK,
+        #     Nonogram.BLANK,
+        #     Nonogram.BLANK,
+        #     Nonogram.BLANK,
+        #     Nonogram.MARK,
+        #     Nonogram.BLANK,
+        #     Nonogram.NOTE,
+        #     Nonogram.NOTE,
+        #     Nonogram.NOTE
+        # ]))
 
         row = [Nonogram.BLANK for i in range(10)]
         row[1] = Nonogram.MARK
