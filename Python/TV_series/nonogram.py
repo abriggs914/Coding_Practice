@@ -100,7 +100,8 @@ class Nonogram:
                 st.write(f"{ifb_lr=}, {ifm_lr=}")
 
                 if ifb_lr is not None:
-                    c_b = 0
+                    c_b = ifb_lr
+                    c_bo = c_b
                     while c_b < len(row):
                         c_b, b_idxs = Nonogram.count_continuous(row, Nonogram.BLANK, idx=ifb_lr)
                         if (row[b_idxs[0]] == Nonogram.BLANK) and (len(b_idxs) >= hints_l[0]):
@@ -109,6 +110,9 @@ class Nonogram:
                             c_b += 1
                         if (len(row) - 1) in b_idxs:
                             break
+                        if c_b == c_bo:
+                            break
+                        c_b = c_bo
 
                 # idx_first_mark = 0 + (ifm_lr if ifm_lr is not None else (ifb_lr if ifb_lr is not None else 0))
                 # if (ifm_lr is not None) and (ifb_lr is not None) and (ifb_lr < ifm_lr):
