@@ -5,7 +5,7 @@ import streamlit as st
 import datetime
 import asyncio
 import time
-from utility import percent
+from utility import percent, flatten
 from datetime_utility import time_between
 
 
@@ -92,10 +92,29 @@ class Nonogram:
             with parent_cont if parent_cont is not None else st.container():
                 st.write(f"IN  {note_sep=}, {row=}, {hints=}")
                 st.code(Nonogram.to_string([row], r_hints=[hints]))
+            
+            ifm_lr = row.index(Nonogram.MARK) if Nonogram.MARK in row else None
+            ifn_lr = row.index(Nonogram.NOTE) if Nonogram.NOTE in row else None
+            ifb_lr = row.index(Nonogram.BLANK) if Nonogram.BLANK in row else None
             if len(note_sep) > 1:
-                idx_first_mark = 0 + (row.index(Nonogram.MARK) if Nonogram.MARK in row else (row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0))
+                st.write(f"{ifb_lr=}, {ifm_lr=}")
+
+                if ifb_lr is not None:
+                    c_b = 0
+                    while c_b < len(row):
+                        c_b, b_idxs = Nonogram.count_continuous(row, Nonogram.BLANK, idx=ifb_lr)
+                        if (row[b_idxs[0]] == Nonogram.BLANK) and (len(b_idxs) >= hints_l[0]):
+                            idx_first_mark = b_idxs[0]
+                        else:
+                            c_b += 1
+                        if (len(row) - 1) in b_idxs:
+                            break
+
+                # idx_first_mark = 0 + (ifm_lr if ifm_lr is not None else (ifb_lr if ifb_lr is not None else 0))
+                # if (ifm_lr is not None) and (ifb_lr is not None) and (ifb_lr < ifm_lr):
+                #     idx_first_mark = ifm_lr - (ifb_lr + 0)
             else:
-                idx_first_mark = row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0
+                idx_first_mark = ifb_lr if ifb_lr is not None else 0
 
             # idx_first_mark = min(row.index(Nonogram.MARK) if Nonogram.MARK in row else 0, row.index(Nonogram.BLANK) if Nonogram.BLANK in row else 0)
             for i, sep_space in enumerate(note_sep):
@@ -207,22 +226,48 @@ class Nonogram:
                     cnt_marks += 1
 
     def fill_smalls(row: list[str], hints: list[int], parent_cont=None):
-        small_hint = min(hints)
-        for i in range(len(row)):
-            val = row[i]
-            c_val, val_idxs = Nonogram.count_continuous(row, m=val, idx=i)
-            with parent_cont if parent_cont is not None else st.container():
-                st.write(f"{i=}, {val=}, {c_val=}, {small_hint=}, {val_idxs=}")
-            if c_val < small_hint:
-                for idx in val_idxs:
-                    row[idx] = Nonogram.NOTE
 
-    def note_separated(lst: list[int]) -> list[int]:
+        with parent_cont if parent_cont is not None else st.container():
+            m_spans = Nonogram.marked_spans(row)
+            m_idxs = flatten(m_spans)
+            if m_spans == hints:
+                for i in range(len(row)):
+                    if i not in m_idxs:
+                        row[i] = Nonogram.NOTE
+            ml_spans = [len(span) for span in m_spans]
+
+            st.write(f"{row=}, {hints=}")
+            st.write(m_spans)
+
+        # small_hint = min(hints)
+        # for i in range(len(row)):
+        #     val = row[i]
+        #     c_val, val_idxs = Nonogram.count_continuous(row, m=val, idx=i)
+        #     with parent_cont if parent_cont is not None else st.container():
+        #         st.write(f"{i=}, {val=}, {c_val=}, {small_hint=}, {val_idxs=}")
+        #     if (c_val < small_hint) and (val in [Nonogram.BLANK, Nonogram.NOTE]):
+        #         for idx in val_idxs:
+        #             row[idx] = Nonogram.NOTE
+
+    def marked_spans(row: list[str]) -> list[list[int]]:
+        i = 0
+        c = len(row)
+        res = []
+        while i < c:
+            if row[i] == Nonogram.MARK:
+                c_val, c_idxs = Nonogram.count_continuous(row, Nonogram.MARK, i)
+                res.append(c_idxs)
+                i = c_idxs[-1]
+            i += 1
+        return res
+
+    def note_separated(lst: list[str]) -> list[int]:
         res = []
         cnt = 0
         for i, val in enumerate(lst):
             if val == Nonogram.NOTE:
-                if (cnt != 0) and (len(res) != 0):
+                #if (cnt != 0) and (len(res) != 0):
+                if (cnt != 0):
                     res.append(cnt)
                 cnt = 0
             else:
@@ -379,12 +424,12 @@ class Nonogram:
         self.grid_solved = None
         self.grid_working = self.grid_blank.copy()
 
-        col_debug.write(f"-AA BK")
-        col_debug.write(self.grid_blank)
-        col_debug.write(f"-AA SV")
-        col_debug.write(self.grid_solved)
-        col_debug.write(f"-AA GW")
-        col_debug.write(self.grid_working)
+        # col_debug.write(f"-AA BK")
+        # col_debug.write(self.grid_blank)
+        # col_debug.write(f"-AA SV")
+        # col_debug.write(self.grid_solved)
+        # col_debug.write(f"-AA GW")
+        # col_debug.write(self.grid_working)
 
         self.solve(resolve=True)
 
