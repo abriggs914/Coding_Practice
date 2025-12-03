@@ -100,23 +100,43 @@ class Nonogram:
                 st.write(f"{ifb_lr=}, {ifm_lr=}")
 
                 if ifb_lr is not None:
-                    c_b = ifb_lr
-                    c_bo = c_b
-                    while c_b < len(row):
-                        c_b, b_idxs = Nonogram.count_continuous(row, Nonogram.BLANK, idx=ifb_lr)
-                        if (row[b_idxs[0]] == Nonogram.BLANK) and (len(b_idxs) >= hints_l[0]):
-                            idx_first_mark = b_idxs[0]
-                        else:
-                            c_b += 1
-                        if (len(row) - 1) in b_idxs:
-                            break
-                        if c_b == c_bo:
-                            break
-                        c_b = c_bo
+                    c_b, b_idxs = Nonogram.count_continuous(row, Nonogram.BLANK, idx=ifb_lr)
+                    c_b0 = c_b
+                    b0_idxs = b0_idxs.copy()
+                    if len(row) > (b_idxs[-1] + 1):
+                        c_mn, mn_idxs = Nonogram.count_continuous(row, Nonogram.MARK, idx=b_idxs[-1] + 1)
+                    if len(row) > (mn_idxs[-1] + 1):
+                        c_b, b_idxs = Nonogram.count_continuous(row, Nonogram.BLANK, idx=mn_idxs[-1] + 1)
 
-                # idx_first_mark = 0 + (ifm_lr if ifm_lr is not None else (ifb_lr if ifb_lr is not None else 0))
-                # if (ifm_lr is not None) and (ifb_lr is not None) and (ifb_lr < ifm_lr):
-                #     idx_first_mark = ifm_lr - (ifb_lr + 0)
+                    t_space = b_idxs[0]
+
+                    # b0_idx = b_idxs[0]
+                    # if len(b_idxs) > 2:
+                    #     b1_idx = b_idxs[-1]
+
+                    h_idx = 0
+                    hint = hints[h_idx]
+                    if len(b_idxs) >= hint:
+
+                # if ifb_lr is not None:
+                #     c_b = ifb_lr
+                #     c_bo = c_b
+                #     while c_b < len(row):
+                #         c_b, b_idxs = Nonogram.count_continuous(row, Nonogram.BLANK, idx=ifb_lr)
+                #         print(f"{c_b=}, {b_idxs=}, {c_bo=}")
+                #         if (row[b_idxs[0]] == Nonogram.BLANK) and (len(b_idxs) >= hints_l[0]):
+                #             idx_first_mark = b_idxs[0]
+                #         else:
+                #             c_b += b_idxs[-1] + 1
+                #         if (len(row) - 1) in b_idxs:
+                #             break
+                #         if c_b == c_bo:
+                #             break
+                #         c_bo = c_b
+                #
+                # # idx_first_mark = 0 + (ifm_lr if ifm_lr is not None else (ifb_lr if ifb_lr is not None else 0))
+                # # if (ifm_lr is not None) and (ifb_lr is not None) and (ifb_lr < ifm_lr):
+                # #     idx_first_mark = ifm_lr - (ifb_lr + 0)
             else:
                 idx_first_mark = ifb_lr if ifb_lr is not None else 0
 
