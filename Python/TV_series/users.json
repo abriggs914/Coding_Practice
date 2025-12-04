@@ -1,0 +1,18 @@
+{
+  "users": {
+    "abriggs": {
+      "password_hash": "f60b80dd52001304569f7c3edf639febfb3c5a1fe69d125a2f423152fd87a9ac",
+      "salt": "3516ebce1aafeb05b97b693cdc94fb28",
+      "first_access": "2025-12-04T01:06:57.957418+00:00",
+      "last_access": "2025-12-04T01:55:06.959648+00:00",
+      "times_accessed": 7
+    },
+    "abriggs1": {
+      "password_hash": "58d6e2b7f76083ae235ec99820688365392d3ae1070d3098de25839b8da79f6c",
+      "salt": "9680f6abb6f91f55df5ecf1672e4b108",
+      "first_access": "2025-12-04T01:32:15.767165+00:00",
+      "last_access": "2025-12-04T01:32:33.817910+00:00",
+      "times_accessed": 2
+    }
+  }
+}
