@@ -41,7 +41,7 @@ NHL_API_URL_V1: str = "{0}v1/".format(NHL_API_URL)
 NHL_PLAYER_API_URL: str = "{0}player/".format(NHL_API_URL_V1)
 PATH_UNKNOWN_IMAGE: str = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags\unknown_flag.png"
 PATH_FOLDER_JERSEY_COLLECTION: str = r"D:\NHL jerseys\Jerseys 20250927"
-PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251217.xlsx"
+PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251220.xlsx"
 JERSEY_COLOUR_SAVE_FILE: str = "new_colours_save.json"
 
 UTC_FMT: str = "%Y-%m-%dT%H:%M:%SZ"
@@ -1755,25 +1755,30 @@ if __name__ == "__main__":
         # League Data
         st.write(nhl.get_country())
         st.write(nhl.get_geolocation())
-        display_df(
+        display_df_paginated(
             nhl.df_saved_data,
-        "nhl.df_saved_data"
+        "nhl.df_saved_data",
+            key=f"nhl.df_saved_data"
         )
-        display_df(
+        display_df_paginated(
             teams,
-            "Teams"
+            "Teams",
+            key=f"Teams"
         )
-        display_df(
+        display_df_paginated(
             seasons,
-            "Seasons"
+            "Seasons",
+            key=f"Seasons"
         )
-        display_df(
+        display_df_paginated(
             nhl.get_country_data(),
-            "Countries"
+            "Countries",
+            key=f"Countries"
         )
-        display_df(
+        display_df_paginated(
             nhl.df_players,
-            "Known NHL Players"
+            "Known NHL Players",
+            key=f"Known NHL Players"
         )
         with st.container(border=True):
             df_nhl_glossary: pd.DataFrame = nhl.get_glossary_data()
@@ -1854,9 +1859,10 @@ if __name__ == "__main__":
                 (nhl.df_games_boxscore["home_team_name_abbrev"] == team_tri_code)
                 | (nhl.df_games_boxscore["away_team_name_abbrev"] == team_tri_code)
             ]
-            display_df(
+            display_df_paginated(
                 df_team_games,
-                f"{selectbox_team_calendar} Games:"
+                f"{selectbox_team_calendar} Games:",
+                key=f"{selectbox_team_calendar} Games:"
             )
             for i, row in df_team_games.iterrows():
                 is_home: bool = row["home_team_name_abbrev"] == team_tri_code
@@ -1880,9 +1886,10 @@ if __name__ == "__main__":
                 }
             )
 
-        display_df(
+        display_df_paginated(
             df_standings_now,
-            "Standings as of now:"
+            "Standings as of now:",
+            key="Standings as of now:"
         )
 
         # cols_standings: dict = {
@@ -2004,7 +2011,7 @@ if __name__ == "__main__":
         for i, k_df in enumerate(df_standings_to_show):
             df: pd.DataFrame = df_standings_to_show[k_df]
             with cols_dfs_to_show[i]:
-                display_df(
+                display_df_paginated(
                     df=df[list(cols_standings.values())],
                     title=f"{k_df} Standings as of now:",
                     column_config={
@@ -2025,6 +2032,7 @@ if __name__ == "__main__":
                         )
                     },
                     height=standings_heights[len(df_standings_to_show)],
+                    key=f"{k_df} Standings as of now:"
                 )
 
         scoreboard_now: NHLScoreboard = nhl.load_scoreboard()
@@ -2054,9 +2062,18 @@ if __name__ == "__main__":
             ser_game: pd.Series = nhl.df_games_scoreboard.loc[
                 nhl.df_games_scoreboard["str"] == selectbox_investigate_game
             ].iloc[0]
-            display_df(
-                ser_game,
-                "ser_game"
+            ax = ser_game.axes[0].tolist()
+            for a in [
+                "home_team",
+                "away_team"
+            ]:
+                if a in ax:
+                    ax.remove(a)
+            sg = ser_game[ax]
+            display_df_paginated(
+                sg,
+                "ser_game",
+                key="ser_game"
             )
 
             url_game_center: str = ser_game["game_center_link"]
@@ -2175,8 +2192,20 @@ if __name__ == "__main__":
 
         schedule = nhl.get_schedule()
         st.write(schedule)
-        display_df(
-            nhl.df_games_boxscore
+
+        ax = nhl.df_games_boxscore.columns.tolist()
+        for a in [
+            "home_team",
+            "away_team"
+        ]:
+            if a in ax:
+                ax.remove(a)
+        sg = nhl.df_games_boxscore[ax]
+
+        display_df_paginated(
+            sg,
+            title="nhl.df_games_boxscore",
+            key="nhl.df_games_boxscore"
         )
 
         df_games_yet_to_play: pd.DataFrame = nhl.df_games_boxscore[nhl.df_games_boxscore["game_state"] != "OFF"]
@@ -2200,9 +2229,10 @@ if __name__ == "__main__":
             inplace=True
         )
 
-        display_df(
+        display_df_paginated(
             df_games_yet_to_play,
-            "df_games_yet_to_play"
+            "df_games_yet_to_play",
+            key="df_games_yet_to_play"
         )
 
         if selectbox_team_calendar:
@@ -2221,9 +2251,10 @@ if __name__ == "__main__":
                 | (df_games_yet_to_play["game_away_team_id"] == sel_team_id)
             ].reset_index(drop=True)
 
-            display_df(
+            display_df_paginated(
                 df_sel_team_games_left,
                 f"Games left for {selectbox_team_calendar}:",
+                key=f"Games left for {selectbox_team_calendar}:",
                 hide_index=False
             )
 
@@ -2254,9 +2285,10 @@ if __name__ == "__main__":
                 return df
 
 
-            display_df(
+            display_df_paginated(
                 calc_leg(df_sel_team_games_left),
                 "df_sel_team_games_left_legs",
+                key="df_sel_team_games_left_legs",
                 hide_index=False
             )
 
@@ -2264,25 +2296,28 @@ if __name__ == "__main__":
                 df_sel_team_games_left["conferenceAbbrev"] == df_sel_team_games_left["conferenceAbbrev_AT"]
             ]
 
-            display_df(
+            display_df_paginated(
                 df_sel_team_games_left_same_conf,
-                "df_sel_team_games_left_same_conf"
+                "df_sel_team_games_left_same_conf",
+                key="df_sel_team_games_left_same_conf"
             )
 
             df_sel_team_games_left_same_div: pd.DataFrame = df_sel_team_games_left_same_conf[
                 df_sel_team_games_left_same_conf["divisionAbbrev"] == df_sel_team_games_left_same_conf["divisionAbbrev_AT"]
             ]
 
-            display_df(
+            display_df_paginated(
                 df_sel_team_games_left_same_div,
-                "df_sel_team_games_left_same_div"
+                "df_sel_team_games_left_same_div",
+                key="df_sel_team_games_left_same_div"
             )
 
             df_sel_team_games_left_adj_div: pd.DataFrame = df_sel_team_games_left_same_conf[~df_sel_team_games_left_same_conf.index.isin(df_sel_team_games_left_same_div.index.tolist())]
 
-            display_df(
+            display_df_paginated(
                 df_sel_team_games_left_adj_div,
-                "df_sel_team_games_left_adj_div"
+                "df_sel_team_games_left_adj_div",
+                key="df_sel_team_games_left_adj_div"
             )
 
             sel_team_conf = ser_sel_team["conferenceAbbrev"]
@@ -2291,9 +2326,10 @@ if __name__ == "__main__":
                 | (df_sel_team_games_left["conferenceAbbrev_AT"] != sel_team_conf)
             ]
 
-            display_df(
+            display_df_paginated(
                 df_sel_team_games_left_opp_conf,
-                "df_sel_team_games_left_opp_conf"
+                "df_sel_team_games_left_opp_conf",
+                key="df_sel_team_games_left_opp_conf"
             )
 
 
@@ -2301,9 +2337,10 @@ if __name__ == "__main__":
 
         # Jerseys
         k_pl_id: str = "key_pl_id"
-        display_df(
+        display_df_paginated(
             nhl_jc.df_jerseys,
-            "nhl_jc.df_jerseys"
+            "nhl_jc.df_jerseys",
+            key="nhl_jc.df_jerseys"
         )
         # lst_selectbox_player = nhl_jc.df_jerseys.loc[~pd.isna(nhl_jc.df_jerseys["PlayerLast"]), "JerseyToString"].dropna().unique().tolist()
         lst_selectbox_player = nhl_jc.df_jerseys["JerseyToString"].dropna().unique().tolist()
@@ -2317,9 +2354,10 @@ if __name__ == "__main__":
         df_selected_jersey_orig: pd.DataFrame = nhl_jc.df_jerseys.loc[nhl_jc.df_jerseys["JerseyToString"] == pl_to_string]
         df_selected_jersey: pd.DataFrame = df_selected_jersey_orig.copy()
         j_idx = df_selected_jersey_orig.index.tolist()[0]
-        display_df(
+        display_df_paginated(
             df_selected_jersey,
-            "A df_selected_jersey"
+            "A df_selected_jersey",
+            key="A df_selected_jersey"
         )
         # df_selected_jersey = df_selected_jersey.merge(
         #     nhl.df_players,
@@ -2330,7 +2368,7 @@ if __name__ == "__main__":
         # if df_selected_jersey.empty:
         #     # pla
         #
-        # display_df(
+        # display_df_paginated(
         #     df_selected_jersey,
         #     "B df_selected_jersey"
         # )
@@ -2345,9 +2383,10 @@ if __name__ == "__main__":
         lst_jerseys = sorted(list(nhl_jc.jerseys))
         j_id = df_selected_jersey_orig.loc[j_idx, "ID"]
         if not df_selected_jersey.empty:
-            display_df(
+            display_df_paginated(
                 df_selected_jersey,
-                "C df_selected_jersey"
+                "C df_selected_jersey",
+                key="C df_selected_jersey"
             )
             ser_selected_jersey: pd.Series = df_selected_jersey.iloc[0]
             pl_id = ser_selected_jersey["NHLID"]
@@ -2359,7 +2398,7 @@ if __name__ == "__main__":
             st.write(pl_team)
 
             if pl_team is None:
-                display_df(ser_selected_jersey, "ser_selected_jersey")
+                display_df_paginated(ser_selected_jersey, "ser_selected_jersey", key="ser_selected_jersey")
                 pl_team = nhl.lookup_team(ser_selected_jersey["t_id"])
                 # pl_obj.team = pl_team
 
@@ -2370,9 +2409,9 @@ if __name__ == "__main__":
             image_cols[3].image(pl_obj.path_hero_shot_logo, width=300)
 
             pl_obj_featured_stats_season, df_pl_obj_featured_stats = pl_obj.featured_stats
-            display_df(df_pl_obj_featured_stats, f"Featured Stats {f_season(pl_obj_featured_stats_season)}")
-            display_df(pl_obj.career_totals, "Career Totals")
-            display_df(pl_obj.season_totals, "Season Totals")
+            display_df_paginated(df_pl_obj_featured_stats, f"Featured Stats {f_season(pl_obj_featured_stats_season)}", key=f"Featured Stats {f_season(pl_obj_featured_stats_season)}")
+            display_df_paginated(pl_obj.career_totals, "Career Totals", key="Career Totals")
+            display_df_paginated(pl_obj.season_totals, "Season Totals", key="Season Totals")
 
             options_pills_jersey_mode = [
                 "Landing",
@@ -2391,9 +2430,10 @@ if __name__ == "__main__":
 
             if pills_jersey_mode == options_pills_jersey_mode[1]:
                 load_player_progress = st.progress(value=0, text=f"Loading {pl_team.full_name} Roster -- 0%")
-                display_df(
+                display_df_paginated(
                     nhl.get_team_roster(pl_team.tri_code, pb=load_player_progress, pb_text=f"Loading {pl_team.full_name} Roster -- "),
-                    f"{pl_team.full_name} {f_season(get_this_season_str())} Team Roster"
+                    f"{pl_team.full_name} {f_season(get_this_season_str())} Team Roster",
+                    key=f"{pl_team.full_name} {f_season(get_this_season_str())} Team Roster"
                 )
 
             # k_selectbox_jersey = "key_selectbox_jersey"
@@ -2684,9 +2724,10 @@ if __name__ == "__main__":
 
         cont_metrics = st.container(border=True)
         with cont_metrics.expander("Data"):
-            display_df(
+            display_df_paginated(
                 df_jerseys_stats,
-                "Jerseys:"
+                "Jerseys:",
+                key="Jerseys:"
             )
         n_met_cols = 4
         # cols_metrics_0 = cont_metrics.columns(5)
@@ -3050,9 +3091,10 @@ if __name__ == "__main__":
             # )
             st.plotly_chart(fig, use_container_width=True)
 
-            display_df(
+            display_df_paginated(
                 df_nhl_jerseys_w_d,
-                "df_nhl_jerseys_w_d"
+                "df_nhl_jerseys_w_d",
+                key="df_nhl_jerseys_w_d"
             )
 
     else:
@@ -3113,9 +3155,10 @@ if __name__ == "__main__":
             }
 
             df_known_urls: pd.DataFrame = nhl.df_saved_data.copy()
-            display_df(
+            display_df_paginated(
                 df_known_urls,
-                "df_known_urls"
+                "df_known_urls",
+                key="df_known_urls"
             )
 
             k_text_url: str = "key_text_url"

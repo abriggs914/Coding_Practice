@@ -1,5 +1,6 @@
 from typing import Literal, Optional, Iterable, Any
 
+import math
 import pandas as pd
 from streamlit_js_eval import streamlit_js_eval
 
@@ -15,8 +16,8 @@ from colour_utility import Colour
 VERSION = \
 	"""	
     Streamlit utility functions
-    Version..............1.06
-    Date...........2025-10-20
+    Version..............1.09
+    Date...........2025-12-22
     Author(s)....Avery Briggs
     """
 
@@ -31,7 +32,7 @@ def VERSION_NUMBER():
 
 def VERSION_DATE():
 	return datetime.datetime.strptime(VERSION.lower().split("today")[-1].split("author")[0].split(".")[-1].strip(),
-									  "%Y-%m-%dictionary")
+									  "%Y-%m-%d")
 
 
 def VERSION_AUTHORS():
@@ -190,6 +191,113 @@ def display_df(
 def load_pdf_binary(pdf_file):
 	with open(pdf_file, "rb") as f:
 		return f.read()
+	
+
+@st.cache_data(show_spinner=False)
+def split_frame(input_df: pd.DataFrame, rows: int):
+	if input_df.shape[0] <= rows:
+		return [input_df]
+	# st.write(f"{rows=}")
+	# st.write(input_df.head(3))
+	df = [input_df.reset_index().loc[i : i + rows - 1, :] for i in range(0, input_df.shape[0] + rows, rows)]
+	return df
+
+
+def display_df_paginated(
+		df: pd.DataFrame | pd.Series,
+		title: Optional[str] = None,
+		hide_index: str | bool = "if_int",
+		show_shape: bool = True,
+		batch_size_options: list[int] = (25, 50, 100),
+
+		# params for st.dataframe 20250325
+		width: int | None = None,
+		height: int | None = None,
+		use_container_width: bool = False,
+		column_order: Iterable[str] | None = None,
+		column_config: Any | None = None,
+		key: Any | None = None,
+		on_select: Literal["ignore", "rerun"] | Any = "ignore",
+		selection_mode: Any = "multi-row"		
+):
+	
+	if key is None:
+		# sub_widget_keys = f"stdf_paginated_{datetime.datetime.now():%Y%m%d%%H%M%S}"
+		msg = f"You must pass a key for a paginated dataframe widget. Otherwise sub-widgets won't have state-persistence."
+		st.error(msg)
+		raise ValueError(msg)
+	else:
+		sub_widget_keys = key
+
+	top_menu = st.columns(3)
+	with top_menu[0]:
+		sort = st.radio(
+			label="Sort Data",
+			options=["Yes", "No"],
+			horizontal=1,
+			index=1,
+			key=f"{sub_widget_keys}_radio_sort_col"
+		)
+	if sort == "Yes":
+		with top_menu[1]:
+			sort_field = st.selectbox("Sort By", options=df.columns)
+		with top_menu[2]:
+			sort_direction = st.radio(
+				label="Direction",
+				options=["⬆️", "⬇️"],
+				horizontal=True,
+				key=f"{sub_widget_keys}_radio_sort_dir"
+			)
+		df.sort_values(
+			by=sort_field,
+			ascending=sort_direction == "⬆️",
+			ignore_index=True,
+			inplace=True
+		)
+	pagination = st.container()
+
+	bottom_menu = st.columns((4, 1, 1))
+	with bottom_menu[2]:
+		batch_size = st.selectbox(
+			label="Page Size",
+			options=batch_size_options,
+			key=f"{sub_widget_keys}_selectbox_batch_size"
+		)
+	with bottom_menu[1]:
+		total_pages = (
+			math.ceil(len(df) / batch_size) if int(len(df) / batch_size) > 0 else 1
+		)
+		current_page = st.number_input(
+			label="Page",
+			min_value=1,
+			max_value=total_pages,
+			step=1,
+			key=f"{sub_widget_keys}_number_input_pages"
+		)
+	with bottom_menu[0]:
+		st.markdown(f"Page **{current_page}** of **{total_pages}** ")
+		st.markdown(f"**{df.shape[0]}** total records")
+
+	pages = split_frame(df, batch_size)
+	# st.write(f"{len(pages)=}")
+	# st.write(f"{[len(p) for p in pages]=}")
+	# st.write(f"{batch_size=}")
+	with pagination:
+		return display_df(
+			df=pages[current_page - 1] if pages else pd.DataFrame(data=[{"data": None}]),
+			title=title,
+			hide_index=hide_index,
+			show_shape=show_shape,
+
+			width=width,
+			height=height,
+			use_container_width=use_container_width,
+			column_order=column_order,
+			column_config=column_config,
+			key=key,
+			on_select=on_select,
+			selection_mode=selection_mode
+		)
 
 
 if __name__ == '__main__':
