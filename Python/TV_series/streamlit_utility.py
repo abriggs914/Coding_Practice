@@ -17,7 +17,7 @@ from colour_utility import Colour
 VERSION = \
 	"""	
     Streamlit utility functions
-    Version..............1.09
+    Version..............1.10
     Date...........2025-12-22
     Author(s)....Avery Briggs
     """
@@ -171,6 +171,9 @@ def display_df(
 
 	if height is None:
 		height = "auto"
+    
+	if width is None:
+		width = "stretch" if use_container_width else "content"
 
 	# st.write(f"{title=}, {hide_index=}")
 	stdf = st.dataframe(
@@ -178,7 +181,6 @@ def display_df(
 		hide_index=hide_index,
 		width=width,
 		height=height,
-		use_container_width=use_container_width,
 		column_order=column_order,
 		column_config=column_config,
 		key=key,
