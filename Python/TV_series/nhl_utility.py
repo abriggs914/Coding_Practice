@@ -2,6 +2,7 @@ import enum
 import math
 import os.path
 import random
+import shutil
 
 import pandas as pd
 import streamlit
@@ -41,7 +42,7 @@ NHL_API_URL_V1: str = "{0}v1/".format(NHL_API_URL)
 NHL_PLAYER_API_URL: str = "{0}player/".format(NHL_API_URL_V1)
 PATH_UNKNOWN_IMAGE: str = r"C:\Users\abrig\Documents\Coding_Practice\Resources\Flags\unknown_flag.png"
 PATH_FOLDER_JERSEY_COLLECTION: str = r"D:\NHL jerseys\Jerseys 20250927"
-PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20251220.xlsx"
+PATH_JERSEY_COLLECTION_DATA: str = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20260103.xlsx"
 JERSEY_COLOUR_SAVE_FILE: str = "new_colours_save.json"
 
 UTC_FMT: str = "%Y-%m-%dT%H:%M:%SZ"
@@ -1899,7 +1900,7 @@ if __name__ == "__main__":
         cols_standings = standings_now.show_cols()
         df_standings_now.rename(columns=cols_standings, inplace=True)
         df_standings_now["STRK"] = df_standings_now["STRKC"].astype(str) + df_standings_now["STRKN"].astype(str)
-        df_standings_now["GPP"] = df_standings_now[NHLStandings.Abbr.GP.value]
+        df_standings_now["GPP"] = df_standings_now[NHLStandings.Abbr.GP.value] / 82
         df_standings_now["REC"] = df_standings_now.apply(
             lambda row:
             f_standing_record(
@@ -2022,7 +2023,7 @@ if __name__ == "__main__":
                         "GPP": st.column_config.ProgressColumn(
                             label="Season %",
                             min_value=0,
-                            max_value=82,
+                            max_value=1,
                             width=100
                         ),
                         "Δ": st.column_config.TextColumn(
@@ -3221,3 +3222,19 @@ if __name__ == "__main__":
     # # #     # cgs = nhl.check_game_status(sel_team.t_id, date=datetime.date.today())
     # # #     st.write(cgs)
 
+#
+# fu = st.file_uploader(
+#     label="files",
+#     type=["png", "jpeg"],
+#     accept_multiple_files=True,
+#     key="fu"
+# )
+#
+# if fu:
+#     for f in fu:
+#         dst = os.path.join(r"D:\3D Prints\Bath Monquarters", f.name)
+#         print(f"{dst=}")
+#         st.write(f"{dst=}")
+#         if not os.path.exists(dst):
+#             with open(dst, "wb") as out:
+#                 out.write(f.getvalue())
