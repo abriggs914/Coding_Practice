@@ -3232,9 +3232,18 @@ if __name__ == "__main__":
 #
 # if fu:
 #     for f in fu:
-#         dst = os.path.join(r"D:\3D Prints\Bath Monquarters", f.name)
+#         dst = os.path.join(r"D:\3D Prints\QMJHL Logos", f.name)
 #         print(f"{dst=}")
 #         st.write(f"{dst=}")
 #         if not os.path.exists(dst):
 #             with open(dst, "wb") as out:
 #                 out.write(f.getvalue())
+#
+#
+# st.download_button(
+#     "download",
+#     data=open(r"D:\Important documents\Bills\crv_registration_2026.pdf", "rb").read(),
+#     file_name="crv_2026.pdf",
+#     mime="application/pdf",
+#     key=f"drive_1"
+# )
