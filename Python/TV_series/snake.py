@@ -39,10 +39,14 @@ def move_snake():
     new_snake = []
     for i, idx in enumerate(snake):
         i_, j_ = idx
-        n_i = i_ + snake_direction[1]
-        n_j = j_ + snake_direction[0]
-        n_i %= n_rows
-        n_j %= n_cols
+        if allow_snake_wrap:
+            n_i = i_ + snake_direction[1]
+            n_j = j_ + snake_direction[0]
+            n_i %= n_rows
+            n_j %= n_cols
+        else:
+            n_i = clamp(0, i_ + snake_direction[1], n_rows - 1)
+            n_j = clamp(0, j_ + snake_direction[0], n_cols - 1)
         new_snake.append((n_i, n_j))
         # r_data = gc_cells[n_i][n_j]
         # x_1 = r_data["x_1"]
@@ -69,9 +73,12 @@ if __name__ == "__main__":
     FONT_DEFAULT = pygame.font.Font(None, 36)
 
     running = True
+    time_passed = 0
+    ticks_passed = 0
 
     n_rows = 10
     n_cols = 10
+    allow_snake_wrap = False
     snake = [(n_rows//2, n_cols//2)]
     snake_direction = 1, 0
 
@@ -108,6 +115,8 @@ if __name__ == "__main__":
 
     while running:
         CLOCK.tick(FPS_START)
+        time_passed += CLOCK.get_time()
+        ticks_passed += 1
 
         # reset window
         WINDOW.fill(black.rgb_code)
@@ -120,7 +129,9 @@ if __name__ == "__main__":
 
         draw_grid()
         draw_snake()
-        move_snake()
+        print(f"{ticks_passed=}, {time_passed} milliseconds")
+        if ticks_passed % 2 == 0:
+            move_snake()
 
         # handle events
         for event in pygame.event.get():
