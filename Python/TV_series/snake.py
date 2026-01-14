@@ -1,6 +1,6 @@
 from colour_utility import Colour
 from utility import grid_cells, clamp
-import pygame
+from pygame_utility import pygame, write_text
 
 #	General main loop structure for pygame.
 #	Includes 2D motion + acceleration controls.
@@ -34,27 +34,47 @@ def draw_snake():
         pygame.draw.rect(WINDOW, colour_snake.rgb_code, rect)
 
 
+def draw_time():
+    m_passed = time_passed // (1000 * 60)
+    s_passed = (time_passed % 60000) // 1000
+    ms_passed = int(round((time_passed % 1000) / 10, 2))
+    m_passed = str(m_passed).zfill(2)
+    s_passed = str(s_passed).zfill(2)
+    ms_passed = str(ms_passed).zfill(2)
+    write_text(
+        pygame,
+        WINDOW,
+        pygame.rect.Rect(520, 25, 150, 30),
+        f"{m_passed}:{s_passed}:{ms_passed} s",
+        FONT_DEFAULT,
+        bg_c=bg_grid_cell.brightened(0.25).hex_code
+    )
+
+
+def draw_score():
+    pass
+
+
 def move_snake():
-    global snake
-    new_snake = []
-    for i, idx in enumerate(snake):
-        i_, j_ = idx
-        if allow_snake_wrap:
-            n_i = i_ + snake_direction[1]
-            n_j = j_ + snake_direction[0]
-            n_i %= n_rows
-            n_j %= n_cols
-        else:
-            n_i = clamp(0, i_ + snake_direction[1], n_rows - 1)
-            n_j = clamp(0, j_ + snake_direction[0], n_cols - 1)
-        new_snake.append((n_i, n_j))
+    snake_head = snake[0]
+    i_, j_ = snake_head
+    if allow_snake_wrap:
+        n_i = i_ + snake_direction[1]
+        n_j = j_ + snake_direction[0]
+        n_i %= n_rows
+        n_j %= n_cols
+    else:
+        n_i = clamp(0, i_ + snake_direction[1], n_rows - 1)
+        n_j = clamp(0, j_ + snake_direction[0], n_cols - 1)
+    snake.insert(0, (n_i, n_j))
+    snake.pop(-1)
+
         # r_data = gc_cells[n_i][n_j]
         # x_1 = r_data["x_1"]
         # y_1 = r_data["y_1"]
         # w = r_data["w"]
         # h = r_data["h"]
         # rect = pygame.Rect(x_1, y_1, w, h)
-    snake = new_snake
 
 
 if __name__ == "__main__":
@@ -129,6 +149,8 @@ if __name__ == "__main__":
 
         draw_grid()
         draw_snake()
+        draw_time()
+        draw_score()
         print(f"{ticks_passed=}, {time_passed} milliseconds")
         if ticks_passed % 2 == 0:
             move_snake()
