@@ -44,7 +44,7 @@ def draw_time():
     write_text(
         pygame,
         WINDOW,
-        pygame.rect.Rect(520, 25, 150, 30),
+        pygame.rect.Rect(600, 25, 150, 30),
         f"{m_passed}:{s_passed}:{ms_passed} s",
         FONT_DEFAULT,
         bg_c=bg_grid_cell.brightened(0.25).hex_code
@@ -52,7 +52,14 @@ def draw_time():
 
 
 def draw_score():
-    pass
+    write_text(
+        pygame,
+        WINDOW,
+        pygame.rect.Rect(600, 60, 150, 30),
+        f"{str(score).zfill(5)}",
+        FONT_DEFAULT,
+        bg_c=bg_grid_cell.brightened(0.25).hex_code
+    )
 
 
 def move_snake():
@@ -92,15 +99,18 @@ if __name__ == "__main__":
 
     FONT_DEFAULT = pygame.font.Font(None, 36)
 
+    score = 0
     running = True
     time_passed = 0
     ticks_passed = 0
 
     n_rows = 10
     n_cols = 10
-    allow_snake_wrap = False
+    allow_snake_wrap = True
     snake = [(n_rows//2, n_cols//2)]
     snake_direction = 1, 0
+    food = []
+    n_new_food = 1
 
     gc_cells = grid_cells(
         G_WIDTH,
@@ -146,6 +156,9 @@ if __name__ == "__main__":
         # text_rect = text_surface.get_rect()
         # text_rect.center = WINDOW.get_rect().center
         # WINDOW.blit(text_surface, text_rect)
+
+        if len(food) != n_new_food:
+            
 
         draw_grid()
         draw_snake()
