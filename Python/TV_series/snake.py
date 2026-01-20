@@ -204,8 +204,6 @@ if __name__ == "__main__":
         draw_time()
         draw_score()
         print(f"{ticks_passed=}, {time_passed} milliseconds")
-        if ticks_passed % 2 == 0:
-            move_snake()
 
         # handle events
         for event in pygame.event.get():
@@ -232,42 +230,53 @@ if __name__ == "__main__":
             #     if event.key in (pygame.K_UP, pygame.K_DOWN):
             #         y_accel = 0
 
-        snake_head = snake[0]
-        food_eaten = []
-        print(f"{food=}")
-        for i, idx in enumerate(food):
-            i_, j_ = idx
-            if snake_head == idx:
-                print(f"eat {i=}, {idx=}, {snake_head=}")
-                food_eaten.append(i)
-        for idx in food_eaten:
-            # [i, j, snake_len]
-            eaten_food.append((*food[idx], len(snake)+1))
-            food.pop(idx)
-        if eaten_food:
-            n_eaten_food = []
-            for i_, j_, l_snake in eaten_food:
-                l_snake -= 1
-                if l_snake < 0:
-                    snake.append((i_, j_))
-                else:
-                    n_eaten_food.append((i_, j_, l_snake))
-            eaten_food = n_eaten_food
+        if ticks_passed % 2 == 0:
+            move_snake()
+            snake_head = snake[0]
+            food_eaten = []
+            print(f"{food=}")
+            for i, idx in enumerate(food):
+                i_, j_ = idx
+                if snake_head == idx:
+                    print(f"eat {i=}, {idx=}, {snake_head=}")
+                    food_eaten.append(i)
+                    score += 50
+            for idx in food_eaten:
+                # [i, j, snake_len]
+                eaten_food.append((*food[idx], len(snake) + 1))
+                food.pop(idx)
+            if eaten_food:
+                n_eaten_food = []
+                for i_, j_, l_snake in eaten_food:
+                    l_snake -= 1
+                    if l_snake < 0:
+                        snake.append((i_, j_))
+                    else:
+                        n_eaten_food.append((i_, j_, l_snake))
+                eaten_food = n_eaten_food
 
-        print(f"A {snake=}, {set(snake)=}")
-        print(f"B {eaten_food=}, {set(eaten_food)=}")
-        # s_snake = set(snake)
-        # s_snake.union(set(eaten_food))
-        # print(f"B {set(eaten_food)=}")
-        # print(f"C {len(s_snake)=}")
-        # print(f"D {s_snake=}")
-        # print(f"E {len(snake)=} {len(eaten_food)=}")
-        ss = [f"{idx[0]}_{idx[1]}" for idx in snake]
-        sef = [f"{idx[0]}_{idx[1]}" for idx in eaten_food]
-        print(f"S={ss}, SEF={sef}")
-        # if (len(set(ss)) + len(set(sef))) != (len(snake) + len(eaten_food)):
-        #     print(f"Game over")
-        #     running = False
+            w = snake.copy()  # + [(ef[0], ef[1]) for ef in eaten_food]
+            sw = set(w)
+            print(f"A {snake=}, {set(snake)=}")
+            print(f"B {eaten_food=}, {set(eaten_food)=}")
+            print(f"C {w=}, {sw=}")
+            print(f"D {len(w)=}, {len(sw)=}")
+            # s_snake = set(snake)
+            # s_snake.union(set(eaten_food))
+            # print(f"B {set(eaten_food)=}")
+            # print(f"C {len(s_snake)=}")
+            # print(f"D {s_snake=}")
+            # print(f"E {len(snake)=} {len(eaten_food)=}")
+            ss = [f"{idx[0]}_{idx[1]}" for idx in snake]
+            sef = [f"{idx[0]}_{idx[1]}" for idx in eaten_food]
+            print(f"S={ss}, SEF={sef}")
+            # if (len(set(ss)) + len(set(sef))) != (len(snake) + len(eaten_food)):
+            #     print(f"Game over")
+            #     running = False
+
+            if len(w) != len(sw):
+                print(f"Game over")
+                running = False
 
 
 
