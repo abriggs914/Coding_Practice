@@ -1,0 +1,10 @@
+
+Link formats for NHL game center as of Jan 2026.
+
+"https://www.nhl.com/gamecenter/" + {AWAY_TEAM} + "-vs-" + {AWAY_TEAM} + "/" + {YEAR(GAMEDATE)} + "/" + {MONTH(GAMEDATE)} + "/" + {DAY(GAMEDATE)} + "/" + {GAME_ID}
+
+
+Quebec 2024 Preseason games:
+
+https://www.nhl.com/gamecenter/fla-vs-lak/2024/10/05/2024010103
+https://www.nhl.com/gamecenter/bos-vs-lak/2024/10/03/2024010087
