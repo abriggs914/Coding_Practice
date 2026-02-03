@@ -583,7 +583,7 @@ class NHLBoxScore(NHLGame):
         self.game_season: int = self.bx_data.get("season")
         self.game_type: int = self.bx_data.get("gameType")
         self.game_limited_scoring: bool = self.bx_data.get("limitedScoring")
-        self.game_date: datetime.date = datetime.datetime.strptime(self.bx_data.get("gameDate"), DATE_FMT).date() if self.bx_data.get("gameDate") else None
+        self.game_date: datetime.date = datetime.datetime.strptime(self.bx_data.get("gameDate"), DATE_FMT).date() if self.bx_data.get("gameDate") else (datetime.datetime.strptime(self.bx_data.get("start_time_atl"), DATE_FMT).date() if self.bx_data.get("start_time_atl") else None)
         self.game_venue: str = self.bx_data.get("venue", {}).get("default")
         self.game_venue_fr: str = self.bx_data.get("venue", {}).get("fr")
         self.game_venue_location: str = self.bx_data.get("venueLocation", {}).get("default")
@@ -605,7 +605,8 @@ class NHLBoxScore(NHLGame):
         self.game_away_team_dark_logo: str = self.game_away_team.get("darkLogo")
         self.game_away_team_place_name: str = self.game_away_team.get("placeName", {}).get("default")
         self.game_away_team_place_name_fr: str = self.game_away_team.get("placeName", {}).get("fr")
-        self.game_away_team_place_name_prep: str = self.game_away_team.get("placeNameWithPreposition", {}).get("default")
+        self.game_away_team_place_name_prep: str = self.game_away_team.get("placeNameWithPreposition", {}).get(
+            "default")
         self.game_away_team_place_name_prep_fr: str = self.game_away_team.get("placeNameWithPreposition", {}).get("fr")
 
         self.game_home_team: dict[str: Any] = self.bx_data.get("homeTeam", {})
@@ -618,8 +619,37 @@ class NHLBoxScore(NHLGame):
         self.game_home_team_dark_logo: str = self.game_home_team.get("darkLogo")
         self.game_home_team_place_name: str = self.game_home_team.get("placeName", {}).get("default")
         self.game_home_team_place_name_fr: str = self.game_home_team.get("placeName", {}).get("fr")
-        self.game_home_team_place_name_prep: str = self.game_home_team.get("placeNameWithPreposition", {}).get("default")
+        self.game_home_team_place_name_prep: str = self.game_home_team.get("placeNameWithPreposition", {}).get(
+            "default")
         self.game_home_team_place_name_prep_fr: str = self.game_home_team.get("placeNameWithPreposition", {}).get("fr")
+
+        # re-key some items
+
+        self.away_team: NHLTeam = None
+        self.away_team_id: int = bx_data.get("awayTeam", {}).get("id")
+        self.away_team_name_full: str = bx_data.get("awayTeam", {}).get("name", {}).get("default")
+        self.away_team_name_fr: str = bx_data.get("awayTeam", {}).get("name", {}).get("fr")
+        self.away_team_name_short: str = bx_data.get("awayTeam", {}).get("commonName", {}).get("default")
+        self.away_team_place_name_prep: str = bx_data.get("awayTeam", {}).get("placeNameWithPreposition", {}).get(
+            "default")
+        self.away_team_place_name_prep_fr: str = bx_data.get("awayTeam", {}).get("placeNameWithPreposition", {}).get(
+            "fr")
+        self.away_team_name_abbrev: str = bx_data.get("awayTeam", {}).get("abbrev")
+        self.away_team_score: int = bx_data.get("awayTeam", {}).get("score", 0)
+        self.away_team_logo: str = bx_data.get("awayTeam", {}).get("logo")
+
+        self.home_team: NHLTeam = None
+        self.home_team_id: int = bx_data.get("homeTeam", {}).get("id")
+        self.home_team_name_full: str = bx_data.get("homeTeam", {}).get("name", {}).get("default")
+        self.home_team_name_fr: str = bx_data.get("homeTeam", {}).get("name", {}).get("fr")
+        self.home_team_name_short: str = bx_data.get("homeTeam", {}).get("commonName", {}).get("default")
+        self.home_team_place_name_prep: str = bx_data.get("homeTeam", {}).get("placeNameWithPreposition", {}).get(
+            "default")
+        self.home_team_place_name_prep_fr: str = bx_data.get("homeTeam", {}).get("placeNameWithPreposition", {}).get(
+            "fr")
+        self.home_team_name_abbrev: str = bx_data.get("homeTeam", {}).get("abbrev")
+        self.home_team_score: int = bx_data.get("homeTeam", {}).get("score", 0)
+        self.home_team_logo: str = bx_data.get("homeTeam", {}).get("logo")
 
         self.game_clock: dict[str: Any] = self.bx_data.get("clock", {})
         self.game_clock_time_remaining: str = self.game_clock.get("timeRemaining")
@@ -695,6 +725,206 @@ class NHLBoxScore(NHLGame):
         # st.code(html, language="html", line_numbers=True)
         return html
 
+    def __repr__(self) -> str:
+        if self.game_date is not None:
+            return f"NHLBoxScore(ID={self.g_id}, date={self.game_date:%Y-%m-%d %H:%M:%S} {self.away_team} @ {self.home_team})"
+        return f"NHLBoxScore(ID={self.g_id}, ({self.away_team_id}) {self.away_team_name_short} @ {self.home_team_name_short} ({self.home_team_id}))"
+
+
+class NHLGameLanding:
+    def __init__(self, l_data: dict | pd.Series):
+        self.l_data = l_data.copy()
+        self.g_id: int = self.l_data.get("id")
+        self.game_season: int = self.l_data.get("season")
+        self.game_type: int = self.l_data.get("gameType")
+        self.game_limited_scoring: bool = self.l_data.get("limitedScoring")
+        self.game_date: datetime.date = datetime.datetime.strptime(self.l_data.get("gameDate"),
+                                                                   DATE_FMT).date() if self.l_data.get(
+            "gameDate") else (
+            datetime.datetime.strptime(self.l_data.get("start_time_atl"), DATE_FMT).date() if self.l_data.get(
+                "start_time_atl") else None)
+        self.game_venue: str = self.l_data.get("venue", {}).get("default")
+        self.game_venue_fr: str = self.l_data.get("venue", {}).get("fr")
+        self.game_venue_location: str = self.l_data.get("venueLocation", {}).get("default")
+        self.game_venue_location_fr: str = self.l_data.get("venueLocation", {}).get("fr")
+        self.game_start_time_utc: datetime.datetime = datetime.datetime.strptime(self.l_data.get("startTimeUTC"),
+                                                                                 UTC_FMT)
+        self.game_eastern_utc_offset: str = self.l_data.get("easternUTCOffset")
+        self.game_eastern_utc_offset_sec: datetime.timedelta = datetime.timedelta(
+            seconds=utc_offset_to_seconds(self.game_eastern_utc_offset))
+        self.start_time_atl: datetime.datetime = (
+                    self.game_start_time_utc + self.game_eastern_utc_offset_sec + datetime.timedelta(hours=1)).replace(
+            minute=0, second=0, microsecond=0)
+        self.game_venue_utc_offset: int = self.bx_data.get("venueUTCOffset")
+        self.game_broadcasts: list[dict[str: Any]] = self.l_data.get("tvBroadcasts", [])
+
+        self.game_state: str = self.l_data.get("gameState")
+        self.game_schedule_state: str = self.l_data.get("gameScheduleState")
+        self.game_reg_periods: int = self.l_data.get("regPeriods")
+
+        self.away_team: NHLTeam = None
+        self.away_team_id: int = self.l_data.get("awayTeam", {}).get("id")
+        self.away_team_name_full: str = self.l_data.get("awayTeam", {}).get("name", {}).get("default")
+        self.away_team_name_fr: str = self.l_data.get("awayTeam", {}).get("name", {}).get("fr")
+        self.away_team_name_short: str = self.l_data.get("awayTeam", {}).get("commonName", {}).get("default")
+        self.away_team_place_name_prep: str = self.l_data.get("awayTeam", {}).get("placeNameWithPreposition", {}).get(
+            "default")
+        self.away_team_place_name_prep_fr: str = self.l_data.get("awayTeam", {}).get("placeNameWithPreposition", {}).get(
+            "fr")
+        self.away_team_name_abbrev: str = self.l_data.get("awayTeam", {}).get("abbrev")
+        self.away_team_score: int = self.l_data.get("awayTeam", {}).get("score", 0)
+        self.away_team_logo: str = self.l_data.get("awayTeam", {}).get("logo")
+        self.away_team_radio_link: str = self.l_data.get("awayTeam", {}).get("radioLink")
+
+        self.home_team: NHLTeam = None
+        self.home_team_id: int = self.l_data.get("homeTeam", {}).get("id")
+        self.home_team_name_full: str = self.l_data.get("homeTeam", {}).get("name", {}).get("default")
+        self.home_team_name_fr: str = self.l_data.get("homeTeam", {}).get("name", {}).get("fr")
+        self.home_team_name_short: str = self.l_data.get("homeTeam", {}).get("commonName", {}).get("default")
+        self.home_team_place_name_prep: str = self.l_data.get("homeTeam", {}).get("placeNameWithPreposition", {}).get(
+            "default")
+        self.home_team_place_name_prep_fr: str = self.l_data.get("homeTeam", {}).get("placeNameWithPreposition", {}).get(
+            "fr")
+        self.home_team_name_abbrev: str = self.l_data.get("homeTeam", {}).get("abbrev")
+        self.home_team_score: int = self.l_data.get("homeTeam", {}).get("score", 0)
+        self.home_team_logo: str = self.l_data.get("homeTeam", {}).get("logo")
+        self.home_team_radio_link: str = self.l_data.get("awayTeam", {}).get("radioLink")
+
+        self.shoot_out_in_use: bool = self.l_data.get("shootoutInUse")
+        self.max_periods: int = self.l_data.get("maxPeriods")
+        self.reg_periods: int = self.l_data.get("regPeriods")
+        self.ot_in_use: bool = self.l_data.get("otInUse")
+        self.ties_in_use: bool = self.l_data.get("tiesInUse")
+
+        self.summary: dict = self.l_data.get("summary", {})
+        self.ice_surface: dict = self.summary.get("iceSurface", {})
+        self.ice_surface_away_forwards: list = self.ice_surface.get("awayTeam", {}).get("forwards", [])
+        self.ice_surface_away_defensemen: list = self.ice_surface.get("awayTeam", {}).get("defensemen", [])
+        self.ice_surface_away_goalies: list = self.ice_surface.get("awayTeam", {}).get("goalies", [])
+        self.ice_surface_away_penalty_box: list = self.ice_surface.get("awayTeam", {}).get("penaltyBox", [])
+        self.ice_surface_home_forwards: list = self.ice_surface.get("homeTeam", {}).get("forwards", [])
+        self.ice_surface_home_defensemen: list = self.ice_surface.get("homeTeam", {}).get("defensemen", [])
+        self.ice_surface_home_goalies: list = self.ice_surface.get("homeTeam", {}).get("goalies", [])
+        self.ice_surface_home_penalty_box: list = self.ice_surface.get("homeTeam", {}).get("penaltyBox", [])
+        self.scoring: list = self.summary.get("scoring", [])
+        self.penalties: list = self.summary.get("penalties", [])
+
+        self.game_clock: dict[str: Any] = self.bx_data.get("clock", {})
+        self.game_clock_time_remaining: str = self.game_clock.get("timeRemaining")
+        self.game_clock_seconds_remaining: int = int(self.game_clock.get("secondsRemaining", 1200))
+        self.game_clock_running: str = self.game_clock.get("running")
+        self.game_clock_in_intermission: str = self.game_clock.get("inIntermission")
+
+        { 'summary': {
+            'scoring': [{'periodDescriptor': {'number': 1, 'periodType': 'REG', 'maxRegulationPeriods': 3}, 'goals': [
+                {'situationCode': '1551', 'eventId': 57, 'strength': 'ev', 'playerId': 8477939,
+                 'firstName': {'default': 'William'}, 'lastName': {'default': 'Nylander'},
+                 'name': {'default': 'W. Nylander'}, 'teamAbbrev': {'default': 'TOR'},
+                 'headshot': 'https://assets.nhle.com/mugs/nhl/20252026/TOR/8477939.png',
+                 'highlightClipSharingUrl': 'https://nhl.com/video/tor-cgy-nylander-scores-goal-against-dustin-wolf-6388697483112',
+                 'highlightClipSharingUrlFr': 'https://nhl.com/fr/video/tor-cgy-nylander-marque-un-but-contre-dustin-wolf-6388697115112',
+                 'highlightClip': 6388697483112, 'highlightClipFr': 6388697115112, 'discreteClip': 6388698459112,
+                 'discreteClipFr': 6388699286112, 'goalsToDate': 18, 'awayScore': 1, 'homeScore': 0,
+                 'leadingTeamAbbrev': {'default': 'TOR'}, 'timeInPeriod': '00:35', 'shotType': 'wrist',
+                 'goalModifier': 'none', 'assists': [
+                    {'playerId': 8475166, 'firstName': {'default': 'John'}, 'lastName': {'default': 'Tavares'},
+                     'name': {'default': 'J. Tavares'}, 'assistsToDate': 27, 'sweaterNumber': 91}],
+                 'pptReplayUrl': 'https://wsr.nhle.com/sprites/20252026/2025020885/ev57.json',
+                 'homeTeamDefendingSide': 'right', 'isHome': False}]},
+                        {'periodDescriptor': {'number': 2, 'periodType': 'REG', 'maxRegulationPeriods': 3}, 'goals': [
+                            {'situationCode': '1551', 'eventId': 521, 'strength': 'ev', 'playerId': 8481711,
+                             'firstName': {'default': 'Matias'}, 'lastName': {'default': 'Maccelli'},
+                             'name': {'default': 'M. Maccelli'}, 'teamAbbrev': {'default': 'TOR'},
+                             'headshot': 'https://assets.nhle.com/mugs/nhl/20252026/TOR/8481711.png',
+                             'highlightClipSharingUrl': 'https://nhl.com/video/tor-cgy-maccelli-scores-goal-against-dustin-wolf-6388698942112',
+                             'highlightClipSharingUrlFr': 'https://nhl.com/fr/video/tor-cgy-maccelli-marque-un-but-contre-dustin-wolf-6388700919112',
+                             'highlightClip': 6388698942112, 'highlightClipFr': 6388700919112,
+                             'discreteClip': 6388699025112, 'discreteClipFr': 6388700116112, 'goalsToDate': 8,
+                             'awayScore': 2, 'homeScore': 0, 'leadingTeamAbbrev': {'default': 'TOR'},
+                             'timeInPeriod': '07:17', 'shotType': 'snap', 'goalModifier': 'none', 'assists': [
+                                {'playerId': 8477939, 'firstName': {'default': 'William'},
+                                 'lastName': {'default': 'Nylander'}, 'name': {'default': 'W. Nylander'},
+                                 'assistsToDate': 32, 'sweaterNumber': 88}],
+                             'pptReplayUrl': 'https://wsr.nhle.com/sprites/20252026/2025020885/ev521.json',
+                             'homeTeamDefendingSide': 'left', 'isHome': False},
+                            {'situationCode': '1441', 'eventId': 563, 'strength': 'ev', 'playerId': 8479442,
+                             'firstName': {'default': 'Troy'}, 'lastName': {'default': 'Stecher'},
+                             'name': {'default': 'T. Stecher'}, 'teamAbbrev': {'default': 'TOR'},
+                             'headshot': 'https://assets.nhle.com/mugs/nhl/20252026/TOR/8479442.png',
+                             'highlightClipSharingUrl': 'https://nhl.com/video/tor-cgy-stecher-scores-goal-against-dustin-wolf-6388701191112',
+                             'highlightClipSharingUrlFr': 'https://nhl.com/fr/video/tor-cgy-stecher-marque-un-but-contre-dustin-wolf-6388700214112',
+                             'highlightClip': 6388701191112, 'highlightClipFr': 6388700214112,
+                             'discreteClip': 6388700616112, 'discreteClipFr': 6388701099112, 'goalsToDate': 3,
+                             'awayScore': 3, 'homeScore': 0, 'leadingTeamAbbrev': {'default': 'TOR'},
+                             'timeInPeriod': '09:10', 'shotType': 'backhand', 'goalModifier': 'none', 'assists': [
+                                {'playerId': 8477939, 'firstName': {'default': 'William'},
+                                 'lastName': {'default': 'Nylander'}, 'name': {'default': 'W. Nylander'},
+                                 'assistsToDate': 33, 'sweaterNumber': 88},
+                                {'playerId': 8479318, 'firstName': {'default': 'Auston'},
+                                 'lastName': {'default': 'Matthews'}, 'name': {'default': 'A. Matthews'},
+                                 'assistsToDate': 21, 'sweaterNumber': 34}],
+                             'pptReplayUrl': 'https://wsr.nhle.com/sprites/20252026/2025020885/ev563.json',
+                             'homeTeamDefendingSide': 'left', 'isHome': False},
+                            {'situationCode': '1551', 'eventId': 663, 'strength': 'ev', 'playerId': 8475172,
+                             'firstName': {'default': 'Nazem'}, 'lastName': {'default': 'Kadri'},
+                             'name': {'default': 'N. Kadri'}, 'teamAbbrev': {'default': 'CGY'},
+                             'headshot': 'https://assets.nhle.com/mugs/nhl/20252026/CGY/8475172.png',
+                             'highlightClipSharingUrl': 'https://nhl.com/video/tor-cgy-kadri-scores-goal-against-joseph-woll-6388701003112',
+                             'highlightClipSharingUrlFr': 'https://nhl.com/fr/video/tor-cgy-kadri-marque-un-but-contre-joseph-woll-6388699633112',
+                             'highlightClip': 6388701003112, 'highlightClipFr': 6388699633112,
+                             'discreteClip': 6388699736112, 'discreteClipFr': 6388700141112, 'goalsToDate': 10,
+                             'awayScore': 3, 'homeScore': 1, 'leadingTeamAbbrev': {'default': 'TOR'},
+                             'timeInPeriod': '13:15', 'shotType': 'wrist', 'goalModifier': 'none', 'assists': [
+                                {'playerId': 8480797, 'firstName': {'default': 'Joel'},
+                                 'lastName': {'default': 'Farabee'}, 'name': {'default': 'J. Farabee'},
+                                 'assistsToDate': 11, 'sweaterNumber': 86},
+                                {'playerId': 8477810, 'firstName': {'default': 'Joel'},
+                                 'lastName': {'default': 'Hanley'}, 'name': {'default': 'J. Hanley'},
+                                 'assistsToDate': 7, 'sweaterNumber': 44}],
+                             'pptReplayUrl': 'https://wsr.nhle.com/sprites/20252026/2025020885/ev663.json',
+                             'homeTeamDefendingSide': 'left', 'isHome': True},
+                            {'situationCode': '1551', 'eventId': 701, 'strength': 'ev', 'playerId': 8480797,
+                             'firstName': {'default': 'Joel'}, 'lastName': {'default': 'Farabee'},
+                             'name': {'default': 'J. Farabee'}, 'teamAbbrev': {'default': 'CGY'},
+                             'headshot': 'https://assets.nhle.com/mugs/nhl/20252026/CGY/8480797.png',
+                             'highlightClipSharingUrl': 'https://nhl.com/video/tor-cgy-farabee-scores-goal-against-joseph-woll-6388700151112',
+                             'highlightClipSharingUrlFr': 'https://nhl.com/fr/video/tor-cgy-farabee-marque-un-but-contre-joseph-woll-6388701391112',
+                             'highlightClip': 6388700151112, 'highlightClipFr': 6388701391112,
+                             'discreteClip': 6388700324112, 'discreteClipFr': 6388699744112, 'goalsToDate': 12,
+                             'awayScore': 3, 'homeScore': 2, 'leadingTeamAbbrev': {'default': 'TOR'},
+                             'timeInPeriod': '15:46', 'shotType': 'tip-in', 'goalModifier': 'none', 'assists': [
+                                {'playerId': 8475172, 'firstName': {'default': 'Nazem'},
+                                 'lastName': {'default': 'Kadri'}, 'name': {'default': 'N. Kadri'}, 'assistsToDate': 27,
+                                 'sweaterNumber': 91}, {'playerId': 8477346, 'firstName': {'default': 'MacKenzie'},
+                                                        'lastName': {'default': 'Weegar'},
+                                                        'name': {'default': 'M. Weegar'}, 'assistsToDate': 15,
+                                                        'sweaterNumber': 52}],
+                             'pptReplayUrl': 'https://wsr.nhle.com/sprites/20252026/2025020885/ev701.json',
+                             'homeTeamDefendingSide': 'left', 'isHome': True}]}], 'threeStars': [], 'penalties': [
+                {'periodDescriptor': {'number': 1, 'periodType': 'REG', 'maxRegulationPeriods': 3}, 'penalties': []},
+                {'periodDescriptor': {'number': 2, 'periodType': 'REG', 'maxRegulationPeriods': 3}, 'penalties': [
+                    {'timeInPeriod': '08:11', 'type': 'MIN', 'duration': 2,
+                     'committedByPlayer': {'firstName': {'default': 'Joseph'}, 'lastName': {'default': 'Woll'},
+                                           'sweaterNumber': 60}, 'teamAbbrev': {'default': 'TOR'},
+                     'drawnBy': {'firstName': {'default': 'Mikael'}, 'lastName': {'default': 'Backlund'},
+                                 'sweaterNumber': 11}, 'descKey': 'holding-the-stick',
+                     'servedBy': {'default': 'Bobby McMann'}}, {'timeInPeriod': '08:11', 'type': 'MIN', 'duration': 2,
+                                                                'committedByPlayer': {
+                                                                    'firstName': {'default': 'Mikael'},
+                                                                    'lastName': {'default': 'Backlund'},
+                                                                    'sweaterNumber': 11},
+                                                                'teamAbbrev': {'default': 'CGY'},
+                                                                'drawnBy': {'firstName': {'default': 'Joseph'},
+                                                                            'lastName': {'default': 'Woll'},
+                                                                            'sweaterNumber': 60},
+                                                                'descKey': 'roughing'},
+                    {'timeInPeriod': '17:46', 'type': 'MIN', 'duration': 2,
+                     'committedByPlayer': {'firstName': {'default': 'Matthew'}, 'lastName': {'default': 'Knies'},
+                                           'sweaterNumber': 23}, 'teamAbbrev': {'default': 'TOR'},
+                     'drawnBy': {'firstName': {'default': 'Joel'}, 'lastName': {'default': 'Hanley'},
+                                 'sweaterNumber': 44}, 'descKey': 'tripping'}]}]},
+         'clock': {'timeRemaining': '00:53', 'secondsRemaining': 53, 'running': False, 'inIntermission': True}}
+
 
 class NHLScoreboard:
     def __init__(self, sc_data: dict | pd.Series):
@@ -750,7 +980,7 @@ class NHLSchedule:
         self.game_week: list[NHLGameDate] = [NHLGameDate(gd) for gd in sc_data.get("gameWeek", [])]
 
     def __repr__(self):
-        return f"NHLSchedule {self.next_start_date:{DATE_FMT}}, {self.previous_start_date:{DATE_FMT}}"
+        return f"NHLSchedule {self.previous_start_date:{DATE_FMT}}, {self.next_start_date:{DATE_FMT}}"
 
 
 class NHLJerseyCollection:
@@ -1183,10 +1413,10 @@ class NHLAPIHandler:
             d1: datetime.date = schedule.regular_season_start_date
             d2: datetime.date = d1
             ed: datetime.date = schedule.regular_season_end_date
-            st.write(f"{d1=}, {d2=}, {ed=}")
+            # st.write(f"{d1=}, {d2=}, {ed=}")
             while d1 <= ed:
                 d2 = d1
-                st.write(f"{d1=}, {d2=}")
+                # st.write(f"{d1=}, {d2=}")
                 schedule: NHLSchedule = self.get_schedule(d1)
                 d1 = schedule.next_start_date
                 if d2 == d1 or d1 is None:
@@ -1208,6 +1438,7 @@ class NHLAPIHandler:
 
     def query(self, url: str, hold_time_secs: int = 0):
         now = datetime.datetime.now()
+        print(f"{now:%Y-%m-%d %H:%M:%S} - {url}")
         self.create_save_file(overwrite=False)
         url = url.strip().lower()
         if not url:
@@ -1599,11 +1830,11 @@ class NHLAPIHandler:
         """ Function to check if there is a game now with chosen team. Returns True if game, False if NO game. """
         # Set URL depending on team selected and date
         url = '{0}schedule?teamId={1}&date={2}'.format(NHL_API_URL, team_id,date)
-        st.write(url)
-        st.link_button(
-            label="URL",
-            url=url,
-        )
+        # st.write(url)
+        # st.link_button(
+        #     label="URL",
+        #     url=url,
+        # )
         data = self.query(url)
         return data
 
