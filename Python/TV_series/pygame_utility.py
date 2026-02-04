@@ -1,6 +1,6 @@
 from utility import *
 from colour_utility import *
-#import pyperclip
+import pyperclip
 
 #	General Utility functions for pygame applications
 #	Version...........1.30
@@ -1310,8 +1310,8 @@ class ScrollBar(Widget):
 
 class TableRow(Widget):
 
-    def __init__(self, game, display):
-        super().__init__(game, display, None)
+    def __init__(self, game, display, rect):
+        super().__init__(game, display, rect)
 
         self.x = None
         self.y = None
@@ -1453,7 +1453,7 @@ class Table(Widget):
 
     def set_header(self, h):
         self.header = h
-        header_row = TableRow(self.game, self.display)
+        header_row = TableRow(self.game, self.display, rect)
         header_row.add_content(list(map(str.title, map(str, h))))
         if len(self.table_rows) > 0:
             self.table_rows = self.table_rows[1:]

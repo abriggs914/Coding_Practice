@@ -3,7 +3,10 @@ import datetime
 import pandas as pd
 from dateutil.utils import today
 
+from colour_utility import Colour
 from nhl_utility import NHLAPIHandler, NHLSchedule, NHLGameDate, NHLBoxScore, NHLStandings
+import pygame_utility as pgu
+import pygame
 # from json_utility import jsonify
 import json
 
@@ -42,6 +45,46 @@ def save_session():
 
 
 if __name__ == "__main__":
+
+    pygame.init()
+    WIDTH, HEIGHT = 750, 550
+    P_WIDTH, P_HEIGHT = 0.8, 0.8
+    MARGIN_X_GRID = WIDTH - (WIDTH * P_WIDTH)
+    MARGIN_Y_GRID = HEIGHT - (HEIGHT * P_HEIGHT)
+    G_WIDTH, G_HEIGHT = WIDTH * P_WIDTH, HEIGHT * P_HEIGHT
+    X_GRID, Y_GRID = 5, 5
+    WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
+    CLOCK = pygame.time.Clock()
+    FPS_START = 5
+    FPS = 60
+
+    FONT_DEFAULT = pygame.font.Font(None, 36)
+
+    score = 0
+    running = True
+    time_passed = 0
+    ticks_passed = 0
+
+    x, y = WIDTH / 2, HEIGHT / 2
+    max_speed = 15
+    x_change = 0
+    y_change = 0
+    x_accel_r = 0.2
+    y_accel_r = 0.2
+    x_decel_r = 0.92
+    y_decel_r = 0.92
+    x_accel = 0
+    y_accel = 0
+    m_width, m_height = 20, 40
+    mallow_rect = pygame.Rect(0, 0, m_width, m_height)
+    mallow_rect.center = x, y
+
+    black = Colour("black")
+    colour_mallow = Colour((0, 120, 250))
+    bg_grid_cell = Colour((160, 160, 160))
+    colour_snake = Colour((10, 210, 40))
+    colour_food = Colour((210, 40, 10))
+
     api = NHLAPIHandler(init=True)
     db: dict = load_db()
 
@@ -96,5 +139,64 @@ if __name__ == "__main__":
 
     print(api.check_game_status(sel_team_id, today))
     print("="*120)
+
+    def draw_table():
+        table = pgu.Table(pygame, WINDOW, x, y, 40, 40, colour_mallow, FONT_DEFAULT, "Title", "Header")
+        table.add_rows([[k, v] for k, v in box_score.__dict__.items()])
+        table.draw()
+
+    while running:
+        CLOCK.tick(FPS_START)
+        time_passed += CLOCK.get_time()
+        ticks_passed += 1
+
+        # reset window
+        WINDOW.fill(black.rgb_code)
+
+        # # begin drawing
+        # text_surface = FONT_DEFAULT.render("Demo Text", True, GREEN_4, GRAY_27)
+        # text_rect = text_surface.get_rect()
+        # text_rect.center = WINDOW.get_rect().center
+        # WINDOW.blit(text_surface, text_rect)
+
+        draw_table()
+
+        print(f"{ticks_passed=}, {time_passed} milliseconds")
+
+        # handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                break
+            elif event.type == pygame.KEYDOWN:
+                # Set the acceleration value.
+                if event.key == pygame.K_LEFT:
+                    x_accel = -x_accel_r
+                    snake_direction = (-1, 0)
+                if event.key == pygame.K_RIGHT:
+                    x_accel = x_accel_r
+                    snake_direction = (1, 0)
+                if event.key == pygame.K_UP:
+                    y_accel = -y_accel_r
+                    snake_direction = (0, -1)
+                if event.key == pygame.K_DOWN:
+                    y_accel = y_accel_r
+                    snake_direction = (0, 1)
+            # elif event.type == pygame.KEYUP:
+            #     if event.key in (pygame.K_LEFT, pygame.K_RIGHT):
+            #         x_accel = 0
+            #     if event.key in (pygame.K_UP, pygame.K_DOWN):
+            #         y_accel = 0
+
+        # if ticks_passed % 2 == 0:
+        #     # do something every other game tick
+
+        # # update the display
+        # # draw everything
+        # # pygame.display.flip()
+        # # draw everything, or pass a surface or shape to update only that portion.
+        pygame.display.update()
+
+    pygame.quit()
 
     save_session()
