@@ -46,8 +46,13 @@ def save_session():
 
 if __name__ == "__main__":
 
+    from customtkinter_utility import get_largest_monitors
+
     pygame.init()
-    WIDTH, HEIGHT = 750, 550
+
+    m0 = get_largest_monitors()[0]
+
+    WIDTH, HEIGHT = m0.width * 0.9, m0.height * 0.9
     P_WIDTH, P_HEIGHT = 0.8, 0.8
     MARGIN_X_GRID = WIDTH - (WIDTH * P_WIDTH)
     MARGIN_Y_GRID = HEIGHT - (HEIGHT * P_HEIGHT)
@@ -140,10 +145,43 @@ if __name__ == "__main__":
     print(api.check_game_status(sel_team_id, today))
     print("="*120)
 
-    def draw_table():
-        table = pgu.Table(pygame, WINDOW, x, y, 40, 40, colour_mallow, FONT_DEFAULT, "Title", "Header")
-        table.add_rows([[k, v] for k, v in box_score.__dict__.items()])
-        table.draw()
+    # def draw_table():
+    #     table = pgu.Table(pygame, WINDOW, 20, 20, 800, 900, colour_mallow, FONT_DEFAULT, "Box Score Data", "Header")
+    #     table.add_rows([[k, v] for k, v in box_score.__dict__.items()])
+    #     table.draw()
+
+    def draw_dates_nav_bar():
+        bb = pgu.ButtonBar(
+            pygame,
+            WINDOW,
+            rect_dates_nav_bar,
+            FONT_DEFAULT,
+            "#CCCCFF"
+        )
+
+        df_box_scores: pd.DataFrame = api.df_games_boxscore
+        df_box_scores = df_box_scores[
+            (df_box_scores["start_time_atl"].dt.date >= start)
+            & (df_box_scores["start_time_atl"].dt.date <= end)
+        ]
+        df_box_scores.sort_values("start_time_atl", inplace=True)
+        # dates = df_box_scores["start_time_atl"].unique().tolist()
+
+        for i, date in enumerate(dates):
+            bb.add_button(
+                f"{date:%Y-%m-%d}",
+                "#9898AA",
+                "#BBBBCA",
+                lambda date_=date: update
+            )
+        bb.draw()
+
+
+    rect_dates_nav_bar = pygame.Rect(15, 15, WIDTH, 20)
+    k_bxs_sel_id_date = None
+    k_bxs_start_date: datetime.date = today + datetime.timedelta(days=-3)
+    end: datetime.date = today + datetime.timedelta(days=3)
+    dates = pd.date_range(start, end)
 
     while running:
         CLOCK.tick(FPS_START)
@@ -159,7 +197,7 @@ if __name__ == "__main__":
         # text_rect.center = WINDOW.get_rect().center
         # WINDOW.blit(text_surface, text_rect)
 
-        draw_table()
+        draw_dates_nav_bar()
 
         print(f"{ticks_passed=}, {time_passed} milliseconds")
 

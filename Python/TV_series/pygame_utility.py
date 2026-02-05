@@ -167,10 +167,12 @@ class Widget:
     def __init__(self, game, display, rect):
         self.game = game
         self.display = display
+        self.rect_obj = None
         if isinstance(rect, Rect2):
             rect = game.Rect(*rect.tupl)
+            self.rect_obj = Rect2(rect.x, rect.y, rect.width, rect.height)
         self.rect = rect
-        self.rect_obj = Rect2(rect.x, rect.y, rect.width, rect.height)
+
 
     def resize(self, rect):
         if isinstance(rect, Rect2):
@@ -1313,11 +1315,11 @@ class TableRow(Widget):
     def __init__(self, game, display, rect):
         super().__init__(game, display, rect)
 
-        self.x = None
-        self.y = None
-        self.width = None
-        self.height = None
-        self.bounds = None
+        self.x = rect[0] if rect else None
+        self.y = rect[1] if rect else None
+        self.width = rect[2] if rect else None
+        self.height = rect[3] if rect else None
+        self.bounds = rect
         self.contents = []
         self.cols = len(self.contents)
         self.div_c = BLACK
@@ -1394,9 +1396,15 @@ class TableRow(Widget):
 class Table(Widget):
 
     # Create a generic table with a title and header.
-    def __init__(self, game, display, x, y, w, h, c, font, title, header):
+    def __init__(
+            self, game, display,
+            x, y, w, h,
+            c="#EEFFFF", font=None,
+            title=None,
+            header=None
+    ):
         super().__init__(game, display, Rect2(x, y, w, h))
-        self.c = c
+        self.c: Colour = Colour(c)
         self.font = font if font is not None else game.font.Font(None, 16)
         self.title = title.title()
         self.header = header
@@ -1436,7 +1444,7 @@ class Table(Widget):
     def set_title_color(self, c):
         self.title_color = c
         header_row = self.table_rows[0]
-        header_row.set_row_color(self.c)
+        header_row.set_row_color(self.c.hex_code)
         header_row.set_text_color(self.title_color)
 
     def set_table_color(self, c):
@@ -1453,6 +1461,8 @@ class Table(Widget):
 
     def set_header(self, h):
         self.header = h
+        rect = self.rect
+        rect = pygame.Rect(rect.x, rect.y, rect.w, 10)
         header_row = TableRow(self.game, self.display, rect)
         header_row.add_content(list(map(str.title, map(str, h))))
         if len(self.table_rows) > 0:
@@ -1490,7 +1500,7 @@ class Table(Widget):
     # Append a TableRow object to the end of the list, or insert it at given index.
     def add_row(self, table_row, index=None):
         if not isinstance(table_row, TableRow):
-            tr = TableRow(self.game, self.display)
+            tr = TableRow(self.game, self.display, None)
             tr.add_content(list(map(str, table_row)))
             tr.set_divider_color(self.div_c)
             table_row = tr
@@ -1541,7 +1551,7 @@ class Table(Widget):
 
     def draw(self):
         # draw background
-        self.game.draw.rect(self.display, self.c, self.rect)
+        self.game.draw.rect(self.display, self.c.hex_code, self.rect)
         # draw border lines
         self.game.draw.line(self.display, self.div_c, self.rect.topleft, self.rect.topright, self.div_w)
         self.game.draw.line(self.display, self.div_c, self.rect.topleft, self.rect.bottomleft, self.div_w)
