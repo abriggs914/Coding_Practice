@@ -161,27 +161,33 @@ if __name__ == "__main__":
 
         df_box_scores: pd.DataFrame = api.df_games_boxscore
         df_box_scores = df_box_scores[
-            (df_box_scores["start_time_atl"].dt.date >= start)
-            & (df_box_scores["start_time_atl"].dt.date <= end)
+            (df_box_scores["start_time_atl"].dt.date >= bxs_start_date)
+            & (df_box_scores["start_time_atl"].dt.date <= bxs_end_date)
         ]
         df_box_scores.sort_values("start_time_atl", inplace=True)
         # dates = df_box_scores["start_time_atl"].unique().tolist()
 
         for i, date in enumerate(dates):
+            msg: str = f"{date:%Y-%m-%d}"
             bb.add_button(
-                f"{date:%Y-%m-%d}",
+                msg,
                 "#9898AA",
                 "#BBBBCA",
-                lambda date_=date: update
+                lambda i_=i: db.update({k_bxs_sel_id_date: i_})
             )
+            btn: pgu.Button = bb.buttons[msg]
+            btn.enable_toggle()
+            if db[k_bxs_sel_id_date] == i:
+                btn.toggle()
         bb.draw()
 
 
     rect_dates_nav_bar = pygame.Rect(15, 15, WIDTH, 20)
-    k_bxs_sel_id_date = None
-    k_bxs_start_date: datetime.date = today + datetime.timedelta(days=-3)
-    end: datetime.date = today + datetime.timedelta(days=3)
-    dates = pd.date_range(start, end)
+    k_bxs_sel_id_date: str = "key_bxs_sel_id_date"
+    db.setdefault(k_bxs_sel_id_date, None)
+    bxs_start_date: datetime.date = today + datetime.timedelta(days=-3)
+    bxs_end_date: datetime.date = today + datetime.timedelta(days=3)
+    dates = pd.date_range(bxs_start_date, bxs_end_date)
 
     while running:
         CLOCK.tick(FPS_START)

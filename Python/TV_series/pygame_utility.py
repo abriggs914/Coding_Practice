@@ -915,7 +915,7 @@ class ButtonBar(Widget):
         self.is_horizontal = is_horizontal
         self.font_size = font_size
 
-        self.buttons = {}
+        self.buttons = []
 
     # No need to move buttons within bar, since their placement is calculated in the draw function.
     def move(self, r):
@@ -934,7 +934,16 @@ class ButtonBar(Widget):
     # ex: self.add_button("Click Me", RED, brighten(RED, 0.15), eval, "print(\"Hey!\")")
     def add_button(self, msg, ic, ac, action=None, args=None):
         button = {msg: (ic, ac, action, args)}
-        self.buttons.update(button)
+        self.buttons.append(Button(
+            self.game,
+            self.display,
+            b,
+            Rect2(xi, yi, wi, hi),
+            *info[:2],
+            self.font,
+            self.font_size,
+            *info[2:]
+        ))
 
     def draw(self):
         nb = len(self.buttons)  # number buttons
