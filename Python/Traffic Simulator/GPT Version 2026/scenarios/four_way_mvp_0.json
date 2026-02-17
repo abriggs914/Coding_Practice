@@ -1,0 +1,270 @@
+{
+  "units": { "space": "meters", "time": "seconds" },
+
+  "sim": {
+    "dt": 0.1,
+    "seed": 123,
+    "duration_s": 300
+  },
+
+  "view": {
+    "pixels_per_meter": 6,
+    "show_overlays": true
+  },
+
+ "network": {
+   "lanes": [
+      {
+        "id": "N_in_through",
+        "name": "North inbound through",
+        "centerline": [[0, -80], [0, -10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 13.9,
+        "allowed_movements": ["through","left","right"],
+        "connects_to": ["N_to_S_through", "N_to_E_left", "N_to_W_right"],
+        "stopline_s": 65.0,
+        "movement_key": "NS_through"
+      },
+      {
+        "id": "S_out",
+        "name": "South outbound",
+        "centerline": [[0, 10], [0, 80]],
+        "width_m": 3.5,
+        "speed_limit_mps": 13.9,
+        "allowed_movements": ["through"],
+        "connects_to": []
+      },
+
+      {
+        "id": "S_in_through",
+        "name": "South inbound through",
+        "centerline": [[0, 80], [0, 10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 13.9,
+        "allowed_movements": ["through","left","right"],
+        "connects_to": ["S_to_N_through", "S_to_W_left", "S_to_E_right"],
+        "stopline_s": 65.0,
+        "movement_key": "NS_through"
+      },
+      {
+        "id": "N_out",
+        "name": "North outbound",
+        "centerline": [[0, -10], [0, -80]],
+        "width_m": 3.5,
+        "speed_limit_mps": 13.9,
+        "allowed_movements": ["through"],
+        "connects_to": []
+      },
+
+      {
+        "id": "W_in_through",
+        "name": "West inbound through",
+        "centerline": [[-80, 0], [-10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 13.9,
+        "allowed_movements": ["through","left","right"],
+        "connects_to": ["W_to_E_through", "W_to_N_left", "W_to_S_right"],
+        "stopline_s": 65.0,
+        "movement_key": "EW_through"
+      },
+      {
+        "id": "E_out",
+        "name": "East outbound",
+        "centerline": [[10, 0], [80, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 13.9,
+        "allowed_movements": ["through"],
+        "connects_to": []
+      },
+
+      {
+        "id": "E_in_through",
+        "name": "East inbound through",
+        "centerline": [[80, 0], [10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 13.9,
+        "connects_to": ["E_to_W_through", "E_to_S_left", "E_to_N_right"],
+        "allowed_movements": ["through","left","right"],
+        "stopline_s": 65.0,
+        "movement_key": "EW_through"
+      },
+      {
+        "id": "W_out",
+        "name": "West outbound",
+        "centerline": [[-10, 0], [-80, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 13.9,
+        "allowed_movements": ["through"],
+        "connects_to": []
+      },
+     {
+        "id": "N_to_S_through",
+        "name": "N through connector",
+        "centerline": [[0, -10], [0, 0], [0, 10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 10.0,
+        "allowed_movements": ["through"],
+        "connects_to": ["S_out"]
+      },
+      {
+        "id": "S_to_N_through",
+        "name": "S through connector",
+        "centerline": [[0, 10], [0, 0], [0, -10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 10.0,
+        "allowed_movements": ["through"],
+        "connects_to": ["N_out"]
+      },
+      {
+        "id": "E_to_W_through",
+        "name": "E through connector",
+        "centerline": [[10, 0], [0, 0], [-10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 10.0,
+        "allowed_movements": ["through"],
+        "connects_to": ["W_out"]
+      },
+      {
+        "id": "W_to_E_through",
+        "name": "W through connector",
+        "centerline": [[-10, 0], [0, 0], [10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 10.0,
+        "allowed_movements": ["through"],
+        "connects_to": ["E_out"]
+      },
+
+      {
+        "id": "N_to_E_left",
+        "name": "N left turn connector",
+        "centerline": [[0, -10], [6, -6], [10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["left"],
+        "connects_to": ["E_out"]
+      },
+      {
+        "id": "N_to_W_right",
+        "name": "N right turn connector",
+        "centerline": [[0, -10], [-6, -6], [-10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["right"],
+        "connects_to": ["W_out"]
+      },
+
+      {
+        "id": "S_to_W_left",
+        "name": "S left turn connector",
+        "centerline": [[0, 10], [-6, 6], [-10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["left"],
+        "connects_to": ["W_out"]
+      },
+      {
+        "id": "S_to_E_right",
+        "name": "S right turn connector",
+        "centerline": [[0, 10], [6, 6], [10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["right"],
+        "connects_to": ["E_out"]
+      },
+
+      {
+        "id": "E_to_S_left",
+        "name": "E left turn connector",
+        "centerline": [[10, 0], [6, 6], [0, 10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["left"],
+        "connects_to": ["S_out"]
+      },
+      {
+        "id": "E_to_N_right",
+        "name": "E right turn connector",
+        "centerline": [[10, 0], [6, -6], [0, -10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["right"],
+        "connects_to": ["N_out"]
+      },
+
+      {
+        "id": "W_to_N_left",
+        "name": "W left turn connector",
+        "centerline": [[-10, 0], [-6, -6], [0, -10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["left"],
+        "connects_to": ["N_out"]
+      },
+      {
+        "id": "W_to_S_right",
+        "name": "W right turn connector",
+        "centerline": [[-10, 0], [-6, 6], [0, 10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["right"],
+        "connects_to": ["S_out"]
+      }
+    ]
+  },
+
+  "signals": {
+    "movement_to_lanes": {
+      "NS_through": ["N_in_through", "S_in_through"],
+      "EW_through": ["E_in_through", "W_in_through"]
+    },
+    "plan": {
+      "start_phase_index": 0,
+      "phases": [
+        { "name": "NS green", "green_movements": ["NS_through"], "duration_s": 25, "yellow_s": 3, "all_red_s": 1 },
+        { "name": "EW green", "green_movements": ["EW_through"], "duration_s": 25, "yellow_s": 3, "all_red_s": 1 }
+      ]
+    }
+  },
+
+  "demand": {
+    "spawners": [
+      {
+        "lane_id": "N_in_through",
+        "arrival_rate_vps": 0.18,
+        "choices": [
+          { "p": 0.70, "route": ["N_in_through", "N_to_S_through", "S_out"] },
+          { "p": 0.15, "route": ["N_in_through", "N_to_E_left", "E_out"] },
+          { "p": 0.15, "route": ["N_in_through", "N_to_W_right", "W_out"] }
+        ]
+      },
+      {
+        "lane_id": "S_in_through",
+        "arrival_rate_vps": 0.18,
+        "choices": [
+          { "p": 0.70, "route": ["S_in_through", "S_to_N_through", "N_out"] },
+          { "p": 0.15, "route": ["S_in_through", "S_to_E_right", "E_out"] },
+          { "p": 0.15, "route": ["S_in_through", "S_to_W_left", "W_out"] }
+        ]
+      },
+
+      {
+        "lane_id": "E_in_through",
+        "arrival_rate_vps": 0.14,
+        "choices": [
+          { "p": 0.70, "route": ["E_in_through", "E_to_W_through", "W_out"] },
+          { "p": 0.15, "route": ["E_in_through", "E_to_N_right", "N_out"] },
+          { "p": 0.15, "route": ["E_in_through", "E_to_S_left", "S_out"] }
+        ]
+      },
+      {
+        "lane_id": "W_in_through",
+        "arrival_rate_vps": 0.14,
+        "choices": [
+          { "p": 0.70, "route": ["W_in_through", "W_to_E_through", "E_out"] },
+          { "p": 0.15, "route": ["W_in_through", "W_to_S_right", "S_out"] },
+          { "p": 0.15, "route": ["W_in_through", "W_to_N_left", "N_out"] }
+        ]
+      }
+    ]
+  }
+}

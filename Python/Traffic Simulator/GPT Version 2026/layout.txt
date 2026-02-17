@@ -1,0 +1,25 @@
+traffic_sim/
+  main.py
+
+  sim/
+    __init__.py
+    world.py              # World state + step()
+    network.py            # RoadNetwork, Lanes, polyline geometry
+    vehicles.py           # Vehicle, car-following, lane-change stubs
+    signals.py            # TrafficLightController, phases
+    demand.py             # Spawners / arrival processes
+    metrics.py            # Live metrics + aggregation
+    routing.py            # Route choice / lane graph traversal
+    config.py             # Load/validate config JSON -> objects
+
+  render/
+    __init__.py
+    pygame_view.py        # Draw lanes/vehicles/signals/overlays
+    colors.py             # Color maps (including congestion -> color)
+
+  utils/
+    geometry.py           # polyline length, s->xy, headings, etc
+    timing.py             # fixed-step accumulator helpers
+
+  scenarios/
+    four_way_mvp.json

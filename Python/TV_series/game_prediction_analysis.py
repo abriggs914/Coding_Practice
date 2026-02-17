@@ -324,4 +324,4 @@ if selectbox_season:
             pie_scores(df_season, actual=False, home=True)
             pie_scores(df_season, actual=True, home=True)
 
-        line_season_points(df_season, selectbox_team=None)
+        line_season_points(df_season, team=None)
