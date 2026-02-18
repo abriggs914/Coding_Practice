@@ -5,14 +5,6 @@ from typing import Optional
 import math
 
 @dataclass
-class VehicleModel:
-    length_m: float = 4.5
-    desired_speed_mps: float = 13.9      # ~50 km/h
-    max_accel_mps2: float = 2.0
-    comfortable_decel_mps2: float = 2.5  # braking comfort
-    min_gap_m: float = 2.0               # standstill gap
-
-@dataclass
 class Vehicle:
     id: int
     lane_id: str
@@ -26,6 +18,7 @@ class Vehicle:
     is_waiting: bool = False
     spawned_time_s: float = 0.0
     finished_time_s: Optional[float] = None
+    color: Optional[tuple[int]] = None
 
 
 @dataclass

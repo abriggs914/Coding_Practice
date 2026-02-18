@@ -1,7 +1,10 @@
 # utils/geometry.py
 from typing import List, Tuple
 import math
+
+
 Vec2 = Tuple[float, float]
+
 
 def polyline_length(points: List[Vec2]) -> float:
     if len(points) < 2:
@@ -12,6 +15,7 @@ def polyline_length(points: List[Vec2]) -> float:
         x2, y2 = points[i]
         total += math.hypot(x2 - x1, y2 - y1)
     return total
+
 
 def point_at_s(points: List[Vec2], s: float) -> Tuple[float, float]:
     # returns approximate point along polyline at distance s
@@ -32,6 +36,7 @@ def point_at_s(points: List[Vec2], s: float) -> Tuple[float, float]:
         remaining -= seg
     return points[-1]
 
+
 def quarter_arc(center: Vec2, radius: float, start_angle: float, end_angle: float, n: int = 12) -> List[Vec2]:
     """Generate points along an arc."""
     cx, cy = center
@@ -41,3 +46,10 @@ def quarter_arc(center: Vec2, radius: float, start_angle: float, end_angle: floa
         ang = start_angle + (end_angle - start_angle) * t
         pts.append((cx + radius * math.cos(ang), cy + radius * math.sin(ang)))
     return pts
+
+
+def heading_at_end(points):
+    if len(points) < 2:
+        return 0.0
+    (x1,y1),(x2,y2) = points[-2], points[-1]
+    return math.atan2(y2-y1, x2-x1)

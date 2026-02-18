@@ -5,10 +5,11 @@ from typing import Dict, List, Optional
 import random
 import math
 
+from render.colors import random_rgb
 from sim.network import RoadNetwork
 from sim.vehicles import Vehicle, VehicleModel
 from sim.signals import TrafficLightController
-from sim.metrics import LiveMetrics, clamp01, congestion_score
+from sim.metrics import LiveMetrics, congestion_score
 from sim.vehicles import idm_accel
 
 
@@ -82,7 +83,8 @@ class World:
             speed_mps=0.0,
             model=VehicleModel(),
             route=route.copy(),
-            spawned_time_s=self.t_s
+            spawned_time_s=self.t_s,
+            color=random_rgb()
         )
         self.next_vehicle_id += 1
         self.vehicles.append(v)
