@@ -1,6 +1,6 @@
 import math
 import ctypes
-from typing import Literal
+from typing import Literal, Any
 
 import pandas as pd
 from locale import currency, setlocale, LC_ALL
@@ -24,8 +24,8 @@ from screeninfo import get_monitors
 VERSION = \
     """	
     General Utility Functions
-    Version..............1.85
-    Date...........2025-03-05
+    Version..............1.86
+    Date...........2026-02-19
     Author(s)....Avery Briggs
     """
 
@@ -2135,6 +2135,25 @@ def mc_mac_title(name: str) -> str:
         r_name = name
     # print(f" {r_name=}")
     return r_name
+
+
+def nz(val: Any, length: int):
+
+	def helper(val_: str, length_: int):
+		if len(val_) > length_:
+			return val_[:length_] + "... "
+		return val_
+
+	if isinstance(val, (pd.Series, pd.DataFrame)):
+		if val.empty:
+			return ""
+		else:
+			for i, va in enumerate(val):
+				val[i] = va[:length]
+			return val
+	if pd.isna(val):
+		return ""
+	return helper(str(val))
 
 
 BLK_ONE = "1", "  1  \n  1  \n  1  \n  1  \n  1  "
