@@ -1,6 +1,7 @@
 # render/pygame_view.py
 import pygame
 from render.colors import congestion_to_color, random_rgb
+from sim import world
 from sim.world import World
 from utils.geometry import point_at_s, heading_at_end
 import math
@@ -32,7 +33,7 @@ def draw_vehicle_triangle(screen, world_to_screen, lane, s_m: float, size_px: in
     rear2 = (sx + int(size_px * math.cos(rear_ang2)),
              sy + int(size_px * math.sin(rear_ang2)))
 
-    pygame.draw.polygon(screen, color, [tip, rear1, rear2])
+    return pygame.draw.polygon(screen, color, [tip, rear1, rear2])
 
 
 def draw_stopline(screen, world_to_screen, lane, s_stop: float, half_len_m: float = 2.0, width_px: int = 3):
@@ -113,7 +114,7 @@ class PygameView:
         # vehicles (simple circles for now)
         for v in world.vehicles:
             lane = world.network.lane(v.lane_id)
-            draw_vehicle_triangle(self.screen, self.world_to_screen, lane, v.s_m, size_px=6, color=v.color)
+            v.rect = draw_vehicle_triangle(self.screen, self.world_to_screen, lane, v.s_m, size_px=6, color=v.color)
 
         # HUD metrics
         self.draw_hud(world)
@@ -136,3 +137,16 @@ class PygameView:
             surf = self.font.render(ln, True, (220, 220, 220))
             self.screen.blit(surf, (10, y))
             y += 20
+
+    def handle_event(self, event: pygame.event.Event, world: World):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # If the user clicked on the input_box rect.
+            for vehicle in world.vehicles:
+                # s_m = vehicle.s_m
+                # lane = world.network.lane(vehicle.lane_id)
+                # x, y = point_at_s(lane.centerline, s_m)
+                # ang = heading_at_s(lane.centerline, s_m)
+                rect: pygame.rect.Rect = vehicle.rect
+                if rect is not None:
+                    if rect.collidepoint(event.pos):
+                        print(f"Clicked {vehicle.id}")

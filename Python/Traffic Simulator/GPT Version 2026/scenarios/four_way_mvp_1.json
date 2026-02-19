@@ -21,7 +21,7 @@
         "width_m": 3.5,
         "speed_limit_mps": 13.9,
         "allowed_movements": ["through","left","right"],
-        "connects_to": ["N_to_S_through", "W_to_E_through"],
+        "connects_to": ["N_to_S_through", "W_to_E_through", "N_to_W_right"],
         "stopline_s": 65.0,
         "movement_key": "NS_through"
       },
@@ -42,7 +42,7 @@
         "width_m": 3.5,
         "speed_limit_mps": 13.9,
         "allowed_movements": ["through","left","right"],
-        "connects_to": ["S_to_N_through", "E_to_W_through"],
+        "connects_to": ["S_to_N_through", "E_to_W_through", "S_to_E_right"],
         "stopline_s": 65.0,
         "movement_key": "NS_through"
       },
@@ -63,7 +63,7 @@
         "width_m": 3.5,
         "speed_limit_mps": 13.9,
         "allowed_movements": ["through","left","right"],
-        "connects_to": ["W_to_E_through", "S_to_N_through"],
+        "connects_to": ["W_to_E_through", "S_to_N_through", "W_to_S_right"],
         "stopline_s": 65.0,
         "movement_key": "EW_through"
       },
@@ -83,7 +83,7 @@
         "centerline": [[80, 0], [10, 0]],
         "width_m": 3.5,
         "speed_limit_mps": 13.9,
-        "connects_to": ["E_to_W_through", "N_to_S_through"],
+        "connects_to": ["E_to_W_through", "N_to_S_through", "E_to_N_right"],
         "allowed_movements": ["through","left","right"],
         "stopline_s": 65.0,
         "movement_key": "EW_through"
@@ -132,6 +132,46 @@
         "speed_limit_mps": 10.0,
         "allowed_movements": ["through"],
         "connects_to": ["E_out"]
+      },
+
+      {
+        "id": "N_to_W_right",
+        "name": "N right turn connector",
+        "centerline": [[0, -10], [-6, -6], [-10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["right"],
+        "connects_to": ["W_out"]
+      },
+
+      {
+        "id": "S_to_E_right",
+        "name": "S right turn connector",
+        "centerline": [[0, 10], [6, 6], [10, 0]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["right"],
+        "connects_to": ["E_out"]
+      },
+
+      {
+        "id": "E_to_N_right",
+        "name": "E right turn connector",
+        "centerline": [[10, 0], [6, -6], [0, -10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["right"],
+        "connects_to": ["N_out"]
+      },
+
+      {
+        "id": "W_to_S_right",
+        "name": "W right turn connector",
+        "centerline": [[-10, 0], [-6, 6], [0, 10]],
+        "width_m": 3.5,
+        "speed_limit_mps": 8.0,
+        "allowed_movements": ["right"],
+        "connects_to": ["S_out"]
       }
     ]
   },
@@ -158,7 +198,7 @@
         "choices": [
           { "p": 0.70, "route": ["N_in_through", "N_to_S_through", "S_out"] },
           { "p": 0.15, "route": ["N_in_through", "W_to_E_through", "E_out"] },
-          { "p": 0.15, "route": ["N_in_through", "E_to_W_through", "W_out"] }
+          { "p": 0.15, "route": ["N_in_through", "N_to_W_right", "W_out"] }
         ]
       },
       {
@@ -166,7 +206,7 @@
         "arrival_rate_vps": 0.18,
         "choices": [
           { "p": 0.70, "route": ["S_in_through", "S_to_N_through", "N_out"] },
-          { "p": 0.15, "route": ["S_in_through", "W_to_E_through", "E_out"] },
+          { "p": 0.15, "route": ["S_in_through", "S_to_E_right", "E_out"] },
           { "p": 0.15, "route": ["S_in_through", "E_to_W_through", "W_out"] }
         ]
       },
@@ -176,7 +216,7 @@
         "arrival_rate_vps": 0.14,
         "choices": [
           { "p": 0.70, "route": ["E_in_through", "E_to_W_through", "W_out"] },
-          { "p": 0.15, "route": ["E_in_through", "S_to_N_through", "N_out"] },
+          { "p": 0.15, "route": ["E_in_through", "E_to_N_right", "N_out"] },
           { "p": 0.15, "route": ["E_in_through", "N_to_S_through", "S_out"] }
         ]
       },
@@ -185,7 +225,7 @@
         "arrival_rate_vps": 0.14,
         "choices": [
           { "p": 0.70, "route": ["W_in_through", "W_to_E_through", "E_out"] },
-          { "p": 0.15, "route": ["W_in_through", "N_to_S_through", "S_out"] },
+          { "p": 0.15, "route": ["W_in_through", "W_to_S_right", "S_out"] },
           { "p": 0.15, "route": ["W_in_through", "S_to_N_through", "N_out"] }
         ]
       }

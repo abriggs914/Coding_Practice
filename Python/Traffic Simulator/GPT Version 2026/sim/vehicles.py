@@ -4,6 +4,9 @@ from dataclasses import dataclass
 from typing import Optional
 import math
 
+import pygame.rect
+
+
 @dataclass
 class Vehicle:
     id: int
@@ -19,6 +22,7 @@ class Vehicle:
     spawned_time_s: float = 0.0
     finished_time_s: Optional[float] = None
     color: Optional[tuple[int]] = None
+    rect: Optional[pygame.rect.Rect] = None
 
 
 @dataclass
