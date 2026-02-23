@@ -439,7 +439,6 @@ family_guy = TVSeries("Family Guy", {
 	"Comedy",
 	"Disney+")
 	
-	
 its_always_sunny_in_philadelphia = TVSeries("It's Always Sunny in Philadelphia", {
 	1 : 7,
 	2 : 10,
@@ -465,7 +464,6 @@ its_always_sunny_in_philadelphia = TVSeries("It's Always Sunny in Philadelphia",
 	"Comedy",
 	"Disney+")
 	
-
 the_last_man_on_earth = TVSeries("The Last Man on Earth", {
 	1 : 13,
 	2 : 18,
@@ -478,7 +476,6 @@ the_last_man_on_earth = TVSeries("The Last Man on Earth", {
 	"Comedy",
 	"Disney+")
 	
-
 the_mick = TVSeries("The Mick", {
 	1 : 17,
 	2 : 20},
@@ -489,7 +486,6 @@ the_mick = TVSeries("The Mick", {
 	"Comedy",
 	"Disney+")
 	
-
 brickleberry = TVSeries("Brickleberry", {
 	1 : 10,
 	2 : 13,
@@ -500,7 +496,6 @@ brickleberry = TVSeries("Brickleberry", {
 	False,
 	"Comedy",
 	"Disney+")
-	
 	
 the_simpsons = TVSeries("The Simpsons", {
 	1: 13,
@@ -546,7 +541,6 @@ the_simpsons = TVSeries("The Simpsons", {
 	"Comedy",
 	"Disney+")
 	
-
 solar_opposites = TVSeries("Solar Opposites", {
 	1 : 8,
 	2 : 9,
@@ -560,7 +554,6 @@ solar_opposites = TVSeries("Solar Opposites", {
 	"Comedy",
 	"Disney+")
 	
-
 the_orville = TVSeries("The Orville", {
 	1 : 12,
 	2 : 14,
@@ -572,7 +565,6 @@ the_orville = TVSeries("The Orville", {
 	"Comedy",
 	"Disney+")
 	
-
 mr_robot = TVSeries("Mr. Robot", {
 	1 : 10,
 	2 : 12,
@@ -584,7 +576,6 @@ mr_robot = TVSeries("Mr. Robot", {
 	False,
 	"Drama / Thriller",
 	"Prime TV")
-	
 	
 criminal_minds = TVSeries("Criminal Minds", {
 	1: 22,
@@ -612,7 +603,6 @@ criminal_minds = TVSeries("Criminal Minds", {
 	"Thriller / Drama",
 	"Disney+")
 	
-
 baskets = TVSeries("Baskets", {
 	1 : 10,
 	2 : 10,
@@ -625,7 +615,6 @@ baskets = TVSeries("Baskets", {
 	"Comedy",
 	"Disney+")
 	
-	
 sherlock = TVSeries("Sherlock", {
 	1 : 3,
 	2 : 3,
@@ -637,7 +626,6 @@ sherlock = TVSeries("Sherlock", {
 	False,
 	"Mystery / Crime / Drama",
 	"Prime TV")
-	
 	
 malcolm_in_the_middle = TVSeries("Malcolm in the Middle", {
 	1: 16,
@@ -654,7 +642,6 @@ malcolm_in_the_middle = TVSeries("Malcolm in the Middle", {
 	"Comedy",
 	"Disney+")
 	
-	
 wandavision = TVSeries("Wandavision", {
 	1: 9},
 	45,
@@ -663,7 +650,6 @@ wandavision = TVSeries("Wandavision", {
 	True,
 	"Drama",
 	"Disney+")
-	
 	
 the_falcon_and_the_winter_soldier = TVSeries("The Falcon and the Winter Soldier", {
 	1: 6},
@@ -674,7 +660,6 @@ the_falcon_and_the_winter_soldier = TVSeries("The Falcon and the Winter Soldier"
 	"Drama",
 	"Disney+")
 	
-	
 loki = TVSeries("Loki", {
 	1: 6},
 	60,
@@ -683,7 +668,6 @@ loki = TVSeries("Loki", {
 	False,
 	"Drama",
 	"Disney+")
-	
 	
 gravity_falls = TVSeries("Gravity Falls", {
 	1: 20,
@@ -695,7 +679,6 @@ gravity_falls = TVSeries("Gravity Falls", {
 	"Comedy / Cartoon",
 	"Disney+")
 	
-	
 what_if = TVSeries("What If?", {
 	1: 9,
 	2: 9},
@@ -706,7 +689,6 @@ what_if = TVSeries("What If?", {
 	"Drama",
 	"Disney+")
 	
-	
 hawkeye = TVSeries("Hawkeye", {
 	1: 6},
 	60,
@@ -716,7 +698,6 @@ hawkeye = TVSeries("Hawkeye", {
 	"Drama",
 	"Disney+")
 	
-	
 gravity_falls_shorts = TVSeries("Gravity Falls Shorts", {
 	1: 17},
 	5,
@@ -725,7 +706,6 @@ gravity_falls_shorts = TVSeries("Gravity Falls Shorts", {
 	False,
 	"Comedy / Cartoon",
 	"Disney+")
-	
 
 the_replacements = TVSeries("The Replacements", {
 	1: 21},
@@ -735,7 +715,6 @@ the_replacements = TVSeries("The Replacements", {
 	False,
 	"Comedy / Cartoon",
 	"Disney+")
-	
 	
 star_wars_the_clone_wars = TVSeries("Star Wars the Clone Wars", {
 	1: 22,
@@ -752,7 +731,6 @@ star_wars_the_clone_wars = TVSeries("Star Wars the Clone Wars", {
 	"Drama / Cartoon",
 	"Disney+")
 	
-	
 sons_of_anarchy = TVSeries("Sons of Anarchy", {
 	1: 13,
 	2: 13,
@@ -768,7 +746,6 @@ sons_of_anarchy = TVSeries("Sons of Anarchy", {
 	"Drama / Action",
 	"Disney+")
 	
-	
 the_great_north = TVSeries("The Great North", {
 	1: 11,
 	2: 22,
@@ -780,7 +757,6 @@ the_great_north = TVSeries("The Great North", {
 	True,
 	"Comedy / Cartoon",
 	"Disney+")
-	
 	
 king_of_the_hill = TVSeries("King of the Hill", {
 	1: 12,
@@ -804,7 +780,6 @@ king_of_the_hill = TVSeries("King of the Hill", {
 	"Comedy / Cartoon",
 	"Disney+")
 	
-	
 bless_the_harts = TVSeries("Bless the Harts", {
 	1: 10,
 	2: 24},
@@ -814,7 +789,6 @@ bless_the_harts = TVSeries("Bless the Harts", {
 	False,
 	"Comedy / Cartoon",
 	"Disney+")
-	
 	
 # https://tv.getyarn.io/yarn-clip/d2594eb7-39da-4231-a1a9-a7c50289f249
 buffy_the_vampire_slayer = TVSeries("Buffy The Vampire Slayer", {
@@ -831,7 +805,6 @@ buffy_the_vampire_slayer = TVSeries("Buffy The Vampire Slayer", {
 	False,
 	"Drama / Action",
 	"Disney+")
-	
 
 angel = TVSeries("Angel", {
 	1: 22,
@@ -846,7 +819,6 @@ angel = TVSeries("Angel", {
 	"Drama / Action",
 	"Disney+")
 	
-
 what_we_do_in_the_shadows = TVSeries("What We Do In The Shadows", {
 	1: 10,
 	2: 10,
@@ -860,7 +832,6 @@ what_we_do_in_the_shadows = TVSeries("What We Do In The Shadows", {
 	"Comedy",
 	"Disney+")
 	
-
 american_dad = TVSeries("American Dad", {
 	1: 7,
 	2: 16,
@@ -890,7 +861,6 @@ american_dad = TVSeries("American Dad", {
 	"Comedy",
 	"Disney+")
 	
-
 smallville = TVSeries("Smallville", {
 	1: 21,
 	2: 23,
@@ -908,7 +878,6 @@ smallville = TVSeries("Smallville", {
 	False,
 	"Drama",
 	"Prime TV")
-	
 	
 the_x_files = TVSeries("The X-Files", {
 	1: 24,
@@ -929,7 +898,6 @@ the_x_files = TVSeries("The X-Files", {
 	"Drama / Crime / Mystery",
 	"Disney+")
 	
-
 fillmore = TVSeries("Fillmore", {
     1 : 26},
     23,
@@ -939,6 +907,14 @@ fillmore = TVSeries("Fillmore", {
     "Comedy, Cartoon",
     "Disney+")
 
+digimon = TVSeries("Digimon", {
+	1: 52},
+	23,
+	,
+	,
+	False,
+	"Action/Adventure",
+	"Disney+")
 
 series_list = [
     the_office,
@@ -1001,7 +977,8 @@ series_list = [
 	american_dad,
 	smallville,
 	the_x_files,
-	fillmore
+	fillmore,
+	digimon
 ]
 
    

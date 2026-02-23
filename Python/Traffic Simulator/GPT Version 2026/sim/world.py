@@ -54,6 +54,7 @@ class World:
     next_vehicle_id: int = 1
     rng: random.Random = field(default_factory=random.Random)
     metrics: LiveMetrics = field(default_factory=LiveMetrics)
+    selected_vehicles: List[Vehicle] = field(default_factory=list)
 
     def step(self, dt: float):
         self.t_s += dt
@@ -254,3 +255,7 @@ class World:
             if v.lane_id == lane_id and v.s_m < min_clearance_m:
                 return False
         return True
+
+    def select_vehicle(self, sel_vehicles: Vehicle | list[Vehicle]):
+        sel_vehicles = [sel_vehicles] if not isinstance(sel_vehicles, list) else sel_vehicles
+        self.selected_vehicles = sel_vehicles.copy()

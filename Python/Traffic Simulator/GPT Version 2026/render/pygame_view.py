@@ -1,7 +1,7 @@
-# render/pygame_view.py
 import pygame
 from render.colors import congestion_to_color, random_rgb
 from sim import world
+from sim.vehicles import Vehicle
 from sim.world import World
 from utils.geometry import point_at_s, heading_at_end
 import math
@@ -14,6 +14,29 @@ def heading_at_s(points, s: float) -> float:
     x1, y1 = point_at_s(points, max(0.0, s))
     x2, y2 = point_at_s(points, max(0.0, s2))
     return math.atan2(y2 - y1, x2 - x1)
+
+
+def draw_vehicle_selection_annotation(screen, world_to_screen, lane, vehicle: Vehicle, font: pygame.font.Font):
+    s_m = vehicle.s_m
+    x, y = point_at_s(lane.centerline, s_m)
+    ang = heading_at_s(lane.centerline, s_m)
+    sx, sy = world_to_screen(x, y)
+    rect = pygame.rect.Rect(0, 0, 75, 24)
+    rect.center = (sx + 40, sy - 40)
+
+    pygame.draw.line(screen, (245, 245, 245), (sx, sy), rect.center, 3)
+    pygame.draw.rect(screen, (255, 255, 255), rect)
+
+    lines = [
+        f"#{vehicle.id} {vehicle.speed_mps:.3f} mph",
+        f"{vehicle.route}"
+    ]
+
+
+    for i, ln in enumerate(lines):
+        surf = font.render(ln, True, (0, 0, 160))
+        screen.blit(surf, (rect.left + 3, rect.top + (8 * (i + 0)) + 2))
+        y += 20
 
 
 def draw_vehicle_triangle(screen, world_to_screen, lane, s_m: float, size_px: int = 7, color: tuple = (220, 220, 230)):
@@ -66,6 +89,7 @@ class PygameView:
         self.screen = pygame.display.set_mode((self.w, self.h))
         pygame.display.set_caption("Traffic Sim")
         self.font = pygame.font.SysFont("consolas", 18)
+        self.font_mini = pygame.font.SysFont("consolas", 10)
         self.show_overlays = bool(cfg["view"].get("show_overlays", True))
 
         # world origin -> screen center
@@ -115,6 +139,8 @@ class PygameView:
         for v in world.vehicles:
             lane = world.network.lane(v.lane_id)
             v.rect = draw_vehicle_triangle(self.screen, self.world_to_screen, lane, v.s_m, size_px=6, color=v.color)
+            if v in world.selected_vehicles:
+                draw_vehicle_selection_annotation(self.screen, self.world_to_screen, lane, v, self.font_mini)
 
         # HUD metrics
         self.draw_hud(world)
@@ -141,6 +167,9 @@ class PygameView:
     def handle_event(self, event: pygame.event.Event, world: World):
         if event.type == pygame.MOUSEBUTTONDOWN:
             # If the user clicked on the input_box rect.
+            mods = pygame.key.get_mods()
+            print(f"SC={mods & pygame.KMOD_SHIFT}, {mods=}, {pygame.K_LSHIFT=}, , {pygame.K_RSHIFT=}, {pygame.KMOD_SHIFT=}")
+            sel_v_ids = world.selected_vehicles.copy()
             for vehicle in world.vehicles:
                 # s_m = vehicle.s_m
                 # lane = world.network.lane(vehicle.lane_id)
@@ -149,4 +178,8 @@ class PygameView:
                 rect: pygame.rect.Rect = vehicle.rect
                 if rect is not None:
                     if rect.collidepoint(event.pos):
-                        print(f"Clicked {vehicle.id}")
+                        if mods & pygame.KMOD_SHIFT:
+                            sel_v_ids.append(vehicle)
+                        else:
+                            sel_v_ids = [vehicle]
+            world.select_vehicle(sel_v_ids)

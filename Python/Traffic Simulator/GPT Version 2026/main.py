@@ -27,6 +27,8 @@ def main():
                     accumulator = 0.0  # <-- critical: prevent catch-up jump
                 elif event.key == pygame.K_PERIOD and paused:
                     world.step(sim_dt)
+                elif event.key == pygame.K_LSHIFT:
+                    pass
             view.handle_event(event, world)
 
         if not paused:
