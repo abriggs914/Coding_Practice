@@ -10,6 +10,7 @@ from utility import pad_centre
 #	Bones
 #	The Big Bang Theory
 #	Digimon
+#	Quantum Leap
 
 
 the_office = TVSeries("The Office", {
