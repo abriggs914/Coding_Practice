@@ -1500,7 +1500,7 @@ function renderGames(games, isFirstLoad) {
       const awayScore = away.score ?? 0;
       const homeScore = home.score ?? 0;
       const prev = previousGamesSnapshot[id];
-      // console.log("Render '" + id + "', (" + awayScore + ", " + homeScore + ")")
+      //console.log("Render '" + id + "', (" + awayScore + ", " + homeScore + ")")
       if (!prev) continue;
       // console.log(JSON.stringify(prev, null, 2))
       const prevGoalIds = new Set(prev.goals);

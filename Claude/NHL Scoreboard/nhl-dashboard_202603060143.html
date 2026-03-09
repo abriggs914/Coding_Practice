@@ -1065,12 +1065,12 @@
     gap: 10px;
   }
   .standings-logo {
-    width: 28px; height: 28px;
+    width: 40px; height: 40px;
     object-fit: contain;
     filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
   }
   .standings-logo-placeholder {
-    width: 28px; height: 28px;
+    width: 40px; height: 40px;
     border-radius: 50%;
     background: var(--rink-light);
     display: flex; align-items: center; justify-content: center;
@@ -2282,7 +2282,9 @@ function buildWildcardBlock(confName, div1Name, div1Teams, div2Name, div2Teams, 
   const buildMiniTable = (label, teamsList, showWCLine) => {
     const rows = teamsList.map((t, i) => {
       const logo = t.teamLogo ? `<img class="standings-logo" src="${t.teamLogo}" alt="${t.teamAbbrev?.default}" onerror="this.style.display='none'">` : `<div class="standings-logo-placeholder">${t.teamAbbrev?.default||'?'}</div>`;
-      const streak = t.streakCode || '-';
+      const streakCode = t.streakCode || '-';
+      const streakCount = t.streakCount || '-';
+      const streak = streakCode + streakCount;
       const sc = streak.startsWith('W') ? 'streak-w' : streak.startsWith('L') ? 'streak-l' : streak.startsWith('O') ? 'streak-ot' : '';
       const wc = showWCLine && i === 2;
       return `<tr class="${i < (showWCLine ? 3 : 3) ? 'in-playoffs' : ''} ${wc ? 'wildcard-divider' : ''}">
@@ -2301,7 +2303,9 @@ function buildWildcardBlock(confName, div1Name, div1Teams, div2Name, div2Teams, 
 
   const wcRows = wcTeams.map((t, i) => {
     const logo = t.teamLogo ? `<img class="standings-logo" src="${t.teamLogo}" alt="${t.teamAbbrev?.default}" onerror="this.style.display='none'">` : `<div class="standings-logo-placeholder">${t.teamAbbrev?.default||'?'}</div>`;
-    const streak = t.streakCode || '-';
+    const streakCode = t.streakCode || '-';
+    const streakCount = t.streakCount || '-';
+    const streak = streakCode + streakCount;
     const sc = streak.startsWith('W') ? 'streak-w' : streak.startsWith('L') ? 'streak-l' : streak.startsWith('O') ? 'streak-ot' : '';
     return `<tr class="${i < 2 ? 'in-playoffs' : ''} ${i === 2 ? 'wildcard-divider' : ''}">
       <td><div class="team-cell">${logo}<div><div class="team-abbrev">${t.teamAbbrev?.default||''}</div><div class="team-fullname">${t.teamName?.default||''}</div></div></div></td>
@@ -2335,7 +2339,9 @@ function buildDivisionTable(divName, conf, teams, viewMode) {
       ? `<img class="standings-logo" src="${logo}" alt="${t.teamAbbrev?.default}" onerror="this.style.display='none'">`
       : `<div class="standings-logo-placeholder">${t.teamAbbrev?.default || '?'}</div>`;
 
-    const streak = t.streakCode || '-';
+    const streakCode = t.streakCode || '-';
+    const streakCount = t.streakCount || '-';
+    const streak = streakCode + streakCount;
     let streakClass = '';
     if (streak.startsWith('W')) streakClass = 'streak-w';
     else if (streak.startsWith('L')) streakClass = 'streak-l';

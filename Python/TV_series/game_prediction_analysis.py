@@ -16,7 +16,7 @@ def read_excel(pth: str) -> pd.DataFrame:
             pth = pth.lower().replace(r"\abrig\documents", r"\abriggs\documents")
             if not os.path.exists(pth):
                 raise FileNotFoundError(f"Could not open '{pth_o}'")
-    return pd.read_excel(pth)
+    return pd.read_excel(pth, skiprows=1)
 
 
 def describe_score_cols(df_games: pd.DataFrame, team: Optional[str] = None):
@@ -181,6 +181,8 @@ selectbox_season = st.selectbox(
 if selectbox_season:
     st.header(f"Data from the {selectbox_season[:4]} - {selectbox_season[4:]} Season")
     df_season: pd.DataFrame = excel_dfs[selectbox_season]
+	
+    st.write(df_season.columns.tolist())
 
     lst_teams: list = sorted(df_season["AwayTeam"].dropna().unique().tolist())
     lst_game_dates: list = sorted(df_season["GameDate"].dropna().unique().tolist())
