@@ -3,6 +3,8 @@ NHL Prediction Performance Dashboard
 Run with: streamlit run nhl_dashboard.py
 """
 
+import os
+import math
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -315,7 +317,7 @@ def get_jersey_image_paths(jersey_id, base_path: str) -> list:
         glob.glob(os.path.join(folder, "*.JPG")) +
         glob.glob(os.path.join(folder, "*.JPEG"))
     )
-    return imgs
+    return list(set(imgs))
 
 
 def render_jersey_card(row, base_img_path: str, show_player_data: bool = True):
@@ -370,8 +372,7 @@ def render_jersey_card(row, base_img_path: str, show_player_data: bool = True):
             {logo_html}
             <div>
                 <span style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:#c8a84b;letter-spacing:2px">
-                    {"#" + str(int(number)) + " " if str(number).strip() not in ["","nan"] else ""}
-                    {player if player else team}
+                    {"#" + str(int(number)) + " " if str(number).strip() not in ["","nan"] else ""}{player if player else team}
                 </span>
                 <span style="color:#8899aa;font-size:0.8rem;margin-left:8px">{team} · {league}</span>
             </div>
@@ -387,7 +388,7 @@ def render_jersey_card(row, base_img_path: str, show_player_data: bool = True):
         </div>
     </div>
     """
-    st.code(markdown, language="HTML", line_numbers=True)
+    # st.code(markdown, language="HTML", line_numbers=True)
     st.markdown(markdown, unsafe_allow_html=True)
 
     # Jersey photos
@@ -719,9 +720,39 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         # st.write(filtered)
         # print(f"filtered")
         # print(filtered)
+        
+        cols_paginataion = st.columns([0.6, 0.08, 0.08, 0.08, 0.08, 0.08])
+        k_page: str = "page_number"
+        cards_per_page = 3
+        n_pages = int(math.ceil(filtered.shape[0] / cards_per_page))
+        page_num = st.session_state.setdefault(k_page, 0)
+        with cols_paginataion[1]:
+            if st.button("|<"):
+                st.session_state.update({k_page: 0})
+                st.rerun()
+        with cols_paginataion[2]:
+            if st.button("<"):
+                st.session_state.update({k_page: max(0, page_num - 1)})
+                st.rerun()
+        with cols_paginataion[3]:
+            st.write(f"{page_num + 1} / {n_pages}")
+        with cols_paginataion[4]:
+            if st.button("\>"):
+                st.session_state.update({k_page: min(n_pages - 1, page_num + 1)})
+                st.rerun()
+        with cols_paginataion[5]:
+            if st.button("\>|"):
+                st.session_state.update({k_page: n_pages - 1})
+                st.rerun()
+        i_a = cards_per_page * page_num
+        i_b = (cards_per_page * (page_num + 1)) - 1
+        
+        filtered = filtered[i_a: i_b + 1]
+        
+        # st.write(f"{page_num=}, {i_a=}, {i_b=}, {filtered.shape=}")
 
         # Render jersey cards
-        for _, row in filtered.head(1).iterrows():
+        for _, row in filtered.head(cards_per_page).iterrows():
             with st.container():
                 # st.write(f"row")
                 # st.write(row)
@@ -1111,11 +1142,32 @@ def apply_enhanced_scores(df: pd.DataFrame) -> pd.DataFrame:
     df.loc[mask, "EnhancedScore"] = df[mask].apply(compute_enhanced_score, axis=1)
     return df
 
+
+def peek_rows(filepath: str) -> int:
+    """If copy file was made manually, need to skip 1 row. If it was done by the sidebar button, none need to be skipped."""
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"Could not find '{filepath}'")
+    n = 3
+    ext = str(filepath).lower()
+    if ext.endswith(".xlsx") or ext.endswith(".xls"):
+        df = pd.read_excel(filepath, nrows=n)
+    else:
+        df = pd.read_csv(filepath, encoding="utf-8-sig", nrows=n)
+    cols = df.columns.tolist()
+    read = [cols] + [list(df.iloc[i].values) for i in range(n)]
+    for i, row in enumerate(read):
+        vals = "".join(map(str, [v for v in row if (not pd.isna(v)) and bool(v)])).strip()
+        if vals:
+            return i
+    raise ValueError(f"peek_rows could not determine hoe many rows to skip in '{filepath}'")
+    
+
+
 @st.cache_data
 def load_data(filepath: str) -> pd.DataFrame:
     ext = str(filepath).lower()
     if ext.endswith(".xlsx") or ext.endswith(".xls"):
-        df = pd.read_excel(filepath, skiprows=1)
+        df = pd.read_excel(filepath, skiprows=peek_rows(filepath))
     else:
         df = pd.read_csv(filepath, encoding="utf-8-sig")
     df.columns = df.columns.str.strip()
@@ -1139,7 +1191,7 @@ def load_data(filepath: str) -> pd.DataFrame:
     for col in yn_cols:
         if col in df.columns:
             df[col] = df[col].map(
-                lambda x: True if str(x).strip().upper() in ["Y", "YES", "1", "TRUE"] else False
+                lambda x: str(x).strip().upper().replace(".0", "") in ["Y", "YES", "1", "TRUE"]
             )
 
     # Numeric
@@ -1657,6 +1709,18 @@ def main():
         ], label_visibility="collapsed")
         st.markdown("---")
         st.caption(f"📂 `{path_excel_predictions.split(chr(92))[-1]}`")
+        
+        if st.button(
+            "Update predictions copy"
+        ):
+            path_predictions_2526 = r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\NHLGamePredictions2526.xlsx"
+            if os.path.exists(path_predictions_2526):
+                try:
+                    df_new = pd.read_excel(path_predictions_2526, skiprows=1)
+                    df_new.to_excel(path_excel_predictions, index=False)
+                    load_data.clear()
+                except PermissionError:
+                    print("Excel file is currently open.")
 
     # Load data
     try:
@@ -1770,22 +1834,17 @@ def main():
         col_g1, col_g2 = st.columns(2)
         with col_g1:
             g1 = st.selectbox("Group by (Chart 1)", list(grouping_options.keys()), index=0)
-        with col_g2:
-            g2 = st.selectbox("Group by (Chart 2)", list(grouping_options.keys()), index=2)
-
-        tab1, tab2 = st.tabs([f"📊 {g1}", f"📊 {g2}"])
-        with tab1:
             fig, tbl = accuracy_bar(grouping_options[g1], g1, completed)
             st.plotly_chart(fig, use_container_width=True)
             with st.expander("View data table"):
                 st.dataframe(tbl.sort_values("Accuracy", ascending=False), use_container_width=True)
-
-        with tab2:
+        with col_g2:
+            g2 = st.selectbox("Group by (Chart 2)", list(grouping_options.keys()), index=2)
             fig2, tbl2 = accuracy_bar(grouping_options[g2], g2, completed)
             st.plotly_chart(fig2, use_container_width=True)
             with st.expander("View data table"):
                 st.dataframe(tbl2.sort_values("Accuracy", ascending=False), use_container_width=True)
-
+        
         # Stacked comparison
         st.markdown('<div class="section-header">SIDE-BY-SIDE COMPARISON</div>', unsafe_allow_html=True)
         cmp_col = st.selectbox("Compare by", list(grouping_options.keys()), index=6)
