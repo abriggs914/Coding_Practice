@@ -11,6 +11,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from streamlit_pills import pills
 import requests
 from datetime import datetime, timedelta
 import warnings
@@ -223,8 +224,36 @@ def load_jersey_data(filepath: str) -> pd.DataFrame:
         if col in df.columns:
             df[col] = pd.to_datetime(df[col], errors="coerce")
 
+    df["PriceF"] = df.apply(
+        lambda r:
+            (
+                (
+                    (
+                        r["ExchangeRate"] * (
+                            r["StickerPriceUS"]
+                            + (r["Shipping"] if (str(r["Shipping"]).lower() not in ["nan", "0", "0.0", "none"]) else 0)
+                            + (r["Tax"] if (str(r["Tax"]).lower() not in ["nan", "0", "0.0", "none"]) else 0)
+                        )
+                    )
+                    + (r["Duty"] if (str(r["Duty"]).lower() not in ["nan", "0", "0.0", "none"]) else 0)
+                    - (r["Discount"] if (str(r["Discount"]).lower() not in ["nan", "0", "0.0", "none"]) else 0)
+                ) if (str(r["StickerPriceUS"]).lower() not in ["nan", "0", "0.0", "none"]) else (
+                    (
+                        (
+                            r["StickerPriceCDN"]
+                            + (r["Duty"] if (str(r["Duty"]).lower() not in ["nan", "0", "0.0", "none"]) else 0)
+                            + (r["Shipping"] if (str(r["Shipping"]).lower() not in ["nan", "0", "0.0", "none"]) else 0)
+                            + (r["Tax"] if (str(r["Tax"]).lower() not in ["nan", "0", "0.0", "none"]) else 0)
+                        )
+                        - (r["Discount"] if (str(r["Discount"]).lower() not in ["nan", "0", "0.0", "none"]) else 0)
+                    ) if (str(r["StickerPriceCDN"]).lower() not in ["nan", "0", "0.0", "none"]) else -1
+                )
+            )
+        , axis=1
+    )
+
     # Numeric
-    for col in ["PriceC", "PriceM", "StickerPriceCDN", "StickerPriceUS",
+    for col in ["PriceF", "PriceM", "PriceF", "StickerPriceCDN", "StickerPriceUS",
                 "Duty", "Shipping", "Discount", "Tax", "ExchangeRate", "NHLID"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -331,9 +360,11 @@ def render_jersey_card(row, base_img_path: str, show_player_data: bool = True):
     model     = row.get("Model", "")
     make      = row.get("Make", "")
     size      = row.get("Size", "")
-    price     = row.get("PriceC", None)
+    price     = row.get("PriceF", None)
     nhl_id    = row.get("NHLID", None)
     order_dt  = row.get("OrderDate", None)
+    
+    k_jersey: str = ''.join(map(str, [jersey_id, player, team, league, number, brand, model, make, size, price, nhl_id, order_dt]))
 
     # Colour chips
     colours = [str(row.get(c, "")) for c in ["Colour1", "Colour2", "Colour3"] if row.get(c, "")]
@@ -393,13 +424,38 @@ def render_jersey_card(row, base_img_path: str, show_player_data: bool = True):
 
     # Jersey photos
     if img_paths:
-        cols_img = st.columns(min(len(img_paths), 3))
-        for i, p in enumerate(img_paths[:3]):
-            with cols_img[i]:
-                try:
-                    st.image(p, use_container_width=True)
-                except Exception:
-                    st.caption(f"📷 {p.split('/')[-1].split(chr(92))[-1]}")
+        if len(img_paths) > 3:
+            lst_cols_to_make = [1] + [8 for _ in range(3)] + [1]
+            # st.write(img_paths)
+        else:
+            lst_cols_to_make = [1 for _ in range(min(len(img_paths), 3))]
+            
+        with st.expander(f"{len(img_paths)} Jersey Images:", expanded=False):
+            cols_img = st.columns(lst_cols_to_make)
+            k_images_start: str = f"key_images_start_{k_jersey}"
+            i_images_start = st.session_state.setdefault(k_images_start, 0)
+            # st.write(f"{len(img_paths)=}, {i_images_start=}, {k_images_start=}")
+            if len(img_paths) > 3:
+                with cols_img[0]:
+                    if st.button("<", key=f"prev_image_{k_jersey}", disabled=i_images_start==0):
+                        st.session_state.update({k_images_start: max(0, i_images_start - 1)})
+                        st.rerun()
+                    if st.button("|<", key=f"first_image_{k_jersey}", disabled=i_images_start==0):
+                        st.session_state.update({k_images_start: 0})
+                        st.rerun()
+                with cols_img[4]:
+                    if st.button("\>", key=f"next_image_{k_jersey}", disabled=i_images_start==(len(img_paths)-3)):
+                        st.session_state.update({k_images_start: max(0, i_images_start + 1)})
+                        st.rerun()
+                    if st.button("\>|", key=f"last_image_{k_jersey}", disabled=i_images_start==(len(img_paths)-3)):
+                        st.session_state.update({k_images_start: len(img_paths)-3})
+                        st.rerun()
+            for i, p in enumerate(img_paths[i_images_start: i_images_start + 3]):
+                with cols_img[i + int(bool(len(img_paths) > 3))]:
+                    try:
+                        st.image(p, use_container_width=True, caption=f"{i_images_start+i+1} / {len(img_paths)} -- '{p}'")
+                    except Exception:
+                        st.caption(f"📷 {p.split('/')[-1].split(chr(92))[-1]}")
     else:
         st.caption("📷 No local images found for this jersey.")
 
@@ -498,36 +554,56 @@ def render_player_panel(pd_data: dict, league: str):
 def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     """Full Jersey Collection page."""
     st.markdown('<div class="section-header">🧥 JERSEY COLLECTION</div>', unsafe_allow_html=True)
+    
+    # st.write("df_jerseys")
+    # st.dataframe(df_jerseys)
+    # st.write("'" + ("', '".join(df_jerseys["PlayerName"].values)) + "'")
 
     active = df_jerseys[df_jerseys.get("Cancelled", pd.Series([False]*len(df_jerseys))).fillna(False) != True].copy()
+    
+    # st.write("active")
+    # st.dataframe(active)
+    # st.write("'" + ("', '".join(active["PlayerName"].values)) + "'")
+    
     total_jerseys = len(active)
-    total_value   = active["PriceC"].sum() if "PriceC" in active.columns else 0
-    with_player   = active["PlayerName"].notna().sum()
+    total_value   = active["PriceF"].sum() if "PriceF" in active.columns else 0
+    with_player   = (~active["PlayerName"].str.strip().isin(["nan", "none", ""])).sum()
     blank_jerseys = total_jerseys - with_player
     with_images   = sum(1 for _, r in active.iterrows() if get_jersey_image_paths(r.get("ID", -1), base_img_path))
+    missing_price = len(active) - len(active[active["PriceF"] > 0])
 
     # Top KPIs
-    k1, k2, k3, k4, k5 = st.columns(5)
+    k1, k2, k3, k4, k5, k6 = st.columns(6)
     k1.metric("Total Jerseys", total_jerseys)
     k2.metric("Collection Value", f"${total_value:,.0f} CAD" if total_value > 0 else "—")
     k3.metric("Player Jerseys", with_player)
     k4.metric("Blank Jerseys", blank_jerseys)
     k5.metric("With Photos", with_images)
+    k6.metric("Missing Price", missing_price)
 
     st.markdown("---")
-
-    # ── Tabs ────────────────────────────────────────────────
-    tab_stats, tab_browse, tab_timeline, tab_cost = st.tabs([
+    
+    options_pills_jersey_collection_mode = [
         "📊 Collection Stats",
         "🔍 Browse Jerseys",
         "📅 Timeline",
         "💰 Cost Analysis",
-    ])
+    ]
+    k_pills_jersey_collection_mode: str = "key_pills_jersey_collection_mode"
+    st.session_state.setdefault(k_pills_jersey_collection_mode, 0)
+    pills_jersey_collection_mode = pills(
+        label="Mode",
+        options=options_pills_jersey_collection_mode,
+        key=k_pills_jersey_collection_mode,
+        index=0,
+        label_visibility="hidden"
+    )
 
     # ══════════════════════════════════════════════
     # TAB 1: COLLECTION STATS
     # ══════════════════════════════════════════════
-    with tab_stats:
+    if pills_jersey_collection_mode == options_pills_jersey_collection_mode[0]:
+        # 📊 Collection Stats
         st.markdown('<div class="section-header" style="font-size:1.2rem">COLLECTION STATISTICS</div>', unsafe_allow_html=True)
 
         col_l, col_r = st.columns(2)
@@ -656,11 +732,13 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             size_cnt = active["Size"].fillna("Unknown").astype(str).value_counts().reset_index()
             size_cnt.columns = ["Size", "Count"]
             fig_size = px.bar(
-                size_cnt.sort_values("Size"), x="Size", y="Count",
+                size_cnt.sort_values("Count", ascending=False), x="Size", y="Count",
                 title="Jersey Size Distribution",
-                color="Count", color_continuous_scale=[[0, ICE_BLUE], [1, GOLD]],
+                color="Count",
+                color_continuous_scale=[[0, ICE_BLUE], [1, GOLD]],
                 text="Count"
             )
+            fig_size.update_xaxes(type="category")
             fig_size.update_traces(textposition="outside")
             fig_size.update_layout(**DARK_THEME, coloraxis_showscale=False, height=300)
             st.plotly_chart(fig_size, use_container_width=True)
@@ -668,7 +746,8 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     # ══════════════════════════════════════════════
     # TAB 2: BROWSE JERSEYS
     # ══════════════════════════════════════════════
-    with tab_browse:
+    if pills_jersey_collection_mode == options_pills_jersey_collection_mode[1]:
+        # 🔍 Browse Jerseys
         st.markdown('<div class="section-header" style="font-size:1.2rem">BROWSE & SEARCH</div>', unsafe_allow_html=True)
 
         # Filters
@@ -709,7 +788,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         # Sort
         sort_col, sort_dir = st.columns([3, 1])
         with sort_col:
-            sort_by = st.selectbox("Sort by", ["OrderDate", "PriceC", "Team", "PlayerLast", "League", "ID"], index=0)
+            sort_by = st.selectbox("Sort by", ["OrderDate", "PriceF", "Team", "PlayerLast", "League", "ID"], index=0)
         with sort_dir:
             asc = st.selectbox("Direction", ["Desc", "Asc"], index=0) == "Asc"
 
@@ -721,7 +800,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         # print(f"filtered")
         # print(filtered)
         
-        cols_paginataion = st.columns([0.6, 0.08, 0.08, 0.08, 0.08, 0.08])
+        cols_paginataion = st.columns([0.65, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05])
         k_page: str = "page_number"
         cards_per_page = 3
         n_pages = int(math.ceil(filtered.shape[0] / cards_per_page))
@@ -731,16 +810,24 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
                 st.session_state.update({k_page: 0})
                 st.rerun()
         with cols_paginataion[2]:
+            if st.button(f"-{cards_per_page} <"):
+                st.session_state.update({k_page: max(0, page_num - cards_per_page)})
+                st.rerun()
+        with cols_paginataion[3]:
             if st.button("<"):
                 st.session_state.update({k_page: max(0, page_num - 1)})
                 st.rerun()
-        with cols_paginataion[3]:
-            st.write(f"{page_num + 1} / {n_pages}")
         with cols_paginataion[4]:
+            st.write(f"{page_num + 1} / {n_pages}")
+        with cols_paginataion[5]:
             if st.button("\>"):
                 st.session_state.update({k_page: min(n_pages - 1, page_num + 1)})
                 st.rerun()
-        with cols_paginataion[5]:
+        with cols_paginataion[6]:
+            if st.button(f"\> {cards_per_page}"):
+                st.session_state.update({k_page: min(n_pages - 1, page_num + cards_per_page)})
+                st.rerun()
+        with cols_paginataion[7]:
             if st.button("\>|"):
                 st.session_state.update({k_page: n_pages - 1})
                 st.rerun()
@@ -764,93 +851,154 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     # ══════════════════════════════════════════════
     # TAB 3: TIMELINE
     # ══════════════════════════════════════════════
-    with tab_timeline:
+    # with tab_timeline:
+    if pills_jersey_collection_mode == options_pills_jersey_collection_mode[2]:
+        # 📅 Timeline
         st.markdown('<div class="section-header" style="font-size:1.2rem">ACQUISITION TIMELINE</div>', unsafe_allow_html=True)
+        
+        active_timeline = active.rename(columns={
+            "ID": "JerseyID",
+            "Brand": "BrandName",
+            "Make": "JerseyMake"
+        })
+        active_timeline["Colours"] = active_timeline.apply(
+            lambda r:
+                ", ".join([c for c in r[["Colour1", "Colour2", "Colour3"]] if str(c).lower().strip() not in ["none", "nan", ""]])
+            , axis=1
+        )
+        cols_timeline_order_open = ["OrderDate", "OpenDate", "JerseyID"]
+        # st.write("active_timeline")
+        # st.write(active_timeline)
+        df_timeline_order_open = active_timeline[cols_timeline_order_open]
+        # st.dataframe(df_timeline_order_open)
+        # df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+        # df_timeline_order_receive["Event"] = df_timeline_order_receive.apply(lambda row: print(f"{row=}"))
+        df_timeline_order_open = df_timeline_order_open.rename(
+            columns={"OrderDate": "Start Date", "OpenDate": "End Date"})
 
-        timeline_df = active.dropna(subset=["OrderDate"]).copy()
-        timeline_df["Label"] = timeline_df.apply(
-            lambda r: (
-                f"#{int(r['Number'])} " if str(r.get("Number","")).strip() not in ["","nan"] else ""
-            ) + (r.get("PlayerName") or r.get("Team","?")) + f" ({r.get('Team','?')})",
+        df_timeline_order_open['Start Date'] = pd.to_datetime(df_timeline_order_open['Start Date'])
+        df_timeline_order_open["Category"] = df_timeline_order_open.apply(lambda row: "Yet To Open" if pd.isna(row["End Date"]) else "Opened", axis=1)
+        df_timeline_order_open['End Date'] = pd.to_datetime(df_timeline_order_open['End Date']).fillna(pd.Timestamp.now())
+        df_timeline_order_open["DDiff"] = df_timeline_order_open.apply(lambda row: (row["End Date"] - row["Start Date"]).days, axis=1)
+        df_timeline_order_open["Event"] = df_timeline_order_open.apply(
+            lambda row:
+                ", ".join(map(str, active_timeline.loc[
+                        active_timeline["JerseyID"] == row["JerseyID"],
+                    ["Number", "PlayerFirst", "PlayerLast", "Team", "BrandName", "JerseyMake", "Colours"]
+                    ].iloc[0].values)) + " Dates between: " + str(row["DDiff"]),
             axis=1
         )
-        timeline_df = timeline_df.sort_values("OrderDate")
-
-        # Gantt-style timeline: Order → Receive → Open
-        fig_gantt = go.Figure()
-        colours_gantt = [GOLD, ICE_BLUE, GREEN, RED, "#e67e22", "#9b59b6", "#1abc9c"]
-
-        for i, (_, row) in enumerate(timeline_df.iterrows()):
-            colour = colours_gantt[i % len(colours_gantt)]
-            label  = row["Label"]
-            od     = row.get("OrderDate")
-            rd     = row.get("ReceiveDate")
-            opd    = row.get("OpenDate")
-            price  = row.get("PriceC")
-            hover  = (
-                f"<b>{label}</b><br>"
-                f"Ordered: {od.strftime('%b %d, %Y') if pd.notna(od) else '—'}<br>"
-                f"Received: {rd.strftime('%b %d, %Y') if pd.notna(rd) else '—'}<br>"
-                f"Opened: {opd.strftime('%b %d, %Y') if pd.notna(opd) else '—'}<br>"
-                f"Cost: {'$' + f'{price:.0f}' + ' CAD' if pd.notna(price) else '—'}"
-            )
-
-            # Order → Receive bar
-            if pd.notna(od) and pd.notna(rd):
-                fig_gantt.add_trace(go.Bar(
-                    name="Order→Receive" if i == 0 else "",
-                    y=[label],
-                    x=[(rd - od).days],
-                    base=[od],
-                    orientation="h",
-                    marker_color=colour,
-                    opacity=0.85,
-                    hovertemplate=hover + "<extra>Order→Receive</extra>",
-                    showlegend=(i == 0),
-                ))
-
-            # Receive → Open bar (if both exist)
-            if pd.notna(rd) and pd.notna(opd) and opd > rd:
-                fig_gantt.add_trace(go.Bar(
-                    name="Receive→Open" if i == 0 else "",
-                    y=[label],
-                    x=[(opd - rd).days],
-                    base=[rd],
-                    orientation="h",
-                    marker_color=colour,
-                    opacity=0.35,
-                    hovertemplate=hover + "<extra>Receive→Open</extra>",
-                    showlegend=(i == 0),
-                ))
-
-            # Point markers for key events
-            for event_date, marker_sym, event_label in [
-                (od,  "circle",          "Ordered"),
-                (rd,  "diamond",         "Received"),
-                (opd, "star",            "Opened"),
-            ]:
-                if pd.notna(event_date):
-                    fig_gantt.add_trace(go.Scatter(
-                        x=[event_date], y=[label],
-                        mode="markers",
-                        marker=dict(symbol=marker_sym, size=9, color=colour,
-                                    line=dict(width=1, color="#fff")),
-                        hovertemplate=f"<b>{label}</b><br>{event_label}: {event_date.strftime('%b %d, %Y')}<extra></extra>",
-                        showlegend=False
-                    ))
-
-        fig_gantt.update_layout(
-            **DARK_THEME,
-            barmode="overlay",
-            title="Jersey Acquisition Timeline  ●=Ordered  ◆=Received  ★=Opened",
-            xaxis_title="Date",
-            # xaxis=dict(type="date", gridcolor="#1e3a5a", linecolor="#1e3a5a"),
-            # yaxis=dict(gridcolor="#1e3a5a", linecolor="#1e3a5a", autorange="reversed"),
-            height=max(400, len(timeline_df) * 32 + 80),
-            legend=dict(orientation="h", yanchor="bottom", y=1.01),
-            margin=dict(l=20, r=20, t=60, b=20),
+        del df_timeline_order_open["JerseyID"]
+        df_timeline_order_open.sort_values(
+            by=["End Date", "DDiff"],
+            inplace=True
         )
-        st.plotly_chart(fig_gantt, use_container_width=True)
+
+        # Create a Gantt-like timeline using Plotly
+        fig_timeline_order_open = px.timeline(
+            df_timeline_order_open,
+            x_start='Start Date',
+            x_end='End Date',
+            y='Event',
+            title='Time Between Order to Open date',
+            color='Category',
+            color_discrete_map={
+                'Yet To Open': 'red',
+                'Medium': 'orange',
+                'Opened': 'green'
+            }
+        )
+
+        # Update layout to make it more readable
+        fig_timeline_order_open.update_layout(xaxis_title="Date", yaxis_title="Order Date to Open Date", height=1500)
+
+        # Display in Streamlit
+        st.plotly_chart(fig_timeline_order_open)
+
+        # timeline_df = active.dropna(subset=["OrderDate"]).copy()
+        # timeline_df["Label"] = timeline_df.apply(
+        #     lambda r: (
+        #         f"#{int(r['Number'])} " if str(r.get("Number","")).strip() not in ["","nan"] else ""
+        #     ) + (r.get("PlayerName") or r.get("Team","?")) + f" ({r.get('Team','?')})",
+        #     axis=1
+        # )
+        # timeline_df = timeline_df.sort_values("OrderDate")
+
+        # # Gantt-style timeline: Order → Receive → Open
+        # fig_gantt = go.Figure()
+        # colours_gantt = [GOLD, ICE_BLUE, GREEN, RED, "#e67e22", "#9b59b6", "#1abc9c"]
+
+        # for i, (_, row) in enumerate(timeline_df.iterrows()):
+        #     colour = colours_gantt[i % len(colours_gantt)]
+        #     label  = row["Label"]
+        #     od     = row.get("OrderDate")
+        #     rd     = row.get("ReceiveDate")
+        #     opd    = row.get("OpenDate")
+        #     price  = row.get("PriceF")
+        #     hover  = (
+        #         f"<b>{label}</b><br>"
+        #         f"Ordered: {od.strftime('%b %d, %Y') if pd.notna(od) else '—'}<br>"
+        #         f"Received: {rd.strftime('%b %d, %Y') if pd.notna(rd) else '—'}<br>"
+        #         f"Opened: {opd.strftime('%b %d, %Y') if pd.notna(opd) else '—'}<br>"
+        #         f"Cost: {'$' + f'{price:.0f}' + ' CAD' if pd.notna(price) else '—'}"
+        #     )
+
+        #     # Order → Receive bar
+        #     if pd.notna(od) and pd.notna(rd):
+        #         fig_gantt.add_trace(go.Bar(
+        #             name="Order→Receive" if i == 0 else "",
+        #             y=[label],
+        #             x=[(rd - od).days],
+        #             base=[od],
+        #             orientation="h",
+        #             marker_color=colour,
+        #             opacity=0.85,
+        #             hovertemplate=hover + "<extra>Order→Receive</extra>",
+        #             showlegend=(i == 0),
+        #         ))
+
+        #     # Receive → Open bar (if both exist)
+        #     if pd.notna(rd) and pd.notna(opd) and opd > rd:
+        #         fig_gantt.add_trace(go.Bar(
+        #             name="Receive→Open" if i == 0 else "",
+        #             y=[label],
+        #             x=[(opd - rd).days],
+        #             base=[rd],
+        #             orientation="h",
+        #             marker_color=colour,
+        #             opacity=0.35,
+        #             hovertemplate=hover + "<extra>Receive→Open</extra>",
+        #             showlegend=(i == 0),
+        #         ))
+
+        #     # Point markers for key events
+        #     for event_date, marker_sym, event_label in [
+        #         (od,  "circle",          "Ordered"),
+        #         (rd,  "diamond",         "Received"),
+        #         (opd, "star",            "Opened"),
+        #     ]:
+        #         if pd.notna(event_date):
+        #             fig_gantt.add_trace(go.Scatter(
+        #                 x=[event_date], y=[label],
+        #                 mode="markers",
+        #                 marker=dict(symbol=marker_sym, size=9, color=colour,
+        #                             line=dict(width=1, color="#fff")),
+        #                 hovertemplate=f"<b>{label}</b><br>{event_label}: {event_date.strftime('%b %d, %Y')}<extra></extra>",
+        #                 showlegend=False
+        #             ))
+
+        # fig_gantt.update_layout(
+        #     **DARK_THEME,
+        #     barmode="overlay",
+        #     title="Jersey Acquisition Timeline  ●=Ordered  ◆=Received  ★=Opened",
+        #     xaxis_title="Date",
+        #     # xaxis=dict(type="date", gridcolor="#1e3a5a", linecolor="#1e3a5a"),
+        #     # yaxis=dict(gridcolor="#1e3a5a", linecolor="#1e3a5a", autorange="reversed"),
+        #     height=max(400, len(timeline_df) * 32 + 80),
+        #     legend=dict(orientation="h", yanchor="bottom", y=1.01),
+        #     margin=dict(l=20, r=20, t=60, b=20),
+        # )
+        # st.plotly_chart(fig_gantt, use_container_width=True)
 
         # Days to receive + days to open distributions
         col_dtr, col_dto = st.columns(2)
@@ -896,28 +1044,47 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     # ══════════════════════════════════════════════
     # TAB 4: COST ANALYSIS
     # ══════════════════════════════════════════════
-    with tab_cost:
+    # with tab_cost:
+    if pills_jersey_collection_mode == options_pills_jersey_collection_mode[3]:
+        # 💰 Cost Analysis
         st.markdown('<div class="section-header" style="font-size:1.2rem">COST ANALYSIS</div>', unsafe_allow_html=True)
 
-        priced = active.dropna(subset=["PriceC"]).copy()
+        all_known = active.copy()
+        n_all_jerseys = len(all_known)
+        priced = active.dropna(subset=["PriceF"]).copy()
+        priced = priced[priced["PriceF"] > 0]
+        n_priced_jerseys = len(priced)
 
         if len(priced) == 0:
             st.info("No pricing data available yet.")
         else:
             # Summary KPIs
-            ck1, ck2, ck3, ck4, ck5 = st.columns(5)
-            ck1.metric("Total Spent", f"${priced['PriceC'].sum():,.0f} CAD")
-            ck2.metric("Avg per Jersey", f"${priced['PriceC'].mean():,.0f} CAD")
-            ck3.metric("Most Expensive", f"${priced['PriceC'].max():,.0f} CAD")
-            ck4.metric("Least Expensive", f"${priced['PriceC'].min():,.0f} CAD")
-            ck5.metric("Jerseys with Price", len(priced))
+            ck1, ck2, ck3, ck4, ck5, ck6 = st.columns(6)
+            
+            sum_priced = priced['PriceF'].sum()
+            mean_priced = priced['PriceF'].mean()
+            sum_priced_extrapolated = ((mean_priced * (n_all_jerseys - n_priced_jerseys)) + sum_priced)
+            first_date = active["OrderDate"].min().date()
+            today = datetime.now().date()
+            n_days = (today - first_date).days
+            spent_per_day = sum_priced_extrapolated / n_days
+            
+            ck1.metric("Total Spent", f"${sum_priced:,.2f} CAD")
+            ck2.metric("Total Spent (Extrapolated)", f"${sum_priced_extrapolated:,.2f} CAD")
+            ck3.metric("Avg per Jersey", f"${mean_priced:,.0f} CAD")
+            ck4.metric("Most Expensive", f"${priced['PriceF'].max():,.2f} CAD")
+            ck5.metric("Least Expensive", f"${priced['PriceF'].min():,.2f} CAD")
+            ck6.metric("Jerseys with Price", len(priced))
+            
+            ck1.metric("Total Days Collecting:", n_days)
+            ck2.metric("Total Spent per Day:", f"${spent_per_day:,.2f} CAD")
 
             # Cumulative spend over time
             priced_sorted = priced.dropna(subset=["OrderDate"]).sort_values("OrderDate").copy()
             if len(priced_sorted) > 0:
-                priced_sorted["CumulativeSpend"] = priced_sorted["PriceC"].cumsum()
+                priced_sorted["CumulativeSpend"] = priced_sorted["PriceF"].cumsum()
                 priced_sorted["Label"] = priced_sorted.apply(
-                    lambda r: (r.get("PlayerName") or r.get("Team","?")) + f" (${r['PriceC']:.0f})", axis=1
+                    lambda r: (r.get("PlayerName") or r.get("Team","?")) + f" (${r['PriceF']:.0f})", axis=1
                 )
                 fig_cum = go.Figure()
                 fig_cum.add_trace(go.Scatter(
@@ -936,12 +1103,13 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
                     title="Cumulative Collection Spend Over Time",
                     xaxis_title="Order Date",
                     yaxis_title="Cumulative Spend (CAD $)",
-                    height=380
+                    height=380,
+                    # trendline="ols"
                 )
                 st.plotly_chart(fig_cum, use_container_width=True)
 
             # Cost by team
-            cost_team = priced.groupby("Team")["PriceC"].agg(["sum","mean","count"]).reset_index()
+            cost_team = priced.groupby("Team")["PriceF"].agg(["sum","mean","count"]).reset_index()
             cost_team.columns = ["Team","Total","Average","Count"]
             cost_team = cost_team.sort_values("Total", ascending=True)
 
@@ -974,7 +1142,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             # Cost by brand & supplier
             col_cb1, col_cb2 = st.columns(2)
             with col_cb1:
-                cost_brand = priced.groupby("Brand")["PriceC"].agg(["sum","mean"]).reset_index()
+                cost_brand = priced.groupby("Brand")["PriceF"].agg(["sum","mean"]).reset_index()
                 cost_brand.columns = ["Brand","Total","Average"]
                 fig_cb = px.bar(
                     cost_brand.sort_values("Total"),
@@ -988,7 +1156,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
                 st.plotly_chart(fig_cb, use_container_width=True)
 
             with col_cb2:
-                cost_sup = priced.groupby("Supplier")["PriceC"].sum().reset_index()
+                cost_sup = priced.groupby("Supplier")["PriceF"].sum().reset_index()
                 cost_sup.columns = ["Supplier","Total"]
                 cost_sup = cost_sup.sort_values("Total", ascending=False).head(10)
                 fig_cs = px.pie(
@@ -1029,13 +1197,13 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             )
             fig_scatter = px.scatter(
                 priced_label.dropna(subset=["OrderDate"]),
-                x="OrderDate", y="PriceC",
+                x="OrderDate", y="PriceF",
                 color="League" if "League" in priced_label.columns else None,
-                size="PriceC",
+                size="PriceF",
                 hover_name="Label",
                 hover_data=["Team","Brand","Model","Supplier"],
                 title="Jersey Prices Over Time",
-                labels={"PriceC":"Price (CAD $)","OrderDate":"Order Date"}
+                labels={"PriceF":"Price (CAD $)","OrderDate":"Order Date"}
             )
             fig_scatter.update_layout(**DARK_THEME, height=380)
             st.plotly_chart(fig_scatter, use_container_width=True)
