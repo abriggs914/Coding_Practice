@@ -2,6 +2,7 @@
 	"ENTITIES": {
 
 		"Anaheim Ducks": {
+			"abbrev": "AVA",
 			"name": "Anaheim Ducks",
 			"colour": "#877046",
 			"border_colour": "#fa5006",
@@ -10,6 +11,7 @@
 			"image_path": "logo_anaheim_ducks.png"
 		},
 		"Boston Bruins": {
+			"abbrev": "BOS",
 			"name": "Boston Bruins",
 			"colour": "#FFB602",
 			"border_colour": "BLACK",
@@ -18,6 +20,7 @@
 			"image_path": "logo_boston_bruins.png"
 		},
 		"Buffalo Sabres": {
+			"abbrev": "BUF",
 			"name": "Buffalo Sabres",
 			"colour": "#002E62",
 			"border_colour": "WHITE",
@@ -26,6 +29,7 @@
 			"image_path": "logo_buffalo_sabres.png"
 		},
 		"Calgary Flames": {
+			"abbrev": "CGY",
 			"name": "Calgary Flames",
 			"colour": "#CB0D0D",
 			"border_colour": "#FDBF12",
@@ -34,6 +38,7 @@
 			"image_path": "logo_calgary_flames.png"
 		},
 		"Carolina Hurricanes": {
+			"abbrev": "CAR",
 			"name": "Carolina Hurricanes",
 			"colour": "#CF0A2C",
 			"border_colour": "BLACK",
@@ -42,6 +47,7 @@
 			"image_path": "logo_carolina_hurricanes.png"
 		},
 		"Chicago Black Hawks": {
+			"abbrev": "CBH",
 			"name": "Chicago Black Hawks",
 			"colour": "#C61027",
 			"border_colour": "BLACK",
@@ -50,6 +56,7 @@
 			"image_path": "logo_chicago_blackhawks.png"
 		},
 		"Chicago Blackhawks": {
+			"abbrev": "CHI",
 			"name": "Chicago Blackhawks",
 			"colour": "#C61027",
 			"border_colour": "BLACK",
@@ -58,6 +65,7 @@
 			"image_path": "logo_chicago_blackhawks.png"
 		},
 		"Colorado Avalanche": {
+			"abbrev": "COL",
 			"name": "Colorado Avalanche",
 			"colour": "#76192E",
 			"border_colour": "#013E75",
@@ -66,6 +74,7 @@
 			"image_path": "logo_colorado_avalanche.png"
 		},
 		"Dallas Stars": {
+			"abbrev": "DAL",
 			"name": "Dallas Stars",
 			"colour": "#006340",
 			"border_colour": "#A2AAAD",
@@ -74,6 +83,7 @@
 			"image_path": "logo_dallas_stars.png"
 		},
 		"Detroit Red Wings": {
+			"abbrev": "DET",
 			"name": "Detroit Red Wings",
 			"colour": "#C30F12",
 			"border_colour": "WHITE",
@@ -82,6 +92,7 @@
 			"image_path": "logo_detroit_red_wings.png"
 		},
 		"Edmonton Oilers": {
+			"abbrev": "EDM",
 			"name": "Edmonton Oilers",
 			"colour": "#FF4C01",
 			"border_colour": "#041E41",
@@ -90,6 +101,7 @@
 			"image_path": "logo_edmonton_oilers.png"
 		},
 		"Florida Panthers": {
+			"abbrev": "FLA",
 			"name": "Florida Panthers",
 			"colour": "#BF965C",
 			"border_colour": "#D2202F",
@@ -98,6 +110,7 @@
 			"image_path": "logo_florida_panthers.png"
 		},
 		"Los Angeles Kings": {
+			"abbrev": "LAK",
 			"name": "Los Angeles Kings",
 			"colour": "#949494",
 			"border_colour": "#171717",
@@ -106,6 +119,7 @@
 			"image_path": "logo_los_angeles_kings.png"
 		},
 		"Mighty Ducks of Anaheim": {
+			"abbrev": "MDA",
 			"name": "Mighty Ducks of Anaheim",
 			"colour": "#008E60",
 			"border_colour": "BLACK",
@@ -114,6 +128,7 @@
 			"image_path": "logo_mighty_ducks_of_anaheim.png"
 		},
 		"Minnesota North Stars": {
+			"abbrev": "MNS",
 			"name": "Minnesota North Stars",
 			"colour": "SLATEGRAY_4",
 			"border_colour": "#FFD100",
@@ -122,6 +137,7 @@
 			"image_path": "logo_minnesota_north_stars.png"
 		},
 		"Montreal Canadiens": {
+			"abbrev": "MTL",
 			"name": "Montreal Canadiens",
 			"colour": "#BE2A36",
 			"border_colour": "#1B326D",
@@ -130,6 +146,7 @@
 			"image_path": "logo_montreal_canadiens.png"
 		},
 		"Montreal Maroons": {
+			"abbrev": "MON",
 			"name": "Montreal Maroons",
 			"colour": "WHITE",
 			"border_colour": "#7B0324",
@@ -138,6 +155,7 @@
 			"image_path": "logo_montreal_maroons.png"
 		},
 		"Nashville Predators": {
+			"abbrev": "NSH",
 			"name": "Nashville Predators",
 			"colour": "#FBB925",
 			"border_colour": "#002A5C",
@@ -146,6 +164,7 @@
 			"image_path": "logo_nashville_predators.png"
 		},
 		"New Jersey Devils": {
+			"abbrev": "NJD",
 			"name": "New Jersey Devils",
 			"colour": "#F20018",
 			"border_colour": "BLACK",
@@ -154,6 +173,7 @@
 			"image_path": "logo_new_jersey_devils.png"
 		},
 		"New York Islanders": {
+			"abbrev": "NYI",
 			"name": "New York Islanders",
 			"colour": "#FF5C00",
 			"border_colour": "#023588",
@@ -162,6 +182,7 @@
 			"image_path": "logo_new_york_islanders.png"
 		},
 		"New York Rangers": {
+			"abbrev": "NYR",
 			"name": "New York Rangers",
 			"colour": "#005DAC",
 			"border_colour": "#E51837",
@@ -170,6 +191,7 @@
 			"image_path": "logo_new_york_rangers.png"
 		},
 		"Ottawa Senators": {
+			"abbrev": "OTT",
 			"name": "Ottawa Senators",
 			"colour": "#F20018",
 			"border_colour": "#D09700",
@@ -178,6 +200,7 @@
 			"image_path": "logo_ottawa_senators.png"
 		},
 		"Philadelphia Flyers": {
+			"abbrev": "PHI",
 			"name": "Philadelphia Flyers",
 			"colour": "#FF8E1C",
 			"border_colour": "BLACK",
@@ -186,6 +209,7 @@
 			"image_path": "logo_philadelphia_flyers.png"
 		},
 		"Pittsburgh Penguins": {
+			"abbrev": "PIT",
 			"name": "Pittsburgh Penguins",
 			"colour": "#F3C04A",
 			"border_colour": "BLACK",
@@ -194,6 +218,7 @@
 			"image_path": "logo_pittsburgh_penguins.png"
 		},
 		"San Jose Sharks": {
+			"abbrev": "SJS",
 			"name": "San Jose Sharks",
 			"colour": "#004650",
 			"border_colour": "BLACK",
@@ -202,6 +227,7 @@
 			"image_path": "logo_san_jose_sharks.png"
 		},
 		"Seattle Kraken": {
+			"abbrev": "SEA",
 			"name": "Seattle Kraken",
 			"colour": "#004650",
 			"border_colour": "#df7453",
@@ -210,6 +236,7 @@
 			"image_path": "logo_seattle_kraken.png"
 		},
 		"St. Louis Blues": {
+			"abbrev": "STL",
 			"name": "St. Louis Blues",
 			"colour": "#0C599D",
 			"border_colour": "#C89E3B",
@@ -218,6 +245,7 @@
 			"image_path": "logo_st_louis_blues.png"
 		},
 		"Tampa Bay Lightning": {
+			"abbrev": "TBL",
 			"name": "Tampa Bay Lightning",
 			"colour": "WHITE",
 			"border_colour": "#013E7D",
@@ -226,6 +254,7 @@
 			"image_path": "logo_tampa_bay_lightning.png"
 		},
 		"Toronto Maple Leafs": {
+			"abbrev": "TOR",
 			"name": "Toronto Maple Leafs",
 			"colour": "#002465",
 			"border_colour": "WHITE",
@@ -234,6 +263,7 @@
 			"image_path": "logo_toronto_maple_leafs.png"
 		},
 		"Vancouver Canucks": {
+			"abbrev": "VAN",
 			"name": "Vancouver Canucks",
 			"colour": "#21426F",
 			"border_colour": "#00915E",
@@ -242,14 +272,16 @@
 			"image_path": "logo_vancouver_canucks.png"
 		},
 		"Vegas Golden Knights": {
+			"abbrev": "VGK",
 			"name": "Vegas Golden Knights",
-			"colour": "#8D744A",
+			"colour": "#8f7f4A",
 			"border_colour": "#36424A",
 			"font_colour": "BLACK",
 			"font_back_colour": "WHITE",
 			"image_path": "logo_vegas_golden_knights.png"
 		},
 		"Washington Capitals": {
+			"abbrev": "WSH",
 			"name": "Washington Capitals",
 			"colour": "#D02239",
 			"border_colour": "#00264B",
@@ -3631,6 +3663,41 @@
 		"Detroit Red Wings": 11,
 		"Edmonton Oilers": 5,
 		"Florida Panthers": 1,
+		"Los Angeles Kings": 2,
+		"Mighty Ducks of Anaheim": 0,
+		"Minnesota North Stars": 0,
+		"Montreal Canadiens": 22,
+		"Montreal Maroons": 1,
+		"Nashville Predators": 0,
+		"New Jersey Devils": 3,
+		"New York Islanders": 4,
+		"New York Rangers": 4,
+		"Ottawa Senators": 1,
+		"Philadelphia Flyers": 2,
+		"Pittsburgh Penguins": 5,
+		"San Jose Sharks": 0,
+		"Seattle Kraken": 0,
+		"St. Louis Blues": 1,
+		"Tampa Bay Lightning": 3,
+		"Toronto Maple Leafs": 11,
+		"Vancouver Canucks": 0,
+		"Vegas Golden Knights": 1,
+		"Washington Capitals": 1
+
+	},
+	"2025": {
+		"Anaheim Ducks": 1,
+		"Boston Bruins": 6,
+		"Buffalo Sabres": 0,
+		"Calgary Flames": 1,
+		"Carolina Hurricanes": 1,
+		"Chicago Black Hawks": 3,
+		"Chicago Blackhawks": 3,
+		"Colorado Avalanche": 3,
+		"Dallas Stars": 1,
+		"Detroit Red Wings": 11,
+		"Edmonton Oilers": 5,
+		"Florida Panthers": 2,
 		"Los Angeles Kings": 2,
 		"Mighty Ducks of Anaheim": 0,
 		"Minnesota North Stars": 0,

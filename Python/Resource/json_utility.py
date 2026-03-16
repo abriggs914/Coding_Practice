@@ -11,8 +11,8 @@ import pandas
 VERSION = \
     """	
     General JSON Centered Utility Functions
-    Version..............1.03
-    Date...........2024-04-14
+    Version..............1.04
+    Date...........2026-03-16
     Author(s)....Avery Briggs
     """
 
@@ -122,6 +122,36 @@ def jsonify(value: Any, t_depth: int = 0, in_line: bool = True) -> str:
     #         if value.startswith("datetime.datetime(") and value.endswith(")") and value.count(",") == 5:
     #             # datetime
 
+
+def peek_json(result, depth: int = 10):
+    """
+    Function takes a json object and attempts to gather all keys into a tree structure for viewing.
+    If a list is found, assumes ALL list items are the same format as the first element, does not sample the rest.
+    """
+    def helper(data, d):
+        if d > depth:
+            return "..."
+
+        if isinstance(data, dict):
+            return {
+                k: helper(v, d + 1)
+                for k, v in data.items()
+            }
+
+        elif isinstance(data, list):
+            if not data:
+                return ["empty_list"]
+            return [helper(data[0], d + 1)]
+
+        elif isinstance(data, tuple):
+            if not data:
+                return ["empty_tuple"]
+            return [helper(data[0], d + 1)]
+
+        else:
+            return type(data).__name__
+
+    return helper(result, 0)
 
 
 if __name__ == '__main__':

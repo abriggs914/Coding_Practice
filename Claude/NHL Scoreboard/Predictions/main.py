@@ -5,24 +5,39 @@ Run with: streamlit run nhl_dashboard.py
 
 import os
 import math
+import time
+import json
+import base64
+import requests
+import warnings
 import streamlit as st
 import pandas as pd
 import numpy as np
+from pathlib import Path
+import streamlit.components.v1 as components
 import plotly.express as px
 import plotly.graph_objects as go
+from sklearn.linear_model import LinearRegression
 from plotly.subplots import make_subplots
 from streamlit_pills import pills
-import requests
 from datetime import datetime, timedelta
-import warnings
+
+from colour_utility import Colour
+from json_utility import peek_json
+import nhl_api_reference_examples as api_ref
+
 warnings.filterwarnings("ignore")
 
 # ─────────────────────────────────────────────────────────
 # DATA SOURCE — local Excel workbook
 # ─────────────────────────────────────────────────────────
-path_excel_predictions = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\NHLGamePredictions_2526_copy.xlsx"
-path_excel_jerseys     = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\Jerseys_20260309.xlsx"
-path_jersey_images     = r"D:\\NHL jerseys\\Jerseys 20250927"
+path_excel_predictions       = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\NHLGamePredictions_2526_copy.xlsx"
+path_excel_jerseys           = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\Jerseys_20260309.xlsx"
+path_jersey_images           = r"D:\\NHL jerseys\\Jerseys 20250927"
+path_image_dir               = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer"
+path_stanley_cup_appearances = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_apperances.json"
+path_stanley_cup_wins        = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_wins.json"
+path_stanley_cup_losses      = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_losses.json"
 
 # ─────────────────────────────────────────────────────────
 # PAGE CONFIG
@@ -253,7 +268,7 @@ def load_jersey_data(filepath: str) -> pd.DataFrame:
     )
 
     # Numeric
-    for col in ["PriceF", "PriceM", "PriceF", "StickerPriceCDN", "StickerPriceUS",
+    for col in ["PriceC", "PriceM", "PriceF", "StickerPriceCDN", "StickerPriceUS",
                 "Duty", "Shipping", "Discount", "Tax", "ExchangeRate", "NHLID"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -280,6 +295,8 @@ def load_jersey_data(filepath: str) -> pd.DataFrame:
         df.get("PlayerLast", pd.Series([""] * len(df))).fillna("").astype(str).str.strip()
     ).str.strip()
     # df["PlayerName"] = df["PlayerName"].replace("", pd.NA)
+    df["NHLID"] = df["NHLID"].fillna(0)
+    df["NHLID"] = df["NHLID"].astype(int)
 
     return df
 
@@ -391,7 +408,7 @@ def render_jersey_card(row, base_img_path: str, show_player_data: bool = True):
             break
     logo_html = "<div></div>"
     if team_abbr:
-        logo_url = get_team_logo(team_abbr)
+        logo_url = fetch_team_logo(team_abbr)
         logo_html = f'<img src="{logo_url}" width="36" style="vertical-align:middle;margin-right:8px">'
 
     # Jersey images
@@ -565,11 +582,23 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     # st.dataframe(active)
     # st.write("'" + ("', '".join(active["PlayerName"].values)) + "'")
     
+    active["ImagePaths"] = active["ID"].apply(lambda id_: get_jersey_image_paths(id_, base_img_path))
+    
+    st.write(f"active")
+    st.write(active)
+    
     total_jerseys = len(active)
     total_value   = active["PriceF"].sum() if "PriceF" in active.columns else 0
     with_player   = (~active["PlayerName"].str.strip().isin(["nan", "none", ""])).sum()
     blank_jerseys = total_jerseys - with_player
-    with_images   = sum(1 for _, r in active.iterrows() if get_jersey_image_paths(r.get("ID", -1), base_img_path))
+    # with_images   = sum(1 for _, r in active.iterrows() if get_jersey_image_paths(r.get("ID", -1), base_img_path))
+    # need_images = active.loc[bool(len(get_jersey_image_paths(active.get("ID", -1), base_img_path)))]
+    # need_images = active.loc[len(np.where(get_jersey_image_paths(active.get("ID", -1), base_img_path)) > 0)]
+    # need_images = active.loc[(pd.isna(active["ImagePaths"])) | (len(active["ImagePaths"]) == 0)]
+    need_images = active.loc[active["ImagePaths"].map(len) == 0]
+    st.write(f"need_images")
+    st.write(need_images)
+    with_images   = len(active) - len(need_images)
     missing_price = len(active) - len(active[active["PriceF"] > 0])
 
     # Top KPIs
@@ -764,9 +793,11 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         with fc4:
             player_search = st.text_input("Search player name", "")
 
-        has_player_filter = st.checkbox("Has player name", value=False)
-        show_player_info  = st.checkbox("Load player data from NHL API", value=True,
+        fc5, fc6, fc7 = st.columns(3)
+        has_player_filter = fc5.checkbox("Has player name", value=False)
+        show_player_info  = fc6.checkbox("Load player data from NHL API", value=True,
                                         help="Fetches live data — may be slow for many jerseys")
+        has_image_filter = fc7.checkbox("Has image(s)", value=False)
 
         # Apply filters
         filtered = active.copy()
@@ -782,6 +813,8 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             filtered = filtered[
                 filtered["PlayerName"].fillna("").str.lower().str.contains(player_search.lower())
             ]
+        if has_image_filter:
+            filtered = filtered[filtered["ImagePaths"].map(len) != 0]
 
         st.caption(f"Showing {len(filtered)} of {total_jerseys} jerseys")
 
@@ -1080,13 +1113,16 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             ck2.metric("Total Spent per Day:", f"${spent_per_day:,.2f} CAD")
 
             # Cumulative spend over time
+            st.write("priced")
+            st.write(priced)
+            priced = pd.concat([priced, pd.DataFrame({"OrderDate": [pd.Timestamp(today)], "PriceF": [0], "PlayerName": [""], "Team": [""]})])
             priced_sorted = priced.dropna(subset=["OrderDate"]).sort_values("OrderDate").copy()
             if len(priced_sorted) > 0:
                 priced_sorted["CumulativeSpend"] = priced_sorted["PriceF"].cumsum()
                 priced_sorted["Label"] = priced_sorted.apply(
                     lambda r: (r.get("PlayerName") or r.get("Team","?")) + f" (${r['PriceF']:.0f})", axis=1
                 )
-                fig_cum = go.Figure()
+                fig_cum = make_subplots(specs=[[{"secondary_y": True}]])
                 fig_cum.add_trace(go.Scatter(
                     x=priced_sorted["OrderDate"],
                     y=priced_sorted["CumulativeSpend"],
@@ -1098,6 +1134,29 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
                     fill="tozeroy",
                     fillcolor="rgba(200,168,75,0.08)"
                 ))
+
+                # Convert datetime to numeric values
+                x = priced_sorted["OrderDate"].map(pd.Timestamp.toordinal).to_numpy().reshape(-1, 1)
+                y = priced_sorted["CumulativeSpend"].to_numpy()
+
+                regr = LinearRegression()
+                regr.fit(x, y)
+
+                fit = regr.predict(x)
+
+                fig_cum.add_trace(
+                    go.Scatter(
+                        x=priced_sorted["OrderDate"],
+                        y=fit,
+                        name="Trend",
+                        mode="lines",
+                        line=dict(dash="dash", width=2, color="white"),
+                        hovertemplate="Trend: $%{y:,.0f} CAD<extra></extra>"
+                    ),
+                    secondary_y=False
+                )       
+                
+                
                 fig_cum.update_layout(
                     **DARK_THEME,
                     title="Cumulative Collection Spend Over Time",
@@ -1330,7 +1389,6 @@ def peek_rows(filepath: str) -> int:
     raise ValueError(f"peek_rows could not determine hoe many rows to skip in '{filepath}'")
     
 
-
 @st.cache_data
 def load_data(filepath: str) -> pd.DataFrame:
     ext = str(filepath).lower()
@@ -1524,12 +1582,22 @@ def detect_gauntlets(df: pd.DataFrame) -> pd.DataFrame:
 
 
 @st.cache_data
-def get_team_logo(team_abbr: str) -> str:
+def fetch_team_logo(team_abbr: str) -> str:
     """Get NHL team logo URL from NHL API."""
     team_id = TEAM_META.get(team_abbr, {}).get("id")
     if team_id:
         return f"https://assets.nhle.com/logos/nhl/svg/{team_abbr}_dark.svg"
     return ""
+
+
+@st.cache_data(ttl=60)
+def fetch_game_landing(g_id) -> dict:
+    """Load NHL game landing for given game ID"""
+    try:
+        url = f"https://api-web.nhle.com/v1/gamecenter/{g_id}/landing"
+        return requests.get(url).json()
+    except Exception:
+        return {}
 
 
 # ─────────────────────────────────────────────────────────
@@ -1852,6 +1920,110 @@ def build_predictions(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(results)
 
 
+@st.cache_data()
+def load_index_html() -> str:
+    # index_html = ""
+    # with open("index.html", "r", encoding="utf-8-sig") as f:
+    #     index_html = "".join(f.read())
+    # return index_html
+    return Path("index.html").read_text(encoding="utf-8")
+
+
+def load_jersey_workbook():
+    # Load jersey workbook
+    try:
+        return load_jersey_data(path_excel_jerseys)
+    except FileNotFoundError:
+        st.error(f"❌ Jersey workbook not found:\n\n`{path_excel_jerseys}`\n\nCheck the path at the top of the script.")
+        return pd.DataFrame()
+    except Exception as e:
+        st.error(f"❌ Could not load jersey workbook: {e}")
+        return pd.DataFrame()
+
+
+def verify_scores(df):
+    """Slow process to check every game landing against every game prediction in the prediction file."""
+    game_ids = df["GameID"].tolist()
+    st.write(game_ids)
+    to_reconcile = []
+    for g_id in game_ids:
+        results = fetch_game_landing(g_id)
+        if results:
+            # all_results.append(results)
+            df_game = df.loc[df["GameID"] == g_id]
+            if not df_game.empty:
+                ser_game = df_game.reset_index().iloc[0]
+                
+                my_away_name = ser_game["AwayTeam"]
+                my_home_name = ser_game["HomeTeam"]
+                my_away_score = ser_game["ActualAwayScore"]
+                my_home_score = ser_game["ActualHomeScore"]
+                my_result = ser_game["ActualResult"]
+                
+                away = results.get("awayTeam", {})
+                home = results.get("homeTeam", {})
+                away_name = away.get("abbrev", "")
+                home_name = home.get("abbrev", "")
+                away_score = int(away.get("score", "0"))
+                home_score = int(home.get("score", "0"))
+                game_result = results.get("periodDescriptor", {}).get("periodType", "REG")
+                
+                if any([
+                    my_away_name != away_name,
+                    my_home_name != home_name,
+                    my_away_score != away_score,
+                    my_home_score != home_score,
+                    my_result != game_result,
+                ]):
+                    to_reconcile.append(dict(
+                        g_id=g_id, away=away_name, home=home_name,
+                        my_away_score=my_away_score, my_home_score=my_home_score,
+                        away_score=away_score, home_score=home_score,
+                        my_result=my_result, game_result=game_result
+                    ))
+        
+        # time.sleep(0.08)
+        
+    return to_reconcile
+        
+
+@st.cache_data
+def load_stanley_cup_jsons():
+    d_a = json.load(open(path_stanley_cup_appearances, "r"))
+    d_w = json.load(open(path_stanley_cup_wins, "r"))
+    d_l = json.load(open(path_stanley_cup_losses, "r"))
+    datas = {
+        "appearances": d_a,
+        "wins": d_w,
+        "losses": d_l
+    }
+    for k, data in datas.items():
+        for k_ in ["colour", "border_colour", "font_colour", "font_back_colour"]:
+            # st.write(f"{k=}, {k_=}")
+            # st.write(data["ENTITIES"])
+            for t, t_data in data["ENTITIES"].items():
+                t_data[k_] = Colour(t_data[k_]).hex_code
+    return datas
+
+
+def img_to_uri(path, abbr, path_image_dir=path_image_dir):
+    
+    # logo = fetch_team_logo(abbr)
+    logo = ""
+    
+    if not logo:    
+        path = Path(os.path.join(path_image_dir, path))
+        if not path.exists():
+            return None
+        ext = path.suffix.lower().replace(".", "")
+        mime = "png" if ext == "png" else "jpeg"
+        with open(path, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode()
+        return f"data:image/{mime};base64,{b64}"
+    else:
+        return logo
+
+
 # ─────────────────────────────────────────────────────────
 # MAIN APP
 # ─────────────────────────────────────────────────────────
@@ -1868,12 +2040,15 @@ def main():
     with st.sidebar:
         st.markdown("### 🗂️ Navigation")
         page = st.radio("", [
+            "⚡ Scores",
             "📊 Overview & Accuracy",
             "👥 By Team",
             "🗓️ Trends Over Time",
             "🌍 Travel & Gauntlets",
             "🔮 Future Predictions",
             "🧥 Jersey Collection",
+            "Stanley Cup",
+            "Explore API",
         ], label_visibility="collapsed")
         st.markdown("---")
         st.caption(f"📂 `{path_excel_predictions.split(chr(92))[-1]}`")
@@ -1906,9 +2081,391 @@ def main():
     total      = len(completed)
     n_correct  = completed["CorrectWinnerPrediction"].sum()
     accuracy   = n_correct / total * 100 if total > 0 else 0
+    
+    if page == "Explore API":
+        
+        df_jerseys = load_jersey_workbook()
+        
+        if not df_jerseys.empty:
+            
+            lst_player_ids = df_jerseys["NHLID"].dropna().unique().tolist()
+            if 0 in lst_player_ids:
+                lst_player_ids.remove(0)
+            lst_player_ids.sort()
+            
+            # playerID = data["playerID"]
+            # teamAbbr = data["teamAbbr"]
+            # date = data["date"]
+            # season = data["season"]
+            # gameType = data["gameType"]
+            # gameID = data["gameID"]
+            # draftYear = data["draftYear"]
+            
+            k_selectbox_player_id = "key_selectbox_player_id"
+            st.session_state.setdefault(k_selectbox_player_id, 8471675)  # Sidney Crosby
+            selectbox_player_id = st.selectbox(
+                label="Player ID",
+                options=lst_player_ids,
+                key=k_selectbox_player_id,
+                help="PlayerIDs list is sourced from Jersey Collection spreadsheet"
+            )
+            
+            k_datepicker_date = "key_datepicker_date"
+            st.session_state.setdefault(k_datepicker_date, datetime.now().date())  # Today
+            datepicker_date = st.date_input(
+                label="Date",
+                key=k_datepicker_date
+            )
+            
+            start_year = 1900
+            lst_seasons = [f"{start_year+i}{start_year+i+1}" for i in range(2026-start_year)]
+            lst_seasons.sort(reverse=True)
+            k_selectbox_season = "key_selectbox_season"
+            st.session_state.setdefault(k_selectbox_season, lst_seasons[0])  # Current season
+            selectbox_season = st.selectbox(
+                label="Season",
+                options=lst_seasons,
+                key=k_selectbox_season,
+                help="Season of play. Seasons start in the Fall and end in Spring / Summer, spanning ~250 days over 2 calendar years."
+            )
+            
+            lst_team_abbrs = list(TEAM_META.keys())
+            k_selectbox_team = "key_selectbox_team"
+            st.session_state.setdefault(k_selectbox_team, "PIT")  # Sidney Crosby's team
+            lst_team_abbrs.sort()
+            selectbox_team = st.selectbox(
+                label="Team",
+                options=lst_team_abbrs,
+                key=k_selectbox_team
+            )
+            
+            params = {
+                "playerID": selectbox_player_id,
+                "date": datepicker_date,
+                "season": selectbox_season,
+                "teamAbbr": selectbox_team,
+            }
+            
+            df_contents_og = api_ref.contents(**params)
+            df_contents = df_contents_og.copy()
+            df_contents[["url", "key_order"]] = df_contents.apply(
+                lambda r:
+                    pd.Series([
+                        r["url"].format(**r["data"]),
+                        [{v: k_ for k_, v in r["data"].items()}[k] for k in r["order"]]
+                    ])
+                , axis=1
+            )
+            df_contents.drop(columns=["order", "data"], inplace=True)
+            
+            lst_sections = df_contents["section"].dropna().unique().tolist()
+            lst_sections.sort()
+            k_multiselect_sections = "key_multiselect_sections"
+            st.session_state.setdefault(k_multiselect_sections, lst_sections)  # All
+            selectbox_player_id = st.multiselect(
+                label="Sections:",
+                options=lst_sections,
+                key=k_multiselect_sections
+            )
+            
+            df_contents = df_contents[df_contents["section"].isin(selectbox_player_id)]
+            
+            k_sel_url = "key_sel_url"
+            stdf_contents = st.dataframe(
+                df_contents,
+                selection_mode="single-row",
+                on_select="rerun"
+            )
+            
+            if not stdf_contents:
+                stdf_contents = st.session_state.get(k_sel_url)
+            
+            if stdf_contents:
+                df_sel_contents: pd.DataFrame = df_contents.iloc[stdf_contents.get("selection", {}).get("rows", [])]
+                if not df_sel_contents.empty:
+                    ser_sel_contents = df_sel_contents.reset_index().iloc[0]
+                    sel_url = ser_sel_contents["url"]
+                    section = ser_sel_contents["section"]
+                    description = ser_sel_contents["description"]
+                    is_image = str(sel_url).lower().strip().endswith(".png")
+                    st.session_state.update({k_sel_url: stdf_contents})
+                    result = None
+                    cont_info = st.container(horizontal=True)
+                    cols_info = st.columns(2)
+                    try:
+                        if not is_image:
+                            result = requests.get(sel_url)
+                            if result.status_code == 200:
+                                result = result.json()
+                            else:
+                                st.write(f":red[Invalid HTML status code] {result.status_code=}")
+                        else:
+                            result = None
+                        with cont_info:
+                            # st.write(ser_sel_contents["section"])
+                            # st.write(ser_sel_contents["description"])
+                            st.metric(
+                                ser_sel_contents["section"],
+                                ser_sel_contents["description"]
+                            )
+                            st.link_button(label=sel_url, url=sel_url)
+                            with st.container():
+                                st.write("raw")
+                                st.code(sel_url)
+                            
+                            proxy_prefix = "https://corsproxy.io/?url="
+                            replace_chars = {
+                                ":": "%3A",
+                                "/": "%2F",
+                                "?": "%3F",
+                                "=": "%3D",
+                                ",": "%2C",
+                                "&": "%26",
+                            }
+                            sel_url_cors = f"{sel_url}"
+                            for c, v in replace_chars.items():
+                                sel_url_cors = sel_url_cors.replace(c, v)
+                            sel_url_cors = f"{proxy_prefix}{sel_url_cors}"
+                            with st.container():
+                                st.write(f"cors")
+                                st.code(sel_url_cors)
+                        if not is_image:
+                            with cols_info[1]:
+                                k_checkbox_expand_actual = "key_checkbox_expand_actual"
+                                checkbox_expand_actual = st.checkbox(
+                                    "expand?",
+                                    key=k_checkbox_expand_actual,
+                                    value=False
+                                )
+                                st.subheader(f"Actual ({len(str(result))} characters)")
+                                st.json(result, expanded=checkbox_expand_actual)
+                    except Exception as e:
+                        st.error(e)
+                        raise e
+                    with cols_info[0]:
+                        st.write(df_contents_og[(df_contents_og["section"] == section) & (df_contents_og["description"] == description)].iloc[0])
+                        if is_image:
+                            st.image(sel_url, caption=sel_url)
+                        else:
+                            if result:
+                                k_checkbox_expand_sampled = "key_checkbox_expand_sampled"
+                                checkbox_expand_sampled = st.checkbox(
+                                    "expand?",
+                                    key=k_checkbox_expand_sampled,
+                                    value=False
+                                )
+                                peek_results = peek_json(result)
+                                st.subheader(f"Sampled ({len(str(peek_results))} characters)")
+                                st.json(peek_results, expanded=checkbox_expand_sampled)
+            
+    # ── PAGE: Stanley Cup ───────────────────────────────────
+    elif page == "Stanley Cup":
+        
+        datas = load_stanley_cup_jsons()
+        data_appearances = datas["appearances"].copy()
+        data_wins = datas["wins"].copy()
+        data_losses = datas["losses"].copy()
+        
+        entities = data_appearances.pop("ENTITIES", {})
+
+        rows = []
+        first_season = list(data_appearances)[0]
+        teams = list(data_appearances[first_season])
+        data_appearances[int(first_season) - 1] = {t: 0 for t in teams}
+        data_wins[int(first_season) - 1] = {t: 0 for t in teams}
+        data_losses[int(first_season) - 1] = {t: 0 for t in teams}
+        
+        for season, season_data_a in data_appearances.items():
+            season_data_w = data_wins[season]
+            season_data_l = data_losses[season]
+            for team, total in season_data_a.items():
+                season_data_w_t = season_data_w[team]
+                season_data_l_t = season_data_l[team]
+                rows.append({
+                    "Season": int(season),
+                    "Team": team,
+                    "Appearances": total,
+                    "Wins": season_data_w_t,
+                    "Losses": season_data_l_t
+                })
+
+        df = pd.DataFrame(rows)
+        df.sort_values(by=["Season", "Team"], inplace=True)
+
+        # Optional historical name cleanup
+        df["Team"] = df["Team"].replace({
+            "Chicago Black Hawks": "Chicago Blackhawks",
+            "Mighty Ducks of Anaheim": "Anaheim Ducks",
+        })
+
+        # User choice of metric to animate
+        metric = st.radio(
+            "Animate by:",
+            ["Appearances", "Wins", "Losses"],
+            horizontal=True,
+            index=0
+        )
+
+        top_n = st.slider("Top teams to display", 5, 20, 12)
+
+        # Build label text for bars
+        df["BarText"] = df.apply(
+            lambda r: f"{r[metric]}  (W:{r['Wins']} L:{r['Losses']})",
+            axis=1
+        )
+
+        # Keep top N teams per season based on chosen metric
+        df_plot = (
+            df.sort_values(["Season", metric], ascending=[True, False])
+            .groupby("Season", group_keys=False)
+            .head(top_n)
+            .copy()
+        )
+
+        color_map = {
+            team: meta.get("colour", "#888888")
+            for team, meta in entities.items()
+            if isinstance(meta, dict)
+        }
+
+        title_map = {
+            "Appearances": "Stanley Cup Final Appearances by Team Over Time",
+            "Wins": "Stanley Cup Wins by Team Over Time",
+            "Losses": "Stanley Cup Final Losses by Team Over Time"
+        }
+
+        fig = px.bar(
+            df_plot,
+            x=metric,
+            y="Team",
+            animation_frame="Season",
+            orientation="h",
+            color="Team",
+            color_discrete_map=color_map,
+            text="BarText",
+            range_x=[0, df[metric].max() + 1],
+            title=title_map[metric],
+            hover_data={
+                "Appearances": True,
+                "Wins": True,
+                "Losses": True,
+                "BarText": False
+            }
+        )
+
+        fig.update_layout(
+            height=700,
+            showlegend=False,
+            yaxis=dict(categoryorder="total ascending")
+        )
+
+        fig.update_traces(
+            textposition="outside",
+            cliponaxis=False,
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                "Season: %{frame}<br>"
+                f"{metric}: %{{x}}<br>"
+                "Wins: %{customdata[1]}<br>"
+                "Losses: %{customdata[2]}<extra></extra>"
+            )
+        )
+        
+        logo_uri_map = {
+            team: img_to_uri(meta.get("image_path", ""), meta.get("abbr", ""))
+            for team, meta in entities.items()
+            if isinstance(meta, dict)
+        }
+        
+        for frame in fig.frames:
+            season = int(frame.name)
+            frame_df = (
+                df_plot[df_plot["Season"] == season]
+                .sort_values(metric, ascending=False)
+                .head(top_n)
+                .copy()
+            )
+
+            images = []
+            for _, row in frame_df.iterrows():
+                team = row["Team"]
+                logo_uri = logo_uri_map.get(team)
+
+                if not logo_uri:
+                    continue
+
+                images.append(dict(
+                    source=logo_uri,
+                    xref="x",
+                    yref="y",
+                    x=row[metric],
+                    y=team,
+                    sizex=max(df[metric].max() * 0.03, 0.6),
+                    sizey=0.8,
+                    xanchor="left",
+                    yanchor="middle",
+                    sizing="contain",
+                    layer="above",
+                    opacity=1
+                ))
+
+            frame.layout = dict(images=images)
+        
+        initial_season = df_plot["Season"].min()
+        initial_df = (
+            df_plot[df_plot["Season"] == initial_season]
+            .sort_values(metric, ascending=False)
+            .head(top_n)
+            .copy()
+        )
+
+        fig.update_layout(
+            images=[
+                dict(
+                    source=logo_uri_map[row["Team"]],
+                    xref="x",
+                    yref="y",
+                    x=row[metric],
+                    y=row["Team"],
+                    sizex=max(df[metric].max() * 0.03, 0.6),
+                    sizey=0.8,
+                    xanchor="left",
+                    yanchor="middle",
+                    sizing="contain",
+                    layer="above",
+                    opacity=1
+                )
+                for _, row in initial_df.iterrows()
+                if logo_uri_map.get(row["Team"])
+            ]
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+    
+    # ── PAGE: Scores ───────────────────────────────────
+    elif page == "⚡ Scores":
+        st.markdown('<div class="section-header">Scores</div>', unsafe_allow_html=True)
+        # index_html = load_index_html()
+        # st.code(index_html, language="html", line_numbers=True)
+        # st.markdown(index_html, unsafe_allow_html=True)
+        # st.html("index.html")
+        index_html = load_index_html()
+        components.html(
+            index_html,
+            height=2400,
+            scrolling=True,
+        )
+        st.subheader(f"Coming soon")
+        if st.button(
+            "Verify My Records?"
+        ):
+            game_ids = completed["GameID"].tolist()
+            st.write(game_ids)
+            to_reconcile = verify_scores(completed)
+            st.write(to_reconcile)
 
     # ── PAGE: OVERVIEW ───────────────────────────────────
-    if page == "📊 Overview & Accuracy":
+    elif page == "📊 Overview & Accuracy":
         st.markdown('<div class="section-header">OVERALL PERFORMANCE</div>', unsafe_allow_html=True)
 
         c1, c2, c3, c4, c5 = st.columns(5)
@@ -2037,7 +2594,7 @@ def main():
         all_teams = sorted(set(completed["AwayTeam"].dropna()) | set(completed["HomeTeam"].dropna()))
         selected_team = st.selectbox("Select Team", all_teams)
 
-        team_logo_url = get_team_logo(selected_team)
+        team_logo_url = fetch_team_logo(selected_team)
         team_name = TEAM_META.get(selected_team, {}).get("name", selected_team)
 
         col_logo, col_title = st.columns([1, 6])
@@ -2309,7 +2866,7 @@ def main():
         for i, (name, info) in enumerate(GAUNTLETS.items()):
             with cols[i % 2]:
                 teams_str = " · ".join([
-                    f'<img src="{get_team_logo(t)}" width="24" style="vertical-align:middle"> {t}'
+                    f'<img src="{fetch_team_logo(t)}" width="24" style="vertical-align:middle"> {t}'
                     for t in info["teams"]
                 ])
                 st.markdown(f"""
@@ -2439,16 +2996,10 @@ def main():
 
     # ── PAGE: JERSEY COLLECTION ───────────────────────────
     elif page == "🧥 Jersey Collection":
-        # Load jersey workbook
-        try:
-            df_jerseys = load_jersey_data(path_excel_jerseys)
-        except FileNotFoundError:
-            st.error(f"❌ Jersey workbook not found:\n\n`{path_excel_jerseys}`\n\nCheck the path at the top of the script.")
-            return
-        except Exception as e:
-            st.error(f"❌ Could not load jersey workbook: {e}")
-            return
-        page_jersey_collection(df_jerseys, path_jersey_images)
+        
+        df_jerseys = load_jersey_workbook()
+        if not df_jerseys.empty:        
+            page_jersey_collection(df_jerseys, path_jersey_images)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,23 @@
+
+
+# https://api-web.nhle.com/v1/skater-stats-leaders/{season}/{game-type}?categories=assists&limit=3
+# https://api-web.nhle.com/v1/goalie-stats-leaders/{season}/{game-type}?categories=gaa&limit=3
+https://api-web.nhle.com/v1/skater-stats-leaders/current?categories=goals&limit=5
+https://api-web.nhle.com/v1/goalie-stats-leaders/current?categories=wins&limit=5
+
+
+# Link formats for NHL game center as of Jan 2026.
+# "https://www.nhl.com/gamecenter/" + {AWAY_TEAM} + "-vs-" + {AWAY_TEAM} + "/" + {YEAR(GAMEDATE)} + "/" + {MONTH(GAMEDATE)} + "/" + {DAY(GAMEDATE)} + "/" + {GAME_ID}
+#Quebec 2024 Preseason games:
+https://www.nhl.com/gamecenter/fla-vs-lak/2024/10/05/2024010103
+https://www.nhl.com/gamecenter/bos-vs-lak/2024/10/03/2024010087
+
+https://api.nhle.com/stats/rest/en/leaders/skaters/points
+https://api.nhle.com/stats/rest/en/leaders/goalies/gaa
+
+
+https://api-web.nhle.com/v1/skater-stats-leaders/current?categories=goals&limit=5&season=20252026
+==>
+https://api-web.nhle.com/v1/skater-stats-leaders/20252026/1?categories=goals&limit=5   # doesnt work
+https://api-web.nhle.com/v1/skater-stats-leaders/20252026/2?categories=goals&limit=5   # works
+https://api-web.nhle.com/v1/skater-stats-leaders/20252026/3?categories=goals&limit=5   # works
