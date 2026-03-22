@@ -38,6 +38,7 @@ def contents(**data) -> pd.DataFrame:
     data_1 = dict(
         playerID = 8471675,
         teamAbbr = "PIT",
+        teamID = 5,
         date = "2026-01-31",
         season = "20252026",
         gameID = 2025021032,
@@ -53,6 +54,7 @@ def contents(**data) -> pd.DataFrame:
     
     playerID = data["playerID"]
     teamAbbr = data["teamAbbr"]
+    teamID = data["teamID"]
     date = data["date"]
     season = data["season"]
     gameID = data["gameID"]
@@ -123,7 +125,7 @@ def contents(**data) -> pd.DataFrame:
         url_openapi_guess = ('i', 'https://api-web.nhle.com/model/v1/openapi.json', [], 'Referenced openapi spec path; public reference notes it appears to return 404', {}),
         url_edge_team_details = ('j', '{base}/edge/team/details/{teamAbbr}', [base, teamAbbr], 'Team Edge details', {'base': base, 'teamAbbr': teamAbbr}),
         url_edge_team_landing = ('j', '{base}/edge/team/landing/{teamAbbr}', [base, teamAbbr], 'Team Edge landing page', {'base': base, 'teamAbbr': teamAbbr}),
-        url_edge_team_comparison = ('j', '{base}/edge/team/comparison/{teamAbbr}/{season}/{gameType}', [base, teamAbbr, season, gameType], 'Team comparison metrics', {'base': base, 'teamAbbr': teamAbbr, 'season': season, 'gameType': gameType}),
+        url_edge_team_comparison = ('j', '{base}/edge/team-comparison/{teamID}/{season}/{gameType}', [base, teamID, season, gameType], 'Team comparison metrics', {'base': base, 'teamID': teamID, 'season': season, 'gameType': gameType}),
         url_edge_team_skating_distance_top10 = ('j', '{base}/edge/team/skating-distance/{teamAbbr}/{season}/{gameType}', [base, teamAbbr, season, gameType], 'Team skating distance top-level summary', {'base': base, 'teamAbbr': teamAbbr, 'season': season, 'gameType': gameType}),
         url_edge_team_skating_distance_detail = ('j', '{base}/edge/team/skating-distance-detail/{teamAbbr}/{season}/{gameType}', [base, teamAbbr, season, gameType], 'Team skating distance details', {'base': base, 'teamAbbr': teamAbbr, 'season': season, 'gameType': gameType}),
         url_edge_team_skating_speed_top10 = ('j', '{base}/edge/team/skating-speed/{teamAbbr}/{season}/{gameType}', [base, teamAbbr, season, gameType], 'Team skating speed summary', {'base': base, 'teamAbbr': teamAbbr, 'season': season, 'gameType': gameType}),

@@ -24,6 +24,7 @@ from datetime import datetime, timedelta
 
 from colour_utility import Colour
 from json_utility import peek_json
+from streamlit_utility import display_df
 import nhl_api_reference_examples as api_ref
 
 warnings.filterwarnings("ignore")
@@ -32,7 +33,7 @@ warnings.filterwarnings("ignore")
 # DATA SOURCE — local Excel workbook
 # ─────────────────────────────────────────────────────────
 path_excel_predictions       = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\NHLGamePredictions_2526_copy.xlsx"
-path_excel_jerseys           = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\Jerseys_20260309.xlsx"
+path_excel_jerseys           = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\Jerseys_20260319.xlsx"
 path_jersey_images           = r"D:\\NHL jerseys\\Jerseys 20250927"
 path_image_dir               = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer"
 path_stanley_cup_appearances = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_apperances.json"
@@ -164,6 +165,8 @@ TEAM_META = {
     "WPG": {"name": "Winnipeg Jets",        "conf": "Western", "div": "Central",    "id": 52},
 }
 
+CANADIAN_TEAMS = {"MTL", "OTT", "TOR", "WPG", "EDM", "CGY", "VAN"}
+
 GAUNTLETS = {
     "California Swing 🌴": {
         "teams": ["ANA", "LAK", "SJS", "VGK"],
@@ -216,6 +219,598 @@ GAUNTLETS = {
         "region": "Historic Rivalry"
     },
 }
+
+
+# ─────────────────────────────────────────────────────────
+# NHL TEAM RIVALRIES
+# ─────────────────────────────────────────────────────────
+TEAM_RIVALS = {
+    "ANA": {
+        "primary":   ["LAK", "SJS"],
+        "secondary": ["VGK", "SEA"],
+        "historic":  ["DET"],
+        "modern":    ["EDM"],
+        "reasons": {
+            "LAK": ["same_division", "southern_california", "geographic", "frequent_matchups"],
+            "SJS": ["same_division", "california", "geographic"],
+            "VGK": ["same_division", "pacific_contention"],
+            "SEA": ["same_division", "regional_west"],
+            "DET": ["historic_playoffs"],
+            "EDM": ["playoff_history"]
+        }
+    },
+
+    "UTA": {
+        "primary":   ["COL", "VGK"],
+        "secondary": ["DAL", "NSH", "WPG"],
+        "historic":  [],
+        "modern":    [],
+        "reasons": {
+            "COL": ["same_division", "rocky_mountain_region"],
+            "VGK": ["regional_west", "newer_franchise_competition"],
+            "DAL": ["same_division"],
+            "NSH": ["same_division"],
+            "WPG": ["same_division"]
+        }
+    },
+
+    "BOS": {
+        "primary":   ["MTL", "TOR"],
+        "secondary": ["BUF", "FLA", "TBL"],
+        "historic":  ["DET", "NYR", "CHI"],
+        "modern":    ["FLA"],
+        "reasons": {
+            "MTL": ["original_six", "historic", "playoff_history", "atlantic"],
+            "TOR": ["original_six", "atlantic", "historic"],
+            "BUF": ["atlantic", "regional_east"],
+            "FLA": ["atlantic", "recent_playoffs"],
+            "TBL": ["atlantic", "recent_contention"],
+            "DET": ["original_six", "historic"],
+            "NYR": ["original_six", "historic"],
+            "CHI": ["original_six"]
+        }
+    },
+
+    "BUF": {
+        "primary":   ["TOR", "OTT"],
+        "secondary": ["BOS", "DET", "MTL"],
+        "historic":  ["PHI"],
+        "modern":    [],
+        "reasons": {
+            "TOR": ["atlantic", "geographic", "cross_border"],
+            "OTT": ["atlantic", "regional"],
+            "BOS": ["atlantic"],
+            "DET": ["regional", "great_lakes"],
+            "MTL": ["atlantic", "regional"],
+            "PHI": ["historic"]
+        }
+    },
+
+    "CGY": {
+        "primary":   ["EDM", "VAN"],
+        "secondary": ["LAK", "SEA", "VGK", "TOR", "OTT", "MTL"],
+        "historic":  ["WPG", "ANA"],
+        "modern":    ["EDM"],
+        "reasons": {
+            "EDM": ["same_division", "same_province", "battle_of_alberta", "historic", "modern"],
+            "VAN": ["same_division", "western_canada"],
+            "LAK": ["same_division", "playoff_history"],
+            "SEA": ["same_division", "regional_west"],
+            "VGK": ["same_division", "pacific_contention"],
+            "WPG": ["western_canada", "historic"],
+            "ANA": ["playoff_history"],
+            "TOR": ["canadian_team"],
+            "OTT": ["canadian_team"],
+            "MTL": ["canadian_team"]
+        }
+    },
+
+    "CAR": {
+        "primary":   ["WSH", "NJD"],
+        "secondary": ["NYR", "TBL", "FLA"],
+        "historic":  ["MTL", "BOS"],
+        "modern":    ["NYR", "FLA"],
+        "reasons": {
+            "WSH": ["metro", "regional_east"],
+            "NJD": ["metro", "playoff_history"],
+            "NYR": ["metro", "recent_playoffs", "contention"],
+            "TBL": ["regional_southeast", "playoff_history"],
+            "FLA": ["east_contention", "recent_playoffs"],
+            "MTL": ["former_division", "historic"],
+            "BOS": ["east_contention", "historic"]
+        }
+    },
+
+    "CHI": {
+        "primary":   ["DET", "STL"],
+        "secondary": ["MIN", "NSH", "COL"],
+        "historic":  ["VAN", "LAK", "TOR", "MTL", "NYR", "BOS"],
+        "modern":    [],
+        "reasons": {
+            "DET": ["original_six", "historic", "regional", "old_central"],
+            "STL": ["regional", "midwest", "historic"],
+            "MIN": ["same_division", "regional"],
+            "NSH": ["same_division"],
+            "COL": ["same_division"],
+            "VAN": ["historic_playoffs"],
+            "LAK": ["historic_playoffs"],
+            "TOR": ["original_six"],
+            "MTL": ["original_six"],
+            "NYR": ["original_six"],
+            "BOS": ["original_six"]
+        }
+    },
+
+    "COL": {
+        "primary":   ["DET", "MIN"],
+        "secondary": ["DAL", "VGK", "STL"],
+        "historic":  ["NJD"],
+        "modern":    ["DAL", "VGK", "SEA"],
+        "reasons": {
+            "DET": ["historic", "legendary_playoff_rivalry"],
+            "MIN": ["same_division", "proximity"],
+            "DAL": ["same_division", "recent_playoffs", "contention"],
+            "VGK": ["west_contention", "recent_playoffs"],
+            "STL": ["same_division"],
+            "NJD": ["historic_cup_final"],
+            "SEA": ["recent_playoffs"]
+        }
+    },
+
+    "CBJ": {
+        "primary":   ["PIT", "WSH"],
+        "secondary": ["NJD", "CAR", "DET"],
+        "historic":  ["TBL"],
+        "modern":    [],
+        "reasons": {
+            "PIT": ["metro", "regional"],
+            "WSH": ["metro"],
+            "NJD": ["metro"],
+            "CAR": ["metro"],
+            "DET": ["regional"],
+            "TBL": ["historic_sweep_upset"]
+        }
+    },
+
+    "DAL": {
+        "primary":   ["COL", "STL"],
+        "secondary": ["NSH", "MIN", "WPG", "EDM"],
+        "historic":  ["EDM", "BUF"],
+        "modern":    ["VGK", "COL", "EDM"],
+        "reasons": {
+            "COL": ["same_division", "recent_playoffs", "contention"],
+            "STL": ["same_division", "historic_playoffs"],
+            "NSH": ["same_division"],
+            "MIN": ["same_division"],
+            "WPG": ["same_division"],
+            "EDM": ["west_contention", "recent_playoffs", "historic_playoffs"],
+            "BUF": ["historic_cup_final"],
+            "VGK": ["west_contention", "recent_playoffs"]
+        }
+    },
+
+    "DET": {
+        "primary":   ["CHI", "COL", "TOR"],
+        "secondary": ["BOS", "MTL", "OTT", "TBL"],
+        "historic":  ["STL", "ANA", "NYR"],
+        "modern":    ["OTT"],
+        "reasons": {
+            "CHI": ["original_six", "regional", "historic"],
+            "COL": ["historic", "legendary_playoff_rivalry"],
+            "TOR": ["original_six", "regional"],
+            "BOS": ["original_six", "atlantic"],
+            "MTL": ["original_six", "atlantic"],
+            "OTT": ["atlantic", "recent_tension"],
+            "TBL": ["atlantic"],
+            "STL": ["historic_division"],
+            "ANA": ["historic_playoffs"],
+            "NYR": ["original_six"]
+        }
+    },
+
+    "EDM": {
+        "primary":   ["CGY", "LAK"],
+        "secondary": ["VAN", "VGK", "DAL", "WPG", "OTT", "TOR", "MTL"],
+        "historic":  ["NYI", "PHI", "DAL"],
+        "modern":    ["FLA", "VGK", "DAL"],
+        "reasons": {
+            "CGY": ["same_division", "same_province", "battle_of_alberta", "historic", "modern"],
+            "LAK": ["same_division", "playoff_history", "recent_playoffs"],
+            "VAN": ["same_division", "western_canada"],
+            "VGK": ["same_division", "west_contention", "recent_playoffs"],
+            "DAL": ["west_contention", "recent_playoffs", "historic_playoffs"],
+            "NYI": ["historic_cup_final", "1980s_dynasty"],
+            "PHI": ["historic_cup_final", "1980s"],
+            "FLA": ["modern", "recent_cup_final"],
+            "TOR": ["canadian_team"],
+            "OTT": ["canadian_team"],
+            "MTL": ["canadian_team"],
+            "WPG": ["Canadian_team"]
+        }
+    },
+
+    "FLA": {
+        "primary":   ["TBL", "TOR"],
+        "secondary": ["BOS", "OTT", "CAR"],
+        "historic":  [],
+        "modern":    ["EDM", "VGK", "BOS"],
+        "reasons": {
+            "TBL": ["same_division", "same_state", "sunshine_state"],
+            "TOR": ["atlantic", "recent_playoffs"],
+            "BOS": ["atlantic", "recent_playoffs"],
+            "OTT": ["atlantic", "recent_playoffs"],
+            "CAR": ["east_contention", "recent_playoffs"],
+            "EDM": ["modern", "recent_cup_final"],
+            "VGK": ["modern", "cup_final"],
+        }
+    },
+
+    "LAK": {
+        "primary":   ["ANA", "SJS", "EDM"],
+        "secondary": ["VGK", "VAN", "CGY"],
+        "historic":  ["CHI", "NJD", "MTL", "NYR"],
+        "modern":    ["EDM", "VGK"],
+        "reasons": {
+            "ANA": ["same_division", "southern_california", "freeway_faceoff"],
+            "SJS": ["same_division", "california"],
+            "EDM": ["same_division", "recent_playoffs"],
+            "VGK": ["same_division", "regional_west"],
+            "VAN": ["same_division", "playoff_history"],
+            "CGY": ["same_division"],
+            "CHI": ["historic_playoffs"],
+            "NJD": ["historic_cup_final"],
+            "MTL": ["historic_cup_final"],
+            "NYR": ["historic_cup_final"]
+        }
+    },
+
+    "MIN": {
+        "primary":   ["COL", "WPG"],
+        "secondary": ["DAL", "STL", "CHI", "NSH"],
+        "historic":  ["VAN"],
+        "modern":    ["DAL", "VGK"],
+        "reasons": {
+            "COL": ["same_division", "regional"],
+            "WPG": ["same_division", "regional"],
+            "DAL": ["same_division", "historic_franchise_connection", "recent_playoffs"],
+            "STL": ["same_division", "regional"],
+            "CHI": ["regional", "historic_division"],
+            "NSH": ["same_division"],
+            "VAN": ["historic_playoffs"],
+            "VGK": ["recent_playoffs"]
+        }
+    },
+
+    "MTL": {
+        "primary":   ["BOS", "TOR"],
+        "secondary": ["OTT", "DET", "TBL", "EDM", "VAN", "WPG"],
+        "historic":  ["NYR", "PHI", "CGY", "LAK", "CHI"],
+        "modern":    ["TOR"],
+        "reasons": {
+            "BOS": ["original_six", "historic", "playoff_history", "atlantic"],
+            "TOR": ["original_six", "atlantic", "historic", "modern"],
+            "OTT": ["atlantic", "regional"],
+            "DET": ["original_six", "atlantic"],
+            "TBL": ["atlantic"],
+            "NYR": ["original_six", "historic"],
+            "PHI": ["historic_playoffs"],
+            "CGY": ["historic_cup_final"],
+            "LAK": ["historic_cup_final"],
+            "CHI": ["original_six"],
+            "EDM": ["canadian_team"],
+            "VAN": ["canadian_team"],
+            "WPG": ["canadian_team"]
+        }
+    },
+
+    "NSH": {
+        "primary":   ["DAL", "STL"],
+        "secondary": ["CHI", "WPG", "MIN", "COL"],
+        "historic":  ["ANA", "PIT"],
+        "modern":    ["COL", "WPG"],
+        "reasons": {
+            "DAL": ["same_division"],
+            "STL": ["same_division", "regional"],
+            "CHI": ["historic_division", "playoff_history"],
+            "WPG": ["same_division"],
+            "MIN": ["same_division"],
+            "COL": ["same_division", "recent_playoffs"],
+            "ANA": ["historic_playoffs"],
+            "PIT": ["historic_cup_final"]
+        }
+    },
+
+    "NJD": {
+        "primary":   ["NYR", "PHI"],
+        "secondary": ["NYI", "CAR", "WSH"],
+        "historic":  ["DET", "DAL", "LAK", "ANA"],
+        "modern":    ["CAR", "NYR"],
+        "reasons": {
+            "NYR": ["metro", "greater_new_york", "hudson_river", "historic", "modern"],
+            "PHI": ["metro", "regional"],
+            "NYI": ["metro", "greater_new_york"],
+            "CAR": ["metro", "recent_playoffs"],
+            "WSH": ["metro"],
+            "DET": ["historic_cup_final"],
+            "DAL": ["historic_cup_final"],
+            "LAK": ["historic_cup_final"],
+            "ANA": ["historic_cup_final"]
+        }
+    },
+
+    "NYI": {
+        "primary":   ["NYR", "NJD"],
+        "secondary": ["PHI", "PIT", "WSH"],
+        "historic":  ["EDM", "TOR"],
+        "modern":    ["CAR", "TBL"],
+        "reasons": {
+            "NYR": ["metro", "greater_new_york", "historic", "geographic"],
+            "NJD": ["metro", "greater_new_york"],
+            "PHI": ["metro", "historic_playoffs"],
+            "PIT": ["metro"],
+            "WSH": ["metro"],
+            "EDM": ["historic_cup_final", "1980s_dynasty"],
+            "TOR": ["historic"],
+            "CAR": ["recent_playoffs"],
+            "TBL": ["recent_playoffs"]
+        }
+    },
+
+    "NYR": {
+        "primary":   ["NYI", "NJD", "PHI"],
+        "secondary": ["WSH", "PIT", "CAR"],
+        "historic":  ["MTL", "VAN", "LAK", "TOR", "BOS", "CHI"],
+        "modern":    ["CAR", "FLA", "NJD"],
+        "reasons": {
+            "NYI": ["metro", "greater_new_york", "historic", "geographic"],
+            "NJD": ["metro", "greater_new_york", "historic", "modern"],
+            "PHI": ["metro", "historic"],
+            "WSH": ["metro"],
+            "PIT": ["metro"],
+            "CAR": ["metro", "recent_playoffs", "modern"],
+            "MTL": ["original_six", "historic"],
+            "VAN": ["historic_cup_final"],
+            "LAK": ["historic_cup_final"],
+            "FLA": ["modern", "recent_east_contention"],
+            "TOR": ["original_six"],
+            "CHI": ["original_six"],
+            "BOS": ["original_six"]
+        }
+    },
+
+    "OTT": {
+        "primary":   ["TOR", "MTL"],
+        "secondary": ["BUF", "DET", "BOS", "VAN", "CGY", "EDM", "WPG"],
+        "historic":  ["PIT", "NJD"],
+        "modern":    ["TOR", "DET"],
+        "reasons": {
+            "TOR": ["same_division", "battle_of_ontario", "historic", "modern"],
+            "MTL": ["same_division", "regional"],
+            "BUF": ["same_division", "regional"],
+            "DET": ["same_division", "recent_tension"],
+            "BOS": ["same_division"],
+            "PIT": ["historic_playoffs"],
+            "NJD": ["historic_playoffs"],
+            "VAN": ["canadian_team"],
+            "CGY": ["canadian_team"],
+            "EDM": ["canadian_team"],
+            "WPG": ["canadian_team"]
+        }
+    },
+
+    "PHI": {
+        "primary":   ["PIT", "NYR", "NJD"],
+        "secondary": ["NYI", "WSH", "BOS"],
+        "historic":  ["EDM", "MTL", "CHI"],
+        "modern":    ["PIT", "NYR"],
+        "reasons": {
+            "PIT": ["metro", "same_state", "keystone_state", "historic", "modern"],
+            "NYR": ["metro", "historic"],
+            "NJD": ["metro", "regional"],
+            "NYI": ["metro"],
+            "WSH": ["metro"],
+            "BOS": ["historic_east"],
+            "EDM": ["historic_cup_final"],
+            "MTL": ["historic_playoffs"],
+            "CHI": ["historic_cup_final"]
+        }
+    },
+
+    "PIT": {
+        "primary":   ["PHI", "WSH", "NYR"],
+        "secondary": ["CBJ", "NYI", "NJD"],
+        "historic":  ["DET", "OTT", "NSH", "SJS"],
+        "modern":    ["WSH", "PHI"],
+        "reasons": {
+            "PHI": ["metro", "same_state", "keystone_state", "historic", "modern"],
+            "WSH": ["metro", "era_defining", "crosby_ovechkin"],
+            "NYR": ["metro", "playoff_history"],
+            "CBJ": ["metro", "regional"],
+            "NYI": ["metro"],
+            "NJD": ["metro"],
+            "DET": ["historic_cup_final"],
+            "OTT": ["historic_playoffs"],
+            "NSH": ["historic_cup_final"],
+            "SJS": ["historic_cup_final"]
+        }
+    },
+
+    "SJS": {
+        "primary":   ["LAK", "ANA", "VGK"],
+        "secondary": ["VAN", "SEA", "EDM"],
+        "historic":  ["DET", "STL", "DAL", "COL"],
+        "modern":    ["VGK"],
+        "reasons": {
+            "LAK": ["same_division", "california", "historic"],
+            "ANA": ["same_division", "california"],
+            "VGK": ["same_division", "playoff_history", "modern"],
+            "VAN": ["same_division", "playoff_history"],
+            "SEA": ["same_division", "regional_west"],
+            "EDM": ["same_division"],
+            "DET": ["historic_playoffs"],
+            "STL": ["historic_playoffs"],
+            "DAL": ["historic_playoffs"],
+            "COL": ["historic_playoffs"]
+        }
+    },
+
+    "SEA": {
+        "primary":   ["VAN", "VGK"],
+        "secondary": ["EDM", "CGY", "ANA", "SJS"],
+        "historic":  [],
+        "modern":    ["COL", "DAL"],
+        "reasons": {
+            "VAN": ["same_division", "cascadia", "geographic"],
+            "VGK": ["same_division", "newer_west_contention"],
+            "EDM": ["same_division"],
+            "CGY": ["same_division"],
+            "ANA": ["same_division"],
+            "SJS": ["same_division"],
+            "COL": ["recent_playoffs"],
+            "DAL": ["recent_playoffs"]
+        }
+    },
+
+    "STL": {
+        "primary":   ["CHI", "NSH"],
+        "secondary": ["DAL", "COL", "MIN", "WPG"],
+        "historic":  ["DET", "SJS", "BOS"],
+        "modern":    ["COL", "DAL"],
+        "reasons": {
+            "CHI": ["regional", "historic", "midwest"],
+            "NSH": ["same_division", "regional"],
+            "DAL": ["same_division", "modern"],
+            "COL": ["same_division", "modern"],
+            "MIN": ["same_division"],
+            "WPG": ["same_division"],
+            "DET": ["historic_division"],
+            "SJS": ["historic_playoffs"],
+            "BOS": ["historic_cup_final"]
+        }
+    },
+
+    "TBL": {
+        "primary":   ["FLA", "TOR"],
+        "secondary": ["BOS", "DET", "MTL"],
+        "historic":  ["CGY", "CHI", "CBJ"],
+        "modern":    ["FLA", "TOR", "NYI"],
+        "reasons": {
+            "FLA": ["same_division", "same_state", "sunshine_state", "modern"],
+            "TOR": ["same_division", "recent_playoffs", "modern"],
+            "BOS": ["same_division", "contention"],
+            "DET": ["same_division", "historic_realignment_overlap"],
+            "MTL": ["same_division"],
+            "CGY": ["historic_cup_final"],
+            "CHI": ["historic_cup_final"],
+            "CBJ": ["historic_upset"],
+            "NYI": ["recent_playoffs"]
+        }
+    },
+
+    "TOR": {
+        "primary":   ["MTL", "OTT", "BOS"],
+        "secondary": ["BUF", "DET", "TBL", "FLA", "CGY", "EDM", "VAN", "WPG"],
+        "historic":  ["NYI", "CHI", "DET", "NYR"],
+        "modern":    ["OTT", "TBL", "FLA", "MTL"],
+        "reasons": {
+            "MTL": ["original_six", "historic", "atlantic", "modern"],
+            "OTT": ["same_division", "battle_of_ontario", "historic", "modern"],
+            "BOS": ["original_six", "atlantic", "historic"],
+            "BUF": ["same_division", "regional"],
+            "DET": ["original_six", "regional"],
+            "TBL": ["same_division", "recent_playoffs", "modern"],
+            "FLA": ["same_division", "recent_playoffs", "modern"],
+            "NYI": ["historic"],
+            "CHI": ["original_six"],
+            "NYR": ["original_six"],
+            "VAN": ["canadian_team"],
+            "CGY": ["canadian_team"],
+            "WPG": ["canadian_team"],
+            "EDM": ["canadian_team"]
+        }
+    },
+
+    "VAN": {
+        "primary":   ["CGY", "EDM", "SEA"],
+        "secondary": ["LAK", "SJS", "VGK", "MTL", "OTT", "TOR", "WPG"],
+        "historic":  ["CHI", "NYR", "BOS"],
+        "modern":    ["EDM", "VGK"],
+        "reasons": {
+            "CGY": ["same_division", "western_canada"],
+            "EDM": ["same_division", "western_canada", "modern"],
+            "SEA": ["same_division", "cascadia", "geographic"],
+            "LAK": ["same_division", "playoff_history"],
+            "SJS": ["same_division", "playoff_history"],
+            "VGK": ["same_division", "modern"],
+            "CHI": ["historic_playoffs"],
+            "NYR": ["historic_cup_final"],
+            "BOS": ["historic_cup_final"],
+            "TOR": ["canadian_team"],
+            "OTT": ["canadian_team"],
+            "MTL": ["canadian_team"],
+            "WPG": ["canadian_team"]
+        }
+    },
+
+    "VGK": {
+        "primary":   ["SJS", "LAK"],
+        "secondary": ["EDM", "VAN", "SEA", "ANA"],
+        "historic":  ["WSH", "FLA"],
+        "modern":    ["DAL", "EDM", "COL", "SEA"],
+        "reasons": {
+            "SJS": ["same_division", "playoff_history", "modern"],
+            "LAK": ["same_division", "regional_west"],
+            "EDM": ["same_division", "west_contention", "modern"],
+            "VAN": ["same_division"],
+            "SEA": ["same_division", "newer_franchise_competition"],
+            "ANA": ["same_division"],
+            "WSH": ["historic_cup_final"],
+            "FLA": ["historic_cup_final"],
+            "DAL": ["modern", "recent_playoffs"],
+            "COL": ["modern", "recent_playoffs"]
+        }
+    },
+
+    "WSH": {
+        "primary":   ["PIT", "NYR"],
+        "secondary": ["CAR", "PHI", "NYI", "NJD"],
+        "historic":  ["VGK", "BOS"],
+        "modern":    ["PIT", "CAR", "NYR"],
+        "reasons": {
+            "PIT": ["metro", "era_defining", "crosby_ovechkin", "modern"],
+            "NYR": ["metro", "playoff_history", "modern"],
+            "CAR": ["metro", "regional", "modern"],
+            "PHI": ["metro"],
+            "NYI": ["metro"],
+            "NJD": ["metro"],
+            "VGK": ["historic_cup_final"],
+            "BOS": ["historic_playoffs"]
+        }
+    },
+
+    "WPG": {
+        "primary":   ["MIN", "NSH"],
+        "secondary": ["DAL", "COL", "STL", "CGY", "EDM", "MTL", "TOR", "OTT", "VAN"],
+        "historic":  ["ANA", "VGK"],
+        "modern":    ["COL", "DAL", "VGK"],
+        "reasons": {
+            "MIN": ["same_division", "regional"],
+            "NSH": ["same_division"],
+            "DAL": ["same_division", "modern"],
+            "COL": ["same_division", "modern"],
+            "STL": ["same_division"],
+            "CGY": ["regional_canada"],
+            "EDM": ["regional_canada"],
+            "ANA": ["historic_playoffs"],
+            "VGK": ["historic_playoffs", "modern"],
+            "TOR": ["canadian_team"],
+            "OTT": ["canadian_team"],
+            "VAN": ["canadian_team"],
+            "MTL": ["canadian_team"]
+        }
+    },
+}
+
 
 # ═══════════════════════════════════════════════════════════
 # JERSEY COLLECTION MODULE
@@ -1111,60 +1706,142 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             
             ck1.metric("Total Days Collecting:", n_days)
             ck2.metric("Total Spent per Day:", f"${spent_per_day:,.2f} CAD")
-
+            
             # Cumulative spend over time
             st.write("priced")
             st.write(priced)
-            priced = pd.concat([priced, pd.DataFrame({"OrderDate": [pd.Timestamp(today)], "PriceF": [0], "PlayerName": [""], "Team": [""]})])
-            priced_sorted = priced.dropna(subset=["OrderDate"]).sort_values("OrderDate").copy()
+
+            priced_plot = pd.concat([
+                priced.copy(),
+                pd.DataFrame({
+                    "OrderDate": [pd.Timestamp(today)],
+                    "PriceF": [0],
+                    "PlayerName": [""],
+                    "Team": [""]
+                })
+            ])
+
+            priced_sorted = priced_plot.dropna(subset=["OrderDate"]).sort_values("OrderDate").copy()
+
             if len(priced_sorted) > 0:
                 priced_sorted["CumulativeSpend"] = priced_sorted["PriceF"].cumsum()
                 priced_sorted["Label"] = priced_sorted.apply(
-                    lambda r: (r.get("PlayerName") or r.get("Team","?")) + f" (${r['PriceF']:.0f})", axis=1
+                    lambda r: (r.get("PlayerName") or r.get("Team", "?")) + f" (${r['PriceF']:.0f})",
+                    axis=1
                 )
-                fig_cum = make_subplots(specs=[[{"secondary_y": True}]])
-                fig_cum.add_trace(go.Scatter(
-                    x=priced_sorted["OrderDate"],
-                    y=priced_sorted["CumulativeSpend"],
-                    mode="lines+markers",
-                    line=dict(color=GOLD, width=2),
-                    marker=dict(size=8, color=GOLD),
-                    text=priced_sorted["Label"],
-                    hovertemplate="<b>%{text}</b><br>Date: %{x|%b %d, %Y}<br>Cumulative: $%{y:,.0f} CAD<extra></extra>",
-                    fill="tozeroy",
-                    fillcolor="rgba(200,168,75,0.08)"
-                ))
 
-                # Convert datetime to numeric values
-                x = priced_sorted["OrderDate"].map(pd.Timestamp.toordinal).to_numpy().reshape(-1, 1)
-                y = priced_sorted["CumulativeSpend"].to_numpy()
+                # Build extrapolated series from all jerseys, not just priced ones
+                extrapolated = active.dropna(subset=["OrderDate"]).sort_values("OrderDate").copy()
+                extrapolated["PriceF_Extrapolated"] = extrapolated["PriceF"].fillna(mean_priced)
+                extrapolated["PriceF_Extrapolated"] = extrapolated["PriceF"].replace(0, mean_priced)
+                extrapolated["PriceF_Extrapolated"] = extrapolated["PriceF"].replace(-1, mean_priced)
+                extrapolated["CumulativeSpendExtrapolated"] = extrapolated["PriceF_Extrapolated"].cumsum()
+                extrapolated["Label"] = extrapolated.apply(
+                    lambda r: (
+                        (r.get("PlayerName") or r.get("Team", "?"))
+                        + (
+                            f" (${r['PriceF']:.0f})"
+                            if pd.notna(r.get("PriceF"))
+                            else f" (est. ${mean_priced:.0f})"
+                        )
+                    ),
+                    axis=1
+                )
 
-                regr = LinearRegression()
-                regr.fit(x, y)
+                # Append today to extrapolated series too
+                extrapolated = pd.concat([
+                    extrapolated,
+                    pd.DataFrame({
+                        "OrderDate": [pd.Timestamp(today)],
+                        "PriceF": [0],
+                        "PriceF_Extrapolated": [0],
+                        "CumulativeSpendExtrapolated": [sum_priced_extrapolated],
+                        "PlayerName": [""],
+                        "Team": [""],
+                        "Label": ["Today"]
+                    })
+                ]).sort_values("OrderDate").reset_index(drop=True)
 
-                fit = regr.predict(x)
+                fig_cum = make_subplots(specs=[[{"secondary_y": False}]])
 
+                # Actual cumulative spend
                 fig_cum.add_trace(
                     go.Scatter(
                         x=priced_sorted["OrderDate"],
-                        y=fit,
-                        name="Trend",
-                        mode="lines",
-                        line=dict(dash="dash", width=2, color="white"),
-                        hovertemplate="Trend: $%{y:,.0f} CAD<extra></extra>"
-                    ),
-                    secondary_y=False
-                )       
-                
-                
+                        y=priced_sorted["CumulativeSpend"],
+                        name="Actual Cumulative Spend",
+                        mode="lines+markers",
+                        line=dict(color=GOLD, width=2),
+                        marker=dict(size=8, color=GOLD),
+                        text=priced_sorted["Label"],
+                        hovertemplate="<b>%{text}</b><br>Date: %{x|%b %d, %Y}<br>Cumulative: $%{y:,.0f} CAD<extra></extra>",
+                        fill="tozeroy",
+                        fillcolor="rgba(200,168,75,0.08)"
+                    )
+                )
+
+                # Actual trendline
+                if len(priced_sorted) > 1:
+                    x_actual = priced_sorted["OrderDate"].map(pd.Timestamp.toordinal).to_numpy().reshape(-1, 1)
+                    y_actual = priced_sorted["CumulativeSpend"].to_numpy()
+
+                    regr_actual = LinearRegression()
+                    regr_actual.fit(x_actual, y_actual)
+                    fit_actual = regr_actual.predict(x_actual)
+
+                    fig_cum.add_trace(
+                        go.Scatter(
+                            x=priced_sorted["OrderDate"],
+                            y=fit_actual,
+                            name="Actual Trend",
+                            mode="lines",
+                            line=dict(dash="dash", width=2, color="white"),
+                            hovertemplate="Actual Trend: $%{y:,.0f} CAD<extra></extra>"
+                        )
+                    )
+
+                # Extrapolated cumulative spend
+                fig_cum.add_trace(
+                    go.Scatter(
+                        x=extrapolated["OrderDate"],
+                        y=extrapolated["CumulativeSpendExtrapolated"],
+                        name="Extrapolated Cumulative Spend",
+                        mode="lines+markers",
+                        line=dict(width=2, dash="dot"),
+                        marker=dict(size=7),
+                        text=extrapolated["Label"],
+                        hovertemplate="<b>%{text}</b><br>Date: %{x|%b %d, %Y}<br>Extrapolated Cumulative: $%{y:,.0f} CAD<extra></extra>"
+                    )
+                )
+
+                # Extrapolated trendline
+                if len(extrapolated) > 1:
+                    x_ex = extrapolated["OrderDate"].map(pd.Timestamp.toordinal).to_numpy().reshape(-1, 1)
+                    y_ex = extrapolated["CumulativeSpendExtrapolated"].to_numpy()
+
+                    regr_ex = LinearRegression()
+                    regr_ex.fit(x_ex, y_ex)
+                    fit_ex = regr_ex.predict(x_ex)
+
+                    fig_cum.add_trace(
+                        go.Scatter(
+                            x=extrapolated["OrderDate"],
+                            y=fit_ex,
+                            name="Extrapolated Trend",
+                            mode="lines",
+                            line=dict(dash="dash", width=2),
+                            hovertemplate="Extrapolated Trend: $%{y:,.0f} CAD<extra></extra>"
+                        )
+                    )
+
                 fig_cum.update_layout(
                     **DARK_THEME,
                     title="Cumulative Collection Spend Over Time",
                     xaxis_title="Order Date",
                     yaxis_title="Cumulative Spend (CAD $)",
-                    height=380,
-                    # trendline="ols"
+                    height=420
                 )
+
                 st.plotly_chart(fig_cum, use_container_width=True)
 
             # Cost by team
@@ -1455,7 +2132,46 @@ def load_data(filepath: str) -> pd.DataFrame:
 
     # Enhanced scoring
     df = apply_enhanced_scores(df)
+    
+    df = detect_rivals(df)
+    
+    
+    return df
 
+
+def detect_rivals(df: pd.DataFrame) -> pd.DataFrame:
+    df["RivalGame"] = ""
+    df["RivalReason"] = [[] for _ in range(df.shape[0])]
+    
+    all_teams = set(df["AwayTeam"].dropna()) | set(df["HomeTeam"].dropna())
+    for team in all_teams:
+        rival_data = TEAM_RIVALS.get(team, {})
+        mask_away = df["AwayTeam"] == team
+        mask_home = df["HomeTeam"] == team
+        team_away_games = df[mask_away].copy()
+        team_home_games = df[mask_home].copy()
+        for rival_status in [
+            "primary",
+            "secondary",
+            "historic",
+            "modern"
+        ]:
+            rivals_list = rival_data.get(rival_status, [])
+            df.loc[mask_away & team_away_games["HomeTeam"].isin(rivals_list), "RivalGame"] = rival_status
+            df.loc[mask_away & team_away_games["HomeTeam"].isin(rivals_list), "RivalReason"] = df.loc[mask_away & team_away_games["HomeTeam"].isin(rivals_list)].apply(
+                lambda r:
+                    r["RivalReason"] + rival_data["reasons"][r["HomeTeam"]]
+                , axis=1
+            )
+            df.loc[mask_home & team_home_games["AwayTeam"].isin(rivals_list), "RivalGame"] = rival_status
+            df.loc[mask_home & team_home_games["AwayTeam"].isin(rivals_list), "RivalReason"] = df.loc[mask_home & team_home_games["AwayTeam"].isin(rivals_list)].apply(
+                lambda r:
+                    r["RivalReason"] + rival_data["reasons"][r["AwayTeam"]]
+                , axis=1
+            )
+            
+    df["RivalReason"] = df["RivalReason"].apply(lambda rr: ", ".join(list(set(rr))))
+    
     return df
 
 
@@ -1598,6 +2314,49 @@ def fetch_game_landing(g_id) -> dict:
         return requests.get(url).json()
     except Exception:
         return {}
+
+ 
+# ─── STEP 1 – paste these two functions near the other fetch_* helpers ────────
+ 
+@st.cache_data(ttl=300)
+def fetch_nhl_standings() -> list:
+    """
+    Fetch current NHL standings from the NHL web API.
+    Returns a list of team-standing dicts, one per team.
+    """
+    try:
+        url = "https://api-web.nhle.com/v1/standings/now"
+        resp = requests.get(url, timeout=10)
+        resp.raise_for_status()
+        data = resp.json()
+        return data.get("standings", [])
+    except Exception as e:
+        return []
+ 
+ 
+@st.cache_data(ttl=300)
+def fetch_nhl_team_schedule(team_abbr: str) -> list:
+    """
+    Fetch the remaining regular-season schedule for *team_abbr*.
+    Returns a list of game dicts that have not yet been played.
+    """
+    try:
+        # The NHL API supports a full-season schedule by team abbreviation
+        url = f"https://api-web.nhle.com/v1/club-schedule-season/{team_abbr}/20252026"
+        resp = requests.get(url, timeout=10)
+        resp.raise_for_status()
+        games = resp.json().get("games", [])
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        # Keep only games that are not yet final (gameState != OFF/FINAL/CRIT)
+        remaining = [
+            g for g in games
+            if g.get("gameDate", "") >= today_str
+            and g.get("gameState", "") not in ("OFF", "FINAL", "CRIT")
+            and g.get("gameType", 2) == 2          # regular season only
+        ]
+        return remaining
+    except Exception:
+        return []
 
 
 # ─────────────────────────────────────────────────────────
@@ -2024,6 +2783,752 @@ def img_to_uri(path, abbr, path_image_dir=path_image_dir):
         return logo
 
 
+def page_clinching_scenarios():
+    """
+    Render the 🏆 Clinching Scenarios page.
+ 
+    Playoff structure (32 teams, 16 qualify):
+      • Top 3 from each division  → 12 automatic berths
+      • Next 2 points-leaders from each conference (wild-cards) → 4 berths
+    """
+ 
+    # ── colour / theme helpers (already defined in main.py) ──────────────────
+    GOLD_    = "#c8a84b"
+    ICE_     = "#4ab3f4"
+    GREEN_   = "#2ecc71"
+    RED_     = "#e74c3c"
+    BG_CARD  = "#0d1f35"
+    BG_DARK  = "#0a0e1a"
+    BORDER   = "#1e3a5a"
+ 
+    # ── header ────────────────────────────────────────────────────────────────
+    st.markdown('<div class="section-header">🏆 CLINCHING SCENARIOS</div>',
+                unsafe_allow_html=True)
+    st.caption(
+        "Live standings + remaining schedule are pulled from the NHL API. "
+        "Clinch numbers are exact (magic-number arithmetic). "
+        "Playoff odds are estimated via Monte-Carlo simulation."
+    )
+ 
+    # ─── fetch standings ──────────────────────────────────────────────────────
+    with st.spinner("Fetching live standings…"):
+        raw_standings = fetch_nhl_standings()
+ 
+    if not raw_standings:
+        st.error("❌ Could not load NHL standings. The NHL API may be temporarily unavailable.")
+        return
+ 
+    # ─── parse standings into a DataFrame ─────────────────────────────────────
+    rows = []
+    for s in raw_standings:
+        abbr = s.get("teamAbbrev", {}).get("default", "")
+        meta = TEAM_META.get(abbr, {})
+        # Conference / division come from the API but we fall back to TEAM_META
+        conf = s.get("conferenceName", meta.get("conf", ""))
+        div  = s.get("divisionName",  meta.get("div",  ""))
+        rows.append({
+            "Abbr":        abbr,
+            "TeamName":    s.get("teamName", {}).get("default", meta.get("name", abbr)),
+            "Conf":        conf,
+            "Div":         div,
+            "GP":          int(s.get("gamesPlayed",        0)),
+            "W":           int(s.get("wins",               0)),
+            "L":           int(s.get("losses",             0)),
+            "OTL":         int(s.get("otLosses",           0)),
+            "Pts":         int(s.get("points",             0)),
+            "RW":          int(s.get("regulationWins",     0)),   # tie-break #2
+            "ROW":         int(s.get("regulationPlusOtWins", s.get("row", 0))),  # tie-break #3
+            "GF":          int(s.get("goalFor",            0)),
+            "GA":          int(s.get("goalAgainst",        0)),
+            "DIFF":        int(s.get("goalDifferential",   0)),
+            # Points percentage (tie-break #1 proxy — fewer GP with same pts = better)
+            "PtsPct":      float(s.get("pointPctg",        0.0)),
+        })
+    df_st = pd.DataFrame(rows)
+ 
+    if df_st.empty:
+        st.error("Standings data appears empty.")
+        return
+ 
+    TOTAL_GAMES = 82  # regular-season games per team
+ 
+    df_st["GP_Remaining"] = TOTAL_GAMES - df_st["GP"]
+    df_st["Max_Pts"]      = df_st["Pts"] + df_st["GP_Remaining"] * 2   # 2 pts per game
+ 
+    # ── rank within division and conference ───────────────────────────────────
+    TIE_BREAK_COLS = ["Pts", "PtsPct", "RW", "ROW", "W", "DIFF", "GF"]
+ 
+    def rank_group(sub: pd.DataFrame) -> pd.Series:
+        ranked = sub.sort_values(
+            TIE_BREAK_COLS,
+            ascending=[False, False, False, False, False, False, False]
+        )
+        return pd.Series(range(1, len(ranked) + 1), index=ranked.index)
+ 
+    df_st["DivRank"]  = df_st.groupby("Div",  group_keys=False).apply(rank_group)
+    df_st["ConfRank"] = df_st.groupby("Conf", group_keys=False).apply(rank_group)
+ 
+    # Wild-card rank: 4th+ in conference, after removing the top-3 of each division
+    def wc_rank(conf_df: pd.DataFrame) -> pd.Series:
+        non_div_leaders = conf_df[conf_df["DivRank"] > 3].copy()
+        wc = non_div_leaders.sort_values(
+            TIE_BREAK_COLS,
+            ascending=[False, False, False, False, False, False, False]
+        )
+        ranks = pd.Series(range(1, len(wc) + 1), index=wc.index)
+        # Fill division leaders with 0 (already in via div spot)
+        full = pd.Series(0, index=conf_df.index)
+        full.update(ranks)
+        return full
+ 
+    df_st["WCRank"] = df_st.groupby("Conf", group_keys=False).apply(wc_rank)
+ 
+    # ── current playoff picture ───────────────────────────────────────────────
+    df_st["InPlayoffs"] = (df_st["DivRank"] <= 3) | (df_st["WCRank"].between(1, 2))
+    df_st["PlayoffSpot"] = df_st.apply(
+        lambda r:
+            f"Div {r['DivRank']}" if r["DivRank"] <= 3
+            else (f"WC{int(r['WCRank'])}" if r["WCRank"] in (1, 2) else "—"),
+        axis=1
+    )
+ 
+    # ── helper: find the "bubble" team (first team out of playoffs) ───────────
+    def get_cutoff_pts(conf: str) -> tuple:
+        """
+        Returns (last_wc_pts, first_out_pts) for the conference.
+        The 'magic number' for teams IN the playoffs is relative to first_out.
+        The 'magic number' for teams OUT is relative to last_wc.
+        """
+        conf_df = df_st[df_st["Conf"] == conf]
+        in_df   = conf_df[conf_df["InPlayoffs"]].sort_values("Pts", ascending=False)
+        out_df  = conf_df[~conf_df["InPlayoffs"]].sort_values("Pts", ascending=False)
+        last_wc_pts   = in_df["Pts"].iloc[-1]  if len(in_df)  > 0 else 0
+        first_out_pts = out_df["Pts"].iloc[0]  if len(out_df) > 0 else 0
+        return last_wc_pts, first_out_pts
+ 
+    # ── Monte-Carlo playoff odds ───────────────────────────────────────────────
+    # We simulate the remainder of the season N times, assuming each team wins
+    # each remaining game with probability proportional to their current PtsPct.
+    # This is fast (vectorised) rather than game-by-game schedule traversal.
+    N_SIM = 10_000
+ 
+    @st.cache_data(ttl=300)
+    def monte_carlo_odds(_df_st: pd.DataFrame, n_sim: int = N_SIM) -> pd.DataFrame:
+        """
+        Returns a DataFrame with columns [Abbr, P_DivTop3, P_WildCard, P_Playoffs].
+        Simulation assigns remaining GP as Bernoulli wins, weighted by PtsPct.
+        Ties are broken by adding a tiny uniform noise to points.
+        """
+        teams = _df_st.set_index("Abbr")
+        abbrs = list(teams.index)
+        n = len(abbrs)
+ 
+        # Base probability of winning any given game (proxy = current PtsPct)
+        p_win = teams["PtsPct"].clip(0.30, 0.75).values           # shape (n,)
+        gp_rem = teams["GP_Remaining"].values.clip(0).astype(int) # shape (n,)
+        cur_pts = teams["Pts"].values.astype(float)
+        rw_base = teams["RW"].values.astype(float)
+        row_base = teams["ROW"].values.astype(float)
+        w_base   = teams["W"].values.astype(float)
+        gf_base  = teams["GF"].values.astype(float)
+        diff_base = teams["DIFF"].values.astype(float)
+        conf_arr = teams["Conf"].values
+        div_arr  = teams["Div"].values
+ 
+        rng = np.random.default_rng(42)
+        div_top3_count = np.zeros(n, dtype=float)
+        wc_count       = np.zeros(n, dtype=float)
+        playoff_count  = np.zeros(n, dtype=float)
+ 
+        for _ in range(n_sim):
+            # Simulate wins for remaining games (binomial)
+            sim_wins     = rng.binomial(gp_rem, p_win)                    # (n,)
+            # OT losses: ~25 % of losses can be OTL (2 pts = OT win, 1 pt = OTL)
+            # Simplified: treat each remaining game as 2 pts if win, 1 pt if OTL (~20 %), 0 if reg loss
+            sim_otl      = rng.binomial(gp_rem - sim_wins, 0.22)
+            sim_pts      = cur_pts + 2 * sim_wins + sim_otl
+            sim_rw       = rw_base + sim_wins * 0.58    # ~58 % of wins are in regulation (approximation)
+            sim_row      = row_base + sim_wins * 0.88
+            sim_w        = w_base  + sim_wins
+            sim_gf       = gf_base + sim_wins * 2.9 + (gp_rem - sim_wins - sim_otl) * 1.8
+            sim_diff     = diff_base + sim_wins * 1.1 - (gp_rem - sim_wins) * 1.1
+            # Tiny noise for tie-breaking stability
+            noise = rng.uniform(0, 1e-4, n)
+            eff_pts = sim_pts + noise
+ 
+            # Rank within each division (top-3 = automatic playoff)
+            div_top3 = np.zeros(n, bool)
+            for div in np.unique(div_arr):
+                mask = div_arr == div
+                idx  = np.where(mask)[0]
+                # Sort by pts desc, then by other tie-break criteria (simplified to pts+noise here)
+                sorted_idx = idx[np.argsort(-eff_pts[idx])]
+                div_top3[sorted_idx[:3]] = True
+ 
+            # Wild-card: top 2 non-div-top3 per conference
+            wc = np.zeros(n, bool)
+            for conf in np.unique(conf_arr):
+                mask = (conf_arr == conf) & (~div_top3)
+                idx  = np.where(mask)[0]
+                sorted_idx = idx[np.argsort(-eff_pts[idx])]
+                wc[sorted_idx[:2]] = True
+ 
+            in_po = div_top3 | wc
+            div_top3_count += div_top3
+            wc_count       += wc & (~div_top3)
+            playoff_count  += in_po
+ 
+        result = pd.DataFrame({
+            "Abbr":        abbrs,
+            "P_DivTop3":   (div_top3_count / n_sim * 100).round(1),
+            "P_WildCard":  (wc_count       / n_sim * 100).round(1),
+            "P_Playoffs":  (playoff_count  / n_sim * 100).round(1),
+        })
+        return result
+ 
+    with st.spinner("Running Monte-Carlo simulation (10 000 seasons)…"):
+        df_odds = monte_carlo_odds(df_st)
+ 
+    df_st = df_st.merge(df_odds, on="Abbr", how="left")
+ 
+    # ═══════════════════════════════════════════════════════════════════════════
+    # UI LAYOUT
+    # ═══════════════════════════════════════════════════════════════════════════
+ 
+    # ── Conference selector tabs ──────────────────────────────────────────────
+    tab_east, tab_west, tab_team = st.tabs(["🔵 Eastern Conference", "🟠 Western Conference", "🔍 Team Deep-Dive"])
+ 
+    def render_conference_table(conf: str):
+        """Render a sortable standings + clinching table for one conference."""
+        cdf = df_st[df_st["Conf"] == conf].copy()
+        cdf = cdf.sort_values(TIE_BREAK_COLS, ascending=[False]*len(TIE_BREAK_COLS)).reset_index(drop=True)
+ 
+        last_wc_pts, first_out_pts = get_cutoff_pts(conf)
+ 
+        # ── magic numbers ──────────────────────────────────────────────────────
+        # Magic number to clinch a playoff spot (wild-card):
+        #   For teams currently IN: how many points before the first team OUT
+        #   cannot catch them even if they win all remaining.
+        #   MN = (team_pts + gp_remaining * 2) - first_out_max_pts + 1
+        # Simpler classic formula:
+        #   MN_clinch = max(0, first_out_max_pts - team_pts + 1)   ← points team needs or opponent loses
+        # We display "x" meaning: team clinches when (own_pts + opponent_losses) >= MN
+ 
+        def magic_number_vs_team(team_pts, team_gp_rem, rival_pts, rival_gp_rem):
+            """
+            Classic magic number: wins + rival losses needed.
+            = (rival_pts + rival_gp_rem*2 + 1) - team_pts
+            Negative → already clinched vs that rival.
+            """
+            return max(0, (rival_pts + rival_gp_rem * 2 + 1) - team_pts)
+ 
+        # For each team, find the worst rival they need to clinch against
+        # (the first team outside the playoff line in points)
+        out_teams = cdf[~cdf["InPlayoffs"]].sort_values("Pts", ascending=False)
+        in_teams  = cdf[ cdf["InPlayoffs"]].sort_values("Pts", ascending=True)
+ 
+        # Clinch magic number (for teams in playoffs, vs first out)
+        if not out_teams.empty:
+            first_out = out_teams.iloc[0]
+            cdf["MN_Clinch"] = cdf.apply(
+                lambda r: magic_number_vs_team(
+                    r["Pts"], r["GP_Remaining"],
+                    first_out["Pts"], first_out["GP_Remaining"]
+                ) if r["InPlayoffs"] else "—",
+                axis=1
+            )
+        else:
+            cdf["MN_Clinch"] = "✅"    # everyone is in
+ 
+        # Elimination number (for teams OUT, vs last team in)
+        if not in_teams.empty:
+            last_in = in_teams.iloc[0]
+            cdf["MN_Elim"] = cdf.apply(
+                lambda r: magic_number_vs_team(
+                    last_in["Pts"], last_in["GP_Remaining"],
+                    r["Pts"], r["GP_Remaining"]
+                ) if not r["InPlayoffs"] else "—",
+                axis=1
+            )
+        else:
+            cdf["MN_Elim"] = "—"
+ 
+        # ── division sub-tables ────────────────────────────────────────────────
+        divs = cdf["Div"].unique()
+        for div in sorted(divs):
+            st.markdown(f'<div class="section-header" style="font-size:1.1rem">{div} Division</div>',
+                        unsafe_allow_html=True)
+            ddf = cdf[cdf["Div"] == div].copy()
+ 
+            # Build display rows
+            display_rows = []
+            for i, (_, r) in enumerate(ddf.iterrows(), 1):
+                logo_url = fetch_team_logo(r["Abbr"])
+                logo_html = f'<img src="{logo_url}" width="26" style="vertical-align:middle;margin-right:6px">' if logo_url else ""
+ 
+                # Spot indicator
+                if r["DivRank"] <= 3:
+                    spot_badge = f'<span style="background:#0d3321;color:{GREEN_};border-radius:4px;padding:2px 7px;font-size:0.75rem;font-weight:700">Div {int(r["DivRank"])}</span>'
+                elif r["WCRank"] in (1, 2):
+                    spot_badge = f'<span style="background:#1a2e05;color:#a3e04a;border-radius:4px;padding:2px 7px;font-size:0.75rem;font-weight:700">WC{int(r["WCRank"])}</span>'
+                else:
+                    spot_badge = f'<span style="background:#2a0d0d;color:{RED_};border-radius:4px;padding:2px 7px;font-size:0.75rem;font-weight:700">OUT</span>'
+ 
+                # Playoff probability bar
+                pct = float(r.get("P_Playoffs", 0))
+                bar_color = GREEN_ if pct >= 70 else (GOLD_ if pct >= 35 else RED_)
+                prob_bar = (
+                    f'<div style="background:#1e3a5a;border-radius:3px;height:8px;width:80px;display:inline-block;vertical-align:middle">'
+                    f'<div style="background:{bar_color};width:{pct:.0f}%;height:100%;border-radius:3px"></div></div>'
+                    f'&nbsp;<span style="font-size:0.8rem;color:{bar_color}">{pct:.0f}%</span>'
+                )
+ 
+                mn = r["MN_Clinch"]
+                el = r["MN_Elim"]
+                mn_str = (
+                    '<span style="color:#2ecc71;font-weight:700">✅ CLINCHED</span>' if mn == 0
+                    else (f'<span style="color:{GOLD_}">{mn}</span>' if isinstance(mn, int) else str(mn))
+                )
+                el_str = (
+                    '<span style="color:#e74c3c;font-weight:700">❌ ELIMINATED</span>' if el == 0
+                    else (f'<span style="color:{RED_}">{el}</span>' if isinstance(el, int) else str(el))
+                )
+ 
+                display_rows.append({
+                    "": logo_html + f'<b style="color:#ccd6e0">{r["TeamName"]}</b>',
+                    "Spot":   spot_badge,
+                    "GP":     r["GP"],
+                    "Pts":    f'<span style="color:{GOLD_};font-weight:700">{r["Pts"]}</span>',
+                    "W-L-OTL": f'{r["W"]}-{r["L"]}-{r["OTL"]}',
+                    "RW":     r["RW"],
+                    "GP Left": r["GP_Remaining"],
+                    "Max Pts": r["Max_Pts"],
+                    "Magic#": mn_str,
+                    "Elim#":  el_str,
+                    "Playoff %": prob_bar,
+                })
+ 
+            display_df_obj = pd.DataFrame(display_rows)
+            st.markdown(
+                display_df_obj.to_html(escape=False, index=False),
+                unsafe_allow_html=True
+            )
+            st.markdown("<br>", unsafe_allow_html=True)
+ 
+        # ── Wild-Card picture ─────────────────────────────────────────────────
+        st.markdown(f'<div class="section-header" style="font-size:1.1rem">Wild-Card Race — {conf}</div>',
+                    unsafe_allow_html=True)
+ 
+        # All teams sorted by points; mark who's in the WC slots
+        wc_df = cdf.sort_values(TIE_BREAK_COLS, ascending=[False]*len(TIE_BREAK_COLS)).reset_index(drop=True)
+        # Show only teams within 10 points of the last WC spot (to keep it focused)
+        bubble_pts = last_wc_pts - 10
+        wc_focus = wc_df[wc_df["Pts"] >= bubble_pts].copy()
+ 
+        wc_rows = []
+        for _, r in wc_focus.iterrows():
+            spot = r["PlayoffSpot"]
+            pts_diff = r["Pts"] - last_wc_pts
+            diff_str = (
+                f'+{pts_diff}' if pts_diff > 0
+                else (f'{pts_diff}' if pts_diff < 0 else '—')
+            )
+            diff_color = GREEN_ if pts_diff >= 0 else RED_
+            logo_url = fetch_team_logo(r["Abbr"])
+            logo_html = f'<img src="{logo_url}" width="22" style="vertical-align:middle;margin-right:5px">' if logo_url else ""
+ 
+            wc_rows.append({
+                "Team":    logo_html + r["TeamName"],
+                "Spot":    spot,
+                "Pts":     r["Pts"],
+                "GP":      r["GP"],
+                "GP Left": r["GP_Remaining"],
+                "Max Pts": r["Max_Pts"],
+                "vs Bubble": f'<span style="color:{diff_color};font-weight:700">{diff_str}</span>',
+                "PO%":     f'<b style="color:{GREEN_ if r["P_Playoffs"] >= 50 else RED_}">{r["P_Playoffs"]:.0f}%</b>',
+            })
+ 
+        if wc_rows:
+            st.markdown(
+                pd.DataFrame(wc_rows).to_html(escape=False, index=False),
+                unsafe_allow_html=True
+            )
+ 
+    # ── TAB: Eastern Conference ───────────────────────────────────────────────
+    with tab_east:
+        render_conference_table("Eastern")
+ 
+    # ── TAB: Western Conference ───────────────────────────────────────────────
+    with tab_west:
+        render_conference_table("Western")
+ 
+    # ── TAB: Team Deep-Dive ───────────────────────────────────────────────────
+    with tab_team:
+        st.markdown('<div class="section-header" style="font-size:1.1rem">TEAM CLINCHING SCENARIOS</div>',
+                    unsafe_allow_html=True)
+ 
+        # Team selector
+        sorted_teams = sorted(df_st["Abbr"].tolist())
+        col_sel, col_empty = st.columns([1, 3])
+        with col_sel:
+            sel_abbr = st.selectbox(
+                "Select team",
+                sorted_teams,
+                format_func=lambda a: f"{a} — {TEAM_META.get(a, {}).get('name', a)}"
+            )
+ 
+        team_row = df_st[df_st["Abbr"] == sel_abbr].iloc[0]
+        conf     = team_row["Conf"]
+        div      = team_row["Div"]
+        conf_df  = df_st[df_st["Conf"] == conf].copy()
+ 
+        logo_url = fetch_team_logo(sel_abbr)
+        team_name = team_row["TeamName"]
+ 
+        # ── Team header card ──────────────────────────────────────────────────
+        spot      = team_row["PlayoffSpot"]
+        in_po     = team_row["InPlayoffs"]
+        div_rank  = int(team_row["DivRank"])
+        wc_rank   = int(team_row["WCRank"]) if team_row["WCRank"] > 0 else None
+        p_po      = float(team_row.get("P_Playoffs", 0))
+        p_div     = float(team_row.get("P_DivTop3",  0))
+        p_wc      = float(team_row.get("P_WildCard", 0))
+ 
+        spot_color = GREEN_ if in_po else RED_
+        spot_text  = spot if spot != "—" else "OUT"
+ 
+        st.markdown(f"""
+        <div style="background:{BG_CARD};border:1px solid {BORDER};border-left:5px solid {spot_color};
+                    border-radius:10px;padding:20px 24px;margin-bottom:18px;display:flex;align-items:center;gap:18px">
+            <img src="{logo_url}" width="72" style="object-fit:contain">
+            <div style="flex:1">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:{GOLD_};letter-spacing:3px">{team_name}</div>
+                <div style="color:#8899aa;font-size:0.85rem">{conf} Conference · {div} Division</div>
+            </div>
+            <div style="text-align:right">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:{GOLD_}">{int(team_row['Pts'])}</div>
+                <div style="color:#8899aa;font-size:0.75rem;letter-spacing:1px">POINTS</div>
+                <div style="margin-top:6px">
+                    <span style="background:{'#0d3321' if in_po else '#2a0d0d'};color:{spot_color};
+                                 border-radius:5px;padding:3px 12px;font-weight:700;font-size:0.9rem">
+                        {spot_text}
+                    </span>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+ 
+        # ── Key metrics row ───────────────────────────────────────────────────
+        m1, m2, m3, m4, m5, m6 = st.columns(6)
+        m1.metric("GP", int(team_row["GP"]))
+        m2.metric("W–L–OTL", f"{int(team_row['W'])}–{int(team_row['L'])}–{int(team_row['OTL'])}")
+        m3.metric("Pts", int(team_row["Pts"]))
+        m4.metric("GP Remaining", int(team_row["GP_Remaining"]))
+        m5.metric("Max Pts", int(team_row["Max_Pts"]))
+        m6.metric("Reg Wins (RW)", int(team_row["RW"]))
+ 
+        # ── Playoff odds gauge ────────────────────────────────────────────────
+        st.markdown("#### 🎲 Estimated Playoff Odds (Monte-Carlo · 10 000 simulations)")
+        g1, g2, g3 = st.columns(3)
+ 
+        def gauge_fig(value, title, color):
+            fig = go.Figure(go.Indicator(
+                mode="gauge+number",
+                value=value,
+                number={"suffix": "%", "font": {"color": GOLD_, "size": 36}},
+                title={"text": title, "font": {"color": "#8899aa", "size": 13}},
+                gauge={
+                    "axis": {"range": [0, 100], "tickcolor": "#8899aa"},
+                    "bar": {"color": color},
+                    "bgcolor": BG_CARD,
+                    "bordercolor": BORDER,
+                    "steps": [
+                        {"range": [0,  35], "color": "#2a0d0d"},
+                        {"range": [35, 70], "color": "#2a2000"},
+                        {"range": [70, 100],"color": "#0d3321"},
+                    ],
+                    "threshold": {
+                        "line": {"color": GOLD_, "width": 3},
+                        "thickness": 0.75,
+                        "value": value
+                    }
+                }
+            ))
+            fig.update_layout(
+                paper_bgcolor=BG_DARK, font_color="#ccd6e0",
+                height=220, margin=dict(l=20, r=20, t=40, b=10)
+            )
+            return fig
+ 
+        g1.plotly_chart(gauge_fig(p_po,  "Make Playoffs",   GREEN_ if p_po >= 70 else (GOLD_ if p_po >= 35 else RED_)), use_container_width=True)
+        g2.plotly_chart(gauge_fig(p_div, "Win Div Top-3",   ICE_   if p_div >= 50 else GOLD_), use_container_width=True)
+        g3.plotly_chart(gauge_fig(p_wc,  "Wild-Card Only",  GOLD_  if p_wc >= 30  else RED_),  use_container_width=True)
+ 
+        # ── Magic / Elimination numbers ───────────────────────────────────────
+        st.markdown("#### 🔢 Clinching & Elimination Numbers")
+ 
+        # Re-compute for this team against every rival in the conference
+        rival_rows = []
+        for _, rival in conf_df.iterrows():
+            if rival["Abbr"] == sel_abbr:
+                continue
+            # Magic number: points we need combined with rival losses
+            mn = max(0, (rival["Pts"] + rival["GP_Remaining"] * 2 + 1) - team_row["Pts"])
+            rel = rival["Pts"] - team_row["Pts"]  # positive = rival leads
+ 
+            rival_rows.append({
+                "rival_abbr":  rival["Abbr"],
+                "rival_name":  rival["TeamName"],
+                "rival_div":   rival["Div"],
+                "rival_spot":  rival["PlayoffSpot"],
+                "rival_pts":   int(rival["Pts"]),
+                "rival_gp":    int(rival["GP"]),
+                "rival_gpr":   int(rival["GP_Remaining"]),
+                "rival_maxpts":int(rival["Max_Pts"]),
+                "mn":          mn,
+                "pts_diff":    rel,
+                "in_playoffs": rival["InPlayoffs"],
+            })
+ 
+        rival_df = pd.DataFrame(rival_rows)
+ 
+        if in_po:
+            st.markdown(
+                f"**{team_name}** is currently **in a playoff spot** ({spot}). "
+                f"Their clinching number vs the first team out:"
+            )
+            out_rivals = rival_df[~rival_df["in_playoffs"]].sort_values("rival_pts", ascending=False)
+            if not out_rivals.empty:
+                first_out = out_rivals.iloc[0]
+                mn_clinch = first_out["mn"]
+                st.markdown(f"""
+                <div style="background:{BG_CARD};border:2px solid {GREEN_};border-radius:8px;padding:16px;margin:10px 0">
+                    <span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:{GREEN_}">
+                        Magic Number: {mn_clinch if mn_clinch > 0 else "✅ CLINCHED"}
+                    </span><br>
+                    <span style="color:#8899aa">
+                        vs <b style="color:#ccd6e0">{first_out['rival_name']}</b>
+                        ({int(first_out['rival_pts'])} pts, {int(first_out['rival_gpr'])} GP left).
+                        Any combination of {team_name} wins + {first_out['rival_name']} losses/OTL
+                        totalling <b style="color:{GREEN_}">{mn_clinch}</b> clinches a playoff berth.
+                    </span>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.markdown(
+                f"**{team_name}** is currently **outside a playoff spot**. "
+                f"Their elimination number vs the last team in:"
+            )
+            in_rivals = rival_df[rival_df["in_playoffs"]].sort_values("rival_pts", ascending=True)
+            if not in_rivals.empty:
+                last_in = in_rivals.iloc[0]
+                # Elim number: when is it mathematically impossible for this team to catch last_in?
+                # = max_pts_for_this_team - last_in_max_pts + 1  (simplified)
+                elim_n = max(0, (last_in["rival_pts"] + last_in["rival_gpr"] * 2 + 1) - team_row["Pts"])
+                can_still_make_it = team_row["Max_Pts"] >= last_in["rival_pts"]
+                if can_still_make_it:
+                    st.markdown(f"""
+                    <div style="background:{BG_CARD};border:2px solid {GOLD_};border-radius:8px;padding:16px;margin:10px 0">
+                        <span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:{GOLD_}">
+                            Still Alive — Need {elim_n} pts OR rival losses
+                        </span><br>
+                        <span style="color:#8899aa">
+                            Last team in: <b style="color:#ccd6e0">{last_in['rival_name']}</b>
+                            ({int(last_in['rival_pts'])} pts, {int(last_in['rival_gpr'])} GP left).
+                            {team_name} max pts: <b>{int(team_row['Max_Pts'])}</b>.
+                        </span>
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+                    <div style="background:#2a0d0d;border:2px solid {RED_};border-radius:8px;padding:16px;margin:10px 0">
+                        <span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:{RED_}">
+                            ❌ MATHEMATICALLY ELIMINATED
+                        </span><br>
+                        <span style="color:#8899aa">
+                            Max possible points ({int(team_row['Max_Pts'])}) cannot reach
+                            <b style="color:#ccd6e0">{last_in['rival_name']}</b>'s current {int(last_in['rival_pts'])} pts.
+                        </span>
+                    </div>
+                    """, unsafe_allow_html=True)
+ 
+        # ── Scenario generator ────────────────────────────────────────────────
+        st.markdown("#### 📋 Scenario Explorer")
+        st.caption(
+            "Adjust the sliders to model different outcomes for the remainder of the season. "
+            "The standings update live based on your inputs."
+        )
+ 
+        gp_rem = int(team_row["GP_Remaining"])
+        if gp_rem == 0:
+            st.info("No games remaining — the season is over for this team.")
+        else:
+            sc1, sc2 = st.columns(2)
+            with sc1:
+                sim_wins_user = st.slider(
+                    f"{sel_abbr} wins in remaining {gp_rem} games",
+                    0, gp_rem, min(gp_rem, max(0, int(gp_rem * team_row["PtsPct"]))),
+                    key="slider_wins"
+                )
+            with sc2:
+                # OTL can only happen on losses
+                max_otl = gp_rem - sim_wins_user
+                sim_otl_user = st.slider(
+                    f"of those losses, how many are OTL?",
+                    0, max_otl, min(max_otl, max(0, int(max_otl * 0.22))),
+                    key="slider_otl"
+                )
+ 
+            proj_pts = int(team_row["Pts"]) + sim_wins_user * 2 + sim_otl_user
+            proj_rw  = int(team_row["RW"])  + int(sim_wins_user * 0.58)
+ 
+            st.markdown(f"""
+            <div style="background:{BG_CARD};border:1px solid {BORDER};border-radius:8px;padding:14px 20px;margin:12px 0;display:flex;gap:32px">
+                <div><div style="color:{GOLD_};font-family:'Bebas Neue',sans-serif;font-size:1.6rem">{proj_pts}</div>
+                     <div style="color:#8899aa;font-size:0.75rem;letter-spacing:1px">PROJECTED PTS</div></div>
+                <div><div style="color:{ICE_};font-family:'Bebas Neue',sans-serif;font-size:1.6rem">{sim_wins_user}-{gp_rem - sim_wins_user - sim_otl_user}-{sim_otl_user}</div>
+                     <div style="color:#8899aa;font-size:0.75rem;letter-spacing:1px">REMAINING W-L-OTL</div></div>
+                <div><div style="color:{GREEN_};font-family:'Bebas Neue',sans-serif;font-size:1.6rem">{proj_rw}</div>
+                     <div style="color:#8899aa;font-size:0.75rem;letter-spacing:1px">PROJECTED RW</div></div>
+            </div>
+            """, unsafe_allow_html=True)
+ 
+            # Would this projected total put the team in the playoffs?
+            # Compare against each conference rival's current pts (static)
+            proj_conf = conf_df.copy()
+            proj_conf.loc[proj_conf["Abbr"] == sel_abbr, "Pts"] = proj_pts
+            proj_conf.loc[proj_conf["Abbr"] == sel_abbr, "RW"]  = proj_rw
+            proj_conf = proj_conf.sort_values(
+                ["Div", "Pts", "RW"], ascending=[True, False, False]
+            )
+ 
+            # Re-rank division
+            proj_conf["SimDivRank"] = proj_conf.groupby("Div")["Pts"].rank(
+                ascending=False, method="min"
+            ).astype(int)
+            proj_conf["SimInDiv"]   = proj_conf["SimDivRank"] <= 3
+ 
+            # Wild-card
+            proj_conf["SimWCRank"] = 0
+            for c_ in ["Eastern", "Western"]:
+                sub = proj_conf[(proj_conf["Conf"] == c_) & (~proj_conf["SimInDiv"])].copy()
+                sub = sub.sort_values("Pts", ascending=False).reset_index()
+                for rank_, idx_ in enumerate(sub["index"].tolist(), 1):
+                    proj_conf.loc[idx_, "SimWCRank"] = rank_
+ 
+            proj_conf["SimInPO"] = proj_conf["SimInDiv"] | proj_conf["SimWCRank"].between(1, 2)
+ 
+            team_sim = proj_conf[proj_conf["Abbr"] == sel_abbr].iloc[0]
+            sim_in = bool(team_sim["SimInPO"])
+            sim_div_r = int(team_sim["SimDivRank"])
+            sim_wc_r  = int(team_sim["SimWCRank"])
+ 
+            if sim_in:
+                sim_spot = f"Div {sim_div_r}" if sim_div_r <= 3 else f"WC{sim_wc_r}"
+                st.success(f"✅ With this scenario, **{team_name}** QUALIFIES for the playoffs as **{sim_spot}**.")
+            else:
+                pts_needed = proj_conf[proj_conf["SimInPO"] & (proj_conf["Conf"] == conf)]["Pts"].min() - proj_pts
+                st.error(f"❌ With this scenario, **{team_name}** misses the playoffs by ~**{max(0, pts_needed)} pts**.")
+ 
+        # ── Remaining schedule snapshot ───────────────────────────────────────
+        st.markdown("#### 📅 Remaining Schedule")
+        with st.spinner(f"Fetching {sel_abbr} remaining schedule…"):
+            remaining_games = fetch_nhl_team_schedule(sel_abbr)
+ 
+        if remaining_games:
+            sched_rows = []
+            for g in remaining_games[:20]:   # cap at 20 for display
+                gdate  = g.get("gameDate", "")
+                away   = g.get("awayTeam",  {}).get("abbrev", "")
+                home   = g.get("homeTeam",  {}).get("abbrev", "")
+                is_home = home == sel_abbr
+                opp    = away if is_home else home
+                side   = "🏠 Home" if is_home else "✈️ Away"
+                opp_pts = int(df_st[df_st["Abbr"] == opp]["Pts"].values[0]) if opp in df_st["Abbr"].values else "—"
+                opp_po  = bool(df_st[df_st["Abbr"] == opp]["InPlayoffs"].values[0]) if opp in df_st["Abbr"].values else False
+                opp_logo = fetch_team_logo(opp)
+                opp_html = f'<img src="{opp_logo}" width="20" style="vertical-align:middle;margin-right:5px">{opp}' if opp_logo else opp
+                sched_rows.append({
+                    "Date":      gdate,
+                    "H/A":       side,
+                    "Opponent":  opp_html,
+                    "Opp Pts":   opp_pts,
+                    "Opp In PO": "🟢" if opp_po else "🔴",
+                })
+            if sched_rows:
+                st.markdown(
+                    pd.DataFrame(sched_rows).to_html(escape=False, index=False),
+                    unsafe_allow_html=True
+                )
+        else:
+            st.info("No remaining regular-season games found (or season is complete).")
+ 
+        # ── Head-to-head vs bubble rivals ────────────────────────────────────
+        st.markdown("#### ⚔️ Remaining Games vs Bubble Rivals")
+        st.caption("Teams within 5 points of the wild-card cut-line in your conference.")
+ 
+        if remaining_games:
+            bubble_abbrs = set(
+                conf_df[
+                    (conf_df["Pts"] >= team_row["Pts"] - 5) & (conf_df["Abbr"] != sel_abbr)
+                ]["Abbr"].tolist()
+            )
+            h2h_rows = []
+            for g in remaining_games:
+                away = g.get("awayTeam", {}).get("abbrev", "")
+                home = g.get("homeTeam", {}).get("abbrev", "")
+                opp  = away if home == sel_abbr else home
+                if opp in bubble_abbrs:
+                    is_home = home == sel_abbr
+                    opp_logo = fetch_team_logo(opp)
+                    opp_html = f'<img src="{opp_logo}" width="20" style="vertical-align:middle;margin-right:5px">{opp}' if opp_logo else opp
+                    opp_pts  = int(df_st[df_st["Abbr"] == opp]["Pts"].values[0]) if opp in df_st["Abbr"].values else "—"
+                    h2h_rows.append({
+                        "Date":     g.get("gameDate",""),
+                        "H/A":      "🏠 Home" if is_home else "✈️ Away",
+                        "Rival":    opp_html,
+                        "Rival Pts": opp_pts,
+                        "Importance": "🔥 Critical" if abs(opp_pts - team_row["Pts"]) <= 4 else "⚠️ Key",
+                    })
+            if h2h_rows:
+                st.markdown(
+                    pd.DataFrame(h2h_rows).to_html(escape=False, index=False),
+                    unsafe_allow_html=True
+                )
+                st.caption(
+                    f"These are direct points-stealing opportunities — a win takes 2 pts away from a rival "
+                    f"(you gain 2, they gain 0) for a net 2-pt swing."
+                )
+            else:
+                st.info("No upcoming games vs bubble rivals found.")
+ 
+    # ── Legend / methodology ──────────────────────────────────────────────────
+    with st.expander("ℹ️ Methodology & Tie-Breaking Rules"):
+        st.markdown("""
+**Playoff qualification:**
+- Top **3** teams from each division (Atlantic, Metropolitan, Central, Pacific) qualify automatically.
+- The next **2** highest-points teams from each conference (Eastern / Western) qualify as Wild-Cards.
+- 16 teams total qualify.
+ 
+**Tie-Breaking Order (official NHL rules):**
+1. Fewer games played (superior points percentage) — teams with a game in hand rank higher at equal points.
+2. Greater Regulation Wins (RW) — wins in regulation time only.
+3. Greater ROW (Regulation + Overtime Wins) — excludes Shootout wins.
+4. Greater total Wins (W) — includes Shootout wins.
+5. Points in head-to-head games among tied clubs.
+6. Greater goal differential (GF − GA) for the full season.
+7. Greater goals scored (GF) for the full season.
+ 
+**Magic Number:**  
+`MN = (Rival Max Pts + 1) − Own Current Pts`  
+= the number of combined "own wins + rival losses/OTL" needed to guarantee finishing ahead of that rival.  
+When MN = 0, the team has clinched ahead of that rival.
+ 
+**Playoff Odds:**  
+Estimated via Monte-Carlo simulation (10 000 random season completions). Each remaining game is modelled as a Bernoulli trial with win probability ≈ team's current points percentage (clipped to 30–75%). OT losses are assigned at ~22% of losses. Final standings in each simulation are re-ranked using points + tie-breaker noise; the fraction of simulations where a team makes the playoffs gives the estimated odds.
+        """)
+
+
 # ─────────────────────────────────────────────────────────
 # MAIN APP
 # ─────────────────────────────────────────────────────────
@@ -2046,6 +3551,7 @@ def main():
             "🗓️ Trends Over Time",
             "🌍 Travel & Gauntlets",
             "🔮 Future Predictions",
+            "🏆 Clinching Scenarios",
             "🧥 Jersey Collection",
             "Stanley Cup",
             "Explore API",
@@ -2066,14 +3572,57 @@ def main():
                     print("Excel file is currently open.")
 
     # Load data
-    try:
-        df = load_data(path_excel_predictions)
-    except FileNotFoundError:
-        st.error(f"❌ Workbook not found:\n\n`{path_excel_predictions}`\n\nCheck the path at the top of the script.")
-        return
-    except Exception as e:
-        st.error(f"❌ Could not load workbook: {e}")
-        return
+    # try:
+    df = load_data(path_excel_predictions)
+    # except FileNotFoundError:
+        # st.error(f"❌ Workbook not found:\n\n`{path_excel_predictions}`\n\nCheck the path at the top of the script.")
+        # return
+    # except Exception as e:
+        # st.error(f"❌ Could not load workbook: {e}")
+        # return
+    
+    display_df(df)
+    df_cad_games_1_team = df[
+        (
+            (df["HomeTeam"].isin(CANADIAN_TEAMS))
+            & (~df["AwayTeam"].isin(CANADIAN_TEAMS))
+        )
+        | (
+            (df["AwayTeam"].isin(CANADIAN_TEAMS))
+            & (~df["HomeTeam"].isin(CANADIAN_TEAMS))
+        )
+    ]
+    df_cad_games_2_team = df[
+        (
+            (df["HomeTeam"].isin(CANADIAN_TEAMS))
+            & (df["AwayTeam"].isin(CANADIAN_TEAMS))
+        )
+    ]
+    df_cad_games_either_team = df[
+        (
+            (df["HomeTeam"].isin(CANADIAN_TEAMS))
+            | (df["AwayTeam"].isin(CANADIAN_TEAMS))
+        )
+    ]
+    display_df(
+        df_cad_games_1_team,
+        "df_cad_games_1_team"
+    )
+    display_df(
+        df_cad_games_2_team,
+        "df_cad_games_2_team"
+    )
+    display_df(
+        df_cad_games_either_team,
+        "df_cad_games_either_team"
+    )
+    df_grouped = df_cad_games_1_team.groupby(
+        by=["GameDate"]
+    ).agg("count")
+    df_grouped = df_grouped[df_grouped["PredictionDate"] >= 6]
+    display_df(
+        df_grouped
+    )
 
     completed = df[df["GameIsOver"] == True].copy()
     future    = df[df["GameIsOver"] == False].copy()
@@ -2083,6 +3632,33 @@ def main():
     accuracy   = n_correct / total * 100 if total > 0 else 0
     
     if page == "Explore API":
+        
+        
+        stats_base_a = "https://api.nhle.com/stats/rest/en"
+
+        url_goalie_summary_a = (
+            f'{stats_base_a}/goalie/summary'
+            f'?isAggregate=false'
+            f'&isGame=false'
+            f'&start=0'
+            f'&limit=50'
+            f'&sort=[{{"property":"wins","direction":"DESC"}}]'
+            f'&cayenneExp=seasonId=20252026 and gameTypeId=2'
+        )
+        st.write("url_goalie_summary_a")
+        st.write(url_goalie_summary_a)
+
+        url_skater_summary_a = (
+            f'{stats_base_a}/skater/summary'
+            f'?isAggregate=false'
+            f'&isGame=false'
+            f'&start=0'
+            f'&limit=50'
+            f'&sort=[{{"property":"wins","direction":"DESC"}}]'
+            f'&cayenneExp=seasonId=20252026 and gameTypeId=2'
+        )
+        st.write("url_skater_summary_a")
+        st.write(url_skater_summary_a)
         
         df_jerseys = load_jersey_workbook()
         
@@ -2991,8 +4567,10 @@ def main():
             top_conf["GameDate"] = pd.to_datetime(top_conf["GameDate"]).dt.strftime("%b %d")
             top_conf["Confidence"] = top_conf["Confidence"].astype(str) + "%"
             st.dataframe(top_conf, use_container_width=True, hide_index=True)
-
-
+    
+    # ── PAGE: CLINCHING SCENARIOS──────────────────────────
+    elif page == "🏆 Clinching Scenarios":
+            page_clinching_scenarios()
 
     # ── PAGE: JERSEY COLLECTION ───────────────────────────
     elif page == "🧥 Jersey Collection":

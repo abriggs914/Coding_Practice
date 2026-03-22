@@ -2396,7 +2396,7 @@ function renderGames(games, isFirstLoad) {
 
   // Compute new events vs previous snapshot (skip on very first load)
   const newEvents = {};
-  console.log("isFirstLoad '" + isFirstLoad + "'")
+  //console.log("isFirstLoad '" + isFirstLoad + "'")
   if (!isFirstLoad) {
     for (const g of games) {
       const id = g.id;
@@ -2404,7 +2404,7 @@ function renderGames(games, isFirstLoad) {
       const awayScore = away.score ?? 0;
       const homeScore = home.score ?? 0;
       const prev = previousGamesSnapshot[id];
-      console.log("Render '" + id + "', (" + awayScore + ", " + homeScore + ")")
+      //console.log("Render '" + id + "', (" + awayScore + ", " + homeScore + ")")
       if (!prev) continue;
       // console.log(JSON.stringify(prev, null, 2))
       const prevGoalIds = new Set(prev.goals);
@@ -2619,8 +2619,8 @@ function buildCard(g, events) {
       const perLabel = perType === 'OT' ? 'OT' : perType === 'SO' ? 'SO' : per ? `P${per}` : '';
       const timeStr = gl.timeInPeriod || '';
       const scoreCtx = (awayG !== '' && homeG !== '') ? `${away.abbrev} ${awayG} – ${home.abbrev} ${homeG}` : '';
-	  
-	  const headshotUrl = gl.mugshot
+
+	    const headshotUrl = gl.mugshot
       const headshotHtml = headshotUrl
         ? `<img class="scorer-headshot" src="${headshotUrl}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt=""><div class="scorer-headshot-placeholder" style="display:none"></div>`
         : `<div class="scorer-headshot-placeholder"></div>`;
@@ -3759,6 +3759,7 @@ function renderGameDetail(landing, feedGame) {
         const homeG     = gl.homeScore ?? '';
         const score     = awayG !== '' ? `${awayAbbr} ${awayG}–${homeAbbr} ${homeG}` : '';
         const hlUrl     = gl.highlightClipSharingUrl || '';
+        console.log("B-- hlurl", hlurl)
         const hlBtn     = hlUrl ? `<button class="highlight-btn" onclick="openVideoModal(event,'${hlUrl.replace(/'/g,"\\'")}','${scorer.replace(/'/g,"\\'")}')">▶</button>` : '';
         return `<tr>
           <td class="sg-time">${time}</td>
@@ -3980,7 +3981,7 @@ const GANTT = {
   bottomPad:  12,   // space below last bar
   barR:        5,   // bar corner radius
   tickCount:  12,   // approximate number of time ticks
-  gameMins:  160,   // assumed game duration in minutes
+  gameMins:  165,   // assumed game duration in minutes
   // Colours matching Python color_discrete_map, translated to CSS
   stateColour: {
     LIVE:  '#22c55e',   // green
