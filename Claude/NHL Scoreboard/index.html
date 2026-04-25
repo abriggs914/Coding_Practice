@@ -2324,46 +2324,65 @@ async function loadGames() {
     }
 
     games.sort((a, b) => {
-      // 1️⃣ Live games first
-      const aLive = (a.gameState === 'LIVE' || a.gameState === 'CRIT') ? 1 : 0;
-      const bLive = (b.gameState === 'LIVE' || b.gameState === 'CRIT') ? 1 : 0;
+      const isLive = (g) => g.gameState === "LIVE" || g.gameState === "CRIT";
+      const isFinal = (g) => g.gameState === "FINAL" || g.gameState === "OFF";
+      const isPregame = (g) => !isLive(g) && !isFinal(g);
+
+      const gameProgress = (g) => {
+        const period = g.periodDescriptor?.number ?? 0;
+        const secondsRemaining = g.clock?.secondsRemaining ?? 1200;
+
+        // Assume 20-minute periods. Higher = closer to being over.
+        return (period * 1200) - secondsRemaining;
+      };
+
+      const goalDiff = (g) =>
+        Math.abs((g.awayTeam?.score ?? 0) - (g.homeTeam?.score ?? 0));
+
+      const totalGoals = (g) =>
+        (g.awayTeam?.score ?? 0) + (g.homeTeam?.score ?? 0);
+
+      const startTime = (g) =>
+        new Date(g.startTimeUTC ?? g.startTime ?? 0).getTime();
+
+      const aLive = isLive(a);
+      const bLive = isLive(b);
       if (aLive !== bLive) {
-        // console.log("A", a.id, b.id, aLive, bLive);
-        return bLive - aLive;
+        return aLive ? -1 : 1;
       }
 
-      // 2️⃣ Least time remaining
-      const aPer = a.periodDescriptor?.number ?? 9999;
-      const bPer = b.periodDescriptor?.number ?? 9999;
-      if (aPer !== bPer) {
-        // console.log("B", a.id, b.id, aPer, bPer);
-        return bPer - aPer;
+      // Both live: closest to over, then closest game, then highest scoring
+      if (aLive && bLive) {
+        const aProg = gameProgress(a);
+        const bProg = gameProgress(b);
+        if (aProg !== bProg) {
+          return bProg - aProg;
+        }
+
+        const aDiff = goalDiff(a);
+        const bDiff = goalDiff(b);
+        if (aDiff !== bDiff) {
+          return aDiff - bDiff;
+        }
+
+        const aGoals = totalGoals(a);
+        const bGoals = totalGoals(b);
+        if (aGoals !== bGoals) {
+          return bGoals - aGoals;
+        }
+
+        return startTime(a) - startTime(b);
       }
 
-      // 2️⃣ Least time remaining
-      const tpPer = 60 * 20;
-      const slices = 10;  // 120 second buckets
-      const p = tpPer / slices;
-      const aTime = Math.round((a.clock?.secondsRemaining ?? 9999) / p, 0);
-      const bTime = Math.round((b.clock?.secondsRemaining ?? 9999) / p, 0);
-      if (aTime !== bTime) {
-        // console.log("C", a.id, b.id, aTime, bTime);
-        return aTime - bTime;
+      // Neither live:
+      // optional choice: upcoming before finals
+      const aPregame = isPregame(a);
+      const bPregame = isPregame(b);
+      if (aPregame !== bPregame) {
+        return aPregame ? -1 : 1;
       }
 
-      // 4️⃣ Most total goals
-      const aGoals = (a.awayTeam?.score ?? 0) + (a.homeTeam?.score ?? 0);
-      const bGoals = (b.awayTeam?.score ?? 0) + (b.homeTeam?.score ?? 0);
-      if (aGoals !== bGoals) {
-        // console.log("D", a.id, b.id, aGoals, bGoals);
-        return bGoals - aGoals;
-      }
-
-      // 3️⃣ Lowest goal differential
-      const aDiff = Math.abs((a.awayTeam?.score ?? 0) - (a.homeTeam?.score ?? 0));
-      const bDiff = Math.abs((b.awayTeam?.score ?? 0) - (b.homeTeam?.score ?? 0));
-      // console.log("E", a.id, b.id, aDiff, bDiff);
-      return aDiff - bDiff;
+      return startTime(a) - startTime(b);
     });
     renderGames(games, !hasSnapshot);
   } catch(e) {
@@ -2625,9 +2644,17 @@ function buildCard(g, events) {
         ? `<img class="scorer-headshot" src="${headshotUrl}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'" alt=""><div class="scorer-headshot-placeholder" style="display:none"></div>`
         : `<div class="scorer-headshot-placeholder"></div>`;
 
-      const hlUrl = gl.highlightClipSharingUrl || gl.highlightClip || '';
+      let hlUrl = gl.highlightClipSharingUrl || gl.highlightClip || '';
+      //console.log("A-- hlUrl: ", hlUrl)
+      try {
+        hlUrl = hlUrl.replace(/'/g,"\\'")
+      }
+      catch {
+        hlurl = ""
+      }
+      //console.log("A-- gl.highlightClipSharingUrl: ", gl.highlightClipSharingUrl, " ,gl.highlightClip: ", gl.highlightClip)
       const hlBtn = hlUrl
-        ? `<button class="highlight-btn" onclick="openVideoModal(event,'${hlUrl.replace(/'/g,"\\'")}','${scorerName.replace(/'/g,"\\'")} — ${teamAbbr}')" title="Watch highlight">▶</button>`
+        ? `<button class="highlight-btn" onclick="openVideoModal(event,'${hlUrl}','${scorerName.replace(/'/g,"\\'")} — ${teamAbbr}')" title="Watch highlight">▶</button>`
         : '';
 
       return `<div class="scorer-card${isNew ? ' scorer-new' : ''}">
@@ -3759,7 +3786,7 @@ function renderGameDetail(landing, feedGame) {
         const homeG     = gl.homeScore ?? '';
         const score     = awayG !== '' ? `${awayAbbr} ${awayG}–${homeAbbr} ${homeG}` : '';
         const hlUrl     = gl.highlightClipSharingUrl || '';
-        console.log("B-- hlurl", hlurl)
+        // console.log("B-- hlUrl", hlUrl)
         const hlBtn     = hlUrl ? `<button class="highlight-btn" onclick="openVideoModal(event,'${hlUrl.replace(/'/g,"\\'")}','${scorer.replace(/'/g,"\\'")}')">▶</button>` : '';
         return `<tr>
           <td class="sg-time">${time}</td>

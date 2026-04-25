@@ -30,7 +30,7 @@ class App(ctk.CTk):
         # self.history = {}
         self.full_size_image = (200, 200)
         self.small_size_image = (40, 40)
-        self.df = pd.read_excel(r"D:\NHL Jerseys.xlsm", sheet_name="JerseyData")
+        self.df = pd.read_excel(r"C:\Users\abrig\Documents\Coding_Practice\Python\Jerseys\Jerseys_20260401.xlsx", sheet_name="Jerseys")
         self.geometry(calc_geometry_tl(0.99, 0.99, parent=self, ask=True))
         # self.geometry(calc_geometry_tl(100, 100, parent=self))
         self.title(self.title_app_long)
@@ -114,7 +114,7 @@ class FrameTeamsView(ctk.CTkScrollableFrame):
             # self.dict_tags_teams[t] = {k: v for k, v in template.items()}
             t_ = t.replace(".", "").strip().lower()
             print(f"{t=}, {t_=}")
-            img = self.ctk_.res_images[t_]
+            img = self.ctk_.res_images[t_ if t_ in self.ctk_.res_images else None]
             img_lbl = ctk.CTkLabel(self.frame_reporting, text="", image=img)
             lbl = ctk.CTkLabel(self.frame_reporting, text=self.df_unique_team_counts.loc[self.df_unique_team_counts["Team"] == t].iloc[0]["CountOfTeam"])
             self.dict_tags_teams[t] = {

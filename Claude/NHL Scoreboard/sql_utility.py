@@ -13,8 +13,8 @@ import datetime
 VERSION = \
     """	
     General SQL Utility Functions
-    Version..............1.04
-    Date...........2024-12-05
+    Version..............1.05
+    Date...........2026-04-21
     Author(s)....Avery Briggs
     """
 
@@ -42,18 +42,29 @@ def VERSION_AUTHORS():
 #######################################################################################################################
 
 
-def no_specials(text: str, r_char: str = "") -> str:
+def no_specials(text: str, r_char: str = "", strict:bool = False) -> str:
     """ Exception on '_' """
-    invalid = {
-        " ", "!", "@", "#", "$", "%",
-        "^", "&", "*", "(", ")", "-",
-        "+", "=", "'", "\"", "[", "]",
-        "{", "}", "\\", "|", ":", ";",
-        "<", ",", ">", ".", "?", "/",
-        "~", "`"
-    }
-    for c in invalid:
-        text = text.replace(c, r_char)
+    if strict:
+        # numbers, letters, and underscores only
+        valid = ["-"] + [chr(i) for i in range(97, 97+26)]
+        valid += [c.upper() for c in valid]
+        valid += [str(i) for i in range(10)]
+        t = ""
+        for i, c in enumerate(text):
+            if c in valid:
+                t += c
+        text = t
+    else:
+        invalid = {
+            " ", "!", "@", "#", "$", "%",
+            "^", "&", "*", "(", ")", "-",
+            "+", "=", "'", "\"", "[", "]",
+            "{", "}", "\\", "|", ":", ";",
+            "<", ",", ">", ".", "?", "/",
+            "~", "`"
+        }
+        for c in invalid:
+            text = text.replace(c, r_char)
     return text
 
 

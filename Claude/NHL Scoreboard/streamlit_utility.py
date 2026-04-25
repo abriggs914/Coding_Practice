@@ -15,11 +15,11 @@ from colour_utility import Colour
 
 VERSION = \
 	"""	
-    Streamlit utility functions
-    Version..............1.09
-    Date...........2025-12-22
-    Author(s)....Avery Briggs
-    """
+		Streamlit utility functions
+		Version..............1.13
+		Date...........2026-04-21
+		Author(s)....Avery Briggs
+		"""
 
 
 def VERSION_DETAILS():
@@ -53,24 +53,24 @@ def aligned_text(
 		line_height: int = 1
 ) -> str:
 	"""
-    Return formatted HTML, and in-line CSS to h_align a given text in a container.
-    Use with streamlit's markdown function and with 'unsafe_allow_html' set to True.
-    See coloured_text() for streamlined-colour-only functionality.
-    """
+		Return formatted HTML, and in-line CSS to h_align a given text in a container.
+		Use with streamlit's markdown function and with 'unsafe_allow_html' set to True.
+		See coloured_text() for streamlined-colour-only functionality.
+		"""
 	return f"<{tag_style} style='line-height: {line_height}; text-align: {h_align}; color: {colour};'>{txt}</{tag_style}>"
 
 
 def hide_image_fullscreen_buttons():
 	"""
-    Remove ALL fullscreen buttons for images created using streamlit's image function.
-    https://discuss.streamlit.io/t/hide-fullscreen-option-when-displaying-images-using-st-image/19792
-    """
+		Remove ALL fullscreen buttons for images created using streamlit's image function.
+		https://discuss.streamlit.io/t/hide-fullscreen-option-when-displaying-images-using-st-image/19792
+		"""
 	hide_img_fs = '''
-    <style>
-    button[title="View fullscreen"]{
-        visibility: hidden;}
-    </style>
-    '''
+		<style>
+		button[title="View fullscreen"]{
+				visibility: hidden;}
+		</style>
+		'''
 	st.markdown(hide_img_fs, unsafe_allow_html=True)
 
 	hide_img_fs
@@ -78,21 +78,21 @@ def hide_image_fullscreen_buttons():
 
 def center_fullscreen_images():
 	"""
-    Center an image when in fullscreen browsing mode
-    https://discuss.streamlit.io/t/how-can-i-center-a-picture/30995/3
-    """
+		Center an image when in fullscreen browsing mode
+		https://discuss.streamlit.io/t/how-can-i-center-a-picture/30995/3
+		"""
 	st.markdown(
 		"""
-        <style>
-            button[title^=Exit]+div [path_data-testid=stImage]{
-                text-align: center;
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 100%;
-            }
-        </style>
-        """, unsafe_allow_html=True
+		<style>
+				button[title^=Exit]+div [path_data-testid=stImage]{
+						text-align: center;
+						display: block;
+						margin-left: auto;
+						margin-right: auto;
+						width: 100%;
+				}
+		</style>
+		""", unsafe_allow_html=True
 	)
 
 
@@ -104,16 +104,16 @@ def coloured_text(
 		style_only: bool = False
 ) -> str:
 	"""
-    Return an HTML string of text styled with a colour.
-    See aligned_text() for more functionality
+		Return an HTML string of text styled with a colour.
+		See aligned_text() for more functionality
 
-    :param text: Text to be rendered.
-    :param colour: Text foreground colour.
-    :param html_tags: The HTML text tag you want to display the text with. Wide-open and not fully tested. stick to common text elements (headers, paragraphs, etc...)
-    :param call: If True the result will immediately be displayed by calling st.markdown. Not recommended if you want to place your text within another element or container.
-    :param style_only: If True return the formatted HTML style string.
-    :return: Formatted HTML string.
-    """
+		:param text: Text to be rendered.
+		:param colour: Text foreground colour.
+		:param html_tags: The HTML text tag you want to display the text with. Wide-open and not fully tested. stick to common text elements (headers, paragraphs, etc...)
+		:param call: If True the result will immediately be displayed by calling st.markdown. Not recommended if you want to place your text within another element or container.
+		:param style_only: If True return the formatted HTML style string.
+		:return: Formatted HTML string.
+		"""
 	style = f"style='color:{Colour(colour).hex_code};'"
 	html = f"<{html_tags}{' ' + style}'>{text}</{html_tags}>"
 	if call:
@@ -131,9 +131,9 @@ def rerun():
 
 def screen_dimensions() -> tuple[Optional[int], Optional[int]]:
 	"""
-    Use JavaScript to retrieve the screen's Width and Height as integers.
-    :return: (Width, Height) as an integer tuple. May return None.
-    """
+		Use JavaScript to retrieve the screen's Width and Height as integers.
+		:return: (Width, Height) as an integer tuple. May return None.
+		"""
 	return (
 		streamlit_js_eval(js_expressions='parent.innerWidth', key='SCR_W'),
 		streamlit_js_eval(js_expressions='parent.innerHeight', key='SCR_H')
@@ -141,50 +141,109 @@ def screen_dimensions() -> tuple[Optional[int], Optional[int]]:
 
 
 def display_df(
-		df: pd.DataFrame | pd.Series,
-		title: Optional[str] = None,
-		hide_index: str | bool = "if_int",
-		show_shape: bool = True,
+	df: pd.DataFrame | pd.Series,
+	title: Optional[str] = None,
+	hide_index: str | bool = "if_int",
+	show_shape: Literal[True, False, "separate", "below"] = True,
+	fail_safe: Optional[Any] = True,
+	border: bool = False,
 
-		# params for st.dataframe 20250325
-		width: int | None = None,
-		height: int | None = None,
-		use_container_width: bool = False,
-		column_order: Iterable[str] | None = None,
-		column_config: Any | None = None,
-		key: Any | None = None,
-		on_select: Literal["ignore", "rerun"] | Any = "ignore",
-		selection_mode: Any = "multi-row"
+	# params for st.dataframe 20250325
+	width: int | None = None,
+	height: int | None = None,
+	use_container_width: bool = False,
+	column_order: Iterable[str] | None = None,
+	column_config: Any | None = None,
+	key: Any | None = None,
+	on_select: Literal["ignore", "rerun"] | Any = "ignore",
+	selection_mode: Any = "multi-row"
 ):
-	title = title if title else ""
-	shape = df.shape
-	if show_shape:
-		title = f"{title} ({shape[0]} Rows".strip()
-		title += f" x {shape[1]} Cols)" if len(shape) > 1 else ")"
+	with st.container(border=border):
+		try:
+			title = title if title else ""
+			sub_title = ""
+			shape = df.shape
+			if show_shape:
+				if isinstance(show_shape, bool):
+					title = f"{title} ({shape[0]} Rows x {shape[1]} Cols)" if len(shape) > 1 else ")".strip()
+				else:
+					sub_title = f"({shape[0]} Rows x {shape[1]} Cols)" if len(shape) > 1 else ")".strip()
+		
+			if title:
+				st.write(title)
+			if sub_title and (show_shape != "below"):
+				st.caption(sub_title)
 
-	if title:
-		st.write(title)
+			if hide_index == "if_int":
+				hide_index = str(df.index.dtype).lower() == "int64"
 
-	if hide_index == "if_int":
-		hide_index = str(df.index.dtype).lower() == "int64"
+			if height is None:
+				height = "auto"
 
-	if height is None:
-		height = "auto"
-
-	# st.write(f"{title=}, {hide_index=}")
-	stdf = st.dataframe(
-		data=df,
-		hide_index=hide_index,
-		width=width,
-		height=height,
-		use_container_width=use_container_width,
-		column_order=column_order,
-		column_config=column_config,
-		key=key,
-		on_select=on_select,
-		selection_mode=selection_mode
-	)
+			# st.write(f"{title=}, {hide_index=}")
+			stdf = st.dataframe(
+				data=df,
+				hide_index=hide_index,
+				width=width,
+				height=height,
+				use_container_width=use_container_width,
+				column_order=column_order,
+				column_config=column_config,
+				key=key,
+				on_select=on_select,
+				selection_mode=selection_mode
+			)
+			if sub_title and (show_shape == "below"):
+				st.markdown(
+					f"""
+					<div style="
+						width: 100%;
+						text-align: right;
+						color: rgba(128, 128, 128, 0.9);
+						font-size: 0.8rem;
+						margin-top: -0.35rem;
+						padding-top: 0;
+					">
+						{sub_title}
+					</div>
+					""",
+					unsafe_allow_html=True
+				)
+		except Exception as e:
+			if isinstance(fail_safe, bool):
+				fail_safe = st.write if fail_safe else None
+			if fail_safe is not None:			
+				stdf = None
+				if callable(fail_safe):
+					try:
+						fail_safe(df)
+					except:
+						pass
+				else:
+					st.write(df)
+			else:
+				raise e
 	return stdf
+
+
+def consolidate_df_edits(df: pd.DataFrame, editor_data: dict) -> pd.DataFrame:
+	"""Use with a data_editor to quickly retrieve a copy of the data currently modeled in the editor."""
+	edited_rows = editor_data.get("edited_rows", {})
+	added_rows = editor_data.get("added_rows", [])
+	deleted_rows = editor_data.get("deleted_rows", [])
+
+	dff = df.copy()
+	for idx, changes in edited_rows.items():
+		for col, val in changes.items():
+			dff.loc[idx, col] = val
+			
+	for idx in deleted_rows:
+		dff.drop(index=deleted_rows, inplace=True)
+
+	if added_rows:
+		dff = pd.concat([dff, pd.DataFrame(added_rows)], ignore_index=True)
+		
+	return dff
 
 
 @st.cache_data(ttl=None, show_spinner=True)
@@ -204,21 +263,21 @@ def split_frame(input_df: pd.DataFrame, rows: int):
 
 
 def display_df_paginated(
-		df: pd.DataFrame | pd.Series,
-		title: Optional[str] = None,
-		hide_index: str | bool = "if_int",
-		show_shape: bool = True,
-		batch_size_options: list[int] = (25, 50, 100),
+	df: pd.DataFrame | pd.Series,
+	title: Optional[str] = None,
+	hide_index: str | bool = "if_int",
+	show_shape: bool = True,
+	batch_size_options: list[int] = (25, 50, 100),
 
-		# params for st.dataframe 20250325
-		width: int | None = None,
-		height: int | None = None,
-		use_container_width: bool = False,
-		column_order: Iterable[str] | None = None,
-		column_config: Any | None = None,
-		key: Any | None = None,
-		on_select: Literal["ignore", "rerun"] | Any = "ignore",
-		selection_mode: Any = "multi-row"		
+	# params for st.dataframe 20250325
+	width: int | None = None,
+	height: int | None = None,
+	use_container_width: bool = False,
+	column_order: Iterable[str] | None = None,
+	column_config: Any | None = None,
+	key: Any | None = None,
+	on_select: Literal["ignore", "rerun"] | Any = "ignore",
+	selection_mode: Any = "multi-row"		
 ):
 	
 	if key is None:
@@ -297,7 +356,16 @@ def display_df_paginated(
 			key=key,
 			on_select=on_select,
 			selection_mode=selection_mode
-		)
+		)  
+  
+
+def in_streamlit() -> bool:
+	"""Detect whether there is an active Streamlit script context"""
+	try:
+			from streamlit.runtime.scriptrunner import get_script_run_ctx
+			return get_script_run_ctx() is not None
+	except Exception:
+			return False
 
 
 if __name__ == '__main__':

@@ -8,23 +8,30 @@ import math
 import time
 import json
 import base64
+import random
 import requests
 import warnings
+import pdfplumber
 import streamlit as st
 import pandas as pd
 import numpy as np
 from pathlib import Path
 import streamlit.components.v1 as components
+from streamlit_sortables import sort_items
 import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
 from plotly.subplots import make_subplots
 from streamlit_pills import pills
 from datetime import datetime, timedelta
+from typing import Optional, Literal, Sequence
+from collections import defaultdict
 
-from colour_utility import Colour
-from json_utility import peek_json
-from streamlit_utility import display_df
+from colour_utility import Colour, gradient_merge
+from json_utility import peek_json, jsonify
+from sql_utility import no_specials
+from streamlit_utility import display_df, consolidate_df_edits
+from streamlit_auth import show_login_register
 import nhl_api_reference_examples as api_ref
 
 warnings.filterwarnings("ignore")
@@ -33,12 +40,13 @@ warnings.filterwarnings("ignore")
 # DATA SOURCE — local Excel workbook
 # ─────────────────────────────────────────────────────────
 path_excel_predictions       = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\NHLGamePredictions_2526_copy.xlsx"
-path_excel_jerseys           = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\Jerseys_20260319.xlsx"
+path_excel_jerseys           = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\Jerseys_20260401.xlsx"
 path_jersey_images           = r"D:\\NHL jerseys\\Jerseys 20250927"
 path_image_dir               = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer"
 path_stanley_cup_appearances = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_apperances.json"
 path_stanley_cup_wins        = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_wins.json"
 path_stanley_cup_losses      = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_losses.json"
+path_hockey_pool_data        = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Data\data.json"
 
 # ─────────────────────────────────────────────────────────
 # PAGE CONFIG
@@ -130,39 +138,39 @@ div[data-testid="stMetricLabel"] { color: #8899aa !important; }
 # NHL TEAM METADATA
 # ─────────────────────────────────────────────────────────
 TEAM_META = {
-    "ANA": {"name": "Anaheim Ducks",       "conf": "Western", "div": "Pacific",    "id": 24},
-    "ARI": {"name": "Utah Hockey Club",     "conf": "Western", "div": "Central",    "id": 53},
-    "UTA": {"name": "Utah Hockey Club",     "conf": "Western", "div": "Central",    "id": 59},
-    "BOS": {"name": "Boston Bruins",        "conf": "Eastern", "div": "Atlantic",   "id": 6},
-    "BUF": {"name": "Buffalo Sabres",       "conf": "Eastern", "div": "Atlantic",   "id": 7},
-    "CGY": {"name": "Calgary Flames",       "conf": "Western", "div": "Pacific",    "id": 20},
-    "CAR": {"name": "Carolina Hurricanes",  "conf": "Eastern", "div": "Metropolitan","id": 12},
-    "CHI": {"name": "Chicago Blackhawks",   "conf": "Western", "div": "Central",    "id": 16},
-    "COL": {"name": "Colorado Avalanche",   "conf": "Western", "div": "Central",    "id": 21},
-    "CBJ": {"name": "Columbus Blue Jackets","conf": "Eastern", "div": "Metropolitan","id": 29},
-    "DAL": {"name": "Dallas Stars",         "conf": "Western", "div": "Central",    "id": 25},
-    "DET": {"name": "Detroit Red Wings",    "conf": "Eastern", "div": "Atlantic",   "id": 17},
-    "EDM": {"name": "Edmonton Oilers",      "conf": "Western", "div": "Pacific",    "id": 22},
-    "FLA": {"name": "Florida Panthers",     "conf": "Eastern", "div": "Atlantic",   "id": 13},
-    "LAK": {"name": "Los Angeles Kings",    "conf": "Western", "div": "Pacific",    "id": 26},
-    "MIN": {"name": "Minnesota Wild",       "conf": "Western", "div": "Central",    "id": 30},
-    "MTL": {"name": "Montréal Canadiens",   "conf": "Eastern", "div": "Atlantic",   "id": 8},
-    "NSH": {"name": "Nashville Predators",  "conf": "Western", "div": "Central",    "id": 18},
-    "NJD": {"name": "New Jersey Devils",    "conf": "Eastern", "div": "Metropolitan","id": 1},
-    "NYI": {"name": "New York Islanders",   "conf": "Eastern", "div": "Metropolitan","id": 2},
-    "NYR": {"name": "New York Rangers",     "conf": "Eastern", "div": "Metropolitan","id": 3},
-    "OTT": {"name": "Ottawa Senators",      "conf": "Eastern", "div": "Atlantic",   "id": 9},
-    "PHI": {"name": "Philadelphia Flyers",  "conf": "Eastern", "div": "Metropolitan","id": 4},
-    "PIT": {"name": "Pittsburgh Penguins",  "conf": "Eastern", "div": "Metropolitan","id": 5},
-    "SJS": {"name": "San Jose Sharks",      "conf": "Western", "div": "Pacific",    "id": 28},
-    "SEA": {"name": "Seattle Kraken",       "conf": "Western", "div": "Pacific",    "id": 55},
-    "STL": {"name": "St. Louis Blues",      "conf": "Western", "div": "Central",    "id": 19},
-    "TBL": {"name": "Tampa Bay Lightning",  "conf": "Eastern", "div": "Atlantic",   "id": 14},
-    "TOR": {"name": "Toronto Maple Leafs",  "conf": "Eastern", "div": "Atlantic",   "id": 10},
-    "VAN": {"name": "Vancouver Canucks",    "conf": "Western", "div": "Pacific",    "id": 23},
-    "VGK": {"name": "Vegas Golden Knights", "conf": "Western", "div": "Pacific",    "id": 54},
-    "WSH": {"name": "Washington Capitals",  "conf": "Eastern", "div": "Metropolitan","id": 15},
-    "WPG": {"name": "Winnipeg Jets",        "conf": "Western", "div": "Central",    "id": 52},
+    "ANA": {"name": "Anaheim Ducks",       "conf": "Western", "div": "Pacific",    "id": 24, "active": True},
+    # "ARI": {"name": "Utah Hockey Club",     "conf": "Western", "div": "Central",    "id": 53, "active": False},
+    "UTA": {"name": "Utah Hockey Club",     "conf": "Western", "div": "Central",    "id": 59, "active": True},
+    "BOS": {"name": "Boston Bruins",        "conf": "Eastern", "div": "Atlantic",   "id": 6, "active": True},
+    "BUF": {"name": "Buffalo Sabres",       "conf": "Eastern", "div": "Atlantic",   "id": 7, "active": True},
+    "CGY": {"name": "Calgary Flames",       "conf": "Western", "div": "Pacific",    "id": 20, "active": True},
+    "CAR": {"name": "Carolina Hurricanes",  "conf": "Eastern", "div": "Metropolitan","id": 12, "active": True},
+    "CHI": {"name": "Chicago Blackhawks",   "conf": "Western", "div": "Central",    "id": 16, "active": True},
+    "COL": {"name": "Colorado Avalanche",   "conf": "Western", "div": "Central",    "id": 21, "active": True},
+    "CBJ": {"name": "Columbus Blue Jackets","conf": "Eastern", "div": "Metropolitan","id": 29, "active": True},
+    "DAL": {"name": "Dallas Stars",         "conf": "Western", "div": "Central",    "id": 25, "active": True},
+    "DET": {"name": "Detroit Red Wings",    "conf": "Eastern", "div": "Atlantic",   "id": 17, "active": True},
+    "EDM": {"name": "Edmonton Oilers",      "conf": "Western", "div": "Pacific",    "id": 22, "active": True},
+    "FLA": {"name": "Florida Panthers",     "conf": "Eastern", "div": "Atlantic",   "id": 13, "active": True},
+    "LAK": {"name": "Los Angeles Kings",    "conf": "Western", "div": "Pacific",    "id": 26, "active": True},
+    "MIN": {"name": "Minnesota Wild",       "conf": "Western", "div": "Central",    "id": 30, "active": True},
+    "MTL": {"name": "Montréal Canadiens",   "conf": "Eastern", "div": "Atlantic",   "id": 8, "active": True},
+    "NSH": {"name": "Nashville Predators",  "conf": "Western", "div": "Central",    "id": 18, "active": True},
+    "NJD": {"name": "New Jersey Devils",    "conf": "Eastern", "div": "Metropolitan","id": 1, "active": True},
+    "NYI": {"name": "New York Islanders",   "conf": "Eastern", "div": "Metropolitan","id": 2, "active": True},
+    "NYR": {"name": "New York Rangers",     "conf": "Eastern", "div": "Metropolitan","id": 3, "active": True},
+    "OTT": {"name": "Ottawa Senators",      "conf": "Eastern", "div": "Atlantic",   "id": 9, "active": True},
+    "PHI": {"name": "Philadelphia Flyers",  "conf": "Eastern", "div": "Metropolitan","id": 4, "active": True},
+    "PIT": {"name": "Pittsburgh Penguins",  "conf": "Eastern", "div": "Metropolitan","id": 5, "active": True},
+    "SJS": {"name": "San Jose Sharks",      "conf": "Western", "div": "Pacific",    "id": 28, "active": True},
+    "SEA": {"name": "Seattle Kraken",       "conf": "Western", "div": "Pacific",    "id": 55, "active": True},
+    "STL": {"name": "St. Louis Blues",      "conf": "Western", "div": "Central",    "id": 19, "active": True},
+    "TBL": {"name": "Tampa Bay Lightning",  "conf": "Eastern", "div": "Atlantic",   "id": 14, "active": True},
+    "TOR": {"name": "Toronto Maple Leafs",  "conf": "Eastern", "div": "Atlantic",   "id": 10, "active": True},
+    "VAN": {"name": "Vancouver Canucks",    "conf": "Western", "div": "Pacific",    "id": 23, "active": True},
+    "VGK": {"name": "Vegas Golden Knights", "conf": "Western", "div": "Pacific",    "id": 54, "active": True},
+    "WSH": {"name": "Washington Capitals",  "conf": "Eastern", "div": "Metropolitan","id": 15, "active": True},
+    "WPG": {"name": "Winnipeg Jets",        "conf": "Western", "div": "Central",    "id": 52, "active": True},
 }
 
 CANADIAN_TEAMS = {"MTL", "OTT", "TOR", "WPG", "EDM", "CGY", "VAN"}
@@ -812,6 +820,66 @@ TEAM_RIVALS = {
 }
 
 
+GOLD = "#c8a84b"
+ICE_BLUE = "#4ab3f4"
+RED = "#e74c3c"
+GREEN = "#2ecc71"
+
+
+possible_records = [
+    (4, 0, 0),
+    (3, 0, 1),
+    (3, 0, 0),
+    (3, 1, 0),
+    (2, 0, 2),
+    (2, 0, 1),
+    (2, 1, 1),
+    (1, 0, 3),
+    (2, 0, 0),
+    (2, 1, 0),
+    (1, 0, 2),
+    (2, 2, 0),
+    (1, 1, 2),
+    (0, 0, 4),
+    (1, 0, 1),
+    (1, 1, 1),
+    (0, 0, 3),
+    (1, 2, 1),
+    (0, 1, 3),
+    (1, 0, 0),
+    (1, 1, 0),
+    (0, 0, 2),
+    (1, 2, 0),
+    (0, 1, 2),
+    (1, 3, 0),
+    (0, 2, 2),
+    (0, 0, 1),
+    (0, 1, 1),
+    (0, 2, 1),
+    (0, 3, 1),
+    (0, 1, 0),
+    (0, 2, 0),
+    (0, 3, 0),
+    (0, 4, 0)
+]
+record_grad = gradient_merge([GREEN, RED], (len(possible_records) - 2) // 1, True)
+TEAM_RECORD_COLOUR_MAP = {
+    tup: dict(
+        i=i+1,
+        color=record_grad[i],
+        score=(2 * tup[0]) + tup[2],
+        pct=(0.5 * ((2 * tup[0]) + tup[2])) / sum(tup),
+    ) 
+    for i, tup in enumerate(possible_records)
+}
+TEAM_RECORD_COLOUR_MAP[(0,0,0)] = dict(i=0, color="#707070", score=0, pct=0.0)
+TEAM_RECORD_COLOUR_MAP.update({str(k): v for k, v in TEAM_RECORD_COLOUR_MAP.items()})
+
+# with st.container(horizontal=True):
+#     for t, data in TEAM_RECORD_COLOUR_MAP.items():
+#         st.color_picker(str(t), value=data["color"], key=f"{t}_{type(t)}", disabled=True)
+
+
 # ═══════════════════════════════════════════════════════════
 # JERSEY COLLECTION MODULE
 # ═══════════════════════════════════════════════════════════
@@ -1163,8 +1231,81 @@ def render_player_panel(pd_data: dict, league: str):
             st.markdown(f'<div style="color:#aabbcc;font-size:0.82rem;line-height:1.6">{bio_text}</div>', unsafe_allow_html=True)
 
 
+def to_string(
+    row: pd.Series | dict,
+    inc_team: Optional[bool] = None,
+    inc_brand: Optional[bool] = None,
+    inc_make: Optional[bool] = None,
+    inc_model: Optional[bool] = None,
+    inc_num: Optional[bool] = None,
+    inc_fname: Optional[bool] = None,
+    inc_lname: Optional[bool] = None,
+    inc_size: Optional[bool] = None
+) -> str:
+    res = []
+    if inc_team is None:
+        inc_team = True
+    if inc_brand is None:
+        inc_brand = True
+    if inc_make is None:
+        inc_make = True
+    if inc_model is None:
+        inc_model = True
+    
+    is_blank: bool = pd.isna(row["Number"])
+
+    if inc_num is None:
+        inc_num = not is_blank
+    if inc_fname is None:
+        inc_fname = not is_blank
+    if inc_lname is None:
+        inc_lname = not is_blank
+
+    if inc_size is None:
+        inc_size = True
+
+    team = row["Team"]
+    brand = row["Brand"]
+    make = row["Make"]
+    model = row["Model"]
+    number = row["Number"]
+    player_first = row["PlayerFirst"]
+    player_last = row["PlayerLast"]
+    size = row["Size"]
+
+    if inc_team and bool(team):
+        res.append(team)
+    if inc_brand and bool(brand):
+        res.append(brand)
+    if inc_make and bool(make):
+        res.append(make)
+    if inc_model and bool(model):
+        res.append(model)
+    if inc_num and bool(number):
+        res.append(f"#{number}")
+    if inc_fname and bool(player_first):
+        res.append(player_first)
+    if inc_lname and bool(player_last):
+        res.append(player_last)
+    if inc_size and bool(size):
+        res.append(size)
+    return " ".join(map(str, res))
+
+
 def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     """Full Jersey Collection page."""
+    
+    if st.session_state.get("user") is None:
+
+        if "user" not in st.session_state:
+            st.session_state.user = None
+            
+        show_login_register()
+        st.stop()
+    elif st.session_state.get("user", "").lower() != "avery":
+        st.info("You do not currently have permission to view this screen.")
+        st.stop()
+    
     st.markdown('<div class="section-header">🧥 JERSEY COLLECTION</div>', unsafe_allow_html=True)
     
     # st.write("df_jerseys")
@@ -1172,6 +1313,9 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     # st.write("'" + ("', '".join(df_jerseys["PlayerName"].values)) + "'")
 
     active = df_jerseys[df_jerseys.get("Cancelled", pd.Series([False]*len(df_jerseys))).fillna(False) != True].copy()
+    for c in ["Order", "Receive", "Open"]:
+        col = f"{c}Date"
+        active[col] = active[col].dt.date
     
     # st.write("active")
     # st.dataframe(active)
@@ -1212,6 +1356,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         "🔍 Browse Jerseys",
         "📅 Timeline",
         "💰 Cost Analysis",
+        "Checklist"
     ]
     k_pills_jersey_collection_mode: str = "key_pills_jersey_collection_mode"
     st.session_state.setdefault(k_pills_jersey_collection_mode, 0)
@@ -1366,11 +1511,48 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             fig_size.update_traces(textposition="outside")
             fig_size.update_layout(**DARK_THEME, coloraxis_showscale=False, height=300)
             st.plotly_chart(fig_size, use_container_width=True)
+            
+        cols_names = st.columns(3)
+        active_player = active.copy()
+        active_player = active_player[~pd.isna(active_player["PlayerLast"]) & (active_player["PlayerLast"].str not in [None, ""])]
+        for i, col in enumerate(["PlayerLast", "PlayerFirst", "Number"]):
+            with cols_names[i]:
+                lname_cnt = active_player[col].fillna("Unknown").value_counts().reset_index()
+                lname_cnt.columns = [col, "Count"]
+                fig_lname = px.bar(
+                    lname_cnt, x="Count", y=col, orientation="h",
+                    title=f"By {col}",
+                    color="Count", color_continuous_scale=[[0, "#8e44ad"], [1, GOLD]],
+                    text="Count"
+                )
+                fig_lname.update_traces(textposition="outside")
+                fig_lname.update_layout(**DARK_THEME, coloraxis_showscale=False,
+                                        height=max(280, len(lname_cnt)*30 + 60))
+                st.plotly_chart(fig_lname, use_container_width=True)
+    
+        active_letters = pd.DataFrame(dict(zip([chr(i) for i in range(97, 97+26)], [[0] for i in range(26)])))
+        active_letters[[".", " ", "-", "'"]] = [0, 0, 0, 0]
+        for i, row in active_player.iterrows():
+            for c in row["PlayerLast"].lower():
+                active_letters.at[0, c] += 1
+        active_letters = active_letters.T.reset_index()
+        # # lname_cnt = active_letters[].fillna("Unknown").value_counts().head(15).reset_index()
+        active_letters.columns = ["Letter", "Count"]
+        fig_lname = px.bar(
+            active_letters, x="Count", y="Letter", orientation="h",
+            title=f"By Letter",
+            color="Count", color_continuous_scale=[[0, "#8e44ad"], [1, GOLD]],
+            text="Count"
+        )
+        fig_lname.update_traces(textposition="outside")
+        fig_lname.update_layout(**DARK_THEME, coloraxis_showscale=False,
+                                height=max(280, len(active_letters)*30 + 60))
+        st.plotly_chart(fig_lname, use_container_width=True)
 
     # ══════════════════════════════════════════════
     # TAB 2: BROWSE JERSEYS
     # ══════════════════════════════════════════════
-    if pills_jersey_collection_mode == options_pills_jersey_collection_mode[1]:
+    elif pills_jersey_collection_mode == options_pills_jersey_collection_mode[1]:
         # 🔍 Browse Jerseys
         st.markdown('<div class="section-header" style="font-size:1.2rem">BROWSE & SEARCH</div>', unsafe_allow_html=True)
 
@@ -1480,7 +1662,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     # TAB 3: TIMELINE
     # ══════════════════════════════════════════════
     # with tab_timeline:
-    if pills_jersey_collection_mode == options_pills_jersey_collection_mode[2]:
+    elif pills_jersey_collection_mode == options_pills_jersey_collection_mode[2]:
         # 📅 Timeline
         st.markdown('<div class="section-header" style="font-size:1.2rem">ACQUISITION TIMELINE</div>', unsafe_allow_html=True)
         
@@ -1543,90 +1725,90 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         # Display in Streamlit
         st.plotly_chart(fig_timeline_order_open)
 
-        # timeline_df = active.dropna(subset=["OrderDate"]).copy()
-        # timeline_df["Label"] = timeline_df.apply(
-        #     lambda r: (
-        #         f"#{int(r['Number'])} " if str(r.get("Number","")).strip() not in ["","nan"] else ""
-        #     ) + (r.get("PlayerName") or r.get("Team","?")) + f" ({r.get('Team','?')})",
-        #     axis=1
-        # )
-        # timeline_df = timeline_df.sort_values("OrderDate")
+        timeline_df = active.dropna(subset=["OrderDate"]).copy()
+        timeline_df["Label"] = timeline_df.apply(
+            lambda r: (
+                f"#{int(r['Number'])} " if str(r.get("Number","")).strip() not in ["","nan"] else ""
+            ) + (r.get("PlayerName") or r.get("Team","?")) + f" ({r.get('Team','?')})",
+            axis=1
+        )
+        timeline_df = timeline_df.sort_values("OrderDate")
 
-        # # Gantt-style timeline: Order → Receive → Open
-        # fig_gantt = go.Figure()
-        # colours_gantt = [GOLD, ICE_BLUE, GREEN, RED, "#e67e22", "#9b59b6", "#1abc9c"]
+        # Gantt-style timeline: Order → Receive → Open
+        fig_gantt = go.Figure()
+        colours_gantt = [GOLD, ICE_BLUE, GREEN, RED, "#e67e22", "#9b59b6", "#1abc9c"]
 
-        # for i, (_, row) in enumerate(timeline_df.iterrows()):
-        #     colour = colours_gantt[i % len(colours_gantt)]
-        #     label  = row["Label"]
-        #     od     = row.get("OrderDate")
-        #     rd     = row.get("ReceiveDate")
-        #     opd    = row.get("OpenDate")
-        #     price  = row.get("PriceF")
-        #     hover  = (
-        #         f"<b>{label}</b><br>"
-        #         f"Ordered: {od.strftime('%b %d, %Y') if pd.notna(od) else '—'}<br>"
-        #         f"Received: {rd.strftime('%b %d, %Y') if pd.notna(rd) else '—'}<br>"
-        #         f"Opened: {opd.strftime('%b %d, %Y') if pd.notna(opd) else '—'}<br>"
-        #         f"Cost: {'$' + f'{price:.0f}' + ' CAD' if pd.notna(price) else '—'}"
-        #     )
+        for i, (_, row) in enumerate(timeline_df.iterrows()):
+            colour = colours_gantt[i % len(colours_gantt)]
+            label  = row["Label"]
+            od     = row.get("OrderDate")
+            rd     = row.get("ReceiveDate")
+            opd    = row.get("OpenDate")
+            price  = row.get("PriceF")
+            hover  = (
+                f"<b>{label}</b><br>"
+                f"Ordered: {od.strftime('%b %d, %Y') if pd.notna(od) else '—'}<br>"
+                f"Received: {rd.strftime('%b %d, %Y') if pd.notna(rd) else '—'}<br>"
+                f"Opened: {opd.strftime('%b %d, %Y') if pd.notna(opd) else '—'}<br>"
+                f"Cost: {'$' + f'{price:.0f}' + ' CAD' if pd.notna(price) else '—'}"
+            )
 
-        #     # Order → Receive bar
-        #     if pd.notna(od) and pd.notna(rd):
-        #         fig_gantt.add_trace(go.Bar(
-        #             name="Order→Receive" if i == 0 else "",
-        #             y=[label],
-        #             x=[(rd - od).days],
-        #             base=[od],
-        #             orientation="h",
-        #             marker_color=colour,
-        #             opacity=0.85,
-        #             hovertemplate=hover + "<extra>Order→Receive</extra>",
-        #             showlegend=(i == 0),
-        #         ))
+            # Order → Receive bar
+            if pd.notna(od) and pd.notna(rd):
+                fig_gantt.add_trace(go.Bar(
+                    name="Order→Receive" if i == 0 else "",
+                    y=[label],
+                    x=[(rd - od).days],
+                    base=[od],
+                    orientation="h",
+                    marker_color=colour,
+                    opacity=0.85,
+                    hovertemplate=hover + "<extra>Order→Receive</extra>",
+                    showlegend=(i == 0),
+                ))
 
-        #     # Receive → Open bar (if both exist)
-        #     if pd.notna(rd) and pd.notna(opd) and opd > rd:
-        #         fig_gantt.add_trace(go.Bar(
-        #             name="Receive→Open" if i == 0 else "",
-        #             y=[label],
-        #             x=[(opd - rd).days],
-        #             base=[rd],
-        #             orientation="h",
-        #             marker_color=colour,
-        #             opacity=0.35,
-        #             hovertemplate=hover + "<extra>Receive→Open</extra>",
-        #             showlegend=(i == 0),
-        #         ))
+            # Receive → Open bar (if both exist)
+            if pd.notna(rd) and pd.notna(opd) and opd > rd:
+                fig_gantt.add_trace(go.Bar(
+                    name="Receive→Open" if i == 0 else "",
+                    y=[label],
+                    x=[(opd - rd).days],
+                    base=[rd],
+                    orientation="h",
+                    marker_color=colour,
+                    opacity=0.35,
+                    hovertemplate=hover + "<extra>Receive→Open</extra>",
+                    showlegend=(i == 0),
+                ))
 
-        #     # Point markers for key events
-        #     for event_date, marker_sym, event_label in [
-        #         (od,  "circle",          "Ordered"),
-        #         (rd,  "diamond",         "Received"),
-        #         (opd, "star",            "Opened"),
-        #     ]:
-        #         if pd.notna(event_date):
-        #             fig_gantt.add_trace(go.Scatter(
-        #                 x=[event_date], y=[label],
-        #                 mode="markers",
-        #                 marker=dict(symbol=marker_sym, size=9, color=colour,
-        #                             line=dict(width=1, color="#fff")),
-        #                 hovertemplate=f"<b>{label}</b><br>{event_label}: {event_date.strftime('%b %d, %Y')}<extra></extra>",
-        #                 showlegend=False
-        #             ))
+            # Point markers for key events
+            for event_date, marker_sym, event_label in [
+                (od,  "circle",          "Ordered"),
+                (rd,  "diamond",         "Received"),
+                (opd, "star",            "Opened"),
+            ]:
+                if pd.notna(event_date):
+                    fig_gantt.add_trace(go.Scatter(
+                        x=[event_date], y=[label],
+                        mode="markers",
+                        marker=dict(symbol=marker_sym, size=9, color=colour,
+                                    line=dict(width=1, color="#fff")),
+                        hovertemplate=f"<b>{label}</b><br>{event_label}: {event_date.strftime('%b %d, %Y')}<extra></extra>",
+                        showlegend=False
+                    ))
 
-        # fig_gantt.update_layout(
-        #     **DARK_THEME,
-        #     barmode="overlay",
-        #     title="Jersey Acquisition Timeline  ●=Ordered  ◆=Received  ★=Opened",
-        #     xaxis_title="Date",
-        #     # xaxis=dict(type="date", gridcolor="#1e3a5a", linecolor="#1e3a5a"),
-        #     # yaxis=dict(gridcolor="#1e3a5a", linecolor="#1e3a5a", autorange="reversed"),
-        #     height=max(400, len(timeline_df) * 32 + 80),
-        #     legend=dict(orientation="h", yanchor="bottom", y=1.01),
-        #     margin=dict(l=20, r=20, t=60, b=20),
-        # )
-        # st.plotly_chart(fig_gantt, use_container_width=True)
+        fig_gantt.update_layout(
+            **DARK_THEME,
+            barmode="overlay",
+            title="Jersey Acquisition Timeline  ●=Ordered  ◆=Received  ★=Opened",
+            xaxis_title="Date",
+            # xaxis=dict(type="date", gridcolor="#1e3a5a", linecolor="#1e3a5a"),
+            # yaxis=dict(gridcolor="#1e3a5a", linecolor="#1e3a5a", autorange="reversed"),
+            height=max(400, len(timeline_df) * 32 + 80),
+            legend=dict(orientation="h", yanchor="bottom", y=1.01),
+            margin=dict(l=20, r=20, t=60, b=20),
+        )
+        st.plotly_chart(fig_gantt, use_container_width=True)
 
         # Days to receive + days to open distributions
         col_dtr, col_dto = st.columns(2)
@@ -1668,20 +1850,71 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             fig_mo.update_layout(**DARK_THEME, coloraxis_showscale=False,
                                   xaxis_tickangle=-45, height=340)
             st.plotly_chart(fig_mo, use_container_width=True)
+    
+    # ══════════════════════════════════════════════
+    # TAB 5: Checklist
+    # ══════════════════════════════════════════════
+    # with tab_cost:
+    elif pills_jersey_collection_mode == options_pills_jersey_collection_mode[4]:
+        checklist = active.copy()
+        for i in range(10):
+            checklist["Model"] = checklist["Model"].apply(lambda m: m.replace(str(i), "").strip())
+        display_df(
+            checklist,
+            "checklist"
+        )
+        cols_bm = ["Team", "Model"]
+        checklist_by_model = checklist.groupby(
+            cols_bm
+        ).agg("count").reset_index().rename(columns={"ID":"Count"})
+        display_df(
+            checklist_by_model,
+            "checklist_by_model"
+        )
+        checklist_by_model_b = checklist_by_model.pivot(
+            index=["Team"],
+            columns=["Model"]
+        )["Count"]
+        cols_model = checklist_by_model_b.columns.tolist()
+        cols_model.remove("Away")
+        cols_model.remove("Home")
+        cols_model = ["Home", "Away"] + cols_model
+        display_df(
+            checklist_by_model_b[cols_model],
+            "Model Checklist by Team"
+        )
 
     # ══════════════════════════════════════════════
     # TAB 4: COST ANALYSIS
     # ══════════════════════════════════════════════
     # with tab_cost:
-    if pills_jersey_collection_mode == options_pills_jersey_collection_mode[3]:
+    # if pills_jersey_collection_mode == options_pills_jersey_collection_mode[3]:
+    else:
         # 💰 Cost Analysis
         st.markdown('<div class="section-header" style="font-size:1.2rem">COST ANALYSIS</div>', unsafe_allow_html=True)
 
         all_known = active.copy()
         n_all_jerseys = len(all_known)
         priced = active.dropna(subset=["PriceF"]).copy()
+        priced.sort_values("ID", ascending=False, inplace=True)
         priced = priced[priced["PriceF"] > 0]
         n_priced_jerseys = len(priced)
+        
+        first_date = active["OrderDate"].min()
+        last_date = active["OrderDate"].max()
+        today = datetime.now().date()
+        n_days = (today - first_date).days
+        
+        sum_priced = priced['PriceF'].sum()
+        mean_priced = priced['PriceF'].mean()
+        sum_priced_extrapolated = ((mean_priced * (n_all_jerseys - n_priced_jerseys)) + sum_priced)
+        spent_per_day = sum_priced_extrapolated / n_days
+        jerseys_per_day = len(active) / n_days
+        days_since_last_order = (today - last_date).days
+        est_savings_since_last_order = days_since_last_order * spent_per_day
+        
+        t_c_patches = len(priced[priced["CPatch"] == 1])
+        t_a_patches = len(priced[priced["APatch"] == 1])
 
         if len(priced) == 0:
             st.info("No pricing data available yet.")
@@ -1689,23 +1922,25 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             # Summary KPIs
             ck1, ck2, ck3, ck4, ck5, ck6 = st.columns(6)
             
-            sum_priced = priced['PriceF'].sum()
-            mean_priced = priced['PriceF'].mean()
-            sum_priced_extrapolated = ((mean_priced * (n_all_jerseys - n_priced_jerseys)) + sum_priced)
-            first_date = active["OrderDate"].min().date()
-            today = datetime.now().date()
-            n_days = (today - first_date).days
-            spent_per_day = sum_priced_extrapolated / n_days
-            
-            ck1.metric("Total Spent", f"${sum_priced:,.2f} CAD")
-            ck2.metric("Total Spent (Extrapolated)", f"${sum_priced_extrapolated:,.2f} CAD")
-            ck3.metric("Avg per Jersey", f"${mean_priced:,.0f} CAD")
-            ck4.metric("Most Expensive", f"${priced['PriceF'].max():,.2f} CAD")
-            ck5.metric("Least Expensive", f"${priced['PriceF'].min():,.2f} CAD")
+            loc_cur = " CAD"
+            ck1.metric("Total Spent", f"${sum_priced:,.2f}{loc_cur}")
+            ck2.metric("Total Spent (Extrapolated)", f"${sum_priced_extrapolated:,.2f}{loc_cur}")
+            ck3.metric("Avg per Jersey", f"${mean_priced:,.0f}{loc_cur}")
+            ck4.metric("Most Expensive", f"${priced['PriceF'].max():,.2f}{loc_cur}")
+            ck5.metric("Least Expensive", f"${priced['PriceF'].min():,.2f}{loc_cur}")
             ck6.metric("Jerseys with Price", len(priced))
             
             ck1.metric("Total Days Collecting:", n_days)
-            ck2.metric("Total Spent per Day:", f"${spent_per_day:,.2f} CAD")
+            ck2.metric("Total Spent per Day:", f"${spent_per_day:,.2f}{loc_cur}")
+            ck3.metric("Jersey per Day:", f"{jerseys_per_day:,.2f}")
+            ck4.metric("Days Between Jersey Order:", f"{1/jerseys_per_day:,.2f}")
+            ck5.metric("Days Since Last Order:", days_since_last_order)
+            ck6.metric("Est. Savings Since Last Order:", f"${est_savings_since_last_order:,.2f}{loc_cur}")
+            
+            ck1.metric("First Date:", f"{first_date}")
+            ck2.metric("Last Date:", f"{last_date}")
+            ck3.metric("# C Patches:", t_c_patches)
+            ck4.metric("# A Patches:", t_a_patches)
             
             # Cumulative spend over time
             st.write("priced")
@@ -1714,7 +1949,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             priced_plot = pd.concat([
                 priced.copy(),
                 pd.DataFrame({
-                    "OrderDate": [pd.Timestamp(today)],
+                    "OrderDate": [datetime.now().date()],
                     "PriceF": [0],
                     "PlayerName": [""],
                     "Team": [""]
@@ -1752,7 +1987,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
                 extrapolated = pd.concat([
                     extrapolated,
                     pd.DataFrame({
-                        "OrderDate": [pd.Timestamp(today)],
+                        "OrderDate": [datetime.now().date()],
                         "PriceF": [0],
                         "PriceF_Extrapolated": [0],
                         "CumulativeSpendExtrapolated": [sum_priced_extrapolated],
@@ -1782,7 +2017,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
 
                 # Actual trendline
                 if len(priced_sorted) > 1:
-                    x_actual = priced_sorted["OrderDate"].map(pd.Timestamp.toordinal).to_numpy().reshape(-1, 1)
+                    x_actual = priced_sorted["OrderDate"].map(lambda d: 1 + (d - datetime(1, 1, 1).date()).days).to_numpy().reshape(-1, 1)
                     y_actual = priced_sorted["CumulativeSpend"].to_numpy()
 
                     regr_actual = LinearRegression()
@@ -1816,7 +2051,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
 
                 # Extrapolated trendline
                 if len(extrapolated) > 1:
-                    x_ex = extrapolated["OrderDate"].map(pd.Timestamp.toordinal).to_numpy().reshape(-1, 1)
+                    x_ex = extrapolated["OrderDate"].map(lambda d: 1 + (d - datetime(1, 1, 1).date()).days).to_numpy().reshape(-1, 1)
                     y_ex = extrapolated["CumulativeSpendExtrapolated"].to_numpy()
 
                     regr_ex = LinearRegression()
@@ -1943,6 +2178,68 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             )
             fig_scatter.update_layout(**DARK_THEME, height=380)
             st.plotly_chart(fig_scatter, use_container_width=True)
+    
+        df_cost_per_day = active.copy()
+        df_cost_per_day["PriceF"] = df_cost_per_day["PriceF"].replace(-1, mean_priced)
+        df_cost_per_day["ToString"] = df_cost_per_day.apply(to_string, axis=1)
+        df_cost_per_day.sort_values("ID", inplace=True)
+        for c in ["Order", "Receive", "Open"]:
+            col = f"{c}Date"
+            c_name = f"DaysSince{c}"
+            df_cost_per_day[c_name] = df_cost_per_day[col].apply(lambda d: (today - d).days if not pd.isna(d) else 0)
+        
+        df_cost_per_day["DollarsPerDay"] = df_cost_per_day["PriceF"] / df_cost_per_day["DaysSinceOrder"]
+        df_cost_per_day["DollarsPerWeek"] = df_cost_per_day["DollarsPerDay"] * 7
+        df_cost_per_day["DollarsPerMonth"] = df_cost_per_day["DollarsPerDay"] * (365 / 12)
+        df_cost_per_day["DollarsPerDay_Tomorrow"] = df_cost_per_day["PriceF"] / (1 + df_cost_per_day["DaysSinceOrder"])
+        df_cost_per_day["DollarsPerDay_DayAftermorrow"] = df_cost_per_day["PriceF"] / (2 + df_cost_per_day["DaysSinceOrder"])
+        df_cost_per_day["DollarsPerDay_NextWeek"] = df_cost_per_day["PriceF"] / (7 + df_cost_per_day["DaysSinceOrder"])
+        df_cost_per_day["DollarsPerDay_NextMonth"] = df_cost_per_day["PriceF"] / ((365.2425 / 12) + df_cost_per_day["DaysSinceOrder"])
+        df_cost_per_day["DollarsPerDay_NextYear"] = df_cost_per_day["PriceF"] / (365.2425 + df_cost_per_day["DaysSinceOrder"])
+        
+        df_cpd = df_cost_per_day[[
+            "ID", "ToString",
+            "OrderDate", "ReceiveDate", "OpenDate", "PriceF",
+            "DaysSinceOrder", "DaysSinceReceive", "DaysSinceOpen",
+            "DollarsPerDay", "DollarsPerWeek", "DollarsPerMonth",
+            "DollarsPerDay_Tomorrow", "DollarsPerDay_DayAftermorrow",
+            "DollarsPerDay_NextWeek", "DollarsPerDay_NextMonth",
+            "DollarsPerDay_NextYear"
+        ]]
+        dpd_column_config = {
+            col: st.column_config.NumberColumn(label=f"DPD_{col.split('_')[-1]}", format="dollar", width="small") 
+            for col in [
+                "DollarsPerDay", "DollarsPerWeek", "DollarsPerMonth",
+                "DollarsPerDay_Tomorrow", "DollarsPerDay_DayAftermorrow",
+                "DollarsPerDay_NextWeek", "DollarsPerDay_NextMonth",
+                "DollarsPerDay_NextYear"
+            ]
+        }
+        df_cpd.sort_values("DollarsPerDay", ascending=False, inplace=True)
+        display_df(
+            df_cpd,
+            "df_cost_per_day",
+            column_config=dpd_column_config
+        )
+        df_cpd["Label"] = df_cpd["ToString"]
+        df_cpd["DPDRatingColor"] = df_cpd["DollarsPerDay"] // 5
+        fig_scatter = px.scatter(
+            df_cpd.dropna(subset=["DaysSinceOrder"]),
+            x="DaysSinceOrder", y="DollarsPerDay",
+            color="DPDRatingColor",
+            size="PriceF",
+            hover_name="Label",
+            hover_data=[
+                "OrderDate", "ReceiveDate", "OpenDate", "PriceF",
+                "DaysSinceOrder", "DaysSinceReceive", "DaysSinceOpen",
+                "DollarsPerDay", "DollarsPerWeek", "DollarsPerMonth"
+            ],
+            title="Jersey Dollars Per Day Over Time",
+            labels={"PriceF":"Price (CAD $)","DaysSinceOrder":"Days Since Order"},
+            trendline="expanding"
+        )
+        fig_scatter.update_layout(**DARK_THEME, height=380)
+        st.plotly_chart(fig_scatter, use_container_width=True)
 
 
 # ─────────────────────────────────────────────────────────
@@ -2369,10 +2666,6 @@ DARK_THEME = dict(
     xaxis=dict(gridcolor="#1e3a5a", linecolor="#1e3a5a"),
     yaxis=dict(gridcolor="#1e3a5a", linecolor="#1e3a5a"),
 )
-GOLD = "#c8a84b"
-ICE_BLUE = "#4ab3f4"
-RED = "#e74c3c"
-GREEN = "#2ecc71"
 
 
 def accuracy_bar(group_col, label, df_completed):
@@ -2514,6 +2807,289 @@ def compare_two_groups(df_completed, group_col, label):
         legend=dict(orientation="h", yanchor="bottom", y=1.02)
     )
     return fig
+
+
+# ---------------------------------------
+# Example assumptions
+# df_toar columns include:
+# TeamA, TeamB, Sweep, WasSwept
+#
+# TEAM_META contains:
+# {
+#   "ANA": {"name": "Anaheim Ducks", "logo": "path/or/url"},
+#   ...
+# }
+# ---------------------------------------
+
+
+def render_sweep_logo_table(
+    df_toar: pd.DataFrame,
+    team_meta: dict = TEAM_META,
+    sort: str | Sequence[str] = ("SweepCount", "SweptByCount", "TiedCount", "NetCount", "TeamName"),
+    ascending: bool | Sequence[bool] = (False, True, True, True),
+):
+    # Maps:
+    # swept_map[A] = teams that A swept
+    # swept_by_map[B] = teams that swept B
+    # tied_map[A] = teams that A tied in season series
+    swept_map = defaultdict(list)
+    swept_by_map = defaultdict(list)
+    tied_map = defaultdict(list)
+
+    for _, row in df_toar.iterrows():
+        a = row["TeamA"]
+        b = row["TeamB"]
+
+        if bool(row.get("Sweep", False)):
+            swept_map[a].append(b)
+            swept_by_map[b].append(a)
+
+        if bool(row.get("WasSwept", False)):
+            swept_map[b].append(a)
+            swept_by_map[a].append(b)
+
+        # Explicit tie flag preferred
+        is_tied = bool(row.get("Tied", False))
+
+        # Fallback inference if no explicit flag exists
+        if not is_tied:
+            w = row.get("W")
+            l = row.get("L")
+            gp = row.get("GP")
+            if pd.notna(w) and pd.notna(l) and pd.notna(gp):
+                # Common tied-season-series case
+                if int(gp) > 0 and int(w) == int(l):
+                    # Avoid classifying sweep rows as ties
+                    if not bool(row.get("Sweep", False)) and not bool(row.get("WasSwept", False)):
+                        is_tied = True
+
+        if is_tied:
+            tied_map[a].append(b)
+            tied_map[b].append(a)
+
+    teams = sorted(team_meta.keys())
+
+    rows = []
+    for team in teams:
+        swept = sorted(set(swept_map.get(team, [])))
+        swept_by = sorted(set(swept_by_map.get(team, [])))
+        tied = sorted(set(tied_map.get(team, [])))
+
+        rows.append({
+            "Team": team,
+            "TeamName": team_meta.get(team, {}).get("name", team),
+            "TeamLogo": fetch_team_logo(team),
+            "SweptTeams": swept,
+            "SweepCount": len(swept),
+            "SweptByTeams": swept_by,
+            "SweptByCount": len(swept_by),
+            "TiedTeams": tied,
+            "TiedCount": len(tied),
+            "NetSweepDiff": len(swept) - len(swept_by),
+        })
+
+    df_summary = pd.DataFrame(rows)
+
+    allowed_sort_cols = [
+        "SweepCount", "SweptByCount", "TiedCount",
+        "NetSweepDiff", "TeamName"
+    ]
+
+    # Normalize sort input
+    if isinstance(sort, str):
+        sort_order = [sort] if sort in allowed_sort_cols else ["SweepCount"]
+    else:
+        sort_order = [s for s in sort if s in allowed_sort_cols]
+        if not sort_order:
+            sort_order = ["SweepCount", "SweptByCount", "TiedCount", "TeamName"]
+
+    # Add stable fallback sorts if missing
+    for fallback in ["SweepCount", "SweptByCount", "TiedCount", "TeamName"]:
+        if fallback not in sort_order:
+            sort_order.append(fallback)
+
+    # Normalize ascending input
+    if isinstance(ascending, bool):
+        sort_asc = [ascending] * len(sort_order)
+    else:
+        asc_list = list(ascending)
+        default_dir = {
+            "SweepCount": False,
+            "SweptByCount": True,
+            "TiedCount": True,
+            "NetSweepDiff": False,
+            "TeamName": True
+        }
+        sort_asc = []
+        for i, col in enumerate(sort_order):
+            if i < len(asc_list):
+                sort_asc.append(bool(asc_list[i]))
+            else:
+                sort_asc.append(default_dir.get(col, True))
+
+    df_summary = df_summary.sort_values(
+        sort_order,
+        ascending=sort_asc,
+        kind="stable"
+    )
+
+    def build_logo_strip(team_list):
+        if not team_list:
+            return '<span class="no-items">None</span>'
+
+        return "".join(
+            f"""
+            <div class="opp-logo-wrap" title="{team_meta.get(opp, {}).get('name', opp)}">
+                <img class="opp-logo" src="{fetch_team_logo(opp)}" loading="lazy">
+            </div>
+            """
+            for opp in team_list
+        )
+
+    html = """
+    <html>
+    <style>
+    body {
+        margin: 0;
+        background: transparent;
+        color: white;
+        font-family: sans-serif;
+    }
+
+    .table-scroll {
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: visible;
+    }
+
+    .sweep-table {
+        min-width: 1850px;
+        width: 100%;
+        border-collapse: collapse;
+        color: white;
+        table-layout: auto;
+    }
+
+    .sweep-table th, .sweep-table td {
+        border-bottom: 1px solid #1f3b5c;
+        padding: 12px 10px;
+        vertical-align: middle;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .team-cell {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        white-space: nowrap;
+    }
+
+    .team-logo {
+        width: 34px;
+        height: 34px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .opp-strip {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+        align-items: center;
+        min-height: 50px;
+    }
+
+    .opp-logo-wrap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        flex: 0 0 auto;
+    }
+
+    .opp-logo {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+    }
+
+    .no-items {
+        opacity: 0.6;
+        font-style: italic;
+    }
+
+    th.count-col, td.count-col {
+        text-align: center;
+        width: 84px;
+    }
+
+    th.opp-col, td.opp-col {
+        min-width: 300px;
+    }
+
+    th.net-col, td.net-col {
+        text-align: center;
+        width: 100px;
+    }
+    </style>
+    <body>
+        <div class="table-scroll">
+            <table class="sweep-table">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th class="count-col">Sweeps</th>
+                        <th class="opp-col">Opponents</th>
+                        <th class="count-col">Swept By</th>
+                        <th class="opp-col">Opponents</th>
+                        <th class="count-col">Tied</th>
+                        <th class="opp-col">Opponents</th>
+                        <th class="net-col">Net</th>
+                    </tr>
+                </thead>
+                <tbody>
+    """
+
+    for _, row in df_summary.iterrows():
+        html += f"""
+        <tr>
+            <td>
+                <div class="team-cell">
+                    <img class="team-logo" src="{row['TeamLogo']}" loading="lazy">
+                    <span>{row['TeamName']}</span>
+                </div>
+            </td>
+            <td class="count-col">{row['SweepCount']}</td>
+            <td class="opp-col">
+                <div class="opp-strip">{build_logo_strip(row['SweptTeams'])}</div>
+            </td>
+            <td class="count-col">{row['SweptByCount']}</td>
+            <td class="opp-col">
+                <div class="opp-strip">{build_logo_strip(row['SweptByTeams'])}</div>
+            </td>
+            <td class="count-col">{row['TiedCount']}</td>
+            <td class="opp-col">
+                <div class="opp-strip">{build_logo_strip(row['TiedTeams'])}</div>
+            </td>
+            <td class="net-col">{row['NetSweepDiff']:+d}</td>
+        </tr>
+        """
+
+    html += """
+                </tbody>
+            </table>
+        </div>
+    </body>
+    </html>
+    """
+
+    table_height = min(3200, 90 + len(df_summary) * 64)
+    components.html(html, height=table_height, scrolling=True)
 
 
 # ─────────────────────────────────────────────────────────
@@ -3529,6 +4105,898 @@ Estimated via Monte-Carlo simulation (10 000 random season completions). Each re
         """)
 
 
+def normalize_record_key(val):
+    if isinstance(val, tuple):
+        return val
+    if isinstance(val, str):
+        s = val.strip().replace("(", "").replace(")", "").replace(" ", "")
+        if "," in s:
+            parts = tuple(int(x) for x in s.split(",") if x != "")
+        else:
+            parts = tuple(int(x) for x in s.split("-") if x != "")
+        return parts
+    return (0, 0, 0)
+
+
+def make_step_colorscale_from_record_map(record_colour_map):
+    """
+    Build a discrete/stepped Plotly colorscale from TEAM_RECORD_COLOUR_MAP.
+    Uses the integer rank 'i' for exact bucket coloring.
+    """
+    # only tuple keys, not the duplicated str keys
+    tuple_items = [(k, v) for k, v in record_colour_map.items() if isinstance(k, tuple)]
+    tuple_items = sorted(tuple_items, key=lambda kv: kv[1]["i"])
+
+    max_i = max(v["i"] for _, v in tuple_items)
+    if max_i == 0:
+        return [[0.0, "#707070"], [1.0, "#707070"]], max_i
+
+    colorscale = []
+    for rec, meta in tuple_items:
+        i = meta["i"]
+        color = meta["color"]
+
+        left = i / max_i
+        right = i / max_i
+
+        # make it stepped by duplicating edges
+        prev_edge = max(0.0, (i - 1) / max_i)
+        curr_edge = min(1.0, i / max_i)
+
+        colorscale.append([prev_edge, color])
+        colorscale.append([curr_edge, color])
+
+    # ensure exact zero bucket exists for (0,0,0)
+    if (0, 0, 0) in record_colour_map:
+        zero_color = record_colour_map[(0, 0, 0)]["color"]
+        colorscale.insert(0, [0.0, zero_color])
+
+    # sort for safety
+    colorscale = sorted(colorscale, key=lambda x: x[0])
+    return colorscale, max_i
+
+
+def build_team_order(df_records, team_meta, sort_mode, reverse=False):
+    active_teams = [t for t in team_meta if team_meta[t].get("active", True)]
+
+    if sort_mode == "Team":
+        return sorted(active_teams, reverse=reverse)
+
+    if sort_mode == "Conference":
+        return sorted(
+            active_teams,
+            key=lambda t: (
+                team_meta[t].get("conf", ""),
+                team_meta[t].get("name", ""),
+                t
+            ),
+            reverse=reverse
+        )
+
+    if sort_mode == "Division":
+        return sorted(
+            active_teams,
+            key=lambda t: (
+                team_meta[t].get("div", ""),
+                team_meta[t].get("conf", ""),
+                team_meta[t].get("name", ""),
+                t
+            ),
+            reverse=reverse
+        )
+
+    if sort_mode == "Best to Worst Record":
+        team_points = {t: 0 for t in active_teams}
+        team_games = {t: 0 for t in active_teams}
+
+        for _, r in df_records.iterrows():
+            away = r["AwayTeam"]
+            home = r["HomeTeam"]
+
+            if away in team_points:
+                team_points[away] += 2 * r.get("AwayWon", 0) + r.get("A_ETL", 0)
+                team_games[away] += r.get("GameID", 0)
+
+            if home in team_points:
+                team_points[home] += 2 * r.get("HomeWon", 0) + r.get("H_ETL", 0)
+                team_games[home] += r.get("GameID", 0)
+
+        return sorted(
+            active_teams,
+            key=lambda t: (
+                -(team_points[t] / max(team_games[t], 1)),
+                -team_points[t],
+                t
+            ),
+            reverse=reverse
+        )
+
+    return sorted(active_teams, reverse=reverse)
+
+
+def render_team_record_heatmap_fast(
+    df,
+    x_team_order,
+    y_team_order,
+    record_colour_map=TEAM_RECORD_COLOUR_MAP,
+    dark_theme=True,
+    impossible_color="#707070"
+):
+    dff = df.copy()
+
+    colorscale, max_i = make_step_colorscale_from_record_map(record_colour_map)
+
+    x_idx = {team: i for i, team in enumerate(x_team_order)}
+    y_idx = {team: i for i, team in enumerate(y_team_order)}
+
+    n_rows = len(y_team_order)
+    n_cols = len(x_team_order)
+
+    z = np.full((n_rows, n_cols), np.nan, dtype=float)
+    hover = np.full((n_rows, n_cols), "", dtype=object)
+    
+    res_df = pd.DataFrame(columns=["ID", "Scenario", "AwayTeam", "HomeTeam", "PCT", "PTS"])
+
+    # Fill valid matchup values
+    for idx, row in dff.iterrows():
+        away = row["AwayTeam"]
+        home = row["HomeTeam"]
+
+        if home not in x_idx or away not in y_idx:
+            continue
+
+        rec = normalize_record_key(row["Record"])
+        meta = record_colour_map.get(
+            rec,
+            record_colour_map.get(str(rec), record_colour_map[(0, 0, 0)])
+        )
+
+        i = y_idx[away]
+        j = x_idx[home]
+
+        z[i, j] = meta["i"]
+        scenario = f"{away} vs {home}"
+        hover[i, j] = (
+            f"{scenario}"
+            f"<br>Record: {rec}"
+            f"<br>Points %: {meta['pct']:.3f}"
+            f"<br>Score: {meta['score']}"
+        )
+        if away == home:
+            res_df.loc[idx] = [None for _ in res_df.columns]
+        else:
+            res_df.loc[idx] = [row["GameID"], scenario, away, home, meta["pct"], meta["score"]]
+
+    # Build impossible-cell mask
+    impossible_mask = np.full((n_rows, n_cols), np.nan, dtype=float)
+
+    for i, away in enumerate(y_team_order):
+        for j, home in enumerate(x_team_order):
+            if away == home:
+                impossible_mask[i, j] = 1
+                hover[i, j] = f"{away} vs {home}<br>Not Applicable"
+
+    fig = go.Figure()
+
+    # Base grey layer for impossible cells
+    fig.add_trace(
+        go.Heatmap(
+            z=impossible_mask,
+            x=x_team_order,
+            y=y_team_order,
+            colorscale=[
+                [0.0, impossible_color],
+                [1.0, impossible_color]
+            ],
+            showscale=False,
+            hoverinfo="skip",
+            xgap=1,
+            ygap=1
+        )
+    )
+
+    # Main record layer
+    fig.add_trace(
+        go.Heatmap(
+            z=z,
+            x=x_team_order,
+            y=y_team_order,
+            text=hover,
+            hovertemplate="%{text}<extra></extra>",
+            zmin=0,
+            zmax=max_i,
+            colorscale=colorscale,
+            showscale=False,
+            xgap=1,
+            ygap=1,
+            hoverongaps=False
+        )
+    )
+
+    fig.update_layout(
+        title="Team vs Team Record Heatmap",
+        height=900,
+        margin=dict(l=10, r=10, t=50, b=10),
+        plot_bgcolor="#000814" if dark_theme else "white",
+        paper_bgcolor="#000814" if dark_theme else "white",
+        font=dict(color="white" if dark_theme else "black"),
+        xaxis=dict(side="top"),
+        yaxis=dict(autorange="reversed")
+    )
+
+    return fig, res_df
+
+
+@st.cache_data
+def load_hockey_pool_data():
+    with open(path_hockey_pool_data, "r") as f:
+        data = json.load(f)
+    res = {}
+    for k, v in data.items():
+        res[k] = pd.DataFrame(v)
+    return res
+
+
+# def page_hockey_pool():
+#     dfs: dict[str, pd.DataFrame] = load_hockey_pool_data()
+#     for k, df in dfs.items():
+#         display_df(df, title=k)
+        
+#     df_people: pd.DataFrame = dfs["people"]
+#     df_pools: pd.DataFrame = dfs["pools"]
+        
+#     cols_pool_results = st.columns(len(df_pools))
+    
+#     lst_df_pool_e = []
+    
+#     for i, row in df_pools.iterrows():
+#         with cols_pool_results[i]:
+#             year = row["year"]
+#             fee = row["fee"]
+#             pct_prize = row["pctPrize"]
+#             standings = row["standings"]
+#             n_people = len(standings)
+#             total_fees = fee * pct_prize * n_people
+#             prizes = [total_fees * 0.5, total_fees * 0.35, total_fees * 0.15]
+            
+#             st.header(f"{year} playoffs")
+#             for i, people_id in enumerate(standings):
+#                 name = df_people[df_people["id"] == people_id].reset_index().loc[0, "name"]
+#                 winnings = prizes[i] if i < len(prizes) else 0
+#                 if winnings:
+#                     st.write(f"{i + 1} - prize: $ {winnings:,.2f} - {name}")
+#                 else:
+#                     st.write(f"{i + 1} - {name}")
+#                 lst_df_pool_e.append(pd.DataFrame([{
+#                     "year": year,
+#                     "fee": fee,
+#                     "pctPrize": pct_prize,
+#                     "totalPrizes": total_fees,
+#                     "nPlayers": n_people,
+#                     "place": i + 1,
+#                     "winnings": winnings,
+#                     "person": people_id
+#                 }]))
+               
+#     df_pools_e = pd.concat(lst_df_pool_e, ignore_index=True)
+#     display_df(df_pools_e, "df_pools_e")
+    
+#     df_people_e = df_people.copy()
+#     df_people_e["best"] = None
+#     df_people_e["worst"] = None
+#     df_people_e["sum"] = None
+#     df_people_e["inv"] = None
+#     df_people_e["mean"] = None
+#     df_people_e["lastYear"] = None
+#     df_people_e["totalPayed"] = 0
+#     df_people_e["timesPlayed"] = 0
+#     df_people_e["totalWinnings"] = 0
+#     for i, row in df_people.iterrows():
+#         people_id = row["id"]
+#         df_pools_person = df_pools_e[df_pools_e["person"] == people_id]
+#         df_people_e.loc[i, "best"] = df_pools_person["place"].min()
+#         df_people_e.loc[i, "worst"] = df_pools_person["place"].max()
+#         df_people_e.loc[i, "sum"] = df_pools_person["place"].sum()
+#         df_people_e.loc[i, "inv"] = df_pools_person["nPlayers"].sum() - df_pools_person["place"].sum()
+#         df_people_e.loc[i, "mean"] = df_pools_person["place"].mean()
+#         df_people_e.loc[i, "lastYear"] = df_pools_person["year"].max()
+#         df_people_e.loc[i, "totalPayed"] = df_pools_person["fee"].sum()
+#         df_people_e.loc[i, "timesPlayed"] = df_pools_person["place"].count()
+#         df_people_e.loc[i, "totalWinnings"] = df_pools_person["winnings"].sum()
+        
+#     df_people_e["totalEarnings"] = df_people_e["totalWinnings"] - df_people_e["totalPayed"]
+#     df_people_e["earningsPerYear"] = df_people_e["totalEarnings"] / df_people_e["timesPlayed"]
+#     df_people_e["score"] = df_people_e["inv"] + (df_people_e["totalEarnings"] / 10)
+#     # df_people_e.sort_values(["totalEarnings", "timesPlayed", "mean"], ascending=[False, False, True], inplace=True)
+#     df_people_e.sort_values(["score"], ascending=[False], inplace=True)
+#     display_df(df_people_e, "df_people_e")
+
+
+@st.cache_data
+def read_pool_sheet(path, debug=False):
+    search_text_start_picks = ["East Fwd 1 (pick 1)", "East - Forward 1 (pick 1)", "West - Forward 1 (pick 1)"]
+    found_start_picks = 0
+    # 4 boxes per row, 3 rows per conference, 6 text rows per box (+1 header & only 4 in the team boxes). => 6 * (6+1) = 42 lines of text in 24 boxes (4 team boxes only have 4 lines +1 header)
+    box_data = [
+        {
+            "name": None,
+            "row": i // 4,
+            "col": i % 4,
+            "picks": [],
+        }
+        for i in range(24)
+    ]
+    # line_by_line_data = []
+    with pdfplumber.open(path) as pdf:
+        for page in pdf.pages:
+            if debug:
+                st.write(f"Page #{page.page_number}")
+                # st.write(page.extract_text()[:15])
+                # st.write(page.extract_text())
+                st.write(page.find_table())
+            table = page.find_table()
+            if table:
+                for i, data in enumerate(table.extract()):
+                    if debug:
+                        st.write(f"{i=}")
+                        st.write(data)
+                    for j, txt in enumerate(data):
+                        if not found_start_picks:
+                            for stsp in search_text_start_picks:
+                                if stsp.lower() in str(txt).lower():
+                                    found_start_picks = 1
+                                    break
+                        if found_start_picks and txt:
+                            if debug:
+                                st.write(f"{j=}, {found_start_picks=}")
+                                st.write(txt)
+                                st.write("'__' in txt: {txt.split('__')=}")
+                            for k, txt_s in enumerate(txt.split("__")):
+                                if debug:
+                                    st.write(f"{k=}")
+                                    st.write(txt_s)
+                                if k == 0:
+                                    box_data[found_start_picks - 1]["name"] = txt_s.strip()
+                                else:
+                                    # row = found_start_picks // 4
+                                    # col = found_start_picks % 4
+                                    tss = txt_s.split(":")
+                                    ppg = tss[-1].strip()
+                                    tss_t = "".join(tss[:-1]).strip()
+                                    tss_ts = tss_t.split("(")
+                                    val = "".join(tss_ts[:-1]).strip()
+                                    team = tss_ts[-1].removesuffix(")").strip()
+                                    box_data[found_start_picks - 1]["picks"].append({"pick": val, "team": team, "ppg": ppg})
+                            found_start_picks += 1
+
+    if debug:
+        st.write("box_data")
+        st.write(box_data)
+    # box_data_2 = box_data.copy()
+    datas = []
+    for i, data in enumerate(box_data):
+        name, row, col = data["name"], data["row"], data["col"]
+        for j, pick in enumerate(data["picks"]):
+            p_data = pick.copy()
+            p_data.update(dict(name=name, row=row, col=col, box=i, pos=j))
+            datas.append(p_data)
+    
+    df_sheet = pd.DataFrame(datas)
+    if debug:
+        st.write("datas")
+        st.write(datas)
+        display_df(df_sheet, "df_sheet")
+    
+    if not df_sheet.empty:
+        df_sheet["conf"] = df_sheet["name"].apply(lambda n: "E" if set({"east", "atlantic", "metro", "metropolitan"}).intersection(set(n.lower().split(" "))) else "W")
+        df_sheet["type"] = df_sheet["name"].apply(lambda n: "D" if "def" in n.lower() else ("T" if "seed" in n.lower() else "F"))
+    if debug:
+        display_df(df_sheet, "df_sheet")
+    return df_sheet
+
+
+def show_sheet(path: str, year: int, final: bool=True, style: Literal["radio", "selectbox", "counts", "results_best", "results_worst", "input"] = "radio"):
+    
+    if style in ["counts", "results_best", "results_worst"]:
+        st.error(f"{style=} not supported yet")
+        return
+    
+    radios: bool = style == "radio"
+    num_type: bool = style in ["counts", "results_best", "results_worst", "input"]
+    
+    with st.container(border=True):
+        df_sheet = read_pool_sheet(path)
+        n_cols = 4
+        n_boxes = df_sheet["box"].max() + 1
+        selectboxes = []
+        box_nums = {}
+        
+        def sb_key(i):
+            return f"key_selectbox_poolbox_{i}"
+        
+        def sbi_key(i, j):
+            return f"{sb_key(i)}_{j}"
+        
+        def name_fmt(pick_name, team, ppg):
+            return f"{pick_name} ({team}): {ppg}"
+        
+        def sb_options(i):
+            df_box = df_sheet[df_sheet["box"] == i].reset_index()
+            return [""] + df_box.apply(lambda r: name_fmt(r["pick"], r["team"], r["ppg"]), axis=1).values.tolist()
+        
+        cols_menu = st.columns([0.15, 0.85])
+        
+        with cols_menu[0]:
+            if st.button("Clear", key="key_poolsheet_btn_clear"):
+                for i in range(n_boxes):
+                    st.session_state.update({sb_key(i): None})
+            if st.button("Clear East", key="key_poolsheet_btn_clear_east"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["conf"] == "E") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): None})
+            if st.button("Clear West", key="key_poolsheet_btn_clear_west"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["conf"] == "W") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): None})
+            if st.button("Clear Forwards", key="key_poolsheet_btn_clear_forwards"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["type"] == "F") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): None})
+            if st.button("Clear Defence", key="key_poolsheet_btn_clear_defence"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["type"] == "D") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): None})
+            if st.button("Clear Teams", key="key_poolsheet_btn_clear_teams"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["type"] == "T") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): None})
+            if st.button("Randomize", key="key_poolsheet_btn_randomize"):
+                for i in range(n_boxes):
+                    st.session_state.update({sb_key(i): random.choice(sb_options(i)[1:])})
+            if st.button("Randomize East", key="key_poolsheet_btn_randomize_east"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["conf"] == "E") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): random.choice(sb_options(i)[1:])})
+            if st.button("Randomize West", key="key_poolsheet_btn_randomize_west"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["conf"] == "W") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): random.choice(sb_options(i)[1:])})
+            if st.button("Randomize Forwards", key="key_poolsheet_btn_randomize_forwards"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["type"] == "F") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): random.choice(sb_options(i)[1:])})
+            if st.button("Randomize Defence", key="key_poolsheet_btn_randomize_defence"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["type"] == "D") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): random.choice(sb_options(i)[1:])})
+            if st.button("Randomize Teams", key="key_poolsheet_btn_randomize_teams"):
+                for i in range(n_boxes):
+                    df_box = df_sheet[(df_sheet["type"] == "T") & (df_sheet["box"] == i)]
+                    if not df_box.empty:
+                        st.session_state.update({sb_key(i): random.choice(sb_options(i)[1:])})
+            if st.button("Fill Remaining", key="key_poolsheet_btn_fill_remaining"):
+                for i in range(n_boxes):
+                    key = sb_key(i)
+                    if not bool(st.session_state.get(key)):
+                        st.session_state.update({key: random.choice(sb_options(i)[1:])})
+            if st.button("Top PPG", key="key_poolsheet_btn_top_ppg"):
+                for i in range(n_boxes):
+                    key = sb_key(i)
+                    df_box = df_sheet[df_sheet["box"] == i].reset_index()
+                    df_box = df_box[~pd.isna(df_box["pick"])].sort_values("ppg", ascending=False)
+                    pick, team, ppg = df_box.iloc[0][["pick", "team", "ppg"]].values
+                    st.session_state.update({key: name_fmt(pick, team, ppg)})
+            if st.button("Top PPG of Selected Teams", key="key_poolsheet_btn_top_ppg_sel_teams"):
+                sel_box_nums = df_sheet[df_sheet["type"] == "T"]["box"].unique().tolist()
+                sel_teams = [st.session_state.get(sb_key(i), "") for i in sel_box_nums]
+                sel_teams = ["".join(("".join(s.split("(")[1]).split(":")[0]).removesuffix(")").lower() if s else "") for s in sel_teams]
+                if not all(sel_teams):
+                    st.warning(f"Choose a team from the 4 team selector boxes below, then hit save")
+                # st.write("sel_box_nums")
+                # st.write(sel_box_nums)
+                # st.write("sel_teams")
+                # st.write(sel_teams)                
+                for i in range(n_boxes):
+                    if i not in sel_box_nums:
+                        key = sb_key(i)
+                        df_box = df_sheet[df_sheet["box"] == i].reset_index()
+                        df_box["sel_team"] = df_box["team"].apply(lambda t: 1 if t.lower() in sel_teams else 0)
+                        df_box = df_box[~pd.isna(df_box["pick"])].sort_values(["sel_team", "ppg"], ascending=[False, False])
+                        # display_df(df_box, f"df_box_{i=}")
+                        pick, team, ppg = df_box.iloc[0][["pick", "team", "ppg"]].values
+                        st.session_state.update({key: name_fmt(pick, team, ppg)})
+            if style == "input":
+                st.divider()            
+                # if st.button("output", key="key_output_poolsheet", disabled=all(selectboxes)):
+                if st.button("output", key="key_output_poolsheet"):
+                    now = datetime.now()
+                    f_name = f"poolsheet_{year}_{now:%Y%m%d%H%M%S}.json"
+                    data = {"date": now}
+                    # data.update({i: sb for i, sb in enumerate(selectboxes)})
+                    data.update({i: [st.session_state.get(sbi_key(i, j)) for j, opt in enumerate(sb_options(i)[1:])] for i in range(n_boxes)})
+                    data = jsonify(data, in_line=False)
+                    st.write("data")
+                    st.json(data)
+                    with open(f_name, "w") as f:
+                        json.dump(data, f)
+        
+        with cols_menu[1]:
+            with st.form(border=False, key="key_poolsheet_form"):
+                with st.container():
+                    st.header(f"{year} Playoffs:")
+                    st.caption("Final: " + (":white_check_mark:" if final else ":x:"))
+                grid_conts = [st.container(horizontal=True) for i in range(n_boxes // n_cols)]
+                for i in range(n_boxes):
+                    df_box = df_sheet[df_sheet["box"] == i].reset_index()
+                    name = df_box.loc[0, "name"]
+                    options = sb_options(i)
+                    key = sb_key(i)
+                    with grid_conts[i // n_cols]:
+                        with st.container(border=True):
+                            valid = bool(st.session_state.get(key))
+                            valid_lbl = ":white_check_mark:" if valid else ":x:"
+                            if radios:
+                                options = options[1:]
+                                selectboxes.append(st.radio(label=f"{name} {valid_lbl}", options=options, key=key, index=None))
+                            else:
+                                if num_type:
+                                    box_nums[i] = []
+                                    for j, opt in enumerate(options[1:]):
+                                        val = 0
+                                        disabled = False
+                                        box_nums[i].append(st.number_input(
+                                            label=opt,
+                                            min_value=0,
+                                            max_value=50,
+                                            value=val,
+                                            disabled=disabled,
+                                            key=sbi_key(i, j)
+                                        ))
+                                else:
+                                    selectboxes.append(st.selectbox(label=f"{name} {valid_lbl}", options=options, key=key))
+                        
+                        
+                st.write("box_nums")
+                st.write(box_nums)
+                if st.form_submit_button("submit", key="key_poolsheet_submit"):
+                    valid = all(selectboxes)
+                    st.write(f"Valid={valid}")
+                                    
+                # display_df(df_sheet)
+    
+
+def page_hockey_pool_test():
+    sheet_paths = [[2023, "C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Hockey pool\\2023\\boxpool-BWSPool2023 (2).pdf"]]
+    st.write("sheet_paths")
+    st.write(sheet_paths)
+    df_combined = []
+    for year, path in sheet_paths:
+        df = read_pool_sheet(path, debug=year==2023)
+        display_df(df, f"df_{year}")
+        if not df.empty:
+            df["year"] = year
+            df_combined.append(df)
+    
+    df_combined = pd.concat(df_combined)
+    display_df(df_combined, f"Combined")
+            
+    show_sheet(sheet_paths[0][1], 2023)
+    
+    
+def page_hockey_pool():
+    dfs: dict[str, pd.DataFrame] = load_hockey_pool_data()
+    for k, df in dfs.items():
+        display_df(df, title=k, show_shape="separate", border=True)
+        
+    df_people: pd.DataFrame = dfs["people"]
+    df_pools: pd.DataFrame = dfs["pools"]
+    df_years: pd.DataFrame = dfs["years"]
+    
+    
+    sheet_paths = df_pools.groupby(["picksheet", "year", "final"]).agg("min").index.to_list()
+    count_paths = df_pools.groupby(["pickCounts", "year", "final"]).agg("min").index.to_list()
+    st.write("sheet_paths")
+    st.write(sheet_paths)
+    df_combined = []
+    for path, year, final in sheet_paths:
+        df = read_pool_sheet(path)
+        # display_df(df, f"df_{year}")
+        if not df.empty:
+            df["year"] = year
+            df_combined.append(df)
+    
+    df_combined = pd.concat(df_combined)
+    display_df(df_combined, f"Combined")
+    
+    radio_pool_sheet_year = st.radio(
+        label="Select a Pool Year:",
+        options=df_years["year"].unique().tolist(),
+        key="key_radio_pool_sheet_year",
+        index=len(df_years["year"].unique()) - 1,
+        horizontal=True
+    )
+    radio_pool_sheet_style = st.radio(
+        label="Select a Pool Sheet Style:",
+        options=["radio", "selectbox", "counts", "results_best", "results_worst", "input"],
+        key="key_radio_pool_sheet_style",
+        index=0,
+        horizontal=True        
+    )
+    # st.write(*[sp for sp in sheet_paths if sp[1] == radio_pool_sheet_year][0])
+    show_sheet(*[sp for sp in sheet_paths if sp[1] == radio_pool_sheet_year][0], style=radio_pool_sheet_style)
+    
+    
+    hp_html = """
+        <iframe marginheight="0" marginwidth="0"
+            style="border: none;" frameborder="0"
+            src="https://www.officepools.com/nhl/classic/auth/2025/playoff/MMPlayoffs2026/hockey"
+            width="500" 
+            height="500"
+        ></iframe>
+    """
+    
+    st.markdown(hp_html, unsafe_allow_html=True)
+    
+    
+    
+    
+    df_people["norm"] = df_people["name"].apply(lambda n: no_specials(n, strict=True))
+        
+    cols_pool_results = st.columns(len(df_pools))
+    
+    lst_df_pool_e = []
+    
+    for i, row in df_pools.iterrows():
+        with cols_pool_results[i]:
+            year = row["year"]
+            fee = row["fee"]
+            pct_prize = row["pctPrize"]
+            standings = row["standings"]
+            final = row["final"]
+            n_people = len(standings)
+            total_fees = fee * pct_prize * n_people
+            prizes = [total_fees * 0.5, total_fees * 0.35, total_fees * 0.15]
+            
+            st.header(f"{year} playoffs - {'FINAL' if final else 'ONGOING'}")
+            for i, people_id in enumerate(standings):
+                df_pool_people = df_people[df_people["id"] == people_id].reset_index()
+                name = df_pool_people.loc[0, "name"]
+                alias = df_pool_people.iloc[0].get("alias")
+                if " " in name.strip():
+                    name_a = name.split(" ")
+                    name_a = f"{name_a[0].title()} {name_a[1][0].upper()}"
+                else:
+                    name_a = name
+                alias = name_a if pd.isna(alias) else alias
+                winnings = prizes[i] if i < len(prizes) else 0
+                winnings = winnings if final else 0
+                if winnings:
+                    st.write(f"{i + 1} - prize: $ {winnings:,.2f} - {alias}")
+                else:
+                    st.write(f"{i + 1} - {alias}")
+                norm = no_specials(name, strict=True)
+                lst_df_pool_e.append(pd.DataFrame([{
+                    "year": year,
+                    "fee": fee,
+                    "pctPrize": pct_prize,
+                    "totalPrizes": total_fees,
+                    "nPlayers": n_people,
+                    "place": i + 1,
+                    "winnings": winnings,
+                    "person": people_id,
+                    "norm": norm
+                }]))
+               
+    df_pools_e = pd.concat(lst_df_pool_e, ignore_index=True)
+    display_df(df_pools_e, "df_pools_e")
+    
+    df_people_e = df_people.copy()
+    df_people_e["best"] = None
+    df_people_e["worst"] = None
+    df_people_e["sum"] = None
+    df_people_e["inv"] = None
+    df_people_e["mean"] = None
+    df_people_e["lastYear"] = None
+    df_people_e["totalPayed"] = 0
+    df_people_e["timesPlayed"] = 0
+    df_people_e["totalWinnings"] = 0
+    for i, row in df_people.iterrows():
+        # people_id = row["id"]
+        # df_pools_person = df_pools_e[df_pools_e["person"] == people_id]
+        people_norm = row["norm"]
+        df_pools_person = df_pools_e[df_pools_e["norm"] == people_norm]
+        df_people_e.loc[i, "best"] = df_pools_person["place"].min()
+        df_people_e.loc[i, "worst"] = df_pools_person["place"].max()
+        df_people_e.loc[i, "sum"] = df_pools_person["place"].sum()
+        df_people_e.loc[i, "inv"] = df_pools_person["nPlayers"].sum() - df_pools_person["place"].sum()
+        df_people_e.loc[i, "mean"] = df_pools_person["place"].mean()
+        df_people_e.loc[i, "lastYear"] = df_pools_person["year"].max()
+        df_people_e.loc[i, "totalPayed"] = df_pools_person["fee"].sum()
+        df_people_e.loc[i, "timesPlayed"] = df_pools_person["place"].count()
+        df_people_e.loc[i, "totalWinnings"] = df_pools_person["winnings"].sum()
+        
+    df_people_e["totalEarnings"] = df_people_e["totalWinnings"] - df_people_e["totalPayed"]
+    df_people_e["earningsPerYear"] = df_people_e["totalEarnings"] / df_people_e["timesPlayed"]
+    df_people_e["score"] = df_people_e["inv"] + (df_people_e["totalEarnings"] / 10)
+    
+    df_people_e["placementPct"] = 1 - ((df_people_e["mean"] - 1) / (df_people_e["timesPlayed"].replace(0, 1)))
+    df_people_e["roi"] = df_people_e["totalWinnings"] / df_people_e["totalPayed"].replace(0, 1)
+
+    # Final score (balanced)
+    df_people_e["score"] = (
+        df_people_e["placementPct"] * 0.6 +
+        np.log1p(df_people_e["roi"]) * 0.4
+    )
+    
+    total_players = df_people["id"].nunique()
+    total_entries = len(df_pools_e)
+    total_fees = df_pools_e["fee"].sum()
+    total_winnings = df_pools_e["winnings"].sum()
+
+    df_p_ret = df_pools_e.copy()
+    df_p_ret["currID"] = df_p_ret["person"]
+    display_df(df_p_ret, "df_p_ret A")
+    df_p_ret["person"] = df_p_ret["person"].apply(lambda id_: no_specials(df_people[df_people["id"] == id_].reset_index().loc[0, "name"], strict=True).lower())
+    display_df(df_people, "df_people")
+    display_df(df_p_ret, "df_p_ret B")
+    # df_p_ret["maxID"] = df_p_ret["person"].apply(lambda id_: df_people[df_people["id"] == id_, "id"].sort_values("id", ascending=False).reset_index().loc[0, "id"])
+    df_p_ret["maxID"] = df_p_ret["person"].apply(lambda p: df_people[df_people["norm"].str.lower() == p.lower()]["id"].idxmax())
+    # retention_rate = df_pools_e.groupby("person")["year"].nunique().mean() / df_pools["year"].nunique()
+    display_df(df_p_ret, "df_p_ret FINAL")
+    retention_rate = df_p_ret.groupby("person")["year"].nunique().mean() / df_pools["year"].nunique()
+    
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    col1.metric("Unique Players", total_players)
+    col2.metric("Total Entries", total_entries)
+    col3.metric("Total Fees Collected", f"${total_fees:,.2f}")
+    col4.metric("Total Winnings Paid", f"${total_winnings:,.2f}")
+
+    st.metric("Avg Retention Rate", f"{retention_rate:.2%}")
+    
+    best_player = df_people_e.sort_values("score", ascending=False).iloc[0]
+    worst_player = df_people_e.sort_values("score", ascending=True).iloc[0]
+
+    st.subheader("🏆 Best Performer")
+    st.write(best_player[["name", "score", "totalEarnings", "mean"]])
+
+    st.subheader("💀 Worst Performer")
+    st.write(worst_player[["name", "score", "totalEarnings", "mean"]])
+    
+    df_prize_dist = df_pools_e[df_pools_e["winnings"] > 0]
+
+    fig = px.pie(
+        df_prize_dist,
+        names="place",
+        values="winnings",
+        title="Prize Distribution by Placement"
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+    
+    df_top = df_people_e.sort_values("totalWinnings", ascending=False).head(15)
+
+    fig_bar_winnings = px.bar(
+        df_top,
+        x="name",
+        y="totalWinnings",
+        title="Top Earners",
+        text_auto=True
+    )
+
+    # st.plotly_chart(fig, use_container_width=True)
+    
+    fig_roi = px.bar(
+        df_top,
+        x="name",
+        y="roi",
+        title="ROI by Player"
+    )
+
+    # st.plotly_chart(fig, use_container_width=True)
+    
+    fig_scatter = px.scatter(
+        df_people_e,
+        x="placementPct",
+        y="totalEarnings",
+        size="timesPlayed",
+        hover_name="name",
+        title="Skill vs Profit (Bubble Size = Participation)"
+    )
+
+    # st.plotly_chart(fig, use_container_width=True)
+    
+    fig_hist = px.histogram(
+        df_pools_e,
+        x="place",
+        nbins=20,
+        title="Distribution of Placements"
+    )
+
+    # st.plotly_chart(fig, use_container_width=True)
+    
+    df_retention = df_pools_e.groupby("year")["person"].nunique().reset_index()
+
+    fig_retention = px.line(
+        df_retention,
+        x="year",
+        y="person",
+        title="Players Per Year"
+    )
+
+    # st.plotly_chart(fig, use_container_width=True)
+    
+    df_people_e["wins"] = df_pools_e[df_pools_e["place"] == 1].groupby("person").size()
+    df_people_e["wins"] = df_people_e["wins"].fillna(0)
+
+    df_people_e["winRate"] = df_people_e["wins"] / df_people_e["timesPlayed"]
+    
+    df_people_e["podiums"] = df_pools_e[df_pools_e["place"] <= 3].groupby("person").size()
+    df_people_e["podiums"] = df_people_e["podiums"].fillna(0)
+
+    df_people_e["podiumRate"] = df_people_e["podiums"] / df_people_e["timesPlayed"]
+    
+    st.title("🏒 Hockey Pool Analytics Dashboard")
+    
+    # df_people_e.sort_values(["totalEarnings", "timesPlayed", "mean"], ascending=[False, False, True], inplace=True)
+    df_people_e.sort_values(["score"], ascending=[False], inplace=True)
+    display_df(df_people_e, "df_people_e")
+
+    # KPIs
+    # (metrics row)
+
+    # Row 1
+    col1, col2 = st.columns(2)
+    with col1:
+        st.plotly_chart(fig_bar_winnings)
+    with col2:
+        st.plotly_chart(fig_roi)
+
+    # Row 2
+    col1, col2 = st.columns(2)
+    with col1:
+        st.plotly_chart(fig_scatter)
+    with col2:
+        st.plotly_chart(fig_hist)
+
+    # Row 3
+    st.plotly_chart(fig_retention)
+    
+    curr_year = int(df_years["year"].max())
+    last_year = int(df_years["year"].values.tolist()[-2])
+    
+    df_current = df_people_e[df_people_e["lastYear"] == curr_year]
+    df_core = df_people_e[df_people_e["timesPlayed"] == len(df_years)]
+    df_sub_core = df_people_e[df_people_e["timesPlayed"] == (len(df_years) - 1)]
+    df_core_twice = df_people_e[df_people_e["timesPlayed"] == 2]
+    df_core_once = df_people_e[df_people_e["timesPlayed"] == 1]
+    df_new = df_current.loc[df_current.index.intersection(df_core_once.index)]
+    df_recent_exits = df_people_e[df_people_e["lastYear"] == last_year]
+    # df_recent_exits = df_recent_exits.loc[~df_current.index.intersection(df_recent_exits.index)]
+    
+    for df, title in [
+        (df_current, f"This year's pool players for {curr_year} playoffs"),
+        (df_new, f"New pool players for {curr_year} playoffs"),
+        (df_recent_exits, f"Players that did not return from {last_year} playoffs"),
+        (df_core, f"Core pool players for {len(df_years)} seasons"),
+        (df_sub_core, f"Core pool players for all but 1 season"),
+        (df_core_twice, f"Players who have played two seasons only"),
+        (df_core_once, f"Players who have played only one season")
+    ]:
+        display_df(df, title, show_shape="below", border=True)
+        
+
+
 # ─────────────────────────────────────────────────────────
 # MAIN APP
 # ─────────────────────────────────────────────────────────
@@ -3555,6 +5023,7 @@ def main():
             "🧥 Jersey Collection",
             "Stanley Cup",
             "Explore API",
+            "Hockey Pool",
         ], label_visibility="collapsed")
         st.markdown("---")
         st.caption(f"📂 `{path_excel_predictions.split(chr(92))[-1]}`")
@@ -3574,58 +5043,60 @@ def main():
     # Load data
     # try:
     df = load_data(path_excel_predictions)
-    # except FileNotFoundError:
-        # st.error(f"❌ Workbook not found:\n\n`{path_excel_predictions}`\n\nCheck the path at the top of the script.")
-        # return
-    # except Exception as e:
-        # st.error(f"❌ Could not load workbook: {e}")
-        # return
+    # # except FileNotFoundError:
+    #     # st.error(f"❌ Workbook not found:\n\n`{path_excel_predictions}`\n\nCheck the path at the top of the script.")
+    #     # return
+    # # except Exception as e:
+    #     # st.error(f"❌ Could not load workbook: {e}")
+    #     # return
     
-    display_df(df)
-    df_cad_games_1_team = df[
-        (
-            (df["HomeTeam"].isin(CANADIAN_TEAMS))
-            & (~df["AwayTeam"].isin(CANADIAN_TEAMS))
-        )
-        | (
-            (df["AwayTeam"].isin(CANADIAN_TEAMS))
-            & (~df["HomeTeam"].isin(CANADIAN_TEAMS))
-        )
-    ]
-    df_cad_games_2_team = df[
-        (
-            (df["HomeTeam"].isin(CANADIAN_TEAMS))
-            & (df["AwayTeam"].isin(CANADIAN_TEAMS))
-        )
-    ]
-    df_cad_games_either_team = df[
-        (
-            (df["HomeTeam"].isin(CANADIAN_TEAMS))
-            | (df["AwayTeam"].isin(CANADIAN_TEAMS))
-        )
-    ]
-    display_df(
-        df_cad_games_1_team,
-        "df_cad_games_1_team"
-    )
-    display_df(
-        df_cad_games_2_team,
-        "df_cad_games_2_team"
-    )
-    display_df(
-        df_cad_games_either_team,
-        "df_cad_games_either_team"
-    )
-    df_grouped = df_cad_games_1_team.groupby(
-        by=["GameDate"]
-    ).agg("count")
-    df_grouped = df_grouped[df_grouped["PredictionDate"] >= 6]
-    display_df(
-        df_grouped
-    )
+    # # DataFrames to show days canadian teams play, and when all have a chance of winning.
+    # display_df(df)
+    # df_cad_games_1_team = df[
+    #     (
+    #         (df["HomeTeam"].isin(CANADIAN_TEAMS))
+    #         & (~df["AwayTeam"].isin(CANADIAN_TEAMS))
+    #     )
+    #     | (
+    #         (df["AwayTeam"].isin(CANADIAN_TEAMS))
+    #         & (~df["HomeTeam"].isin(CANADIAN_TEAMS))
+    #     )
+    # ]
+    # df_cad_games_2_team = df[
+    #     (
+    #         (df["HomeTeam"].isin(CANADIAN_TEAMS))
+    #         & (df["AwayTeam"].isin(CANADIAN_TEAMS))
+    #     )
+    # ]
+    # df_cad_games_either_team = df[
+    #     (
+    #         (df["HomeTeam"].isin(CANADIAN_TEAMS))
+    #         | (df["AwayTeam"].isin(CANADIAN_TEAMS))
+    #     )
+    # ]
+    # display_df(
+    #     df_cad_games_1_team,
+    #     "df_cad_games_1_team"
+    # )
+    # display_df(
+    #     df_cad_games_2_team,
+    #     "df_cad_games_2_team"
+    # )
+    # display_df(
+    #     df_cad_games_either_team,
+    #     "df_cad_games_either_team"
+    # )
+    # df_grouped = df_cad_games_1_team.groupby(
+    #     by=["GameDate"]
+    # ).agg("count")
+    # df_grouped = df_grouped[df_grouped["PredictionDate"] >= 6]
+    # display_df(
+    #     df_grouped
+    # )
 
     completed = df[df["GameIsOver"] == True].copy()
     future    = df[df["GameIsOver"] == False].copy()
+    teams     = sorted(list(set(completed["AwayTeam"].dropna().unique().tolist() + completed["HomeTeam"].dropna().unique().tolist() + future["AwayTeam"].dropna().unique().tolist() + future["HomeTeam"].dropna().unique().tolist())))
 
     total      = len(completed)
     n_correct  = completed["CorrectWinnerPrediction"].sum()
@@ -4162,6 +5633,428 @@ def main():
 
         fig_b2b, _ = accuracy_bar("Situation", "Back-to-Back Situation", b2b_df)
         st.plotly_chart(fig_b2b, use_container_width=True)
+        
+        teams = df["AwayTeam"].dropna().unique().tolist()
+        df_w = completed.copy()
+        df_w["Teams"] = df_w.apply(lambda row: [row["AwayTeam"], row["HomeTeam"]], axis=1)
+        df_w["HasExtraTime"] = df_w["ActualResult"].apply(lambda ar: ar in ["OT", "SO"])
+        df_w = df_w[[
+            "GameID",
+            "Teams",
+            "AwayTeam",
+            "HomeTeam",
+            "AwayWon",
+            "HomeWon_",
+            "HasExtraTime"
+        ]]
+        df_w.rename(
+            columns={
+                "HomeWon_": "HomeWon"
+            },
+            inplace=True
+        )
+        
+        df_w["A_ETL"] = df_w.apply(lambda r: r["HomeWon"] and r["HasExtraTime"], axis=1)
+        df_w["H_ETL"] = df_w.apply(lambda r: r["AwayWon"] and r["HasExtraTime"], axis=1)
+        
+        if st.toggle("Filter using test games?", value=False):
+            # df_w = df_w[df_w["Teams"] == "CHI"]
+            
+            # def validate_matchups(*args):
+            #     st.write(f"validate_matchups {args=}")
+            #     df = de_matchups.copy()
+            #     display_df(df, "a")
+            #     df = st.session_state.get(k_df_matchups, pd.DataFrame()).copy()
+            #     display_df(df, "b")
+            #     de_data = st.session_state.get(k_stde_matchups, {})
+            #     display_df(de_data, "c")
+                
+            #     edited_rows = de_data.get("edited_rows", {})
+            #     added_rows = de_data.get("added_rows", [])
+            #     deleted_rows = de_data.get("deleted_rows", [])
+                
+            #     team_count = {}
+            #     for i, row in enumerate(added_rows):
+            #         team1 = row.get("Team1")
+            #         team2 = row.get("Team2")
+            #         if team1 is not None:
+            #             team_count.setdefault(team1, 0)
+            #         if team2 is not None:
+            #             team_count.setdefault(team2, 0)
+            #         if (team1 is None) and (team2 is None):
+            #             # bad
+            #         elif team1 == team2:
+            #             # bad
+                    
+            #         team_count[team1] += 1
+            #         team_count[team2] += 1
+            #         if team_count1[team1] > 1:             
+            
+            radio_and_or = st.radio("And / Or", options=["And", "Or"], index=1)
+            
+            k_df_matchups = "key_df_matchups"
+            k_stde_matchups = "key_stde_matchups"
+            df_matchups: pd.DataFrame = st.session_state.setdefault(
+                k_df_matchups,
+                pd.DataFrame({
+                    "Team1": ["ANA", "ANA", "ANA", "ANA", "ANA", "NJD"],
+                    "Team2": ["CGY", "UTA", "EDM", "LAK", "NSH", "MTL"]
+                }))
+            de_matchups = st.data_editor(
+                df_matchups,
+                column_config = {
+                    "Team1": st.column_config.SelectboxColumn(
+                        "Team1",
+                        options=teams
+                    ),
+                    "Team2": st.column_config.SelectboxColumn(
+                        "Team2",
+                        options=teams
+                    )
+                },
+                # on_change=validate_matchups,
+                key=k_stde_matchups,
+                num_rows="dynamic"
+            )
+            
+            de_data = st.session_state.get(k_stde_matchups, {})
+            
+            # st.write("df_matchups")
+            # st.write(df_matchups)
+            # st.write("de_data")
+            # st.write(de_data)
+            dfc: pd.DataFrame = consolidate_df_edits(df_matchups, de_data)
+            st.write("dfc")
+            st.write(dfc)
+            if not dfc.empty:
+                filter_idxs = []
+                for i, row in dfc.iterrows():
+                    team1 = row.get("Team1")
+                    team2 = row.get("Team2")
+                    # st.write(f"{team1=}, {team2=}")
+                    if pd.isna(team1):
+                        team1 = team2 if not pd.isna(team2) else None
+                        team2 = None
+                    st.write(f"{team1=}, {team2=}")
+                    if (not pd.isna(team1)) and pd.isna(team2):
+                        # all matchups for this team
+                        for j, team in enumerate(teams):
+                            df_ww = df_w[
+                                ((df_w["AwayTeam"] == team1) & (df_w["HomeTeam"] == team))
+                                | ((df_w["AwayTeam"] == team) & (df_w["HomeTeam"] == team1))
+                            ]
+                            filter_idxs += df_ww.index.tolist()
+                            
+                    else:
+                        # matchups between the two teams
+                        df_ww = df_w[
+                            ((df_w["AwayTeam"] == team1) & (df_w["HomeTeam"] == team2))
+                            | ((df_w["AwayTeam"] == team2) & (df_w["HomeTeam"] == team1))
+                        ]
+                        window = df_ww.index.tolist()
+                        if radio_and_or == "Or":
+                            # st.write(f"window")
+                            # st.write(window)
+                            filter_idxs += window
+                        else:
+                            if not filter_idxs:
+                                filter_idxs += window
+                            else:
+                                window = window
+                                filter_idxs = list(set(filter_idxs).intersection(set(window)))
+                df_w = df_w.loc[filter_idxs]
+                
+            st.write("filter_idxs")
+            st.write(filter_idxs)
+            
+            # df_w = df_w[
+            #     (
+            #         (
+            #             (df_w["AwayTeam"] == "CGY")
+            #             & (df_w["HomeTeam"] == "ANA")
+            #         ) | (
+            #             (df_w["AwayTeam"] == "ANA")
+            #             & (df_w["HomeTeam"] == "CGY")
+            #         )
+            #     ) |
+            #     (
+            #         (
+            #             (df_w["AwayTeam"] == "UTA")
+            #             & (df_w["HomeTeam"] == "ANA")
+            #         ) | (
+            #             (df_w["AwayTeam"] == "ANA")
+            #             & (df_w["HomeTeam"] == "UTA")
+            #         )
+            #     ) |
+            #     (
+            #         (
+            #             (df_w["AwayTeam"] == "EDM")
+            #             & (df_w["HomeTeam"] == "ANA")
+            #         ) | (
+            #             (df_w["AwayTeam"] == "ANA")
+            #             & (df_w["HomeTeam"] == "EDM")
+            #         )
+            #     ) |
+            #     (
+            #         (
+            #             (df_w["AwayTeam"] == "LAK")
+            #             & (df_w["HomeTeam"] == "ANA")
+            #         ) | (
+            #             (df_w["AwayTeam"] == "ANA")
+            #             & (df_w["HomeTeam"] == "LAK")
+            #         )
+            #     ) |
+            #     (
+            #         (
+            #             (df_w["AwayTeam"] == "MTL")
+            #             & (df_w["HomeTeam"] == "NJD")
+            #         ) | (
+            #             (df_w["AwayTeam"] == "NJD")
+            #             & (df_w["HomeTeam"] == "MTL")
+            #         )
+            #     ) |
+            #     (
+            #         (
+            #             (df_w["AwayTeam"] == "ANA")
+            #             & (df_w["HomeTeam"] == "NSH")
+            #         ) | (
+            #             (df_w["AwayTeam"] == "NSH")
+            #             & (df_w["HomeTeam"] == "ANA")
+            #         )
+            #     )
+            # ]
+        
+        df_w = df_w.groupby(
+            ["AwayTeam", "HomeTeam"]
+        ).agg({
+            "GameID": "count",
+            "AwayWon": "sum",
+            "HomeWon": "sum",
+            "HasExtraTime": "sum",
+            "A_ETL": "sum",
+            "H_ETL": "sum"
+        }).reset_index()
+        
+        df_w["Record"] = ""
+        covered = set()
+        to_add = []
+        with st.container(horizontal=False):
+            for i, a_row in df_w.iterrows():
+                # st.write(a_row)
+                if i not in covered:
+                    covered.add(i)
+                else:
+                    continue
+                a, b = a_row["AwayTeam"], a_row["HomeTeam"]
+                j_row_lst = df_w[(df_w["AwayTeam"] == b) & (df_w["HomeTeam"] == a)].index.tolist()
+                if len(j_row_lst):
+                    j = j_row_lst[0]
+                    h_row = df_w.iloc[j]
+                    covered.add(j)
+                else:
+                    h_row = {
+                        "GameID": 0,
+                        "AwayWon": False,
+                        "HomeWon": False,
+                        "A_ETL": 0,
+                        "H_ETL": 0,
+                    }
+                    to_add.append(pd.DataFrame({
+                        k: [v]
+                        for k, v in {
+                            "AwayTeam": b,
+                            "HomeTeam": a,
+                            "GameID": int(a_row["GameID"]),
+                            "AwayWon": int(a_row["HomeWon"]),
+                            "HomeWon": int(a_row["AwayWon"]),
+                            "HasExtraTime": 0,
+                            "A_ETL": int(a_row["H_ETL"]),
+                            "H_ETL": int(a_row["A_ETL"]),
+                            "Record": f"{(int(a_row['HomeWon']), int(a_row['AwayWon'] - a_row['H_ETL']), int(a_row['H_ETL']))}",
+                        }.items()
+                    }))
+                
+                a_gp = int(a_row["GameID"])
+                h_gp = int(h_row["GameID"])
+                t_gp = a_gp + h_gp
+                
+                a_aw = int(a_row["AwayWon"])
+                a_hw = int(a_row["HomeWon"])
+                h_aw = int(h_row["AwayWon"])
+                h_hw = int(h_row["HomeWon"])
+                a_w = a_aw + h_hw
+                h_w = a_hw + h_aw
+                
+                a_et = int(a_row["A_ETL"] + h_row["H_ETL"])
+                h_et = int(a_row["H_ETL"] + h_row["A_ETL"])
+                
+                a_l = t_gp - (a_w + a_et)
+                h_l = t_gp - (h_w + h_et)
+                
+                away_record = (a_w, a_l, a_et)
+                home_record = (h_w, h_l, h_et)
+                
+                # dd = dict(
+                #     a=a,
+                #     b=b,
+                #     i=i,
+                #     j=j,
+                #     # covered=covered,             
+                #     a_gp=a_gp,
+                #     a_aw=a_aw,
+                #     a_hw=a_hw,
+                #     a_w=a_w,
+                #     a_het=a_het,    
+                #     h_gp=h_gp,
+                #     h_aw=h_aw,
+                #     h_hw=h_hw,
+                #     h_w=h_w,
+                #     h_het=h_het,   
+                #     t_gp=t_gp,             
+                #     a_et=a_et,    
+                #     h_et=h_et,        
+                #     a_l=a_l,
+                #     h_l=h_l,
+                #     away_record=away_record,
+                #     home_record=home_record,
+                # )
+                # st.write(dd)
+                # display_df(pd.DataFrame({k: [v] for k, v in dd.items()}))
+                
+                df_w.loc[i, "Record"] = str(away_record)
+                df_w.loc[j, "Record"] = str(home_record)
+        
+        if to_add:
+            df_ta = pd.concat(to_add) 
+            df_w = pd.concat([df_w, df_ta], ignore_index=True)
+        df_w.sort_values(["AwayTeam", "HomeTeam"], inplace=True)
+        
+        display_df(df_w, "df_w")
+        
+        df_w["colour"] = df_w["Record"].apply(lambda r: TEAM_RECORD_COLOUR_MAP[r]["color"])
+        
+        # with st.container(horizontal=True):
+        cc1, cc2, cc3, cc4 = st.columns([3, 1, 3, 1])
+        x_sort_mode = cc1.selectbox("Sort X axis by", ["Conference", "Division", "Team", "Best to Worst Record"], index=3)
+        x_sort_rev = not cc2.toggle("Ascending?", key="x_sort_rev", value=True)
+        y_sort_mode = cc3.selectbox("Sort Y axis by", ["Conference", "Division", "Team", "Best to Worst Record"], index=3)
+        y_sort_rev = not cc4.toggle("Ascending?", key="y_sort_rev", value=True)
+
+        x_team_order = build_team_order(df_w, TEAM_META, x_sort_mode, x_sort_rev)
+        y_team_order = build_team_order(df_w, TEAM_META, y_sort_mode, y_sort_rev)
+
+        fig, res_df = render_team_record_heatmap_fast(
+            df=df_w,
+            x_team_order=x_team_order,
+            y_team_order=y_team_order,
+            record_colour_map=TEAM_RECORD_COLOUR_MAP
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+        
+        df_w["Remaining"] = 0
+        for i, row in future.iterrows():
+            away = row["AwayTeam"]
+            home = row["HomeTeam"]
+            a_row = df_w[(df_w["AwayTeam"] == away) & (df_w["HomeTeam"] == home)]
+            # b_row = df_w[(df_w["AwayTeam"] == home) & (df_w["HomeTeam"] == away)]
+            if not a_row.empty:
+                a_idx = a_row.index.tolist()[0]
+                # b_idx = b_row.index.tolist()[0]
+                df_w.loc[a_idx, "Remaining"] += 1
+        
+        df_toar = pd.DataFrame(
+            columns=[
+                "TeamA", "TeamB", "GP",
+                "Away_W", "Home_W",
+                "Away_ET", "Home_ETL",
+                "Away_Record", "Home_Record",
+                "Colour_A", "Colour_B",
+                "GR", "W", "L", "OTL", "Record"
+            ]
+        )
+        df_toar.rename(columns={"GameID" : "GP"}, inplace=True)    
+        for i, row in df_w.iterrows():
+            away = row["AwayTeam"]
+            home = row["HomeTeam"]
+            a_row = df_w[(df_w["AwayTeam"] == away) & (df_w["HomeTeam"] == home)]
+            b_row = df_w[(df_w["AwayTeam"] == home) & (df_w["HomeTeam"] == away)]
+            a_idx = a_row.index.tolist()[0]
+            b_idx = b_row.index.tolist()[0]
+            a_row = a_row.reset_index().iloc[0]
+            b_row = b_row.reset_index().iloc[0]
+            row_data = [
+                away,
+                home,
+                int(a_row["GameID"] + b_row["GameID"]),  # GP
+                int(a_row["AwayWon"] + b_row["HomeWon"]),  # Away_W
+                int(a_row["HomeWon"] + b_row["AwayWon"]),  # Home_W
+                int(a_row["A_ETL"] + b_row["H_ETL"]),  # Away_ET
+                int(a_row["H_ETL"] + b_row["A_ETL"]),  # Home_ETL
+                a_row["Record"],
+                b_row["Record"],
+                a_row["colour"],
+                b_row["colour"],
+                a_row["Remaining"] + b_row["Remaining"],  # GR
+                int(a_row["AwayWon"] + b_row["HomeWon"]),  # W
+                int((a_row["HomeWon"] - a_row["A_ETL"]) + (b_row["AwayWon"] - b_row["H_ETL"])),  # L
+                int(a_row["A_ETL"] + b_row["H_ETL"]),  # OTL
+                a_row["Record"],
+            ]
+            # if int(i) == 0:
+            #     st.write(a_row)
+            #     st.write(b_row)
+            #     st.write(row_data)
+            #     st.write(df_toar.columns.tolist())
+            df_toar.loc[i] = row_data
+            
+        df_toar["PTS"] = df_toar.apply(lambda r: (2 * r["W"]) + r["OTL"], axis=1)
+        df_toar["PCT"] = df_toar.apply(lambda r: ((r["PTS"] / r["GP"]) / 2) if r["GP"] != 0 else 0, axis=1)
+        df_toar["MAX_PTS"] = df_toar.apply(lambda r: r["PTS"] + (2 * r["GR"]), axis=1)
+        df_toar["Sweep"] = df_toar.apply(lambda r: (r["GR"] == 0) and (r["GP"] == r["W"]), axis=1)
+        df_toar["WasSwept"] = df_toar.apply(lambda r: (r["GR"] == 0) and (r["PTS"] == 0), axis=1)
+        
+        with st.expander("View data table", expanded=False):
+            display_df(
+                df_w,
+                "Data"
+            )
+            # display_df(
+            #     res_df,
+            #     "res_df"
+            # )
+        
+        st.markdown('<div class="section-header">🧹 Season Sweeps</div>', unsafe_allow_html=True)
+        num_sweeps = df_toar["Sweep"].sum()
+        st.write(f"{num_sweeps} total sweeps this regular season")
+        display_df(
+            df_toar,
+            "Team vs Team Records"
+        )
+        
+        k_multiselect_sort_toar = "key_multiselect_sort_toar"
+        # st.session_state.setdefault(k_multiselect_sort_toar, ["SweepCount", "SweptByCount", "TiedCount", "NetSweepDiff", "TeamName"])
+        multiselect_sort_toar = sort_items(
+            header="Sort Order",
+            items=[
+                {"header": "Sort Order", "items": ["SweepCount", "SweptByCount", "TiedCount", "NetSweepDiff", "TeamName"]},
+                {"header": "Exclude", "items": []}
+            ],
+            multi_containers=True,
+            key=k_multiselect_sort_toar
+        )
+        sort_asc_toar = False
+        sort_items_use = multiselect_sort_toar[0]["items"]
+        if sort_items:
+            co_asc = st.columns(len(sort_items_use))
+            sort_asc_toar = [
+                co_asc[i].toggle(f"{sort} ASC", value=False, key=f"col_asc_sort_{i=}_{sort=}")
+                for i, sort in enumerate(sort_items_use)
+            ]
+            
+        render_sweep_logo_table(df_toar, sort=sort_items_use, ascending=sort_asc_toar)
+            
+        # df_zero_against = df_w[df_w[""]].groupby("AwayTeam")
 
     # ── PAGE: BY TEAM ────────────────────────────────────
     elif page == "👥 By Team":
@@ -4570,7 +6463,7 @@ def main():
     
     # ── PAGE: CLINCHING SCENARIOS──────────────────────────
     elif page == "🏆 Clinching Scenarios":
-            page_clinching_scenarios()
+        page_clinching_scenarios()
 
     # ── PAGE: JERSEY COLLECTION ───────────────────────────
     elif page == "🧥 Jersey Collection":
@@ -4578,6 +6471,10 @@ def main():
         df_jerseys = load_jersey_workbook()
         if not df_jerseys.empty:        
             page_jersey_collection(df_jerseys, path_jersey_images)
+    
+    # ── PAGE: Hockey Pool ──────────────────────────
+    elif page == "Hockey Pool":
+        page_hockey_pool()
 
 
 if __name__ == "__main__":
