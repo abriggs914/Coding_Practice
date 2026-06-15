@@ -1,59 +1,326 @@
 {
     "people": [
-        {"id": 0, "name": "Avery Briggs", "email": "abriggs914@gmail.com", "phone": "(506)-323-8472"},
-        {"id": 1, "name": "Susan Briggs", "email": "sbriggs19641@gmail.com", "phone": ""},
-        {"id": 2, "name": "Gus Briggs", "email": "gus.briggs@nbed.nb.ca", "phone": ""},
-        {"id": 3, "name": "Kristen Briggs", "email": "kristen.briggs@nbed.nb.ca", "phone": ""},
-        {"id": 4, "name": "Emily Briggs", "email": "emily.briggs.eb9@gmail.com", "phone": ""},
-        {"id": 5, "name": "Hayley Briggs", "email": "hayley.briggs@crandallu.ca", "phone": ""},
-        {"id": 6, "name": "Dan Dugan", "email": "dgdugan@hotmail.com", "alias": "Mount Delight", "phone": ""},
-        {"id": 7, "name": "Annie Dugan", "email": "anniedugan2001@gmail.com", "phone": ""},
-        {"id": 8, "name": "Justin Thibault", "email": "justinthibault13@gmail.com", "alias": "TBO", "phone": ""},
-        {"id": 9, "name": "Rick Howard", "email": "rick.howard@bwstrailers.com", "alias": "Howard", "phone": ""},
-        {"id": 10, "name": "Lori Piper", "email": "loripiper77@gmail.com", "alias": "LoriP", "phone": ""},
-        {"id": 11, "name": "Arnold Dill", "email": "arnold.dill@bwstrailers.com", "phone": ""},
-        {"id": 12, "name": "Lester Brooker", "email": "lester.brooker@bwstrailers.com", "phone": ""},
-        {"id": 13, "name": "Alfie Cass", "email": "alfred.cass@bwstrailers.com", "alias": "Sneaker Beach Leafs", "phone": ""},
-        {"id": 14, "name": "Rose Black", "email": "roseb01@me.com", "phone": ""},
-        {"id": 15, "name": "Jason Morgan", "email": "jason.morgan@bwstrailers.com", "phone": ""},
-        {"id": 16, "name": "Jennifer Skarrup", "email": "jennifer.skarrup@bwstrailers.com", "phone": ""},
-        {"id": 17, "name": "Mike Piper", "email": "loripiper77@gmail.com", "alias": "MikeyP", "phone": ""},
-        {"id": 18, "name": "Simon Thibert", "email": "simon.thibert@remorqueslewis.com", "phone": ""},
-        {"id": 19, "name": "Gilles Babin", "email": "gillesbabin58@gmail.com", "phone": ""},
-        {"id": 20, "name": "Jamie Merrithew", "email": "jamie@merrithew.info", "phone": ""},
-        {"id": 21, "name": "Theresa Merrithew", "email": "theresa.merrithew@bwstrailers.com", "phone": ""},
-        {"id": 22, "name": "Janet Orser", "email": "janet.orser@bwstrailers.com", "phone": ""},
-        {"id": 23, "name": "Ruby Orser", "email": "rjorser4209@gmail.com", "phone": ""},
-        {"id": 24, "name": "Lance Lunn", "email": "lance.lunn@bwstrailers.com", "phone": ""},
-        {"id": 25, "name": "Blake Lunn", "email": "lance.lunn@bwstrailers.com", "phone": ""},
-        {"id": 26, "name": "Wyatt Lunn", "email": "lance.lunn@bwstrailers.com", "phone": ""},
-        {"id": 27, "name": "Riley Lunn", "email": "lance.lunn@bwstrailers.com", "phone": ""},
-        {"id": 28, "name": "Patrick Rafters", "email": "raftersp@yahoo.com", "alias": "This cars could be lauder", "phone": ""},
-        {"id": 29, "name": "Leedya Macmillan", "email": "leedya.macmilan@nbed.nb.ca", "phone": ""},
-        {"id": 30, "name": "Reid Smith", "email": "jamie.smith@bwstrailers.com", "phone": ""},
-        {"id": 31, "name": "Shelley Holmes", "email": "sd-holmes2011@live.com", "phone": ""},
-        {"id": 32, "name": "Carson Kenney", "email": "lester.brooker@bwstrailers.com", "phone": ""},
-        {"id": 33, "name": "Alex Maclaughlin", "email": "alex_mac15@live.com", "alias": "Toronto or Bust", "phone": ""},
-        {"id": 34, "name": "Sarah Ebbet", "email": "", "phone": ""},
-        {"id": 35, "name": "Avery2", "email": "abriggs914@gmail.com", "alias": "Jets! Jets! Jets!", "phone": "(506)-323-8472"},
-        {"id": 36, "name": "Rick Howard", "email": "hunterhoward2007@hotmail.com", "alias": "Snubber", "phone": "(506)-740-2136"},
-        {"id": 37, "name": "Alex LeBrun", "email": "alexlebrun_66@hotmail.com", "phone": "(506)-740-2136"},
-        {"id": 38, "name": "Tim Clavette", "email": "clavettetim87@gmail.com", "phone": "(506)-838-5114"},
-        {"id": 39, "name": "Leedya Macmillan", "alias": "LM Team One", "email": "mleedya@hotmail.com", "phone": "(506)-866-9472"},
-        {"id": 40, "name": "Leedya Macmillan", "alias": "LM Team Two", "email": "mleedya@hotmail.com", "phone": "(506)-866-9472"},
-        {"id": 41, "name": "Leedya Macmillan", "alias": "LM Team Three", "email": "mleedya@hotmail.com", "phone": "(506)-866-9472"},
-        {"id": 42, "name": "Marc St.Onge", "alias": "Appleton", "email": "marcsto72@gmail.com", "phone": "(506)-737-3919"},
-        {"id": 43, "name": "Marc-Andre Voisine", "alias": "Pitoune1178", "email": "marvois@hotmail.com", "phone": "(506)-253-9453"},
-        {"id": 44, "name": "Lori Piper", "alias": "Penalty Kills", "email": "loripiper77@gmail.com", "phone": "(506)-253-9453"},
-        {"id": 45, "name": "Sébastien Gauvin", "alias": "BrayonnaTer5", "email": "gauvinsg@hotmail.com", "phone": ""},
-        {"id": 46, "name": "Keith Brideau", "alias": "Montréal Canadiens", "email": "keith.brideau@yahoo.com", "phone": ""},
-        {"id": 47, "name": "Patrick Couturier", "alias": "PAT151", "email": "pcouturier@pattisonsign.com", "phone": ""}
+        {
+            "id": 0,
+            "name": "Avery Briggs",
+            "email": "abriggs914@gmail.com",
+            "phone": "(506)-323-8472"
+        },
+        {
+            "id": 1,
+            "name": "Susan Briggs",
+            "email": "sbriggs19641@gmail.com",
+            "phone": ""
+        },
+        {
+            "id": 2,
+            "name": "Gus Briggs",
+            "email": "gus.briggs@nbed.nb.ca",
+            "phone": ""
+        },
+        {
+            "id": 3,
+            "name": "Kristen Briggs",
+            "email": "kristen.briggs@nbed.nb.ca",
+            "phone": ""
+        },
+        {
+            "id": 4,
+            "name": "Emily Briggs",
+            "email": "emily.briggs.eb9@gmail.com",
+            "phone": ""
+        },
+        {
+            "id": 5,
+            "name": "Hayley Briggs",
+            "email": "hayley.briggs@crandallu.ca",
+            "phone": ""
+        },
+        {
+            "id": 6,
+            "name": "Dan Dugan",
+            "email": "dgdugan@hotmail.com",
+            "alias": "Mount Delight",
+            "phone": ""
+        },
+        {
+            "id": 7,
+            "name": "Annie Dugan",
+            "email": "anniedugan2001@gmail.com",
+            "phone": ""
+        },
+        {
+            "id": 8,
+            "name": "Justin Thibault",
+            "email": "justinthibault13@gmail.com",
+            "alias": "TBO",
+            "phone": ""
+        },
+        {
+            "id": 9,
+            "name": "Rick Howard",
+            "email": "rick.howard@bwstrailers.com",
+            "alias": "Howard",
+            "phone": ""
+        },
+        {
+            "id": 10,
+            "name": "Lori Piper",
+            "email": "loripiper77@gmail.com",
+            "alias": "LoriP",
+            "phone": ""
+        },
+        {
+            "id": 11,
+            "name": "Arnold Dill",
+            "email": "arnold.dill@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 12,
+            "name": "Lester Brooker",
+            "email": "lester.brooker@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 13,
+            "name": "Alfie Cass",
+            "email": "alfred.cass@bwstrailers.com",
+            "alias": "Sneaker Beach Leafs",
+            "phone": ""
+        },
+        {
+            "id": 14,
+            "name": "Rose Black",
+            "email": "roseb01@me.com",
+            "phone": ""
+        },
+        {
+            "id": 15,
+            "name": "Jason Morgan",
+            "email": "jason.morgan@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 16,
+            "name": "Jennifer Skarrup",
+            "email": "jennifer.skarrup@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 17,
+            "name": "Mike Piper",
+            "email": "loripiper77@gmail.com",
+            "alias": "MikeyP",
+            "phone": ""
+        },
+        {
+            "id": 18,
+            "name": "Simon Thibert",
+            "email": "simon.thibert@remorqueslewis.com",
+            "phone": ""
+        },
+        {
+            "id": 19,
+            "name": "Gilles Babin",
+            "email": "gillesbabin58@gmail.com",
+            "phone": ""
+        },
+        {
+            "id": 20,
+            "name": "Jamie Merrithew",
+            "email": "jamie@merrithew.info",
+            "phone": ""
+        },
+        {
+            "id": 21,
+            "name": "Theresa Merrithew",
+            "email": "theresa.merrithew@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 22,
+            "name": "Janet Orser",
+            "email": "janet.orser@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 23,
+            "name": "Ruby Orser",
+            "email": "rjorser4209@gmail.com",
+            "phone": ""
+        },
+        {
+            "id": 24,
+            "name": "Lance Lunn",
+            "email": "lance.lunn@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 25,
+            "name": "Blake Lunn",
+            "email": "lance.lunn@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 26,
+            "name": "Wyatt Lunn",
+            "email": "lance.lunn@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 27,
+            "name": "Riley Lunn",
+            "email": "lance.lunn@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 28,
+            "name": "Patrick Rafters",
+            "email": "raftersp@yahoo.com",
+            "alias": "This cars could be lauder",
+            "phone": ""
+        },
+        {
+            "id": 29,
+            "name": "Leedya Macmillan",
+            "email": "leedya.macmilan@nbed.nb.ca",
+            "phone": ""
+        },
+        {
+            "id": 30,
+            "name": "Reid Smith",
+            "email": "jamie.smith@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 31,
+            "name": "Shelley Holmes",
+            "email": "sd-holmes2011@live.com",
+            "phone": ""
+        },
+        {
+            "id": 32,
+            "name": "Carson Kenney",
+            "email": "lester.brooker@bwstrailers.com",
+            "phone": ""
+        },
+        {
+            "id": 33,
+            "name": "Alex Maclaughlin",
+            "email": "alex_mac15@live.com",
+            "alias": "Toronto or Bust",
+            "phone": ""
+        },
+        {
+            "id": 34,
+            "name": "Sarah Ebbet",
+            "email": "",
+            "phone": ""
+        },
+        {
+            "id": 35,
+            "name": "Avery2",
+            "email": "abriggs914@gmail.com",
+            "alias": "Jets! Jets! Jets!",
+            "phone": "(506)-323-8472"
+        },
+        {
+            "id": 36,
+            "name": "Rick Howard",
+            "email": "hunterhoward2007@hotmail.com",
+            "alias": "Snubber",
+            "phone": "(506)-740-2136"
+        },
+        {
+            "id": 37,
+            "name": "Alex LeBrun",
+            "email": "alexlebrun_66@hotmail.com",
+            "phone": "(506)-740-2136"
+        },
+        {
+            "id": 38,
+            "name": "Tim Clavette",
+            "email": "clavettetim87@gmail.com",
+            "phone": "(506)-838-5114"
+        },
+        {
+            "id": 39,
+            "name": "Leedya Macmillan",
+            "alias": "LM Team One",
+            "email": "mleedya@hotmail.com",
+            "phone": "(506)-866-9472"
+        },
+        {
+            "id": 40,
+            "name": "Leedya Macmillan",
+            "alias": "LM Team Two",
+            "email": "mleedya@hotmail.com",
+            "phone": "(506)-866-9472"
+        },
+        {
+            "id": 41,
+            "name": "Leedya Macmillan",
+            "alias": "LM Team Three",
+            "email": "mleedya@hotmail.com",
+            "phone": "(506)-866-9472"
+        },
+        {
+            "id": 42,
+            "name": "Marc St.Onge",
+            "alias": "Appleton",
+            "email": "marcsto72@gmail.com",
+            "phone": "(506)-737-3919"
+        },
+        {
+            "id": 43,
+            "name": "Marc-Andre Voisine",
+            "alias": "Pitoune1178",
+            "email": "marvois@hotmail.com",
+            "phone": "(506)-253-9453"
+        },
+        {
+            "id": 44,
+            "name": "Lori Piper",
+            "alias": "Penalty Kills",
+            "email": "loripiper77@gmail.com",
+            "phone": "(506)-253-9453"
+        },
+        {
+            "id": 45,
+            "name": "Sébastien Gauvin",
+            "alias": "BrayonnaTer5",
+            "email": "gauvinsg@hotmail.com",
+            "phone": ""
+        },
+        {
+            "id": 46,
+            "name": "Keith Brideau",
+            "alias": "Montréal Canadiens",
+            "email": "keith.brideau@yahoo.com",
+            "phone": ""
+        },
+        {
+            "id": 47,
+            "name": "Patrick Couturier",
+            "alias": "PAT151",
+            "email": "pcouturier@pattisonsign.com",
+            "phone": ""
+        }
     ],
     "years": [
-        {"year": 2023},
-        {"year": 2024},
-        {"year": 2025},
-        {"year": 2026}
+        {
+            "year": 2023
+        },
+        {
+            "year": 2024
+        },
+        {
+            "year": 2025
+        },
+        {
+            "year": 2026
+        }
     ],
     "pools": [
         {
@@ -62,7 +329,29 @@
             "pctPrize": 1,
             "final": true,
             "picksheet": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Hockey pool\\2023\\boxpool-BWSPool2023 (2).pdf",
-            "standings": [12, 1, 26, 6, 8, 27, 22, 2, 0, 15, 36, 32, 34, 16, 4, 11, 31, 30, 20, 7, 10]
+            "standings": [
+                12,
+                1,
+                26,
+                6,
+                8,
+                27,
+                22,
+                2,
+                0,
+                15,
+                36,
+                32,
+                34,
+                16,
+                4,
+                11,
+                31,
+                30,
+                20,
+                7,
+                10
+            ]
         },
         {
             "year": 2024,
@@ -70,7 +359,29 @@
             "pctPrize": 1,
             "final": true,
             "picksheet": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Hockey pool\\2024\\PoolSheet_BWSPlayoffs2024.pdf",
-            "standings": [2, 13, 0, 10, 22, 1, 4, 11, 30, 7, 8, 24, 17, 23, 6, 33, 28, 21, 20, 9, 32]
+            "standings": [
+                2,
+                13,
+                0,
+                10,
+                22,
+                1,
+                4,
+                11,
+                30,
+                7,
+                8,
+                24,
+                17,
+                23,
+                6,
+                33,
+                28,
+                21,
+                20,
+                9,
+                32
+            ]
         },
         {
             "year": 2025,
@@ -78,16 +389,196 @@
             "pctPrize": 1,
             "final": true,
             "picksheet": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Hockey pool\\2025\\boxpool-BWSPlayoffs2025.pdf",
-            "standings": [10, 24, 14, 25, 9, 4, 3, 19, 27, 7, 6, 35, 33, 5, 18, 1, 26, 8, 29, 2, 0]
+            "standings": [
+                10,
+                24,
+                14,
+                25,
+                9,
+                4,
+                3,
+                19,
+                27,
+                7,
+                6,
+                35,
+                33,
+                5,
+                18,
+                1,
+                26,
+                8,
+                29,
+                2,
+                0
+            ]
         },
         {
             "year": 2026,
             "fee": 10,
             "pctPrize": 1,
-            "final": false,
+            "final": true,
             "picksheet": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Hockey pool\\2026\\pick_sheet_2026.pdf",
             "pickCounts": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Hockey pool\\2026\\pick_counts.json",
-            "standings": [2, 37, 5, 38, 18, 40, 1, 42, 43, 41, 4, 0, 39, 3, 44, 8, 45, 46, 47]
+            "results": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Hockey pool\\2026\\My Predictions2026.xlsm.xlsx",
+            "standings": [
+                47,
+                45,
+                2,
+                4,
+                37,
+                18,
+                40,
+                0,
+                43,
+                5,
+                1,
+                42,
+                3,
+                8,
+                41,
+                39,
+                38,
+                46,
+                44
+            ]
         }
+    ],
+    "picksheets": [
+        {
+            "year": 2026,
+            "player": 0,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_avery_2026_20260501130659.json"
+        },
+        {
+            "year": 2026,
+            "player": 1,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_susan_2026_20260427222600.json"
+        },
+        {
+            "year": 2026,
+            "player": 2,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_dad_2026_20260427214126.json"
+        },
+        {
+            "year": 2026,
+            "player": 3,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_kristen_2026_20260427214809.json"
+        },
+        {
+            "year": 2026,
+            "player": 4,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_emily_2026_20260427213425.json"
+        },
+        {
+            "year": 2026,
+            "player": 5,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_hayley_2026_20260427214358.json"
+        },
+        {
+            "year": 2026,
+            "player": 8,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_tbo_2026_20260427222846.json"
+        },
+        {
+            "year": 2026,
+            "player": 44,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_lorip_2026_20260427221923.json"
+        },
+        {
+            "year": 2026,
+            "player": 18,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_simon_2026_20260427222343.json"
+        },
+        {
+            "year": 2026,
+            "player": 39,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_lm_team_1_2026_20260427220122.json"
+        },
+        {
+            "year": 2026,
+            "player": 40,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_lm_team_2_2026_20260427220259.json"
+        },
+        {
+            "year": 2026,
+            "player": 41,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_lm_team_3_2026_20260427220553.json"
+        },
+        {
+            "year": 2026,
+            "player": 38,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_tim_2026_20260427223033.json"
+        },
+        {
+            "year": 2026,
+            "player": 42,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_marc_2026_20260427212834.json"
+        },
+        {
+            "year": 2026,
+            "player": 43,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_pitoune1178_2026_20260427222131.json"
+        },
+        {
+            "year": 2026,
+            "player": 45,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_brayonnater5_2026_20260427213152.json"
+        },
+        {
+            "year": 2026,
+            "player": 46,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_keith_2026_20260427220925.json"
+        },
+        {
+            "year": 2026,
+            "player": 47,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_pat151_2026_20260427221559.json"
+        },
+        {
+            "year": 2026,
+            "player": 37,
+            "path": "C:\\Users\\abrig\\Documents\\Coding_Practice\\Claude\\NHL Scoreboard\\poolsheet_alex_2026_20260427212426.json"
+        },
+        {
+            "year": 2025,
+            "player": 0,
+            "path": "poolsheet_avery briggs_2025_20260502215509.json"
+        }
+    ],
+    "teams": [
+        {"acronym": "ANA", "name": "Anaheim Ducks",         "conf": "Western", "div": "Pacific",        "id": 24,   "active": true},
+        {"acronym": "ARI", "name": "Utah Hockey Club",      "conf": "Western", "div": "Central",        "id": 53,   "active": false},
+        {"acronym": "UTA", "name": "Utah Hockey Club",      "conf": "Western", "div": "Central",        "id": 59,   "active": true},
+        {"acronym": "BOS", "name": "Boston Bruins",         "conf": "Eastern", "div": "Atlantic",       "id": 6,    "active": true},
+        {"acronym": "BUF", "name": "Buffalo Sabres",        "conf": "Eastern", "div": "Atlantic",       "id": 7,    "active": true},
+        {"acronym": "CGY", "name": "Calgary Flames",        "conf": "Western", "div": "Pacific",        "id": 20,   "active": true},
+        {"acronym": "CAR", "name": "Carolina Hurricanes",   "conf": "Eastern", "div": "Metropolitan",   "id": 12,   "active": true},
+        {"acronym": "CHI", "name": "Chicago Blackhawks",    "conf": "Western", "div": "Central",        "id": 16,   "active": true},
+        {"acronym": "COL", "name": "Colorado Avalanche",    "conf": "Western", "div": "Central",        "id": 21,   "active": true},
+        {"acronym": "CBJ", "name": "Columbus Blue Jackets", "conf": "Eastern", "div": "Metropolitan",   "id": 29,   "active": true},
+        {"acronym": "DAL", "name": "Dallas Stars",          "conf": "Western", "div": "Central",        "id": 25,   "active": true},
+        {"acronym": "DET", "name": "Detroit Red Wings",     "conf": "Eastern", "div": "Atlantic",       "id": 17,   "active": true},
+        {"acronym": "EDM", "name": "Edmonton Oilers",       "conf": "Western", "div": "Pacific",        "id": 22,   "active": true},
+        {"acronym": "FLA", "name": "Florida Panthers",      "conf": "Eastern", "div": "Atlantic",       "id": 13,   "active": true},
+        {"acronym": "LAK", "name": "Los Angeles Kings",     "conf": "Western", "div": "Pacific",        "id": 26,   "active": true},
+        {"acronym": "MIN", "name": "Minnesota Wild",        "conf": "Western", "div": "Central",        "id": 30,   "active": true},
+        {"acronym": "MTL", "name": "Montréal Canadiens",    "conf": "Eastern", "div": "Atlantic",       "id": 8,    "active": true},
+        {"acronym": "NSH", "name": "Nashville Predators",   "conf": "Western", "div": "Central",        "id": 18,   "active": true},
+        {"acronym": "NJD", "name": "New Jersey Devils",     "conf": "Eastern", "div": "Metropolitan",   "id": 1,    "active": true},
+        {"acronym": "NYI", "name": "New York Islanders",    "conf": "Eastern", "div": "Metropolitan",   "id": 2,    "active": true},
+        {"acronym": "NYR", "name": "New York Rangers",      "conf": "Eastern", "div": "Metropolitan",   "id": 3,    "active": true},
+        {"acronym": "OTT", "name": "Ottawa Senators",       "conf": "Eastern", "div": "Atlantic",       "id": 9,    "active": true},
+        {"acronym": "PHI", "name": "Philadelphia Flyers",   "conf": "Eastern", "div": "Metropolitan",   "id": 4,    "active": true},
+        {"acronym": "PIT", "name": "Pittsburgh Penguins",   "conf": "Eastern", "div": "Metropolitan",   "id": 5,    "active": true},
+        {"acronym": "SJS", "name": "San Jose Sharks",       "conf": "Western", "div": "Pacific",        "id": 28,   "active": true},
+        {"acronym": "SEA", "name": "Seattle Kraken",        "conf": "Western", "div": "Pacific",        "id": 55,   "active": true},
+        {"acronym": "STL", "name": "St. Louis Blues",       "conf": "Western", "div": "Central",        "id": 19,   "active": true},
+        {"acronym": "TBL", "name": "Tampa Bay Lightning",   "conf": "Eastern", "div": "Atlantic",       "id": 14,   "active": true},
+        {"acronym": "TOR", "name": "Toronto Maple Leafs",   "conf": "Eastern", "div": "Atlantic",       "id": 10,   "active": true},
+        {"acronym": "VAN", "name": "Vancouver Canucks",     "conf": "Western", "div": "Pacific",        "id": 23,   "active": true},
+        {"acronym": "VGK", "name": "Vegas Golden Knights",  "conf": "Western", "div": "Pacific",        "id": 54,   "active": true},
+        {"acronym": "WSH", "name": "Washington Capitals",   "conf": "Eastern", "div": "Metropolitan",   "id": 15,   "active": true},
+        {"acronym": "WPG", "name": "Winnipeg Jets",         "conf": "Western", "div": "Central",        "id": 52,   "active": true}
     ]
 }

@@ -23,14 +23,17 @@ import plotly.graph_objects as go
 from sklearn.linear_model import LinearRegression
 from plotly.subplots import make_subplots
 from streamlit_pills import pills
-from datetime import datetime, timedelta
-from typing import Optional, Literal, Sequence
+from datetime import datetime, timedelta, date
+from typing import Optional, Literal, Sequence, Any, Iterable
 from collections import defaultdict
+from itertools import combinations
+from PIL import Image
 
+from utility import flatten
 from colour_utility import Colour, gradient_merge
 from json_utility import peek_json, jsonify
 from sql_utility import no_specials
-from streamlit_utility import display_df, consolidate_df_edits
+from streamlit_utility import display_df, consolidate_df_edits, get_selected_rows, local_image_thumbnail_data_url
 from streamlit_auth import show_login_register
 import nhl_api_reference_examples as api_ref
 
@@ -47,6 +50,7 @@ path_stanley_cup_appearances = r"C:\Users\abrig\Documents\Coding_Practice\Python
 path_stanley_cup_wins        = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_wins.json"
 path_stanley_cup_losses      = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_losses.json"
 path_hockey_pool_data        = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Data\data.json"
+path_playoffs_predictions    = r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\predictions.xlsm"
 
 # ─────────────────────────────────────────────────────────
 # PAGE CONFIG
@@ -140,7 +144,7 @@ div[data-testid="stMetricLabel"] { color: #8899aa !important; }
 TEAM_META = {
     "ANA": {"name": "Anaheim Ducks",       "conf": "Western", "div": "Pacific",    "id": 24, "active": True},
     # "ARI": {"name": "Utah Hockey Club",     "conf": "Western", "div": "Central",    "id": 53, "active": False},
-    "UTA": {"name": "Utah Hockey Club",     "conf": "Western", "div": "Central",    "id": 59, "active": True},
+    "UTA": {"name": "Utah Mammoth",         "conf": "Western", "div": "Central",    "id": 59, "active": True},
     "BOS": {"name": "Boston Bruins",        "conf": "Eastern", "div": "Atlantic",   "id": 6, "active": True},
     "BUF": {"name": "Buffalo Sabres",       "conf": "Eastern", "div": "Atlantic",   "id": 7, "active": True},
     "CGY": {"name": "Calgary Flames",       "conf": "Western", "div": "Pacific",    "id": 20, "active": True},
@@ -172,6 +176,54 @@ TEAM_META = {
     "WSH": {"name": "Washington Capitals",  "conf": "Eastern", "div": "Metropolitan","id": 15, "active": True},
     "WPG": {"name": "Winnipeg Jets",        "conf": "Western", "div": "Central",    "id": 52, "active": True},
 }
+
+
+PWHL_META = [
+    {"name": "Ottawa Charge", "acronym": "OTT", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\ottawa_charge.png",},
+    {"name": "Montreal Victoire", "acronym": "MTL", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\montreal_victoire.png",},
+    {"name": "Toronto Sceptres", "acronym": "TOR", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\toronto_sceptres.png",},
+    {"name": "Vancouver Goldeneyes", "acronym": "VAN", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\vancouver_goldeneyes.png",},
+    {"name": "New York Sirens", "acronym": "NY", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\new_york_sirens.png",},
+    {"name": "Seattle Torrent", "acronym": "SEA", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\seattle_torrent.png",},
+    {"name": "Boston Fleet", "acronym": "BOS", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\boston_fleet.png",},
+    {"name": "Minnesota Frost", "acronym": "MIN", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\minnesota_frost.png",},
+]
+
+df_pwhl = pd.DataFrame(PWHL_META)
+df_pwhl[["league", "active"]] = ["PWHL", True]
+df_pwhl = df_pwhl.rename(columns={"acronym": "team"})
+display_df(df_pwhl, "PWHL")
+
+df_teams = pd.DataFrame(TEAM_META).T.reset_index(names="team")
+df_teams["league"] = "NHL"
+for team, name, league in [
+    ("ARI", "Arizona Coyotes", "NHL"),
+    
+    ("CAN", "Team Canada", "IIHF"),
+    ("USA", "Team United States", "IIHF"),
+    ("SWE", "Team Sweden", "IIHF"),
+    ("FIN", "Team Finland", "IIHF"),
+    ("CAN", "Team Canada", "IIHF"),
+    
+    ("SJ", "Saint John SeaDogs", "QMJHL"),
+]:
+    df_teams.loc[len(df_teams), df_teams.columns] = [team, name, None, None, None, True, league]
+    
+df_teams.loc[df_teams["team"] == "ARI", ["active", "conf", "div"]] = [False, "Western", "Central"]
+
+df_teams["alt"] = None
+for t, a in [
+    ("LAK", "LA"),
+    ("TBL", "TB"),
+    ("NJD", "NJ"),
+    ("SJS", "SJ"),
+    ("WSH", "WAS"),
+]:
+    df_teams.loc[df_teams["team"] == t, "alt"] = a
+
+df_teams = pd.concat([df_teams, df_pwhl], ignore_index=True)
+
+display_df(df_teams, "TEAMS")
 
 CANADIAN_TEAMS = {"MTL", "OTT", "TOR", "WPG", "EDM", "CGY", "VAN"}
 
@@ -826,6 +878,40 @@ RED = "#e74c3c"
 GREEN = "#2ecc71"
 
 
+def g_key(num, mode: str = "i") -> str:
+    if mode == "p":
+        return f"g{str(num).rjust(2, '0')}_playername"
+    elif mode == "t":
+        return f"g{str(num).rjust(2, '0')}_team"
+    else:
+        return f"g{str(num).rjust(2, '0')}_playerid"
+
+
+def a_key(num, a_num: int = 1, mode: str = "i") -> str:
+    if mode == "p":
+        return f"g{str(num).rjust(2, '0')}_a{a_num}_playername"
+    elif mode == "t":
+        return f"g{str(num).rjust(2, '0')}_a{a_num}_team"
+    else:
+        return f"g{str(num).rjust(2, '0')}_a{a_num}_playerid"
+
+
+MAX_GOALS_PER_GAME = 18
+slider_time_fetch_game_landing = st.sidebar.slider("Cache Time Game Data (s)", 10, 3600, 500)
+k_time_fetch_game_landing = "key_time_fetch_game_landing"
+# time_fetch_game_landing = st.session_state.setdefault(k_time_fetch_game_landing, 60)
+time_fetch_game_landing = st.session_state.update({k_time_fetch_game_landing: slider_time_fetch_game_landing})
+team_cols_a = ["topseed", "lowseed", "awayteam", "hometeam", "mychoice", "winner"]
+team_cols_b = [
+    g_key(i, "t")
+    for i in range(1, MAX_GOALS_PER_GAME + 1)
+]
+int_record_cols = [
+    "w_a", "l_a", "gf_a", "ga_a",
+    "w_h", "l_h", "gf_h", "ga_h",
+]
+
+
 possible_records = [
     (4, 0, 0),
     (3, 0, 1),
@@ -897,10 +983,15 @@ def load_jersey_data(filepath: str) -> pd.DataFrame:
     if df.columns[0] == "" or df.columns[0].startswith("Unnamed"):
         df = df.iloc[:, 1:]
 
+    display_df(df)
+
     # Date parsing
     for col in ["OrderDate", "ReceiveDate", "OpenDate"]:
         if col in df.columns:
             df[col] = pd.to_datetime(df[col], errors="coerce")
+            # st.write(df[col])
+            # st.write(df[col].dtypes)
+            # df[col] = df[col].apply(lambda v: v.date() if not pd.isna(v) else v)
 
     df["PriceF"] = df.apply(
         lambda r:
@@ -960,6 +1051,10 @@ def load_jersey_data(filepath: str) -> pd.DataFrame:
     # df["PlayerName"] = df["PlayerName"].replace("", pd.NA)
     df["NHLID"] = df["NHLID"].fillna(0)
     df["NHLID"] = df["NHLID"].astype(int)
+    
+    # for col in ["OrderDate", "ReceiveDate", "OpenDate"]:
+    #     if col in df.columns:
+    #         df[col] = df[col].apply(lambda v: v if pd.isna(v) else v.date())
 
     return df
 
@@ -1011,7 +1106,7 @@ def fetch_nhl_player(nhl_id: int) -> dict:
         return {}
 
 
-def get_jersey_image_paths(jersey_id, base_path: str) -> list:
+def get_jersey_image_paths(jersey_id, base_path: str, do_sort: bool = True) -> list:
     """Return list of local image paths for a jersey ID."""
     import os, glob
     j_folder = f"J_{int(jersey_id):03d}"
@@ -1019,14 +1114,18 @@ def get_jersey_image_paths(jersey_id, base_path: str) -> list:
     if not os.path.isdir(folder):
         return []
     # f"{folder=}, {jersey_id=}"
-    imgs = sorted(
-        glob.glob(os.path.join(folder, "*.jpg")) +
-        glob.glob(os.path.join(folder, "*.jpeg")) +
-        glob.glob(os.path.join(folder, "*.png")) +
-        glob.glob(os.path.join(folder, "*.JPG")) +
-        glob.glob(os.path.join(folder, "*.JPEG"))
-    )
-    return list(set(imgs))
+    # imgs = (
+    #     glob.glob(os.path.join(folder, "*.jpg")) +
+    #     glob.glob(os.path.join(folder, "*.jpeg")) +
+    #     glob.glob(os.path.join(folder, "*.png")) +
+    #     glob.glob(os.path.join(folder, "*.JPG")) +
+    #     glob.glob(os.path.join(folder, "*.JPEG"))
+    # )
+    valid = ["jpg", "jpeg", "png"]
+    imgs = [os.path.join(folder, p) for p in os.listdir(folder) if p.lower().split(".")[-1] in valid]
+    if do_sort:
+        imgs.sort()
+    return imgs
 
 
 def render_jersey_card(row, base_img_path: str, show_player_data: bool = True):
@@ -1231,6 +1330,35 @@ def render_player_panel(pd_data: dict, league: str):
             st.markdown(f'<div style="color:#aabbcc;font-size:0.82rem;line-height:1.6">{bio_text}</div>', unsafe_allow_html=True)
 
 
+def team_fmt(s):
+    return str(s).replace(" ", "").upper().strip()
+    
+    
+def find_team(team, league="NHL", debug: bool = False):
+    if debug:
+        st.write(f"find_team {team=}")
+    tf = team_fmt(team)
+    sl = str(league).upper()
+    for i, row in df_teams.iterrows():
+        rl = str(row["league"]).upper()
+        rt = row["team"]
+        if sl != rl:
+            continue
+        if (tf == team_fmt(row["team"])):
+            if debug:
+                st.write(f"A {i=}, {rt=}")
+            return rt
+        elif tf == team_fmt(row["name"]):
+            if debug:
+                st.write(f"B {i=}, {rt=}")
+            return rt  
+        elif not pd.isna(row["alt"]):
+            if tf == team_fmt(row["alt"]):
+                if debug:
+                    st.write(f"C {i=}, {rt=}, {row['alt']}")
+                return rt
+
+
 def to_string(
     row: pd.Series | dict,
     inc_team: Optional[bool] = None,
@@ -1240,7 +1368,9 @@ def to_string(
     inc_num: Optional[bool] = None,
     inc_fname: Optional[bool] = None,
     inc_lname: Optional[bool] = None,
-    inc_size: Optional[bool] = None
+    inc_size: Optional[bool] = None,
+    
+    short_team: bool = False
 ) -> str:
     res = []
     if inc_team is None:
@@ -1274,7 +1404,7 @@ def to_string(
     size = row["Size"]
 
     if inc_team and bool(team):
-        res.append(team)
+        res.append(find_team(team) if short_team else team)
     if inc_brand and bool(brand):
         res.append(brand)
     if inc_make and bool(make):
@@ -1282,7 +1412,7 @@ def to_string(
     if inc_model and bool(model):
         res.append(model)
     if inc_num and bool(number):
-        res.append(f"#{number}")
+        res.append(f"#{int(number)}")
     if inc_fname and bool(player_first):
         res.append(player_first)
     if inc_lname and bool(player_last):
@@ -1313,9 +1443,10 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     # st.write("'" + ("', '".join(df_jerseys["PlayerName"].values)) + "'")
 
     active = df_jerseys[df_jerseys.get("Cancelled", pd.Series([False]*len(df_jerseys))).fillna(False) != True].copy()
-    for c in ["Order", "Receive", "Open"]:
-        col = f"{c}Date"
-        active[col] = active[col].dt.date
+    for df in [df_jerseys, active]:
+        for c in ["Order", "Receive", "Open"]:
+            col = f"{c}Date"
+            df[col] = df[col].dt.date
     
     # st.write("active")
     # st.dataframe(active)
@@ -1657,6 +1788,27 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
                 # print(row)
                 render_jersey_card(row, base_img_path, show_player_data=show_player_info)
                 st.markdown("---")
+         
+         
+        df_jerseys_ = df_jerseys.copy()
+        df_jerseys_["path_image_preview"] = df_jerseys_["ID"].apply(lambda id_: get_jersey_image_paths(id_, path_jersey_images, do_sort=False))
+        cols = df_jerseys_.columns.tolist()
+        cols = cols[-1:] + cols[:-1]
+        slider_preview_index = st.slider("Preview Image Index", 0, 5, 0)
+        df_jerseys_["path_image_preview"] = df_jerseys_["path_image_preview"].apply(lambda lst: lst[min(slider_preview_index, len(lst) - 1)] if lst else None)
+        df_jerseys_["path_image_preview"] = df_jerseys_["path_image_preview"].apply(lambda p: local_image_thumbnail_data_url(p, max_size=200, quality=100))
+        # display_df(
+        #     df_jerseys_[cols],
+        #     hide_index=False
+        # )
+        # st.image(df_jerseys_.iloc[25]["path_image_preview"])
+        display_df(
+            df_jerseys_[cols],
+            "HERE ARE JERSEYS",
+            column_config={"path_image_preview": st.column_config.ImageColumn(label="Preview", width=525, help="image")},
+            row_height=600,
+            height=900
+        )
 
     # ══════════════════════════════════════════════
     # TAB 3: TIMELINE
@@ -2181,7 +2333,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     
         df_cost_per_day = active.copy()
         df_cost_per_day["PriceF"] = df_cost_per_day["PriceF"].replace(-1, mean_priced)
-        df_cost_per_day["ToString"] = df_cost_per_day.apply(to_string, axis=1)
+        df_cost_per_day["ToString"] = df_cost_per_day.apply(lambda row: to_string(row, short_team=True), axis=1)
         df_cost_per_day.sort_values("ID", inplace=True)
         for c in ["Order", "Receive", "Open"]:
             col = f"{c}Date"
@@ -2240,7 +2392,103 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         )
         fig_scatter.update_layout(**DARK_THEME, height=380)
         st.plotly_chart(fig_scatter, use_container_width=True)
-
+            
+        if not st.checkbox("Dollars per Day / Max Dollars per Day", value=False):
+            c1, c2 = st.columns([0.75, 0.25])
+            with c1:
+                with st.container():
+                    k_sdtpo = "key_slider_dpd_to_pay_off_e"
+                    lst_adj_vals = [0.01, 0.02, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10, 20, 25, 50, 100]
+                    switch = len(lst_adj_vals)
+                    lst_adj_vals = lst_adj_vals + lst_adj_vals
+                    conts = [st.container(horizontal=True) for _ in range(2)]
+                    for i, v in enumerate(lst_adj_vals):
+                        with conts[int(i < switch)]:
+                            if st.button(f"{'-' if i < switch else '+'}{v:.2f}"):
+                                ov = st.session_state.get(k_sdtpo, 100)
+                                c = ((-1 if i < switch else 1) * v * 100)
+                                st.session_state.update({k_sdtpo: max(1, min(50000, int(ov + c)))})
+                    slider_dpd_to_pay_off_e = st.slider("Dollars per Day Each", 1, 50000, key=k_sdtpo, step=1)
+            with c2:
+                st.metric("$PD", f"${slider_dpd_to_pay_off_e / 100:,.2f}")
+            df_cpd["DaysToPayOff"] = df_cpd["PriceF"].apply(lambda p: int(math.ceil(p / (slider_dpd_to_pay_off_e / 100))))
+        else:
+            with st.container(horizontal=True):
+                slider_dpd_to_pay_off_m = st.slider("Max Dollars per Day", 1, 50000, value=5000, step=1)
+                st.metric("label", f"${slider_dpd_to_pay_off_m / 100:,.2f}")
+                
+        
+        # @@@@#########    
+            
+                
+        df_cpd["PaidForDate"] = df_cpd.apply(lambda row: row["OrderDate"] + timedelta(days=row["DaysToPayOff"]), axis=1)
+        with st.expander("df_cpd"):
+            display_df(
+                df_cpd,
+                "df_cpd"
+            )
+        
+        slider_days_into_future = st.slider("Days into Future", 0, 15000, 365)
+        
+        df_c = pd.DataFrame({"dates": pd.date_range(df_cpd["OrderDate"].min(), max(df_cpd["OrderDate"].max(), (datetime.now().date() + timedelta(days=slider_days_into_future))))})
+        df_c["dates"] = df_c["dates"].apply(lambda d: d.date())
+        df_c["concurrent"] = 0
+        # df_c["payingfor"] = []
+        
+        for i, row in df_cpd.iterrows():
+            od = row["OrderDate"]
+            tpo = row["DaysToPayOff"]
+            ed = od + timedelta(days=tpo)
+            # st.write(f"{i=}, {tpo=}, {ed=}")
+            m = (od <= df_c["dates"]) & (df_c["dates"] <= ed)
+            df_c.loc[m, "concurrent"] += 1
+            # df_c.loc[m, "concurrent"] += 1
+            
+        # df_c.iloc[-1]['concurrent']
+        jpft = df_c[df_c["dates"] == datetime.now().date()].reset_index().iloc[0]["concurrent"]
+        
+        df_c["dollars"] = df_c["concurrent"] * slider_dpd_to_pay_off_e / 100
+        
+        cols_res = st.columns([0.16, 0.32, 0.52])
+        with cols_res[0]:
+            display_df(
+                df_c,
+                "df_c"
+            )
+        with cols_res[1]:
+            display_df(
+                df_cpd[df_cpd["PaidForDate"] > datetime.now().date()][["Label", "OrderDate", "PaidForDate"]],
+                "Paying for Today"
+            )
+        with cols_res[2]:
+            fig = px.line(df_c, x="dates", y="dollars")
+            st.plotly_chart(fig)
+        # st.metric(f"Today I am paying for {df_c.iloc[-1]['concurrent']} jersey(s), if I pay ${slider_dpd_to_pay_off_e/100:,.2f} per day.")
+        
+        cols_vc = st.columns(3)
+        with cols_vc[0]:
+            st.metric(f"Jersey(s) paid for today:", jpft)
+            st.caption(f"@ ${slider_dpd_to_pay_off_e/100:,.2f} per day.")
+            lst_idxs = df_c[df_c["dollars"] > 0].index.to_list()[::-1]
+            if lst_idxs and ((len(df_c) - 1) != lst_idxs[0]):
+                date_paid_off = df_c.loc[lst_idxs[0] + 1]
+                st.caption(f"Jerseys will be paid off on {date_paid_off['dates']}")
+            else:
+                st.write(f"Will still be paying off jerseys beyond {slider_days_into_future} days later.")
+        
+        with cols_vc[1]:
+            st.subheader("Concurrent")
+            fig = px.bar(df_c["concurrent"].value_counts().reset_index(), x="concurrent", y="count")
+            st.plotly_chart(fig)
+            with st.expander("Data"):
+                st.write(df_c["concurrent"].value_counts())
+            
+        with cols_vc[2]:
+            st.subheader("Dollars")
+            fig = px.bar(df_c["dollars"].value_counts().reset_index(), x="count", y="dollars")
+            st.plotly_chart(fig)
+            with st.expander("Data"):
+                st.write(df_c["dollars"].value_counts())
 
 # ─────────────────────────────────────────────────────────
 # DATA LOADING & ENRICHMENT
@@ -2594,35 +2842,101 @@ def detect_gauntlets(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+@st.cache_data(show_spinner=False)
+def fetch_team_logo_png_image(
+    team_abbr: str,
+    dark: bool = True,
+    output_width: int = 256,
+    output_height: int = 256,
+) -> Image.Image | None:
+    try:
+        url = fetch_team_logo(team_abbr, dark=dark)
+
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+
+        png_bytes = cairosvg.svg2png(
+            bytestring=response.content,
+            output_width=output_width,
+            output_height=output_height,
+        )
+
+        img = Image.open(BytesIO(png_bytes)).convert("RGBA")
+        return img
+    
+    except Exception as e:
+        st.warning(f"Could not load logo for {team_abbr}: {e}")
+        return None
+
+
 @st.cache_data
-def fetch_team_logo(team_abbr: str) -> str:
+def fetch_team_logo(team_abbr: str, dark: bool = True, err_on_not_found: bool = False, league: str = "NHL", debug: bool = False) -> str:
     """Get NHL team logo URL from NHL API."""
-    team_id = TEAM_META.get(team_abbr, {}).get("id")
-    if team_id:
-        return f"https://assets.nhle.com/logos/nhl/svg/{team_abbr}_dark.svg"
+    
+    prefix = "https://assets.nhle.com/logos/nhl/svg/"
+    suffix = ".svg"
+    d, l = "_dark", "_light"
+    team_abbr_s = str(team_abbr).lower().strip().removeprefix(prefix).removesuffix(suffix).removesuffix(d).removesuffix(l)
+    
+    # debug = debug and (str(datetime.now().second).endswith("1") or str(datetime.now().second).endswith("4") or str(datetime.now().second).endswith("7") or str(datetime.now().second).endswith("0") or str(datetime.now().second).endswith("3"))
+    
+    if debug:
+        st.write(f"team='{team_abbr}', team_s='{team_abbr_s}', {league=} {dark=}")
+    s_t = team_fmt(find_team(team_abbr_s, league=league, debug=debug))
+    s_l = team_fmt(str(league))
+    if debug:
+        st.write(f"{s_t=}, {s_l=}")
+    df_s = df_teams.copy()
+    df_s["team_s"] = df_s["team"].apply(team_fmt)
+    df_s["league_s"] = df_s["league"].apply(team_fmt)
+    df_s = df_s[(df_s["team_s"] == s_t) & (df_s["league_s"] == s_l)].reset_index()
+    c = len(df_s)
+    if debug:
+        display_df(df_s, f"df_s {team_abbr=}, {dark=}, err={err_on_not_found}, {league=}")
+    if c == 1:
+        if s_l == team_fmt("NHL"):
+            return f"{prefix}{df_s.loc[0, 'team'].upper()}_{'dark' if dark else 'light'}{suffix}"
+        elif s_l == team_fmt("PWHL"):
+            return df_s.iloc[0]["logo"]
+    elif (c == 0) and err_on_not_found:
+        raise ValueError(f"{team_abbr=} not found in df_teams")
+    elif c > 0:
+        raise ValueError(f"Multiple teams found matching {team_abbr=} found in df_teams")
+    
     return ""
+    
+        
+    # if str(find_team(team_abbr)).upper() not in TEAM_META:
+    #     if err_on_not_found:
+    #         raise ValueError(f"{team_abbr=} not found in TEAM_META")        
+    #     return ""
+    # return f"https://assets.nhle.com/logos/nhl/svg/{team_abbr.upper()}_{'dark' if dark else 'light'}.svg"
 
 
-@st.cache_data(ttl=60)
-def fetch_game_landing(g_id) -> dict:
+@st.cache_data(ttl=time_fetch_game_landing)
+def fetch_game_landing(g_id, debug: bool = False) -> dict:
     """Load NHL game landing for given game ID"""
     try:
         url = f"https://api-web.nhle.com/v1/gamecenter/{g_id}/landing"
+        if debug:
+            st.write(f"{datetime.now():%Y-%m-%d %H:%M:%S}, {url=}")
         return requests.get(url).json()
     except Exception:
         return {}
 
  
-# ─── STEP 1 – paste these two functions near the other fetch_* helpers ────────
- 
-@st.cache_data(ttl=300)
-def fetch_nhl_standings() -> list:
+@st.cache_data(ttl=60*30)
+def fetch_nhl_standings(date_in: date = None) -> list:
     """
     Fetch current NHL standings from the NHL web API.
     Returns a list of team-standing dicts, one per team.
     """
     try:
-        url = "https://api-web.nhle.com/v1/standings/now"
+        if date_in is None:
+            url = "https://api-web.nhle.com/v1/standings/now"
+        else:
+            url = f"https://api-web.nhle.com/v1/standings/{date_in:%Y-%m-%d}"
+            # st.write(url)
         resp = requests.get(url, timeout=10)
         resp.raise_for_status()
         data = resp.json()
@@ -2654,6 +2968,25 @@ def fetch_nhl_team_schedule(team_abbr: str) -> list:
         return remaining
     except Exception:
         return []
+
+
+@st.cache_data
+def load_season_meta() -> pd.DataFrame:
+    try:
+        url = "https://api.nhle.com/stats/rest/en/season"
+        resp = requests.get(url, timeout=10)
+        resp.raise_for_status()
+        data = resp.json()
+        df = pd.DataFrame(data.get("data", []))  # .get("", []))
+        for c in ["endDate", "preseasonStartdate", "regularSeasonEndDate", "startDate"]:
+            df[c] = df[c].apply(lambda d: datetime.fromisoformat(d) if not pd.isna(d) else d)
+        df["year"] = df["endDate"].dt.year
+        df.sort_values("endDate", inplace=True)
+        df = df.reset_index(drop=True)
+        return df
+    except Exception as e:
+        raise e
+        # return pd.DataFrame()
 
 
 # ─────────────────────────────────────────────────────────
@@ -2807,19 +3140,6 @@ def compare_two_groups(df_completed, group_col, label):
         legend=dict(orientation="h", yanchor="bottom", y=1.02)
     )
     return fig
-
-
-# ---------------------------------------
-# Example assumptions
-# df_toar columns include:
-# TeamA, TeamB, Sweep, WasSwept
-#
-# TEAM_META contains:
-# {
-#   "ANA": {"name": "Anaheim Ducks", "logo": "path/or/url"},
-#   ...
-# }
-# ---------------------------------------
 
 
 def render_sweep_logo_table(
@@ -3266,14 +3586,14 @@ def load_index_html() -> str:
 
 def load_jersey_workbook():
     # Load jersey workbook
-    try:
-        return load_jersey_data(path_excel_jerseys)
-    except FileNotFoundError:
-        st.error(f"❌ Jersey workbook not found:\n\n`{path_excel_jerseys}`\n\nCheck the path at the top of the script.")
-        return pd.DataFrame()
-    except Exception as e:
-        st.error(f"❌ Could not load jersey workbook: {e}")
-        return pd.DataFrame()
+    # try:
+    return load_jersey_data(path_excel_jerseys)
+    # except FileNotFoundError:
+    #     st.error(f"❌ Jersey workbook not found:\n\n`{path_excel_jerseys}`\n\nCheck the path at the top of the script.")
+    #     return pd.DataFrame()
+    # except Exception as e:
+    #     st.error(f"❌ Could not load jersey workbook: {e}")
+    #     return pd.DataFrame()
 
 
 def verify_scores(df):
@@ -4490,22 +4810,60 @@ def read_pool_sheet(path, debug=False):
     if not df_sheet.empty:
         df_sheet["conf"] = df_sheet["name"].apply(lambda n: "E" if set({"east", "atlantic", "metro", "metropolitan"}).intersection(set(n.lower().split(" "))) else "W")
         df_sheet["type"] = df_sheet["name"].apply(lambda n: "D" if "def" in n.lower() else ("T" if "seed" in n.lower() else "F"))
+        df_sheet = df_sheet.merge(
+            df_teams.loc[(df_teams["league"] == "NHL") & (df_teams["active"] == 1), ["team", "div"]],
+            on="team"
+        )
+        df_sheet["div"] = df_sheet["div"].apply(lambda d: d[0])
     if debug:
         display_df(df_sheet, "df_sheet")
     return df_sheet
 
-
-def show_sheet(path: str, year: int, final: bool=True, style: Literal["radio", "selectbox", "counts", "results_best", "results_worst", "input"] = "radio"):
     
-    if style in ["counts", "results_best", "results_worst"]:
+def name_fmt_ps(pick_name, team, ppg):
+    return f"{pick_name} ({team}): {ppg}"
+    
+
+def show_sheet(
+    path: str | pd.DataFrame,
+    year: int,
+    final: bool=True,
+    style: Literal["radio", "selectbox", "results_best", "results_worst", "number"] = "radio",
+    debug: bool = False,
+    df_pools: pd.DataFrame = None,
+    df_people: pd.DataFrame = None
+):
+    
+    if st.button("rewrite"):
+        jsons = [os.path.join(os.getcwd(), f) for f in os.listdir(os.getcwd()) if (f.lower().endswith(".json")) and (not f.lower().startswith("new_")) and (not f.lower().startswith("users"))]
+        jsons.append(r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Data\data.json")
+        new_fs = []
+        for file in jsons:
+            with open(file) as f:
+                data = eval(f.read().replace("\n", "").replace("true", "True").replace("false", "False"))
+            dir_ = os.path.dirname(file)
+            base = os.path.basename(file)
+            f_new = os.path.join(dir_, f"new_{base}")
+            with open(f_new, "w") as f:
+                data = jsonify(data, in_line=False)
+                f.write(data)
+                new_fs.append(f_new)
+        st.write("new_fs")
+        st.write(new_fs)
+    
+    if style in ["results_best", "results_worst"]:
         st.error(f"{style=} not supported yet")
         return
     
     radios: bool = style == "radio"
-    num_type: bool = style in ["counts", "results_best", "results_worst", "input"]
+    selections: bool = style in ["radio", "selectbox"]
+    num_type: bool = style in ["results_best", "results_worst", "number"]
     
     with st.container(border=True):
-        df_sheet = read_pool_sheet(path)
+        if isinstance(path, str):
+            df_sheet: pd.DataFrame = read_pool_sheet(path, debug=debug)
+        else:
+            df_sheet: pd.DataFrame = path.copy()
         n_cols = 4
         n_boxes = df_sheet["box"].max() + 1
         selectboxes = []
@@ -4517,12 +4875,13 @@ def show_sheet(path: str, year: int, final: bool=True, style: Literal["radio", "
         def sbi_key(i, j):
             return f"{sb_key(i)}_{j}"
         
-        def name_fmt(pick_name, team, ppg):
-            return f"{pick_name} ({team}): {ppg}"
+        def sb_teams(i):
+            df_box = df_sheet[df_sheet["box"] == i].reset_index()
+            return df_box["team"].values.tolist()
         
         def sb_options(i):
             df_box = df_sheet[df_sheet["box"] == i].reset_index()
-            return [""] + df_box.apply(lambda r: name_fmt(r["pick"], r["team"], r["ppg"]), axis=1).values.tolist()
+            return [""] + df_box.apply(lambda r: name_fmt_ps(r["pick"], r["team"], r["ppg"]), axis=1).values.tolist()
         
         cols_menu = st.columns([0.15, 0.85])
         
@@ -4594,7 +4953,7 @@ def show_sheet(path: str, year: int, final: bool=True, style: Literal["radio", "
                     df_box = df_sheet[df_sheet["box"] == i].reset_index()
                     df_box = df_box[~pd.isna(df_box["pick"])].sort_values("ppg", ascending=False)
                     pick, team, ppg = df_box.iloc[0][["pick", "team", "ppg"]].values
-                    st.session_state.update({key: name_fmt(pick, team, ppg)})
+                    st.session_state.update({key: name_fmt_ps(pick, team, ppg)})
             if st.button("Top PPG of Selected Teams", key="key_poolsheet_btn_top_ppg_sel_teams"):
                 sel_box_nums = df_sheet[df_sheet["type"] == "T"]["box"].unique().tolist()
                 sel_teams = [st.session_state.get(sb_key(i), "") for i in sel_box_nums]
@@ -4613,24 +4972,71 @@ def show_sheet(path: str, year: int, final: bool=True, style: Literal["radio", "
                         df_box = df_box[~pd.isna(df_box["pick"])].sort_values(["sel_team", "ppg"], ascending=[False, False])
                         # display_df(df_box, f"df_box_{i=}")
                         pick, team, ppg = df_box.iloc[0][["pick", "team", "ppg"]].values
-                        st.session_state.update({key: name_fmt(pick, team, ppg)})
-            if style == "input":
-                st.divider()            
-                # if st.button("output", key="key_output_poolsheet", disabled=all(selectboxes)):
-                if st.button("output", key="key_output_poolsheet"):
-                    now = datetime.now()
-                    f_name = f"poolsheet_{year}_{now:%Y%m%d%H%M%S}.json"
-                    data = {"date": now}
-                    # data.update({i: sb for i, sb in enumerate(selectboxes)})
-                    data.update({i: [st.session_state.get(sbi_key(i, j)) for j, opt in enumerate(sb_options(i)[1:])] for i in range(n_boxes)})
-                    data = jsonify(data, in_line=False)
-                    st.write("data")
-                    st.json(data)
-                    with open(f_name, "w") as f:
-                        json.dump(data, f)
+                        st.session_state.update({key: name_fmt_ps(pick, team, ppg)})
+            # if style == "number":
+            st.divider()            
+            # if st.button("output", key="key_output_poolsheet", disabled=all(selectboxes)):
+            
+            if (df_pools is not None) and (not df_pools.empty):
+                df_sel_players = df_pools[df_pools["year"] == year].explode("standings").merge(df_people, left_on="standings", right_on="id", how="inner")
+                df_sel_players["Name"] = df_sel_players.apply(lambda r: r["alias"] if not pd.isna(r["alias"]) else r["name"], axis=1)
+                df_sel_players.sort_values("Name", inplace=True)
+                stdf_sel_players = display_df(
+                    df_sel_players["Name"],
+                    "bind:",
+                    show_shape=False,
+                    on_select="rerun",
+                    selection_mode="single-row"
+                )
+                sel_player = get_selected_rows(df_sel_players, stdf_sel_players, cols="id", n=1)
+                sel_player_id = tuple()
+                if not sel_player.empty:
+                    sel_player_id = int(sel_player), df_people[df_people["id"] == int(sel_player)].reset_index().loc[0, "name"]
+                st.write(f"sel_player_id")
+                st.write(sel_player_id)
+                
+            k_text_picksheet_name = f"key_text_picksheet_name"
+            if sel_player_id:
+                st.session_state.update({k_text_picksheet_name: sel_player_id[1]})
+            text_name = st.text_input("Name:", key=k_text_picksheet_name, placeholder="Enter a name for this picksheet")
+            
+            if st.button("output" + ("" if not sel_player_id else f" and bind to '{sel_player_id[1]}' in {year}") + "?", key="key_output_poolsheet", disabled=not bool(text_name.strip())):
+                now = datetime.now()
+                f_name = f"poolsheet_{text_name.strip().lower()}_{year}_{now:%Y%m%d%H%M%S}.json"
+                data = {"date": now}
+                # data.update({i: sb for i, sb in enumerate(selectboxes)})
+                if num_type:
+                    key_data = {i: [st.session_state.get(sbi_key(i, j)) for j, opt in enumerate(sb_options(i)[1:])] for i in range(n_boxes)}
+                else:
+                    key_data = {i: st.session_state.get(sb_key(i)) for i in range(n_boxes)}
+                data.update(key_data)
+                data = jsonify(data, in_line=False)
+                st.write("data")
+                st.json(data)
+                with open(f_name, "w") as f:
+                    f.write(data)
+                    
+                if sel_player_id:
+                    with open(path_hockey_pool_data, "r") as f:
+                        j_data = json.load(f)
+                        
+                    picksheets_data = j_data.setdefault("picksheets", [])
+                    idx = None
+                    for i, ps_data in enumerate(picksheets_data):
+                        if (ps_data.get("year") == year) and (ps_data.get("player") == sel_player_id[0]):
+                            idx = i
+                            break
+                    
+                    if idx is not None:
+                        picksheets_data.pop(idx)
+                    picksheets_data.append({"year": year, "player": sel_player_id[0], "path": f_name})
+                    j_data = jsonify(j_data)
+                    with open(path_hockey_pool_data, "w") as f:
+                        f.write(j_data)
+                    load_hockey_pool_data.clear()
         
         with cols_menu[1]:
-            with st.form(border=False, key="key_poolsheet_form"):
+            with st.container():
                 with st.container():
                     st.header(f"{year} Playoffs:")
                     st.caption("Final: " + (":white_check_mark:" if final else ":x:"))
@@ -4639,20 +5045,53 @@ def show_sheet(path: str, year: int, final: bool=True, style: Literal["radio", "
                     df_box = df_sheet[df_sheet["box"] == i].reset_index()
                     name = df_box.loc[0, "name"]
                     options = sb_options(i)
+                    teams = sb_teams(i)
                     key = sb_key(i)
+                    in_vals = df_box.get("val") is not None
+                    vals = df_box.get("val", pd.Series([0 for _ in options])).values.tolist()
+                    lst_vals = list(map(bool, vals))
+                    lst_vals_i = list(map(lambda v: int(v), vals))
+                    vals_b = sum(lst_vals)
+                    idx = lst_vals.index(True) if True in lst_vals else None
+                    if idx is not None:
+                        if selections:
+                            if debug:
+                                st.write(f"{i=}, {key=}, {idx=}, {options[1:]=}, {options[1:][idx]=}")
+                            st.session_state.update({key: options[1:][idx]})
+                        else:
+                            for j, val in enumerate(lst_vals_i):
+                                if debug:
+                                    st.write(f"{i=}, {j=}, {key=}, {idx=}")
+                                st.session_state.update({sbi_key(i, j): val})
+                    
+                    if debug:
+                        st.write(f"{name=}, {in_vals=}, {vals=}, {lst_vals=}, {lst_vals_i=}, {vals_b=}, {idx=}")
+                        
                     with grid_conts[i // n_cols]:
-                        with st.container(border=True):
+                        with st.container(border=True, horizontal=True):
                             valid = bool(st.session_state.get(key))
                             valid_lbl = ":white_check_mark:" if valid else ":x:"
-                            if radios:
-                                options = options[1:]
-                                selectboxes.append(st.radio(label=f"{name} {valid_lbl}", options=options, key=key, index=None))
+                            if selections:
+                                if radios:
+                                    if vals_b > 1:
+                                        raise ValueError(f"Can't apply radio to a multi-positive value input DF. {i=}, {name=}, {key=}, {vals=}")
+                                    options = options[1:]
+                                    selectboxes.append(st.radio(label=f"{name} {valid_lbl}", options=options, key=key, index=idx, disabled=in_vals))
+                                else:
+                                    selectboxes.append(st.selectbox(label=f"{name} {valid_lbl}", options=options, key=key))
+                                    
+                                sel_val = st.session_state.get(key)
+                                if sel_val:
+                                    sel_idx = options.index(sel_val) - (not radios)
+                                    sel_team = teams[sel_idx]
+                                    st.image(fetch_team_logo(sel_team), sel_team, width=60)
+                                    
                             else:
                                 if num_type:
                                     box_nums[i] = []
                                     for j, opt in enumerate(options[1:]):
-                                        val = 0
-                                        disabled = False
+                                        val = lst_vals_i[j]
+                                        disabled = in_vals
                                         box_nums[i].append(st.number_input(
                                             label=opt,
                                             min_value=0,
@@ -4661,13 +5100,11 @@ def show_sheet(path: str, year: int, final: bool=True, style: Literal["radio", "
                                             disabled=disabled,
                                             key=sbi_key(i, j)
                                         ))
-                                else:
-                                    selectboxes.append(st.selectbox(label=f"{name} {valid_lbl}", options=options, key=key))
                         
                         
                 st.write("box_nums")
                 st.write(box_nums)
-                if st.form_submit_button("submit", key="key_poolsheet_submit"):
+                if st.button("submit", key="key_poolsheet_submit",):
                     valid = all(selectboxes)
                     st.write(f"Valid={valid}")
                                     
@@ -4692,20 +5129,354 @@ def page_hockey_pool_test():
     show_sheet(sheet_paths[0][1], 2023)
     
     
-def page_hockey_pool():
-    dfs: dict[str, pd.DataFrame] = load_hockey_pool_data()
-    for k, df in dfs.items():
-        display_df(df, title=k, show_shape="separate", border=True)
+def clean_letters(word: str) -> str:
+    translate = {
+        "ü": "u",
+        "ý": "y"
+    }
+    for i, c in enumerate(word[::]):
+        if c.lower() in translate:
+            f = str.upper if c.isupper() else str.lower
+            word = word[:i] + f(translate[c]) + word[i+1:]
+    return word
+    
+
+# @st.cache_data
+# def load_scores(path) -> tuple[dict, pd.DataFrame]:
+#     df = pd.read_excel(path)
+#     display_df(df, "LOADED")
+#     cols_to_drop = [c for c in df.columns if c.lower().startswith("unnamed")]
+#     df = df.drop(columns=cols_to_drop)
+#     col_dict = {col.lower(): col for col in df.columns}
+#     df.columns = [col.lower() for col in df.columns]
+#     df = df[~pd.isna(df["gameid"])]
+#     yn_cols = [
+#         "correct", "gameover", "awaywon", "homewon",
+#         "hasot", "awaywasshutout", "homewasshutout"
+#     ]
+#     int_cols = [
+#         "gameid", "seriesid", "roundnum", "gamenum",
+#         "topseedwins", "lowseedwins", "pawayscore",
+#         "phomescore", "aawayscore", "ahomescore",
+#         "otroundnum", "timeinseconds", 
+#         "diffawaygoals", "diffhomegoals", 
+#     ]
+#     for col in yn_cols:
+#         df[col] = df[col].apply(lambda v: bool(v) if not pd.isna(v) else False)
+#     for col in int_cols:
+#         df[col] = df[col].apply(lambda v: int(v) if not pd.isna(v) else 0)
+#     return col_dict, df
+    
+
+def extract_scoring(game_data: dict) -> pd.DataFrame:
+    
+    # score_cols = ["gameid"] + flatten([
+    #     [
+    #         f"g{str(i).rjust(2, '0')}_team", f"g{str(i).rjust(2, '0')}_playerid", f"g{str(i).rjust(2, '0')}_playername",
+    #         f"g{str(i).rjust(2, '0')}_a1_playerid", f"g{str(i).rjust(2, '0')}_a1_playername",
+    #         f"g{str(i).rjust(2, '0')}_a2_playerid", f"g{str(i).rjust(2, '0')}_a2_playername"
+    #     ]
+    #     for i in range(1, MAX_GOALS_PER_GAME + 1)
+    # ])
+    
+    score_cols = ["gameid", "seriescode", "round", "gamenum"] + flatten([
+        [
+            g_key(i, "t"), g_key(i, "i"), g_key(i, "p"),
+            a_key(i, 1, "i"), a_key(i, 1, "p"),
+            a_key(i, 2, "i"), a_key(i, 2, "p"),
+        ]
+        for i in range(1, MAX_GOALS_PER_GAME + 1)
+    ])
+    
+    # st.write(score_cols)
+    
+    df = pd.DataFrame([{col: None for col in score_cols}])
+    id_ = game_data.get("id")
+    roundnum, seriescode, gamenum = str(id_)[-3:]
+    summary = game_data.get("summary", {})
+    g_num = 0
+    if summary:
+        df.loc[0, ["gameid", "seriescode", "round", "gamenum"]] = id_, seriescode, roundnum, gamenum
+        scoring = summary.get("scoring", [])
+        for i, score_data in enumerate(scoring):
+            goals = score_data.get("goals", [])
+            for j, goal_data in enumerate(goals):
+                g_num += 1
+                goal_key = f"g{str(g_num).rjust(2, '0')}_"
+                scorer_id = goal_data.get("playerId")
+                scorer_team = goal_data.get("teamAbbrev", {}).get("default")
+                scorer_name = goal_data.get("name", {}).get("default")
+                assists = goal_data.get("assists", [])
+                df.loc[0, f"{goal_key}team"] = scorer_team
+                df.loc[0, f"{goal_key}playerid"] = scorer_id
+                df.loc[0, f"{goal_key}playername"] = scorer_name
+                for k, assist_data in enumerate(assists, start=1):
+                    assist_key = f"{goal_key}a{k}_"
+                    assist_id = assist_data.get("playerId")
+                    # assist_team = assist_data.get("teamAbbrev", {}).get("default")
+                    assist_name = assist_data.get("name", {}).get("default")
+                    df.loc[0, f"{assist_key}playerid"] = assist_id
+                    df.loc[0, f"{assist_key}playername"] = assist_name
         
+    return df
+
+
+def extract_player_scoring(df_game_scoring, debug: bool = False) -> pd.DataFrame:
+    
+    goal_id_cols = flatten([
+        [g_key(i, "i"), a_key(i, 1, "i"), a_key(i, 2, "i")]
+        for i in range(1, MAX_GOALS_PER_GAME + 1)
+    ])
+    
+    df = pd.DataFrame(columns=["year", "player", "team", "id", "g", "a", "pts", "gp"])
+    idx = 0
+    for j, row in df_game_scoring.iterrows():
+        if debug:
+            st.divider()
+        for i in range(1, MAX_GOALS_PER_GAME + 1):    
+            gk_i, gk_p, gk_t = map(lambda m: g_key(i, m), ["i", "p", "t"])
+            a1k_i, a1k_p = map(lambda m: a_key(i, 1, m), ["i", "p"])
+            a2k_i, a2k_p = map(lambda m: a_key(i, 2, m), ["i", "p"])
+            
+            y = row["year"]
+            g_i, g_p, g_t = row[[gk_i, gk_p, gk_t]]
+            a1_i, a1_p = row[[a1k_i, a1k_p]]
+            a2_i, a2_p = row[[a2k_i, a2k_p]]
+            
+            if debug:
+                if "M. Marner" not in [g_p, a1_p, a2_p]:
+                    continue
+            
+            df_g = df[df["id"] == g_i]
+            df_a1 = df[df["id"] == a1_i]
+            df_a2 = df[df["id"] == a2_i]
+            if g_i:
+                if debug:
+                    st.write(f"G#={row['gameid']}, {g_i=}, {g_p=}, {g_t=}")
+                if df_g.empty:
+                    df.loc[idx, ["year", "player", "team", "id", "g", "a", "gp"]] = [y, g_p, g_t, g_i, 1, 0, 0]
+                    idx += 1
+                else:
+                    if debug:
+                        with st.container(horizontal=True):
+                            st.write(df_g.index.tolist())
+                            display_df(df, "Goals DF {j=}, {i=}")
+                    df.loc[df_g.index, "g"] += 1
+            if a1_i:
+                if debug:
+                    st.write(f"{a1_i=}, {a1_p=}, {g_t=}")
+                if df_a1.empty:
+                    df.loc[idx, ["year", "player", "team", "id", "g", "a", "gp"]] = [y, a1_p, g_t, a1_i, 0, 1, 0]
+                    idx += 1
+                else:
+                    if debug:
+                        st.write(df_a1.index.tolist())
+                    df.loc[df_a1.index, "a"] += 1
+            if a2_i:
+                if debug:
+                    st.write(f"{a2_i=}, {a2_p=}, {g_t=}")
+                if df_a2.empty:
+                    df.loc[idx, ["year", "player", "team", "id", "g", "a", "gp"]] = [y, a2_p, g_t, a2_i, 0, 1, 0]
+                    idx += 1
+                else:
+                    if debug:
+                        st.write(df_a2.index.tolist())
+                    df.loc[df_a2.index, "a"] += 1
+
+        game_pts_ids = list(set([row[col] for col in goal_id_cols if not pd.isna(row[col])]))
+        df.loc[df["id"].isin(game_pts_ids), "gp"] += 1
+    
+    df["pts"] = df["g"] + df["a"]
+    df["ppg"] = df["pts"] / df["gp"]
+    
+    # for i, row in df.iterrows():
+    #     df["gp"] = sum(map(len, flatten(df_game_scoring[goal_id_cols].values.tolist())))
+    df = df.sort_values(["pts", "g", "a"], ascending=False)
+    df_m = pd.DataFrame(TEAM_META)
+    for col in df_m.columns:
+        df_m.loc["div", col] = df_m.loc["div", col][:1].upper()
+        df_m.loc["conf", col] = df_m.loc["conf", col][:1].upper()
+    df_m = df_m.transpose().reset_index(names="team")
+    # display_df(
+    #     df_m,
+    #     "df_m",
+    #     hide_index=False
+    # )
+    df = df.merge(
+        df_m[["team", "conf", "div"]],
+        "inner",
+        on="team"
+    )
+    df["pick"] = df["player"].apply(lambda p: clean_letters(p.split(".")[1].strip() + ", " + p.split(".")[0].strip()))
+    return df
+
+
+def scoring_summaries(df_playoffs, df_game_scoring) -> pd.DataFrame:
+    cols = [
+        "gameid", "awayteam", "hometeam", "winner",
+        "seriescode", "round", "gamenum",
+    ] + int_record_cols + team_cols_b
+    
+    ddn(df_game_scoring, "df_game_scoring from scoring_summaries", image_cols=team_cols_b)
+    
+    df = pd.DataFrame([{col: None for col in cols}])
+    idx = 0
+    
+    for i, row in df_game_scoring.iterrows():
+        s_code, roundnum, gamenum, gameid = row[["seriescode", "round", "gamenum", "gameid"]]
+        # st.write(f"X {i=}, {s_code=}, {roundnum=}, {gamenum=}, {gameid=}")
+        df_p = df_playoffs[
+            (df_playoffs["seriesid"].fillna(0).astype(int) == int(s_code))
+            & (df_playoffs["roundnum"].fillna(0).astype(int) == int(roundnum))
+            & (df_playoffs["gamenum"].fillna(0).astype(int) == int(gamenum))
+        ].reset_index()
+        # display_df(df_p, f"{i=}, {s_code=}, {roundnum=}, {gamenum=}")
+        g_id, away_team, home_team = df_p.iloc[0][["gameid", "awayteam", "hometeam"]]
+        # st.write(f"{i=}, {g_id=}, {away_team=}, {home_team=}")
+        df.loc[idx, ["gameid", "seriescode", "round", "gamenum"]] = [g_id, s_code, roundnum, gamenum]
+        df.loc[idx, "awayteam"] = away_team
+        df.loc[idx, "hometeam"] = home_team
+        
+        scores = {t: {c: 0 for c in int_record_cols} for t in [away_team, home_team]}
+        # with st.container(horizontal=True):
+        #     with st.container():
+        #         st.write("scores")
+        #         st.write(scores)
+        #     with st.container():
+        #         st.write("team_cols_b")
+        #         st.write(team_cols_b)
+        
+        for col in team_cols_b:
+            score_team = row[col]
+            if pd.isna(score_team):
+                break
+            is_home = score_team == home_team
+            scored_on_team = away_team if is_home else home_team
+            scores[score_team]["gf_h" if is_home else "gf_a"] += 1
+            scores[scored_on_team]["ga_a" if is_home else "ga_h"] += 1
+            df.loc[idx, col] = score_team
+        
+        winner = home_team if scores[home_team]["gf_h"] > scores[away_team]["gf_a"] else away_team
+        df.loc[idx, "winner"] = winner
+        scores[away_team]["w_a" if winner == away_team else "l_a"] += 1
+        scores[home_team]["w_h" if winner == home_team else "l_h"] += 1
+        
+        # st.write(f"scores: {winner=}")
+        # st.write(pd.DataFrame(scores))
+        
+        for col in int_record_cols:
+            df.loc[idx, col] = scores[away_team if col.endswith("_a") else home_team][col]
+        
+        idx += 1
+        
+    for col in int_record_cols:
+        df[col] = df[col].apply(lambda v: int(v) if not pd.isna(v) else 0)
+        
+    return df
+
+
+@st.cache_data
+def load_all_pool_picks():
+    
+    dfs: dict[str, pd.DataFrame] = load_hockey_pool_data()
+    df_pools: pd.DataFrame = dfs["pools"]
+    df_picksheets: pd.DataFrame = dfs["picksheets"]
+    
+    df_all_picks = []
+    for i, row in df_picksheets.iterrows():
+        path = row["path"]
+        year = row["year"]
+        player = row["player"]
+        df_sheet = read_pool_sheet(df_pools[df_pools["year"] == year].reset_index().iloc[0]["picksheet"])
+        df_sheet["val"] = 0
+        df_sheet["year"] = year
+        df_sheet["player"] = player
+        df_sheet["text"] = df_sheet.apply(lambda r: name_fmt_ps(r["pick"], r["team"], r["ppg"]), axis=1).values.tolist()
+        
+        if path:
+            with open(path) as f:
+                data_picks = eval(json.load(f))
+            date_in = data_picks.pop("date")
+            for box_n, choice in data_picks.items():
+                df_sheet.loc[df_sheet[df_sheet["text"] == choice].index, "val"] = 1
+        
+        # display_df(df_sheet, f"{i=}")
+        df_all_picks.append(df_sheet)
+    return pd.concat(df_all_picks, ignore_index=True)
+
+
+@st.cache_data
+def load_league_standings(year: int | list = None, seasons: int = 5) -> pd.DataFrame:
+    if year is None:
+        year = datetime.now().year
+    elif isinstance(year, (list, tuple)):
+        if not len(year) == 2:
+            raise ValueError(f"'year' must be an int or a list of ints as years, got {year=}")
+        year = sorted(list(year))
+    else:
+        if not isinstance(seasons, int):
+            raise ValueError(f"'seasons' must be an int, got {seasons=}")
+    
+    seasons = max(1, abs(seasons))
+    # lst_years = list(range(year-seasons+1, year+1))
+    # st.write("lst_years")
+    # st.write(lst_years)
+    
+    df_season_meta = load_season_meta()
+    idxs = df_season_meta.index.tolist()
+    df_stu = df_season_meta[df_season_meta["year"] == year-seasons+1]
+    if not df_stu.empty:
+        idx = df_stu.index
+        i = idxs.index(idx)
+        df_stu = df_season_meta[i:i+seasons]
+    display_df(df_stu, "Seasons to use:")
+    
+    df_syby = []
+    for i, row in df_stu.iterrows():
+        end_date = row["regularSeasonEndDate"]
+        year = row["year"]
+        data = fetch_nhl_standings(end_date)
+        # with st.container(horizontal=True):
+        #     st.write(data)
+        #     display_df(pd.DataFrame(data), f"{end_date:%Y-%m-%d}")
+        df_ss = pd.DataFrame(data)
+        df_ss["year"] = year
+        df_ss["placeName"] = df_ss["placeName"].apply(lambda p: find_team(p["default"]))
+        df_ss["teamAbbrev"] = df_ss["teamAbbrev"].apply(lambda p: find_team(p["default"]))
+        df_ss["teamName"] = df_ss["teamName"].apply(lambda p: p["default"])
+        df_ss["teamCommonName"] = df_ss["teamCommonName"].apply(lambda p: p["default"])
+        df_syby.append(df_ss)
+    df_syby = pd.concat(df_syby, ignore_index=True)
+    return df_syby
+    
+
+    
+def page_hockey_pool():
+    
+    k_radio_hp_mode = "key_radio_hp_mode"
+    st.session_state.setdefault(k_radio_hp_mode, "Stats")
+    radio_hp_mode = st.radio(
+        "Mode",
+        ["Stats", "Teams", "Predictions", "Pools", "PickSheets"],
+        key=k_radio_hp_mode,
+        horizontal=True
+    )
+    
+    dfs: dict[str, pd.DataFrame] = load_hockey_pool_data()
+        
+    df_jerseys = load_jersey_workbook()
     df_people: pd.DataFrame = dfs["people"]
     df_pools: pd.DataFrame = dfs["pools"]
     df_years: pd.DataFrame = dfs["years"]
-    
+    df_picksheets: pd.DataFrame = dfs["picksheets"]
+    df_predictions: pd.DataFrame = load_playoff_predictions()
     
     sheet_paths = df_pools.groupby(["picksheet", "year", "final"]).agg("min").index.to_list()
-    count_paths = df_pools.groupby(["pickCounts", "year", "final"]).agg("min").index.to_list()
-    st.write("sheet_paths")
-    st.write(sheet_paths)
+    # count_paths = df_pools.groupby(["pickCounts", "year", "final"]).agg("min").index.to_list()
+    # st.write("sheet_paths")
+    # st.write(sheet_paths)
+    # st.write("count_paths")
+    # st.write(count_paths)
     df_combined = []
     for path, year, final in sheet_paths:
         df = read_pool_sheet(path)
@@ -4715,286 +5486,1738 @@ def page_hockey_pool():
             df_combined.append(df)
     
     df_combined = pd.concat(df_combined)
-    display_df(df_combined, f"Combined")
+    display_df_nhl(df_combined, f"Combined")
+    display_df_nhl(df_picksheets, f"df_picksheets")
     
-    radio_pool_sheet_year = st.radio(
-        label="Select a Pool Year:",
-        options=df_years["year"].unique().tolist(),
-        key="key_radio_pool_sheet_year",
-        index=len(df_years["year"].unique()) - 1,
-        horizontal=True
-    )
-    radio_pool_sheet_style = st.radio(
-        label="Select a Pool Sheet Style:",
-        options=["radio", "selectbox", "counts", "results_best", "results_worst", "input"],
-        key="key_radio_pool_sheet_style",
-        index=0,
-        horizontal=True        
-    )
-    # st.write(*[sp for sp in sheet_paths if sp[1] == radio_pool_sheet_year][0])
-    show_sheet(*[sp for sp in sheet_paths if sp[1] == radio_pool_sheet_year][0], style=radio_pool_sheet_style)
+    with st.spinner("Loading Pool Picks", show_time=True):
+        df_all_picks = load_all_pool_picks()        
+    display_df(df_all_picks, "df_all_picks")
     
+    df_all_picks_g = df_all_picks.groupby([
+        "pick", 'team', "ppg", 'name',
+        "row", "col", "box", "pos",
+        "conf", "type", "year", "text"
+    ]).agg({
+        "player": "count",
+        "val": "sum",
+    }).rename(columns={
+        "player": "freq",
+        "val": "pickcount"
+    }).reset_index()
+    df_all_picks_g["pick%"] = df_all_picks_g["pickcount"] / df_all_picks_g["freq"]
     
-    hp_html = """
-        <iframe marginheight="0" marginwidth="0"
-            style="border: none;" frameborder="0"
-            src="https://www.officepools.com/nhl/classic/auth/2025/playoff/MMPlayoffs2026/hockey"
-            width="500" 
-            height="500"
-        ></iframe>
-    """
+    display_df_nhl(df_all_picks_g, "df_all_picks_g")
     
-    st.markdown(hp_html, unsafe_allow_html=True)
+    display_df_nhl(df_pools, "df_pools")
+    df_pools_results = df_pools[~pd.isna(df_pools["results"])]
     
+    df_predictions.columns = map(str.lower, df_predictions.columns)
+    display_df_nhl(df_predictions, "df_predictions")
     
+    df_all_series = []
+    # for i, row in df_predictions.iterrows():
+    #     path_results = row["results"]
+    #     col_translation, df_playoffs = load_scores(path_results)
     
+        # df_playoffs["year"] = row["year"]
+    df_playoffs = df_predictions.copy()
+    df_series = df_playoffs.groupby(
+        [
+            "seriescode", "seriesid", "roundnum",
+            "conf", "lowseed", "topseed"
+        ]).agg({
+            "gamenum": "count",
+            "lowseedwins": "max",
+            "topseedwins": "max",
+            # "aawayscore": "sum",
+            # "ahomescore": "sum",
+            "year": "max",
+        }).reset_index().sort_values([
+            "roundnum", "seriesid"
+        ]).rename(columns={
+            "gf_away": "sum",
+            "gf_home": "sum",
+        })
     
-    df_people["norm"] = df_people["name"].apply(lambda n: no_specials(n, strict=True))
+    df_series["seriesover"] = df_series.apply(lambda r: (r["topseedwins"] == 4) or (r["lowseedwins"] == 4), axis=1)
+    df_series["topseedwon"] = df_series["topseedwins"].apply(lambda v: v == 4)
+    df_series["lowseedwon"] = df_series["lowseedwins"].apply(lambda v: v == 4)
+    df_series["winner"] = df_series.apply(lambda r: r["topseed"] if r["topseedwon"] else (r["lowseed"] if r["lowseedwon"] else None), axis=1)
+    # df_all_series.append(df_series)
+    
+    display_df_nhl(df_series, "SERIES")
+    
+    df_series_team = df_series.copy()
+    df_series_team["teams"] = df_series_team.apply(lambda r: [r["lowseed"], r["topseed"]], axis=1)
+    df_series_team = df_series_team.drop(columns=["lowseed", "topseed"])
+    df_series_team = df_series_team.explode("teams").rename(columns={"teams": "team"})
+    # for i, row in df_series.iterrows():
+    #     df_series_team.append(pd.DataFrame([{
+    #         "": ""
+    #     }]))
         
-    cols_pool_results = st.columns(len(df_pools))
+    # df_series_team = pd.concat(df_series_team, ignore_index=True)
+    display_df_nhl(df_series_team, "df_series_team")
+        
+    # df_all_series = pd.concat(df_all_series, ignore_index=True)
+    # display_df_nhl(df_all_series, "df_all_series")
     
-    lst_df_pool_e = []
+    st.divider()
+    st.divider()
+    st.divider()
     
-    for i, row in df_pools.iterrows():
-        with cols_pool_results[i]:
-            year = row["year"]
-            fee = row["fee"]
-            pct_prize = row["pctPrize"]
-            standings = row["standings"]
-            final = row["final"]
-            n_people = len(standings)
-            total_fees = fee * pct_prize * n_people
-            prizes = [total_fees * 0.5, total_fees * 0.35, total_fees * 0.15]
+    if radio_hp_mode == "Picksheets":
+        cols_layout = st.columns(2)
+    
+        with cols_layout[0]:
+            radio_pool_sheet_year = st.radio(
+                label="Select a Pool Year:",
+                options=df_years["year"].unique().tolist(),
+                key="key_radio_pool_sheet_year",
+                index=len(df_years["year"].unique()) - 1,
+                horizontal=True
+            )
+            df_picksheets_year = df_picksheets[df_picksheets["year"] == radio_pool_sheet_year]
+            df_picksheets_year = df_picksheets_year.merge(df_people, "inner", left_on="player", right_on="id")
+            k_toggle_browse_picksheet = "key_toggle_browse_picksheet"
+            if df_picksheets_year.empty:
+                st.warning(f"No picksheets for {radio_pool_sheet_year} Playoffs")
+                st.session_state.update({k_toggle_browse_picksheet: False})
             
-            st.header(f"{year} playoffs - {'FINAL' if final else 'ONGOING'}")
-            for i, people_id in enumerate(standings):
-                df_pool_people = df_people[df_people["id"] == people_id].reset_index()
-                name = df_pool_people.loc[0, "name"]
-                alias = df_pool_people.iloc[0].get("alias")
-                if " " in name.strip():
-                    name_a = name.split(" ")
-                    name_a = f"{name_a[0].title()} {name_a[1][0].upper()}"
-                else:
-                    name_a = name
-                alias = name_a if pd.isna(alias) else alias
-                winnings = prizes[i] if i < len(prizes) else 0
-                winnings = winnings if final else 0
-                if winnings:
-                    st.write(f"{i + 1} - prize: $ {winnings:,.2f} - {alias}")
-                else:
-                    st.write(f"{i + 1} - {alias}")
-                norm = no_specials(name, strict=True)
-                lst_df_pool_e.append(pd.DataFrame([{
-                    "year": year,
-                    "fee": fee,
-                    "pctPrize": pct_prize,
-                    "totalPrizes": total_fees,
-                    "nPlayers": n_people,
-                    "place": i + 1,
-                    "winnings": winnings,
-                    "person": people_id,
-                    "norm": norm
-                }]))
-               
-    df_pools_e = pd.concat(lst_df_pool_e, ignore_index=True)
-    display_df(df_pools_e, "df_pools_e")
-    
-    df_people_e = df_people.copy()
-    df_people_e["best"] = None
-    df_people_e["worst"] = None
-    df_people_e["sum"] = None
-    df_people_e["inv"] = None
-    df_people_e["mean"] = None
-    df_people_e["lastYear"] = None
-    df_people_e["totalPayed"] = 0
-    df_people_e["timesPlayed"] = 0
-    df_people_e["totalWinnings"] = 0
-    for i, row in df_people.iterrows():
-        # people_id = row["id"]
-        # df_pools_person = df_pools_e[df_pools_e["person"] == people_id]
-        people_norm = row["norm"]
-        df_pools_person = df_pools_e[df_pools_e["norm"] == people_norm]
-        df_people_e.loc[i, "best"] = df_pools_person["place"].min()
-        df_people_e.loc[i, "worst"] = df_pools_person["place"].max()
-        df_people_e.loc[i, "sum"] = df_pools_person["place"].sum()
-        df_people_e.loc[i, "inv"] = df_pools_person["nPlayers"].sum() - df_pools_person["place"].sum()
-        df_people_e.loc[i, "mean"] = df_pools_person["place"].mean()
-        df_people_e.loc[i, "lastYear"] = df_pools_person["year"].max()
-        df_people_e.loc[i, "totalPayed"] = df_pools_person["fee"].sum()
-        df_people_e.loc[i, "timesPlayed"] = df_pools_person["place"].count()
-        df_people_e.loc[i, "totalWinnings"] = df_pools_person["winnings"].sum()
+            toggle_browse = st.toggle("browse", False, key=k_toggle_browse_picksheet)
+            radio_pool_sheet_style = st.radio(
+                label="Select a Pool Sheet Style:",
+                options=["radio", "selectbox", "number", "results_best", "results_worst"],
+                key="key_radio_pool_sheet_style",
+                index=0,
+                horizontal=True        
+            )
         
-    df_people_e["totalEarnings"] = df_people_e["totalWinnings"] - df_people_e["totalPayed"]
-    df_people_e["earningsPerYear"] = df_people_e["totalEarnings"] / df_people_e["timesPlayed"]
-    df_people_e["score"] = df_people_e["inv"] + (df_people_e["totalEarnings"] / 10)
-    
-    df_people_e["placementPct"] = 1 - ((df_people_e["mean"] - 1) / (df_people_e["timesPlayed"].replace(0, 1)))
-    df_people_e["roi"] = df_people_e["totalWinnings"] / df_people_e["totalPayed"].replace(0, 1)
-
-    # Final score (balanced)
-    df_people_e["score"] = (
-        df_people_e["placementPct"] * 0.6 +
-        np.log1p(df_people_e["roi"]) * 0.4
-    )
-    
-    total_players = df_people["id"].nunique()
-    total_entries = len(df_pools_e)
-    total_fees = df_pools_e["fee"].sum()
-    total_winnings = df_pools_e["winnings"].sum()
-
-    df_p_ret = df_pools_e.copy()
-    df_p_ret["currID"] = df_p_ret["person"]
-    display_df(df_p_ret, "df_p_ret A")
-    df_p_ret["person"] = df_p_ret["person"].apply(lambda id_: no_specials(df_people[df_people["id"] == id_].reset_index().loc[0, "name"], strict=True).lower())
-    display_df(df_people, "df_people")
-    display_df(df_p_ret, "df_p_ret B")
-    # df_p_ret["maxID"] = df_p_ret["person"].apply(lambda id_: df_people[df_people["id"] == id_, "id"].sort_values("id", ascending=False).reset_index().loc[0, "id"])
-    df_p_ret["maxID"] = df_p_ret["person"].apply(lambda p: df_people[df_people["norm"].str.lower() == p.lower()]["id"].idxmax())
-    # retention_rate = df_pools_e.groupby("person")["year"].nunique().mean() / df_pools["year"].nunique()
-    display_df(df_p_ret, "df_p_ret FINAL")
-    retention_rate = df_p_ret.groupby("person")["year"].nunique().mean() / df_pools["year"].nunique()
-    
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    col1.metric("Unique Players", total_players)
-    col2.metric("Total Entries", total_entries)
-    col3.metric("Total Fees Collected", f"${total_fees:,.2f}")
-    col4.metric("Total Winnings Paid", f"${total_winnings:,.2f}")
-
-    st.metric("Avg Retention Rate", f"{retention_rate:.2%}")
-    
-    best_player = df_people_e.sort_values("score", ascending=False).iloc[0]
-    worst_player = df_people_e.sort_values("score", ascending=True).iloc[0]
-
-    st.subheader("🏆 Best Performer")
-    st.write(best_player[["name", "score", "totalEarnings", "mean"]])
-
-    st.subheader("💀 Worst Performer")
-    st.write(worst_player[["name", "score", "totalEarnings", "mean"]])
-    
-    df_prize_dist = df_pools_e[df_pools_e["winnings"] > 0]
-
-    fig = px.pie(
-        df_prize_dist,
-        names="place",
-        values="winnings",
-        title="Prize Distribution by Placement"
-    )
-
-    st.plotly_chart(fig, use_container_width=True)
-    
-    df_top = df_people_e.sort_values("totalWinnings", ascending=False).head(15)
-
-    fig_bar_winnings = px.bar(
-        df_top,
-        x="name",
-        y="totalWinnings",
-        title="Top Earners",
-        text_auto=True
-    )
-
-    # st.plotly_chart(fig, use_container_width=True)
-    
-    fig_roi = px.bar(
-        df_top,
-        x="name",
-        y="roi",
-        title="ROI by Player"
-    )
-
-    # st.plotly_chart(fig, use_container_width=True)
-    
-    fig_scatter = px.scatter(
-        df_people_e,
-        x="placementPct",
-        y="totalEarnings",
-        size="timesPlayed",
-        hover_name="name",
-        title="Skill vs Profit (Bubble Size = Participation)"
-    )
-
-    # st.plotly_chart(fig, use_container_width=True)
-    
-    fig_hist = px.histogram(
-        df_pools_e,
-        x="place",
-        nbins=20,
-        title="Distribution of Placements"
-    )
-
-    # st.plotly_chart(fig, use_container_width=True)
-    
-    df_retention = df_pools_e.groupby("year")["person"].nunique().reset_index()
-
-    fig_retention = px.line(
-        df_retention,
-        x="year",
-        y="person",
-        title="Players Per Year"
-    )
-
-    # st.plotly_chart(fig, use_container_width=True)
-    
-    df_people_e["wins"] = df_pools_e[df_pools_e["place"] == 1].groupby("person").size()
-    df_people_e["wins"] = df_people_e["wins"].fillna(0)
-
-    df_people_e["winRate"] = df_people_e["wins"] / df_people_e["timesPlayed"]
-    
-    df_people_e["podiums"] = df_pools_e[df_pools_e["place"] <= 3].groupby("person").size()
-    df_people_e["podiums"] = df_people_e["podiums"].fillna(0)
-
-    df_people_e["podiumRate"] = df_people_e["podiums"] / df_people_e["timesPlayed"]
-    
-    st.title("🏒 Hockey Pool Analytics Dashboard")
-    
-    # df_people_e.sort_values(["totalEarnings", "timesPlayed", "mean"], ascending=[False, False, True], inplace=True)
-    df_people_e.sort_values(["score"], ascending=[False], inplace=True)
-    display_df(df_people_e, "df_people_e")
-
-    # KPIs
-    # (metrics row)
-
-    # Row 1
-    col1, col2 = st.columns(2)
-    with col1:
-        st.plotly_chart(fig_bar_winnings)
-    with col2:
-        st.plotly_chart(fig_roi)
-
-    # Row 2
-    col1, col2 = st.columns(2)
-    with col1:
-        st.plotly_chart(fig_scatter)
-    with col2:
-        st.plotly_chart(fig_hist)
-
-    # Row 3
-    st.plotly_chart(fig_retention)
-    
-    curr_year = int(df_years["year"].max())
-    last_year = int(df_years["year"].values.tolist()[-2])
-    
-    df_current = df_people_e[df_people_e["lastYear"] == curr_year]
-    df_core = df_people_e[df_people_e["timesPlayed"] == len(df_years)]
-    df_sub_core = df_people_e[df_people_e["timesPlayed"] == (len(df_years) - 1)]
-    df_core_twice = df_people_e[df_people_e["timesPlayed"] == 2]
-    df_core_once = df_people_e[df_people_e["timesPlayed"] == 1]
-    df_new = df_current.loc[df_current.index.intersection(df_core_once.index)]
-    df_recent_exits = df_people_e[df_people_e["lastYear"] == last_year]
-    # df_recent_exits = df_recent_exits.loc[~df_current.index.intersection(df_recent_exits.index)]
-    
-    for df, title in [
-        (df_current, f"This year's pool players for {curr_year} playoffs"),
-        (df_new, f"New pool players for {curr_year} playoffs"),
-        (df_recent_exits, f"Players that did not return from {last_year} playoffs"),
-        (df_core, f"Core pool players for {len(df_years)} seasons"),
-        (df_sub_core, f"Core pool players for all but 1 season"),
-        (df_core_twice, f"Players who have played two seasons only"),
-        (df_core_once, f"Players who have played only one season")
-    ]:
-        display_df(df, title, show_shape="below", border=True)
+        df_sheet = read_pool_sheet(df_pools[df_pools["year"] == radio_pool_sheet_year].reset_index().iloc[0]["picksheet"])
+        df_sheet["val"] = 0
+        df_sheet["text"] = df_sheet.apply(lambda r: name_fmt_ps(r["pick"], r["team"], r["ppg"]), axis=1).values.tolist()
         
+        if toggle_browse:
+            with cols_layout[1]:
+                k_stde_picksheet = "key_stde_picksheet"
+                stde_picksheet = display_df(
+                    df_picksheets_year[["id", "name", "year", "path"]],
+                    f"Sheets for {radio_pool_sheet_year} Playoffs",
+                    key=k_stde_picksheet,
+                    on_select="rerun",
+                    selection_mode="single-row"
+                )
+            sel_rows = get_selected_rows(df_picksheets_year, stde_picksheet, n=1)
+            # st.write("sel_rows")
+            # st.write(sel_rows)
+            
+            if not sel_rows.empty:    
+                path = sel_rows["path"]
+                # display_df(df_sheet, "df_sheet A")
+                
+                with open(path) as f:
+                    data_picks = eval(json.load(f))
+                # st.write("data_picks")
+                # st.write(data_picks)
+                date_ = data_picks.pop("date")
+                for box_n, choice in data_picks.items():
+                    df_sheet.loc[df_sheet[df_sheet["text"] == choice].index, "val"] = 1
+                    
+                # display_df(df_sheet, "df_sheet A")
+                
+                show_sheet(df_sheet, radio_pool_sheet_year, style=radio_pool_sheet_style, df_pools=df_pools, df_people=df_people)
+        else:    
+            if radio_pool_sheet_style == "number":
+                # display_df(df_sheet, "df_sheet A")
+                path = df_pools[df_pools["year"] == radio_pool_sheet_year].reset_index().iloc[0]["pickCounts"]
+                with open(path) as f:
+                    data_picks = eval(json.load(f))
+                # st.write("data_picks")
+                # st.write(data_picks)
+                date_ = data_picks.pop("date")
+                for i, choices in data_picks.items():
+                    for j, val in enumerate(choices):
+                        # df_sheet[df_sheet[(df_sheet["box"] == i) & (df_sheet["pos"] == j)].index, "val"] = val
+                        idx = df_sheet[(df_sheet["box"] == int(i)) & (df_sheet["pos"] == j)].index
+                        df_sheet.loc[idx, "val"] = val
+                
+                # display_df(df_sheet, "df_sheet B")
+                # st.write(*[sp for sp in sheet_paths if sp[1] == radio_pool_sheet_year][0])
+                show_sheet(df_sheet, radio_pool_sheet_year, style=radio_pool_sheet_style, df_pools=df_pools, df_people=df_people)
+            else:
+                show_sheet(*[sp for sp in sheet_paths if sp[1] == radio_pool_sheet_year][0], style=radio_pool_sheet_style, df_pools=df_pools, df_people=df_people)
+    elif radio_hp_mode == "Teams":
+        
+        nhl_teams = df_teams[(df_teams["league"] == "NHL") & (df_teams["active"] == 1)]
+        
+        df_p = pd.DataFrame([{"year": datetime.now().year, "seasons": 5}])
+        with st.container(horizontal=True):
+            stdf_p = display_df(
+                df_p,
+                "Parameters",
+                show_shape=False,
+                hide_index=True,
+                editor=True,
+                column_config={
+                    "year": st.column_config.NumberColumn("Year", min_value=1960, max_value=datetime.now().year, width=300, step=1, alignment="center", required=True),
+                    "seasons": st.column_config.NumberColumn("Seasons", min_value=1, max_value=50, width=300, step=1, alignment="center", required=True)
+                },
+                width=750,
+                height=60,
+                fail_safe=False,
+                debug=False,
+                key="wwwwsd"
+            )
+            # stdf_p = st.data_editor(
+            #     df_p,
+            #     column_config={
+            #         "year": st.column_config.NumberColumn("year"),
+            #         "seasons": st.column_config.NumberColumn("seasons")
+            #     },
+            #     width=750,
+            #     height=60,
+            #     key="wwwwsadfd"
+            # )
+            # data_df = pd.DataFrame(
+            #     {
+            #         "price": [20, 950, 250, 500],
+            #     }
+            # )
+
+            # st.data_editor(
+            #     data_df,
+            #     column_config={
+            #         "price": st.column_config.NumberColumn(
+            #             "Price (in USD)",
+            #             help="The price of the product in USD",
+            #             min_value=0,
+            #             max_value=1000,
+            #             step=1,
+            #             format="$%d",
+            #         )
+            #     },
+            #     hide_index=True,
+            # )
+        
+        # st.write(stdf_p)
+        # df_p = consolidate_df_edits(df_p, stdf_p)
+        year, seasons = stdf_p.loc[0, ["year", "seasons"]]
+        
+        df_league_standings = load_league_standings(year, seasons=seasons)
+        
+        y_col = st.selectbox(
+            "Y:",
+            ["points", "wins", "goalAgainst", "goalFor"],
+            key="k_selectbox_tyby_y_cols"
+        )
+        
+        df_league_standings = df_league_standings.rename(columns={"teamAbbrev": "team"})
+        show_cols = ["year", "team", "teamName", y_col]
+        ddn(df_league_standings[show_cols], "df_league_standings", image_cols=["teamLogo"])
+        
+        ddn(df_league_standings.groupby(["team", "year"]).agg("min").reset_index())
+        
+        num_cols = [c for c in df_league_standings.columns if df_league_standings[c].dtypes in [int, float]]
+        st.write("num_cols")
+        st.write(num_cols)
+        
+        st.line_chart(
+            df_league_standings,
+            x="year",
+            y=y_col,
+            color="team"
+        )
+        
+        tn = 8
+        df_at = df_league_standings.sort_values(y_col, ascending=False)
+        df_rc1 = df_league_standings.sort_values(["year", y_col], ascending=False)
+        df_rc2 = df_league_standings.sort_values(["year", y_col], ascending=[False, True])
+        df_top3_rc = df_rc1.head(tn)
+        df_bot3_rc = df_rc2.head(tn)  #.sort_values(y_col, ascending=False)
+        df_top3_at = df_at.head(tn)
+        df_bot3_at = df_at.tail(tn)[::-1]
+        with st.container(horizontal=True):
+            with st.container():
+                st.subheader(f"Recent {y_col}")
+                with st.container(horizontal=True):
+                    ddn(df_top3_rc[show_cols], f"Top {tn}", width=550)
+                    ddn(df_bot3_rc[show_cols], f"Bottom {tn}", width=550)
+            with st.container():
+                st.subheader(f"All-Time {y_col}")
+                with st.container(horizontal=True):
+                    ddn(df_top3_at[show_cols], f"Top {tn}", width=550)
+                    ddn(df_bot3_at[show_cols], f"Bottom {tn}", width=550)
+        
+    elif radio_hp_mode == "Predictions":
+        
+        radio_hp_year = st.radio(
+            label="Select a Year:",
+            options=df_years["year"].unique().tolist(),
+            key="key_radio_hp_year",
+            index=len(df_years["year"].unique()) - 1,
+            horizontal=True
+        )
+        df_pool_year = df_pools[df_pools["year"] == radio_hp_year].reset_index()
+        df_series = df_series[df_series["year"] == str(radio_hp_year)].reset_index()
+        if not df_pool_year.empty:
+            path_results = df_pool_year.iloc[0].get("results")
+            if not pd.isna(path_results):
+                # col_translation, df_playoffs = load_scores(path_results)
+                col_translation = {}
+                df_playoffs = load_playoff_predictions()
+                # df_playoffs["year"] = radio_hp_year
+            else:
+                st.error("here")
+                st.stop()
+
+            df_playoffs = df_playoffs[df_playoffs["year"] == str(radio_hp_year)]
+            # df_picksheets_year = df_picksheets[df_picksheets["year"] == radio_pool_sheet_year]
+            # df_picksheets_year = df_picksheets_year.merge(df_people, "inner", left_on="player", right_on="id")
+            
+            #####
+            st.markdown("""
+            <style>
+            .st-key-series_grid {
+                display: flex;
+                justify-content: center;
+            }
+
+            .st-key-series_grid [data-testid="stHorizontalBlock"] {
+                justify-content: center;
+            }
+
+            .st-key-series_grid [data-testid="column"] {
+                display: flex;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .st-key-series_grid .stCheckbox {
+                display: flex;
+                justify-content: center;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            #####            
+            
+            btns_pr = 8
+            image_size = 45
+            # cols_btns = [st.columns(btns_pr) if (i % 2) == 0 else st.container() for i in range(9)]
+            # cols_btns = [int(btns_pr // (i + 1)) if (i % 2) == 0 else "CONT" for i in range(9)]
+            cols_btns = [int(2 ** (4 - (i // 2))) if (i % 2) == 0 else "CONT" for i in range(9)]
+            # st.write("cols_btns")
+            # st.write(cols_btns)
+            # cols_btns = [st.columns(int(btns_pr // (i + 1))) if (i % 2) == 0 else st.container() for i in range(9)]
+            cols_btns = [st.columns(int(2 ** (4 - (i // 2)))) if (i % 2) == 0 else st.container() for i in range(9)]
+            keys_cb = {
+                i: f"key_checkbox_conf={row['conf']}_round={row['roundnum']}_series={row['seriesid']}_top={row['topseed']}_low={row['lowseed']}"
+                for i, row in df_series.iterrows()
+            }
+            c = 0
+            cr = None
+
+            with st.container(horizontal=True):
+                with st.container(border=True, horizontal=True):
+                    if st.button("Clear Checkboxes"):
+                        st.session_state.update({k: False for k in keys_cb.values()})
+
+                    if st.button("All Checkboxes"):
+                        st.session_state.update({k: False for k in keys_cb.values()})
+                        st.session_state.update({k: True for k in keys_cb.values()})
+                    
+                with st.container(border=True, horizontal=True):
+                    for i in range(4):
+                        if st.button(f"All Round {i+1}"):
+                            st.session_state.update({k: False for k in keys_cb.values()})
+                            st.session_state.update({k: True for k in keys_cb.values() if f"round={i+1}" in k})
+                        
+                with st.container(border=True, horizontal=True):
+                    for i, team in enumerate(sorted(list(set(df_series[["lowseed", "topseed"]].values.flatten())))):
+                        if st.button(f"All Team {team}"):
+                            st.session_state.update({k: False for k in keys_cb.values()})
+                            st.session_state.update({k: True for k in keys_cb.values() if (f"top={team}" in k) or (f"low={team}" in k)})
+                            
+            display_df_nhl(df_playoffs, "df_playoffs")
+            display_df_nhl(df_series, "df_series")
+
+            for i, row in df_series.iterrows():
+                seriesid = row["seriesid"]
+                roundnum = row["roundnum"]
+                conf = row["conf"]
+                low_seed = row["lowseed"]
+                top_seed = row["topseed"]
+                k_cb = keys_cb[i]
+                st.session_state.setdefault(k_cb, True)
+                if cr != roundnum:
+                    cr = roundnum
+                    with cols_btns[(2 * roundnum) - 1]:
+                        st.divider()
+                        st.subheader(f"Round {roundnum}")
+                with cols_btns[2 * roundnum][seriesid - 1]:
+                    with st.container(border=True):
+                        # st.subheader(f"{conf.title()}")
+                        with st.container(horizontal=True):
+                            st.image(fetch_team_logo(top_seed), width=image_size)
+                            st.write("VS")
+                            st.image(fetch_team_logo(low_seed), width=image_size)
+                            st.checkbox(
+                                label="label",
+                                key=k_cb,
+                                label_visibility="hidden",
+                                # on_change=lambda id_=k_cb: st.session_state.update({k_cb_sel: id_})
+                            )
+                c += 1
+
+            # st.write([i for i, k in keys_cb.items() if st.session_state.get(k)])
+            df_use_series = df_series.loc[[i for i, k in keys_cb.items() if st.session_state.get(k)]]
+
+            display_df_nhl(
+                df_use_series,
+                "df_use_series"
+            )
+
+            # with st.container(horizontal=True):
+            #     st.write(df_use_series["seriescode"].unique().tolist())
+            #     st.write(df_playoffs["seriescode"].unique().tolist())
+            #     st.write(set(df_playoffs["seriescode"].unique().tolist()).symmetric_difference(df_use_series["seriescode"].unique().tolist()))
+            
+            df_playoffs = df_playoffs[
+                (df_playoffs["seriescode"].isin(df_use_series["seriescode"]))
+            ]
+
+            df_game_scoring = []
+            with st.spinner(text="Loading game data", show_time=True):
+                for i, row in df_playoffs[df_playoffs["seriescode"].isin(df_use_series["seriescode"])].iterrows():
+                    g_id = row["gameid"]
+                    year = row["year"]
+                    seriescode = row["seriescode"]
+                    my_away_name = row["awayteam"]
+                    my_home_name = row["hometeam"]
+                    my_away_score = row["aawayscore"]
+                    my_home_score = row["ahomescore"]
+                    my_result = row["otroundnum"]
+                    my_result = "REG" if my_result == 0 else f"OT{my_result}"
+                    results = fetch_game_landing(g_id)
+                    # if (my_away_name == "VGK") or (my_home_name == "VGK"):
+                    #     st.write("results")
+                    #     st.write(results)
+                    e_score = extract_scoring(results)
+                    if not pd.isna(e_score.loc[0, "gameid"]):
+                        e_score["year"] = year
+                        df_game_scoring.append(e_score)
+                    # if results:
+                        
+                    #     away = results.get("awayTeam", {})
+                    #     home = results.get("homeTeam", {})
+                    #     away_name = away.get("abbrev", "")
+                    #     home_name = home.get("abbrev", "")
+                    #     away_score = int(away.get("score", "0"))
+                    #     home_score = int(home.get("score", "0"))
+                    #     game_result = results.get("periodDescriptor", {}).get("periodType", "REG")
+                
+            df_game_scoring = pd.concat(df_game_scoring, ignore_index=True) if df_game_scoring else pd.DataFrame(
+                columns=["seriescode", "seriesid", "round", "lowseed", "highseed", "gamenum"] + team_cols_b
+            )
+            display_df_nhl(df_game_scoring.copy(), "YUYUYc", image_cols=team_cols_b)
+
+            # for each game extract goals and assists
+            df_player_scoring = extract_player_scoring(df_game_scoring, debug=False)
+
+            df_by_team = df_player_scoring.groupby(
+                ["team", "conf", "div"]
+                ).agg({
+                    "player": "count",
+                    "g": "sum",
+                    "a": "sum",
+                    "pts": "sum",
+                    "gp": "max",
+                    "ppg": "mean"
+                }).rename(columns={
+                    "player": "count"
+                }).reset_index().sort_values(
+                    ["pts", "ppg"],
+                    ascending=False
+                )
+                
+            df_scoring_summaries = scoring_summaries(df_playoffs, df_game_scoring)
+
+            df_ss_gb = df_scoring_summaries.groupby([
+                "awayteam", "hometeam"
+            ]).agg({col: "sum" for col in int_record_cols}).reset_index(
+                names=["awayteam", "hometeam"]
+            )
+            df_ss_away = df_ss_gb.groupby("awayteam").agg({col: "sum" for col in int_record_cols}).reset_index(names="team")
+            df_ss_home = df_ss_gb.groupby("hometeam").agg({col: "sum" for col in int_record_cols}).reset_index(names="team")
+            df_ss = df_ss_home.merge(df_ss_away, "inner", "team", suffixes=["_h", "_a"])
+            for col in int_record_cols:
+                t_col = col.removesuffix("_a").removesuffix("_h")
+                a_col = f"{t_col}_a"
+                h_col = f"{t_col}_h"
+                if t_col not in df_ss.columns:
+                    df_ss[t_col] = 0
+                if a_col not in df_ss.columns:
+                    df_ss[a_col] = 0
+                if h_col not in df_ss.columns:
+                    df_ss[h_col] = 0
+                # for c in ["h", "a"]:
+                df_ss[t_col] += df_ss[f"{col}_{col[-1]}"]
+                if "_a_" in col:
+                    df_ss[a_col] += df_ss[col]
+                if "_h_" in col:
+                    df_ss[h_col] += df_ss[col]
+                    
+            #######################################################################################################################
+            #######################################################################################################################
+                
+            # df_playoffs_ = df_playoffs.copy()
+            # df_game_scoring_ = df_game_scoring.copy()
+            # df_by_team_ = df_by_team.copy()
+            # df_player_scoring_ = df_player_scoring.copy()
+            # df_scoring_summaries_ = df_scoring_summaries.copy()
+            
+            # with st.container(horizontal=True):
+            #     for v in ["", None, "cbj", "sj"]:
+            #         image = fetch_team_logo(v)
+            #         with st.container():
+            #             st.write(f"{v=}, {image=}")
+            #             if image:
+            #                 st.image(image, image)
+            # st.stop()
+
+            # for col in team_cols_a:
+            #     df_playoffs_[col] = df_playoffs_[col].apply(fetch_team_logo)
+            # for col in team_cols_b:
+            #     df_game_scoring_[col] = df_game_scoring_[col].apply(lambda t: fetch_team_logo(t))
+            # for col in ["awayteam", "hometeam", "winner"] + team_cols_b:
+            #     df_scoring_summaries_[col] = df_scoring_summaries_[col].apply(lambda t: fetch_team_logo(t, debug=False))
+            # df_by_team_["team"] = df_by_team_["team"].apply(lambda t: fetch_team_logo(t))
+            # df_player_scoring_["team"] = df_player_scoring_["team"].apply(lambda t: fetch_team_logo(t))
+
+            #######################################################################################################################
+            #######################################################################################################################
+
+            display_df_nhl(
+                df_playoffs.rename(columns=col_translation),
+                "Scores",
+                # column_config={
+                #     col_translation[col]: st.column_config.ImageColumn(col_translation[col], width=80)
+                #     for col in team_cols_a
+                # },
+                row_height=40
+            )
+            display_df_nhl(
+                df_game_scoring,
+                "Scoring by Game",
+                row_height=40,
+                image_cols=team_cols_b
+                # column_config={
+                #     col: st.column_config.ImageColumn(col, width=80)
+                #     for col in ["awayteam", "hometeam", "winner"] + team_cols_b
+                # },
+                # debug=True
+            )
+            
+            df_combined["year"] = df_combined["year"].astype(str)
+            with st.container(horizontal=True):
+                display_df_nhl(
+                    df_player_scoring,
+                    "df_player_scoring",
+                )
+                display_df_nhl(
+                    df_combined,
+                    "df_combined",
+                )
+                
+            years_with_data = df_player_scoring.loc[~pd.isna(df_player_scoring["player"]), "year"].dropna().unique().tolist()
+            st.write("years_with_data")
+            st.write(years_with_data)
+            
+            df_scoring_in_pool = df_player_scoring.merge(
+                df_combined,
+                on=["pick", "team", "conf", "div", "year"],
+                how="right"
+            )
+            df_scoring_in_pool = df_scoring_in_pool[df_scoring_in_pool["year"].isin(years_with_data) & (df_scoring_in_pool["type"] != "T")]
+            
+            df_scoring_in_pool.sort_values(["box", "pos"])
+            df_jerseys["pick"] = df_jerseys.apply(lambda r: f"{r['PlayerFirst'].title()[0]}. {r['PlayerLast']}" if not pd.isna(r["Number"]) else "", axis=1)
+            dfj = df_scoring_in_pool.merge(
+                df_jerseys,
+                left_on="id",
+                right_on="NHLID",
+            )
+            with st.container(horizontal=True):
+                display_df_nhl(
+                    df_scoring_in_pool,
+                    "df_scoring_in_pool",
+                )
+                # st.write(dfj.columns.tolist())
+                ddn(
+                    dfj,
+                    "player jerseys in playoff pool",
+                    image_cols=[],
+                    debug=False
+                )
+                
+            st.divider()
+            df_selections_a = df_all_picks[df_all_picks["val"] == 1]
+            df_player_scoring["year"] = df_player_scoring["year"].astype(int)
+            # with st.container(horizontal=True):
+            #     ddn(df_selections_a, "df_selections_a")
+            #     ddn(df_player_scoring, "df_player_scoring")
+            #     st.write(df_selections_a.columns.tolist())
+            #     st.write(df_player_scoring.columns.tolist())
+            df_selections = df_selections_a.merge(
+                df_player_scoring[["year", "pick"]],
+                on=["year", "pick"],
+                how="inner"
+            )
+            with st.container(horizontal=True):
+                ddn(df_selections_a, "df_selections_a")
+                ddn(df_selections, "df_selections")
+                ddn(df_player_scoring, "df_player_scoring")
+                
+            st.subheader("HERE")
+            display_df_nhl(df_picksheets, "df_picksheets", hide_index=False)
+            df_pick_sim = []
+            for i, row in df_picksheets.iterrows():
+                path = row["path"]
+                year = row["year"]
+                player = row["player"]
+                df_sheet = read_pool_sheet(df_pools[df_pools["year"] == year].reset_index().iloc[0]["picksheet"])
+                df_sheet["val"] = 0
+                df_sheet["year"] = year
+                df_sheet["player"] = player
+                df_sheet["text"] = df_sheet.apply(lambda r: name_fmt_ps(r["pick"], r["team"], r["ppg"]), axis=1).values.tolist()
+                
+                df_player_picks = df_selections[
+                    (df_selections["player"] == player)
+                    & (df_selections["year"] == year)
+                ]
+                df_o_picks = df_selections[
+                    (df_selections["player"] != player)
+                    & (df_selections["year"] == year)                
+                ]
+                
+                p_picks = df_player_picks["text"].values.tolist()
+                o_players = df_o_picks["player"].unique().tolist()
+                # df_r = pd.DataFrame(columns=["year", "player"] + df_selections["player"].unique().tolist())
+                vals = {"year": year, "player": player, "pleft": len(df_player_picks)}
+                
+                if (player == 2) or (player == 45):
+                    with st.container(horizontal=True):
+                        ddn(df_player_picks, "df_player_picks")
+                        ddn(df_o_picks, "df_o_picks")
+                        ddn(df_sheet, "df_sheet")
+                        with st.container():
+                            st.write(f"{path=}, {year=}, {player=}")
+                            st.write(p_picks)
+                            st.write(o_players)
+                            st.write(vals)
+                
+                for p in o_players:
+                    df_o = df_o_picks[df_o_picks["player"] == p]
+                    o_picks = df_o["text"].values.tolist()
+                    same_picks = list(set(p_picks).intersection(set(o_picks)))
+                    vals.update({p: len(same_picks)})
+                    # with st.container(horizontal=True, border=True):
+                    #     st.write(f"{player=}, {p=}")
+                    #     st.write(p_picks)
+                    #     st.write(o_picks)
+                    #     st.write(same_picks)
+                df_pick_sim.append(pd.DataFrame([vals]))
+                
+                # display_df(df_player_picks, f"{player} picks for {year}")
+                # display_df(df_o_picks, f"Other picks")
+                
+            df_pick_sim = pd.concat(df_pick_sim, ignore_index=True)
+            cols = df_pick_sim.columns.tolist()[3:]
+            cols.sort()
+            df_pick_sim = df_pick_sim[["year", "player", "pleft"] + cols]
+            
+            df_pick_sim = df_pick_sim.merge(df_people, left_on="player", right_on="id", how="inner")
+            df_pick_sim = df_pick_sim[["year", "name", "pleft"] + cols]
+            df_pick_sim = df_pick_sim.rename(columns={r["id"]: f"{r['id']}_{r['name']}" for i, r in df_people.iterrows()})
+            
+            df_pick_sim.sort_values(["year", "name"], ascending=[False, True])
+            o_cols = [c for c in df_pick_sim.columns if df_pick_sim[c].dtypes not in [int, float]]
+            n_cols = [c for c in df_pick_sim.columns if df_pick_sim[c].dtypes in [int, float]]
+            d_col_order = {c: df_pick_sim[c].sum() for c in n_cols}
+            col_order = sorted(d_col_order, reverse=True, key=lambda c: d_col_order[c])
+            cols_use = o_cols + col_order
+            display_df(df_pick_sim[cols_use], f"df_pick_sim", fail_safe=False)
+            
+            cols_names = df_pick_sim.columns.tolist()
+            for c in ["year", "name", "pleft"]:
+                cols_names.remove(c)
+            with st.container(horizontal=True):
+                for c in cols_names:
+                    df_row = df_pick_sim[df_pick_sim["name"] == c.split("_")[-1]]
+                    i = df_row.index.tolist()[0]
+                    row = df_row.reset_index().iloc[0]
+                    name, pleft = row[["name", "pleft"]]
+                    imax = df_pick_sim[c].idxmax()
+                    imin = df_pick_sim[c].idxmin()
+                    cmin, cmax = df_pick_sim.loc[imin, c], df_pick_sim.loc[imax, c]
+                    pmin, pmax = df_pick_sim.loc[imin, "pleft"], df_pick_sim.loc[imax, "pleft"]
+                    with st.container(border=True, width=250):
+                        st.write(f"## {name}")
+                        st.write(f"##### players left: {pleft}")
+                        div = (max(pmin, pmax) if max(pmin, pmax) != 0 else 1)
+                        st.metric("Most Like:", df_pick_sim.loc[imax, 'name'], f"#{int(pleft)}/{int(cmax)} - {100 * cmax / div:.3f}%", delta_arrow="off")
+                        st.metric("Least Like:", df_pick_sim.loc[imin, 'name'], f"#{int(pleft)}/{int(cmin)} - {100 * cmin / div:.3f}%", delta_arrow="off", delta_color="red")
+                
+            
+            st.divider()
+            
+            df_box_perf = df_scoring_in_pool.groupby(["box"]).agg({"pts": "mean"}).reset_index(names=["box"])
+            df_best_picks = df_scoring_in_pool["pts"].idxmax()
+            df_best_picks = df_scoring_in_pool.loc[df_scoring_in_pool.groupby("box")["pts"].idxmax()]
+            df_worst_picks = df_scoring_in_pool.loc[df_scoring_in_pool.groupby("box")["pts"].idxmin()]
+            display_df_nhl(df_best_picks, "df_best_picks")
+            display_df_nhl(df_worst_picks, "df_worst_picks")
+            display_df_nhl(df_box_perf, "df_box_perf")
+            df_box_perf = df_box_perf.rename(columns={"pts": "avgpts"}).merge(
+                df_best_picks[[
+                    "year",
+                    "player",
+                    "team",
+                    "id",
+                    "g",
+                    "a",
+                    "pts",
+                    "box"
+                ]],
+                on="box"
+            ).merge(
+                df_worst_picks[[
+                    "year",
+                    "player",
+                    "team",
+                    "id",
+                    "g",
+                    "a",
+                    "pts",
+                    "box"
+                ]],
+                on=["box"],
+                suffixes=["_best", "_worst"]
+            )
+            display_df_nhl(
+                df_box_perf,
+                "df_box_perf",
+                
+                image_cols=["team_best", "team_worst"]
+            )
+                
+            with st.container(horizontal=True):
+                display_df_nhl(
+                    df_player_scoring,
+                    "Scoring",
+                    row_height=40
+                )
+                display_df_nhl(
+                    df_by_team,
+                    "Scoring by Team",
+                    row_height=40
+                )
+                display_df_nhl(
+                    df_scoring_summaries,
+                    "df_scoring_summaries",
+                    column_config={
+                        col: st.column_config.ImageColumn(col, width=80)
+                        for col in ["awayteam", "hometeam", "winner"] + team_cols_b
+                    },
+                    row_height=40
+                )
+
+            with st.container(horizontal=True):
+                display_df_nhl(
+                    df_ss_gb,
+                    "df_ss_gb"
+                )
+                display_df_nhl(
+                    df_ss_away,
+                    "df_ss_away"
+                )
+                display_df_nhl(
+                    df_ss_home,
+                    "df_ss_home"
+                )
+
+            display_df_nhl(
+                df_ss,
+                "df_ss"
+            )
+            
+            display_df_nhl(
+                df_series,
+                "df_series",
+            )                    
+                    
+            # # CREATE HEAD-TO-HEAD CHARTS FOR EACH COLUMN OF DF_SS COMPARING ROW 1 VS ROW 2
+            # # PSEUDOCODE
+            # df_ss.index = df.columns[0]  # make column 0 'team' the index
+            # fig = px.comparison(df_ss, cols, index=df_ss.index)
+            # st.plotly_chart(fig)
+
+            # choose columns to compare
+            compare_cols = [
+                c for c in df_ss.columns
+                if c not in ["team", "conf", "div"]
+                and pd.api.types.is_numeric_dtype(df_ss[c])
+            ]
+
+            # convert from wide -> long format
+            df_compare = df_ss.melt(
+                id_vars="team",
+                value_vars=compare_cols,
+                var_name="stat",
+                value_name="value"
+            )
+
+            fig = px.bar(
+                df_compare,
+                x="value",
+                y="stat",
+                color="team",
+                barmode="group",
+                text_auto=True,
+                title=f"{df_ss.iloc[0]['team']} vs {df_ss.iloc[1]['team']}"
+            )
+
+            fig.update_layout(
+                xaxis_title="Statistic",
+                yaxis_title="Value",
+                legend_title="Team",
+                height=650
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = go.Figure()
+            for _, row in df_ss.iterrows():
+                fig.add_trace(go.Scatterpolar(
+                    r=[row[c] for c in compare_cols],
+                    theta=compare_cols,
+                    fill='toself',
+                    name=row["team"]
+                ))
+
+            fig.update_layout(
+                polar=dict(radialaxis=dict(visible=True)),
+                showlegend=True
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+            cols = st.columns(4)
+
+            for i, stat in enumerate(compare_cols):
+                with cols[i % 4]:
+                    fig = px.bar(
+                        df_ss,
+                        x="team",
+                        y=stat,
+                        color="team",
+                        title=stat.upper()
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                    
+            team_col = "team"
+            title = "Head to Head"
+            stat_cols = [
+                c for c in df_ss.columns
+                if c != team_col and pd.api.types.is_numeric_dtype(df_ss[c])
+            ]
+
+            team_1 = df_ss.iloc[0][team_col]
+            team_2 = df_ss.iloc[1][team_col]
+
+            rows = []
+
+            for stat in stat_cols:
+                v1 = float(df_ss.iloc[0][stat] or 0)
+                v2 = float(df_ss.iloc[1][stat] or 0)
+                total = v1 + v2
+
+                if total == 0:
+                    p1 = 0
+                    p2 = 0
+                else:
+                    p1 = (v1 / total) * 100
+                    p2 = (v2 / total) * 100
+
+                rows.append({
+                    "stat": stat.upper(),
+                    team_1: v1,
+                    team_2: v2,
+                    f"{team_1}_pct": p1,
+                    f"{team_2}_pct": p2,
+                    f"{team_1}_label": f"{v1:g} ({p1:.1f}%)",
+                    f"{team_2}_label": f"{v2:g} ({p2:.1f}%)",
+                })
+
+            df_plot = pd.DataFrame(rows)
+
+            fig = go.Figure()
+            fig.add_trace(go.Bar(
+                y=df_plot["stat"],
+                x=df_plot[f"{team_1}_pct"],
+                name=team_1,
+                orientation="h",
+                text=df_plot[f"{team_1}_label"],
+                textposition="inside",
+                hovertemplate=(
+                    f"<b>{team_1}</b><br>"
+                    "Stat: %{y}<br>"
+                    "Share: %{x:.1f}%<br>"
+                    "Value: %{customdata:g}"
+                    "<extra></extra>"
+                ),
+                customdata=df_plot[team_1],
+            ))
+
+            fig.add_trace(go.Bar(
+                y=df_plot["stat"],
+                x=df_plot[f"{team_2}_pct"],
+                name=team_2,
+                orientation="h",
+                text=df_plot[f"{team_2}_label"],
+                textposition="inside",
+                hovertemplate=(
+                    f"<b>{team_2}</b><br>"
+                    "Stat: %{y}<br>"
+                    "Share: %{x:.1f}%<br>"
+                    "Value: %{customdata:g}"
+                    "<extra></extra>"
+                ),
+                customdata=df_plot[team_2],
+            ))
+
+            fig.update_layout(
+                title=title,
+                barmode="stack",
+                xaxis=dict(
+                    title="Share of Total",
+                    range=[0, 100],
+                    ticksuffix="%",
+                ),
+                yaxis=dict(
+                    title="",
+                    autorange="reversed",
+                ),
+                legend_title="Team",
+                height=max(400, 45 * len(stat_cols)),
+                margin=dict(l=120, r=40, t=80, b=60),
+            )
+            st.plotly_chart(fig, True)
+            
+            stat_cols = [
+                "w", "l", "gf", "ga",
+                "w_h", "l_h", "gf_h", "ga_h",
+                "w_a", "l_a", "gf_a", "ga_a",
+            ]
+
+            stat_labels = {
+                "w": "Wins",
+                "l": "Losses",
+                "gf": "Goals For",
+                "ga": "Goals Against",
+                "w_h": "Wins at Home",
+                "l_h": "Losses at Home",
+                "gf_h": "Goals For at Home",
+                "ga_h": "Goals Against at Home",
+                "w_a": "Wins Away",
+                "l_a": "Losses Away",
+                "gf_a": "Goals For Away",
+                "ga_a": "Goals Against Away",
+            }
+
+            if len(df_ss) == 2:
+                fig = make_h2h_stat_graphic(
+                    df_ss=df_ss,
+                    stat_cols=stat_cols,
+                    stat_labels=stat_labels,
+                    title="Head to Head Comparison",
+                )
+
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning("Please select exactly 2 teams for the head-to-head chart.")
+        
+    elif radio_hp_mode == "Stats":
+        # with st.container(border=True):
+            
+        #         # for i, row in df_selections.groupby(by=["player", "year"]).agg("min").reset_index().iterrows():
+        #         #     o_player, o_year, o_box, o_pick = row[["player", "year", "box", "pick"]]
+        #         #     if player != o_player:
+        #         #         st.write(f"{o_player=}, {o_year=}, {o_box=}, {o_pick=}")
+        #         #         st.write(row)
+        #         #     if i > 4:
+        #         #         break
+                
+        #         # if path:
+        #         #     with open(path) as f:
+        #         #         data_picks = eval(json.load(f))
+        #         #     date_ = data_picks.pop("date")
+        #         #     for box_n, choice in data_picks.items():
+        #         #         df_sheet.loc[df_sheet[df_sheet["text"] == choice].index, "val"] = 1
+            
+        #     # st.write("data_picks")
+        #     # st.write(data_picks)
+            
+        #     # df_picks = read_
+            
+        #     df_c = df_combined.copy()
+        #     display_df_nhl(df_c, "comb")
+        #     # with st.container(horizontal=True):
+        #     #     for v in ["LAK", "LA", "SEA"]:
+        #     #         for b in ["Light", "Dark"]:
+        #     #             with st.container():
+        #     #                 st.write(b)
+        #     #                 u = fetch_team_logo(v, b == "Light", league="NHL" if v != "SEA" else "PWHL")
+        #     #                 st.write(u)
+        #     #                 st.image(u)
+        
+        df_people["norm"] = df_people["name"].apply(lambda n: no_specials(n, strict=True))
+            
+        cols_pool_results = st.columns(len(df_pools))
+        
+        lst_df_pool_e = []
+        
+        for i, row in df_pools.iterrows():
+            with cols_pool_results[i]:
+                year = row["year"]
+                fee = row["fee"]
+                pct_prize = row["pctPrize"]
+                standings = row["standings"]
+                final = row["final"]
+                n_people = len(standings)
+                total_fees = fee * pct_prize * n_people
+                prizes = [total_fees * 0.5, total_fees * 0.35, total_fees * 0.15]
+                
+                st.header(f"{year} playoffs - {'FINAL' if final else 'ONGOING'}")
+                for i, people_id in enumerate(standings):
+                    df_pool_people = df_people[df_people["id"] == people_id].reset_index()
+                    name = df_pool_people.loc[0, "name"]
+                    alias = df_pool_people.iloc[0].get("alias")
+                    if " " in name.strip():
+                        name_a = name.split(" ")
+                        name_a = f"{name_a[0].title()} {name_a[1][0].upper()}"
+                    else:
+                        name_a = name
+                    alias = name_a if pd.isna(alias) else alias
+                    winnings = prizes[i] if i < len(prizes) else 0
+                    winnings = winnings if final else 0
+                    if winnings:
+                        st.write(f"{i + 1} - prize: $ {winnings:,.2f} - {alias}")
+                    else:
+                        st.write(f"{i + 1} - {alias}")
+                    norm = no_specials(name, strict=True)
+                    lst_df_pool_e.append(pd.DataFrame([{
+                        "year": year,
+                        "fee": fee,
+                        "pctPrize": pct_prize,
+                        "totalPrizes": total_fees,
+                        "nPlayers": n_people,
+                        "place": i + 1,
+                        "winnings": winnings,
+                        "person": people_id,
+                        "norm": norm
+                    }]))
+                
+        df_pools_e = pd.concat(lst_df_pool_e, ignore_index=True)
+        display_df(df_pools_e, "df_pools_e")
+        
+        df_people_e = df_people.copy()
+        df_people_e["best"] = None
+        df_people_e["worst"] = None
+        df_people_e["sum"] = None
+        df_people_e["inv"] = None
+        df_people_e["mean"] = None
+        df_people_e["lastYear"] = None
+        df_people_e["totalPayed"] = 0
+        df_people_e["timesPlayed"] = 0
+        df_people_e["totalWinnings"] = 0
+        for i, row in df_people.iterrows():
+            # people_id = row["id"]
+            # df_pools_person = df_pools_e[df_pools_e["person"] == people_id]
+            people_norm = row["norm"]
+            df_pools_person = df_pools_e[df_pools_e["norm"] == people_norm]
+            df_people_e.loc[i, "best"] = df_pools_person["place"].min()
+            df_people_e.loc[i, "worst"] = df_pools_person["place"].max()
+            df_people_e.loc[i, "sum"] = df_pools_person["place"].sum()
+            df_people_e.loc[i, "inv"] = df_pools_person["nPlayers"].sum() - df_pools_person["place"].sum()
+            df_people_e.loc[i, "mean"] = df_pools_person["place"].mean()
+            df_people_e.loc[i, "lastYear"] = df_pools_person["year"].max()
+            df_people_e.loc[i, "totalPayed"] = df_pools_person["fee"].sum()
+            df_people_e.loc[i, "timesPlayed"] = df_pools_person["place"].count()
+            df_people_e.loc[i, "totalWinnings"] = df_pools_person["winnings"].sum()
+            
+        df_people_e["totalEarnings"] = df_people_e["totalWinnings"] - df_people_e["totalPayed"]
+        df_people_e["earningsPerYear"] = df_people_e["totalEarnings"] / df_people_e["timesPlayed"]
+        df_people_e["score"] = df_people_e["inv"] + (df_people_e["totalEarnings"] / 10)
+        
+        df_people_e["placementPct"] = 1 - ((df_people_e["mean"] - 1) / (df_people_e["timesPlayed"].replace(0, 1)))
+        df_people_e["roi"] = df_people_e["totalWinnings"] / df_people_e["totalPayed"].replace(0, 1)
+
+        # Final score (balanced)
+        df_people_e["score"] = (
+            df_people_e["placementPct"] * 0.6 +
+            np.log1p(df_people_e["roi"]) * 0.4
+        )
+        
+        total_players = df_people["id"].nunique()
+        total_entries = len(df_pools_e)
+        total_fees = df_pools_e["fee"].sum()
+        total_winnings = df_pools_e["winnings"].sum()
+
+        df_p_ret = df_pools_e.copy()
+        df_p_ret["currID"] = df_p_ret["person"]
+        display_df(df_p_ret, "df_p_ret A")
+        df_p_ret["person"] = df_p_ret["person"].apply(lambda id_: no_specials(df_people[df_people["id"] == id_].reset_index().loc[0, "name"], strict=True).lower())
+        display_df(df_people, "df_people")
+        display_df(df_p_ret, "df_p_ret B")
+        # df_p_ret["maxID"] = df_p_ret["person"].apply(lambda id_: df_people[df_people["id"] == id_, "id"].sort_values("id", ascending=False).reset_index().loc[0, "id"])
+        df_p_ret["maxID"] = df_p_ret["person"].apply(lambda p: df_people[df_people["norm"].str.lower() == p.lower()]["id"].idxmax())
+        # retention_rate = df_pools_e.groupby("person")["year"].nunique().mean() / df_pools["year"].nunique()
+        display_df(df_p_ret, "df_p_ret FINAL")
+        retention_rate = df_p_ret.groupby("person")["year"].nunique().mean() / df_pools["year"].nunique()
+        
+
+        col1, col2, col3, col4 = st.columns(4)
+
+        col1.metric("Unique Players", total_players)
+        col2.metric("Total Entries", total_entries)
+        col3.metric("Total Fees Collected", f"${total_fees:,.2f}")
+        col4.metric("Total Winnings Paid", f"${total_winnings:,.2f}")
+
+        st.metric("Avg Retention Rate", f"{retention_rate:.2%}")
+        
+        best_player = df_people_e.sort_values("score", ascending=False).iloc[0]
+        worst_player = df_people_e.sort_values("score", ascending=True).iloc[0]
+
+        st.subheader("🏆 Best Performer")
+        st.write(best_player[["name", "score", "totalEarnings", "mean"]])
+
+        st.subheader("💀 Worst Performer")
+        st.write(worst_player[["name", "score", "totalEarnings", "mean"]])
+        
+        df_prize_dist = df_pools_e[df_pools_e["winnings"] > 0]
+
+        fig = px.pie(
+            df_prize_dist,
+            names="place",
+            values="winnings",
+            title="Prize Distribution by Placement"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+        
+        df_top = df_people_e.sort_values("totalWinnings", ascending=False).head(15)
+
+        fig_bar_winnings = px.bar(
+            df_top,
+            x="name",
+            y="totalWinnings",
+            title="Top Earners",
+            text_auto=True
+        )
+
+        # st.plotly_chart(fig, use_container_width=True)
+        
+        fig_roi = px.bar(
+            df_top,
+            x="name",
+            y="roi",
+            title="ROI by Player"
+        )
+
+        # st.plotly_chart(fig, use_container_width=True)
+        
+        fig_scatter = px.scatter(
+            df_people_e,
+            x="placementPct",
+            y="totalEarnings",
+            size="timesPlayed",
+            hover_name="name",
+            title="Skill vs Profit (Bubble Size = Participation)"
+        )
+
+        # st.plotly_chart(fig, use_container_width=True)
+        
+        fig_hist = px.histogram(
+            df_pools_e,
+            x="place",
+            nbins=20,
+            title="Distribution of Placements"
+        )
+
+        # st.plotly_chart(fig, use_container_width=True)
+        
+        df_retention = df_pools_e.groupby("year")["person"].nunique().reset_index()
+
+        fig_retention = px.line(
+            df_retention,
+            x="year",
+            y="person",
+            title="Players Per Year"
+        )
+
+        # st.plotly_chart(fig, use_container_width=True)
+        
+        df_people_e["wins"] = df_pools_e[df_pools_e["place"] == 1].groupby("person").size()
+        df_people_e["wins"] = df_people_e["wins"].fillna(0)
+
+        df_people_e["winRate"] = df_people_e["wins"] / df_people_e["timesPlayed"]
+        
+        df_people_e["podiums"] = df_pools_e[df_pools_e["place"] <= 3].groupby("person").size()
+        df_people_e["podiums"] = df_people_e["podiums"].fillna(0)
+
+        df_people_e["podiumRate"] = df_people_e["podiums"] / df_people_e["timesPlayed"]
+        
+        st.title("🏒 Hockey Pool Analytics Dashboard")
+        
+        # df_people_e.sort_values(["totalEarnings", "timesPlayed", "mean"], ascending=[False, False, True], inplace=True)
+        df_people_e.sort_values(["score"], ascending=[False], inplace=True)
+        display_df(df_people_e, "df_people_e")
+
+        # KPIs
+        # (metrics row)
+
+        # Row 1
+        col1, col2 = st.columns(2)
+        with col1:
+            st.plotly_chart(fig_bar_winnings)
+        with col2:
+            st.plotly_chart(fig_roi)
+
+        # Row 2
+        col1, col2 = st.columns(2)
+        with col1:
+            st.plotly_chart(fig_scatter)
+        with col2:
+            st.plotly_chart(fig_hist)
+
+        # Row 3
+        st.plotly_chart(fig_retention)
+        
+        curr_year = int(df_years["year"].max())
+        last_year = int(df_years["year"].values.tolist()[-2])
+        
+        df_current = df_people_e[df_people_e["lastYear"] == curr_year]
+        df_core = df_people_e[df_people_e["timesPlayed"] == len(df_years)]
+        df_sub_core = df_people_e[df_people_e["timesPlayed"] == (len(df_years) - 1)]
+        df_core_twice = df_people_e[df_people_e["timesPlayed"] == 2]
+        df_core_once = df_people_e[df_people_e["timesPlayed"] == 1]
+        df_new = df_current.loc[df_current.index.intersection(df_core_once.index)]
+        df_recent_exits = df_people_e[df_people_e["lastYear"] == last_year]
+        # df_recent_exits = df_recent_exits.loc[~df_current.index.intersection(df_recent_exits.index)]
+        
+        for df, title in [
+            (df_current, f"This year's pool players for {curr_year} playoffs"),
+            (df_new, f"New pool players for {curr_year} playoffs"),
+            (df_recent_exits, f"Players that did not return from {last_year} playoffs"),
+            (df_core, f"Core pool players for {len(df_years)} seasons"),
+            (df_sub_core, f"Core pool players for all but 1 season"),
+            (df_core_twice, f"Players who have played two seasons only"),
+            (df_core_once, f"Players who have played only one season")
+        ]:
+            display_df(df, title, show_shape="below", border=True)
+    else:
+        with st.container(horizontal=True):
+            for k, df in dfs.items():
+                display_df(df, title=k, show_shape="separate", border=True, width=500)
+    
+    
+    # hp_html = """
+    #     <iframe marginheight="0" marginwidth="0"
+    #         style="border: none;" frameborder="0"
+    #         src="https://www.officepools.com/nhl/classic/auth/2025/playoff/MMPlayoffs2026/hockey"
+    #         width="500" 
+    #         height="500"
+    #     ></iframe>
+    # """
+    
+    # st.markdown(hp_html, unsafe_allow_html=True)
+        
+        
+@st.dialog("PWHL Bracket", width="large")
+def fill_pwhl_bracket():
+    st.header(f"2026 Playoffs")
+    
+    logo_min = PWHL_META[7]["logo"]
+    logo_mtl = PWHL_META[1]["logo"]
+    logo_ott = PWHL_META[0]["logo"]
+    logo_bos = PWHL_META[6]["logo"]
+    
+    # MIN, MTL
+    # OTT BOS
+    series_a = ["MIN", "MTL"]
+    series_b = ["OTT", "BOS"]
+    
+    k_opt_min = "k_opt_min"
+    k_opt_mtl = "k_opt_mtl"
+    k_ser_a = "k_series_a"
+    k_opt_ott = "k_opt_ott"
+    k_opt_bos = "k_opt_bos"
+    k_ser_b = "k_series_b"
+    k_opt_ser_a = "k_opt_ser_a"
+    k_opt_ser_b = "k_opt_ser_b"
+    k_ser_cup = "k_ser_cup"
+    
+    # cols_layout = st.columns(2)
+    # cols_a = cols_layout[0].columns(2)
+    # cols_b = cols_layout[1].columns(2)
+    
+    # check_min = cols_a[0].checkbox("MIN", value=False, key=k_opt_min, label_visibility="hidden")
+    # cols_a[1].image(logo_min, caption="MIN")
+    # cols_a[0].divider()
+    # cols_a[1].divider()
+    # check_mtl = cols_a[0].checkbox("MTL", value=False, key=k_opt_mtl, label_visibility="hidden")
+    # cols_a[1].image(logo_mtl, caption="MTL")
+    
+    # check_ott = cols_b[0].checkbox("OTT", value=False, key=k_opt_ott, label_visibility="hidden")
+    # cols_b[1].image(logo_ott, caption="OTT")
+    # cols_b[0].divider()
+    # cols_b[1].divider()
+    # check_bos = cols_b[0].checkbox("BOS", value=False, key=k_opt_bos, label_visibility="hidden")
+    # cols_b[1].image(logo_bos, caption="BOS")
+    
+    ser_a = st.session_state.get(k_ser_a)
+    ser_a_opp = None
+    if ser_a:
+        ser_a_opp = k_opt_mtl if ser_a == k_opt_min else k_opt_min
+        st.session_state.update({ser_a: True, ser_a_opp: False})
+    ser_b = st.session_state.get(k_ser_b)
+    ser_b_opp = None
+    if ser_b:
+        ser_b_opp = k_opt_bos if ser_b == k_opt_ott else k_opt_ott
+        st.session_state.update({ser_b: True, ser_b_opp: False})
+        
+    ser_cup = st.session_state.get(k_ser_cup)
+    ser_opp_cup = None
+    if st.session_state.get(k_ser_cup):
+        st.session_state.update({k_opt_ser_b: True, k_opt_ser_a: False})
+    else:
+        st.session_state.update({k_opt_ser_a: True, k_opt_ser_b: False})
+        
+    champ = None, None
+    
+    # st.write(f"{st.session_state.get('k_opt_min')=}")
+    # st.write(f"{st.session_state.get('k_opt_mtl')=}")
+    # st.write(f"{st.session_state.get('k_ser_a')=}")
+    # st.write(f"{st.session_state.get('k_opt_ott')=}")
+    # st.write(f"{st.session_state.get('k_opt_bos')=}")
+    # st.write(f"{st.session_state.get('k_ser_b')=}")
+    # st.write(f"{st.session_state.get('k_opt_ser_a')=}")
+    # st.write(f"{st.session_state.get('k_opt_ser_b')=}")
+    # st.write(f"{st.session_state.get('k_ser_cup')=}")
+    
+    with st.container(horizontal=True, border=True):
+        with st.container(horizontal=False, border=True):
+            with st.container(horizontal=True, border=True):
+                with st.container(horizontal=True, border=False):
+                    check_min = st.checkbox("MIN", value=False, key=k_opt_min, label_visibility="hidden", on_change=lambda: st.session_state.update({k_ser_a: k_opt_min}))
+                    st.image(logo_min, caption="MIN")
+                with st.container(horizontal=True, border=False):
+                    check_mtl = st.checkbox("MTL", value=False, key=k_opt_mtl, label_visibility="hidden", on_change=lambda: st.session_state.update({k_ser_a: k_opt_mtl}))
+                    st.image(logo_mtl, caption="MTL")
+            with st.container(horizontal=True, border=True):
+                with st.container(horizontal=True, border=False):
+                    check_ott = st.checkbox("OTT", value=False, key=k_opt_ott, label_visibility="hidden", on_change=lambda: st.session_state.update({k_ser_b: k_opt_ott}))
+                    st.image(logo_ott, caption="OTT")
+                with st.container(horizontal=True, border=False):
+                    check_bos = st.checkbox("BOS", value=False, key=k_opt_bos, label_visibility="hidden", on_change=lambda: st.session_state.update({k_ser_b: k_opt_bos}))
+                    st.image(logo_bos, caption="BOS")
+        with st.container(horizontal=False, border=True):
+            if ser_a:
+                with st.container(horizontal=True, border=False):
+                    team_a_cup = "MTL" if ser_a == k_opt_mtl else "MIN"
+                    logo_a_cup = logo_mtl if ser_a == k_opt_mtl else logo_min
+                    check_ser_a = st.checkbox(
+                        team_a_cup,
+                        value=False, key=k_opt_ser_a,
+                        label_visibility="hidden",
+                        on_change=lambda: st.session_state.update({k_ser_cup: 0})
+                    )
+                    st.image(logo_a_cup, caption=team_a_cup)
+                    if check_ser_a:
+                        champ = team_a_cup, logo_a_cup
+            if ser_b:
+                with st.container(horizontal=True, border=False):
+                    team_b_cup = "BOS" if ser_b == k_opt_bos else "OTT"
+                    logo_b_cup = logo_bos if ser_b == k_opt_bos else logo_ott
+                    check_ser_b = st.checkbox(
+                        team_b_cup,
+                        value=False, key=k_opt_ser_b,
+                        label_visibility="hidden",
+                        on_change=lambda: st.session_state.update({k_ser_cup: 1})
+                    )
+                    st.image(logo_b_cup, caption=team_b_cup)
+                    if check_ser_b:
+                        champ = team_b_cup, logo_b_cup
+        
+        if all(champ):
+            with st.container(horizontal=False, border=True):
+                team_cup, logo_cup = champ
+                st.image(logo_cup, caption=team_cup)
+                
+
+def page_pwhl():
+    st.write(PWHL_META)
+    cols = st.columns(len(PWHL_META))
+    for i, data in enumerate(PWHL_META):
+        name = data["name"]
+        acronym = data["acronym"]
+        logo = data["logo"]
+        with cols[i]:
+            st.write(name)
+            st.image(logo, caption=acronym)
+    st.divider()
+    
+    if st.button("fill bracket", key=f"key_fill_PWHL_bracket"):
+        fill_pwhl_bracket()
+
+
+@st.cache_data
+def load_playoff_predictions() -> pd.DataFrame:
+    dct = pd.read_excel(path_playoffs_predictions, sheet_name=None)
+    for y, df in dct.copy().items():    
+        cols_to_drop = [c for c in df.columns if c.lower().startswith("unnamed")]
+        df_ = df.drop(columns=cols_to_drop)
+        df_["year"] = y
+        df_["date"] = df_.apply(lambda r: datetime(r["DATE"].year, r["DATE"].month, r["DATE"].day) + timedelta(hours=r["TIME"].hour, minutes=r["TIME"].minute, seconds=r["TIME"].second), axis=1)
+        df_["LOCKEDIN"] = df_["LOCKEDIN"].dt.date
+        dct[y] = df_
+    df_ = pd.concat(dct.values(), ignore_index=True)
+    cols = df_.columns.to_list()
+    for c in ["year", "date", "DATE", "TIME"]:
+        cols.remove(c)
+    cols.insert(0, "year")
+    cols.insert(1, "date")
+    df_ = df_[cols]
+    df_.columns = [col.lower() for col in df_.columns]
+    return df_
+
+
+def ddn(
+    df: pd.DataFrame | pd.Series,
+    title: Optional[str] = None,
+    hide_index: str | bool = "if_int",
+    show_shape: Literal[True, False, "separate", "below"] = True,
+    fail_safe: Optional[Any] = True,
+    border: bool = False,
+
+    # params for st.dataframe 20250325
+    width: int | None = None,
+    height: int | None = None,
+    use_container_width: bool = False,
+    column_order: Iterable[str] | None = None,
+    column_config: Any | None = None,
+    key: Any | None = None,
+    on_select: Literal["ignore", "rerun"] | Any = "ignore",
+    selection_mode: Any = "multi-row",
+ 
+     # params for st.dataframe 20260514
+    selection_default: dict | None = None,
+    row_height: int | None = None,
+    placeholder: str | None = None,
+    
+    image_cols: list | None = None,
+    image_col_width: int = 40,
+    
+    debug: bool = False
+):
+    return display_df_nhl(
+        df=df,
+        title=title,
+        hide_index=hide_index,
+        show_shape=show_shape,
+        fail_safe=fail_safe,
+        border=border,
+
+        # params for st.dataframe 20250325
+        width=width,
+        height=height,
+        use_container_width=use_container_width,
+        column_order=column_order,
+        column_config=column_config,
+        key=key,
+        on_select=on_select,
+        selection_mode=selection_mode,
+    
+        # params for st.dataframe 20260514
+        selection_default=selection_default,
+        row_height=row_height,
+        placeholder=placeholder,        
+        
+        image_cols = image_cols,
+        
+        debug = debug
+    )
+
+
+def display_df_nhl(
+    df: pd.DataFrame | pd.Series,
+    title: Optional[str] = None,
+    hide_index: str | bool = "if_int",
+    show_shape: Literal[True, False, "separate", "below"] = True,
+    fail_safe: Optional[Any] = True,
+    border: bool = False,
+
+    # params for st.dataframe 20250325
+    width: int | None = None,
+    height: int | None = None,
+    use_container_width: bool = False,
+    column_order: Iterable[str] | None = None,
+    column_config: Any | None = None,
+    key: Any | None = None,
+    on_select: Literal["ignore", "rerun"] | Any = "ignore",
+    selection_mode: Any = "multi-row",
+ 
+     # params for st.dataframe 20260514
+    selection_default: dict | None = None,
+    row_height: int | None = None,
+    placeholder: str | None = None,
+    
+    image_cols: list | None = None,
+    image_col_width: int = 40,
+    
+    debug: bool = False
+):
+    team_cols = ["", "away", "home", "abbr", "abbrev"]
+    team_cols += [f"{t}team" for t in team_cols] + [f"team{t}" for t in team_cols]
+    team_cols += ["mychoice", "winner", "loser", "lowseed", "topseed", "top", "low", "high"]
+    if debug:
+        st.write(f"{df.columns.tolist()}")
+        # st.write(f"{df['team'].unique().tolist()}")
+    # df_cols = {str(c).lower().strip(): c for c in df.columns}
+    column_config = column_config if column_config else {}
+    
+    i_cols = []
+    for col in df.columns:
+        col_t = str(col).lower().strip()
+        if (col not in column_config) and (col_t in team_cols):
+            i_cols.append(col)
+            
+    image_cols = image_cols if image_cols else []
+    
+    for c in image_cols:
+        if c not in i_cols:
+            i_cols.append(c)
+    
+    if debug:
+        with st.container(horizontal=True):
+            st.header("A")
+            with st.expander("team_cols"):
+                st.write(team_cols)
+            # with st.expander("df_cols"):
+            #     st.write(df_cols)
+            with st.expander("i_cols"):
+                st.write(i_cols)
+            with st.expander("column_config"):
+                st.write(column_config)
+            with st.expander("df.columns"):
+                st.write(df.columns.tolist())
+            with st.expander("image_cols"):
+                st.write(image_cols)
+    
+    i_cols += list(column_config.keys())
+    df_ = df.copy()
+    for c in i_cols:
+        if c not in df_.columns:
+            if debug:
+                st.write(f"skip {c}")
+            continue
+        df_[c] = df_[c].apply(fetch_team_logo)
+        column_config[c] = st.column_config.ImageColumn(c, width=image_col_width)
+    
+    if debug:
+        with st.container(horizontal=True):
+            st.header("B")
+            # with st.expander("df_cols"):
+            #     st.write(df_cols)
+            with st.expander("i_cols"):
+                st.write(i_cols)
+            with st.expander("column_config"):
+                st.write(column_config)
+            with st.expander("df.columns"):
+                st.write(df.columns.tolist())
+    
+        with st.container():
+            st.write("df_HERE")
+            st.write(df_)
+    
+    return display_df(
+        df=df_,
+        title=title,
+        hide_index=hide_index,
+        show_shape=show_shape,
+        fail_safe=fail_safe,
+        border=border,
+
+        # params for st.dataframe 20250325
+        width=width,
+        height=height,
+        use_container_width=use_container_width,
+        column_order=column_order,
+        column_config=column_config,
+        key=key,
+        on_select=on_select,
+        selection_mode=selection_mode,
+    
+        # params for st.dataframe 20260514
+        selection_default=selection_default,
+        row_height=row_height,
+        placeholder=placeholder
+    )
+    
+
+def fetch_playoff_game_data(year: int) -> pd.DataFrame:
+    df_east = df_teams[df_teams["conf"] == "Eastern"]
+    df_west = df_teams[df_teams["conf"] == "Western"]
+    series_ids = list(range(1, 8 + 1))
+    games_ids = list(range(1, 7 + 1))
+    rounds = list(range(1, 4 + 1))
+    # year | type | fill | round | seriesid | game
+    # 2024 | 03 | 0 | 1 | 3 | 1
+    # 2024030131
+    dfff = pd.DataFrame([{"year": year, "typefill": "030", "rounds": rounds, "series": series_ids, "games": games_ids}])
+    # display_df(dfff, "dfff")
+    dfff = dfff.explode("rounds")
+    dfff = dfff.explode("series")
+    dfff = dfff.explode("games")
+    dfff["id"] = dfff.apply(lambda r: f"{r['year']}{r['typefill']}{r['rounds']}{r['series']}{r['games']}", axis=1)
+    display_df(dfff, f"dfff {year=}")
+    dfff = dfff[
+        ~(
+            ((dfff["rounds"] == 4) & (dfff["series"] > 1))
+            | ((dfff["rounds"] == 3) & (dfff["series"] > 2))
+            | ((dfff["rounds"] == 2) & (dfff["series"] > 4))
+        )
+    ]
+    dv = dfff["id"].values.tolist()
+    # st.write(dv)
+    df_games_data = []
+    # with st.spinner("Loading Playoff Games", show_time=True):
+    for id_ in dv:
+        g_data = fetch_game_landing(id_, debug=False)
+        df_g = dfff[dfff["id"] == id_].reset_index().iloc[0]
+        if g_data:
+            round_ = df_g["rounds"]
+            series_id = df_g["series"]
+            game_num = df_g["games"]
+            
+            wc_game = series_id in [1, 3, 5, 7]
+            final = round_ == 4
+            date_ = g_data["gameDate"]
+            date_v = datetime.strptime(date_, "%Y-%m-%d")
+            dow = f"{date_v:%A}"
+            time = f"{datetime.fromisoformat(g_data['startTimeUTC']).astimezone():%H:%M}"
+            clock = g_data.get("clock", {})
+            s_remain = clock.get("secondsRemaining", 1200)
+            away = g_data["awayTeam"]["abbrev"]
+            home = g_data["homeTeam"]["abbrev"]
+            div_away = df_teams[df_teams["team"] == find_team(away)].reset_index().loc[0, "div"][0]
+            div_home = df_teams[df_teams["team"] == find_team(home)].reset_index().loc[0, "div"][0]
+            ot_num = max(0, len(g_data.get("summary", {}).get("scoring", [])) - 3)
+            tos = 3600 + max(0, (1200 * ot_num) - s_remain)
+            conf = "WEST" if (final) or (away in df_west["team"].values) else "EAST"
+            top = home if game_num in [1, 2, 5, 7] else away
+            low = away if home == top else home
+            if round_ == 4:
+                series_code = "SCF"
+            elif round_ == 3:
+                top_div = f"{div_home if top == home else div_away}"
+                low_div = f"{div_home if low == home else div_away}"
+                a_div, b_div = sorted([top_div, low_div], reverse=conf=="WEST") 
+                series_code = f"{conf[0]}R{round_}{a_div}{b_div}"
+            elif round_ == 2:
+                top_div = f"{div_home if top == home else div_away}1"
+                low_div = f"{div_home if low == home else div_away}2"
+                series_code = f"{conf[0]}R{round_}{top_div}{low_div}"
+            else:
+                top_div = f"{div_home if top == home else div_away}  # {'1' if wc_game else '2'}"
+                low_div = "WC" if wc_game else f"{div_home if low == home else div_away}3"
+                series_code = f"{conf[0]}R{round_}{top_div}{low_div}"
+            st.write(f"{id_=}, {series_code=}")
+            low_wins = 0
+            top_wins = 0
+            away_score = g_data["awayTeam"].get("score", 0)
+            home_score = g_data["homeTeam"].get("score", 0)
+            periods = tos / 1200
+            game_over = "clock" in g_data
+            away_won = False if not game_over else (home_score < away_score)
+            home_won = False if not game_over else (home_score > away_score)
+            winner = None if not game_over else (home if home_won else away)
+            has_ot = periods > 3
+            away_was_so = None if not game_over else (away_score == 0)
+            home_was_so = None if not game_over else (home_score == 0)
+            
+            df_games_data.append(pd.DataFrame([{
+                "GameID": id_,
+                "SeriesID": series_id,
+                "WEEKDATE": dow,
+                "DATE": date,
+                "TIME": time,
+                "CONF": conf,
+                "ROUNDNUM": round_,
+                "SERIESCODE": series_code,
+                "GAMENUM": game_num,
+                "TOPSEED": top,
+                "LOWSEED": low,
+                "TOPSEEDWINS": top_wins,
+                "LOWSEEDWINS": low_wins,
+                "AWAYTEAM": away,
+                "HOMETEAM": home,
+                "MYCHOICE": None,
+                "PAWAYSCORE": None,
+                "PHOMESCORE": None,
+                "PResult": None,
+                "LOCKEDIN": None,
+                "AAWAYSCORE": away_score,
+                "AHOMESCORE": home_score,
+                "OTROUNDNUM": ot_num,
+                "TimeInSeconds": tos,
+                "Periods": periods,
+                "CORRECT": None,
+                "WINNER": winner,
+                "DiffAwayGoals": None,
+                "DiffHomeGoals": None,
+                "GameOver": game_over,
+                "AwayWon": away_won,
+                "HomeWon": home_won,
+                "HasOT": has_ot,
+                "AwayWasShutOut": away_was_so,
+                "HomeWasShutOut": home_was_so,
+                "Notes": None
+            }]))
+        # else:
+        #     st.write(f"skip {id_=}")
+
+    dfg = pd.concat(df_games_data, ignore_index=True)
+    dfg = dfg.sort_values(["DATE", "TIME"]).reset_index(drop=True)
+    dfg["year"] = str(year)
+    pd.DataFrame().reset_index()
+    h2h = {}
+    for i, row in dfg.copy().iterrows():
+        ser = row["SERIESCODE"]
+        top = row["TOPSEED"]
+        low = row["LOWSEED"]
+        away = row["AWAYTEAM"]
+        home = row["HOMETEAM"]
+        a_score = row["AAWAYSCORE"]
+        h_score = row["AHOMESCORE"]
+        tsw = dfg.loc[i, "TOPSEEDWINS"]
+        lsw = dfg.loc[i, "LOWSEEDWINS"]
+        hit = top == home
+        hw = h_score > a_score
+        tw = hw if hit else not hw
+        # st.write(f"{ser=}, {top=}, {low=}, {away=}, {home=}, {a_score=}, {h_score=}, {tsw=}, {lsw=}, {hit=}, {hw=}, {tw=}")
+        dfg.loc[i:].loc[dfg["SERIESCODE"] == ser, ["TOPSEEDWINS", "LOWSEEDWINS"]] = [tsw + int(tw), lsw + int(not tw)]    
+
+    return dfg
 
 
 # ─────────────────────────────────────────────────────────
@@ -5024,6 +7247,8 @@ def main():
             "Stanley Cup",
             "Explore API",
             "Hockey Pool",
+            "Playoffs",
+            "PWHL",
         ], label_visibility="collapsed")
         st.markdown("---")
         st.caption(f"📂 `{path_excel_predictions.split(chr(92))[-1]}`")
@@ -5142,7 +7367,7 @@ def main():
             
             # playerID = data["playerID"]
             # teamAbbr = data["teamAbbr"]
-            # date = data["date"]
+            # date_ = data["date"]
             # season = data["season"]
             # gameType = data["gameType"]
             # gameID = data["gameID"]
@@ -5218,7 +7443,7 @@ def main():
             df_contents = df_contents[df_contents["section"].isin(selectbox_player_id)]
             
             k_sel_url = "key_sel_url"
-            stdf_contents = st.dataframe(
+            stdf_contents = display_df(
                 df_contents,
                 selection_mode="single-row",
                 on_select="rerun"
@@ -6027,9 +8252,16 @@ def main():
         st.markdown('<div class="section-header">🧹 Season Sweeps</div>', unsafe_allow_html=True)
         num_sweeps = df_toar["Sweep"].sum()
         st.write(f"{num_sweeps} total sweeps this regular season")
+        df_toar_ = df_toar.copy()
+        df_toar_["TeamA"] = df_toar_["TeamA"].apply(fetch_team_logo)
+        df_toar_["TeamB"] = df_toar_["TeamB"].apply(fetch_team_logo)
         display_df(
-            df_toar,
-            "Team vs Team Records"
+            df_toar_,
+            "Team vs Team Records",
+            column_config={
+                "TeamA": st.column_config.ImageColumn(label="TeamA", width=60),
+                "TeamB": st.column_config.ImageColumn(label="TeamB", width=60)
+            }
         )
         
         k_multiselect_sort_toar = "key_multiselect_sort_toar"
@@ -6147,7 +8379,22 @@ def main():
             log_df["CorrectWinnerPrediction"] = log_df["CorrectWinnerPrediction"].map(
                 {True: "✅", False: "❌"}
             )
-            st.dataframe(log_df, use_container_width=True, height=320)
+            log_df_ = log_df.copy()
+            log_df_["AwayTeam"] = log_df_["AwayTeam"].apply(fetch_team_logo)
+            log_df_["HomeTeam"] = log_df_["HomeTeam"].apply(fetch_team_logo)
+            log_df_["PredictedWinner"] = log_df_["PredictedWinner"].apply(fetch_team_logo)
+            log_df_["ActualWinner"] = log_df_["ActualWinner"].apply(fetch_team_logo)
+            st.dataframe(
+                log_df_,
+                use_container_width=True,
+                height=320,
+                column_config={
+                    "AwayTeam": st.column_config.ImageColumn(label="Away", width=40),
+                    "HomeTeam": st.column_config.ImageColumn(label="Home", width=40),
+                    "PredictedWinner": st.column_config.ImageColumn(label="P. Winner", width=40),
+                    "ActualWinner": st.column_config.ImageColumn(label="A. Winner", width=40)
+                }
+            )
         else:
             st.warning("No games match the selected filters.")
 
@@ -6325,7 +8572,19 @@ def main():
                     st.caption(g_info["desc"])
                     dcols = ["GameDate", "AwayTeam", "HomeTeam", "ActualWinner", "CorrectWinnerPrediction"]
                     dcols = [c for c in dcols if c in g_games.columns]
-                    st.dataframe(g_games[dcols].sort_values("GameDate"), use_container_width=True)
+                    df_ = g_games[dcols].sort_values("GameDate")
+                    df_["AwayTeam"] = df_["AwayTeam"].apply(fetch_team_logo)
+                    df_["HomeTeam"] = df_["HomeTeam"].apply(fetch_team_logo)
+                    df_["ActualWinner"] = df_["ActualWinner"].apply(fetch_team_logo)
+                    st.dataframe(
+                        df_,
+                        use_container_width=True,
+                        column_config={
+                            "AwayTeam": st.column_config.ImageColumn(label="Away", width=40),
+                            "HomeTeam": st.column_config.ImageColumn(label="Home", width=40),
+                            "ActualWinner": st.column_config.ImageColumn(label="Winner", width=40)
+                        }
+                    )
         else:
             st.info("No gauntlet patterns detected in completed games yet. As the season progresses, patterns will emerge from consecutive away game groupings.")
 
@@ -6338,13 +8597,22 @@ def main():
                     f'<img src="{fetch_team_logo(t)}" width="24" style="vertical-align:middle"> {t}'
                     for t in info["teams"]
                 ])
-                st.markdown(f"""
+                html_ = f"""
                 <div class="gauntlet-card">
                     <div class="gauntlet-title">{name}</div>
                     <div style="color:#8899aa; font-size:0.85rem; margin-top:4px">{info["desc"]}</div>
-                    <div style="margin-top:8px; font-size:0.8rem; color:#ccd6e0">{", ".join(info["teams"])}</div>
-                </div>
-                """, unsafe_allow_html=True)
+                """
+                for t in info["teams"]:
+                    html_ += f"""<img src="{fetch_team_logo(t)}" alt="{t}" width="64" style="vertical-align:middle">"""
+                html_ += """</div>"""
+                st.markdown(html_, unsafe_allow_html=True)
+                # st.markdown(f"""
+                # <div class="gauntlet-card">
+                #     <div class="gauntlet-title">{name}</div>
+                #     <div style="color:#8899aa; font-size:0.85rem; margin-top:4px">{info["desc"]}</div>
+                #     <div style="margin-top:8px; font-size:0.8rem; color:#ccd6e0">{", ".join(info["teams"])}</div>
+                # </div>
+                # """, unsafe_allow_html=True)
 
     # ── PAGE: FUTURE PREDICTIONS ──────────────────────────
     elif page == "🔮 Future Predictions":
@@ -6475,6 +8743,170 @@ def main():
     # ── PAGE: Hockey Pool ──────────────────────────
     elif page == "Hockey Pool":
         page_hockey_pool()
+        
+    # ── PAGE: Hockey Pool ──────────────────────────
+    elif page == "Playoffs":
+        
+        radio_playoffs_mode = st.radio("Mode:", ["Predictions", "Get Scores"], 1)
+        
+        if radio_playoffs_mode == "Predictions":
+            dfs_predictions = load_playoff_predictions()
+            years = dfs_predictions["year"].dropna().unique().tolist()
+            k_saved_years = "key_saved_years"
+            lst_saved_years = st.session_state.setdefault(k_saved_years, [])
+            l_years_m = [y for y in set(list(map(str, years)) + list(map(str, lst_saved_years))) if int(y) <= datetime.today().year]
+            l_years_m.sort(reverse=True)
+            year_m = int(min(l_years_m)) - 1
+            with st.container(horizontal=True):
+                st.write(lst_saved_years)
+                st.write(l_years_m)
+                st.write(year_m)
+            if st.button(f"Get data for {year_m}?"):
+                st.session_state.update({k_saved_years: list(set(l_years_m))})
+                st.rerun()
+            if lst_saved_years:
+                with st.spinner("Loading Games", show_time=True):
+                    dfs_predictions = pd.concat([dfs_predictions] + [fetch_playoff_game_data(y) for y in lst_saved_years], ignore_index=True)
+                
+            k_multiselect_include_years = "key_multiselect_include_years"
+            st.session_state.setdefault(k_multiselect_include_years, l_years_m)
+            include_years = st.multiselect("Included Years", l_years_m, key=k_multiselect_include_years)
+            dfs_predictions = dfs_predictions[dfs_predictions["year"].isin(include_years)]
+            display_df_nhl(
+                dfs_predictions,
+                f"dfs_predictions"
+            )
+            
+            teams = list(set(dfs_predictions["AWAYTEAM"].dropna().unique().tolist() + dfs_predictions["HOMETEAM"].dropna().unique().tolist()))
+            df_ = []
+            for t in teams:
+                df_at = dfs_predictions[dfs_predictions["AWAYTEAM"] == t]
+                df_ht = dfs_predictions[dfs_predictions["HOMETEAM"] == t]
+                wins = len(df_at[df_at["WINNER"] == t]) + len(df_ht[df_ht["WINNER"] == t])
+                losses = len(df_at[df_at["WINNER"] != t]) + len(df_ht[df_ht["WINNER"] != t])
+                high_round = max(df_at["ROUNDNUM"].max(), df_ht["ROUNDNUM"].max())
+                gp = wins + losses
+                gf = df_at["AAWAYSCORE"].sum() + df_ht["AHOMESCORE"].sum()
+                ga = df_at["AHOMESCORE"].sum() + df_ht["AAWAYSCORE"].sum()
+                tos = df_at["TimeInSeconds"].sum() + df_ht["TimeInSeconds"].sum()
+                ot_count = df_at["OTROUNDNUM"].sum() + df_ht["OTROUNDNUM"].sum()
+                df_.append(pd.DataFrame([{
+                    "team": t,
+                    "wins": wins,
+                    "losses": losses,
+                    "highest_round": high_round,
+                    "gp": gp,
+                    "gf": gf,
+                    "ga": ga,
+                    "TiS": tos,
+                    "OTs": ot_count
+                }]))
+            df_ = pd.concat(df_, ignore_index=True)
+            df_["gfpg"] = df_["gf"] / df_["gp"]
+            df_["gapg"] = df_["ga"] / df_["gp"]
+            df_c = df_.copy()
+            i_cols = ["team"]
+            
+            for i, row in df_teams.iterrows():
+                l = row["league"]
+                t = row["team"]
+                a = row["active"]
+                # st.write(f"{l=}, {t=}, {a=}")
+                if not any([l != "NHL", not a, t in teams]):
+                    # st.write("b")
+                    df_c.loc[len(df_c), df_c.columns] = [t] + [0 for _ in range(len(df_c.columns) - 1)]
+                    
+            for dff in [df_, df_c]:
+                dff["appearances"] = dff["wins"] + dff["losses"]
+                dff["gd"] = dff["gf"] - dff["ga"]
+            
+            for c in i_cols:
+                df_c[c] = df_c[c].apply(fetch_team_logo)
+            
+            with st.container(horizontal=True):
+                display_df_nhl(
+                    df_c[df_c["gp"] > 0],
+                    f"Playoff Teams {dfs_predictions['year'].min()} - {dfs_predictions['year'].max()}"
+                )
+                display_df_nhl(
+                    df_c[df_c["gp"] == 0],
+                    f"Non-Playoff Teams {dfs_predictions['year'].min()} - {dfs_predictions['year'].max()}",
+                )
+            
+            with st.container(horizontal=True):
+                with st.container():
+                    st.subheader("Playoff Wins & Losses by Team", text_alignment="center")
+                    sort_col = st.selectbox("sort:", ["wins", "losses", "appearances", "team"], key="k_selectbox_sort_playoff_appearances")
+                    y = sort_col if sort_col in ["wins", "losses"] else ["wins", "losses"]
+                    st.bar_chart(
+                        df_,
+                        x="team",
+                        y=y,
+                        x_label="Teams",
+                        y_label="Count",
+                        color=y,
+                        sort=("-" if st.checkbox("reverse", False, key="k_checkbox_playoffs_appearances") else "") + sort_col
+                    )
+                with st.container():
+                    st.subheader("Playoff Wins & Losses by Team", text_alignment="center")
+                    sort_col = st.selectbox("sort:", ["wins", "losses", "appearances", "team"], key="k_selectbox_sort_playoff_appearances_px")
+                    y = sort_col if sort_col in ["wins", "losses"] else ["wins", "losses"]
+                    df_.sort_values(by=sort_col, inplace=True, ascending=st.checkbox("reverse", False, key="k_checkbox_playoffs_appearances_px"))
+                    st.plotly_chart(px.bar(
+                        df_,
+                        x="team",
+                        y=y,
+                        color=sort_col if len(y) > 1 else y,
+                    ))
+            
+            with st.container(horizontal=True):
+                with st.container():
+                    st.subheader("Playoff Goals For & Goals Against by Team", text_alignment="center")
+                    sort_col = st.selectbox("sort:", ["gf", "ga", "gd", "team"], key="k_selectbox_sort_playoff_goals")
+                    y = sort_col if sort_col in ["gf", "ga"] else ["gf", "ga"]
+                    df_c = df_.copy()
+                    if not st.checkbox("absolute?", False, key="key_checkbox_gd_absoulte"):
+                        df_c["ga"] = df_c["ga"] * -1
+                    st.bar_chart(
+                        df_c,
+                        x="team",
+                        y=y,
+                        x_label="Teams",
+                        y_label="Count",
+                        color=sort_col,
+                        sort=("-" if st.checkbox("reverse", False, key="k_checkbox_playoffs_goals") else "") + sort_col
+                    )
+                    
+                with st.container():
+                    st.subheader("Playoff Goals For & Goals Against by Team", text_alignment="center")
+                    sort_col = st.selectbox("sort:", ["gf", "ga", "gd", "team"], key="k_selectbox_sort_playoff_goals_px")
+                    y = sort_col if sort_col in ["gf", "ga"] else ["gf", "ga"]
+                    df_.sort_values(by=sort_col, inplace=True, ascending=st.checkbox("reverse", False, key="k_checkbox_playoffs_goals_px"))
+                    df_c = df_.copy()
+                    if not st.checkbox("absolute?", False, key="key_checkbox_gd_absoulte_px"):
+                        df_c["ga"] = df_c["ga"] * -1
+                    st.plotly_chart(px.bar(
+                        df_c,
+                        x="team",
+                        y=y,
+                        color=sort_col if len(y) > 1 else y,
+                    ))
+                
+        
+        elif radio_playoffs_mode == "Get Scores":
+                        
+            df_east = df_teams[df_teams["conf"] == "Eastern"]
+            df_west = df_teams[df_teams["conf"] == "Western"]
+            year = st.radio("Year:", [2023, 2024, 2025], 2)
+            dfg = fetch_playoff_game_data(year)    
+            display_df(dfg, "dfg", hide_index=False)
+        
+        else:    
+            st.info("Coming soon")
+    
+    # ── PAGE: Hockey Pool ──────────────────────────
+    elif page == "PWHL":
+        page_pwhl()
 
 
 if __name__ == "__main__":
