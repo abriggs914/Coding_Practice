@@ -670,24 +670,79 @@ Total minutes:			598
 Total hours:			9.966666666666667
 Where to watch:			Disney+
 
+	Digimon
+Genre:				Action/Adventure
+Run (1999 -> 2000):		1 year
+number seasons:			1
+number episodes:		52
+episodes per season:		52.0
+average length of an episode:	23
+Total minutes:			1196
+Total hours:			19.933333333333334
+Where to watch:			Disney+
+
+	The Weekenders
+Genre:				Comedy
+Run (2000 -> 2001):		1 year
+number seasons:			2
+number episodes:		39
+episodes per season:		19.5
+average length of an episode:	23
+Total minutes:			897
+Total hours:			14.95
+Where to watch:			Disney+
+
+	Reboot
+Genre:				Comedy
+Run (2022 -> 2023):		1 year
+number seasons:			1
+number episodes:		8
+episodes per season:		8.0
+average length of an episode:	28
+Total minutes:			224
+Total hours:			3.7333333333333334
+Where to watch:			Disney+
+
+	Bob's Burgers
+Genre:				Comedy
+Run (2011 -> 2025):		14 years
+number seasons:			16
+number episodes:		313
+episodes per season:		19.5625
+average length of an episode:	23
+Total minutes:			7199
+Total hours:			119.98333333333333
+Where to watch:			Disney+
+
+	The Drew Carey Show
+Genre:				Comedy
+Run (1995 -> 2004):		9 years
+number seasons:			9
+number episodes:		233
+episodes per season:		25.88888888888889
+average length of an episode:	23
+Total minutes:			5359
+Total hours:			89.31666666666666
+Where to watch:			PlutoTV
+
 
 	What to watch?
 
 Series:
 
-	Mr. Robot
-Genre:				Drama / Thriller
-Run (2015 -> 2019):		4 years
-number seasons:			4
-number episodes:		45
-episodes per season:		11.25
-average length of an episode:	65
-Total minutes:			2925
-Total hours:			48.75
-Where to watch:			Prime TV
+	Workaholics
+Genre:				Comedy
+Run (2011 -> 2017):		6 years
+number seasons:			7
+number episodes:		86
+episodes per season:		12.285714285714286
+average length of an episode:	22
+Total minutes:			1892
+Total hours:			31.533333333333335
+Where to watch:			Crave
 
-Season: 3
-Episode: 9
+Season: 6
+Episode: 1
 
 	How would you like to print the stats?
 1	-	By start year
@@ -710,6 +765,7 @@ sorting by start year...
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| start year |##################################
 |The Simpsons                     |    1989    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    1989    |The Simpsons                     |
 |The X-Files                      |    1993    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    1993    |The X-Files                      |
+|The Drew Carey Show              |    1995    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1995    |The Drew Carey Show              |
 |Recess                           |    1997    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1997    |Recess                           |
 |King of the Hill                 |    1997    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    1997    |King of the Hill                 |
 |Buffy The Vampire Slayer         |    1997    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1997    |Buffy The Vampire Slayer         |
@@ -717,8 +773,10 @@ sorting by start year...
 |Futurama                         |    1999    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    1999    |Futurama                         |
 |Family Guy                       |    1999    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    1999    |Family Guy                       |
 |Angel                            |    1999    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1999    |Angel                            |
+|Digimon                          |    1999    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    1999    |Digimon                          |
 |Curb your Enthusiasm             |    2000    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    2000    |Curb your Enthusiasm             |
 |Malcolm in the Middle            |    2000    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2000    |Malcolm in the Middle            |
+|The Weekenders                   |    2000    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2000    |The Weekenders                   |
 |Trailer Park Boys                |    2001    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    2001    |Trailer Park Boys                |
 |Scrubs                           |    2001    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2001    |Scrubs                           |
 |The Proud Family                 |    2001    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    2001    |The Proud Family                 |
@@ -744,6 +802,7 @@ sorting by start year...
 |Game of Thrones                  |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    2011    |Game of Thrones                  |
 |Workaholics                      |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2011    |Workaholics                      |
 |Black Mirror                     |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    2011    |Black Mirror                     |
+|Bob's Burgers                    |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    2011    |Bob's Burgers                    |
 |Brickleberry                     |    2012    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    2012    |Brickleberry                     |
 |Gravity Falls                    |    2012    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    2012    |Gravity Falls                    |
 |Brooklyn Nine-Nine               |    2013    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    2013    |Brooklyn Nine-Nine               |
@@ -769,6 +828,7 @@ sorting by start year...
 |What If?                         |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    2021    |What If?                         |
 |Hawkeye                          |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    2021    |Hawkeye                          |
 |The Great North                  |    2021    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    2021    |The Great North                  |
+|Reboot                           |    2022    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    2022    |Reboot                           |
 #############################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -792,6 +852,7 @@ sorting by start year...
 ##################################| start year |
 |The Simpsons                     |    1989    |
 |The X-Files                      |    1993    |
+|The Drew Carey Show              |    1995    |
 |Recess                           |    1997    |
 |King of the Hill                 |    1997    |
 |Buffy The Vampire Slayer         |    1997    |
@@ -799,8 +860,10 @@ sorting by start year...
 |Futurama                         |    1999    |
 |Family Guy                       |    1999    |
 |Angel                            |    1999    |
+|Digimon                          |    1999    |
 |Curb your Enthusiasm             |    2000    |
 |Malcolm in the Middle            |    2000    |
+|The Weekenders                   |    2000    |
 |Trailer Park Boys                |    2001    |
 |Scrubs                           |    2001    |
 |The Proud Family                 |    2001    |
@@ -826,6 +889,7 @@ sorting by start year...
 |Game of Thrones                  |    2011    |
 |Workaholics                      |    2011    |
 |Black Mirror                     |    2011    |
+|Bob's Burgers                    |    2011    |
 |Brickleberry                     |    2012    |
 |Gravity Falls                    |    2012    |
 |Brooklyn Nine-Nine               |    2013    |
@@ -851,14 +915,15 @@ sorting by start year...
 |What If?                         |    2021    |
 |Hawkeye                          |    2021    |
 |The Great North                  |    2021    |
+|Reboot                           |    2022    |
 ################################################
 
-Mean:		2008.95
+Mean:		2008.68
 Median:		2009.00
-Pstdev:		  8.15
-Pvariance:	 66.37
-Stdev:		  8.21
-Variance:	 67.48
+Pstdev:		  8.34
+Pvariance:	 69.58
+Stdev:		  8.41
+Variance:	 70.65
 
 	How would you like to print the stats?
 1	-	By start year
@@ -879,9 +944,12 @@ sorting by end year...
 
 #########################################################################################################################################################################################################################################################################################
 ##################################| end year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| end year |##################################
+|Digimon                          |   2000   |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2000   |Digimon                          |
 |Recess                           |   2001   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2001   |Recess                           |
+|The Weekenders                   |   2001   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2001   |The Weekenders                   |
 |Fillmore                         |   2002   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2002   |Fillmore                         |
 |Buffy The Vampire Slayer         |   2003   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2003   |Buffy The Vampire Slayer         |
+|The Drew Carey Show              |   2004   |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2004   |The Drew Carey Show              |
 |Angel                            |   2004   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2004   |Angel                            |
 |The Proud Family                 |   2005   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2005   |The Proud Family                 |
 |Yu-Gi-Oh!                        |   2006   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   2006   |Yu-Gi-Oh!                        |
@@ -932,6 +1000,7 @@ sorting by end year...
 |The Mandalorian                  |   2023   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |   2023   |The Mandalorian                  |
 |What We Do In The Shadows        |   2023   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |   2023   |What We Do In The Shadows        |
 |The Great North                  |   2023   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |   2023   |The Great North                  |
+|Reboot                           |   2023   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   2023   |Reboot                           |
 |What If?                         |   2024   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |   2024   |What If?                         |
 |The Simpsons                     |   2025   |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   2025   |The Simpsons                     |
 |King of the Hill                 |   2025   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   2025   |King of the Hill                 |
@@ -939,6 +1008,7 @@ sorting by end year...
 |It's Always Sunny in Philadelphia|   2025   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   2025   |It's Always Sunny in Philadelphia|
 |Criminal Minds                   |   2025   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   2025   |Criminal Minds                   |
 |American Dad                     |   2025   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   2025   |American Dad                     |
+|Bob's Burgers                    |   2025   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|   2025   |Bob's Burgers                    |
 |Solar Opposites                  |   2025   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|   2025   |Solar Opposites                  |
 #########################################################################################################################################################################################################################################################################################
 
@@ -961,9 +1031,12 @@ sorting by end year...
 
 ##############################################
 ##################################| end year |
+|Digimon                          |   2000   |
 |Recess                           |   2001   |
+|The Weekenders                   |   2001   |
 |Fillmore                         |   2002   |
 |Buffy The Vampire Slayer         |   2003   |
+|The Drew Carey Show              |   2004   |
 |Angel                            |   2004   |
 |The Proud Family                 |   2005   |
 |Yu-Gi-Oh!                        |   2006   |
@@ -1014,6 +1087,7 @@ sorting by end year...
 |The Mandalorian                  |   2023   |
 |What We Do In The Shadows        |   2023   |
 |The Great North                  |   2023   |
+|Reboot                           |   2023   |
 |What If?                         |   2024   |
 |The Simpsons                     |   2025   |
 |King of the Hill                 |   2025   |
@@ -1021,15 +1095,16 @@ sorting by end year...
 |It's Always Sunny in Philadelphia|   2025   |
 |Criminal Minds                   |   2025   |
 |American Dad                     |   2025   |
+|Bob's Burgers                    |   2025   |
 |Solar Opposites                  |   2025   |
 ##############################################
 
-Mean:		2016.77
-Median:		2019.00
-Pstdev:		  6.42
-Pvariance:	 41.16
-Stdev:		  6.47
-Variance:	 41.85
+Mean:		2016.30
+Median:		2018.50
+Pstdev:		  7.07
+Pvariance:	 49.94
+Stdev:		  7.12
+Variance:	 50.71
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1050,6 +1125,8 @@ sorting by shortest series length...
 
 #############################################################################################################################################################################################################################################################################################################################
 ##################################| shortest series run length |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| shortest series run length |##################################
+|Digimon                          |             1              |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1              |Digimon                          |
+|The Weekenders                   |             1              |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1              |The Weekenders                   |
 |Fillmore                         |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1              |Fillmore                         |
 |The Replacements                 |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1              |The Replacements                 |
 |Gravity Falls Shorts             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |             1              |Gravity Falls Shorts             |
@@ -1059,6 +1136,7 @@ sorting by shortest series length...
 |The Falcon and the Winter Soldier|             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1              |The Falcon and the Winter Soldier|
 |Loki                             |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1              |Loki                             |
 |Hawkeye                          |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1              |Hawkeye                          |
+|Reboot                           |             1              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1              |Reboot                           |
 |Final Space                      |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |    |    |             2              |Final Space                      |
 |The Great North                  |             2              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2              |The Great North                  |
 |Avatar, the Last Airbender       |             3              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             3              |Avatar, the Last Airbender       |
@@ -1096,10 +1174,12 @@ sorting by shortest series length...
 |Game of Thrones                  |             8              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |             8              |Game of Thrones                  |
 |Black Mirror                     |             8              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |             8              |Black Mirror                     |
 |Brooklyn Nine-Nine               |             8              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |             8              |Brooklyn Nine-Nine               |
+|The Drew Carey Show              |             9              |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             9              |The Drew Carey Show              |
 |Scrubs                           |             9              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             9              |Scrubs                           |
 |Smallville                       |             10             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             10             |Smallville                       |
 |Prison Break                     |             12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             12             |Prison Break                     |
 |Star Wars the Clone Wars         |             12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |             12             |Star Wars the Clone Wars         |
+|Bob's Burgers                    |             14             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|             14             |Bob's Burgers                    |
 |Futurama                         |             16             |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |             16             |Futurama                         |
 |Arrested Develpoment             |             16             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |             16             |Arrested Develpoment             |
 |Trailer Park Boys                |             17             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |             17             |Trailer Park Boys                |
@@ -1132,6 +1212,8 @@ sorting by shortest series length...
 
 ################################################################
 ##################################| shortest series run length |
+|Digimon                          |             1              |
+|The Weekenders                   |             1              |
 |Fillmore                         |             1              |
 |The Replacements                 |             1              |
 |Gravity Falls Shorts             |             1              |
@@ -1141,6 +1223,7 @@ sorting by shortest series length...
 |The Falcon and the Winter Soldier|             1              |
 |Loki                             |             1              |
 |Hawkeye                          |             1              |
+|Reboot                           |             1              |
 |Final Space                      |             2              |
 |The Great North                  |             2              |
 |Avatar, the Last Airbender       |             3              |
@@ -1178,10 +1261,12 @@ sorting by shortest series length...
 |Game of Thrones                  |             8              |
 |Black Mirror                     |             8              |
 |Brooklyn Nine-Nine               |             8              |
+|The Drew Carey Show              |             9              |
 |Scrubs                           |             9              |
 |Smallville                       |             10             |
 |Prison Break                     |             12             |
 |Star Wars the Clone Wars         |             12             |
+|Bob's Burgers                    |             14             |
 |Futurama                         |             16             |
 |Arrested Develpoment             |             16             |
 |Trailer Park Boys                |             17             |
@@ -1195,12 +1280,12 @@ sorting by shortest series length...
 |The Simpsons                     |             36             |
 ################################################################
 
-Mean:		  7.92
+Mean:		  7.71
 Median:		  5.00
-Pstdev:		  7.60
-Pvariance:	 57.71
-Stdev:		  7.66
-Variance:	 58.68
+Pstdev:		  7.49
+Pvariance:	 56.05
+Stdev:		  7.54
+Variance:	 56.92
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1232,9 +1317,11 @@ sorting by longest series length...
 |Trailer Park Boys                |            17             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |            17             |Trailer Park Boys                |
 |Futurama                         |            16             |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |            16             |Futurama                         |
 |Arrested Develpoment             |            16             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |            16             |Arrested Develpoment             |
+|Bob's Burgers                    |            14             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|            14             |Bob's Burgers                    |
 |Prison Break                     |            12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |            12             |Prison Break                     |
 |Star Wars the Clone Wars         |            12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |            12             |Star Wars the Clone Wars         |
 |Smallville                       |            10             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |            10             |Smallville                       |
+|The Drew Carey Show              |             9             |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             9             |The Drew Carey Show              |
 |Scrubs                           |             9             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             9             |Scrubs                           |
 |Yu-Gi-Oh!                        |             8             |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             8             |Yu-Gi-Oh!                        |
 |Game of Thrones                  |             8             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |             8             |Game of Thrones                  |
@@ -1273,6 +1360,8 @@ sorting by longest series length...
 |What If?                         |             3             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |             3             |What If?                         |
 |Final Space                      |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |    |    |             2             |Final Space                      |
 |The Great North                  |             2             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |             2             |The Great North                  |
+|Digimon                          |             1             |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1             |Digimon                          |
+|The Weekenders                   |             1             |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1             |The Weekenders                   |
 |Fillmore                         |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1             |Fillmore                         |
 |The Replacements                 |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             1             |The Replacements                 |
 |Gravity Falls Shorts             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |             1             |Gravity Falls Shorts             |
@@ -1282,6 +1371,7 @@ sorting by longest series length...
 |The Falcon and the Winter Soldier|             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1             |The Falcon and the Winter Soldier|
 |Loki                             |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1             |Loki                             |
 |Hawkeye                          |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |             1             |Hawkeye                          |
+|Reboot                           |             1             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |             1             |Reboot                           |
 ###########################################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1314,9 +1404,11 @@ sorting by longest series length...
 |Trailer Park Boys                |            17             |
 |Futurama                         |            16             |
 |Arrested Develpoment             |            16             |
+|Bob's Burgers                    |            14             |
 |Prison Break                     |            12             |
 |Star Wars the Clone Wars         |            12             |
 |Smallville                       |            10             |
+|The Drew Carey Show              |             9             |
 |Scrubs                           |             9             |
 |Yu-Gi-Oh!                        |             8             |
 |Game of Thrones                  |             8             |
@@ -1355,6 +1447,8 @@ sorting by longest series length...
 |What If?                         |             3             |
 |Final Space                      |             2             |
 |The Great North                  |             2             |
+|Digimon                          |             1             |
+|The Weekenders                   |             1             |
 |Fillmore                         |             1             |
 |The Replacements                 |             1             |
 |Gravity Falls Shorts             |             1             |
@@ -1364,14 +1458,15 @@ sorting by longest series length...
 |The Falcon and the Winter Soldier|             1             |
 |Loki                             |             1             |
 |Hawkeye                          |             1             |
+|Reboot                           |             1             |
 ###############################################################
 
-Mean:		  7.92
+Mean:		  7.71
 Median:		  5.00
-Pstdev:		  7.60
-Pvariance:	 57.71
-Stdev:		  7.66
-Variance:	 58.68
+Pstdev:		  7.49
+Pvariance:	 56.05
+Stdev:		  7.54
+Variance:	 56.92
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1392,6 +1487,7 @@ sorting by least number of seasons...
 
 #################################################################################################################################################################################################################################################################################################################
 ##################################| least number seasons |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| least number seasons |##################################
+|Digimon                          |          1           |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1           |Digimon                          |
 |Fillmore                         |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1           |Fillmore                         |
 |The Replacements                 |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1           |The Replacements                 |
 |Gravity Falls Shorts             |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |          1           |Gravity Falls Shorts             |
@@ -1400,11 +1496,13 @@ sorting by least number of seasons...
 |The Falcon and the Winter Soldier|          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1           |The Falcon and the Winter Soldier|
 |Loki                             |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1           |Loki                             |
 |Hawkeye                          |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1           |Hawkeye                          |
+|Reboot                           |          1           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          1           |Reboot                           |
 |The Proud Family                 |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2           |The Proud Family                 |
 |Gravity Falls                    |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          2           |Gravity Falls                    |
 |Bless the Harts                  |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |          2           |Bless the Harts                  |
 |What If?                         |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          2           |What If?                         |
 |Final Space                      |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |    |    |          2           |Final Space                      |
+|The Weekenders                   |          2           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2           |The Weekenders                   |
 |The Mick                         |          2           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |          2           |The Mick                         |
 |The Orville                      |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          3           |The Orville                      |
 |The Mandalorian                  |          3           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |          3           |The Mandalorian                  |
@@ -1439,6 +1537,7 @@ sorting by least number of seasons...
 |Workaholics                      |          7           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          7           |Workaholics                      |
 |Game of Thrones                  |          8           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |          8           |Game of Thrones                  |
 |Brooklyn Nine-Nine               |          8           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |          8           |Brooklyn Nine-Nine               |
+|The Drew Carey Show              |          9           |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          9           |The Drew Carey Show              |
 |Scrubs                           |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          9           |Scrubs                           |
 |The Office                       |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          9           |The Office                       |
 |Smallville                       |          10          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          10          |Smallville                       |
@@ -1448,6 +1547,7 @@ sorting by least number of seasons...
 |Trailer Park Boys                |          12          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |          12          |Trailer Park Boys                |
 |Futurama                         |          13          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |          13          |Futurama                         |
 |King of the Hill                 |          14          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          14          |King of the Hill                 |
+|Bob's Burgers                    |          16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          16          |Bob's Burgers                    |
 |It's Always Sunny in Philadelphia|          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          17          |It's Always Sunny in Philadelphia|
 |Criminal Minds                   |          18          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          18          |Criminal Minds                   |
 |American Dad                     |          20          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          20          |American Dad                     |
@@ -1474,6 +1574,7 @@ sorting by least number of seasons...
 
 ##########################################################
 ##################################| least number seasons |
+|Digimon                          |          1           |
 |Fillmore                         |          1           |
 |The Replacements                 |          1           |
 |Gravity Falls Shorts             |          1           |
@@ -1482,11 +1583,13 @@ sorting by least number of seasons...
 |The Falcon and the Winter Soldier|          1           |
 |Loki                             |          1           |
 |Hawkeye                          |          1           |
+|Reboot                           |          1           |
 |The Proud Family                 |          2           |
 |Gravity Falls                    |          2           |
 |Bless the Harts                  |          2           |
 |What If?                         |          2           |
 |Final Space                      |          2           |
+|The Weekenders                   |          2           |
 |The Mick                         |          2           |
 |The Orville                      |          3           |
 |The Mandalorian                  |          3           |
@@ -1521,6 +1624,7 @@ sorting by least number of seasons...
 |Workaholics                      |          7           |
 |Game of Thrones                  |          8           |
 |Brooklyn Nine-Nine               |          8           |
+|The Drew Carey Show              |          9           |
 |Scrubs                           |          9           |
 |The Office                       |          9           |
 |Smallville                       |          10          |
@@ -1530,6 +1634,7 @@ sorting by least number of seasons...
 |Trailer Park Boys                |          12          |
 |Futurama                         |          13          |
 |King of the Hill                 |          14          |
+|Bob's Burgers                    |          16          |
 |It's Always Sunny in Philadelphia|          17          |
 |Criminal Minds                   |          18          |
 |American Dad                     |          20          |
@@ -1537,12 +1642,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          36          |
 ##########################################################
 
-Mean:		  6.64
+Mean:		  6.58
 Median:		  5.00
-Pstdev:		  6.10
-Pvariance:	 37.18
-Stdev:		  6.15
-Variance:	 37.80
+Pstdev:		  6.09
+Pvariance:	 37.06
+Stdev:		  6.13
+Variance:	 37.63
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1568,6 +1673,7 @@ sorting by most number of seasons...
 |American Dad                     |         20          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         20          |American Dad                     |
 |Criminal Minds                   |         18          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         18          |Criminal Minds                   |
 |It's Always Sunny in Philadelphia|         17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         17          |It's Always Sunny in Philadelphia|
+|Bob's Burgers                    |         16          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         16          |Bob's Burgers                    |
 |King of the Hill                 |         14          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         14          |King of the Hill                 |
 |Futurama                         |         13          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |         13          |Futurama                         |
 |Trailer Park Boys                |         12          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |         12          |Trailer Park Boys                |
@@ -1575,6 +1681,7 @@ sorting by most number of seasons...
 |Curb your Enthusiasm             |         11          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         11          |Curb your Enthusiasm             |
 |Letterkenny                      |         11          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |         11          |Letterkenny                      |
 |Smallville                       |         10          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         10          |Smallville                       |
+|The Drew Carey Show              |          9          |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          9          |The Drew Carey Show              |
 |Scrubs                           |          9          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          9          |Scrubs                           |
 |The Office                       |          9          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          9          |The Office                       |
 |Game of Thrones                  |          8          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |          8          |Game of Thrones                  |
@@ -1615,7 +1722,9 @@ sorting by most number of seasons...
 |Bless the Harts                  |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |          2          |Bless the Harts                  |
 |What If?                         |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |          2          |What If?                         |
 |Final Space                      |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |    |    |          2          |Final Space                      |
+|The Weekenders                   |          2          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          2          |The Weekenders                   |
 |The Mick                         |          2          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |          2          |The Mick                         |
+|Digimon                          |          1          |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1          |Digimon                          |
 |Fillmore                         |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1          |Fillmore                         |
 |The Replacements                 |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          1          |The Replacements                 |
 |Gravity Falls Shorts             |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |          1          |Gravity Falls Shorts             |
@@ -1624,6 +1733,7 @@ sorting by most number of seasons...
 |The Falcon and the Winter Soldier|          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1          |The Falcon and the Winter Soldier|
 |Loki                             |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1          |Loki                             |
 |Hawkeye                          |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          1          |Hawkeye                          |
+|Reboot                           |          1          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          1          |Reboot                           |
 ###############################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -1650,6 +1760,7 @@ sorting by most number of seasons...
 |American Dad                     |         20          |
 |Criminal Minds                   |         18          |
 |It's Always Sunny in Philadelphia|         17          |
+|Bob's Burgers                    |         16          |
 |King of the Hill                 |         14          |
 |Futurama                         |         13          |
 |Trailer Park Boys                |         12          |
@@ -1657,6 +1768,7 @@ sorting by most number of seasons...
 |Curb your Enthusiasm             |         11          |
 |Letterkenny                      |         11          |
 |Smallville                       |         10          |
+|The Drew Carey Show              |          9          |
 |Scrubs                           |          9          |
 |The Office                       |          9          |
 |Game of Thrones                  |          8          |
@@ -1697,7 +1809,9 @@ sorting by most number of seasons...
 |Bless the Harts                  |          2          |
 |What If?                         |          2          |
 |Final Space                      |          2          |
+|The Weekenders                   |          2          |
 |The Mick                         |          2          |
+|Digimon                          |          1          |
 |Fillmore                         |          1          |
 |The Replacements                 |          1          |
 |Gravity Falls Shorts             |          1          |
@@ -1706,14 +1820,15 @@ sorting by most number of seasons...
 |The Falcon and the Winter Soldier|          1          |
 |Loki                             |          1          |
 |Hawkeye                          |          1          |
+|Reboot                           |          1          |
 #########################################################
 
-Mean:		  6.64
+Mean:		  6.58
 Median:		  5.00
-Pstdev:		  6.10
-Pvariance:	 37.18
-Stdev:		  6.15
-Variance:	 37.80
+Pstdev:		  6.09
+Pvariance:	 37.06
+Stdev:		  6.13
+Variance:	 37.63
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1738,6 +1853,7 @@ sorting by least number of episodes...
 |The Falcon and the Winter Soldier|           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           6           |The Falcon and the Winter Soldier|
 |Loki                             |           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           6           |Loki                             |
 |Hawkeye                          |           6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           6           |Hawkeye                          |
+|Reboot                           |           8           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |           8           |Reboot                           |
 |Wandavision                      |           9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |           9           |Wandavision                      |
 |Sherlock                         |          13           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          13           |Sherlock                         |
 |Gravity Falls Shorts             |          17           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |          17           |Gravity Falls Shorts             |
@@ -1754,12 +1870,14 @@ sorting by least number of episodes...
 |Brickleberry                     |          36           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |          36           |Brickleberry                     |
 |Misfits                          |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          37           |Misfits                          |
 |The Mick                         |          37           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |          37           |The Mick                         |
+|The Weekenders                   |          39           |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          39           |The Weekenders                   |
 |Baskets                          |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |          40           |Baskets                          |
 |Gravity Falls                    |          40           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          40           |Gravity Falls                    |
 |Mr. Robot                        |          45           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |          45           |Mr. Robot                        |
 |Better Call Saul                 |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |          50           |Better Call Saul                 |
 |What We Do In The Shadows        |          50           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |          50           |What We Do In The Shadows        |
 |The Proud Family                 |          52           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52           |The Proud Family                 |
+|Digimon                          |          52           |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52           |Digimon                          |
 |Silicon Valley                   |          53           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |          53           |Silicon Valley                   |
 |Solar Opposites                  |          53           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|          53           |Solar Opposites                  |
 |The Great North                  |          60           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |          60           |The Great North                  |
@@ -1789,8 +1907,10 @@ sorting by least number of episodes...
 |The Office                       |          201          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          201          |The Office                       |
 |The X-Files                      |          217          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |          217          |The X-Files                      |
 |Smallville                       |          217          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          217          |Smallville                       |
+|The Drew Carey Show              |          233          |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          233          |The Drew Carey Show              |
 |Yu-Gi-Oh!                        |          236          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          236          |Yu-Gi-Oh!                        |
 |King of the Hill                 |          269          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          269          |King of the Hill                 |
+|Bob's Burgers                    |          313          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          313          |Bob's Burgers                    |
 |Criminal Minds                   |          354          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          354          |Criminal Minds                   |
 |American Dad                     |          373          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          373          |American Dad                     |
 |Family Guy                       |          442          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          442          |Family Guy                       |
@@ -1820,6 +1940,7 @@ sorting by least number of episodes...
 |The Falcon and the Winter Soldier|           6           |
 |Loki                             |           6           |
 |Hawkeye                          |           6           |
+|Reboot                           |           8           |
 |Wandavision                      |           9           |
 |Sherlock                         |          13           |
 |Gravity Falls Shorts             |          17           |
@@ -1836,12 +1957,14 @@ sorting by least number of episodes...
 |Brickleberry                     |          36           |
 |Misfits                          |          37           |
 |The Mick                         |          37           |
+|The Weekenders                   |          39           |
 |Baskets                          |          40           |
 |Gravity Falls                    |          40           |
 |Mr. Robot                        |          45           |
 |Better Call Saul                 |          50           |
 |What We Do In The Shadows        |          50           |
 |The Proud Family                 |          52           |
+|Digimon                          |          52           |
 |Silicon Valley                   |          53           |
 |Solar Opposites                  |          53           |
 |The Great North                  |          60           |
@@ -1871,20 +1994,22 @@ sorting by least number of episodes...
 |The Office                       |          201          |
 |The X-Files                      |          217          |
 |Smallville                       |          217          |
+|The Drew Carey Show              |          233          |
 |Yu-Gi-Oh!                        |          236          |
 |King of the Hill                 |          269          |
+|Bob's Burgers                    |          313          |
 |Criminal Minds                   |          354          |
 |American Dad                     |          373          |
 |Family Guy                       |          442          |
 |The Simpsons                     |          786          |
 ###########################################################
 
-Mean:		106.30
-Median:		 62.00
-Pstdev:		127.56
-Pvariance:	16272.80
-Stdev:		128.62
-Variance:	16544.01
+Mean:		108.02
+Median:		 61.50
+Pstdev:		127.23
+Pvariance:	16187.35
+Stdev:		128.20
+Variance:	16436.38
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1909,8 +2034,10 @@ sorting by most number of episodes...
 |Family Guy                       |         442          |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         442          |Family Guy                       |
 |American Dad                     |         373          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         373          |American Dad                     |
 |Criminal Minds                   |         354          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         354          |Criminal Minds                   |
+|Bob's Burgers                    |         313          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         313          |Bob's Burgers                    |
 |King of the Hill                 |         269          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         269          |King of the Hill                 |
 |Yu-Gi-Oh!                        |         236          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         236          |Yu-Gi-Oh!                        |
+|The Drew Carey Show              |         233          |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         233          |The Drew Carey Show              |
 |The X-Files                      |         217          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |         217          |The X-Files                      |
 |Smallville                       |         217          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         217          |Smallville                       |
 |The Office                       |         201          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         201          |The Office                       |
@@ -1941,11 +2068,13 @@ sorting by most number of episodes...
 |Silicon Valley                   |          53          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |          53          |Silicon Valley                   |
 |Solar Opposites                  |          53          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|          53          |Solar Opposites                  |
 |The Proud Family                 |          52          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52          |The Proud Family                 |
+|Digimon                          |          52          |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          52          |Digimon                          |
 |Better Call Saul                 |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |          50          |Better Call Saul                 |
 |What We Do In The Shadows        |          50          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |          50          |What We Do In The Shadows        |
 |Mr. Robot                        |          45          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |          45          |Mr. Robot                        |
 |Baskets                          |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |          40          |Baskets                          |
 |Gravity Falls                    |          40          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |          40          |Gravity Falls                    |
+|The Weekenders                   |          39          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          39          |The Weekenders                   |
 |Misfits                          |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          37          |Misfits                          |
 |The Mick                         |          37          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |          37          |The Mick                         |
 |The Orville                      |          36          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |          36          |The Orville                      |
@@ -1962,6 +2091,7 @@ sorting by most number of episodes...
 |Gravity Falls Shorts             |          17          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |          17          |Gravity Falls Shorts             |
 |Sherlock                         |          13          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          13          |Sherlock                         |
 |Wandavision                      |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          9           |Wandavision                      |
+|Reboot                           |          8           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |          8           |Reboot                           |
 |The Falcon and the Winter Soldier|          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          6           |The Falcon and the Winter Soldier|
 |Loki                             |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          6           |Loki                             |
 |Hawkeye                          |          6           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |          6           |Hawkeye                          |
@@ -1991,8 +2121,10 @@ sorting by most number of episodes...
 |Family Guy                       |         442          |
 |American Dad                     |         373          |
 |Criminal Minds                   |         354          |
+|Bob's Burgers                    |         313          |
 |King of the Hill                 |         269          |
 |Yu-Gi-Oh!                        |         236          |
+|The Drew Carey Show              |         233          |
 |The X-Files                      |         217          |
 |Smallville                       |         217          |
 |The Office                       |         201          |
@@ -2023,11 +2155,13 @@ sorting by most number of episodes...
 |Silicon Valley                   |          53          |
 |Solar Opposites                  |          53          |
 |The Proud Family                 |          52          |
+|Digimon                          |          52          |
 |Better Call Saul                 |          50          |
 |What We Do In The Shadows        |          50          |
 |Mr. Robot                        |          45          |
 |Baskets                          |          40          |
 |Gravity Falls                    |          40          |
+|The Weekenders                   |          39          |
 |Misfits                          |          37          |
 |The Mick                         |          37          |
 |The Orville                      |          36          |
@@ -2044,18 +2178,19 @@ sorting by most number of episodes...
 |Gravity Falls Shorts             |          17          |
 |Sherlock                         |          13          |
 |Wandavision                      |          9           |
+|Reboot                           |          8           |
 |The Falcon and the Winter Soldier|          6           |
 |Loki                             |          6           |
 |Hawkeye                          |          6           |
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		106.30
-Median:		 62.00
-Pstdev:		127.56
-Pvariance:	16272.80
-Stdev:		128.62
-Variance:	16544.01
+Mean:		108.02
+Median:		 61.50
+Pstdev:		127.23
+Pvariance:	16187.35
+Stdev:		128.20
+Variance:	16436.38
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2077,6 +2212,7 @@ sorting by shortest time...
 ###################################################################################################################################################################################################################################################################################################
 ##################################| shortest time |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| shortest time |##################################
 |Gravity Falls Shorts             |   1.416667    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |   1.416667    |Gravity Falls Shorts             |
+|Reboot                           |   3.733333    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   3.733333    |Reboot                           |
 |Chernobyl                        |      5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |      5.0      |Chernobyl                        |
 |The Falcon and the Winter Soldier|      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |      6.0      |The Falcon and the Winter Soldier|
 |Loki                             |      6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |      6.0      |Loki                             |
@@ -2092,11 +2228,13 @@ sorting by shortest time...
 |The Mick                         |   13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |   13.566667   |The Mick                         |
 |Baskets                          |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |   14.666667   |Baskets                          |
 |Gravity Falls                    |   14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |   14.666667   |Gravity Falls                    |
+|The Weekenders                   |   14.950000   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   14.950000   |The Weekenders                   |
 |The Mandalorian                  |   17.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |   17.600000   |The Mandalorian                  |
 |What We Do In The Shadows        |   19.166667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |   19.166667   |What We Do In The Shadows        |
 |Silicon Valley                   |   19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |   19.433333   |Silicon Valley                   |
 |Sherlock                         |   19.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   19.500000   |Sherlock                         |
 |The Proud Family                 |   19.933333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   19.933333   |The Proud Family                 |
+|Digimon                          |   19.933333   |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   19.933333   |Digimon                          |
 |Black Mirror                     |     21.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |     21.0      |Black Mirror                     |
 |Solar Opposites                  |   21.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|   21.200000   |Solar Opposites                  |
 |Avatar, the Last Airbender       |   22.366667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   22.366667   |Avatar, the Last Airbender       |
@@ -2128,9 +2266,11 @@ sorting by shortest time...
 |The Office                       |   73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   73.700000   |The Office                       |
 |Angel                            |   82.500000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   82.500000   |Angel                            |
 |Yu-Gi-Oh!                        |   86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   86.533333   |Yu-Gi-Oh!                        |
+|The Drew Carey Show              |   89.316667   |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   89.316667   |The Drew Carey Show              |
 |Sons of Anarchy                  |     92.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |     92.0      |Sons of Anarchy                  |
 |King of the Hill                 |  103.116667   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  103.116667   |King of the Hill                 |
 |Buffy The Vampire Slayer         |     108.0     |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |     108.0     |Buffy The Vampire Slayer         |
+|Bob's Burgers                    |  119.983333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  119.983333   |Bob's Burgers                    |
 |American Dad                     |  142.983333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  142.983333   |American Dad                     |
 |Smallville                       |  159.133333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |  159.133333   |Smallville                       |
 |The X-Files                      |  162.750000   |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |  162.750000   |The X-Files                      |
@@ -2159,6 +2299,7 @@ sorting by shortest time...
 ###################################################
 ##################################| shortest time |
 |Gravity Falls Shorts             |   1.416667    |
+|Reboot                           |   3.733333    |
 |Chernobyl                        |      5.0      |
 |The Falcon and the Winter Soldier|      6.0      |
 |Loki                             |      6.0      |
@@ -2174,11 +2315,13 @@ sorting by shortest time...
 |The Mick                         |   13.566667   |
 |Baskets                          |   14.666667   |
 |Gravity Falls                    |   14.666667   |
+|The Weekenders                   |   14.950000   |
 |The Mandalorian                  |   17.600000   |
 |What We Do In The Shadows        |   19.166667   |
 |Silicon Valley                   |   19.433333   |
 |Sherlock                         |   19.500000   |
 |The Proud Family                 |   19.933333   |
+|Digimon                          |   19.933333   |
 |Black Mirror                     |     21.0      |
 |Solar Opposites                  |   21.200000   |
 |Avatar, the Last Airbender       |   22.366667   |
@@ -2210,9 +2353,11 @@ sorting by shortest time...
 |The Office                       |   73.700000   |
 |Angel                            |   82.500000   |
 |Yu-Gi-Oh!                        |   86.533333   |
+|The Drew Carey Show              |   89.316667   |
 |Sons of Anarchy                  |     92.0      |
 |King of the Hill                 |  103.116667   |
 |Buffy The Vampire Slayer         |     108.0     |
+|Bob's Burgers                    |  119.983333   |
 |American Dad                     |  142.983333   |
 |Smallville                       |  159.133333   |
 |The X-Files                      |  162.750000   |
@@ -2221,12 +2366,12 @@ sorting by shortest time...
 |The Simpsons                     |  314.400000   |
 ###################################################
 
-Mean:		 51.91
-Median:		 27.13
-Pstdev:		 59.35
-Pvariance:	3522.03
-Stdev:		 59.84
-Variance:	3580.73
+Mean:		 51.73
+Median:		 26.77
+Pstdev:		 58.46
+Pvariance:	3417.95
+Stdev:		 58.91
+Variance:	3470.53
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2253,9 +2398,11 @@ sorting by longest time...
 |The X-Files                      |  162.750000  |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |  162.750000  |The X-Files                      |
 |Smallville                       |  159.133333  |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |  159.133333  |Smallville                       |
 |American Dad                     |  142.983333  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  142.983333  |American Dad                     |
+|Bob's Burgers                    |  119.983333  |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  119.983333  |Bob's Burgers                    |
 |Buffy The Vampire Slayer         |    108.0     |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    108.0     |Buffy The Vampire Slayer         |
 |King of the Hill                 |  103.116667  |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  103.116667  |King of the Hill                 |
 |Sons of Anarchy                  |     92.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |     92.0     |Sons of Anarchy                  |
+|The Drew Carey Show              |  89.316667   |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  89.316667   |The Drew Carey Show              |
 |Yu-Gi-Oh!                        |  86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  86.533333   |Yu-Gi-Oh!                        |
 |Angel                            |  82.500000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  82.500000   |Angel                            |
 |The Office                       |  73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |  73.700000   |The Office                       |
@@ -2288,10 +2435,12 @@ sorting by longest time...
 |Solar Opposites                  |  21.200000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|  21.200000   |Solar Opposites                  |
 |Black Mirror                     |     21.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |     21.0     |Black Mirror                     |
 |The Proud Family                 |  19.933333   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  19.933333   |The Proud Family                 |
+|Digimon                          |  19.933333   |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  19.933333   |Digimon                          |
 |Sherlock                         |  19.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |  19.500000   |Sherlock                         |
 |Silicon Valley                   |  19.433333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |  19.433333   |Silicon Valley                   |
 |What We Do In The Shadows        |  19.166667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |  19.166667   |What We Do In The Shadows        |
 |The Mandalorian                  |  17.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |  17.600000   |The Mandalorian                  |
+|The Weekenders                   |  14.950000   |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  14.950000   |The Weekenders                   |
 |Baskets                          |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |  14.666667   |Baskets                          |
 |Gravity Falls                    |  14.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |  14.666667   |Gravity Falls                    |
 |The Mick                         |  13.566667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |  13.566667   |The Mick                         |
@@ -2307,6 +2456,7 @@ sorting by longest time...
 |Loki                             |     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |     6.0      |Loki                             |
 |Hawkeye                          |     6.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |     6.0      |Hawkeye                          |
 |Chernobyl                        |     5.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |     5.0      |Chernobyl                        |
+|Reboot                           |   3.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |   3.733333   |Reboot                           |
 |Gravity Falls Shorts             |   1.416667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |   1.416667   |Gravity Falls Shorts             |
 #################################################################################################################################################################################################################################################################################################
 
@@ -2335,9 +2485,11 @@ sorting by longest time...
 |The X-Files                      |  162.750000  |
 |Smallville                       |  159.133333  |
 |American Dad                     |  142.983333  |
+|Bob's Burgers                    |  119.983333  |
 |Buffy The Vampire Slayer         |    108.0     |
 |King of the Hill                 |  103.116667  |
 |Sons of Anarchy                  |     92.0     |
+|The Drew Carey Show              |  89.316667   |
 |Yu-Gi-Oh!                        |  86.533333   |
 |Angel                            |  82.500000   |
 |The Office                       |  73.700000   |
@@ -2370,10 +2522,12 @@ sorting by longest time...
 |Solar Opposites                  |  21.200000   |
 |Black Mirror                     |     21.0     |
 |The Proud Family                 |  19.933333   |
+|Digimon                          |  19.933333   |
 |Sherlock                         |  19.500000   |
 |Silicon Valley                   |  19.433333   |
 |What We Do In The Shadows        |  19.166667   |
 |The Mandalorian                  |  17.600000   |
+|The Weekenders                   |  14.950000   |
 |Baskets                          |  14.666667   |
 |Gravity Falls                    |  14.666667   |
 |The Mick                         |  13.566667   |
@@ -2389,15 +2543,16 @@ sorting by longest time...
 |Loki                             |     6.0      |
 |Hawkeye                          |     6.0      |
 |Chernobyl                        |     5.0      |
+|Reboot                           |   3.733333   |
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 51.91
-Median:		 27.13
-Pstdev:		 59.35
-Pvariance:	3522.03
-Stdev:		 59.84
-Variance:	3580.73
+Mean:		 51.73
+Median:		 26.77
+Pstdev:		 58.46
+Pvariance:	3417.95
+Stdev:		 58.91
+Variance:	3470.53
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2418,9 +2573,11 @@ sorting by most episodes per season...
 
 #########################################################################################################################################################################################################################################################################################################################
 ##################################| most episodes per season |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| most episodes per season |##################################
+|Digimon                          |           52.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           52.0           |Digimon                          |
 |Yu-Gi-Oh!                        |        47.200000         |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        47.200000         |Yu-Gi-Oh!                        |
 |The Proud Family                 |           26.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           26.0           |The Proud Family                 |
 |Fillmore                         |           26.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           26.0           |Fillmore                         |
+|The Drew Carey Show              |        25.888889         |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        25.888889         |The Drew Carey Show              |
 |My Name is Earl                  |           24.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0           |My Name is Earl                  |
 |The Office                       |        22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |        22.333333         |The Office                       |
 |Angel                            |           22.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0           |Angel                            |
@@ -2434,6 +2591,8 @@ sorting by most episodes per season...
 |Gravity Falls                    |           20.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |           20.0           |Gravity Falls                    |
 |The X-Files                      |        19.727273         |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |        19.727273         |The X-Files                      |
 |Criminal Minds                   |        19.666667         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        19.666667         |Criminal Minds                   |
+|Bob's Burgers                    |        19.562500         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        19.562500         |Bob's Burgers                    |
+|The Weekenders                   |        19.500000         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        19.500000         |The Weekenders                   |
 |Family Guy                       |        19.217391         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        19.217391         |Family Guy                       |
 |King of the Hill                 |        19.214286         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        19.214286         |King of the Hill                 |
 |Brooklyn Nine-Nine               |        19.125000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |        19.125000         |Brooklyn Nine-Nine               |
@@ -2469,6 +2628,7 @@ sorting by most episodes per season...
 |Silicon Valley                   |         8.833333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |         8.833333         |Silicon Valley                   |
 |Trailer Park Boys                |         8.750000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |         8.750000         |Trailer Park Boys                |
 |The Mandalorian                  |           8.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |           8.0            |The Mandalorian                  |
+|Reboot                           |           8.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |           8.0            |Reboot                           |
 |Misfits                          |         7.400000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         7.400000         |Misfits                          |
 |The IT Crowd                     |         6.250000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         6.250000         |The IT Crowd                     |
 |Letterkenny                      |         6.181818         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |         6.181818         |Letterkenny                      |
@@ -2500,9 +2660,11 @@ sorting by most episodes per season...
 
 ##############################################################
 ##################################| most episodes per season |
+|Digimon                          |           52.0           |
 |Yu-Gi-Oh!                        |        47.200000         |
 |The Proud Family                 |           26.0           |
 |Fillmore                         |           26.0           |
+|The Drew Carey Show              |        25.888889         |
 |My Name is Earl                  |           24.0           |
 |The Office                       |        22.333333         |
 |Angel                            |           22.0           |
@@ -2516,6 +2678,8 @@ sorting by most episodes per season...
 |Gravity Falls                    |           20.0           |
 |The X-Files                      |        19.727273         |
 |Criminal Minds                   |        19.666667         |
+|Bob's Burgers                    |        19.562500         |
+|The Weekenders                   |        19.500000         |
 |Family Guy                       |        19.217391         |
 |King of the Hill                 |        19.214286         |
 |Brooklyn Nine-Nine               |        19.125000         |
@@ -2551,6 +2715,7 @@ sorting by most episodes per season...
 |Silicon Valley                   |         8.833333         |
 |Trailer Park Boys                |         8.750000         |
 |The Mandalorian                  |           8.0            |
+|Reboot                           |           8.0            |
 |Misfits                          |         7.400000         |
 |The IT Crowd                     |         6.250000         |
 |Letterkenny                      |         6.181818         |
@@ -2563,12 +2728,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 14.81
-Median:		 13.14
-Pstdev:		  7.31
-Pvariance:	 53.50
-Stdev:		  7.38
-Variance:	 54.40
+Mean:		 15.58
+Median:		 15.88
+Pstdev:		  8.55
+Pvariance:	 73.05
+Stdev:		  8.61
+Variance:	 74.18
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2600,6 +2765,7 @@ sorting by least episodes per season...
 |The IT Crowd                     |         6.250000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         6.250000          |The IT Crowd                     |
 |Misfits                          |         7.400000          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |         7.400000          |Misfits                          |
 |The Mandalorian                  |            8.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |            8.0            |The Mandalorian                  |
+|Reboot                           |            8.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |            8.0            |Reboot                           |
 |Trailer Park Boys                |         8.750000          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |         8.750000          |Trailer Park Boys                |
 |Silicon Valley                   |         8.833333          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |         8.833333          |Silicon Valley                   |
 |What If?                         |            9.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |            9.0            |What If?                         |
@@ -2634,6 +2800,8 @@ sorting by least episodes per season...
 |Brooklyn Nine-Nine               |         19.125000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |         19.125000         |Brooklyn Nine-Nine               |
 |King of the Hill                 |         19.214286         |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         19.214286         |King of the Hill                 |
 |Family Guy                       |         19.217391         |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         19.217391         |Family Guy                       |
+|The Weekenders                   |         19.500000         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         19.500000         |The Weekenders                   |
+|Bob's Burgers                    |         19.562500         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         19.562500         |Bob's Burgers                    |
 |Criminal Minds                   |         19.666667         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         19.666667         |Criminal Minds                   |
 |The X-Files                      |         19.727273         |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |         19.727273         |The X-Files                      |
 |Gravity Falls                    |           20.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |           20.0            |Gravity Falls                    |
@@ -2647,9 +2815,11 @@ sorting by least episodes per season...
 |Angel                            |           22.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0            |Angel                            |
 |The Office                       |         22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         22.333333         |The Office                       |
 |My Name is Earl                  |           24.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0            |My Name is Earl                  |
+|The Drew Carey Show              |         25.888889         |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         25.888889         |The Drew Carey Show              |
 |The Proud Family                 |           26.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           26.0            |The Proud Family                 |
 |Fillmore                         |           26.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           26.0            |Fillmore                         |
 |Yu-Gi-Oh!                        |         47.200000         |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         47.200000         |Yu-Gi-Oh!                        |
+|Digimon                          |           52.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           52.0            |Digimon                          |
 ###########################################################################################################################################################################################################################################################################################################################
 
 	How would you like to print the stats?
@@ -2682,6 +2852,7 @@ sorting by least episodes per season...
 |The IT Crowd                     |         6.250000          |
 |Misfits                          |         7.400000          |
 |The Mandalorian                  |            8.0            |
+|Reboot                           |            8.0            |
 |Trailer Park Boys                |         8.750000          |
 |Silicon Valley                   |         8.833333          |
 |What If?                         |            9.0            |
@@ -2716,6 +2887,8 @@ sorting by least episodes per season...
 |Brooklyn Nine-Nine               |         19.125000         |
 |King of the Hill                 |         19.214286         |
 |Family Guy                       |         19.217391         |
+|The Weekenders                   |         19.500000         |
+|Bob's Burgers                    |         19.562500         |
 |Criminal Minds                   |         19.666667         |
 |The X-Files                      |         19.727273         |
 |Gravity Falls                    |           20.0            |
@@ -2729,24 +2902,26 @@ sorting by least episodes per season...
 |Angel                            |           22.0            |
 |The Office                       |         22.333333         |
 |My Name is Earl                  |           24.0            |
+|The Drew Carey Show              |         25.888889         |
 |The Proud Family                 |           26.0            |
 |Fillmore                         |           26.0            |
 |Yu-Gi-Oh!                        |         47.200000         |
+|Digimon                          |           52.0            |
 ###############################################################
 
-Mean:		 14.81
-Median:		 13.14
-Pstdev:		  7.31
-Pvariance:	 53.50
-Stdev:		  7.38
-Variance:	 54.40
+Mean:		 15.58
+Median:		 15.88
+Pstdev:		  8.55
+Pvariance:	 73.05
+Stdev:		  8.61
+Variance:	 74.18
 
 #############################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 2  | 2  | 2  | 2  | 5  | 6  | 9  | 11 | 15 | 15 | 15 | 14 | 20 | 21 | 19 | 21 | 23 | 23 | 25 | 26 | 28 | 26 | 27 | 25 | 26 | 24 | 24 | 18 | 20 | 14 | 11 | 8  | 7  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 2  | 2  | 3  | 3  | 6  | 7  | 11 | 14 | 17 | 16 | 16 | 15 | 20 | 21 | 19 | 21 | 23 | 23 | 26 | 27 | 29 | 27 | 28 | 26 | 27 | 25 | 25 | 19 | 21 | 16 | 13 | 9  | 8  | start year |Concurrent                       |
 #############################################################################################################################################################################################################################################################################################
 
 #############################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| start year |##################################
-|End Year Count                   | start year | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 1  | 1  | 1  | 1  | 1  | 2  | 1  | 1  | 1  | 1  | 1  | 1  | 3  | 2  | 4  | 1  | 3  | 4  | 7  | 4  | 6  | 3  | 3  | 1  | 7  | start year |End Year Count                   |
+|End Year Count                   | start year | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 1  | 2  | 1  | 1  | 2  | 1  | 2  | 1  | 1  | 1  | 1  | 1  | 1  | 3  | 2  | 4  | 1  | 3  | 4  | 7  | 4  | 6  | 3  | 4  | 1  | 8  | start year |End Year Count                   |
 #############################################################################################################################################################################################################################################################################################

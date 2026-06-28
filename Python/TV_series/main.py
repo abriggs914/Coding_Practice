@@ -900,7 +900,7 @@ the_x_files = TVSeries("The X-Files", {
 	"Disney+")
 	
 fillmore = TVSeries("Fillmore", {
-    1 : 26},
+    1 : 26,},
     23,
     2002,
     2002,
@@ -911,11 +911,71 @@ fillmore = TVSeries("Fillmore", {
 digimon = TVSeries("Digimon", {
 	1: 52},
 	23,
-	,
-	,
+	1999,
+	2000,
 	False,
 	"Action/Adventure",
 	"Disney+")
+
+the_weekenders = TVSeries("The Weekenders", {
+	1: 13,
+	2: 26,},
+	23,
+	2000,
+	2001,
+	False,
+	"Comedy",
+	"Disney+")
+
+reboot = TVSeries("Reboot", {
+	1: 8,},
+	28,
+	2022,
+	2023,
+	False,
+	"Comedy",
+	"Disney+")
+
+bobs_burgers = TVSeries("Bob's Burgers", {
+	1: 13,
+	2: 9,
+	3: 23,
+	4: 22,
+	5: 21,
+	6: 19,
+	7: 22,
+	8: 21,
+	9: 22,
+	10: 22,
+	11: 22,
+	12: 22,
+	13: 22,
+	14: 16,
+	15: 22,
+	16: 15,},
+	23,
+	2011,
+	2025,
+	False,
+	"Comedy",
+	"Disney+")
+
+the_drew_carey_show = TVSeries("The Drew Carey Show", {
+	1: 22,
+	2: 24,
+	3: 28,
+	4: 27,
+	5: 26,
+	6: 27,
+	7: 27,
+	8: 26,
+	9: 26,},
+	23,
+	1995,
+	2004,
+	False,
+	"Comedy",
+	"PlutoTV")
 
 series_list = [
     the_office,
@@ -979,7 +1039,11 @@ series_list = [
 	smallville,
 	the_x_files,
 	fillmore,
-	digimon
+	digimon,
+	the_weekenders,
+	reboot,
+	bobs_burgers,
+	the_drew_carey_show
 ]
 
    

@@ -1,4 +1,5 @@
 import math
+import html
 import base64
 import datetime
 import mimetypes
@@ -12,6 +13,12 @@ from streamlit.runtime.state import (
     WidgetArgs,
     WidgetCallback
 )
+from pandas.api.types import (
+    is_numeric_dtype,
+    is_datetime64_any_dtype,
+    is_timedelta64_dtype,
+    is_bool_dtype,
+)
 
 from colour_utility import Colour
 
@@ -22,8 +29,8 @@ from colour_utility import Colour
 VERSION = \
     """    
         Streamlit utility functions
-        Version..............1.18
-        Date...........2026-06-10
+        Version..............1.19
+        Date...........2026-06-25
         Author(s)....Avery Briggs
         """
 
@@ -121,12 +128,12 @@ def coloured_text(
         :return: Formatted HTML string.
         """
     style = f"style='color:{Colour(colour).hex_code};'"
-    html = f"<{html_tags}{' ' + style}'>{text}</{html_tags}>"
+    html_ = f"<{html_tags}{' ' + style}'>{text}</{html_tags}>"
     if call:
-        st.markdown(html, unsafe_allow_html=True)
+        st.markdown(html_, unsafe_allow_html=True)
     if style_only:
         return style
-    return html
+    return html_
 
 
 def rerun():
@@ -146,36 +153,129 @@ def screen_dimensions() -> tuple[Optional[int], Optional[int]]:
     )
 
 
+def divider_header(
+    text: str,
+    boxed: bool = True,
+    line_color: str = "#d0d0d0",
+    text_color: str = "inherit",
+    background_color: str = "#757575",
+    margin: str = "1rem 0",
+    font_size: str = "0.95rem",
+    font_weight: int = 500,
+):
+    safe_text = html.escape(str(text))
+
+    box_css = (
+        f"padding: 0.15rem 0.75rem; "
+        f"border: 1px solid {line_color}; "
+        f"border-radius: 0.25rem;"
+        if boxed
+        else "padding: 0 0.65rem;"
+    )
+
+    html_string = f"""
+    <div style="display:flex; align-items:center; width:100%; margin:{margin};">
+        <div style="flex:1; height:1px; background:{line_color};"></div>
+        <span style="color:{text_color}; background:{background_color}; font-size:{font_size}; font-weight:{font_weight}; white-space:nowrap; {box_css}">
+            {safe_text}
+        </span>
+        <div style="flex:1; height:1px; background:{line_color};"></div>
+    </div>
+    """
+
+    st.markdown(html_string, unsafe_allow_html=True)
+    # st.code(html_string, language="html", line_numbers=True)
+    
+    
+def is_time_series(s: pd.Series) -> bool:
+    s2 = s.dropna()
+    return not s2.empty and s2.map(lambda x: isinstance(x, datetime.time)).all()
+
+
+def mean_time(s: pd.Series):
+    s2 = s.dropna()
+    seconds = s2.map(lambda t: t.hour * 3600 + t.minute * 60 + t.second + t.microsecond / 1_000_000)
+    avg = seconds.mean()
+
+    h = int(avg // 3600) % 24
+    m = int((avg % 3600) // 60)
+    sec = int(avg % 60)
+
+    return datetime.time(h, m, sec)
+
+
+def can_aggregate(s: pd.Series, agg: str) -> bool:
+    numeric_aggs = {"sum", "mean", "median", "std", "var", "sem", "prod", "skew"}
+    order_aggs = {"min", "max", "first", "last"}
+    count_aggs = {"count", "size", "nunique"}
+    bool_aggs = {"any", "all"}
+
+    if agg in count_aggs:
+        return True
+
+    if agg in bool_aggs:
+        return is_bool_dtype(s) or s.dropna().map(lambda x: isinstance(x, bool)).all()
+
+    if agg in order_aggs:
+        return True
+
+    if agg in numeric_aggs:
+        return (
+            is_numeric_dtype(s)
+            or is_datetime64_any_dtype(s)
+            or is_timedelta64_dtype(s)
+            or is_time_series(s)
+        )
+
+    return False
+
+
+def safe_aggregate(s: pd.Series, agg: str):
+    if not can_aggregate(s, agg):
+        return None
+
+    if agg == "mean" and is_time_series(s):
+        return mean_time(s)
+
+    try:
+        return s.aggregate(agg)
+    except Exception:
+        return None
+
+
 def display_df(
     df: pd.DataFrame | pd.Series,
     title: Optional[str] = None,
-    hide_index: str | bool = "if_int",
+    hide_index: Optional[str | bool] = "if_int",
     show_shape: Literal[True, False, "separate", "below"] = True,
     fail_safe: Optional[Any] = True,
     warn_fail_safe: Optional[Any] = True,
-    border: bool = False,
+    border: Optional[bool] = None,
     debug: bool = False,
 
     # params for st.dataframe 20250325
-    width: int | None = None,
-    height: int | None = None,
+    width: int | str = "stretch",
+    height: int | str = "auto",
     use_container_width: bool = False,
-    column_order: Iterable[str] | None = None,
-    column_config: Any | None = None,
-    key: Any | None = None,
+    column_order: Optional[Iterable[str]] = None,
+    column_config: Optional[dict] = None,
+    key: Any = None,
     on_select: Literal["ignore", "rerun"] | Any = "ignore",
     selection_mode: Any = "multi-row",
     editor: bool = False,
     num_rows: Literal["fixed", "dynamic", "add", "delete"] = "fixed",
     disabled: bool | Iterable[str | int] = False,
-    on_change: WidgetCallback | None = None,
-    args: WidgetArgs | None = None,
+    on_change: Optional[WidgetCallback] = None,
+    args: Optional[WidgetArgs] = None,
  
      # params for st.dataframe 20260514
-    selection_default: dict | None = None,
-    row_height: int | None = None,
-    placeholder: str | None = None,
+    selection_default: Optional[dict] = None,
+    row_height: Optional[int] = None,
+    placeholder: Optional[str] = None,
+    
+    totals: Any = None,
 ):
+    border = bool(border) or (bool(totals) and (border is None))
     with st.container(border=border):
         try:
             title = title if title else ""
@@ -197,30 +297,25 @@ def display_df(
                 hide_index = str(df.index.dtype).lower() == "int64"
             elif editor and (hide_index == "if_int"):
                 hide_index = None
-
-            if height is None:
-                height = "auto"
-                
-            if width is None:
-                width = "stretch"
-                
-            de_defaults = dict(
-                width = "stretch",
-                height = "auto",
-                use_container_width = None,
-                hide_index = None,
-                column_order = None,
-                column_config = None,
-                num_rows = "fixed",
-                disabled = False,
-                key = None,
-                on_change = None,
-                args = None,
-                row_height = None,
-                placeholder = None,
-            )
             
             if debug:
+                
+                de_defaults = dict(
+                    width = "stretch",
+                    height = "auto",
+                    use_container_width = None,
+                    hide_index = None,
+                    column_order = None,
+                    column_config = None,
+                    num_rows = "fixed",
+                    disabled = False,
+                    key = None,
+                    on_change = None,
+                    args = None,
+                    row_height = None,
+                    placeholder = None,
+                )
+                
                 kwargs = dict(
                     title=title,
                     hide_index=hide_index,
@@ -336,11 +431,71 @@ def display_df(
                     """,
                     unsafe_allow_html=True
                 )
+                
+            if totals is not None:
+                valid_agg = [
+                    "sum", "mean", "median", "min", "max", "count",
+                    "size", "std", "var", "sem", "prod", "first",
+                    "last", "nunique", "any", "all", "skew",
+                ]
+                t_vals = {}
+                aggs_used = []
+                if isinstance(totals, dict):
+                    for c, v_ in totals.items():
+                        if c not in df.columns:
+                            raise KeyError(f"column '{c}' in 'totals' was not found in the dataframe columns.")
+                        if isinstance(v_, (list, tuple)):
+                            t_vals[c] = []
+                            for v in v_:
+                                if v not in valid_agg:
+                                    raise ValueError(f"aggregate '{v}' in 'totals' is not recognized as a valid aggregate function.")
+                                t_vals[c].append(v)
+                                if v not in aggs_used:
+                                    aggs_used.append(v)
+                        else:
+                            t_vals[c] = [v_]
+                            if v_ not in aggs_used:
+                                aggs_used.append(v_)
+                            
+                elif isinstance(totals, (list, tuple)):
+                    for c in df.columns:
+                        t_vals[c] = []
+                        for v in totals:
+                            if v not in valid_agg:
+                                raise ValueError(f"aggregate '{v}' in 'totals' is not recognized as a valid aggregate function.")
+                            t_vals[c].append(v)
+                            if v not in aggs_used:
+                                aggs_used.append(v)
+                            
+                elif isinstance(totals, str):
+                    if totals not in valid_agg:
+                        raise ValueError(f"aggregate '{totals}' is not recognized as a valid aggregate function.")
+                    for c in df.columns:
+                        t_vals[c] = [totals]
+                        if totals not in aggs_used:
+                            aggs_used.append(totals)
+                
+                if t_vals:
+                    # st.write(df.describe())
+                    df_t = pd.DataFrame([[None] * len(df.columns.tolist()) for _ in range(len(aggs_used))], index=aggs_used, columns=df.columns)
+                    for c in df.columns:
+                        for i, a in enumerate(t_vals.get(c, [])):
+                            # st.write(f"{c=}, {i=}, {a=}") 
+                            s = df[c].dropna()
+                            if a == "mean" and len(s) and s.map(lambda x: isinstance(x, datetime.time)).all():
+                                df_t.loc[a, c] = mean_time(s)
+                            else:
+                                df_t.loc[a, c] = safe_aggregate(df[c], a)
+                    
+                    divider_header("Totals:", font_size="1.12rem")
+                    display_df(df_t, show_shape=False)
+                        
         except Exception as e:
             if isinstance(fail_safe, bool):
                 fail_safe = st.write if fail_safe else None
             if fail_safe is not None:
-                st.warning("display_df fail-safe evoked.")
+                if warn_fail_safe:
+                    st.warning("display_df fail-safe evoked.")
                 stdf = None
                 if callable(fail_safe):
                     try:
@@ -351,6 +506,7 @@ def display_df(
                     st.write(df)
             else:
                 raise e
+    
     return stdf
 
 

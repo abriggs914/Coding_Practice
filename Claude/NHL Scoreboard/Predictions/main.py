@@ -43,7 +43,7 @@ warnings.filterwarnings("ignore")
 # DATA SOURCE — local Excel workbook
 # ─────────────────────────────────────────────────────────
 path_excel_predictions       = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\NHLGamePredictions_2526_copy.xlsx"
-path_excel_jerseys           = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\Jerseys_20260401.xlsx"
+path_excel_jerseys           = r"C:\\Users\\abrig\\Documents\\Coding_Practice\\Python\\Jerseys\\Jerseys_20260617.xlsx"
 path_jersey_images           = r"D:\\NHL jerseys\\Jerseys 20250927"
 path_image_dir               = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer"
 path_stanley_cup_appearances = r"C:\Users\abrig\Documents\Coding_Practice\Python\DataVisualizer\dataset_nhl_team_apperances.json"
@@ -1443,6 +1443,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     # st.write("'" + ("', '".join(df_jerseys["PlayerName"].values)) + "'")
 
     active = df_jerseys[df_jerseys.get("Cancelled", pd.Series([False]*len(df_jerseys))).fillna(False) != True].copy()
+    active = active[~pd.isna(active["ID"])]
     for df in [df_jerseys, active]:
         for c in ["Order", "Receive", "Open"]:
             col = f"{c}Date"
@@ -2392,51 +2393,111 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         )
         fig_scatter.update_layout(**DARK_THEME, height=380)
         st.plotly_chart(fig_scatter, use_container_width=True)
+        
+        slider_days_into_future = st.slider("Days into Future", 0, 15000, 365)
+        df_cpd["DayStartPay"] = df_cpd["OrderDate"]
+        
+        with st.container():
+            k_sdtpo = "key_slider_dpd_to_pay_off_e"
+            lst_adj_vals = [0.01, 0.02, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10, 20, 25, 50, 100]
+            switch = len(lst_adj_vals)
+            lst_adj_vals = lst_adj_vals + lst_adj_vals
+            conts = [st.container(horizontal=True) for _ in range(2)]
+            for i, v in enumerate(lst_adj_vals):
+                with conts[int(i < switch)]:
+                    if st.button(f"{'-' if i < switch else '+'}{v:.2f}"):
+                        ov = st.session_state.get(k_sdtpo, 100)
+                        c = ((-1 if i < switch else 1) * v * 100)
+                        st.session_state.update({k_sdtpo: max(1, min(50000, int(ov + c)))})
             
         if not st.checkbox("Dollars per Day / Max Dollars per Day", value=False):
             c1, c2 = st.columns([0.75, 0.25])
             with c1:
-                with st.container():
-                    k_sdtpo = "key_slider_dpd_to_pay_off_e"
-                    lst_adj_vals = [0.01, 0.02, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10, 20, 25, 50, 100]
-                    switch = len(lst_adj_vals)
-                    lst_adj_vals = lst_adj_vals + lst_adj_vals
-                    conts = [st.container(horizontal=True) for _ in range(2)]
-                    for i, v in enumerate(lst_adj_vals):
-                        with conts[int(i < switch)]:
-                            if st.button(f"{'-' if i < switch else '+'}{v:.2f}"):
-                                ov = st.session_state.get(k_sdtpo, 100)
-                                c = ((-1 if i < switch else 1) * v * 100)
-                                st.session_state.update({k_sdtpo: max(1, min(50000, int(ov + c)))})
-                    slider_dpd_to_pay_off_e = st.slider("Dollars per Day Each", 1, 50000, key=k_sdtpo, step=1)
+                slider_dpd_to_pay_off_e = st.slider("Dollars per Day Each", 1, 50000, key=k_sdtpo, step=1)
             with c2:
                 st.metric("$PD", f"${slider_dpd_to_pay_off_e / 100:,.2f}")
             df_cpd["DaysToPayOff"] = df_cpd["PriceF"].apply(lambda p: int(math.ceil(p / (slider_dpd_to_pay_off_e / 100))))
         else:
             with st.container(horizontal=True):
-                slider_dpd_to_pay_off_m = st.slider("Max Dollars per Day", 1, 50000, value=5000, step=1)
+                slider_dpd_to_pay_off_m = st.slider("Max Dollars per Day", 50, 50000, key=k_sdtpo, step=1)
+                slider_dpd_to_pay_off_e = slider_dpd_to_pay_off_m
                 st.metric("label", f"${slider_dpd_to_pay_off_m / 100:,.2f}")
-                
+            df_cpd = df_cpd.sort_values("ID").reset_index()
+            
+            t_cost = 0
+            df_cpd_i = 0
+            counted_idxs = {}
+            dr = pd.date_range(df_cpd["OrderDate"].min(), periods=slider_days_into_future * 3)
+            df_cpd["DaysToPayOff"] = slider_days_into_future
+            tids = list(range(128))
+            
+            paying_for = dict(idx=0, price=df_cpd.iloc[0]["PriceF"])
+            date = None
+            residual = 0
+            with st.container(horizontal=True):
+                for i, row in df_cpd.copy().iterrows():
+                    if date is None:
+                        date = row["OrderDate"]
+                    with st.container(border=True, width=500):
+                        p = row["PriceF"] + residual
+                        dtpf = p / (slider_dpd_to_pay_off_m / 100)
+                        dtpf_ = int(dtpf)
+                        residual = (dtpf - dtpf_) * (slider_dpd_to_pay_off_m / 100)
+                        st.write(f"{i=}, od={df_cpd.loc[i, 'OrderDate']}, {date=}, {p=}, {dtpf=}, {dtpf_=}, {residual=}")
+                        df_cpd.loc[i, "DayStartPay"] = date
+                        date += timedelta(days=dtpf_)
+                        df_cpd.loc[i, "DaysToPayOff"] = (date - df_cpd.loc[i, "OrderDate"]).days
+                        if (date is not None) and (i < (len(df_cpd) - 1)) and (df_cpd.loc[i + 1, "OrderDate"] > date):
+                            date = None
+            
+            # with st.container(horizontal=True):
+            #     for i, date in enumerate(dr):
+            #         if df_cpd_i in tids:
+            #             cont = st.container(border=True, width=250)
+            #         if not counted_idxs:
+            #             counted_idxs[df_cpd_i] = df_cpd.iloc[df_cpd_i]["PriceF"]
+            #         pay_total = (i + 1) * (slider_dpd_to_pay_off_m / 100)
+            #         cost_total = sum(counted_idxs.values())
+            #         old = counted_idxs.copy()
+            #         if df_cpd_i in tids:
+            #             cont.write(f"{i=}, date={date.date()}, {pay_total=}, {cost_total=}, {old=}")
+            #         while cost_total < pay_total:    
+            #             ser_cpd = df_cpd.iloc[df_cpd_i]
+            #             # if date.date() > ser_cpd["OrderDate"]:
+            #             #     break
+            #             pf = ser_cpd["PriceF"]
+            #             counted_idxs[df_cpd_i] = pf
+            #             cost_total = sum(counted_idxs.values())
+            #             if i in tids:
+            #                 cont.write(f"{df_cpd_i=}, {pf=}, {cost_total=}, {pay_total=}, {old=}")
+            #             df_cpd_i += 1
+            #         new = {k: v for k, v in counted_idxs.items() if k not in old}
+            #         if df_cpd_i in tids:
+            #             cont.write(f"{new=}")
+            #         for j in new:
+            #             df_cpd.loc[j, "DaysToPayOff"] = i
+            
+            df_cpd = df_cpd[~pd.isna(df_cpd["ID"])]
+            ddn(df_cpd, "CPD")
+            # ddn(active, "active")
         
         # @@@@#########    
             
                 
-        df_cpd["PaidForDate"] = df_cpd.apply(lambda row: row["OrderDate"] + timedelta(days=row["DaysToPayOff"]), axis=1)
+        df_cpd["PaidForDate"] = df_cpd.apply(lambda row: row["DayStartPay"] + timedelta(days=row["DaysToPayOff"]), axis=1)
         with st.expander("df_cpd"):
             display_df(
                 df_cpd,
                 "df_cpd"
             )
         
-        slider_days_into_future = st.slider("Days into Future", 0, 15000, 365)
-        
-        df_c = pd.DataFrame({"dates": pd.date_range(df_cpd["OrderDate"].min(), max(df_cpd["OrderDate"].max(), (datetime.now().date() + timedelta(days=slider_days_into_future))))})
+        df_c = pd.DataFrame({"dates": pd.date_range(df_cpd["DayStartPay"].min(), max(df_cpd["DayStartPay"].max(), (datetime.now().date() + timedelta(days=slider_days_into_future))))})
         df_c["dates"] = df_c["dates"].apply(lambda d: d.date())
         df_c["concurrent"] = 0
         # df_c["payingfor"] = []
         
         for i, row in df_cpd.iterrows():
-            od = row["OrderDate"]
+            od = row["DayStartPay"]
             tpo = row["DaysToPayOff"]
             ed = od + timedelta(days=tpo)
             # st.write(f"{i=}, {tpo=}, {ed=}")
@@ -2457,7 +2518,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             )
         with cols_res[1]:
             display_df(
-                df_cpd[df_cpd["PaidForDate"] > datetime.now().date()][["Label", "OrderDate", "PaidForDate"]],
+                df_cpd[df_cpd["PaidForDate"] > datetime.now().date()][["Label", "DayStartPay", "PaidForDate"]],
                 "Paying for Today"
             )
         with cols_res[2]:

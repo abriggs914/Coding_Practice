@@ -185,6 +185,9 @@ class Pokemon:
                         
     def __eq__(self, other):
         return all([self.name == other.name, self.id == other.id])
+    
+    def __repr__(self) -> str:
+        return f"Pokemon(#{self.id}, {self.name})"
 
 
 @dataclasses.dataclass
@@ -241,6 +244,7 @@ TYPE_IMAGES = {
     "dragon": ":dragon_face:"
 }
 DEFAULT_GAME = "brilliant-diamond-shining-pearl"
+LINK_POKEBALL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
 
 def get_json(url):
     r = requests.get(url, timeout=20)
@@ -407,7 +411,7 @@ pika = get_pokemon("pikachu")
 st.set_page_config(layout="wide", page_icon=pika.artwork, page_title="Pokedex")
 
 # Pokemon Shining Pearl Dex Data
-radio_sheet = st.radio("Sheet #", [0, 1])
+radio_sheet = st.radio("Sheet #", [0, 1, 2])
 data = load_data(sheet=radio_sheet)
 ids_missed = [i+1 for i, v in enumerate(data) if pd.isna(v)]
 ids_seen = [i+1 for i, v in enumerate(data) if v == 0]
@@ -505,6 +509,94 @@ if selectbox_game:
                 #     st.write(f"{t_.name=}")
                 if t_ is not None:
                     df_pokemon.loc[i, c] = t_.last_name_icon
+                    
+    chains = {}
+    chain_strs = {}
+    ids_to_render = dict(zip(df_pokemon["number_national"], [1] * len(df_pokemon)))
+    for i, row in df_pokemon.copy().iterrows():
+        p1 = get_pokemon(row["number_national"])
+        df_ev_to = df_pokemon[df_pokemon["evolvefrom"] == p1.name].reset_index()
+        # display_df(df_ev_to, f"{i=}, {p1=}")
+        if df_ev_to.empty:
+            chains[p1.id] = []
+        chain_strs[p1.id] = f"{p1.name.title()}"
+        while not df_ev_to.empty:
+            p2 = get_pokemon(df_ev_to.iloc[0]["number_national"])
+            ids_to_render[p2.id] = 0
+            chain_strs[p1.id] += f" -> {p2.name.title()}"
+            if p1.id not in chains:
+                chains[p1.id] = [p2.id]
+            else:
+                chains[p1.id].append(p2.id)
+            df_ev_to2 = df_pokemon[df_pokemon["evolvefrom"] == p2.name].reset_index()
+            if not df_ev_to2.empty:
+                df_ev_to = pd.concat([df_ev_to, df_ev_to2])
+            df_ev_to = df_ev_to[1:]
+        # if i > 2:
+        #     break
+
+    i = 0
+    img_width = 80
+    # ev_col_p = 0.5
+    radio_layout = st.radio("Layout:", ["Rows", "Compact"], 1)
+    radio_show = st.radio("Filter:", ["All", "Caught", "Seen", "Seen + Missed", "Missed"], 1)
+    
+    def check_skip(id_, evolve=False):
+        return any([
+            (radio_show == "Caught") and (data[id_ - 1] != 1),
+            (radio_show == "Seen") and (pd.isna(data[id_ - 1])),
+            (radio_show == "Seen + Missed") and (data[id_ - 1] != 0),
+            (radio_show == "Missed") and (not pd.isna(data[id_ - 1]))
+        ]) or (False if evolve else (not ids_to_render[id_]))
+    
+    # def check_skip(id_, evolve=False):
+    #     a = (radio_show == "Caught") and (data[id_ - 1] != 1)
+    #     b = (radio_show == "Seen") and (pd.isna(data[id_ - 1]))
+    #     c = (radio_show == "Seen + Missed") and (data[id_ - 1] == 0)
+    #     d = (radio_show == "Missed") and (not pd.isna(data[id_ - 1]))
+    #     e = (not ids_to_render[id_])
+    #     if id_ in [19, 20]:
+    #         st.write(f"{id_}, {evolve=}, {a=}, {b=}, {c=}, {d=}, {e=}")
+    
+    with st.container(horizontal=radio_layout=="Compact"):
+        for p_name_src, p_chain in chains.items():
+            p1 = get_pokemon(p_name_src)
+            # if check_skip(p1.id):
+            #     continue
+            # st.write(f"{img_width=}, {len(p_chain)=}, {int(img_width * (max(1, len(p_chain)) * 3))=}")
+            with st.container(border=True, width=int(img_width * (max(1.4, len(p_chain)) * 3.2))):
+                st.subheader(chain_strs[p1.id], text_alignment="center")
+                
+                with st.container(horizontal=True, horizontal_alignment="center"): 
+                    if not check_skip(p2.id):
+                        with st.container(horizontal_alignment="center"):
+                            st.image(p1.artwork, width=img_width)
+                            cols_cap = st.columns([0.25, 0.75])
+                            if data[p1.id - 1] == 1:
+                                cols_cap[0].image(LINK_POKEBALL, width=int(img_width / 3.5))
+                            cols_cap[1].caption(f"#{p1.id} - {p1.name}")
+                        
+                    if not len(p_chain):
+                        continue
+                    for j, p_evolve in enumerate(p_chain):
+                        with st.container(width=img_width // 3, horizontal_alignment="center"):
+                            with st.container(height=int(img_width // 10), width=1, border=False):
+                                pass
+                            st.subheader(f"->", text_alignment="center")
+                        p2 = get_pokemon(p_evolve)
+                        cols_cap = st.columns([0.25, 0.75])
+                        if not check_skip(p2.id, evolve=True):
+                            if data[p2.id - 1] == 1:
+                                cols_cap[0].image(LINK_POKEBALL, width=int(img_width / 3.5))
+                            cols_cap[1].image(p2.artwork, f"#{p2.id} - {p2.name}", width=img_width)
+                        if j == (len(p_chain) - 1):
+                            break
+        i += 1
+        # if i >= 5:
+        #     break
+            
+    st.stop()
+            
     
     df_pokemon.rename(columns={"number_national": "#"}, inplace=True)
     st.write(df_pokemon.columns.tolist())
