@@ -7,6 +7,7 @@ import os
 import math
 import time
 import json
+import html
 import base64
 import random
 import requests
@@ -16,6 +17,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from pathlib import Path
+from dataclasses import dataclass
 import streamlit.components.v1 as components
 from streamlit_sortables import sort_items
 import plotly.express as px
@@ -29,12 +31,22 @@ from collections import defaultdict
 from itertools import combinations
 from PIL import Image
 
-from utility import flatten
+from utility import flatten, number_suffix
 from colour_utility import Colour, gradient_merge
 from json_utility import peek_json, jsonify
 from sql_utility import no_specials
-from streamlit_utility import display_df, consolidate_df_edits, get_selected_rows, local_image_thumbnail_data_url
+
+from streamlit_utility import (
+    display_df,
+    consolidate_df_edits,
+    get_selected_rows,
+    local_image_thumbnail_data_url,
+    get_screen_info,
+    report_screen_info
+)
+
 from streamlit_auth import show_login_register
+from datetime_utility import end_of_month
 import nhl_api_reference_examples as api_ref
 
 warnings.filterwarnings("ignore")
@@ -55,12 +67,17 @@ path_playoffs_predictions    = r"C:\Users\abrig\Documents\Coding_Practice\Python
 # ─────────────────────────────────────────────────────────
 # PAGE CONFIG
 # ─────────────────────────────────────────────────────────
+screen = get_screen_info()
+report_screen_info(screen)
+
+
 st.set_page_config(
     page_title="NHL Prediction Dashboard",
     page_icon="🏒",
-    layout="wide",
+    layout="centered" if screen.is_phone else "wide",
     initial_sidebar_state="expanded",
 )
+
 
 # ─────────────────────────────────────────────────────────
 # STYLES
@@ -192,7 +209,9 @@ PWHL_META = [
 df_pwhl = pd.DataFrame(PWHL_META)
 df_pwhl[["league", "active"]] = ["PWHL", True]
 df_pwhl = df_pwhl.rename(columns={"acronym": "team"})
-display_df(df_pwhl, "PWHL")
+# df_pwhl["logo"] = df_pwhl["logo"].apply(lambda l: local_image_to_data_url(l))
+df_pwhl["logo"] = df_pwhl["logo"].apply(lambda p: local_image_thumbnail_data_url(p, max_size=200, quality=100))
+# display_df(df_pwhl, "PWHL")
 
 df_teams = pd.DataFrame(TEAM_META).T.reset_index(names="team")
 df_teams["league"] = "NHL"
@@ -223,7 +242,7 @@ for t, a in [
 
 df_teams = pd.concat([df_teams, df_pwhl], ignore_index=True)
 
-display_df(df_teams, "TEAMS")
+display_df(df_teams, "TEAMS", width=1600)
 
 CANADIAN_TEAMS = {"MTL", "OTT", "TOR", "WPG", "EDM", "CGY", "VAN"}
 
@@ -1422,6 +1441,17 @@ def to_string(
     return " ".join(map(str, res))
 
 
+def safe_date(date_in: date | datetime):
+    n = datetime.now()
+    t = n.date()
+    y, m, d = date_in.year, date_in.month, date_in.day
+    td = datetime(t.year, m, 1)
+    em = end_of_month(td)
+    emd = em.day
+    d = min(d, emd)
+    return datetime(t.year, m, d).date()
+
+
 def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     """Full Jersey Collection page."""
     
@@ -1499,6 +1529,41 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         index=0,
         label_visibility="hidden"
     )
+    
+    today = datetime.now().date()
+    df_jc = df_jerseys.copy()
+    df_jc["ManufacturedDate"] = df_jc["ManufactureDate"].apply(lambda md: datetime(2000+int(md[-2:]), int(md[:2]), 1, 0, 0, 0).date() if (not pd.isna(md)) and (md != "-") else None)
+    for c in ["Order", "Receive", "Open", "Manufactured"]:
+        # for c in ["Order", "Receive", "Open"]:
+        col = f"{c}Date"
+        c_name = f"DaysSince{c}"
+        df_jc[c_name] = df_jc[col].apply(lambda d: (today - d).days if not pd.isna(d) else 0)
+        c_name = f"DaysTo{c}"
+        df_jc[c_name] = df_jc[col].apply(lambda d: (today - safe_date(d)).days if not pd.isna(d) else 0)
+        c_name = f"{c}Anniversary"
+        df_jc[c_name] = df_jc[col].apply(lambda d: all([today.month == d.month, today.day == d.day]) if not pd.isna(d) else False)
+    df_jc["ManufacturedAnniversary"] = df_jc["ManufacturedDate"].apply(lambda d: all([today.month == d.month]) if not pd.isna(d) else False)
+    ddn(df_jc, "Jerseys")
+    
+    df_a_order = df_jc[df_jc["OrderAnniversary"]]
+    df_a_receive = df_jc[df_jc["ReceiveAnniversary"]]
+    df_a_open = df_jc[df_jc["OpenAnniversary"]]
+    df_a_manufacture = df_jc[df_jc["ManufacturedAnniversary"]]
+    with st.container(horizontal=True):
+        for df, title in [
+            (df_a_order, "Order"),
+            (df_a_receive, "Receive"),
+            (df_a_open, "Open"),
+            (df_a_manufacture, "Manufacture"),
+        ]:
+            with st.container(border=True):
+                st.subheader(f"{title} Anniversaries:")
+                for i, row in df.iterrows():
+                    titled = title if title != "Manufacture" else "Manufactured"
+                    age = int(row[f"DaysSince{titled}"] / 365.2425)
+                    st.write(f"{age}{number_suffix(age)} year {to_string(row, short_team=True)}")
+                with st.expander(title):
+                    ddn(df)
 
     # ══════════════════════════════════════════════
     # TAB 1: COLLECTION STATS
@@ -2931,7 +2996,7 @@ def fetch_team_logo_png_image(
 
 
 @st.cache_data
-def fetch_team_logo(team_abbr: str, dark: bool = True, err_on_not_found: bool = False, league: str = "NHL", debug: bool = False) -> str:
+def fetch_team_logo(team_abbr: str, dark: bool = True, err_on_not_found: bool = False, league: str = "NHL", debug: bool = False, season_id: int = None) -> str:
     """Get NHL team logo URL from NHL API."""
     
     prefix = "https://assets.nhle.com/logos/nhl/svg/"
@@ -2956,7 +3021,10 @@ def fetch_team_logo(team_abbr: str, dark: bool = True, err_on_not_found: bool = 
         display_df(df_s, f"df_s {team_abbr=}, {dark=}, err={err_on_not_found}, {league=}")
     if c == 1:
         if s_l == team_fmt("NHL"):
-            return f"{prefix}{df_s.loc[0, 'team'].upper()}_{'dark' if dark else 'light'}{suffix}"
+            if season_id:
+                return f"{prefix}{df_s.loc[0, 'team'].upper()}_{'dark' if dark else 'light'}{suffix}?season={season_id}"
+            else:
+                return f"{prefix}{df_s.loc[0, 'team'].upper()}_{'dark' if dark else 'light'}{suffix}"
         elif s_l == team_fmt("PWHL"):
             return df_s.iloc[0]["logo"]
     elif (c == 0) and err_on_not_found:
@@ -6971,8 +7039,8 @@ def ddn(
     border: bool = False,
 
     # params for st.dataframe 20250325
-    width: int | None = None,
-    height: int | None = None,
+    width: int | None = "stretch",
+    height: int | None = "auto",
     use_container_width: bool = False,
     column_order: Iterable[str] | None = None,
     column_config: Any | None = None,
@@ -7028,8 +7096,8 @@ def display_df_nhl(
     border: bool = False,
 
     # params for st.dataframe 20250325
-    width: int | None = None,
-    height: int | None = None,
+    width: int | None = "stretch",
+    height: int | None = "auto",
     use_container_width: bool = False,
     column_order: Iterable[str] | None = None,
     column_config: Any | None = None,
@@ -7047,9 +7115,9 @@ def display_df_nhl(
     
     debug: bool = False
 ):
-    team_cols = ["", "away", "home", "abbr", "abbrev"]
-    team_cols += [f"{t}team" for t in team_cols] + [f"team{t}" for t in team_cols]
-    team_cols += ["mychoice", "winner", "loser", "lowseed", "topseed", "top", "low", "high"]
+    team_cols = ["", "away", "home", "abbr", "abbrev", "name"]
+    team_cols += [f"{t}team" for t in team_cols] + [f"team{t}" for t in team_cols] + [f"team_{t}" for t in team_cols] + [f"{t}_team" for t in team_cols]
+    team_cols += ["mychoice", "winner", "loser", "lowseed", "topseed", "top", "low", "high", "opponent"]
     if debug:
         st.write(f"{df.columns.tolist()}")
         # st.write(f"{df['team'].unique().tolist()}")
@@ -7084,7 +7152,7 @@ def display_df_nhl(
             with st.expander("image_cols"):
                 st.write(image_cols)
     
-    i_cols += list(column_config.keys())
+    i_cols += [c for c in column_config.keys() if c in team_cols]
     df_ = df.copy()
     for c in i_cols:
         if c not in df_.columns:
@@ -7150,7 +7218,7 @@ def fetch_playoff_game_data(year: int) -> pd.DataFrame:
     dfff = dfff.explode("series")
     dfff = dfff.explode("games")
     dfff["id"] = dfff.apply(lambda r: f"{r['year']}{r['typefill']}{r['rounds']}{r['series']}{r['games']}", axis=1)
-    display_df(dfff, f"dfff {year=}")
+    # ddn(dfff, f"dfff {year=}")
     dfff = dfff[
         ~(
             ((dfff["rounds"] == 4) & (dfff["series"] > 1))
@@ -7202,7 +7270,7 @@ def fetch_playoff_game_data(year: int) -> pd.DataFrame:
                 top_div = f"{div_home if top == home else div_away}  # {'1' if wc_game else '2'}"
                 low_div = "WC" if wc_game else f"{div_home if low == home else div_away}3"
                 series_code = f"{conf[0]}R{round_}{top_div}{low_div}"
-            st.write(f"{id_=}, {series_code=}")
+            # st.write(f"{id_=}, {series_code=}")
             low_wins = 0
             top_wins = 0
             away_score = g_data["awayTeam"].get("score", 0)
@@ -7220,7 +7288,7 @@ def fetch_playoff_game_data(year: int) -> pd.DataFrame:
                 "GameID": id_,
                 "SeriesID": series_id,
                 "WEEKDATE": dow,
-                "DATE": date,
+                "DATE": date_,
                 "TIME": time,
                 "CONF": conf,
                 "ROUNDNUM": round_,
@@ -7256,6 +7324,9 @@ def fetch_playoff_game_data(year: int) -> pd.DataFrame:
             }]))
         # else:
         #     st.write(f"skip {id_=}")
+        
+    if not df_games_data:
+        return pd.DataFrame()
 
     dfg = pd.concat(df_games_data, ignore_index=True)
     dfg = dfg.sort_values(["DATE", "TIME"]).reset_index(drop=True)
@@ -7276,9 +7347,5261 @@ def fetch_playoff_game_data(year: int) -> pd.DataFrame:
         hw = h_score > a_score
         tw = hw if hit else not hw
         # st.write(f"{ser=}, {top=}, {low=}, {away=}, {home=}, {a_score=}, {h_score=}, {tsw=}, {lsw=}, {hit=}, {hw=}, {tw=}")
-        dfg.loc[i:].loc[dfg["SERIESCODE"] == ser, ["TOPSEEDWINS", "LOWSEEDWINS"]] = [tsw + int(tw), lsw + int(not tw)]    
+        # dfg.loc[i:].loc[dfg["SERIESCODE"] == ser, ["TOPSEEDWINS", "LOWSEEDWINS"]] = [tsw + int(tw), lsw + int(not tw)]    
+        future_mask = (
+            (dfg.index >= i)
+            & dfg["SERIESCODE"].eq(ser)
+        )
+
+        dfg.loc[
+            future_mask,
+            ["TOPSEEDWINS", "LOWSEEDWINS"],
+        ] = [
+            tsw + int(tw),
+            lsw + int(not tw),
+        ]
 
     return dfg
+
+
+def page_carousel():
+    
+    
+    ROUND_NAMES = {
+        0: "Did not qualify",
+        1: "First round",
+        2: "Second round",
+        3: "Conference final",
+        4: "Stanley Cup Final",
+    }
+
+
+    SHORT_ROUND_NAMES = {
+        0: "DNQ",
+        1: "R1",
+        2: "R2",
+        3: "CF",
+        4: "SCF",
+    }
+    
+    
+    def start_year_to_season_id(start_year: int) -> int:
+        """
+        Convert 2023 to the NHL season ID 20232024.
+        """
+        return int(f"{start_year}{start_year + 1}")
+
+
+    def season_id_to_start_year(season_id: int | str) -> int:
+        text = str(season_id)
+        return int(text[:4])
+    
+
+    def season_label(start_year: int) -> str:
+        return f"{start_year}-{str(start_year + 1)[-2:]}"
+
+    
+    def weighted_mean(values: pd.Series, weights: pd.Series) -> float:
+        valid = values.notna() & weights.notna()
+        if not valid.any():
+            return float("nan")
+
+        value_array = values.loc[valid].astype(float).to_numpy()
+        weight_array = weights.loc[valid].astype(float).to_numpy()
+
+        if weight_array.sum() <= 0:
+            return float(np.mean(value_array))
+
+        return float(np.average(value_array, weights=weight_array))
+
+
+    def consecutive_state_count(values: list[int], target: int) -> int:
+        """
+        Count consecutive target values working backward from the latest season.
+        """
+        count = 0
+        for value in reversed(values):
+            if value == target:
+                count += 1
+            else:
+                break
+        return count
+
+
+    def ordinal_round(round_number: float | int) -> str:
+        if pd.isna(round_number):
+            return "N/A"
+
+        rounded = int(round(float(round_number)))
+        rounded = max(0, min(4, rounded))
+        return ROUND_NAMES[rounded]
+
+
+    def html_escape(value: Any) -> str:
+        import html
+
+        return html.escape(str(value))
+    
+    
+    @st.cache_data(ttl=6 * 60 * 60, show_spinner=False)
+    def fetch_playoff_carousel(season_id: int) -> dict[str, Any]:
+        url = f"https://api-web.nhle.com/v1/playoff-series/carousel/{season_id}"
+
+        response = requests.get(
+            url,
+            timeout=20,
+            headers={
+                "Accept": "application/json",
+                "User-Agent": "NHLPlayoffPerformanceDashboard/1.0",
+            },
+        )
+        response.raise_for_status()
+
+        data = response.json()
+        if not isinstance(data, dict):
+            raise ValueError(f"Unexpected response for season {season_id}")
+
+        return data
+
+
+    @st.cache_data(ttl=6 * 60 * 60, show_spinner=False)
+    def collect_carousels(
+        first_start_year: int,
+        last_start_year: int,
+    ) -> tuple[dict[int, dict[str, Any]], list[str]]:
+        collected: dict[int, dict[str, Any]] = {}
+        errors: list[str] = []
+
+        for start_year in range(first_start_year, last_start_year + 1):
+            season_id = start_year_to_season_id(start_year)
+
+            try:
+                collected[start_year] = fetch_playoff_carousel(season_id)
+            except requests.HTTPError as exc:
+                status = exc.response.status_code if exc.response is not None else "unknown"
+                errors.append(
+                    f"{season_label(start_year)}: HTTP {status}"
+                )
+            except (requests.RequestException, ValueError, TypeError) as exc:
+                errors.append(
+                    f"{season_label(start_year)}: {type(exc).__name__}: {exc}"
+                )
+
+        return collected, errors
+    
+    def parse_carousels(
+        carousels: dict[int, dict[str, Any]],
+    ) -> tuple[pd.DataFrame, pd.DataFrame]:
+        """
+        Returns:
+            team_seasons:
+                One row per team and playoff season in which it appeared.
+
+            series_df:
+                One row per team per series.
+        """
+        series_rows: list[dict[str, Any]] = []
+
+        for requested_start_year, payload in carousels.items():
+            returned_season_id = int(
+                payload.get(
+                    "seasonId",
+                    start_year_to_season_id(requested_start_year),
+                )
+            )
+            returned_start_year = season_id_to_start_year(returned_season_id)
+            # st.write(f"{returned_start_year=}")
+
+            for round_data in payload.get("rounds", []):
+                round_number = int(round_data.get("roundNumber", 0) or 0)
+                round_label = round_data.get(
+                    "roundLabel",
+                    ROUND_NAMES.get(round_number, f"Round {round_number}"),
+                )
+
+                for series in round_data.get("series", []):
+                    top_team = series.get("topSeed") or {}
+                    bottom_team = series.get("bottomSeed") or {}
+
+                    if not top_team or not bottom_team:
+                        continue
+
+                    needed_to_win = int(series.get("neededToWin", 4) or 4)
+                    winning_team_id = series.get("winningTeamId")
+
+                    top_id = top_team.get("id")
+                    bottom_id = bottom_team.get("id")
+                    top_wins = int(top_team.get("wins", 0) or 0)
+                    bottom_wins = int(bottom_team.get("wins", 0) or 0)
+
+                    top_abbrev = top_team.get("abbrev")
+                    bottom_abbrev = bottom_team.get("abbrev")
+
+                    if not top_abbrev or not bottom_abbrev:
+                        continue
+
+                    common = {
+                        "season_id": returned_season_id,
+                        "season_start": returned_start_year,
+                        "season": season_label(returned_start_year),
+                        "playoff_year": returned_start_year + 1,
+                        "round": round_number,
+                        "round_label": round_label,
+                        "series_letter": series.get("seriesLetter"),
+                        "needed_to_win": needed_to_win,
+                        "series_complete": winning_team_id is not None,
+                    }
+
+                    series_rows.append(
+                        {
+                            **common,
+                            "team_id": top_id,
+                            "team": top_abbrev,
+                            "team_name": find_team(top_abbrev),
+                            "logo": fetch_team_logo(top_abbrev, season_id=returned_season_id),
+                            "dark_logo": top_team.get("darkLogo"),
+                            "opponent_id": bottom_id,
+                            "opponent": bottom_abbrev,
+                            "wins": top_wins,
+                            "losses": bottom_wins,
+                            "won_series": int(winning_team_id == top_id),
+                            "lost_series": int(winning_team_id == bottom_id),
+                        }
+                    )
+
+                    series_rows.append(
+                        {
+                            **common,
+                            "team_id": bottom_id,
+                            "team": bottom_abbrev,
+                            "team_name": find_team(bottom_abbrev),
+                            "logo": bottom_team.get("logo")
+                            or fetch_team_logo(bottom_abbrev, season_id=returned_season_id),
+                            "dark_logo": bottom_team.get("darkLogo"),
+                            "opponent_id": top_id,
+                            "opponent": top_abbrev,
+                            "wins": bottom_wins,
+                            "losses": top_wins,
+                            "won_series": int(winning_team_id == bottom_id),
+                            "lost_series": int(winning_team_id == top_id),
+                        }
+                    )
+
+        series_df = pd.DataFrame(series_rows)
+
+        if series_df.empty:
+            return pd.DataFrame(), series_df
+
+        team_seasons = (
+            series_df.groupby(
+                [
+                    "season_id",
+                    "season_start",
+                    "season",
+                    "playoff_year",
+                    "team_id",
+                    "team",
+                    "team_name",
+                ],
+                as_index=False,
+            )
+            .agg(
+                wins=("wins", "sum"),
+                losses=("losses", "sum"),
+                round_reached=("round", "max"),
+                series_wins=("won_series", "sum"),
+                series_losses=("lost_series", "sum"),
+                logo=("logo", "last"),
+                dark_logo=("dark_logo", "last"),
+                all_series_complete=("series_complete", "all"),
+            )
+        )
+
+        champion_ids = set(
+            series_df.loc[
+                (series_df["round"] == 4)
+                & (series_df["won_series"] == 1),
+                ["season_id", "team_id"],
+            ].itertuples(index=False, name=None)
+        )
+
+        team_seasons["qualified"] = 1
+        team_seasons["champion"] = team_seasons.apply(
+            lambda row: int(
+                (row["season_id"], row["team_id"]) in champion_ids
+            ),
+            axis=1,
+        )
+        team_seasons["games"] = (
+            team_seasons["wins"] + team_seasons["losses"]
+        )
+        team_seasons["win_pct"] = np.where(
+            team_seasons["games"] > 0,
+            team_seasons["wins"] / team_seasons["games"],
+            np.nan,
+        )
+        team_seasons["round_name"] = team_seasons["round_reached"].map(
+            ROUND_NAMES
+        )
+        team_seasons["round_short"] = team_seasons["round_reached"].map(
+            SHORT_ROUND_NAMES
+        )
+
+        return team_seasons, series_df
+
+
+    def build_complete_team_history(
+        qualified_history: pd.DataFrame,
+        first_start_year: int,
+        last_start_year: int,
+    ) -> pd.DataFrame:
+        """
+        Add zero-valued rows for seasons in which a known team did not qualify.
+        """
+        if qualified_history.empty:
+            return pd.DataFrame()
+
+        team_metadata = (
+            qualified_history.sort_values("season_start")
+            .groupby("team", as_index=False)
+            .agg(
+                team_id=("team_id", "last"),
+                team_name=("team_name", "last"),
+                logo=("logo", "last"),
+                dark_logo=("dark_logo", "last"),
+            )
+        )
+
+        full_rows: list[dict[str, Any]] = []
+        indexed = qualified_history.set_index(["team", "season_start"])
+        # ddn(qualified_history, "qualified_history")
+
+        for team_row in team_metadata.itertuples(index=False):
+            for start_year in range(first_start_year, last_start_year + 1):
+                key = (team_row.team, start_year)
+
+                if key in indexed.index:
+                    existing = indexed.loc[key]
+
+                    # Defensive handling in case a duplicate unexpectedly exists.
+                    if isinstance(existing, pd.DataFrame):
+                        existing = existing.iloc[0]
+                    
+                    existing["team"] = team_row.team
+                    existing["season_start"] = start_year
+
+                    # with st.container(horizontal=True):
+                    #     st.write(f"exist {team=}")
+                    #     st.write(existing)
+                    #     st.write(existing.index)
+                    #     st.write(existing.axes)
+                    #     st.write(existing.columns)
+                    #     st.write(existing.reset_index())
+                    #     st.write(existing.reset_index().to_dict())
+                    #     st.write(existing.reset_index(names=["team", "season_start"]).to_dict())
+                    full_rows.append(existing.to_dict())
+                else:
+                    # st.write(f"{team=}, {start_year=}")
+                    full_rows.append(
+                        {
+                            "season_id": start_year_to_season_id(start_year),
+                            "season_start": start_year,
+                            "season": season_label(start_year),
+                            "playoff_year": start_year + 1,
+                            "team_id": team_row.team_id,
+                            "team": team_row.team,
+                            "team_name": team_row.team_name,
+                            "wins": 0,
+                            "losses": 0,
+                            "round_reached": 0,
+                            "series_wins": 0,
+                            "series_losses": 0,
+                            "logo": team_row.logo,
+                            "dark_logo": team_row.dark_logo,
+                            "all_series_complete": True,
+                            "qualified": 0,
+                            "champion": 0,
+                            "games": 0,
+                            "win_pct": np.nan,
+                            "round_name": ROUND_NAMES[0],
+                            "round_short": SHORT_ROUND_NAMES[0],
+                        }
+                    )
+
+        result = pd.DataFrame(full_rows)
+        return result.sort_values(["team", "season_start"]).reset_index(drop=True)
+    
+    def summarize_teams(full_history: pd.DataFrame) -> pd.DataFrame:
+        summaries: list[dict[str, Any]] = []
+        
+        # ddn(full_history, "START", fail_safe=False)
+
+        # dd = full_history[full_history["team_name"] == "ANA"]
+        # ddn(dd, "dd1", fail_safe=False)
+        for team, all_seasons in full_history.groupby("team_name"):
+            all_seasons = all_seasons.sort_values("season_start")
+            qualified = all_seasons[all_seasons["qualified"] == 1]
+            # dd = full_history[full_history["team_name"] == team]
+            # with st.container(horizontal=True):
+            #     st.write(f"{team=}")
+            #     ddn(all_seasons, "all_seasons", fail_safe=False)
+            #     ddn(dd, "dd2", fail_safe=False)
+            #     ddn(qualified, "qualified", fail_safe=False)
+
+            if qualified.empty:
+                continue
+
+            latest = all_seasons.iloc[-1]
+            last_qualified = int(qualified["season_start"].max())
+            best_season = qualified.loc[qualified["round_reached"].idxmax()]
+            worst_season = qualified.loc[qualified["round_reached"].idxmin()]
+
+            summaries.append(
+                {
+                    "team": team,
+                    "team_name": latest["team_name"],
+                    "logo": latest["logo"],
+                    "seasons_observed": len(all_seasons),
+                    "appearances": int(qualified.shape[0]),
+                    "qualification_rate": float(
+                        qualified.shape[0] / all_seasons.shape[0]
+                    ),
+                    "last_qualified_start": last_qualified,
+                    "last_playoff_year": last_qualified + 1,
+                    "best_wins": int(qualified["wins"].max()),
+                    "worst_wins": int(qualified["wins"].min()),
+                    "avg_wins": float(qualified["wins"].mean()),
+                    "best_losses": int(qualified["losses"].min()),
+                    "worst_losses": int(qualified["losses"].max()),
+                    "avg_losses": float(qualified["losses"].mean()),
+                    "best_round": int(qualified["round_reached"].max()),
+                    "worst_round": int(qualified["round_reached"].min()),
+                    "avg_round": float(qualified["round_reached"].mean()),
+                    "best_round_name": ROUND_NAMES[
+                        int(qualified["round_reached"].max())
+                    ],
+                    "worst_round_name": ROUND_NAMES[
+                        int(qualified["round_reached"].min())
+                    ],
+                    "championships": int(qualified["champion"].sum()),
+                    "total_wins": int(qualified["wins"].sum()),
+                    "total_losses": int(qualified["losses"].sum()),
+                    "avg_win_pct": float(qualified["win_pct"].mean()),
+                    "best_season": best_season["season"],
+                    "worst_season": worst_season["season"],
+                }
+            )
+
+        # st.write("summaries")
+        # st.write(summaries)
+        return pd.DataFrame(summaries)
+    
+    @dataclass
+    class PredictionSettings:
+        half_life: float = 3.0
+        recent_window: int = 4
+        streak_adjustment: float = 0.045
+        drought_adjustment: float = 0.055
+        qualification_blend: float = 0.65
+
+
+    def create_predictions(
+        full_history: pd.DataFrame,
+        settings: PredictionSettings,
+    ) -> pd.DataFrame:
+        """
+        Recency-weighted heuristic.
+
+        Qualification:
+        1. Exponentially weighted historical qualification rate.
+        2. Blended with the recent-window qualification rate.
+        3. Qualification streak raises the estimate.
+        4. Consecutive misses lower the estimate.
+
+        Conditional performance:
+        Weighted averages among playoff seasons only, with recent seasons
+        receiving more weight.
+
+        This intentionally models competitive windows and droughts without
+        claiming to be a trained statistical forecasting model.
+        """
+        predictions: list[dict[str, Any]] = []
+
+        for team, team_df in full_history.groupby("team"):
+            team_df = team_df.sort_values("season_start").copy()
+            latest_start = int(team_df["season_start"].max())
+
+            team_df["age"] = latest_start - team_df["season_start"]
+            team_df["recency_weight"] = np.power(
+                0.5,
+                team_df["age"] / settings.half_life,
+            )
+
+            qualification_values = (
+                team_df["qualified"].astype(int).tolist()
+            )
+
+            weighted_qualification = weighted_mean(
+                team_df["qualified"],
+                team_df["recency_weight"],
+            )
+
+            recent = team_df.tail(settings.recent_window)
+            recent_qualification = float(recent["qualified"].mean())
+
+            qualification_streak = consecutive_state_count(
+                qualification_values,
+                target=1,
+            )
+            drought_length = consecutive_state_count(
+                qualification_values,
+                target=0,
+            )
+
+            base_probability = (
+                settings.qualification_blend * weighted_qualification
+                + (1 - settings.qualification_blend)
+                * recent_qualification
+            )
+
+            window_adjustment = (
+                settings.streak_adjustment
+                * min(qualification_streak, 4)
+                - settings.drought_adjustment
+                * min(drought_length, 5)
+            )
+
+            # Small persistence adjustment based on the immediately prior season.
+            latest_qualified = int(team_df.iloc[-1]["qualified"])
+            persistence_adjustment = 0.035 if latest_qualified else -0.025
+
+            qualification_probability = float(
+                np.clip(
+                    base_probability
+                    + window_adjustment
+                    + persistence_adjustment,
+                    0.02,
+                    0.98,
+                )
+            )
+
+            playoff_rows = team_df[team_df["qualified"] == 1].copy()
+
+            if playoff_rows.empty:
+                expected_wins_if_qualified = 0.0
+                expected_losses_if_qualified = 0.0
+                expected_round_if_qualified = 1.0
+                expected_win_pct = float("nan")
+            else:
+                expected_wins_if_qualified = weighted_mean(
+                    playoff_rows["wins"],
+                    playoff_rows["recency_weight"],
+                )
+                expected_losses_if_qualified = weighted_mean(
+                    playoff_rows["losses"],
+                    playoff_rows["recency_weight"],
+                )
+                expected_round_if_qualified = weighted_mean(
+                    playoff_rows["round_reached"],
+                    playoff_rows["recency_weight"],
+                )
+                expected_win_pct = weighted_mean(
+                    playoff_rows["win_pct"],
+                    playoff_rows["recency_weight"],
+                )
+
+                # A recent playoff streak slightly increases expected depth.
+                expected_round_if_qualified += min(
+                    qualification_streak * 0.08,
+                    0.28,
+                )
+
+                # A return after a drought is treated more conservatively.
+                if latest_qualified == 0:
+                    expected_round_if_qualified -= min(
+                        drought_length * 0.06,
+                        0.24,
+                    )
+
+                expected_round_if_qualified = float(
+                    np.clip(expected_round_if_qualified, 1.0, 4.0)
+                )
+
+            unconditional_expected_wins = (
+                qualification_probability * expected_wins_if_qualified
+            )
+            unconditional_expected_round = (
+                qualification_probability * expected_round_if_qualified
+            )
+
+            if qualification_probability < 0.35:
+                forecast = "Likely to miss"
+            elif qualification_probability < 0.52:
+                forecast = "Playoff bubble"
+            elif expected_round_if_qualified < 1.65:
+                forecast = "Likely first-round team"
+            elif expected_round_if_qualified < 2.45:
+                forecast = "Second-round potential"
+            elif expected_round_if_qualified < 3.35:
+                forecast = "Conference-final potential"
+            else:
+                forecast = "Stanley Cup Final potential"
+
+            latest = team_df.iloc[-1]
+
+            predictions.append(
+                {
+                    "team": team,
+                    "team_name": latest["team_name"],
+                    "logo": latest["logo"],
+                    "next_season_start": latest_start + 1,
+                    "next_playoff_year": latest_start + 2,
+                    "qualification_probability": qualification_probability,
+                    "expected_wins_if_qualified": expected_wins_if_qualified,
+                    "expected_losses_if_qualified": expected_losses_if_qualified,
+                    "expected_round_if_qualified": expected_round_if_qualified,
+                    "expected_round_name": ordinal_round(
+                        expected_round_if_qualified
+                    ),
+                    "unconditional_expected_wins": unconditional_expected_wins,
+                    "unconditional_expected_round": unconditional_expected_round,
+                    "expected_win_pct": expected_win_pct,
+                    "qualification_streak": qualification_streak,
+                    "drought_length": drought_length,
+                    "forecast": forecast,
+                }
+            )
+
+        result = pd.DataFrame(predictions)
+        return result.sort_values(
+            [
+                "qualification_probability",
+                "expected_round_if_qualified",
+                "expected_wins_if_qualified",
+            ],
+            ascending=False,
+        ).reset_index(drop=True)
+    
+    def render_logo_header(
+        logo: str,
+        team_name: str,
+        abbreviation: str,
+        width: int = 100,
+    ) -> None:
+        left, right = st.columns([1, 5], vertical_alignment="center")
+
+        with left:
+            st.image(logo, width=width)
+
+        with right:
+            st.subheader(team_name)
+            st.caption(abbreviation)
+
+
+    def render_summary_cards(summary: pd.Series) -> None:
+        cols = st.columns(5)
+
+        cols[0].metric(
+            "Appearances",
+            f"{int(summary['appearances'])}",
+            help="Playoff appearances within the selected period.",
+        )
+        cols[1].metric(
+            "Qualification rate",
+            f"{summary['qualification_rate']:.0%}",
+        )
+        cols[2].metric(
+            "Last playoffs",
+            f"{int(summary['last_playoff_year'])}",
+        )
+        cols[3].metric(
+            "Best result",
+            summary["best_round_name"],
+            summary["best_season"],
+        )
+        cols[4].metric(
+            "Championships",
+            f"{int(summary['championships'])}",
+        )
+
+
+    def render_year_logo_history(team_history: pd.DataFrame) -> None:
+        st.markdown("#### Season-by-season playoff history")
+
+        seasons_per_row = 6
+        ordered = team_history.sort_values(
+            "season_start",
+            ascending=False,
+        )
+
+        for offset in range(0, len(ordered), seasons_per_row):
+            chunk = ordered.iloc[offset : offset + seasons_per_row]
+            columns = st.columns(seasons_per_row)
+
+            for column, (_, row) in zip(columns, chunk.iterrows()):
+                with column:
+                    if row["qualified"]:
+                        st.image(row["logo"], width=72)
+                        st.markdown(
+                            f"<div style='text-align:center'>"
+                            f"<strong>{html_escape(row['season'])}</strong><br>"
+                            f"{html_escape(row['round_short'])}<br>"
+                            f"{int(row['wins'])}-{int(row['losses'])}"
+                            f"</div>",
+                            unsafe_allow_html=True,
+                        )
+                    else:
+                        st.markdown(
+                            f"""
+                            <div style="
+                                height:72px;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                border:1px dashed #777;
+                                border-radius:8px;
+                                opacity:0.65;
+                            ">
+                                DNQ
+                            </div>
+                            <div style="text-align:center">
+                                <strong>{html_escape(row['season'])}</strong>
+                            </div>
+                            """,
+                            unsafe_allow_html=True,
+                        )
+
+
+    def create_team_timeline(team_history: pd.DataFrame) -> go.Figure:
+        plotting = team_history.copy()
+        plotting["qualified_label"] = plotting["qualified"].map(
+            {1: "Qualified", 0: "Did not qualify"}
+        )
+        plotting["hover_text"] = plotting.apply(
+            lambda row: (
+                f"{row['season']}<br>"
+                f"{row['round_name']}<br>"
+                f"Wins: {int(row['wins'])}<br>"
+                f"Losses: {int(row['losses'])}"
+            ),
+            axis=1,
+        )
+
+        figure = go.Figure()
+
+        figure.add_trace(
+            go.Bar(
+                x=plotting["season"],
+                y=plotting["round_reached"],
+                customdata=np.column_stack(
+                    [
+                        plotting["wins"],
+                        plotting["losses"],
+                        plotting["round_name"],
+                    ]
+                ),
+                hovertemplate=(
+                    "<b>%{x}</b><br>"
+                    "%{customdata[2]}<br>"
+                    "Wins: %{customdata[0]}<br>"
+                    "Losses: %{customdata[1]}"
+                    "<extra></extra>"
+                ),
+                name="Round reached",
+            )
+        )
+
+        figure.update_layout(
+            title="Playoff depth by season",
+            xaxis_title=None,
+            yaxis_title=None,
+            yaxis={
+                "tickmode": "array",
+                "tickvals": [0, 1, 2, 3, 4],
+                "ticktext": ["DNQ", "R1", "R2", "CF", "SCF"],
+                "range": [0, 4.4],
+            },
+            margin={"l": 20, "r": 20, "t": 55, "b": 20},
+            height=380,
+        )
+
+        return figure
+
+
+    def create_wins_losses_chart(team_history: pd.DataFrame) -> go.Figure:
+        qualified = team_history[team_history["qualified"] == 1].copy()
+
+        figure = go.Figure()
+        figure.add_bar(
+            x=qualified["season"],
+            y=qualified["wins"],
+            name="Wins",
+        )
+        figure.add_bar(
+            x=qualified["season"],
+            y=qualified["losses"],
+            name="Losses",
+        )
+
+        figure.update_layout(
+            title="Playoff wins and losses",
+            barmode="group",
+            xaxis_title=None,
+            yaxis_title="Games",
+            height=380,
+            margin={"l": 20, "r": 20, "t": 55, "b": 20},
+        )
+        return figure
+
+
+    def render_best_worst_average(summary: pd.Series) -> None:
+        st.markdown("#### Best, worst and average qualified-season performance")
+
+        stats = pd.DataFrame(
+            {
+                "Metric": ["Wins", "Losses", "Round reached"],
+                "Best": [
+                    f"{int(summary['best_wins'])}",
+                    f"{int(summary['best_losses'])}",
+                    summary["best_round_name"],
+                ],
+                "Average": [
+                    f"{summary['avg_wins']:.2f}",
+                    f"{summary['avg_losses']:.2f}",
+                    f"{summary['avg_round']:.2f} — "
+                    f"{ordinal_round(summary['avg_round'])}",
+                ],
+                "Worst": [
+                    f"{int(summary['worst_wins'])}",
+                    f"{int(summary['worst_losses'])}",
+                    summary["worst_round_name"],
+                ],
+            }
+        )
+
+        st.dataframe(
+            stats,
+            hide_index=True,
+            use_container_width=True,
+        )
+
+
+    def render_prediction_card(prediction: pd.Series) -> None:
+        st.markdown("#### Next-season projection")
+
+        probability = prediction["qualification_probability"]
+        confidence_text = (
+            "high"
+            if probability >= 0.70 or probability <= 0.30
+            else "moderate"
+            if probability >= 0.58 or probability <= 0.42
+            else "low"
+        )
+
+        cols = st.columns(5)
+        cols[0].metric(
+            "Qualify",
+            f"{probability:.1%}",
+        )
+        cols[1].metric(
+            "Expected wins",
+            f"{prediction['expected_wins_if_qualified']:.1f}",
+            help="Conditional on qualifying.",
+        )
+        cols[2].metric(
+            "Expected losses",
+            f"{prediction['expected_losses_if_qualified']:.1f}",
+            help="Conditional on qualifying.",
+        )
+        cols[3].metric(
+            "Expected depth",
+            f"{prediction['expected_round_if_qualified']:.2f}",
+            prediction["expected_round_name"],
+        )
+        cols[4].metric(
+            "Forecast",
+            prediction["forecast"],
+        )
+
+        streak = int(prediction["qualification_streak"])
+        drought = int(prediction["drought_length"])
+
+        if streak:
+            state_text = (
+                f"The team enters the projection with a "
+                f"{streak}-season playoff streak."
+            )
+        elif drought:
+            state_text = (
+                f"The team enters the projection after missing the playoffs "
+                f"for {drought} consecutive season"
+                f"{'s' if drought != 1 else ''}."
+            )
+        else:
+            state_text = "No active qualification streak or drought was detected."
+
+        st.caption(
+            f"Projection confidence: {confidence_text}. {state_text} "
+            "The result is a recency-weighted historical heuristic and does "
+            "not account for rosters, injuries, trades, prospects, or standings."
+        )
+    
+    st.caption(
+        "Historical playoff results reconstructed from NHL playoff-series "
+        "carousel data."
+    )
+
+    with st.sidebar:
+        st.header("Data range")
+
+        first_start_year = st.number_input(
+            "First season start year",
+            min_value=1990,
+            max_value=2100,
+            value=2015,
+            step=1,
+            help="For example, 2015 represents the 2015-16 season.",
+        )
+
+        last_start_year = st.number_input(
+            "Last season start year",
+            min_value=int(first_start_year),
+            max_value=2100,
+            value=max(int(first_start_year), 2025),
+            step=1,
+        )
+
+        st.divider()
+        st.header("Prediction model")
+
+        half_life = st.slider(
+            "Recency half-life",
+            min_value=1.0,
+            max_value=8.0,
+            value=3.0,
+            step=0.5,
+            help=(
+                "A three-season half-life means a result three seasons ago "
+                "receives half the weight of the latest result."
+            ),
+        )
+
+        recent_window = st.slider(
+            "Competitive-window length",
+            min_value=2,
+            max_value=8,
+            value=4,
+            help="Number of recent seasons used to emphasize current form.",
+        )
+
+        streak_adjustment = st.slider(
+            "Playoff-streak bonus",
+            min_value=0.00,
+            max_value=0.10,
+            value=0.045,
+            step=0.005,
+            format="%.3f",
+        )
+
+        drought_adjustment = st.slider(
+            "Drought penalty",
+            min_value=0.00,
+            max_value=0.10,
+            value=0.055,
+            step=0.005,
+            format="%.3f",
+        )
+
+        load_data = st.button(
+            "Load playoff data",
+            type="primary",
+            use_container_width=True,
+        )
+
+    # Streamlit reruns after every control change, so data can load without
+    # forcing the button after the first run.
+    with st.spinner("Collecting NHL playoff series..."):
+        carousels, errors = collect_carousels(
+            int(first_start_year),
+            int(last_start_year),
+        )
+
+    if errors:
+        with st.expander(
+            f"{len(errors)} season request(s) were unavailable",
+            expanded=False,
+        ):
+            for error in errors:
+                st.write(error)
+
+    if not carousels:
+        st.error(
+            "No playoff carousel data was returned for the selected period."
+        )
+        st.stop()
+
+    qualified_history, series_df = parse_carousels(carousels)
+
+    if qualified_history.empty:
+        st.error("The returned carousel responses contained no team series.")
+        st.stop()
+
+    full_history = build_complete_team_history(
+        qualified_history,
+        int(first_start_year),
+        int(last_start_year),
+    )
+    # ddn(qualified_history, "qualified_history")
+    # st.write(qualified_history["qualified"])
+    # st.write(qualified_history["qualified"].dtypes)
+    # ddn(full_history, "full_history")
+    summaries = summarize_teams(full_history)
+    # ddn(summaries, "summaries")
+
+    prediction_settings = PredictionSettings(
+        half_life=half_life,
+        recent_window=recent_window,
+        streak_adjustment=streak_adjustment,
+        drought_adjustment=drought_adjustment,
+    )
+    predictions = create_predictions(
+        full_history,
+        prediction_settings,
+    )
+
+    available_seasons = len(carousels)
+    observed_teams = full_history["team"].nunique()
+    total_appearances = int(full_history["qualified"].sum())
+    total_championships = int(full_history["champion"].sum())
+
+    overview_cols = st.columns(4)
+    overview_cols[0].metric("Seasons loaded", available_seasons)
+    overview_cols[1].metric("Teams observed", observed_teams)
+    overview_cols[2].metric("Playoff appearances", total_appearances)
+    overview_cols[3].metric("Championships found", total_championships)
+
+    tabs = st.tabs(
+        [
+            "League overview",
+            "Playoff explorer",
+            "Team explorer",
+            "Predictions",
+            "Series data",
+            "Methodology",
+        ]
+    )
+
+    # -----------------------------------------------------------------------
+    # League overview
+    # -----------------------------------------------------------------------
+
+    with tabs[0]:
+        st.subheader("Overall team performance")
+
+        display_summary = summaries[
+            [
+                "team",
+                "appearances",
+                "qualification_rate",
+                "last_playoff_year",
+                "total_wins",
+                "total_losses",
+                "avg_wins",
+                "avg_losses",
+                "avg_round",
+                "best_round_name",
+                "championships",
+            ]
+        ].copy()
+
+        display_summary.columns = [
+            "Team",
+            "Appearances",
+            "Qualification rate",
+            "Last playoff year",
+            "Total wins",
+            "Total losses",
+            "Average wins",
+            "Average losses",
+            "Average round",
+            "Best result",
+            "Championships",
+        ]
+
+        ddn(
+            display_summary.sort_values(
+                ["Championships", "Average round", "Total wins"],
+                ascending=False,
+            ),
+            hide_index=True,
+            use_container_width=True,
+            column_config={
+                "Qualification rate": st.column_config.ProgressColumn(
+                    min_value=0,
+                    max_value=1,
+                    format="%.0f%%",
+                ),
+                "Average wins": st.column_config.NumberColumn(format="%.2f"),
+                "Average losses": st.column_config.NumberColumn(format="%.2f"),
+                "Average round": st.column_config.NumberColumn(format="%.2f"),
+            },
+        )
+
+        chart_col1, chart_col2 = st.columns(2)
+
+        with chart_col1:
+            round_chart = px.scatter(
+                summaries,
+                x="qualification_rate",
+                y="avg_round",
+                size="appearances",
+                hover_name="team_name",
+                hover_data={
+                    "team": True,
+                    "appearances": True,
+                    "championships": True,
+                    "qualification_rate": ":.1%",
+                    "avg_round": ":.2f",
+                },
+                labels={
+                    "qualification_rate": "Qualification rate",
+                    "avg_round": "Average round reached",
+                },
+                title="Qualification frequency versus playoff depth",
+            )
+            round_chart.update_yaxes(
+                tickmode="array",
+                tickvals=[1, 2, 3, 4],
+                ticktext=["R1", "R2", "CF", "SCF"],
+            )
+            round_chart.update_layout(height=480)
+            st.plotly_chart(round_chart, use_container_width=True)
+
+        with chart_col2:
+            win_chart = px.scatter(
+                summaries,
+                x="avg_losses",
+                y="avg_wins",
+                size="appearances",
+                hover_name="team_name",
+                hover_data={
+                    "team": True,
+                    "appearances": True,
+                    "avg_losses": ":.2f",
+                    "avg_wins": ":.2f",
+                },
+                labels={
+                    "avg_losses": "Average playoff losses",
+                    "avg_wins": "Average playoff wins",
+                },
+                title="Average wins versus losses per appearance",
+            )
+            win_chart.update_layout(height=480)
+            st.plotly_chart(win_chart, use_container_width=True)
+
+        st.subheader("Recent champions")
+
+        champion_rows = qualified_history[
+            qualified_history["champion"] == 1
+        ].sort_values("season_start", ascending=False)
+
+        n_rows = 10
+        n_champs = abs(last_start_year - first_start_year)
+        if champion_rows.empty:
+            st.info("No completed championship result was found.")
+        else:
+            columns = st.columns(n_rows)
+
+            for i, champion in champion_rows.head(n_champs).reset_index().iterrows():
+                with columns[i % n_rows]:
+                    st.image(champion["logo"], width=160)
+                    st.markdown(
+                        f"<div style='text-align:center'>"
+                        f"<strong>{html_escape(champion['team'])}</strong><br>"
+                        f"{int(champion['playoff_year'])}"
+                        f"</div>",
+                        unsafe_allow_html=True,
+                    )
+
+    # -----------------------------------------------------------------------
+    # Playoff explorer
+    # -----------------------------------------------------------------------
+    with tabs[1]:
+        # # ddn(summaries, "summaries")
+        # # ddn(full_history, "full_history")
+        # ddn(series_df, "series_df")
+        # ddn(qualified_history, "qualified_history")
+        # year_id = st.selectbox("Playoff year:", qualified_history["playoff_year"].unique().tolist())
+        # if year_id:
+        # available_years = sorted(
+        #     matchups["playoff_year"].astype(int).unique(),
+        #     reverse=True,
+        # )
+        for year_id in range(last_start_year, first_start_year, -1):
+            # for year_id in available_years:
+            df_series = series_df[(series_df["playoff_year"] == year_id) & (series_df["team_id"] < 200)]
+            df_series.sort_values(["round", "series_letter"], inplace=True)
+            # ddn(df_series, "df_series")
+            r1 = df_series[df_series["round"] == 1].reset_index()
+            r2 = df_series[df_series["round"] == 2].reset_index()
+            r3 = df_series[df_series["round"] == 3].reset_index()
+            r4 = df_series[df_series["round"] == 4].reset_index()
+            
+            # columns = st.columns([1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1])
+            # for i in range(8):
+            #     with columns[i % 2]:
+            #         st.image(r1.loc[i, "dark_logo"], r1.loc[i, "team"])
+            
+            with st.container(border=True, width=screen.width if screen.is_phone else "stretch"):
+                columns = st.columns(2)
+                for i, c in enumerate(["West", "East"]):
+                    with columns[i]:
+                        st.subheader(c, text_alignment="center")
+                st.subheader(f"{year_id}", text_alignment="center")
+                columns = st.columns(7)
+                lp = 0.675
+                i_width = 82 * (0.35 if screen.is_phone else 1)
+                c_height = int(1.25 * i_width)
+                
+                for round_num, df_round, col_a, col_b in [
+                    (1, r1, 0, 6),
+                    (2, r2, 1, 5),
+                    (3, r3, 2, 4),
+                    (4, r4, 3, 3),
+                ]:
+                    if round_num > 1:
+                        for c in set([col_a, col_b]):
+                            with columns[c]:
+                                with st.container(height=int(c_height * 1.18), border=False):
+                                    st.write(" ")
+
+                    hl = int(len(df_round) / 2)
+                    for i in range(0, hl, 2):
+                        
+                        # East
+                        # Right
+                        with columns[col_b]:
+                            low = df_round.loc[i + 1, "team"]
+                            high = df_round.loc[i, "team"]
+                            low_w = df_round.loc[i + 1, "wins"]
+                            high_w = df_round.loc[i, "wins"]
+                            high_won = df_round.loc[i, "won_series"] == 1
+                            l_width = int((lp if high_won else 1) * i_width)
+                            h_width = int((1 if high_won else lp) * i_width)
+                            l_key = ("dark_" if high_won else "") + "logo"
+                            h_key = ("" if high_won else "dark_") + "logo"
+                            l_image = df_round.loc[i + 1, l_key] if df_round.loc[i + 1, l_key] != "" else df_round.loc[i + 1, h_key]
+                            h_image = df_round.loc[i, h_key] if df_round.loc[i, h_key] != "" else df_round.loc[i, l_key]
+                            if i == 0:
+                                st.subheader(f"{ROUND_NAMES[round_num]}", text_alignment="center")
+                            with st.container(border=True):
+                                with st.container(border=False, horizontal=round_num < 3, height=c_height + (0 if round_num < 3 else int(c_height * 1.1))):
+                                    st.image(l_image, low, width=l_width)
+                                    st.write("@")
+                                    st.image(h_image, high, width=h_width)
+                                st.caption(f"{low_w} - {high_w}", text_alignment="center")
+                    
+                        if round_num != 4:
+                            # West
+                            # Left
+                            with columns[col_a]:
+                                low = df_round.loc[i + hl + 1, "team"]
+                                high = df_round.loc[i + hl, "team"]
+                                low_w = df_round.loc[i + hl + 1, "wins"]
+                                high_w = df_round.loc[i + hl, "wins"]
+                                high_won = df_round.loc[i + hl, "won_series"] == 1
+                                l_width = int((lp if high_won else 1) * i_width)
+                                h_width = int((1 if high_won else lp) * i_width)
+                                l_key = ("dark_" if high_won else "") + "logo"
+                                h_key = ("" if high_won else "dark_") + "logo"
+                                l_image = df_round.loc[i + hl + 1, l_key] if df_round.loc[i + hl + 1, l_key] != "" else df_round.loc[i + hl + 1, h_key]
+                                h_image = df_round.loc[i + hl, h_key] if df_round.loc[i + hl, h_key] != "" else df_round.loc[i + hl, l_key]
+                                # st.write(f"{low} @ {high}, {l_key=}, {h_key=}, {l_image=}, {h_image=}")
+                                if i == 0:
+                                    st.subheader(f"{ROUND_NAMES[round_num]}", text_alignment="center")
+                                with st.container(border=True):
+                                    with st.container(border=False, horizontal=round_num < 3, height=c_height + (0 if round_num < 3 else int(c_height * 1.1))):
+                                        st.image(l_image, low, width=l_width)
+                                        st.write("@")
+                                        st.image(h_image, high, width=h_width)
+                                    st.caption(f"{low_w} - {high_w}", text_alignment="center")
+                                    
+        
+        st.divider()
+        
+        def safe_value(value: Any, default: str = "") -> str:
+            if value is None:
+                return default
+
+            try:
+                if pd.isna(value):
+                    return default
+            except (TypeError, ValueError):
+                pass
+
+            return str(value)
+
+
+        def preferred_logo(row: pd.Series, winner: bool) -> str:
+            """
+            Use the light logo for the winner and dark logo for the losing team.
+            Fall back gracefully when one URL is missing.
+            """
+            light_logo = safe_value(row.get("logo"))
+            dark_logo = safe_value(row.get("dark_logo"))
+
+            preferred = light_logo if winner else dark_logo
+            fallback = dark_logo if winner else light_logo
+
+            return preferred or fallback
+
+
+        def pair_round_series(df_round: pd.DataFrame) -> list[dict[str, Any]]:
+            """
+            Convert the two team-perspective rows for each series into one matchup.
+
+            This assumes series_letter uniquely identifies a series within a round.
+            """
+            if df_round.empty:
+                return []
+
+            matchups: list[dict[str, Any]] = []
+
+            for series_letter, group in df_round.groupby(
+                "series_letter",
+                sort=True,
+                dropna=False,
+            ):
+                group = (
+                    group.drop_duplicates(subset=["team"])
+                    .sort_values(
+                        ["won_series", "wins"],
+                        ascending=[False, False],
+                    )
+                    .reset_index(drop=True)
+                )
+
+                if len(group) != 2:
+                    continue
+
+                first = group.iloc[0]
+                second = group.iloc[1]
+
+                first_won = int(first.get("won_series", 0) or 0) == 1
+                second_won = int(second.get("won_series", 0) or 0) == 1
+
+                matchups.append(
+                    {
+                        "series_letter": safe_value(series_letter),
+                        "team_1": safe_value(first["team"]),
+                        "team_2": safe_value(second["team"]),
+                        "team_1_wins": int(first.get("wins", 0) or 0),
+                        "team_2_wins": int(second.get("wins", 0) or 0),
+                        "team_1_won": first_won,
+                        "team_2_won": second_won,
+                        "team_1_logo": preferred_logo(first, first_won),
+                        "team_2_logo": preferred_logo(second, second_won),
+                    }
+                )
+
+            return matchups
+        
+        def normalize_conference(value: Any) -> str:
+            text = safe_value(value).strip().lower()
+
+            if text.startswith("e"):
+                return "East"
+
+            if text.startswith("w"):
+                return "West"
+
+            return ""
+
+
+        def build_team_conference_lookup(
+            df_teams: pd.DataFrame,
+        ) -> dict[str, str]:
+            """
+            Supports either:
+                team/conf
+            or:
+                abbrev/conf
+            """
+            team_column = (
+                "team"
+                if "team" in df_teams.columns
+                else "abbrev"
+            )
+
+            return {
+                safe_value(row[team_column]): normalize_conference(row["conf"])
+                for _, row in df_teams.iterrows()
+            }
+
+
+        def matchup_conference(
+            matchup: dict[str, Any],
+            conference_lookup: dict[str, str],
+            round_number: int,
+        ) -> str:
+            if round_number == 4:
+                return "Final"
+
+            team_1_conf = conference_lookup.get(matchup["team_1"], "")
+            team_2_conf = conference_lookup.get(matchup["team_2"], "")
+
+            if team_1_conf == team_2_conf:
+                return team_1_conf
+
+            # Defensive fallback for renamed/missing teams.
+            return team_1_conf or team_2_conf
+        
+        def matchup_card_html(
+            matchup: dict[str, Any],
+            *,
+            card_class: str = "",
+        ) -> str:
+            team_1 = html.escape(matchup["team_1"])
+            team_2 = html.escape(matchup["team_2"])
+
+            team_1_logo = html.escape(matchup["team_1_logo"])
+            team_2_logo = html.escape(matchup["team_2_logo"])
+
+            team_1_wins = int(matchup["team_1_wins"])
+            team_2_wins = int(matchup["team_2_wins"])
+
+            team_1_result_class = (
+                "winner"
+                if matchup["team_1_won"]
+                else "loser"
+            )
+            team_2_result_class = (
+                "winner"
+                if matchup["team_2_won"]
+                else "loser"
+            )
+
+            return f"""
+            <article class="series-card {card_class}">
+                <div class="series-team {team_1_result_class}">
+                    <img
+                        class="series-logo"
+                        src="{team_1_logo}"
+                        alt="{team_1}"
+                    >
+                    <span class="team-abbrev">{team_1}</span>
+                    <span class="team-wins">{team_1_wins}</span>
+                </div>
+
+                <div class="series-separator">@</div>
+
+                <div class="series-team {team_2_result_class}">
+                    <img
+                        class="series-logo"
+                        src="{team_2_logo}"
+                        alt="{team_2}"
+                    >
+                    <span class="team-abbrev">{team_2}</span>
+                    <span class="team-wins">{team_2_wins}</span>
+                </div>
+            </article>
+            """
+            
+            
+        def render_playoff_bracket(
+            *,
+            year_id: int,
+            year_series: pd.DataFrame,
+            df_teams: pd.DataFrame,
+            height: int = 850,
+        ) -> None:
+            """
+            Render an entire seven-column playoff bracket inside one HTML component.
+
+            Desktop:
+                All seven columns are visible.
+
+            Phone:
+                The bracket retains a desktop-like minimum width and scrolls
+                horizontally instead of stacking vertically.
+            """
+            conference_lookup = build_team_conference_lookup(df_teams)
+
+            rounds: dict[int, list[dict[str, Any]]] = {}
+
+            for round_number in [1, 2, 3, 4]:
+                round_df = year_series[
+                    year_series["round"].astype(int).eq(round_number)
+                ].copy()
+
+                rounds[round_number] = pair_round_series(round_df)
+
+            def conference_series(
+                round_number: int,
+                conference: str,
+            ) -> list[dict[str, Any]]:
+                return [
+                    matchup
+                    for matchup in rounds[round_number]
+                    if matchup_conference(
+                        matchup,
+                        conference_lookup,
+                        round_number,
+                    )
+                    == conference
+                ]
+
+            west_r1 = conference_series(1, "West")
+            west_r2 = conference_series(2, "West")
+            west_r3 = conference_series(3, "West")
+
+            east_r1 = conference_series(1, "East")
+            east_r2 = conference_series(2, "East")
+            east_r3 = conference_series(3, "East")
+
+            final_series = rounds[4][:1]
+
+            def render_stack(
+                matchups: list[dict[str, Any]],
+                *,
+                stack_class: str,
+            ) -> str:
+                cards = "".join(
+                    matchup_card_html(matchup)
+                    for matchup in matchups
+                )
+
+                return f"""
+                <div class="round-stack {stack_class}">
+                    {cards}
+                </div>
+                """
+
+            final_card = (
+                matchup_card_html(
+                    final_series[0],
+                    card_class="final-card",
+                )
+                if final_series
+                else '<div class="empty-series">No final data</div>'
+            )
+
+            bracket_html = f"""
+            <!doctype html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+
+                <style>
+                    * {{
+                        box-sizing: border-box;
+                    }}
+
+                    html,
+                    body {{
+                        margin: 0;
+                        padding: 0;
+                        width: 100%;
+                        overflow: hidden;
+                        background: transparent;
+                        color: #f4f6fb;
+                        font-family:
+                            -apple-system,
+                            BlinkMacSystemFont,
+                            "Segoe UI",
+                            sans-serif;
+                    }}
+
+                    .bracket-viewport {{
+                        width: 100%;
+                        overflow-x: auto;
+                        overflow-y: hidden;
+                        overscroll-behavior-x: contain;
+                        scrollbar-width: thin;
+                        padding: 4px 4px 14px;
+                    }}
+
+                    /*
+                    * This minimum width is the critical part.
+                    * It prevents the seven bracket columns from collapsing or
+                    * stacking on phones.
+                    */
+                    .bracket {{
+                        min-width: 1180px;
+                        display: grid;
+                        grid-template-columns:
+                            minmax(145px, 1fr)
+                            minmax(145px, 1fr)
+                            minmax(145px, 1fr)
+                            minmax(160px, 1.08fr)
+                            minmax(145px, 1fr)
+                            minmax(145px, 1fr)
+                            minmax(145px, 1fr);
+                        grid-template-rows:
+                            auto
+                            auto
+                            minmax(650px, auto);
+                        column-gap: 12px;
+                        border: 1px solid rgba(148, 163, 184, 0.28);
+                        border-radius: 12px;
+                        padding: 12px;
+                        background: rgba(8, 13, 21, 0.68);
+                    }}
+
+                    .conference-heading {{
+                        color: #f8fafc;
+                        font-size: 18px;
+                        font-weight: 800;
+                        text-align: center;
+                    }}
+
+                    .west-heading {{
+                        grid-column: 1 / 4;
+                        grid-row: 1;
+                    }}
+
+                    .east-heading {{
+                        grid-column: 5 / 8;
+                        grid-row: 1;
+                    }}
+
+                    .year-heading {{
+                        grid-column: 4;
+                        grid-row: 1;
+                        color: #f8fafc;
+                        font-size: 19px;
+                        font-weight: 850;
+                        text-align: center;
+                    }}
+
+                    .round-heading {{
+                        align-self: end;
+                        padding: 10px 2px 8px;
+                        color: #f8fafc;
+                        font-size: 15px;
+                        font-weight: 800;
+                        text-align: center;
+                        white-space: nowrap;
+                    }}
+
+                    .r1-west-title {{ grid-column: 1; grid-row: 2; }}
+                    .r2-west-title {{ grid-column: 2; grid-row: 2; }}
+                    .r3-west-title {{ grid-column: 3; grid-row: 2; }}
+                    .final-title   {{ grid-column: 4; grid-row: 2; }}
+                    .r3-east-title {{ grid-column: 5; grid-row: 2; }}
+                    .r2-east-title {{ grid-column: 6; grid-row: 2; }}
+                    .r1-east-title {{ grid-column: 7; grid-row: 2; }}
+
+                    .round-column {{
+                        grid-row: 3;
+                        min-width: 0;
+                        display: flex;
+                        flex-direction: column;
+                    }}
+
+                    .r1-west {{ grid-column: 1; }}
+                    .r2-west {{ grid-column: 2; }}
+                    .r3-west {{ grid-column: 3; }}
+                    .final   {{ grid-column: 4; }}
+                    .r3-east {{ grid-column: 5; }}
+                    .r2-east {{ grid-column: 6; }}
+                    .r1-east {{ grid-column: 7; }}
+
+                    /*
+                    * The vertical distribution recreates the bracket shape.
+                    */
+                    .r1-west,
+                    .r1-east {{
+                        justify-content: space-between;
+                    }}
+
+                    .r2-west,
+                    .r2-east {{
+                        justify-content: space-around;
+                        padding-top: 72px;
+                        padding-bottom: 72px;
+                    }}
+
+                    .r3-west,
+                    .r3-east {{
+                        justify-content: center;
+                    }}
+
+                    .final {{
+                        justify-content: center;
+                    }}
+
+                    .round-stack {{
+                        width: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                    }}
+
+                    .series-card {{
+                        min-height: 108px;
+                        display: grid;
+                        grid-template-columns:
+                            minmax(0, 1fr)
+                            22px
+                            minmax(0, 1fr);
+                        align-items: center;
+                        gap: 4px;
+                        padding: 10px 8px;
+                        border: 1px solid rgba(148, 163, 184, 0.33);
+                        border-radius: 9px;
+                        background:
+                            linear-gradient(
+                                145deg,
+                                rgba(17, 24, 39, 0.96),
+                                rgba(9, 14, 23, 0.96)
+                            );
+                    }}
+
+                    .final-card {{
+                        min-height: 160px;
+                    }}
+
+                    .series-team {{
+                        min-width: 0;
+                        display: grid;
+                        grid-template-rows: 43px auto auto;
+                        justify-items: center;
+                        gap: 3px;
+                        text-align: center;
+                    }}
+
+                    .series-team.loser {{
+                        opacity: 0.56;
+                    }}
+
+                    .series-logo {{
+                        width: 43px;
+                        height: 43px;
+                        object-fit: contain;
+                    }}
+
+                    .team-abbrev {{
+                        max-width: 60px;
+                        overflow: hidden;
+                        color: #d9dee8;
+                        font-size: 10px;
+                        font-weight: 750;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }}
+
+                    .team-wins {{
+                        color: #f4f6fb;
+                        font-size: 13px;
+                        font-weight: 850;
+                    }}
+
+                    .series-separator {{
+                        align-self: start;
+                        padding-top: 18px;
+                        color: #f4f6fb;
+                        font-size: 12px;
+                        font-weight: 800;
+                        text-align: center;
+                    }}
+
+                    .empty-series {{
+                        padding: 20px 8px;
+                        color: #94a3b8;
+                        font-size: 11px;
+                        text-align: center;
+                    }}
+
+                    .scroll-hint {{
+                        display: none;
+                    }}
+
+                    @media (max-width: 700px) {{
+                        .bracket-viewport {{
+                            padding-bottom: 9px;
+                        }}
+
+                        .bracket {{
+                            min-width: 980px;
+                            column-gap: 8px;
+                            grid-template-columns:
+                                126px
+                                126px
+                                126px
+                                142px
+                                126px
+                                126px
+                                126px;
+                            min-height: 630px;
+                            padding: 9px;
+                        }}
+
+                        .conference-heading {{
+                            font-size: 14px;
+                        }}
+
+                        .year-heading {{
+                            font-size: 15px;
+                        }}
+
+                        .round-heading {{
+                            font-size: 11px;
+                            padding-bottom: 6px;
+                        }}
+
+                        .series-card {{
+                            min-height: 91px;
+                            padding: 7px 5px;
+                            grid-template-columns:
+                                minmax(0, 1fr)
+                                16px
+                                minmax(0, 1fr);
+                        }}
+
+                        .final-card {{
+                            min-height: 130px;
+                        }}
+
+                        .series-team {{
+                            grid-template-rows: 34px auto auto;
+                        }}
+
+                        .series-logo {{
+                            width: 34px;
+                            height: 34px;
+                        }}
+
+                        .team-abbrev {{
+                            font-size: 8px;
+                        }}
+
+                        .team-wins {{
+                            font-size: 10px;
+                        }}
+
+                        .series-separator {{
+                            padding-top: 13px;
+                            font-size: 9px;
+                        }}
+
+                        .r2-west,
+                        .r2-east {{
+                            padding-top: 58px;
+                            padding-bottom: 58px;
+                        }}
+
+                        .scroll-hint {{
+                            display: block;
+                            position: sticky;
+                            left: 0;
+                            width: fit-content;
+                            margin-bottom: 5px;
+                            padding: 3px 7px;
+                            border-radius: 999px;
+                            background: rgba(30, 41, 59, 0.92);
+                            color: #cbd5e1;
+                            font-size: 9px;
+                        }}
+                    }}
+                </style>
+            </head>
+
+            <body>
+                <div class="bracket-viewport">
+                    <div class="scroll-hint">
+                        Swipe horizontally to view the bracket
+                    </div>
+
+                    <section class="bracket">
+                        <div class="conference-heading west-heading">
+                            West
+                        </div>
+
+                        <div class="year-heading">
+                            {int(year_id)}
+                        </div>
+
+                        <div class="conference-heading east-heading">
+                            East
+                        </div>
+
+                        <div class="round-heading r1-west-title">
+                            First round
+                        </div>
+
+                        <div class="round-heading r2-west-title">
+                            Second round
+                        </div>
+
+                        <div class="round-heading r3-west-title">
+                            Conference final
+                        </div>
+
+                        <div class="round-heading final-title">
+                            Stanley Cup Final
+                        </div>
+
+                        <div class="round-heading r3-east-title">
+                            Conference final
+                        </div>
+
+                        <div class="round-heading r2-east-title">
+                            Second round
+                        </div>
+
+                        <div class="round-heading r1-east-title">
+                            First round
+                        </div>
+
+                        <div class="round-column r1-west">
+                            {render_stack(west_r1, stack_class="round-one-stack")}
+                        </div>
+
+                        <div class="round-column r2-west">
+                            {render_stack(west_r2, stack_class="round-two-stack")}
+                        </div>
+
+                        <div class="round-column r3-west">
+                            {render_stack(west_r3, stack_class="round-three-stack")}
+                        </div>
+
+                        <div class="round-column final">
+                            {final_card}
+                        </div>
+
+                        <div class="round-column r3-east">
+                            {render_stack(east_r3, stack_class="round-three-stack")}
+                        </div>
+
+                        <div class="round-column r2-east">
+                            {render_stack(east_r2, stack_class="round-two-stack")}
+                        </div>
+
+                        <div class="round-column r1-east">
+                            {render_stack(east_r1, stack_class="round-one-stack")}
+                        </div>
+                    </section>
+                </div>
+            </body>
+            </html>
+            """
+
+            components.html(
+                bracket_html,
+                height=height,
+                scrolling=False,
+            )
+            
+            
+        available_years = sorted(
+            series_df["playoff_year"]
+            .dropna()
+            .astype(int)
+            .unique()
+            .tolist(),
+            reverse=True,
+        )
+
+        selected_years = st.multiselect(
+            "Playoff years",
+            options=available_years,
+            default=available_years[:1],
+        )
+
+        if not selected_years:
+            st.info("Select at least one playoff year.")
+        else:
+            for year_id in sorted(selected_years, reverse=True):
+                year_series = series_df[
+                    series_df["playoff_year"]
+                    .astype(int)
+                    .eq(int(year_id))
+                    & series_df["team_id"].lt(200)
+                ].copy()
+
+                year_series = year_series.sort_values(
+                    ["round", "series_letter"]
+                )
+
+                st.subheader(f"{year_id} NHL Playoffs")
+
+                render_playoff_bracket(
+                    year_id=year_id,
+                    year_series=year_series,
+                    df_teams=df_teams,
+                    height=760 if screen.is_phone else 850,
+                )
+        
+        
+        st.divider()
+        
+        SERIES_LENGTH_META = {
+            4: {
+                "label": "Sweep",
+                "description": "Complete domination",
+                "start": "#166534",
+                "end": "#22c55e",
+            },
+            5: {
+                "label": "Five games",
+                "description": "Decisive series",
+                "start": "#3f6212",
+                "end": "#84cc16",
+            },
+            6: {
+                "label": "Six games",
+                "description": "Competitive series",
+                "start": "#a16207",
+                "end": "#f59e0b",
+            },
+            7: {
+                "label": "Game 7",
+                "description": "Thriller",
+                "start": "#991b1b",
+                "end": "#ef4444",
+            },
+        }
+
+
+        def valid_logo(primary: Any, fallback: Any = "") -> str:
+            """Return the first non-empty logo URL."""
+            for value in (primary, fallback):
+                if pd.notna(value) and str(value).strip():
+                    return str(value)
+            return ""
+
+
+        def build_series_matchups(series_df: pd.DataFrame) -> pd.DataFrame:
+            """
+            Convert the two team-perspective rows in series_df into one matchup row
+            per playoff series.
+            """
+            required = {
+                "playoff_year",
+                "round",
+                "series_letter",
+                "team",
+                "wins",
+                "won_series",
+                "logo",
+                "dark_logo",
+            }
+            missing = required.difference(series_df.columns)
+
+            if missing:
+                raise ValueError(
+                    "series_df is missing required columns: "
+                    + ", ".join(sorted(missing))
+                )
+
+            matchup_rows: list[dict[str, Any]] = []
+
+            group_columns = [
+                "season_id",
+                "season_start",
+                "season",
+                "playoff_year",
+                "round",
+                "series_letter",
+            ]
+
+            available_group_columns = [
+                column for column in group_columns if column in series_df.columns
+            ]
+
+            for group_key, group in series_df.groupby(
+                available_group_columns,
+                dropna=False,
+                sort=False,
+            ):
+                group = (
+                    group.drop_duplicates(subset=["team"])
+                    .sort_values(
+                        ["won_series", "wins"],
+                        ascending=[False, False],
+                    )
+                    .reset_index(drop=True)
+                )
+
+                if len(group) != 2:
+                    continue
+
+                first = group.iloc[0]
+                second = group.iloc[1]
+
+                # Put the series winner first when the series is complete.
+                if int(first.get("won_series", 0)) == 1:
+                    winner = first
+                    loser = second
+                elif int(second.get("won_series", 0)) == 1:
+                    winner = second
+                    loser = first
+                else:
+                    # Current/incomplete series: order by wins.
+                    winner = first
+                    loser = second
+
+                winner_wins = int(winner.get("wins", 0) or 0)
+                loser_wins = int(loser.get("wins", 0) or 0)
+                games_played = winner_wins + loser_wins
+                complete = bool(
+                    int(winner.get("won_series", 0)) == 1
+                    or int(loser.get("won_series", 0)) == 1
+                )
+
+                matchup_rows.append(
+                    {
+                        **{
+                            column: winner.get(column)
+                            for column in available_group_columns
+                        },
+                        "team_a": str(winner["team"]),
+                        "team_b": str(loser["team"]),
+                        "team_a_wins": winner_wins,
+                        "team_b_wins": loser_wins,
+                        "team_a_logo": valid_logo(
+                            winner.get("logo"),
+                            winner.get("dark_logo"),
+                        ),
+                        "team_b_logo": valid_logo(
+                            loser.get("logo"),
+                            loser.get("dark_logo"),
+                        ),
+                        "team_a_won": int(winner.get("won_series", 0)) == 1,
+                        "team_b_won": int(loser.get("won_series", 0)) == 1,
+                        "series_complete": complete,
+                        "games_played": games_played,
+                        "series_length": games_played if complete else None,
+                        "matchup": f"{winner['team']} vs {loser['team']}",
+                    }
+                )
+
+            matchups = pd.DataFrame(matchup_rows)
+
+            if matchups.empty:
+                return matchups
+
+            return matchups.sort_values(
+                ["playoff_year", "round", "series_letter"],
+                ascending=[False, True, True],
+            ).reset_index(drop=True)
+
+
+        def get_series_length_meta(
+            games_played: int,
+            complete: bool,
+        ) -> dict[str, str]:
+            if not complete:
+                return {
+                    "label": f"{games_played} played",
+                    "description": "Series in progress",
+                    "start": "#334155",
+                    "end": "#64748b",
+                }
+
+            return SERIES_LENGTH_META.get(
+                int(games_played),
+                {
+                    "label": f"{games_played} games",
+                    "description": "Completed series",
+                    "start": "#334155",
+                    "end": "#64748b",
+                },
+            )
+
+
+        # def series_card_html(series: pd.Series) -> str:
+        #     team_a = html.escape(str(series["team_a"]))
+        #     team_b = html.escape(str(series["team_b"]))
+
+        #     team_a_logo = html.escape(str(series["team_a_logo"]))
+        #     team_b_logo = html.escape(str(series["team_b_logo"]))
+
+        #     team_a_wins = int(series["team_a_wins"])
+        #     team_b_wins = int(series["team_b_wins"])
+        #     games_played = int(series["games_played"])
+        #     complete = bool(series["series_complete"])
+
+        #     meta = get_series_length_meta(games_played, complete)
+
+        #     team_a_opacity = "1" if series["team_a_won"] or not complete else "0.48"
+        #     team_b_opacity = "1" if series["team_b_won"] or not complete else "0.48"
+
+        #     team_a_scale = "1.08" if series["team_a_won"] else "1"
+        #     team_b_scale = "1.08" if series["team_b_won"] else "1"
+
+        #     status = "FINAL" if complete else "LIVE / INCOMPLETE"
+
+        #     return f"""
+        #     <div class="playoff-series-card">
+        #         <div
+        #             class="series-length-banner"
+        #             style="
+        #                 background: linear-gradient(
+        #                     100deg,
+        #                     {meta['start']},
+        #                     {meta['end']}
+        #                 );
+        #             "
+        #         >
+        #             <span>{html.escape(meta['label'])}</span>
+        #             <small>{html.escape(meta['description'])}</small>
+        #         </div>
+
+        #         <div class="series-card-status">{status}</div>
+
+        #         <div class="series-teams">
+        #             <div
+        #                 class="series-team"
+        #                 style="opacity:{team_a_opacity};transform:scale({team_a_scale});"
+        #             >
+        #                 <img src="{team_a_logo}">
+        #                 <div class="series-team-abbrev">{team_a}</div>
+        #                 <div class="series-team-score">{team_a_wins}</div>
+        #             </div>
+
+        #             <div class="series-versus">
+        #                 <span>VS</span>
+        #                 <small>{games_played} GP</small>
+        #             </div>
+
+        #             <div
+        #                 class="series-team"
+        #                 style="opacity:{team_b_opacity};transform:scale({team_b_scale});"
+        #             >
+        #                 <img src="{team_b_logo}">
+        #                 <div class="series-team-abbrev">{team_b}</div>
+        #                 <div class="series-team-score">{team_b_wins}</div>
+        #             </div>
+        #         </div>
+        #     </div>
+        #     """
+        
+        def series_card_html(series: pd.Series) -> str:
+            team_a = html.escape(str(series["team_a"]))
+            team_b = html.escape(str(series["team_b"]))
+
+            team_a_logo = html.escape(str(series.get("team_a_logo", "")))
+            team_b_logo = html.escape(str(series.get("team_b_logo", "")))
+
+            team_a_wins = int(series.get("team_a_wins", 0) or 0)
+            team_b_wins = int(series.get("team_b_wins", 0) or 0)
+            games_played = int(series.get("games_played", 0) or 0)
+            complete = bool(series.get("series_complete", False))
+
+            meta = get_series_length_meta(
+                games_played=games_played,
+                complete=complete,
+            )
+
+            team_a_won = bool(series.get("team_a_won", False))
+            team_b_won = bool(series.get("team_b_won", False))
+
+            team_a_class = "winner" if team_a_won else "loser" if complete else ""
+            team_b_class = "winner" if team_b_won else "loser" if complete else ""
+
+            status_text = "FINAL" if complete else "IN PROGRESS"
+
+            return f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <style>
+                    * {{
+                        box-sizing: border-box;
+                    }}
+
+                    html,
+                    body {{
+                        margin: 0;
+                        padding: 0;
+                        width: 100%;
+                        background: transparent;
+                        color: #f8fafc;
+                        font-family:
+                            -apple-system,
+                            BlinkMacSystemFont,
+                            "Segoe UI",
+                            sans-serif;
+                    }}
+
+                    .card {{
+                        width: 100%;
+                        height: 154px;
+                        overflow: hidden;
+                        border: 1px solid rgba(148, 163, 184, 0.32);
+                        border-radius: 10px;
+                        background:
+                            linear-gradient(
+                                145deg,
+                                rgba(30, 41, 59, 0.96),
+                                rgba(15, 23, 42, 0.96)
+                            );
+                        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22);
+                    }}
+
+                    .length-banner {{
+                        min-height: 29px;
+                        padding: 4px 7px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 8px;
+                        color: white;
+                        background:
+                            linear-gradient(
+                                100deg,
+                                {meta["start"]},
+                                {meta["end"]}
+                            );
+                    }}
+
+                    .length-main {{
+                        font-size: 12px;
+                        line-height: 1;
+                        font-weight: 800;
+                        white-space: nowrap;
+                    }}
+
+                    .length-description {{
+                        max-width: 60%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        color: rgba(255, 255, 255, 0.88);
+                        font-size: 9px;
+                        line-height: 1.05;
+                        text-align: right;
+                        white-space: nowrap;
+                    }}
+
+                    .status {{
+                        height: 17px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: rgba(226, 232, 240, 0.68);
+                        font-size: 8px;
+                        font-weight: 750;
+                        letter-spacing: 0.08em;
+                    }}
+
+                    .matchup {{
+                        height: 105px;
+                        padding: 3px 8px 7px 8px;
+                        display: grid;
+                        grid-template-columns:
+                            minmax(0, 1fr)
+                            34px
+                            minmax(0, 1fr);
+                        align-items: center;
+                        gap: 4px;
+                    }}
+
+                    .team {{
+                        min-width: 0;
+                        text-align: center;
+                        transition:
+                            opacity 0.15s ease,
+                            transform 0.15s ease;
+                    }}
+
+                    .team.loser {{
+                        opacity: 0.50;
+                    }}
+
+                    .team.winner {{
+                        transform: scale(1.03);
+                    }}
+
+                    .logo-wrap {{
+                        height: 55px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }}
+
+                    .logo {{
+                        display: block;
+                        width: 54px;
+                        height: 54px;
+                        object-fit: contain;
+                    }}
+
+                    .team-line {{
+                        margin-top: 2px;
+                        display: flex;
+                        align-items: baseline;
+                        justify-content: center;
+                        gap: 7px;
+                        color: #f8fafc;
+                    }}
+
+                    .abbrev {{
+                        max-width: 52px;
+                        overflow: hidden;
+                        color: #f8fafc;
+                        font-size: 11px;
+                        font-weight: 760;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }}
+
+                    .wins {{
+                        color: #ffffff;
+                        font-size: 18px;
+                        font-weight: 850;
+                        line-height: 1;
+                    }}
+
+                    .middle {{
+                        text-align: center;
+                    }}
+
+                    .versus {{
+                        color: rgba(226, 232, 240, 0.65);
+                        font-size: 9px;
+                        font-weight: 800;
+                    }}
+
+                    .games {{
+                        margin-top: 5px;
+                        color: rgba(226, 232, 240, 0.52);
+                        font-size: 8px;
+                        white-space: nowrap;
+                    }}
+                </style>
+            </head>
+
+            <body>
+                <div class="card">
+                    <div class="length-banner">
+                        <div class="length-main">
+                            {games_played} games · {html.escape(meta["label"])}
+                        </div>
+
+                        <div class="length-description">
+                            {html.escape(meta["description"])}
+                        </div>
+                    </div>
+
+                    <div class="status">
+                        {status_text}
+                    </div>
+
+                    <div class="matchup">
+                        <div class="team {team_a_class}">
+                            <div class="logo-wrap">
+                                <img
+                                    class="logo"
+                                    src="{team_a_logo}"
+                                    alt="{team_a}"
+                                >
+                            </div>
+
+                            <div class="team-line">
+                                <span class="abbrev">{team_a}</span>
+                                <span class="wins">{team_a_wins}</span>
+                            </div>
+                        </div>
+
+                        <div class="middle">
+                            <div class="versus">VS</div>
+                            <div class="games">{games_played} GP</div>
+                        </div>
+
+                        <div class="team {team_b_class}">
+                            <div class="logo-wrap">
+                                <img
+                                    class="logo"
+                                    src="{team_b_logo}"
+                                    alt="{team_b}"
+                                >
+                            </div>
+
+                            <div class="team-line">
+                                <span class="wins">{team_b_wins}</span>
+                                <span class="abbrev">{team_b}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+            </html>
+            """
+
+
+        def inject_playoff_card_css() -> None:
+            st.markdown(
+                """
+                <style>
+                .playoff-series-card {
+                    border: 1px solid rgba(128, 128, 128, 0.34);
+                    border-radius: 14px;
+                    overflow: hidden;
+                    min-height: 238px;
+                    background:
+                        linear-gradient(
+                            145deg,
+                            rgba(255,255,255,0.055),
+                            rgba(255,255,255,0.012)
+                        );
+                    box-shadow: 0 5px 14px rgba(0,0,0,0.16);
+                    margin-bottom: 0.35rem;
+                }
+
+                .series-length-banner {
+                    padding: 0.52rem 0.7rem;
+                    color: white;
+                    text-align: center;
+                    line-height: 1.15;
+                }
+
+                .series-length-banner span {
+                    display: block;
+                    font-weight: 750;
+                    font-size: 1.02rem;
+                    letter-spacing: 0.02rem;
+                }
+
+                .series-length-banner small {
+                    display: block;
+                    margin-top: 0.18rem;
+                    opacity: 0.9;
+                    font-size: 0.76rem;
+                }
+
+                .series-card-status {
+                    text-align: center;
+                    font-size: 0.68rem;
+                    opacity: 0.6;
+                    margin-top: 0.45rem;
+                    font-weight: 700;
+                    letter-spacing: 0.09rem;
+                }
+
+                .series-teams {
+                    display: grid;
+                    grid-template-columns: 1fr 46px 1fr;
+                    align-items: center;
+                    min-height: 166px;
+                    padding: 0.4rem 0.6rem 0.75rem 0.6rem;
+                }
+
+                .series-team {
+                    text-align: center;
+                    transition: transform 0.2s ease;
+                }
+
+                .series-team img {
+                    height: 72px;
+                    width: 72px;
+                    object-fit: contain;
+                    display: block;
+                    margin: 0 auto 0.2rem auto;
+                }
+
+                .series-team-abbrev {
+                    font-weight: 720;
+                    font-size: 0.85rem;
+                }
+
+                .series-team-score {
+                    font-size: 1.7rem;
+                    font-weight: 820;
+                    line-height: 1;
+                    margin-top: 0.14rem;
+                }
+
+                .series-versus {
+                    text-align: center;
+                    opacity: 0.72;
+                    font-weight: 700;
+                }
+
+                .series-versus span {
+                    display: block;
+                    font-size: 0.76rem;
+                }
+
+                .series-versus small {
+                    display: block;
+                    font-size: 0.67rem;
+                    margin-top: 0.2rem;
+                    font-weight: 500;
+                }
+
+                .game-detail-card {
+                    border: 1px solid rgba(128,128,128,0.30);
+                    border-radius: 12px;
+                    padding: 0.75rem 0.85rem;
+                    margin-bottom: 0.55rem;
+                    background: rgba(255,255,255,0.025);
+                }
+
+                .game-detail-heading {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 0.5rem;
+                    margin-bottom: 0.6rem;
+                }
+
+                .game-number {
+                    font-weight: 760;
+                }
+
+                .overtime-badge {
+                    border-radius: 999px;
+                    padding: 0.18rem 0.55rem;
+                    font-size: 0.72rem;
+                    font-weight: 760;
+                    background: rgba(239,68,68,0.18);
+                    border: 1px solid rgba(239,68,68,0.6);
+                }
+
+                .regulation-badge {
+                    border-radius: 999px;
+                    padding: 0.18rem 0.55rem;
+                    font-size: 0.72rem;
+                    opacity: 0.65;
+                    border: 1px solid rgba(128,128,128,0.35);
+                }
+
+                .game-score-row {
+                    display: grid;
+                    grid-template-columns: minmax(50px, 1fr) 42px 16px 42px minmax(50px, 1fr);
+                    align-items: center;
+                    gap: 0.2rem;
+                }
+
+                .game-score-team-left {
+                    text-align: right;
+                    font-weight: 700;
+                }
+
+                .game-score-team-right {
+                    text-align: left;
+                    font-weight: 700;
+                }
+
+                .game-score-value {
+                    text-align: center;
+                    font-size: 1.38rem;
+                    font-weight: 820;
+                }
+
+                .game-score-divider {
+                    text-align: center;
+                    opacity: 0.45;
+                }
+
+                .game-series-progress {
+                    margin-top: 0.5rem;
+                    text-align: center;
+                    font-size: 0.76rem;
+                    opacity: 0.67;
+                }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
+        
+        @st.cache_data(
+            ttl=24 * 60 * 60,
+            show_spinner=False,
+        )
+        def get_playoff_games_for_year(playoff_year: int) -> pd.DataFrame:
+            return fetch_playoff_game_data(playoff_year)
+            
+        def find_games_for_series(
+            games_df: pd.DataFrame,
+            playoff_year: int,
+            round_number: int,
+            team_a: str,
+            team_b: str,
+        ) -> pd.DataFrame:
+            """
+            Match games using playoff year, round, and the unordered pair of teams.
+
+            This is safer than relying on SERIESCODE because the series-code-building
+            logic may change between seasons.
+            """
+            if games_df.empty:
+                raise ValueError("here")
+                return pd.DataFrame()
+
+            required = {
+                "ROUNDNUM",
+                "AWAYTEAM",
+                "HOMETEAM",
+                "GAMENUM",
+            }
+            missing = required.difference(games_df.columns)
+
+            if missing:
+                raise ValueError(
+                    "Game data is missing columns: "
+                    + ", ".join(sorted(missing))
+                )
+
+            expected_teams = frozenset([team_a, team_b])
+
+            mask = (
+                games_df["ROUNDNUM"].astype(int).eq(int(round_number))
+                & games_df.apply(
+                    lambda row: frozenset(
+                        [
+                            str(row["AWAYTEAM"]),
+                            str(row["HOMETEAM"]),
+                        ]
+                    )
+                    == expected_teams,
+                    axis=1,
+                )
+            )
+
+            selected = games_df.loc[mask].copy()
+            with st.container(horizontal=True, border=True):
+                st.write(f"{team_a=}, {team_b=}, {playoff_year=}, {round_number=}")
+                st.write("expected_teams")
+                st.write(expected_teams)
+            with st.container(horizontal=True, border=True):
+                st.write("games_df")
+                ddn(games_df)
+            with st.container(horizontal=True, border=True):
+                st.write("selected")
+                ddn(selected)
+
+            if "GameOver" in selected.columns:
+                selected = selected[selected["GameOver"].fillna(False)]
+
+            return selected.sort_values(
+                ["GAMENUM", "DATE", "TIME"],
+                na_position="last",
+            ).reset_index(drop=True)
+
+
+        def overtime_label(row: pd.Series) -> str:
+            overtime_count = int(row.get("OTROUNDNUM", 0) or 0)
+            has_overtime = bool(row.get("HasOT", overtime_count > 0))
+
+            if not has_overtime:
+                return "Regulation"
+
+            if overtime_count <= 1:
+                return "OT"
+
+            return f"{overtime_count}OT"
+        
+        
+        def localized_text(value: Any, default: str = "") -> str:
+            """
+            NHL API names are often dictionaries such as:
+                {"default": "Connor McDavid"}
+            """
+            if value is None:
+                return default
+
+            if isinstance(value, dict):
+                return str(
+                    value.get("default")
+                    or value.get("en")
+                    or next(iter(value.values()), default)
+                )
+
+            return str(value)
+
+
+        def first_present(mapping: dict, *keys: str, default=None):
+            for key in keys:
+                value = mapping.get(key)
+                if value not in (None, "", [], {}):
+                    return value
+
+            return default
+
+
+        def player_full_name(player: dict | None) -> str:
+            if not player:
+                return ""
+
+            explicit_name = first_present(
+                player,
+                "name",
+                "playerName",
+                "fullName",
+            )
+
+            if explicit_name:
+                return localized_text(explicit_name)
+
+            first_name = localized_text(
+                first_present(player, "firstName", default="")
+            )
+            last_name = localized_text(
+                first_present(player, "lastName", default="")
+            )
+
+            return f"{first_name} {last_name}".strip()
+
+
+        def team_logo_url(
+            team: dict,
+            team_abbrev: str,
+            season_id: str | int | None = None,
+        ) -> str:
+            logo = first_present(
+                team,
+                "logo",
+                "darkLogo",
+                "teamLogo",
+            )
+
+            if logo:
+                return str(logo)
+
+            base = (
+                f"https://assets.nhle.com/logos/nhl/svg/"
+                f"{team_abbrev}_light.svg"
+            )
+
+            return (
+                f"{base}?season={season_id}"
+                if season_id
+                else base
+            )
+
+
+        def player_headshot_url(
+            player: dict | None,
+            team_abbrev: str,
+            season_id: str | int | None,
+        ) -> str:
+            if not player:
+                return ""
+
+            direct_url = first_present(
+                player,
+                "headshot",
+                "headshotUrl",
+                "mugshot",
+                "image",
+            )
+
+            if direct_url:
+                return str(direct_url)
+
+            player_id = first_present(
+                player,
+                "playerId",
+                "id",
+            )
+
+            if not player_id or not season_id:
+                return ""
+
+            return (
+                "https://assets.nhle.com/mugs/nhl/"
+                f"{season_id}/{team_abbrev}/{player_id}.png"
+            )
+
+
+        def parse_clock_seconds(time_text: str | None) -> int:
+            """
+            Convert MM:SS into elapsed seconds within the period.
+            """
+            if not time_text:
+                return 0
+
+            try:
+                minutes, seconds = str(time_text).split(":", maxsplit=1)
+                return int(minutes) * 60 + int(seconds)
+            except (ValueError, TypeError):
+                return 0
+
+
+        def period_number_from_descriptor(descriptor: Any) -> int:
+            if isinstance(descriptor, dict):
+                return int(
+                    descriptor.get("number")
+                    or descriptor.get("periodNumber")
+                    or 0
+                )
+
+            try:
+                return int(descriptor)
+            except (TypeError, ValueError):
+                return 0
+
+
+        def period_label(period_number: int) -> str:
+            if period_number <= 0:
+                return "Game"
+
+            if period_number <= 3:
+                return f"Period {period_number}"
+
+            overtime_number = period_number - 3
+            return "Overtime" if overtime_number == 1 else f"{overtime_number}OT"
+        
+        
+        def extract_assists(
+            goal: dict,
+            team_abbrev: str,
+            season_id: str | int | None,
+        ) -> list[dict]:
+            raw_assists = first_present(
+                goal,
+                "assists",
+                "assistPlayers",
+                default=[],
+            )
+
+            assists: list[dict] = []
+
+            for assist in raw_assists or []:
+                if not isinstance(assist, dict):
+                    continue
+
+                assists.append({
+                    "name": player_full_name(assist),
+                    "player_id": first_present(
+                        assist,
+                        "playerId",
+                        "id",
+                    ),
+                    "headshot": player_headshot_url(
+                        assist,
+                        team_abbrev,
+                        season_id,
+                    ),
+                })
+
+            return assists
+
+
+        def normalize_scoring_events(
+            landing: dict,
+            season_id: str | int | None,
+        ) -> list[dict]:
+            events: list[dict] = []
+
+            scoring_periods = (
+                landing.get("summary", {}).get("scoring", [])
+                or []
+            )
+
+            for period_block in scoring_periods:
+                period_number = period_number_from_descriptor(
+                    first_present(
+                        period_block,
+                        "periodDescriptor",
+                        "period",
+                        "periodNumber",
+                        default=0,
+                    )
+                )
+
+                goals = first_present(
+                    period_block,
+                    "goals",
+                    "events",
+                    default=[],
+                )
+
+                for goal in goals or []:
+                    team_abbrev = str(
+                        first_present(
+                            goal,
+                            "teamAbbrev",
+                            "team",
+                            default="",
+                        )
+                    )
+
+                    scorer = {
+                        "playerId": first_present(
+                            goal,
+                            "playerId",
+                            "scoringPlayerId",
+                        ),
+                        "firstName": first_present(
+                            goal,
+                            "firstName",
+                            "scorerFirstName",
+                        ),
+                        "lastName": first_present(
+                            goal,
+                            "lastName",
+                            "scorerLastName",
+                        ),
+                        "name": first_present(
+                            goal,
+                            "name",
+                            "scorerName",
+                        ),
+                        "headshot": first_present(
+                            goal,
+                            "headshot",
+                            "headshotUrl",
+                        ),
+                    }
+
+                    time_in_period = str(
+                        first_present(
+                            goal,
+                            "timeInPeriod",
+                            "time",
+                            default="",
+                        )
+                    )
+
+                    strength = localized_text(
+                        first_present(
+                            goal,
+                            "strength",
+                            "strengthCode",
+                            "situation",
+                            default="",
+                        )
+                    )
+
+                    events.append({
+                        "event_type": "goal",
+                        "period": period_number,
+                        "period_label": period_label(period_number),
+                        "time": time_in_period,
+                        "sort_seconds": parse_clock_seconds(time_in_period),
+                        "team": team_abbrev,
+                        "scorer": player_full_name(scorer),
+                        "scorer_headshot": player_headshot_url(
+                            scorer,
+                            team_abbrev,
+                            season_id,
+                        ),
+                        "assists": extract_assists(
+                            goal,
+                            team_abbrev,
+                            season_id,
+                        ),
+                        "strength": strength,
+                        "away_score": first_present(
+                            goal,
+                            "awayScore",
+                            default=None,
+                        ),
+                        "home_score": first_present(
+                            goal,
+                            "homeScore",
+                            default=None,
+                        ),
+                        "highlight": first_present(
+                            goal,
+                            "highlightClip",
+                            "highlightUrl",
+                            default="",
+                        ),
+                    })
+
+            return events
+
+
+        def normalize_penalty_events(
+            landing: dict,
+            season_id: str | int | None,
+        ) -> list[dict]:
+            events: list[dict] = []
+
+            penalty_periods = (
+                landing.get("summary", {}).get("penalties", [])
+                or []
+            )
+
+            for period_block in penalty_periods:
+                period_number = period_number_from_descriptor(
+                    first_present(
+                        period_block,
+                        "periodDescriptor",
+                        "period",
+                        "periodNumber",
+                        default=0,
+                    )
+                )
+
+                penalties = first_present(
+                    period_block,
+                    "penalties",
+                    "events",
+                    default=[],
+                )
+
+                for penalty in penalties or []:
+                    team_abbrev = str(
+                        first_present(
+                            penalty,
+                            "teamAbbrev",
+                            "team",
+                            default="",
+                        )
+                    )
+
+                    committed_by = first_present(
+                        penalty,
+                        "committedByPlayer",
+                        "committedBy",
+                        "player",
+                        default={},
+                    )
+
+                    drawn_by = first_present(
+                        penalty,
+                        "drawnBy",
+                        "drawnByPlayer",
+                        default={},
+                    )
+
+                    time_in_period = str(
+                        first_present(
+                            penalty,
+                            "timeInPeriod",
+                            "time",
+                            default="",
+                        )
+                    )
+
+                    duration = first_present(
+                        penalty,
+                        "duration",
+                        "durationMinutes",
+                        "minutes",
+                        default=None,
+                    )
+
+                    penalty_type = localized_text(
+                        first_present(
+                            penalty,
+                            "type",
+                            "descKey",
+                            "description",
+                            default="Penalty",
+                        )
+                    ).replace("-", " ").title()
+
+                    events.append({
+                        "event_type": "penalty",
+                        "period": period_number,
+                        "period_label": period_label(period_number),
+                        "time": time_in_period,
+                        "sort_seconds": parse_clock_seconds(time_in_period),
+                        "team": team_abbrev,
+                        "player": player_full_name(committed_by),
+                        "player_headshot": player_headshot_url(
+                            committed_by,
+                            team_abbrev,
+                            season_id,
+                        ),
+                        "drawn_by": player_full_name(drawn_by),
+                        "penalty_type": penalty_type,
+                        "duration": duration,
+                    })
+
+            return events
+
+
+        def build_game_timeline(
+            landing: dict,
+            season_id: str | int | None,
+        ) -> list[dict]:
+            events = [
+                *normalize_scoring_events(landing, season_id),
+                *normalize_penalty_events(landing, season_id),
+            ]
+
+            # A goal and penalty can share a timestamp. Goals sort first.
+            event_priority = {
+                "goal": 0,
+                "penalty": 1,
+            }
+
+            return sorted(
+                events,
+                key=lambda event: (
+                    event["period"],
+                    event["sort_seconds"],
+                    event_priority.get(event["event_type"], 9),
+                ),
+            )
+            
+            
+        def player_chip_html(
+            name: str,
+            image_url: str = "",
+            subtitle: str = "",
+        ) -> str:
+            safe_name = html.escape(name or "Unknown")
+            safe_subtitle = html.escape(subtitle)
+
+            if image_url:
+                avatar = (
+                    f'<img class="player-avatar" '
+                    f'src="{html.escape(image_url)}" '
+                    f'alt="{safe_name}">'
+                )
+            else:
+                initials = "".join(
+                    part[0]
+                    for part in (name or "?").split()
+                    if part
+                )[:2].upper()
+
+                avatar = (
+                    f'<div class="player-avatar avatar-fallback">'
+                    f'{html.escape(initials)}</div>'
+                )
+
+            subtitle_markup = (
+                f'<div class="player-subtitle">{safe_subtitle}</div>'
+                if subtitle
+                else ""
+            )
+
+            return f"""
+            <div class="player-chip">
+                {avatar}
+                <div class="player-copy">
+                    <div class="player-name">{safe_name}</div>
+                    {subtitle_markup}
+                </div>
+            </div>
+            """
+        
+        def render_goal_event_html(event: dict) -> str:
+            assists = event.get("assists", [])
+
+            assist_markup = ""
+
+            if assists:
+                chips = "".join(
+                    player_chip_html(
+                        assist.get("name", ""),
+                        assist.get("headshot", ""),
+                        "Assist",
+                    )
+                    for assist in assists
+                )
+
+                assist_markup = f"""
+                <div class="assists-list">
+                    {chips}
+                </div>
+                """
+            else:
+                assist_markup = """
+                <div class="unassisted">Unassisted</div>
+                """
+
+            strength = str(event.get("strength") or "").upper()
+
+            strength_badge = (
+                f'<span class="strength-badge">'
+                f'{html.escape(strength)}</span>'
+                if strength
+                else ""
+            )
+
+            away_score = event.get("away_score")
+            home_score = event.get("home_score")
+
+            score_markup = ""
+
+            if away_score is not None and home_score is not None:
+                score_markup = f"""
+                <div class="event-score">
+                    {int(away_score)}–{int(home_score)}
+                </div>
+                """
+
+            return f"""
+            <div class="timeline-event goal-event">
+                <div class="timeline-time">
+                    {html.escape(str(event.get("time", "")))}
+                </div>
+
+                <div class="timeline-marker-column">
+                    <div class="timeline-marker goal-marker">●</div>
+                </div>
+
+                <div class="event-content">
+                    <div class="event-heading">
+                        <span class="event-team">
+                            {html.escape(str(event.get("team", "")))}
+                        </span>
+                        <span class="event-title">Goal</span>
+                        {strength_badge}
+                        {score_markup}
+                    </div>
+
+                    <div class="goal-people">
+                        {player_chip_html(
+                            event.get("scorer", ""),
+                            event.get("scorer_headshot", ""),
+                            "Goal scorer",
+                        )}
+
+                        {assist_markup}
+                    </div>
+                </div>
+            </div>
+            """
+
+
+        def render_penalty_event_html(event: dict) -> str:
+            duration = event.get("duration")
+
+            duration_text = (
+                f"{int(duration)} min"
+                if duration not in (None, "")
+                else ""
+            )
+
+            drawn_by = event.get("drawn_by", "")
+
+            drawn_markup = (
+                f"""
+                <div class="drawn-by">
+                    Drawn by {html.escape(drawn_by)}
+                </div>
+                """
+                if drawn_by
+                else ""
+            )
+
+            return f"""
+            <div class="timeline-event penalty-event">
+                <div class="timeline-time">
+                    {html.escape(str(event.get("time", "")))}
+                </div>
+
+                <div class="timeline-marker-column">
+                    <div class="timeline-marker penalty-marker">▲</div>
+                </div>
+
+                <div class="event-content">
+                    <div class="event-heading">
+                        <span class="event-team">
+                            {html.escape(str(event.get("team", "")))}
+                        </span>
+                        <span class="event-title">
+                            {html.escape(event.get("penalty_type", "Penalty"))}
+                        </span>
+
+                        <span class="penalty-duration">
+                            {html.escape(duration_text)}
+                        </span>
+                    </div>
+
+                    <div class="penalty-person">
+                        {player_chip_html(
+                            event.get("player", ""),
+                            event.get("player_headshot", ""),
+                            "Penalty",
+                        )}
+                        {drawn_markup}
+                    </div>
+                </div>
+            </div>
+            """
+        
+        
+        def game_card_html(
+            game: pd.Series,
+            landing: dict,
+            timeline: list[dict],
+            team_a: str,
+            team_b: str,
+            team_a_series_wins: int,
+            team_b_series_wins: int,
+        ) -> str:
+            away_data = landing.get("awayTeam", {}) or {}
+            home_data = landing.get("homeTeam", {}) or {}
+
+            away = str(
+                away_data.get("abbrev")
+                or game.get("AWAYTEAM", "")
+            )
+            home = str(
+                home_data.get("abbrev")
+                or game.get("HOMETEAM", "")
+            )
+
+            away_score = int(
+                away_data.get("score")
+                if away_data.get("score") is not None
+                else game.get("AAWAYSCORE", 0) or 0
+            )
+
+            home_score = int(
+                home_data.get("score")
+                if home_data.get("score") is not None
+                else game.get("AHOMESCORE", 0) or 0
+            )
+
+            season_id = landing.get("season")
+
+            away_logo = team_logo_url(
+                away_data,
+                away,
+                season_id,
+            )
+            home_logo = team_logo_url(
+                home_data,
+                home,
+                season_id,
+            )
+
+            game_number = int(game.get("GAMENUM", 0) or 0)
+
+            date_value = game.get("DATE")
+
+            if pd.notna(date_value):
+                timestamp = pd.to_datetime(date_value)
+                date_text = (
+                    f"{timestamp:%A}, {timestamp:%b} "
+                    f"{timestamp.day}, {timestamp:%Y}"
+                )
+            else:
+                date_text = ""
+
+            venue = localized_text(
+                landing.get("venue", ""),
+            )
+
+            ot_text = overtime_label(game)
+
+            period_groups: list[str] = []
+
+            timeline_df = pd.DataFrame(timeline)
+
+            if not timeline_df.empty:
+                for period_number, period_events in timeline_df.groupby(
+                    "period",
+                    sort=True,
+                ):
+                    event_rows = []
+
+                    for event in period_events.to_dict("records"):
+                        if event["event_type"] == "goal":
+                            event_rows.append(
+                                render_goal_event_html(event)
+                            )
+                        else:
+                            event_rows.append(
+                                render_penalty_event_html(event)
+                            )
+
+                    period_groups.append(
+                        f"""
+                        <section class="period-section">
+                            <div class="period-heading">
+                                <span>{html.escape(period_label(int(period_number)))}</span>
+                                <span class="period-event-count">
+                                    {len(period_events)} events
+                                </span>
+                            </div>
+
+                            <div class="period-events">
+                                {''.join(event_rows)}
+                            </div>
+                        </section>
+                        """
+                    )
+            else:
+                period_groups.append(
+                    """
+                    <div class="empty-timeline">
+                        No scoring or penalty events were returned.
+                    </div>
+                    """
+                )
+
+            winner = away if away_score > home_score else home
+
+            away_class = "winner-team" if winner == away else "loser-team"
+            home_class = "winner-team" if winner == home else "loser-team"
+
+            return f"""
+            <!doctype html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+
+                <style>
+                    * {{
+                        box-sizing: border-box;
+                    }}
+
+                    html,
+                    body {{
+                        margin: 0;
+                        padding: 0;
+                        width: 100%;
+                        background: transparent;
+                        color: #e8f1ff;
+                        font-family:
+                            Inter,
+                            -apple-system,
+                            BlinkMacSystemFont,
+                            "Segoe UI",
+                            sans-serif;
+                    }}
+
+                    .game-card {{
+                        overflow: hidden;
+                        border: 1px solid #28527d;
+                        border-radius: 14px;
+                        background: #0d2035;
+                        box-shadow: 0 7px 20px rgba(0, 0, 0, 0.24);
+                    }}
+
+                    .game-card-header {{
+                        padding: 10px 14px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 10px;
+                        border-bottom: 1px solid #1f4e79;
+                        background: #102b49;
+                    }}
+
+                    .game-meta-main {{
+                        font-size: 13px;
+                        font-weight: 800;
+                    }}
+
+                    .game-meta-secondary {{
+                        margin-top: 2px;
+                        color: #82a6c9;
+                        font-size: 10px;
+                    }}
+
+                    .game-badges {{
+                        display: flex;
+                        gap: 6px;
+                        flex-wrap: wrap;
+                        justify-content: flex-end;
+                    }}
+
+                    .game-badge {{
+                        padding: 3px 8px;
+                        border: 1px solid #35678f;
+                        border-radius: 999px;
+                        background: #173d61;
+                        color: #a9c9e8;
+                        font-size: 9px;
+                        font-weight: 800;
+                        letter-spacing: 0.04em;
+                        text-transform: uppercase;
+                    }}
+
+                    .overtime {{
+                        border-color: #a8573d;
+                        background: #4a2925;
+                        color: #ffb393;
+                    }}
+
+                    .scoreboard {{
+                        display: grid;
+                        grid-template-columns:
+                            minmax(100px, 1fr)
+                            auto
+                            minmax(100px, 1fr);
+                        align-items: center;
+                        gap: 12px;
+                        padding: 12px 18px;
+                        background:
+                            radial-gradient(
+                                circle at center,
+                                #173857 0%,
+                                #0d2035 68%
+                            );
+                    }}
+
+                    .score-team {{
+                        min-width: 0;
+                        display: flex;
+                        align-items: center;
+                        gap: 9px;
+                    }}
+
+                    .score-team.home {{
+                        flex-direction: row-reverse;
+                        text-align: right;
+                    }}
+
+                    .score-team.loser-team {{
+                        opacity: 0.62;
+                    }}
+
+                    .team-logo {{
+                        width: 52px;
+                        height: 52px;
+                        object-fit: contain;
+                        flex: 0 0 auto;
+                    }}
+
+                    .team-abbrev {{
+                        color: #f4f8ff;
+                        font-size: 17px;
+                        font-weight: 850;
+                    }}
+
+                    .team-location {{
+                        margin-top: 2px;
+                        color: #789cbd;
+                        font-size: 9px;
+                    }}
+
+                    .score-centre {{
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    }}
+
+                    .score-number {{
+                        min-width: 27px;
+                        color: #ffffff;
+                        font-size: 34px;
+                        font-weight: 900;
+                        text-align: center;
+                        line-height: 1;
+                    }}
+
+                    .score-divider {{
+                        color: #627f9c;
+                        font-size: 18px;
+                    }}
+
+                    .series-progress {{
+                        padding: 6px 12px;
+                        border-top: 1px solid #173b5c;
+                        border-bottom: 1px solid #173b5c;
+                        background: #0a1a2b;
+                        color: #82a6c9;
+                        font-size: 10px;
+                        text-align: center;
+                    }}
+
+                    .period-section {{
+                        border-bottom: 1px solid #214463;
+                    }}
+
+                    .period-section:last-child {{
+                        border-bottom: none;
+                    }}
+
+                    .period-heading {{
+                        padding: 6px 13px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        background: #12314c;
+                        color: #23c7f3;
+                        font-size: 11px;
+                        font-weight: 850;
+                    }}
+
+                    .period-event-count {{
+                        color: #6f98ba;
+                        font-size: 8px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                    }}
+
+                    .period-events {{
+                        position: relative;
+                    }}
+
+                    .timeline-event {{
+                        min-height: 66px;
+                        display: grid;
+                        grid-template-columns: 50px 22px minmax(0, 1fr);
+                        align-items: stretch;
+                        border-top: 1px solid rgba(52, 86, 115, 0.52);
+                    }}
+
+                    .timeline-event:first-child {{
+                        border-top: none;
+                    }}
+
+                    .timeline-time {{
+                        padding: 12px 6px;
+                        color: #76aedc;
+                        font-family: monospace;
+                        font-size: 10px;
+                        text-align: right;
+                    }}
+
+                    .timeline-marker-column {{
+                        position: relative;
+                        display: flex;
+                        justify-content: center;
+                    }}
+
+                    .timeline-marker-column::before {{
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 50%;
+                        width: 2px;
+                        background: #245274;
+                        content: "";
+                        transform: translateX(-50%);
+                    }}
+
+                    .timeline-marker {{
+                        position: relative;
+                        z-index: 2;
+                        width: 18px;
+                        height: 18px;
+                        margin-top: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        font-size: 8px;
+                    }}
+
+                    .goal-marker {{
+                        border: 2px solid #23c7f3;
+                        background: #103f5b;
+                        color: #23c7f3;
+                    }}
+
+                    .penalty-marker {{
+                        border: 2px solid #ef7f61;
+                        background: #552b27;
+                        color: #ff9c7d;
+                        font-size: 7px;
+                    }}
+
+                    .event-content {{
+                        min-width: 0;
+                        padding: 9px 12px 10px 8px;
+                    }}
+
+                    .event-heading {{
+                        min-width: 0;
+                        display: flex;
+                        align-items: center;
+                        gap: 7px;
+                        flex-wrap: wrap;
+                    }}
+
+                    .event-team {{
+                        color: #23c7f3;
+                        font-size: 11px;
+                        font-weight: 900;
+                    }}
+
+                    .event-title {{
+                        color: #ffffff;
+                        font-size: 11px;
+                        font-weight: 800;
+                    }}
+
+                    .strength-badge,
+                    .penalty-duration {{
+                        padding: 2px 5px;
+                        border-radius: 5px;
+                        background: #173f61;
+                        color: #8bc7ee;
+                        font-size: 8px;
+                        font-weight: 800;
+                    }}
+
+                    .penalty-duration {{
+                        margin-left: auto;
+                        border: 1px solid #a8553f;
+                        background: #492a27;
+                        color: #ffaf91;
+                    }}
+
+                    .event-score {{
+                        margin-left: auto;
+                        color: #87abc9;
+                        font-family: monospace;
+                        font-size: 10px;
+                    }}
+
+                    .goal-people {{
+                        margin-top: 7px;
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 9px;
+                        flex-wrap: wrap;
+                    }}
+
+                    .assists-list {{
+                        display: flex;
+                        gap: 7px;
+                        flex-wrap: wrap;
+                    }}
+
+                    .player-chip {{
+                        min-width: 116px;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                    }}
+
+                    .player-avatar {{
+                        width: 31px;
+                        height: 31px;
+                        object-fit: cover;
+                        border: 1px solid #305b80;
+                        border-radius: 50%;
+                        background: #17314b;
+                        flex: 0 0 auto;
+                    }}
+
+                    .avatar-fallback {{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #8fb4d5;
+                        font-size: 9px;
+                        font-weight: 800;
+                    }}
+
+                    .player-copy {{
+                        min-width: 0;
+                    }}
+
+                    .player-name {{
+                        max-width: 145px;
+                        overflow: hidden;
+                        color: #e8f1ff;
+                        font-size: 10px;
+                        font-weight: 750;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }}
+
+                    .player-subtitle {{
+                        margin-top: 1px;
+                        color: #688dac;
+                        font-size: 8px;
+                    }}
+
+                    .unassisted {{
+                        align-self: center;
+                        color: #6689a5;
+                        font-size: 9px;
+                        font-style: italic;
+                    }}
+
+                    .penalty-person {{
+                        margin-top: 7px;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    }}
+
+                    .drawn-by {{
+                        color: #7397b6;
+                        font-size: 9px;
+                    }}
+
+                    .empty-timeline {{
+                        padding: 24px;
+                        color: #7598b5;
+                        text-align: center;
+                    }}
+
+                    @media (max-width: 650px) {{
+                        .scoreboard {{
+                            grid-template-columns: 1fr;
+                            gap: 7px;
+                        }}
+
+                        .score-team,
+                        .score-team.home {{
+                            justify-content: center;
+                            flex-direction: row;
+                            text-align: left;
+                        }}
+
+                        .score-centre {{
+                            justify-content: center;
+                            order: -1;
+                        }}
+
+                        .player-chip {{
+                            min-width: 100px;
+                        }}
+                    }}
+                </style>
+            </head>
+
+            <body>
+                <article class="game-card">
+                    <header class="game-card-header">
+                        <div>
+                            <div class="game-meta-main">
+                                Game {game_number} · {html.escape(date_text)}
+                            </div>
+
+                            <div class="game-meta-secondary">
+                                {html.escape(venue)}
+                            </div>
+                        </div>
+
+                        <div class="game-badges">
+                            <span class="game-badge">Final</span>
+
+                            <span class="game-badge {
+                                'overtime' if ot_text != 'Regulation' else ''
+                            }">
+                                {html.escape(ot_text)}
+                            </span>
+                        </div>
+                    </header>
+
+                    <div class="scoreboard">
+                        <div class="score-team away {away_class}">
+                            <img
+                                class="team-logo"
+                                src="{html.escape(away_logo)}"
+                                alt="{html.escape(away)}"
+                            >
+
+                            <div>
+                                <div class="team-abbrev">
+                                    {html.escape(away)}
+                                </div>
+                                <div class="team-location">Away</div>
+                            </div>
+                        </div>
+
+                        <div class="score-centre">
+                            <div class="score-number">{away_score}</div>
+                            <div class="score-divider">–</div>
+                            <div class="score-number">{home_score}</div>
+                        </div>
+
+                        <div class="score-team home {home_class}">
+                            <img
+                                class="team-logo"
+                                src="{html.escape(home_logo)}"
+                                alt="{html.escape(home)}"
+                            >
+
+                            <div>
+                                <div class="team-abbrev">
+                                    {html.escape(home)}
+                                </div>
+                                <div class="team-location">Home</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="series-progress">
+                        Series after Game {game_number}:
+                        {html.escape(team_a)} {team_a_series_wins}
+                        –
+                        {team_b_series_wins} {html.escape(team_b)}
+                    </div>
+
+                    <div class="timeline">
+                        {''.join(period_groups)}
+                    </div>
+                </article>
+            </body>
+            </html>
+            """
+        
+        
+        def render_game_details(
+            games: pd.DataFrame,
+            team_a: str,
+            team_b: str,
+        ) -> None:
+            if games.empty:
+                st.info(
+                    "No completed game landing records were found for this series."
+                )
+                return
+
+            team_a_series_wins = 0
+            team_b_series_wins = 0
+
+            games = games.sort_values(
+                ["GAMENUM", "DATE", "TIME"],
+                na_position="last",
+            ).reset_index(drop=True)
+
+            for _, game in games.iterrows():
+                away = str(game["AWAYTEAM"])
+                home = str(game["HOMETEAM"])
+
+                away_score = int(game.get("AAWAYSCORE", 0) or 0)
+                home_score = int(game.get("AHOMESCORE", 0) or 0)
+
+                game_winner = (
+                    away
+                    if away_score > home_score
+                    else home
+                )
+
+                if game_winner == team_a:
+                    team_a_series_wins += 1
+                elif game_winner == team_b:
+                    team_b_series_wins += 1
+
+                landing = game.get("LANDING_DATA")
+
+                if not isinstance(landing, dict) or not landing:
+                    landing = fetch_game_landing(
+                        game["GameID"]
+                    )
+
+                if not landing:
+                    st.warning(
+                        f"Game {int(game['GAMENUM'])}: "
+                        "landing data could not be loaded."
+                    )
+                    continue
+
+                season_id = (
+                    landing.get("season")
+                    or landing.get("seasonId")
+                    or str(game["GameID"])[:4]
+                    + str(int(str(game["GameID"])[:4]) + 1)
+                )
+
+                timeline = build_game_timeline(
+                    landing=landing,
+                    season_id=season_id,
+                )
+
+                card = game_card_html(
+                    game=game,
+                    landing=landing,
+                    timeline=timeline,
+                    team_a=team_a,
+                    team_b=team_b,
+                    team_a_series_wins=team_a_series_wins,
+                    team_b_series_wins=team_b_series_wins,
+                )
+
+                # Rough dynamic iframe height. This avoids a large empty region while
+                # ensuring multi-overtime games with many events remain visible.
+                event_count = len(timeline)
+                period_count = len({
+                    event["period"]
+                    for event in timeline
+                })
+
+                card_height = (
+                    185
+                    + period_count * 31
+                    + event_count * 70
+                )
+
+                card_height = max(300, min(card_height, 2200))
+
+                components.html(
+                    card,
+                    height=card_height,
+                    scrolling=card_height >= 2200,
+                )
+
+                st.markdown(
+                    "<div style='height:0.65rem'></div>",
+                    unsafe_allow_html=True,
+                )
+        
+        
+        # def render_game_details(
+        #     games: pd.DataFrame,
+        #     team_a: str,
+        #     team_b: str,
+        # ) -> None:
+        #     if games.empty:
+        #         st.info(
+        #             "No completed game landing records were found for this series."
+        #         )
+        #         return
+
+        #     team_a_series_wins = 0
+        #     team_b_series_wins = 0
+
+        #     for _, game in games.iterrows():
+        #         away = str(game["AWAYTEAM"])
+        #         home = str(game["HOMETEAM"])
+
+        #         away_score = int(game.get("AAWAYSCORE", 0) or 0)
+        #         home_score = int(game.get("AHOMESCORE", 0) or 0)
+
+        #         game_winner = (
+        #             away
+        #             if away_score > home_score
+        #             else home
+        #         )
+
+        #         if game_winner == team_a:
+        #             team_a_series_wins += 1
+        #         elif game_winner == team_b:
+        #             team_b_series_wins += 1
+
+        #         ot_text = overtime_label(game)
+        #         badge_class = (
+        #             "overtime-badge"
+        #             if ot_text != "Regulation"
+        #             else "regulation-badge"
+        #         )
+
+        #         game_number = int(game.get("GAMENUM", 0) or 0)
+
+        #         date_value = game.get("DATE")
+        #         if pd.notna(date_value):
+        #             # date_text = pd.to_datetime(date_value).strftime("%b %-d, %Y")
+        #             timestamp = pd.to_datetime(date_value)
+        #             date_text = f"{timestamp:%b} {timestamp.day}, {timestamp:%Y}"
+        #         else:
+        #             date_text = ""
+
+        #         fc = "#9B9CCF"
+
+        #         components.html(
+        #             f"""
+        #             <div class="game-detail-card">
+        #                 <div class="game-detail-heading">
+        #                     <div>
+        #                         <span class="game-number">Game {game_number}</span>
+        #                         <span style="opacity:0.55; margin-left:0.4rem; color:{fc};">
+        #                             {html.escape(date_text)}
+        #                         </span>
+        #                     </div>
+        #                     <span class="{badge_class}">
+        #                         {html.escape(ot_text)}
+        #                     </span>
+        #                 </div>
+
+        #                 <div class="game-score-row">
+        #                     <div class="game-score-team-left" style="color:{fc};">
+        #                         {html.escape(away)}
+        #                     </div>
+
+        #                     <div class="game-score-value" style="color:{fc};">
+        #                         {away_score}
+        #                     </div>
+
+        #                     <div class="game-score-divider" style="color:{fc};">–</div>
+
+        #                     <div class="game-score-value" style="color:{fc};">
+        #                         {home_score}
+        #                     </div>
+
+        #                     <div class="game-score-team-right" style="color:{fc};">
+        #                         {html.escape(home)}
+        #                     </div>
+        #                 </div>
+
+        #                 <div class="game-series-progress" style="color:{fc};">
+        #                     Series after Game {game_number}:
+        #                     {html.escape(team_a)} {team_a_series_wins}
+        #                     –
+        #                     {team_b_series_wins} {html.escape(team_b)}
+        #                 </div>
+        #             </div>
+        #             """,
+        #             height=300,
+        #         )
+                
+        # def render_series_grid(
+        #     round_series: pd.DataFrame,
+        #     playoff_year: int,
+        #     round_number: int,
+        #     columns_per_row: int = 4,
+        # ) -> None:
+        #     if round_series.empty:
+        #         return
+
+        #     round_title = ROUND_NAMES.get(
+        #         round_number,
+        #         f"Round {round_number}",
+        #     )
+
+        #     st.markdown(f"### {round_title}")
+
+        #     for start in range(0, len(round_series), columns_per_row):
+        #         chunk = round_series.iloc[
+        #             start : start + columns_per_row
+        #         ]
+        #         columns = st.columns(columns_per_row)
+
+        #         for column, (_, series) in zip(columns, chunk.iterrows()):
+        #             series_letter = str(series.get("series_letter", ""))
+        #             selection_key = (
+        #                 f"{playoff_year}_"
+        #                 f"{round_number}_"
+        #                 f"{series_letter}_"
+        #                 f"{series['team_a']}_"
+        #                 f"{series['team_b']}"
+        #             )
+
+        #             with column:
+        #                 # st.markdown(
+        #                 #     series_card_html(series),
+        #                 #     unsafe_allow_html=True,
+        #                 # )
+        #                 components.html(series_card_html(series), height=160, scrolling=False)
+
+        #                 selected = (
+        #                     st.session_state.get("selected_playoff_series")
+        #                     == selection_key
+        #                 )
+
+        #                 button_label = (
+        #                     "Selected"
+        #                     if selected
+        #                     else "View games"
+        #                 )
+
+        #                 if st.button(
+        #                     button_label,
+        #                     key=f"select_series_{selection_key}",
+        #                     type="primary" if selected else "secondary",
+        #                     use_container_width=True,
+        #                     disabled=selected,
+        #                 ):
+        #                     st.session_state["selected_playoff_series"] = (
+        #                         selection_key
+        #                     )
+        #                     st.session_state["selected_playoff_series_data"] = (
+        #                         series.to_dict()
+        #                     )
+        #                     st.rerun()
+        
+        def render_series_grid(
+            round_series: pd.DataFrame,
+            playoff_year: int,
+            round_number: int,
+            columns_per_row: int = 4,
+        ) -> None:
+            if round_series.empty:
+                return
+
+            round_title = ROUND_NAMES.get(
+                round_number,
+                f"Round {round_number}",
+            )
+
+            st.markdown(f"#### {round_title}")
+
+            round_series = (
+                round_series
+                .sort_values("series_letter")
+                .reset_index(drop=True)
+            )
+
+            for start in range(0, len(round_series), columns_per_row):
+                chunk = round_series.iloc[
+                    start : start + columns_per_row
+                ]
+
+                columns = st.columns(
+                    columns_per_row,
+                    gap="small",
+                )
+
+                for column_index, column in enumerate(columns):
+                    if column_index >= len(chunk):
+                        continue
+
+                    series = chunk.iloc[column_index]
+
+                    series_letter = str(
+                        series.get("series_letter", "")
+                    )
+
+                    selection_key = (
+                        f"{int(playoff_year)}_"
+                        f"{int(round_number)}_"
+                        f"{series_letter}_"
+                        f"{series['team_a']}_"
+                        f"{series['team_b']}"
+                    )
+
+                    selected = (
+                        st.session_state.get(
+                            "selected_playoff_series"
+                        )
+                        == selection_key
+                    )
+
+                    with column:
+                        components.html(
+                            series_card_html(series),
+                            height=160,
+                            scrolling=False,
+                        )
+
+                        if st.button(
+                            "Selected" if selected else "View games",
+                            key=f"select_series_{selection_key}",
+                            type="primary" if selected else "secondary",
+                            use_container_width=True,
+                            disabled=selected,
+                        ):
+                            st.session_state[
+                                "selected_playoff_series"
+                            ] = selection_key
+
+                            st.session_state[
+                                "selected_playoff_series_data"
+                            ] = series.to_dict()
+
+                            st.rerun()
+                            
+        def render_series_length_legend() -> None:
+            legend_columns = st.columns(4, gap="small")
+
+            for column, length in zip(
+                legend_columns,
+                [4, 5, 6, 7],
+            ):
+                meta = SERIES_LENGTH_META[length]
+
+                with column:
+                    components.html(
+                        f"""
+                        <div style="
+                            min-height:42px;
+                            padding:5px 8px;
+                            display:flex;
+                            align-items:center;
+                            justify-content:space-between;
+                            gap:8px;
+                            border-radius:8px;
+                            color:white;
+                            background:
+                                linear-gradient(
+                                    100deg,
+                                    {meta['start']},
+                                    {meta['end']}
+                                );
+                        ">
+                            <strong style="
+                                font-size:0.77rem;
+                                white-space:nowrap;
+                            ">
+                                {length} games
+                            </strong>
+
+                            <span style="
+                                overflow:hidden;
+                                font-size:0.62rem;
+                                opacity:0.88;
+                                text-overflow:ellipsis;
+                                white-space:nowrap;
+                            ">
+                                {html.escape(meta['label'])}
+                            </span>
+                        </div>
+                        """,
+                        height=150,
+                    )
+        
+        def render_selected_series_details(
+            selected_series: dict[str, Any],
+            selected_year: int,
+        ) -> None:
+            team_a = str(selected_series["team_a"])
+            team_b = str(selected_series["team_b"])
+            round_number = int(selected_series["round"])
+
+            heading_left, heading_center, heading_right = st.columns(
+                [2, 1, 2],
+                vertical_alignment="center",
+            )
+
+            with heading_left:
+                left_logo, left_text = st.columns(
+                    [1, 2],
+                    vertical_alignment="center",
+                )
+
+                with left_logo:
+                    st.image(
+                        selected_series["team_a_logo"],
+                        width=68,
+                    )
+
+                with left_text:
+                    st.subheader(team_a)
+
+            with heading_center:
+                # components.html(
+                h = f"""
+                    <div style="text-align:center; padding:0.25rem;">
+                        <div style="font-size:1.65rem; font-weight:800; line-height:1; color:#afafaf">
+                            {int(selected_series['team_a_wins'])} - {int(selected_series['team_b_wins'])}
+                        </div>
+
+                        <div style="margin-top:0.35rem; font-size:0.75rem; opacity:0.62; color:#afafaf">
+                            {
+                                html.escape(
+                                    ROUND_NAMES.get(
+                                        round_number,
+                                        f"Round {round_number}",
+                                    )
+                                )
+                            }
+                        </div>
+                    </div>
+                    """
+                    
+                components.html(
+                    h,
+                    height=70,
+                    scrolling=False,
+                )
+                # st.code(
+                #     h,
+                #     language="html",
+                #     line_numbers=True
+                # )
+                #     
+                # )
+
+            with heading_right:
+                right_text, right_logo = st.columns(
+                    [2, 1],
+                    vertical_alignment="center",
+                )
+
+                with right_text:
+                    st.subheader(
+                        team_b,
+                        text_alignment="right",
+                    )
+
+                with right_logo:
+                    st.image(
+                        selected_series["team_b_logo"],
+                        width=68,
+                    )
+
+            with st.spinner(
+                f"Loading {selected_year} playoff games..."
+            ):
+                year_games = get_playoff_games_for_year(
+                    int(selected_year) - 1  # offset!
+                )
+
+            selected_games = find_games_for_series(
+                games_df=year_games,
+                playoff_year=int(selected_year),
+                round_number=round_number,
+                team_a=team_a,
+                team_b=team_b,
+            )
+            
+            with st.container(horizontal=True, border=True):
+                st.write("selected_games")
+                st.write(selected_games)
+
+            if selected_games.empty:
+                st.info(
+                    "No completed game records were found for this series."
+                )
+                return
+
+            game_count = len(selected_games)
+
+            overtime_games = (
+                int(
+                    selected_games["HasOT"]
+                    .fillna(False)
+                    .astype(bool)
+                    .sum()
+                )
+                if "HasOT" in selected_games.columns
+                else 0
+            )
+
+            multiple_overtime_games = (
+                int(
+                    selected_games["OTROUNDNUM"]
+                    .fillna(0)
+                    .astype(int)
+                    .gt(1)
+                    .sum()
+                )
+                if "OTROUNDNUM" in selected_games.columns
+                else 0
+            )
+
+            stat_columns = st.columns(4)
+
+            stat_columns[0].metric(
+                "Games",
+                game_count,
+            )
+            stat_columns[1].metric(
+                "Overtime",
+                overtime_games,
+            )
+            stat_columns[2].metric(
+                "Multiple OT",
+                multiple_overtime_games,
+            )
+            stat_columns[3].metric(
+                "Deciding game",
+                (
+                    f"Game {game_count}"
+                    if bool(selected_series["series_complete"])
+                    else "In progress"
+                ),
+            )
+
+            st.markdown("### Game-by-game results")
+
+            render_game_details(
+                games=selected_games,
+                team_a=team_a,
+                team_b=team_b,
+            )
+        
+        inject_playoff_card_css()
+
+        matchups = build_series_matchups(series_df)
+
+        if matchups.empty:
+            st.info("No playoff series are available.")
+            st.stop()
+
+        # available_years = sorted(
+        #     matchups["playoff_year"]
+        #     .dropna()
+        #     .astype(int)
+        #     .unique()
+        #     .tolist(),
+        #     reverse=True,
+        # )
+
+        # selected_year = st.selectbox(
+        #     "Playoff year",
+        #     options=available_years,
+        #     index=0,
+        # )
+
+        # year_series = matchups[
+        #     matchups["playoff_year"].astype(int).eq(int(selected_year))
+        # ].copy()
+        
+        available_years = sorted(
+            matchups["playoff_year"]
+            .dropna()
+            .astype(int)
+            .unique()
+            .tolist(),
+            reverse=True,
+        )
+
+        default_years = available_years[:2]
+
+        selected_years = st.multiselect(
+            "Playoff years",
+            options=available_years,
+            default=default_years,
+            help=(
+                "Select one or more playoff years. "
+                "Every selected postseason will be displayed below."
+            ),
+        )
+
+        if not selected_years:
+            st.info("Select at least one playoff year.")
+            st.stop()
+
+        # st.title(f"{selected_year} NHL Playoffs")
+
+        # # Compact legend for the series-length gradient.
+        # legend_columns = st.columns(4)
+
+        # for column, length in zip(
+        #     legend_columns,
+        #     [4, 5, 6, 7],
+        # ):
+        #     meta = SERIES_LENGTH_META[length]
+
+        #     with column:
+        #         st.markdown(
+        #             f"""
+        #             <div style="
+        #                 border-radius:10px;
+        #                 padding:0.55rem;
+        #                 text-align:center;
+        #                 color:white;
+        #                 background:linear-gradient(
+        #                     100deg,
+        #                     {meta['start']},
+        #                     {meta['end']}
+        #                 );
+        #             ">
+        #                 <strong>{length} games</strong><br>
+        #                 <span style="font-size:0.75rem; opacity:0.9;">
+        #                     {html.escape(meta['label'])}
+        #                 </span>
+        #             </div>
+        #             """,
+        #             unsafe_allow_html=True,
+        #         )
+
+        # st.divider()
+
+        # for round_number in [1, 2, 3, 4]:
+        #     round_series = (
+        #         year_series[
+        #             year_series["round"].astype(int).eq(round_number)
+        #         ]
+        #         .sort_values("series_letter")
+        #         .reset_index(drop=True)
+        #     )
+
+        #     render_series_grid(
+        #         round_series=round_series,
+        #         playoff_year=int(selected_year),
+        #         round_number=round_number,
+        #         columns_per_row=4 if round_number == 1 else 2,
+        #     )
+
+        #     if not round_series.empty:
+        #         st.divider()
+
+        # selected_series = st.session_state.get(
+        #     "selected_playoff_series_data"
+        # )
+
+        # if selected_series:
+        #     selected_series_year = int(
+        #         selected_series["playoff_year"]
+        #     )
+
+        #     # Do not show a previous year's selected series under another year.
+        #     if selected_series_year == int(selected_year):
+        #         team_a = str(selected_series["team_a"])
+        #         team_b = str(selected_series["team_b"])
+        #         round_number = int(selected_series["round"])
+
+        #         st.markdown("## Selected series")
+
+        #         heading_left, heading_center, heading_right = st.columns(
+        #             [2, 1, 2],
+        #             vertical_alignment="center",
+        #         )
+
+        #         with heading_left:
+        #             st.image(
+        #                 selected_series["team_a_logo"],
+        #                 width=105,
+        #             )
+        #             st.subheader(
+        #                 team_a,
+        #                 text_alignment="center",
+        #             )
+
+        #         with heading_center:
+        #             st.markdown(
+        #                 f"""
+        #                 <div style="text-align:center;">
+        #                     <div style="
+        #                         font-size:2rem;
+        #                         font-weight:800;
+        #                     ">
+        #                         {int(selected_series['team_a_wins'])}
+        #                         –
+        #                         {int(selected_series['team_b_wins'])}
+        #                     </div>
+        #                     <div style="opacity:0.62;">
+        #                         {html.escape(
+        #                             ROUND_NAMES.get(
+        #                                 round_number,
+        #                                 f"Round {round_number}",
+        #                             )
+        #                         )}
+        #                     </div>
+        #                 </div>
+        #                 """,
+        #                 unsafe_allow_html=True,
+        #             )
+
+        #         with heading_right:
+        #             st.image(
+        #                 selected_series["team_b_logo"],
+        #                 width=105,
+        #             )
+        #             st.subheader(
+        #                 team_b,
+        #                 text_alignment="center",
+        #             )
+
+        #         with st.spinner(
+        #             f"Loading {selected_year} playoff games..."
+        #         ):
+        #             year_games = get_playoff_games_for_year(
+        #                 int(selected_year)
+        #             )
+
+        #         selected_games = find_games_for_series(
+        #             games_df=year_games,
+        #             playoff_year=int(selected_year),
+        #             round_number=round_number,
+        #             team_a=team_a,
+        #             team_b=team_b,
+        #         )
+
+        #         game_count = len(selected_games)
+        #         overtime_games = (
+        #             int(selected_games["HasOT"].fillna(False).sum())
+        #             if (
+        #                 not selected_games.empty
+        #                 and "HasOT" in selected_games.columns
+        #             )
+        #             else 0
+        #         )
+
+        #         stat_columns = st.columns(4)
+
+        #         stat_columns[0].metric(
+        #             "Games",
+        #             game_count,
+        #         )
+        #         stat_columns[1].metric(
+        #             "Overtime games",
+        #             overtime_games,
+        #         )
+        #         stat_columns[2].metric(
+        #             "Series length",
+        #             (
+        #                 f"{game_count} games"
+        #                 if bool(selected_series["series_complete"])
+        #                 else f"{game_count} played"
+        #             ),
+        #         )
+        #         stat_columns[3].metric(
+        #             "Deciding game",
+        #             (
+        #                 f"Game {game_count}"
+        #                 if bool(selected_series["series_complete"])
+        #                 else "Not complete"
+        #             ),
+        #         )
+
+        #         st.markdown("### Game-by-game results")
+
+        #         render_game_details(
+        #             games=selected_games,
+        #             team_a=team_a,
+        #             team_b=team_b,
+        #         )
+        
+        matchups = build_series_matchups(series_df)
+
+        if matchups.empty:
+            st.info("No playoff series are available.")
+            st.stop()
+
+        available_years = sorted(
+            matchups["playoff_year"]
+            .dropna()
+            .astype(int)
+            .unique()
+            .tolist(),
+            reverse=True,
+        )
+
+        control_left, control_right = st.columns(
+            [4, 1],
+            vertical_alignment="bottom",
+        )
+
+        with control_left:
+            selected_years = st.multiselect(
+                "Playoff years",
+                options=available_years,
+                default=available_years[:2],
+                help=(
+                    "Choose multiple seasons to compare their "
+                    "playoff series simultaneously."
+                ),
+            )
+
+        with control_right:
+            collapse_years = st.toggle(
+                "Collapse years",
+                value=len(selected_years) > 2,
+                help=(
+                    "Place each postseason in a collapsible section."
+                ),
+            )
+
+        if not selected_years:
+            st.info("Select at least one playoff year.")
+            st.stop()
+
+        selected_years = sorted(
+            selected_years,
+            reverse=True,
+        )
+
+        st.markdown("### Series-length guide")
+        render_series_length_legend()
+        st.divider()
+
+        for year_position, playoff_year in enumerate(selected_years):
+            year_series = matchups[
+                matchups["playoff_year"]
+                .astype(int)
+                .eq(int(playoff_year))
+            ].copy()
+
+            if year_series.empty:
+                st.warning(
+                    f"No series data was found for {playoff_year}."
+                )
+                continue
+
+            def render_year_content() -> None:
+                overview_columns = st.columns(4)
+
+                completed = year_series[
+                    year_series["series_complete"]
+                ]
+
+                sweeps = int(
+                    completed["games_played"].eq(4).sum()
+                )
+                game_sevens = int(
+                    completed["games_played"].eq(7).sum()
+                )
+                average_length = (
+                    completed["games_played"].mean()
+                    if not completed.empty
+                    else float("nan")
+                )
+
+                overview_columns[0].metric(
+                    "Series",
+                    len(year_series),
+                )
+                overview_columns[1].metric(
+                    "Sweeps",
+                    sweeps,
+                )
+                overview_columns[2].metric(
+                    "Game 7s",
+                    game_sevens,
+                )
+                overview_columns[3].metric(
+                    "Average length",
+                    (
+                        f"{average_length:.2f}"
+                        if pd.notna(average_length)
+                        else "—"
+                    ),
+                )
+
+                for round_number in [1, 2, 3, 4]:
+                    round_series = (
+                        year_series[
+                            year_series["round"]
+                            .astype(int)
+                            .eq(round_number)
+                        ]
+                        .sort_values("series_letter")
+                        .reset_index(drop=True)
+                    )
+
+                    if round_series.empty:
+                        continue
+
+                    # First round has eight series and works well in four columns.
+                    # Later rounds can use fewer columns and remain compact.
+                    columns_per_row = {
+                        1: 4,
+                        2: 4,
+                        3: 2,
+                        4: 1,
+                    }[round_number]
+
+                    render_series_grid(
+                        round_series=round_series,
+                        playoff_year=int(playoff_year),
+                        round_number=round_number,
+                        columns_per_row=columns_per_row,
+                    )
+
+                    if round_number != 4:
+                        st.markdown(
+                            "<div style='height:0.35rem'></div>",
+                            unsafe_allow_html=True,
+                        )
+
+            if collapse_years:
+                with st.expander(
+                    f"{playoff_year} NHL Playoffs",
+                    expanded=year_position == 0,
+                ):
+                    render_year_content()
+            else:
+                st.markdown(
+                    f"## {playoff_year} NHL Playoffs"
+                )
+                render_year_content()
+
+                if year_position < len(selected_years) - 1:
+                    st.divider()
+
+        selected_series = st.session_state.get(
+            "selected_playoff_series_data"
+        )
+
+        if selected_series:
+            selected_series_year = int(
+                selected_series["playoff_year"]
+            )
+
+            # Keep showing a selected series only while its year remains selected.
+            if selected_series_year in selected_years:
+                st.divider()
+                st.markdown(
+                    f"## Selected series · {selected_series_year}"
+                )
+
+                render_selected_series_details(
+                    selected_series=selected_series,
+                    selected_year=selected_series_year,
+                )
+
+    # -----------------------------------------------------------------------
+    # Team explorer
+    # -----------------------------------------------------------------------
+
+    with tabs[2]:
+        team_options = summaries.sort_values("team_name")["team"].tolist()
+
+        selected_team = st.selectbox(
+            "Select a team",
+            options=team_options,
+            format_func=lambda abbreviation: (
+                f"{TEAM_META.get(abbreviation, abbreviation)} "
+                f"({abbreviation})"
+            ),
+        )
+
+        team_summary = summaries[
+            summaries["team"] == selected_team
+        ].iloc[0]
+
+        team_history = full_history[
+            full_history["team"] == selected_team
+        ].copy()
+
+        team_prediction = predictions[
+            predictions["team"] == selected_team
+        ].iloc[0]
+
+        render_logo_header(
+            team_summary["logo"],
+            team_summary["team_name"],
+            selected_team,
+        )
+        render_summary_cards(team_summary)
+        render_year_logo_history(team_history)
+
+        chart1, chart2 = st.columns(2)
+
+        with chart1:
+            st.plotly_chart(
+                create_team_timeline(team_history),
+                use_container_width=True,
+            )
+
+        with chart2:
+            st.plotly_chart(
+                create_wins_losses_chart(team_history),
+                use_container_width=True,
+            )
+
+        render_best_worst_average(team_summary)
+        render_prediction_card(team_prediction)
+
+        with st.expander("Show team-season data"):
+            team_display = team_history[
+                [
+                    "season",
+                    "qualified",
+                    "wins",
+                    "losses",
+                    "win_pct",
+                    "round_name",
+                    "series_wins",
+                    "series_losses",
+                    "champion",
+                ]
+            ].copy()
+
+            st.dataframe(
+                team_display,
+                hide_index=True,
+                use_container_width=True,
+                column_config={
+                    "qualified": st.column_config.CheckboxColumn(
+                        "Qualified"
+                    ),
+                    "champion": st.column_config.CheckboxColumn(
+                        "Champion"
+                    ),
+                    "win_pct": st.column_config.NumberColumn(
+                        "Win percentage",
+                        format="%.1%%",
+                    ),
+                },
+            )
+
+    # -----------------------------------------------------------------------
+    # Predictions
+    # -----------------------------------------------------------------------
+
+    with tabs[3]:
+        next_playoff_year = int(predictions["next_playoff_year"].max())
+
+        st.subheader(f"Projected {next_playoff_year} playoff outlook")
+        st.caption(
+            "Expected wins, losses and round are conditional on qualifying. "
+            "Teams are ranked first by qualification probability and then "
+            "by expected playoff depth."
+        )
+
+        top_n = st.slider(
+            "Teams shown",
+            min_value=8,
+            max_value=min(32, len(predictions)),
+            value=min(16, len(predictions)),
+            key="prediction_team_count",
+        )
+
+        prediction_chart_data = predictions.head(top_n).sort_values(
+            "qualification_probability"
+        )
+
+        prediction_chart = px.bar(
+            prediction_chart_data,
+            x="qualification_probability",
+            y="team",
+            orientation="h",
+            hover_name="team_name",
+            hover_data={
+                "qualification_probability": ":.1%",
+                "expected_wins_if_qualified": ":.2f",
+                "expected_losses_if_qualified": ":.2f",
+                "expected_round_if_qualified": ":.2f",
+                "forecast": True,
+            },
+            labels={
+                "qualification_probability": "Projected qualification probability",
+                "team": "",
+            },
+            title="Projected playoff qualification",
+        )
+        prediction_chart.update_xaxes(tickformat=".0%")
+        prediction_chart.update_layout(height=max(450, top_n * 30))
+        st.plotly_chart(prediction_chart, use_container_width=True)
+
+        prediction_display = predictions[
+            [
+                "team",
+                "qualification_probability",
+                "expected_wins_if_qualified",
+                "expected_losses_if_qualified",
+                "expected_round_if_qualified",
+                "expected_round_name",
+                "qualification_streak",
+                "drought_length",
+                "forecast",
+            ]
+        ].copy()
+
+        prediction_display.columns = [
+            "Team",
+            "Qualify",
+            "Expected wins",
+            "Expected losses",
+            "Expected round",
+            "Expected result",
+            "Playoff streak",
+            "Drought",
+            "Forecast",
+        ]
+
+        ddn(
+            prediction_display,
+            hide_index=True,
+            use_container_width=True,
+            column_config={
+                "Qualify": st.column_config.ProgressColumn(
+                    min_value=0,
+                    max_value=1,
+                    format="%.1f%%",
+                ),
+                "Expected wins": st.column_config.NumberColumn(
+                    format="%.2f"
+                ),
+                "Expected losses": st.column_config.NumberColumn(
+                    format="%.2f"
+                ),
+                "Expected round": st.column_config.NumberColumn(
+                    format="%.2f"
+                ),
+            }
+        )
+
+    # -----------------------------------------------------------------------
+    # Series data
+    # -----------------------------------------------------------------------
+
+    with tabs[4]:
+        st.subheader("Parsed series records")
+        st.caption(
+            "Each series appears twice: once from each team's perspective."
+        )
+
+        selected_series_seasons = st.multiselect(
+            "Seasons",
+            options=sorted(series_df["season"].unique(), reverse=True),
+            default=sorted(series_df["season"].unique(), reverse=True)[:1],
+        )
+
+        series_display = series_df.copy()
+        if selected_series_seasons:
+            series_display = series_display[
+                series_display["season"].isin(selected_series_seasons)
+            ]
+
+        st.dataframe(
+            series_display[
+                [
+                    "season",
+                    "round",
+                    "team",
+                    "opponent",
+                    "wins",
+                    "losses",
+                    "won_series",
+                    "series_complete",
+                ]
+            ].sort_values(
+                ["season", "round", "team"],
+                ascending=[False, True, True],
+            ),
+            hide_index=True,
+            use_container_width=True,
+            column_config={
+                "won_series": st.column_config.CheckboxColumn(
+                    "Won series"
+                ),
+                "series_complete": st.column_config.CheckboxColumn(
+                    "Complete"
+                ),
+            },
+        )
+
+    # -----------------------------------------------------------------------
+    # Methodology
+    # -----------------------------------------------------------------------
+
+    with tabs[5]:
+        st.subheader("How the statistics are calculated")
+
+        st.markdown(
+            """
+            **Season wins**
+
+            The wins reported for a team in every series are summed.
+
+            **Season losses**
+
+            The opponent's wins in every series are summed. This allows an
+            incomplete current series to be represented without assuming that
+            it has ended.
+
+            **Round reached**
+
+            The highest carousel `roundNumber` in which the team appears.
+
+            **Best and worst performance**
+
+            These are calculated only among seasons in which the team
+            qualified. For losses, fewer is considered better.
+
+            **Qualification rate**
+
+            The number of playoff appearances divided by the number of
+            successfully loaded seasons in the selected range.
+
+            **Last playoff year**
+
+            The latest postseason in the selected data range in which the
+            team appears. For example, the 2023-24 season is displayed as the
+            2024 playoffs.
+            """
+        )
+
+        st.subheader("Prediction formula")
+
+        st.markdown(
+            """
+            The prediction model intentionally favours recent performance:
+
+            1. Every season receives an exponential recency weight.
+            2. Qualification history is blended with a short recent window.
+            3. Consecutive playoff appearances add a competitive-window bonus.
+            4. Consecutive missed seasons apply a drought penalty.
+            5. Expected wins, losses and round are weighted averages of the
+            team's qualified seasons.
+            6. Expected depth is adjusted slightly upward during an active
+            playoff streak and downward following a drought.
+
+            It does **not** use current rosters, player projections, standings,
+            injuries, trades, salary-cap information, or strength of schedule.
+            It should therefore be interpreted as a historical trend indicator,
+            not a wagering or probability model.
+            """
+        )
+
+        with st.expander("Loaded season responses"):
+            response_summary = pd.DataFrame(
+                [
+                    {
+                        "Requested season": season_label(start_year),
+                        "Returned season ID": payload.get("seasonId"),
+                        "Current round": payload.get("currentRound"),
+                        "Rounds returned": len(payload.get("rounds", [])),
+                    }
+                    for start_year, payload in carousels.items()
+                ]
+            )
+            st.dataframe(
+                response_summary,
+                hide_index=True,
+                use_container_width=True,
+            )
 
 
 # ─────────────────────────────────────────────────────────
@@ -7310,6 +12633,7 @@ def main():
             "Hockey Pool",
             "Playoffs",
             "PWHL",
+            "Carousel"
         ], label_visibility="collapsed")
         st.markdown("---")
         st.caption(f"📂 `{path_excel_predictions.split(chr(92))[-1]}`")
@@ -8968,6 +14292,10 @@ def main():
     # ── PAGE: Hockey Pool ──────────────────────────
     elif page == "PWHL":
         page_pwhl()
+
+    # ── PAGE: Hockey Pool ──────────────────────────
+    elif page == "Carousel":
+        page_carousel()
 
 
 if __name__ == "__main__":

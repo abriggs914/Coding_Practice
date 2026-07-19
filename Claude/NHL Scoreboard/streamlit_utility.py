@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import math
 import html
 import base64
@@ -7,6 +9,7 @@ import pandas as pd
 from PIL import Image
 import streamlit as st
 from pathlib import Path
+from dataclasses import dataclass
 from streamlit_js_eval import streamlit_js_eval
 from typing import Literal, Optional, Iterable, Any
 from streamlit.runtime.state import (
@@ -29,8 +32,8 @@ from colour_utility import Colour
 VERSION = \
     """    
         Streamlit utility functions
-        Version..............1.19
-        Date...........2026-06-25
+        Version..............1.20
+        Date...........2026-07-19
         Author(s)....Avery Briggs
         """
 
@@ -782,6 +785,183 @@ def local_image_thumbnail_data_url(
 
     data = base64.b64encode(out_path.read_bytes()).decode("utf-8")
     return f"data:image/webp;base64,{data}"
+
+
+DeviceType = Literal["phone", "tablet", "laptop", "desktop"]
+
+
+@dataclass(frozen=True)
+class ScreenInfo:
+    width: int
+    height: int
+    device_type: DeviceType
+    orientation: Literal["portrait", "landscape"]
+
+    is_phone: bool
+    is_tablet: bool
+    is_laptop: bool
+    is_desktop: bool
+
+    is_mobile_layout: bool
+    columns: int
+
+
+SCREEN_DETECTOR_JS = """
+export default function(component) {
+    const { setStateValue } = component;
+
+    let resizeTimer = null;
+    let previousWidth = null;
+    let previousHeight = null;
+
+    function reportScreen() {
+        const width = Math.round(window.innerWidth);
+        const height = Math.round(window.innerHeight);
+
+        // Prevent unnecessary Streamlit reruns.
+        if (
+            width === previousWidth &&
+            height === previousHeight
+        ) {
+            return;
+        }
+
+        previousWidth = width;
+        previousHeight = height;
+
+        setStateValue("width", width);
+        setStateValue("height", height);
+        setStateValue(
+            "orientation",
+            width >= height ? "landscape" : "portrait"
+        );
+    }
+
+    function handleResize() {
+        clearTimeout(resizeTimer);
+
+        resizeTimer = setTimeout(
+            reportScreen,
+            200
+        );
+    }
+
+    reportScreen();
+
+    window.addEventListener(
+        "resize",
+        handleResize
+    );
+
+    return () => {
+        clearTimeout(resizeTimer);
+
+        window.removeEventListener(
+            "resize",
+            handleResize
+        );
+    };
+}
+"""
+
+
+screen_detector_component = st.components.v2.component(
+    name="responsive_screen_detector",
+    js=SCREEN_DETECTOR_JS,
+)
+
+
+def get_screen_info(
+    *,
+    key: str = "responsive_screen",
+    phone_max: int = 639,
+    tablet_max: int = 899,
+    laptop_max: int = 1439,
+    mobile_layout_max: int = 899,
+) -> ScreenInfo:
+    """
+    Detect the current browser viewport.
+
+    The component will initially return default values, then rerun the
+    Streamlit script when JavaScript reports the actual browser dimensions.
+    """
+
+    default_width = 1200
+    default_height = 800
+
+    result = screen_detector_component(
+        key=key,
+        default={
+            "width": default_width,
+            "height": default_height,
+            "orientation": "landscape",
+        },
+        on_width_change=lambda: None,
+        on_height_change=lambda: None,
+        on_orientation_change=lambda: None,
+    )
+
+    width = int(
+        getattr(result, "width", None)
+        or default_width
+    )
+
+    height = int(
+        getattr(result, "height", None)
+        or default_height
+    )
+
+    orientation = (
+        "landscape"
+        if width >= height
+        else "portrait"
+    )
+
+    if width <= phone_max:
+        device_type: DeviceType = "phone"
+    elif width <= tablet_max:
+        device_type = "tablet"
+    elif width <= laptop_max:
+        device_type = "laptop"
+    else:
+        device_type = "desktop"
+
+    if width < 600:
+        columns = 1
+    elif width < 900:
+        columns = 2
+    elif width < 1200:
+        columns = 3
+    else:
+        columns = 4
+
+    return ScreenInfo(
+        width=width,
+        height=height,
+        device_type=device_type,
+        orientation=orientation,
+        is_phone=device_type == "phone",
+        is_tablet=device_type == "tablet",
+        is_laptop=device_type == "laptop",
+        is_desktop=device_type == "desktop",
+        is_mobile_layout=width <= mobile_layout_max,
+        columns=columns,
+    )
+    
+
+def report_screen_info(screen):
+    st.caption(
+        f"{screen.device_type.title()} layout · "
+        f"{screen.width} × {screen.height} · "
+        f"{screen.orientation}"
+    )
+
+    if screen.is_phone:
+        st.write("Using phone layout")
+    elif screen.is_tablet:
+        st.write("Using tablet layout")
+    else:
+        st.write("Using laptop/desktop layout")
 
 
 if __name__ == '__main__':
