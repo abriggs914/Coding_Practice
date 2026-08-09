@@ -4,6 +4,7 @@ import pandas as pd
 
 
 t_template_0: str = "%Y-%m-%d"
+t_template_2: str = "%H:%M"
 t_template_1: str = "%Y-%m-%dT%H:%M:%SZ"
 template: str = "https://api-web.nhle.com/v1/schedule"
 
@@ -37,7 +38,9 @@ def get_team(data):
 
 def parse_date(obj, data, attr, key_name, template=t_template_0):
     try:
-        setattr(obj, attr, datetime.datetime.strptime(data.get(key_name), template).date())
+        d_val = data.get(key_name)
+        # print(f"{d_val=}")
+        setattr(obj, attr, datetime.datetime.strptime(d_val, template))
     except TypeError:
         setattr(obj, attr, None)
 
@@ -64,6 +67,7 @@ class GameData:
         self.tickets_link: str = data.get("ticketsLink")
         self.tickets_link_fr: str = data.get("ticketsLinkFr")
         self.game_center_link: str = data.get("gameCenterLink")
+        self.start_time_ATL = self.start_time_UTC + datetime.timedelta(hours=-3)
         
     def __repr__(self):
         return f"{self.start_time_UTC.strftime(t_template_1)}  -  {self.id_}  -  {self.away_team} @ {self.home_team}"
@@ -111,6 +115,7 @@ if __name__ == "__main__":
     ld = None
     d1 = datetime.datetime(2025, 9, 15).date()
     # d1 = datetime.datetime(2026, 4, 1).date()
+    d1 = datetime.datetime(2026, 9, 15)
     d2 = None
     k = 0
     
@@ -144,6 +149,9 @@ if __name__ == "__main__":
                 keep_going = False            
             elif d1 > d2:
                 keep_going = False
+            
+            # # testing here    
+            # keep_going = len(data_games) <= 100
                 
         except Exception as e:
             print(f"{e=}, {e.with_traceback()=}")
@@ -156,17 +164,23 @@ if __name__ == "__main__":
         # if k >= 4:
         #     keep_going = False
             
+    # print("-"*85)
+    # print(f"{data_games}")
+    # print("-"*85)
     list_games = list(data_games.values())
     list_games = [game for game in list_games if game.game_type == 2]
     list_games.sort(key=lambda x: x.start_time_UTC)
     
-    # print(f"{list_games[:5]}")
-    # print(f"{list_games[-5:]}")
+    print("-"*85)
+    print(f"{list_games[:5]}")
+    print(f"{list_games[-5:]}")
+    print("-"*85)
 
     df_data = [
         {
             "PredictionDate": None,
-            "GameDate": game.start_time_UTC.strftime(t_template_0),
+            "GameDate": game.start_time_ATL.strftime(t_template_0),
+            "GameTime": game.start_time_ATL.strftime(t_template_2),
             "GameID": game.id_,
             "AwayTeam": str(game.away_team),
             "HomeTeam": str(game.home_team)
@@ -174,6 +188,7 @@ if __name__ == "__main__":
         for game in list_games
     ]
     df = pd.DataFrame(data=df_data)
+    df["GameID"] = df["GameID"].astype(str)
     print(f"df")
     print(df)
     # with open(f"fetched_schedule_{datetime.datetime.now():%Y-%m-%m %H%M%S}.xlsx", "w") as f:

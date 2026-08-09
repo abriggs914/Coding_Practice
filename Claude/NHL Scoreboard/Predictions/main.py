@@ -26,6 +26,7 @@ from sklearn.linear_model import LinearRegression
 from plotly.subplots import make_subplots
 from streamlit_pills import pills
 from datetime import datetime, timedelta, date
+from dateutil import relativedelta
 from typing import Optional, Literal, Sequence, Any, Iterable
 from collections import defaultdict
 from itertools import combinations
@@ -43,6 +44,17 @@ from streamlit_utility import (
     local_image_thumbnail_data_url,
     get_screen_info,
     report_screen_info
+)
+
+from streamlit_nhl_utility import (
+    TEAM_META,
+    PWHL_META,
+    load_df_teams,
+    ddn,
+    display_df_nhl,
+    find_team,
+    team_fmt,
+    fetch_team_logo
 )
 
 from streamlit_auth import show_login_register
@@ -155,94 +167,10 @@ div[data-testid="stMetricLabel"] { color: #8899aa !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────────────────
-# NHL TEAM METADATA
-# ─────────────────────────────────────────────────────────
-TEAM_META = {
-    "ANA": {"name": "Anaheim Ducks",       "conf": "Western", "div": "Pacific",    "id": 24, "active": True},
-    # "ARI": {"name": "Utah Hockey Club",     "conf": "Western", "div": "Central",    "id": 53, "active": False},
-    "UTA": {"name": "Utah Mammoth",         "conf": "Western", "div": "Central",    "id": 59, "active": True},
-    "BOS": {"name": "Boston Bruins",        "conf": "Eastern", "div": "Atlantic",   "id": 6, "active": True},
-    "BUF": {"name": "Buffalo Sabres",       "conf": "Eastern", "div": "Atlantic",   "id": 7, "active": True},
-    "CGY": {"name": "Calgary Flames",       "conf": "Western", "div": "Pacific",    "id": 20, "active": True},
-    "CAR": {"name": "Carolina Hurricanes",  "conf": "Eastern", "div": "Metropolitan","id": 12, "active": True},
-    "CHI": {"name": "Chicago Blackhawks",   "conf": "Western", "div": "Central",    "id": 16, "active": True},
-    "COL": {"name": "Colorado Avalanche",   "conf": "Western", "div": "Central",    "id": 21, "active": True},
-    "CBJ": {"name": "Columbus Blue Jackets","conf": "Eastern", "div": "Metropolitan","id": 29, "active": True},
-    "DAL": {"name": "Dallas Stars",         "conf": "Western", "div": "Central",    "id": 25, "active": True},
-    "DET": {"name": "Detroit Red Wings",    "conf": "Eastern", "div": "Atlantic",   "id": 17, "active": True},
-    "EDM": {"name": "Edmonton Oilers",      "conf": "Western", "div": "Pacific",    "id": 22, "active": True},
-    "FLA": {"name": "Florida Panthers",     "conf": "Eastern", "div": "Atlantic",   "id": 13, "active": True},
-    "LAK": {"name": "Los Angeles Kings",    "conf": "Western", "div": "Pacific",    "id": 26, "active": True},
-    "MIN": {"name": "Minnesota Wild",       "conf": "Western", "div": "Central",    "id": 30, "active": True},
-    "MTL": {"name": "Montréal Canadiens",   "conf": "Eastern", "div": "Atlantic",   "id": 8, "active": True},
-    "NSH": {"name": "Nashville Predators",  "conf": "Western", "div": "Central",    "id": 18, "active": True},
-    "NJD": {"name": "New Jersey Devils",    "conf": "Eastern", "div": "Metropolitan","id": 1, "active": True},
-    "NYI": {"name": "New York Islanders",   "conf": "Eastern", "div": "Metropolitan","id": 2, "active": True},
-    "NYR": {"name": "New York Rangers",     "conf": "Eastern", "div": "Metropolitan","id": 3, "active": True},
-    "OTT": {"name": "Ottawa Senators",      "conf": "Eastern", "div": "Atlantic",   "id": 9, "active": True},
-    "PHI": {"name": "Philadelphia Flyers",  "conf": "Eastern", "div": "Metropolitan","id": 4, "active": True},
-    "PIT": {"name": "Pittsburgh Penguins",  "conf": "Eastern", "div": "Metropolitan","id": 5, "active": True},
-    "SJS": {"name": "San Jose Sharks",      "conf": "Western", "div": "Pacific",    "id": 28, "active": True},
-    "SEA": {"name": "Seattle Kraken",       "conf": "Western", "div": "Pacific",    "id": 55, "active": True},
-    "STL": {"name": "St. Louis Blues",      "conf": "Western", "div": "Central",    "id": 19, "active": True},
-    "TBL": {"name": "Tampa Bay Lightning",  "conf": "Eastern", "div": "Atlantic",   "id": 14, "active": True},
-    "TOR": {"name": "Toronto Maple Leafs",  "conf": "Eastern", "div": "Atlantic",   "id": 10, "active": True},
-    "VAN": {"name": "Vancouver Canucks",    "conf": "Western", "div": "Pacific",    "id": 23, "active": True},
-    "VGK": {"name": "Vegas Golden Knights", "conf": "Western", "div": "Pacific",    "id": 54, "active": True},
-    "WSH": {"name": "Washington Capitals",  "conf": "Eastern", "div": "Metropolitan","id": 15, "active": True},
-    "WPG": {"name": "Winnipeg Jets",        "conf": "Western", "div": "Central",    "id": 52, "active": True},
-}
+# Show Teams
+df_teams = load_df_teams()
+ddn(df_teams, "TEAMS - show # jerseys and games attended", width=1600, non_image_cols=["name"], debug=False)
 
-
-PWHL_META = [
-    {"name": "Ottawa Charge", "acronym": "OTT", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\ottawa_charge.png",},
-    {"name": "Montreal Victoire", "acronym": "MTL", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\montreal_victoire.png",},
-    {"name": "Toronto Sceptres", "acronym": "TOR", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\toronto_sceptres.png",},
-    {"name": "Vancouver Goldeneyes", "acronym": "VAN", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\vancouver_goldeneyes.png",},
-    {"name": "New York Sirens", "acronym": "NY", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\new_york_sirens.png",},
-    {"name": "Seattle Torrent", "acronym": "SEA", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\seattle_torrent.png",},
-    {"name": "Boston Fleet", "acronym": "BOS", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\boston_fleet.png",},
-    {"name": "Minnesota Frost", "acronym": "MIN", "logo": r"C:\Users\abrig\Documents\Coding_Practice\Python\Hockey pool\Images\minnesota_frost.png",},
-]
-
-df_pwhl = pd.DataFrame(PWHL_META)
-df_pwhl[["league", "active"]] = ["PWHL", True]
-df_pwhl = df_pwhl.rename(columns={"acronym": "team"})
-# df_pwhl["logo"] = df_pwhl["logo"].apply(lambda l: local_image_to_data_url(l))
-df_pwhl["logo"] = df_pwhl["logo"].apply(lambda p: local_image_thumbnail_data_url(p, max_size=200, quality=100))
-# display_df(df_pwhl, "PWHL")
-
-df_teams = pd.DataFrame(TEAM_META).T.reset_index(names="team")
-df_teams["league"] = "NHL"
-for team, name, league in [
-    ("ARI", "Arizona Coyotes", "NHL"),
-    
-    ("CAN", "Team Canada", "IIHF"),
-    ("USA", "Team United States", "IIHF"),
-    ("SWE", "Team Sweden", "IIHF"),
-    ("FIN", "Team Finland", "IIHF"),
-    ("CAN", "Team Canada", "IIHF"),
-    
-    ("SJ", "Saint John SeaDogs", "QMJHL"),
-]:
-    df_teams.loc[len(df_teams), df_teams.columns] = [team, name, None, None, None, True, league]
-    
-df_teams.loc[df_teams["team"] == "ARI", ["active", "conf", "div"]] = [False, "Western", "Central"]
-
-df_teams["alt"] = None
-for t, a in [
-    ("LAK", "LA"),
-    ("TBL", "TB"),
-    ("NJD", "NJ"),
-    ("SJS", "SJ"),
-    ("WSH", "WAS"),
-]:
-    df_teams.loc[df_teams["team"] == t, "alt"] = a
-
-df_teams = pd.concat([df_teams, df_pwhl], ignore_index=True)
-
-display_df(df_teams, "TEAMS", width=1600)
 
 CANADIAN_TEAMS = {"MTL", "OTT", "TOR", "WPG", "EDM", "CGY", "VAN"}
 
@@ -1346,36 +1274,7 @@ def render_player_panel(pd_data: dict, league: str):
     # Bio blurb
     if bio_text and len(bio_text) > 20:
         with st.expander("📖 Player Bio"):
-            st.markdown(f'<div style="color:#aabbcc;font-size:0.82rem;line-height:1.6">{bio_text}</div>', unsafe_allow_html=True)
-
-
-def team_fmt(s):
-    return str(s).replace(" ", "").upper().strip()
-    
-    
-def find_team(team, league="NHL", debug: bool = False):
-    if debug:
-        st.write(f"find_team {team=}")
-    tf = team_fmt(team)
-    sl = str(league).upper()
-    for i, row in df_teams.iterrows():
-        rl = str(row["league"]).upper()
-        rt = row["team"]
-        if sl != rl:
-            continue
-        if (tf == team_fmt(row["team"])):
-            if debug:
-                st.write(f"A {i=}, {rt=}")
-            return rt
-        elif tf == team_fmt(row["name"]):
-            if debug:
-                st.write(f"B {i=}, {rt=}")
-            return rt  
-        elif not pd.isna(row["alt"]):
-            if tf == team_fmt(row["alt"]):
-                if debug:
-                    st.write(f"C {i=}, {rt=}, {row['alt']}")
-                return rt
+            st.markdown(f'<div style="color:#aabbcc;font-size:0.82rem;line-height:1.6">{bio_text}</div>', unsafe_allow_html=True)    
 
 
 def to_string(
@@ -1536,34 +1435,48 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
     for c in ["Order", "Receive", "Open", "Manufactured"]:
         # for c in ["Order", "Receive", "Open"]:
         col = f"{c}Date"
-        c_name = f"DaysSince{c}"
-        df_jc[c_name] = df_jc[col].apply(lambda d: (today - d).days if not pd.isna(d) else 0)
-        c_name = f"DaysTo{c}"
-        df_jc[c_name] = df_jc[col].apply(lambda d: (today - safe_date(d)).days if not pd.isna(d) else 0)
-        c_name = f"{c}Anniversary"
-        df_jc[c_name] = df_jc[col].apply(lambda d: all([today.month == d.month, today.day == d.day]) if not pd.isna(d) else False)
-    df_jc["ManufacturedAnniversary"] = df_jc["ManufacturedDate"].apply(lambda d: all([today.month == d.month]) if not pd.isna(d) else False)
-    ddn(df_jc, "Jerseys")
-    
-    df_a_order = df_jc[df_jc["OrderAnniversary"]]
-    df_a_receive = df_jc[df_jc["ReceiveAnniversary"]]
-    df_a_open = df_jc[df_jc["OpenAnniversary"]]
-    df_a_manufacture = df_jc[df_jc["ManufacturedAnniversary"]]
-    with st.container(horizontal=True):
-        for df, title in [
-            (df_a_order, "Order"),
-            (df_a_receive, "Receive"),
-            (df_a_open, "Open"),
-            (df_a_manufacture, "Manufacture"),
+        for suf, date_ in [
+            ("", today),
+            ("_next", today + timedelta(days=1))
         ]:
-            with st.container(border=True):
-                st.subheader(f"{title} Anniversaries:")
-                for i, row in df.iterrows():
-                    titled = title if title != "Manufacture" else "Manufactured"
-                    age = int(row[f"DaysSince{titled}"] / 365.2425)
-                    st.write(f"{age}{number_suffix(age)} year {to_string(row, short_team=True)}")
-                with st.expander(title):
-                    ddn(df)
+            c_name = f"DaysSince{c}{suf}"
+            df_jc[c_name] = df_jc[col].apply(lambda d: (date_ - d).days if not pd.isna(d) else 0)
+            c_name = f"DaysTo{c}{suf}"
+            df_jc[c_name] = df_jc[col].apply(lambda d: (date_ - safe_date(d)).days if not pd.isna(d) else 0)
+            c_name = f"{c}Anniversary{suf}"
+            df_jc[c_name] = df_jc[col].apply(lambda d: all([date_.month == d.month, date_.day == d.day]) if not pd.isna(d) else False)
+    df_jc["ManufacturedAnniversary"] = df_jc["ManufacturedDate"].apply(lambda d: all([today.month == d.month]) if not pd.isna(d) else False)
+    df_jc["ManufacturedAnniversary_next"] = df_jc["ManufacturedDate"].apply(lambda d: all([(today + relativedelta.relativedelta(months=1)).month == d.month]) if not pd.isna(d) else False)
+    df_jc.sort_values("ID", inplace=True)
+    ddn(df_jc, "Jersey Collection", debug=False)
+    
+    # df_a_order = df_jc[df_jc["OrderAnniversary"]]
+    # df_a_receive = df_jc[df_jc["ReceiveAnniversary"]]
+    # df_a_open = df_jc[df_jc["OpenAnniversary"]]
+    # df_a_manufacture = df_jc[df_jc["ManufacturedAnniversary"]]
+    for div, suf in [
+        ("Today", ""),
+        ("Next", "_next")
+    ]:
+        with st.container(border=True):
+            st.header(div, text_alignment="center")
+            with st.container(horizontal=True):
+                for title in [
+                    "Order",
+                    "Receive",
+                    "Open",
+                    "Manufactured",
+                ]:
+                    with st.container(border=True):
+                        col = f"{title}Anniversary{suf}"
+                        df_ja = df_jc[df_jc[col]]
+                        st.subheader(f"{title} Anniversaries:")
+                        for i, row in df_ja.iterrows():
+                            titled = title if title != "Manufacture" else "Manufactured"
+                            age = int(row[f"DaysSince{titled}"] / 365.2425)
+                            st.write(f"{age}{number_suffix(age)} year {to_string(row, short_team=True)}")
+                        with st.expander(title):
+                            ddn(df_ja)
 
     # ══════════════════════════════════════════════
     # TAB 1: COLLECTION STATS
@@ -2085,7 +1998,7 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
         checklist_by_model = checklist.groupby(
             cols_bm
         ).agg("count").reset_index().rename(columns={"ID":"Count"})
-        display_df(
+        ddn(
             checklist_by_model,
             "checklist_by_model"
         )
@@ -2094,13 +2007,39 @@ def page_jersey_collection(df_jerseys: pd.DataFrame, base_img_path: str):
             columns=["Model"]
         )["Count"]
         cols_model = checklist_by_model_b.columns.tolist()
+        checklist_by_model_b = checklist_by_model_b.reset_index()
         cols_model.remove("Away")
         cols_model.remove("Home")
-        cols_model = ["Home", "Away"] + cols_model
-        display_df(
+        cols_model = ["Team", "Home", "Away"] + cols_model
+        for c in cols_model:
+            checklist_by_model_b[c] = checklist_by_model_b[c].fillna(0)
+        ddn(
             checklist_by_model_b[cols_model],
             "Model Checklist by Team"
         )
+        
+        cols_simp = ["Home", "Away"]
+        with st.container(horizontal=True):
+            ddn(
+                checklist_by_model_b[cols_model],
+                "Model Checklist by Team",
+                width=800,
+                non_image_cols=cols_simp,
+                debug=False
+            )
+            checklist_by_model_b_s = checklist_by_model_b.copy()
+            cols_models_s = cols_model.copy()
+            for c in ["Team"] + cols_simp:
+                cols_models_s.remove(c)
+            checklist_by_model_b_s["Alt"] = checklist_by_model_b_s.apply(lambda row: sum(map(lambda c: row[c], cols_models_s)), axis=1)
+            checklist_by_model_b_s["Total"] = checklist_by_model_b_s.apply(lambda row: sum(map(lambda c: row[c], cols_simp + ["Alt"])), axis=1)
+            ddn(
+                checklist_by_model_b_s[["Team"] + cols_simp + ["Alt", "Total"]],
+                "Model Checklist by Team (Simplified)",
+                width=400,
+                non_image_cols=cols_simp
+            )
+
 
     # ══════════════════════════════════════════════
     # TAB 4: COST ANALYSIS
@@ -2993,53 +2932,6 @@ def fetch_team_logo_png_image(
     except Exception as e:
         st.warning(f"Could not load logo for {team_abbr}: {e}")
         return None
-
-
-@st.cache_data
-def fetch_team_logo(team_abbr: str, dark: bool = True, err_on_not_found: bool = False, league: str = "NHL", debug: bool = False, season_id: int = None) -> str:
-    """Get NHL team logo URL from NHL API."""
-    
-    prefix = "https://assets.nhle.com/logos/nhl/svg/"
-    suffix = ".svg"
-    d, l = "_dark", "_light"
-    team_abbr_s = str(team_abbr).lower().strip().removeprefix(prefix).removesuffix(suffix).removesuffix(d).removesuffix(l)
-    
-    # debug = debug and (str(datetime.now().second).endswith("1") or str(datetime.now().second).endswith("4") or str(datetime.now().second).endswith("7") or str(datetime.now().second).endswith("0") or str(datetime.now().second).endswith("3"))
-    
-    if debug:
-        st.write(f"team='{team_abbr}', team_s='{team_abbr_s}', {league=} {dark=}")
-    s_t = team_fmt(find_team(team_abbr_s, league=league, debug=debug))
-    s_l = team_fmt(str(league))
-    if debug:
-        st.write(f"{s_t=}, {s_l=}")
-    df_s = df_teams.copy()
-    df_s["team_s"] = df_s["team"].apply(team_fmt)
-    df_s["league_s"] = df_s["league"].apply(team_fmt)
-    df_s = df_s[(df_s["team_s"] == s_t) & (df_s["league_s"] == s_l)].reset_index()
-    c = len(df_s)
-    if debug:
-        display_df(df_s, f"df_s {team_abbr=}, {dark=}, err={err_on_not_found}, {league=}")
-    if c == 1:
-        if s_l == team_fmt("NHL"):
-            if season_id:
-                return f"{prefix}{df_s.loc[0, 'team'].upper()}_{'dark' if dark else 'light'}{suffix}?season={season_id}"
-            else:
-                return f"{prefix}{df_s.loc[0, 'team'].upper()}_{'dark' if dark else 'light'}{suffix}"
-        elif s_l == team_fmt("PWHL"):
-            return df_s.iloc[0]["logo"]
-    elif (c == 0) and err_on_not_found:
-        raise ValueError(f"{team_abbr=} not found in df_teams")
-    elif c > 0:
-        raise ValueError(f"Multiple teams found matching {team_abbr=} found in df_teams")
-    
-    return ""
-    
-        
-    # if str(find_team(team_abbr)).upper() not in TEAM_META:
-    #     if err_on_not_found:
-    #         raise ValueError(f"{team_abbr=} not found in TEAM_META")        
-    #     return ""
-    # return f"https://assets.nhle.com/logos/nhl/svg/{team_abbr.upper()}_{'dark' if dark else 'light'}.svg"
 
 
 @st.cache_data(ttl=time_fetch_game_landing)
@@ -7028,179 +6920,6 @@ def load_playoff_predictions() -> pd.DataFrame:
     df_ = df_[cols]
     df_.columns = [col.lower() for col in df_.columns]
     return df_
-
-
-def ddn(
-    df: pd.DataFrame | pd.Series,
-    title: Optional[str] = None,
-    hide_index: str | bool = "if_int",
-    show_shape: Literal[True, False, "separate", "below"] = True,
-    fail_safe: Optional[Any] = True,
-    border: bool = False,
-
-    # params for st.dataframe 20250325
-    width: int | None = "stretch",
-    height: int | None = "auto",
-    use_container_width: bool = False,
-    column_order: Iterable[str] | None = None,
-    column_config: Any | None = None,
-    key: Any | None = None,
-    on_select: Literal["ignore", "rerun"] | Any = "ignore",
-    selection_mode: Any = "multi-row",
- 
-     # params for st.dataframe 20260514
-    selection_default: dict | None = None,
-    row_height: int | None = None,
-    placeholder: str | None = None,
-    
-    image_cols: list | None = None,
-    image_col_width: int = 40,
-    
-    debug: bool = False
-):
-    return display_df_nhl(
-        df=df,
-        title=title,
-        hide_index=hide_index,
-        show_shape=show_shape,
-        fail_safe=fail_safe,
-        border=border,
-
-        # params for st.dataframe 20250325
-        width=width,
-        height=height,
-        use_container_width=use_container_width,
-        column_order=column_order,
-        column_config=column_config,
-        key=key,
-        on_select=on_select,
-        selection_mode=selection_mode,
-    
-        # params for st.dataframe 20260514
-        selection_default=selection_default,
-        row_height=row_height,
-        placeholder=placeholder,        
-        
-        image_cols = image_cols,
-        
-        debug = debug
-    )
-
-
-def display_df_nhl(
-    df: pd.DataFrame | pd.Series,
-    title: Optional[str] = None,
-    hide_index: str | bool = "if_int",
-    show_shape: Literal[True, False, "separate", "below"] = True,
-    fail_safe: Optional[Any] = True,
-    border: bool = False,
-
-    # params for st.dataframe 20250325
-    width: int | None = "stretch",
-    height: int | None = "auto",
-    use_container_width: bool = False,
-    column_order: Iterable[str] | None = None,
-    column_config: Any | None = None,
-    key: Any | None = None,
-    on_select: Literal["ignore", "rerun"] | Any = "ignore",
-    selection_mode: Any = "multi-row",
- 
-     # params for st.dataframe 20260514
-    selection_default: dict | None = None,
-    row_height: int | None = None,
-    placeholder: str | None = None,
-    
-    image_cols: list | None = None,
-    image_col_width: int = 40,
-    
-    debug: bool = False
-):
-    team_cols = ["", "away", "home", "abbr", "abbrev", "name"]
-    team_cols += [f"{t}team" for t in team_cols] + [f"team{t}" for t in team_cols] + [f"team_{t}" for t in team_cols] + [f"{t}_team" for t in team_cols]
-    team_cols += ["mychoice", "winner", "loser", "lowseed", "topseed", "top", "low", "high", "opponent"]
-    if debug:
-        st.write(f"{df.columns.tolist()}")
-        # st.write(f"{df['team'].unique().tolist()}")
-    # df_cols = {str(c).lower().strip(): c for c in df.columns}
-    column_config = column_config if column_config else {}
-    
-    i_cols = []
-    for col in df.columns:
-        col_t = str(col).lower().strip()
-        if (col not in column_config) and (col_t in team_cols):
-            i_cols.append(col)
-            
-    image_cols = image_cols if image_cols else []
-    
-    for c in image_cols:
-        if c not in i_cols:
-            i_cols.append(c)
-    
-    if debug:
-        with st.container(horizontal=True):
-            st.header("A")
-            with st.expander("team_cols"):
-                st.write(team_cols)
-            # with st.expander("df_cols"):
-            #     st.write(df_cols)
-            with st.expander("i_cols"):
-                st.write(i_cols)
-            with st.expander("column_config"):
-                st.write(column_config)
-            with st.expander("df.columns"):
-                st.write(df.columns.tolist())
-            with st.expander("image_cols"):
-                st.write(image_cols)
-    
-    i_cols += [c for c in column_config.keys() if c in team_cols]
-    df_ = df.copy()
-    for c in i_cols:
-        if c not in df_.columns:
-            if debug:
-                st.write(f"skip {c}")
-            continue
-        df_[c] = df_[c].apply(fetch_team_logo)
-        column_config[c] = st.column_config.ImageColumn(c, width=image_col_width)
-    
-    if debug:
-        with st.container(horizontal=True):
-            st.header("B")
-            # with st.expander("df_cols"):
-            #     st.write(df_cols)
-            with st.expander("i_cols"):
-                st.write(i_cols)
-            with st.expander("column_config"):
-                st.write(column_config)
-            with st.expander("df.columns"):
-                st.write(df.columns.tolist())
-    
-        with st.container():
-            st.write("df_HERE")
-            st.write(df_)
-    
-    return display_df(
-        df=df_,
-        title=title,
-        hide_index=hide_index,
-        show_shape=show_shape,
-        fail_safe=fail_safe,
-        border=border,
-
-        # params for st.dataframe 20250325
-        width=width,
-        height=height,
-        use_container_width=use_container_width,
-        column_order=column_order,
-        column_config=column_config,
-        key=key,
-        on_select=on_select,
-        selection_mode=selection_mode,
-    
-        # params for st.dataframe 20260514
-        selection_default=selection_default,
-        row_height=row_height,
-        placeholder=placeholder
-    )
     
 
 def fetch_playoff_game_data(year: int) -> pd.DataFrame:
