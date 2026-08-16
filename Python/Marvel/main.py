@@ -1,12 +1,30 @@
 import re
+import os
+import json
+import datetime
 import pandas as pd
 import streamlit as st
 import plotly.express as px
 
 from streamlit_utility import display_df
+from sql_utility import no_specials
 
 
 st.set_page_config(layout="wide")
+
+
+save_file = "save_file.json"
+start_date_marathon = datetime.datetime(2026, 8, 15, 16, 30)
+end_date_marathon = start_date_marathon + datetime.timedelta(days=(1 + (datetime.datetime.now() - start_date_marathon).days))
+
+
+@st.cache_data
+def load_save_file() -> dict:
+    if not os.path.exists(save_file):
+        with open(save_file, "w") as f:
+            json.dump([], f)
+    with open(save_file, "r") as f:
+        return json.load(f)
 
 
 @st.cache_data
@@ -155,14 +173,92 @@ def load_imdb_list() -> pd.DataFrame:
     df["votes"] = df["votes"] / 1e6
     df = df.reset_index(names="order_chronological")
     df["minutes"] = df["runtime"].apply(lambda r: eval(("(" if ("h" in r.lower()) else "") + r.lower().replace("m","").replace("h","*60)").replace(" ", "+")) if ((not pd.isna(r)) and (r != "")) else None)
-    df["d_years"] = df["e_year"] - df["s_year"]
+    df["d_years"] = 1 + (df["e_year"] - df["s_year"])
     df.sort_values(["d_years", "s_year"], inplace=True)
     df = df.reset_index(drop=True).reset_index(names="order_release")
     return df
 
 
+save_data = load_save_file()
 df = load_imdb_list()
 display_df(df, "Entire Watch List")
+set_cols = df.columns.tolist()
+edit_cols = ["StartWatchDate", "EndWatchDate", "Length"]
+
+k_df = "k_df"
+for col in edit_cols:
+    df[col] = None
+
+if save_data:
+    for i, data in enumerate(save_data):
+        idx = data["index"]
+        col = data["column"]
+        val = data["val"]
+        df.loc[idx, col] = val
+
+df = df[edit_cols + set_cols]
+st.session_state.setdefault(k_df, df)
+    
+df_2 = display_df(
+    df,
+    "Watch Log",
+    key="k_stde_df",
+    editor=True,
+    disabled=set_cols,
+    column_config={
+        "StartWatchDate": st.column_config.DatetimeColumn(
+            label="Start Watching",
+            min_value=start_date_marathon,
+            max_value=end_date_marathon,
+            # timezone=start_date_marathon.tzname(),
+        ),
+        "EndWatchDate": st.column_config.DatetimeColumn(
+            label="Finish Watching",
+            min_value=start_date_marathon,
+            max_value=end_date_marathon,
+            # timezone=start_date_marathon.tzname(),
+        ),
+        "Length": st.column_config.NumberColumn(
+            label="Length",
+            min_value=1,
+            step=5
+        )
+    }
+)
+c1, c2 = st.container(border=True).columns([0.15, 0.85])
+c1.write("df_e B")
+c2.write(df_2)
+st.session_state[k_df] = df_2
+
+if df_2 is not None:
+    if not df.equals(df_2):
+        st.warning("edited")
+        
+        mask = (
+            df.ne(df_2)
+            & ~(df.isna() & df_2.isna())
+        )
+
+        changes = []
+
+        for row, col in zip(*mask.to_numpy().nonzero()):
+            changes.append({
+                "index": df.index[row],
+                "column": df.columns[col],
+                # "old": df.iat[row, col],
+                "val": df_2.iat[row, col],
+            })
+            
+        st.write("changes")
+        st.write(changes)
+        
+        if st.button(
+            "save"
+        ):
+            with open(save_file, "w") as f:
+                json.dump(changes, f)
+            load_save_file.clear()
+            del st.session_state[k_df]
 
 df_titles = df[[
     "title",
