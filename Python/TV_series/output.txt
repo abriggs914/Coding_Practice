@@ -725,24 +725,46 @@ Total minutes:			5359
 Total hours:			89.31666666666666
 Where to watch:			PlutoTV
 
+	Modern Family
+Genre:				Comedy
+Run (2009 -> 2020):		11 years
+number seasons:			10
+number episodes:		228
+episodes per season:		22.8
+average length of an episode:	23
+Total minutes:			5244
+Total hours:			87.4
+Where to watch:			Disney+
+
+	Raising Hope
+Genre:				Comedy
+Run (2010 -> 2014):		4 years
+number seasons:			4
+number episodes:		88
+episodes per season:		22.0
+average length of an episode:	23
+Total minutes:			2024
+Total hours:			33.733333333333334
+Where to watch:			Disney+
+
 
 	What to watch?
 
 Series:
 
-	Workaholics
-Genre:				Comedy
-Run (2011 -> 2017):		6 years
-number seasons:			7
-number episodes:		86
-episodes per season:		12.285714285714286
-average length of an episode:	22
-Total minutes:			1892
-Total hours:			31.533333333333335
-Where to watch:			Crave
+	Loki
+Genre:				Drama
+Run (2021 -> 2021):		1 year
+number seasons:			1
+number episodes:		6
+episodes per season:		6.0
+average length of an episode:	60
+Total minutes:			360
+Total hours:			6.0
+Where to watch:			Disney+
 
-Season: 6
-Episode: 1
+Season: 1
+Episode: 4
 
 	How would you like to print the stats?
 1	-	By start year
@@ -798,7 +820,9 @@ sorting by start year...
 |Community                        |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    2009    |Community                        |
 |Parks and Recreation             |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    2009    |Parks and Recreation             |
 |Misfits                          |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    2009    |Misfits                          |
+|Modern Family                    |    2009    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    2009    |Modern Family                    |
 |Sherlock                         |    2010    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2010    |Sherlock                         |
+|Raising Hope                     |    2010    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    2010    |Raising Hope                     |
 |Game of Thrones                  |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    2011    |Game of Thrones                  |
 |Workaholics                      |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    2011    |Workaholics                      |
 |Black Mirror                     |    2011    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    2011    |Black Mirror                     |
@@ -885,7 +909,9 @@ sorting by start year...
 |Community                        |    2009    |
 |Parks and Recreation             |    2009    |
 |Misfits                          |    2009    |
+|Modern Family                    |    2009    |
 |Sherlock                         |    2010    |
+|Raising Hope                     |    2010    |
 |Game of Thrones                  |    2011    |
 |Workaholics                      |    2011    |
 |Black Mirror                     |    2011    |
@@ -918,12 +944,12 @@ sorting by start year...
 |Reboot                           |    2022    |
 ################################################
 
-Mean:		2008.68
+Mean:		2008.71
 Median:		2009.00
-Pstdev:		  8.34
-Pvariance:	 69.58
-Stdev:		  8.41
-Variance:	 70.65
+Pstdev:		  8.22
+Pvariance:	 67.56
+Stdev:		  8.28
+Variance:	 68.57
 
 	How would you like to print the stats?
 1	-	By start year
@@ -964,6 +990,7 @@ sorting by end year...
 |Breaking Bad                     |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |   2013   |Breaking Bad                     |
 |Misfits                          |   2013   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |   2013   |Misfits                          |
 |Sons of Anarchy                  |   2014   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |   2014   |Sons of Anarchy                  |
+|Raising Hope                     |   2014   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |   2014   |Raising Hope                     |
 |Gravity Falls Shorts             |   2014   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|    |    |    |    |    |    |    |    |    |    |    |   2014   |Gravity Falls Shorts             |
 |Futurama                         |   2015   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2015   |Futurama                         |
 |Community                        |   2015   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   2015   |Community                        |
@@ -985,6 +1012,7 @@ sorting by end year...
 |Baskets                          |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |   2019   |Baskets                          |
 |Chernobyl                        |   2019   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |   2019   |Chernobyl                        |
 |Star Wars the Clone Wars         |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |   2020   |Star Wars the Clone Wars         |
+|Modern Family                    |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |   2020   |Modern Family                    |
 |Peaky Blinders                   |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |   2020   |Peaky Blinders                   |
 |Better Call Saul                 |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |   2020   |Better Call Saul                 |
 |Final Space                      |   2020   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|    |    |    |    |    |   2020   |Final Space                      |
@@ -1051,6 +1079,7 @@ sorting by end year...
 |Breaking Bad                     |   2013   |
 |Misfits                          |   2013   |
 |Sons of Anarchy                  |   2014   |
+|Raising Hope                     |   2014   |
 |Gravity Falls Shorts             |   2014   |
 |Futurama                         |   2015   |
 |Community                        |   2015   |
@@ -1072,6 +1101,7 @@ sorting by end year...
 |Baskets                          |   2019   |
 |Chernobyl                        |   2019   |
 |Star Wars the Clone Wars         |   2020   |
+|Modern Family                    |   2020   |
 |Peaky Blinders                   |   2020   |
 |Better Call Saul                 |   2020   |
 |Final Space                      |   2020   |
@@ -1099,12 +1129,12 @@ sorting by end year...
 |Solar Opposites                  |   2025   |
 ##############################################
 
-Mean:		2016.30
+Mean:		2016.32
 Median:		2018.50
-Pstdev:		  7.07
-Pvariance:	 49.94
-Stdev:		  7.12
-Variance:	 50.71
+Pstdev:		  6.98
+Pvariance:	 48.75
+Stdev:		  7.03
+Variance:	 49.48
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1149,6 +1179,7 @@ sorting by shortest series length...
 |The Proud Family                 |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |The Proud Family                 |
 |My Name is Earl                  |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4              |My Name is Earl                  |
 |Misfits                          |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |             4              |Misfits                          |
+|Raising Hope                     |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |             4              |Raising Hope                     |
 |Gravity Falls                    |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |             4              |Gravity Falls                    |
 |Mr. Robot                        |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |             4              |Mr. Robot                        |
 |The Mandalorian                  |             4              |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |             4              |The Mandalorian                  |
@@ -1177,6 +1208,7 @@ sorting by shortest series length...
 |The Drew Carey Show              |             9              |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             9              |The Drew Carey Show              |
 |Scrubs                           |             9              |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             9              |Scrubs                           |
 |Smallville                       |             10             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |             10             |Smallville                       |
+|Modern Family                    |             11             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |             11             |Modern Family                    |
 |Prison Break                     |             12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |             12             |Prison Break                     |
 |Star Wars the Clone Wars         |             12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |             12             |Star Wars the Clone Wars         |
 |Bob's Burgers                    |             14             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|             14             |Bob's Burgers                    |
@@ -1236,6 +1268,7 @@ sorting by shortest series length...
 |The Proud Family                 |             4              |
 |My Name is Earl                  |             4              |
 |Misfits                          |             4              |
+|Raising Hope                     |             4              |
 |Gravity Falls                    |             4              |
 |Mr. Robot                        |             4              |
 |The Mandalorian                  |             4              |
@@ -1264,6 +1297,7 @@ sorting by shortest series length...
 |The Drew Carey Show              |             9              |
 |Scrubs                           |             9              |
 |Smallville                       |             10             |
+|Modern Family                    |             11             |
 |Prison Break                     |             12             |
 |Star Wars the Clone Wars         |             12             |
 |Bob's Burgers                    |             14             |
@@ -1282,10 +1316,10 @@ sorting by shortest series length...
 
 Mean:		  7.71
 Median:		  5.00
-Pstdev:		  7.49
-Pvariance:	 56.05
-Stdev:		  7.54
-Variance:	 56.92
+Pstdev:		  7.40
+Pvariance:	 54.77
+Stdev:		  7.46
+Variance:	 55.58
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1320,6 +1354,7 @@ sorting by longest series length...
 |Bob's Burgers                    |            14             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|            14             |Bob's Burgers                    |
 |Prison Break                     |            12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |            12             |Prison Break                     |
 |Star Wars the Clone Wars         |            12             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |            12             |Star Wars the Clone Wars         |
+|Modern Family                    |            11             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |            11             |Modern Family                    |
 |Smallville                       |            10             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |            10             |Smallville                       |
 |The Drew Carey Show              |             9             |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             9             |The Drew Carey Show              |
 |Scrubs                           |             9             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             9             |Scrubs                           |
@@ -1348,6 +1383,7 @@ sorting by longest series length...
 |The Proud Family                 |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |The Proud Family                 |
 |My Name is Earl                  |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |             4             |My Name is Earl                  |
 |Misfits                          |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |             4             |Misfits                          |
+|Raising Hope                     |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |             4             |Raising Hope                     |
 |Gravity Falls                    |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |             4             |Gravity Falls                    |
 |Mr. Robot                        |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |             4             |Mr. Robot                        |
 |The Mandalorian                  |             4             |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |             4             |The Mandalorian                  |
@@ -1407,6 +1443,7 @@ sorting by longest series length...
 |Bob's Burgers                    |            14             |
 |Prison Break                     |            12             |
 |Star Wars the Clone Wars         |            12             |
+|Modern Family                    |            11             |
 |Smallville                       |            10             |
 |The Drew Carey Show              |             9             |
 |Scrubs                           |             9             |
@@ -1435,6 +1472,7 @@ sorting by longest series length...
 |The Proud Family                 |             4             |
 |My Name is Earl                  |             4             |
 |Misfits                          |             4             |
+|Raising Hope                     |             4             |
 |Gravity Falls                    |             4             |
 |Mr. Robot                        |             4             |
 |The Mandalorian                  |             4             |
@@ -1463,10 +1501,10 @@ sorting by longest series length...
 
 Mean:		  7.71
 Median:		  5.00
-Pstdev:		  7.49
-Pvariance:	 56.05
-Stdev:		  7.54
-Variance:	 56.92
+Pstdev:		  7.40
+Pvariance:	 54.77
+Stdev:		  7.46
+Variance:	 55.58
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1511,6 +1549,7 @@ sorting by least number of seasons...
 |The IT Crowd                     |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          4           |The IT Crowd                     |
 |Sherlock                         |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          4           |Sherlock                         |
 |My Name is Earl                  |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          4           |My Name is Earl                  |
+|Raising Hope                     |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          4           |Raising Hope                     |
 |Mr. Robot                        |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |          4           |Mr. Robot                        |
 |The Last Man on Earth            |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          4           |The Last Man on Earth            |
 |Baskets                          |          4           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |          4           |Baskets                          |
@@ -1540,6 +1579,7 @@ sorting by least number of seasons...
 |The Drew Carey Show              |          9           |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          9           |The Drew Carey Show              |
 |Scrubs                           |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          9           |Scrubs                           |
 |The Office                       |          9           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          9           |The Office                       |
+|Modern Family                    |          10          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          10          |Modern Family                    |
 |Smallville                       |          10          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          10          |Smallville                       |
 |The X-Files                      |          11          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |          11          |The X-Files                      |
 |Curb your Enthusiasm             |          11          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |          11          |Curb your Enthusiasm             |
@@ -1598,6 +1638,7 @@ sorting by least number of seasons...
 |The IT Crowd                     |          4           |
 |Sherlock                         |          4           |
 |My Name is Earl                  |          4           |
+|Raising Hope                     |          4           |
 |Mr. Robot                        |          4           |
 |The Last Man on Earth            |          4           |
 |Baskets                          |          4           |
@@ -1627,6 +1668,7 @@ sorting by least number of seasons...
 |The Drew Carey Show              |          9           |
 |Scrubs                           |          9           |
 |The Office                       |          9           |
+|Modern Family                    |          10          |
 |Smallville                       |          10          |
 |The X-Files                      |          11          |
 |Curb your Enthusiasm             |          11          |
@@ -1642,12 +1684,12 @@ sorting by least number of seasons...
 |The Simpsons                     |          36          |
 ##########################################################
 
-Mean:		  6.58
+Mean:		  6.59
 Median:		  5.00
-Pstdev:		  6.09
-Pvariance:	 37.06
-Stdev:		  6.13
-Variance:	 37.63
+Pstdev:		  6.02
+Pvariance:	 36.24
+Stdev:		  6.06
+Variance:	 36.78
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1680,6 +1722,7 @@ sorting by most number of seasons...
 |The X-Files                      |         11          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |         11          |The X-Files                      |
 |Curb your Enthusiasm             |         11          |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |         11          |Curb your Enthusiasm             |
 |Letterkenny                      |         11          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |         11          |Letterkenny                      |
+|Modern Family                    |         10          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         10          |Modern Family                    |
 |Smallville                       |         10          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         10          |Smallville                       |
 |The Drew Carey Show              |          9          |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          9          |The Drew Carey Show              |
 |Scrubs                           |          9          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          9          |Scrubs                           |
@@ -1709,6 +1752,7 @@ sorting by most number of seasons...
 |The IT Crowd                     |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |          4          |The IT Crowd                     |
 |Sherlock                         |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          4          |Sherlock                         |
 |My Name is Earl                  |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          4          |My Name is Earl                  |
+|Raising Hope                     |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          4          |Raising Hope                     |
 |Mr. Robot                        |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |          4          |Mr. Robot                        |
 |The Last Man on Earth            |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |    |          4          |The Last Man on Earth            |
 |Baskets                          |          4          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|    |    |    |    |    |    |          4          |Baskets                          |
@@ -1767,6 +1811,7 @@ sorting by most number of seasons...
 |The X-Files                      |         11          |
 |Curb your Enthusiasm             |         11          |
 |Letterkenny                      |         11          |
+|Modern Family                    |         10          |
 |Smallville                       |         10          |
 |The Drew Carey Show              |          9          |
 |Scrubs                           |          9          |
@@ -1796,6 +1841,7 @@ sorting by most number of seasons...
 |The IT Crowd                     |          4          |
 |Sherlock                         |          4          |
 |My Name is Earl                  |          4          |
+|Raising Hope                     |          4          |
 |Mr. Robot                        |          4          |
 |The Last Man on Earth            |          4          |
 |Baskets                          |          4          |
@@ -1823,12 +1869,12 @@ sorting by most number of seasons...
 |Reboot                           |          1          |
 #########################################################
 
-Mean:		  6.58
+Mean:		  6.59
 Median:		  5.00
-Pstdev:		  6.09
-Pvariance:	 37.06
-Stdev:		  6.13
-Variance:	 37.63
+Pstdev:		  6.02
+Pvariance:	 36.24
+Stdev:		  6.06
+Variance:	 36.78
 
 	How would you like to print the stats?
 1	-	By start year
@@ -1890,6 +1936,7 @@ sorting by least number of episodes...
 |Arrested Develpoment             |          84           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |          84           |Arrested Develpoment             |
 |Workaholics                      |          86           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          86           |Workaholics                      |
 |Prison Break                     |          88           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          88           |Prison Break                     |
+|Raising Hope                     |          88           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          88           |Raising Hope                     |
 |Sons of Anarchy                  |          92           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          92           |Sons of Anarchy                  |
 |My Name is Earl                  |          96           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          96           |My Name is Earl                  |
 |Trailer Park Boys                |          105          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |          105          |Trailer Park Boys                |
@@ -1907,6 +1954,7 @@ sorting by least number of episodes...
 |The Office                       |          201          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |          201          |The Office                       |
 |The X-Files                      |          217          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |          217          |The X-Files                      |
 |Smallville                       |          217          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |          217          |Smallville                       |
+|Modern Family                    |          228          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |          228          |Modern Family                    |
 |The Drew Carey Show              |          233          |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          233          |The Drew Carey Show              |
 |Yu-Gi-Oh!                        |          236          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          236          |Yu-Gi-Oh!                        |
 |King of the Hill                 |          269          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|          269          |King of the Hill                 |
@@ -1977,6 +2025,7 @@ sorting by least number of episodes...
 |Arrested Develpoment             |          84           |
 |Workaholics                      |          86           |
 |Prison Break                     |          88           |
+|Raising Hope                     |          88           |
 |Sons of Anarchy                  |          92           |
 |My Name is Earl                  |          96           |
 |Trailer Park Boys                |          105          |
@@ -1994,6 +2043,7 @@ sorting by least number of episodes...
 |The Office                       |          201          |
 |The X-Files                      |          217          |
 |Smallville                       |          217          |
+|Modern Family                    |          228          |
 |The Drew Carey Show              |          233          |
 |Yu-Gi-Oh!                        |          236          |
 |King of the Hill                 |          269          |
@@ -2004,12 +2054,12 @@ sorting by least number of episodes...
 |The Simpsons                     |          786          |
 ###########################################################
 
-Mean:		108.02
-Median:		 61.50
-Pstdev:		127.23
-Pvariance:	16187.35
-Stdev:		128.20
-Variance:	16436.38
+Mean:		109.49
+Median:		 64.50
+Pstdev:		126.20
+Pvariance:	15926.69
+Stdev:		127.14
+Variance:	16164.40
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2038,6 +2088,7 @@ sorting by most number of episodes...
 |King of the Hill                 |         269          |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         269          |King of the Hill                 |
 |Yu-Gi-Oh!                        |         236          |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         236          |Yu-Gi-Oh!                        |
 |The Drew Carey Show              |         233          |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         233          |The Drew Carey Show              |
+|Modern Family                    |         228          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         228          |Modern Family                    |
 |The X-Files                      |         217          |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |         217          |The X-Files                      |
 |Smallville                       |         217          |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         217          |Smallville                       |
 |The Office                       |         201          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         201          |The Office                       |
@@ -2056,6 +2107,7 @@ sorting by most number of episodes...
 |My Name is Earl                  |          96          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |          96          |My Name is Earl                  |
 |Sons of Anarchy                  |          92          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          92          |Sons of Anarchy                  |
 |Prison Break                     |          88          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          88          |Prison Break                     |
+|Raising Hope                     |          88          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |          88          |Raising Hope                     |
 |Workaholics                      |          86          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |          86          |Workaholics                      |
 |Arrested Develpoment             |          84          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |          84          |Arrested Develpoment             |
 |Game of Thrones                  |          73          |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |          73          |Game of Thrones                  |
@@ -2125,6 +2177,7 @@ sorting by most number of episodes...
 |King of the Hill                 |         269          |
 |Yu-Gi-Oh!                        |         236          |
 |The Drew Carey Show              |         233          |
+|Modern Family                    |         228          |
 |The X-Files                      |         217          |
 |Smallville                       |         217          |
 |The Office                       |         201          |
@@ -2143,6 +2196,7 @@ sorting by most number of episodes...
 |My Name is Earl                  |          96          |
 |Sons of Anarchy                  |          92          |
 |Prison Break                     |          88          |
+|Raising Hope                     |          88          |
 |Workaholics                      |          86          |
 |Arrested Develpoment             |          84          |
 |Game of Thrones                  |          73          |
@@ -2185,12 +2239,12 @@ sorting by most number of episodes...
 |Chernobyl                        |          5           |
 ##########################################################
 
-Mean:		108.02
-Median:		 61.50
-Pstdev:		127.23
-Pvariance:	16187.35
-Stdev:		128.20
-Variance:	16436.38
+Mean:		109.49
+Median:		 64.50
+Pstdev:		126.20
+Pvariance:	15926.69
+Stdev:		127.14
+Variance:	16164.40
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2248,6 +2302,7 @@ sorting by shortest time...
 |Arrested Develpoment             |   30.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |   30.800000   |Arrested Develpoment             |
 |Workaholics                      |   31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |   31.533333   |Workaholics                      |
 |My Name is Earl                  |   33.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   33.600000   |My Name is Earl                  |
+|Raising Hope                     |   33.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |   33.733333   |Raising Hope                     |
 |Trailer Park Boys                |   38.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |   38.500000   |Trailer Park Boys                |
 |Community                        |   40.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |   40.333333   |Community                        |
 |Better Call Saul                 |   41.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |   41.666667   |Better Call Saul                 |
@@ -2266,6 +2321,7 @@ sorting by shortest time...
 |The Office                       |   73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |   73.700000   |The Office                       |
 |Angel                            |   82.500000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   82.500000   |Angel                            |
 |Yu-Gi-Oh!                        |   86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   86.533333   |Yu-Gi-Oh!                        |
+|Modern Family                    |   87.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |   87.400000   |Modern Family                    |
 |The Drew Carey Show              |   89.316667   |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   89.316667   |The Drew Carey Show              |
 |Sons of Anarchy                  |     92.0      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |     92.0      |Sons of Anarchy                  |
 |King of the Hill                 |  103.116667   |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  103.116667   |King of the Hill                 |
@@ -2335,6 +2391,7 @@ sorting by shortest time...
 |Arrested Develpoment             |   30.800000   |
 |Workaholics                      |   31.533333   |
 |My Name is Earl                  |   33.600000   |
+|Raising Hope                     |   33.733333   |
 |Trailer Park Boys                |   38.500000   |
 |Community                        |   40.333333   |
 |Better Call Saul                 |   41.666667   |
@@ -2353,6 +2410,7 @@ sorting by shortest time...
 |The Office                       |   73.700000   |
 |Angel                            |   82.500000   |
 |Yu-Gi-Oh!                        |   86.533333   |
+|Modern Family                    |   87.400000   |
 |The Drew Carey Show              |   89.316667   |
 |Sons of Anarchy                  |     92.0      |
 |King of the Hill                 |  103.116667   |
@@ -2366,12 +2424,12 @@ sorting by shortest time...
 |The Simpsons                     |  314.400000   |
 ###################################################
 
-Mean:		 51.73
-Median:		 26.77
-Pstdev:		 58.46
-Pvariance:	3417.95
-Stdev:		 58.91
-Variance:	3470.53
+Mean:		 51.99
+Median:		 28.97
+Pstdev:		 57.80
+Pvariance:	3340.82
+Stdev:		 58.23
+Variance:	3390.69
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2403,6 +2461,7 @@ sorting by longest time...
 |King of the Hill                 |  103.116667  |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|  103.116667  |King of the Hill                 |
 |Sons of Anarchy                  |     92.0     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |     92.0     |Sons of Anarchy                  |
 |The Drew Carey Show              |  89.316667   |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  89.316667   |The Drew Carey Show              |
+|Modern Family                    |  87.400000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |  87.400000   |Modern Family                    |
 |Yu-Gi-Oh!                        |  86.533333   |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  86.533333   |Yu-Gi-Oh!                        |
 |Angel                            |  82.500000   |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  82.500000   |Angel                            |
 |The Office                       |  73.700000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |  73.700000   |The Office                       |
@@ -2421,6 +2480,7 @@ sorting by longest time...
 |Better Call Saul                 |  41.666667   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |  41.666667   |Better Call Saul                 |
 |Community                        |  40.333333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |  40.333333   |Community                        |
 |Trailer Park Boys                |  38.500000   |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |  38.500000   |Trailer Park Boys                |
+|Raising Hope                     |  33.733333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |  33.733333   |Raising Hope                     |
 |My Name is Earl                  |  33.600000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |  33.600000   |My Name is Earl                  |
 |Workaholics                      |  31.533333   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |  31.533333   |Workaholics                      |
 |Arrested Develpoment             |  30.800000   |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |  30.800000   |Arrested Develpoment             |
@@ -2490,6 +2550,7 @@ sorting by longest time...
 |King of the Hill                 |  103.116667  |
 |Sons of Anarchy                  |     92.0     |
 |The Drew Carey Show              |  89.316667   |
+|Modern Family                    |  87.400000   |
 |Yu-Gi-Oh!                        |  86.533333   |
 |Angel                            |  82.500000   |
 |The Office                       |  73.700000   |
@@ -2508,6 +2569,7 @@ sorting by longest time...
 |Better Call Saul                 |  41.666667   |
 |Community                        |  40.333333   |
 |Trailer Park Boys                |  38.500000   |
+|Raising Hope                     |  33.733333   |
 |My Name is Earl                  |  33.600000   |
 |Workaholics                      |  31.533333   |
 |Arrested Develpoment             |  30.800000   |
@@ -2547,12 +2609,12 @@ sorting by longest time...
 |Gravity Falls Shorts             |   1.416667   |
 ##################################################
 
-Mean:		 51.73
-Median:		 26.77
-Pstdev:		 58.46
-Pvariance:	3417.95
-Stdev:		 58.91
-Variance:	3470.53
+Mean:		 51.99
+Median:		 28.97
+Pstdev:		 57.80
+Pvariance:	3340.82
+Stdev:		 58.23
+Variance:	3390.69
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2579,8 +2641,10 @@ sorting by most episodes per season...
 |Fillmore                         |           26.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           26.0           |Fillmore                         |
 |The Drew Carey Show              |        25.888889         |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        25.888889         |The Drew Carey Show              |
 |My Name is Earl                  |           24.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0           |My Name is Earl                  |
+|Modern Family                    |        22.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |        22.800000         |Modern Family                    |
 |The Office                       |        22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |        22.333333         |The Office                       |
 |Angel                            |           22.0           |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0           |Angel                            |
+|Raising Hope                     |           22.0           |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |           22.0           |Raising Hope                     |
 |The Simpsons                     |        21.833333         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|        21.833333         |The Simpsons                     |
 |Smallville                       |        21.700000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |        21.700000         |Smallville                       |
 |Malcolm in the Middle            |        21.571429         |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |        21.571429         |Malcolm in the Middle            |
@@ -2666,8 +2730,10 @@ sorting by most episodes per season...
 |Fillmore                         |           26.0           |
 |The Drew Carey Show              |        25.888889         |
 |My Name is Earl                  |           24.0           |
+|Modern Family                    |        22.800000         |
 |The Office                       |        22.333333         |
 |Angel                            |           22.0           |
+|Raising Hope                     |           22.0           |
 |The Simpsons                     |        21.833333         |
 |Smallville                       |        21.700000         |
 |Malcolm in the Middle            |        21.571429         |
@@ -2728,12 +2794,12 @@ sorting by most episodes per season...
 |Sherlock                         |         3.250000         |
 ##############################################################
 
-Mean:		 15.58
-Median:		 15.88
-Pstdev:		  8.55
-Pvariance:	 73.05
-Stdev:		  8.61
-Variance:	 74.18
+Mean:		 15.78
+Median:		 16.77
+Pstdev:		  8.50
+Pvariance:	 72.24
+Stdev:		  8.56
+Variance:	 73.32
 
 	How would you like to print the stats?
 1	-	By start year
@@ -2813,7 +2879,9 @@ sorting by least episodes per season...
 |Smallville                       |         21.700000         |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |         21.700000         |Smallville                       |
 |The Simpsons                     |         21.833333         |    |****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|****|         21.833333         |The Simpsons                     |
 |Angel                            |           22.0            |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           22.0            |Angel                            |
+|Raising Hope                     |           22.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |           22.0            |Raising Hope                     |
 |The Office                       |         22.333333         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |         22.333333         |The Office                       |
+|Modern Family                    |         22.800000         |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |         22.800000         |Modern Family                    |
 |My Name is Earl                  |           24.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           24.0            |My Name is Earl                  |
 |The Drew Carey Show              |         25.888889         |    |    |    |    |    |    |    |****|****|****|****|****|****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |         25.888889         |The Drew Carey Show              |
 |The Proud Family                 |           26.0            |    |    |    |    |    |    |    |    |    |    |    |    |    |****|****|****|****|****|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |           26.0            |The Proud Family                 |
@@ -2900,7 +2968,9 @@ sorting by least episodes per season...
 |Smallville                       |         21.700000         |
 |The Simpsons                     |         21.833333         |
 |Angel                            |           22.0            |
+|Raising Hope                     |           22.0            |
 |The Office                       |         22.333333         |
+|Modern Family                    |         22.800000         |
 |My Name is Earl                  |           24.0            |
 |The Drew Carey Show              |         25.888889         |
 |The Proud Family                 |           26.0            |
@@ -2909,19 +2979,19 @@ sorting by least episodes per season...
 |Digimon                          |           52.0            |
 ###############################################################
 
-Mean:		 15.58
-Median:		 15.88
-Pstdev:		  8.55
-Pvariance:	 73.05
-Stdev:		  8.61
-Variance:	 74.18
+Mean:		 15.78
+Median:		 16.77
+Pstdev:		  8.50
+Pvariance:	 72.24
+Stdev:		  8.56
+Variance:	 73.32
 
 #############################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| start year |##################################
-|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 2  | 2  | 3  | 3  | 6  | 7  | 11 | 14 | 17 | 16 | 16 | 15 | 20 | 21 | 19 | 21 | 23 | 23 | 26 | 27 | 29 | 27 | 28 | 26 | 27 | 25 | 25 | 19 | 21 | 16 | 13 | 9  | 8  | start year |Concurrent                       |
+|Concurrent                       | start year | 0  | 1  | 1  | 1  | 1  | 2  | 2  | 3  | 3  | 6  | 7  | 11 | 14 | 17 | 16 | 16 | 15 | 20 | 21 | 19 | 21 | 24 | 25 | 28 | 29 | 31 | 29 | 29 | 27 | 28 | 26 | 26 | 20 | 21 | 16 | 13 | 9  | 8  | start year |Concurrent                       |
 #############################################################################################################################################################################################################################################################################################
 
 #############################################################################################################################################################################################################################################################################################
 ##################################| start year |1988|1989|1990|1991|1992|1993|1994|1995|1996|1997|1998|1999|2000|2001|2002|2003|2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025| start year |##################################
-|End Year Count                   | start year | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 1  | 2  | 1  | 1  | 2  | 1  | 2  | 1  | 1  | 1  | 1  | 1  | 1  | 3  | 2  | 4  | 1  | 3  | 4  | 7  | 4  | 6  | 3  | 4  | 1  | 8  | start year |End Year Count                   |
+|End Year Count                   | start year | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 1  | 2  | 1  | 1  | 2  | 1  | 2  | 1  | 1  | 1  | 1  | 1  | 1  | 3  | 3  | 4  | 1  | 3  | 4  | 7  | 5  | 6  | 3  | 4  | 1  | 8  | start year |End Year Count                   |
 #############################################################################################################################################################################################################################################################################################

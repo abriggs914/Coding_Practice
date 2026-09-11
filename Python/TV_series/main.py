@@ -977,6 +977,36 @@ the_drew_carey_show = TVSeries("The Drew Carey Show", {
 	"Comedy",
 	"PlutoTV")
 
+modern_family = TVSeries("Modern Family", {
+	1: 24,
+	2: 24,
+	3: 24,
+	4: 24,
+	5: 24,
+	6: 24,
+	7: 22,
+	8: 22,
+	10: 22,
+	11: 18,},
+	23,
+	2009,
+	2020,
+	False,
+	"Comedy",
+	"Disney+")
+
+raising_hope = TVSeries("Raising Hope", {
+	1: 22,
+	2: 22,
+	3: 22,
+	4: 22,},
+	23,
+	2010,
+	2014,
+	False,
+	"Comedy",
+	"Disney+")
+
 series_list = [
     the_office,
     community,
@@ -1043,7 +1073,9 @@ series_list = [
 	the_weekenders,
 	reboot,
 	bobs_burgers,
-	the_drew_carey_show
+	the_drew_carey_show,
+	modern_family,
+	raising_hope
 ]
 
    
